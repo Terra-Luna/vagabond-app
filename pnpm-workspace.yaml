@@ -1,3 +1,5 @@
+allowBuilds:
+  unrs-resolver: true
 blockExoticSubdeps: false
 onlyBuiltDependencies:
   - '@league-of-foundry-developers/foundry-vtt-types'

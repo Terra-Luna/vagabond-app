@@ -1,4 +1,4 @@
-import { HeroDataModel } from "../../actor/Hero.mjs"
+import { HeroDataModel } from "../../actor/HeroDataModel.mjs"
 import Equipment, { EquipmentSchema } from "./EquipmentDataModel.mjs"
 
 const weaponSchema = () => {

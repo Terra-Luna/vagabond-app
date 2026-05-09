@@ -3,7 +3,11 @@
   "description": "",
   "scripts": {
     "start": "start cmd /k \"tsc -w --outDir build\"",
-    "clean": "rmdir /s build"
+    "clean": "rmdir /s build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:ui": "vitset --ui"
+
   },
   "keywords": [],
   "author": "",
@@ -21,6 +25,7 @@
   },
   "devDependencies": {
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20251209192131",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "vitest": "^4.1.5"
   }
 }

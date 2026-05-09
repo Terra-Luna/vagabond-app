@@ -1,12 +1,25 @@
-import test, { describe } from "node:test";
-import { AdversaryDataModel } from "../Adversary.mjs";
+import { AdversaryDataModel } from "../AdversaryDataModel.mjs"
 
-
-describe('testing threat level calculation', () => {
-    test('expected val: 1.23', () => {
-        var adv = new AdversaryDataModel()
-        adv.armor.total = 2
-        adv.health.max = 11
-        assert
-    });
-});
+test('threat-level caluclation', () => {
+    const f = foundry.data.fields
+    var adv = new AdversaryDataModel()
+    adv.health.max = 11
+    adv.armor.total = 3
+    adv.actions = [
+        {
+            name: undefined,
+            type: undefined,
+            description: undefined,
+            damage: "",
+            avgDamage: 3
+        },
+        {
+            name: undefined,
+            type: undefined,
+            description: undefined,
+            damage: "",
+            avgDamage: 4
+        }
+    ]
+    expect(adv._calculateThreatLevel()).toBe(5.28)
+})

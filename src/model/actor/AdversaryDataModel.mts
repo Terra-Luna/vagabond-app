@@ -4,7 +4,7 @@ const adversarySchema = () => {
     const f = foundry.data.fields
     return {
         hitDice: new f.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
-        threatLevel: new f.NumberField({ integer: false, min: 0, initial: 0 }),
+        threatLevel: new f.StringField({ integer: false, min: 0, initial: 0 }),
         zone: new f.StringField({
             choices: [
                 'frontline', 'midline', 'backline'
@@ -47,7 +47,7 @@ export class AdversaryDataModel extends foundry.abstract.TypeDataModel<Adversary
         this.threatLevel = this._calculateThreatLevel()
     }
 
-    _calculateThreatLevel(): number {
+    _calculateThreatLevel(): string {
         /**
          * Threat level formula:
          *      a = armor * 2
@@ -58,6 +58,6 @@ export class AdversaryDataModel extends foundry.abstract.TypeDataModel<Adversary
         var a = this.armor.total! * 2
         var b = this.health.max! / 10
         var c = ((this.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / this.actions.entries.length) / 6
-        return (a + b) / 4 + (c || 0)
+        return ((a + b) / 4 + (c || 0)).toFixed(2)
     }
 }
