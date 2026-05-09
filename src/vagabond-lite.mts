@@ -1,11 +1,12 @@
-import { AdversaryDataModel } from "./actor/Adversary.mjs";
-import { HeroDataModel } from "./actor/Hero.mjs";
+import { AdversaryDataModel } from "./model/actor/Adversary.mjs"
+import { HeroDataModel } from "./model/actor/Hero.mjs"
 
 Hooks.once("init", () => {
-    console.log("AHHH")
-    console.log("HELLO WORLD 2")
-    Object.assign(CONFIG.Actor.dataModels, {
-        "hero": HeroDataModel,
-        "adversary": AdversaryDataModel
-    })
+    console.log("HELLO WORLD")
+    Object.assign(
+        CONFIG.Actor.dataModels, {
+            "hero": HeroDataModel,
+            "adversary": AdversaryDataModel
+        }
+    )
 })

@@ -2,7 +2,8 @@
   "name": "vagabond-lite",
   "description": "",
   "scripts": {
-    "start": "start cmd /k \"tsc -w --outDir build\""
+    "start": "start cmd /k \"tsc -w --outDir build\"",
+    "clean": "rmdir /s build"
   },
   "keywords": [],
   "author": "",
