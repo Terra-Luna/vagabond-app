@@ -1,0 +1,12 @@
+blockExoticSubdeps: false
+onlyBuiltDependencies:
+  - '@league-of-foundry-developers/foundry-vtt-types'
+peerDependencyRules:
+  allowedVersions:
+    "@pixi/basis>@pixi/assets": "*"
+    "@pixi/basis>@pixi/core": "*"
+  ignoreMissing:
+    - "@pixi/compressed-textures"
+    - "@pixi/particle-emitter"
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 10080

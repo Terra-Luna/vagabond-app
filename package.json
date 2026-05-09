@@ -1,0 +1,25 @@
+{
+  "name": "vagabond-lite",
+  "description": "",
+  "scripts": {
+    "start": "start cmd /k \"tsc -w --outDir build\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.0.9",
+      "onFail": "download"
+    }
+  },
+  "type": "module",
+  "dependencies": {
+    "react": "19.2.6"
+  },
+  "devDependencies": {
+    "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20251209192131",
+    "typescript": "6.0.3"
+  }
+}
