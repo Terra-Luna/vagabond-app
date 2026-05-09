@@ -1,5 +1,5 @@
 import Currency from "../item/Currency.mjs"
-import EquipmentDataModel from "../item/gear/Equipment.mjs"
+import EquipmentDataModel from "../item/gear/EquipmentDataModel.mjs"
 import BaseActor from "./ActorBase.mjs"
 
 const heroActorSchema = () => {

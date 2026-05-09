@@ -1,5 +1,5 @@
 import { HeroDataModel } from "../../actor/Hero.mjs"
-import Equipment from "./Equipment.mjs"
+import Equipment, { EquipmentSchema } from "./EquipmentDataModel.mjs"
 
 const armorSchema = () => {
     const f = foundry.data.fields
@@ -9,9 +9,9 @@ const armorSchema = () => {
     }
 }
 
-export type ArmorSchema = ReturnType<typeof armorSchema>
+export type ArmorSchema = ReturnType<typeof armorSchema> & EquipmentSchema
 
-export class ArmorDataModel extends Equipment {
+export class ArmorDataModel extends foundry.abstract.TypeDataModel<ArmorSchema, any> {
     static defineSchema() {
         const f = foundry.data.fields
         return {
@@ -22,10 +22,12 @@ export class ArmorDataModel extends Equipment {
 
     prepareDerivedData() {
         super.prepareDerivedData()
-        this.baseArmor = {'light': 1, 'medium': 2, 'heavy': 3}[this.armorType || 1]
+        this.baseArmor = { 'light': 1, 'medium': 2, 'heavy': 3 }[this.armorType || 0]
     }
 
-    override onEquip(hero: HeroDataModel) { }
+    onEquip(hero: HeroDataModel) {
+        
+    }
 
-    override onUse() { }
+    onUse() { }
 }
