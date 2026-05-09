@@ -1,4 +1,4 @@
-const baseActorSchema = () => {
+export const baseActorSchema = () => {
     const f = foundry.data.fields
     const schema = {
         health: new f.SchemaField({
@@ -42,10 +42,9 @@ const baseActorSchema = () => {
 
 export type BaseActorSchema = ReturnType<typeof baseActorSchema>
 
-export default abstract class ActorBase extends foundry.abstract.TypeDataModel<BaseActorSchema, any> {
+export default abstract class ActorBase<T extends BaseActorSchema> extends foundry.abstract.TypeDataModel<T, any> {
     static defineSchema() {
         return {
-            ...super.defineSchema(),
             ...baseActorSchema()
         }
     }

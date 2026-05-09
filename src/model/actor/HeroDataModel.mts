@@ -30,7 +30,7 @@ const heroSchema = () => {
         }),
         boundRelicLimit: new f.NumberField({ integer: true, initial: 3 }),
         inventory: new f.SchemaField({
-            wealth: new f.TypedSchemaField({
+            wealth: new f.SchemaField({
                 ...Currency.defineSchema
             }),
             maxSlots: new f.NumberField({ integer: true, min: 8, initial: 8 }),
@@ -45,7 +45,7 @@ const heroSchema = () => {
 
 export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
 
-export class HeroDataModel extends foundry.abstract.TypeDataModel<HeroDataModelSchema, any> {
+export class HeroDataModel extends ActorBase<HeroDataModelSchema> {
     static defineSchema() {
         const f = foundry.data.fields
         return {

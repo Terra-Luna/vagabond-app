@@ -4,7 +4,7 @@ const adversarySchema = () => {
     const f = foundry.data.fields
     return {
         hitDice: new f.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
-        threatLevel: new f.StringField({ integer: false, min: 0, initial: 0 }),
+        threatLevel: new f.StringField(),
         zone: new f.StringField({
             choices: [
                 'frontline', 'midline', 'backline'
@@ -32,7 +32,7 @@ const adversarySchema = () => {
 
 export type AdversarySchema = ReturnType<typeof adversarySchema> & BaseActorSchema
 
-export class AdversaryDataModel extends foundry.abstract.TypeDataModel<AdversarySchema, any> {
+export class AdversaryDataModel extends ActorBase<AdversarySchema> {
     static defineSchema() {
         const f = foundry.data.fields
         return {

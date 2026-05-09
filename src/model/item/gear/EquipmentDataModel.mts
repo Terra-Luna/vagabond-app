@@ -18,7 +18,7 @@ const baseEquipmentSchema = () => {
 
 export type EquipmentSchema = ReturnType<typeof baseEquipmentSchema> & BaseItemSchema
 
-export default abstract class EquipmentDataModel extends foundry.abstract.TypeDataModel<EquipmentSchema, any> {
+export default abstract class EquipmentDataModel<T extends EquipmentSchema> extends ItemBase<T> {
     static defineSchema() {
         const f = foundry.data.fields;
         return {

@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../actor/HeroDataModel.mjs"
+import EquipmentDataModel from "./EquipmentDataModel.mjs"
 import Equipment, { EquipmentSchema } from "./EquipmentDataModel.mjs"
 
 const weaponSchema = () => {
@@ -34,7 +35,7 @@ const weaponSchema = () => {
 
 export type WeaponSchema = ReturnType<typeof weaponSchema> & EquipmentSchema
 
-export class WeaponDataModel extends foundry.abstract.TypeDataModel<WeaponSchema, any> {
+export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
     static defineSchema() {
         const f = foundry.data.fields
         return {
