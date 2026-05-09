@@ -57,7 +57,7 @@ export class AdversaryDataModel extends foundry.abstract.TypeDataModel<Adversary
          */
         var a = this.armor.total! * 2
         var b = this.health.max! / 10
-        var c = this.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0)
+        var c = ((this.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / this.actions.entries.length) / 6
         return (a + b) / 4 + (c || 0)
     }
 }
