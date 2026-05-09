@@ -6,5 +6,5 @@ export default defineConfig({
         // Specify your test options here
         globals: true,
         environment: 'node', // Use 'jsdom' if testing browser components
-    },
+    }
 })
