@@ -47,7 +47,7 @@ export class AdversaryDataModel extends ActorBase<AdversarySchema> {
         this.threatLevel = this._calculateThreatLevel()
     }
 
-    _calculateThreatLevel(): string {
+    _calculateThreatLevel(): number {
         /**
          * Threat level formula:
          *      a = armor * 2
@@ -58,6 +58,6 @@ export class AdversaryDataModel extends ActorBase<AdversarySchema> {
         var a = this.armor.total! * 2
         var b = this.health.max! / 10
         var c = ((this.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / this.actions.entries.length) / 6
-        return ((a + b) / 4 + (c || 0)).toFixed(2)
+        return (a + b) / 4 + (c || 0)
     }
 }
