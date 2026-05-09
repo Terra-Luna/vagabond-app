@@ -1,13 +1,9 @@
-const baseActorSchema = (extras, { maxHealth, startingHealth }: { maxHealth: number, startingHealth: number }) => {
+const baseActorSchema = ({ maxHealth, startingHealth }: { startingHealth: number, maxHealth: number }) => {
     const f = foundry.data.fields
-
     const schema = {
-        resources: new f.SchemaField({
-            health: new f.SchemaField({
-                max: new f.NumberField({ required: true, integer: true, min: 0, initial: maxHealth }),
-                value: new f.NumberField({ required: true, number: true, min: 0, initial: startingHealth })
-            }),
-            ...extras
+        health: new f.SchemaField({
+            max: new f.NumberField({ required: true, integer: true, min: 0, initial: maxHealth }),
+            value: new f.NumberField({ required: true, number: true, min: 0, initial: startingHealth })
         }),
         movement: new f.ArrayField(
             new f.SchemaField({
@@ -35,19 +31,13 @@ const baseActorSchema = (extras, { maxHealth, startingHealth }: { maxHealth: num
         })
     }
 
-    // a hack to get the typing system on our side
-    schema.resources.fields = {
-        ...schema.resources.fields,
-        ...extras
-    }
-
     return schema
 }
 
 export type BaseActorModelSchema = ReturnType<typeof baseActorSchema>
 
 export default abstract class BaseActor extends foundry.abstract.TypeDataModel<BaseActorModelSchema, any> {
-    static defineSchema(extras = {}, props = { maxHealth: 2, startingHealth: 2 }) {
-        return baseActorSchema(extras, props)
+    static defineSchema(props = { startingHealth: 2, maxHealth: 2 }) {
+        return baseActorSchema(props)
     }
 }

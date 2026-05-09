@@ -17,7 +17,7 @@ export class ArmorDataModel extends Equipment {
         this.baseArmor = {'light': 1, 'medium': 2, 'heavy': 3}[this.armorType || 1]
     }
 
-    override onEquip(hero: HeroDataModel) {
-        hero.resources
-    }
+    override onEquip(hero: HeroDataModel) { }
+
+    override onUse() { }
 }

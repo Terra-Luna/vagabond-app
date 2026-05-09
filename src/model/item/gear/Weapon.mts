@@ -34,11 +34,7 @@ export class WeaponDataModel extends Equipment {
         }
     }
 
-    override onEquip(hero: HeroDataModel) {
+    override onEquip(hero: HeroDataModel) { }
 
-    }
-
-    override onUse() {
-        
-    }
+    override onUse() { }
 }
