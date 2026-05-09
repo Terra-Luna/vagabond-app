@@ -40,6 +40,7 @@ export default class BaseActor extends foundry.abstract.TypeDataModel<BaseActorM
         return baseActorSchema(additionalResources, props)
     }
 
-    async prepareDerivedData() {
+    override async prepareDerivedData() {
+        
     }
 }

@@ -5,17 +5,17 @@ const heroActorSchema = () => {
 
     return {
         xp: new fields.SchemaField({
-            level: new fields.NumberField({ integer: true }),
-            current: new fields.NumberField({ integer: true }),
-            nextLevel: new fields.NumberField({ integer: true })
+            level: new fields.NumberField({ integer: true, initial: 0 }),
+            current: new fields.NumberField({ integer: true, initial: 0 }),
+            nextLevel: new fields.NumberField({ integer: true, initial: 10 })
         }),
         stats: new fields.SchemaField({
-            might: new fields.NumberField({ integer: true, max: 7, min: 2 }),
-            dexterity: new fields.NumberField({ integer: true, max: 7, min: 2 }),
-            awareness: new fields.NumberField({ integer: true, max: 7, min: 2 }),
-            reason: new fields.NumberField({ integer: true, max: 7, min: 2 }),
-            presence: new fields.NumberField({ integer: true, max: 7, min: 2 }),
-            luck: new fields.NumberField({ integer: true, max: 7, min: 2 }),
+            might: new fields.NumberField({ integer: true, max: 7, min: 2, initial: 2 }),
+            dexterity: new fields.NumberField({ integer: true, max: 7, min: 2, initial: 2 }),
+            awareness: new fields.NumberField({ integer: true, max: 7, min: 2, initial: 2 }),
+            reason: new fields.NumberField({ integer: true, max: 7, min: 2, initial: 2 }),
+            presence: new fields.NumberField({ integer: true, max: 7, min: 2, initial: 2 }),
+            luck: new fields.NumberField({ integer: true, max: 7, min: 2, initial: 2 }),
         })
     };
 }
@@ -40,5 +40,11 @@ export class HeroDataModel extends BaseActor {
             }),
             ...heroActorSchema()
         }
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
+        const { health } = this.resources
+        health.max = this.stats.might * (this.xp.level || 1)
     }
 }
