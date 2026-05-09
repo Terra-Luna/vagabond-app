@@ -4,7 +4,7 @@ const adversarySchema = () => {
     const fields = foundry.data.fields;
 
     return {
-        hitDice: new fields.NumberField({ integer: true, min: 1 }),
+        hitDice: new fields.NumberField({ integer: true, min: 1, initial: 1 }),
         //todo: is this here or ONLY in derivedData? unsure
         threatLevel: new fields.NumberField({ integer: false, min: 0 }),
         zone: new fields.StringField({
@@ -35,5 +35,23 @@ export class AdversaryDataModel extends BaseActor {
             ...super.defineSchema({}, { maxHealth: 1, startingHealth: 1 }),
             ...adversarySchema()
         }
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
+        const { health } = this.resources
+        health.max = this.size?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice * 4.5)
+        this.threatLevel = this._calculateThreatLevel()
+    }
+
+    _calculateThreatLevel(): number {
+        /**
+         * Threat level formula:
+         *      a = armor * 2
+         *      b = HP / 10
+         *      c = Mean dmg-per-round / 6
+         *      TL = (a + b) / 4 + c
+         */
+        return 1.23
     }
 }

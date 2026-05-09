@@ -15,11 +15,11 @@ const baseActorSchema = (additionalResources, { maxHealth, startingHealth }: { m
                 type: new fields.StringField({ choices: ['walk', 'fly', 'cling', 'climb', 'phase', 'swim'] })
             })),
         size: new fields.StringField({
-            choices: ['small', 'medium', 'large', 'huge', 'giant', 'colossal']
+            choices: ['small', 'medium', 'large', 'huge', 'giant', 'colossal'],
+            initital: 'medium'
         }),
         beingType: new fields.StringField({
-            choices: ['artificial', 'beast', 'cryptid', 'fae', 'humanlike',
-                'outer', 'primordial', 'undead']
+            choices: ['artificial', 'beast', 'cryptid', 'fae', 'humanlike', 'outer', 'primordial', 'undead']
         }),
         senses: new fields.SchemaField({
             allsight: new fields.BooleanField(),
