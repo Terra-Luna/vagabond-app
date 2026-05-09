@@ -1,7 +1,7 @@
 const baseActorSchema = (additionalResources, { maxHealth, startingHealth }: { maxHealth: number; startingHealth: number }) => {
     const fields = foundry.data.fields;
 
-    return {
+    const schema = {
         resources: new fields.SchemaField({
             health: new fields.SchemaField({
                 max: new fields.NumberField({ required: true, integer: true, min: 0, initial: maxHealth }),
@@ -31,6 +31,14 @@ const baseActorSchema = (additionalResources, { maxHealth, startingHealth }: { m
         }),
         // todo: weaknesses (might be adversary-only)
     }
+
+    // a hack to get the typing system on our side
+    schema.resources.fields = {
+        ...schema.resources.fields,
+        ...additionalResources
+    }
+
+    return schema
 }
 
 export type BaseActorModelSchema = ReturnType<typeof baseActorSchema>
@@ -41,6 +49,6 @@ export default class BaseActor extends foundry.abstract.TypeDataModel<BaseActorM
     }
 
     override async prepareDerivedData() {
-        
+
     }
 }
