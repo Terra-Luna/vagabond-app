@@ -1,9 +1,15 @@
-const baseActorSchema = ({ maxHealth, startingHealth }: { startingHealth: number, maxHealth: number }) => {
+const baseActorSchema = () => {
     const f = foundry.data.fields
     const schema = {
         health: new f.SchemaField({
-            max: new f.NumberField({ required: true, integer: true, min: 0, initial: maxHealth }),
-            value: new f.NumberField({ required: true, number: true, min: 0, initial: startingHealth })
+            value: new f.NumberField({ required: true, number: true, min: 0, initial: 2 }),
+            max: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
+            maxBonus: new f.NumberField({ required: false, integer: true, min: 0, initial: 0 })
+        }),
+        armor: new f.SchemaField({
+            rating: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            bonus: new f.NumberField({ required: false, integer: true, min: 0, initial: 0 }),
+            total: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 })
         }),
         movement: new f.ArrayField(
             new f.SchemaField({
@@ -34,10 +40,13 @@ const baseActorSchema = ({ maxHealth, startingHealth }: { startingHealth: number
     return schema
 }
 
-export type BaseActorModelSchema = ReturnType<typeof baseActorSchema>
+export type BaseActorSchema = ReturnType<typeof baseActorSchema>
 
-export default abstract class BaseActor extends foundry.abstract.TypeDataModel<BaseActorModelSchema, any> {
-    static defineSchema(props = { startingHealth: 2, maxHealth: 2 }) {
-        return baseActorSchema(props)
+export default abstract class ActorBase extends foundry.abstract.TypeDataModel<BaseActorSchema, any> {
+    static defineSchema() {
+        return {
+            ...super.defineSchema(),
+            ...baseActorSchema()
+        }
     }
 }

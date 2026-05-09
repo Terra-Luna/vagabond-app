@@ -1,8 +1,8 @@
 import Currency from "../item/Currency.mjs"
 import EquipmentDataModel from "../item/gear/EquipmentDataModel.mjs"
-import BaseActor from "./ActorBase.mjs"
+import ActorBase, { BaseActorSchema } from "./ActorBase.mjs"
 
-const heroActorSchema = () => {
+const heroSchema = () => {
     const f = foundry.data.fields
     const schema = {
         mana: new f.SchemaField({
@@ -43,20 +43,19 @@ const heroActorSchema = () => {
     return schema
 }
 
-export type HeroDataModelSchema = ReturnType<typeof heroActorSchema>
+export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
 
-export class HeroDataModel extends BaseActor {
-
+export class HeroDataModel extends foundry.abstract.TypeDataModel<HeroDataModelSchema, any> {
     static defineSchema() {
         const f = foundry.data.fields
         return {
             ...super.defineSchema(),
-            ...heroActorSchema()
+            ...heroSchema()
         }
     }
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        this.health.max = 5
+        this.health.max = this.stats.might! * (this.level.current || 1)
     }
 }
