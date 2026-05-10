@@ -11,6 +11,8 @@ export default defineConfig({
       "/socket.io": {
         target: "ws://localhost:30000",
         ws: true,
+        changeOrigin: true,
+        secure: false
       },
     }
   },
@@ -21,7 +23,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       name: "vagabond-lite",
-      entry: "src/vagabond-lite.ts",
+      entry: "src/vagabond-lite.tsx",
       formats: ["es"],
       fileName: "vagabond-lite"
     }
