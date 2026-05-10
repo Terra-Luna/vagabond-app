@@ -35,18 +35,14 @@ const weaponSchema = () => {
 
 export type WeaponSchema = ReturnType<typeof weaponSchema> & EquipmentSchema
 
-export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
+export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
     static defineSchema() {
-        const f = foundry.data.fields
         return {
             ...super.defineSchema(),
             ...weaponSchema()
         }
     }
 
-    onEquip(hero: HeroDataModel) {
-        
-    }
-
-    onUse() { }
+    override onEquip(hero: HeroDataModel) { }
+    override onUse() { }
 }
