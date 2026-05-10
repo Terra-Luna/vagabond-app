@@ -1,11 +1,11 @@
 export const skillsTrainingSchema = () => {
     const f = foundry.data.fields
-    return new f.SchemaField({
+    return {
         granted: new f.ArrayField(
             new f.StringField(), { initial: [] }
         ),
         choices: skillChoices()
-    })
+    }
 }
 
 export const skillChoices = () => {

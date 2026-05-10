@@ -6,7 +6,7 @@ import ClassDataModel from "../item/class/ClassDataModel.mjs"
 
 const heroSchema = () => {
     const f = foundry.data.fields
-    const schema = {
+    return {
         mana: new f.SchemaField({
             max: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
             value: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
@@ -22,8 +22,8 @@ const heroSchema = () => {
             xp: new f.NumberField({ integer: true, initial: 0 }),
             xpToLevel: new f.NumberField({ integer: true, initial: 10 })
         }),
-        ancestry: AncestryDataModel.defineSchema(),
-        class: ClassDataModel.defineSchema(),
+        ancestry: new f.SchemaField({ ...AncestryDataModel.defineSchema() }),
+        class: new f.SchemaField({ ...ClassDataModel.defineSchema() }),
         stats: new f.SchemaField({
             might: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
             dexterity: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
@@ -44,7 +44,6 @@ const heroSchema = () => {
         }),
         boundRelicLimit: new f.NumberField({ integer: true, initial: 3 }),
     }
-    return schema
 }
 
 export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
