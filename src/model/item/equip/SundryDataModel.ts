@@ -1,5 +1,5 @@
-import HeroDataModel from "../../actor/HeroDataModel.mjs"
-import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel.mjs"
+import HeroDataModel from "../../actor/HeroDataModel"
+import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 const sundrySchema = () => {
     const f = foundry.data.fields

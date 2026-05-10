@@ -1,4 +1,4 @@
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel.mjs"
+import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 
 const adversarySchema = () => {
     const f = foundry.data.fields

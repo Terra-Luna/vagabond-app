@@ -1,4 +1,4 @@
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel.mjs"
+import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const ancestrySchema = () => {
     const f = foundry.data.fields

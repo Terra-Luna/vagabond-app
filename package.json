@@ -22,13 +22,13 @@
     "react-dom": "19.2.6"
   },
   "devDependencies": {
-    "@jest/globals": "^30.4.1",
+    "@jest/globals": "30.4.1",
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20251209192131",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
-    "jest": "^30.4.1",
-    "ts-jest": "^29.4.9",
+    "jest": "30.4.1",
+    "ts-jest": "29.4.9",
     "typescript": "6.0.3",
-    "vite": "^8.0.11"
+    "vite": "8.0.11"
   }
 }

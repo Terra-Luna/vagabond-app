@@ -1,5 +1,5 @@
-import { requiredString, standardInteger } from "../../../../vagabond-lite.mjs"
-import { skillChoices } from "./SkillsTrainingSchema.mjs"
+import { requiredString, standardInteger } from "../../../../vagabond-lite"
+import { skillChoices } from "./SkillsTrainingSchema"
 
 export const featureSchema = () => {
     const f = foundry.data.fields

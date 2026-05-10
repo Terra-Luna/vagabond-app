@@ -1,6 +1,6 @@
-import HeroDataModel from "../../actor/HeroDataModel.mjs"
-import EquipmentDataModel from "./EquipmentDataModel.mjs"
-import { EquipmentSchema } from "./EquipmentDataModel.mjs"
+import HeroDataModel from "../../actor/HeroDataModel"
+import EquipmentDataModel from "./EquipmentDataModel"
+import { EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
     const f = foundry.data.fields

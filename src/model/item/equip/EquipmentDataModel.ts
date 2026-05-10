@@ -1,6 +1,6 @@
-import HeroDataModel from "../../actor/HeroDataModel.mjs"
-import CurrencyDataModel from "../misc/CurrencyDataModel.mjs"
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel.mjs"
+import HeroDataModel from "../../actor/HeroDataModel"
+import CurrencyDataModel from "../misc/CurrencyDataModel"
+import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const baseEquipmentSchema = () => {
     const f = foundry.data.fields

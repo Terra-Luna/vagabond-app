@@ -1,11 +1,11 @@
-//#region src/model/actor/ActorBase.mts
+//#region src/model/actor/ActorDataModel.ts
 var e = () => {
 	let e = foundry.data.fields;
 	return {
 		health: new e.SchemaField({
 			value: new e.NumberField({
 				required: !0,
-				number: !0,
+				integer: !0,
 				min: 0,
 				initial: 2
 			}),
@@ -23,24 +23,14 @@ var e = () => {
 			})
 		}),
 		armor: new e.SchemaField({
-			rating: new e.NumberField({
-				required: !0,
-				integer: !0,
-				min: 0,
-				initial: 0
-			}),
+			rating: new e.NumberField({ ...L }),
 			bonus: new e.NumberField({
 				required: !1,
 				integer: !0,
 				min: 0,
 				initial: 0
 			}),
-			total: new e.NumberField({
-				required: !0,
-				integer: !0,
-				min: 0,
-				initial: 0
-			})
+			total: new e.NumberField({ ...L })
 		}),
 		movement: new e.ArrayField(new e.SchemaField({
 			speed: new e.NumberField({
@@ -140,19 +130,21 @@ var e = () => {
 	};
 }, r = class extends t {
 	static defineSchema() {
-		return foundry.data.fields, {
+		return {
 			...super.defineSchema(),
 			...n()
 		};
 	}
 	async prepareDerivedData() {
-		super.prepareDerivedData(), this.health.max = this.size?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice * 4.5), this.threatLevel = this._calculateThreatLevel();
+		super.prepareDerivedData(), this.health.max = this.size?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice * 4.5), this.threatLevel = this.calculateThreatLevel();
 	}
-	_calculateThreatLevel() {
-		var e = this.armor.total * 2, t = this.health.max / 10, n = (this.actions.map((e) => e.avgDamage).reduce((e, t) => (e || 0) + (t || 0), 0) || 0) / this.actions.entries.length / 6;
-		return ((e + t) / 4 + (n || 0)).toFixed(2);
+	calculateThreatLevel() {
+		return i(this);
 	}
-}, i = () => {
+}, i = (e) => {
+	var t = e.armor.total * 2, n = e.health.max / 10, r = (e.actions.map((e) => e.avgDamage).reduce((e, t) => (e || 0) + (t || 0), 0) || 0) / e.actions.entries.length / 6;
+	return ((t + n) / 4 + (r || 0)).toFixed(2);
+}, a = () => {
 	let e = foundry.data.fields;
 	return {
 		g: new e.NumberField({
@@ -174,26 +166,26 @@ var e = () => {
 			initial: 0
 		})
 	};
-}, a = class extends foundry.abstract.TypeDataModel {
+}, o = class extends foundry.abstract.TypeDataModel {
 	static defineSchema() {
-		return i();
+		return a();
 	}
 	async consolidateDenominations() {
-		o(this);
+		s(this);
 	}
-}, o = (e) => {
+}, s = (e) => {
 	var t = Math.floor(e.c / 100);
 	e.s += t, e.c %= 100;
 	var n = Math.floor(e.s / 100);
 	e.g += n, e.s %= 100;
-}, s = () => ({ description: new foundry.data.fields.HTMLField() }), c = class extends foundry.abstract.TypeDataModel {
+}, c = () => ({ description: new foundry.data.fields.HTMLField() }), l = class extends foundry.abstract.TypeDataModel {
 	static defineSchema() {
-		return s();
+		return c();
 	}
-}, l = () => {
+}, u = () => {
 	let e = foundry.data.fields;
 	return {
-		value: new e.SchemaField({ ...a.defineSchema() }),
+		value: new e.SchemaField({ ...o.defineSchema() }),
 		slots: new e.NumberField({
 			integer: !0,
 			min: 0,
@@ -206,14 +198,100 @@ var e = () => {
 			isBound: new e.BooleanField({ initial: !1 })
 		})
 	};
-}, u = class extends c {
+}, d = class extends l {
 	static defineSchema() {
-		return foundry.data.fields, {
+		return {
 			...super.defineSchema(),
-			...l()
+			...u()
 		};
 	}
-}, d = () => {
+}, f = () => (foundry.data.fields, {}), p = class extends l {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...f()
+		};
+	}
+}, m = () => {
+	let e = foundry.data.fields;
+	return {
+		granted: new e.ArrayField(new e.StringField(), { initial: [] }),
+		choices: h()
+	};
+}, h = () => {
+	let e = foundry.data.fields;
+	return new e.ArrayField(new e.SchemaField({
+		options: new e.ArrayField(new e.StringField(), { initial: [] }),
+		count: new e.NumberField({
+			integer: !0,
+			initial: 0,
+			min: 0
+		})
+	}), { initial: [] });
+}, g = () => {
+	let e = foundry.data.fields;
+	return {
+		name: new e.StringField({
+			...F,
+			initial: ""
+		}),
+		description: new e.StringField({ initial: "" }),
+		level: new e.NumberField({
+			required: !0,
+			integer: !0,
+			min: 1,
+			max: 10,
+			initial: 1
+		}),
+		statBonus: new e.NumberField({
+			...I,
+			max: 10
+		}),
+		perkOptions: new e.ArrayField(new e.StringField({ initial: "" }), { initial: [] }),
+		perkLimit: new e.NumberField({ ...I }),
+		skillTraining: new e.NumberField({
+			...I,
+			max: 10
+		}),
+		skillOptions: h()
+	};
+}, _ = () => {
+	let e = foundry.data.fields;
+	return {
+		isSpellcaster: new e.BooleanField({ initial: !1 }),
+		manaMultiplier: new e.NumberField({
+			integer: !0,
+			min: 0,
+			initial: 0
+		}),
+		manaStat: new e.StringField({
+			initial: null,
+			nullable: !0,
+			required: !1
+		}),
+		castStat: new e.StringField({
+			initial: null,
+			nullable: !0,
+			required: !1
+		})
+	};
+}, v = () => (foundry.data.fields, {}), y = () => {
+	let e = foundry.data.fields;
+	return {
+		spellcasting: new e.SchemaField({ ..._() }),
+		keyStats: new e.ArrayField(new e.StringField(), { initial: [] }),
+		skillsTraining: new e.SchemaField({ ...m() }),
+		features: new e.ArrayField(new e.SchemaField({ ...g() })),
+		spellsProgression: new e.SchemaField({ ...v() })
+	};
+}, b = class extends l {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...y()
+		};
+	}
+}, x = () => {
 	let e = foundry.data.fields;
 	return {
 		mana: new e.SchemaField({
@@ -263,6 +341,8 @@ var e = () => {
 				initial: 10
 			})
 		}),
+		ancestry: new e.SchemaField({ ...p.defineSchema() }),
+		class: new e.SchemaField({ ...b.defineSchema() }),
 		stats: new e.SchemaField({
 			might: new e.NumberField({
 				integer: !0,
@@ -301,12 +381,8 @@ var e = () => {
 				initial: 2
 			})
 		}),
-		boundRelicLimit: new e.NumberField({
-			integer: !0,
-			initial: 3
-		}),
 		inventory: new e.SchemaField({
-			wealth: new e.SchemaField({ ...a.defineSchema }),
+			wealth: new e.SchemaField({ ...o.defineSchema() }),
 			maxSlots: new e.NumberField({
 				integer: !0,
 				min: 8,
@@ -317,28 +393,182 @@ var e = () => {
 				min: 0,
 				initial: 0
 			}),
-			equipped: new e.ArrayField(new e.TypedSchemaField({ ...u.defineSchema }))
+			equipped: new e.ArrayField(new e.SchemaField({ ...d.defineSchema() }))
+		}),
+		boundRelicLimit: new e.NumberField({
+			integer: !0,
+			initial: 3
 		})
 	};
-}, f = class extends t {
+}, S = class extends t {
 	static defineSchema() {
-		return foundry.data.fields, {
+		return {
 			...super.defineSchema(),
-			...d()
+			...x()
 		};
 	}
 	async prepareDerivedData() {
 		super.prepareDerivedData(), this.health.max = this.stats.might * (this.level.current || 1);
+	}
+}, C = () => {
+	let e = foundry.data.fields;
+	return {
+		armorType: new e.StringField({
+			reuired: !1,
+			initial: "light",
+			choices: [
+				"light",
+				"medium",
+				"heavy"
+			]
+		}),
+		baseArmor: new e.NumberField({
+			integer: !0,
+			min: 0,
+			initial: 0
+		})
+	};
+}, w = class extends d {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...C()
+		};
+	}
+	prepareDerivedData() {
+		super.prepareDerivedData(), this.baseArmor = {
+			light: 1,
+			medium: 2,
+			heavy: 3
+		}[this.armorType || 0];
+	}
+	onEquip(e) {}
+	onUse() {}
+}, T = () => {
+	let e = foundry.data.fields;
+	return {
+		range: new e.StringField({
+			required: !1,
+			initial: "close",
+			choices: [
+				"close",
+				"near",
+				"far"
+			]
+		}),
+		damage1H: new e.StringField({
+			required: !1,
+			initial: ""
+		}),
+		damage2H: new e.StringField({
+			required: !1,
+			initial: ""
+		}),
+		grip: new e.SchemaField({
+			options: new e.StringField({
+				required: !1,
+				initial: "1H",
+				choices: [
+					"1H",
+					"2H",
+					"V",
+					"F"
+				]
+			}),
+			gripState: new e.StringField({
+				required: !1,
+				initial: ""
+			})
+		}),
+		attackSkills: new e.ArrayField(new e.StringField({
+			initial: "",
+			required: !0
+		}), { initial: [] }),
+		properties: new e.ArrayField(new e.StringField({
+			required: !0,
+			blank: !1
+		}), { initial: [] }),
+		explodeData: new e.SchemaField({
+			canExplode: new e.BooleanField({ initial: !1 }),
+			explodesOn: new e.ArrayField(new e.NumberField({
+				integer: !0,
+				initial: 0,
+				required: !1
+			}), { initial: [] })
+		}),
+		isCrude: new e.BooleanField({ initial: !1 })
+	};
+}, E = class extends d {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...T()
+		};
+	}
+	onEquip(e) {}
+	onUse() {}
+}, D = () => (foundry.data.fields, {}), O = class extends d {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...D()
+		};
+	}
+	onEquip(e) {}
+	onUse() {}
+}, k = () => (foundry.data.fields, {}), A = class extends l {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...k()
+		};
+	}
+}, j = () => (foundry.data.fields, {}), M = class extends l {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...j()
+		};
+	}
+}, N = () => (foundry.data.fields, {}), P = class extends t {
+	static defineSchema() {
+		return {
+			...super.defineSchema(),
+			...N()
+		};
 	}
 };
 //#endregion
 //#region src/vagabond-lite.ts
 Hooks.once("init", () => {
 	console.log("HELLO WORLD"), Object.assign(CONFIG.Actor.dataModels, {
-		hero: f,
-		adversary: r
+		hero: S,
+		adversary: r,
+		npc: P
+	}, CONFIG.Item.dataModels, {
+		armor: w,
+		weapon: E,
+		sundry: O,
+		ancestry: p,
+		class: b,
+		perk: M,
+		spell: A
 	});
 });
+var F = {
+	required: !0,
+	nullable: !1
+}, I = {
+	integer: !0,
+	min: 0,
+	initial: 0
+}, L = {
+	required: !0,
+	integer: !0,
+	min: 0,
+	initial: 0
+};
 //#endregion
+export { L as requiredInteger, F as requiredString, I as standardInteger };
 
 //# sourceMappingURL=vagabond-lite.js.map

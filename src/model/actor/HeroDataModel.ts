@@ -1,8 +1,8 @@
-import CurrencyDataModel from "../item/misc/CurrencyDataModel.mjs"
-import EquipmentDataModel from "../item/equip/EquipmentDataModel.mjs"
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel.mjs"
-import AncestryDataModel from "../item/ancestry/AncestryDataModel.mjs"
-import ClassDataModel from "../item/class/ClassDataModel.mjs"
+import CurrencyDataModel from "../item/misc/CurrencyDataModel"
+import EquipmentDataModel from "../item/equip/EquipmentDataModel"
+import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import AncestryDataModel from "../item/ancestry/AncestryDataModel"
+import ClassDataModel from "../item/class/ClassDataModel"
 
 const heroSchema = () => {
     const f = foundry.data.fields

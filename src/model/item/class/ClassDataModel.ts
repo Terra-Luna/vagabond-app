@@ -1,8 +1,8 @@
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel.mjs"
-import { featureSchema } from "./schema/FeaturesSchema.mjs"
-import { skillsTrainingSchema } from "./schema/SkillsTrainingSchema.mjs"
-import { spellcastingSchema } from "./schema/SpellcastingSchema.mjs"
-import { spellsProgressionSchema } from "./schema/SpellsProgressionSchema.mjs"
+import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import { featureSchema } from "./schema/FeaturesSchema"
+import { skillsTrainingSchema } from "./schema/SkillsTrainingSchema"
+import { spellcastingSchema } from "./schema/SpellcastingSchema"
+import { spellsProgressionSchema } from "./schema/SpellsProgressionSchema"
 
 const classSchema = () => {
     const f = foundry.data.fields
