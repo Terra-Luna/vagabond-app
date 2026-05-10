@@ -2,7 +2,7 @@ import { requiredInteger } from "../../vagabond-lite"
 
 export const baseActorSchema = () => {
     const f = foundry.data.fields
-    const schema = {
+    return {
         health: new f.SchemaField({
             value: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
             max: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
@@ -38,8 +38,6 @@ export const baseActorSchema = () => {
             telepathy: new f.BooleanField({ initial: false })
         })
     }
-
-    return schema
 }
 
 export type BaseActorSchema = ReturnType<typeof baseActorSchema>
