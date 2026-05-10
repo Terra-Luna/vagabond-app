@@ -121,6 +121,17 @@
       }
     },
     {
+      "name": "gear",
+      "label": "Gear",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/gear.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
       "name": "sundries",
       "label": "Sundries",
       "type": "Item",
@@ -169,7 +180,7 @@
     "vagabond-lite.js"
   ],
   "styles": [
-    "vagabond-lite.css"
+    "./styles/vagabond-lite.css"
   ],
   "languages": [
     {

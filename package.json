@@ -3,8 +3,9 @@
   "description": "",
   "scripts": {
     "build": "pnpm vite build",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "clean": "rmdir /s dist",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "foundry": "node \"C:/Program Files/FoundryVTT-Node/main.js\" --dataPath=%userprofile%/AppData/Local/FoundryVTT"
   },
   "keywords": [],
   "author": "",

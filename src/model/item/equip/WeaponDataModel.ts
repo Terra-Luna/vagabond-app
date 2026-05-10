@@ -6,10 +6,10 @@ const weaponSchema = () => {
     const f = foundry.data.fields
     return {
         range: new f.StringField({
-            required: false, initial: 'close', choices: ['close', 'near', 'far']
+            required: false, initial: 'close', choices: ['close', 'near', 'far'],
         }),
-        damage1H: new f.StringField({ required: false, initial: '' }),
-        damage2H: new f.StringField({ required: false, initial: '' }),
+        damage1H: new f.StringField({ required: false, initial: '1d4' }),
+        damage2H: new f.StringField({ required: false, initial: '1d4' }),
         grip: new f.SchemaField({
             options: new f.StringField({
                 required: false, initial: '1H', choices: ['1H', '2H', 'V', 'F']
@@ -17,7 +17,7 @@ const weaponSchema = () => {
             gripState: new f.StringField({ required: false, initial: '' })
         }),
         attackSkills: new f.ArrayField(
-            new f.StringField({ initial: '', required: true }), { initial: [] }
+            new f.StringField({ initial: '', required: true }), { initial: ['melee'] }
         ),
         properties: new f.ArrayField(
             new f.StringField({ required: true, blank: false }),

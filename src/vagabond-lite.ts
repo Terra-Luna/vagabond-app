@@ -1,6 +1,3 @@
-// @ts-ignore
-import '../styles/vagabond-lite.css'
-
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
 import ArmorDataModel from "./model/item/equip/ArmorDataModel"
