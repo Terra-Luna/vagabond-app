@@ -9,6 +9,8 @@ import SpellDataModel from "./model/item/spell/SpellDataModel"
 import PerkDataModel from "./model/item/perk/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
 
+import '../styles/vagabond-lite.css'
+
 Hooks.once("init", () => {
     console.log("HELLO WORLD")
     Object.assign(

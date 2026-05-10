@@ -1,0 +1,16 @@
+{
+  "TYPES": {
+    "Actor": {
+        "hero": "Hero",
+        "adversary": "Adversary",
+        "npc": "NPC"
+      },
+      "Item": {
+        "ancestry": "Ancestry",
+        "class": "Class",
+        "equipment": "Equipment",
+        "perk": "Perk",
+        "spell": "Spell"
+    }
+  }
+}

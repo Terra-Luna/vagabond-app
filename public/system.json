@@ -154,7 +154,7 @@
     "vagabond-lite.js"
   ],
   "styles": [
-    "styles/system-styles.css"
+    "vagabond-lite.css"
   ],
   "languages": [
     {
