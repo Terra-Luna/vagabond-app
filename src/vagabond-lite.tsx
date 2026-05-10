@@ -9,6 +9,8 @@ import SpellDataModel from "./model/item/spell/SpellDataModel"
 import PerkDataModel from "./model/item/perk/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
 import GearDataModel from "./model/item/equip/GearDataModel"
+import ReactDom from "react-dom/client"
+import React, { useEffect } from "react"
 
 Hooks.once("init", () => {
     Object.assign(
@@ -27,6 +29,23 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.spell = SpellDataModel
     )
 })
+
+Hooks.on("ready", () => {
+    const reactRoot = document.createElement("vagabond-lite-root")
+
+    const root = ReactDom.createRoot(document.body.appendChild(reactRoot))
+    root.render(
+        <React.StrictMode>
+            <div id="tw-portal-root" className="tw" />
+            <MyReactComponent />
+        </React.StrictMode>
+    );
+})
+
+const MyReactComponent = () => {
+    return <div id="adasdiv" style={{backgroundColor: 'blue', height: 400, width: 400}}></div>
+}
+
 
 export const requiredString = { required: true, nullable: false }
 export const standardInteger = { integer: true, min: 0, initial: 0 }

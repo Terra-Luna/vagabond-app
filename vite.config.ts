@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   base: "/systems/vagabond-lite/",
@@ -25,4 +26,5 @@ export default defineConfig({
       fileName: "vagabond-lite"
     }
   },
+  plugins: [react()],
 })

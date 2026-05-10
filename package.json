@@ -28,6 +28,7 @@
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20251209192131",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
     "jest": "30.4.1",
     "ts-jest": "29.4.9",
     "typescript": "6.0.3",
