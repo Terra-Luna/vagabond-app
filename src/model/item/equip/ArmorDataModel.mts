@@ -14,7 +14,6 @@ export type ArmorSchema = ReturnType<typeof armorSchema> & EquipmentSchema
 
 export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
     static defineSchema() {
-        const f = foundry.data.fields
         return {
             ...super.defineSchema(),
             ...armorSchema()

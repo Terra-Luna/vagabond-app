@@ -34,7 +34,6 @@ export type AdversarySchema = ReturnType<typeof adversarySchema> & BaseActorSche
 
 export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
     static defineSchema() {
-        const f = foundry.data.fields
         return {
             ...super.defineSchema(),
             ...adversarySchema()

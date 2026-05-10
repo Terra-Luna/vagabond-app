@@ -1,6 +1,6 @@
-import HeroDataModel from "../../actor/HeroDataModel.mjs";
-import CurrencyDataModel from "../misc/CurrencyDataModel.mjs";
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel.mjs";
+import HeroDataModel from "../../actor/HeroDataModel.mjs"
+import CurrencyDataModel from "../misc/CurrencyDataModel.mjs"
+import ItemDataModel, { BaseItemSchema } from "../ItemDataModel.mjs"
 
 const baseEquipmentSchema = () => {
     const f = foundry.data.fields
@@ -20,7 +20,6 @@ export type EquipmentSchema = ReturnType<typeof baseEquipmentSchema> & BaseItemS
 
 export default abstract class EquipmentDataModel<T extends EquipmentSchema> extends ItemDataModel<T> {
     static defineSchema() {
-        const f = foundry.data.fields;
         return {
             ...super.defineSchema(),
             ...baseEquipmentSchema()

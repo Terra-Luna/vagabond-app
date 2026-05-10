@@ -40,7 +40,35 @@
   "documentTypes": {
     "Actor": {
       "hero": {},
-      "adversary": {}
+      "adversary": {},
+      "npc": {}
+    },
+    "Item": {
+      "ancestry": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "class": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "equipment": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "perk": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "spell": {
+        "htmlFields": [
+          "description"
+        ]
+      }
     }
   },
   "packs": [
@@ -51,18 +79,7 @@
       "system": "vagabond-lite",
       "path": "packs/adversaries.db",
       "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "items",
-      "label": "Items",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/items.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
+        "PLAYER": "NONE",
         "ASSISTANT": "OWNER"
       }
     },
@@ -89,11 +106,11 @@
       }
     },
     {
-      "name": "relics",
-      "label": "Relics",
+      "name": "sundries",
+      "label": "Sundries",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/relics.db",
+      "path": "packs/sundries.db",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -105,6 +122,28 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/spells.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "ancestries",
+      "label": "Ancestries",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/ancestries.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "classes",
+      "label": "Classes",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/classes.db",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"

@@ -1,6 +1,8 @@
 import CurrencyDataModel from "../item/misc/CurrencyDataModel.mjs"
 import EquipmentDataModel from "../item/equip/EquipmentDataModel.mjs"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel.mjs"
+import AncestryDataModel from "../item/ancestry/AncestryDataModel.mjs"
+import ClassDataModel from "../item/class/ClassDataModel.mjs"
 
 const heroSchema = () => {
     const f = foundry.data.fields
@@ -20,6 +22,8 @@ const heroSchema = () => {
             xp: new f.NumberField({ integer: true, initial: 0 }),
             xpToLevel: new f.NumberField({ integer: true, initial: 10 })
         }),
+        ancestry: new f.SchemaField({ ...AncestryDataModel.defineSchema() }),
+        class: new f.SchemaField({ ...ClassDataModel.defineSchema() }),
         stats: new f.SchemaField({
             might: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
             dexterity: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
@@ -28,17 +32,17 @@ const heroSchema = () => {
             presence: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
             luck: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
         }),
-        boundRelicLimit: new f.NumberField({ integer: true, initial: 3 }),
         inventory: new f.SchemaField({
             wealth: new f.SchemaField({
-                ...CurrencyDataModel.defineSchema
+                ...CurrencyDataModel.defineSchema()
             }),
             maxSlots: new f.NumberField({ integer: true, min: 8, initial: 8 }),
             slotBonus: new f.NumberField({ integer: true, min: 0, initial: 0 }),
             equipped: new f.ArrayField(
-                new f.SchemaField({ ...EquipmentDataModel.defineSchema })
+                new f.SchemaField({ ...EquipmentDataModel.defineSchema() })
             )
-        })
+        }),
+        boundRelicLimit: new f.NumberField({ integer: true, initial: 3 }),
     }
     return schema
 }
@@ -47,7 +51,6 @@ export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchem
 
 export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     static defineSchema() {
-        const f = foundry.data.fields
         return {
             ...super.defineSchema(),
             ...heroSchema()
