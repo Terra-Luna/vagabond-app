@@ -1,4 +1,4 @@
-module.exports = async () => {
+export default async () => {
     global.foundry = {
         data: {
             fields: {
@@ -9,4 +9,4 @@ module.exports = async () => {
             TypeDataModel: class { }
         }
     }
-};
+}

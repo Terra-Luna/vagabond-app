@@ -1,11 +1,11 @@
 import { HeroDataModel } from "../../actor/HeroDataModel.mjs";
-import Currency from "../Currency.mjs";
+import CurrencyDataModel from "../CurrencyDataModel.mjs";
 import ItemBase, { BaseItemSchema } from "../ItemBase.mjs";
 
 const baseEquipmentSchema = () => {
     const f = foundry.data.fields
     return {
-        value: new f.SchemaField({ ...Currency.defineSchema() }),
+        value: new f.SchemaField({ ...CurrencyDataModel.defineSchema() }),
         slots: new f.NumberField({ integer: true, min: 0, max: 4 }),
         isEquipped: new f.BooleanField({ initial: false }),
         relicData: new f.SchemaField({

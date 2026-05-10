@@ -1,10 +1,10 @@
 import { describe, expect, test } from "@jest/globals"
-import Currency, { consolidateDenominations } from "../../../src/model/item/Currency.mts"
+import CurrencyDataModel, { consolidateDenominations } from "../../../src/model/item/CurrencyDataModel.mts"
 
 describe("consolidate denominations", () => {
     test('consolidates correctly', () => {
         // Setup
-        const c = { g: 100, s: 251, c: 307 } as Currency
+        const c = { g: 100, s: 251, c: 307 } as CurrencyDataModel
         // Execute
         consolidateDenominations(c)
         // Verify

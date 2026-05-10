@@ -44,20 +44,24 @@ export class AdversaryDataModel extends ActorBase<AdversarySchema> {
     override async prepareDerivedData() {
         super.prepareDerivedData()
         this.health.max = this.size?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice! * 4.5)
-        this.threatLevel = this._calculateThreatLevel()
+        this.threatLevel = this.calculateThreatLevel()
     }
 
-    _calculateThreatLevel(): string {
-        /**
-         * Threat level formula:
-         *      a = armor * 2
-         *      b = HP / 10
-         *      c = Mean dmg-per-round / 6
-         *      TL = (a + b) / 4 + c
-         */
-        var a = this.armor.total! * 2
-        var b = this.health.max! / 10
-        var c = ((this.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / this.actions.entries.length) / 6
-        return ((a + b) / 4 + (c || 0)).toFixed(2)
+    calculateThreatLevel(): string {
+        return calculateThreatLevel(this)
     }
+}
+
+export const calculateThreatLevel = (adv: AdversaryDataModel): string => {
+/**
+ * Threat level formula:
+ *      a = armor * 2
+ *      b = HP / 10
+ *      c = Mean dmg-per-round / 6
+ *      TL = (a + b) / 4 + c
+ */
+    var a = adv.armor.total! * 2
+    var b = adv.health.max! / 10
+    var c = ((adv.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / adv.actions.entries.length) / 6
+    return ((a + b) / 4 + (c || 0)).toFixed(2)
 }

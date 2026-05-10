@@ -1,4 +1,4 @@
-import Currency from "../item/Currency.mjs"
+import CurrencyDataModel from "../item/CurrencyDataModel.mjs"
 import EquipmentDataModel from "../item/gear/EquipmentDataModel.mjs"
 import ActorBase, { BaseActorSchema } from "./ActorBase.mjs"
 
@@ -31,7 +31,7 @@ const heroSchema = () => {
         boundRelicLimit: new f.NumberField({ integer: true, initial: 3 }),
         inventory: new f.SchemaField({
             wealth: new f.SchemaField({
-                ...Currency.defineSchema
+                ...CurrencyDataModel.defineSchema
             }),
             maxSlots: new f.NumberField({ integer: true, min: 8, initial: 8 }),
             slotBonus: new f.NumberField({ integer: true, min: 0, initial: 0 }),

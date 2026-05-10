@@ -7,5 +7,5 @@ const presetConfig = createDefaultEsmPreset({
 
 export default {
   ...presetConfig,
-  globalSetup: './test/setupTests.js'
+  globalSetup: './test/setup-tests.js'
 } satisfies Config

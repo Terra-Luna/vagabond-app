@@ -9,7 +9,7 @@ const currencySchema = () => {
 
 export type CurrencySchema = ReturnType<typeof currencySchema>
 
-export default class Currency extends foundry.abstract.TypeDataModel<CurrencySchema, any> {
+export default class CurrencyDataModel extends foundry.abstract.TypeDataModel<CurrencySchema, any> {
     static defineSchema() {
         return currencySchema()
     }
@@ -20,7 +20,7 @@ export default class Currency extends foundry.abstract.TypeDataModel<CurrencySch
 }
 
 // exported for unit tests
-export const consolidateDenominations = (curr: Currency) => {
+export const consolidateDenominations = (curr: CurrencyDataModel) => {
     var copperToSilver = Math.floor(curr.c! / 100)
     curr.s! += copperToSilver
     curr.c! = curr.c! % 100
