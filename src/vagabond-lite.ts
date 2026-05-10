@@ -12,23 +12,19 @@ import GearDataModel from "./model/item/equip/GearDataModel"
 
 Hooks.once("init", () => {
     Object.assign(
-        CONFIG.Actor.dataModels,
-        {
-            "hero": HeroDataModel,
-            "adversary": AdversaryDataModel,
-            "npc": NpcDataModel
-        },
-        CONFIG.Item.dataModels,
-        {
-            "armor": ArmorDataModel,
-            "weapon": WeaponDataModel,
-            "gear": GearDataModel,
-            "sundry": SundryDataModel,
-            "ancestry": AncestryDataModel,
-            "class": ClassDataModel,
-            "perk": PerkDataModel,
-            "spell": SpellDataModel
-        }
+        // Actors
+        CONFIG.Actor.dataModels.hero = HeroDataModel,
+        CONFIG.Actor.dataModels.adversary = AdversaryDataModel,
+        CONFIG.Actor.dataModels.npc = NpcDataModel,
+        // Items
+        CONFIG.Item.dataModels.armor = ArmorDataModel,
+        CONFIG.Item.dataModels.weapon = WeaponDataModel,
+        CONFIG.Item.dataModels.gear = GearDataModel,
+        CONFIG.Item.dataModels.sundry = SundryDataModel,
+        CONFIG.Item.dataModels.ancestry = AncestryDataModel,
+        CONFIG.Item.dataModels.class = ClassDataModel,
+        CONFIG.Item.dataModels.perk = PerkDataModel,
+        CONFIG.Item.dataModels.spell = SpellDataModel
     )
 })
 
