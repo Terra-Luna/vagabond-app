@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
+    "module": "nodenext",
     "target": "ESNext",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "isolatedModules": true
   }
 }
