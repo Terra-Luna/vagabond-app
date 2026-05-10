@@ -1,3 +1,6 @@
+// @ts-ignore
+import '../styles/vagabond-lite.css'
+
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
 import ArmorDataModel from "./model/item/equip/ArmorDataModel"
@@ -8,11 +11,9 @@ import AncestryDataModel from "./model/item/ancestry/AncestryDataModel"
 import SpellDataModel from "./model/item/spell/SpellDataModel"
 import PerkDataModel from "./model/item/perk/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
-
-import '../styles/vagabond-lite.css'
+import GearDataModel from "./model/item/equip/GearDataModel"
 
 Hooks.once("init", () => {
-    console.log("HELLO WORLD")
     Object.assign(
         CONFIG.Actor.dataModels,
         {
@@ -24,6 +25,7 @@ Hooks.once("init", () => {
         {
             "armor": ArmorDataModel,
             "weapon": WeaponDataModel,
+            "gear": GearDataModel,
             "sundry": SundryDataModel,
             "ancestry": AncestryDataModel,
             "class": ClassDataModel,

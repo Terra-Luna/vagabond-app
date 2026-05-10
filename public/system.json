@@ -54,17 +54,32 @@
           "description"
         ]
       },
-      "equipment": {
-        "htmlFields": [
-          "description"
-        ]
-      },
       "perk": {
         "htmlFields": [
           "description"
         ]
       },
       "spell": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "armor": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "weapon": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "gear": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "sundry": {
         "htmlFields": [
           "description"
         ]

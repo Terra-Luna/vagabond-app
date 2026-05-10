@@ -8,9 +8,13 @@
       "Item": {
         "ancestry": "Ancestry",
         "class": "Class",
-        "equipment": "Equipment",
         "perk": "Perk",
-        "spell": "Spell"
+        "spell": "Spell",
+        "equipment": "Equipment",
+        "armor": "Armor",
+        "weapon": "Weapon",
+        "gear": "Gear",
+        "sundry": "Sundry"
     }
   }
 }
