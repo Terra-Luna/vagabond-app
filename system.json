@@ -126,7 +126,7 @@
   ],
   "socket": false,
   "grid": {
-    "type": 2,
+    "type": 1,
     "distance": 5,
     "units": "ft",
     "diagonals": 0
