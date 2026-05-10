@@ -1,4 +1,4 @@
-import ActorBase, { BaseActorSchema } from "./ActorBase.mjs"
+import ActorDataModel, { BaseActorSchema } from "./ActorDataModel.mjs"
 
 const adversarySchema = () => {
     const f = foundry.data.fields
@@ -32,7 +32,7 @@ const adversarySchema = () => {
 
 export type AdversarySchema = ReturnType<typeof adversarySchema> & BaseActorSchema
 
-export default class AdversaryDataModel extends ActorBase<AdversarySchema> {
+export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
     static defineSchema() {
         const f = foundry.data.fields
         return {
