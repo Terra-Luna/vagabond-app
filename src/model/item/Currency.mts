@@ -15,11 +15,16 @@ export default class Currency extends foundry.abstract.TypeDataModel<CurrencySch
     }
 
     async consolidateDenominations() {
-        var copperToSilver = Math.floor(this.c! / 100)
-        this.s! += copperToSilver
-        this.c! = this.c! % 100
-        var silverToGold = Math.floor(this.s! / 100)
-        this.g! += silverToGold
-        this.s = this.s! % 100
+        consolidateDenominations(this)
     }
+}
+
+// exported for unit tests
+export const consolidateDenominations = (curr: Currency) => {
+    var copperToSilver = Math.floor(curr.c! / 100)
+    curr.s! += copperToSilver
+    curr.c! = curr.c! % 100
+    var silverToGold = Math.floor(curr.s! / 100)
+    curr.g! += silverToGold
+    curr.s = curr.s! % 100
 }
