@@ -1,5 +1,5 @@
-import { AdversaryDataModel } from "./model/actor/AdversaryDataModel.mjs"
-import { HeroDataModel } from "./model/actor/HeroDataModel.mjs"
+import AdversaryDataModel from "./model/actor/AdversaryDataModel.mjs"
+import HeroDataModel from "./model/actor/HeroDataModel.mjs"
 
 Hooks.once("init", () => {
     console.log("HELLO WORLD")

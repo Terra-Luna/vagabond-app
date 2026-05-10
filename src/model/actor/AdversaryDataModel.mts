@@ -32,7 +32,7 @@ const adversarySchema = () => {
 
 export type AdversarySchema = ReturnType<typeof adversarySchema> & BaseActorSchema
 
-export class AdversaryDataModel extends ActorBase<AdversarySchema> {
+export default class AdversaryDataModel extends ActorBase<AdversarySchema> {
     static defineSchema() {
         const f = foundry.data.fields
         return {
@@ -53,13 +53,13 @@ export class AdversaryDataModel extends ActorBase<AdversarySchema> {
 }
 
 export const calculateThreatLevel = (adv: AdversaryDataModel): string => {
-/**
- * Threat level formula:
- *      a = armor * 2
- *      b = HP / 10
- *      c = Mean dmg-per-round / 6
- *      TL = (a + b) / 4 + c
- */
+    /**
+     * Threat level formula:
+     *      a = armor * 2
+     *      b = HP / 10
+     *      c = Mean dmg-per-round / 6
+     *      TL = (a + b) / 4 + c
+     */
     var a = adv.armor.total! * 2
     var b = adv.health.max! / 10
     var c = ((adv.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / adv.actions.entries.length) / 6

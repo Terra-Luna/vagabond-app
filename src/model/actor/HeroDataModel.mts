@@ -36,7 +36,7 @@ const heroSchema = () => {
             maxSlots: new f.NumberField({ integer: true, min: 8, initial: 8 }),
             slotBonus: new f.NumberField({ integer: true, min: 0, initial: 0 }),
             equipped: new f.ArrayField(
-                new f.TypedSchemaField({ ...EquipmentDataModel.defineSchema })
+                new f.SchemaField({ ...EquipmentDataModel.defineSchema })
             )
         })
     }
@@ -45,7 +45,7 @@ const heroSchema = () => {
 
 export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
 
-export class HeroDataModel extends ActorBase<HeroDataModelSchema> {
+export default class HeroDataModel extends ActorBase<HeroDataModelSchema> {
     static defineSchema() {
         const f = foundry.data.fields
         return {

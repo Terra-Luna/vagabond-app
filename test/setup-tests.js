@@ -2,7 +2,12 @@ export default async () => {
     global.foundry = {
         data: {
             fields: {
-                NumberField: class { }
+                ArrayField: class { },
+                BooleanField: class { },
+                NumberField: class { },
+                SchemaField: class { },
+                StringField: class { },
+                TypedSchemaField: class { }
             }
         },
         abstract: {
