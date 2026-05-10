@@ -151,7 +151,7 @@
     }
   ],
   "esmodules": [
-    "dist/vagabond-lite.js"
+    "vagabond-lite.js"
   ],
   "styles": [
     "styles/system-styles.css"
