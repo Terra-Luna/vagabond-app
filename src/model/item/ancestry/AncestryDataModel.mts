@@ -2,9 +2,7 @@ import ItemDataModel, { BaseItemSchema } from "../ItemDataModel.mjs"
 
 const ancestrySchema = () => {
     const f = foundry.data.fields
-    return {
-        
-    }
+    return new f.SchemaField({})
 }
 
 export type AncestrySchema = ReturnType<typeof ancestrySchema> & BaseItemSchema

@@ -22,8 +22,8 @@ const heroSchema = () => {
             xp: new f.NumberField({ integer: true, initial: 0 }),
             xpToLevel: new f.NumberField({ integer: true, initial: 10 })
         }),
-        ancestry: new f.SchemaField({ ...AncestryDataModel.defineSchema() }),
-        class: new f.SchemaField({ ...ClassDataModel.defineSchema() }),
+        ancestry: AncestryDataModel.defineSchema(),
+        class: ClassDataModel.defineSchema(),
         stats: new f.SchemaField({
             might: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
             dexterity: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
