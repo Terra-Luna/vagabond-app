@@ -13,6 +13,7 @@
         "equipment": "Equipment",
         "armor": "Armor",
         "weapon": "Weapon",
+        "alchemical": "Alchemical Item",
         "gear": "Gear",
         "sundry": "Sundry"
     }

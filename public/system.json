@@ -74,6 +74,11 @@
           "description"
         ]
       },
+      "alchemical": {
+        "htmlFields": [
+          "description"
+        ]
+      },
       "gear": {
         "htmlFields": [
           "description"
@@ -115,6 +120,17 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/armor.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "alchemical",
+      "label": "Alchemical Items",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/alchemical.db",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"

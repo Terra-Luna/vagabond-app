@@ -1,12 +1,13 @@
+import AlchemicalItemDataModel from "./model/item/equip/AlchemicalItemDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
+import ClassDataModel from "./model/item/character/ClassDataModel"
 import ArmorDataModel from "./model/item/equip/ArmorDataModel"
 import WeaponDataModel from "./model/item/equip/WeaponDataModel"
 import SundryDataModel from "./model/item/equip/SundryDataModel"
-import ClassDataModel from "./model/item/class/ClassDataModel"
-import AncestryDataModel from "./model/item/ancestry/AncestryDataModel"
-import SpellDataModel from "./model/item/spell/SpellDataModel"
-import PerkDataModel from "./model/item/perk/PerkDataModel"
+import AncestryDataModel from "./model/item/character/AncestryDataModel"
+import SpellDataModel from "./model/item/character/SpellDataModel"
+import PerkDataModel from "./model/item/character/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
 import GearDataModel from "./model/item/equip/GearDataModel"
 import ReactDom from "react-dom/client"
@@ -21,6 +22,7 @@ Hooks.once("init", () => {
         // Items
         CONFIG.Item.dataModels.armor = ArmorDataModel,
         CONFIG.Item.dataModels.weapon = WeaponDataModel,
+        CONFIG.Item.dataModels.alchemical = AlchemicalItemDataModel,
         CONFIG.Item.dataModels.gear = GearDataModel,
         CONFIG.Item.dataModels.sundry = SundryDataModel,
         CONFIG.Item.dataModels.ancestry = AncestryDataModel,

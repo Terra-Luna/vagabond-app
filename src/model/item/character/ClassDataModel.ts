@@ -1,8 +1,7 @@
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import { featureSchema } from "./schema/FeaturesSchema"
-import { skillsTrainingSchema } from "./schema/SkillsTrainingSchema"
-import { spellcastingSchema } from "./schema/SpellcastingSchema"
-import { spellsProgressionSchema } from "./schema/SpellsProgressionSchema"
+import { featureSchema } from "./schema/featureSchema"
+import { skillsTrainingSchema } from "./schema/skillsTrainingSchema"
+import { spellcastingSchema } from "./schema/spellcastingSchema"
 
 const classSchema = () => {
     const f = foundry.data.fields
@@ -10,8 +9,7 @@ const classSchema = () => {
         spellcasting: new f.SchemaField({ ...spellcastingSchema() }),
         keyStats: new f.ArrayField(new f.StringField({}), { initial: [] }),
         skillsTraining: new f.SchemaField({ ...skillsTrainingSchema() }),
-        features: new f.ArrayField(new f.SchemaField({ ...featureSchema() })),
-        spellsProgression: new f.SchemaField({ ...spellsProgressionSchema() })
+        features: new f.ArrayField(new f.SchemaField({ ...featureSchema() }))
     }
 }
 
@@ -23,5 +21,9 @@ export default class ClassDataModel<T extends ClassSchema> extends ItemDataModel
             ...super.defineSchema(),
             ...classSchema()
         }
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
     }
 }

@@ -1,8 +1,8 @@
 import CurrencyDataModel from "../item/misc/CurrencyDataModel"
 import EquipmentDataModel from "../item/equip/EquipmentDataModel"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import AncestryDataModel from "../item/ancestry/AncestryDataModel"
-import ClassDataModel from "../item/class/ClassDataModel"
+import AncestryDataModel from "../item/character/AncestryDataModel"
+import ClassDataModel from "../item/character/ClassDataModel"
 
 const heroSchema = () => {
     const f = foundry.data.fields
@@ -59,6 +59,12 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        this.health.max = this.stats.might! * (this.level.current || 1)
+        this.health.max = this.stats.might! * (this.level.current || 1) + this.health.bonus!
+        if (typeof this.class.spellcasting.castSkill !== null) {
+            this.mana.max = this.level.current! * this.class.spellcasting.manaMultiplier!
+            this.mana.maxCast = Math.ceil(this.level.current! / 2) + Number(this.stats[this.class.spellcasting.maxPerCastStat!])
+        }
+        this.inventory.maxSlots = Number(this.stats['might']) + 8
     }
+
 }

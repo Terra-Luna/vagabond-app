@@ -6,7 +6,7 @@ export const baseActorSchema = () => {
         health: new f.SchemaField({
             value: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
             max: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
-            maxBonus: new f.NumberField({ required: false, integer: true, min: 0, initial: 0 })
+            bonus: new f.NumberField({ required: true, integer: true, initial: 0 })
         }),
         armor: new f.SchemaField({
             rating: new f.NumberField({ ...requiredInteger }),

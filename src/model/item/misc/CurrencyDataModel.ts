@@ -14,13 +14,13 @@ export default class CurrencyDataModel extends foundry.abstract.TypeDataModel<Cu
         return currencySchema()
     }
 
-    async consolidateDenominations() {
-        consolidateDenominations(this)
+    async consolidateCoins() {
+        consolidateCoins(this)
     }
 }
 
 // exported for unit tests
-export const consolidateDenominations = (curr: CurrencyDataModel) => {
+export const consolidateCoins = (curr: CurrencyDataModel) => {
     var copperToSilver = Math.floor(curr.c! / 100)
     curr.s! += copperToSilver
     curr.c! = curr.c! % 100

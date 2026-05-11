@@ -1,5 +1,5 @@
 import { requiredString, standardInteger } from "../../../modelUtils"
-import { skillChoices } from "./SkillsTrainingSchema"
+import { skillChoices } from "./skillsTrainingSchema"
 
 export const featureSchema = () => {
     const f = foundry.data.fields
