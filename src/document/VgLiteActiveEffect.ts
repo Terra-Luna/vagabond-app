@@ -3,7 +3,7 @@
  *      Name: should match the accessor-operator path.
  *      Description: User-friendly description.
  */
-export default class VagabondActiveEffect extends ActiveEffect {
+export default class VgLiteActiveEffect extends ActiveEffect {
     static getAttributeChoices = () => {
         return {
             'system.health.bonus': 'Max HP bonus',
