@@ -37,12 +37,12 @@ Hooks.on("ready", () => {
     root.render(
         <React.StrictMode>
             <div id="tw-portal-root" className="tw" />
-            <MyReactComponent />
+            <BigBlueBox />
         </React.StrictMode>
     );
 })
 
-const MyReactComponent = () => {
+const BigBlueBox = () => {
     return <div id="adasdiv" style={{backgroundColor: 'blue', height: 400, width: 400}}></div>
 }
 

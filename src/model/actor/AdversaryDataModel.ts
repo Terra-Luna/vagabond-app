@@ -4,27 +4,27 @@ const adversarySchema = () => {
     const f = foundry.data.fields
     return {
         hitDice: new f.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
-        threatLevel: new f.StringField(),
+        threatLevel: new f.NumberField({ integer: false, min: 0, initial: 1.00 }),
         zone: new f.StringField({
             choices: [
                 'frontline', 'midline', 'backline'
             ]
         }),
         morale: new f.NumberField({ integer: true, min: 2, max: 12 }),
-        numberAppearing: new f.StringField(),
+        numberAppearing: new f.StringField({}),
         actions: new f.ArrayField(
             new f.SchemaField({
-                name: new f.StringField(),
+                name: new f.StringField({}),
                 type: new f.StringField({ choices: ['Melee', 'Ranged', 'Cast', 'Combo'] }),
-                description: new f.StringField(),
+                description: new f.StringField({}),
                 damage: new f.StringField({ required: false, initial: '1d4' }),
                 avgDamage: new f.NumberField({ required: false, integer: true, initial: 0 })
             })
         ),
         abilities: new f.ArrayField(
             new f.SchemaField({
-                name: new f.StringField(),
-                description: new f.StringField(),
+                name: new f.StringField({}),
+                description: new f.StringField({}),
             })
         )
     }
@@ -46,12 +46,12 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
         this.threatLevel = this.calculateThreatLevel()
     }
 
-    calculateThreatLevel(): string {
+    calculateThreatLevel(): number {
         return calculateThreatLevel(this)
     }
 }
 
-export const calculateThreatLevel = (adv: AdversaryDataModel): string => {
+export const calculateThreatLevel = (adv: AdversaryDataModel): number => {
     /**
      * Threat level formula:
      *      a = armor * 2
@@ -62,5 +62,5 @@ export const calculateThreatLevel = (adv: AdversaryDataModel): string => {
     var a = adv.armor.total! * 2
     var b = adv.health.max! / 10
     var c = ((adv.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / adv.actions.entries.length) / 6
-    return ((a + b) / 4 + (c || 0)).toFixed(2)
+    return Number(((a + b) / 4 + (c || 0)).toFixed(2))
 }

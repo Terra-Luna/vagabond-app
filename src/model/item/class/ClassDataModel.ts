@@ -8,7 +8,7 @@ const classSchema = () => {
     const f = foundry.data.fields
     return {
         spellcasting: new f.SchemaField({ ...spellcastingSchema() }),
-        keyStats: new f.ArrayField(new f.StringField(), { initial: [] }),
+        keyStats: new f.ArrayField(new f.StringField({}), { initial: [] }),
         skillsTraining: new f.SchemaField({ ...skillsTrainingSchema() }),
         features: new f.ArrayField(new f.SchemaField({ ...featureSchema() })),
         spellsProgression: new f.SchemaField({ ...spellsProgressionSchema() })

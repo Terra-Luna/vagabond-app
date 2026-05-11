@@ -6,6 +6,7 @@ import ClassDataModel from "../item/class/ClassDataModel"
 
 const heroSchema = () => {
     const f = foundry.data.fields
+    const statProps = { integer: true, min: 2, max: 7, initial: 2 }
     return {
         mana: new f.SchemaField({
             max: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
@@ -25,12 +26,12 @@ const heroSchema = () => {
         ancestry: new f.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new f.SchemaField({ ...ClassDataModel.defineSchema() }),
         stats: new f.SchemaField({
-            might: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
-            dexterity: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
-            awareness: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
-            reason: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
-            presence: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
-            luck: new f.NumberField({ integer: true, min: 2, max: 7, initial: 2 }),
+            might: new f.NumberField({ ...statProps }),
+            dexterity: new f.NumberField({ ...statProps }),
+            awareness: new f.NumberField({ ...statProps }),
+            reason: new f.NumberField({ ...statProps }),
+            presence: new f.NumberField({ ...statProps }),
+            luck: new f.NumberField({ ...statProps }),
         }),
         inventory: new f.SchemaField({
             wealth: new f.SchemaField({

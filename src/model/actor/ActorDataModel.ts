@@ -10,7 +10,7 @@ export const baseActorSchema = () => {
         }),
         armor: new f.SchemaField({
             rating: new f.NumberField({ ...requiredInteger }),
-            bonus: new f.NumberField({ required: false, integer: true, min: 0, initial: 0 }),
+            bonus: new f.NumberField({ required: false, integer: true, initial: 0 }),
             total: new f.NumberField({ ...requiredInteger })
         }),
         movement: new f.ArrayField(
