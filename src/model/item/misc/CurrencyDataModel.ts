@@ -1,9 +1,11 @@
+import { requiredInteger } from "../../modelUtils";
+
 const currencySchema = () => {
     const f = foundry.data.fields;
     return {
-        g: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        s: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-        c: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 })
+        g: new f.NumberField({ ...requiredInteger, initial: 0 }),
+        s: new f.NumberField({ ...requiredInteger, initial: 0 }),
+        c: new f.NumberField({ ...requiredInteger, initial: 0 })
     };
 };
 

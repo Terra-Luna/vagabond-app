@@ -1,16 +1,17 @@
-import CurrencyDataModel from "../item/misc/CurrencyDataModel";
-import EquipmentDataModel from "../item/equip/EquipmentDataModel";
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel";
 import AncestryDataModel from "../item/character/AncestryDataModel";
 import ClassDataModel from "../item/character/ClassDataModel";
+import EquipmentDataModel from "../item/equip/EquipmentDataModel";
+import CurrencyDataModel from "../item/misc/CurrencyDataModel";
+import { requiredInteger } from "../modelUtils";
+import ActorDataModel, { BaseActorSchema } from "./ActorDataModel";
 
 const heroSchema = () => {
     const f = foundry.data.fields;
     const statProps = { integer: true, min: 2, max: 7, initial: 2 };
     return {
         mana: new f.SchemaField({
-            max: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
-            value: new f.NumberField({ required: true, integer: true, min: 0, initial: 0 }),
+            max: new f.NumberField({ ...requiredInteger, initial: 0 }),
+            value: new f.NumberField({ ...requiredInteger, initial: 0 }),
             maxCast: new f.NumberField({ integer: true })
         }),
         currentLuck: new f.NumberField({ integer: true, initial: 2, max: 2 }),

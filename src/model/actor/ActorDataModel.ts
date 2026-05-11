@@ -4,14 +4,14 @@ export const baseActorSchema = () => {
     const f = foundry.data.fields;
     return {
         health: new f.SchemaField({
-            value: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
-            max: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
+            value: new f.NumberField({ ...requiredInteger, initial: 2 }),
+            max: new f.NumberField({ ...requiredInteger, initial: 2 }),
             bonus: new f.NumberField({ required: true, integer: true, initial: 0 })
         }),
         armor: new f.SchemaField({
-            rating: new f.NumberField({ ...requiredInteger }),
-            bonus: new f.NumberField({ required: false, integer: true, initial: 0 }),
-            total: new f.NumberField({ ...requiredInteger })
+            rating: new f.NumberField({ ...requiredInteger, initial: 0 }),
+            bonus: new f.NumberField({ ...requiredInteger, initial: 0 }),
+            total: new f.NumberField({ ...requiredInteger, initial: 0 })
         }),
         movement: new f.ArrayField(
             new f.SchemaField({
