@@ -1,4 +1,4 @@
-import { requiredInteger } from "../../vagabond-lite"
+import { requiredInteger } from "../modelUtils"
 
 export const baseActorSchema = () => {
     const f = foundry.data.fields

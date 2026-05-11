@@ -1,9 +1,7 @@
 import { describe, expect, test } from "@jest/globals"
 import AdversaryDataModel, { calculateThreatLevel } from "../../../src/model/actor/AdversaryDataModel"
-import { jest } from "@jest/globals"
 
 describe('calculate threat level', () => {
-    jest.mock('foundry', () => ({}))
     test('calculate tl to two deci-places', () => {
         //Setup
         const adv = {

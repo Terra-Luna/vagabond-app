@@ -45,8 +45,3 @@ Hooks.on("ready", () => {
 const BigBlueBox = () => {
     return <div id="adasdiv" style={{backgroundColor: 'blue', height: 400, width: 400}}></div>
 }
-
-
-export const requiredString = { required: true, nullable: false }
-export const standardInteger = { integer: true, min: 0, initial: 0 }
-export const requiredInteger = { required: true, integer: true, min: 0, initial: 0 }

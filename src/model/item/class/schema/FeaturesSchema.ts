@@ -1,4 +1,4 @@
-import { requiredString, standardInteger } from "../../../../vagabond-lite"
+import { requiredString, standardInteger } from "../../../modelUtils"
 import { skillChoices } from "./SkillsTrainingSchema"
 
 export const featureSchema = () => {
