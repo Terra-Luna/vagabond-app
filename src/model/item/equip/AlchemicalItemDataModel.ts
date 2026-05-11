@@ -1,12 +1,12 @@
-import HeroDataModel from "../../actor/HeroDataModel";
-import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel";
+import HeroDataModel from "../../actor/HeroDataModel"
+import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemicalItemSchema = () => {
-    const f = foundry.data.fields;
+    const f = foundry.data.fields
     return {
 
-    };
-};
+    }
+}
 
 export type AlchemicalItemSchema = ReturnType<typeof alchemicalItemSchema> & EquipmentSchema
 
@@ -15,7 +15,7 @@ export default class AlchemicalItemDataModel extends EquipmentDataModel<Alchemic
         return {
             ...super.defineSchema(),
             ...alchemicalItemSchema()
-        };
+        }
     }
 
     override onEquip(hero: HeroDataModel) { }

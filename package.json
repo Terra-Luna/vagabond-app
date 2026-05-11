@@ -8,7 +8,7 @@
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
     "clean": "echo Y | rmdir /s dist",
     "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",

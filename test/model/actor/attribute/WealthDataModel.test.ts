@@ -1,12 +1,12 @@
 import { describe, expect, test } from "@jest/globals"
-import CurrencyDataModel, { consolidateCoins } from "../../../../src/model/item/misc/CurrencyDataModel"
+import WealthDataModel, { consolidate } from "../../../../src/model/actor/attribute/WealthDataModel"
 
 describe('consolidate denominations', () => {
     test('consolidates correctly', () => {
         // Setup
-        const c = { g: 100, s: 251, c: 307 } as CurrencyDataModel
+        const c = { g: 100, s: 251, c: 307 }
         // Execute
-        consolidateCoins(c)
+        consolidate(c as unknown as WealthDataModel)
         // Verify
         expect(c.g).toEqual(102)
         expect(c.s).toEqual(54)

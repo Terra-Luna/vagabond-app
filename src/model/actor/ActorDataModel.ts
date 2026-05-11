@@ -1,26 +1,13 @@
-import { requiredInteger } from "../modelUtils";
+import ArmorDataModel from "./attribute/ArmorDataModel"
+import HealthDataModel from "./attribute/HealthDataModel"
+import SensesDataModel from "./attribute/SensesDataModel"
 
 export const baseActorSchema = () => {
-    const f = foundry.data.fields;
+    const f = foundry.data.fields
     return {
-        health: new f.SchemaField({
-            value: new f.NumberField({ ...requiredInteger, initial: 2 }),
-            max: new f.NumberField({ ...requiredInteger, initial: 2 }),
-            bonus: new f.NumberField({ required: true, integer: true, initial: 0 })
-        }),
-        armor: new f.SchemaField({
-            rating: new f.NumberField({ ...requiredInteger, initial: 0 }),
-            bonus: new f.NumberField({ ...requiredInteger, initial: 0 }),
-            total: new f.NumberField({ ...requiredInteger, initial: 0 })
-        }),
-        movement: new f.ArrayField(
-            new f.SchemaField({
-                speed: new f.NumberField({ integer: true, min: 0 }),
-                type: new f.StringField({
-                    choices: ['walk', 'fly', 'cling', 'climb', 'phase', 'swim']
-                })
-            })
-        ),
+        health: new f.SchemaField({ ...HealthDataModel.defineSchema() }),
+        armor: new f.SchemaField({ ...ArmorDataModel.defineSchema() }),
+        senses: new f.SchemaField({ ...SensesDataModel.defineSchema() }),
         size: new f.StringField({
             choices: ['small', 'medium', 'large', 'huge', 'giant', 'colossal'],
             initital: 'medium'
@@ -28,17 +15,9 @@ export const baseActorSchema = () => {
         beingType: new f.StringField({
             choices: ['artificial', 'beast', 'cryptid', 'fae', 'humanlike', 'outer', 'primordial', 'undead'],
             initial: 'humanlike'
-        }),
-        senses: new f.SchemaField({
-            allsight: new f.BooleanField({ initial: false }),
-            blindsight: new f.BooleanField({ initial: false }),
-            darksight: new f.BooleanField({ initial: false }),
-            echolocation: new f.BooleanField({ initial: false }),
-            seismicsense: new f.BooleanField({ initial: false }),
-            telepathy: new f.BooleanField({ initial: false })
         })
-    };
-};
+    }
+}
 
 export type BaseActorSchema = ReturnType<typeof baseActorSchema>
 
@@ -46,6 +25,10 @@ export default abstract class ActorDataModel<T extends BaseActorSchema> extends 
     static defineSchema() {
         return {
             ...baseActorSchema()
-        };
+        }
+    }
+
+    override async prepareDerivedData() {
+
     }
 }

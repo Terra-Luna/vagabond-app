@@ -1,52 +1,42 @@
-import AncestryDataModel from "../item/character/AncestryDataModel";
-import ClassDataModel from "../item/character/ClassDataModel";
-import EquipmentDataModel from "../item/equip/EquipmentDataModel";
-import CurrencyDataModel from "../item/misc/CurrencyDataModel";
-import { requiredInteger } from "../modelUtils";
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel";
+import AncestryDataModel from "../item/character/AncestryDataModel"
+import ClassDataModel from "../item/character/ClassDataModel"
+import EquipmentDataModel from "../item/equip/EquipmentDataModel"
+import { fields, requiredInteger } from "../foundryHelper"
+import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import SkillsDataModel from "./attribute/SkillsDataModel"
+import SpeedDataModel from "./attribute/SpeedDataModel"
+import StatsDataModel from "./attribute/StatsDataModel"
+import WealthDataModel from "./attribute/WealthDataModel"
 
 const heroSchema = () => {
-    const f = foundry.data.fields;
-    const statProps = { integer: true, min: 2, max: 7, initial: 2 };
     return {
-        mana: new f.SchemaField({
-            max: new f.NumberField({ ...requiredInteger, initial: 0 }),
-            value: new f.NumberField({ ...requiredInteger, initial: 0 }),
-            maxCast: new f.NumberField({ integer: true })
+        level: new fields.SchemaField({
+            current: new fields.NumberField({ integer: true, min: 0, max: 10, initial: 0 }),
+            xp: new fields.NumberField({ integer: true, initial: 0 }),
+            xpToLevel: new fields.NumberField({ integer: true, initial: 10 })
         }),
-        currentLuck: new f.NumberField({ integer: true, initial: 2, max: 2 }),
-        fatigue: new f.NumberField({
-            choices: [0, 1, 2, 3, 4, 5],
-            initial: 0
+        ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
+        class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
+        stats: new fields.SchemaField({ ...StatsDataModel.defineSchema() }),
+        fatigue: new fields.NumberField({ choices: [0, 1, 2, 3, 4, 5], initial: 0, max: 5 }),
+        speed: new fields.SchemaField({ ...SpeedDataModel.defineSchema() }),
+        skills: new fields.SchemaField({ ...SkillsDataModel.defineSchema() }),
+        mana: new fields.SchemaField({
+            max: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            value: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            maxCast: new fields.NumberField({ integer: true })
         }),
-        level: new f.SchemaField({
-            current: new f.NumberField({ integer: true, min: 0, max: 10, initial: 0 }),
-            xp: new f.NumberField({ integer: true, initial: 0 }),
-            xpToLevel: new f.NumberField({ integer: true, initial: 10 })
-        }),
-        ancestry: new f.SchemaField({ ...AncestryDataModel.defineSchema() }),
-        class: new f.SchemaField({ ...ClassDataModel.defineSchema() }),
-        stats: new f.SchemaField({
-            might: new f.NumberField({ ...statProps }),
-            dexterity: new f.NumberField({ ...statProps }),
-            awareness: new f.NumberField({ ...statProps }),
-            reason: new f.NumberField({ ...statProps }),
-            presence: new f.NumberField({ ...statProps }),
-            luck: new f.NumberField({ ...statProps }),
-        }),
-        inventory: new f.SchemaField({
-            wealth: new f.SchemaField({
-                ...CurrencyDataModel.defineSchema()
-            }),
-            maxSlots: new f.NumberField({ integer: true, min: 8, initial: 8 }),
-            slotBonus: new f.NumberField({ integer: true, min: 0, initial: 0 }),
-            equipped: new f.ArrayField(
-                new f.SchemaField({ ...EquipmentDataModel.defineSchema() })
+        inventory: new fields.SchemaField({
+            wealth: new fields.SchemaField({ ...WealthDataModel.defineSchema() }),
+            maxSlots: new fields.NumberField({ integer: true, min: 8, initial: 8 }),
+            slotBonus: new fields.NumberField({ integer: true, min: 0, initial: 0 }),
+            equipped: new fields.ArrayField(
+                new fields.SchemaField({ ...EquipmentDataModel.defineSchema() })
             )
         }),
-        boundRelicLimit: new f.NumberField({ integer: true, initial: 3 }),
-    };
-};
+        boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 })
+    }
+}
 
 export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
 
@@ -55,17 +45,18 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         return {
             ...super.defineSchema(),
             ...heroSchema()
-        };
+        }
     }
 
     override async prepareDerivedData() {
-        super.prepareDerivedData();
-        this.health.max = this.stats.might! * (this.level.current || 1) + this.health.bonus!;
-        if (typeof this.class.spellcasting.castSkill !== null) {
-            this.mana.max = this.level.current! * this.class.spellcasting.manaMultiplier!;
-            this.mana.maxCast = Math.ceil(this.level.current! / 2) + Number(this.stats[this.class.spellcasting.maxPerCastStat!]);
+        super.prepareDerivedData()
+        this.health.max = this.stats.might! * (this.level.current || 1) + this.health.bonus!
+        if (typeof this.class.spellcastingData.castSkill !== null) {
+            this.mana.max = this.level.current! * this.class.spellcastingData.manaMultiplier!
+            this.mana.maxCast = Math.ceil(this.level.current! / 2) + Number(this.stats[this.class.spellcastingData.maxPerCastStat!])
         }
-        this.inventory.maxSlots = Number(this.stats['might']) + 8;
+        
+        this.inventory.maxSlots = Number(this.stats.might) + 8
     }
 
 }

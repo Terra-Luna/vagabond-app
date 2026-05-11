@@ -1,7 +1,7 @@
-import SpellDataModel from "../SpellDataModel";
+import SpellDataModel from "../SpellDataModel"
 
 export const spellcastingSchema = () => {
-    const f = foundry.data.fields;
+    const f = foundry.data.fields
     return {
         // Skill used to make Cast Checks
         castSkill: new f.StringField({ initial: null, nullable: true, required: false }),
@@ -15,5 +15,5 @@ export const spellcastingSchema = () => {
         ),
         // Class learns a new spell every [this] levels after the first
         newSpellEvery: new f.NumberField({ integer: true })
-    };
-};
+    }
+}

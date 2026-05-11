@@ -10,6 +10,6 @@ export default class VagabondActiveEffect extends ActiveEffect {
             'system.health.current': 'Current HP',
             'system.inventory.maxSlots': 'Max inventory slots',
             'system.inventory.slotBonus': 'Inventory slot bonus'
-        };
-    };
+        }
+    }
 }

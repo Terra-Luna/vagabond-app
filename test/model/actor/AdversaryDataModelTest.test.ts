@@ -6,7 +6,7 @@ describe('calculate threat level', () => {
         //Setup
         const adv = {
             health: { max: 31 }, armor: { total: 3 }, actions: [{ avgDamage: 3 }, { avgDamage: 4 }]
-        } as AdversaryDataModel
+        } as unknown as AdversaryDataModel
         //Execute
         var tl = calculateThreatLevel(adv)
         //Verify

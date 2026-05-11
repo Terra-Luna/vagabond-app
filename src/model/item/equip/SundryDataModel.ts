@@ -1,12 +1,12 @@
-import HeroDataModel from "../../actor/HeroDataModel";
-import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel";
+import HeroDataModel from "../../actor/HeroDataModel"
+import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 const sundrySchema = () => {
-    const f = foundry.data.fields;
+    const f = foundry.data.fields
     return {
 
-    };
-};
+    }
+}
 
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema
 
@@ -15,7 +15,7 @@ export default class SundryDataModel<T extends SundrySchema> extends EquipmentDa
         return {
             ...super.defineSchema(),
             ...sundrySchema()
-        };
+        }
     }
 
     override onEquip(hero: HeroDataModel) { }

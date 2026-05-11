@@ -1,11 +1,11 @@
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel";
+import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {
-    const f = foundry.data.fields;
+    const f = foundry.data.fields
     return {
         
-    };
-};
+    }
+}
 
 export type PerkSchema = ReturnType<typeof perkSchema> & BaseItemSchema
 
@@ -14,6 +14,6 @@ export default class PerkDataModel<T extends PerkSchema> extends ItemDataModel<T
         return {
             ...super.defineSchema(),
             ...perkSchema()
-        };
+        }
     }
 }

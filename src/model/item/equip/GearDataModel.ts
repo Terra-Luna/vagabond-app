@@ -1,12 +1,12 @@
-import HeroDataModel from "../../actor/HeroDataModel";
-import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel";
+import HeroDataModel from "../../actor/HeroDataModel"
+import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 const gearSchema = () => {
-    const f = foundry.data.fields;
+    const f = foundry.data.fields
     return {
 
-    };
-};
+    }
+}
 
 export type GearSchema = ReturnType<typeof gearSchema> & EquipmentSchema
 
@@ -15,7 +15,7 @@ export default class GearDataModel<T extends GearSchema> extends EquipmentDataMo
         return {
             ...super.defineSchema(),
             ...gearSchema()
-        };
+        }
     }
 
     override onEquip(hero: HeroDataModel) { }

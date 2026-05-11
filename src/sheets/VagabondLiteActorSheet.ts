@@ -1,4 +1,4 @@
-const { api, sheets } = foundry.applications;
+const { api, sheets } = foundry.applications
 
 export class VagabondLiteActorSheet extends api.HandlebarsApplicationMixin(
     sheets.ActorSheetV2
@@ -14,7 +14,7 @@ export class VagabondLiteActorSheet extends api.HandlebarsApplicationMixin(
     }
 
     static async _viewDoc(event, target) {
-        const doc = this._getEmbeddedDocument(target, this.actor);
-        if (doc) doc.sheet.render(true);
+        const doc = this._getEmbeddedDocument(target, this.actor)
+        if (doc) doc.sheet.render(true)
     }
 }
