@@ -61,6 +61,7 @@ export const calculateThreatLevel = (adv: AdversaryDataModel): number => {
      */
     var a = adv.armor.total! * 2
     var b = adv.health.max! / 10
-    var c = ((adv.actions.map(a => a.avgDamage).reduce((sum, cur) => (sum || 0) + (cur || 0), 0) || 0) / adv.actions.entries.length) / 6
+    var actionDmgSum = Number(adv.actions.reduce((n, { avgDamage }) => n + (avgDamage || 0), 0).toFixed(2))
+    var c = (actionDmgSum / adv.actions.length) / 6
     return Number(((a + b) / 4 + (c || 0)).toFixed(2))
 }

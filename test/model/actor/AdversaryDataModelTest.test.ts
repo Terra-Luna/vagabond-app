@@ -10,6 +10,6 @@ describe('calculate threat level', () => {
         //Execute
         var tl = calculateThreatLevel(adv)
         //Verify
-        expect(tl).toBe(1.22)
+        expect(tl).toBe(2.86)
     })
 })
