@@ -12,6 +12,7 @@ import NpcDataModel from "./model/actor/NpcDataModel"
 import GearDataModel from "./model/item/equip/GearDataModel"
 import ReactDom from "react-dom/client"
 import React, { useEffect } from "react"
+import VagabondLiteHeroSheet from "./sheets/VagabondLiteHeroSheet"
 
 Hooks.once("init", () => {
     Object.assign(
@@ -39,7 +40,6 @@ Hooks.on("ready", () => {
     root.render(
         <React.StrictMode>
             <div id="tw-portal-root" className="tw" />
-            <BigBlueBox />
         </React.StrictMode>
     );
 })
@@ -47,3 +47,9 @@ Hooks.on("ready", () => {
 const BigBlueBox = () => {
     return <div id="adasdiv" style={{backgroundColor: 'blue', height: 400, width: 400}}></div>
 }
+
+// register sheets
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', VagabondLiteHeroSheet, {
+    types: ['hero'],
+    makeDefault: true
+})
