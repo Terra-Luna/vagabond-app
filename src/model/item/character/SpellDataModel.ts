@@ -9,10 +9,14 @@ const spellSchema = () => {
 export type SpellSchema = ReturnType<typeof spellSchema> & BaseItemSchema
 
 export default class SpellDataModel<T extends SpellSchema> extends ItemDataModel<T> {
-    static defineSchema() {
+    static override defineSchema() {
         return {
             ...super.defineSchema(),
             ...spellSchema()
         }
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
     }
 }

@@ -1,0 +1,17 @@
+import { fields, requiredInteger } from "../../foundryHelper"
+
+export const manaSchema = () => {
+    return {
+        max: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        maxCast: new fields.NumberField({ integer: true })
+    }
+}
+
+export type ManaSchema = ReturnType<typeof manaSchema>
+
+export default class ManaDataModel extends foundry.abstract.TypeDataModel<ManaSchema, any> {
+    static defineSchema() {
+        return manaSchema()
+    }
+}

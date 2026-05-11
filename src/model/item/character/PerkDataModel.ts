@@ -9,10 +9,14 @@ const perkSchema = () => {
 export type PerkSchema = ReturnType<typeof perkSchema> & BaseItemSchema
 
 export default class PerkDataModel<T extends PerkSchema> extends ItemDataModel<T> {
-    static defineSchema() {
+    static override defineSchema() {
         return {
             ...super.defineSchema(),
             ...perkSchema()
         }
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
     }
 }

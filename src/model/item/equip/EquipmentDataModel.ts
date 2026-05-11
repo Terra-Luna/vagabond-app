@@ -19,11 +19,15 @@ const baseEquipmentSchema = () => {
 export type EquipmentSchema = ReturnType<typeof baseEquipmentSchema> & BaseItemSchema
 
 export default abstract class EquipmentDataModel<T extends EquipmentSchema> extends ItemDataModel<T> {
-    static defineSchema() {
+    static override defineSchema() {
         return {
             ...super.defineSchema(),
             ...baseEquipmentSchema()
         }
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
     }
 
     abstract onEquip(hero: HeroDataModel)

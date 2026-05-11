@@ -20,7 +20,7 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
         }
     }
 
-    prepareDerivedData() {
+    override async prepareDerivedData() {
         super.prepareDerivedData()
         this.baseArmor = { 'light': 1, 'medium': 2, 'heavy': 3 }[this.armorType || 0]
     }

@@ -1,5 +1,6 @@
 import { fields } from "../foundryHelper"
 import ArmorDataModel from "./attribute/ArmorDataModel"
+import { beingSizeOptions, beingTypeOptions } from "./attribute/beingTraitsSchema"
 import HealthDataModel from "./attribute/HealthDataModel"
 import SensesDataModel from "./attribute/SensesDataModel"
 
@@ -8,14 +9,8 @@ export const baseActorSchema = () => {
         health: new fields.SchemaField({ ...HealthDataModel.defineSchema() }),
         armor: new fields.SchemaField({ ...ArmorDataModel.defineSchema() }),
         senses: new fields.SchemaField({ ...SensesDataModel.defineSchema() }),
-        size: new fields.StringField({
-            choices: ['small', 'medium', 'large', 'huge', 'giant', 'colossal'],
-            initital: 'medium'
-        }),
-        beingType: new fields.StringField({
-            choices: ['artificial', 'beast', 'cryptid', 'fae', 'humanlike', 'outer', 'primordial', 'undead'],
-            initial: 'humanlike'
-        })
+        size: new fields.StringField({ ...beingSizeOptions() }),
+        beingType: new fields.StringField({ ...beingTypeOptions() })
     }
 }
 

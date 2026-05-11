@@ -1,4 +1,4 @@
-console.log("FOUNDRY IS BEING DEFINED")
+console.log("Preparing globals for testing...")
 global.foundry = {
     data: {
         fields: {
