@@ -1,9 +1,9 @@
-import HeroDataModel from "../../actor/HeroDataModel"
-import EquipmentDataModel from "./EquipmentDataModel"
-import { EquipmentSchema } from "./EquipmentDataModel"
+import HeroDataModel from "../../actor/HeroDataModel";
+import EquipmentDataModel from "./EquipmentDataModel";
+import { EquipmentSchema } from "./EquipmentDataModel";
 
 const weaponSchema = () => {
-    const f = foundry.data.fields
+    const f = foundry.data.fields;
     return {
         range: new f.StringField({
             required: false, initial: 'close', choices: ['close', 'near', 'far'],
@@ -30,8 +30,8 @@ const weaponSchema = () => {
             )
         }),
         isCrude: new f.BooleanField({ initial: false })
-    }
-}
+    };
+};
 
 export type WeaponSchema = ReturnType<typeof weaponSchema> & EquipmentSchema
 
@@ -40,7 +40,7 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         return {
             ...super.defineSchema(),
             ...weaponSchema()
-        }
+        };
     }
 
     override onEquip(hero: HeroDataModel) { }

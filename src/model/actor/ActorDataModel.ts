@@ -1,7 +1,7 @@
-import { requiredInteger } from "../modelUtils"
+import { requiredInteger } from "../modelUtils";
 
 export const baseActorSchema = () => {
-    const f = foundry.data.fields
+    const f = foundry.data.fields;
     return {
         health: new f.SchemaField({
             value: new f.NumberField({ required: true, integer: true, min: 0, initial: 2 }),
@@ -37,8 +37,8 @@ export const baseActorSchema = () => {
             seismicsense: new f.BooleanField({ initial: false }),
             telepathy: new f.BooleanField({ initial: false })
         })
-    }
-}
+    };
+};
 
 export type BaseActorSchema = ReturnType<typeof baseActorSchema>
 
@@ -46,6 +46,6 @@ export default abstract class ActorDataModel<T extends BaseActorSchema> extends 
     static defineSchema() {
         return {
             ...baseActorSchema()
-        }
+        };
     }
 }

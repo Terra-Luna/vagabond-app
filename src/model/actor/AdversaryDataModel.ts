@@ -1,7 +1,7 @@
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import ActorDataModel, { BaseActorSchema } from "./ActorDataModel";
 
 const adversarySchema = () => {
-    const f = foundry.data.fields
+    const f = foundry.data.fields;
     return {
         hitDice: new f.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         threatLevel: new f.NumberField({ integer: false, min: 0, initial: 1.00 }),
@@ -27,8 +27,8 @@ const adversarySchema = () => {
                 description: new f.StringField({}),
             })
         )
-    }
-}
+    };
+};
 
 export type AdversarySchema = ReturnType<typeof adversarySchema> & BaseActorSchema
 
@@ -37,17 +37,17 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
         return {
             ...super.defineSchema(),
             ...adversarySchema()
-        }
+        };
     }
 
     override async prepareDerivedData() {
-        super.prepareDerivedData()
-        this.health.max = this.size?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice! * 4.5)
-        this.threatLevel = this.calculateThreatLevel()
+        super.prepareDerivedData();
+        this.health.max = this.size?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice! * 4.5);
+        this.threatLevel = this.calculateThreatLevel();
     }
 
     calculateThreatLevel(): number {
-        return calculateThreatLevel(this)
+        return calculateThreatLevel(this);
     }
 }
 
@@ -59,9 +59,9 @@ export const calculateThreatLevel = (adv: AdversaryDataModel): number => {
      *      c = Mean dmg-per-round / 6
      *      TL = (a + b) / 4 + c
      */
-    var a = adv.armor.total! * 2
-    var b = adv.health.max! / 10
-    var actionDmgSum = Number(adv.actions.reduce((n, { avgDamage }) => n + (avgDamage || 0), 0).toFixed(2))
-    var c = (actionDmgSum / adv.actions.length) / 6
-    return Number(((a + b) / 4 + (c || 0)).toFixed(2))
-}
+    var a = adv.armor.total! * 2;
+    var b = adv.health.max! / 10;
+    var actionDmgSum = Number(adv.actions.reduce((n, { avgDamage }) => n + (avgDamage || 0), 0).toFixed(2));
+    var c = (actionDmgSum / adv.actions.length) / 6;
+    return Number(((a + b) / 4 + (c || 0)).toFixed(2));
+};

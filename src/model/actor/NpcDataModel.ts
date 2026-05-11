@@ -1,11 +1,11 @@
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import ActorDataModel, { BaseActorSchema } from "./ActorDataModel";
 
 const npcSchema = () => {
-    const f = foundry.data.fields
+    const f = foundry.data.fields;
     return {
 
-    }
-}
+    };
+};
 
 export type NpcSchema = ReturnType<typeof npcSchema> & BaseActorSchema
 
@@ -14,6 +14,6 @@ export default class NpcDataModel extends ActorDataModel<NpcSchema> {
         return {
             ...super.defineSchema(),
             ...npcSchema()
-        }
+        };
     }
 }

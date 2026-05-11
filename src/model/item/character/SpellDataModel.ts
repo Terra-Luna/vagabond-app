@@ -1,11 +1,11 @@
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import ItemDataModel, { BaseItemSchema } from "../ItemDataModel";
 
 const spellSchema = () => {
-    const f = foundry.data.fields
+    const f = foundry.data.fields;
     return {
         
-    }
-}
+    };
+};
 
 export type SpellSchema = ReturnType<typeof spellSchema> & BaseItemSchema
 
@@ -14,6 +14,6 @@ export default class SpellDataModel<T extends SpellSchema> extends ItemDataModel
         return {
             ...super.defineSchema(),
             ...spellSchema()
-        }
+        };
     }
 }

@@ -6,7 +6,9 @@
     "foundry": "node \"C:/Program Files/FoundryVTT-Node/main.js\" --dataPath=%userprofile%/AppData/Local/FoundryVTT",
     "vite-no": "pnpm vite --open 0",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
-    "clean": "echo Y | rmdir /s dist"
+    "clean": "echo Y | rmdir /s dist",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
   },
   "keywords": [],
   "author": "",
@@ -20,18 +22,24 @@
   },
   "type": "module",
   "dependencies": {
+    "lint": "1.2.2",
     "react": "19.2.6",
     "react-dom": "19.2.6"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@jest/globals": "30.4.1",
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20251209192131",
     "@types/react": "19.2.6",
     "@types/react-dom": "19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.59.2",
+    "@typescript-eslint/parser": "^8.59.2",
     "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.3.0",
     "jest": "30.4.1",
     "ts-jest": "29.4.9",
     "typescript": "6.0.3",
+    "typescript-eslint": "^8.59.2",
     "vite": "8.0.11"
   }
 }

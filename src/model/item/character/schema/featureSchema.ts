@@ -1,8 +1,8 @@
-import { requiredString, standardInteger } from "../../../modelUtils"
-import { skillChoices } from "./skillsTrainingSchema"
+import { requiredString, standardInteger } from "../../../modelUtils";
+import { skillChoices } from "./skillsTrainingSchema";
 
 export const featureSchema = () => {
-    const f = foundry.data.fields
+    const f = foundry.data.fields;
     return {
         // Name and description of this feature
         name: new f.StringField({ ...requiredString, initial: '' }),
@@ -25,5 +25,5 @@ export const featureSchema = () => {
 
         // The skills which are allowed to be trained using skillTraining value
         skillOptions: skillChoices()
-    }
-}
+    };
+};
