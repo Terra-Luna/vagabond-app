@@ -1,7 +1,6 @@
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const spellSchema = () => {
-    const f = foundry.data.fields
     return {
         
     }

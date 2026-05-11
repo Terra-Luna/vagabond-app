@@ -1,19 +1,19 @@
+import { fields } from "../../../foundryHelper"
+
 export const skillsTrainingSchema = () => {
-    const f = foundry.data.fields
     return {
-        granted: new f.ArrayField(
-            new f.StringField({}), { initial: [] }
+        granted: new fields.ArrayField(
+            new fields.StringField({}), { initial: [] }
         ),
         choices: skillChoices()
     }
 }
 
 export const skillChoices = () => {
-    const f = foundry.data.fields
-    return new f.ArrayField(
-        new f.SchemaField({
-            options: new f.ArrayField(new f.StringField({}), { initial: [] }),
-            count: new f.NumberField({ integer: true, initial: 0, min: 0 })
+    return new fields.ArrayField(
+        new fields.SchemaField({
+            options: new fields.ArrayField(new fields.StringField({}), { initial: [] }),
+            count: new fields.NumberField({ integer: true, initial: 0, min: 0 })
         }),
         { initial: [] }
     )

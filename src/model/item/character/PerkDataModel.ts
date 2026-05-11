@@ -1,7 +1,6 @@
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {
-    const f = foundry.data.fields
     return {
         
     }

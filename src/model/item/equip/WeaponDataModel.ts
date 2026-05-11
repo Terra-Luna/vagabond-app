@@ -1,35 +1,35 @@
 import HeroDataModel from "../../actor/HeroDataModel"
+import { fields } from "../../foundryHelper"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
-    const f = foundry.data.fields
     return {
-        range: new f.StringField({
+        range: new fields.StringField({
             required: false, initial: 'close', choices: ['close', 'near', 'far'],
         }),
-        damage1H: new f.StringField({ required: false, initial: '1d4' }),
-        damage2H: new f.StringField({ required: false, initial: '1d4' }),
-        grip: new f.SchemaField({
-            options: new f.StringField({
+        damage1H: new fields.StringField({ required: false, initial: '1d4' }),
+        damage2H: new fields.StringField({ required: false, initial: '1d4' }),
+        grip: new fields.SchemaField({
+            options: new fields.StringField({
                 required: false, initial: '1H', choices: ['1H', '2H', 'V', 'F']
             }),
-            gripState: new f.StringField({ required: false, initial: '' })
+            gripState: new fields.StringField({ required: false, initial: '' })
         }),
-        attackSkills: new f.ArrayField(
-            new f.StringField({ initial: '', required: true }), { initial: ['melee'] }
+        attackSkills: new fields.ArrayField(
+            new fields.StringField({ initial: '', required: true }), { initial: ['melee'] }
         ),
-        properties: new f.ArrayField(
-            new f.StringField({ required: true, blank: false }),
+        properties: new fields.ArrayField(
+            new fields.StringField({ required: true, blank: false }),
             { initial: [] }
         ),
-        explodeData: new f.SchemaField({
-            canExplode: new f.BooleanField({ initial: false }),
-            explodesOn: new f.ArrayField(
-                new f.NumberField({ integer: true, initial: 0, required: false }), { initial: [] }
+        explodeData: new fields.SchemaField({
+            canExplode: new fields.BooleanField({ initial: false }),
+            explodesOn: new fields.ArrayField(
+                new fields.NumberField({ integer: true, initial: 0, required: false }), { initial: [] }
             )
         }),
-        isCrude: new f.BooleanField({ initial: false })
+        isCrude: new fields.BooleanField({ initial: false })
     }
 }
 

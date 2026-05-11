@@ -1,17 +1,17 @@
 import WealthDataModel from "../../actor/attribute/WealthDataModel"
 import HeroDataModel from "../../actor/HeroDataModel"
+import { fields } from "../../foundryHelper"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const baseEquipmentSchema = () => {
-    const f = foundry.data.fields
     return {
-        value: new f.SchemaField({ ...WealthDataModel.defineSchema() }),
-        slots: new f.NumberField({ integer: true, min: 0, max: 4 }),
-        isEquipped: new f.BooleanField({ initial: false }),
-        relicData: new f.SchemaField({
-            isRelic: new f.BooleanField({ initial: false }),
-            requiresBind: new f.BooleanField({ initial: false }),
-            isBound: new f.BooleanField({ initial: false })
+        value: new fields.SchemaField({ ...WealthDataModel.defineSchema() }),
+        slots: new fields.NumberField({ integer: true, min: 0, max: 4 }),
+        isEquipped: new fields.BooleanField({ initial: false }),
+        relicData: new fields.SchemaField({
+            isRelic: new fields.BooleanField({ initial: false }),
+            requiresBind: new fields.BooleanField({ initial: false }),
+            isBound: new fields.BooleanField({ initial: false })
         })
     }
 }

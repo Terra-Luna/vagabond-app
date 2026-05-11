@@ -1,12 +1,12 @@
 import HeroDataModel from "../../actor/HeroDataModel"
+import { fields } from "../../foundryHelper"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
 const armorSchema = () => {
-    const f = foundry.data.fields
     return {
-        armorType: new f.StringField({ reuired: false, initial: 'light', choices: ['light', 'medium', 'heavy'] }),
-        baseArmor: new f.NumberField({ integer: true, min: 0, initial: 0 })
+        armorType: new fields.StringField({ reuired: false, initial: 'light', choices: ['light', 'medium', 'heavy'] }),
+        baseArmor: new fields.NumberField({ integer: true, min: 0, initial: 0 })
     }
 }
 

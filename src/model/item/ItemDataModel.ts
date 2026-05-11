@@ -1,7 +1,8 @@
+import { fields } from "../foundryHelper"
+
 const baseItemSchema = () => {
-    const f = foundry.data.fields
     return {
-        description: new f.HTMLField()
+        description: new fields.HTMLField()
     }
 }
 

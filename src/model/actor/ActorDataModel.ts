@@ -1,18 +1,18 @@
+import { fields } from "../foundryHelper"
 import ArmorDataModel from "./attribute/ArmorDataModel"
 import HealthDataModel from "./attribute/HealthDataModel"
 import SensesDataModel from "./attribute/SensesDataModel"
 
 export const baseActorSchema = () => {
-    const f = foundry.data.fields
     return {
-        health: new f.SchemaField({ ...HealthDataModel.defineSchema() }),
-        armor: new f.SchemaField({ ...ArmorDataModel.defineSchema() }),
-        senses: new f.SchemaField({ ...SensesDataModel.defineSchema() }),
-        size: new f.StringField({
+        health: new fields.SchemaField({ ...HealthDataModel.defineSchema() }),
+        armor: new fields.SchemaField({ ...ArmorDataModel.defineSchema() }),
+        senses: new fields.SchemaField({ ...SensesDataModel.defineSchema() }),
+        size: new fields.StringField({
             choices: ['small', 'medium', 'large', 'huge', 'giant', 'colossal'],
             initital: 'medium'
         }),
-        beingType: new f.StringField({
+        beingType: new fields.StringField({
             choices: ['artificial', 'beast', 'cryptid', 'fae', 'humanlike', 'outer', 'primordial', 'undead'],
             initial: 'humanlike'
         })

@@ -1,7 +1,7 @@
+import { fields, requiredInteger } from "../foundryHelper"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import EquipmentDataModel from "../item/equip/EquipmentDataModel"
-import { fields, requiredInteger } from "../foundryHelper"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import SkillsDataModel from "./attribute/SkillsDataModel"
 import SpeedDataModel from "./attribute/SpeedDataModel"

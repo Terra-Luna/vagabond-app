@@ -2,7 +2,6 @@ import HeroDataModel from "../../actor/HeroDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemicalItemSchema = () => {
-    const f = foundry.data.fields
     return {
 
     }

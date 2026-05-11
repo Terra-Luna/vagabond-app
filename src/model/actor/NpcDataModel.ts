@@ -1,7 +1,6 @@
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 
 const npcSchema = () => {
-    const f = foundry.data.fields
     return {
 
     }

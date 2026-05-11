@@ -1,13 +1,13 @@
+import { fields } from "../../foundryHelper"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 import { featureSchema } from "./schema/featureSchema"
 import { spellcastingSchema } from "./schema/spellcastingSchema"
 
 const classSchema = () => {
-    const f = foundry.data.fields
     return {
-        spellcastingData: new f.SchemaField({ ...spellcastingSchema() }),
-        keyStats: new f.ArrayField(new f.StringField({}), { initial: [] }),
-        features: new f.ArrayField(new f.SchemaField({ ...featureSchema() }))
+        spellcastingData: new fields.SchemaField({ ...spellcastingSchema() }),
+        keyStats: new fields.ArrayField(new fields.StringField({}), { initial: [] }),
+        features: new fields.ArrayField(new fields.SchemaField({ ...featureSchema() }))
     }
 }
 
