@@ -5,7 +5,7 @@
     "build": "pnpm vite build",
     "foundry": "node \"C:/Program Files/FoundryVTT-Node/main.js\" --dataPath=%userprofile%/AppData/Local/FoundryVTT",
     "vite-no": "pnpm vite --open 0",
-    "test": "pnpm build && node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test": "pnpm build && node --experimental-vm-modules --trace-warnings node_modules/jest/bin/jest.js",
     "clean": "rmdir /s dist"
   },
   "keywords": [],
