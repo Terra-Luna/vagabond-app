@@ -10,10 +10,9 @@ import SpellDataModel from "./model/item/character/SpellDataModel"
 import PerkDataModel from "./model/item/character/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
 import GearDataModel from "./model/item/equip/GearDataModel"
-import ReactDom from "react-dom/client"
-import React, { useEffect } from "react"
-import VagabondLiteHeroSheet from "./sheets/VagabondLiteHeroSheet"
-import VagabondLiteAdversarySheet from "./sheets/VagabondLiteAdversarySheet"
+import VagabondLiteHeroSheet from "./view/sheets/VagabondLiteHeroSheet"
+
+import "../styles/vagabond-lite.css"
 
 Hooks.once("init", () => {
     Object.assign(
@@ -34,28 +33,8 @@ Hooks.once("init", () => {
     )
 })
 
-Hooks.on("ready", () => {
-    const reactRoot = document.createElement("vagabond-lite-root")
-
-    const root = ReactDom.createRoot(document.body.appendChild(reactRoot))
-    root.render(
-        <React.StrictMode>
-            <div id="tw-portal-root" className="tw" />
-        </React.StrictMode>
-    );
-})
-
-const BigBlueBox = () => {
-    return <div id="adasdiv" style={{backgroundColor: 'blue', height: 400, width: 400}}></div>
-}
-
 // register sheets
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', VagabondLiteHeroSheet, {
     types: ['hero'],
-    makeDefault: true
-})
-
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', VagabondLiteAdversarySheet, {
-    types: ['adversary'],
-    makeDefault: true
+    makeDefault: true,
 })

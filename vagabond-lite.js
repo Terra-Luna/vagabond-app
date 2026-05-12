@@ -3,4 +3,6 @@
  * src/vagabond-lite.tsx for the vite dev server.
  * DO NOT REMOVE
  */
+
+import '@vitejs/plugin-react/preamble'
 import "./src/vagabond-lite"
