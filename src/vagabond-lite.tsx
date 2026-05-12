@@ -13,12 +13,13 @@ import GearDataModel from "./model/item/equip/GearDataModel"
 import ReactDom from "react-dom/client"
 import React, { useEffect } from "react"
 import VagabondLiteHeroSheet from "./sheets/VagabondLiteHeroSheet"
+import VagabondLiteAdversarySheet from "./sheets/VagabondLiteAdversarySheet"
 
 Hooks.once("init", () => {
     Object.assign(
         // Actors
-        CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.adversary = AdversaryDataModel,
+        CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.npc = NpcDataModel,
         // Items
         CONFIG.Item.dataModels.armor = ArmorDataModel,
@@ -51,5 +52,10 @@ const BigBlueBox = () => {
 // register sheets
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', VagabondLiteHeroSheet, {
     types: ['hero'],
+    makeDefault: true
+})
+
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', VagabondLiteAdversarySheet, {
+    types: ['adversary'],
     makeDefault: true
 })

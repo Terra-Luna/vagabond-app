@@ -11,3 +11,10 @@ export const beingTypeOptions = () => {
         initial: 'humanlike'
     }
 }
+
+export const zonePreferences = () => {
+    return {
+        choices: ['frontline', 'midline', 'backline'],
+        initial: 'midline'
+    }
+}

@@ -1,15 +1,13 @@
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import AdversaryActionDataModel, { AdversaryActionComboDataModel } from "./attribute/AdversaryActionDataModel"
+import { zonePreferences } from "./attribute/beingTraitsSchema"
 
 const adversarySchema = () => {
     const f = foundry.data.fields
     return {
         hitDice: new f.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         threatLevel: new f.NumberField({ integer: false, min: 0, initial: 1.00 }),
-        zone: new f.StringField({
-            choices: [
-                'frontline', 'midline', 'backline'
-            ]
-        }),
+        zone: new f.StringField({ ...zonePreferences() }),
         movement: new f.ArrayField(
             new f.SchemaField({
                 speed: new f.NumberField({ integer: true, min: 0 }),
@@ -19,20 +17,13 @@ const adversarySchema = () => {
             })
         ),
         morale: new f.NumberField({ integer: true, min: 2, max: 12 }),
-        numberAppearing: new f.StringField({}),
-        actions: new f.ArrayField(
-            new f.SchemaField({
-                name: new f.StringField({}),
-                type: new f.StringField({ choices: ['Melee', 'Ranged', 'Cast', 'Combo'] }),
-                description: new f.StringField({}),
-                damage: new f.StringField({ required: false, initial: '1d4' }),
-                avgDamage: new f.NumberField({ required: false, integer: true, initial: 0 })
-            })
-        ),
+        numberAppearing: new f.StringField({ initial: '1d4' }),
+        actions: new f.ArrayField(new f.SchemaField({ ...AdversaryActionDataModel.defineSchema() })),
+        combo: new f.SchemaField({ ...AdversaryActionComboDataModel.defineSchema() }),
         abilities: new f.ArrayField(
             new f.SchemaField({
-                name: new f.StringField({}),
-                description: new f.StringField({}),
+                name: new f.StringField({ required: true, initial: '' }),
+                description: new f.StringField({ required: true, initital: '' }),
             })
         )
     }
@@ -69,7 +60,15 @@ export const calculateThreatLevel = (adv: AdversaryDataModel): number => {
      */
     var a = adv.armor.total! * 2
     var b = adv.health.max! / 10
-    var actionDmgSum = Number(adv.actions.reduce((n, { avgDamage }) => n + (avgDamage || 0), 0).toFixed(2))
-    var c = (actionDmgSum / adv.actions.length) / 6
+    var c = 0
+    if (adv?.combo?.actions?.length > 0) {
+        adv.combo?.actions?.forEach(act => c += Number(act.damage.avg) || 0)
+    }
+    else {
+        adv.actions?.forEach(act => c += Number(act.damage.avg) || 0)
+        c = c / adv.actions?.length || 0
+    }
+    c = c / 6
+
     return Number(((a + b) / 4 + (c || 0)).toFixed(2))
 }

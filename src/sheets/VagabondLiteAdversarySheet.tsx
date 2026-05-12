@@ -1,10 +1,10 @@
 import ReactDom from "react-dom/client"
 import { VagabondLiteActorSheet } from "./VagabondLiteActorSheet"
-import HeroDataModel from "../model/actor/HeroDataModel";
+import AdversaryDataModel from "../model/actor/AdversaryDataModel";
 
-export default class VagabondLiteHeroSheet extends VagabondLiteActorSheet {
+export default class VagabondLiteAdversarySheet extends VagabondLiteActorSheet {
     static DEFAULT_OPTIONS = foundry.utils.mergeObject(super.DEFAULT_OPTIONS, {
-        classes: ['vagabond', 'actor', 'hero'],
+        classes: ['vagabond', 'actor', 'adversary'],
         position: {
             width: 430  // Ensure character sheet keeps its proper width
         }
@@ -12,14 +12,11 @@ export default class VagabondLiteHeroSheet extends VagabondLiteActorSheet {
 }
 
 Hooks.on("renderActorSheetV2", ({ element, document: doc }) => {
-    const heroData = doc.system as HeroDataModel
-    console.log(heroData)
+    const advData = doc.system as AdversaryDataModel
+    console.log(advData)
     const reactRoot = document.createElement("vagabond-lite-root")
     const root = ReactDom.createRoot(element.appendChild(reactRoot))
-    root.render(<div id="hero-sheet-div" style={{ color: 'black', height: 400, backgroundColor: 'white' }}>
-        {JSON.stringify(heroData.toJSON())}
-        <button onClick={() => {
-            console.log("Click!")
-        }}>Press me!</button>
+    root.render(<div id="adversary-sheet-div" style={{ color: 'white', height: 400, backgroundColor: 'black' }}>
+        {JSON.stringify(advData.toJSON())}
     </div>)
 })
