@@ -1,6 +1,6 @@
-import ReactDom from "react-dom/client"
 import { VagabondLiteActorSheet } from "./VagabondLiteActorSheet"
 import HeroDataModel from "../model/actor/HeroDataModel";
+import ReactDom from 'react-dom/client'
 
 export default class VagabondLiteHeroSheet extends VagabondLiteActorSheet {
     static DEFAULT_OPTIONS = foundry.utils.mergeObject(super.DEFAULT_OPTIONS, {

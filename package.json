@@ -24,7 +24,8 @@
   "dependencies": {
     "lint": "1.2.2",
     "react": "19.2.6",
-    "react-dom": "19.2.6"
+    "react-dom": "19.2.6",
+    "react-draggable": "^4.5.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
