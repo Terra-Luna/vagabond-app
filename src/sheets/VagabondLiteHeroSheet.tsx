@@ -18,8 +18,15 @@ Hooks.on("renderActorSheetV2", ({ element, document: doc }) => {
     const root = ReactDom.createRoot(element.appendChild(reactRoot))
     root.render(<div id="hero-sheet-div" style={{ color: 'black', height: 400, backgroundColor: 'white' }}>
         {JSON.stringify(heroData.toJSON())}
-        <button onClick={() => {
-            console.log("Click!")
-        }}>Press me!</button>
+        <button onClick={async () => {
+            let roll = await new Roll('2d12').evaluate()
+            let results = roll.terms[0].results // <-- fake error, can we fix?
+            console.log(results)
+            ChatMessage.create({
+                speaker: ChatMessage.getSpeaker({}),
+                content: `<h3>Rolling: 2d12</h3><br><p>${results[0].result} + ${results[1].result} = ${roll._total}`,
+                rolls: [roll]
+            })
+        }}>Roll 2d12</button>
     </div>)
 })
