@@ -1,6 +1,6 @@
-import { fields } from "../../common/sharedSchemas"
-import { coinSchema } from "../../common/CoinValue"
 import HeroDataModel from "../../actor/HeroDataModel"
+import { coinSchema } from "../../common/CoinValue"
+import { fields } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const baseEquipmentSchema = () => {

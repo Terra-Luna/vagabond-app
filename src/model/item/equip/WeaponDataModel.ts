@@ -1,5 +1,5 @@
-import { fields, rangeOptions } from "../../common/sharedSchemas"
 import HeroDataModel from "../../actor/HeroDataModel"
+import { fields, rangeOptions } from "../../common/sharedSchemas"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 

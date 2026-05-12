@@ -1,15 +1,15 @@
-import { fields, requiredInteger } from "../common/sharedSchemas"
+import { CoinValue,consolidate } from "../common/CoinValue"
+import { fields } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/ancestry/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
-import EquipmentDataModel from "../item/equip/EquipmentDataModel"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import { coinSchema, CoinValue, consolidate } from "../common/CoinValue"
+import { inventorySchema } from "./attribute/Inventory"
 import { levelSchema } from "./attribute/Level"
-import { statsSchema } from "./attribute/Stats"
-import { savesSchema } from "./attribute/Saves"
-import { calculateSpeeds, speedSchema } from "./attribute/Speed"
-import { calculateDifficulties, skillsSchema } from "./attribute/Skills"
 import { manaSchema } from "./attribute/Mana"
+import { savesSchema } from "./attribute/Saves"
+import { calculateDifficulties, skillsSchema } from "./attribute/Skills"
+import { calculateSpeeds, speedSchema } from "./attribute/Speed"
+import { statsSchema } from "./attribute/Stats"
 
 const heroSchema = () => {
     return {
@@ -22,16 +22,7 @@ const heroSchema = () => {
         speed: new fields.SchemaField({ ...speedSchema() }),
         skills: new fields.SchemaField({ ...skillsSchema() }),
         mana: new fields.SchemaField({ ...manaSchema() }),
-        inventory: new fields.SchemaField({
-            coins: new fields.SchemaField({ ...coinSchema() }),
-            occupiedSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-            maxSlots: new fields.NumberField({ integer: true, min: 8, initial: 8 }),
-            slotBonus: new fields.NumberField({ integer: true, min: 0, initial: 0 }),
-            items: new fields.ArrayField( new fields.SchemaField({ ...EquipmentDataModel.defineSchema() }), { initial: [] } ),
-            equipped: new fields.ArrayField(
-                new fields.SchemaField({ ...EquipmentDataModel.defineSchema() })
-            )
-        }),
+        inventory: new fields.SchemaField({ ...inventorySchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 })
     }
 }
@@ -88,7 +79,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     deriveSpeed() {
-        calculateSpeeds(this.stats.dexterity!, this.speed)
+        calculateSpeeds(this.stats.dexterity!, this.speed) // <-- surely, this is fine
     }
 
     /**
