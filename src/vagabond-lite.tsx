@@ -12,7 +12,7 @@ import NpcDataModel from "./model/actor/NpcDataModel"
 import GearDataModel from "./model/item/equip/GearDataModel"
 import VagabondLiteHeroSheet from "./view/sheets/VagabondLiteHeroSheet"
 
-import "../styles/vagabond-lite.css"
+import '../styles/vagabond-lite.css'
 
 Hooks.once("init", () => {
     Object.assign(

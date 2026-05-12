@@ -1,6 +1,6 @@
 import { FoundryActor, updateActor, VagabondLiteActorSheet } from "./VagabondLiteActorSheet"
 import HeroDataModel from "../../model/actor/HeroDataModel"
-import HPDisplay from "../component/HPDisplay";
+import HPDisplay from "../component/HPDisplay"
 
 export default class VagabondLiteHeroSheet extends VagabondLiteActorSheet {
     Component = MyReactComponent
