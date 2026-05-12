@@ -1,11 +1,11 @@
 import { fields } from "../../../common/sharedSchemas"
-import WealthDataModel from "../../actor/attribute/WealthDataModel"
+import { coinSchema } from "../../actor/attribute/CoinValue"
 import HeroDataModel from "../../actor/HeroDataModel"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const baseEquipmentSchema = () => {
     return {
-        value: new fields.SchemaField({ ...WealthDataModel.defineSchema() }),
+        value: new fields.SchemaField({ ...coinSchema() }),
         slots: new fields.NumberField({ integer: true, min: 0, max: 4 }),
         isEquipped: new fields.BooleanField({ initial: false }),
         relicData: new fields.SchemaField({
