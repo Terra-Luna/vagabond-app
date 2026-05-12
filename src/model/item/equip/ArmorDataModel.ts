@@ -1,4 +1,4 @@
-import { fields } from "../../../common/sharedSchemas"
+import { fields } from "../../common/sharedSchemas"
 import HeroDataModel from "../../actor/HeroDataModel"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"

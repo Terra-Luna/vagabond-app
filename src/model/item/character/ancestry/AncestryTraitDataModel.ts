@@ -1,4 +1,4 @@
-import { fields } from "../../../../common/sharedSchemas"
+import { fields } from "../../../common/sharedSchemas"
 
 export const ancestryTraitSchema = () => {
     return {

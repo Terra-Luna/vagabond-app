@@ -1,4 +1,4 @@
-import { fields } from "../../../common/sharedSchemas"
+import { fields } from "../../common/sharedSchemas"
 
 export const levelSchema = () => {
     return {
@@ -9,9 +9,4 @@ export const levelSchema = () => {
 }
 
 export type LevelSchema = ReturnType<typeof levelSchema>
-
-export default class LevelDataModel extends foundry.abstract.TypeDataModel<LevelSchema, any> {
-    static defineSchema() {
-        return levelSchema()
-    }
-}
+export type Level = foundry.abstract.TypeDataModel<LevelSchema, any>

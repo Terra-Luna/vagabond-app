@@ -1,4 +1,4 @@
-import { fields } from "../../../../common/sharedSchemas"
+import { fields } from "../../../common/sharedSchemas"
 import SpellDataModel from "../SpellDataModel"
 
 export const spellcastingSchema = () => {

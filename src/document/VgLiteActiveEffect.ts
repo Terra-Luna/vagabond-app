@@ -6,9 +6,8 @@
 export default class VgLiteActiveEffect extends ActiveEffect {
     static getAttributeChoices = () => {
         return {
-            'system.health.current': 'Current HP',
             'system.health.bonus': 'Max HP bonus',
-            'system.inventory.maxSlots': 'Max inventory slots',
+            'system.health.mana.max': 'Max Mana bonus',
             'system.inventory.slotBonus': 'Inventory slot bonus'
         }
     }

@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../../common/sharedSchemas"
+import { fields, requiredInteger } from "./sharedSchemas"
 
 export const coinSchema = () => {
     return {

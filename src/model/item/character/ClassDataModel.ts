@@ -1,4 +1,4 @@
-import { fields } from "../../../common/sharedSchemas"
+import { fields } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 import { featureSchema } from "./schema/featureSchema"
 import { spellcastingSchema } from "./schema/spellcastingSchema"

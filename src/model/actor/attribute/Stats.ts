@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../../common/sharedSchemas"
+import { fields, requiredInteger } from "../../common/sharedSchemas"
 
 const statProps = { integer: true, min: 2, max: 7, initial: 2 }
 
@@ -15,9 +15,4 @@ export const statsSchema = () => {
 }
 
 export type StatsSchema = ReturnType<typeof statsSchema>
-
-export default class StatsDataModel extends foundry.abstract.TypeDataModel<StatsSchema, any> {
-    static defineSchema() {
-        return statsSchema()
-    }
-}
+export type Stats = foundry.abstract.TypeDataModel<StatsSchema, any>

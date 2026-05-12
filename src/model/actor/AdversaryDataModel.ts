@@ -1,7 +1,6 @@
-import { zonePreferences } from "../../common/sharedSchemas"
+import { zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import AdversaryActionDataModel, { AdversaryActionComboDataModel } from "./attribute/AdversaryActionDataModel"
-
+import { adversaryActionComboSchema, adversaryActionSchema } from "./attribute/AdversaryAction"
 
 const adversarySchema = () => {
     const f = foundry.data.fields
@@ -19,8 +18,8 @@ const adversarySchema = () => {
         ),
         morale: new f.NumberField({ integer: true, min: 2, max: 12 }),
         numberAppearing: new f.StringField({ initial: '1d4' }),
-        actions: new f.ArrayField(new f.SchemaField({ ...AdversaryActionDataModel.defineSchema() })),
-        combo: new f.SchemaField({ ...AdversaryActionComboDataModel.defineSchema() }),
+        actions: new f.ArrayField(new f.SchemaField({ ...adversaryActionSchema() })),
+        combo: new f.SchemaField({ ...adversaryActionComboSchema() }),
         abilities: new f.ArrayField(
             new f.SchemaField({
                 name: new f.StringField({ required: true, initial: '' }),

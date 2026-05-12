@@ -1,5 +1,5 @@
-import { fields } from "../../../common/sharedSchemas"
-import { coinSchema } from "../../actor/attribute/CoinValue"
+import { fields } from "../../common/sharedSchemas"
+import { coinSchema } from "../../common/CoinValue"
 import HeroDataModel from "../../actor/HeroDataModel"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 

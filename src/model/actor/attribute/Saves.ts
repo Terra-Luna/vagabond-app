@@ -1,4 +1,4 @@
-import { fields, requiredInteger, standardInteger } from "../../../common/sharedSchemas"
+import { fields, requiredInteger, standardInteger } from "../../common/sharedSchemas"
 
 export const savesSchema = () => {
     return {
@@ -15,9 +15,4 @@ export const savesSchema = () => {
 }
 
 export type SavesSchema = ReturnType<typeof savesSchema>
-
-export default class SavesDataModel extends foundry.abstract.TypeDataModel<SavesSchema, any> {
-    static defineSchema() {
-        return savesSchema()
-    }
-}
+export type Saves = foundry.abstract.TypeDataModel<SavesSchema, any>

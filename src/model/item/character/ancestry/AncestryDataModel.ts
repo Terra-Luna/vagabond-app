@@ -1,4 +1,4 @@
-import { beingTypeOptions, beingSizeOptions, fields } from "../../../../common/sharedSchemas"
+import { beingTypeOptions, beingSizeOptions, fields } from "../../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../../ItemDataModel"
 import AncestryTraitDataModel from "./AncestryTraitDataModel"
 

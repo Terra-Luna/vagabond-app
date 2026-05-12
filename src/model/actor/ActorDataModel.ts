@@ -1,13 +1,13 @@
-import { beingSizeOptions, beingTypeOptions, fields } from "../../common/sharedSchemas"
-import ArmorDataModel from "./attribute/ArmorDataModel"
-import HealthDataModel from "./attribute/HealthDataModel"
-import SensesDataModel from "./attribute/SensesDataModel"
+import { beingSizeOptions, beingTypeOptions, fields } from "../common/sharedSchemas"
+import { armorSchema } from "./attribute/Armor"
+import { healthSchema } from "./attribute/Health"
+import { sensesSchema } from "./attribute/Senses"
 
 export const baseActorSchema = () => {
     return {
-        health: new fields.SchemaField({ ...HealthDataModel.defineSchema() }),
-        armor: new fields.SchemaField({ ...ArmorDataModel.defineSchema() }),
-        senses: new fields.SchemaField({ ...SensesDataModel.defineSchema() }),
+        health: new fields.SchemaField({ ...healthSchema() }),
+        armor: new fields.SchemaField({ ...armorSchema() }),
+        senses: new fields.SchemaField({ ...sensesSchema() }),
         size: new fields.StringField({ ...beingSizeOptions() }),
         beingType: new fields.StringField({ ...beingTypeOptions() })
     }

@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../../common/sharedSchemas"
+import { fields, requiredInteger } from "../../common/sharedSchemas"
 
 export const speedSchema = () => {
     return {
@@ -10,18 +10,9 @@ export const speedSchema = () => {
 }
 
 export type SpeedSchema = ReturnType<typeof speedSchema>
+export type Speed = foundry.abstract.TypeDataModel<SpeedSchema, any>
 
-export default class SpeedDataModel extends foundry.abstract.TypeDataModel<SpeedSchema, any> {
-    static defineSchema() {
-        return speedSchema()
-    }
-
-    async calculateSpeeds(dex: number) {
-        calculateSpeeds(dex, this)
-    }
-}
-
-export function calculateSpeeds(dex: number, speed: SpeedDataModel) {
+export function calculateSpeeds(dex: number, speed: Speed) {
     const bonus = Number(speed.bonus || 0)
     if (dex < 4) {
         speed.turn = 25 + bonus

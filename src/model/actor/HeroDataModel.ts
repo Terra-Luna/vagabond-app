@@ -1,27 +1,27 @@
-import { fields, requiredInteger } from "../../common/sharedSchemas"
+import { fields, requiredInteger } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/ancestry/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import EquipmentDataModel from "../item/equip/EquipmentDataModel"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import { coinSchema, CoinValue, consolidate } from "./attribute/CoinValue"
-import LevelDataModel from "./attribute/LevelDataModel"
-import ManaDataModel from "./attribute/ManaDataModel"
-import SavesDataModel from "./attribute/SavesDataModel"
-import SkillsDataModel from "./attribute/SkillsDataModel"
-import SpeedDataModel from "./attribute/SpeedDataModel"
-import StatsDataModel from "./attribute/StatsDataModel"
+import { coinSchema, CoinValue, consolidate } from "../common/CoinValue"
+import { levelSchema } from "./attribute/Level"
+import { statsSchema } from "./attribute/Stats"
+import { savesSchema } from "./attribute/Saves"
+import { calculateSpeeds, speedSchema } from "./attribute/Speed"
+import { calculateDifficulties, skillsSchema } from "./attribute/Skills"
+import { manaSchema } from "./attribute/Mana"
 
 const heroSchema = () => {
     return {
-        level: new fields.SchemaField({ ...LevelDataModel.defineSchema() }),
+        level: new fields.SchemaField({ ...levelSchema() }),
         ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
-        stats: new fields.SchemaField({ ...StatsDataModel.defineSchema() }),
-        saves: new fields.SchemaField({ ...SavesDataModel.defineSchema() }),
+        stats: new fields.SchemaField({ ...statsSchema() }),
+        saves: new fields.SchemaField({ ...savesSchema() }),
         fatigue: new fields.NumberField({ choices: [0, 1, 2, 3, 4, 5], initial: 0, max: 5 }),
-        speed: new fields.SchemaField({ ...SpeedDataModel.defineSchema() }),
-        skills: new fields.SchemaField({ ...SkillsDataModel.defineSchema() }),
-        mana: new fields.SchemaField({ ...ManaDataModel.defineSchema() }),
+        speed: new fields.SchemaField({ ...speedSchema() }),
+        skills: new fields.SchemaField({ ...skillsSchema() }),
+        mana: new fields.SchemaField({ ...manaSchema() }),
         inventory: new fields.SchemaField({
             coins: new fields.SchemaField({ ...coinSchema() }),
             occupiedSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
@@ -48,14 +48,17 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        
         this.deriveHealth()
         this.deriveSaves()
         this.deriveMana()
+        this.deriveSkillDifficulties()
+        this.deriveSpeed()
         this.deriveInventoryData()
-        
     }
 
+    /**
+     * MaxHP = Might x 2 + bonus, where bonus is the sum of all active effects of type 'system.health.bonus'.
+     */
     deriveHealth() {
         this.health.max = this.stats.might! * (this.level.current || 1) + this.health.bonus!
     }
@@ -75,15 +78,27 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     deriveMana() {
         if (typeof this.class.spellcastingData.castSkill !== null) {
-            this.mana.max = this.level.current || 0 * this.class.spellcastingData.manaMultiplier!
-            this.mana.maxCast = Math.ceil((this.level.current || 0) / 2) + Number(this.stats[this.class.spellcastingData.maxPerCastStat || 0])
+            this.mana.max = this.level.current! * this.class.spellcastingData.manaMultiplier!
+            this.mana.maxCast = Math.ceil((this.level.current!) / 2) + Number(this.stats[this.class.spellcastingData.maxPerCastStat!])
         }
     }
 
+    deriveSkillDifficulties() {
+        calculateDifficulties(this)
+    }
+
+    deriveSpeed() {
+        calculateSpeeds(this.stats.dexterity!, this.speed)
+    }
+
+    /**
+     * TODO: create some feedback on the UI for when fatigue is reducing max slots, maybe make it
+     *       red with some on-hover helper text?
+     */
     deriveInventoryData() {
         consolidate(this.inventory.coins as CoinValue)
         this.inventory.items.forEach((i) => this.inventory.occupiedSlots! += i.slots!)
-        this.inventory.maxSlots = Number(this.stats.might) + 8 + this.inventory.slotBonus!
+        this.inventory.maxSlots = Number(this.stats.might) + 8 + this.inventory.slotBonus! - this.fatigue
     }
 
 }

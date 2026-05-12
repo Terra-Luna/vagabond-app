@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../../common/sharedSchemas"
+import { fields, requiredInteger } from "../../common/sharedSchemas"
 
 export const healthSchema = () => {
     return {
@@ -10,9 +10,4 @@ export const healthSchema = () => {
 }
 
 export type HealthSchema = ReturnType<typeof healthSchema>
-
-export default class HealthDataModel extends foundry.abstract.TypeDataModel<HealthSchema, any> {
-    static defineSchema() {
-        return healthSchema()
-    }
-}
+export type Health = foundry.abstract.TypeDataModel<HealthSchema, any>

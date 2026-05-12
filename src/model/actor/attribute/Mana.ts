@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../../common/sharedSchemas"
+import { fields, requiredInteger } from "../../common/sharedSchemas"
 
 export const manaSchema = () => {
     return {
@@ -9,9 +9,4 @@ export const manaSchema = () => {
 }
 
 export type ManaSchema = ReturnType<typeof manaSchema>
-
-export default class ManaDataModel extends foundry.abstract.TypeDataModel<ManaSchema, any> {
-    static defineSchema() {
-        return manaSchema()
-    }
-}
+export type Mana = foundry.abstract.TypeDataModel<ManaSchema, any>

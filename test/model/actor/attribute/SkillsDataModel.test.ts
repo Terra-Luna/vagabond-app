@@ -1,7 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
-import { calculateSkill, calculateDifficulties } from "../../../../src/model/actor/attribute/SkillsDataModel"
+import { calculateSkill, calculateDifficulties } from "../../../../src/model/actor/attribute/Skills"
 import HeroDataModel from "../../../../src/model/actor/HeroDataModel"
-import SkillsDataModel from "../../../../src/model/actor/attribute/SkillsDataModel"
 
 describe('test basic skill calc', () => {
     test('test trained', () => {
@@ -21,25 +20,24 @@ describe('test basic skill calc', () => {
 describe('test hero skill check calcs', () => {
     test('hero skill mega test', () => {
         // Setup
-        const hero = { stats: { ...mockStats } } as unknown as HeroDataModel
-        const skills = { ...mockSkills } 
+        const hero = { stats: { ...mockStats }, skills: mockSkills } as unknown as HeroDataModel
         // Execute
-        calculateDifficulties(hero, skills as unknown as SkillsDataModel)
+        calculateDifficulties(hero)
         // Verify
-        expect(skills.brawl.value).toEqual(6)
-        expect(skills.finesse.value).toEqual(14)
-        expect(skills.melee.value).toEqual(13)
-        expect(skills.ranged.value).toEqual(15)
-        expect(skills.arcana.value).toEqual(16)
-        expect(skills.craft.value).toEqual(16)
-        expect(skills.detect.value).toEqual(15)
-        expect(skills.influence.value).toEqual(14)
-        expect(skills.leadership.value).toEqual(17)
-        expect(skills.medicine.value).toEqual(16)
-        expect(skills.mysticism.value).toEqual(15)
-        expect(skills.performance.value).toEqual(17)
-        expect(skills.sneak.value).toEqual(8)
-        expect(skills.survival.value).toEqual(15)
+        expect(hero.skills.brawl.value).toEqual(6)
+        expect(hero.skills.finesse.value).toEqual(14)
+        expect(hero.skills.melee.value).toEqual(13)
+        expect(hero.skills.ranged.value).toEqual(15)
+        expect(hero.skills.arcana.value).toEqual(16)
+        expect(hero.skills.craft.value).toEqual(16)
+        expect(hero.skills.detect.value).toEqual(15)
+        expect(hero.skills.influence.value).toEqual(14)
+        expect(hero.skills.leadership.value).toEqual(17)
+        expect(hero.skills.medicine.value).toEqual(16)
+        expect(hero.skills.mysticism.value).toEqual(15)
+        expect(hero.skills.performance.value).toEqual(17)
+        expect(hero.skills.sneak.value).toEqual(8)
+        expect(hero.skills.survival.value).toEqual(15)
     })
 })
 

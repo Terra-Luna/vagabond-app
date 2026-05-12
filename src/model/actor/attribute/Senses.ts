@@ -1,4 +1,4 @@
-import { fields } from "../../../common/sharedSchemas"
+import { fields } from "../../common/sharedSchemas"
 
 export const sensesSchema = () => {
     return {
@@ -12,9 +12,4 @@ export const sensesSchema = () => {
 }
 
 export type SensesSchema = ReturnType<typeof sensesSchema>
-
-export default class SensesDataModel extends foundry.abstract.TypeDataModel<SensesSchema, any> {
-    static defineSchema() {
-        return sensesSchema()
-    }
-}
+export type Senses = foundry.abstract.TypeDataModel<SensesSchema, any>

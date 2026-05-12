@@ -1,12 +1,12 @@
 import { describe, expect, test } from "@jest/globals"
-import SpeedDataModel, { calculateSpeeds } from "../../../../src/model/actor/attribute/SpeedDataModel"
+import { Speed, calculateSpeeds } from "../../../../src/model/actor/attribute/Speed"
 
 describe('test hero speed data', () => {
     test('slow hero', () => {
         // Setup
         const speed = { turn: 0, crawl: 0, travel: 0 }
         // Execute
-        calculateSpeeds(3, (speed as unknown as SpeedDataModel))
+        calculateSpeeds(3, (speed as unknown as Speed))
         //Verify
         expect(speed.turn).toEqual(25)
         expect(speed.crawl).toEqual(75)
@@ -16,7 +16,7 @@ describe('test hero speed data', () => {
         // Setup
         const speed = { turn: 0, crawl: 0, travel: 0 }
         // Execute
-        calculateSpeeds(5, (speed as unknown as SpeedDataModel))
+        calculateSpeeds(5, (speed as unknown as Speed))
         //Verify
         expect(speed.turn).toEqual(30)
         expect(speed.crawl).toEqual(90)
@@ -26,7 +26,7 @@ describe('test hero speed data', () => {
         // Setup
         const speed = { turn: 0, crawl: 0, travel: 0 }
         // Execute
-        calculateSpeeds(6, (speed as unknown as SpeedDataModel))
+        calculateSpeeds(6, (speed as unknown as Speed))
         //Verify
         expect(speed.turn).toEqual(35)
         expect(speed.crawl).toEqual(105)
@@ -36,7 +36,7 @@ describe('test hero speed data', () => {
         // Setup
         const speed = { turn: 0, crawl: 0, travel: 0, bonus: 5 }
         // Execute
-        calculateSpeeds(6, (speed as unknown as SpeedDataModel))
+        calculateSpeeds(6, (speed as unknown as Speed))
         //Verify
         expect(speed.turn).toEqual(40)
         expect(speed.crawl).toEqual(120)

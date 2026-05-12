@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import { CoinValue, consolidate } from "../../../../src/model/actor/attribute/CoinValue"
+import { CoinValue, consolidate } from "../../../src/model/common/CoinValue"
 
 describe('consolidate denominations', () => {
     test('consolidates correctly', () => {
