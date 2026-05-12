@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../foundryHelper"
+import { fields, rangeOptions, requiredInteger } from "../../../common/sharedSchemas"
 import WeaponDataModel from "../../item/equip/WeaponDataModel"
 
 /**
@@ -9,7 +9,7 @@ export const adversaryActionSchema = () => {
         name: new fields.StringField({ required: true, initial: '' }),
         weapon: new fields.SchemaField({ ...WeaponDataModel.defineSchema() }),
         damage: new fields.SchemaField({ roll: new fields.StringField({ required: true, initial: '1d4' }), avg: new fields.NumberField({ ...requiredInteger, initial: 2 }) }),
-        range: new fields.StringField({ required: false }),
+        range: new fields.StringField({ ...rangeOptions(), required: false }),
         area: new fields.StringField({ required: false }),
         save: new fields.StringField({ required: false }),
         effect: new fields.StringField({ required: false }),

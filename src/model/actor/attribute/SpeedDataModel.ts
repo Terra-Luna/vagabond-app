@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../foundryHelper"
+import { fields, requiredInteger } from "../../../common/sharedSchemas"
 
 export const speedSchema = () => {
     return {

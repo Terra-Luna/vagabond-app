@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../../foundryHelper"
+import { fields, requiredInteger } from "../../../common/sharedSchemas"
 
 const statProps = { integer: true, min: 2, max: 7, initial: 2 }
 

@@ -1,4 +1,4 @@
-import { fields, requiredString, standardInteger } from "../../../foundryHelper"
+import { fields, requiredString, standardInteger } from "../../../../common/sharedSchemas"
 import { skillChoices } from "./skillsTrainingSchema"
 
 export const featureSchema = () => {

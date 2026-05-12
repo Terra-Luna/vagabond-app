@@ -1,4 +1,4 @@
-import { fields } from "../foundryHelper"
+import { fields } from "../../common/sharedSchemas"
 
 const baseItemSchema = () => {
     return {

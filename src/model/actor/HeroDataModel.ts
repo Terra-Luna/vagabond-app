@@ -1,4 +1,4 @@
-import { fields } from "../foundryHelper"
+import { fields } from "../../common/sharedSchemas"
 import AncestryDataModel from "../item/character/ancestry/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import EquipmentDataModel from "../item/equip/EquipmentDataModel"

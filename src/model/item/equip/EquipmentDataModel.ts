@@ -1,6 +1,6 @@
+import { fields } from "../../../common/sharedSchemas"
 import WealthDataModel from "../../actor/attribute/WealthDataModel"
 import HeroDataModel from "../../actor/HeroDataModel"
-import { fields } from "../../foundryHelper"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const baseEquipmentSchema = () => {

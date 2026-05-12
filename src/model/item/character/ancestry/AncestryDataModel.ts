@@ -1,5 +1,4 @@
-import { beingSizeOptions, beingTypeOptions } from "../../../actor/attribute/beingTraitsSchema"
-import { fields } from "../../../foundryHelper"
+import { beingTypeOptions, beingSizeOptions, fields } from "../../../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../../ItemDataModel"
 import AncestryTraitDataModel from "./AncestryTraitDataModel"
 

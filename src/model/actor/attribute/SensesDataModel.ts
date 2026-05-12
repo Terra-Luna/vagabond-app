@@ -1,4 +1,4 @@
-import { fields } from "../../foundryHelper"
+import { fields } from "../../../common/sharedSchemas"
 
 export const sensesSchema = () => {
     return {

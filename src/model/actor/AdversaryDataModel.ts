@@ -1,6 +1,7 @@
+import { zonePreferences } from "../../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import AdversaryActionDataModel, { AdversaryActionComboDataModel } from "./attribute/AdversaryActionDataModel"
-import { zonePreferences } from "./attribute/beingTraitsSchema"
+
 
 const adversarySchema = () => {
     const f = foundry.data.fields

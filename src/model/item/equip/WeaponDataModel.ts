@@ -1,13 +1,11 @@
+import { fields, rangeOptions } from "../../../common/sharedSchemas"
 import HeroDataModel from "../../actor/HeroDataModel"
-import { fields } from "../../foundryHelper"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
     return {
-        range: new fields.StringField({
-            required: false, initial: 'close', choices: ['close', 'near', 'far'],
-        }),
+        range: new fields.StringField({ ...rangeOptions(), required: false }),
         damage1H: new fields.StringField({ required: false, initial: '1d4' }),
         damage2H: new fields.StringField({ required: false, initial: '1d4' }),
         grip: new fields.SchemaField({

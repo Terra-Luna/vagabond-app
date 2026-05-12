@@ -1,6 +1,5 @@
-import { fields } from "../foundryHelper"
+import { beingSizeOptions, beingTypeOptions, fields } from "../../common/sharedSchemas"
 import ArmorDataModel from "./attribute/ArmorDataModel"
-import { beingSizeOptions, beingTypeOptions } from "./attribute/beingTraitsSchema"
 import HealthDataModel from "./attribute/HealthDataModel"
 import SensesDataModel from "./attribute/SensesDataModel"
 
