@@ -1,4 +1,4 @@
-import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
+import { fields, optionalString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {

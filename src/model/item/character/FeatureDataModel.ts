@@ -1,4 +1,4 @@
-import { fields } from "../../foundryHelper"
+import { fields } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 export const featureSchema = () => {
