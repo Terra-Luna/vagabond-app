@@ -3,13 +3,13 @@ import { fields } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import { calculateMaxHP } from "./type/Health"
-import { calculateInventoryData, inventorySchema } from "./type/Inventory"
-import { levelSchema, calculateXpToNextLevel } from "./type/Level"
-import { calculateManaValues, manaSchema } from "./type/Mana"
-import { calculateSaves, savesSchema } from "./type/Saves"
-import { calculateDifficulties as calculateSkillDifficulties, skillsSchema } from "./type/Skills"
-import { calculateSpeeds, Speed, speedSchema } from "./type/Speed"
+import { setMaxHP } from "./type/Health"
+import { setInventoryData, inventorySchema } from "./type/Inventory"
+import { levelSchema, setXpToNextLevel } from "./type/Level"
+import { setManaValues, manaSchema } from "./type/Mana"
+import { setSaves, savesSchema } from "./type/Saves"
+import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
+import { setSpeeds, Speed, speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
 
 const heroSchema = () => {
@@ -40,13 +40,13 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        calculateXpToNextLevel(this)
-        calculateMaxHP(this)
-        calculateSaves(this)
-        calculateManaValues(this)
-        calculateSkillDifficulties(this)
-        calculateSpeeds(this)
-        calculateInventoryData(this)
+        setXpToNextLevel(this)
+        setMaxHP(this)
+        setSaves(this)
+        setManaValues(this)
+        setSkillDifficulties(this)
+        setSpeeds(this)
+        setInventoryData(this)
     }
 
 }

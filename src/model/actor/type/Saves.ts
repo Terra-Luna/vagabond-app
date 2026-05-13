@@ -18,7 +18,7 @@ export const savesSchema = () => {
 export type SavesSchema = ReturnType<typeof savesSchema>
 export type Saves = foundry.abstract.TypeDataModel<SavesSchema, any>
 
-export function calculateSaves(hero: HeroDataModel) {
+export function setSaves(hero: HeroDataModel) {
     const base = 20
     hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
     hero.saves.reflexBonus = 0

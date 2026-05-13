@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import HeroDataModel from "../../../../src/model/actor/HeroDataModel";
-import { calculateSaves } from "../../../../src/model/actor/type/Saves";
+import { setSaves } from "../../../../src/model/actor/type/Saves";
 
 describe('hero derived data tests', () => {
     test('test save calculations', () => {
@@ -10,7 +10,7 @@ describe('hero derived data tests', () => {
             saves: { endure: 20, reflex: 20, will: 20 }
         } 
         // Execute
-        calculateSaves(hero as unknown as HeroDataModel)
+        setSaves(hero as unknown as HeroDataModel)
         // Verify
         expect(hero.saves.endure).toEqual(10)
         expect(hero.saves.reflex).toEqual(11)

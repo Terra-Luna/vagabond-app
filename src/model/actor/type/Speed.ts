@@ -13,7 +13,7 @@ export const speedSchema = () => {
 export type SpeedSchema = ReturnType<typeof speedSchema>
 export type Speed = foundry.abstract.TypeDataModel<SpeedSchema, any>
 
-export function calculateSpeeds(hero: HeroDataModel) {
+export function setSpeeds(hero: HeroDataModel) {
     const dex = hero.stats.dexterity!
     const bonus = Number(hero.speed.bonus || 0)
     if (dex < 4) {

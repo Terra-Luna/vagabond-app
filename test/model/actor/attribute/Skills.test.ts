@@ -1,17 +1,17 @@
 import { describe, expect, test } from "@jest/globals"
-import { calculateSkill, calculateDifficulties } from "../../../../src/model/actor/type/Skills"
+import { setSkill, setDifficulties } from "../../../../src/model/actor/type/Skills"
 import HeroDataModel from "../../../../src/model/actor/HeroDataModel"
 
 describe('test basic skill calc', () => {
     test('test trained', () => {
         // Setup & Execute
-        const res = calculateSkill(3, true)
+        const res = setSkill(3, true)
         // Verify
         expect(res).toEqual(14)
     })
     test('test untrained', () => {
         // Setup & Execute
-        const res = calculateSkill(3, false)
+        const res = setSkill(3, false)
         // Verify
         expect(res).toEqual(17)
     })
@@ -22,7 +22,7 @@ describe('test hero skill check calcs', () => {
         // Setup
         const hero = { stats: { ...mockStats }, skills: mockSkills }
         // Execute
-        calculateDifficulties(hero as unknown as HeroDataModel)
+        setDifficulties(hero as unknown as HeroDataModel)
         // Verify
         expect(hero.skills.brawl.value).toEqual(6)
         expect(hero.skills.finesse.value).toEqual(14)

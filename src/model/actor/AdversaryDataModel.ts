@@ -42,11 +42,11 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
     override async prepareDerivedData() {
         super.prepareDerivedData()
         this.health.max = this.ancestry.beingSize?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice! * 4.5)
-        this.threatLevel = this.calculateThreatLevel()
+        this.threatLevel = this.setThreatLevel()
     }
 
-    calculateThreatLevel(): number {
-        return calculateThreatLevel(this)
+    setThreatLevel(): number {
+        return setThreatLevel(this)
     }
 }
 
@@ -57,7 +57,7 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
  *      c = Mean dmg-per-round / 6
  *      TL = (a + b) / 4 + c
  */
-export const calculateThreatLevel = (adv: AdversaryDataModel): number => {
+export const setThreatLevel = (adv: AdversaryDataModel): number => {
     var a = adv.armor.total! * 2
     var b = adv.health.max! / 10
     var c = 0
