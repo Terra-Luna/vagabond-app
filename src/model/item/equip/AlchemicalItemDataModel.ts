@@ -17,6 +17,7 @@ export default class AlchemicalItemDataModel extends EquipmentDataModel<Alchemic
         }
     }
 
+    override typeName: String = "Alchemical"
     override onEquip(hero: HeroDataModel) { }
     override onUse() { }
 }

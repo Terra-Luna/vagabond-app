@@ -19,4 +19,6 @@ export default class StarterPackDataModel<T extends StarterPackSchema> extends I
             ...starterPackSchema()
         }
     }
+
+    override typeName: String = "Starter"
 }

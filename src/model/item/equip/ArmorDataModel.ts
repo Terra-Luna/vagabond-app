@@ -25,9 +25,7 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
         this.baseArmor = { 'light': 1, 'medium': 2, 'heavy': 3 }[this.armorType || 0]
     }
 
-    override onEquip(hero: HeroDataModel) {
-        
-    }
-
+    override typeName: String = "Armor"
+    override onEquip(hero: HeroDataModel) { }
     override onUse() { }
 }

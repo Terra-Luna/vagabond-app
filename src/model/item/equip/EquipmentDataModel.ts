@@ -34,6 +34,7 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
         super.prepareDerivedData()
     }
 
+    abstract typeName: String
     abstract onEquip(hero: HeroDataModel)
     abstract onUse()
 }

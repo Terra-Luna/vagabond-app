@@ -7,7 +7,7 @@
     "foundry-linux": "node ~/Apps/FoundryVTT-Node/main.js",
     "vite-no": "pnpm vite --open 0",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
-    "clean": "echo Y | rmdir /s dist",
+    "clean-": "echo Y | rmdir /s dist && pnpm clean",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

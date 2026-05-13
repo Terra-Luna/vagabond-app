@@ -20,6 +20,7 @@ export default class GearDataModel<T extends ToolSchema> extends EquipmentDataMo
         }
     }
 
+    override typeName: String = "Tool"
     override onEquip(hero: HeroDataModel) { }
     override onUse() { }
 }

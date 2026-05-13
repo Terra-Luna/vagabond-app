@@ -1,4 +1,3 @@
-console.log("Preparing globals for testing...")
 global.foundry = {
     data: {
         fields: {

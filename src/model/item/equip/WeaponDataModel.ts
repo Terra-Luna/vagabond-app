@@ -41,6 +41,7 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         }
     }
 
+    override typeName: String = "Weapon"
     override onEquip(hero: HeroDataModel) { }
     override onUse() { }
 }
