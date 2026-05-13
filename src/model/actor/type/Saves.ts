@@ -1,4 +1,5 @@
 import { fields, requiredInteger, standardInteger } from "../../common/sharedSchemas"
+import HeroDataModel, { Hero } from "../HeroDataModel"
 
 export const savesSchema = () => {
     return {
@@ -16,3 +17,13 @@ export const savesSchema = () => {
 
 export type SavesSchema = ReturnType<typeof savesSchema>
 export type Saves = foundry.abstract.TypeDataModel<SavesSchema, any>
+
+export function calculateSaves(hero: HeroDataModel) {
+    const base = 20
+    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
+    hero.saves.reflexBonus = 0
+    hero.saves.endure = base - (hero.stats.might! * 2)
+    hero.saves.endureBonus = 0
+    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)
+    hero.saves.willBonus = 0
+}

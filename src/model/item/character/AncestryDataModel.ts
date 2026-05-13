@@ -1,6 +1,5 @@
-import { beingSizeOptions, beingTypeOptions, fields } from "../../../common/sharedSchemas"
-import ItemDataModel, { BaseItemSchema } from "../../ItemDataModel"
-import AncestryTraitDataModel from "./AncestryTraitDataModel"
+import { beingSizeOptions, beingTypeOptions, fields } from "../../common/sharedSchemas"
+import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const ancestrySchema = () => {
     return {
@@ -12,7 +11,7 @@ const ancestrySchema = () => {
          * extra perk, extra training, etc...
          */
         traits: new fields.ArrayField(
-            new fields.SchemaField({ ...AncestryTraitDataModel.defineSchema() })
+            new fields.SchemaField({})
         )
     }
 }

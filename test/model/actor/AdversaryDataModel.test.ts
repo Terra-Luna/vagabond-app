@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
-import AdversaryDataModel, { calculateThreatLevel } from "../../../src/model/actor/AdversaryDataModel"
-import { AdversaryAction } from "../../../src/model/actor/attribute/AdversaryAction"
+import { Adversary, calculateThreatLevel } from "../../../src/model/actor/AdversaryDataModel"
+import { AdversaryAction } from "../../../src/model/actor/type/AdversaryAction"
 
 describe('calculate threat level', () => {
     test('calculate tl with combo', () => {
@@ -13,7 +13,7 @@ describe('calculate threat level', () => {
             health: { max: 31 },
             armor: { total: 3 },
             combo: { actions: actions }
-        } as unknown as AdversaryDataModel
+        } as unknown as Adversary
         //Execute
         var tl = calculateThreatLevel(adv)
         //Verify
@@ -30,7 +30,7 @@ describe('calculate threat level', () => {
             health: { max: 31 },
             armor: { total: 3 },
             actions: actions
-        } as unknown as AdversaryDataModel
+        } as unknown as Adversary
         //Execute
         var tl = calculateThreatLevel(adv)
         //Verify
@@ -42,7 +42,7 @@ describe('calculate threat level', () => {
         const adv = {
             health: { max: 31 },
             armor: { total: 3 }
-        } as unknown as AdversaryDataModel
+        } as unknown as Adversary
         //Execute
         var tl = calculateThreatLevel(adv)
         //Verify

@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
-import { calculateSkill, calculateDifficulties } from "../../../../src/model/actor/attribute/Skills"
-import HeroDataModel from "../../../../src/model/actor/HeroDataModel"
+import { calculateSkill, calculateDifficulties } from "../../../../src/model/actor/type/Skills"
+import { Hero } from "../../../../src/model/actor/HeroDataModel"
 
 describe('test basic skill calc', () => {
     test('test trained', () => {
@@ -20,7 +20,7 @@ describe('test basic skill calc', () => {
 describe('test hero skill check calcs', () => {
     test('hero skill mega test', () => {
         // Setup
-        const hero = { stats: { ...mockStats }, skills: mockSkills } as unknown as HeroDataModel
+        const hero = { stats: { ...mockStats }, skills: mockSkills } as unknown as Hero
         // Execute
         calculateDifficulties(hero)
         // Verify

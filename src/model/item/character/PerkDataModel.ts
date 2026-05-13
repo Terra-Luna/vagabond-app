@@ -1,8 +1,9 @@
+import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {
     return {
-        
+        prerequisites: new fields.StringField({ ...optionalString }),
     }
 }
 

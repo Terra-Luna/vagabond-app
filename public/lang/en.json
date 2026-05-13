@@ -19,6 +19,16 @@
     }
   },
   "VGLITE": {
+    "Ranges": {
+      "close": "Close",
+      "near": "Near",
+      "far": "Far"
+    },
+    "Zones": {
+      "front": "Frontline",
+      "mid": "Midline",
+      "back": "Backline"
+    },
     "Sizes": {
       "small": "Small",
       "medium": "Medium",
@@ -28,150 +38,181 @@
       "colossal": "Colossal"
     },
     "BeingTypes": {
-      "Humanlike": "Humanlike",
-      "Fae": "Fae",
-      "Cryptid": "Cryptid",
-      "Artificials": "Artificials",
-      "Beasts": "Beasts",
-      "Outers": "Outers",
-      "Primordials": "Primordials",
-      "Undead": "Undead",
-      "Hellspawn": "Hellspawn"
+      "humanlike": "Humanlike",
+      "fae": "Fae",
+      "cryptid": "Cryptid",
+      "artificials": "Artificials",
+      "beasts": "Beasts",
+      "outers": "Outers",
+      "primordials": "Primordials",
+      "undead": "Undead",
+      "hellspawn": "Hellspawn"
     },
     "AncestryTypes": {
-      "Draken": "Draken",
-      "Dwarf": "Dwarf",
-      "Elf": "Elf",
-      "Gobin": "Goblin",
-      "Halfling": "Halfling",
-      "Human": "Human",
-      "Orc": "Orc"
+      "draken": "Draken",
+      "dwarf": "Dwarf",
+      "elf": "Elf",
+      "gobin": "Goblin",
+      "halfling": "Halfling",
+      "human": "Human",
+      "orc": "Orc"
     },
     "ClassTypes": {
-        "Alchemist": "Alchemist",
-        "Barbarian": "Barbarian",
-        "Bard": "Bard",
-        "Dancer": "Dancer",
-        "Druid": "Druid",
-        "Fighter": "Fighter",
-        "Gunslinger": "Gunslinger",
-        "Hunter": "Hunter",
-        "Luminary": "Luminary",
-        "Magus": "Magus",
-        "Merchant": "Merchant",
-        "Pugilist": "Revelator",
-        "Rogue": "Rogue",
-        "Sorcerer": "Sorcerer",
-        "Vanguard": "Vanguard",
-        "Witch": "Witch",
-        "Wizard": "Wizard"
+      "alchemist": "Alchemist",
+      "barbarian": "Barbarian",
+      "bard": "Bard",
+      "dancer": "Dancer",
+      "druid": "Druid",
+      "fighter": "Fighter",
+      "gunslinger": "Gunslinger",
+      "hunter": "Hunter",
+      "luminary": "Luminary",
+      "magus": "Magus",
+      "merchant": "Merchant",
+      "pugilist": "Pugilist",
+      "revelator": "Revelator",
+      "rogue": "Rogue",
+      "sorcerer": "Sorcerer",
+      "vanguard": "Vanguard",
+      "witch": "Witch",
+      "wizard": "Wizard"
     },
     "DamageTypes": {
-      "None": "-",
-      "Acid": "Acid",
-      "Fire": "Fire",
-      "Shock": "Shock",
-      "Poison": "Poison",
-      "Cold": "Cold",
-      "Blunt": "Blunt",
-      "Physical": "Physical",
-      "Necrotic": "Necrotic",
-      "Psychic": "Psychic",
-      "Magical": "Magical",
-      "Healing": "Healing",
-      "Recover": "Recover",
-      "Recharge": "Recharge",
-      "Slashing": "Slashing",
-      "Piercing": "Piercing"
+      "none": "-",
+      "acid": "Acid",
+      "blunt": "Blunt",
+      "cold": "Cold",
+      "fire": "Fire",
+      "healing": "Healing",
+      "magical": "Magical",
+      "necrotic": "Necrotic",
+      "physical": "Physical",
+      "piercing": "Piercing",
+      "poison": "Poison",
+      "psychic": "Psychic",
+      "shock": "Shock",
+      "slashing": "Slashing"
     },
     "StatusConditions": {
-      "Berserk": "Berserk",
-      "Blinded": "Blinded",
-      "Burning": "Burning",
-      "Charmed": "Charmed",
-      "Confused": "Confused",
-      "Dazed": "Dazed",
-      "Dead": "Dead",
-      "Fatigued": "Fatigued",
-      "Focusing": "Focusing",
-      "Frightened": "Frightened",
-      "Incapacitated": "Incapacitated",
-      "Invisible": "Invisible",
-      "Paralyzed": "Paralyzed",
-      "Prone": "Prone",
-      "Restrained": "Restrained",
-      "Grappling": "Grappling",
-      "Sickened": "Sickened",
-      "Suffocating": "Suffocating",
-      "Unconscious": "Unconscious",
-      "Vulnerable": "Vulnerable"
-    },
-    "StatusConditionDescriptions": {
-      "Berserk": "Can't take the Cast Action or Focus, it can’t be Frightened, and it doesn’t make Morale Checks.",
-      "Blinded": "Can't see and is Vulnerable.",
-      "Burning": "A die roll indicates damage it takes at the start of its turns, unless an appropriate action is taken to end it (such as dousing fire).",
-      "Charmed": "It can't willingly attack the charmer.",
-      "Confused": "Its Checks and SAves have Hinder, and Saves against its Actions have Favor.",
-      "Dazed": "It can't Focus or Move unless it uses an Action to do so.",
-      "Fatigued": "Fatigue is measured from 0 to 5 with the following rules: - Each Fatigue occupies an Item Slot. - At 3 or ore Fatigue, it can't Rush. - At 5 Fatigue, it dies.",
-      "Frightened": "It has a -2 penalty to damage it deals.",
-      "Incapacitated": "It can't Focus or use its Actions or Move, fails all Might and Dexterity Checks, and is Vulnerable.",
-      "Invisible": "It can't be seen by normal senses, and thos that can't see it act as Blinded for Checks and Saves involving it.",
-      "Paralyzed": "It is Incapacitated and its Speed is 0.",
-      "Prone": "You can either drop or stand from Prone by using 10' of Speed. While Prone: Speed cost is halved, it cannot Rush, and is Vulnerable for the purposes of Melee Attacks and Dodge Checks.",
-      "Restrained": "It is Vulnerable and its Speed is 0.",
-      "Sickened": "It has a -2 penalty to any healing it receives. Additional effects may be indicated by the cause of the Sickness.",
-      "Suffocating": "Beings begin Suffocating after not breathing for 1 Minute. Heroes: Each Round, while Suffocating, roll a d8. If the result is equal to or greater than your Might, gain 1 Fatigue. Enemies: Each Round, while Suffocating, gain 1 Fatigue.",
-      "Unconscious": "It is Blinded, Incapacitated, and Prone. Close Attacks Targeting it always Crit.",
-      "Vulnerable": "Its attacks and Saves against attacks have Hinder. Attacks targeting it and Saves against its attacks have Favor.",
-      "Grappling": "Physically causing a Target to be Restrained by using your body is Grappling. A Being that is physically restraining a Target has its Speed halved, unless the Target is smaller."
+      "berserk": {
+        "name": "Berserk",
+        "description": "Can't take the Cast Action or Focus, it can’t be Frightened, and it doesn’t make Morale Checks."
+      },
+      "blinded": {
+        "name": "Blinded",
+        "description": "Can't see and is Vulnerable."
+      },
+      "burning": {
+        "name": "Burning",
+        "description": "A die roll indicates damage it takes at the start of its turns, unless an appropriate action is taken to end it (such as dousing fire)."
+      },
+      "charmed": {
+        "name": "Charmed",
+        "description": "It can't willingly attack the charmer."
+      },
+      "confused": {
+        "name": "Confused",
+        "description": "Its Checks and SAves have Hinder, and Saves against its Actions have Favor."
+      },
+      "dazed": {
+        "name": "Dazed",
+        "description": "It can't Focus or Move unless it uses an Action to do so."
+      },
+      "fatigued": {
+        "name": "Fatigued",
+        "description": "Fatigue is measured from 0 to 5 with the following rules: - Each Fatigue occupies an Item Slot. - At 3 or ore Fatigue, it can't Rush. - At 5 Fatigue, it dies."
+      },
+      "frightened": {
+        "name": "Frightened",
+        "description": "It has a -2 penalty to damage it deals."
+      },
+      "grappling": {
+        "name": "Grappling",
+        "description": "Physically causing a Target to be Restrained by using your body is Grappling. A Being that is physically restraining a Target has its Speed halved, unless the Target is smaller."
+      },
+      "incapacitated": {
+        "name": "Incapacitated",
+        "description": "It can't Focus or use its Actions or Move, fails all Might and Dexterity Checks, and is Vulnerable."
+      },
+      "invisible": {
+        "name": "Invisible",
+        "description": "It can't be seen by normal senses, and thos that can't see it act as Blinded for Checks and Saves involving it."
+      },
+      "paralyzed": {
+        "name": "Paralyzed",
+        "description": "It is Incapacitated and its Speed is 0."
+      },
+      "prone": {
+        "name": "Prone",
+        "description": "You can either drop or stand from Prone by using 10' of Speed. While Prone: Speed cost is halved, it cannot Rush, and is Vulnerable for the purposes of Melee Attacks and Dodge Checks."
+      },
+      "restrained": {
+        "name": "Restrained",
+        "description": "It is Vulnerable and its Speed is 0."
+      },
+      "sickened": {
+        "name": "Sickened",
+        "description": "It has a -2 penalty to any healing it receives. Additional effects may be indicated by the cause of the Sickness."
+      },
+      "suffocating": {
+        "name": "Suffocating",
+        "description": "Beings begin Suffocating after not breathing for 1 Minute. Heroes: Each Round, while Suffocating, roll a d8. If the result is equal to or greater than your Might, gain 1 Fatigue. Enemies: Each Round, while Suffocating, gain 1 Fatigue."
+      },
+      "unconscious": {
+        "name": "Unconscious",
+        "description": "It is Blinded, Incapacitated, and Prone. Close Attacks Targeting it always Crit."
+      },
+      "vulnerable": {
+        "name": "Vulnerable",
+        "description": "Its attacks and Saves against attacks have Hinder. Attacks targeting it and Saves against its attacks have Favor."
+      }
     },
     "Wealth": {
-      "Gold": "Gold",
-      "Silver": "Silver",
-      "Copper": "Copper"
+      "g": "g",
+      "s": "s",
+      "c": "c"
     },
     "Stat": {
-      "Might": {
+      "might": {
         "long": "Might",
         "abbr": "MIT"
       },
-      "Dexterity": {
+      "dexterity": {
         "long": "Dexterity",
         "abbr": "DEX"
       },
-      "Awareness": {
+      "awareness": {
         "long": "Awareness",
         "abbr": "AWR"
       },
-      "Reason": {
+      "reason": {
         "long": "Reason",
         "abbr": "RSN"
       },
-      "Presence": {
+      "presence": {
         "long": "Presence",
         "abbr": "PRS"
       },
-      "Luck": {
+      "luck": {
         "long": "Luck",
         "abbr": "LUK"
       }
     },
     "Skills": {
-      "Arcana": "Arcana",
-      "Brawl": "Brawl",
-      "Craft": "Craft",
-      "Detect": "Detect",
-      "Finesse": "Finesse",
-      "Influence": "Influence",
-      "Leadership": "Leadership",
-      "Medicine": "Medicine",
-      "Mysticism": "Mysticism",
-      "Performance": "Performance",
-      "Sneak": "Sneak",
-      "Survival": "Survival",
-      "Melee": "Melee",
-      "Ranged": "Ranged"
+      "arcana": "Arcana",
+      "brawl": "Brawl",
+      "craft": "Craft",
+      "detect": "Detect",
+      "finesse": "Finesse",
+      "influence": "Influence",
+      "leadership": "Leadership",
+      "medicine": "Medicine",
+      "mysticism": "Mysticism",
+      "performance": "Performance",
+      "sneak": "Sneak",
+      "survival": "Survival",
+      "melee": "Melee",
+      "ranged": "Ranged"
     }
   }
 }

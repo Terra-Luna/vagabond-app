@@ -1,11 +1,11 @@
 import { fields } from "../../../common/sharedSchemas"
-import SpellDataModel from "../SpellDataModel"
+import SpellDataModel from "./SpellDataModel"
 
 export const spellcastingSchema = () => {
     return {
         // Skill used to make Cast Checks
         castSkill: new fields.StringField({ initial: null, nullable: true, required: false }),
-        // Max mana = [this] * level
+        // Max mana = multiplier * level
         manaMultiplier: new fields.NumberField({ integer: true, min: 0, initial: 0 }),
         // Max mana per cast = [this] + (level / 2), rounded up
         maxPerCastStat: new fields.StringField({ initial: '' }),
@@ -17,3 +17,6 @@ export const spellcastingSchema = () => {
         newSpellEvery: new fields.NumberField({ integer: true })
     }
 }
+
+export type SpellCastingSchema = ReturnType<typeof spellcastingSchema>
+export type SpellCasting = foundry.abstract.TypeDataModel<SpellCastingSchema, any>

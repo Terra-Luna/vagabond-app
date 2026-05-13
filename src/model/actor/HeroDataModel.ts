@@ -1,15 +1,15 @@
 import { CoinValue,consolidate } from "../common/CoinValue"
 import { fields } from "../common/sharedSchemas"
-import AncestryDataModel from "../item/character/ancestry/AncestryDataModel"
+import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import { inventorySchema } from "./attribute/Inventory"
-import { levelSchema } from "./attribute/Level"
-import { manaSchema } from "./attribute/Mana"
-import { savesSchema } from "./attribute/Saves"
-import { calculateDifficulties, skillsSchema } from "./attribute/Skills"
-import { calculateSpeeds, speedSchema } from "./attribute/Speed"
-import { statsSchema } from "./attribute/Stats"
+import { inventorySchema } from "./type/Inventory"
+import { levelSchema, xpToNextLevel } from "./type/Level"
+import { manaSchema } from "./type/Mana"
+import { calculateSaves, savesSchema } from "./type/Saves"
+import { calculateDifficulties, skillsSchema } from "./type/Skills"
+import { calculateSpeeds, Speed, speedSchema } from "./type/Speed"
+import { statsSchema } from "./type/Stats"
 
 const heroSchema = () => {
     return {
@@ -28,6 +28,7 @@ const heroSchema = () => {
 }
 
 export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
+export type Hero = HeroDataModel & HeroDataModelSchema
 
 export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     static defineSchema() {
@@ -40,7 +41,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     override async prepareDerivedData() {
         super.prepareDerivedData()
         this.deriveHealth()
-        this.deriveSaves()
+        calculateSaves(this)
         this.deriveMana()
         this.deriveSkillDifficulties()
         this.deriveSpeed()
@@ -52,19 +53,6 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
      */
     deriveHealth() {
         this.health.max = this.stats.might! * (this.level.current || 1) + this.health.bonus!
-    }
-
-    /**
-     * TODO: hook up the bonuses to a UI component on the hero sheet, maybe some +/- buttons?
-     */
-    deriveSaves() {
-        const base = 20
-        this.saves.reflex = base - this.stats.dexterity! + this.stats.awareness!
-        this.saves.reflexBonus = 0
-        this.saves.endure = base - this.stats.might! * 2
-        this.saves.endureBonus = 0
-        this.saves.will = base - this.stats.reason! + this.stats.presence!
-        this.saves.willBonus = 0
     }
 
     deriveMana() {
@@ -79,7 +67,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     deriveSpeed() {
-        calculateSpeeds(this.stats.dexterity!, this.speed) // <-- surely, this is fine
+        calculateSpeeds(this.stats.dexterity!, this.speed as Speed)
     }
 
     /**
@@ -90,6 +78,10 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         consolidate(this.inventory.coins as CoinValue)
         this.inventory.items.forEach((i) => this.inventory.occupiedSlots! += i.slots!)
         this.inventory.maxSlots = Number(this.stats.might) + 8 + this.inventory.slotBonus! - this.fatigue
+    }
+
+    deriveXpToNextLevel() {
+        this.level.xpToLevel = xpToNextLevel(this.level.current!)
     }
 
 }
