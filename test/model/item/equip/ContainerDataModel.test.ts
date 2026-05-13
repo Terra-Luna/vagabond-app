@@ -29,6 +29,22 @@ describe('test contaianer properties', () => {
         expect(container.emptySlots).toEqual(-1)
     })
 
+    test('add item up to max capacity', () => {
+        //Setup
+        const container = {
+            size: 3, items: [{ slots: 1 }, { slots: 1 }],
+            emptySlots: 1
+        }
+        const item = { slots: 1 }
+        //Execute
+        addItem(
+            container as unknown as ContainerDataModel,
+            item as unknown as EquipmentDataModel<EquipmentSchema>
+        )
+        //  & Verify
+        expect(container.items.length).toEqual(3)
+    })
+
     test('add item throws error if no space', () => {
         //Setup
         const container = {
