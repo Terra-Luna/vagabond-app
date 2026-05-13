@@ -25,7 +25,7 @@ describe('test contaianer properties', () => {
         }
         //Execute
         setEmptySlots(container as unknown as ContainerDataModel)
-        // Verify
+        //Verify
         expect(container.emptySlots).toEqual(-1)
     })
 
@@ -41,7 +41,7 @@ describe('test contaianer properties', () => {
             container as unknown as ContainerDataModel,
             item as unknown as EquipmentDataModel<EquipmentSchema>
         )
-        //  & Verify
+        //Verify
         expect(container.items.length).toEqual(3)
     })
 
