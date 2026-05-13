@@ -8,7 +8,9 @@ export default class VgLiteActiveEffect extends ActiveEffect {
         return {
             'system.health.bonus': 'Max HP bonus',
             'system.health.mana.max': 'Max Mana bonus',
-            'system.inventory.slotBonus': 'Inventory slot bonus'
+            'system.inventory.slotBonus': 'Inventory slot bonus',
+            'system.armor.bonus': 'Armor bonus',
+            'system.speed.bonus': 'Speed bonus'
         }
     }
 }

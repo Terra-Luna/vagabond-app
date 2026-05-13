@@ -215,6 +215,79 @@
       "survival": "Survival",
       "melee": "Melee",
       "ranged": "Ranged"
+    },
+    "WeaponProps": {
+      "brawl": {
+        "name": "Brawl",
+        "description": "Attacks with Brawl can Grapple or Shove."
+      },
+      "brutal": {
+        "name": "Brutal",
+        "description": "Crits deal 1 extra damage die."
+      },
+      "cleave": {
+        "name": "Cleave",
+        "description": "Can deal half damage to two Targets."
+      },
+      "entangle": {
+        "name": "Entangle",
+        "description": "Can Grapple"
+      },
+      "finesse": {
+        "name": "Finesse",
+        "description": "Can attack with Finesse."
+      },
+      "keen": {
+        "name": "Keen",
+        "description": "Attack Checks crit on 1 lower value."
+      },
+      "long": {
+        "name": "Long",
+        "description": "Its Range is 5' further."
+      },
+      "near": {
+        "name": "Near",
+        "description": "Can only target up to near."
+      },
+      "ranged": {
+        "name": "Ranged",
+        "description": "Attacks with Ranged. Attacking a Close Target Hinders the Check."
+      },
+      "shield": {
+        "name": "Shield",
+        "description": "Ignores Hinder from Blocking Ranged Attacks. Can Shove."
+      },
+      "thrown": {
+        "name": "Thrown",
+        "description": "Can be thrown to attack up to Near, or Far with Hinder."
+      }
+    },
+    "Metals": {
+      "adamant": {
+        "name": "Adamant",
+        "description": "Occupies +1 Slot. +1 to Armor (if Armor) or Weapon damage (if Weapon).",
+        "valueMultiplier": 50
+      },
+      "coldiron": {
+        "name": "Cold Iron",
+        "description": "Situational weakness (Fae).",
+        "valueMultiplier": 20
+      },
+      "silver": {
+        "name": "Silver",
+        "description": "Blesses Weapons against the accursed.",
+        "valueMultiplier": 10
+      },
+      "mythral": {
+        "name": "Mythral",
+        "description": "Occupiese 1 fewer Slot (min 1).",
+        "valueMultiplier": 50
+      },
+      "orichalcum": {
+        "name": "Orichalcum",
+        "description": "Armor reduces Cast damage.",
+        "valueMultiplier": 50
+      }
     }
   }
 }

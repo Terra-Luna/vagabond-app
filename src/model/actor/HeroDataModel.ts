@@ -1,4 +1,4 @@
-import { fields } from "../common/sharedSchemas"
+import { fields, requiredInteger } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
@@ -18,11 +18,12 @@ const heroSchema = () => {
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
         stats: new fields.SchemaField({ ...statsSchema() }),
         saves: new fields.SchemaField({ ...savesSchema() }),
-        fatigue: new fields.NumberField({ choices: [0, 1, 2, 3, 4, 5], initial: 0, max: 5 }),
         speed: new fields.SchemaField({ ...speedSchema() }),
         skills: new fields.SchemaField({ ...skillsSchema() }),
         mana: new fields.SchemaField({ ...manaSchema() }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
+        studied: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        fatigue: new fields.NumberField({ choices: [0, 1, 2, 3, 4, 5], initial: 0, max: 5 }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 })
     }
 }
@@ -46,6 +47,17 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSkillDifficulties(this)
         setSpeeds(this)
         setInventoryData(this)
+    }
+
+    async updateStudied(changeBy: number) {
+        this.studied! += changeBy
+    }
+
+    async updateFatigue(changeBy: number) {
+        this.fatigue += changeBy
+        if (this.fatigue == 5) {
+            this.health.current = 0
+        }
     }
 
 }

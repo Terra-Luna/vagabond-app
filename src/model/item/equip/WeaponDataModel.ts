@@ -1,5 +1,5 @@
 import HeroDataModel from "../../actor/HeroDataModel"
-import { fields, rangeOptions } from "../../common/sharedSchemas"
+import { fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
@@ -18,13 +18,17 @@ const weaponSchema = () => {
             new fields.StringField({ initial: '', required: true }), { initial: ['melee'] }
         ),
         properties: new fields.ArrayField(
-            new fields.StringField({ required: true, blank: false }),
+            new fields.SchemaField({
+                name: new fields.StringField({ ...requiredString }),
+                description: new fields.StringField({ ...requiredString })
+            }),
             { initial: [] }
         ),
         explodeData: new fields.SchemaField({
             canExplode: new fields.BooleanField({ initial: false }),
             explodesOn: new fields.ArrayField(
-                new fields.NumberField({ integer: true, initial: 0, required: false }), { initial: [] }
+                new fields.NumberField({ integer: true, initial: 0, required: false }),
+                { initial: [] }
             )
         }),
         isCrude: new fields.BooleanField({ initial: false })
