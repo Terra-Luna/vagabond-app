@@ -6,13 +6,15 @@ import ArmorDataModel from "./model/item/equip/ArmorDataModel"
 import WeaponDataModel from "./model/item/equip/WeaponDataModel"
 import SundryDataModel from "./model/item/equip/SundryDataModel"
 import AncestryDataModel from "./model/item/character/AncestryDataModel"
-import SpellDataModel from "./model/item/character/type/SpellDataModel"
+import SpellDataModel from "./model/item/character/SpellDataModel"
 import PerkDataModel from "./model/item/character/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
-import GearDataModel from "./model/item/equip/GearDataModel"
+import ToolDataModel from "./model/item/equip/ToolDataModel"
 import VagabondLiteHeroSheet from "./view/sheets/VagabondLiteHeroSheet"
 
 import '../styles/vagabond-lite.css'
+import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
+import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 
 Hooks.once("init", () => {
     Object.assign(
@@ -21,11 +23,13 @@ Hooks.once("init", () => {
         CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.npc = NpcDataModel,
         // Items
+        CONFIG.Item.dataModels.container = ContainerDataModel,
         CONFIG.Item.dataModels.armor = ArmorDataModel,
         CONFIG.Item.dataModels.weapon = WeaponDataModel,
         CONFIG.Item.dataModels.alchemical = AlchemicalItemDataModel,
-        CONFIG.Item.dataModels.gear = GearDataModel,
+        CONFIG.Item.dataModels.tool = ToolDataModel,
         CONFIG.Item.dataModels.sundry = SundryDataModel,
+        CONFIG.Item.dataModels.starterPack = StarterPackDataModel,
         CONFIG.Item.dataModels.ancestry = AncestryDataModel,
         CONFIG.Item.dataModels.class = ClassDataModel,
         CONFIG.Item.dataModels.perk = PerkDataModel,

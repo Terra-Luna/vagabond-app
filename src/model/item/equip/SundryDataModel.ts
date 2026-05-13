@@ -1,6 +1,10 @@
 import HeroDataModel from "../../actor/HeroDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
+/**
+ * Random items with no discrete use-case.
+ * Eg.: magnifying glass, compass, books...
+ */
 const sundrySchema = () => {
     return {
 

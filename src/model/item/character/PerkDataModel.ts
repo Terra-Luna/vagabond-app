@@ -4,6 +4,10 @@ import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 const perkSchema = () => {
     return {
         prerequisites: new fields.StringField({ ...optionalString }),
+        type: new fields.StringField({
+            choices: ['-', 'Skill training', 'Stat increase', 'Spell slot'],
+            initial: '-'
+        })
     }
 }
 

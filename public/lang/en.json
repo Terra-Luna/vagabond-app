@@ -10,12 +10,14 @@
         "class": "Class",
         "perk": "Perk",
         "spell": "Spell",
+        "container": "Container",
         "equipment": "Equipment",
         "armor": "Armor",
         "weapon": "Weapon",
-        "alchemical": "Alchemical Item",
-        "gear": "Gear",
-        "sundry": "Sundry"
+        "alchemical": "Alchemical",
+        "tool": "Tool",
+        "sundry": "Sundry",
+        "starter": "Starter pack"
     }
   },
   "VGLITE": {

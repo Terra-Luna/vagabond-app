@@ -1,19 +1,22 @@
 import HeroDataModel from "../../actor/HeroDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
-const gearSchema = () => {
+/**
+ * Anything a Hero can equip that isn't a weapon or armor.
+ */
+const toolSchema = () => {
     return {
 
     }
 }
 
-export type GearSchema = ReturnType<typeof gearSchema> & EquipmentSchema
+export type ToolSchema = ReturnType<typeof toolSchema> & EquipmentSchema
 
-export default class GearDataModel<T extends GearSchema> extends EquipmentDataModel<T> {
+export default class GearDataModel<T extends ToolSchema> extends EquipmentDataModel<T> {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            ...gearSchema()
+            ...toolSchema()
         }
     }
 

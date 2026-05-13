@@ -3,6 +3,10 @@ import { coinSchema } from "../../common/CoinValue"
 import { fields } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
+/**
+ * Anything a hero can have in their inventory.
+ * Subtypes: Armor, Weapon, Alchemical, Tool, Sundry
+ */
 const baseEquipmentSchema = () => {
     return {
         value: new fields.SchemaField({ ...coinSchema() }),
