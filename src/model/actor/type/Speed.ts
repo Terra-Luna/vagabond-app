@@ -1,4 +1,5 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
+import HeroDataModel from "../HeroDataModel"
 
 export const speedSchema = () => {
     return {
@@ -12,21 +13,22 @@ export const speedSchema = () => {
 export type SpeedSchema = ReturnType<typeof speedSchema>
 export type Speed = foundry.abstract.TypeDataModel<SpeedSchema, any>
 
-export function calculateSpeeds(dex: number, speed: Speed) {
-    const bonus = Number(speed.bonus || 0)
+export function calculateSpeeds(hero: HeroDataModel) {
+    const dex = hero.stats.dexterity!
+    const bonus = Number(hero.speed.bonus || 0)
     if (dex < 4) {
-        speed.turn = 25 + bonus
-        speed.crawl = (25 + bonus) * 3
-        speed.travel = 5
+        hero.speed.turn = 25 + bonus
+        hero.speed.crawl = (25 + bonus) * 3
+        hero.speed.travel = 5
     }
     else if (dex < 6) {
-        speed.turn = 30 + bonus
-        speed.crawl = (30 + bonus) * 3
-        speed.travel = 6
+        hero.speed.turn = 30 + bonus
+        hero.speed.crawl = (30 + bonus) * 3
+        hero.speed.travel = 6
     }
     else {
-        speed.turn = 35 + bonus
-        speed.crawl = (35 + bonus) * 3
-        speed.travel = 7
+        hero.speed.turn = 35 + bonus
+        hero.speed.crawl = (35 + bonus) * 3
+        hero.speed.travel = 7
     }
 }

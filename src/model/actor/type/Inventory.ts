@@ -1,6 +1,7 @@
-import { coinSchema } from "../../common/CoinValue"
+import { coinSchema, CoinValue, consolidate } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import EquipmentDataModel from "../../item/equip/EquipmentDataModel"
+import HeroDataModel from "../HeroDataModel"
 
 export const inventorySchema = () => {
     return {
@@ -17,3 +18,9 @@ export const inventorySchema = () => {
 
 export type InventorySchema = ReturnType<typeof inventorySchema>
 export type Inventory = foundry.abstract.TypeDataModel<InventorySchema, any>
+
+export function calculateInventoryData(hero: HeroDataModel) {
+    consolidate(hero.inventory.coins as CoinValue)
+    hero.inventory.items.forEach((i) => hero.inventory.occupiedSlots! += i.slots!)
+    hero.inventory.maxSlots = Number(hero.stats.might) + 8 + hero.inventory.slotBonus! - hero.fatigue
+}

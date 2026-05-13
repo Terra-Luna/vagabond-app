@@ -1,4 +1,5 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
+import HeroDataModel, { Hero } from "../HeroDataModel"
 
 export const healthSchema = () => {
     return {
@@ -11,3 +12,7 @@ export const healthSchema = () => {
 
 export type HealthSchema = ReturnType<typeof healthSchema>
 export type Health = foundry.abstract.TypeDataModel<HealthSchema, any>
+
+export function calculateMaxHP(hero: HeroDataModel) {
+    hero.health.max = hero.stats.might! * (hero.level.current || 1) + hero.health.bonus!
+}

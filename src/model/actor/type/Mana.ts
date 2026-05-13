@@ -1,4 +1,5 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
+import HeroDataModel from "../HeroDataModel"
 
 export const manaSchema = () => {
     return {
@@ -10,3 +11,10 @@ export const manaSchema = () => {
 
 export type ManaSchema = ReturnType<typeof manaSchema>
 export type Mana = foundry.abstract.TypeDataModel<ManaSchema, any>
+
+export function calculateManaValues(hero: HeroDataModel) {
+    if (typeof hero.class.spellcastingData.castSkill !== null) {
+        hero.mana.max = hero.level.current! * hero.class.spellcastingData.manaMultiplier!
+        hero.mana.maxCast = Math.ceil((hero.level.current!) / 2) + Number(hero.stats[hero.class.spellcastingData.maxPerCastStat!])
+    }
+}
