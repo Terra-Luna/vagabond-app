@@ -1,5 +1,5 @@
 import { fields, requiredInteger, standardInteger } from "../../common/sharedSchemas"
-import HeroDataModel, { Hero } from "../HeroDataModel"
+import HeroDataModel from "../HeroDataModel"
 
 export const savesSchema = () => {
     return {

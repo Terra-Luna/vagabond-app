@@ -29,7 +29,6 @@ const heroSchema = () => {
 }
 
 export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
-export type Hero = HeroDataModel & HeroDataModelSchema
 
 export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     static defineSchema() {

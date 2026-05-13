@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 import { calculateSkill, calculateDifficulties } from "../../../../src/model/actor/type/Skills"
-import { Hero } from "../../../../src/model/actor/HeroDataModel"
+import HeroDataModel from "../../../../src/model/actor/HeroDataModel"
 
 describe('test basic skill calc', () => {
     test('test trained', () => {
@@ -20,9 +20,9 @@ describe('test basic skill calc', () => {
 describe('test hero skill check calcs', () => {
     test('hero skill mega test', () => {
         // Setup
-        const hero = { stats: { ...mockStats }, skills: mockSkills } as unknown as Hero
+        const hero = { stats: { ...mockStats }, skills: mockSkills }
         // Execute
-        calculateDifficulties(hero)
+        calculateDifficulties(hero as unknown as HeroDataModel)
         // Verify
         expect(hero.skills.brawl.value).toEqual(6)
         expect(hero.skills.finesse.value).toEqual(14)

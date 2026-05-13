@@ -1,5 +1,5 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import HeroDataModel, { Hero } from "../HeroDataModel"
+import HeroDataModel from "../HeroDataModel"
 
 export const healthSchema = () => {
     return {

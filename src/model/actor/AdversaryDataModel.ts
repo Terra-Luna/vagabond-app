@@ -30,7 +30,6 @@ const adversarySchema = () => {
 }
 
 export type AdversarySchema = ReturnType<typeof adversarySchema> & BaseActorSchema
-export type Adversary = AdversaryDataModel & AdversarySchema
 
 export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
     static defineSchema() {
