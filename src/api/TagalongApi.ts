@@ -1,4 +1,4 @@
-export interface TagalongHero {
+interface TagalongHero {
     character: {
         name: string,
         ancestry: string,
@@ -6,17 +6,21 @@ export interface TagalongHero {
         xp: number,
         trained_skills: string[],
         statArray: number[]
-    }
+    },
+    derived: {}
+    /**
+     * TODO: finish mapping this response schema
+     */
 }
 
-const tagalongAPI: string = 'https://www.vgbnd.app/api/characters/'
+const tagalongApi: string = 'https://www.vgbnd.app/api/characters/'
 
 export async function fetchHero(url: URL): Promise<TagalongHero> {
     const headers: Headers = new Headers()
     headers.set('Content-Type', 'application/json')
     headers.set('Accept', 'application/json')
     
-    const requestUrl = `${tagalongAPI}${parseHeroId(url)}`
+    const requestUrl = `${tagalongApi}${parseHeroId(url)}`
     console.log("Calling Tagalong API:", requestUrl)
     const request: RequestInfo = new Request(requestUrl, {
         method: 'GET',
