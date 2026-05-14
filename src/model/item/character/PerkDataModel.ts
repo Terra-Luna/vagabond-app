@@ -1,13 +1,14 @@
-import { fields, optionalString } from "../../common/sharedSchemas"
+import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {
     return {
-        prerequisites: new fields.StringField({ ...optionalString }),
-        type: new fields.StringField({
-            choices: ['-', 'Skill training', 'Stat increase', 'Spell slot'],
-            initial: '-'
-        })
+        prerequisites: new fields.ArrayField(
+            new fields.SchemaField({
+                type: new fields.StringField({ choices: ['stat', 'training', 'spell'] }),
+                value: new fields.StringField({ ...requiredString })
+            })
+        )
     }
 }
 

@@ -1,18 +1,15 @@
+import { sensesSchema } from "../../actor/type/Senses"
 import { beingSizeOptions, beingTypeOptions, fields } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import { skillsTrainingSchema } from "./type/SkillsTraining"
 
 const ancestrySchema = () => {
     return {
+        senses: new fields.ArrayField(new fields.SchemaField({ ...sensesSchema() }), { initial: [] }),
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() }),
-        
-        /**
-         * Bonuses granted by the selected ancestry such as: +1 stat,
-         * extra perk, extra training, etc...
-         */
-        traits: new fields.ArrayField(
-            new fields.SchemaField({})
-        )
+        // Training this ancestry gets at hero creation.
+        training: new fields.SchemaField({ ...skillsTrainingSchema() })
     }
 }
 

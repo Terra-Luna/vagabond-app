@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+
+@font-face {
+    font-family: "Eskapade";
+    src: url("../assets/fonts/eskapade-black.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Eskapade";
+    src: url("../assets/fonts/eskapade-regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Germania";
+    src: url("../assets/fonts/germania-one-regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Ludlow";
+    src: url("../assets/fonts/ludlow-regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Manofa";
+    src: url("../assets/fonts/manofa-bold.otf") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Paradigm";
+    src: url("../assets/fonts/paradigm-regular.otf") format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Paradigm";
+    src: url("../assets/fonts/paradigm-bold.otf") format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Paradigm";
+    src: url("../assets/fonts/paradigm-italic.otf") format("opentype");
+    font-weight: normal;
+    font-style: italic;
+}

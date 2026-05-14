@@ -46,7 +46,6 @@ export function setEmptySlots(container: ContainerDataModel) {
  * Writing rules for placing containers within containers seems messy, let's just not.
  */
 export function addItem(container: ContainerDataModel, item: EquipmentDataModel<EquipmentSchema>, allowContainerNesting: boolean = false) {
-    console.log("Item typeName =", item.typeName)
     if (allowContainerNesting || item.typeName != "Container") {
         if (container.emptySlots! >= item.slots!) {
             container.items.push(item)

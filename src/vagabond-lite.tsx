@@ -12,7 +12,7 @@ import NpcDataModel from "./model/actor/NpcDataModel"
 import ToolDataModel from "./model/item/equip/ToolDataModel"
 import VagabondLiteHeroSheet from "./view/sheets/hero/VagabondLiteHeroSheet"
 
-import '../styles/vagabond-lite.css'
+import '../public/styles/vagabond-lite.css'
 import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
 import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 

@@ -1,19 +1,21 @@
-import { fields } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
-export const featureSchema = () => {
+export const classFeatureSchema = () => {
     return {
-        x: new fields.StringField()
+        /**
+         * This can just be a name and desription til we figure out how to add
+         * bonuses like stat increases or extra trainings.
+         */
     }
 }
 
-export type FeatureSchema = ReturnType<typeof featureSchema> & BaseItemSchema
+export type ClassFeatureSchema = ReturnType<typeof classFeatureSchema> & BaseItemSchema
 
-export default class FeatureDataModel<T extends FeatureSchema> extends ItemDataModel<T> {
+export default class ClassFeatureDataModel<T extends ClassFeatureSchema> extends ItemDataModel<T> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),
-            ...featureSchema()
+            ...classFeatureSchema()
         }
     }
 

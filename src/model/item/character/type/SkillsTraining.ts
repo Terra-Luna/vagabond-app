@@ -5,12 +5,10 @@ export const skillsTrainingSchema = () => {
     return {
         // Skills they get at character creation
         innate: new fields.ArrayField(new fields.SchemaField({ ...skillSchema() })),
-        // Extra pool of skills they get to choose to train
+        // Extra pool of skills they get to choose to train, leave blank for unrestricted.
         trainingOptions: new fields.ArrayField(new fields.SchemaField({ ...skillSchema() })),
         // How many skills they get to train from the 'options' pool
-        trainings: new fields.NumberField({ ...standardInteger }),
-        // How many skills they may train from the whole list
-        unrestrictedTrainings: new fields.NumberField({ ...standardInteger })
+        trainings: new fields.NumberField({ ...standardInteger })
     }
 }
 

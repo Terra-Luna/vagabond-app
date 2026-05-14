@@ -9,7 +9,7 @@ export const baseActorSchema = () => {
         health: new fields.SchemaField({ ...healthSchema() }),
         armor: new fields.SchemaField({ ...armorSchema() }),
         ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
-        senses: new fields.SchemaField({ ...sensesSchema() })
+        senses: new fields.ArrayField(new fields.SchemaField({ ...sensesSchema() }), { initial: [] })
     }
 }
 

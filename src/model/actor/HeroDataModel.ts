@@ -1,12 +1,14 @@
 import { fields, requiredInteger } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
+import { setSpellcastingData } from "../item/character/type/SpellCasting"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { setMaxHP } from "./type/Health"
 import { inventorySchema,setInventoryData } from "./type/Inventory"
 import { levelSchema, setXpToNextLevel } from "./type/Level"
 import { manaSchema,setManaValues } from "./type/Mana"
 import { savesSchema,setSaves } from "./type/Saves"
+import { setSenses } from "./type/Senses"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, Speed, speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
@@ -47,6 +49,8 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSkillDifficulties(this)
         setSpeeds(this)
         setInventoryData(this)
+        setSenses(this)
+        setSpellcastingData(this)
     }
 
     async updateStudied(changeBy: number) {

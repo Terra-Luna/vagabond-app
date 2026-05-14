@@ -1,15 +1,20 @@
-import { fields } from "../../common/sharedSchemas"
+import { fields, requiredString } from "../../common/sharedSchemas"
+import HeroDataModel from "../HeroDataModel"
 
 export const sensesSchema = () => {
     return {
-        allsight: new fields.BooleanField({ initial: false }),
-        blindsight: new fields.BooleanField({ initial: false }),
-        darksight: new fields.BooleanField({ initial: false }),
-        echolocation: new fields.BooleanField({ initial: false }),
-        seismicsense: new fields.BooleanField({ initial: false }),
-        telepathy: new fields.BooleanField({ initial: false })
+        name: new fields.StringField({ ...requiredString }),
+        description: new fields.StringField({ ...requiredString })
     }
 }
 
 export type SensesSchema = ReturnType<typeof sensesSchema>
 export type Senses = foundry.abstract.TypeDataModel<SensesSchema, any>
+
+export function setSenses(hero: HeroDataModel) {
+    hero.ancestry.senses.forEach(s => {
+        if (!hero.senses.map(it => it.name).includes(s.name)) {
+            hero.senses.push({ name: s.name, description: s.description })
+        }
+    })
+}

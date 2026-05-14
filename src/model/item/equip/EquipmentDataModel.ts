@@ -1,6 +1,6 @@
 import HeroDataModel from "../../actor/HeroDataModel"
 import { coinSchema } from "../../common/CoinValue"
-import { fields } from "../../common/sharedSchemas"
+import { fields, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 /**
@@ -12,6 +12,7 @@ const baseEquipmentSchema = () => {
         value: new fields.SchemaField({ ...coinSchema() }),
         slots: new fields.NumberField({ integer: true, min: 0, max: 4 }),
         isEquipped: new fields.BooleanField({ initial: false }),
+        category: new fields.StringField({ ...requiredString }),
         relicData: new fields.SchemaField({
             isRelic: new fields.BooleanField({ initial: false }),
             requiresBind: new fields.BooleanField({ initial: false }),

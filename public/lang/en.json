@@ -39,6 +39,32 @@
       "giant": "Giant",
       "colossal": "Colossal"
     },
+    "Senses": {
+      "allsight": {
+        "name": "Allsight",
+        "description": "Isn't foold by illusions or invisibility."
+      },
+      "blindsight": {
+        "name": "Blindsight",
+        "description": "Can see even if Blinded."
+      },
+      "darksight": {
+        "name": "Darksight",
+        "description": "Can see in darkness."
+      },
+      "echolocation": {
+        "name": "Echolocation",
+        "description": "Can see by hearing."
+      },
+      "seismicsense": {
+        "name": "Seismicsense",
+        "description": "Can see anything touching ground it is touching."
+      },
+      "telepath": {
+        "name": "Telepathy",
+        "description": "Can see anything that can think."
+      }
+    },
     "BeingTypes": {
       "humanlike": "Humanlike",
       "fae": "Fae",
@@ -288,6 +314,26 @@
         "description": "Armor reduces Cast damage.",
         "valueMultiplier": 50
       }
+    },
+    "EquipmentCategories": {
+      "armor": "Armor",
+      "weapon": "Weapons",
+      "alchemy": "Alchemy & Medicine",
+      "beasts": "Beasts & Husbandry",
+      "astrnonomy": "Astronomy & Navigation",
+      "books": "Books & Magic",
+      "clothing": "Clothing, Hygiene, & Textiles",
+      "containers": "Containers & Packs",
+      "cooking": "Cooking & Food",
+      "games": "Games & Toys",
+      "valuables": "Gems, Jewelry, & Smithing",
+      "hardware": "Hardware",
+      "booze": "Liquor & Spirits",
+      "musical": "Musical",
+      "outdoors": "Outdoors",
+      "personal": "Personal Items",
+      "tools": "Tools",
+      "trade": "Trade Goods"
     }
   },
   "HeroSheet": {
