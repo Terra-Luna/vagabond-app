@@ -1,6 +1,7 @@
-import { FoundryActor, updateActor, VagabondLiteActorSheet } from "./VagabondLiteActorSheet"
-import HeroDataModel from "../../model/actor/HeroDataModel"
-import HPDisplay from "../component/HPDisplay"
+import { FoundryActor, updateActor, VagabondLiteActorSheet } from "../VagabondLiteActorSheet"
+import HeroDataModel from "../../../model/actor/HeroDataModel"
+import HPDisplay from "../../component/HPDisplay"
+import { Identity } from "./Identity"
 
 export default class VagabondLiteHeroSheet extends VagabondLiteActorSheet {
     Component = MyReactComponent
@@ -10,10 +11,11 @@ const MyReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel> }) => 
     const hero = actor.system;
     return (
         <div id="hero-sheet-div" style={{ color: 'black', backgroundColor: 'white' }}>
+            <Identity hero={hero} />
             <HPDisplay health={hero.health} />
             Bound Relic Limit: {hero.boundRelicLimit}
             <button onClick={async () => {
-                actor.update({"system.health.bonus": 100})
+                actor.update({ "system.health.bonus": 100 })
                 updateActor(actor, { boundRelicLimit: 1 })
                 let roll = await new Roll('2d12').evaluate()
                 let results = (roll.terms[0] as any).results // <-- fake error, can we fix?

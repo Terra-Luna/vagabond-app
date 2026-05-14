@@ -1,23 +1,23 @@
 {
   "TYPES": {
     "Actor": {
-        "hero": "Hero",
-        "adversary": "Adversary",
-        "npc": "NPC"
-      },
-      "Item": {
-        "ancestry": "Ancestry",
-        "class": "Class",
-        "perk": "Perk",
-        "spell": "Spell",
-        "container": "Container",
-        "equipment": "Equipment",
-        "armor": "Armor",
-        "weapon": "Weapon",
-        "alchemical": "Alchemical",
-        "tool": "Tool",
-        "sundry": "Sundry",
-        "starter": "Starter pack"
+      "hero": "Hero",
+      "adversary": "Adversary",
+      "npc": "NPC"
+    },
+    "Item": {
+      "ancestry": "Ancestry",
+      "class": "Class",
+      "perk": "Perk",
+      "spell": "Spell",
+      "container": "Container",
+      "equipment": "Equipment",
+      "armor": "Armor",
+      "weapon": "Weapon",
+      "alchemical": "Alchemical",
+      "tool": "Tool",
+      "sundry": "Sundry",
+      "starter": "Starter pack"
     }
   },
   "VGLITE": {
@@ -289,5 +289,8 @@
         "valueMultiplier": 50
       }
     }
+  },
+  "HeroSheet": {
+    "Identity": "Identity"
   }
 }
