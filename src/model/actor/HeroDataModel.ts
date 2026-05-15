@@ -45,9 +45,10 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
-    override _initialize() {
-        super._initialize()
+    override async _onCreate(data: any, options: any, userId: string) {
+        console.log("Creating Hero:", this)
         this.health.current = 2
+        super._onCreate(data, options, userId)
     }
 
     override async prepareDerivedData() {

@@ -1,3 +1,4 @@
+import { FoundryActor } from "../../../view/sheets/VagabondLiteActorSheet"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import HeroDataModel from "../HeroDataModel"
 

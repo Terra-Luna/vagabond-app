@@ -3,6 +3,7 @@ import HeroDataModel from "../../../model/actor/HeroDataModel"
 import HPDisplay from "../../component/HPDisplay"
 import { Identity } from "./Identity"
 import { CharacterSheetHeader } from "../../component/character/CharacterSheetHeader"
+import { updateHp } from "../../../model/actor/type/Health"
 
 export default class VagabondLiteHeroSheet extends VagabondLiteActorSheet {
     Component = MyReactComponent
@@ -17,8 +18,8 @@ const MyReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel> }) => 
             <HPDisplay health={hero.health} />
             Bound Relic Limit: {hero.boundRelicLimit}
             <button onClick={async () => {
-                actor.update({ 'system.health.current': actor.system.health.current! += 1 })
-                updateActor(actor, { boundRelicLimit: 1 })
+                updateActor(actor, { health: { current: actor.system.health.current! += 1 }})
+                updateActor(actor, { class: { spellcasting: { castSkill: 'mysticism'}}})
                 let roll = await new Roll('2d12').evaluate()
                 let results = (roll.terms[0] as any).results // <-- fake error, can we fix?
                 console.log(results)

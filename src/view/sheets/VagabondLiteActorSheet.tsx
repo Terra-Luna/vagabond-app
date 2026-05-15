@@ -7,7 +7,6 @@ export const updateActor = async <T extends ActorDataModel<any>>(actor: { system
     Object.entries(update).forEach(([key, value]) => {
         updates[`system.${key}`] = value;
     })
-
     await actor.update(updates);
 }
 
