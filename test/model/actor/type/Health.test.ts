@@ -17,7 +17,8 @@ describe('health component tests', () => {
         const hero = {
             level: { current: 10 },
             stats: { might: 7 },
-            health: { current: 3, max: 2, bonus: 2 }
+            health: { current: 3, max: 2 },
+            bonus: { maxHP: 2 }
         }
         //Execute
         setMaxHP(hero as unknown as HeroDataModel)

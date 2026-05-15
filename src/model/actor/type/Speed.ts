@@ -5,8 +5,7 @@ export const speedSchema = () => {
     return {
         turn: new fields.NumberField({ ...requiredInteger, initial: 25 }),
         crawl: new fields.NumberField({ ...requiredInteger, initial: 75 }),
-        travel: new fields.NumberField({ ...requiredInteger, initial: 5 }),
-        bonus: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        travel: new fields.NumberField({ ...requiredInteger, initial: 5 })
     }
 }
 
@@ -15,7 +14,7 @@ export type Speed = foundry.abstract.TypeDataModel<SpeedSchema, any>
 
 export function setSpeeds(hero: HeroDataModel) {
     const dex = hero.stats.dexterity!
-    const bonus = Number(hero.speed.bonus || 0)
+    const bonus = Number(hero.bonus.speed || 0)
     if (dex < 4) {
         hero.speed.turn = 25 + bonus
         hero.speed.crawl = (25 + bonus) * 3

@@ -1,6 +1,8 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
+import HeroDataModel from "../HeroDataModel"
 
-const statProps = { integer: true, min: 2, max: 7, initial: 2 }
+const MAX_STAT_VALUE: number = 7 // TODO: <-- make this configurable via system settings?
+const statProps = { integer: true, min: 2, max: MAX_STAT_VALUE, initial: 2 }
 
 export const statsSchema = () => {
     return {
@@ -33,3 +35,12 @@ export const baseStatBlocks: number[][] = [
     [7, 5, 5, 2, 2, 2],
     [7, 6, 4, 2, 2, 2]
 ]
+
+export function applyStatBonuses(hero: HeroDataModel) {
+    hero.stats.might! += hero.bonus.might!
+    hero.stats.dexterity! += hero.bonus.dexterity!
+    hero.stats.awareness! += hero.bonus.awareness!
+    hero.stats.reason! += hero.bonus.reason!
+    hero.stats.presence! += hero.bonus.presence!
+    hero.stats.luck! += hero.bonus.luck!
+}

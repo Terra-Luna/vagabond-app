@@ -1,16 +1,74 @@
 /**
- * Systemic bonuses:
- *      Name: should match the accessor-operator path.
- *      Description: User-friendly description.
- */
+Systemic bonuses:
+    Name: should match the accessor-operator path.
+    Description: User-friendly description to help users set up Active Effects.
+    
+Documentation: https://foundryvtt.com/article/active-effects/
+
+//List Actor paths:
+const types = Actor.implementation.TYPES;
+const shells = types.map( t => new Actor.implementation({name: t, type: t}));
+shells.forEach( s => console.log(`'${s.type}'`, "type Actors have the following attribute keys available:\nsystem.\n", s.toObject().system));
+ 
+//List Item paths:
+const types = Item.implementation.TYPES;
+const shells = types.map( t => new Item.implementation({name: t, type: t}));
+shells.forEach( s => console.log(`'${s.type}'`, "type Items have the following attribute keys available:\nsystem.\n", s.toObject().system));
+
+//Create an ActiveEffect
+const actor = Array.from(game.actors.entries())[0][1]
+const effectData = {
+	name: 'Test',
+	origin: actor.uuid,
+	changes: [
+		{ key: 'system.health.bonus', mode: "2", value: 2, priority: 20 }
+	],
+	disabled: false
+}
+await actor.createEmbeddedDocuments('ActiveEffect', [effectData])
+
+*/
 export default class VgLiteActiveEffect extends ActiveEffect {
     static getAttributeChoices = () => {
         return {
-            'system.health.bonus': 'Max HP bonus',
-            'system.health.mana.max': 'Max Mana bonus',
-            'system.inventory.slotBonus': 'Inventory slot bonus',
-            'system.armor.bonus': 'Armor bonus',
-            'system.speed.bonus': 'Speed bonus'
+            'system.bonus.maxHP': 'Max HP bonus',
+            'system.bonus.maxMana': 'Max Mana bonus',
+            'system.bonus.maxCast': 'Max mana-per-cast bonus',
+            'system.bonus.armor': 'Armor bonus',
+            'system.bonus.speed': 'Speed bonus',
+            'system.bonus.inventorySlots': 'Inventory slot bonus',
+
+            'system.bonus.might': "Might bonus",
+            'system.bonus.dexterity': "Dexterity bonus",
+            'system.bonus.awareness': "Awareness bonus",
+            'system.bonus.reason': "Reason bonus",
+            'system.bonus.presence': "Presence bonus",
+            'system.bonus.luck': "Luck bonus",
+
+            'system.bonus.reflex': "Reflex bonus",
+            'system.bonus.endure': "Endure bonus",
+            'system.bonus.will': "Will bonus",
+            'system.bonus.brawl': "Brawl bonus",
+            'system.bonus.finesse': "Finesse bonus",
+            'system.bonus.melee': "Melee bonus",
+            'system.bonus.ranged': "Ranged bonus",
+            'system.bonus.arcana': "Arcana bonus",
+            'system.bonus.craft': "Craft bonus",
+            'system.bonus.detect': "Detect bonus",
+            'system.bonus.influence': "Influence bonus",
+            'system.bonus.leadership': "Leadership bonus",
+            'system.bonus.medicine': "Medicine bonus",
+            'system.bonus.mysticism': "Mysticism bonus",
+            'system.bonus.performance': "Performance bonus",
+            'system.bonus.sneak': "Sneak bonus",
+            'system.bonus.survival': "Survival bonus",
+
+            'system.bonus.flatAtkDmg': "A flat bonus to Attack damage",
+            'system.bonus.flatSpellDmg': "A flat bonus to Spell damage",
+            'system.bonus.flatDmgReduction': "A flat reduction in total damage taken",
+            'system.bonus.perDieAtkDmg': "A per-damage die bonus to Attack damage",
+            'system.bonus.perDieSpellDmg': "A per-damage die bonus to Spell damage",
+            'system.bonus.perDieDmgReduction': "A per-damage die reduction in total damage taken"
         }
     }
 }

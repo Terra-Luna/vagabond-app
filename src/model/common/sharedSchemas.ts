@@ -6,6 +6,7 @@ export const optionalString = { required: false, nullable: true }
 export const requiredString = { required: true, nullable: false, initial: '' }
 export const standardInteger = { integer: true, min: 0, initial: 0 }
 export const requiredInteger = { required: true, integer: true, min: 0 }
+export const uncappedInteger = { required: true, integer: true, initial: 0 }
 
 export const statOptions = () => {
     const stats = Object.values(locale.VGLITE.Stat)
@@ -27,7 +28,7 @@ export const beingSizeOptions = () => {
     const sizes = Object.values(locale.VGLITE.Sizes)
     return {
         choices: sizes,
-        initital: sizes[1]
+        initital: sizes[0]
     }
 }
 

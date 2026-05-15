@@ -7,7 +7,8 @@ describe('test hero speed data', () => {
         // Setup
         const hero = {
             stats: { dexterity: 3 },
-            speed: { turn: 0, crawl: 0, travel: 0 }
+            speed: { turn: 0, crawl: 0, travel: 0 },
+            bonus: { speed: 0 }
         }
         // Execute
         setSpeeds(hero as unknown as HeroDataModel)
@@ -21,7 +22,8 @@ describe('test hero speed data', () => {
         // Setup
         const hero = {
             stats: { dexterity: 5 },
-            speed: { turn: 0, crawl: 0, travel: 0 }
+            speed: { turn: 0, crawl: 0, travel: 0 },
+            bonus: { speed: 0 }
         }
         // Execute
         setSpeeds(hero as unknown as HeroDataModel)
@@ -35,7 +37,8 @@ describe('test hero speed data', () => {
         // Setup
         const hero = {
             stats: { dexterity: 6 },
-            speed: { turn: 0, crawl: 0, travel: 0 }
+            speed: { turn: 0, crawl: 0, travel: 0 },
+            bonus: { speed: 0 }
         }
         // Execute
         setSpeeds(hero as unknown as HeroDataModel)
@@ -49,7 +52,8 @@ describe('test hero speed data', () => {
         // Setup
         const hero = {
             stats: { dexterity: 6 },
-            speed: { turn: 0, crawl: 0, travel: 0, bonus: 5 }
+            speed: { turn: 0, crawl: 0, travel: 0 },
+            bonus: { speed: 5 }
         }
         // Execute
         setSpeeds(hero as unknown as HeroDataModel)
