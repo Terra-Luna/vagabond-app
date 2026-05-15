@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { ActorSheetContext } from "./sheets/VagabondLiteActorSheet";
+import { useDimensions } from "./context/DimensionsContext";
 
 const BREAKPOINT = 600;
 
@@ -8,7 +7,7 @@ interface UseBreakpointsArgs {
     lg: number;
 }
 export const useSmallLarge = ({ sm, lg }: UseBreakpointsArgs) => {
-    const dimensions = useContext(ActorSheetContext)
+    const dimensions = useDimensions()
     if (dimensions.width > BREAKPOINT) {
         return `vglite-col-${lg}`
     }

@@ -53,6 +53,22 @@
   grid-column: span 12;
 }
 
+svg.vglite-hp {
+  border-color: #e7000b;
+  color: #e7000b;
+  fill: #e7000b;
+}
+
+.vglite-container {
+  background-color: #1c1917;
+}
+
+.vglite-text {
+  font-size: 36px;
+  font-family: "Eskapade";
+  color: #d6d3d1;
+}
+
 .vglite-header {
   display: flex;
   width: 100%;
@@ -110,6 +126,28 @@
 
 .vglite-thumbnail {
   height: 200px;
+  width: 200px;
+  background-color: #0c0a09;
+}
+
+.vglite-hp {
+  font-family: "Eskapade";
+  font-size: 36px;
+}
+.vglite-hp .current {
+  color: #e7000b;
+}
+.vglite-hp .slash {
+  color: #a6a09b;
+}
+.vglite-hp .max {
+  color: #ff6467;
+}
+
+.vglite-armor {
+  margin-left: 20px;
+  color: #a6a09b;
+  fill: #57534d;
 }
 
 @font-face {

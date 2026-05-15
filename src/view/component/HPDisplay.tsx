@@ -6,9 +6,11 @@ interface Health {
 
 const HPDisplay = ({ health }: { health: Health }) => {
     return (
-        <h1 className="text-3xl font-bold underline" style={{ color: 'black' }}>
-            {health.current} / {health.max} (bonus: {health.bonus})
-        </h1>
+        <div className="vglite-hp">
+            <span className="current">{health.current}</span>
+            <span className="slash"> / </span>
+            <span className="max">{health.max}</span>
+        </div>
     )
 }
 

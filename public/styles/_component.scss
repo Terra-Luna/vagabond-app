@@ -1,5 +1,16 @@
 @use "./_theme";
 @use "./_grid";
+@use "./_svg";
+
+.vglite-container {
+    background-color: theme.$fill-heavy;
+}
+
+.vglite-text {
+    font-size: 36px;
+    font-family: 'Eskapade';
+    color: theme.$secondary-color;
+}
 
 .vglite-header {
     display: flex;
@@ -65,4 +76,26 @@
 
 .vglite-thumbnail {
     height: 200px;
+    width: 200px;
+    background-color: theme.$fill-light;
+}
+
+.vglite-hp {
+    font-family: 'Eskapade';
+    font-size: 36px;
+    .current {
+        color: theme.$hp-color;
+    }
+    .slash {
+        color: theme.$tertiary-color;
+    }
+    .max {
+        color: theme.$hp-light;
+    }
+}
+
+.vglite-armor {
+    margin-left: 20px;
+    color: theme.$tertiary-color;
+    fill: theme.$fill-other;
 }

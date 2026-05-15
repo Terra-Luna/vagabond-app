@@ -1,0 +1,7 @@
+@use "./_theme";
+
+svg.vglite-hp {
+    border-color: theme.$hp-color;
+    color: theme.$hp-color;
+    fill: theme.$hp-color;
+}
