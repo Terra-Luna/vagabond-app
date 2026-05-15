@@ -7,7 +7,7 @@ interface UseBreakpointsArgs {
     sm?: number;
     lg: number;
 }
-export const useSmallAndLarge = ({ sm, lg }: UseBreakpointsArgs) => {
+export const useSmallLarge = ({ sm, lg }: UseBreakpointsArgs) => {
     const dimensions = useContext(ActorSheetContext)
     if (dimensions.width > BREAKPOINT) {
         return `vglite-col-${lg}`
