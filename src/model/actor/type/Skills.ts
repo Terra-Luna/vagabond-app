@@ -29,9 +29,6 @@ export const skillSchema = (isTrained: boolean = false, stat: number = 2) => {
     }
 }
 
-export type SkillsSchema = ReturnType<typeof skillsSchema>
-export type Skills = foundry.abstract.TypeDataModel<SkillsSchema, any>
-
 export const setDifficulties = (hero: HeroDataModel) => {
     const skills = hero.skills
     const stats = hero.stats

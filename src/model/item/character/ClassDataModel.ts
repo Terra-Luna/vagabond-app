@@ -7,7 +7,7 @@ import { spellcastingSchema } from "./type/SpellCasting"
 const classSchema = () => {
     return {
         // Heros with spellcasting data are casters. Else, leave it as default.
-        spellcastingData: new fields.SchemaField({ ...spellcastingSchema() }),
+        spellcasting: new fields.SchemaField({ ...spellcastingSchema() }),
 
         // Key stats for this class meant to help players with point allocation during creation.
         keyStats: new fields.ArrayField(new fields.StringField({ ...statOptions() }), { initial: [] }),

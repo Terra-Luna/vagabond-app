@@ -16,45 +16,42 @@ export const spellcastingSchema = () => {
         newSpellEvery: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         // Total spell slots available (derived)
         spellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        // This hero's prepared spells
+        spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
         // Spells this class is compelled to have.
-        requiredSpells: new fields.ArrayField(
-            new fields.SchemaField({ ...SpellDataModel.defineSchema() })
-        )
+        requiredSpells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() }))
     }
 }
 
-export type SpellCastingSchema = ReturnType<typeof spellcastingSchema>
-export type SpellCasting = foundry.abstract.TypeDataModel<SpellCastingSchema, any>
-
-export function setSpellcastingData(hero: HeroDataModel) {
-    if (hero.class.spellcastingData.castSkill !== null) {
+export function setSpellcasting(hero: HeroDataModel) {
+    if (hero.class.spellcasting.castSkill !== null) {
         setMaxMana(hero)
         setMaxManaPerCast(hero)
         setSpellSlots(hero)
+        mergeSpellsToClass(hero)
     }
 }
 
 function setMaxMana(hero: HeroDataModel) {
-    const spellcasting = hero.class.spellcastingData
+    const spellcasting = hero.class.spellcasting
     hero.mana.max = spellcasting.manaMultiplier! * hero.level.current!
 }
 
 function setMaxManaPerCast(hero: HeroDataModel) {
-    const spellcasting = hero.class.spellcastingData
+    const spellcasting = hero.class.spellcasting
     const stat = hero.stats[spellcasting.maxPerCastStat] as number
     hero.mana.maxCast = stat + Math.ceil(hero.level.current! / 2)
 }
 
 function setSpellSlots(hero: HeroDataModel) {
-    hero.class.spellcastingData.spellSlots =
-        hero.class.spellcastingData.baseSpellSlots! +
-        Math.floor((hero.level.current! - 1) / hero.class.spellcastingData.newSpellEvery!) +
-        getBonusSpellSlots(hero)
+    hero.class.spellcasting.spellSlots =
+        hero.class.spellcasting.baseSpellSlots! +
+        Math.floor((hero.level.current! - 1) / hero.class.spellcasting.newSpellEvery!) +
+        hero.bonus.spellSlots!
 }
 
-/**
- * Loop thru the Hero's ancestry info and perks to check for any bonus spell slots.
- */
-function getBonusSpellSlots(hero: HeroDataModel): number {
-    return 0
+function mergeSpellsToClass(hero: HeroDataModel) {
+    const classSpells = hero.class.spellcasting.spells
+    const ancestralSpells = hero.ancestry.spellcasting.spells
+    hero.class.spellcasting.spells = [...classSpells, ...ancestralSpells]
 }

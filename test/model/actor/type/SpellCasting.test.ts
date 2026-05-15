@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { setSpellcastingData } from "../../../../src/model/item/character/type/SpellCasting";
+import { setspellcasting } from "../../../../src/model/item/character/type/SpellCasting";
 import HeroDataModel from "../../../../src/model/actor/HeroDataModel";
 
 describe('spellcasting schema tests', () => {
@@ -10,7 +10,7 @@ describe('spellcasting schema tests', () => {
             stats: { awareness: 7 },
             mana: { max: 0, maxCast: 0 },
             class: {
-                spellcastingData: {
+                spellcasting: {
                     castSkill: 'mysticism',
                     manaMultiplier: 3,
                     maxPerCastStat: 'awareness',
@@ -21,11 +21,11 @@ describe('spellcasting schema tests', () => {
             }
         }
         //Execute
-        setSpellcastingData(hero as unknown as HeroDataModel)
+        setspellcasting(hero as unknown as HeroDataModel)
         //Verify
         expect(hero.mana.max).toEqual(24)
         expect(hero.mana.maxCast).toEqual(11)
-        expect(hero.class.spellcastingData.spellSlots).toEqual(7)
+        expect(hero.class.spellcasting.spellSlots).toEqual(7)
     })
 
     test('test spellcasting calculations round up', () => {
@@ -35,7 +35,7 @@ describe('spellcasting schema tests', () => {
             stats: { awareness: 7 },
             mana: { max: 0, maxCast: 0 },
             class: {
-                spellcastingData: {
+                spellcasting: {
                     castSkill: 'mysticism',
                     manaMultiplier: 3,
                     maxPerCastStat: 'awareness',
@@ -46,11 +46,11 @@ describe('spellcasting schema tests', () => {
             }
         }
         //Execute
-        setSpellcastingData(hero as unknown as HeroDataModel)
+        setspellcasting(hero as unknown as HeroDataModel)
         //Verify
         expect(hero.mana.max).toEqual(21)
         expect(hero.mana.maxCast).toEqual(11)
-        expect(hero.class.spellcastingData.spellSlots).toEqual(7)
+        expect(hero.class.spellcasting.spellSlots).toEqual(7)
     })
 
     test('skip spellcasting setup if no casting stat', () => {
@@ -58,10 +58,10 @@ describe('spellcasting schema tests', () => {
             level: { current: 7 },
             mana: { max: 0, maxCast: 0 },
             stats: { awareness: 7 },
-            class: { spellcastingData: { castSkill: null } }
+            class: { spellcasting: { castSkill: null } }
         }
         //Execute
-        setSpellcastingData(hero as unknown as HeroDataModel)
+        setspellcasting(hero as unknown as HeroDataModel)
         //Verify
         expect(hero.mana.max).toEqual(0)
         expect(hero.mana.maxCast).toEqual(0)

@@ -8,10 +8,7 @@ export const coinSchema = () => {
     }
 }
 
-export type CoinSchema = ReturnType<typeof coinSchema>
-export type CoinValue = foundry.abstract.TypeDataModel<CoinSchema, any>
-
-export const consolidate = (coins: CoinValue) => {
+export const consolidate = (coins: any) => {
     var copperToSilver = Math.floor(coins.c! / 100)
     coins.s! += copperToSilver
     coins.c! = coins.c! % 100

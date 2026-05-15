@@ -1,6 +1,7 @@
 import { sensesSchema } from "../../actor/type/Senses"
-import { beingSizeOptions, beingTypeOptions, fields } from "../../common/sharedSchemas"
+import { beingSizeOptions, beingTypeOptions, fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import SpellDataModel from "./SpellDataModel"
 import { skillsTrainingSchema } from "./type/SkillsTraining"
 
 const ancestrySchema = () => {
@@ -9,7 +10,12 @@ const ancestrySchema = () => {
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() }),
         // Training this ancestry gets at hero creation.
-        training: new fields.SchemaField({ ...skillsTrainingSchema() })
+        training: new fields.SchemaField({ ...skillsTrainingSchema() }),
+        spellcasting: new fields.SchemaField({
+            spellSlots: new fields.NumberField({ ...standardInteger }),
+            spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
+            skillOfChoice: new fields.StringField({ ...optionalString })
+        })
     }
 }
 

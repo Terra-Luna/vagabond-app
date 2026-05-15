@@ -9,12 +9,9 @@ export const manaSchema = () => {
     }
 }
 
-export type ManaSchema = ReturnType<typeof manaSchema>
-export type Mana = foundry.abstract.TypeDataModel<ManaSchema, any>
-
 export function setManaValues(hero: HeroDataModel) {
-    if (typeof hero.class.spellcastingData.castSkill !== null) {
-        hero.mana.max = hero.level.current! * hero.class.spellcastingData.manaMultiplier! + hero.bonus.maxHP!
-        hero.mana.maxCast = Math.ceil((hero.level.current!) / 2) + Number(hero.stats[hero.class.spellcastingData.maxPerCastStat!]) + hero.bonus.maxCast!
+    if (typeof hero.class.spellcasting.castSkill !== null) {
+        hero.mana.max = hero.level.current! * hero.class.spellcasting.manaMultiplier! + hero.bonus.maxHP!
+        hero.mana.maxCast = Math.ceil((hero.level.current!) / 2) + Number(hero.stats[hero.class.spellcasting.maxPerCastStat!]) + hero.bonus.maxCast!
     }
 }

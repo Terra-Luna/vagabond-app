@@ -8,9 +8,6 @@ export const sensesSchema = () => {
     }
 }
 
-export type SensesSchema = ReturnType<typeof sensesSchema>
-export type Senses = foundry.abstract.TypeDataModel<SensesSchema, any>
-
 export function setSenses(hero: HeroDataModel) {
     hero.ancestry.senses.forEach(s => {
         if (!hero.senses.map(it => it.name).includes(s.name)) {

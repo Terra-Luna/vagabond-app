@@ -16,8 +16,6 @@ export const adversaryActionSchema = () => {
         usage: new fields.SchemaField({ uses: new fields.StringField({ required: false }), requiresFocus: new fields.BooleanField({ initial: false }) })
     }
 }
-export type AdversaryActionSchema = ReturnType<typeof adversaryActionSchema>
-export type AdversaryAction = foundry.abstract.TypeDataModel<AdversaryActionSchema, any>
 
 /**
  * Special NPC combo actions. E.g.: "Combo: 2x Claw & 1x Bite".
@@ -27,5 +25,3 @@ export const adversaryActionComboSchema = () => {
         actions: new fields.ArrayField(new fields.SchemaField({ ...adversaryActionSchema() }))
     }
 }
-export type AdversaryActionComboSchema = ReturnType<typeof adversaryActionComboSchema>
-export type AdversaryComboaction = foundry.abstract.TypeDataModel<AdversaryActionComboSchema, any>

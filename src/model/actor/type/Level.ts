@@ -12,9 +12,6 @@ export const levelSchema = () => {
     }
 }
 
-export type LevelSchema = ReturnType<typeof levelSchema>
-export type Level = foundry.abstract.TypeDataModel<LevelSchema, any>
-
 export function setXpToNextLevel(hero: HeroDataModel) {
     return (hero.level.current! + 1) * XP_CURVE
 }

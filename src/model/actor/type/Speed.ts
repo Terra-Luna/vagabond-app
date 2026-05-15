@@ -9,9 +9,6 @@ export const speedSchema = () => {
     }
 }
 
-export type SpeedSchema = ReturnType<typeof speedSchema>
-export type Speed = foundry.abstract.TypeDataModel<SpeedSchema, any>
-
 export function setSpeeds(hero: HeroDataModel) {
     const dex = hero.stats.dexterity!
     const bonus = Number(hero.bonus.speed || 0)

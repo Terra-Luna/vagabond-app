@@ -9,9 +9,6 @@ export const armorSchema = () => {
     }
 }
 
-export type ArmorSchema = ReturnType<typeof armorSchema>
-export type Armor = foundry.abstract.TypeDataModel<ArmorSchema, any>
-
 export function setArmorRating(hero: HeroDataModel) {
     const equippedArmor = hero.inventory.container.items.filter(it => it.isEquipped && it.category === "Armor") as ArmorDataModel[]
     hero.armor.rating = equippedArmor.reduce(

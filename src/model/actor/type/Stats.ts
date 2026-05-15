@@ -18,9 +18,6 @@ export const statsSchema = () => {
     }
 }
 
-export type StatsSchema = ReturnType<typeof statsSchema>
-export type Stats = foundry.abstract.TypeDataModel<StatsSchema, any>
-
 export const baseStatBlocks: number[][] = [
     [5, 5, 5, 4, 4, 3],
     [5, 5, 5, 5, 3, 2],

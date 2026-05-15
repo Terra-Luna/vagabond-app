@@ -10,9 +10,6 @@ export const inventorySchema = () => {
     }
 }
 
-export type InventorySchema = ReturnType<typeof inventorySchema>
-export type Inventory = foundry.abstract.TypeDataModel<InventorySchema, any>
-
 export function setInventoryData(hero: HeroDataModel) {
     consolidate(hero.inventory.coins as CoinValue)
     hero.inventory.container.capacity = Number(hero.stats.might) + 8 + hero.bonus.inventorySlots! - hero.fatigue

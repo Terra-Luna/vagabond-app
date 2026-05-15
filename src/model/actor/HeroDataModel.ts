@@ -2,7 +2,7 @@ import { fields, requiredInteger } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import { perksSchema, setPerkSlots } from "../item/character/PerkDataModel"
-import { setSpellcastingData } from "../item/character/type/SpellCasting"
+import { setSpellcasting as setSpellcasting } from "../item/character/type/SpellCasting"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { setArmorRating } from "./type/Armor"
 import { bonusSchema } from "./type/Bonus"
@@ -57,7 +57,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSkillDifficulties(this)
         setSpeeds(this)
         setSenses(this)
-        setSpellcastingData(this)
+        setSpellcasting(this)
         setInventoryData(this)
         setPerkSlots(this)
     }

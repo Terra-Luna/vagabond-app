@@ -11,6 +11,3 @@ export const skillsTrainingSchema = () => {
         trainings: new fields.NumberField({ ...standardInteger })
     }
 }
-
-export type SkillsTrainingSchema = ReturnType<typeof skillsTrainingSchema>
-export type SkillsTraining = foundry.abstract.TypeDataModel<SkillsTrainingSchema, any>

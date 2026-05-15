@@ -41,3 +41,11 @@ export function setPerkSlots(hero: HeroDataModel) {
     const slotBonus = hero.bonus.perkSlots || 0
     hero.perkData.perkSlots = Math.floor((level - 1) / 2) + slotBonus
 }
+
+export function addPerk(hero: HeroDataModel, perk: PerkDataModel<PerkSchema>) {
+    const perks = hero.perkData.perks
+    const isNotSelected = perks.find(it => (it as PerkDataModel<PerkSchema>).parent.name == perk.parent.name) == null
+    if (perks.length < hero.perkData.perkSlots! && isNotSelected) {
+        hero.perkData.perks.push(perk)
+    }
+}

@@ -1,12 +1,12 @@
 import { describe, expect, test } from "@jest/globals"
-import { CoinValue, consolidate } from "../../../src/model/common/CoinValue"
+import { consolidate } from "../../../src/model/common/CoinValue"
 
 describe('consolidate denominations', () => {
     test('consolidates correctly', () => {
         // Setup
         const c = { g: 100, s: 251, c: 307 }
         // Execute
-        consolidate(c as CoinValue)
+        consolidate(c)
         // Verify
         expect(c.g).toEqual(102)
         expect(c.s).toEqual(54)
