@@ -45,6 +45,11 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
+    override _initialize() {
+        super._initialize()
+        this.health.current = 2
+    }
+
     override async prepareDerivedData() {
         super.prepareDerivedData()
         applyStatBonuses(this)
