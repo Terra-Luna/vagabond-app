@@ -1,4 +1,5 @@
 allowBuilds:
+  '@parcel/watcher': set this to true or false
   unrs-resolver: true
 blockExoticSubdeps: false
 onlyBuiltDependencies:

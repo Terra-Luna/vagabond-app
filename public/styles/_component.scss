@@ -1,0 +1,62 @@
+@use "./_theme";
+
+.vglite-header {
+    display: flex;
+    width: 100%;
+    background-color: theme.$primary-color;
+    align-items: center;
+
+    h1 {
+        color: theme.$fill-light;
+        text-align: center;
+        font-family: 'Eskapade';
+        position: relative;
+        bottom: 5px;
+    }
+
+    .vglite-divider {
+        color: theme.$fill-light;
+        flex: 1;
+        height: 1px;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+}
+
+.vglite-divider {
+    background-color: theme.$fill-light;
+}
+
+.vglite-char-sheet-header {
+    padding: 10px;
+    background-color: theme.$fill-heavy;
+    color: theme.$primary-color;
+    font-family: 'Eskapade';
+    font-weight: bolder;
+    font-size: 36px;
+
+    .level {
+        color: theme.$secondary-color;
+        font-weight: normal;
+        font-size: 18px;
+        flex: 1;
+        padding-bottom: 5px;
+
+        .vglite-dot {
+            color: theme.$tertiary-color;
+        }
+
+        span {
+            padding-right: 3px;
+        }
+    }
+
+    .xp {
+        color: theme.$tertiary-color;
+        font-weight: normal;
+        font-size: 16px;
+        span {
+            padding-right: 3px;
+        }
+    }
+}

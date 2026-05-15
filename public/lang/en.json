@@ -334,9 +334,12 @@
       "personal": "Personal Items",
       "tools": "Tools",
       "trade": "Trade Goods"
+    },
+    "HeroSheet": {
+      "Identity": "Identity",
+      "Level": "Level {{level}}",
+      "AncestryAndClass": "{{ancestry}} {{class}}",
+      "xp": "XP: {{xp}} / {{nextLevel}}"
     }
-  },
-  "HeroSheet": {
-    "Identity": "Identity"
   }
 }

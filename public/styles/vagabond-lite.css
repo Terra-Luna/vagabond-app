@@ -1,58 +1,106 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+.vglite-header {
+  display: flex;
+  width: 100%;
+  background-color: #c5b358;
+  align-items: center;
+}
+.vglite-header h1 {
+  color: #0c0a09;
+  text-align: center;
+  font-family: "Eskapade";
+  position: relative;
+  bottom: 5px;
+}
+.vglite-header .vglite-divider {
+  color: #0c0a09;
+  flex: 1;
+  height: 1px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
 
+.vglite-divider {
+  background-color: #0c0a09;
+}
 
-@font-face {
-    font-family: "Eskapade";
-    src: url("../assets/fonts/eskapade-black.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
+.vglite-char-sheet-header {
+  padding: 10px;
+  background-color: #1c1917;
+  color: #c5b358;
+  font-family: "Eskapade";
+  font-weight: bolder;
+  font-size: 36px;
+}
+.vglite-char-sheet-header .level {
+  color: #d6d3d1;
+  font-weight: normal;
+  font-size: 18px;
+  flex: 1;
+  padding-bottom: 5px;
+}
+.vglite-char-sheet-header .level .vglite-dot {
+  color: #a6a09b;
+}
+.vglite-char-sheet-header .level span {
+  padding-right: 3px;
+}
+.vglite-char-sheet-header .xp {
+  color: #a6a09b;
+  font-weight: normal;
+  font-size: 16px;
+}
+.vglite-char-sheet-header .xp span {
+  padding-right: 3px;
 }
 
 @font-face {
-    font-family: "Eskapade";
-    src: url("../assets/fonts/eskapade-regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Eskapade";
+  src: url("../assets/fonts/eskapade-black.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Eskapade";
+  src: url("../assets/fonts/eskapade-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Germania";
+  src: url("../assets/fonts/germania-one-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Ludlow";
+  src: url("../assets/fonts/ludlow-regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Manofa";
+  src: url("../assets/fonts/manofa-bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Paradigm";
+  src: url("../assets/fonts/paradigm-regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Paradigm";
+  src: url("../assets/fonts/paradigm-bold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Paradigm";
+  src: url("../assets/fonts/paradigm-italic.otf") format("opentype");
+  font-weight: normal;
+  font-style: italic;
 }
 
-@font-face {
-    font-family: "Germania";
-    src: url("../assets/fonts/germania-one-regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Ludlow";
-    src: url("../assets/fonts/ludlow-regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Manofa";
-    src: url("../assets/fonts/manofa-bold.otf") format("opentype");
-    font-weight: bold;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Paradigm";
-    src: url("../assets/fonts/paradigm-regular.otf") format("opentype");
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Paradigm";
-    src: url("../assets/fonts/paradigm-bold.otf") format("opentype");
-    font-weight: bold;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: "Paradigm";
-    src: url("../assets/fonts/paradigm-italic.otf") format("opentype");
-    font-weight: normal;
-    font-style: italic;
-}
+/*# sourceMappingURL=vagabond-lite.css.map */
