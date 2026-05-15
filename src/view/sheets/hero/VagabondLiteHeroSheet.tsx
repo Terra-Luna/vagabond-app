@@ -2,8 +2,8 @@ import { FoundryActor, updateActor, VagabondLiteActorSheet } from "../VagabondLi
 import HeroDataModel from "../../../model/actor/HeroDataModel"
 import HPDisplay from "../../component/HPDisplay"
 import { Identity } from "./Identity"
-import { CharacterSheetHeader } from "../../component/character/CharacterSheetHeader"
-import { updateHp } from "../../../model/actor/type/Health"
+import { CharacterSheetHeader } from "./CharacterSheetHeader"
+import { MainTab } from "./MainTab"
 
 export default class VagabondLiteHeroSheet extends VagabondLiteActorSheet {
     Component = MyReactComponent
@@ -14,6 +14,7 @@ const MyReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel> }) => 
     return (
         <div id="hero-sheet-div" style={{ color: 'black', backgroundColor: 'white' }}>
             <CharacterSheetHeader hero={hero} />
+            <MainTab hero={hero} />
             <Identity hero={hero} />
             <HPDisplay health={hero.health} />
             Bound Relic Limit: {hero.boundRelicLimit}

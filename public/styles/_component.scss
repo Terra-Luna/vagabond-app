@@ -1,4 +1,5 @@
 @use "./_theme";
+@use "./_grid";
 
 .vglite-header {
     display: flex;
@@ -55,8 +56,13 @@
         color: theme.$tertiary-color;
         font-weight: normal;
         font-size: 16px;
+
         span {
             padding-right: 3px;
         }
     }
+}
+
+.vglite-thumbnail {
+    height: 200px;
 }

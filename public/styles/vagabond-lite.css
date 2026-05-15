@@ -1,4 +1,58 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+.vglite-row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+.vglite-col-1 {
+  grid-column: span 1;
+}
+
+.vglite-col-2 {
+  grid-column: span 2;
+}
+
+.vglite-col-3 {
+  grid-column: span 3;
+}
+
+.vglite-col-4 {
+  grid-column: span 4;
+}
+
+.vglite-col-5 {
+  grid-column: span 5;
+}
+
+.vglite-col-6 {
+  grid-column: span 6;
+}
+
+.vglite-col-7 {
+  grid-column: span 7;
+}
+
+.vglite-col-8 {
+  grid-column: span 8;
+}
+
+.vglite-col-9 {
+  grid-column: span 9;
+}
+
+.vglite-col-10 {
+  grid-column: span 10;
+}
+
+.vglite-col-11 {
+  grid-column: span 11;
+}
+
+.vglite-col-12 {
+  grid-column: span 12;
+}
+
 .vglite-header {
   display: flex;
   width: 100%;
@@ -52,6 +106,10 @@
 }
 .vglite-char-sheet-header .xp span {
   padding-right: 3px;
+}
+
+.vglite-thumbnail {
+  height: 200px;
 }
 
 @font-face {
