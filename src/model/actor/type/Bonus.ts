@@ -13,6 +13,7 @@ export const bonusSchema = () => {
         maxCast: new fields.NumberField({ ...uncappedInteger }),
         armor: new fields.NumberField({ ...uncappedInteger }),
         speed: new fields.NumberField({ ...uncappedInteger }),
+        perkSlots: new fields.NumberField({ ...uncappedInteger }),
         inventorySlots: new fields.NumberField({ ...uncappedInteger }),
 
         /**

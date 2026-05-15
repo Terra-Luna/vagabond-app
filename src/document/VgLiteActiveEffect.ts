@@ -36,6 +36,7 @@ export default class VgLiteActiveEffect extends ActiveEffect {
             'system.bonus.maxCast': 'Max mana-per-cast bonus',
             'system.bonus.armor': 'Armor bonus',
             'system.bonus.speed': 'Speed bonus',
+            'system.bonus.perkSlots': 'Perk slot bonus',
             'system.bonus.inventorySlots': 'Inventory slot bonus',
 
             'system.bonus.might': "Might bonus",

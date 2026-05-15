@@ -1,11 +1,20 @@
-import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
+import HeroDataModel from "../../actor/HeroDataModel"
+import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+
+export const perksSchema = () => {
+    return {
+        perkSlots: new fields.NumberField({ ...requiredInteger, initial: 0}),
+        perks: new fields.ArrayField(new fields.SchemaField({ ...perkSchema() }), { initial: [] })
+    }
+}
 
 const perkSchema = () => {
     return {
         prerequisites: new fields.ArrayField(
             new fields.SchemaField({
                 type: new fields.StringField({ choices: ['stat', 'training', 'spell'] }),
+                name: new fields.StringField({ ...requiredString }),
                 value: new fields.StringField({ ...requiredString })
             })
         )
@@ -25,4 +34,10 @@ export default class PerkDataModel<T extends PerkSchema> extends ItemDataModel<T
     override async prepareDerivedData() {
         super.prepareDerivedData()
     }
+}
+
+export function setPerkSlots(hero: HeroDataModel) {
+    const level = hero.level.current || 1
+    const slotBonus = hero.bonus.perkSlots || 0
+    hero.perkData.perkSlots = Math.floor((level - 1) / 2) + slotBonus
 }

@@ -1,6 +1,7 @@
 import { fields, requiredInteger } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
+import { perksSchema, setPerkSlots } from "../item/character/PerkDataModel"
 import { setSpellcastingData } from "../item/character/type/SpellCasting"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { setArmorRating } from "./type/Armor"
@@ -28,6 +29,7 @@ const heroSchema = () => {
         saves: new fields.SchemaField({ ...savesSchema() }),
         speed: new fields.SchemaField({ ...speedSchema() }),
         skills: new fields.SchemaField({ ...skillsSchema() }),
+        perkData: new fields.SchemaField({ ...perksSchema() }),
         stats: new fields.SchemaField({ ...statsSchema() }),
         studied: new fields.NumberField({ ...requiredInteger, initial: 0 })
     }
@@ -54,9 +56,10 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setManaValues(this)
         setSkillDifficulties(this)
         setSpeeds(this)
-        setInventoryData(this)
         setSenses(this)
         setSpellcastingData(this)
+        setInventoryData(this)
+        setPerkSlots(this)
     }
 
     async updateStudied(changeBy: number) {
