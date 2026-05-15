@@ -16,9 +16,12 @@ describe('spellcasting schema tests', () => {
                     maxPerCastStat: 'awareness',
                     baseSpellSlots: 4,
                     newSpellEvery: 2,
+                    spells: [{}],
                     spellSlots: 0
                 }
-            }
+            },
+            ancestry: { spellcasting: { skillOfChoice: null, spells: [{}], spellSlots: 0 }},
+            bonus: { spellSlots: 0 }
         }
         //Execute
         setSpellcasting(hero as unknown as HeroDataModel)
@@ -41,12 +44,15 @@ describe('spellcasting schema tests', () => {
                     maxPerCastStat: 'awareness',
                     baseSpellSlots: 4,
                     newSpellEvery: 2,
+                    spells: [{}],
                     spellSlots: 0
                 }
-            }
+            },
+            ancestry: { spellcasting: { skillOfChoice: null, spells: [{}], spellSlots: 0 }},
+            bonus: { spellSlots: 0 }
         }
         //Execute
-        setspellcasting(hero as unknown as HeroDataModel)
+        setSpellcasting(hero as unknown as HeroDataModel)
         //Verify
         expect(hero.mana.max).toEqual(21)
         expect(hero.mana.maxCast).toEqual(11)
@@ -58,10 +64,12 @@ describe('spellcasting schema tests', () => {
             level: { current: 7 },
             mana: { max: 0, maxCast: 0 },
             stats: { awareness: 7 },
-            class: { spellcasting: { castSkill: null } }
+            class: { spellcasting: { castSkill: null } },
+            bonus: { spellSlots: 0 },
+            ancestry: { spellcasting: { skillOfChoice: null, spells: [{}], spellSlots: 0 }},
         }
         //Execute
-        setspellcasting(hero as unknown as HeroDataModel)
+        setSpellcasting(hero as unknown as HeroDataModel)
         //Verify
         expect(hero.mana.max).toEqual(0)
         expect(hero.mana.maxCast).toEqual(0)

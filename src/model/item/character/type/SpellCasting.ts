@@ -24,7 +24,7 @@ export const spellcastingSchema = () => {
 }
 
 export function setSpellcasting(hero: HeroDataModel) {
-    if (hero.class.spellcasting.castSkill !== null) {
+    if (hero.class.spellcasting.castSkill != null || hero.ancestry.spellcasting.skillOfChoice != null) {
         setMaxMana(hero)
         setMaxManaPerCast(hero)
         setSpellSlots(hero)
