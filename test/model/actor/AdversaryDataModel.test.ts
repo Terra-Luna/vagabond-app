@@ -10,7 +10,7 @@ describe('set threat level', () => {
         ]
         const adv = {
             health: { max: 31 },
-            armor: { total: 3 },
+            armor: { rating: 3 },
             combo: { actions: actions }
         } 
         //Execute
@@ -27,7 +27,7 @@ describe('set threat level', () => {
         ]
         const adv = {
             health: { max: 31 },
-            armor: { total: 3 },
+            armor: { rating: 3 },
             actions: actions
         } 
         //Execute
@@ -40,7 +40,7 @@ describe('set threat level', () => {
         //Setup
         const adv = {
             health: { max: 31 },
-            armor: { total: 3 }
+            armor: { rating: 3 }
         }
         //Execute
         var tl = setThreatLevel(adv as unknown as AdversaryDataModel)

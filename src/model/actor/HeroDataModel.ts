@@ -3,6 +3,7 @@ import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import { setSpellcastingData } from "../item/character/type/SpellCasting"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import { setArmorRating } from "./type/Armor"
 import { bonusSchema } from "./type/Bonus"
 import { setMaxHP, validateCurrentHP } from "./type/Health"
 import { inventorySchema,setInventoryData } from "./type/Inventory"
@@ -48,6 +49,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setXpToNextLevel(this)
         setMaxHP(this)
         validateCurrentHP(this)
+        setArmorRating(this)
         setSaves(this)
         setManaValues(this)
         setSkillDifficulties(this)

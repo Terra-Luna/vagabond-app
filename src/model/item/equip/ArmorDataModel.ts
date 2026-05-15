@@ -5,8 +5,8 @@ import { EquipmentSchema } from "./EquipmentDataModel"
 
 const armorSchema = () => {
     return {
-        armorType: new fields.StringField({ reuired: false, initial: 'light', choices: ['light', 'medium', 'heavy'] }),
-        baseArmor: new fields.NumberField({ integer: true, min: 0, initial: 0 })
+        type: new fields.StringField({ reuired: false, initial: 'light', choices: ['light', 'medium', 'heavy'] }),
+        rating: new fields.NumberField({ integer: true, min: 0, initial: 0 })
     }
 }
 
@@ -22,10 +22,21 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        this.baseArmor = { 'light': 1, 'medium': 2, 'heavy': 3 }[this.armorType || 0]
+        this.rating = { 'light': 1, 'medium': 2, 'heavy': 3 }[this.type || 0]
     }
 
     override typeName: String = "Armor"
-    override onEquip(hero: HeroDataModel) { }
+    override onEquip(hero: HeroDataModel) {
+        equipArmor(hero, this)
+    }
+        
     override onUse() { }
+}
+
+export function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
+    const equippedArmor = hero.inventory.container.items.filter(it => it.isEquipped && it.category === "Armor")
+    equippedArmor.forEach(it => {
+        it.isEquipped = false
+    })
+    armor.isEquipped = true
 }
