@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { setspellcasting } from "../../../../src/model/item/character/type/SpellCasting";
+import { setSpellcasting } from "../../../../src/model/item/character/type/SpellCasting";
 import HeroDataModel from "../../../../src/model/actor/HeroDataModel";
 
 describe('spellcasting schema tests', () => {
@@ -21,7 +21,7 @@ describe('spellcasting schema tests', () => {
             }
         }
         //Execute
-        setspellcasting(hero as unknown as HeroDataModel)
+        setSpellcasting(hero as unknown as HeroDataModel)
         //Verify
         expect(hero.mana.max).toEqual(24)
         expect(hero.mana.maxCast).toEqual(11)
