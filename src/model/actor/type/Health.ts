@@ -13,6 +13,11 @@ export const healthSchema = () => {
 export type HealthSchema = ReturnType<typeof healthSchema>
 export type Health = foundry.abstract.TypeDataModel<HealthSchema, any>
 
+export const validateCurrentHP = (hero: HeroDataModel) => {
+    if (hero.health.current! > hero.health.max!) {
+        hero.health.current = hero.health.max!
+    }
+}
 export const setMaxHP = (hero: HeroDataModel) => {
     hero.health.max = hero.stats.might! * (hero.level.current || 1) + hero.health.bonus!
 }

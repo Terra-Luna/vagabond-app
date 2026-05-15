@@ -15,9 +15,7 @@ const MyReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel> }) => 
             <HPDisplay health={hero.health} />
             Bound Relic Limit: {hero.boundRelicLimit}
             <button onClick={async () => {
-                if (actor.system.health.current! < actor.system.health.max!) {
-                    actor.update({ 'system.health.current': actor.system.health.current! += 1 })
-                }
+                actor.update({ 'system.health.current': actor.system.health.current! += 1 })
                 updateActor(actor, { boundRelicLimit: 1 })
                 let roll = await new Roll('2d12').evaluate()
                 let results = (roll.terms[0] as any).results // <-- fake error, can we fix?

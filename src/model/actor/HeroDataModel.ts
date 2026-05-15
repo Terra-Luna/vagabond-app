@@ -3,7 +3,7 @@ import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import { setSpellcastingData } from "../item/character/type/SpellCasting"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import { setMaxHP } from "./type/Health"
+import { setMaxHP, validateCurrentHP } from "./type/Health"
 import { inventorySchema,setInventoryData } from "./type/Inventory"
 import { levelSchema, setXpToNextLevel } from "./type/Level"
 import { manaSchema,setManaValues } from "./type/Mana"
@@ -44,6 +44,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareDerivedData()
         setXpToNextLevel(this)
         setMaxHP(this)
+        validateCurrentHP(this)
         setSaves(this)
         setManaValues(this)
         setSkillDifficulties(this)
