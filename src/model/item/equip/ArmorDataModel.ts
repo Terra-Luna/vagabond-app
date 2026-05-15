@@ -29,6 +29,10 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
     override onEquip(hero: HeroDataModel) {
         equipArmor(hero, this)
     }
+
+    override onUnEquip(hero: HeroDataModel) {
+        unequipArmor(this)
+    }
         
     override onUse() { }
 }
@@ -39,4 +43,8 @@ export function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
         it.isEquipped = false
     })
     armor.isEquipped = true
+}
+
+export function unequipArmor(armor: ArmorDataModel) {
+    armor.isEquipped = false
 }

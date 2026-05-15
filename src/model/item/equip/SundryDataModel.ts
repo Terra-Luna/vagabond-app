@@ -23,5 +23,6 @@ export default class SundryDataModel<T extends SundrySchema> extends EquipmentDa
 
     override typeName: String = "Sundry"
     override onEquip(hero: HeroDataModel) { }
+    override onUnEquip(hero: HeroDataModel) { }
     override onUse() { }
 }

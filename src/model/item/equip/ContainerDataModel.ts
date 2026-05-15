@@ -29,6 +29,7 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
 
     override typeName = "Container"
     override onEquip(hero: HeroDataModel) { }
+    override onUnEquip(hero: HeroDataModel) { }
     override onUse() { }
 
     onAddItem(item: EquipmentDataModel<EquipmentSchema>, allowContainerNesting: boolean = false) {
