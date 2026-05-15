@@ -1,7 +1,7 @@
 const { api, sheets } = foundry.applications;
-import { createContext } from "react"
 import ReactDom from "react-dom/client"
 import ActorDataModel, { BaseActorSchema } from "../../model/actor/ActorDataModel";
+import { DimensionsContext } from "../context/DimensionsContext";
 
 export const updateActor = async <T extends ActorDataModel<any>>(actor: { system: T, update: any }, update: Partial<Record<keyof T, any>>) => {
     const updates = {}
@@ -15,8 +15,6 @@ export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {
     update: (data: Record<keyof T, any>) => any
     system: T
 }
-
-export const ActorSheetContext = createContext({ width: 1, height: 1 })
 
 // @ts-expect-error
 export abstract class VagabondLiteActorSheet extends foundry.applications.api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
@@ -49,9 +47,9 @@ export abstract class VagabondLiteActorSheet extends foundry.applications.api.Ha
         const minWidth = 360
         const { width, height } = position
         const realWidth = width === "auto" ? width : Math.max(minWidth, width)
-        this._reactRoot!.render(<ActorSheetContext.Provider value={{ width: realWidth, height }}>
+        this._reactRoot!.render(<DimensionsContext.Provider value={{ width: realWidth, height }}>
             <this.Component {...this.getReactProps()} width={width} height={height} />
-        </ActorSheetContext.Provider>
+        </DimensionsContext.Provider>
         )
 
         return super._updatePosition({ ...position, width: realWidth })
