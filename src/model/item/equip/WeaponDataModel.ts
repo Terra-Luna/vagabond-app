@@ -65,9 +65,6 @@ export function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
     const equippedWeapons = hero.inventory.container.items.filter(it => it.category === "Weapon" && it.isEquipped) as WeaponDataModel[]
     const nonFist = equippedWeapons.filter(it => it.grip.style !== 'F')
     
-    console.log("Equipped weapons:", ...equippedWeapons)
-    console.log("Non-fist:", ...nonFist)
-    
     if (weapon.grip.style === 'F' && equippedWeapons.filter(it => it.grip.state === 'F').length < 2) {
         weapon.isEquipped = true
         weapon.grip.state = 'F'
