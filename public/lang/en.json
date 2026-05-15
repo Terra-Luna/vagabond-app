@@ -65,6 +65,44 @@
         "description": "Can see anything that can think."
       }
     },
+    "SpellDeliveries": {
+      "aura": {
+        "name": "Aura",
+        "description": ""
+      },
+      "cone": {
+        "name": "Cone",
+        "description": ""
+      },
+      "cube": {
+        "name": "Cube",
+        "description": ""
+      },
+      "imbue": {
+        "name": "Imbue",
+        "description": ""
+      },
+      "glyph": {
+        "name": "Glyph",
+        "description": ""
+      },
+      "line": {
+        "name": "Line",
+        "description": ""
+      },
+      "remote": {
+        "name": "Remote",
+        "description": ""
+      },
+      "sphere": {
+        "name": "Sphere",
+        "description": ""
+      },
+      "touch": {
+        "name": "Touch",
+        "description": ""
+      }
+    },
     "BeingTypes": {
       "humanlike": "Humanlike",
       "fae": "Fae",
@@ -124,7 +162,7 @@
     "StatusConditions": {
       "berserk": {
         "name": "Berserk",
-        "description": "Can't take the Cast Action or Focus, it can’t be Frightened, and it doesn’t make Morale Checks."
+        "description": "Can't take the Cast Action or Focus, it can't be Frightened, and it doesn't make Morale Checks."
       },
       "blinded": {
         "name": "Blinded",
@@ -140,7 +178,7 @@
       },
       "confused": {
         "name": "Confused",
-        "description": "Its Checks and SAves have Hinder, and Saves against its Actions have Favor."
+        "description": "Its Checks and Saves have Hinder, and Saves against its Actions have Favor."
       },
       "dazed": {
         "name": "Dazed",
