@@ -39,17 +39,18 @@ export abstract class VagabondLiteActorSheet extends foundry.applications.api.Ha
             const reactRootElem = this.element.appendChild(document.createElement('div'))
             this._reactRoot = ReactDom.createRoot(reactRootElem)
         }
-        this._reactRoot!.render(<this.Component {...this.getReactProps()} />)
+
+        this.renderWithWrappers({ theme: this._getTheme() })
     }
+
+    _getTheme() { return (game.settings as any).get("core", "uiConfig").colorScheme.applications }
 
     _updatePosition(position) {
         const minWidth = 360
         const { width, height } = position
         const realWidth = width === "auto" ? width : Math.max(minWidth, width)
-        this._reactRoot!.render(<DimensionsContext.Provider value={{ width: realWidth, height }}>
-            <this.Component {...this.getReactProps()} width={width} height={height} />
-        </DimensionsContext.Provider>
-        )
+
+        this.renderWithWrappers({ width: realWidth, height, theme: this._getTheme() })
 
         return super._updatePosition({ ...position, width: realWidth })
     }
@@ -57,6 +58,16 @@ export abstract class VagabondLiteActorSheet extends foundry.applications.api.Ha
     protected _onClose(options) {
         super._onClose(options)
         this._reactRoot = null
+    }
+
+    renderWithWrappers({ width = 1, height = 1, theme = "light" }: { width?: number, height?: number, theme: string }) {
+        this._reactRoot!.render(
+            <DimensionsContext.Provider value={{ width, height }}>
+                <div className={`theme-${theme}`}>
+                    <this.Component {...this.getReactProps()} width={width} height={height} />
+                </div>
+            </DimensionsContext.Provider>
+        );
     }
 
     getReactProps() { return { actor: this.actor } }
