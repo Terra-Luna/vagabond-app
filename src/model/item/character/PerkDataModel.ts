@@ -23,7 +23,7 @@ const perkSchema = () => {
 
 export type PerkSchema = ReturnType<typeof perkSchema> & BaseItemSchema
 
-export default class PerkDataModel<T extends PerkSchema> extends ItemDataModel<T> {
+export default class PerkDataModel extends ItemDataModel<PerkSchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),
@@ -42,9 +42,9 @@ export function setPerkSlots(hero: HeroDataModel) {
     hero.perkData.perkSlots = Math.floor((level - 1) / 2) + slotBonus
 }
 
-export function addPerk(hero: HeroDataModel, perk: PerkDataModel<PerkSchema>) {
+export function addPerk(hero: HeroDataModel, perk: PerkDataModel) {
     const perks = hero.perkData.perks
-    const isNotSelected = perks.find(it => (it as PerkDataModel<PerkSchema>).parent.name == perk.parent.name) == null
+    const isNotSelected = perks.find(it => (it as PerkDataModel).parent.name == perk.parent.name) == null
     if (perks.length < hero.perkData.perkSlots! && isNotSelected) {
         hero.perkData.perks.push(perk)
     }

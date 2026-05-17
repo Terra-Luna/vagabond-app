@@ -27,7 +27,7 @@ const classSchema = () => {
 
 export type ClassSchema = ReturnType<typeof classSchema> & BaseItemSchema
 
-export default class ClassDataModel<T extends ClassSchema> extends ItemDataModel<T> {
+export default class ClassDataModel extends ItemDataModel<ClassSchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),

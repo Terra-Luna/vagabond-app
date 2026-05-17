@@ -15,6 +15,8 @@ import VagabondLiteHeroSheet from "./view/sheets/hero/VagabondLiteHeroSheet"
 import '../public/styles/vagabond-lite.css'
 import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
 import ContainerDataModel from "./model/item/equip/ContainerDataModel"
+import { VgLiteItemSheet } from "./view/sheets/item/VgLiteItemSheet"
+import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
 
 Hooks.once("init", () => {
     Object.assign(
@@ -40,5 +42,10 @@ Hooks.once("init", () => {
 // register sheets
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', VagabondLiteHeroSheet, {
     types: ['hero'],
-    makeDefault: true,
+    makeDefault: true
+})
+
+foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
+    types: ['perk'],
+    makeDefault: true
 })

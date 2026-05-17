@@ -12,7 +12,7 @@ export const starterPackSchema = () => {
 
 export type StarterPackSchema = ReturnType<typeof starterPackSchema> & BaseItemSchema
 
-export default class StarterPackDataModel<T extends StarterPackSchema> extends ItemDataModel<T> {
+export default class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

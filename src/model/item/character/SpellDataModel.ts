@@ -27,7 +27,7 @@ const spellSchema = () => {
 
 export type SpellSchema = ReturnType<typeof spellSchema> & BaseItemSchema
 
-export default class SpellDataModel<T extends SpellSchema> extends ItemDataModel<T> {
+export default class SpellDataModel extends ItemDataModel<SpellSchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),
@@ -41,10 +41,10 @@ export default class SpellDataModel<T extends SpellSchema> extends ItemDataModel
     }
 }
 
-export function addSpell(hero: HeroDataModel, spell: SpellDataModel<SpellSchema>) {
+export function addSpell(hero: HeroDataModel, spell: SpellDataModel) {
     const preppedSpells = hero.class.spellcasting.spells
     const spellSlots = hero.class.spellcasting.spellSlots || 0
-    const isNotPrepped = preppedSpells.find(it => (it as SpellDataModel<SpellSchema>).parent.name === spell.parent.name) == null
+    const isNotPrepped = preppedSpells.find(it => (it as SpellDataModel).parent.name === spell.parent.name) == null
     if (preppedSpells.length < spellSlots && isNotPrepped) {
         hero.class.spellcasting.spells.push(spell)
     }

@@ -21,7 +21,7 @@ const ancestrySchema = () => {
 
 export type AncestrySchema = ReturnType<typeof ancestrySchema> & BaseItemSchema
 
-export default class AncestryDataModel<T extends AncestrySchema> extends ItemDataModel<T> {
+export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),

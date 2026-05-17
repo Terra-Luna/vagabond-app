@@ -13,7 +13,7 @@ const sundrySchema = () => {
 
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema
 
-export default class SundryDataModel<T extends SundrySchema> extends EquipmentDataModel<T> {
+export default class SundryDataModel extends EquipmentDataModel<SundrySchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),
