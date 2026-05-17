@@ -53,11 +53,17 @@
   grid-column: span 12;
 }
 
-.theme-light svg.vglite-hp {
+.theme-light .vglite-hp {
   border-color: #e7000b;
   color: #e7000b;
   fill: #e7000b;
 }
+.vglite-armor {
+  margin-left: 20px;
+  color: #a6a09b;
+  fill: #57534d;
+}
+
 .vglite-container {
   background-color: #1c1917;
 }
@@ -141,12 +147,6 @@
 }
 .vglite-hp .max {
   color: #ff6467;
-}
-
-.vglite-armor {
-  margin-left: 20px;
-  color: #a6a09b;
-  fill: #57534d;
 }
 
 @font-face {

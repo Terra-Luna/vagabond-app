@@ -1,9 +1,15 @@
 @use "./_theme";
 
-svg.vglite-hp {
+.vglite-hp {
     @include theme.themify() {
             border-color: theme.themed('hp-icon-color');
             color: theme.themed('hp-icon-color');
             fill: theme.themed('hp-icon-color');
         }
+}
+
+.vglite-armor {
+    margin-left: 20px;
+    color: theme.$tertiary-color;
+    fill: theme.$fill-other;
 }
