@@ -54,16 +54,10 @@
 }
 
 .theme-light svg.vglite-hp {
-  border-color: theme("hp-icon-color");
-  color: theme("hp-icon-color");
-  fill: theme("hp-icon-color");
+  border-color: #e7000b;
+  color: #e7000b;
+  fill: #e7000b;
 }
-.theme-dark svg.vglite-hp {
-  border-color: theme("hp-icon-color");
-  color: theme("hp-icon-color");
-  fill: theme("hp-icon-color");
-}
-
 .vglite-container {
   background-color: #1c1917;
 }

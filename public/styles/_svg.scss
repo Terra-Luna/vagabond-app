@@ -1,9 +1,9 @@
 @use "./_theme";
 
 svg.vglite-hp {
-    @include theme.themify(theme.$themes) {
-            border-color: theme('hp-icon-color');
-            color: theme('hp-icon-color');
-            fill: theme('hp-icon-color');
+    @include theme.themify() {
+            border-color: theme.themed('hp-icon-color');
+            color: theme.themed('hp-icon-color');
+            fill: theme.themed('hp-icon-color');
         }
 }

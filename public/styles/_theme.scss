@@ -62,7 +62,7 @@ $themes: (
     )
 );
 
-@mixin themify($themes: $themes ) {
+@mixin themify() {
     @each $theme, $map in $themes {
 
         .theme-#{$theme} & {
