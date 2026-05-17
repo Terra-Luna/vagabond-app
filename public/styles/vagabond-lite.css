@@ -53,10 +53,15 @@
   grid-column: span 12;
 }
 
-svg.vglite-hp {
-  border-color: #e7000b;
-  color: #e7000b;
-  fill: #e7000b;
+.theme-light svg.vglite-hp {
+  border-color: theme("hp-icon-color");
+  color: theme("hp-icon-color");
+  fill: theme("hp-icon-color");
+}
+.theme-dark svg.vglite-hp {
+  border-color: theme("hp-icon-color");
+  color: theme("hp-icon-color");
+  fill: theme("hp-icon-color");
 }
 
 .vglite-container {
@@ -72,7 +77,7 @@ svg.vglite-hp {
 .vglite-header {
   display: flex;
   width: 100%;
-  background-color: #c5b358;
+  background-color: var(--text-primary-color);
   align-items: center;
 }
 .vglite-header h1 {
@@ -97,7 +102,7 @@ svg.vglite-hp {
 .vglite-char-sheet-header {
   padding: 10px;
   background-color: #1c1917;
-  color: #c5b358;
+  color: var(--text-primary-color);
   font-family: "Eskapade";
   font-weight: bolder;
   font-size: 36px;

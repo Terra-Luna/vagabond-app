@@ -1,4 +1,4 @@
-$primary-color: #c5b358;
+$primary-color: var(--text-primary-color);
 $secondary-color: #d6d3d1;
 $tertiary-color: #a6a09b;
 $fill-heavy: #1c1917;
@@ -6,3 +6,81 @@ $fill-light: #0c0a09;
 $fill-other: #57534d;
 $hp-color: #e7000b;
 $hp-light: #ff6467;
+$luck-color: #00c950;
+$studied-color: #00bbdb;
+$mana-color: #2b7fff;
+
+$themes: (
+    light: (title-font-family: "Escapade",
+        body-font-family: "Paradigm",
+
+        text-primary-color: #ffffff,
+        text-secondary-color: #44403b,
+        text-tertiary-color: #79716b,
+        text-aux-color: #57534d,
+        text-card-category-color: #c5b358,
+        text-highlight-color: #292524,
+
+        fill-portrait-bg: #00000000,
+        fill-light-color: #ffffff,
+        fill-medium-color: #e7e5e4,
+        fill-heavy-color: #ffffff,
+        fill-header-color: #0c0a09,
+        fill-header-line-color: #e7e5e4,
+
+        tab-active-color: #0c0a09,
+        tab-inactive-color: #9d9c9c,
+
+        scroll-bar-handle-color: #cdcdcd,
+        scroll-bar-track-color: #f0f0f0,
+
+        hp-icon-color: #e7000b,
+        hp-current-color: #e7000b,
+        hp-max-color: #9f0712,
+        luck-color: #00a63e,
+        studied-color: #0092b8,
+        mana-color: #155dfc,
+        ic-inactive-color: #d6d3d1,
+        weapon-dmg-color: #e7000b,
+        destructive-action-color: #f72b35,
+    ),
+    dark: (text-primary-color: #c5b358,
+        text-secondary-color: #c3c0be,
+        text-tertiary-color: #8a8580,
+        text-aux-color: #a6a09b,
+        text-card-category-color: #292524,
+        text-highlight-color: #c5b358,
+        fill-light-color: #292524,
+        fill-medium-color: #44403c,
+        fill-heavy-color: #1c1917,
+        fill-header-color: #c5b358,
+        fill-header-line-color: #e7e5e4,
+        scroll-bar-handle-color: #787677,
+        scroll-bar-track-color: #221f21,
+        hp-max-color: #ff6467,
+        weapon-dmg-color: #ff6467,
+    )
+);
+
+@mixin themify($themes: $themes ) {
+    @each $theme, $map in $themes {
+
+        .theme-#{$theme} & {
+            $theme-map: (
+                ) !global;
+
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), '#{$key}'
+                );
+            $theme-map: map-merge($theme-map, ($key: $value)) !global;
+        }
+
+        @content;
+        $theme-map: null !global;
+    }
+}
+}
+
+@function themed($key ) {
+    @return map-get($theme-map, $key );
+}

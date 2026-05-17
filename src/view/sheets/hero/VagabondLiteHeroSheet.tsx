@@ -29,7 +29,7 @@ const MyReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel> }) => 
                     content: `<h3>Rolling: 2d12</h3><br><p>${results[0].result} + ${results[1].result} = ${roll._total}`,
                     rolls: [roll]
                 })
-            }}>Roll 2d12</button>
+            }}>Click me!</button>
         </div>
     )
 }
