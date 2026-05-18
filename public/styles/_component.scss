@@ -59,7 +59,10 @@
 .vglite-hero-sheet-header {
     @include theme.themify() {
         background-color: theme.themed('fill-heavy');
-
+        height: fit-content;
+        box-sizing: border-box;
+        padding: 8px;
+        
         .name {
             font-family: theme.themed('text-title-font');
             color: theme.themed('text-primary');
@@ -67,20 +70,19 @@
             font-weight: theme.themed('text-title-font-weight');
         }
 
-        .level {
+        .menu-button > button {
+            
+            float: right;
+        }
+
+        .descriptor {
             font-family: theme.themed('text-body-font');
-            color: theme.themed('text-primary');
-            font-size: 18px;
+            color: theme.themed('text-secondary');
+            font-size: 14px;
             font-weight: normal;
-            flex: 1;
-            padding-bottom: 5px;
-
+            display: inline-block;
             .vglite-dot {
-                color: theme.themed('text-tertiary');
-            }
-
-            span {
-                padding-right: 3px;
+                color: theme.themed('text-secondary');
             }
         }
 
@@ -88,9 +90,8 @@
             color: theme.themed('text-tertiary');
             font-weight: normal;
             font-size: 16px;
-            span {
-                padding-right: 3px;
-            }
+            float: right;
+            padding-right: 8px;
         }
     }
 }

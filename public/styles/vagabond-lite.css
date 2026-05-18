@@ -150,6 +150,9 @@
 
 .theme-light .vglite-hero-sheet-header {
   background-color: #ffffff;
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 8px;
 }
 .theme-light .vglite-hero-sheet-header .name {
   font-family: "Eskapade";
@@ -157,55 +160,54 @@
   font-size: 32px;
   font-weight: bolder;
 }
-.theme-light .vglite-hero-sheet-header .level {
+.theme-light .vglite-hero-sheet-header .menu-button > button {
+  float: right;
+}
+.theme-light .vglite-hero-sheet-header .descriptor {
   font-family: "Paradigm";
-  color: #ffffff;
-  font-size: 18px;
+  color: #44403b;
+  font-size: 14px;
   font-weight: normal;
-  flex: 1;
-  padding-bottom: 5px;
+  display: inline-block;
 }
-.theme-light .vglite-hero-sheet-header .level .vglite-dot {
-  color: #79716b;
-}
-.theme-light .vglite-hero-sheet-header .level span {
-  padding-right: 3px;
+.theme-light .vglite-hero-sheet-header .descriptor .vglite-dot {
+  color: #44403b;
 }
 .theme-light .vglite-hero-sheet-header .xp {
   color: #79716b;
   font-weight: normal;
   font-size: 16px;
-}
-.theme-light .vglite-hero-sheet-header .xp span {
-  padding-right: 3px;
+  float: right;
+  padding-right: 8px;
 }
 .theme-dark .vglite-hero-sheet-header {
   background-color: #1c1917;
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 8px;
 }
 .theme-dark .vglite-hero-sheet-header .name {
   color: #c5b358;
   font-size: 32px;
 }
-.theme-dark .vglite-hero-sheet-header .level {
-  color: #c5b358;
-  font-size: 18px;
+.theme-dark .vglite-hero-sheet-header .menu-button > button {
+  float: right;
+}
+.theme-dark .vglite-hero-sheet-header .descriptor {
+  color: #c3c0be;
+  font-size: 14px;
   font-weight: normal;
-  flex: 1;
-  padding-bottom: 5px;
+  display: inline-block;
 }
-.theme-dark .vglite-hero-sheet-header .level .vglite-dot {
-  color: #8a8580;
-}
-.theme-dark .vglite-hero-sheet-header .level span {
-  padding-right: 3px;
+.theme-dark .vglite-hero-sheet-header .descriptor .vglite-dot {
+  color: #c3c0be;
 }
 .theme-dark .vglite-hero-sheet-header .xp {
   color: #8a8580;
   font-weight: normal;
   font-size: 16px;
-}
-.theme-dark .vglite-hero-sheet-header .xp span {
-  padding-right: 3px;
+  float: right;
+  padding-right: 8px;
 }
 
 .vglite-thumbnail {

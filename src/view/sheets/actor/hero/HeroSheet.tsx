@@ -1,7 +1,7 @@
 import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { FoundryActor, updateActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
-import lang from "../../../../../public/lang/en.json" // TODO: correct language import
+import lang from "../../../../../public/lang/en.json"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -36,8 +36,8 @@ const HeroSheetReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel>
 const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
     return <div className="vglite-hero-sheet-header">
         <div className="name">{hero.parent.name}</div>
-        <div className="container">
-        <div className="level">
+        <div className="menu-button">
+        <div className="descriptor">
             <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                 <span className="vglite-dot"> • </span>
                 <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry.description || lang.VGLITE.AncestryTypes.human, class: hero.class.description || "Vagabond" })}</span>

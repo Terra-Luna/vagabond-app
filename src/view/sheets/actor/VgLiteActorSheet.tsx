@@ -22,8 +22,8 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
 
     static DEFAULT_OPTIONS = {
         position: {
-            width: 'auto',
-            height: 'auto'
+            width: 420,
+            height: 800
         },
         window: {
             resizable: true
@@ -48,9 +48,10 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
     }
 
     _updatePosition(position) {
-        const minWidth = 360
+        const minWidth = 420
+        const minHeight = 500
         const { width, height } = position
-        const realWidth = width === "auto" ? width : Math.max(minWidth, width)
+        const realWidth = width === "auto" ? width : Math.max(minWidth, minHeight)
 
         this.renderWithWrappers({ width: realWidth, height, theme: this._getTheme() })
 
