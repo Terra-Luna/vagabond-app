@@ -1,3 +1,4 @@
+import '../public/styles/vagabond-lite.css'
 import AlchemicalItemDataModel from "./model/item/equip/AlchemicalItemDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
@@ -10,12 +11,9 @@ import SpellDataModel from "./model/item/character/SpellDataModel"
 import PerkDataModel from "./model/item/character/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
 import ToolDataModel from "./model/item/equip/ToolDataModel"
-import VagabondLiteHeroSheet from "./view/sheets/hero/VagabondLiteHeroSheet"
-
-import '../public/styles/vagabond-lite.css'
+import HeroSheet from "./view/sheets/actor/hero/HeroSheet"
 import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
 import ContainerDataModel from "./model/item/equip/ContainerDataModel"
-import { VgLiteItemSheet } from "./view/sheets/item/VgLiteItemSheet"
 import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
 
 Hooks.once("init", () => {
@@ -40,7 +38,7 @@ Hooks.once("init", () => {
 })
 
 // register sheets
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', VagabondLiteHeroSheet, {
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
     makeDefault: true
 })

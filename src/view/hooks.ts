@@ -1,6 +1,6 @@
-import { useDimensions } from "./context/DimensionsContext";
+import { useDimensions } from "./context/DimensionsContext"
 
-const BREAKPOINT = 600;
+const BREAKPOINT = 600
 
 interface UseBreakpointsArgs {
     sm?: number;

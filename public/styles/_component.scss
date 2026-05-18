@@ -3,31 +3,39 @@
 @use "./_svg";
 
 .vglite-container {
-    background-color: theme.$fill-heavy;
+    @include theme.themify() {
+        background-color:theme.themed('fill-medium');
+    }
 }
 
 .vglite-text {
-    font-size: 36px;
+    font-size: 32px;
     font-family: 'Eskapade';
-    color: theme.$secondary-color;
+    @include theme.themify() {
+        color:theme.themed('text-primary');
+    }
 }
 
 .vglite-header {
     display: flex;
     width: 100%;
-    background-color: theme.$primary-color;
+    @include theme.themify() {
+        background-color:theme.themed('fill-header');
+    }
     align-items: center;
-
     h1 {
-        color: theme.$fill-light;
+        @include theme.themify() {
+            color:theme.themed('text-secondary');
+        }
         text-align: center;
         font-family: 'Eskapade';
         position: relative;
         bottom: 5px;
     }
-
     .vglite-divider {
-        color: theme.$fill-light;
+        @include theme.themify() {
+            color:theme.themed('fill-medium');
+        }
         flex: 1;
         height: 1px;
         margin-right: 5px;
@@ -36,40 +44,53 @@
 }
 
 .vglite-divider {
-    background-color: theme.$fill-light;
+    @include theme.themify() {
+        background-color:theme.themed('fill-light');
+    }
 }
 
-.vglite-char-sheet-header {
-    padding: 10px;
-    background-color: theme.$fill-heavy;
-    color: theme.$primary-color;
-    font-family: 'Eskapade';
-    font-weight: bolder;
-    font-size: 36px;
-
-    .level {
-        color: theme.$secondary-color;
-        font-weight: normal;
-        font-size: 18px;
-        flex: 1;
-        padding-bottom: 5px;
-
-        .vglite-dot {
-            color: theme.$tertiary-color;
-        }
-
-        span {
-            padding-right: 3px;
-        }
+.vglite-hero-sheet {
+    padding: 8px;
+    @include theme.themify() {
+        background-color:theme.themed('fill-light');
     }
+}
 
-    .xp {
-        color: theme.$tertiary-color;
-        font-weight: normal;
-        font-size: 16px;
+.vglite-hero-sheet-header {
+    @include theme.themify() {
+        background-color: theme.themed('fill-heavy');
 
-        span {
-            padding-right: 3px;
+        .name {
+            font-family: theme.themed('text-title-font');
+            color: theme.themed('text-primary');
+            font-size: 32px;
+            font-weight: theme.themed('text-title-font-weight');
+        }
+
+        .level {
+            font-family: theme.themed('text-body-font');
+            color: theme.themed('text-primary');
+            font-size: 18px;
+            font-weight: normal;
+            flex: 1;
+            padding-bottom: 5px;
+
+            .vglite-dot {
+                color: theme.themed('text-tertiary');
+            }
+
+            span {
+                padding-right: 3px;
+            }
+        }
+
+        .xp {
+            color: theme.themed('text-tertiary');
+            font-weight: normal;
+            font-size: 16px;
+            span {
+                padding-right: 3px;
+            }
         }
     }
 }
@@ -77,19 +98,23 @@
 .vglite-thumbnail {
     height: 200px;
     width: 200px;
-    background-color: theme.$fill-light;
+    @include theme.themify() {
+        background-color:theme.themed('fill-portrait-bg');
+    }
 }
 
 .vglite-hp {
     font-family: 'Eskapade';
     font-size: 36px;
-    .current {
-        color: theme.$hp-color;
-    }
-    .slash {
-        color: theme.$tertiary-color;
-    }
-    .max {
-        color: theme.$hp-light;
+    @include theme.themify() {
+        .current {
+            color:theme.themed('hp-current');
+        }
+        .slash {
+            color:theme.themed('text-tertiary');
+        }
+        .max {
+            color:theme.themed('hp-max');
+        }
     }
 }

@@ -1,12 +1,12 @@
-import VgLiteError from "../model/common/VgLiteError";
+import VgLiteError from "../model/common/VgLiteError"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
     // find all {{var}} instances
-    const processRegexp = localeString.matchAll(/{{(.*?)}}/g);
-    const varsFound = new Set<string>();
+    const processRegexp = localeString.matchAll(/{{(.*?)}}/g)
+    const varsFound = new Set<string>()
     for (const match of processRegexp) {
-        const [_, capture] = match; // "capture" like regex capture group
-        varsFound.add(capture);
+        const [_, capture] = match // "capture" like regex capture group
+        varsFound.add(capture)
     }
 
     let localizedString = localeString
@@ -14,7 +14,7 @@ export const localizeString = (localeString: string, args: Record<string, string
     varsFound.forEach(variable => {
         const arg = args[variable]
         if (arg) {
-            localizedString = localizedString.replace(`{{${variable}}}`, arg);
+            localizedString = localizedString.replace(`{{${variable}}}`, arg)
         }
         else {
             // error checking: each var found should have a matching argument given

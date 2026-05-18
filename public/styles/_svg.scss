@@ -2,14 +2,16 @@
 
 .vglite-hp {
     @include theme.themify() {
-            border-color: theme.themed('hp-icon-color');
-            color: theme.themed('hp-icon-color');
-            fill: theme.themed('hp-icon-color');
-        }
+        border-color: themed('hp-icon');
+        color: themed('hp-icon');
+        fill: themed('hp-icon');
+    }
 }
 
 .vglite-armor {
-    margin-left: 20px;
-    color: theme.$tertiary-color;
-    fill: theme.$fill-other;
+    @include theme.themify() {
+        margin-left: 20px;
+        color: themed('text-tertiary');
+        fill: themed('fill-medium');
+    }
 }

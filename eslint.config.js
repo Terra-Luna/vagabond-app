@@ -6,7 +6,7 @@ import simpleImportSort from "eslint-plugin-simple-import-sort"
 export default defineConfig([
     {
         files: ["**/*.ts"],
-        ignores: ["./test/**", "jest**"],
+        ignores: ["./test/**", "jest**", "*.scss"],
         languageOptions: {
             parser: tsParser,
         },

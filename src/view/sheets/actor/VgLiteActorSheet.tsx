@@ -1,7 +1,7 @@
 const { api, sheets } = foundry.applications;
 import ReactDom from "react-dom/client"
-import ActorDataModel, { BaseActorSchema } from "../../model/actor/ActorDataModel";
-import { DimensionsContext } from "../context/DimensionsContext";
+import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel";
+import { DimensionsContext } from "../../context/DimensionsContext";
 
 export const updateActor = async <T extends ActorDataModel<any>>(actor: { system: T, update: any }, update: Partial<Record<keyof T, any>>) => {
     const updates = {}
@@ -17,13 +17,13 @@ export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {
 }
 
 // @ts-expect-error
-export abstract class VagabondLiteActorSheet extends foundry.applications.api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
+export abstract class VgLiteActorSheet extends foundry.applications.api.HandlebarsApplicationMixin(sheets.ActorSheetV2) {
     _reactRoot: ReactDom.Root | null = null
 
     static DEFAULT_OPTIONS = {
         position: {
             width: 'auto',
-            height: 'auto',
+            height: 'auto'
         },
         window: {
             resizable: true
@@ -43,7 +43,9 @@ export abstract class VagabondLiteActorSheet extends foundry.applications.api.Ha
         this.renderWithWrappers({ theme: this._getTheme() })
     }
 
-    _getTheme() { return (game.settings as any).get("core", "uiConfig").colorScheme.applications }
+    _getTheme() {
+        return (game.settings as any).get("core", "uiConfig").colorScheme.applications
+    }
 
     _updatePosition(position) {
         const minWidth = 360
