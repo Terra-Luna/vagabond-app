@@ -2,7 +2,7 @@
  * Use the available update functions for each delivery type
  * to have manaCost automatically updated.
  */
-abstract class SpellDelivery {
+export abstract class SpellDelivery {
     abstract _baseManaCost: number
     _isDmgOrEffOnly = true
     _upcast = 0

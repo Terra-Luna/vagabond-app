@@ -188,8 +188,6 @@
 .vglite-hero-sheet-header .xp {
   font-weight: normal;
   font-size: 16px;
-  float: right;
-  padding-right: 8px;
 }
 
 .vglite-thumbnail {
@@ -216,6 +214,30 @@
   color: #ff6467;
 }
 
+.float-right {
+  float: right;
+  margin-right: 8px;
+}
+
+.vglite-menu {
+  border-width: 0.5px;
+  border-style: solid;
+  border-radius: 2px;
+  margin-top: 4px;
+  color: inherit !important;
+  --button-hover-background-color: #79716b;
+}
+.theme-light .vglite-menu {
+  border-color: rgb(238, 238, 237);
+}
+.theme-dark .vglite-menu {
+  border-color: #c5b358;
+}
+
+.theme-light .vglite-heart-icon {
+  color: #e7000b;
+  fill: #e7000b;
+}
 @font-face {
   font-family: "Eskapade";
   src: url("../assets/fonts/eskapade-black.ttf") format("truetype");

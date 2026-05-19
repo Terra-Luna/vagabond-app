@@ -1,7 +1,11 @@
 import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { FoundryActor, updateActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
+import { Heart, Menu } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
+import { IconButton } from "../../../component/IconButton"
+import { useCallback, useRef, useState } from "react"
+import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -18,8 +22,8 @@ const HeroSheetReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel>
             <HeroSheetTabbedSection hero={hero} />
 
             <button onClick={async () => {
-                updateActor(actor, { health: { current: actor.system.health.current! += 1 }})
-                updateActor(actor, { class: { spellcasting: { castSkill: 'mysticism'}}})
+                updateActor(actor, { health: { current: actor.system.health.current! += 1 } })
+                updateActor(actor, { class: { spellcasting: { castSkill: 'mysticism' } } })
                 let roll = await new Roll('2d12').evaluate()
                 let results = (roll.terms[0] as any).results
                 console.log(results)
@@ -34,33 +38,50 @@ const HeroSheetReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel>
 }
 
 const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
-    return <div className="vglite-hero-sheet-header">
-        <div className="name">{hero.parent.name}</div>
-        <div className="menu-button">
-        <div className="descriptor">
-            <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
+    const numberOfTimesClickedRef = useRef(0)
+    const deliveryRef = useRef<SpellDelivery>(null)
+
+    const [_, forceUpdate] = useState(false)
+
+    const openMenu = useCallback((event) => {
+        const didShift = event.shiftKey
+        numberOfTimesClickedRef.current += 1
+        alert(`you did${didShift ? '' : ' not'} hold shift! Number of times clicked: ${numberOfTimesClickedRef.current}`)
+        deliveryRef.current = new Sphere()
+        console.log({deliveryRef: deliveryRef.current})
+        forceUpdate(!_)
+    }, [numberOfTimesClickedRef, _])
+
+    return (
+        <div className="vglite-hero-sheet-header">
+            <div>{numberOfTimesClickedRef.current}</div>
+            <div className="name">
+                {hero.parent.name}
+                <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} /></div>
+            <div className="descriptor">
+                <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                 <span className="vglite-dot"> • </span>
                 <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry.description || lang.VGLITE.AncestryTypes.human, class: hero.class.description || "Vagabond" })}</span>
-        </div>
-        <div className="xp">
-            <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+            </div>
+            <div className="xp float-right">
+                <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
             </div>
         </div>
-    </div>
+    )
 }
 
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
-    return <div className="hero-sheet-upper-section">
-        <Avatar hero={hero} />
-        <HPDisplay health={hero.health} />
-        <ArmorDisplay armor={hero.armor} />
-    </div>
+    return (
+        <div className="hero-sheet-upper-section">
+            <Avatar hero={hero} />
+            <HPDisplay health={hero.health} />
+            <ArmorDisplay armor={hero.armor} />
+        </div>
+    )
 }
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
-    return <div className="hero-sheet-tabbed-section">
-
-    </div>
+    return <div className="hero-sheet-tabbed-section" />
 }
 
 const Avatar = ({ hero }: { hero: HeroDataModel }) => {
@@ -77,6 +98,7 @@ interface Health {
 const HPDisplay = ({ health }: { health: Health }) => {
     return (
         <div className="hero-hp">
+            <Heart className="vglite-heart-icon" size={24} />
             <span className="current">{health.current}</span>
             <span className="slash"> / </span>
             <span className="max">{health.max}</span>

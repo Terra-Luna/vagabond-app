@@ -105,8 +105,6 @@
 
         font-weight: normal;
         font-size: 16px;
-        float: right;
-        padding-right: 8px;
     }
 }
 
@@ -135,5 +133,38 @@
         .max {
             color: theme.themed('hp-max');
         }
+    }
+}
+
+.float-right {
+    float: right;
+    margin-right: 8px;
+}
+
+.vglite-menu {
+    border-width: 0.5px;
+    border-style: solid;
+    border-radius: 2px;
+    margin-top: 4px;
+    color: inherit !important;
+
+    --button-hover-background-color: #79716b;
+
+    @include theme.themify() {
+        border-color: theme.themed('header-primary');
+    }
+}
+
+.vglite-heart-icon {
+    // display: 'flex';
+    // padding: "10px";
+    // padding-left: "20px";
+    // align-items: center;
+    // gap: 6px;
+    // this was here when it was in main tab, might be helpful
+
+    @include theme.themify() {
+        color: theme.themed('hp-current');
+        fill: theme.themed('hp-current');
     }
 }
