@@ -48,16 +48,29 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
         numberOfTimesClickedRef.current += 1
         alert(`you did${didShift ? '' : ' not'} hold shift! Number of times clicked: ${numberOfTimesClickedRef.current}`)
         deliveryRef.current = new Sphere()
-        console.log({deliveryRef: deliveryRef.current})
+        console.log({ deliveryRef: deliveryRef.current })
         forceUpdate(!_)
     }, [numberOfTimesClickedRef, _])
+
+    const toggleTheme = useCallback(() => {
+        const curUiConfig = (game.settings as any).get("core", "uiConfig")
+        const curColorScheme = curUiConfig.colorScheme
+        const curTheme = curColorScheme.applications; // this semicolon is needed
+        (game.settings as any).set("core", "uiConfig", {
+            ...curUiConfig,
+            colorScheme: {
+                ...curColorScheme,
+                applications: curTheme === "dark" ? "light" : "dark"
+            }
+        })
+    }, [])
 
     return (
         <div className="vglite-hero-sheet-header">
             {/* <div>{numberOfTimesClickedRef.current}</div> */}
             <div className="name">
                 {hero.parent.name}
-                <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} /></div>
+                <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} onAuxClick={toggleTheme} /></div>
             <div className="descriptor">
                 <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                 <span className="vglite-dot"> • </span>
