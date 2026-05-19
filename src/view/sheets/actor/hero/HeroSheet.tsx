@@ -54,7 +54,7 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className="vglite-hero-sheet-header">
-            <div>{numberOfTimesClickedRef.current}</div>
+            {/* <div>{numberOfTimesClickedRef.current}</div> */}
             <div className="name">
                 {hero.parent.name}
                 <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} /></div>
