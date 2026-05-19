@@ -54,14 +54,14 @@
 }
 
 .theme-light .vglite-hp {
-  border-color: themed("hp-icon");
-  color: themed("hp-icon");
-  fill: themed("hp-icon");
+  border-color: themed("ic-hp");
+  color: themed("ic-hp");
+  fill: themed("ic-hp");
 }
 .theme-dark .vglite-hp {
-  border-color: themed("hp-icon");
-  color: themed("hp-icon");
-  fill: themed("hp-icon");
+  border-color: themed("ic-hp");
+  color: themed("ic-hp");
+  fill: themed("ic-hp");
 }
 
 .theme-light .vglite-armor {
@@ -75,29 +75,20 @@
   fill: themed("fill-medium");
 }
 
-.theme-light .vglite-container {
-  background-color: #e7e5e4;
-}
-.theme-dark .vglite-container {
-  background-color: #44403c;
-}
-
 .vglite-text {
   font-size: 32px;
   font-family: "Eskapade";
 }
 .theme-light .vglite-text {
-  color: #ffffff;
+  color: #1c1917;
 }
+.theme-dark .vglite-text {
+  color: #e7e5e4;
+}
+
 .vglite-header {
   display: flex;
   width: 100%;
-}
-.theme-light .vglite-header {
-  background-color: #0c0a09;
-}
-.theme-dark .vglite-header {
-  background-color: #c5b358;
 }
 .vglite-header {
   align-items: center;
@@ -105,17 +96,14 @@
 .theme-light .vglite-header h1 {
   color: #44403b;
 }
+.theme-dark .vglite-header h1 {
+  color: #a6a09b;
+}
 .vglite-header h1 {
   text-align: center;
   font-family: "Eskapade";
   position: relative;
   bottom: 5px;
-}
-.theme-light .vglite-header .vglite-divider {
-  color: #e7e5e4;
-}
-.theme-dark .vglite-header .vglite-divider {
-  color: #44403c;
 }
 .vglite-header .vglite-divider {
   flex: 1;
@@ -124,28 +112,14 @@
   margin-left: 5px;
 }
 
-.theme-light .vglite-divider {
-  background-color: #ffffff;
-}
-.theme-dark .vglite-divider {
-  background-color: #292524;
-}
-
 .vglite-hero-sheet {
   padding: 8px;
 }
-.theme-light .vglite-hero-sheet {
-  background-color: #ffffff;
-}
-.theme-dark .vglite-hero-sheet {
-  background-color: #292524;
-}
-
 .theme-light .vglite-hero-sheet-header {
-  background-color: rgb(106, 46, 42);
+  background-color: #6a2e2a;
 }
 .theme-dark .vglite-hero-sheet-header {
-  background-color: lab(9.03835% 1.15298 1.92955);
+  background-color: #1c1917;
 }
 .vglite-hero-sheet-header {
   font-weight: bolder;
@@ -157,13 +131,13 @@
   font-size: 32px;
 }
 .theme-light .vglite-hero-sheet-header .name {
-  color: rgb(238, 238, 237);
+  color: #eeeeed;
 }
 .theme-dark .vglite-hero-sheet-header .name {
   color: #c5b358;
 }
 .theme-light .vglite-hero-sheet-header .descriptor {
-  color: rgb(238, 238, 237);
+  color: #eeeeed;
 }
 .theme-dark .vglite-hero-sheet-header .descriptor {
   color: #c3c0be;
@@ -174,13 +148,13 @@
   display: inline-block;
 }
 .theme-light .vglite-hero-sheet-header .vglite-dot {
-  color: rgb(238, 238, 237);
+  color: #eeeeed;
 }
 .theme-dark .vglite-hero-sheet-header .vglite-dot {
   color: #c3c0be;
 }
 .theme-light .vglite-hero-sheet-header .xp {
-  color: rgb(238, 238, 237);
+  color: #e1dbd9;
 }
 .theme-dark .vglite-hero-sheet-header .xp {
   color: #8a8580;
@@ -197,6 +171,10 @@
 .theme-light .vglite-thumbnail {
   background-color: rgba(0, 0, 0, 0.1);
 }
+.theme-dark .vglite-thumbnail {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .vglite-hp {
   font-family: "Eskapade";
   font-size: 36px;
@@ -205,10 +183,16 @@
   color: #e7000b;
 }
 .theme-light .vglite-hp .slash {
-  color: #79716b;
+  color: #6f5e53;
 }
 .theme-light .vglite-hp .max {
   color: #9f0712;
+}
+.theme-dark .vglite-hp .current {
+  color: #e7000b;
+}
+.theme-dark .vglite-hp .slash {
+  color: #79716b;
 }
 .theme-dark .vglite-hp .max {
   color: #ff6467;
@@ -228,7 +212,7 @@
   --button-hover-background-color: #79716b;
 }
 .theme-light .vglite-menu {
-  border-color: rgb(238, 238, 237);
+  border-color: #eeeeed;
 }
 .theme-dark .vglite-menu {
   border-color: #c5b358;
@@ -238,6 +222,11 @@
   color: #e7000b;
   fill: #e7000b;
 }
+.theme-dark .vglite-heart-icon {
+  color: #e7000b;
+  fill: #e7000b;
+}
+
 @font-face {
   font-family: "Eskapade";
   src: url("../assets/fonts/eskapade-black.ttf") format("truetype");

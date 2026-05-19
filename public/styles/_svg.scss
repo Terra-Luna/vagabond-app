@@ -2,9 +2,9 @@
 
 .vglite-hp {
     @include theme.themify() {
-        border-color: themed('hp-icon');
-        color: themed('hp-icon');
-        fill: themed('hp-icon');
+        border-color: themed('ic-hp');
+        color: themed('ic-hp');
+        fill: themed('ic-hp');
     }
 }
 

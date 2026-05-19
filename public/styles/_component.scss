@@ -66,7 +66,7 @@
 
 .vglite-hero-sheet-header {
     @include theme.themify() {
-        background-color: theme.themed('sheet-header-color');
+        background-color: theme.themed('sheet-header-fill');
     }
 
     font-weight: bolder;
@@ -78,13 +78,13 @@
         font-size: 32px;
 
         @include theme.themify() {
-            color: theme.themed('header-primary');
+            color: theme.themed('text-header-primary');
         }
     }
 
     .descriptor {
         @include theme.themify() {
-            color: theme.themed('header-secondary');
+            color: theme.themed('text-header-secondary');
         }
 
         font-size: 14px;
@@ -94,13 +94,13 @@
 
     .vglite-dot {
         @include theme.themify() {
-            color: theme.themed('header-secondary');
+            color: theme.themed('text-header-secondary');
         }
     }
 
     .xp {
         @include theme.themify() {
-            color: theme.themed('header-tertiary');
+            color: theme.themed('text-header-tertiary');
         }
 
         font-weight: normal;
@@ -113,7 +113,7 @@
     width: 200px;
 
     @include theme.themify() {
-        background-color: theme.themed('fill-portrait-bg');
+        background-color: theme.themed('portrait-fill-bg');
     }
 }
 
@@ -123,7 +123,7 @@
 
     @include theme.themify() {
         .current {
-            color: theme.themed('hp-current');
+            color: theme.themed('text-hp-current');
         }
 
         .slash {
@@ -131,7 +131,7 @@
         }
 
         .max {
-            color: theme.themed('hp-max');
+            color: theme.themed('text-hp-max');
         }
     }
 }
@@ -151,7 +151,7 @@
     --button-hover-background-color: #79716b;
 
     @include theme.themify() {
-        border-color: theme.themed('header-primary');
+        border-color: theme.themed('text-header-primary');
     }
 }
 
@@ -164,7 +164,7 @@
     // this was here when it was in main tab, might be helpful
 
     @include theme.themify() {
-        color: theme.themed('hp-current');
-        fill: theme.themed('hp-current');
+        color: theme.themed('text-hp-current');
+        fill: theme.themed('text-hp-current');
     }
 }
