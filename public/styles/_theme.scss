@@ -1,67 +1,86 @@
+@use "sass:map";
+
 $themes: (
-    light: (
-        text-title-font: "Eskapade",
-        text-title-font-weight: bolder,
-        text-body-font: "Paradigm",
-        text-primary: #ffffff,
-        text-secondary: #44403b,
-        text-tertiary: #79716b,
-        text-aux: #57534d,
-        text-card-category: #c5b358,
-        text-highlight: #292524,
-        fill-portrait-bg: rgba(0,0,0,0.1),
-        fill-light: #ffffff,
-        fill-medium: #e7e5e4,
-        fill-heavy: #ffffff,
-        fill-header: #0c0a09,
-        fill-header-line: #e7e5e4,
-        tab-active: #0c0a09,
-        tab-inactive: #9d9c9c,
-        scroll-bar-handle: #cdcdcd,
-        scroll-bar-track: #f0f0f0,
-        hp-icon: #e7000b,
-        hp-current: #e7000b,
-        hp-max: #9f0712,
-        luck: #00a63e,
-        studied: #0092b8,
-        mana: #155dfc,
-        ic-inactive: #d6d3d1,
-        weapon-dmg: #e7000b,
-        destructive-action: #f72b35,
-    ),
-    dark: (
-        text-primary: #c5b358,
-        text-secondary: #c3c0be,
-        text-tertiary: #8a8580,
-        text-aux: #a6a09b,
-        text-card-category: #292524,
-        text-highlight: #c5b358,
-        fill-light: #292524,
-        fill-medium: #44403c,
-        fill-heavy: #1c1917,
-        fill-header: #c5b358,
-        fill-header-line: #e7e5e4,
-        scroll-bar-handle: #787677,
-        scroll-bar-track: #221f21,
-        hp-max: #ff6467,
-        weapon-dmg: #ff6467,
-    ),
+  light: (
+    sheet-header-color: rgb(106, 46, 42),
+    header-primary: rgb(238, 238, 237),
+    header-secondary: rgb(238, 238, 237),
+    header-tertiary: rgb(238, 238, 237),
+
+
+
+
+
+
+
+    text-primary: #ffffff,
+    text-secondary: #44403b,
+    text-tertiary: #79716b,
+    text-aux: #57534d,
+    text-card-category: #c5b358,
+    text-highlight: #292524,
+    fill-portrait-bg: rgba(0, 0, 0, 0.1),
+    fill-light: #ffffff,
+    fill-medium: #e7e5e4,
+    fill-heavy: #ffffff,
+    fill-header: #0c0a09,
+    fill-header-line: #e7e5e4,
+    tab-active: #0c0a09,
+    tab-inactive: #9d9c9c,
+    scroll-bar-handle: #cdcdcd,
+    scroll-bar-track: #f0f0f0,
+    hp-icon: #e7000b,
+    hp-current: #e7000b,
+    hp-max: #9f0712,
+    luck: #00a63e,
+    studied: #0092b8,
+    mana: #155dfc,
+    ic-inactive: #d6d3d1,
+    weapon-dmg: #e7000b,
+    destructive-action: #f72b35,
+  ),
+  dark: (
+    sheet-header-color: lab(9.03835 1.15298 1.92955),
+    header-primary: #c5b358,
+    header-secondary: #c3c0be,
+    header-tertiary: #8a8580,
+
+
+
+
+    
+    text-aux: #a6a09b,
+    text-card-category: #292524,
+    text-highlight: #c5b358,
+    fill-light: #292524,
+    fill-medium: #44403c,
+    fill-heavy: #1c1917,
+    fill-header: #c5b358,
+    fill-header-line: #e7e5e4,
+    scroll-bar-handle: #787677,
+    scroll-bar-track: #221f21,
+    hp-max: #ff6467,
+    weapon-dmg: #ff6467,
+  ),
 );
 
 @mixin themify() {
   @each $theme, $map in $themes {
 
     .theme-#{$theme} & {
-      $theme-map: () !global;
-      @each $key, $submap in $map {
-        $value: map-get(map-get($themes, $theme), '#{$key}');
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
-      }
+      $theme-map: (
+        ) !global;
 
-      @content;
-      $theme-map: null !global;
+      @each $key, $submap in $map {
+        $value: map.get(map-get($themes, $theme), '#{$key}'
+        );
+      $theme-map: map.merge($theme-map, ($key: $value)) !global;
     }
+
+    @content;
+    $theme-map: null !global;
   }
+}
 }
 
 @function themed($key) {

@@ -12,7 +12,7 @@ export default class HeroSheet extends VgLiteActorSheet {
 const HeroSheetReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel> }) => {
     const hero = actor.system;
     return (
-        <div id="hero-sheet-div" className="theme-dark">
+        <div id="hero-sheet-div">
             <HeroSheetHeader hero={hero} />
             <HeroSheetUpperSection hero={hero} />
             <HeroSheetTabbedSection hero={hero} />

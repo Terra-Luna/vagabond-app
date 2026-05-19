@@ -89,10 +89,6 @@
 .theme-light .vglite-text {
   color: #ffffff;
 }
-.theme-dark .vglite-text {
-  color: #c5b358;
-}
-
 .vglite-header {
   display: flex;
   width: 100%;
@@ -108,9 +104,6 @@
 }
 .theme-light .vglite-header h1 {
   color: #44403b;
-}
-.theme-dark .vglite-header h1 {
-  color: #c3c0be;
 }
 .vglite-header h1 {
   text-align: center;
@@ -149,61 +142,50 @@
 }
 
 .theme-light .vglite-hero-sheet-header {
-  background-color: #ffffff;
-  height: fit-content;
-  box-sizing: border-box;
-  padding: 8px;
-}
-.theme-light .vglite-hero-sheet-header .name {
-  font-family: "Eskapade";
-  color: #ffffff;
-  font-size: 32px;
-  font-weight: bolder;
-}
-.theme-light .vglite-hero-sheet-header .menu-button > button {
-  float: right;
-}
-.theme-light .vglite-hero-sheet-header .descriptor {
-  font-family: "Paradigm";
-  color: #44403b;
-  font-size: 14px;
-  font-weight: normal;
-  display: inline-block;
-}
-.theme-light .vglite-hero-sheet-header .descriptor .vglite-dot {
-  color: #44403b;
-}
-.theme-light .vglite-hero-sheet-header .xp {
-  color: #79716b;
-  font-weight: normal;
-  font-size: 16px;
-  float: right;
-  padding-right: 8px;
+  background-color: rgb(106, 46, 42);
 }
 .theme-dark .vglite-hero-sheet-header {
-  background-color: #1c1917;
+  background-color: lab(9.03835% 1.15298 1.92955);
+}
+.vglite-hero-sheet-header {
+  font-weight: bolder;
   height: fit-content;
   box-sizing: border-box;
   padding: 8px;
+}
+.vglite-hero-sheet-header .name {
+  font-size: 32px;
+}
+.theme-light .vglite-hero-sheet-header .name {
+  color: rgb(238, 238, 237);
 }
 .theme-dark .vglite-hero-sheet-header .name {
   color: #c5b358;
-  font-size: 32px;
 }
-.theme-dark .vglite-hero-sheet-header .menu-button > button {
-  float: right;
+.theme-light .vglite-hero-sheet-header .descriptor {
+  color: rgb(238, 238, 237);
 }
 .theme-dark .vglite-hero-sheet-header .descriptor {
   color: #c3c0be;
+}
+.vglite-hero-sheet-header .descriptor {
   font-size: 14px;
   font-weight: normal;
   display: inline-block;
 }
-.theme-dark .vglite-hero-sheet-header .descriptor .vglite-dot {
+.theme-light .vglite-hero-sheet-header .vglite-dot {
+  color: rgb(238, 238, 237);
+}
+.theme-dark .vglite-hero-sheet-header .vglite-dot {
   color: #c3c0be;
+}
+.theme-light .vglite-hero-sheet-header .xp {
+  color: rgb(238, 238, 237);
 }
 .theme-dark .vglite-hero-sheet-header .xp {
   color: #8a8580;
+}
+.vglite-hero-sheet-header .xp {
   font-weight: normal;
   font-size: 16px;
   float: right;
@@ -229,9 +211,6 @@
 }
 .theme-light .vglite-hp .max {
   color: #9f0712;
-}
-.theme-dark .vglite-hp .slash {
-  color: #8a8580;
 }
 .theme-dark .vglite-hp .max {
   color: #ff6467;
@@ -284,6 +263,13 @@
   src: url("../assets/fonts/paradigm-italic.otf") format("opentype");
   font-weight: normal;
   font-style: italic;
+}
+.vg-lite-root {
+  font-family: "Eskapade";
+}
+
+.vg-lite-body {
+  font-family: "Paradigm";
 }
 
 /*# sourceMappingURL=vagabond-lite.css.map */

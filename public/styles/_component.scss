@@ -4,38 +4,45 @@
 
 .vglite-container {
     @include theme.themify() {
-        background-color:theme.themed('fill-medium');
+        background-color: theme.themed('fill-medium');
     }
 }
 
 .vglite-text {
     font-size: 32px;
     font-family: 'Eskapade';
+
     @include theme.themify() {
-        color:theme.themed('text-primary');
+        color: theme.themed('text-primary');
     }
 }
 
 .vglite-header {
     display: flex;
     width: 100%;
+
     @include theme.themify() {
-        background-color:theme.themed('fill-header');
+        background-color: theme.themed('fill-header');
     }
+
     align-items: center;
+
     h1 {
         @include theme.themify() {
-            color:theme.themed('text-secondary');
+            color: theme.themed('text-secondary');
         }
+
         text-align: center;
         font-family: 'Eskapade';
         position: relative;
         bottom: 5px;
     }
+
     .vglite-divider {
         @include theme.themify() {
-            color:theme.themed('fill-medium');
+            color: theme.themed('fill-medium');
         }
+
         flex: 1;
         height: 1px;
         margin-right: 5px;
@@ -45,77 +52,88 @@
 
 .vglite-divider {
     @include theme.themify() {
-        background-color:theme.themed('fill-light');
+        background-color: theme.themed('fill-light');
     }
 }
 
 .vglite-hero-sheet {
     padding: 8px;
+
     @include theme.themify() {
-        background-color:theme.themed('fill-light');
+        background-color: theme.themed('fill-light');
     }
 }
 
 .vglite-hero-sheet-header {
     @include theme.themify() {
-        background-color: theme.themed('fill-heavy');
-        height: fit-content;
-        box-sizing: border-box;
-        padding: 8px;
-        
-        .name {
-            font-family: theme.themed('text-title-font');
-            color: theme.themed('text-primary');
-            font-size: 32px;
-            font-weight: theme.themed('text-title-font-weight');
+        background-color: theme.themed('sheet-header-color');
+    }
+
+    font-weight: bolder;
+    height: fit-content;
+    box-sizing: border-box;
+    padding: 8px;
+
+    .name {
+        font-size: 32px;
+
+        @include theme.themify() {
+            color: theme.themed('header-primary');
+        }
+    }
+
+    .descriptor {
+        @include theme.themify() {
+            color: theme.themed('header-secondary');
         }
 
-        .menu-button > button {
-            
-            float: right;
+        font-size: 14px;
+        font-weight: normal;
+        display: inline-block;
+    }
+
+    .vglite-dot {
+        @include theme.themify() {
+            color: theme.themed('header-secondary');
+        }
+    }
+
+    .xp {
+        @include theme.themify() {
+            color: theme.themed('header-tertiary');
         }
 
-        .descriptor {
-            font-family: theme.themed('text-body-font');
-            color: theme.themed('text-secondary');
-            font-size: 14px;
-            font-weight: normal;
-            display: inline-block;
-            .vglite-dot {
-                color: theme.themed('text-secondary');
-            }
-        }
-
-        .xp {
-            color: theme.themed('text-tertiary');
-            font-weight: normal;
-            font-size: 16px;
-            float: right;
-            padding-right: 8px;
-        }
+        font-weight: normal;
+        font-size: 16px;
+        float: right;
+        padding-right: 8px;
     }
 }
 
 .vglite-thumbnail {
     height: 200px;
     width: 200px;
+
     @include theme.themify() {
-        background-color:theme.themed('fill-portrait-bg');
+        background-color: theme.themed('fill-portrait-bg');
     }
 }
 
 .vglite-hp {
     font-family: 'Eskapade';
     font-size: 36px;
+
     @include theme.themify() {
         .current {
-            color:theme.themed('hp-current');
+            color: theme.themed('hp-current');
         }
+
         .slash {
-            color:theme.themed('text-tertiary');
+            color: theme.themed('text-tertiary');
         }
+
         .max {
-            color:theme.themed('hp-max');
+            color: theme.themed('hp-max');
         }
     }
 }

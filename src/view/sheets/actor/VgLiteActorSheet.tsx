@@ -26,7 +26,7 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
             height: 800
         },
         window: {
-            resizable: true
+            resizable: false
         }
     }
 
@@ -36,7 +36,9 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
             const defaultWindowContent = this.element.getElementsByClassName('window-content')?.[0]
             defaultWindowContent && this.element.removeChild(defaultWindowContent)
 
-            const reactRootElem = this.element.appendChild(document.createElement('div'))
+            const vgLiteDiv = document.createElement('div')
+            vgLiteDiv.setAttribute("class", "vg-lite-root")
+            const reactRootElem = this.element.appendChild(vgLiteDiv)
             this._reactRoot = ReactDom.createRoot(reactRootElem)
         }
 
@@ -44,6 +46,7 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
     }
 
     _getTheme() {
+        console.log((game.settings as any).get("core", "uiConfig").colorScheme.applications)
         return (game.settings as any).get("core", "uiConfig").colorScheme.applications
     }
 
@@ -51,11 +54,12 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
         const minWidth = 420
         const minHeight = 500
         const { width, height } = position
-        const realWidth = width === "auto" ? width : Math.max(minWidth, minHeight)
+        const realWidth = width === "auto" ? width : Math.max(minWidth, width)
+        const realHeight = height === "auto" ? height : Math.max(minHeight, height)
 
-        this.renderWithWrappers({ width: realWidth, height, theme: this._getTheme() })
+        this.renderWithWrappers({ width: realWidth, height: realHeight, theme: this._getTheme() })
 
-        return super._updatePosition({ ...position, width: realWidth })
+        return super._updatePosition({ ...position, width: realWidth, height: realHeight })
     }
 
     protected _onClose(options) {
