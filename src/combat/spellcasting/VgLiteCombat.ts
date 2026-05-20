@@ -3,10 +3,10 @@
  */
 export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     
-    // protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
-    //     this.updateSource({ turn: null })
-    //     return super._preCreate(data, options, user)
-    // }
+    protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
+        this.updateSource({ turn: null })
+        return super._preCreate(data, options, user)
+    }
 
     protected override _sortCombatants(a: VgLiteCombatant, b: VgLiteCombatant): number {
         const dc = b.disposition - a.disposition
@@ -20,81 +20,81 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
 
     override async startCombat(): Promise<this> {
         this._playCombatSound("startEncounter")
-        return super.startCombat()
-        // const data = { round: 1, turn: null }
-        // Hooks.callAll("combatStart", this, data)
-        // await this.resetActivations()
-        // await this.update(data)
-        // return this
+        //return super.startCombat()
+        const data = { round: 1, turn: null }
+        Hooks.callAll("combatStart", this, data)
+        await this.resetActivations()
+        await this.update(data)
+        return this
     }
 
-    // async resetActivations(): Promise<VgLiteCombatant[]> {
-    //     const updates = this.combatants.map(c => {
-    //         return {
-    //             _id: c.id,
-    //             "system.activations": {
-    //                 value: c.isDefeated ? 0 : 1,
-    //                 max: 1
-    //             }
-    //         }
-    //     })
-    //     return await this.updateEmbeddedDocuments("Combatant", updates)
-    // }
+    async resetActivations(): Promise<VgLiteCombatant[]> {
+        const updates = this.combatants.map(c => {
+            return {
+                _id: c.id,
+                "system.activations": {
+                    value: c.isDefeated ? 0 : 1,
+                    max: 1
+                }
+            }
+        })
+        return await this.updateEmbeddedDocuments("Combatant", updates)
+    }
 
-    // override async resetAll(): Promise<this> {
-    //     await this.resetActivations();
-    //     this.combatants.forEach(c => c.updateSource({ initiative: null }));
-    //     await this.update({ turn: null, combatants: this.combatants.toObject() }, { diff: false });
-    //     return this;
-    // }
+    override async resetAll(): Promise<this> {
+        await this.resetActivations();
+        this.combatants.forEach(c => c.updateSource({ initiative: null }));
+        await this.update({ turn: null, combatants: this.combatants.toObject() }, { diff: false });
+        return this;
+    }
 
-    // override async nextTurn(): Promise<this> {
-    //     const data = { turn: null }
-    //     const options = { advanceTime: 0, direction: 0 }
-    //     Hooks.callAll("combatTurn", this, data, options)
-    //     await this.update(data, options as any)
-    //     return thist
-    // }
+    override async nextTurn(): Promise<this> {
+        const data = { turn: null }
+        const options = { advanceTime: 0, direction: 0 }
+        Hooks.callAll("combatTurn", this, data, options)
+        await this.update(data, options as any)
+        return this
+    }
 
-    // override async previousTurn(): Promise<this> {
-    //     if (this.turn === null) {
-    //         return this
-    //     }
-    //     else {
-    //         const data = { turn: null }
-    //         const options = { advanceTime: -CONFIG.time.turnTime, direction: -1 }
-    //         Hooks.callAll("combatTurn", this, data, options)
-    //         await this.update(data, options as any)
-    //         return this
-    //     }
-    // }
+    override async previousTurn(): Promise<this> {
+        if (this.turn === null) {
+            return this
+        }
+        else {
+            const data = { turn: null }
+            const options = { advanceTime: -CONFIG.time.turnTime, direction: -1 }
+            Hooks.callAll("combatTurn", this, data, options)
+            await this.update(data, options as any)
+            return this
+        }
+    }
 
-    // override async nextRound(): Promise<this> {
-    //     await this.resetActivations();
-    //     const data = { round: this.round + 1, turn: null };
-    //     let advanceTime = Math.max(this.turns.length - (this.turn || 0), 0) * CONFIG.time.turnTime;
-    //     advanceTime += CONFIG.time.roundTime;
-    //     const options = { advanceTime, direction: 1 };
-    //     Hooks.callAll("combatRound", this, data, options);
-    //     await this.update(data, options as any);
-    //     return this;
-    // }
+    override async nextRound(): Promise<this> {
+        await this.resetActivations();
+        const data = { round: this.round + 1, turn: null };
+        let advanceTime = Math.max(this.turns.length - (this.turn || 0), 0) * CONFIG.time.turnTime;
+        advanceTime += CONFIG.time.roundTime;
+        const options = { advanceTime, direction: 1 };
+        Hooks.callAll("combatRound", this, data, options);
+        await this.update(data, options as any);
+        return this;
+    }
 
-    // override async previousRound(): Promise<this> {
-    //     await this.resetActivations()
-    //     const round = Math.max(this.round - 1, 0)
-    //     let advanceTime = 0
-    //     if (round > 0) {
-    //         advanceTime -= CONFIG.time.roundTime
-    //     }
-    //     else {
-    //         const data = { round, turn: null }
-    //         const options = { advanceTime, direction: -1 }
-    //         Hooks.callAll("combatRound", this, data, options)
-    //         await this.update(data, options as any)
-    //     }
-    //     return this
-    // }
+    override async previousRound(): Promise<this> {
+        await this.resetActivations()
+        const round = Math.max(this.round - 1, 0)
+        let advanceTime = 0
+        if (round > 0) {
+            advanceTime -= CONFIG.time.roundTime
+        }
+        else {
+            const data = { round, turn: null }
+            const options = { advanceTime, direction: -1 }
+            Hooks.callAll("combatRound", this, data, options)
+            await this.update(data, options as any)
+        }
+        return this
+    }
 
     /**
      * Call this to activate the given combatant in the turn tracker.
