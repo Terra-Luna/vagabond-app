@@ -28,7 +28,10 @@ const effectData = {
 await actor.createEmbeddedDocuments('ActiveEffect', [effectData])
 
 */
-export default class VgLiteActiveEffect extends ActiveEffect {
+export default class VgLiteActiveEffect<
+    SubType extends ActiveEffect.SubType = ActiveEffect.SubType
+> extends ActiveEffect<SubType> {
+
     static getAttributeChoices = () => {
         return {
             'system.bonus.maxHP': 'Max HP bonus',

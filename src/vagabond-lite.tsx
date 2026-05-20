@@ -15,6 +15,8 @@ import HeroSheet from "./view/sheets/actor/hero/HeroSheet"
 import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
 import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
+import { VgLiteCombat, VgLiteCombatant } from './combat/spellcasting/VgLiteCombat'
+import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 
 Hooks.once("init", () => {
     Object.assign(
@@ -33,7 +35,11 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.ancestry = AncestryDataModel,
         CONFIG.Item.dataModels.class = ClassDataModel,
         CONFIG.Item.dataModels.perk = PerkDataModel,
-        CONFIG.Item.dataModels.spell = SpellDataModel
+        CONFIG.Item.dataModels.spell = SpellDataModel,
+        // Combat
+        CONFIG.Combat.documentClass = VgLiteCombat,
+        CONFIG.Combatant.documentClass = VgLiteCombatant,
+        CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
     )
 })
 
