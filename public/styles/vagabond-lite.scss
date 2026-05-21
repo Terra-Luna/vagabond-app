@@ -1,4 +1,5 @@
 @use "./component";
+@use "./theme";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 
@@ -58,8 +59,11 @@
     font-style: italic;
 }
 
-.vg-lite-root{
+.vg-lite-root {
     font-family: 'Eskapade';
+    @include theme.themify(){
+        background-color: theme.themed("body-fill");
+    }
 }
 
 .vg-lite-body {

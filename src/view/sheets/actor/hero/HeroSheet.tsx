@@ -1,11 +1,13 @@
 import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { FoundryActor, updateActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
-import { Heart, Menu } from "lucide-react"
+import { Heart, LucideBookMarked, LucideClover, LucideHeartOff, Menu, Shield } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
 import { IconButton } from "../../../component/IconButton"
-import { useCallback, useRef, useState } from "react"
+import { ReactNode, useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
+import { GridItem, GridRow } from "../../../component/Grid"
+import { Header } from "../../../component/Header"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -86,9 +88,16 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="hero-sheet-upper-section">
-            <Avatar hero={hero} />
-            <HPDisplay health={hero.health} />
-            <ArmorDisplay armor={hero.armor} />
+            <GridRow>
+                <GridItem lg={6} sm={6}>
+                    <Avatar hero={hero} />
+                    <HPAndArmorDisplay health={hero.health} armor={hero.armor} />
+                </GridItem>
+                <GridItem lg={6} sm={6}>
+                    <Stats hero={hero} />
+                    <Trackers hero={hero} />
+                </GridItem>
+            </GridRow>
         </div>
     )
 }
@@ -108,24 +117,61 @@ interface Health {
     max: number;
     bonus: number;
 }
-const HPDisplay = ({ health }: { health: Health }) => {
+interface Armor {
+    rating: number
+}
+const HPAndArmorDisplay = ({ health, armor }: { health: Health, armor: Armor }) => {
     return (
         <div className="hero-hp">
-            <Heart className="vglite-heart-icon" size={24} />
+            <Heart className="vglite-heart-icon" size={20} />
             <span className="current">{health.current}</span>
             <span className="slash"> / </span>
             <span className="max">{health.max}</span>
+            <Shield className="vglite-shield-icon" size={20} />
+            <div className="hero-armor">
+                <span className="rating">{armor.rating}</span>
+            </div>
         </div>
     )
 }
 
-interface Armor {
-    rating: number
+const Stats = ({ hero }: { hero: HeroDataModel }) => {
+    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
+
+    return <div className="vglite-stats-container">{
+        stats.map(stat => (
+            <Stat name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
+        ))}</div>
 }
-const ArmorDisplay = ({ armor }: { armor: Armor }) => {
+
+const Stat = ({ name, value }: { name: string, value: number }) => {
     return (
-        <div className="hero-armor">
-            <span className="rating">{armor.rating}</span>
+        <div className="vglite-stat">
+            {name}
+            <div className="vglite-stat-value">{value}</div>
         </div>
     )
 }
+
+const Trackers = ({ hero }: { hero: HeroDataModel }) => {
+    const { studied, fatigue } = hero;
+    const currentLuck = hero.stats.currentLuck;
+
+    return (
+        <div className="vglite-trackers">
+            <Header title={lang.VGLITE.HeroSheet.trackers} />
+            <div className="trackers-container">
+                <Tracker name={lang.VGLITE.HeroSheet.studied} content={<div className="vglite-studied"><LucideBookMarked size={20} /> {studied}</div>}></Tracker>
+                <Tracker name={lang.VGLITE.HeroSheet.fatigue} content={<div className="vglite-fatigue"><LucideHeartOff size={20} /> {fatigue}</div>}></Tracker>
+                <Tracker name={lang.VGLITE.HeroSheet.luck} content={<div className="vglite-luck"><LucideClover size={20} />{fatigue} </div>}></Tracker>
+            </div>
+        </div>
+    )
+}
+
+const Tracker = ({ name, content }: { name: string, content: ReactNode }) => (
+    <div className="vglite-tracker">
+        {name}
+        {content}
+    </div>
+)

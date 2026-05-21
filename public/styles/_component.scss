@@ -20,39 +20,35 @@
 .vglite-header {
     display: flex;
     width: 100%;
+    align-items: center;
+    margin-top: 6px;
+    height: 26px;
 
     @include theme.themify() {
-        background-color: theme.themed('fill-header');
+        background-color: theme.themed('section-header-fill');
     }
-
-    align-items: center;
 
     h1 {
         @include theme.themify() {
-            color: theme.themed('text-secondary');
+            color: theme.themed('text-section-header');
         }
 
         text-align: center;
         font-family: 'Eskapade';
         position: relative;
-        bottom: 5px;
+        font-size: 20px;
+        bottom: 7px;
     }
 
     .vglite-divider {
         @include theme.themify() {
-            color: theme.themed('fill-medium');
+            background-color: theme.themed('section-header-line');
         }
 
         flex: 1;
         height: 1px;
         margin-right: 5px;
         margin-left: 5px;
-    }
-}
-
-.vglite-divider {
-    @include theme.themify() {
-        background-color: theme.themed('fill-light');
     }
 }
 
@@ -117,25 +113,6 @@
     }
 }
 
-.vglite-hp {
-    font-family: 'Eskapade';
-    font-size: 36px;
-
-    @include theme.themify() {
-        .current {
-            color: theme.themed('text-hp-current');
-        }
-
-        .slash {
-            color: theme.themed('text-tertiary');
-        }
-
-        .max {
-            color: theme.themed('text-hp-max');
-        }
-    }
-}
-
 .float-right {
     float: right;
     margin-right: 8px;
@@ -155,16 +132,123 @@
     }
 }
 
-.vglite-heart-icon {
-    // display: 'flex';
-    // padding: "10px";
-    // padding-left: "20px";
-    // align-items: center;
-    // gap: 6px;
-    // this was here when it was in main tab, might be helpful
+.hero-hp {
+    font-family: 'Eskapade';
+    font-size: 28px;
+    font-weight: bold;
+    display: flex;
+    padding-left: 25px;
+    align-items: center;
+    gap: 6px;
 
+    @include theme.themify() {
+        .current {
+            color: theme.themed('text-hp-current');
+        }
+
+        .slash {
+            color: theme.themed('text-tertiary');
+        }
+
+        .max {
+            color: theme.themed('text-hp-max');
+        }
+    }
+}
+
+.hero-armor {
+    padding-right: 35px;
+}
+
+.vglite-heart-icon {
     @include theme.themify() {
         color: theme.themed('text-hp-current');
         fill: theme.themed('text-hp-current');
+    }
+}
+
+.vglite-shield-icon {
+    margin-left: auto;
+    position: relative;
+    top: 1px;
+
+    @include theme.themify() {
+        color: theme.themed('ic-armor-border');
+        fill: theme.themed('ic-armor-fill');
+    }
+}
+
+.vglite-stats-container {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 6px;
+}
+
+.vglite-stat {
+    width: 25%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+
+    @include theme.themify() {
+        color: theme.themed('text-special');
+    }
+
+    .vglite-stat-value {
+        font-size: 32px;
+
+        @include theme.themify() {
+            background-color: theme.themed('section-header-fill');
+            color: theme.themed('text-section-header');
+        }
+    }
+}
+
+.vglite-trackers {
+    margin-right: 6px;
+
+    .trackers-container {
+        display: flex;
+        gap: 16px;
+        margin-left: 2px;
+    }
+
+    .vglite-tracker {
+        font-family: 'Paradigm';
+        text-align: center;
+        width: 33%;
+
+        @include theme.themify() {
+            color: theme.themed('text-primary')
+        }
+
+        div {
+            position: relative;
+            bottom: 3px;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Eskapade';
+            text-align: center;
+        }
+    }
+}
+
+.vglite-studied {
+    @include theme.themify() {
+        color: theme.themed('text-studied-current')
+    }
+}
+
+
+.vglite-fatigue {
+    @include theme.themify() {
+        color: theme.themed('text-fatigue-current')
+    }
+}
+
+.vglite-luck {
+    @include theme.themify() {
+        color: theme.themed('text-luck-current')
     }
 }
