@@ -225,11 +225,14 @@
 
         div {
             position: relative;
-            bottom: 3px;
+            bottom: 6px;
+            left: 7px; // this is really jank "centering"
             font-size: 24px;
             font-weight: bold;
             font-family: 'Eskapade';
             text-align: center;
+            display: flex;
+            align-items: center;
         }
     }
 }

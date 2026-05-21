@@ -315,11 +315,14 @@
 }
 .vglite-trackers .vglite-tracker div {
   position: relative;
-  bottom: 3px;
+  bottom: 6px;
+  left: 7px;
   font-size: 24px;
   font-weight: bold;
   font-family: "Eskapade";
   text-align: center;
+  display: flex;
+  align-items: center;
 }
 
 .theme-light .vglite-studied {

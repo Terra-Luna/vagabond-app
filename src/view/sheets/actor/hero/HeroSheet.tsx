@@ -163,7 +163,7 @@ const Trackers = ({ hero }: { hero: HeroDataModel }) => {
             <div className="trackers-container">
                 <Tracker name={lang.VGLITE.HeroSheet.studied} content={<div className="vglite-studied"><LucideBookMarked size={20} /> {studied}</div>}></Tracker>
                 <Tracker name={lang.VGLITE.HeroSheet.fatigue} content={<div className="vglite-fatigue"><LucideHeartOff size={20} /> {fatigue}</div>}></Tracker>
-                <Tracker name={lang.VGLITE.HeroSheet.luck} content={<div className="vglite-luck"><LucideClover size={20} />{fatigue} </div>}></Tracker>
+                <Tracker name={lang.VGLITE.HeroSheet.luck} content={<div className="vglite-luck"><LucideClover size={20} /> {fatigue} </div>}></Tracker>
             </div>
         </div>
     )
