@@ -180,7 +180,8 @@
 
 .vglite-stats-container {
     display: flex;
-    gap: 16px;
+    column-gap: 16px;
+    row-gap: 4px;
     flex-wrap: wrap;
     padding-top: 6px;
 }
@@ -206,7 +207,7 @@
 }
 
 .vglite-trackers {
-    margin-right: 6px;
+    margin-right: 4px;
 
     .trackers-container {
         display: flex;
