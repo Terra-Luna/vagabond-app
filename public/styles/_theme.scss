@@ -1,8 +1,7 @@
 @use "sass:map";
 
 $themes: (
-  light: (
-    sheet-header-fill: #6a2e2a,
+  light: (sheet-header-fill: #6a2e2a,
     text-header-primary: #eeeeed,
     text-header-secondary: #eeeeed,
     text-header-tertiary: #e1dbd9,
@@ -40,7 +39,7 @@ $themes: (
     table-fill-odd: #faf0e6,
     table-fill-even: #f4efea,
     text-table-item: #53514a,
-    
+
     ic-hp: #e7000b,
     text-hp-current: #e7000b,
     text-hp-max: #9f0712,
@@ -56,17 +55,15 @@ $themes: (
     ic-mana: #155dfc,
     text-mana-current: #155dfc,
     text-mana-max: #155dfc,
-    ic-equipped: #3d5541,    
+    ic-equipped: #3d5541,
     btn-primary-fill: #6a2e2a,
     btn-primary-hover: #fdfbf7,
     btn-primary-text: #eeeeed,
     btn-secondary-fill: #d7ccc8,
     btn-secondary-hover: #d6a593,
     btn-secondary-text: #3d2622,
-    destructive-action: #f72b35
-  ),
-  dark: (
-    sheet-header-fill: #1c1917,
+    destructive-action: #f72b35),
+  dark: (sheet-header-fill: #1c1917,
     text-header-primary: #c5b358,
     text-header-secondary: #c3c0be,
     text-header-tertiary: #8a8580,
@@ -104,7 +101,7 @@ $themes: (
     table-fill-odd: #292524,
     table-fill-even: #44403c,
     text-table-item: #eae8e7,
-    
+
     ic-hp: #e7000b,
     text-hp-current: #e7000b,
     text-hp-max: #ff6467,
@@ -120,15 +117,14 @@ $themes: (
     text-mana-max: #155dfc,
     ic-fatigue: #a59f9a,
     text-fatigue-current: #a59f9a,
-    ic-equipped: #c5b358,    
+    ic-equipped: #c5b358,
     btn-primary-fill: #c5b358,
     btn-primary-hover: #c5bb82,
     btn-primary-text: #1c1917,
     btn-secondary-fill: #44403b,
     btn-secondary-hover: #636363,
     btn-secondary-text: #e7e5e4,
-    destructive-action: #f72b35
-  ),
+    destructive-action: #f72b35),
 );
 
 @mixin themify() {
@@ -148,6 +144,16 @@ $themes: (
     $theme-map: null !global;
   }
 }
+}
+
+@mixin border() {
+  border: 1px solid;
+  padding-bottom: 4px;
+  margin-right: 4px;
+
+  @include themify() {
+    border-color: themed('text-tertiary');
+  }
 }
 
 @function themed($key) {

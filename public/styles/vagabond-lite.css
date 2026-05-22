@@ -90,7 +90,6 @@
   display: flex;
   width: 100%;
   align-items: center;
-  margin-top: 6px;
   height: 26px;
 }
 .theme-light .vglite-header {
@@ -264,11 +263,22 @@
 }
 
 .vglite-stats-container {
+  border: 1px solid;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+.theme-light .vglite-stats-container {
+  border-color: #6f5e53;
+}
+.theme-dark .vglite-stats-container {
+  border-color: #79716b;
+}
+.vglite-stats-container {
   display: flex;
   column-gap: 16px;
   row-gap: 4px;
   flex-wrap: wrap;
-  padding-top: 6px;
+  padding-left: 12px;
 }
 
 .vglite-stat {
@@ -296,7 +306,17 @@
 }
 
 .vglite-trackers {
+  margin-top: 6px;
   margin-right: 4px;
+  border: 1px solid;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+.theme-light .vglite-trackers {
+  border-color: #6f5e53;
+}
+.theme-dark .vglite-trackers {
+  border-color: #79716b;
 }
 .vglite-trackers .trackers-container {
   display: flex;
@@ -316,7 +336,6 @@
 }
 .vglite-trackers .vglite-tracker div {
   position: relative;
-  bottom: 6px;
   left: 7px;
   font-size: 24px;
   font-weight: bold;
@@ -324,6 +343,7 @@
   text-align: center;
   display: flex;
   align-items: center;
+  margin-top: -4px;
 }
 
 .theme-light .vglite-studied {
@@ -345,6 +365,20 @@
 }
 .theme-dark .vglite-luck {
   color: #00a63e;
+}
+
+.vglite-saves {
+  margin-top: 6px;
+  margin-right: 4px;
+  border: 1px solid;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+.theme-light .vglite-saves {
+  border-color: #6f5e53;
+}
+.theme-dark .vglite-saves {
+  border-color: #79716b;
 }
 
 @font-face {

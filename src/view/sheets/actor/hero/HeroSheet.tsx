@@ -1,13 +1,13 @@
 import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { FoundryActor, updateActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
-import { Heart, LucideBookMarked, LucideClover, LucideHeartOff, Menu, Shield } from "lucide-react"
+import { Menu } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
 import { IconButton } from "../../../component/IconButton"
-import { ReactNode, useCallback, useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 import { GridItem, GridRow } from "../../../component/Grid"
-import { Header } from "../../../component/Header"
+import { Avatar, HPAndArmorDisplay, Saves, Stats, Trackers } from "./TopHalfComponents"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -96,6 +96,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <GridItem lg={6} sm={6}>
                     <Stats hero={hero} />
                     <Trackers hero={hero} />
+                    <Saves hero={hero} />
                 </GridItem>
             </GridRow>
         </div>
@@ -105,73 +106,3 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     return <div className="hero-sheet-tabbed-section" />
 }
-
-const Avatar = ({ hero }: { hero: HeroDataModel }) => {
-    return (
-        <img className="vglite-thumbnail" src="icons/svg/mystery-man.svg" alt={hero.parent.name} />
-    );
-}
-
-interface Health {
-    current: number;
-    max: number;
-    bonus: number;
-}
-interface Armor {
-    rating: number
-}
-const HPAndArmorDisplay = ({ health, armor }: { health: Health, armor: Armor }) => {
-    return (
-        <div className="hero-hp">
-            <Heart className="vglite-heart-icon" size={20} />
-            <span className="current">{health.current}</span>
-            <span className="slash"> / </span>
-            <span className="max">{health.max}</span>
-            <Shield className="vglite-shield-icon" size={20} />
-            <div className="hero-armor">
-                <span className="rating">{armor.rating}</span>
-            </div>
-        </div>
-    )
-}
-
-const Stats = ({ hero }: { hero: HeroDataModel }) => {
-    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
-
-    return <div className="vglite-stats-container">{
-        stats.map(stat => (
-            <Stat name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
-        ))}</div>
-}
-
-const Stat = ({ name, value }: { name: string, value: number }) => {
-    return (
-        <div className="vglite-stat">
-            {name}
-            <div className="vglite-stat-value">{value}</div>
-        </div>
-    )
-}
-
-const Trackers = ({ hero }: { hero: HeroDataModel }) => {
-    const { studied, fatigue } = hero;
-    const currentLuck = hero.stats.currentLuck;
-
-    return (
-        <div className="vglite-trackers">
-            <Header title={lang.VGLITE.HeroSheet.trackers} />
-            <div className="trackers-container">
-                <Tracker name={lang.VGLITE.HeroSheet.studied} content={<div className="vglite-studied"><LucideBookMarked size={20} /> {studied}</div>}></Tracker>
-                <Tracker name={lang.VGLITE.HeroSheet.fatigue} content={<div className="vglite-fatigue"><LucideHeartOff size={20} /> {fatigue}</div>}></Tracker>
-                <Tracker name={lang.VGLITE.HeroSheet.luck} content={<div className="vglite-luck"><LucideClover size={20} /> {fatigue} </div>}></Tracker>
-            </div>
-        </div>
-    )
-}
-
-const Tracker = ({ name, content }: { name: string, content: ReactNode }) => (
-    <div className="vglite-tracker">
-        {name}
-        {content}
-    </div>
-)

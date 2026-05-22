@@ -159,6 +159,11 @@
       "shock": "Shock",
       "slashing": "Slashing"
     },
+    "Saves": {
+      "reflex": "Reflex",
+      "endure": "Endure",
+      "will": "Will"
+    },
     "StatusConditions": {
       "berserk": {
         "name": "Berserk",
@@ -381,7 +386,8 @@
       "trackers": "TRACKERS",
       "studied": "STUDIED",
       "fatigue": "FATIGUE",
-      "luck": "LUCK"
+      "luck": "LUCK",
+      "saves": "SAVES"
     }
   }
 }

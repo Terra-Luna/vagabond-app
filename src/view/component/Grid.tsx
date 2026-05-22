@@ -1,7 +1,7 @@
 import { CSSProperties, ReactNode } from "react";
 import { useSmallLarge } from "../hooks"
 
-export const GridRow = ({ children, ...rest }: { children: ReactNode } & Partial<React.HTMLAttributes<HTMLDivElement>>) => <div className="vglite-row" {...rest}>{children}</div>
+export const GridRow = ({ children, className, ...rest }: { children: ReactNode } & Partial<React.HTMLAttributes<HTMLDivElement>>) => <div className={"vglite-row" + (className ? (" " + className) : "")} {...rest}>{children}</div>
 
 interface GridItemProps {
     children: ReactNode;

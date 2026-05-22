@@ -21,7 +21,6 @@
     display: flex;
     width: 100%;
     align-items: center;
-    margin-top: 6px;
     height: 26px;
 
     @include theme.themify() {
@@ -179,11 +178,12 @@
 }
 
 .vglite-stats-container {
+    @include theme.border();
     display: flex;
     column-gap: 16px;
     row-gap: 4px;
     flex-wrap: wrap;
-    padding-top: 6px;
+    padding-left: 12px;
 }
 
 .vglite-stat {
@@ -206,8 +206,15 @@
     }
 }
 
-.vglite-trackers {
+@mixin right-side() {
+    margin-top: 6px;
     margin-right: 4px;
+    @include theme.border();
+
+}
+
+.vglite-trackers {
+    @include right-side();
 
     .trackers-container {
         display: flex;
@@ -226,7 +233,6 @@
 
         div {
             position: relative;
-            bottom: 6px;
             left: 7px; // this is really jank "centering"
             font-size: 24px;
             font-weight: bold;
@@ -234,6 +240,7 @@
             text-align: center;
             display: flex;
             align-items: center;
+            margin-top: -4px;
         }
     }
 }
@@ -255,4 +262,8 @@
     @include theme.themify() {
         color: theme.themed('text-luck-current')
     }
+}
+
+.vglite-saves {
+    @include right-side();
 }
