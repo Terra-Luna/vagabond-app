@@ -36,7 +36,6 @@ export const HPAndArmorDisplay = ({ health, armor }: { health: Health, armor: Ar
 
 export const Stats = ({ hero }: { hero: HeroDataModel }) => {
     const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
-
     return <div className="vglite-stats-container">{
         stats.map(stat => (
             <Stat name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
@@ -60,8 +59,8 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
         <div className="vglite-trackers">
             <Header title={lang.VGLITE.HeroSheet.trackers} />
             <div className="trackers-container">
-                <Tracker name={lang.VGLITE.HeroSheet.studied} content={<div className="vglite-studied"><LucideBookMarked size={20} /> {studied}</div>}></Tracker>
                 <Tracker name={lang.VGLITE.HeroSheet.fatigue} content={<div className="vglite-fatigue"><LucideHeartOff size={20} /> {fatigue}</div>}></Tracker>
+                <Tracker name={lang.VGLITE.HeroSheet.studied} content={<div className="vglite-studied"><LucideBookMarked size={20} /> {studied}</div>}></Tracker>
                 <Tracker name={lang.VGLITE.HeroSheet.luck} content={<div className="vglite-luck"><LucideClover size={20} /> {currentLuck} </div>}></Tracker>
             </div>
         </div>
