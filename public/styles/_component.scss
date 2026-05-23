@@ -184,6 +184,7 @@
     row-gap: 4px;
     flex-wrap: wrap;
     padding-left: 12px;
+    margin-top: 2px;
 }
 
 .vglite-stat {
@@ -215,11 +216,14 @@
 
 .vglite-trackers {
     @include right-side();
+    margin-top: 4px;
 
     .trackers-container {
         display: flex;
-        gap: 16px;
-        margin-left: 2px;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        padding-top: 2px;
     }
 
     .vglite-tracker {
@@ -233,7 +237,6 @@
 
         div {
             position: relative;
-            left: 7px; // this is really jank "centering"
             font-size: 24px;
             font-weight: bold;
             font-family: 'Eskapade';
@@ -244,20 +247,16 @@
         }
     }
 }
-
 .vglite-studied {
     @include theme.themify() {
         color: theme.themed('text-studied-current')
     }
 }
-
-
 .vglite-fatigue {
     @include theme.themify() {
         color: theme.themed('text-fatigue-current')
     }
 }
-
 .vglite-luck {
     @include theme.themify() {
         color: theme.themed('text-luck-current')
@@ -266,4 +265,5 @@
 
 .vglite-saves {
     @include right-side();
+    margin-top: 4px;
 }

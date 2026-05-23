@@ -279,6 +279,7 @@
   row-gap: 4px;
   flex-wrap: wrap;
   padding-left: 12px;
+  margin-top: 2px;
 }
 
 .vglite-stat {
@@ -318,10 +319,15 @@
 .theme-dark .vglite-trackers {
   border-color: #79716b;
 }
+.vglite-trackers {
+  margin-top: 4px;
+}
 .vglite-trackers .trackers-container {
   display: flex;
-  gap: 16px;
-  margin-left: 2px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  padding-top: 2px;
 }
 .vglite-trackers .vglite-tracker {
   font-family: "Paradigm";
@@ -336,7 +342,6 @@
 }
 .vglite-trackers .vglite-tracker div {
   position: relative;
-  left: 7px;
   font-size: 24px;
   font-weight: bold;
   font-family: "Eskapade";
@@ -379,6 +384,9 @@
 }
 .theme-dark .vglite-saves {
   border-color: #79716b;
+}
+.vglite-saves {
+  margin-top: 4px;
 }
 
 @font-face {
