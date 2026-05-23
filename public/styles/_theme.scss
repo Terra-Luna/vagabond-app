@@ -25,7 +25,7 @@ $themes: (
     text-special: #6a2e2a,
     text-aux: #747069,
     text-dmg: #e7000b,
-    text-highlight: #e2c38c,
+    text-highlight: #292524,
     text-bold: #292524,
 
     ic-skill-trained: #3d5541,
@@ -63,7 +63,8 @@ $themes: (
     btn-secondary-hover: #d6a593,
     btn-secondary-text: #3d2622,
     destructive-action: #f72b35),
-  dark: (sheet-header-fill: #1c1917,
+  dark: (
+    sheet-header-fill: #1c1917,
     text-header-primary: #c5b358,
     text-header-secondary: #c3c0be,
     text-header-tertiary: #8a8580,
@@ -87,7 +88,7 @@ $themes: (
     text-special: #e7e5e4,
     text-aux: #c1bebd,
     text-dmg: #ee5e61,
-    text-highlight: #292524,
+    text-highlight: #e2c38c,
     text-bold: #c1af56,
 
     ic-skill-trained: #c5b358,

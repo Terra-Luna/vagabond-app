@@ -8,4 +8,4 @@ export const Header = ({ title }: { title: string }) => {
     )
 }
 
-const Divider = () => <div className="vglite-divider" />
+export const Divider = () => <div className="vglite-divider" />

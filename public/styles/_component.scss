@@ -34,9 +34,9 @@
 
         text-align: center;
         font-family: 'Eskapade';
-        position: relative;
         font-size: 16px;
-        bottom: 7px;
+        height: 30px;
+        margin: 0px;
     }
 
     .vglite-divider {
@@ -46,8 +46,8 @@
 
         flex: 1;
         height: 1px;
-        margin-right: 5px;
-        margin-left: 5px;
+        margin-right: 6px;
+        margin-left: 6px;
     }
 }
 
@@ -208,10 +208,16 @@
 }
 
 @mixin right-side() {
-    margin-top: 6px;
+    margin-top: 4px;
     margin-right: 4px;
     @include theme.border();
+}
 
+@mixin centered() {
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+    @include theme.border();
 }
 
 .vglite-trackers {
@@ -266,4 +272,108 @@
 .vglite-saves {
     @include right-side();
     margin-top: 4px;
+}
+
+.vglite-card {
+    @include centered();
+    border-radius: 6px;
+    @include theme.themify() {
+        background-color: theme.themed('skill-bg-fill');
+    }
+}
+
+.vglite-card-header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    height: 32px;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+
+    @include theme.themify() {
+        background-color: theme.themed('section-header-fill');
+    }
+
+    h1 {
+        @include theme.themify() {
+            color: theme.themed('text-section-header');
+        }
+
+        text-align: center;
+        font-family: 'Eskapade';
+        position: relative;
+        font-size: 18px;
+        margin: 0px;
+        margin-left: 8px;
+    }
+
+    .vglite-divider {
+        @include theme.themify() {
+            background-color: theme.themed('section-header-line');
+        }
+        flex: 1;
+        height: 1px;
+        margin-right: 6px;
+        margin-left: 6px;
+    }
+}
+
+.vglite-card-sub-header {
+    display: flex;
+    width: fit-content;
+    align-items: left;
+    height: 24px;
+
+    @include theme.themify() {
+        background-color: theme.themed('section-header-fill');
+    }
+
+    h1 {
+        @include theme.themify() {
+            color: theme.themed('text-section-header');
+        }
+
+        font-family: 'Paradigm';
+        font-size: 14px;
+        font-weight: 400;
+        font-style: normal;
+        line-height: 18px;
+        margin: 0px;
+        margin-left: 8px;
+        margin-right: 8px;
+    }
+}
+
+.vglite-card-body {
+    width: fit-content;
+    height: fit-content;
+    padding: 8px;
+
+    @include theme.themify() {
+        background-color: theme.themed('skill-bg-fill');
+    }
+}
+
+.vglite-body-text {
+    @include theme.themify() {
+        color: theme.themed('text-primary');
+    }
+    font-family: 'Paradigm';
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 18px;
+    margin: 0px;
+}
+
+.vglite-body-text-highlight {
+    @include theme.themify() {
+        color: theme.themed('text-highlight');
+    }
+    font-family: 'Paradigm';
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 18px;
+    margin: 0px;
 }

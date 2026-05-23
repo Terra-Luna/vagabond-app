@@ -107,9 +107,9 @@
 .vglite-header h1 {
   text-align: center;
   font-family: "Eskapade";
-  position: relative;
   font-size: 16px;
-  bottom: 7px;
+  height: 30px;
+  margin: 0px;
 }
 .theme-light .vglite-header .vglite-divider {
   background-color: #b59795;
@@ -120,8 +120,8 @@
 .vglite-header .vglite-divider {
   flex: 1;
   height: 1px;
-  margin-right: 5px;
-  margin-left: 5px;
+  margin-right: 6px;
+  margin-left: 6px;
 }
 
 .vglite-hero-sheet {
@@ -307,7 +307,7 @@
 }
 
 .vglite-trackers {
-  margin-top: 6px;
+  margin-top: 4px;
   margin-right: 4px;
   border: 1px solid;
   padding-bottom: 4px;
@@ -373,7 +373,7 @@
 }
 
 .vglite-saves {
-  margin-top: 6px;
+  margin-top: 4px;
   margin-right: 4px;
   border: 1px solid;
   padding-bottom: 4px;
@@ -387,6 +387,142 @@
 }
 .vglite-saves {
   margin-top: 4px;
+}
+
+.vglite-card {
+  margin-top: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
+  border: 1px solid;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+.theme-light .vglite-card {
+  border-color: #6f5e53;
+}
+.theme-dark .vglite-card {
+  border-color: #79716b;
+}
+.vglite-card {
+  border-radius: 6px;
+}
+.theme-light .vglite-card {
+  background-color: #f4efea;
+}
+.theme-dark .vglite-card {
+  background-color: #292524;
+}
+
+.vglite-card-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 32px;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+}
+.theme-light .vglite-card-header {
+  background-color: #6a2e2a;
+}
+.theme-dark .vglite-card-header {
+  background-color: #c5b358;
+}
+.theme-light .vglite-card-header h1 {
+  color: #eeeeed;
+}
+.theme-dark .vglite-card-header h1 {
+  color: #1c1917;
+}
+.vglite-card-header h1 {
+  text-align: center;
+  font-family: "Eskapade";
+  position: relative;
+  font-size: 18px;
+  margin: 0px;
+  margin-left: 8px;
+}
+.theme-light .vglite-card-header .vglite-divider {
+  background-color: #b59795;
+}
+.theme-dark .vglite-card-header .vglite-divider {
+  background-color: #918444;
+}
+.vglite-card-header .vglite-divider {
+  flex: 1;
+  height: 1px;
+  margin-right: 6px;
+  margin-left: 6px;
+}
+
+.vglite-card-sub-header {
+  display: flex;
+  width: fit-content;
+  align-items: left;
+  height: 24px;
+}
+.theme-light .vglite-card-sub-header {
+  background-color: #6a2e2a;
+}
+.theme-dark .vglite-card-sub-header {
+  background-color: #c5b358;
+}
+.theme-light .vglite-card-sub-header h1 {
+  color: #eeeeed;
+}
+.theme-dark .vglite-card-sub-header h1 {
+  color: #1c1917;
+}
+.vglite-card-sub-header h1 {
+  font-family: "Paradigm";
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 18px;
+  margin: 0px;
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.vglite-card-body {
+  width: fit-content;
+  height: fit-content;
+  padding: 8px;
+}
+.theme-light .vglite-card-body {
+  background-color: #f4efea;
+}
+.theme-dark .vglite-card-body {
+  background-color: #292524;
+}
+
+.theme-light .vglite-body-text {
+  color: #1c1917;
+}
+.theme-dark .vglite-body-text {
+  color: #e7e5e4;
+}
+.vglite-body-text {
+  font-family: "Paradigm";
+  font-size: 14px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 18px;
+  margin: 0px;
+}
+
+.theme-light .vglite-body-text-highlight {
+  color: #292524;
+}
+.theme-dark .vglite-body-text-highlight {
+  color: #e2c38c;
+}
+.vglite-body-text-highlight {
+  font-family: "Paradigm";
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 18px;
+  margin: 0px;
 }
 
 @font-face {

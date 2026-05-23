@@ -8,6 +8,7 @@ import { useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 import { GridItem, GridRow } from "../../../component/Grid"
 import { Avatar, HPAndArmorDisplay, Saves, Stats, Trackers } from "./TopHalfComponents"
+import { SkillCard } from "../../../component/SkillCard"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -92,6 +93,12 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     return <div className="hero-sheet-tabbed-section">
+        <SkillCard
+            title="Light" subtitle={new Map<string, string>([["Base dmg", "Fire"]])}
+            description="The Target sheds Light out to Near for the duration. You can choose to do so by creating a floating mote of light that follows the Target."
+            special={new Map<string, string>([["Crit", "Beings of your choice within the Light when you Cast the Spell are Blinded (Cd4)."]])}
+        />        
+        
         {/* <button onClick={async () => {
                 updateActor(actor, { health: { current: actor.system.health.current! += 1 } })
                 updateActor(actor, { class: { spellcasting: { castSkill: 'mysticism' } } })
