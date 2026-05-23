@@ -22,19 +22,6 @@ const HeroSheetReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel>
             <HeroSheetHeader hero={hero} />
             <HeroSheetUpperSection hero={hero} />
             <HeroSheetTabbedSection hero={hero} />
-
-            <button onClick={async () => {
-                updateActor(actor, { health: { current: actor.system.health.current! += 1 } })
-                updateActor(actor, { class: { spellcasting: { castSkill: 'mysticism' } } })
-                let roll = await new Roll('2d12').evaluate()
-                let results = (roll.terms[0] as any).results
-                console.log(results)
-                ChatMessage.create({
-                    speaker: ChatMessage.getSpeaker({}),
-                    content: `<h3>Rolling: 2d12</h3><br><p>${results[0].result} + ${results[1].result} = ${roll._total}`,
-                    rolls: [roll]
-                })
-            }}>Click me!</button>
         </div>
     )
 }
@@ -104,5 +91,18 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
-    return <div className="hero-sheet-tabbed-section" />
+    return <div className="hero-sheet-tabbed-section">
+        {/* <button onClick={async () => {
+                updateActor(actor, { health: { current: actor.system.health.current! += 1 } })
+                updateActor(actor, { class: { spellcasting: { castSkill: 'mysticism' } } })
+                let roll = await new Roll('2d12').evaluate()
+                let results = (roll.terms[0] as any).results
+                console.log(results)
+                ChatMessage.create({
+                    speaker: ChatMessage.getSpeaker({}),
+                    content: `<h3>Rolling: 2d12</h3><br><p>${results[0].result} + ${results[1].result} = ${roll._total}`,
+                    rolls: [roll]
+                })
+            }}>Click me!</button> */}
+    </div>
 }
