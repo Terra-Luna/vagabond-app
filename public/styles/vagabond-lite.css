@@ -90,7 +90,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  height: 26px;
+  height: 30px;
 }
 .theme-light .vglite-header {
   background-color: #6a2e2a;
@@ -108,7 +108,7 @@
   text-align: center;
   font-family: "Eskapade";
   position: relative;
-  font-size: 20px;
+  font-size: 16px;
   bottom: 7px;
 }
 .theme-light .vglite-header .vglite-divider {
