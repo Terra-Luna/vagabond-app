@@ -27,7 +27,7 @@
         background-color: theme.themed('section-header-fill');
     }
 
-    h1 {
+    div {
         @include theme.themify() {
             color: theme.themed('text-section-header');
         }
@@ -35,8 +35,7 @@
         text-align: center;
         font-family: 'Eskapade';
         font-size: 16px;
-        height: 30px;
-        margin: 0px;
+        font-weight: bold;
     }
 
     .vglite-divider {
@@ -294,7 +293,7 @@
         background-color: theme.themed('section-header-fill');
     }
 
-    h1 {
+    div {
         @include theme.themify() {
             color: theme.themed('text-section-header');
         }
@@ -303,8 +302,8 @@
         font-family: 'Eskapade';
         position: relative;
         font-size: 18px;
-        margin: 0px;
         margin-left: 8px;
+        font-weight: bold;
     }
 
     .vglite-divider {
@@ -328,11 +327,11 @@
         background-color: theme.themed('section-header-fill');
     }
 
-    h1 {
+    div {
         @include theme.themify() {
             color: theme.themed('text-section-header');
         }
-
+ 
         font-family: 'Paradigm';
         font-size: 14px;
         font-weight: 400;

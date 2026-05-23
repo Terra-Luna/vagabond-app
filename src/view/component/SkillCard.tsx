@@ -15,7 +15,7 @@ export const SkillCard = ({ title, subtitle, description, special }: {
 const SkillCardHeader = ({ title }: { title: string }) => {
     return (
         <div className="vglite-card-header">
-            <h1>{title}</h1>
+            <div>{title}</div>
             <Divider />
         </div>
     )
@@ -30,7 +30,10 @@ const SkillCardHeader = ({ title }: { title: string }) => {
 const CardSubHeader = ({ content }: { content: Map<String, string> }) => {
     return (
         <div className="vglite-card-sub-header">
-            <h1>{content.entries().next().value?.[0]}: {content.entries().next().value?.[1]}</h1>
+            {content.entries().map(([cardKey, cardValue]) => {
+
+            })}
+            <div>{content.entries().next().value?.[0]}: {content.entries().next().value?.[1]}</div>
         </div>
     )
 }

@@ -98,18 +98,17 @@
 .theme-dark .vglite-header {
   background-color: #c5b358;
 }
-.theme-light .vglite-header h1 {
+.theme-light .vglite-header div {
   color: #eeeeed;
 }
-.theme-dark .vglite-header h1 {
+.theme-dark .vglite-header div {
   color: #1c1917;
 }
-.vglite-header h1 {
+.vglite-header div {
   text-align: center;
   font-family: "Eskapade";
   font-size: 16px;
-  height: 30px;
-  margin: 0px;
+  font-weight: bold;
 }
 .theme-light .vglite-header .vglite-divider {
   background-color: #b59795;
@@ -427,19 +426,19 @@
 .theme-dark .vglite-card-header {
   background-color: #c5b358;
 }
-.theme-light .vglite-card-header h1 {
+.theme-light .vglite-card-header div {
   color: #eeeeed;
 }
-.theme-dark .vglite-card-header h1 {
+.theme-dark .vglite-card-header div {
   color: #1c1917;
 }
-.vglite-card-header h1 {
+.vglite-card-header div {
   text-align: center;
   font-family: "Eskapade";
   position: relative;
   font-size: 18px;
-  margin: 0px;
   margin-left: 8px;
+  font-weight: bold;
 }
 .theme-light .vglite-card-header .vglite-divider {
   background-color: #b59795;
@@ -466,13 +465,13 @@
 .theme-dark .vglite-card-sub-header {
   background-color: #c5b358;
 }
-.theme-light .vglite-card-sub-header h1 {
+.theme-light .vglite-card-sub-header div {
   color: #eeeeed;
 }
-.theme-dark .vglite-card-sub-header h1 {
+.theme-dark .vglite-card-sub-header div {
   color: #1c1917;
 }
-.vglite-card-sub-header h1 {
+.vglite-card-sub-header div {
   font-family: "Paradigm";
   font-size: 14px;
   font-weight: 400;
