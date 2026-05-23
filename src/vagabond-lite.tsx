@@ -15,7 +15,7 @@ import HeroSheet from "./view/sheets/actor/hero/HeroSheet"
 import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
 import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
-import { VgLiteCombat, VgLiteCombatant } from './combat/spellcasting/VgLiteCombat'
+import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 
 Hooks.once("init", () => {
