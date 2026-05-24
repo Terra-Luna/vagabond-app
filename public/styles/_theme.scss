@@ -147,9 +147,9 @@ $themes: (
 }
 }
 
-@mixin border() {
+@mixin border($padding-bottom: 4px) {
   border: 1px solid;
-  padding-bottom: 4px;
+  padding-bottom: $padding-bottom;
   margin-right: 4px;
 
   @include themify() {

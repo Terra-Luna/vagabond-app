@@ -89,11 +89,11 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 export const Save = ({ name, value }: { name: string; value: number }) => {
     return (
         <GridRow className="vglite-save">
-            <GridItem lg={9} sm={9}>
-                <div>{value}</div>
+            <GridItem lg={4} sm={3} className="save-value">
+                <span>{value}</span>
             </GridItem>
-            <GridItem lg={2} sm={2}>
-                <div>{name}</div>
+            <GridItem lg={9} sm={9} className="save-name">
+                {name}
             </GridItem>
         </GridRow>
     )

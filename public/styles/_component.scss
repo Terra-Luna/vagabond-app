@@ -206,10 +206,13 @@
     }
 }
 
-@mixin right-side() {
+@mixin right-side($no-border: false) {
     margin-top: 4px;
     margin-right: 4px;
-    @include theme.border();
+
+    @if not $no-border {
+        @include theme.border();
+    }
 }
 
 @mixin centered() {
@@ -252,16 +255,19 @@
         }
     }
 }
+
 .vglite-studied {
     @include theme.themify() {
         color: theme.themed('text-studied-current')
     }
 }
+
 .vglite-fatigue {
     @include theme.themify() {
         color: theme.themed('text-fatigue-current')
     }
 }
+
 .vglite-luck {
     @include theme.themify() {
         color: theme.themed('text-luck-current')
@@ -269,13 +275,52 @@
 }
 
 .vglite-saves {
-    @include right-side();
+    @include right-side(true); // no-border is the arg
     margin-top: 4px;
+
+    .vglite-row {
+        gap: 0.5rem;
+    }
+
+    .vglite-save {
+        @include theme.border(0px);
+        position: relative;
+        margin-top: 2px;
+        margin-right: 0px;
+    }
+
+    .save-value {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+
+        span {
+            position: relative;
+            top: 1px;
+        }
+
+        @include theme.themify() {
+            background-color: theme.themed('section-header-fill');
+            color: theme.themed('text-section-header');
+        }
+    }
+
+    .save-name {
+        position: relative;
+        top: 1px;
+        font-size: 18px;
+        font-weight: bold;
+
+        @include theme.themify() {
+            color: theme.themed('text-primary');
+        }
+    }
 }
 
 .vglite-card {
     @include centered();
     border-radius: 6px;
+
     @include theme.themify() {
         background-color: theme.themed('skill-bg-fill');
     }
@@ -310,6 +355,7 @@
         @include theme.themify() {
             background-color: theme.themed('section-header-line');
         }
+
         flex: 1;
         height: 1px;
         margin-right: 6px;
@@ -331,7 +377,7 @@
         @include theme.themify() {
             color: theme.themed('text-section-header');
         }
- 
+
         font-family: 'Paradigm';
         font-size: 14px;
         font-weight: 400;
@@ -357,6 +403,7 @@
     @include theme.themify() {
         color: theme.themed('text-primary');
     }
+
     font-family: 'Paradigm';
     font-size: 14px;
     font-weight: 400;
@@ -369,6 +416,7 @@
     @include theme.themify() {
         color: theme.themed('text-highlight');
     }
+
     font-family: 'Paradigm';
     font-size: 14px;
     font-weight: 600;

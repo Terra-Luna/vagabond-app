@@ -374,18 +374,55 @@
 .vglite-saves {
   margin-top: 4px;
   margin-right: 4px;
+  margin-top: 4px;
+}
+.vglite-saves .vglite-row {
+  gap: 0.5rem;
+}
+.vglite-saves .vglite-save {
   border: 1px solid;
-  padding-bottom: 4px;
+  padding-bottom: 0px;
   margin-right: 4px;
 }
-.theme-light .vglite-saves {
+.theme-light .vglite-saves .vglite-save {
   border-color: #6f5e53;
 }
-.theme-dark .vglite-saves {
+.theme-dark .vglite-saves .vglite-save {
   border-color: #79716b;
 }
-.vglite-saves {
-  margin-top: 4px;
+.vglite-saves .vglite-save {
+  position: relative;
+  margin-top: 2px;
+  margin-right: 0px;
+}
+.vglite-saves .save-value {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+.vglite-saves .save-value span {
+  position: relative;
+  top: 1px;
+}
+.theme-light .vglite-saves .save-value {
+  background-color: #6a2e2a;
+  color: #eeeeed;
+}
+.theme-dark .vglite-saves .save-value {
+  background-color: #c5b358;
+  color: #1c1917;
+}
+.vglite-saves .save-name {
+  position: relative;
+  top: 1px;
+  font-size: 18px;
+  font-weight: bold;
+}
+.theme-light .vglite-saves .save-name {
+  color: #1c1917;
+}
+.theme-dark .vglite-saves .save-name {
+  color: #e7e5e4;
 }
 
 .vglite-card {
