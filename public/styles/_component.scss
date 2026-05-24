@@ -328,6 +328,13 @@
     }
 }
 
+.vglite-collapsed {
+    .vglite-card-header {
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+}
+
 .vglite-card-header {
     display: flex;
     width: 100%;
@@ -342,6 +349,7 @@
 
     button {
         border: 0;
+
         @include theme.themify() {
             color: theme.themed('text-section-header');
         }
