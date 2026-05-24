@@ -210,7 +210,14 @@
 @mixin right-side($no-border: false) {
     margin-top: 4px;
     margin-right: 4px;
+    @if not $no-border {
+        @include theme.border();
+    }
+}
 
+@mixin left-side($no-border: false) {
+    margin-top: 4px;
+    margin-left: 4px;
     @if not $no-border {
         @include theme.border();
     }
@@ -319,7 +326,7 @@
 }
 
 .vglite-speeds {
-    @include theme.border();
+    @include left-side();
 }
 
 .vglite-speeds-container {
