@@ -1,3 +1,4 @@
+import { Collapsible, CollapsibleHeaderProps } from "./Collapsible";
 import { Divider } from "./Header"
 
 type CardSubHeaderValues = [subKey: string, subValue: string][];
@@ -7,18 +8,27 @@ export const SkillCard = ({ title, subtitles, description, special }: {
 }) => {
     return (
         <div className="vglite-card">
-            <SkillCardHeader title={title} />
-            <CardSubHeader content={subtitles} />
-            <SkillCardBody description={description} special={special} />
-        </div>
+            <Collapsible
+                startCollapsed
+                title={title}
+                Header={SkillCardHeader}
+                content={(
+                    <>
+                        <CardSubHeader content={subtitles} />
+                        <SkillCardBody description={description} special={special} />
+                    </>
+                )}
+            />
+        </div >
     )
 }
 
-const SkillCardHeader = ({ title }: { title: string }) => {
+const SkillCardHeader = ({ title, toggleCollapsedButton }: CollapsibleHeaderProps) => {
     return (
         <div className="vglite-card-header">
             <div>{title}</div>
             <Divider />
+            {toggleCollapsedButton}
         </div>
     )
 }

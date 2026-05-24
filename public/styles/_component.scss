@@ -321,6 +321,7 @@
 .vglite-card {
     @include centered();
     border-radius: 6px;
+    padding-bottom: 0;
 
     @include theme.themify() {
         background-color: theme.themed('skill-bg-fill');
@@ -339,11 +340,19 @@
         background-color: theme.themed('section-header-fill');
     }
 
+    button {
+        border: 0;
+        @include theme.themify() {
+            color: theme.themed('text-section-header');
+        }
+    }
+
     div {
         @include theme.themify() {
             color: theme.themed('text-section-header');
         }
 
+        display: flex;
         text-align: center;
         font-family: 'Eskapade';
         position: relative;
@@ -369,6 +378,7 @@
     width: fit-content;
     align-items: left;
     height: 24px;
+    clip-path: polygon(0px 0px, 100% 0px, calc(100% - 15px) 100%, 0px 100%);
 
     @include theme.themify() {
         background-color: theme.themed('section-header-fill');
@@ -387,6 +397,7 @@
         margin: 0px;
         margin-left: 8px;
         margin-right: 8px;
+        padding-right: 2rem;
     }
 }
 

@@ -510,6 +510,7 @@
 }
 .vglite-card {
   border-radius: 6px;
+  padding-bottom: 0;
 }
 .theme-light .vglite-card {
   background-color: #f4efea;
@@ -532,6 +533,15 @@
 .theme-dark .vglite-card-header {
   background-color: #c5b358;
 }
+.vglite-card-header button {
+  border: 0;
+}
+.theme-light .vglite-card-header button {
+  color: #eeeeed;
+}
+.theme-dark .vglite-card-header button {
+  color: #1c1917;
+}
 .theme-light .vglite-card-header div {
   color: #eeeeed;
 }
@@ -539,6 +549,7 @@
   color: #1c1917;
 }
 .vglite-card-header div {
+  display: flex;
   text-align: center;
   font-family: "Eskapade";
   position: relative;
@@ -564,6 +575,7 @@
   width: fit-content;
   align-items: left;
   height: 24px;
+  clip-path: polygon(0px 0px, 100% 0px, calc(100% - 15px) 100%, 0px 100%);
 }
 .theme-light .vglite-card-sub-header {
   background-color: #6a2e2a;
@@ -586,6 +598,7 @@
   margin: 0px;
   margin-left: 8px;
   margin-right: 8px;
+  padding-right: 2rem;
 }
 
 .vglite-card-body {
@@ -686,6 +699,13 @@
 }
 .theme-dark .vg-lite-root {
   background-color: #292524;
+}
+.vg-lite-root button {
+  background-color: transparent;
+}
+.vg-lite-root button:focus {
+  outline: 0;
+  box-shadow: 0 0 !important;
 }
 
 .vg-lite-body {

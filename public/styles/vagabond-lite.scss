@@ -61,8 +61,17 @@
 
 .vg-lite-root {
     font-family: 'Eskapade';
-    @include theme.themify(){
+
+    @include theme.themify() {
         background-color: theme.themed("body-fill");
+    }
+
+    button {
+        background-color: transparent;
+        &:focus {
+            outline: 0;
+            box-shadow: 0 0 !important;
+        }
     }
 }
 
