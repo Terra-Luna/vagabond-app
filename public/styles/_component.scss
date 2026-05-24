@@ -481,7 +481,7 @@
 }
 
 .vglite-skills {
-    @include left-side();
+    @include left-side(false); //arg: use border
     margin-top: 4px;
 
     font-family: "Eskapade";

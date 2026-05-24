@@ -694,17 +694,6 @@
 .vglite-skills {
   margin-top: 4px;
   margin-left: 4px;
-  border: 1px solid;
-  padding-bottom: 4px;
-  margin-right: 4px;
-}
-.theme-light .vglite-skills {
-  border-color: #6f5e53;
-}
-.theme-dark .vglite-skills {
-  border-color: #79716b;
-}
-.vglite-skills {
   margin-top: 4px;
   font-family: "Eskapade";
   font-size: 16px;
