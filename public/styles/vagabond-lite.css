@@ -653,6 +653,8 @@
   width: fit-content;
   height: fit-content;
   padding: 8px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 .theme-light .vglite-card-body {
   background-color: #f4efea;
@@ -670,9 +672,7 @@
 .vglite-body-text {
   font-family: "Paradigm";
   font-size: 14px;
-  font-weight: 400;
   font-style: normal;
-  line-height: 18px;
   margin: 0px;
 }
 
