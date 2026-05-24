@@ -12,7 +12,7 @@
         @include theme.themify() {
             border-bottom: 1px solid theme.themed('text-tertiary');
         }
-        
+
         display: flex;
         justify-content: space-evenly;
 
@@ -71,6 +71,10 @@
 
         &--selected {
             display: block;
+
+            // we'll probably want to make this more resilient in the future
+            height: 275px;
+            overflow-y: auto;
         }
     }
 }
