@@ -2,7 +2,7 @@
 .vglite-row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 1rem;
+  gap: 2px;
 }
 
 .vglite-col-1 {
@@ -94,10 +94,11 @@
 }
 .react-tabs__tab {
   display: inline-block;
-  bottom: -1px;
+  bottom: 1px;
   position: relative;
   list-style: none;
   padding: 6px 12px;
+  margin-top: 8px;
   cursor: pointer;
 }
 .theme-light .react-tabs__tab {

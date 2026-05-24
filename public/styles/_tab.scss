@@ -22,11 +22,11 @@
 
     &__tab {
         display: inline-block;
-        // border was removed here from default styling
-        bottom: -1px;
+        bottom: 1px;
         position: relative;
         list-style: none;
         padding: 6px 12px;
+        margin-top: 8px;
         cursor: pointer;
 
         @include theme.themify() {
