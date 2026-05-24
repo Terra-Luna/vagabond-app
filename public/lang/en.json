@@ -164,6 +164,12 @@
       "endure": "Endure",
       "will": "Will"
     },
+    "Attacks": {
+      "melee": "Melee",
+      "brawl": "Brawl",
+      "finesse": "Finesse",
+      "ranged": "Ranged"
+    },
     "Speeds": {
       "turn": "Turn",
       "crawl": "Crawl",
@@ -278,20 +284,62 @@
       }
     },
     "Skills": {
-      "arcana": "Arcana",
-      "brawl": "Brawl",
-      "craft": "Craft",
-      "detect": "Detect",
-      "finesse": "Finesse",
-      "influence": "Influence",
-      "leadership": "Leadership",
-      "medicine": "Medicine",
-      "mysticism": "Mysticism",
-      "performance": "Performance",
-      "sneak": "Sneak",
-      "survival": "Survival",
-      "melee": "Melee",
-      "ranged": "Ranged"
+      "arcana": {
+        "name": "Arcana",
+        "description": ""
+      },
+      "brawl": {
+        "name": "Brawl",
+        "description": ""
+      },
+      "craft": {
+        "name": "Craft",
+        "description": ""
+      },
+      "detect": {
+        "name": "Detect",
+        "description": ""
+      },
+      "finesse": {
+        "name": "Finesse",
+        "description": ""
+      },
+      "influence": {
+        "name": "Influence",
+        "description": ""
+      },
+      "leadership": {
+        "name": "Leadership",
+        "description": ""
+      },
+      "medicine": {
+        "name": "Medicine",
+        "description": ""
+      },
+      "mysticism": {
+        "name": "Mysticism",
+        "description": ""
+      },
+      "performance": {
+        "name": "Performance",
+        "description": ""
+      },
+      "sneak": {
+        "name": "Sneak",
+        "description": ""
+      },
+      "survival": {
+        "name": "Survival",
+        "description": ""
+      },
+      "melee": {
+        "name": "Melee",
+        "description": ""
+      },
+      "ranged": {
+        "name": "Ranged",
+        "description": ""
+      }
     },
     "WeaponProps": {
       "brawl": {
@@ -396,7 +444,11 @@
       "fatigue": "FATIGUE",
       "luck": "LUCK",
       "saves": "SAVES",
-      "speeds": "SPEED"
+      "speeds": "SPEED",
+      "skills": "SKILLS",
+      "attacks": "ATTACKS",
+      "weapons": "WEAPONS",
+      "armor": "ARMOR"
     }
   }
 }

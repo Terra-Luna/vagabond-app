@@ -207,18 +207,18 @@
     }
 }
 
-@mixin right-side($no-border: false) {
+@mixin right-side($border: true) {
     margin-top: 4px;
     margin-right: 4px;
-    @if not $no-border {
+    @if $border {
         @include theme.border();
     }
 }
 
-@mixin left-side($no-border: false) {
+@mixin left-side($border: true) {
     margin-top: 4px;
     margin-left: 4px;
-    @if not $no-border {
+    @if $border {
         @include theme.border();
     }
 }
@@ -288,7 +288,7 @@
 }
 
 .vglite-saves {
-    @include right-side(true); // no-border is the arg
+    @include right-side(false); //arg: use border
     margin-top: 4px;
 
     .vglite-row {
@@ -478,4 +478,76 @@
     font-style: normal;
     line-height: 18px;
     margin: 0px;
+}
+
+.vglite-skills {
+    @include left-side();
+    margin-top: 4px;
+
+    font-family: "Eskapade";
+    font-size: 16px;
+
+    
+}
+.vglite-skill-row {
+    
+    .vglite-data-row-divider {
+        @include theme.themify() {
+            background-color: theme.themed('skill-divider');
+        }
+        flex: 1;
+        height: 1px;
+        margin-right: 4px;
+        margin-left: 4px;
+    }
+
+}
+.vglite-ic-skill-trained {
+    @include theme.themify() {
+        color: theme.themed('ic-skill-trained');
+        fill: theme.themed('ic-skill-trained');
+    }
+}
+.vglite-ic-skill-untrained {
+    @include theme.themify() {
+        color: theme.themed('ic-skill-untrained');
+        fill: transparent;
+    }
+}
+
+
+ .vglite-attacks {
+    @include right-side(false); //arg: use border
+    margin-top: 4px;
+
+    .vglite-row {
+        gap: 0.5rem;
+    }
+
+    .vglite-attack {
+        @include theme.border(0);
+        height: 32px;
+        width: 100%;
+        margin-top: 1px;
+    }
+
+    .attack-value {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: center;
+        @include centered-block-content();
+        @include theme.themify() {
+            background-color: theme.themed('section-header-fill');
+            color: theme.themed('text-section-header');
+        }
+    }
+
+    .attack-name {
+        font-size: 18px;
+        font-weight: bold;
+        @include centered-block-content();
+        @include theme.themify() {
+            color: theme.themed('text-primary');
+        }
+    }
 }

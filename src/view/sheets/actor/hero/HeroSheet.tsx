@@ -10,6 +10,7 @@ import { GridItem, GridRow } from "../../../component/Grid"
 import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./TopHalfComponents"
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
+import { MainTab } from "./tab/MainTab"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -111,7 +112,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 </Tab>
             </TabList>
             <TabPanel>
-                Main
+                <MainTab hero={hero} />
             </TabPanel>
             <TabPanel>
                 Inventory

@@ -7,6 +7,7 @@
     "foundry-linux": "node ~/Apps/FoundryVTT-Node/main.js",
     "vite-no": "pnpm vite --open 0",
     "sass": "sass --watch public/styles/vagabond-lite.scss public/styles/vagabond-lite.css",
+    "sass-update": "sass --update public/styles/vagabond-lite.scss public/styles/vagabond-lite.css",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
     "clean-": "echo Y | rmdir /s dist && pnpm clean",
     "lint": "eslint .",

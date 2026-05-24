@@ -691,6 +691,108 @@
   margin: 0px;
 }
 
+.vglite-skills {
+  margin-top: 4px;
+  margin-left: 4px;
+  border: 1px solid;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+.theme-light .vglite-skills {
+  border-color: #6f5e53;
+}
+.theme-dark .vglite-skills {
+  border-color: #79716b;
+}
+.vglite-skills {
+  margin-top: 4px;
+  font-family: "Eskapade";
+  font-size: 16px;
+}
+
+.theme-light .vglite-skill-row .vglite-data-row-divider {
+  background-color: #e7e5e4;
+}
+.theme-dark .vglite-skill-row .vglite-data-row-divider {
+  background-color: #47412e;
+}
+.vglite-skill-row .vglite-data-row-divider {
+  flex: 1;
+  height: 1px;
+  margin-right: 4px;
+  margin-left: 4px;
+}
+
+.theme-light .vglite-ic-skill-trained {
+  color: #3d5541;
+  fill: #3d5541;
+}
+.theme-dark .vglite-ic-skill-trained {
+  color: #c5b358;
+  fill: #c5b358;
+}
+
+.theme-light .vglite-ic-skill-untrained {
+  color: #aeb2a4;
+  fill: transparent;
+}
+.theme-dark .vglite-ic-skill-untrained {
+  color: #57534d;
+  fill: transparent;
+}
+
+.vglite-attacks {
+  margin-top: 4px;
+  margin-right: 4px;
+  margin-top: 4px;
+}
+.vglite-attacks .vglite-row {
+  gap: 0.5rem;
+}
+.vglite-attacks .vglite-attack {
+  border: 1px solid;
+  padding-bottom: 0;
+  margin-right: 4px;
+}
+.theme-light .vglite-attacks .vglite-attack {
+  border-color: #6f5e53;
+}
+.theme-dark .vglite-attacks .vglite-attack {
+  border-color: #79716b;
+}
+.vglite-attacks .vglite-attack {
+  height: 32px;
+  width: 100%;
+  margin-top: 1px;
+}
+.vglite-attacks .attack-value {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  display: block;
+  align-content: center;
+}
+.theme-light .vglite-attacks .attack-value {
+  background-color: #6a2e2a;
+  color: #eeeeed;
+}
+.theme-dark .vglite-attacks .attack-value {
+  background-color: #c5b358;
+  color: #1c1917;
+}
+.vglite-attacks .attack-name {
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  align-content: center;
+}
+.theme-light .vglite-attacks .attack-name {
+  color: #1c1917;
+}
+.theme-dark .vglite-attacks .attack-name {
+  color: #e7e5e4;
+}
+
 @font-face {
   font-family: "Eskapade";
   src: url("../assets/fonts/eskapade-black.ttf") format("truetype");
