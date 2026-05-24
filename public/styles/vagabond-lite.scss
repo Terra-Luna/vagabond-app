@@ -59,8 +59,9 @@
     font-style: italic;
 }
 
-.vg-lite-root {
+.vglite-root {
     font-family: 'Eskapade';
+    height: 100%;
 
     @include theme.themify() {
         background-color: theme.themed("body-fill");

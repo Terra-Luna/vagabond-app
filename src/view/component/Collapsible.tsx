@@ -4,6 +4,7 @@ import { ReactNode, useCallback, useState } from "react";
 export interface CollapsibleHeaderProps {
     toggleCollapsedButton: ReactNode;
     title: string;
+    toggleCollapsed?: () => void;
 }
 interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode;
@@ -17,7 +18,7 @@ export const Collapsible = ({ title, Header, content, startCollapsed = false }: 
 
     return (
         <div className={isCollapsed ? "vglite-collapsed" : ""}>
-            <Header title={title} toggleCollapsedButton={<button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>} />
+            <Header title={title} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={<button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>} />
             {isCollapsed ? <></> : content}
         </div>
     )

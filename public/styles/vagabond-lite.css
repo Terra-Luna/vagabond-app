@@ -737,19 +737,20 @@
   font-weight: normal;
   font-style: italic;
 }
-.vg-lite-root {
+.vglite-root {
   font-family: "Eskapade";
+  height: 100%;
 }
-.theme-light .vg-lite-root {
+.theme-light .vglite-root {
   background-color: #faf0e6;
 }
-.theme-dark .vg-lite-root {
+.theme-dark .vglite-root {
   background-color: #292524;
 }
-.vg-lite-root button {
+.vglite-root button {
   background-color: transparent;
 }
-.vg-lite-root button:focus {
+.vglite-root button:focus {
   outline: 0;
   box-shadow: 0 0 !important;
 }

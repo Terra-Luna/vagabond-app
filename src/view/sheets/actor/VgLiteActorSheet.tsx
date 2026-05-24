@@ -37,7 +37,7 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
             defaultWindowContent && this.element.removeChild(defaultWindowContent)
 
             const vgLiteDiv = document.createElement('div')
-            vgLiteDiv.setAttribute("class", "vg-lite-root")
+            vgLiteDiv.setAttribute("class", "vglite-root")
             const reactRootElem = this.element.appendChild(vgLiteDiv)
             this._reactRoot = ReactDom.createRoot(reactRootElem)
         }
@@ -70,7 +70,7 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
     renderWithWrappers({ width = 1, height = 1, theme = "light" }: { width?: number, height?: number, theme: string }) {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height }}>
-                <div className={`theme-${theme}`}>
+                <div className={`theme-${theme} vglite-themed-content`}>
                     <this.Component {...this.getReactProps()} width={width} height={height} />
                 </div>
             </DimensionsContext.Provider>

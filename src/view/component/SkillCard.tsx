@@ -23,9 +23,9 @@ export const SkillCard = ({ title, subtitles, description, special }: {
     )
 }
 
-const SkillCardHeader = ({ title, toggleCollapsedButton }: CollapsibleHeaderProps) => {
+const SkillCardHeader = ({ title, toggleCollapsedButton, toggleCollapsed }: CollapsibleHeaderProps) => {
     return (
-        <div className="vglite-card-header">
+        <div onClick={toggleCollapsed} className="vglite-card-header">
             <div>{title}</div>
             <Divider />
             {toggleCollapsedButton}
