@@ -318,6 +318,36 @@
     }
 }
 
+.vglite-speeds {
+    @include theme.border();
+}
+
+.vglite-speeds-container {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 4px;
+
+    font-family: "Paradigm";
+    font-weight: 400;
+
+    @include theme.themify() {
+        color: theme.themed('text-secondary');
+    }
+
+    .speed-value {
+        font-size: 18px;
+        font-weight: bold;
+        font-family: "Eskapade";
+        text-align: center;
+
+        @include theme.themify() {
+            color: theme.themed('text-primary');
+        }
+    }
+}
+
 .vglite-card {
     @include centered();
     border-radius: 6px;

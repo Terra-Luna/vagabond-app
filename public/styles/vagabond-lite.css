@@ -494,6 +494,46 @@
   color: #e7e5e4;
 }
 
+.vglite-speeds {
+  border: 1px solid;
+  padding-bottom: 4px;
+  margin-right: 4px;
+}
+.theme-light .vglite-speeds {
+  border-color: #6f5e53;
+}
+.theme-dark .vglite-speeds {
+  border-color: #79716b;
+}
+
+.vglite-speeds-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 4px;
+  font-family: "Paradigm";
+  font-weight: 400;
+}
+.theme-light .vglite-speeds-container {
+  color: #44403b;
+}
+.theme-dark .vglite-speeds-container {
+  color: #a6a09b;
+}
+.vglite-speeds-container .speed-value {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Eskapade";
+  text-align: center;
+}
+.theme-light .vglite-speeds-container .speed-value {
+  color: #1c1917;
+}
+.theme-dark .vglite-speeds-container .speed-value {
+  color: #e7e5e4;
+}
+
 .vglite-card {
   margin-top: 4px;
   margin-left: 4px;

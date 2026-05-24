@@ -7,7 +7,7 @@ import { IconButton } from "../../../component/IconButton"
 import { useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 import { GridItem, GridRow } from "../../../component/Grid"
-import { Avatar, HPAndArmorDisplay, Saves, Stats, Trackers } from "./TopHalfComponents"
+import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./TopHalfComponents"
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 
@@ -81,6 +81,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <GridItem lg={6} sm={6}>
                     <Avatar hero={hero} />
                     <HPAndArmorDisplay health={hero.health} armor={hero.armor} />
+                    <Speeds hero={hero} />
                 </GridItem>
                 <GridItem lg={6} sm={6}>
                     <Stats hero={hero} />

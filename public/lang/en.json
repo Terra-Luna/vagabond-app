@@ -164,6 +164,14 @@
       "endure": "Endure",
       "will": "Will"
     },
+    "Speeds": {
+      "turn": "Turn",
+      "crawl": "Crawl",
+      "travel": "Travel",
+      "turnSpeed": "{{speed}}'",
+      "crawlSpeed": "{{speed}}'",
+      "travelSpeed": "{{speed}}mi"
+    },
     "StatusConditions": {
       "berserk": {
         "name": "Berserk",
@@ -387,7 +395,8 @@
       "studied": "STUDIED",
       "fatigue": "FATIGUE",
       "luck": "LUCK",
-      "saves": "SAVES"
+      "saves": "SAVES",
+      "speeds": "SPEED"
     }
   }
 }

@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import lang from "../../../../../public/lang/en.json"
 import { Header } from "../../../component/Header";
 import { GridItem, GridRow } from "../../../component/Grid";
+import { localizeString } from "../../../../utils/localeUtils";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -98,3 +99,28 @@ export const Save = ({ name, value }: { name: string; value: number }) => {
         </GridRow>
     )
 }
+
+export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
+    const { crawl, travel, turn } = hero.speed
+    if (crawl == null || travel == null || turn == null) return;
+
+    const localizeSpeed = (type: (keyof typeof lang.VGLITE.Speeds), speed: number) => localizeString(lang.VGLITE.Speeds[type], { speed: speed.toString() })
+
+    return (
+        <div className="vglite-speeds">
+            <Header title={lang.VGLITE.HeroSheet.speeds} />
+            <div className="vglite-speeds-container">
+                <Speed name={lang.VGLITE.Speeds.turn} value={localizeSpeed('turnSpeed', turn)} />
+                <Speed name={lang.VGLITE.Speeds.crawl} value={localizeSpeed('crawlSpeed', crawl)} />
+                <Speed name={lang.VGLITE.Speeds.travel} value={localizeSpeed('travelSpeed', travel)} />
+            </div>
+        </div>
+    )
+}
+
+export const Speed = ({ name, value }: { name: string; value: string }) => (
+    <div className="vglite-speed">
+        <div className="speed-value">{value}</div>
+        <div className="speed-name">{name}</div>
+    </div>
+)
