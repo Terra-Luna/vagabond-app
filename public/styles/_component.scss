@@ -21,8 +21,8 @@
 .vglite-header {
     display: flex;
     width: 100%;
+    height: 28px;
     align-items: center;
-    height: 30px;
 
     @include theme.themify() {
         background-color: theme.themed('section-header-fill');
@@ -33,10 +33,10 @@
             color: theme.themed('text-section-header');
         }
 
-        text-align: center;
         font-family: 'Eskapade';
         font-size: 16px;
         font-weight: bold;
+        text-align: center;
     }
 
     .vglite-divider {
@@ -46,8 +46,8 @@
 
         flex: 1;
         height: 1px;
-        margin-right: 6px;
-        margin-left: 6px;
+        margin-right: 8px;
+        margin-left: 8px;
     }
 }
 
@@ -181,7 +181,7 @@
     @include theme.border();
     display: flex;
     column-gap: 16px;
-    row-gap: 4px;
+    row-gap: 8px;
     flex-wrap: wrap;
     padding-left: 12px;
     margin-top: 2px;
@@ -191,17 +191,17 @@
     width: 25%;
     text-align: center;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
 
     @include theme.themify() {
         color: theme.themed('text-special');
     }
 
     .vglite-stat-value {
-        font-size: 32px;
+        font-size: 34px;
 
         @include theme.themify() {
-            background-color: theme.themed('section-header-fill');
+            background-color: theme.themed('stat-block-fill');
             color: theme.themed('text-section-header');
         }
     }
@@ -228,6 +228,11 @@
     margin-left: 4px;
     margin-right: 4px;
     @include theme.border();
+}
+
+@mixin centered-block-content() {
+    display: block;
+    align-content: center;
 }
 
 .vglite-trackers {
@@ -291,22 +296,17 @@
     }
 
     .vglite-save {
-        @include theme.border(0px);
-        position: relative;
-        margin-top: 2px;
-        margin-right: 0px;
+        @include theme.border(0);
+        height: 32px;
+        width: 100%;
+        margin-top: 1px;
     }
 
     .save-value {
         font-size: 18px;
         font-weight: bold;
         text-align: center;
-
-        span {
-            position: relative;
-            top: 1px;
-        }
-
+        @include centered-block-content();
         @include theme.themify() {
             background-color: theme.themed('section-header-fill');
             color: theme.themed('text-section-header');
@@ -314,11 +314,9 @@
     }
 
     .save-name {
-        position: relative;
-        top: 1px;
         font-size: 18px;
         font-weight: bold;
-
+        @include centered-block-content();
         @include theme.themify() {
             color: theme.themed('text-primary');
         }
@@ -413,8 +411,8 @@
 
         flex: 1;
         height: 1px;
-        margin-right: 6px;
-        margin-left: 6px;
+        margin-right: 8px;
+        margin-left: 8px;
     }
 }
 
