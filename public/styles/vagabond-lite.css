@@ -75,6 +75,75 @@
   fill: themed("fill-medium");
 }
 
+.react-tabs {
+  -webkit-tap-highlight-color: transparent;
+  font-family: "Paradigm";
+  font-size: 18px;
+}
+.theme-light .react-tabs__tab-list {
+  border-bottom: 1px solid #6f5e53;
+}
+.theme-dark .react-tabs__tab-list {
+  border-bottom: 1px solid #79716b;
+}
+.react-tabs__tab-list {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 0 10px;
+  padding: 0;
+}
+.react-tabs__tab {
+  display: inline-block;
+  bottom: -1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.theme-light .react-tabs__tab {
+  color: #53514a;
+}
+.theme-dark .react-tabs__tab {
+  color: #c5b358;
+}
+.react-tabs__tab--selected {
+  border-radius: 5px 5px 0 0;
+  font-weight: 600;
+}
+.theme-light .react-tabs__tab--selected {
+  border-color: #6f5e53;
+}
+.theme-dark .react-tabs__tab--selected {
+  border-color: #79716b;
+}
+.react-tabs__tab--selected:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+}
+.theme-light .react-tabs__tab--selected:after {
+  background: #53514a;
+}
+.theme-dark .react-tabs__tab--selected:after {
+  background: #c5b358;
+}
+.react-tabs__tab--disabled {
+  color: GrayText;
+  cursor: default;
+}
+.react-tabs__tab:focus {
+  outline: none;
+}
+.react-tabs__tab-panel {
+  display: none;
+}
+.react-tabs__tab-panel--selected {
+  display: block;
+}
+
 .vglite-text {
   font-size: 32px;
   font-family: "Eskapade";

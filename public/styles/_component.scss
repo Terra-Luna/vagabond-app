@@ -1,6 +1,7 @@
 @use "./_theme";
 @use "./_grid";
 @use "./_svg";
+@use "./tab";
 
 .vglite-container {
     @include theme.themify() {

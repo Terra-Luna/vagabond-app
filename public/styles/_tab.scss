@@ -1,0 +1,76 @@
+// This is copy-pasted from node_modules/react-tabs/style/react-tabs.scss, then modified to fit our theme / needs
+// If react-tabs updates their styles, it will be in their changelog
+// If they BREAK styles, it will be a semver "major" update
+@use './theme';
+
+.react-tabs {
+    -webkit-tap-highlight-color: transparent;
+    font-family: 'Paradigm';
+    font-size: 18px;
+
+    &__tab-list {
+        @include theme.themify() {
+            border-bottom: 1px solid theme.themed('text-tertiary');
+        }
+        
+        display: flex;
+        justify-content: space-evenly;
+
+        margin: 0 0 10px;
+        padding: 0;
+    }
+
+    &__tab {
+        display: inline-block;
+        // border was removed here from default styling
+        bottom: -1px;
+        position: relative;
+        list-style: none;
+        padding: 6px 12px;
+        cursor: pointer;
+
+        @include theme.themify() {
+            color: theme.themed('text-tab-active');
+        }
+
+        &--selected {
+            border-radius: 5px 5px 0 0;
+            font-weight: 600;
+
+            @include theme.themify() {
+                border-color: theme.themed('text-tertiary');
+            }
+
+            // this was ripped out of &:focus and moved here for our styling
+            &:after {
+                content: "";
+                position: absolute;
+                height: 5px;
+                left: -4px;
+                right: -4px;
+                bottom: -5px;
+
+                @include theme.themify() {
+                    background: theme.themed('text-tab-active');
+                }
+            }
+        }
+
+        &--disabled {
+            color: GrayText;
+            cursor: default;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &__tab-panel {
+        display: none;
+
+        &--selected {
+            display: block;
+        }
+    }
+}
