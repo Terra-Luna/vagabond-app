@@ -143,6 +143,8 @@
 }
 .react-tabs__tab-panel--selected {
   display: block;
+  height: 275px;
+  overflow-y: auto;
 }
 
 .vglite-text {
