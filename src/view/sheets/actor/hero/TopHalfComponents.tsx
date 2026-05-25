@@ -1,4 +1,4 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover } from "lucide-react";
+import { Heart, Shield, Star, LucideBookMarked, LucideHeartOff, LucideClover } from "lucide-react";
 import HeroDataModel from "../../../../model/actor/HeroDataModel";
 import { ReactNode } from "react";
 import lang from "../../../../../public/lang/en.json"

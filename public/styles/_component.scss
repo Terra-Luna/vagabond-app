@@ -21,7 +21,7 @@
 .vglite-header {
     display: flex;
     width: 100%;
-    height: 28px;
+    height: 20px;
     align-items: center;
 
     @include theme.themify() {
@@ -191,7 +191,8 @@
     width: 25%;
     text-align: center;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 12px;
+    font-family: "Paradigm";
 
     @include theme.themify() {
         color: theme.themed('text-special');
@@ -199,6 +200,7 @@
 
     .vglite-stat-value {
         font-size: 34px;
+        font-family: "Eskapade";
 
         @include theme.themify() {
             background-color: theme.themed('stat-block-fill');
@@ -482,39 +484,48 @@
 
 .vglite-skills {
     @include left-side(false); //arg: use border
+    display: inline-block;
     margin-top: 4px;
-
+    padding-right: 4px;
     font-family: "Eskapade";
     font-size: 16px;
-
-    
+    font-weight: bold;
+    width: 100%;
 }
 .vglite-skill-row {
-    
-    .vglite-data-row-divider {
-        @include theme.themify() {
-            background-color: theme.themed('skill-divider');
-        }
-        flex: 1;
-        height: 1px;
-        margin-right: 4px;
-        margin-left: 4px;
-    }
+    display: flex;
+    margin-top: 4px;
+    height: 28px;
+    align-items: center;
 
+    .vglite-skill-text {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-right: 8px;
+    }
 }
 .vglite-ic-skill-trained {
+    margin-right: 8px;
     @include theme.themify() {
         color: theme.themed('ic-skill-trained');
         fill: theme.themed('ic-skill-trained');
     }
 }
 .vglite-ic-skill-untrained {
+    margin-right: 8px;
     @include theme.themify() {
         color: theme.themed('ic-skill-untrained');
-        fill: transparent;
     }
 }
 
+.vglite-data-row-divider {
+    @include theme.themify() {
+        background-color: theme.themed('skill-divider');
+    }
+    flex: 1;
+    height: 1px;
+}
 
  .vglite-attacks {
     @include right-side(false); //arg: use border

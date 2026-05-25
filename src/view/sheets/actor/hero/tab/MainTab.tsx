@@ -1,3 +1,4 @@
+import { Star } from "lucide-react";
 import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import lang from "../../../../../../public/lang/en.json"
 import { Header } from "../../../../component/Header";
@@ -7,10 +8,10 @@ export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="vglite-hero-sheet-main-tab">
             <GridRow>
-                <GridItem lg={6} sm={6}>
+                <GridItem lg={5} sm={5}>
                     <Skills hero={hero} />
                 </GridItem>
-                <GridItem lg={6} sm={6}>
+                <GridItem lg={7} sm={7}>
                     <Attacks hero={hero} />
                 </GridItem>
             </GridRow>
@@ -24,11 +25,26 @@ const Skills = ({ hero }: { hero: HeroDataModel }) => {
         <div className="vglite-skills">
             <Header title={lang.VGLITE.HeroSheet.skills} />
             {
-                skills.map(sk => (
-                    <span>{lang.VGLITE.Skills[sk].name}: {hero.skills[sk].value}{hero.skills[sk].isTrained ? '*' : ''}<br></br></span>
+                skills.map(sk => (                    
+                    <Skill isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} />
                 ))
             }
         </div>
+    )
+}
+
+const Skill = ({ isTrained, name, value }: { isTrained: boolean, name: string, value: number }) => {
+    return (
+        <>
+            <div className="vglite-skill-row">
+                <Star className={(isTrained ? 'vglite-ic-skill-trained' : 'vglite-ic-skill-untrained')} size={18} />
+                <div className="vglite-skill-text">
+                    <div>{name}</div>
+                    <div>{value}</div>
+                </div>
+            </div>
+            <div className="vglite-data-row-divider" />
+        </>
     )
 }
 

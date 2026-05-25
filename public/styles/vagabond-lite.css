@@ -161,7 +161,7 @@
 .vglite-header {
   display: flex;
   width: 100%;
-  height: 28px;
+  height: 20px;
   align-items: center;
 }
 .theme-light .vglite-header {
@@ -223,7 +223,7 @@
   color: #eeeeed;
 }
 .theme-dark .vglite-hero-sheet-header .descriptor {
-  color: #c3c0be;
+  color: #e7e5e4;
 }
 .vglite-hero-sheet-header .descriptor {
   font-size: 14px;
@@ -234,7 +234,7 @@
   color: #eeeeed;
 }
 .theme-dark .vglite-hero-sheet-header .vglite-dot {
-  color: #c3c0be;
+  color: #e7e5e4;
 }
 .theme-light .vglite-hero-sheet-header .xp {
   color: #e1dbd9;
@@ -357,7 +357,8 @@
   width: 25%;
   text-align: center;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 12px;
+  font-family: "Paradigm";
 }
 .theme-light .vglite-stat {
   color: #6a2e2a;
@@ -367,6 +368,7 @@
 }
 .vglite-stat .vglite-stat-value {
   font-size: 34px;
+  font-family: "Eskapade";
 }
 .theme-light .vglite-stat .vglite-stat-value {
   background-color: #6a2e2a;
@@ -694,24 +696,31 @@
 .vglite-skills {
   margin-top: 4px;
   margin-left: 4px;
+  display: inline-block;
   margin-top: 4px;
+  padding-right: 4px;
   font-family: "Eskapade";
   font-size: 16px;
+  font-weight: bold;
+  width: 100%;
 }
 
-.theme-light .vglite-skill-row .vglite-data-row-divider {
-  background-color: #e7e5e4;
+.vglite-skill-row {
+  display: flex;
+  margin-top: 4px;
+  height: 28px;
+  align-items: center;
 }
-.theme-dark .vglite-skill-row .vglite-data-row-divider {
-  background-color: #47412e;
-}
-.vglite-skill-row .vglite-data-row-divider {
-  flex: 1;
-  height: 1px;
-  margin-right: 4px;
-  margin-left: 4px;
+.vglite-skill-row .vglite-skill-text {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-right: 8px;
 }
 
+.vglite-ic-skill-trained {
+  margin-right: 8px;
+}
 .theme-light .vglite-ic-skill-trained {
   color: #3d5541;
   fill: #3d5541;
@@ -721,13 +730,25 @@
   fill: #c5b358;
 }
 
+.vglite-ic-skill-untrained {
+  margin-right: 8px;
+}
 .theme-light .vglite-ic-skill-untrained {
   color: #aeb2a4;
-  fill: transparent;
 }
 .theme-dark .vglite-ic-skill-untrained {
   color: #57534d;
-  fill: transparent;
+}
+
+.theme-light .vglite-data-row-divider {
+  background-color: #e7e5e4;
+}
+.theme-dark .vglite-data-row-divider {
+  background-color: #47412e;
+}
+.vglite-data-row-divider {
+  flex: 1;
+  height: 1px;
 }
 
 .vglite-attacks {
