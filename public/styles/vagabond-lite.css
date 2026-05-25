@@ -355,23 +355,12 @@
 }
 
 .vglite-stats-container {
-  border: 1px solid;
-  padding-bottom: 4px;
-  margin-right: 4px;
-}
-.theme-light .vglite-stats-container {
-  border-color: #6f5e53;
-}
-.theme-dark .vglite-stats-container {
-  border-color: #79716b;
-}
-.vglite-stats-container {
   display: flex;
   column-gap: 16px;
   row-gap: 8px;
   flex-wrap: wrap;
   padding-left: 12px;
-  margin-top: 3px;
+  margin-top: 5px;
 }
 
 .vglite-stat {
@@ -381,6 +370,7 @@
   font-size: 12px;
   font-family: "Paradigm";
   letter-spacing: 0.2px;
+  margin-bottom: 2px;
 }
 .theme-light .vglite-stat {
   color: #6a2e2a;

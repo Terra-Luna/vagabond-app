@@ -197,13 +197,12 @@
 }
 
 .vglite-stats-container {
-    @include theme.border();
     display: flex;
     column-gap: 16px;
     row-gap: 8px;
     flex-wrap: wrap;
     padding-left: 12px;
-    margin-top: 3px;
+    margin-top: 5px;
 }
 
 .vglite-stat {
@@ -213,6 +212,7 @@
     font-size: 12px;
     font-family: "Paradigm";
     letter-spacing: .2px;
+    margin-bottom: 2px;
 
     @include theme.themify() {
         color: theme.themed('text-special');
