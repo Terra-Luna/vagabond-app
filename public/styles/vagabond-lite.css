@@ -89,7 +89,7 @@
 .react-tabs__tab-list {
   display: flex;
   justify-content: space-evenly;
-  margin: 0 0 10px;
+  margin: 0 0 4px;
   padding: 0;
 }
 .react-tabs__tab {
@@ -143,7 +143,7 @@
 }
 .react-tabs__tab-panel--selected {
   display: block;
-  height: 265px;
+  height: 318px;
   overflow-y: auto;
 }
 
