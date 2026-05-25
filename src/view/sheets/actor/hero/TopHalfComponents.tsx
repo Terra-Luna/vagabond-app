@@ -5,6 +5,7 @@ import lang from "../../../../../public/lang/en.json"
 import { Header } from "../../../component/Header";
 import { GridItem, GridRow } from "../../../component/Grid";
 import { localizeString } from "../../../../utils/localeUtils";
+import { skillCheck } from "../../../../combat/skillCheck";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -80,16 +81,20 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="vglite-saves">
             <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save name={lang.VGLITE.Saves.reflex} value={reflex!} />
-            <Save name={lang.VGLITE.Saves.endure} value={endure!} />
-            <Save name={lang.VGLITE.Saves.will} value={will!} />
+            <Save hero={hero} name={lang.VGLITE.Saves.reflex} value={reflex!} />
+            <Save hero={hero} name={lang.VGLITE.Saves.endure} value={endure!} />
+            <Save hero={hero} name={lang.VGLITE.Saves.will} value={will!} />
         </div>
     )
 }
 
-export const Save = ({ name, value }: { name: string; value: number }) => {
+export const Save = ({ hero, name, value }: { hero: HeroDataModel, name: string; value: number }) => {
     return (
-        <GridRow className="vglite-save">
+        <GridRow className="vglite-save" onClick={
+            async (e: React.MouseEvent<HTMLDivElement>) => {
+                skillCheck(hero.parent, name, value, e)
+            }
+        }>
             <GridItem lg={4} sm={3} className="save-value">
                 <span>{value}</span>
             </GridItem>

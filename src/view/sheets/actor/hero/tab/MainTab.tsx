@@ -3,6 +3,7 @@ import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import lang from "../../../../../../public/lang/en.json"
 import { Header } from "../../../../component/Header";
 import { GridRow, GridItem } from "../../../../component/Grid";
+import { skillCheck } from "../../../../../combat/skillCheck";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -26,19 +27,23 @@ const Skills = ({ hero }: { hero: HeroDataModel }) => {
             <Header title={lang.VGLITE.HeroSheet.skills} />
             {
                 skills.map(sk => (                    
-                    <Skill isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} />
+                    <Skill hero={hero} isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} />
                 ))
             }
         </div>
     )
 }
 
-const Skill = ({ isTrained, name, value }: { isTrained: boolean, name: string, value: number }) => {
+const Skill = ({ hero, isTrained, name, value }: { hero: HeroDataModel, isTrained: boolean, name: string, value: number }) => {
     return (
         <>
             <div className="vglite-skill-row">
                 <Star className={(isTrained ? 'vglite-ic-skill-trained' : 'vglite-ic-skill-untrained')} size={18} />
-                <div className="vglite-skill-text">
+                <div className="vglite-skill-text" onClick={
+                    async (e: React.MouseEvent<HTMLDivElement>) => {
+                        skillCheck(hero.parent, name, value, e)
+                    }
+                }>
                     <div>{name}</div>
                     <div>{value}</div>
                 </div>
@@ -53,16 +58,20 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="vglite-attacks">
             <Header title={lang.VGLITE.HeroSheet.attacks} />
-            <Attack name={lang.VGLITE.Attacks.melee} value={melee.value!} />
-            <Attack name={lang.VGLITE.Attacks.brawl} value={brawl.value!} />
-            <Attack name={lang.VGLITE.Attacks.finesse} value={finesse.value!} />
-            <Attack name={lang.VGLITE.Attacks.ranged} value={ranged.value!} />
+            <Attack hero={hero} name={lang.VGLITE.Attacks.melee} value={melee.value!} />
+            <Attack hero={hero} name={lang.VGLITE.Attacks.brawl} value={brawl.value!} />
+            <Attack hero={hero} name={lang.VGLITE.Attacks.finesse} value={finesse.value!} />
+            <Attack hero={hero} name={lang.VGLITE.Attacks.ranged} value={ranged.value!} />
         </div>
     )
 }
-const Attack = ({ name, value }: { name: string, value: number }) => {
+const Attack = ({ hero, name, value }: { hero: HeroDataModel, name: string, value: number }) => {
     return (
-        <GridRow className="vglite-attack">
+        <GridRow className="vglite-attack" onClick={
+            async (e: React.MouseEvent<HTMLDivElement>) => {
+                skillCheck(hero.parent, name, value, e)
+            }
+        }>
             <GridItem lg={4} sm={3} className="attack-value">
                 <span>{value}</span>
             </GridItem>
