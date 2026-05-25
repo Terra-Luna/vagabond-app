@@ -8,7 +8,7 @@ import { localizeString } from "../../../../utils/localeUtils";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <img className="vglite-thumbnail" src="icons/svg/mystery-man.svg" alt={hero.parent.name} />
+        <img className="vglite-thumbnail" src={hero.parent.img} alt={hero.parent.name} />
     );
 }
 

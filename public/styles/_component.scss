@@ -124,8 +124,15 @@
 .vglite-thumbnail {
     height: 200px;
     width: 200px;
-
+    margin-top: 4px;
+    margin-left: 4px;
+    object-fit: scale-down;
+    //object-fit: cover;
+    //object-position: 50% 10%;
+    border: 1px solid;
+    border-radius: 6px;
     @include theme.themify() {
+        border-color: theme.themed('portrait-border');
         background-color: theme.themed('portrait-fill-bg');
     }
 }
@@ -157,7 +164,7 @@
     display: flex;
     padding-left: 24px;
     align-items: center;
-    height: 40px;
+    height: 36px;
 
     @include theme.themify() {
         .current {
@@ -476,7 +483,6 @@
     padding: 8px;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
-
     @include theme.themify() {
         background-color: theme.themed('skill-bg-fill');
     }

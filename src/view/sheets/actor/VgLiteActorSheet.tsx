@@ -46,7 +46,7 @@ export abstract class VgLiteActorSheet extends foundry.applications.api.Handleba
     }
 
     _getTheme() {
-        console.log((game.settings as any).get("core", "uiConfig").colorScheme.applications)
+        //console.log((game.settings as any).get("core", "uiConfig").colorScheme.applications)
         return (game.settings as any).get("core", "uiConfig").colorScheme.applications
     }
 

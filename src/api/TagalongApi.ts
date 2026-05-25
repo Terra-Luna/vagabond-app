@@ -21,7 +21,7 @@ export async function fetchHero(url: URL): Promise<TagalongHero> {
     headers.set('Accept', 'application/json')
     
     const requestUrl = `${tagalongApi}${parseHeroId(url)}`
-    console.log("Calling Tagalong API:", requestUrl)
+    //console.log("Calling Tagalong API:", requestUrl)
     const request: RequestInfo = new Request(requestUrl, {
         method: 'GET',
         headers: headers

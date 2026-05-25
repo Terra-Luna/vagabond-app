@@ -40,7 +40,7 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
         numberOfTimesClickedRef.current += 1
         alert(`you did${didShift ? '' : ' not'} hold shift! Number of times clicked: ${numberOfTimesClickedRef.current}`)
         deliveryRef.current = new Sphere()
-        console.log({ deliveryRef: deliveryRef.current })
+        //console.log({ deliveryRef: deliveryRef.current })
         forceUpdate(!_)
     }, [numberOfTimesClickedRef, _])
 

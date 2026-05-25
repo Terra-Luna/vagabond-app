@@ -130,7 +130,6 @@ describe('spell delivery mana calc tests', () => {
         const touch = new Touch()
         touch.setUpcast(5)
         touch.setIsDmgOrEffOnly(false)
-        console.log(touch)
         // Execute & Verify
         expect(touch.manaCost).toEqual(6)
         expect(touch.damageDice).toEqual(6)
