@@ -3,18 +3,35 @@
 @use "./_svg";
 @use "./tab";
 
+.vglite-body-text {
+    @include theme.themify() {
+        color: theme.themed('text-primary');
+    }
+
+    font-family: 'Paradigm';
+    font-size: 14px;
+    font-style: normal;
+    letter-spacing: .2px;
+    margin: 0px;
+}
+
+.vglite-body-text-highlight {
+    @include theme.themify() {
+        color: theme.themed('text-highlight');
+    }
+
+    font-family: 'Paradigm';
+    font-size: 14px;
+    font-weight: 600;
+    font-style: normal;
+    line-height: 18px;
+    letter-spacing: .2px;
+    margin: 0px;
+}
+
 .vglite-container {
     @include theme.themify() {
         background-color: theme.themed('fill-medium');
-    }
-}
-
-.vglite-text {
-    font-size: 32px;
-    font-family: 'Eskapade';
-
-    @include theme.themify() {
-        color: theme.themed('text-primary');
     }
 }
 
@@ -37,6 +54,7 @@
         font-size: 16px;
         font-weight: bold;
         text-align: center;
+        letter-spacing: .5px;
     }
 
     .vglite-divider {
@@ -133,12 +151,13 @@
 
 .hero-hp {
     font-family: 'Eskapade';
-    font-size: 28px;
+    font-size: 32px;
     font-weight: bold;
+    letter-spacing: .5px;
     display: flex;
-    padding-left: 25px;
+    padding-left: 24px;
     align-items: center;
-    gap: 6px;
+    height: 40px;
 
     @include theme.themify() {
         .current {
@@ -184,7 +203,7 @@
     row-gap: 8px;
     flex-wrap: wrap;
     padding-left: 12px;
-    margin-top: 2px;
+    margin-top: 3px;
 }
 
 .vglite-stat {
@@ -193,6 +212,7 @@
     font-weight: bold;
     font-size: 12px;
     font-family: "Paradigm";
+    letter-spacing: .2px;
 
     @include theme.themify() {
         color: theme.themed('text-special');
@@ -252,6 +272,7 @@
     .vglite-tracker {
         font-family: 'Paradigm';
         text-align: center;
+        letter-spacing: .2px;
         width: 33%;
 
         @include theme.themify() {
@@ -299,9 +320,10 @@
 
     .vglite-save {
         @include theme.border(0);
-        height: 32px;
+        height: 26px;
         width: 100%;
         margin-top: 1px;
+        letter-spacing: .2px;
     }
 
     .save-value {
@@ -338,6 +360,7 @@
 
     font-family: "Paradigm";
     font-weight: 400;
+    letter-spacing: .5px;
 
     @include theme.themify() {
         color: theme.themed('text-secondary');
@@ -404,6 +427,7 @@
         font-size: 18px;
         margin-left: 8px;
         font-weight: bold;
+        letter-spacing: .2px;
     }
 
     .vglite-divider {
@@ -436,9 +460,9 @@
 
         font-family: 'Paradigm';
         font-size: 14px;
-        font-weight: 400;
-        font-style: normal;
+        font-weight: bold;
         line-height: 18px;
+        letter-spacing: .2px;
         margin: 0px;
         margin-left: 8px;
         margin-right: 8px;
@@ -458,30 +482,6 @@
     }
 }
 
-.vglite-body-text {
-    @include theme.themify() {
-        color: theme.themed('text-primary');
-    }
-
-    font-family: 'Paradigm';
-    font-size: 14px;
-    font-style: normal;
-    margin: 0px;
-}
-
-.vglite-body-text-highlight {
-    @include theme.themify() {
-        color: theme.themed('text-highlight');
-    }
-
-    font-family: 'Paradigm';
-    font-size: 14px;
-    font-weight: 600;
-    font-style: normal;
-    line-height: 18px;
-    margin: 0px;
-}
-
 .vglite-skills {
     @include left-side(false); //arg: use border
     display: inline-block;
@@ -490,6 +490,7 @@
     font-family: "Eskapade";
     font-size: 16px;
     font-weight: bold;
+    letter-spacing: .5px;
     width: 100%;
 }
 .vglite-skill-row {
@@ -540,6 +541,7 @@
         height: 32px;
         width: 100%;
         margin-top: 1px;
+        letter-spacing: .2px;
     }
 
     .attack-value {

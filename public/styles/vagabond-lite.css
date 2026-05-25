@@ -147,15 +147,34 @@
   overflow-y: auto;
 }
 
-.vglite-text {
-  font-size: 32px;
-  font-family: "Eskapade";
-}
-.theme-light .vglite-text {
+.theme-light .vglite-body-text {
   color: #1c1917;
 }
-.theme-dark .vglite-text {
+.theme-dark .vglite-body-text {
   color: #e7e5e4;
+}
+.vglite-body-text {
+  font-family: "Paradigm";
+  font-size: 14px;
+  font-style: normal;
+  letter-spacing: 0.2px;
+  margin: 0px;
+}
+
+.theme-light .vglite-body-text-highlight {
+  color: #292524;
+}
+.theme-dark .vglite-body-text-highlight {
+  color: #e2c38c;
+}
+.vglite-body-text-highlight {
+  font-family: "Paradigm";
+  font-size: 14px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: 18px;
+  letter-spacing: 0.2px;
+  margin: 0px;
 }
 
 .vglite-header {
@@ -181,6 +200,7 @@
   font-size: 16px;
   font-weight: bold;
   text-align: center;
+  letter-spacing: 0.5px;
 }
 .theme-light .vglite-header .vglite-divider {
   background-color: #b59795;
@@ -280,12 +300,13 @@
 
 .hero-hp {
   font-family: "Eskapade";
-  font-size: 28px;
+  font-size: 32px;
   font-weight: bold;
+  letter-spacing: 0.5px;
   display: flex;
-  padding-left: 25px;
+  padding-left: 24px;
   align-items: center;
-  gap: 6px;
+  height: 40px;
 }
 .theme-light .hero-hp .current {
   color: #e7000b;
@@ -350,7 +371,7 @@
   row-gap: 8px;
   flex-wrap: wrap;
   padding-left: 12px;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .vglite-stat {
@@ -359,6 +380,7 @@
   font-weight: bold;
   font-size: 12px;
   font-family: "Paradigm";
+  letter-spacing: 0.2px;
 }
 .theme-light .vglite-stat {
   color: #6a2e2a;
@@ -405,6 +427,7 @@
 .vglite-trackers .vglite-tracker {
   font-family: "Paradigm";
   text-align: center;
+  letter-spacing: 0.2px;
   width: 33%;
 }
 .theme-light .vglite-trackers .vglite-tracker {
@@ -465,9 +488,10 @@
   border-color: #79716b;
 }
 .vglite-saves .vglite-save {
-  height: 32px;
+  height: 26px;
   width: 100%;
   margin-top: 1px;
+  letter-spacing: 0.2px;
 }
 .vglite-saves .save-value {
   font-size: 18px;
@@ -519,6 +543,7 @@
   padding-top: 4px;
   font-family: "Paradigm";
   font-weight: 400;
+  letter-spacing: 0.5px;
 }
 .theme-light .vglite-speeds-container {
   color: #44403b;
@@ -606,6 +631,7 @@
   font-size: 18px;
   margin-left: 8px;
   font-weight: bold;
+  letter-spacing: 0.2px;
 }
 .theme-light .vglite-card-header .vglite-divider {
   background-color: #b59795;
@@ -642,9 +668,9 @@
 .vglite-card-sub-header div {
   font-family: "Paradigm";
   font-size: 14px;
-  font-weight: 400;
-  font-style: normal;
+  font-weight: bold;
   line-height: 18px;
+  letter-spacing: 0.2px;
   margin: 0px;
   margin-left: 8px;
   margin-right: 8px;
@@ -665,34 +691,6 @@
   background-color: #292524;
 }
 
-.theme-light .vglite-body-text {
-  color: #1c1917;
-}
-.theme-dark .vglite-body-text {
-  color: #e7e5e4;
-}
-.vglite-body-text {
-  font-family: "Paradigm";
-  font-size: 14px;
-  font-style: normal;
-  margin: 0px;
-}
-
-.theme-light .vglite-body-text-highlight {
-  color: #292524;
-}
-.theme-dark .vglite-body-text-highlight {
-  color: #e2c38c;
-}
-.vglite-body-text-highlight {
-  font-family: "Paradigm";
-  font-size: 14px;
-  font-weight: 600;
-  font-style: normal;
-  line-height: 18px;
-  margin: 0px;
-}
-
 .vglite-skills {
   margin-top: 4px;
   margin-left: 4px;
@@ -702,6 +700,7 @@
   font-family: "Eskapade";
   font-size: 16px;
   font-weight: bold;
+  letter-spacing: 0.5px;
   width: 100%;
 }
 
@@ -774,6 +773,7 @@
   height: 32px;
   width: 100%;
   margin-top: 1px;
+  letter-spacing: 0.2px;
 }
 .vglite-attacks .attack-value {
   font-size: 18px;
