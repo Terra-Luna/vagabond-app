@@ -8,7 +8,21 @@ export const updateActor = async <T extends ActorDataModel<any>>(actor: { system
     Object.entries(update).forEach(([key, value]) => {
         updates[`system.${key}`] = value;
     })
-    await actor.update(updates);
+    return await actor.update(updates);
+}
+
+
+
+export const updateActorAtPath = async <T extends ActorDataModel<any>>(actor: { system: T, update: any }, path: string[], value: any) => {
+    const updates = {}
+    let currentUpdateLevel = updates
+    for (let i = 0; i < path.length - 1; i++) {
+        currentUpdateLevel[path[i]] = {}
+        currentUpdateLevel = currentUpdateLevel[path[i]]
+    }
+
+    currentUpdateLevel[path[path.length - 1]] = value
+    return await updateActor(actor, updates);
 }
 
 export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {

@@ -86,7 +86,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
             <GridRow>
                 <GridItem lg={6} sm={6}>
                     <Avatar hero={hero} />
-                    <HPAndArmorDisplay health={hero.health} armor={hero.armor} />
+                    <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
                     <Speeds hero={hero} />
                 </GridItem>
                 <GridItem lg={6} sm={6}>

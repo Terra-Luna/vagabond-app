@@ -1,6 +1,16 @@
 import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react";
+import VgLiteError from "../../model/common/VgLiteError";
+import { updateActorAtPath } from "../sheets/actor/VgLiteActorSheet";
+import ActorDataModel from "../../model/actor/ActorDataModel";
 
-export const EditableTextField = ({ initialValue, onSave }: { initialValue: string, onSave: (value: string) => Promise<boolean> }) => {
+export const EditableTextField = ({ initialValue, onSave, updateProps }: { initialValue: string, onSave?: (value: string) => Promise<boolean>, updateProps: { actor: any, propertyPath: string[] } }) => {
+    if (onSave && updateProps) {
+        throw new VgLiteError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
+    }
+    else if (!onSave && !updateProps) {
+        throw new VgLiteError({ name: "ARG_ERROR", message: "One of onSave or updateProps is required" })
+    }
+
     const [isInEditMode, setIsInEditMode] = useState(false)
     const [value, setValue] = useState(initialValue)
     const inputRef = useRef<HTMLInputElement | null>(null)
@@ -23,12 +33,21 @@ export const EditableTextField = ({ initialValue, onSave }: { initialValue: stri
         setIsInEditMode(false)
     }, [initialValue, value])
 
+    const save = useCallback(async () => {
+        if (onSave) {
+            return onSave(value)
+        }
+        else {
+            return updateActorAtPath(updateProps.actor, updateProps.propertyPath, value);
+        }
+    }, [value, onSave, updateProps])
+
     const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {
         switch (e.code) {
             case "Enter":
                 e.preventDefault()
                 e.stopPropagation()
-                if (await onSave(value)) {
+                if (await save()) {
                     setIsInEditMode(false)
                 }
                 break;

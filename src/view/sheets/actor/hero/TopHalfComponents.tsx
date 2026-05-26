@@ -1,4 +1,4 @@
-import { Heart, Shield, Star, LucideBookMarked, LucideHeartOff, LucideClover } from "lucide-react";
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover } from "lucide-react";
 import HeroDataModel from "../../../../model/actor/HeroDataModel";
 import { ReactNode } from "react";
 import lang from "../../../../../public/lang/en.json"
@@ -6,6 +6,8 @@ import { Header } from "../../../component/Header";
 import { GridItem, GridRow } from "../../../component/Grid";
 import { localizeString } from "../../../../utils/localeUtils";
 import { skillCheck } from "../../../../combat/skillCheck";
+import { EditableTextField } from "../../../component/EditableTextField";
+import ActorDataModel from "../../../../model/actor/ActorDataModel";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -14,19 +16,20 @@ export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 interface Health {
-    current: number;
-    max: number;
-    bonus: number;
+    current: number | null;
+    max: number | null;
 }
 interface Armor {
-    rating: number
+    rating: number | null;
 }
-export const HPAndArmorDisplay = ({ health, armor }: { health: Health, armor: Armor }) => {
+export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
     return (
         <div className="hero-hp">
             <Heart className="vglite-heart-icon" size={20} />
             &nbsp;
-            <span className="current">{health.current}</span>
+            <span className="current">
+                <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
+            </span>
             <span className="slash">&nbsp;/&nbsp;</span>
             <span className="max">{health.max}</span>
             <Shield className="vglite-shield-icon" size={20} />
