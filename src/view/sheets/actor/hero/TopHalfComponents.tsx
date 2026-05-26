@@ -25,10 +25,12 @@ export const HPAndArmorDisplay = ({ health, armor }: { health: Health, armor: Ar
     return (
         <div className="hero-hp">
             <Heart className="vglite-heart-icon" size={20} />
+            &nbsp;
             <span className="current">{health.current}</span>
             <span className="slash">&nbsp;/&nbsp;</span>
             <span className="max">{health.max}</span>
             <Shield className="vglite-shield-icon" size={20} />
+            &nbsp;
             <div className="hero-armor">
                 <span className="rating">{armor.rating}</span>
             </div>
