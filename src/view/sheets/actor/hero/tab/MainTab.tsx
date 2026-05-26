@@ -27,7 +27,7 @@ const Skills = ({ hero }: { hero: HeroDataModel }) => {
             <Header title={lang.VGLITE.HeroSheet.skills} />
             {
                 skills.map(sk => (                    
-                    <Skill hero={hero} isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} />
+                    <Skill key={sk} hero={hero} isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} />
                 ))
             }
         </div>

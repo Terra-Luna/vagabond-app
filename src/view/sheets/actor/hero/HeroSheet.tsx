@@ -11,6 +11,7 @@ import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./Top
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { MainTab } from "./tab/MainTab"
+import { EditableTextField } from "../../../component/EditableTextField"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -57,11 +58,15 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
         })
     }, [])
 
+    const updateName = useCallback(async (newName: string) => {
+        return !!await hero.parent.update({ name: newName })
+    }, [hero.parent])
+
     return (
         <div className="vglite-hero-sheet-header">
             {/* <div>{numberOfTimesClickedRef.current}</div> */}
             <div className="name">
-                {hero.parent.name}
+                <EditableTextField initialValue={hero.parent.name} onSave={updateName} />
                 <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} onAuxClick={toggleTheme} /></div>
             <div className="descriptor">
                 <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>

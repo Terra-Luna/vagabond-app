@@ -40,7 +40,7 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
     const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
     return <div className="vglite-stats-container">{
         stats.map(stat => (
-            <Stat name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
+            <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
         ))}</div>
 }
 

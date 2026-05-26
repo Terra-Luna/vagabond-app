@@ -570,3 +570,10 @@
         }
     }
 }
+
+.vglite-editable-text-field {
+    field-sizing: content;
+    min-width: 2ch;
+    max-width: 330px;
+    width: auto!important;
+}

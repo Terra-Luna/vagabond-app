@@ -800,6 +800,13 @@
   color: #e7e5e4;
 }
 
+.vglite-editable-text-field {
+  field-sizing: content;
+  min-width: 2ch;
+  max-width: 330px;
+  width: auto !important;
+}
+
 @font-face {
   font-family: "Eskapade";
   src: url("../assets/fonts/eskapade-black.ttf") format("truetype");
