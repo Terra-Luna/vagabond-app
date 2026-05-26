@@ -7,10 +7,10 @@ import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { setArmorRating } from "./type/Armor"
 import { bonusSchema } from "./type/Bonus"
 import { setMaxHP, validateCurrentHP } from "./type/Health"
-import { inventorySchema,setInventoryData } from "./type/Inventory"
+import { inventorySchema, setInventoryData } from "./type/Inventory"
 import { levelSchema, setXpToNextLevel } from "./type/Level"
-import { manaSchema,setManaValues } from "./type/Mana"
-import { savesSchema,setSaves } from "./type/Saves"
+import { manaSchema, setManaValues } from "./type/Mana"
+import { savesSchema, setSaves } from "./type/Saves"
 import { setSenses } from "./type/Senses"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
@@ -22,7 +22,7 @@ const heroSchema = () => {
         bonus: new fields.SchemaField({ ...bonusSchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
-        fatigue: new fields.NumberField({ choices: [0, 1, 2, 3, 4, 5], initial: 0, max: 5 }),
+        fatigue: new fields.NumberField({ ...requiredInteger, initial: 0, max: 5 }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
         level: new fields.SchemaField({ ...levelSchema() }),
         mana: new fields.SchemaField({ ...manaSchema() }),

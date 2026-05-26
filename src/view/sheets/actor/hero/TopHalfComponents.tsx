@@ -1,6 +1,6 @@
 import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover } from "lucide-react";
 import HeroDataModel from "../../../../model/actor/HeroDataModel";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import lang from "../../../../../public/lang/en.json"
 import { Header } from "../../../component/Header";
 import { GridItem, GridRow } from "../../../component/Grid";
@@ -8,6 +8,7 @@ import { localizeString } from "../../../../utils/localeUtils";
 import { skillCheck } from "../../../../combat/skillCheck";
 import { EditableTextField } from "../../../component/EditableTextField";
 import ActorDataModel from "../../../../model/actor/ActorDataModel";
+import { updateActor } from "../VgLiteActorSheet";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -62,20 +63,41 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
     const { studied, fatigue } = hero;
     const currentLuck = hero.stats.currentLuck;
 
+    const updateLuck = useCallback((auxClick: boolean) => {
+        updateActor(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
+    }, [currentLuck])
+
+    const updateStudied = useCallback((auxClick: boolean) => {
+        updateActor(hero.parent, { studied: (studied ?? 0) + (auxClick ? 1 : -1) })
+    }, [studied])
+
+    const updateFatigue = useCallback((auxClick: boolean) => {
+        updateActor(hero.parent, { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) })
+    }, [fatigue])
+
     return (
         <div className="vglite-trackers">
             <Header title={lang.VGLITE.HeroSheet.trackers} />
             <div className="trackers-container">
-                <Tracker name={lang.VGLITE.HeroSheet.fatigue} content={<div className="trackers-container vglite-fatigue"><LucideHeartOff size={20} />{fatigue}</div>}></Tracker>
-                <Tracker name={lang.VGLITE.HeroSheet.studied} content={<div className="trackers-container vglite-studied"><LucideBookMarked size={20} />{studied}</div>}></Tracker>
-                <Tracker name={lang.VGLITE.HeroSheet.luck} content={<div className="trackers-container vglite-luck"><LucideClover size={20} />{currentLuck}</div>}></Tracker>
+                <Tracker
+                    name={lang.VGLITE.HeroSheet.fatigue}
+                    onClick={updateFatigue}
+                    content={<div className="trackers-container vglite-fatigue"><LucideHeartOff size={20} />{fatigue}</div>}></Tracker>
+                <Tracker
+                    name={lang.VGLITE.HeroSheet.studied}
+                    onClick={updateStudied}
+                    content={<div className="trackers-container vglite-studied"><LucideBookMarked size={20} />{studied}</div>}></Tracker>
+                <Tracker
+                    name={lang.VGLITE.HeroSheet.luck}
+                    onClick={updateLuck}
+                    content={<div className="trackers-container vglite-luck"><LucideClover size={20} />{currentLuck}</div>}></Tracker>
             </div>
         </div>
     )
 }
 
-const Tracker = ({ name, content }: { name: string, content: ReactNode }) => (
-    <div className="vglite-tracker">
+const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
+    <div className="vglite-tracker" onClick={() => onClick(false)} onAuxClick={() => onClick(true)} >
         {name}
         {content}
     </div>
