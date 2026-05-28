@@ -17,6 +17,7 @@ import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
+import { Header } from './view/component/Header'
 
 Hooks.once("init", () => {
     Object.assign(
@@ -41,6 +42,14 @@ Hooks.once("init", () => {
         CONFIG.Combatant.documentClass = VgLiteCombatant,
         CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
     )
+})
+
+Hooks.on("renderCombatTracker", (app, html, data) => {
+  $(html).find('.combatant').each((_: any, li: any) => {
+    const actorId = $(li).attr('data-combatant-id')
+    const combatant = Array.from(game.combat?.combatants).find(it => it._id === actorId)
+    $(li).find('.token-initiative').replaceWith(`<div class="vglite-take-init-btn">GO</div>`)
+  })
 })
 
 // register sheets

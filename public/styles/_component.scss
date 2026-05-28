@@ -577,3 +577,19 @@
     max-width: 330px;
     width: auto!important;
 }
+
+.vglite-take-init-btn {
+    height: 24px;
+    width: 48px;
+    margin-right: 8px;
+    text-align: left;
+    line-height: 24px;
+    padding-left: 8px;
+
+
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+    @include theme.themify() {
+        color: theme.themed('btn-primary-text');
+        background-color: theme.themed('btn-primary-fill');
+    }
+}

@@ -807,6 +807,24 @@
   width: auto !important;
 }
 
+.vglite-take-init-btn {
+  height: 24px;
+  width: 48px;
+  margin-right: 8px;
+  text-align: left;
+  line-height: 24px;
+  padding-left: 8px;
+  clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+}
+.theme-light .vglite-take-init-btn {
+  color: #eeeeed;
+  background-color: #6a2e2a;
+}
+.theme-dark .vglite-take-init-btn {
+  color: #1c1917;
+  background-color: #c5b358;
+}
+
 @font-face {
   font-family: "Eskapade";
   src: url("../assets/fonts/eskapade-black.ttf") format("truetype");

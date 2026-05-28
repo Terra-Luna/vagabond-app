@@ -1,5 +1,5 @@
 import HeroDataModel from "../../../../model/actor/HeroDataModel"
-import { FoundryActor, updateActor, VgLiteActorSheet } from "../VgLiteActorSheet"
+import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
 import { Menu } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
@@ -7,7 +7,7 @@ import { IconButton } from "../../../component/IconButton"
 import { useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 import { GridItem, GridRow } from "../../../component/Grid"
-import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./TopHalfComponents"
+import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab/TopHalfComponents"
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { MainTab } from "./tab/MainTab"
@@ -61,6 +61,8 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
     const updateName = useCallback(async (newName: string) => {
         return !!await hero.parent.update({ name: newName })
     }, [hero.parent])
+
+
 
     return (
         <div className="vglite-hero-sheet-header">

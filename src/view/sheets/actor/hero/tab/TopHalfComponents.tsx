@@ -1,14 +1,14 @@
 import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover } from "lucide-react";
-import HeroDataModel from "../../../../model/actor/HeroDataModel";
+import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import { ReactNode, useCallback } from "react";
-import lang from "../../../../../public/lang/en.json"
-import { Header } from "../../../component/Header";
-import { GridItem, GridRow } from "../../../component/Grid";
-import { localizeString } from "../../../../utils/localeUtils";
-import { rollSkillCheck } from "../../../../combat/dice-rolls";
-import { EditableTextField } from "../../../component/EditableTextField";
-import ActorDataModel from "../../../../model/actor/ActorDataModel";
-import { updateActor } from "../VgLiteActorSheet";
+import lang from "../../../../../../public/lang/en.json"
+import { Header } from "../../../../component/Header";
+import { GridItem, GridRow } from "../../../../component/Grid";
+import { localizeString } from "../../../../../utils/localeUtils";
+import { rollSkillCheck } from "../../../../../combat/dice-rolls";
+import { EditableTextField } from "../../../../component/EditableTextField";
+import ActorDataModel from "../../../../../model/actor/ActorDataModel";
+import { updateActor } from "../../VgLiteActorSheet";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
