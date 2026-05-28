@@ -46,9 +46,16 @@ Hooks.once("init", () => {
 
 Hooks.on("renderCombatTracker", (app, html, data) => {
   $(html).find('.combatant').each((_: any, li: any) => {
-    const actorId = $(li).attr('data-combatant-id')
-    const combatant = Array.from(game.combat?.combatants).find(it => it._id === actorId)
-    $(li).find('.token-initiative').replaceWith(`<div class="vglite-take-init-btn">GO</div>`)
+      const actorId = $(li).attr('data-combatant-id')
+      const combatant = Array.from(game.combat?.combatants).find(it => it._id === actorId) as VgLiteCombatant
+      $(li).find('.token-initiative').replaceWith(`<div class="vglite-take-init-btn">GO</div>`)
+      /**
+       * TODO: 
+       * If combatant.activations > 0, vglite-take-init-btn onClick should call VgLiteCombat.activateCombatant().
+       * Then become an END button with a square shape. If actor is out of activations, their row in the tracker
+       * should be dimmed and no button should be available.
+       * Finally, GM should be able to reset their activation via r-click context menu??
+       */
   })
 })
 
