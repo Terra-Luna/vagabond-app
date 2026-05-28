@@ -93,7 +93,7 @@ class DamageRollResult {
     }
     printRollInfo = (): string => {
         const info = this.rolls.reduce((summary, it) => {
-            return summary + `${it.result}${it.exploded ? '*' : ''}, `
+            return summary + `[${it.result}]${it.exploded ? '*' : ''}, `
         }, '')
         return info.substring(0, info.length - 2)
     }
@@ -101,6 +101,10 @@ class DamageRollResult {
 
 /**
  * Rolls damage! dmgFormula: e.g.: '6d10'
+ * Foundry's formulae for exploding dice don't allow for true recursions.
+ * Therefore, we need our own functions for handling it. They also don't
+ * support the concept of adding a bonus based on the total number of dice
+ * rolled.
  */
 export const rollDamage = async (
     actor: Actor,
@@ -131,7 +135,7 @@ export const rollDamage = async (
 
     const result = new DamageRollResult()
     result.formula = `[${dmgFormula}]${canExplode ? '!' : ''}`
-    result.formula += bonusDieFormula != '' ? `+[${bonusDieFormula}]` : ''
+    result.formula += bonusDieFormula !== '' ? `+[${bonusDieFormula}]` : ''
     result.formula += flatDmgBonus > 0 ? `+${flatDmgBonus}` : ''
     result.formula += perDieDmgBonus > 0 ? `, +${perDieDmgBonus}/die` : ''
     result.bonus = (totalDice * perDieDmgBonus) + flatDmgBonus
@@ -155,6 +159,13 @@ export const rollDamage = async (
             })
         })
     })
+    getResults(bonusDamageRoll).forEach(r => {
+        result.rolls.push({
+            result: r.result,
+            dieSize: bonusDamageRoll.dice[0].faces as number,
+            exploded: false
+        })
+    })
 
     /**
      * TODO: build the contents of DamageRollCard.tsx and apply them here.
@@ -162,7 +173,7 @@ export const rollDamage = async (
     ChatMessage.create({
         speaker: { actor: actor.id, alias: actor.name },
         content: `<h3>Damage Roll:</h3><h5>${result.formula}</h5><p>${result.display()}</p>`,
-        rolls: []
+        rolls: damageRoll
     })
 
     return result
