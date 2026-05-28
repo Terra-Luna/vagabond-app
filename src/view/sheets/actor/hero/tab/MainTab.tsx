@@ -3,7 +3,7 @@ import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import lang from "../../../../../../public/lang/en.json"
 import { Header } from "../../../../component/Header";
 import { GridRow, GridItem } from "../../../../component/Grid";
-import { skillCheck } from "../../../../../combat/skillCheck";
+import { rollDamage, rollSkillCheck } from "../../../../../combat/dice-rolls";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -41,7 +41,7 @@ const Skill = ({ hero, isTrained, name, value }: { hero: HeroDataModel, isTraine
                 <Star className={(isTrained ? 'vglite-ic-skill-trained' : 'vglite-ic-skill-untrained')} size={18} />
                 <div className="vglite-skill-text" onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
-                        skillCheck(hero.parent, name, value, e)
+                        rollSkillCheck(hero.parent, name, value, e)
                     }
                 }>
                     <div>{name}</div>
@@ -69,7 +69,8 @@ const Attack = ({ hero, name, value }: { hero: HeroDataModel, name: string, valu
     return (
         <GridRow className="vglite-attack" onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
-                skillCheck(hero.parent, name, value, e)
+                rollSkillCheck(hero.parent, name, value, e)
+                rollDamage(hero.parent, '6d2', 10, 1, true)
             }
         }>
             <GridItem lg={4} sm={3} className="attack-value">
