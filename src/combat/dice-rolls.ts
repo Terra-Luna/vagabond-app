@@ -94,7 +94,7 @@ class DamageRollResult {
         return `${this.printRollInfo()} + ${this.bonus} = <b>${this.total}</b>`
     }
     printRollInfo = (): string => {
-        let info = this.rolls.reduce((summary, it) => {
+        const info = this.rolls.reduce((summary, it) => {
             return summary + `${it.result}${it.exploded ? '*' : ''}, `
         }, '')
         return info.substring(0, info.length - 2)

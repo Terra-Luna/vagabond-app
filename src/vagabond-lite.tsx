@@ -17,7 +17,6 @@ import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
-import { Header } from './view/component/Header'
 
 Hooks.once("init", () => {
     Object.assign(

@@ -42,10 +42,10 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     }
 
     override async resetAll(): Promise<this> {
-        await this.resetActivations();
-        this.combatants.forEach(c => c.updateSource({ initiative: null }));
-        await this.update({ turn: null, combatants: this.combatants.toObject() }, { diff: false });
-        return this;
+        await this.resetActivations()
+        this.combatants.forEach(c => c.updateSource({ initiative: null }))
+        await this.update({ turn: null, combatants: this.combatants.toObject() }, { diff: false })
+        return this
     }
 
     override async nextTurn(): Promise<this> {
@@ -70,14 +70,14 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     }
 
     override async nextRound(): Promise<this> {
-        await this.resetActivations();
-        const data = { round: this.round + 1, turn: null };
-        let advanceTime = Math.max(this.turns.length - (this.turn || 0), 0) * CONFIG.time.turnTime;
-        advanceTime += CONFIG.time.roundTime;
-        const options = { advanceTime, direction: 1 };
-        Hooks.callAll("combatRound", this, data, options);
-        await this.update(data, options as any);
-        return this;
+        await this.resetActivations()
+        const data = { round: this.round + 1, turn: null }
+        let advanceTime = Math.max(this.turns.length - (this.turn || 0), 0) * CONFIG.time.turnTime
+        advanceTime += CONFIG.time.roundTime
+        const options = { advanceTime, direction: 1 }
+        Hooks.callAll("combatRound", this, data, options)
+        await this.update(data, options as any)
+        return this
     }
 
     override async previousRound(): Promise<this> {
@@ -130,16 +130,16 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     }
 
     protected async requestActivation(id: string): Promise<this> {
-        Hooks.callAll("VgLiteCombatRequestActivate", this, id);
-        return this;
+        Hooks.callAll("VgLiteCombatRequestActivate", this, id)
+        return this
     }
 
     /**
      * Kill the next-up sound fx since players determine order.
      */
     override _playCombatSound(...[announcement]: Parameters<Combat["_playCombatSound"]>) {
-        if (announcement === "nextUp") return;
-        return super._playCombatSound(announcement);
+        if (announcement === "nextUp") return
+        return super._playCombatSound(announcement)
     }
 
 }
