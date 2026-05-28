@@ -14,7 +14,7 @@ import { savesSchema, setSaves } from "./type/Saves"
 import { setSenses } from "./type/Senses"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
-import { applyStatBonuses, statsSchema } from "./type/Stats"
+import { applyStatBonuses, statsSchema, validateCurrentLuck } from "./type/Stats"
 
 const heroSchema = () => {
     return {
@@ -57,6 +57,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setXpToNextLevel(this)
         setMaxHP(this)
         validateCurrentHP(this)
+        validateCurrentLuck(this)
         setArmorRating(this)
         setSaves(this)
         setManaValues(this)
@@ -66,17 +67,6 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSpellcasting(this)
         setInventoryData(this)
         setPerkSlots(this)
-    }
-
-    async updateStudied(changeBy: number) {
-        this.studied! += changeBy
-    }
-
-    async updateFatigue(changeBy: number) {
-        this.fatigue += changeBy
-        if (this.fatigue == 5) {
-            this.health.current = 0
-        }
     }
 
 }

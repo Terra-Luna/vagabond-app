@@ -41,3 +41,9 @@ export function applyStatBonuses(hero: HeroDataModel) {
     hero.stats.presence! += hero.bonus.presence!
     hero.stats.luck! += hero.bonus.luck!
 }
+
+export function validateCurrentLuck(hero: HeroDataModel) {
+    if (hero.stats.currentLuck! > hero.stats.luck!) {
+        hero.stats.currentLuck = hero.stats.luck!
+    }
+}

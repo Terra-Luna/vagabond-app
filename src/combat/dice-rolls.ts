@@ -74,7 +74,7 @@ export const rollSkillCheck = async (
      */
     ChatMessage.create({
         speaker: { actor: actor.id, alias: actor.name },
-        content: `<h3>${skill} Check</h3><br><p>${rollSummary} vs. ${difficulty}<br>${summary}</p>`,
+        content: `<h4>${skill} Check</h4><p>${rollSummary} vs. ${difficulty}<br>${summary}</p>`,
         rolls: rolls
     })
 
@@ -86,11 +86,12 @@ export const rollSkillCheck = async (
  * exploded rolls with an asterisk.
  */
 class DamageRollResult {
+    formula: string = ''
     total: number = 0
     bonus: number = 0
     rolls: { result: number, dieSize: number, exploded: boolean }[] = []
     display = (): string => {
-        return `${this.printRollInfo()} + ${this.bonus} = ${this.total}`
+        return `${this.printRollInfo()} + ${this.bonus} = <b>${this.total}</b>`
     }
     printRollInfo = (): string => {
         let info = this.rolls.reduce((summary, it) => {
@@ -106,8 +107,8 @@ class DamageRollResult {
 export const rollDamage = async (
     actor: Actor,
     dmgFormula: string,
-    flatDmgBonus: number,
-    perDieDmgBonus: number,
+    flatDmgBonus: number = 0,
+    perDieDmgBonus: number = 0,
     canExplode: boolean = false,
     explodesOn: number[] = []
 ): Promise<DamageRollResult> => {
@@ -128,6 +129,9 @@ export const rollDamage = async (
         }, 0)
 
     const result = new DamageRollResult()
+    result.formula = `${dmgFormula}${canExplode ? '!' : ''}`
+    result.formula += flatDmgBonus > 0 ? `+${flatDmgBonus}` : ''
+    result.formula += perDieDmgBonus > 0 ? `, +${perDieDmgBonus}/die` : ''
     result.bonus = (totalDice * perDieDmgBonus) + flatDmgBonus
     result.total =
         damageRoll.total +
@@ -155,7 +159,7 @@ export const rollDamage = async (
      */
     ChatMessage.create({
         speaker: { actor: actor.id, alias: actor.name },
-        content: `<h3>Damage Roll:</h3><br><p>${result.display()}</p>`,
+        content: `<h3>Damage Roll:</h3><h5>${result.formula}</h5><p>${result.display()}</p>`,
         rolls: []
     })
 
