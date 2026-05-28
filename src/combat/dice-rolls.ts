@@ -88,7 +88,10 @@ class DamageRollResult {
     bonus: number = 0
     rolls: { result: number, dieSize: number, exploded: boolean }[] = []
     display = (): string => {
-        return `${this.printRollInfo()} + ${this.bonus} = <b>${this.total}</b>`
+        let d = `${this.printRollInfo()}`
+        d += this.bonus > 0 ? ` + ${this.bonus}` : ''
+        d += ` = <b>${this.total}</b>`
+        return d
     }
     printRollInfo = (): string => {
         const info = this.rolls.reduce((summary, it) => {
@@ -108,7 +111,7 @@ class DamageRollResult {
 export const rollDamage = async (
     actor: Actor,
     dmgFormula: string,
-    bonusDieFormula: string = '',
+    bonusDieFormula: string = '0',
     flatDmgBonus: number = 0,
     perDieDmgBonus: number = 0,
     canExplode: boolean = false,
@@ -141,9 +144,9 @@ export const rollDamage = async (
 
     const result = new DamageRollResult()
     result.formula = `[${dmgFormula}]${canExplode ? '!' : ''}`
-    result.formula += bonusDieFormula !== '' ? `+[${bonusDieFormula}]` : ''
+    result.formula += bonusDieFormula !== '0' ? `+[${bonusDieFormula}]` : ''
     result.formula += flatDmgBonus > 0 ? `+${flatDmgBonus}` : ''
-    result.formula += perDieDmgBonus > 0 ? `, +${perDieDmgBonus}/die` : ''
+    result.formula += perDieDmgBonus > 0 ? ` +${perDieDmgBonus}/die` : ''
     result.bonus = (totalDice * perDieDmgBonus) + flatDmgBonus
     result.total =
         damageRoll.total + bonusDamageRoll.total +
@@ -185,6 +188,13 @@ export const rollDamage = async (
     return result
 }
 
+/**
+ * Recursive function to compound exploding dice into
+ * the given 'explosions' parameter.
+ * @param damageRoll
+ * @param explosions 
+ * @param explodesOn 
+ */
 async function processExplosions(
     damageRoll: Roll.Evaluated<Roll>,
     explosions: Roll.Evaluated<Roll>[],
@@ -204,6 +214,12 @@ async function processExplosions(
     }
 }
 
+/**
+ * Used to prevent infinitely exploding dice.
+ * @param formula 
+ * @param explodesOn 
+ * @returns 
+ */
 function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
     const dieSize = Number(formula.split('d')[1])
     console.log("Checking explosion safety:", formula, explodesOn)
@@ -216,10 +232,24 @@ function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
     return false
 }
 
-function getResults(roll: Roll.Evaluated<Roll>): [{ result: number }] {
-    return (roll.terms[0] as unknown as { results: [{ result: number }] }).results
+/**
+ * Helper function to wrap the roll results in something useful
+ * since Foundry's Roll object kind of sucks.
+ * @param roll 
+ * @returns 
+ */
+function getResults(roll: Roll.Evaluated<Roll>): [{ result: number }] | [] {
+    const results = (roll.terms[0] as unknown as { results: [{ result: number }] }).results
+    console.log(results)
+    return results !== undefined ? results : []
 }
 
+/**
+ * Returns die size for the given roll's first dice - should be
+ * reliable since we won't be doing rolls of mixed die sizes.
+ * @param roll 
+ * @returns 
+ */
 function getFaces(roll: Roll.Evaluated<Roll>): number {
     return roll.dice[0].faces as number
 }
