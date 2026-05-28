@@ -1,5 +1,3 @@
-import { EmptyObject, HandleEmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
-
 /**
  * Rolls a skill check and posts the results to chat.
  * Returns a SkillCheckResult enum value.
@@ -39,11 +37,11 @@ export const rollSkillCheck = async (
     /**
      * Process roll results.
      */
-    const d20Result = (rolls[0].terms[0] as any).results[0].result
+    const d20Result = getResults(rolls[0])[0].result
     let favorHinderResult = 0
     let skillCheckTotal = d20Result
     if (rolls.length > 1) {
-        favorHinderResult = (rolls[1].terms[0] as any).results[0].result
+        favorHinderResult = getResults(rolls[1])[0].result
         favorHinder == FavorHinder.Favored ?
             skillCheckTotal += favorHinderResult :
             skillCheckTotal = Math.max(0, skillCheckTotal - favorHinderResult)
@@ -107,12 +105,14 @@ class DamageRollResult {
 export const rollDamage = async (
     actor: Actor,
     dmgFormula: string,
+    bonusDieFormula: string = '',
     flatDmgBonus: number = 0,
     perDieDmgBonus: number = 0,
     canExplode: boolean = false,
     explodesOn: number[] = []
 ): Promise<DamageRollResult> => {
     const damageRoll = await new Roll(dmgFormula).evaluate()
+    const bonusDamageRoll = await new Roll(bonusDieFormula).evaluate()
     const explosions: Roll.Evaluated<Roll>[] = []
 
     if (canExplode) {
@@ -123,21 +123,23 @@ export const rollDamage = async (
     }
 
     const totalDice =
-        damageRoll.terms[0].results.length +
+        getResults(damageRoll).length +
+        getResults(bonusDamageRoll).length +
         explosions.reduce((total, roll) => {
-            return total + roll.terms[0].results.length
+            return total + getResults(roll).length
         }, 0)
 
     const result = new DamageRollResult()
-    result.formula = `${dmgFormula}${canExplode ? '!' : ''}`
+    result.formula = `[${dmgFormula}]${canExplode ? '!' : ''}`
+    result.formula += bonusDieFormula != '' ? `+[${bonusDieFormula}]` : ''
     result.formula += flatDmgBonus > 0 ? `+${flatDmgBonus}` : ''
     result.formula += perDieDmgBonus > 0 ? `, +${perDieDmgBonus}/die` : ''
     result.bonus = (totalDice * perDieDmgBonus) + flatDmgBonus
     result.total =
-        damageRoll.total +
+        damageRoll.total + bonusDamageRoll.total +
         explosions.reduce((total, roll) => { return total + roll.total }, 0) +
         result.bonus
-    getResults(damageRoll).results.forEach(r => {
+    getResults(damageRoll).forEach(r => {
         result.rolls.push({
             result: r.result,
             dieSize: damageRoll.dice[0].faces as number,
@@ -145,7 +147,7 @@ export const rollDamage = async (
         })
     })
     explosions.forEach(ex => {
-        getResults(ex).results.forEach(r => {
+        getResults(ex).forEach(r => {
             result.rolls.push({
                 result: r.result,
                 dieSize: damageRoll.dice[0].faces as number,
@@ -172,7 +174,7 @@ async function processExplosions(
     explodesOn: number[]
 ) {
     let count = 0
-    getResults(damageRoll).results.forEach(r => {
+    getResults(damageRoll).forEach(r => {
         if (explodesOn.indexOf(r.result) > -1) {
             count += 1
         }
@@ -185,8 +187,8 @@ async function processExplosions(
     }
 }
 
-function getResults(roll: Roll.Evaluated<Roll>) {
-    return (roll.terms[0] as unknown as { results: [{ result: number }] })
+function getResults(roll: Roll.Evaluated<Roll>): [{ result: number }] {
+    return (roll.terms[0] as unknown as { results: [{ result: number }] }).results
 }
 
 function getFaces(roll: Roll.Evaluated<Roll>): number {
