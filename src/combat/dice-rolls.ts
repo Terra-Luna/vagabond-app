@@ -68,12 +68,11 @@ export const rollSkillCheck = async (
 
     /**
      * TODO: build the contents of SkillCheckCard.tsx and apply them here.
-     * Is there any reason to handle the chat card outside of the skill check?
      */
     ChatMessage.create({
         speaker: { actor: actor.id, alias: actor.name },
         content: `<h4>${skill} Check</h4><p>${rollSummary} vs. ${difficulty}<br>${summary}</p>`,
-        rolls: rolls
+        rolls: []
     })
 
     return result
@@ -93,9 +92,9 @@ class DamageRollResult {
     }
     printRollInfo = (): string => {
         const info = this.rolls.reduce((summary, it) => {
-            return summary + `[${it.result}]${it.exploded ? '*' : ''}, `
+            return summary + `[${it.result}]${it.exploded ? '*' : ''} `
         }, '')
-        return info.substring(0, info.length - 2)
+        return info.substring(0, info.length - 1)
     }
 }
 
@@ -120,10 +119,17 @@ export const rollDamage = async (
     const explosions: Roll.Evaluated<Roll>[] = []
 
     if (canExplode) {
-        if (explodesOn.length < 1) {
-            explodesOn.push(damageRoll.dice[0].faces as number)
+        if (isSafeToExplode(dmgFormula, explodesOn)) {
+            if (explodesOn.length < 1) {
+                // Default: explode on max val if not otherwise specified.
+                explodesOn.push(damageRoll.dice[0].faces as number)
+            }
+            await processExplosions(damageRoll, explosions, explodesOn)
         }
-        await processExplosions(damageRoll, explosions, explodesOn)
+        else {
+            canExplode = false
+            explodesOn = []
+        }
     }
 
     const totalDice =
@@ -173,7 +179,7 @@ export const rollDamage = async (
     ChatMessage.create({
         speaker: { actor: actor.id, alias: actor.name },
         content: `<h3>Damage Roll:</h3><h5>${result.formula}</h5><p>${result.display()}</p>`,
-        rolls: damageRoll
+        rolls: []
     })
 
     return result
@@ -196,6 +202,18 @@ async function processExplosions(
         explosions.push(explosionRoll)
         await processExplosions(explosionRoll, explosions, explodesOn)
     }
+}
+
+function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
+    const dieSize = Number(formula.split('d')[1])
+    console.log("Checking explosion safety:", formula, explodesOn)
+    for (let i = 1; i <= dieSize; i++) {
+        if (explodesOn.indexOf(i) === -1) {
+            return true
+        }
+    }
+    console.log("Unsafe explosions detected!", formula, explodesOn)
+    return false
 }
 
 function getResults(roll: Roll.Evaluated<Roll>): [{ result: number }] {

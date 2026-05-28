@@ -70,7 +70,7 @@ const Attack = ({ hero, name, value }: { hero: HeroDataModel, name: string, valu
         <GridRow className="vglite-attack" onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
                 rollSkillCheck(hero.parent, name, value, e)
-                rollDamage(hero.parent, '6d6', '1d4', 10, 1, true, [1, 6])
+                rollDamage(hero.parent, '6d6', '2d4', 10, 1, true, [1,2,5,6])
             }
         }>
             <GridItem lg={4} sm={3} className="attack-value">
