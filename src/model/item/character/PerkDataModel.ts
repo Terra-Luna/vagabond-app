@@ -1,23 +1,23 @@
-import HeroDataModel from "../../actor/HeroDataModel"
-import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import lang from "../../../../public/lang/en.json"
+import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-
-export const perksSchema = () => {
-    return {
-        perkSlots: new fields.NumberField({ ...requiredInteger, initial: 0}),
-        perks: new fields.ArrayField(new fields.SchemaField({ ...perkSchema() }), { initial: [] })
-    }
-}
+import SpellDataModel from "./SpellDataModel"
+import { modifierSchema } from "./traitsAndFeatures"
 
 const perkSchema = () => {
     return {
-        prerequisites: new fields.ArrayField(
-            new fields.SchemaField({
-                type: new fields.StringField({ choices: ['stat', 'training', 'spell'] }),
-                name: new fields.StringField({ ...requiredString }),
-                value: new fields.StringField({ ...requiredString })
-            })
-        )
+        prerequisites: new fields.ArrayField(new fields.StringField({ ...requiredString })),
+        modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() }))
+    }
+}
+
+const prerequisiteSchema = () => {
+    return {
+        type: new fields.StringField({ choices: ['STAT', 'TRAINING', 'SPELL'] }),
+        stat: new fields.StringField({ ...optionalString, options: Object.values(lang.VGLITE.Stat).map(it => it.long) }),
+        value: new fields.NumberField({ ...standardInteger }),
+        skillName: new fields.StringField({ ...optionalString }),
+        spell: new fields.SchemaField({ ...SpellDataModel.defineSchema() })
     }
 }
 
@@ -33,19 +33,5 @@ export default class PerkDataModel extends ItemDataModel<PerkSchema> {
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-    }
-}
-
-export function setPerkSlots(hero: HeroDataModel) {
-    const level = hero.level.current || 1
-    const slotBonus = hero.bonus.perkSlots || 0
-    hero.perkData.perkSlots = Math.floor((level - 1) / 2) + slotBonus
-}
-
-export function addPerk(hero: HeroDataModel, perk: PerkDataModel) {
-    const perks = hero.perkData.perks
-    const isNotSelected = perks.find(it => (it as PerkDataModel).parent.name == perk.parent.name) == null
-    if (perks.length < hero.perkData.perkSlots! && isNotSelected) {
-        hero.perkData.perks.push(perk)
     }
 }

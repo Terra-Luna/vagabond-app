@@ -222,7 +222,7 @@ async function processExplosions(
  */
 function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
     const dieSize = Number(formula.split('d')[1])
-    console.log("Checking explosion safety:", formula, explodesOn)
+    //console.log("Checking explosion safety:", formula, explodesOn)
     for (let i = 1; i <= dieSize; i++) {
         if (explodesOn.indexOf(i) === -1) {
             return true
@@ -233,14 +233,12 @@ function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
 }
 
 /**
- * Helper function to wrap the roll results in something useful
- * since Foundry's Roll object kind of sucks.
+ * Helper function to wrap the roll results in something easier to work with.
  * @param roll 
  * @returns 
  */
 function getResults(roll: Roll.Evaluated<Roll>): [{ result: number }] | [] {
     const results = (roll.terms[0] as unknown as { results: [{ result: number }] }).results
-    console.log(results)
     return results !== undefined ? results : []
 }
 

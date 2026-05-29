@@ -1,6 +1,6 @@
 const { api, sheets } = foundry.applications;
 import { FoundryItem, ItemSheetHeader, VgLiteItemSheet } from "../VgLiteItemSheet";
-import FeatureDataModel from "../../../../model/item/character/FeatureDataModel";
+import FeatureDataModel from "../../../../model/item/character/traitsAndFeatures";
 
 // @ts-expect-error
 export class PerkSheet extends VgLiteItemSheet {

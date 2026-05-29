@@ -10,8 +10,8 @@ export const manaSchema = () => {
 }
 
 export function setManaValues(hero: HeroDataModel) {
-    if (typeof hero.class.spellcasting.castSkill !== null) {
-        hero.mana.max = hero.level.current! * hero.class.spellcasting.manaMultiplier! + hero.bonus.maxHP!
-        hero.mana.maxCast = Math.ceil((hero.level.current!) / 2) + Number(hero.stats[hero.class.spellcasting.maxPerCastStat!]) + hero.bonus.maxCast!
+    if (typeof hero.class.castingSkill == null) {
+        hero.mana.max = hero.level.current! * hero.class.manaMultiplier! + hero.bonus.maxHP!
+        hero.mana.maxCast = Math.ceil((hero.level.current!) / 2) + Number(hero.stats[hero.class.maxManaStat!]) + hero.bonus.maxCast!
     }
 }

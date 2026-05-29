@@ -20,6 +20,7 @@ export default class NpcDataModel extends ActorDataModel<NpcSchema> {
     }
 
     override async prepareDerivedData() {
-        this.inventory.maxSlots = 99
+        super.prepareDerivedData()
+        this.inventory.container.capacity = 999
     }
 }

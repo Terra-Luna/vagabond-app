@@ -3,10 +3,10 @@ import HeroDataModel from "../HeroDataModel"
 
 export const skillsSchema = () => {
     return {
-        // Weapon skills
+        // Attack skills
         brawl: new fields.SchemaField({ ...skillSchema() }),
-        finesse: new fields.SchemaField({ ...skillSchema() }),
         melee: new fields.SchemaField({ ...skillSchema() }),
+        finesse: new fields.SchemaField({ ...skillSchema() }),
         ranged: new fields.SchemaField({ ...skillSchema() }),
         // Other skills
         arcana: new fields.SchemaField({ ...skillSchema() }),

@@ -1,27 +1,33 @@
-import { fields, requiredInteger, requiredString, statOptions } from "../../common/sharedSchemas"
+import lang from "../../../../public/lang/en.json"
+import { fields, optionalString, requiredInteger, requiredString, standardInteger, statOptions } from "../../common/sharedSchemas"
+import { starterPackSchema } from "../equip/StarterPackDataModel"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import { classFeatureSchema } from "./FeatureDataModel"
-import { skillsTrainingSchema } from "./type/SkillsTraining"
-import { spellcastingSchema } from "./type/SpellCasting"
+import { classFeatureSchema } from "./traitsAndFeatures"
 
 const classSchema = () => {
     return {
-        // Heros with spellcasting data are casters. Else, leave it as default.
-        spellcasting: new fields.SchemaField({ ...spellcastingSchema() }),
-
-        // Key stats for this class meant to help players with point allocation during creation.
+        quote: new fields.StringField({ ...optionalString }),
+        quoteAttr: new fields.StringField({ ...optionalString }),
+        action: new fields.StringField({ ...requiredString }),
+        move: new fields.StringField({ ...requiredString }),
+        complexity: new fields.NumberField({ ...requiredInteger, min: 1, max: 5}),
+        icons: new fields.ArrayField(new fields.StringField({ ...requiredString })),
+        playstyle: new fields.StringField({ ...requiredString }),
         keyStats: new fields.ArrayField(new fields.StringField({ ...statOptions() }), { initial: [] }),
-        
-        // Training this class gets at hero creation.
-        training: new fields.SchemaField({ ...skillsTrainingSchema() }),
+        startingPacks: new fields.ArrayField(new fields.SchemaField({ ...starterPackSchema() })),
 
-        // An array of 10 (MAX_LEVEL) feature sets the class gets each level.
-        levelFeatures: new fields.ArrayField(
-            new fields.SchemaField({
-                level: new fields.NumberField({ ...requiredInteger, max: 10 }),
-                features: new fields.ArrayField(new fields.SchemaField({ ...classFeatureSchema() }))
-            })
-        )
+        requiredTraining: new fields.ArrayField(new fields.StringField({ ...requiredString, options: Object.values(lang.VGLITE.Skills) })),
+        electiveTrainingCount: new fields.NumberField({ ...requiredInteger }),
+        electivePoolOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, options: Object.values(lang.VGLITE.Skills)} )),
+
+        castingSkill: new fields.StringField({ ...optionalString, options: Object.values(lang.VGLITE.Skills).map(it => it.name)}),
+        maxManaStat: new fields.StringField({ ...optionalString, options: Object.values(lang.VGLITE.Stat).map(it => it.long)}),
+        manaMultiplier: new fields.NumberField({ ...standardInteger }),
+        spellsGained: new fields.NumberField({ ...standardInteger }),
+        spellGainInterval: new fields.NumberField({ ...standardInteger }),
+        startingSpells: new fields.ArrayField(new fields.StringField({ ...requiredString })),
+
+        features: new fields.ArrayField(new fields.SchemaField({ ...classFeatureSchema() }))
     }
 }
 
