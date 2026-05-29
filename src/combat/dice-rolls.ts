@@ -237,7 +237,7 @@ function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
  * @param roll 
  * @returns 
  */
-function getResults(roll: Roll.Evaluated<Roll>): [{ result: number }] | [] {
+function getResults(roll: Roll.Evaluated<Roll>): { result: number }[] {
     const results = (roll.terms[0] as unknown as { results: [{ result: number }] }).results
     return results !== undefined ? results : []
 }
