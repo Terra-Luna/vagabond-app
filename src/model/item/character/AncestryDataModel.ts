@@ -9,7 +9,7 @@ const ancestrySchema = () => {
         senses: new fields.ArrayField(new fields.SchemaField({ ...sensesSchema() }), { initial: [] }),
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() }),
-        // Training this ancestry gets at hero creation.
+        // The training this ancestry received at hero creation.
         training: new fields.SchemaField({ ...skillsTrainingSchema() }),
         spellcasting: new fields.SchemaField({
             spellSlots: new fields.NumberField({ ...standardInteger }),

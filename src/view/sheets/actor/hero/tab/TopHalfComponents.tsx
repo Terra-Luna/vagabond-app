@@ -8,7 +8,7 @@ import { localizeString } from "../../../../../utils/localeUtils";
 import { rollSkillCheck } from "../../../../../combat/dice-rolls";
 import { EditableTextField } from "../../../../component/EditableTextField";
 import ActorDataModel from "../../../../../model/actor/ActorDataModel";
-import { updateActor } from "../../VgLiteActorSheet";
+import { updateDocument } from "../../../../../utils/documentUtils";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -64,15 +64,15 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
     const currentLuck = hero.stats.currentLuck;
 
     const updateLuck = useCallback((auxClick: boolean) => {
-        updateActor(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
+        updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
     }, [currentLuck])
 
     const updateStudied = useCallback((auxClick: boolean) => {
-        updateActor(hero.parent, { studied: (studied ?? 0) + (auxClick ? 1 : -1) })
+        updateDocument(hero.parent, { studied: (studied ?? 0) + (auxClick ? 1 : -1) })
     }, [studied])
 
     const updateFatigue = useCallback((auxClick: boolean) => {
-        updateActor(hero.parent, { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) })
+        updateDocument(hero.parent, { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) })
     }, [fatigue])
 
     return (

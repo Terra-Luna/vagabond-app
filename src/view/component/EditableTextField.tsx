@@ -1,9 +1,8 @@
 import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react";
 import VgLiteError from "../../model/common/VgLiteError";
-import { updateActorAtPath } from "../sheets/actor/VgLiteActorSheet";
-import ActorDataModel from "../../model/actor/ActorDataModel";
+import { updateDocumentAtPath } from "../../utils/documentUtils";
 
-export const EditableTextField = ({ initialValue, onSave, updateProps }: { initialValue: string, onSave?: (value: string) => Promise<boolean>, updateProps: { actor: any, propertyPath: string[] } }) => {
+export const EditableTextField = ({ initialValue, onSave, updateProps }: { initialValue: string, onSave?: (value: string) => Promise<boolean>, updateProps?: { actor: any, propertyPath: string[] } }) => {
     if (onSave && updateProps) {
         throw new VgLiteError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
     }
@@ -38,7 +37,7 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
             return onSave(value)
         }
         else {
-            return updateActorAtPath(updateProps.actor, updateProps.propertyPath, value);
+            return updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
         }
     }, [value, onSave, updateProps])
 
