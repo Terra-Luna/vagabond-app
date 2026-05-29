@@ -14,6 +14,7 @@ export abstract class VgLiteItemSheet extends VgLiteSheetMixin(sheets.ItemSheetV
         }
     }
 
+    abstract Component: React.ComponentType<any>;
 }
 
 export const ItemSheetHeader = ({ item }: { item: ItemDataModel<BaseItemSchema> }) => {

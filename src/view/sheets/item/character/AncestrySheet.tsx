@@ -1,13 +1,11 @@
-const { api, sheets } = foundry.applications;
 import { FoundryItem, ItemSheetHeader, VgLiteItemSheet } from "../VgLiteItemSheet";
 import AncestryDataModel from "../../../../model/item/character/AncestryDataModel";
 
-// @ts-expect-error
-export class PerkSheet extends VgLiteItemSheet {
-    Component = PerkReactComponent
+export class AncestrySheet extends VgLiteItemSheet {
+    Component = AncestryReactComponent
 }
 
-const PerkReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel> }) => {
+const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel> }) => {
     const ancestry = item.system
     return (
         <div id="ancestry-sheet-div">
