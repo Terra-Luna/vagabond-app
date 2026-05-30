@@ -10,7 +10,7 @@ export const healthSchema = () => {
 }
 
 export function validateCurrentHP(hero: HeroDataModel) {
-    if (hero.health.current! > hero.health.max! + hero.bonus.maxHP!) {
+    if (hero.health.current! > hero.health.max!) {
         hero.health.current = hero.health.max!
     }
 }
