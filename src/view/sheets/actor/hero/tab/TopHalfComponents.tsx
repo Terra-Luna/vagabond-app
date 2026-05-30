@@ -7,7 +7,6 @@ import { GridItem, GridRow } from "../../../../component/Grid";
 import { localizeString } from "../../../../../utils/localeUtils";
 import { rollSkillCheck } from "../../../../../combat/dice-rolls";
 import { EditableTextField } from "../../../../component/EditableTextField";
-import ActorDataModel from "../../../../../model/actor/ActorDataModel";
 import { updateDocument } from "../../../../../utils/documentUtils";
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {

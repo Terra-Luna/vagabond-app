@@ -21,10 +21,57 @@
     }
   },
   "VGLITE": {
+    "AlchemyCategories": {
+        "acid": {
+          "name": "Acid",
+          "description": ""
+        },
+        "concoction": {
+          "name": "Concoction",
+          "description": ""
+        },
+        "explosive": {
+          "name": "Explosive",
+          "description": ""
+        },
+        "oil": {
+          "name": "Oil",
+          "description": ""
+        },
+        "poison": {
+          "name": "Poison",
+          "description": ""
+        },
+        "potion": {
+          "name": "Potion",
+          "description": ""
+        },
+        "torch": {
+          "name": "Torch",
+          "description": ""
+        }
+    },
     "Ranges": {
       "close": "Close",
       "near": "Near",
       "far": "Far"
+    },
+    "ArmorTypes": {
+      "light": {
+        "name": "Light",
+        "rating": 1,
+        "slots": 2
+      },
+      "medium": {
+        "name": "Medium",
+        "rating": 2,
+        "slots": 2
+      },
+      "heavy": {
+        "name": "Heavy",
+        "rating": 3,
+        "slots": 3
+      }
     },
     "Zones": {
       "front": "Frontline",
@@ -388,6 +435,11 @@
       }
     },
     "Metals": {
+      "standard": {
+        "name": "Standard",
+        "description": "Standard metal - made well enough, but nothing special.",
+        "valueMultiplier": 1
+      },
       "adamant": {
         "name": "Adamant",
         "description": "Occupies +1 Slot. +1 to Armor (if Armor) or Weapon damage (if Weapon).",

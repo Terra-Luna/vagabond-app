@@ -6,7 +6,7 @@ import SpellDataModel from "../item/character/SpellDataModel"
 import { traitSchema } from "../item/character/traitsAndFeatures"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { setArmorRating } from "./type/Armor"
-import { bonusSchema } from "./type/Bonus"
+import { heroBonusSchema } from "./type/Bonus"
 import { setMaxHP, validateCurrentHP } from "./type/Health"
 import { inventorySchema, setInventoryData } from "./type/Inventory"
 import { levelSchema, setXpToNextLevel } from "./type/Level"
@@ -30,7 +30,7 @@ const heroSchema = () => {
         studied: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         fatigue: new fields.NumberField({ ...requiredInteger, initial: 0, max: 5 }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
-        bonus: new fields.SchemaField({ ...bonusSchema() }),
+        bonus: new fields.SchemaField({ ...heroBonusSchema() }),
 
         inventory: new fields.SchemaField({ ...inventorySchema() }),
 

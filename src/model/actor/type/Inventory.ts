@@ -1,4 +1,4 @@
-import { coinSchema, consolidate } from "../../common/CoinValue"
+import { coinSchema, consolidateCoins } from "../../common/CoinValue"
 import { fields } from "../../common/sharedSchemas"
 import ContainerDataModel from "../../item/equip/ContainerDataModel"
 import HeroDataModel from "../HeroDataModel"
@@ -11,6 +11,6 @@ export const inventorySchema = () => {
 }
 
 export function setInventoryData(hero: HeroDataModel) {
-    consolidate(hero.inventory.coins)
+    consolidateCoins(hero.inventory.coins)
     hero.inventory.container.capacity = Number(hero.stats.might) + 8 + hero.bonus.inventorySlots! - hero.fatigue!
 }

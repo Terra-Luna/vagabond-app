@@ -6,9 +6,7 @@ import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
  * Eg.: magnifying glass, compass, books...
  */
 const sundrySchema = () => {
-    return {
-
-    }
+    return {}
 }
 
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema

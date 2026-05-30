@@ -38,9 +38,7 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
 }
 
 export function setEmptySlots(container: ContainerDataModel) {
-    var occupied = 0
-    container.items.forEach(i => occupied += i.slots!)
-    container.emptySlots = container.capacity! - occupied
+    container.emptySlots = container.capacity! - container.items.reduce((sum, it) => { return sum + it.slots! }, 0)
 }
 
 /**

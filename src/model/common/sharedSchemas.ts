@@ -55,3 +55,9 @@ export const damageTypeOptions = () => {
         initial: damageTypes[0]
     }
 }
+
+export const effectSchema = () => {
+    return {
+        type: new fields.StringField({ ...requiredString, options: ['TEMPORARY', 'PASSIVE', 'INAC'] })
+    }
+}

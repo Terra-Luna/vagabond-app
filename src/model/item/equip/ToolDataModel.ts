@@ -5,9 +5,7 @@ import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
  * Anything a Hero can equip that isn't a weapon or armor.
  */
 const toolSchema = () => {
-    return {
-
-    }
+    return {}
 }
 
 export type ToolSchema = ReturnType<typeof toolSchema> & EquipmentSchema

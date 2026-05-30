@@ -1,5 +1,5 @@
 import '../public/styles/vagabond-lite.css'
-import AlchemicalItemDataModel from "./model/item/equip/AlchemicalItemDataModel"
+import AlchemicalItemDataModel from "./model/item/equip/AlchemicalDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
 import ClassDataModel from "./model/item/character/ClassDataModel"
@@ -59,7 +59,7 @@ Hooks.on("renderCombatTracker", (app, html, data) => {
     })
 })
 
-// register sheets
+// Register sheets
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
     makeDefault: true

@@ -1,4 +1,5 @@
-import { coinSchema } from "../../common/CoinValue"
+import HeroDataModel from "../../actor/HeroDataModel"
+import { addCoins, coinSchema } from "../../common/CoinValue"
 import { fields } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 import EquipmentDataModel from "./EquipmentDataModel"
@@ -19,4 +20,11 @@ export default class StarterPackDataModel extends ItemDataModel<StarterPackSchem
             ...starterPackSchema()
         }
     }
+}
+
+export const applyStarterPack = (hero: HeroDataModel, pack: StarterPackDataModel) => {
+    pack.items.forEach(it => {
+        hero.inventory.container.items.push(it)
+    })
+    hero.inventory.coins = addCoins([hero.inventory.coins, pack.coins])
 }

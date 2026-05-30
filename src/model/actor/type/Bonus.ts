@@ -1,9 +1,9 @@
 import { fields, standardInteger, uncappedInteger } from "../../common/sharedSchemas"
 
 /**
- * Keep this list in-sync with the helper texts in VgLiteActiveEffect.
+ * Keep these lists in-sync with the helper texts in VgLiteActiveEffect.
  */
-export const bonusSchema = () => {
+export const heroBonusSchema = () => {
     return {
         /**
          * Stat and resource bonuses...
@@ -58,5 +58,14 @@ export const bonusSchema = () => {
         perDieAtkDmg: new fields.NumberField({ ...uncappedInteger }),
         perDieSpellDmg: new fields.NumberField({ ...uncappedInteger }),
         perDieDmgReduction: new fields.NumberField({ ...uncappedInteger })
+    }
+}
+
+export const itemBonusSchema = () => {
+    return {
+        slots: new fields.NumberField({ ...uncappedInteger }),
+        armor: new fields.NumberField({ ...uncappedInteger }),
+        flatAtkDmg: new fields.NumberField({ ...uncappedInteger }),
+        flatSpellDmg: new fields.NumberField({ ...uncappedInteger })
     }
 }

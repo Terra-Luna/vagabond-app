@@ -1,3 +1,4 @@
+import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
 import VgLiteError from "../../common/VgLiteError"
@@ -17,13 +18,9 @@ const weaponSchema = () => {
             }),
             state: new fields.StringField({ required: true, initial: '1H', choices: ['1H', '2H', 'F'] })
         }),
-        attackSkills: new fields.ArrayField(
-            new fields.StringField({ initial: '', required: true }), { initial: ['melee'] }
-        ),
         properties: new fields.ArrayField(
-            new fields.SchemaField({
-                name: new fields.StringField({ ...requiredString }),
-                description: new fields.StringField({ ...requiredString })
+            new fields.StringField({
+                ...requiredString, options: Object.values(lang.VGLITE.WeaponProps).map(it => it.name)
             }),
             { initial: [] }
         ),
@@ -34,6 +31,7 @@ const weaponSchema = () => {
                 { initial: [] }
             )
         }),
+        material: new fields.StringField({ ...requiredString, initial: 'Standard', choices: Object.values(lang.VGLITE.Metals).map(it => it.name) }),
         isCrude: new fields.BooleanField({ initial: false })
     }
 }
@@ -48,7 +46,24 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         }
     }
 
-    override typeName: String = "Weapon"
+    /**
+     * May have some issues with these derivatiosn being self-referrenctial.
+     * If that's the case, re-work it and add new props such as "finalSlots"
+     * or something.
+     */
+    override async prepareDerivedData() {
+        if (this.material === 'Adamant') {
+            this.bonus.flatAtkDmg! += 1
+            this.bonus.slots! += 1
+        }
+        else if (this.material === "Mythral") {
+            this.bonus.slots! -= 1
+        }
+
+        super.prepareDerivedData()
+    }
+
+    override typeName: String = 'Weapon'
 
     override onEquip(hero: HeroDataModel) {
         equipWeapon(hero, this)

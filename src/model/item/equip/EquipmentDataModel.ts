@@ -1,6 +1,8 @@
+import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
-import { coinSchema } from "../../common/CoinValue"
-import { fields, requiredString } from "../../common/sharedSchemas"
+import { itemBonusSchema } from "../../actor/type/Bonus"
+import { addCoins as addCoins, coinSchema } from "../../common/CoinValue"
+import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 /**
@@ -10,14 +12,19 @@ import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 const baseEquipmentSchema = () => {
     return {
         value: new fields.SchemaField({ ...coinSchema() }),
-        slots: new fields.NumberField({ integer: true, min: 0, max: 4 }),
+        slots: new fields.NumberField({ integer: true, min: 0 }),
+        isStackable: new fields.BooleanField({ initial: false }),
+        isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),
-        category: new fields.StringField({ ...requiredString }),
-        relicData: new fields.SchemaField({
-            isRelic: new fields.BooleanField({ initial: false }),
-            requiresBind: new fields.BooleanField({ initial: false }),
-            isBound: new fields.BooleanField({ initial: false })
-        })
+        category: new fields.StringField({ ...requiredString, options: Object.values(lang.VGLITE.EquipmentCategories) }),
+        bonus: new fields.SchemaField({ ...itemBonusSchema() }),
+        relicEffects: new fields.ArrayField(
+            new fields.SchemaField({
+                type: new fields.StringField({ ...requiredString, choices: ['BONUS', 'CURSED', 'PROTECTION', 'MOVEMENT', 'SENSES', 'UTILITY', 'UNIQUE', 'UTILITY', 'FABLED'] }),
+                power: new fields.SchemaField({}),
+                addedCoinValue: new fields.SchemaField({ ...coinSchema() })
+            })
+        )
     }
 }
 
@@ -33,6 +40,10 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
+        this.slots = this.slots! + this.bonus.slots!
+        if (this.relicEffects.length > 0) {
+            this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
+        }
     }
 
     abstract typeName: String

@@ -5,7 +5,7 @@ import { validateCurrentHP, setMaxHP } from "../../../../src/model/actor/type/He
 describe('health component tests', () => {
     test('hp cant exceed max', () => {
         //Setup
-        const hero = { health: { current: 3, max: 2 }}
+        const hero = { health: { current: 3, max: 2 }, bonus: { maxHP: 0 } }
         //Execute
         validateCurrentHP(hero as unknown as HeroDataModel)
         //Verify
