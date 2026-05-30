@@ -25,11 +25,11 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
             const reactRootElem = this.element.appendChild(vgLiteDiv)
             this._reactRoot = ReactDom.createRoot(reactRootElem)
         }
+
+        this.renderWithWrappers({ theme: this._getTheme() })
     }
 
-    _replaceHTML(context, options) {
-        // no-op, implemented just to comply with sheets api
-    }
+    _replaceHTML() { } // no-op, implemented just to comply with sheets api
 
     async _onRender(context, options) {
         super._onRender(context, options)
