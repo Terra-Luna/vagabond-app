@@ -22,34 +22,34 @@
   },
   "VGLITE": {
     "AlchemyCategories": {
-        "acid": {
-          "name": "Acid",
-          "description": ""
-        },
-        "concoction": {
-          "name": "Concoction",
-          "description": ""
-        },
-        "explosive": {
-          "name": "Explosive",
-          "description": ""
-        },
-        "oil": {
-          "name": "Oil",
-          "description": ""
-        },
-        "poison": {
-          "name": "Poison",
-          "description": ""
-        },
-        "potion": {
-          "name": "Potion",
-          "description": ""
-        },
-        "torch": {
-          "name": "Torch",
-          "description": ""
-        }
+      "acid": {
+        "name": "Acid",
+        "description": ""
+      },
+      "concoction": {
+        "name": "Concoction",
+        "description": ""
+      },
+      "explosive": {
+        "name": "Explosive",
+        "description": ""
+      },
+      "oil": {
+        "name": "Oil",
+        "description": ""
+      },
+      "poison": {
+        "name": "Poison",
+        "description": ""
+      },
+      "potion": {
+        "name": "Potion",
+        "description": ""
+      },
+      "torch": {
+        "name": "Torch",
+        "description": ""
+      }
     },
     "Ranges": {
       "close": "Close",
@@ -154,10 +154,10 @@
       "humanlike": "Humanlike",
       "fae": "Fae",
       "cryptid": "Cryptid",
-      "artificials": "Artificials",
+      "artificial": "Artificial",
       "beasts": "Beasts",
       "outers": "Outers",
-      "primordials": "Primordials",
+      "primordial": "Primordial",
       "undead": "Undead",
       "hellspawn": "Hellspawn"
     },
@@ -501,6 +501,10 @@
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
       "armor": "ARMOR"
+    },
+    "ItemSheet": {
+      "type": "Type",
+      "size": "Size"
     }
   }
 }

@@ -218,51 +218,52 @@
 .vglite-hero-sheet {
   padding: 8px;
 }
-.theme-light .vglite-hero-sheet-header {
+.theme-light .vglite-sheet-header {
   background-color: #6a2e2a;
 }
-.theme-dark .vglite-hero-sheet-header {
+.theme-dark .vglite-sheet-header {
   background-color: #1c1917;
 }
-.vglite-hero-sheet-header {
+.vglite-sheet-header {
   font-weight: bolder;
+  height: -moz-fit-content;
   height: fit-content;
   box-sizing: border-box;
   padding: 8px;
 }
-.vglite-hero-sheet-header .name {
+.vglite-sheet-header .name {
   font-size: 32px;
 }
-.theme-light .vglite-hero-sheet-header .name {
+.theme-light .vglite-sheet-header .name {
   color: #eeeeed;
 }
-.theme-dark .vglite-hero-sheet-header .name {
+.theme-dark .vglite-sheet-header .name {
   color: #c5b358;
 }
-.theme-light .vglite-hero-sheet-header .descriptor {
+.theme-light .vglite-sheet-header .descriptor {
   color: #eeeeed;
 }
-.theme-dark .vglite-hero-sheet-header .descriptor {
+.theme-dark .vglite-sheet-header .descriptor {
   color: #e7e5e4;
 }
-.vglite-hero-sheet-header .descriptor {
+.vglite-sheet-header .descriptor {
   font-size: 14px;
   font-weight: normal;
   display: inline-block;
 }
-.theme-light .vglite-hero-sheet-header .vglite-dot {
+.theme-light .vglite-sheet-header .vglite-dot {
   color: #eeeeed;
 }
-.theme-dark .vglite-hero-sheet-header .vglite-dot {
+.theme-dark .vglite-sheet-header .vglite-dot {
   color: #e7e5e4;
 }
-.theme-light .vglite-hero-sheet-header .xp {
+.theme-light .vglite-sheet-header .xp {
   color: #e1dbd9;
 }
-.theme-dark .vglite-hero-sheet-header .xp {
+.theme-dark .vglite-sheet-header .xp {
   color: #8a8580;
 }
-.vglite-hero-sheet-header .xp {
+.vglite-sheet-header .xp {
   font-weight: normal;
   font-size: 16px;
 }
@@ -272,7 +273,8 @@
   width: 200px;
   margin-top: 4px;
   margin-left: 4px;
-  object-fit: scale-down;
+  -o-object-fit: scale-down;
+     object-fit: scale-down;
   border: 1px solid;
   border-radius: 6px;
 }
@@ -363,7 +365,8 @@
 
 .vglite-stats-container {
   display: flex;
-  column-gap: 16px;
+  -moz-column-gap: 16px;
+       column-gap: 16px;
   row-gap: 8px;
   flex-wrap: wrap;
   padding-left: 12px;
@@ -645,6 +648,7 @@
 
 .vglite-card-sub-header {
   display: flex;
+  width: -moz-fit-content;
   width: fit-content;
   align-items: left;
   height: 24px;
@@ -675,7 +679,9 @@
 }
 
 .vglite-card-body {
+  width: -moz-fit-content;
   width: fit-content;
+  height: -moz-fit-content;
   height: fit-content;
   padding: 8px;
   border-bottom-left-radius: 6px;
@@ -825,6 +831,16 @@
   background-color: #c5b358;
 }
 
+.vglite-label {
+  margin-bottom: 4px;
+}
+
+.vglite-type-size {
+  margin-top: 4px;
+  display: flex;
+  gap: 16px;
+}
+
 @font-face {
   font-family: "Eskapade";
   src: url("../assets/fonts/eskapade-black.ttf") format("truetype");
@@ -893,6 +909,4 @@
 
 .vg-lite-body {
   font-family: "Paradigm";
-}
-
-/*# sourceMappingURL=vagabond-lite.css.map */
+}/*# sourceMappingURL=vagabond-lite.css.map */

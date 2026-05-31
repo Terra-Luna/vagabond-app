@@ -1,5 +1,6 @@
 @use "./component";
 @use "./theme";
+@use "../../src/view/sheets/item/character/character-styles";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 
@@ -69,6 +70,7 @@
 
     button {
         background-color: transparent;
+
         &:focus {
             outline: 0;
             box-shadow: 0 0 !important;

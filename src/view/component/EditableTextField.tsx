@@ -1,6 +1,7 @@
 import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react";
 import VgLiteError from "../../model/common/VgLiteError";
 import { updateDocumentAtPath } from "../../utils/documentUtils";
+import { FoundryActor } from "../sheets/actor/VgLiteActorSheet";
 
 export const EditableTextField = ({ initialValue, onSave, updateProps }: { initialValue: string, onSave?: (value: string) => Promise<boolean>, updateProps?: { actor: any, propertyPath: string[] } }) => {
     if (onSave && updateProps) {
@@ -67,4 +68,12 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     else {
         return <span onDoubleClick={enterEditMode}>{value}</span>
     }
+}
+
+export const EditableNameField = ({ actor }: { actor: FoundryActor<any> }) => {
+    const updateName = useCallback(async (newName: string) => {
+        return !!await actor.update({ name: newName })
+    }, [actor])
+
+    return <EditableTextField initialValue={(actor as any).name} onSave={updateName} />
 }

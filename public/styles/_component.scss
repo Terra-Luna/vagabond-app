@@ -77,7 +77,7 @@
     }
 }
 
-.vglite-hero-sheet-header {
+.vglite-sheet-header {
     @include theme.themify() {
         background-color: theme.themed('sheet-header-fill');
     }
@@ -592,4 +592,8 @@
         color: theme.themed('btn-primary-text');
         background-color: theme.themed('btn-primary-fill');
     }
+}
+
+.vglite-label {
+    margin-bottom: 4px;
 }
