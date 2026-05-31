@@ -57,6 +57,10 @@ interface TagalongHero {
     }
 }
 
+/**
+ * I reached out to Lzrface about setting up CORS headers on their end for
+ * the GET request. Until then, we'll have to route the request thru a proxy.
+ */
 const tagalongApi: string = 'https://cors-anywhere.herokuapp.com/https://www.vgbnd.app/api/characters/'
 
 export async function fetchHero(url: URL): Promise<TagalongHero> {
