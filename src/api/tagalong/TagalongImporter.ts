@@ -4,7 +4,7 @@ import { updateDocument } from "../../utils/documentUtils"
 import { fetchHero } from "./TagalongApi"
 
 /**
- * Sample link: https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01
+ * Sample link: (Orphenia) https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01
  * Imports hero data from www.vgbnd.app and maps it to the system hero data model.
  * @param hero 
  * @param tagalongUrl 
@@ -17,6 +17,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         updateDocument(hero.parent, {
             tagalongId: res.id,
             name: res.name,
+            prototypeToken: { name: res.name },
             level: { current: res.level, xp: res.xp },
 
             /**

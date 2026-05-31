@@ -1,7 +1,7 @@
 export const updateDocument = async (actor: { system: any, update: any }, update: any) => {
     const updates = {}
     Object.entries(update).forEach(([key, value]) => {
-        if (key === 'name') {
+        if (key === 'name' || key === 'prototypeToken') {
             updates[`${key}`] = value
         }
         else {
