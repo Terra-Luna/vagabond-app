@@ -59,9 +59,9 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
     }, [])
 
     return (
-        <div className="vglite-sheet-header">
+        <div className="bg-sheet-header-fill font-eskapade">
             {/* <div>{numberOfTimesClickedRef.current}</div> */}
-            <div className="name">
+            <div className="text-text-header-primary text-4xl font-bold">
                 <EditableNameField actor={hero.parent} />
                 <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} onAuxClick={toggleTheme} /></div>
             <div className="descriptor">

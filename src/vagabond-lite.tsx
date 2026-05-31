@@ -1,4 +1,3 @@
-import '../public/styles/vagabond-lite.css'
 import AlchemicalItemDataModel from "./model/item/equip/AlchemicalDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"

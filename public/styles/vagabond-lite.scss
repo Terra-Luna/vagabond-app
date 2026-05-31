@@ -3,6 +3,195 @@
 @use "../../src/view/sheets/item/character/character-styles";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 @import "../../node_modules/quill/dist/quill.core";
+@import "tailwindcss";
+
+@theme {
+    sheet-header-fill: var(--sheet-header-fill);
+    text-header-primary: var(--text-header-primary);
+    text-header-secondary: var(--text-header-secondary);
+    text-header-tertiary: var(--text-header-tertiary);
+    portrait-fill-bg: var(--portrait-fill-bg);
+    portrait-border: var(--portrait-border);
+    body-fill: var(--body-fill);
+    text-tab-active: var(--text-tab-active);
+    text-tab-inactive: var(--text-tab-inactive);
+    scroll-bar-handle: var(--scroll-bar-handle);
+    scroll-bar-track: var(--scroll-bar-track);
+    section-header-fill: var(--section-header-fill);
+    section-header-line: var(--section-header-line);
+    text-section-header: var(--text-section-header);
+    text-primary: var(--text-primary);
+    text-secondary: var(--text-secondary);
+    text-tertiary: var(--text-tertiary);
+    text-special: var(--text-special);
+    text-aux: var(--text-aux);
+    text-dmg: var(--text-dmg);
+    text-highlight: var(--text-highlight);
+    text-bold: var(--text-bold);
+    ic-skill-trained: var(--ic-skill-trained);
+    ic-skill-untrained: var(--ic-skill-untrained);
+    skill-divider: var(--skill-divider);
+    skill-bg-fill: var(--skill-bg-fill);
+    skill-border: var(--skill-border);
+    stat-block-fill: var(--stat-block-fill);
+    table-border: var(--table-border);
+    table-fill-odd: var(--table-fill-odd);
+    table-fill-even: var(--table-fill-even);
+    text-table-item: var(--text-table-item);
+    ic-hp: var(--ic-hp);
+    text-hp-current: var(--text-hp-current);
+    text-hp-max: var(--text-hp-max);
+    ic-armor-fill: var(--ic-armor-fill);
+    ic-armor-border: var(--ic-armor-border);
+    text-armor: var(--text-armor);
+    ic-luck: var(--ic-luck);
+    text-luck-current: var(--text-luck-current);
+    ic-studied: var(--ic-studied);
+    text-studied-current: var(--text-studied-current);
+    ic-fatigue: var(--ic-fatigue);
+    text-fatigue-current: var(--text-fatigue-current);
+    ic-mana: var(--ic-mana);
+    text-mana-current: var(--text-mana-current);
+    text-mana-max: var(--text-mana-max);
+    ic-equipped: var(--ic-equipped);
+    btn-primary-fill: var(--btn-primary-fill);
+    btn-primary-hover: var(--btn-primary-hover);
+    btn-primary-text: var(--btn-primary-text);
+    btn-secondary-fill: var(--btn-secondary-fill);
+    btn-secondary-hover: var(--btn-secondary-hover);
+    btn-secondary-text: var(--btn-secondary-text);
+    destructive-action: var(--destructive-action);
+}
+
+:root {
+    --sheet-header-fill: #6a2e2a;
+    --text-header-primary: #eeeeed;
+    --text-header-secondary: #eeeeed;
+    --text-header-tertiary: #e1dbd9;
+
+    --portrait-fill-bg: rgba(0; 0; 0; .1);
+    --portrait-border: #352f28;
+    --body-fill: #faf0e6;
+
+    --text-tab-active: #53514a;
+    --text-tab-inactive: #b7b0a7;
+    --scroll-bar-handle: #cdcdcd;
+    --scroll-bar-track: #f0f0f0;
+
+    --section-header-fill: #6a2e2a;
+    --section-header-line: #b59795;
+    --text-section-header: #eeeeed;
+
+    --text-primary: #1c1917;
+    --text-secondary: #44403b;
+    --text-tertiary: #6f5e53;
+    --text-special: #6a2e2a;
+    --text-aux: #747069;
+    --text-dmg: #e7000b;
+    --text-highlight: #292524;
+    --text-bold: #292524;
+
+    --ic-skill-trained: #3d5541;
+    --ic-skill-untrained: #aeb2a4;
+    --skill-divider: #e7e5e4;
+    --skill-bg-fill: #f4efea;
+    --skill-border: #d6d3d1;
+    --stat-block-fill: #6a2e2a;
+
+    --table-border: #966e50;
+    --table-fill-odd: #faf0e6;
+    --table-fill-even: #f4efea;
+    --text-table-item: #53514a;
+
+    --ic-hp: #e7000b;
+    --text-hp-current: #e7000b;
+    --text-hp-max: #9f0712;
+    --ic-armor-fill: #a59f9a;
+    --ic-armor-border: #78706a;
+    --text-armor: #56524c;
+    --ic-luck: #00a63e;
+    --text-luck-current: #00a63e;
+    --ic-studied: #0092b8;
+    --text-studied-current: #0092b8;
+    --ic-fatigue: #733e0a;
+    --text-fatigue-current: #733e0a;
+    --ic-mana: #155dfc;
+    --text-mana-current: #155dfc;
+    --text-mana-max: #155dfc;
+    --ic-equipped: #3d5541;
+    --btn-primary-fill: #6a2e2a;
+    --btn-primary-hover: #fdfbf7;
+    --btn-primary-text: #eeeeed;
+    --btn-secondary-fill: #d7ccc8;
+    --btn-secondary-hover: #d6a593;
+    --btn-secondary-text: #3d2622;
+    --destructive-action: #f72b35;
+}
+
+[data-theme="dark"] {
+    --sheet-header-fill: #1c1917;
+    --text-header-primary: #c5b358;
+    --text-header-secondary: #e7e5e4;
+    --text-header-tertiary: #8a8580;
+
+    --portrait-fill-bg: rgba(0; 0; 0; .1);
+    --portrait-border: #675e38;
+    --body-fill: #292524;
+
+    --text-tab-active: #c5b358;
+    --text-tab-inactive: #675e38;
+    --scroll-bar-handle: #787677;
+    --scroll-bar-track: #221f21;
+
+    --section-header-fill: #c5b358;
+    --section-header-line: #918444;
+    --text-section-header: #1c1917;
+
+    --text-primary: #e7e5e4;
+    --text-secondary: #a6a09b;
+    --text-tertiary: #79716b;
+    --text-special: #e7e5e4;
+    --text-aux: #c1bebd;
+    --text-dmg: #ee5e61;
+    --text-highlight: #e2c38c;
+    --text-bold: #c1af56;
+
+    --ic-skill-trained: #c5b358;
+    --ic-skill-untrained: #57534d;
+    --skill-divider: #47412e;
+    --skill-bg-fill: #292524;
+    --skill-border: #44403b;
+    --stat-block-fill: #c5b358;
+
+    --table-border: #44403b;
+    --table-fill-odd: #292524;
+    --table-fill-even: #44403c;
+    --text-table-item: #eae8e7;
+
+    --ic-hp: #e7000b;
+    --text-hp-current: #e7000b;
+    --text-hp-max: #ff6467;
+    --ic-armor-fill: #a59f9a;
+    --ic-armor-border: #78706a;
+    --text-armor: #56524c;
+    --ic-luck: #00a63e;
+    --text-luck-current: #00a63e;
+    --ic-studied: #0092b8;
+    --text-studied-current: #0092b8;
+    --ic-mana: #155dfc;
+    --text-mana-current: #155dfc;
+    --text-mana-max: #155dfc;
+    --ic-fatigue: #a59f9a;
+    --text-fatigue-current: #a59f9a;
+    --ic-equipped: #c5b358;
+    --btn-primary-fill: #c5b358;
+    --btn-primary-hover: #c5bb82;
+    --btn-primary-text: #1c1917;
+    --btn-secondary-fill: #44403b;
+    --btn-secondary-hover: #636363;
+    --btn-secondary-text: #e7e5e4;
+    --destructive-action: #f72b35;
+}
 
 
 @font-face {

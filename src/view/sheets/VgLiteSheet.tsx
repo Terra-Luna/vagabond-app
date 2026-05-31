@@ -1,5 +1,6 @@
 import ReactDom from "react-dom/client"
 import { DimensionsContext } from "../context/DimensionsContext"
+import vgliteStyles from "../../../public/styles/vagabond-lite.css?inline"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
@@ -23,7 +24,9 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
             const vgLiteDiv = document.createElement('div')
             vgLiteDiv.setAttribute("class", "vglite-root")
             const reactRootElem = this.element.appendChild(vgLiteDiv)
-            this._reactRoot = ReactDom.createRoot(reactRootElem)
+
+            const scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
+            this._reactRoot = ReactDom.createRoot(scaduRoot)
         }
 
         this.renderWithWrappers({ theme: this._getTheme() })
@@ -60,7 +63,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     renderWithWrappers({ width = 1, height = 1, theme = "light" }: { width?: number, height?: number, theme: string }) {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height }}>
-                <div className={`theme-${theme} vglite-themed-content`}>
+                <style>{vgliteStyles}</style>
+                <div className={`${theme} vglite-themed-content`}>
                     <this.Component {...this.getReactProps()} width={width} height={height} />
                 </div>
             </DimensionsContext.Provider>
