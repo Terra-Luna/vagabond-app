@@ -2,6 +2,7 @@
 @use "./theme";
 @use "../../src/view/sheets/item/character/character-styles";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import "../../node_modules/quill/dist/quill.core";
 
 
 @font-face {
@@ -61,6 +62,7 @@
 }
 
 .vglite-root {
+    all: initial;
     font-family: 'Eskapade';
     height: 100%;
 

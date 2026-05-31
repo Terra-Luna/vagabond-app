@@ -1,5 +1,6 @@
 import { useCallback } from "react"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
+import { LabelledField } from "./LabelledField"
 
 export const DropDown = ({ label, value, options, updatePath, parent }: { label: string, value: any, options: any[], updatePath: string[], parent: any }) => {
     const onChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -8,12 +9,13 @@ export const DropDown = ({ label, value, options, updatePath, parent }: { label:
 
     return (
         <div className="vglite-dropdown">
-            <div className="vglite-label">{label}</div>
-            <div className="vglite-dropdown-select">
-                <select value={value} onChange={onChange}>
-                    {options.map(it => <option key={'label' + it}>{it}</option>)}
-                </select>
-            </div>
+            <LabelledField label={label} >
+                <div className="vglite-dropdown-select">
+                    <select value={value} onChange={onChange}>
+                        {options.map(it => <option key={'label' + it}>{it}</option>)}
+                    </select>
+                </div>
+            </LabelledField>
         </div>
     )
 }
