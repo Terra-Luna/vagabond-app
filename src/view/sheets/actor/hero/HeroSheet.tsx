@@ -11,7 +11,7 @@ import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { MainTab } from "./tab/MainTab"
-import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
+import { EditableNameField } from "../../../component/EditableTextField"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -31,19 +31,14 @@ const HeroSheetReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel>
 }
 
 const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
-    const numberOfTimesClickedRef = useRef(0)
     const deliveryRef = useRef<SpellDelivery>(null)
 
     const [_, forceUpdate] = useState(false)
 
     const openMenu = useCallback((event) => {
-        const didShift = event.shiftKey
-        numberOfTimesClickedRef.current += 1
-        alert(`you did${didShift ? '' : ' not'} hold shift! Number of times clicked: ${numberOfTimesClickedRef.current}`)
         deliveryRef.current = new Sphere()
-        //console.log({ deliveryRef: deliveryRef.current })
         forceUpdate(!_)
-    }, [numberOfTimesClickedRef, _])
+    }, [])
 
     const toggleTheme = useCallback(() => {
         const curUiConfig = (game.settings as any).get("core", "uiConfig")
@@ -60,7 +55,6 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className="vglite-sheet-header">
-            {/* <div>{numberOfTimesClickedRef.current}</div> */}
             <div className="name">
                 <EditableNameField actor={hero.parent} />
                 <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} onAuxClick={toggleTheme} /></div>
