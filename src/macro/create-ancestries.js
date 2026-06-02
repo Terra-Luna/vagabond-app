@@ -85,5 +85,5 @@ ui.notifications.info('Success!')
 game.items.filter(it => it.type === 'ancestry')
 
 const actor = game.actors.getName('Orphenia')
-const human = game.items.filter(it => it.type === 'ancestry' && it.name === 'Human')
-await actor.update({ 'system.ancestry': { ...human[0].system } })
+const human = game.items.find(it => it.type === 'ancestry' && it.name === 'Human')
+await actor.update({ 'system.ancestry': { ...human.system } })

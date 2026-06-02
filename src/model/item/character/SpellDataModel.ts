@@ -7,9 +7,7 @@ const spellSchema = () => {
         damageType: new fields.StringField({ ...damageTypeOptions() }),
         // Does this spell apply a burn effect?
         effectAppliesBurn: new fields.BooleanField({ initial: false }),
-        effectBurnCountdown: new fields.ArrayField(new fields.StringField({ ...requiredString, initial: 'Cd4' })),
-        // What special effects does this spell have on crit?
-        onCrit: new fields.StringField({ ...optionalString })
+        effectBurnCountdown: new fields.StringField({ ...requiredString, initial: '-' }),
     }
 }
 

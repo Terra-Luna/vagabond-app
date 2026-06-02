@@ -58,7 +58,7 @@ interface TagalongHero {
 }
 
 
-const tagalongApi: string = 'https://www.vgbnd.app/api/characters/'
+const tagalongApi: string = 'https://www.vgbnd.app/api/characters/' //e38db88c-ec28-4b67-a44c-09f0fe199d01
 
 export async function fetchHero(url: URL): Promise<TagalongHero> {
     const headers: Headers = new Headers()

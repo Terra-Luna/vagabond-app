@@ -29,5 +29,5 @@ ui.notifications.info('Success')
 game.items.filter(it => it.type === 'perk')
 
 const actor = game.actors.getName('Orphenia')
-const gish = game.items.filter(it => it.type === 'perk' && it.name === 'Gish')
-await actor.update({ 'system.perks': [{ ...gish[0].system }] })
+const gish = game.items.find(it => it.type === 'perk' && it.name === 'Gish')
+await actor.update({ 'system.perks': [{ ...gish.system }] })

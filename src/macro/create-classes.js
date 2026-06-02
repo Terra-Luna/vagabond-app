@@ -91,5 +91,5 @@ ui.notifications.info('Success')
 game.items.filter(it => it.type === 'class')
 
 const actor = game.actors.getName('Orphenia')
-const magus = game.items.filter(it => it.type === 'class' && it.name === 'Magus')
-await actor.update({ 'system.class': { ...magus[0].system } })
+const magus = game.items.find(it => it.type === 'class' && it.name === 'Magus')
+await actor.update({ 'system.class': { ...magus.system } })

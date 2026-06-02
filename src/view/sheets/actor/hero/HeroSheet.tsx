@@ -113,16 +113,15 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 Inventory
             </TabPanel>
             <TabPanel>
-                <SkillCard
-                    title="Light" subtitles={[["Base dmg", "Fire"]]}
-                    description="The Target sheds Light out to Near for the duration. You can choose to do so by creating a floating mote of light that follows the Target."
-                    special={new Map<string, string>([["Crit", "Beings of your choice within the Light when you Cast the Spell are Blinded (Cd4)."]])}
-                />
-                <SkillCard
-                    title="Dark" subtitles={[["Base dmg", "Dark"]]}
-                    description="The Target sheds Dank out to Near for the duration. You can choose to do so by creating a floating mote of light that follows the Target."
-                    special={new Map<string, string>([["Crit", "Beings of your choice within the Light when you Cast the Spell are Blinded (Cd4)."]])}
-                />
+                {
+                    hero.spells.map(s => (
+                        <SkillCard
+                            title={s.name}
+                            subtitles={[['Base dmg', s.damageType]]}
+                            description={`${s.description}`}
+                        />
+                    ))
+                }
             </TabPanel>
             <TabPanel>
                 Abilities
