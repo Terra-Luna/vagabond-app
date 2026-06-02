@@ -1,6 +1,6 @@
 export const Header = ({ title }: { title: string }) => {
     return (
-        <div className="vglite-header">
+        <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-lg">
             <Divider />
             <div>{title}</div>
             <Divider />
@@ -8,4 +8,4 @@ export const Header = ({ title }: { title: string }) => {
     )
 }
 
-export const Divider = () => <div className="vglite-divider" />
+export const Divider = () => <div className="h-px bg-section-header-line w-full mx-1" />

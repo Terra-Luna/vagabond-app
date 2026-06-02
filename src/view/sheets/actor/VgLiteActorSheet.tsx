@@ -8,7 +8,7 @@ export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {
 }
 
 export abstract class VgLiteActorSheet extends VgLiteSheetMixin(sheets.ActorSheetV2) {
-    getReactProps() { return { actor: this.actor } }
+    getReactProps() { return { ...super.getReactProps(), actor: this.actor } }
 
     abstract Component: React.ComponentType<any>;
 }

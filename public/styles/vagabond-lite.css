@@ -1,63 +1,64 @@
 @charset "UTF-8";
 @import "tailwindcss";
 
-@theme {
+@theme static {
   --font-eskapade: "Eskapade";
-  --color-sheet-header-fill:;
-  --color-text-header-primary:;
-  --color-text-header-secondary:;
-  --color-text-header-tertiary:;
-  --color-portrait-fill-bg:;
-  --color-portrait-border:;
-  --color-body-fill:;
-  --color-text-tab-active:;
-  --color-text-tab-inactive:;
-  --color-scroll-bar-handle:;
-  --color-scroll-bar-track:;
-  --color-section-header-fill:;
-  --color-section-header-line:;
-  --color-text-section-header:;
-  --color-text-primary:;
-  --color-text-secondary:;
-  --color-text-tertiary:;
-  --color-text-special:;
-  --color-text-aux:;
-  --color-text-dmg:;
-  --color-text-highlight:;
-  --color-text-bold:;
-  --color-ic-skill-trained:;
-  --color-ic-skill-untrained:;
-  --color-skill-divider:;
-  --color-skill-bg-fill:;
-  --color-skill-border:;
-  --color-stat-block-fill:;
-  --color-table-border:;
-  --color-table-fill-odd:;
-  --color-table-fill-even:;
-  --color-text-table-item:;
-  --color-ic-hp:;
-  --color-text-hp-current:;
-  --color-text-hp-max:;
-  --color-ic-armor-fill:;
-  --color-ic-armor-border:;
-  --color-text-armor:;
-  --color-ic-luck:;
-  --color-text-luck-current:;
-  --color-ic-studied:;
-  --color-text-studied-current:;
-  --color-ic-fatigue:;
-  --color-text-fatigue-current:;
-  --color-ic-mana:;
-  --color-text-mana-current:;
-  --color-text-mana-max:;
-  --color-ic-equipped:;
-  --color-btn-primary-fill:;
-  --color-btn-primary-hover:;
-  --color-btn-primary-text:;
-  --color-btn-secondary-fill:;
-  --color-btn-secondary-hover:;
-  --color-btn-secondary-text:;
-  --color-destructive-action:;
+  --font-paradigm: "Paradigm";
+  --color-sheet-header-fill: ;
+  --color-text-header-primary: ;
+  --color-text-header-secondary: ;
+  --color-text-header-tertiary: ;
+  --color-portrait-fill-bg: ;
+  --color-portrait-border: ;
+  --color-body-fill: ;
+  --color-text-tab-active: ;
+  --color-text-tab-inactive: ;
+  --color-scroll-bar-handle: ;
+  --color-scroll-bar-track: ;
+  --color-section-header-fill: ;
+  --color-section-header-line: ;
+  --color-text-section-header: ;
+  --color-text-primary: ;
+  --color-text-secondary: ;
+  --color-text-tertiary: ;
+  --color-text-special: ;
+  --color-text-aux: ;
+  --color-text-dmg: ;
+  --color-text-highlight: ;
+  --color-text-bold: ;
+  --color-ic-skill-trained: ;
+  --color-ic-skill-untrained: ;
+  --color-skill-divider: ;
+  --color-skill-bg-fill: ;
+  --color-skill-border: ;
+  --color-stat-block-fill: ;
+  --color-table-border: ;
+  --color-table-fill-odd: ;
+  --color-table-fill-even: ;
+  --color-text-table-item: ;
+  --color-ic-hp: ;
+  --color-text-hp-current: ;
+  --color-text-hp-max: ;
+  --color-ic-armor-fill: ;
+  --color-ic-armor-border: ;
+  --color-text-armor: ;
+  --color-ic-luck: ;
+  --color-text-luck-current: ;
+  --color-ic-studied: ;
+  --color-text-studied-current: ;
+  --color-ic-fatigue: ;
+  --color-text-fatigue-current: ;
+  --color-ic-mana: ;
+  --color-text-mana-current: ;
+  --color-text-mana-max: ;
+  --color-ic-equipped: ;
+  --color-btn-primary-fill: ;
+  --color-btn-primary-hover: ;
+  --color-btn-primary-text: ;
+  --color-btn-secondary-fill: ;
+  --color-btn-secondary-hover: ;
+  --color-btn-secondary-text: ;
+  --color-destructive-action: ;
 }
 
 .light {
@@ -190,60 +191,74 @@
   --color-destructive-action: #f72b35;
 }
 
-@custom-variant dark (&:where(.dark, .dark *));
-
-@font-face {
-    font-family: "Eskapade";
-    src: url("../assets/fonts/eskapade-black.ttf") format("truetype");
-    font-weight: bold;
-    font-style: normal;
+.react-tabs {
+  -webkit-tap-highlight-color: transparent;
+  font-family: "Paradigm";
+  font-size: 18px;
 }
 
-@font-face {
-    font-family: "Eskapade";
-    src: url("../assets/fonts/eskapade-regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
+.react-tabs__tab-list {
+  border-bottom: 1px solid var(--color-text-tertiary);
 }
 
-@font-face {
-    font-family: "Germania";
-    src: url("../assets/fonts/germania-one-regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
+.react-tabs__tab-list {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 0 4px;
+  padding: 0;
 }
 
-@font-face {
-    font-family: "Ludlow";
-    src: url("../assets/fonts/ludlow-regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
+.react-tabs__tab {
+  display: inline-block;
+  bottom: 1px;
+  position: relative;
+  list-style: none;
+  padding: 6px 12px;
+  margin-top: 8px;
+  cursor: pointer;
 }
 
-@font-face {
-    font-family: "Manofa";
-    src: url("../assets/fonts/manofa-bold.otf") format("opentype");
-    font-weight: bold;
-    font-style: normal;
+.react-tabs__tab {
+  color: var(--color-text-tab-active)
 }
 
-@font-face {
-    font-family: "Paradigm";
-    src: url("../assets/fonts/paradigm-regular.otf") format("opentype");
-    font-weight: normal;
-    font-style: normal;
+.react-tabs__tab--selected {
+  border-radius: 5px 5px 0 0;
+  font-weight: 600;
 }
 
-@font-face {
-    font-family: "Paradigm";
-    src: url("../assets/fonts/paradigm-bold.otf") format("opentype");
-    font-weight: bold;
-    font-style: normal;
+.react-tabs__tab--selected {
+  border-color: var(--color-text-tertiary);
 }
 
-@font-face {
-    font-family: "Paradigm";
-    src: url("../assets/fonts/paradigm-italic.otf") format("opentype");
-    font-weight: normal;
-    font-style: italic;
+.react-tabs__tab--selected:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  left: -4px;
+  right: -4px;
+  bottom: -5px;
+}
+
+.react-tabs__tab--selected:after {
+  background: var(--color-text-tab-active);
+}
+
+.react-tabs__tab--disabled {
+  color: GrayText;
+  cursor: default;
+}
+
+.react-tabs__tab:focus {
+  outline: none;
+}
+
+.react-tabs__tab-panel {
+  display: none;
+}
+
+.react-tabs__tab-panel--selected {
+  display: block;
+  height: 318px;
+  overflow-y: auto;
 }

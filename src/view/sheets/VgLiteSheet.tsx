@@ -39,7 +39,6 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     }
 
     _getTheme() {
-        //console.log((game.settings as any).get("core", "uiConfig").colorScheme.applications)
         return (game.settings as any).get("core", "uiConfig").colorScheme.applications
     }
 
@@ -64,10 +63,14 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height }}>
                 <style>{vgliteStyles}</style>
-                <div className={`${theme} vglite-themed-content`}>
+                <div className={`${theme} vglite-themed-content font-paradigm`}>
                     <this.Component {...this.getReactProps()} width={width} height={height} />
                 </div>
             </DimensionsContext.Provider>
         );
+    }
+
+    protected getReactProps() {
+        return { sheet: this }
     }
 }

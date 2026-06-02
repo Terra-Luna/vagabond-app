@@ -18,6 +18,35 @@ import { AncestrySheet } from "./view/sheets/item/character/AncestrySheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 
+// add our fonts
+// add our fonts
+const fontFaces = [
+    new FontFace(
+        'Eskapade',
+        'url("systems/vagabond-lite/assets/fonts/eskapade-black.ttf")',
+        { weight: 'bold', style: 'normal', }
+    ),
+    new FontFace(
+        'Eskapade',
+        'url("systems/vagabond-lite/assets/fonts/eskapade-regular.ttf")',
+        { weight: 'normal', style: 'normal', }
+    ),
+    new FontFace(
+        'Paradigm',
+        'url("systems/vagabond-lite/assets/fonts/paradigm-regular.otf")',
+        { weight: 'normal', style: 'normal', }
+    ),
+    new FontFace(
+        'Paradigm',
+        'url("systems/vagabond-lite/assets/fonts/paradigm-bold.otf")',
+        { weight: 'bold', style: 'normal', }
+    ),
+];
+
+(await Promise.all(fontFaces.map(face => face.load()))).forEach(
+    font => document.fonts.add(font)
+)
+
 Hooks.once("init", () => {
     Object.assign(
         // Actors

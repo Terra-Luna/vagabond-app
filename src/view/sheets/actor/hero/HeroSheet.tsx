@@ -6,7 +6,6 @@ import lang from "../../../../../public/lang/en.json"
 import { IconButton } from "../../../component/IconButton"
 import { useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
-import { GridItem, GridRow } from "../../../component/Grid"
 import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab/TopSection"
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
@@ -19,18 +18,18 @@ export default class HeroSheet extends VgLiteActorSheet {
     Component = HeroSheetReactComponent
 }
 
-const HeroSheetReactComponent = ({ actor }: { actor: FoundryActor<HeroDataModel> }) => {
+const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
     const hero = actor.system;
     return (
         <div id="hero-sheet-div">
-            <HeroSheetHeader hero={hero} />
+            <HeroSheetHeader hero={hero} sheet={sheet} />
             <HeroSheetUpperSection hero={hero} />
             <HeroSheetTabbedSection hero={hero} />
         </div>
     )
 }
 
-const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
+const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteActorSheet }) => {
     const numberOfTimesClickedRef = useRef(0)
     const deliveryRef = useRef<SpellDelivery>(null)
 
@@ -45,7 +44,8 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
         forceUpdate(!_)
     }, [numberOfTimesClickedRef, _])
 
-    const toggleTheme = useCallback(() => {
+    const toggleTheme = useCallback((e: React.MouseEvent) => {
+        e.stopPropagation()
         const curUiConfig = (game.settings as any).get("core", "uiConfig")
         const curColorScheme = curUiConfig.colorScheme
         const curTheme = curColorScheme.applications; // this semicolon is needed
@@ -56,21 +56,23 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
                 applications: curTheme === "dark" ? "light" : "dark"
             }
         })
-    }, [])
+
+        sheet._renderHTML()
+    }, [sheet])
 
     return (
         <div className="bg-sheet-header-fill font-eskapade">
-            {/* <div>{numberOfTimesClickedRef.current}</div> */}
-            <div className="text-text-header-primary text-4xl font-bold">
+            <div className="text-text-header-primary text-4xl font-bold ml-2 flex">
                 <EditableNameField actor={hero.parent} />
-                <IconButton Icon={Menu} size={24} className="float-right vglite-menu" onClick={openMenu} onAuxClick={toggleTheme} /></div>
-            <div className="descriptor">
-                <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
-                <span className="vglite-dot"> • </span>
-                <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry.description || lang.VGLITE.AncestryTypes.human, class: hero.class.description || "Vagabond" })}</span>
+                <IconButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
             </div>
-            <div className="xp float-right">
-                <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+            <div className="flex text-text-header-secondary ml-2">
+                <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
+                <span>&nbsp;•&nbsp;</span>
+                <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry.description || lang.VGLITE.AncestryTypes.human, class: hero.class.description || "Vagabond" })}</span>
+                <div className="ml-auto mr-2">
+                    <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+                </div>
             </div>
         </div>
     )
@@ -78,19 +80,17 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
 
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="hero-sheet-upper-section">
-            <GridRow>
-                <GridItem lg={6} sm={6}>
-                    <Avatar hero={hero} />
-                    <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
-                    <Speeds hero={hero} />
-                </GridItem>
-                <GridItem lg={6} sm={6}>
-                    <Stats hero={hero} />
-                    <Trackers hero={hero} />
-                    <Saves hero={hero} />
-                </GridItem>
-            </GridRow>
+        <div className="grid grid-cols-1 lg:grid-cols-2 ml-1 mt-1 gap-1">
+            <div>
+                <Avatar hero={hero} />
+                <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
+                <Speeds hero={hero} />
+            </div>
+            <div className="flex flex-col items-center mx-1 gap-y-2">
+                <Stats hero={hero} />
+                <Trackers hero={hero} />
+                <Saves hero={hero} />
+            </div>
         </div>
     )
 }

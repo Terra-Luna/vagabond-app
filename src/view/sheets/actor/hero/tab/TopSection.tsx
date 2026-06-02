@@ -3,15 +3,16 @@ import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import { ReactNode, useCallback } from "react";
 import lang from "../../../../../../public/lang/en.json"
 import { Header } from "../../../../component/Header";
-import { GridItem, GridRow } from "../../../../component/Grid";
 import { localizeString } from "../../../../../utils/localeUtils";
 import { rollSkillCheck } from "../../../../../combat/dice-rolls";
 import { EditableTextField } from "../../../../component/EditableTextField";
 import { updateDocument } from "../../../../../utils/documentUtils";
 
+const borderClasses = "border border-solid border-sheet-header-fill"
+
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <img className="vglite-thumbnail" src={hero.parent.img} alt={hero.parent.name} />
+        <img className={`${borderClasses} rounded-lg`} src={hero.parent.img} alt={hero.parent.name} />
     );
 }
 
@@ -24,17 +25,19 @@ interface Armor {
 }
 export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
     return (
-        <div className="hero-hp">
-            <Heart className="vglite-heart-icon" size={20} />
-            &nbsp;
-            <span className="current">
-                <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
-            </span>
-            <span className="slash">&nbsp;/&nbsp;</span>
-            <span className="max">{health.max}</span>
-            <Shield className="vglite-shield-icon" size={20} />
-            &nbsp;
-            <div className="hero-armor">
+        <div className="flex text-3xl font-eskapade font-bold ml-4 mr-4 justify-evenly">
+            <div className="flex items-center">
+                <Heart className="text-ic-hp fill-ic-hp" size={20} />
+                &nbsp;
+                <span className="text-text-hp-current">
+                    <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
+                </span>
+                <span className="slash">&nbsp;/&nbsp;</span>
+                <span className="text-text-hp-max">{health.max}</span>
+            </div>
+            <div className="flex items-center">
+                <Shield className="text-ic-armor-border fill-ic-armor-fill" size={20} />
+                &nbsp;
                 <span className="rating">{armor.rating}</span>
             </div>
         </div>
@@ -43,7 +46,7 @@ export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, arm
 
 export const Stats = ({ hero }: { hero: HeroDataModel }) => {
     const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
-    return <div className="vglite-stats-container">{
+    return <div className="flex flex-wrap gap-y-2">{
         stats.map(stat => (
             <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
         ))}</div>
@@ -51,9 +54,11 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
 
 const Stat = ({ name, value }: { name: string, value: number }) => {
     return (
-        <div className="vglite-stat">
+        <div className="text-text-special basis-[32%] font-bold text-center mx-[1px]">
             {name}
-            <div className="vglite-stat-value">{value}</div>
+            <div className="flex items-center justify-center text-text-section-header font-eskapade text-4xl">
+                <span className="bg-stat-block-fill px-[12px] pb-0.5">{value}</span>
+            </div>
         </div>
     )
 }
@@ -74,60 +79,63 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
         updateDocument(hero.parent, { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) })
     }, [fatigue])
 
+    const trackerClasses = (trackerType: string) => `flex gap-1 items-center text-text-${trackerType}-current`
+
     return (
-        <div className="vglite-trackers">
+        <div className="vglite-trackers w-full flex flex-col items-center">
             <Header title={lang.VGLITE.HeroSheet.trackers} />
-            <div className="trackers-container">
+            <div className="flex gap-3">
                 <Tracker
                     name={lang.VGLITE.HeroSheet.fatigue}
                     onClick={updateFatigue}
-                    content={<div className="trackers-container vglite-fatigue"><LucideHeartOff size={20} />{fatigue}</div>}></Tracker>
+                    content={<div className={trackerClasses('fatigue')}><LucideHeartOff size={20} />{fatigue}</div>}></Tracker>
                 <Tracker
                     name={lang.VGLITE.HeroSheet.studied}
                     onClick={updateStudied}
-                    content={<div className="trackers-container vglite-studied"><LucideBookMarked size={20} />{studied}</div>}></Tracker>
+                    content={<div className={trackerClasses('studied')}><LucideBookMarked size={20} />{studied}</div>}></Tracker>
                 <Tracker
                     name={lang.VGLITE.HeroSheet.luck}
                     onClick={updateLuck}
-                    content={<div className="trackers-container vglite-luck"><LucideClover size={20} />{currentLuck}</div>}></Tracker>
+                    content={<div className={trackerClasses('luck')}><LucideClover size={20} />{currentLuck}</div>}></Tracker>
             </div>
         </div>
     )
 }
 
 const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
-    <div className="vglite-tracker" onClick={() => onClick(false)} onAuxClick={() => onClick(true)} >
+    <div className="flex items-center flex-col text-text-primary" onClick={() => onClick(false)} onAuxClick={() => onClick(true)}>
         {name}
-        {content}
+        <span className="font-eskapade font-bold text-2xl -mt-1">{content}</span>
     </div>
 )
 
 export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     const { reflex, endure, will } = hero.saves
     return (
-        <div className="vglite-saves">
+        <div className="w-full flex flex-col gap-y-0.5">
             <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save hero={hero} name={lang.VGLITE.Saves.reflex} value={reflex!} />
-            <Save hero={hero} name={lang.VGLITE.Saves.endure} value={endure!} />
-            <Save hero={hero} name={lang.VGLITE.Saves.will} value={will!} />
+            <Save hero={hero} name={lang.VGLITE.Saves.reflex} value={reflex!} formula="DEX + AWR" />
+            <Save hero={hero} name={lang.VGLITE.Saves.endure} value={endure!} formula="MIT + MIT" />
+            <Save hero={hero} name={lang.VGLITE.Saves.will} value={will!} formula="RSN + PRS" />
         </div>
     )
 }
 
-export const Save = ({ hero, name, value }: { hero: HeroDataModel, name: string; value: number }) => {
+export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string; value: number; formula: string; }) => {
     return (
-        <GridRow className="vglite-save" onClick={
+        <div className={`font-eskapade text-lg flex ${borderClasses}`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
                 rollSkillCheck(hero.parent, name, value, e)
             }
         }>
-            <GridItem lg={4} sm={3} className="save-value">
+            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center flex items-center justify-center">
                 <span>{value}</span>
-            </GridItem>
-            <GridItem lg={9} sm={9} className="save-name">
-                {name}
-            </GridItem>
-        </GridRow>
+            </div>
+            <div className="ml-1 flex flex-col">
+                <span className="font-bold">{name}</span>
+                <span className="text-text-aux font-paradigm text-xs -mt-1 mb-0.5">[{formula}]</span>
+            </div>
+        </div>
     )
 }
 
@@ -138,9 +146,9 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     const localizeSpeed = (type: (keyof typeof lang.VGLITE.Speeds), speed: number) => localizeString(lang.VGLITE.Speeds[type], { speed: speed.toString() })
 
     return (
-        <div className="vglite-speeds">
+        <div>
             <Header title={lang.VGLITE.HeroSheet.speeds} />
-            <div className="vglite-speeds-container">
+            <div className="flex items-center justify-around">
                 <Speed name={lang.VGLITE.Speeds.turn} value={localizeSpeed('turnSpeed', turn)} />
                 <Speed name={lang.VGLITE.Speeds.crawl} value={localizeSpeed('crawlSpeed', crawl)} />
                 <Speed name={lang.VGLITE.Speeds.travel} value={localizeSpeed('travelSpeed', travel)} />
@@ -150,8 +158,8 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 export const Speed = ({ name, value }: { name: string; value: string }) => (
-    <div className="vglite-speed">
-        <div className="speed-value">{value}</div>
-        <div className="speed-name">{name}</div>
+    <div className="flex flex-col items-center">
+        <div className="font-eskapade text-2xl font-bold text-text-primary">{value}</div>
+        <div className="text-text-secondary font-bold -mt-1">{name}</div>
     </div>
 )

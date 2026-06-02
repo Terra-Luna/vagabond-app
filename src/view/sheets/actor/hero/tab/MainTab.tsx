@@ -2,20 +2,19 @@ import { Star } from "lucide-react";
 import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import lang from "../../../../../../public/lang/en.json"
 import { Header } from "../../../../component/Header";
-import { GridRow, GridItem } from "../../../../component/Grid";
 import { rollDamage, rollSkillCheck } from "../../../../../combat/dice-rolls";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="vglite-hero-sheet-main-tab">
-            <GridRow>
-                <GridItem lg={5} sm={5}>
+            <div>
+                <div lg={5} sm={5}>
                     <Skills hero={hero} />
-                </GridItem>
-                <GridItem lg={7} sm={7}>
+                </div>
+                <div lg={7} sm={7}>
                     <Attacks hero={hero} />
-                </GridItem>
-            </GridRow>
+                </div>
+            </div>
         </div>
     )
 }
@@ -67,20 +66,20 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
 }
 const Attack = ({ hero, name, value }: { hero: HeroDataModel, name: string, value: number }) => {
     return (
-        <GridRow className="vglite-attack" onClick={
+        <div className="vglite-attack" onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
                 await rollSkillCheck(hero.parent, name, value, e)
                 await rollDamage(hero.parent, '6d6', '2d4', 10, 1, true, [1,2,5,6])
                 await rollDamage(hero.parent, '6d8', '0', 0, 2)
             }
         }>
-            <GridItem lg={4} sm={3} className="attack-value">
+            <div className="attack-value">
                 <span>{value}</span>
-            </GridItem>
-            <GridItem lg={9} sm={9} className="attack-name">
+            </div>
+            <div className="attack-name">
                 {name}
-            </GridItem>
-        </GridRow>
+            </div>
+        </div>
     )
 }
 
