@@ -13,7 +13,7 @@ export const localizeString = (localeString: string, args: Record<string, string
 
     varsFound.forEach(variable => {
         const arg = args[variable]
-        if (arg) {
+        if (arg !== undefined && arg !== null) {
             localizedString = localizedString.replace(`{{${variable}}}`, arg)
         }
         else {
@@ -21,6 +21,6 @@ export const localizeString = (localeString: string, args: Record<string, string
             throw new VgLiteError({ name: 'NO_MATCHING_ARGUMENT_ERROR', message: 'No argument supplied for {{' + variable + '}}' })
         }
     })
-     
+
     return localizedString
 }
