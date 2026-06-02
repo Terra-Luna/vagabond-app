@@ -1,4 +1,4 @@
-import { fields, requiredInteger } from "../common/sharedSchemas"
+import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import PerkDataModel from "../item/character/PerkDataModel"
@@ -19,6 +19,7 @@ import { applyStatBonuses, statsSchema, validateCurrentLuck } from "./type/Stats
 
 const heroSchema = () => {
     return {
+        tagalongId: new fields.StringField({ ...optionalString }),
         level: new fields.SchemaField({ ...levelSchema() }),
         ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),

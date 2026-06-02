@@ -3,8 +3,8 @@ import { Divider } from "./Header"
 
 type CardSubHeaderValues = [subKey: string, subValue: string][];
 
-export const SkillCard = ({ title, subtitles, description, special }: {
-    title: string, subtitles: CardSubHeaderValues, description: string, special: Map<string, string>
+export const SkillCard = ({ title, subtitles, description }: {
+    title: string, subtitles: CardSubHeaderValues, description: string
 }) => {
     return (
         <div className="vglite-card">
@@ -15,7 +15,7 @@ export const SkillCard = ({ title, subtitles, description, special }: {
                 content={(
                     <>
                         <CardSubHeader content={subtitles} />
-                        <SkillCardBody description={description} special={special} />
+                        <SkillCardBody description={description} />
                     </>
                 )}
             />
@@ -54,15 +54,11 @@ const CardSubHeader = ({ content }: { content: CardSubHeaderValues }) => {
  *      { key: "Crit", value: "Some on-crit effect." }
  * ]
  */
-const SkillCardBody = ({ description, special }: {
-    description: string, special: Map<string, string>
-}) => {
+const SkillCardBody = ({ description }: { description: string }) => {
     return (
         <div className="vglite-card-body">
             <div>
                 <span className="vglite-body-text">{description}</span>
-                <span className="vglite-body-text-highlight"><br></br>{special.entries().next().value?.[0]}: </span>
-                <span className="vglite-body-text">{special.entries().next().value?.[1]}</span>
             </div>
         </div>
     )

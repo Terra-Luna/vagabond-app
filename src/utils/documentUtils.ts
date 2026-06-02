@@ -1,7 +1,12 @@
 export const updateDocument = async (actor: { system: any, update: any }, update: any) => {
     const updates = {}
     Object.entries(update).forEach(([key, value]) => {
-        updates[`system.${key}`] = value
+        if (key === 'name' || key === 'prototypeToken') {
+            updates[`${key}`] = value
+        }
+        else {
+            updates[`system.${key}`] = value
+        }
     })
     console.log("Updating: ", actor, updates)
     return await actor.update(updates)

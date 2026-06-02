@@ -7,12 +7,25 @@ import { localizeString } from "../../../../../utils/localeUtils";
 import { rollSkillCheck } from "../../../../../combat/dice-rolls";
 import { EditableTextField } from "../../../../component/EditableTextField";
 import { updateDocument } from "../../../../../utils/documentUtils";
+import { fetchAndUpdate } from "../../../../../api/tagalong/TagalongImporter";
 
 const borderClasses = "border border-solid border-sheet-header-fill"
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <img className={`${borderClasses} rounded-lg`} src={hero.parent.img} alt={hero.parent.name} />
+        <img
+            className={`${borderClasses} rounded-lg`}
+            src={hero.parent.img}
+            alt={hero.parent.name}
+            onClick={async (event) => {
+                if (hero.tagalongId == undefined) {
+                    const tagalongLink = prompt('Enter character link from Vagabond Tagalong App')
+                    if (tagalongLink != null) {
+                        fetchAndUpdate(hero, tagalongLink)
+                    }
+                }
+            }}
+        />
     );
 }
 

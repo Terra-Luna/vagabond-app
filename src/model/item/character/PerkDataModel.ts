@@ -6,7 +6,7 @@ import { modifierSchema } from "./traitsAndFeatures"
 
 const perkSchema = () => {
     return {
-        prerequisites: new fields.ArrayField(new fields.StringField({ ...requiredString })),
+        prerequisites: new fields.ArrayField(new fields.SchemaField({ ...prerequisiteSchema() })),
         modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() }))
     }
 }
@@ -16,8 +16,9 @@ const prerequisiteSchema = () => {
         type: new fields.StringField({ choices: ['STAT', 'TRAINING', 'SPELL'] }),
         stat: new fields.StringField({ ...optionalString, options: Object.values(lang.VGLITE.Stat).map(it => it.long) }),
         value: new fields.NumberField({ ...standardInteger }),
-        skillName: new fields.StringField({ ...optionalString }),
-        spell: new fields.SchemaField({ ...SpellDataModel.defineSchema() })
+        spell: new fields.SchemaField({ ...SpellDataModel.defineSchema() }),
+        skillNames: new fields.ArrayField(new fields.StringField({ ...optionalString })),
+        andOr: new fields.StringField({ ...optionalString, choices: ['and', 'or'] })
     }
 }
 

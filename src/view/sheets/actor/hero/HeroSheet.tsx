@@ -10,7 +10,7 @@ import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { MainTab } from "./tab/MainTab"
-import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
+import { EditableNameField } from "../../../component/EditableTextField"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -30,19 +30,14 @@ const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDat
 }
 
 const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteActorSheet }) => {
-    const numberOfTimesClickedRef = useRef(0)
     const deliveryRef = useRef<SpellDelivery>(null)
 
     const [_, forceUpdate] = useState(false)
 
     const openMenu = useCallback((event) => {
-        const didShift = event.shiftKey
-        numberOfTimesClickedRef.current += 1
-        alert(`you did${didShift ? '' : ' not'} hold shift! Number of times clicked: ${numberOfTimesClickedRef.current}`)
         deliveryRef.current = new Sphere()
-        //console.log({ deliveryRef: deliveryRef.current })
         forceUpdate(!_)
-    }, [numberOfTimesClickedRef, _])
+    }, [])
 
     const toggleTheme = useCallback((e: React.MouseEvent) => {
         e.stopPropagation()
@@ -119,16 +114,15 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 Inventory
             </TabPanel>
             <TabPanel>
-                <SkillCard
-                    title="Light" subtitles={[["Base dmg", "Fire"]]}
-                    description="The Target sheds Light out to Near for the duration. You can choose to do so by creating a floating mote of light that follows the Target."
-                    special={new Map<string, string>([["Crit", "Beings of your choice within the Light when you Cast the Spell are Blinded (Cd4)."]])}
-                />
-                <SkillCard
-                    title="Dark" subtitles={[["Base dmg", "Dark"]]}
-                    description="The Target sheds Dank out to Near for the duration. You can choose to do so by creating a floating mote of light that follows the Target."
-                    special={new Map<string, string>([["Crit", "Beings of your choice within the Light when you Cast the Spell are Blinded (Cd4)."]])}
-                />
+                {
+                    hero.spells.map(s => (
+                        <SkillCard
+                            title={s.name}
+                            subtitles={[['Base dmg', s.damageType]]}
+                            description={`${s.description}`}
+                        />
+                    ))
+                }
             </TabPanel>
             <TabPanel>
                 Abilities
