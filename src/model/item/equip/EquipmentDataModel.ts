@@ -2,7 +2,7 @@ import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { itemBonusSchema } from "../../actor/type/Bonus"
 import { addCoins as addCoins, coinSchema } from "../../common/CoinValue"
-import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
+import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 /**
@@ -13,6 +13,7 @@ const baseEquipmentSchema = () => {
     return {
         value: new fields.SchemaField({ ...coinSchema() }),
         slots: new fields.NumberField({ integer: true, min: 0 }),
+        quantity: new fields.NumberField({ ...requiredInteger, initial: 1 }),
         isStackable: new fields.BooleanField({ initial: false }),
         isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),

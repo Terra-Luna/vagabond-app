@@ -10,10 +10,14 @@ export const armorSchema = () => {
 }
 
 export function setArmorRating(hero: HeroDataModel) {
-    const equippedArmor = hero.inventory.container.items.filter(it => it.isEquipped && it.category === "Armor") as ArmorDataModel[]
+    const equippedArmor = getArmor(hero).filter(it => it.isEquipped)
     hero.armor.rating = equippedArmor.reduce(
         function (sum, it) {
             return sum += (it.rating || 0)
         }, 0
     ) + (hero.bonus.armor || 0)
+}
+
+const getArmor = (hero: HeroDataModel): ArmorDataModel[] => {
+    return hero.parent.items.filter(i => i.type === 'armor')
 }

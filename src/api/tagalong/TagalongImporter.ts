@@ -134,18 +134,17 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
          * Add complex objects and arrays.
          */
         if (ancestry != undefined) {
-            await hero.parent.update({ 'system.ancestry': { ...ancestry.system } })
+            await hero.parent.createEmbeddedDocuments("Item", [ancestry])
         }
         if (clazz != undefined) {
-            await hero.parent.update({ 'system.class': { ...clazz.system } })
+            await hero.parent.createEmbeddedDocuments("Item", [clazz])
         }
         if (perks.length > 0) {
-            await hero.parent.update({ 'system.perks': [...perks.map(it => it.system)] })
+            await hero.parent.createEmbeddedDocuments("Item", perks)
         }
         if (spells.length > 0) {
-            await hero.parent.update({ 'system.spells': [...spells.map(it => it.system)] })
+            await hero.parent.createEmbeddedDocuments("Item", spells)
         }
-
 
         /**
          * Show any import failures.

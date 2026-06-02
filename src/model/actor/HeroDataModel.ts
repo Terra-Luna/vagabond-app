@@ -21,24 +21,24 @@ const heroSchema = () => {
     return {
         tagalongId: new fields.StringField({ ...optionalString }),
         level: new fields.SchemaField({ ...levelSchema() }),
-        ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
-        class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
-
         stats: new fields.SchemaField({ ...statsSchema() }),
         skills: new fields.SchemaField({ ...skillsSchema() }),
         saves: new fields.SchemaField({ ...savesSchema() }),
         speed: new fields.SchemaField({ ...speedSchema() }),
         studied: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         fatigue: new fields.NumberField({ ...requiredInteger, initial: 0, max: 5 }),
+        mana: new fields.SchemaField({ ...manaSchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         bonus: new fields.SchemaField({ ...heroBonusSchema() }),
-
         inventory: new fields.SchemaField({ ...inventorySchema() }),
-
         traits: new fields.ArrayField(new fields.SchemaField({ ...traitSchema() })),
-        perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
 
-        mana: new fields.SchemaField({ ...manaSchema() }),
+        /**
+         * Derived from embedded documents...
+         */
+        ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
+        class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
+        perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() }))
     }
 }
@@ -73,6 +73,10 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSpeeds(this)
         setSenses(this)
         setInventoryData(this)
+        this.ancestry = this.parent.items.find(i => i.type === 'ancestry')
+        this.class = this.parent.items.find(i => i.type === 'class')
+        this.perks = this.parent.items.filter(i => i.type === 'perk')
+        this.spells = this.parent.items.filter(i => i.type === 'spell')
     }
 
 }

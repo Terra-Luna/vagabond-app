@@ -85,7 +85,7 @@ const Attack = ({ hero, name, value }: { hero: HeroDataModel, name: string, valu
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     let equippedWeapons = () => {
-        return hero.inventory.container.items.filter(it => it.isEquipped && it.category === "Weapon")
+        return hero.inventory.items.filter(it => it.isEquipped && it.category === "Weapon")
     }
     return (
         <div>
@@ -96,7 +96,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
 const Armor = ({ hero }: { hero: HeroDataModel }) => {
     let armor = () => {
-        return hero.inventory.container.items.filter(it => it.isEquipped && it.category === "Armor")
+        return hero.inventory.items.filter(it => it.isEquipped && it.category === "Armor")
     }
     return (
         <div>
