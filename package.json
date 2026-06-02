@@ -6,8 +6,6 @@
     "foundry": "node \"C:/Program Files/FoundryVTT-Node/main.js\" --dataPath=%userprofile%/AppData/Local/FoundryVTT",
     "foundry-linux": "node ~/Apps/FoundryVTT-Node/main.js",
     "vite-no": "pnpm vite --open 0",
-    "sass": "sass --watch public/styles/vagabond-lite.scss public/styles/vagabond-lite.css",
-    "sass-update": "sass --update public/styles/vagabond-lite.scss public/styles/vagabond-lite.css",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
     "clean-": "echo Y | rmdir /s dist && pnpm clean",
     "lint": "eslint .",
@@ -33,7 +31,6 @@
     "react-dom": "19.2.6",
     "react-draggable": "4.5.0",
     "react-tabs": "^6.1.1",
-    "sass": "1.99.0",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
