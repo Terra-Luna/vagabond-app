@@ -1,7 +1,10 @@
 import { sensesSchema } from "../../actor/type/Senses"
-import { beingSizeOptions, beingTypeOptions, fields } from "../../common/sharedSchemas"
+import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import { grantSchema,traitSchema } from "./traitsAndFeatures"
+import PerkDataModel from "./PerkDataModel"
+import { grantSchema, traitSchema } from "./traitsAndFeatures"
+import lang from "../../../../public/lang/en.json"
+import SpellDataModel from "./SpellDataModel"
 
 const ancestrySchema = () => {
     return {
@@ -9,7 +12,15 @@ const ancestrySchema = () => {
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() }),
         traits: new fields.ArrayField(new fields.SchemaField({ ...traitSchema() })),
-        grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() }))
+        grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() })),
+        chosenPerks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
+        chosenSpells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
+        chosenTrainings: new fields.ArrayField(
+            new fields.StringField({
+                ...requiredString,
+                choices: Object.values(lang.VGLITE.Skills).map(it => it.name)
+            })
+        ),
     }
 }
 

@@ -61,7 +61,7 @@ const HeroSheetHeader = ({ hero }: { hero: HeroDataModel }) => {
             <div className="descriptor">
                 <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                 <span className="vglite-dot"> • </span>
-                <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry.description || lang.VGLITE.AncestryTypes.human, class: hero.class.description || "Vagabond" })}</span>
+                <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry.name || lang.VGLITE.AncestryTypes.human, class: hero.class.name || "Vagabond" })}</span>
             </div>
             <div className="xp float-right">
                 <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>

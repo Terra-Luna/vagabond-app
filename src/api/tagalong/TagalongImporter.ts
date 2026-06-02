@@ -20,10 +20,6 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
             prototypeToken: { name: res.name },
             level: { current: res.level, xp: res.xp },
 
-            /**
-             * TODO: map ancestry & class.
-             */
-
             stats: {
                 might: res.assignedStats.might,
                 dexterity: res.assignedStats.dexterity,
@@ -53,12 +49,16 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
             },
 
             /**
+             * TODO: map ancestry & class.
+             */
+
+            /**
              * TODO: map perks & spells.
              */
 
             inventory: {
                 coins: res.current_wealth
-                /* TODO: decide whether we wanna import items.
+                /* TODO: decide whether we want to deal with importing items.
                 container: {
                     items: [
                         ...map it
@@ -69,7 +69,6 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
             health: { current: res.current_hp },
             fatigue: res.fatigue,
             studied: res.studied_dice,
-
         })
     }
     catch (e) {

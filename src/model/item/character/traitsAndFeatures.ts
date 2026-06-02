@@ -6,6 +6,8 @@ import SpellDataModel from "./SpellDataModel"
 export const classFeatureSchema = () => {
     return {
         level: new fields.NumberField({ ...requiredInteger }),
+        name: new fields.StringField({ ...requiredString }),
+        description: new fields.HTMLField({ ...requiredString }),
         modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() })),
         grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() }))
     }

@@ -6,8 +6,6 @@ import { classFeatureSchema } from "./traitsAndFeatures"
 
 const classSchema = () => {
     return {
-        quote: new fields.StringField({ ...optionalString }),
-        quoteAttr: new fields.StringField({ ...optionalString }),
         action: new fields.StringField({ ...requiredString }),
         move: new fields.StringField({ ...requiredString }),
         complexity: new fields.NumberField({ ...requiredInteger, min: 1, max: 5}),
