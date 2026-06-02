@@ -92,24 +92,24 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
         updateDocument(hero.parent, { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) })
     }, [fatigue])
 
-    const trackerClasses = (trackerType: string) => `flex gap-1 items-center text-text-${trackerType}-current`
+    const trackerClasses = `flex gap-1 items-center`
 
     return (
-        <div className="vglite-trackers w-full flex flex-col items-center">
+        <div className="w-full flex flex-col items-center">
             <Header title={lang.VGLITE.HeroSheet.trackers} />
             <div className="flex gap-3">
                 <Tracker
                     name={lang.VGLITE.HeroSheet.fatigue}
                     onClick={updateFatigue}
-                    content={<div className={trackerClasses('fatigue')}><LucideHeartOff size={20} />{fatigue}</div>}></Tracker>
+                    content={<div className={trackerClasses + " text-text-fatigue-current"}><LucideHeartOff size={20} />{fatigue}</div>}></Tracker>
                 <Tracker
                     name={lang.VGLITE.HeroSheet.studied}
                     onClick={updateStudied}
-                    content={<div className={trackerClasses('studied')}><LucideBookMarked size={20} />{studied}</div>}></Tracker>
+                    content={<div className={trackerClasses + " text-text-studied-current"}><LucideBookMarked size={20} />{studied}</div>}></Tracker>
                 <Tracker
                     name={lang.VGLITE.HeroSheet.luck}
                     onClick={updateLuck}
-                    content={<div className={trackerClasses('luck')}><LucideClover size={20} />{currentLuck}</div>}></Tracker>
+                    content={<div className={trackerClasses + " text-text-luck-current"}><LucideClover size={20} />{currentLuck}</div>}></Tracker>
             </div>
         </div>
     )
