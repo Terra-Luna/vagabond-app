@@ -61,7 +61,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                 <EditableNameField actor={hero.parent} />
                 <IconButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
             </div>
-            <div className="flex text-text-header-secondary ml-2">
+            <div className="flex text-text-header-secondary ml-2 pb-1">
                 <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                 <span>&nbsp;•&nbsp;</span>
                 <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry.description || lang.VGLITE.AncestryTypes.human, class: hero.class.description || "Vagabond" })}</span>
