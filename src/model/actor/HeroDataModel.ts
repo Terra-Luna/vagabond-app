@@ -36,7 +36,6 @@ const heroSchema = () => {
         /**
          * Derived from embedded documents...
          */
-        ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
         perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() }))
@@ -61,6 +60,9 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
+        this.class = this.parent.items.find(i => i.type === 'class')
+        this.perks = this.parent.items.filter(i => i.type === 'perk')
+        this.spells = this.parent.items.filter(i => i.type === 'spell')
         applyStatBonuses(this)
         setXpToNextLevel(this)
         setMaxHP(this)
@@ -73,10 +75,6 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSpeeds(this)
         setSenses(this)
         setInventoryData(this)
-        this.ancestry = this.parent.items.find(i => i.type === 'ancestry')
-        this.class = this.parent.items.find(i => i.type === 'class')
-        this.perks = this.parent.items.filter(i => i.type === 'perk')
-        this.spells = this.parent.items.filter(i => i.type === 'spell')
     }
 
 }

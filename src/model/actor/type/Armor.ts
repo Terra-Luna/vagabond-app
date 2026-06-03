@@ -11,7 +11,7 @@ export const armorSchema = () => {
 
 export function setArmorRating(hero: HeroDataModel) {
     const equippedArmor = getArmor(hero)
-    hero.armor.rating = (equippedArmor.rating || 0) + (hero.bonus.armor || 0)
+    hero.armor.rating = (equippedArmor?.rating || 0) + (hero.bonus.armor || 0)
 }
 
 const getArmor = (hero: HeroDataModel): ArmorDataModel => {

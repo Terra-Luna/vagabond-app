@@ -21,6 +21,11 @@ export default abstract class ActorDataModel<T extends BaseActorSchema> extends 
             ...baseActorSchema()
         }
     }
+
+    override async prepareDerivedData() {
+        super.prepareBaseData()
+        this.ancestry = this.parent.items.find(i => i.type === 'ancestry')
+    }
 }
 
 /**
