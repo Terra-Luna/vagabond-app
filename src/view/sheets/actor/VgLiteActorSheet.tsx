@@ -1,4 +1,4 @@
-const { api, sheets } = foundry.applications;
+const { sheets } = foundry.applications;
 import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel";
 import { VgLiteSheetMixin } from "../VgLiteSheet";
 

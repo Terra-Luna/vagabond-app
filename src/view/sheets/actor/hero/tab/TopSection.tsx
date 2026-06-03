@@ -1,4 +1,4 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover } from "lucide-react";
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star } from "lucide-react";
 import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import { ReactNode, useCallback } from "react";
 import lang from "../../../../../../public/lang/en.json"
@@ -38,7 +38,7 @@ interface Armor {
 }
 export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
     return (
-        <div className="flex text-3xl font-eskapade font-bold ml-4 mr-4 justify-evenly">
+        <div className="flex text-3xl font-eskapade font-bold mt-0.5 mb-0.5 ml-4 mr-4 justify-evenly">
             <div className="flex items-center">
                 <Heart className="text-ic-hp fill-ic-hp" size={20} />
                 &nbsp;
@@ -59,10 +59,13 @@ export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, arm
 
 export const Stats = ({ hero }: { hero: HeroDataModel }) => {
     const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
-    return <div className="flex flex-wrap gap-y-2">{
-        stats.map(stat => (
-            <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
-        ))}</div>
+    return (
+        <div className="flex flex-wrap gap-y-2">{
+            stats.map(stat => (
+                <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
+            ))
+        }</div>
+    )
 }
 
 const Stat = ({ name, value }: { name: string, value: number }) => {
@@ -176,3 +179,31 @@ export const Speed = ({ name, value }: { name: string; value: string }) => (
         <div className="text-text-secondary font-bold -mt-1">{name}</div>
     </div>
 )
+
+export const Actions = ({ hero, actions }: { hero: HeroDataModel, actions: {name: string, value: number, isTrained: boolean}[] }) => {
+    return (
+        <div className="mt-2.5">
+            <Header title="Actions" />            
+            <div className="flex items-center justify-between gap-1 mt-0.5">{
+                actions.map(act => (
+                    <Action key={act.name} hero={hero} name={act.name} value={act.value} isTrained={act.isTrained} />
+                ))
+            }</div>
+        </div>        
+    )
+}
+
+const Action = ({ hero, name, value, isTrained }: { hero: HeroDataModel, name: string, value: number, isTrained: boolean }) => {
+    return (
+        <div className="flex w-full justify-between items-center border border-solid border-section-header-fill">
+            <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={16} />
+            <div className="flex items-center justify-between w-full font-eskapade font-bold" onClick={
+                async (e: React.MouseEvent<HTMLDivElement>) => {
+                    rollSkillCheck(hero.parent, name, value, e)
+                }}>
+                <div className="text-left ml-1">{name}</div>
+                <div className="bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center">{value}</div>
+            </div>
+        </div>
+    )
+}

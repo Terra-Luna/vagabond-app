@@ -6,7 +6,7 @@ import lang from "../../../../../public/lang/en.json"
 import { IconButton } from "../../../component/IconButton"
 import { useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
-import { Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab/TopSection"
+import { Actions, Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab/TopSection"
 import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { MainTab } from "./tab/MainTab"
@@ -21,7 +21,7 @@ export default class HeroSheet extends VgLiteActorSheet {
 const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
     const hero = actor.system;
     return (
-        <div id="hero-sheet-div">
+        <div>
             <HeroSheetHeader hero={hero} sheet={sheet} />
             <HeroSheetUpperSection hero={hero} />
             <HeroSheetTabbedSection hero={hero} />
@@ -80,6 +80,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <Avatar hero={hero} />
                 <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
                 <Speeds hero={hero} />
+                <Actions hero={hero} actions={[{ name: 'Arcana', value: 8, isTrained: true }, { name: 'Mysticism', value: 8, isTrained: true }]} />
             </div>
             <div className="flex flex-col items-center mx-1 gap-y-2">
                 <Stats hero={hero} />
