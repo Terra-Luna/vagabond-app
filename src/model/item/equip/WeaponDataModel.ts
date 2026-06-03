@@ -77,7 +77,7 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
 }
 
 export function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
-    const equippedWeapons = hero.inventory.container.items.filter(it => it.category === "Weapon" && it.isEquipped) as WeaponDataModel[]
+    const equippedWeapons = hero.inventory.items.filter(it => it.category === "Weapon" && it.isEquipped) as WeaponDataModel[]
     const nonFist = equippedWeapons.filter(it => it.grip.style !== 'F')
     
     if (weapon.grip.style === 'F' && equippedWeapons.filter(it => it.grip.state === 'F').length < 2) {

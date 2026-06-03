@@ -1,6 +1,6 @@
 import { fields } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
-import { inventorySchema } from "./type/Inventory"
+import { inventorySchema, isInventoryItem } from "./type/Inventory"
 
 const npcSchema = () => {
     return {
@@ -21,6 +21,6 @@ export default class NpcDataModel extends ActorDataModel<NpcSchema> {
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        this.inventory.container.capacity = 999
+        this.inventory.items = this.parent.items.filter(i => isInventoryItem(i))
     }
 }

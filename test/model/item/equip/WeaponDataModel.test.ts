@@ -17,48 +17,48 @@ describe('test weapons functions', () => {
         const greatSwordB = { category: 'Weapon', grip: { style: '2H', state: '2H' }, isEquipped: false }
         const hero = {
             inventory: {
-                container: { items: [caestusA, caestusB, caestusC, daggerA, daggerB, daggerC, longSwordA, longSwordB, greatSwordA, greatSwordB] }
+                items: [caestusA, caestusB, caestusC, daggerA, daggerB, daggerC, longSwordA, longSwordB, greatSwordA, greatSwordB]
             }
         }
 
         //Equip dagger
         equipWeapon(hero as unknown as HeroDataModel, daggerA as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(1)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(1)
         
         //Equip caestus
         equipWeapon(hero as unknown as HeroDataModel, caestusA as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(2)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(2)
 
         //Equip greatSword (error)
         expect(() => {
             equipWeapon(hero as unknown as HeroDataModel, greatSwordA as unknown as WeaponDataModel)
         }).toThrow(NOT_ENOUGH_HANDS_ERROR.message)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(2)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(2)
         
         //Equip longsword
         equipWeapon(hero as unknown as HeroDataModel, longSwordA as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(3)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(3)
         
         //Equip 2nd caestus
         equipWeapon(hero as unknown as HeroDataModel, caestusB as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(4)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(4)
         
         //Equip 3rd caestus (error)
         expect(() => {
             equipWeapon(hero as unknown as HeroDataModel, caestusC as unknown as WeaponDataModel)
         }).toThrow(NOT_ENOUGH_HANDS_ERROR.message)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(4)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(4)
 
         //Un-equip dagger and longsword
         unEquipWeapon(daggerA as unknown as WeaponDataModel)
         unEquipWeapon(longSwordA as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(2)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(2)
 
         //Equip 2 'V' weapons
         equipWeapon(hero as unknown as HeroDataModel, longSwordA as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(3)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(3)
         equipWeapon(hero as unknown as HeroDataModel, longSwordB as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(4)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(4)
 
         //Unequip swords
         unEquipWeapon(longSwordA as unknown as WeaponDataModel)
@@ -66,7 +66,7 @@ describe('test weapons functions', () => {
 
         //Equip greatSword
         equipWeapon(hero as unknown as HeroDataModel, greatSwordA as unknown as WeaponDataModel)
-        expect(hero.inventory.container.items.filter(it => it.isEquipped).length).toEqual(3)
+        expect(hero.inventory.items.filter(it => it.isEquipped).length).toEqual(3)
         expect(() => {
             equipWeapon(hero as unknown as HeroDataModel, greatSwordB as unknown as WeaponDataModel)
         }).toThrow(NOT_ENOUGH_HANDS_ERROR.message)

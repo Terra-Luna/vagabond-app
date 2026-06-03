@@ -117,12 +117,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
 
             inventory: {
                 coins: res.current_wealth
-                /* TODO: decide whether we want to deal with importing items.
-                container: {
-                    items: [
-                        ...map it
-                    ]
-                } */
+                // TODO: decide whether we want to deal with importing items.
             },
 
             health: { current: res.current_hp },

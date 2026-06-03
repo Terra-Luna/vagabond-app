@@ -20,7 +20,7 @@ export function setInventoryData(hero: HeroDataModel) {
     hero.inventory.emptySlots = hero.inventory.capacity - bulk
 }
 
-const isInventoryItem = (item: any): boolean => {
+export const isInventoryItem = (item: any): boolean => {
     return item.type === 'armor' ||
         item.type === 'weapon' ||
         item.type === 'tool' ||

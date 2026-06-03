@@ -54,7 +54,7 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
 }
 
 export function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
-    const equippedArmor = hero.inventory.container.items.filter(it => it.isEquipped && it.category === "Armor")
+    const equippedArmor = hero.inventory.items.filter(it => it.isEquipped && it.category === "Armor")
     equippedArmor.forEach(it => {
         it.isEquipped = false
     })

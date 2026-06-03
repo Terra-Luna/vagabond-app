@@ -22,9 +22,6 @@ export default class StarterPackDataModel extends ItemDataModel<StarterPackSchem
     }
 }
 
-export const applyStarterPack = (hero: HeroDataModel, pack: StarterPackDataModel) => {
-    pack.items.forEach(it => {
-        hero.inventory.container.items.push(it)
-    })
-    hero.inventory.coins = addCoins([hero.inventory.coins, pack.coins])
+export const applyStarterPack = async (hero: HeroDataModel, pack: StarterPackDataModel) => {
+    await hero.parent.createEmbeddedDocuments("Item", [pack.items])
 }

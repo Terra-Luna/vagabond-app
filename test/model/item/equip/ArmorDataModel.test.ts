@@ -11,7 +11,7 @@ describe('test armor equipment functions', () => {
         const hero = {
             armor: { rating: 0 },
             inventory: {
-                container: { items: [oldArmor, newArmor] }
+                items: [oldArmor, newArmor]
             },
             bonus: { armor: 2 }
         }

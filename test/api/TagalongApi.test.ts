@@ -1,5 +1,5 @@
 import { test, describe, expect } from "@jest/globals";
-import { parseHeroId, fetchHero } from "../../src/api/TagalongApi"
+import { parseHeroId, fetchHero } from "../../src/api/tagalong/TagalongApi"
 
 const tagalong = 'https://www.vgbnd.app/character/'
 const testId = 'e38db88c-ec28-4b67-a44c-09f0fe199d01'
@@ -13,11 +13,11 @@ describe('tagalong api tests', () => {
         expect(heroId).toBe(testId)
     })
 
-    /* test('call the api', async () => {
+    test('call the api', async () => {
         //Setup & Execute
         const hero = await fetchHero(testUrl)
         //Verify
         console.log(hero)
         expect(hero.character.name).toBe("Orphenia")
-    }) */
+    })
 })
