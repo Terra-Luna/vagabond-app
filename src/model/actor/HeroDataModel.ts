@@ -1,5 +1,4 @@
-import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
-import AncestryDataModel from "../item/character/AncestryDataModel"
+import { fields, optionalString, requiredInteger, requiredString } from "../common/sharedSchemas"
 import ClassDataModel from "../item/character/ClassDataModel"
 import PerkDataModel from "../item/character/PerkDataModel"
 import SpellDataModel from "../item/character/SpellDataModel"
@@ -13,9 +12,10 @@ import { levelSchema, setXpToNextLevel } from "./type/Level"
 import { manaSchema, setManaValues } from "./type/Mana"
 import { savesSchema, setSaves } from "./type/Saves"
 import { setSenses } from "./type/Senses"
-import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
+import { setDifficulties as setSkillDifficulties, skillSchema, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
 import { applyStatBonuses, statsSchema, validateCurrentLuck } from "./type/Stats"
+import lang from "../../../public/lang/en.json"
 
 const heroSchema = () => {
     return {
@@ -32,6 +32,11 @@ const heroSchema = () => {
         bonus: new fields.SchemaField({ ...heroBonusSchema() }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
         traits: new fields.ArrayField(new fields.SchemaField({ ...traitSchema() })),
+        actions: new fields.ArrayField(
+            new fields.StringField(
+                { ...requiredString, options: Object.values(lang.VGLITE.Skills).map(it => it.name) }
+            ), { initial: ['Melee', 'Ranged'], max: 2 }
+        ),
 
         /**
          * Derived from embedded documents...
@@ -77,4 +82,9 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setInventoryData(this)
     }
 
+}
+
+export function getSkillByName(hero: HeroDataModel, skillName: string): { name: string, value: number, isTrained: boolean } {
+    const skill = hero.skills[skillName.toLowerCase()]
+    return { name: skillName, value: skill.value, isTrained: skill.isTrained }
 }

@@ -201,8 +201,8 @@ const Action = ({ hero, name, value, isTrained }: { hero: HeroDataModel, name: s
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     rollSkillCheck(hero.parent, name, value, e)
                 }}>
-                <div className="text-left ml-1">{name}</div>
-                <div className="bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center">{value}</div>
+                <div className="text-left ml-1 mr-1">{name}</div>
+                <div className="bg-section-header-fill font-bold text-xl text-text-section-header w-1/4 text-center flex items-center justify-center">{value}</div>
             </div>
         </div>
     )

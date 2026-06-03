@@ -1,4 +1,4 @@
-import HeroDataModel from "../../../../model/actor/HeroDataModel"
+import HeroDataModel, { getSkillByName } from "../../../../model/actor/HeroDataModel"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
 import { Menu } from "lucide-react"
@@ -80,7 +80,12 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <Avatar hero={hero} />
                 <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
                 <Speeds hero={hero} />
-                <Actions hero={hero} actions={[{ name: 'Arcana', value: 8, isTrained: true }, { name: 'Mysticism', value: 8, isTrained: true }]} />
+                {
+                    hero.actions.length > 0 ? (
+                        <Actions hero={hero} actions={hero.actions.map(a => getSkillByName(hero, a))} />
+                    ) : null
+                }
+                
             </div>
             <div className="flex flex-col items-center mx-1 gap-y-2">
                 <Stats hero={hero} />
@@ -115,16 +120,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 Inventory
             </TabPanel>
             <TabPanel>
-                {
-                    hero.spells.map(s => (
-                        <SkillCard
-                            key={s.name}
-                            title={s.name}
-                            subtitles={[['Base dmg', s.system.damageType]]}
-                            description={`${s.system.description}`}
-                        />
-                    ))
-                }
+                Spells
             </TabPanel>
             <TabPanel>
                 Abilities
