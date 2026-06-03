@@ -60,7 +60,7 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     }, [value, onSave, initialValue, reset])
 
     if (isInEditMode) {
-        return <input ref={inputRef} className="vglite-editable-text-field" type="text" value={value}
+        return <input ref={inputRef} className="w-auto field-sizing-content" type="text" value={value}
             onChange={e => setValue(e.target.value)}
             onBlur={reset}
             onKeyDown={handleSpecialKeypresses} />
