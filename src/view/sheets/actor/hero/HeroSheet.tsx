@@ -79,17 +79,19 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
             <div>
                 <Avatar hero={hero} />
                 <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
+                <Trackers hero={hero} />
                 <Speeds hero={hero} />
+                
+                
+            </div>
+            <div className="flex flex-col items-center mx-1 gap-y-2">
+                <Stats hero={hero} />
+                
                 {
                     hero.actions.length > 0 ? (
                         <Actions hero={hero} actions={hero.actions.map(a => getSkillByName(hero, a))} />
                     ) : null
                 }
-                
-            </div>
-            <div className="flex flex-col items-center mx-1 gap-y-2">
-                <Stats hero={hero} />
-                <Trackers hero={hero} />
                 <Saves hero={hero} />
             </div>
         </div>

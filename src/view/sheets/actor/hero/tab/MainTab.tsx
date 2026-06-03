@@ -49,7 +49,7 @@ const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel
         <>
             <div className="flex items-center">
                 <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
-                <div className="flex justify-between ml-2 mt-1 w-full font-eskapade font-bold align-middle" onClick={
+                <div className="flex justify-between ml-2 mt-1 w-full font-eskapade font-bold align-middle cursor-pointer" onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
                         rollSkillCheck(hero.parent, name, value, e)
                         if (isAttack) {

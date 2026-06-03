@@ -98,9 +98,9 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
     const trackerClasses = `flex gap-1 items-center`
 
     return (
-        <div className="w-full flex flex-col justify-between ml-4 mr-4">
+        <div className="w-full flex flex-col justify-between">
             <Header title={lang.VGLITE.HeroSheet.trackers} />
-            <div className="flex gap-3">
+            <div className="flex gap-2">
                 <Tracker
                     name={lang.VGLITE.HeroSheet.fatigue}
                     onClick={updateFatigue}
@@ -119,9 +119,12 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
-    <div className="flex items-center flex-col text-text-primary w-1/3" onClick={() => onClick(false)} onAuxClick={() => onClick(true)}>
+    <div className="flex items-center flex-col text-text-primary w-1/3 border-2 cursor-pointer"
+        onClick={() => onClick(false)}
+        onAuxClick={() => onClick(true)}
+    >
         {name}
-        <span className="font-eskapade font-bold text-2xl -mt-1">{content}</span>
+        <span className="font-eskapade font-bold text-2xl -mt-1 mb-1 shadow-xl">{content}</span>
     </div>
 )
 
@@ -139,7 +142,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 
 export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string; value: number; formula: string; }) => {
     return (
-        <div className={`font-eskapade text-lg flex ${borderClasses}`} onClick={
+        <div className={`font-eskapade text-lg flex cursor-pointer ${borderClasses}`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
                 rollSkillCheck(hero.parent, name, value, e)
             }
@@ -176,13 +179,13 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
 export const Speed = ({ name, value }: { name: string; value: string }) => (
     <div className="flex flex-col items-center">
         <div className="font-eskapade text-2xl font-bold text-text-primary">{value}</div>
-        <div className="text-text-secondary font-bold -mt-1">{name}</div>
+        <div className="text-text-aux font-bold -mt-1">{name}</div>
     </div>
 )
 
 export const Actions = ({ hero, actions }: { hero: HeroDataModel, actions: {name: string, value: number, isTrained: boolean}[] }) => {
     return (
-        <div className="mt-2.5">
+        <div className="w-full flex flex-col gap-y-0.5">
             <Header title="Actions" />            
             <div className="flex items-center justify-between gap-1 mt-0.5">{
                 actions.map(act => (
@@ -197,7 +200,7 @@ const Action = ({ hero, name, value, isTrained }: { hero: HeroDataModel, name: s
     return (
         <div className="flex w-full justify-between items-center border border-solid border-section-header-fill">
             <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={16} />
-            <div className="flex items-center justify-between w-full font-eskapade font-bold" onClick={
+            <div className="flex items-center justify-between w-full font-eskapade font-bold cursor-pointer" onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     rollSkillCheck(hero.parent, name, value, e)
                 }}>
