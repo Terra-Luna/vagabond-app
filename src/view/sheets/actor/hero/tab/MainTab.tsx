@@ -70,7 +70,6 @@ const Attack = ({ hero, name, value }: { hero: HeroDataModel, name: string, valu
             async (e: React.MouseEvent<HTMLDivElement>) => {
                 await rollSkillCheck(hero.parent, name, value, e)
                 await rollDamage(hero.parent, '6d6', '2d4', 10, 1, true, [1,2,5,6])
-                await rollDamage(hero.parent, '6d8', '0', 0, 2)
             }
         }>
             <div className="attack-value">

@@ -72,7 +72,7 @@ export const rollSkillCheck = async (
     ChatMessage.create({
         speaker: { actor: actor.id, alias: actor.name },
         content: `<h4>${skill} Check</h4><p>${rollSummary} vs. ${difficulty}<br>${summary}</p>`,
-        rolls: []
+        rolls: [...rolls]
     })
 
     return result
@@ -182,7 +182,7 @@ export const rollDamage = async (
     ChatMessage.create({
         speaker: { actor: actor.id, alias: actor.name },
         content: `<h3>Damage Roll:</h3><h5>${result.formula}</h5><p>${result.display()}</p>`,
-        rolls: []
+        rolls: [damageRoll, bonusDamageRoll, ...explosions]
     })
 
     return result
