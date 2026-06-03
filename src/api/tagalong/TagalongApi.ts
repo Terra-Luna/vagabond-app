@@ -18,6 +18,7 @@ interface TagalongHero {
             luck: number
         }
         trained_skills: string[],
+        active_actions: string[],
         known_spells: string[],
         selected_perks: {
             source: string,
@@ -74,6 +75,9 @@ export async function fetchHero(url: URL): Promise<TagalongHero> {
 
     const response = await fetch(request)
     const json = await response.json()
+
+    console.log("Data fetched from Vagabond Tagalong:", json)
+
     return json as TagalongHero
 }
 

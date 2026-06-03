@@ -23,6 +23,55 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         let failures: string[] = []
 
         /**
+         * Update the Hero's data model.
+         */
+        await updateDocument(hero.parent, {
+            tagalongId: res.id,
+            name: res.name,
+            prototypeToken: { name: res.name },
+            level: { current: res.level, xp: res.xp },
+
+            stats: {
+                might: res.assignedStats.might,
+                dexterity: res.assignedStats.dexterity,
+                awareness: res.assignedStats.awareness,
+                reason: res.assignedStats.reason,
+                presence: res.assignedStats.presence,
+                luck: res.assignedStats.luck,
+                currentLuck: res.current_luck,
+                baseStatBlock: res.statArray
+            },
+
+            skills: {
+                brawl: { isTrained: isTrained('Brawl', res.trained_skills) },
+                melee: { isTrained: isTrained('Melee', res.trained_skills) },
+                finesse: { isTrained: isTrained('Finesse', res.trained_skills) },
+                ranged: { isTrained: isTrained('Ranged', res.trained_skills) },
+                arcana: { isTrained: isTrained('Arcana', res.trained_skills) },
+                craft: { isTrained: isTrained('Craft', res.trained_skills) },
+                detect: { isTrained: isTrained('Detect', res.trained_skills) },
+                influence: { isTrained: isTrained('Influence', res.trained_skills) },
+                leadership: { isTrained: isTrained('Leadership', res.trained_skills) },
+                medicine: { isTrained: isTrained('Medicine', res.trained_skills) },
+                mysticism: { isTrained: isTrained('Mysticism', res.trained_skills) },
+                performance: { isTrained: isTrained('Performance', res.trained_skills) },
+                sneak: { isTrained: isTrained('Sneak', res.trained_skills) },
+                survival: { isTrained: isTrained('Survival', res.trained_skills) }
+            },
+
+            actions: res.active_actions,
+
+            inventory: {
+                coins: res.current_wealth
+                // TODO: decide whether we want to deal with importing items.
+            },
+
+            health: { current: res.current_hp },
+            fatigue: res.fatigue,
+            studied: res.studied_dice
+        })
+
+        /**
          * Lookup matching Ancestry.
          */
         const ancestry = game.items?.find(it =>
@@ -79,54 +128,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         })
 
         /**
-         * Update the Hero's data model.
-         */
-        await updateDocument(hero.parent, {
-            tagalongId: res.id,
-            name: res.name,
-            prototypeToken: { name: res.name },
-            level: { current: res.level, xp: res.xp },
-
-            stats: {
-                might: res.assignedStats.might,
-                dexterity: res.assignedStats.dexterity,
-                awareness: res.assignedStats.awareness,
-                reason: res.assignedStats.reason,
-                presence: res.assignedStats.presence,
-                luck: res.assignedStats.luck,
-                currentLuck: res.current_luck,
-                baseStatBlock: res.statArray
-            },
-
-            skills: {
-                brawl: { isTrained: isTrained('Brawl', res.trained_skills) },
-                melee: { isTrained: isTrained('Melee', res.trained_skills) },
-                finesse: { isTrained: isTrained('Finesse', res.trained_skills) },
-                ranged: { isTrained: isTrained('Ranged', res.trained_skills) },
-                arcana: { isTrained: isTrained('Arcana', res.trained_skills) },
-                craft: { isTrained: isTrained('Craft', res.trained_skills) },
-                detect: { isTrained: isTrained('Detect', res.trained_skills) },
-                influence: { isTrained: isTrained('Influence', res.trained_skills) },
-                leadership: { isTrained: isTrained('Leadership', res.trained_skills) },
-                medicine: { isTrained: isTrained('Medicine', res.trained_skills) },
-                mysticism: { isTrained: isTrained('Mysticism', res.trained_skills) },
-                performance: { isTrained: isTrained('Performance', res.trained_skills) },
-                sneak: { isTrained: isTrained('Sneak', res.trained_skills) },
-                survival: { isTrained: isTrained('Survival', res.trained_skills) }
-            },
-
-            inventory: {
-                coins: res.current_wealth
-                // TODO: decide whether we want to deal with importing items.
-            },
-
-            health: { current: res.current_hp },
-            fatigue: res.fatigue,
-            studied: res.studied_dice
-        })
-
-        /**
-         * Add complex objects and arrays.
+         * Add complex objects and arrays as Embedded Documents.
          */
         if (ancestry != undefined) {
             await hero.parent.createEmbeddedDocuments("Item", [ancestry])

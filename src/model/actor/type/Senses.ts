@@ -9,7 +9,7 @@ export const sensesSchema = () => {
 }
 
 export function setSenses(hero: HeroDataModel) {
-    hero.ancestry.senses?.forEach(s => {
+    hero.ancestry?.senses?.forEach(s => {
         if (!hero.senses.map(it => it.name).includes(s.name)) {
             hero.senses.push({ name: s.name, description: s.description })
         }
