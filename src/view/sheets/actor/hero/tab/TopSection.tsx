@@ -121,7 +121,7 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
 const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
     <div className="flex items-center flex-col text-text-primary w-1/3" onClick={() => onClick(false)} onAuxClick={() => onClick(true)}>
         {name}
-        <span className="font-eskapade font-bold text-2xl -mt-1 ">{content}</span>
+        <span className="font-eskapade font-bold text-2xl -mt-1">{content}</span>
     </div>
 )
 
