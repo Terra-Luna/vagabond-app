@@ -15,8 +15,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         }
     }
 
+    // Prep our react root and shadow dom if needed, and render
     async _renderHTML() {
-        // This just gets our reactRoot ready, _updatePosition actually renders
         if (!this._reactRoot) {
             const defaultWindowContent = this.element.getElementsByClassName('window-content')?.[0]
             defaultWindowContent && this.element.removeChild(defaultWindowContent)
