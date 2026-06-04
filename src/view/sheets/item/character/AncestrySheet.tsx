@@ -20,7 +20,7 @@ export interface AncestryComponentProps {
 const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel> }) => {
     const ancestry = item.system
     return (
-        <div id="ancestry-sheet-div">
+        <div className="">
             <AncestrySheetHeader {...{ ancestry }} />
         </div>
     )
@@ -33,7 +33,7 @@ const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
         <EditableNameField actor={ancestry.parent} />
     } subtitle={
         <>
-            <div className="vglite-type-size">
+            <div className="text-text-header-secondary flex gap-2">
                 <DropDown label={lang.VGLITE.ItemSheet.size}
                     options={Object.values(lang.VGLITE.Sizes)}
                     parent={ancestry.parent}
@@ -45,7 +45,7 @@ const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
                     updatePath={['beingType']}
                     value={ancestry.beingType} />
             </div>
-            <LabelledField label="Sup">
+            <LabelledField label="Sup" className="text-text-header-secondary">
                 <RichTextField ref={richTextRef} />
             </LabelledField>
         </>
