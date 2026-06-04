@@ -15,12 +15,12 @@ export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
 
 const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="flex text-3xl font-eskapade font-bold mt-0.5 mb-0.5 ml-4 justify-evenly">
+        <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 ml-4 justify-evenly">
             <div className="flex items-center">
                 <span className="text-lg justify-bottom">Mana:&nbsp;&nbsp;</span>
                 <Sparkle className="text-mana" size={20} />
                 &nbsp;
-                <span className="cursor-pointer">
+                <span className="cursor-pointer text-mana">
                     <EditableTextField initialValue={hero.mana.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }} />
                 </span>
                 <span className="slash">&nbsp;/&nbsp;</span>
@@ -32,7 +32,9 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                 &nbsp;
                 <span>{hero.mana.maxCast}</span>
             </div>
-            <button className="flex items-center bg-btn-primary-fill text-xl text-btn-primary-text rounded-lg px-2 cursor-pointer">
+            <button className="flex items-center bg-btn-primary-fill text-xl text-btn-primary-text rounded-lg px-2 cursor-pointer" onClick={
+                () => ui.notifications?.info("Feature coming soon!")
+            }>
                 <span className="mr-2">Cast</span>
                 <DamageTypeIcon dmgType={'magical'} />
             </button>
