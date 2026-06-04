@@ -90,8 +90,8 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
      * Prevent adding duplicate perks and spells.
      */
     const uniqueItems = ['perk', 'spell']
-    if (uniqueItemTypes.indexOf(item.type) && actor.items.find((i: { type: any; name: any }) => i.type === item.type && i.name === item.name)) {
-        console.log("Cannot add another", item.type, item.name)
+    if (uniqueItems.indexOf(item.type) > -1 && actor.items.find((i: { type: any; name: any }) => i.type === item.type && i.name === item.name)) {
+        console.log("Already has:", item.type, item.name)
         return false
     }
 })
