@@ -46,17 +46,17 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
         switch (e.code) {
             case "Enter":
                 e.preventDefault()
-                e.stopPropagation()
                 if (await save()) {
                     setIsInEditMode(false)
                 }
                 break;
             case "Escape":
                 e.preventDefault()
-                e.stopPropagation()
                 reset()
                 break;
         }
+
+        e.stopPropagation() // otherwise wasd results in movement
     }, [value, onSave, initialValue, reset])
 
     if (isInEditMode) {
