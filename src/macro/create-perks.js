@@ -10,13 +10,13 @@ const gish = {
                 stat: '',
                 value: 0,
                 skillName: '',
-                spell: {}
+                spell: 'Any'
             },
             {
                 type: 'TRAINING', // STAT, TRAINING, SPELL
                 stat: '',
                 value: 0,
-                spell: {},
+                spell: 'Any',
                 skillNames: ['Melee, Ranged'],
                 andOr: 'or'
             }

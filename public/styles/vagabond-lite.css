@@ -57,6 +57,15 @@
   --color-btn-secondary-hover: ;
   --color-btn-secondary-text: ;
   --color-destructive-action: ;
+  --color-magical: ;
+  --color-fire: ;
+    --color-cold: ;
+    --color-zap: ;
+    --color-acid: ;
+    --color-necrotic: ;
+    --color-psychic: ;
+    --color-healing: ;
+    --color-physical: ;
 }
 
 .light {
@@ -120,6 +129,15 @@
   --color-btn-secondary-hover: #d6a593;
   --color-btn-secondary-text: #3d2622;
   --color-destructive-action: #f72b35;
+  --color-magical: #155dfc;
+  --color-fire: #DE671E;
+  --color-cold: #00D0FF;
+  --color-zap: #FFFF56;
+  --color-acid: #80E31C;
+  --color-necrotic: #009800;
+  --color-psychic: #E938DD;
+  --color-healing: #00FF00;
+  --color-physical: #e7e8f0;
 }
 
 .dark {
@@ -183,6 +201,15 @@
   --color-btn-secondary-hover: #636363;
   --color-btn-secondary-text: #e7e5e4;
   --color-destructive-action: #f72b35;
+  --color-magical: #155dfc;
+  --color-fire: #DE671E;
+  --color-cold: #00D0FF;
+  --color-zap: #FFFF56;
+  --color-acid: #80E31C;
+  --color-necrotic: #009800;
+  --color-psychic: #E938DD;
+  --color-healing: #00FF00;
+  --color-physical: #e7e8f0;
 }
 
 .react-tabs {
@@ -204,7 +231,7 @@
 
 .react-tabs__tab {
   display: inline-block;
-  bottom: 1px;
+  bottom: 4px;
   position: relative;
   list-style: none;
   padding: 6px 12px;
@@ -253,6 +280,6 @@
 
 .react-tabs__tab-panel--selected {
   display: block;
-  height: 318px;
+  height: 600px;
   overflow-y: auto;
 }

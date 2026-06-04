@@ -15,10 +15,11 @@ export const Collapsible = ({ title, Header, content, startCollapsed = false }: 
     const toggleCollapsed = useCallback(() => {
         setCollapsed(!isCollapsed);
     }, [isCollapsed])
-
     return (
-        <div className={isCollapsed ? "vglite-collapsed" : ""}>
-            <Header title={title} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={<button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>} />
+        <div>
+            <Header title={title} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={
+                <button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>
+            } />
             {isCollapsed ? <></> : content}
         </div>
     )

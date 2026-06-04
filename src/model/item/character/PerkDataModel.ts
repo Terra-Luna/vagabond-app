@@ -1,7 +1,6 @@
 import lang from "../../../../public/lang/en.json"
-import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
+import { fields, optionalString, standardInteger } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import SpellDataModel from "./SpellDataModel"
 import { modifierSchema } from "./traitsAndFeatures"
 
 const perkSchema = () => {
@@ -16,7 +15,7 @@ const prerequisiteSchema = () => {
         type: new fields.StringField({ choices: ['STAT', 'TRAINING', 'SPELL'] }),
         stat: new fields.StringField({ ...optionalString, options: Object.values(lang.VGLITE.Stat).map(it => it.long) }),
         value: new fields.NumberField({ ...standardInteger }),
-        spell: new fields.SchemaField({ ...SpellDataModel.defineSchema() }),
+        spell: new fields.StringField({ ...optionalString, initial: 'Any' }),
         skillNames: new fields.ArrayField(new fields.StringField({ ...optionalString })),
         andOr: new fields.StringField({ ...optionalString, choices: ['and', 'or'] })
     }

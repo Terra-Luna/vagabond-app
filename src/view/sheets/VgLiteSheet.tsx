@@ -8,7 +8,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     static DEFAULT_OPTIONS = {
         position: {
             width: 420,
-            height: 900
+            height: 1200
         },
         window: {
             resizable: false

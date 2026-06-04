@@ -13,6 +13,7 @@ const ancestrySchema = () => {
         senses: new fields.ArrayField(new fields.SchemaField({ ...sensesSchema() }), { initial: [] }),
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() }),
+        traitInfo: new fields.ArrayField(new fields.ArrayField(new fields.StringField({ ...requiredString }))),
         traits: new fields.ArrayField(new fields.SchemaField({ ...traitSchema() }), { initial: [] }),
         grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() }), { initial: [] }),
         chosenPerks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
@@ -58,4 +59,14 @@ export async function applyAncestralTraits(hero: HeroDataModel, ancestry: Ancest
             ancestry.parent.createEmbeddedDocuments('ActiveEffect', [effect])
         })
     })
+}
+
+export const ancestryFullDescription = (ancestry: AncestryDataModel): string => {
+    if (!ancestry) return ''
+    let description = ancestry.description
+    ancestry.traitInfo.forEach(i => {
+        description += "\n"
+        description += i[0] + ": " + i[1]
+    })
+    return description
 }

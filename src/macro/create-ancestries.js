@@ -7,10 +7,12 @@ const human = {
         beingType: 'Humanlike',
         beingSize: 'Medium',
         senses: [],
+        traitInfo: [
+            ['Knack', 'You gain a Perk and a Training.'],
+            ['Strong Potential', 'Increase one of your Stats by 1, but no higher than 7.']
+        ],
         traits: [
             {
-                name: 'Strong Potential',
-                description: 'Increase one of your Stats by 1, but no higher than 7.',
                 modifiers: [{
                     targetStat: '',
                     type: 'BONUS', //BONUS, SET, FORMULA
@@ -52,11 +54,12 @@ const elf = {
         beingType: 'Fae',
         beingSize: 'Medium',
         senses: [],
-        traits: [{
-            name: 'Elven Eyes',
-            description: 'You have Favor on sight-based Detect Checks.',
-            modifiers: []
-        }],
+        traitInfo: [
+            ['Ascendancy', 'You are Trained in a Skill from either Arcana, Mysticism, Influence, or in Ranged Attacks.'],
+            ['Elven Eyes', 'You have Favor on sight-based Detect Checks.'],
+            ['Naturally Attuned', 'You know a Spell and can Cast it with a Skill of yoru choice.']
+        ],
+        traits: [{ modifiers: [] }],
         grants: [
             {
                 type: 'TRAINING', //PERK, SPELL, TRAINING
