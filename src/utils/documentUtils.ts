@@ -8,7 +8,6 @@ export const updateDocument = async (actor: { system: any, update: any }, update
             updates[`system.${key}`] = value
         }
     })
-    console.log("Updating: ", actor, updates)
     return await actor.update(updates)
 }
 

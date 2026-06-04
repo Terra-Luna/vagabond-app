@@ -1,5 +1,4 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import ClassDataModel from "../../item/character/ClassDataModel"
 import HeroDataModel from "../HeroDataModel"
 
 export const manaSchema = () => {
@@ -11,9 +10,9 @@ export const manaSchema = () => {
 }
 
 export function setManaValues(hero: HeroDataModel) {
-    const clazz = hero.parent.items.find(i => i.type === 'class') as ClassDataModel
-    if (clazz != undefined && clazz.castingSkill != null) {
-        hero.mana.max = hero.level.current! * clazz.manaMultiplier! + hero.bonus.maxHP!
-        hero.mana.maxCast = Math.ceil((hero.level.current!) / 2) + Number(hero.stats[clazz.maxManaStat!]) + hero.bonus.maxCast!
+    const cls = hero.class
+    if (cls != undefined && cls.castingSkill != null) {
+        hero.mana.max = hero.level.current! * cls.manaMultiplier! + hero.bonus.maxMana!
+        hero.mana.maxCast = Math.ceil((hero.level.current!) / 2) + Number(hero.stats[cls?.maxManaStat?.toLowerCase() || '']) + hero.bonus.maxCast!
     }
 }

@@ -9,6 +9,8 @@ const ward = {
         effectBurnCountdown: '-'
     }
 }
+await Item.create(ward)
+
 const light = {
     name: 'Light',
     type: 'spell',
@@ -20,13 +22,4 @@ const light = {
         effectBurnCountdown: '-'
     }
 }
-
-await Item.create(ward)
 await Item.create(light)
-ui.notifications.info('Success')
-game.items.filter(it => it.type === 'spell')
-
-const actor = game.actors.getName('Orphenia')
-const ward = game.items.find(it => it.type === 'spell' && it.name === 'Ward')
-const light = game.items.find(it => it.type === 'spell' && it.name === 'Light')
-await actor.update({ 'system.spells': [{ ...ward.system }, { ...light.system}] })

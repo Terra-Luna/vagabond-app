@@ -1,10 +1,12 @@
-import { fields, zonePreferences } from "../common/sharedSchemas"
+import { fields, requiredString, zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
+import lang from "../../../public/lang/en.json"
 
 const adversarySchema = () => {
     const f = foundry.data.fields
     return {
+        beingSize: new fields.StringField({ ...requiredString, initial: 'Medium', choices: Object.values(lang.VGLITE.Sizes) }),
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
         zone: new fields.ArrayField(new fields.StringField({ ...zonePreferences() })),
@@ -41,7 +43,7 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        this.health.max = this.ancestry.beingSize?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice! * 4.5)
+        this.health.max = this.beingSize?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice! * 4.5)
         this.threatLevel = this.setThreatLevel()
     }
 

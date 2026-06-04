@@ -12,10 +12,11 @@ import { levelSchema, setXpToNextLevel } from "./type/Level"
 import { manaSchema, setManaValues } from "./type/Mana"
 import { savesSchema, setSaves } from "./type/Saves"
 import { setSenses } from "./type/Senses"
-import { setDifficulties as setSkillDifficulties, skillSchema, skillsSchema } from "./type/Skills"
+import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
 import { applyStatBonuses, statsSchema, validateCurrentLuck } from "./type/Stats"
 import lang from "../../../public/lang/en.json"
+import AncestryDataModel from "../item/character/AncestryDataModel"
 
 const heroSchema = () => {
     return {
@@ -41,6 +42,7 @@ const heroSchema = () => {
         /**
          * Derived from embedded documents...
          */
+        ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
         perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() }))
@@ -64,10 +66,12 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     override async prepareDerivedData() {
+        console.log("HeroDataModel#preparDerivedData()")
         super.prepareDerivedData()
-        this.class = this.parent.items.find(i => i.type === 'class')
-        this.perks = this.parent.items.filter(i => i.type === 'perk')
-        this.spells = this.parent.items.filter(i => i.type === 'spell')
+        this.ancestry = this.parent.items.find(i => i.type === 'ancestry')?.system
+        this.class = this.parent.items.find(i => i.type === 'class')?.system
+        this.perks = this.parent.items.filter(i => i.type === 'perk')?.map(it => it.system)
+        this.spells = this.parent.items.filter(i => i.type === 'spell')?.map(it => it.system)
         applyStatBonuses(this)
         setXpToNextLevel(this)
         setMaxHP(this)

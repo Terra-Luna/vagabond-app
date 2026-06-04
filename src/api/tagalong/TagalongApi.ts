@@ -4,6 +4,8 @@ interface TagalongHero {
         userId: string,
         name: string,
         ancestry: string,
+        ancestry_bonus_skill: string,
+        ancestry_bonus_spell: string,
         class: string,
         level: number,
         xp: number,
@@ -17,6 +19,7 @@ interface TagalongHero {
             presence: number,
             luck: number
         }
+        strongPotentialStat: string,
         trained_skills: string[],
         active_actions: string[],
         known_spells: string[],

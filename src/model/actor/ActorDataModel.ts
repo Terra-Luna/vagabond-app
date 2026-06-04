@@ -1,5 +1,4 @@
 import { fields } from "../common/sharedSchemas"
-import AncestryDataModel from "../item/character/AncestryDataModel"
 import { armorSchema } from "./type/Armor"
 import { healthSchema } from "./type/Health"
 import { sensesSchema } from "./type/Senses"
@@ -8,7 +7,6 @@ export const baseActorSchema = () => {
     return {
         health: new fields.SchemaField({ ...healthSchema() }),
         armor: new fields.SchemaField({ ...armorSchema() }),
-        ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         senses: new fields.ArrayField(new fields.SchemaField({ ...sensesSchema() }), { initial: [] })
     }
 }
@@ -24,7 +22,6 @@ export default abstract class ActorDataModel<T extends BaseActorSchema> extends 
 
     override async prepareDerivedData() {
         super.prepareBaseData()
-        this.ancestry = this.parent.items.find(i => i.type === 'ancestry')
     }
 }
 

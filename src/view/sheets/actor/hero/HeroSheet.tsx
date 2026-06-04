@@ -7,9 +7,11 @@ import { IconButton } from "../../../component/IconButton"
 import { useCallback, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 import { Actions, Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab/TopSection"
-import { SkillCard } from "../../../component/SkillCard"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { MainTab } from "./tab/MainTab"
+import { InventoryTab } from "./tab/InventoryTab"
+import { MagicTab } from "./tab/MagicTab"
+import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { EditableNameField } from "../../../component/EditableTextField"
 
 const locale = lang.VGLITE.HeroSheet
@@ -81,12 +83,9 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
                 <Trackers hero={hero} />
                 <Speeds hero={hero} />
-                
-                
             </div>
             <div className="flex flex-col items-center mx-1 gap-y-2">
                 <Stats hero={hero} />
-                
                 {
                     hero.actions.length > 0 ? (
                         <Actions hero={hero} actions={hero.actions.map(a => getSkillByName(hero, a))} />
@@ -99,7 +98,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
-    return <div className="hero-sheet-tabbed-section">
+    return <div>
         <Tabs>
             <TabList>
                 <Tab>
@@ -119,13 +118,13 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <MainTab hero={hero} />
             </TabPanel>
             <TabPanel>
-                Inventory
+                <InventoryTab hero={hero} />
             </TabPanel>
             <TabPanel>
-                Spells
+                <MagicTab hero={hero} />
             </TabPanel>
             <TabPanel>
-                Abilities
+                <AbilitiesTab hero={hero} />
             </TabPanel>
         </Tabs>
     </div>

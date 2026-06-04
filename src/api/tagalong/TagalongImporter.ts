@@ -1,5 +1,6 @@
 import HeroDataModel from "../../model/actor/HeroDataModel"
 import VgLiteError from "../../model/common/VgLiteError"
+import { applyAncestralTraits } from "../../model/item/character/AncestryDataModel"
 import PerkDataModel from "../../model/item/character/PerkDataModel"
 import SpellDataModel from "../../model/item/character/SpellDataModel"
 import { updateDocument } from "../../utils/documentUtils"
@@ -77,7 +78,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         const ancestry = game.items?.find(it =>
             it.type === 'ancestry' &&
             it.name.toUpperCase() === res.ancestry.toUpperCase()
-        )
+        ) as any
         if (ancestry == undefined) {
             failures.push(`Ancestry: ${res.ancestry}`)
         }
@@ -88,7 +89,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         const clazz = game.items?.find(it =>
             it.type === 'class' &&
             it.name.toUpperCase() === res.class.toUpperCase()
-        )
+        ) as any
         if (clazz == undefined) {
             failures.push(`Class: ${res.class}`)
         }
@@ -132,6 +133,21 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
          */
         if (ancestry != undefined) {
             await hero.parent.createEmbeddedDocuments("Item", [ancestry])
+            const heroAncestry = hero.parent.items.find(i => i.type === 'ancestry')
+            if (res.strongPotentialStat != null) {
+                await updateDocument(heroAncestry, {
+                    'traits': [
+                        {
+                            name: 'Strong Potential',
+                            description: 'Increase one of your Stats by 1, but no higher than 7.',
+                            modifiers: [{
+                                targetStat: res.strongPotentialStat, type: 'BONUS', value: '1'
+                            }]
+                        }
+                    ]
+                })
+            }
+            applyAncestralTraits(hero, heroAncestry.system)
         }
         if (clazz != undefined) {
             await hero.parent.createEmbeddedDocuments("Item", [clazz])
@@ -147,7 +163,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
          * Show any import failures.
          */
         if (failures.length > 0) {
-            ui.notifications?.warn(`These attributes weren\'t able to be imported and will need to be configured manually...`)
+            ui.notifications?.warn("These items weren't able to be imported and will need to be configured manually...")
             failures.forEach(f => {
                 ui.notifications?.warn(f)
             })

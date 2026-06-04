@@ -48,9 +48,7 @@
   --color-text-studied-current: ;
   --color-ic-fatigue: ;
   --color-text-fatigue-current: ;
-  --color-ic-mana: ;
-  --color-text-mana-current: ;
-  --color-text-mana-max: ;
+  --color-mana: ;
   --color-ic-equipped: ;
   --color-btn-primary-fill: ;
   --color-btn-primary-hover: ;
@@ -113,9 +111,7 @@
   --color-text-studied-current: #0092b8;
   --color-ic-fatigue: #733e0a;
   --color-text-fatigue-current: #733e0a;
-  --color-ic-mana: #155dfc;
-  --color-text-mana-current: #155dfc;
-  --color-text-mana-max: #155dfc;
+  --color-mana: #155dfc;
   --color-ic-equipped: #3d5541;
   --color-btn-primary-fill: #6a2e2a;
   --color-btn-primary-hover: #fdfbf7;
@@ -176,9 +172,7 @@
   --color-text-luck-current: #00a63e;
   --color-ic-studied: #0092b8;
   --color-text-studied-current: #0092b8;
-  --color-ic-mana: #155dfc;
-  --color-text-mana-current: #155dfc;
-  --color-text-mana-max: #155dfc;
+  --color-mana: #155dfc;
   --color-ic-fatigue: #a59f9a;
   --color-text-fatigue-current: #a59f9a;
   --color-ic-equipped: #c5b358;

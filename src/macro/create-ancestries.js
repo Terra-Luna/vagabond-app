@@ -14,7 +14,7 @@ const human = {
                 modifiers: [{
                     targetStat: '',
                     type: 'BONUS', //BONUS, SET, FORMULA
-                    value: 0
+                    value: 1
                 }]
             }
         ],
@@ -41,6 +41,7 @@ const human = {
     chosenSpells: [],
     chosenTrainings: []
 }
+await Item.create(human)
 
 const elf = {
     name: 'Elf',
@@ -79,11 +80,4 @@ const elf = {
     chosenSpells: [],
     chosenTrainings: []
 }
-await Item.create(human)
 await Item.create(elf)
-ui.notifications.info('Success!')
-game.items.filter(it => it.type === 'ancestry')
-
-const actor = game.actors.getName('Orphenia')
-const human = game.items.find(it => it.type === 'ancestry' && it.name === 'Human')
-await actor.update({ 'system.ancestry': { ...human.system } })

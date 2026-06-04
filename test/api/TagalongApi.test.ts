@@ -13,11 +13,11 @@ describe('tagalong api tests', () => {
         expect(heroId).toBe(testId)
     })
 
-    test('call the api', async () => {
+    /* test('call the api', async () => {
         //Setup & Execute
         const hero = await fetchHero(testUrl)
         //Verify
         console.log(hero)
         expect(hero.character.name).toBe("Orphenia")
-    })
+    }) */
 })

@@ -5,6 +5,8 @@ import PerkDataModel from "./PerkDataModel"
 import { grantSchema, traitSchema } from "./traitsAndFeatures"
 import lang from "../../../../public/lang/en.json"
 import SpellDataModel from "./SpellDataModel"
+import { ActiveEffectMode } from "../../../document/VgLiteActiveEffect"
+import HeroDataModel from "../../actor/HeroDataModel"
 
 const ancestrySchema = () => {
     return {
@@ -33,8 +35,27 @@ export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
             ...ancestrySchema()
         }
     }
+}
 
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-    }
+export async function applyAncestralTraits(hero: HeroDataModel, ancestry: AncestryDataModel) {
+    ancestry?.traits?.forEach(t => {
+        t.modifiers?.forEach(m => {
+            const effect = {
+                name: t.name,
+                icon: 'icons/svg/upgrade.svg',
+                changes: [
+                    {
+                        key: `system.bonus.${m.targetStat}`,
+                        value: m.value,
+                        mode: m.type == 'BONUS' ?
+                            ActiveEffectMode.ADD : (
+                                m.type == 'SET' ? ActiveEffectMode.OVERRIDE : ActiveEffectMode.CUSTOM
+                            )
+                    }
+                ]
+            }
+            console.log("Creating active ancestral effect:", effect)
+            hero.parent.createEmbeddedDocuments('ActiveEffect', [effect])
+        })
+    })
 }

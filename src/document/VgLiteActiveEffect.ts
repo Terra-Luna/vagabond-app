@@ -87,3 +87,12 @@ export default class VgLiteActiveEffect<
     }
 
 }
+
+export enum ActiveEffectMode {
+    CUSTOM = 0,
+    MULTIPLY = 1,
+    ADD = 2,
+    DOWNGRADE = 3,
+    UPGRADE = 4,
+    OVERRIDE = 5
+}

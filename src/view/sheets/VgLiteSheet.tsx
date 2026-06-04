@@ -63,7 +63,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height }}>
                 <style>{vgliteStyles}</style>
-                <div className={`${theme} vglite-themed-content font-paradigm`}>
+                <div className={`${theme} vglite-themed-content font-paradigm bg-body-fill`}>
                     <this.Component {...this.getReactProps()} width={width} height={height} />
                 </div>
             </DimensionsContext.Provider>
