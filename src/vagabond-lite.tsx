@@ -72,6 +72,30 @@ Hooks.once("init", () => {
     )
 })
 
+Hooks.on("preCreateItem", (item: any, options, userId) => {
+    if (!item.parent || item.parent.documentName !== "Actor") return
+
+    const actor = item.parent
+
+    /**
+     * Prevent adding additional ancestry and class.
+     */
+    const uniqueItemTypes = ['ancestry', 'class']
+    if (uniqueItemTypes.indexOf(item.type) > -1 && actor.items.find((i: { type: string }) => i.type === item.type)) {
+        console.log("Cannot add another", item.type)
+        return false
+    }
+
+    /**
+     * Prevent adding duplicate perks and spells.
+     */
+    const uniqueItems = ['perk', 'spell']
+    if (uniqueItemTypes.indexOf(item.type) && actor.items.find((i: { type: any; name: any }) => i.type === item.type && i.name === item.name)) {
+        console.log("Cannot add another", item.type, item.name)
+        return false
+    }
+})
+
 Hooks.on("renderCombatTracker", (app, html, data) => {
     $(html).find('.combatant').each((_: any, li: any) => {
         const actorId = $(li).attr('data-combatant-id')
