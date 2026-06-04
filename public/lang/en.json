@@ -500,7 +500,11 @@
       "skills": "SKILLS",
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
-      "armor": "ARMOR"
+      "armor": "ARMOR",
+      "tab-main": "Main",
+      "tab-inv": "Inventory",
+      "tab-magic": "Magic",
+      "tab-abilities": "Abilities"
     },
     "ItemSheet": {
       "type": "Type",

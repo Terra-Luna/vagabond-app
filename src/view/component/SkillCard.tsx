@@ -1,17 +1,23 @@
 import { Collapsible, CollapsibleHeaderProps } from "./Collapsible";
 import { Divider } from "./Header"
 
-type CardSubHeaderValues = [subKey: string, subValue: string][];
+const cardLayout = "ml-2 mr-2 mt-1 mb-1"
+const cardHeaderLayout = "flex items-center justify-between gap-2 pt-2 pb-1 pl-2 pr-2 bg-section-header-fill"
+const cardHeaderTextStyle = "rounded-t-lg text-text-section-header text-xl font-eskapade font-bold"
+const cardSubheaderLayout = "flex items-center justify-between gap-1 border-l-1 border-r-1 border-solid border-table-border"
+const cardSubheaderTextStyle = "text-text-section-header text-sm pb-1 pl-2 pr-2 w-fit bg-section-header-fill"
+const cardBodyLayout = "bg-body-fill rounded-b-lg p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border rounded-b-lg"
+const cardBodyTextStyle = "text-text-primary text-sm leading-none antialiased"
 
 export const SkillCard = ({ title, subtitles, description }: {
     title: string, subtitles: CardSubHeaderValues, description: string
 }) => {
     return (
-        <div className="vglite-card">
+        <div className={cardLayout}>
             <Collapsible
                 startCollapsed
                 title={title}
-                Header={SkillCardHeader}
+                Header={CardHeader}
                 content={(
                     <>
                         <CardSubHeader content={subtitles} />
@@ -23,9 +29,9 @@ export const SkillCard = ({ title, subtitles, description }: {
     )
 }
 
-const SkillCardHeader = ({ title, toggleCollapsedButton, toggleCollapsed }: CollapsibleHeaderProps) => {
+const CardHeader = ({ title, toggleCollapsedButton, toggleCollapsed }: CollapsibleHeaderProps) => {
     return (
-        <div onClick={toggleCollapsed} className="vglite-card-header">
+        <div onClick={toggleCollapsed} className={cardHeaderLayout+" "+cardHeaderTextStyle}>
             <div>{title}</div>
             <Divider />
             {toggleCollapsedButton}
@@ -39,12 +45,15 @@ const SkillCardHeader = ({ title, toggleCollapsedButton, toggleCollapsed }: Coll
  *      { key: "Size", value: "Medium" }
  *    ]
  */
+type CardSubHeaderValues = [subKey: string, subValue: string][]
 const CardSubHeader = ({ content }: { content: CardSubHeaderValues }) => {
     return (
-        <div className="vglite-card-sub-header">
-            {content.map(([cardKey, cardValue]) => (
-                <div>{cardKey}: {cardValue}</div>)
-            )}
+        <div className={cardSubheaderLayout}>
+            <div className={cardSubheaderTextStyle}>
+                {content.map(([cardKey, cardValue]) => (
+                    <div>{cardKey}: {cardValue}</div>)
+                )}
+            </div>
         </div>
     )
 }
@@ -56,9 +65,9 @@ const CardSubHeader = ({ content }: { content: CardSubHeaderValues }) => {
  */
 const SkillCardBody = ({ description }: { description: string }) => {
     return (
-        <div className="vglite-card-body">
+        <div className={cardBodyLayout}>
             <div>
-                <span className="vglite-body-text">{description}</span>
+                <span className={cardBodyTextStyle}>{description}</span>
             </div>
         </div>
     )

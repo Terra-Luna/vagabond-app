@@ -102,16 +102,16 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
         <Tabs>
             <TabList>
                 <Tab>
-                    Main
+                    {locale["tab-main"]}
                 </Tab>
                 <Tab>
-                    Inventory
+                    {locale["tab-inv"]}
                 </Tab>
                 <Tab>
-                    Magic
+                    {locale["tab-magic"]}
                 </Tab>
                 <Tab>
-                    Abilities
+                    {locale["tab-abilities"]}
                 </Tab>
             </TabList>
             <TabPanel>

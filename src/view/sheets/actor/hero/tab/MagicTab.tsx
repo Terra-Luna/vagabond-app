@@ -1,11 +1,13 @@
 import { Sparkle, Sparkles } from "lucide-react";
 import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import { EditableTextField } from "../../../../component/EditableTextField";
+import { SkillCard } from "../../../../component/SkillCard";
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div>
             <ManaDisplay hero={hero} />
+            <Spells hero={hero} />
         </div>
     )
 }
@@ -35,8 +37,15 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
 
 const Spells = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="flex">
-
-        </div>
+        <div>{
+            hero.spells.map(sp => (
+                <SkillCard
+                    key={sp.name}
+                    title={sp.name}
+                    subtitles={[['Base dmg', sp.damageType]]}
+                    description={sp.description}
+                />
+            ))
+        }</div>
     )
 }

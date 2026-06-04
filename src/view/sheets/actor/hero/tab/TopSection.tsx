@@ -147,7 +147,7 @@ const Stat = ({ name, value }: { name: string, value: number }) => {
         <div className="text-text-special basis-[32%] font-bold text-center mx-[1px] mt-1 mb-1">
             {name}
             <div className="flex items-center justify-center text-text-section-header font-eskapade text-4xl">
-                <span className="bg-stat-block-fill px-[12px] pb-0.5">{value}</span>
+                <span className="bg-stat-block-fill min-w-[42px] pb-1">{value}</span>
             </div>
         </div>
     )
@@ -156,7 +156,7 @@ const Stat = ({ name, value }: { name: string, value: number }) => {
 export const Actions = ({ hero, actions }: { hero: HeroDataModel, actions: {name: string, value: number}[] }) => {
     return (
         <div className="w-full flex flex-col gap-y-0.5">
-            <Header title="Actions" />            
+            <Header title="ACTIONS" />            
             <div className="flex items-center justify-between gap-1 mt-0.5">{
                 actions.map(act => (
                     <Action key={act.name} hero={hero} name={act.name} value={act.value} />
