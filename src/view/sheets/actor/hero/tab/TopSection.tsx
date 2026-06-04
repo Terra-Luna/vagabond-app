@@ -57,28 +57,6 @@ export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, arm
     )
 }
 
-export const Stats = ({ hero }: { hero: HeroDataModel }) => {
-    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
-    return (
-        <div className="flex flex-wrap gap-y-2">{
-            stats.map(stat => (
-                <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
-            ))
-        }</div>
-    )
-}
-
-const Stat = ({ name, value }: { name: string, value: number }) => {
-    return (
-        <div className="text-text-special basis-[32%] font-bold text-center mx-[1px]">
-            {name}
-            <div className="flex items-center justify-center text-text-section-header font-eskapade text-4xl">
-                <span className="bg-stat-block-fill px-[12px] pb-0.5">{value}</span>
-            </div>
-        </div>
-    )
-}
-
 export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
     const { studied, fatigue } = hero;
     const currentLuck = hero.stats.currentLuck;
@@ -128,36 +106,6 @@ const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode,
     </div>
 )
 
-export const Saves = ({ hero }: { hero: HeroDataModel }) => {
-    const { reflex, endure, will } = hero.saves
-    return (
-        <div className="w-full flex flex-col gap-y-0.5">
-            <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save hero={hero} name={lang.VGLITE.Saves.reflex} value={reflex!} formula="DEX + AWR" />
-            <Save hero={hero} name={lang.VGLITE.Saves.endure} value={endure!} formula="MIT + MIT" />
-            <Save hero={hero} name={lang.VGLITE.Saves.will} value={will!} formula="RSN + PRS" />
-        </div>
-    )
-}
-
-export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string; value: number; formula: string; }) => {
-    return (
-        <div className={`font-eskapade text-lg flex cursor-pointer ${borderClasses}`} onClick={
-            async (e: React.MouseEvent<HTMLDivElement>) => {
-                rollSkillCheck(hero.parent, name, value, e)
-            }
-        }>
-            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center flex items-center justify-center">
-                <span>{value}</span>
-            </div>
-            <div className="ml-1 flex flex-col">
-                <span className="font-bold">{name}</span>
-                <span className="text-text-aux font-paradigm text-xs -mt-1 mb-0.5">[{formula}]</span>
-            </div>
-        </div>
-    )
-}
-
 export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     const { crawl, travel, turn } = hero.speed
     if (crawl == null || travel == null || turn == null) return;
@@ -183,29 +131,80 @@ export const Speed = ({ name, value }: { name: string; value: string }) => (
     </div>
 )
 
-export const Actions = ({ hero, actions }: { hero: HeroDataModel, actions: {name: string, value: number, isTrained: boolean}[] }) => {
+export const Stats = ({ hero }: { hero: HeroDataModel }) => {
+    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
+    return (
+        <div className="flex flex-wrap gap-y-2">{
+            stats.map(stat => (
+                <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
+            ))
+        }</div>
+    )
+}
+
+const Stat = ({ name, value }: { name: string, value: number }) => {
+    return (
+        <div className="text-text-special basis-[32%] font-bold text-center mx-[1px] mt-1 mb-1">
+            {name}
+            <div className="flex items-center justify-center text-text-section-header font-eskapade text-4xl">
+                <span className="bg-stat-block-fill px-[12px] pb-0.5">{value}</span>
+            </div>
+        </div>
+    )
+}
+
+export const Actions = ({ hero, actions }: { hero: HeroDataModel, actions: {name: string, value: number}[] }) => {
     return (
         <div className="w-full flex flex-col gap-y-0.5">
             <Header title="Actions" />            
             <div className="flex items-center justify-between gap-1 mt-0.5">{
                 actions.map(act => (
-                    <Action key={act.name} hero={hero} name={act.name} value={act.value} isTrained={act.isTrained} />
+                    <Action key={act.name} hero={hero} name={act.name} value={act.value} />
                 ))
             }</div>
         </div>        
     )
 }
 
-const Action = ({ hero, name, value, isTrained }: { hero: HeroDataModel, name: string, value: number, isTrained: boolean }) => {
+const Action = ({ hero, name, value}: { hero: HeroDataModel, name: string, value: number }) => {
     return (
         <div className="flex w-full justify-between items-center border border-solid border-section-header-fill">
-            <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={16} />
             <div className="flex items-center justify-between w-full font-eskapade font-bold cursor-pointer" onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     rollSkillCheck(hero.parent, name, value, e)
                 }}>
-                <div className="text-left ml-1 mr-1">{name}</div>
+                <div className="text-lg text-left ml-1 mr-1">{name}</div>
                 <div className="bg-section-header-fill font-bold text-xl text-text-section-header w-1/4 text-center flex items-center justify-center">{value}</div>
+            </div>
+        </div>
+    )
+}
+
+export const Saves = ({ hero }: { hero: HeroDataModel }) => {
+    const { reflex, endure, will } = hero.saves
+    return (
+        <div className="w-full flex flex-col gap-y-0.5">
+            <Header title={lang.VGLITE.HeroSheet.saves} />
+            <Save hero={hero} name={lang.VGLITE.Saves.reflex} value={reflex!} formula="DEX + AWR" />
+            <Save hero={hero} name={lang.VGLITE.Saves.endure} value={endure!} formula="MIT + MIT" />
+            <Save hero={hero} name={lang.VGLITE.Saves.will} value={will!} formula="RSN + PRS" />
+        </div>
+    )
+}
+
+export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string; value: number; formula: string; }) => {
+    return (
+        <div className={`font-eskapade text-lg flex cursor-pointer ${borderClasses}`} onClick={
+            async (e: React.MouseEvent<HTMLDivElement>) => {
+                rollSkillCheck(hero.parent, name, value, e)
+            }
+        }>
+            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center flex items-center justify-center">
+                <span>{value}</span>
+            </div>
+            <div className="ml-1 flex flex-col">
+                <span className="font-bold">{name}</span>
+                <span className="text-text-aux font-paradigm text-xs -mt-1 mb-0.5">[{formula}]</span>
             </div>
         </div>
     )
