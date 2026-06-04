@@ -1,8 +1,9 @@
+import lang from "../../../public/lang/en.json"
 import { fields, optionalString, requiredInteger, requiredString } from "../common/sharedSchemas"
+import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import PerkDataModel from "../item/character/PerkDataModel"
 import SpellDataModel from "../item/character/SpellDataModel"
-import { traitSchema } from "../item/character/traitsAndFeatures"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { setArmorRating } from "./type/Armor"
 import { heroBonusSchema } from "./type/Bonus"
@@ -15,8 +16,6 @@ import { setSenses } from "./type/Senses"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
 import { applyStatBonuses, statsSchema, validateCurrentLuck } from "./type/Stats"
-import lang from "../../../public/lang/en.json"
-import AncestryDataModel from "../item/character/AncestryDataModel"
 
 const heroSchema = () => {
     return {
@@ -32,7 +31,6 @@ const heroSchema = () => {
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         bonus: new fields.SchemaField({ ...heroBonusSchema() }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
-        traits: new fields.ArrayField(new fields.SchemaField({ ...traitSchema() })),
         actions: new fields.ArrayField(
             new fields.StringField(
                 { ...requiredString, options: Object.values(lang.VGLITE.Skills).map(it => it.name) }
@@ -62,28 +60,28 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     override async _onCreate(data: any, options: any, userId: string) {
         console.log("Creating Hero:", this)
         this.health.current = 2
+        this.parent.update({ 'prototypeToken.actorLink': true })
         super._onCreate(data, options, userId)
     }
 
     override async prepareDerivedData() {
-        console.log("HeroDataModel#preparDerivedData()")
         super.prepareDerivedData()
-        this.ancestry = this.parent.items.find(i => i.type === 'ancestry')?.system
-        this.class = this.parent.items.find(i => i.type === 'class')?.system
-        this.perks = this.parent.items.filter(i => i.type === 'perk')?.map(it => it.system)
-        this.spells = this.parent.items.filter(i => i.type === 'spell')?.map(it => it.system)
+        this.ancestry = this.parent.items.find((i: { type: string }) => i.type === 'ancestry')?.system
+        this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
+        this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: any }) => it.system)
+        this.spells = this.parent.items.filter((i: { type: string }) => i.type === 'spell')?.map((it: { system: any }) => it.system)
         applyStatBonuses(this)
         setXpToNextLevel(this)
         setMaxHP(this)
-        validateCurrentHP(this)
-        validateCurrentLuck(this)
+        setManaValues(this)
         setArmorRating(this)
         setSaves(this)
-        setManaValues(this)
         setSkillDifficulties(this)
         setSpeeds(this)
         setSenses(this)
         setInventoryData(this)
+        validateCurrentHP(this)
+        validateCurrentLuck(this)
     }
 
 }

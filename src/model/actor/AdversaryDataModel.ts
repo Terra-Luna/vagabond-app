@@ -1,7 +1,7 @@
+import lang from "../../../public/lang/en.json"
 import { fields, requiredString, zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
-import lang from "../../../public/lang/en.json"
 
 const adversarySchema = () => {
     const f = foundry.data.fields

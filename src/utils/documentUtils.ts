@@ -8,7 +8,7 @@ export const updateDocument = async (actor: { system: any, update: any }, update
             updates[`system.${key}`] = value
         }
     })
-    return await actor.update(updates)
+    return actor.update(updates)
 }
 
 export const updateDocumentAtPath = async (actor: { system: any, update: any }, path: string[], value: any) => {
@@ -20,5 +20,5 @@ export const updateDocumentAtPath = async (actor: { system: any, update: any }, 
     }
 
     currentUpdateLevel[path[path.length - 1]] = value
-    return await updateDocument(actor, updates)
+    return updateDocument(actor, updates)
 }

@@ -21,7 +21,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         /**
          * Build a list of failed item lookups.
          */
-        let failures: string[] = []
+        const failures: string[] = []
 
         /**
          * Update the Hero's data model.
@@ -29,7 +29,7 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         await updateDocument(hero.parent, {
             tagalongId: res.id,
             name: res.name,
-            prototypeToken: { name: res.name },
+            prototypeToken: { name: res.name, actorLink: true },
             level: { current: res.level, xp: res.xp },
 
             stats: {
@@ -144,7 +144,17 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
                                 targetStat: res.strongPotentialStat, type: 'BONUS', value: '1'
                             }]
                         }
-                    ]
+                    ],
+                })
+            }
+            if (res.ancestry_bonus_skill != null) {
+                await updateDocument(heroAncestry, {
+                    'chosenTrainings': [res.ancestry_bonus_skill]
+                })
+            }
+            if (res.ancestry_bonus_spell != null) {
+                await updateDocument(heroAncestry, {
+                    'chosenSpells': [res.ancestry_bonus_spell]
                 })
             }
             applyAncestralTraits(hero, heroAncestry.system)
