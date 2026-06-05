@@ -8,8 +8,8 @@ const human = {
         beingSize: 'Medium',
         senses: [],
         traitInfo: [
-            ['Knack', 'You gain a Perk and a Training.'],
-            ['Strong Potential', 'Increase one of your Stats by 1, but no higher than 7.']
+            ['<br><b>Knack</b>', 'You gain a Perk and a Training.'],
+            ['<br><b>Strong Potential</b>', 'Increase one of your Stats by 1, but no higher than 7.']
         ],
         traits: [
             {
@@ -55,9 +55,9 @@ const elf = {
         beingSize: 'Medium',
         senses: [],
         traitInfo: [
-            ['Ascendancy', 'You are Trained in a Skill from either Arcana, Mysticism, Influence, or in Ranged Attacks.'],
-            ['Elven Eyes', 'You have Favor on sight-based Detect Checks.'],
-            ['Naturally Attuned', 'You know a Spell and can Cast it with a Skill of yoru choice.']
+            ['<br><b>Ascendancy</b>', 'You are Trained in a Skill from either Arcana, Mysticism, Influence, or in Ranged Attacks.'],
+            ['<br><b>Elven Eyes</b>', 'You have Favor on sight-based Detect Checks.'],
+            ['<br><b>Naturally Attuned</b>', 'You know a Spell and can Cast it with a Skill of yoru choice.']
         ],
         traits: [{ modifiers: [] }],
         grants: [

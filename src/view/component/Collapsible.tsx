@@ -1,23 +1,24 @@
-import { LucideChevronDown, LucideChevronUp } from "lucide-react";
-import { ReactNode, useCallback, useState } from "react";
+import { LucideChevronDown, LucideChevronUp } from "lucide-react"
+import { ReactNode, useCallback, useState } from "react"
 
 export interface CollapsibleHeaderProps {
-    toggleCollapsedButton: ReactNode;
-    title: string;
-    toggleCollapsed?: () => void;
+    title: string
+    isCollapsed: boolean
+    toggleCollapsedButton: ReactNode
+    toggleCollapsed?: () => void
 }
 interface CollapsibleHeader {
-    ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode;
+    ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }
 
 export const Collapsible = ({ title, Header, content, startCollapsed = false }: { title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean }) => {
-    const [isCollapsed, setCollapsed] = useState(startCollapsed);
+    const [isCollapsed, setCollapsed] = useState(startCollapsed)
     const toggleCollapsed = useCallback(() => {
-        setCollapsed(!isCollapsed);
+        setCollapsed(!isCollapsed)
     }, [isCollapsed])
     return (
         <div>
-            <Header title={title} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={
+            <Header title={title} isCollapsed={isCollapsed} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={
                 <button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>
             } />
             {isCollapsed ? <></> : content}
@@ -26,6 +27,6 @@ export const Collapsible = ({ title, Header, content, startCollapsed = false }: 
 }
 
 const ToggleCollapseIcon = ({ isCollapsed }: { isCollapsed: boolean }) => {
-    if (isCollapsed) return <LucideChevronDown />;
+    if (isCollapsed) return <LucideChevronDown />
     return <LucideChevronUp />
 }
