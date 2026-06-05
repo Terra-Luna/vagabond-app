@@ -77,14 +77,14 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 ml-1 mt-1 gap-1">
+        <div className="grid grid-cols-1 lg:grid-cols-2 ml-1 mr-1 mt-1 gap-1">
             <div>
                 <Avatar hero={hero} />
                 <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
                 <Trackers hero={hero} />
                 <Speeds hero={hero} />
             </div>
-            <div className="flex flex-col items-center mx-1 gap-y-2">
+            <div className="flex flex-col items-center gap-y-2">
                 <Stats hero={hero} />
                 {
                     hero.actions.length > 0 ? (

@@ -1,20 +1,20 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star } from "lucide-react";
-import HeroDataModel from "../../../../../model/actor/HeroDataModel";
-import { ReactNode, useCallback } from "react";
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star } from "lucide-react"
+import HeroDataModel from "../../../../../model/actor/HeroDataModel"
+import { ReactNode, useCallback } from "react"
 import lang from "../../../../../../public/lang/en.json"
-import { Header } from "../../../../component/Header";
-import { localizeString } from "../../../../../utils/localeUtils";
-import { rollSkillCheck } from "../../../../../combat/dice-rolls";
-import { EditableTextField } from "../../../../component/EditableTextField";
-import { updateDocument } from "../../../../../utils/documentUtils";
-import { fetchAndUpdate } from "../../../../../api/tagalong/TagalongImporter";
+import { Header } from "../../../../component/Header"
+import { localizeString } from "../../../../../utils/localeUtils"
+import { rollSkillCheck } from "../../../../../combat/dice-rolls"
+import { EditableTextField } from "../../../../component/EditableTextField"
+import { updateDocument } from "../../../../../utils/documentUtils"
+import { fetchAndUpdate } from "../../../../../api/tagalong/TagalongImporter"
 
 const borderClasses = "border border-solid border-sheet-header-fill"
 
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <img
-            className={`${borderClasses} rounded-lg`}
+            className={`${borderClasses} rounded-lg object-contain`}
             src={hero.parent.img}
             alt={hero.parent.name}
             onClick={async (event) => {
@@ -26,15 +26,15 @@ export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
                 }
             }}
         />
-    );
+    )
 }
 
 interface Health {
-    current: number | null;
-    max: number | null;
+    current: number | null
+    max: number | null
 }
 interface Armor {
-    rating: number | null;
+    rating: number | null
 }
 export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
     return (
@@ -58,8 +58,8 @@ export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, arm
 }
 
 export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
-    const { studied, fatigue } = hero;
-    const currentLuck = hero.stats.currentLuck;
+    const { studied, fatigue } = hero
+    const currentLuck = hero.stats.currentLuck
 
     const updateLuck = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
@@ -108,7 +108,7 @@ const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode,
 
 export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     const { crawl, travel, turn } = hero.speed
-    if (crawl == null || travel == null || turn == null) return;
+    if (crawl == null || travel == null || turn == null) return
 
     const localizeSpeed = (type: (keyof typeof lang.VGLITE.Speeds), speed: number) => localizeString(lang.VGLITE.Speeds[type], { speed: speed.toString() })
 
@@ -124,7 +124,7 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-export const Speed = ({ name, value }: { name: string; value: string }) => (
+export const Speed = ({ name, value }: { name: string value: string }) => (
     <div className="flex flex-col items-center">
         <div className="font-eskapade text-2xl font-bold text-text-primary">{value}</div>
         <div className="text-text-aux font-bold -mt-1">{name}</div>
@@ -192,7 +192,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string; value: number; formula: string; }) => {
+export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string value: number formula: string }) => {
     return (
         <div className={`font-eskapade text-lg flex cursor-pointer ${borderClasses}`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
