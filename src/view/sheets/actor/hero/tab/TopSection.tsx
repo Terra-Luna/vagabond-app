@@ -14,7 +14,7 @@ const borderClasses = "border border-solid border-sheet-header-fill"
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <img
-            className={`${borderClasses} rounded-lg object-contain`}
+            className={`${borderClasses} rounded-lg object-contain w-[200px] h-[200px]`}
             src={hero.parent.img}
             alt={hero.parent.name}
             onClick={async (event) => {
@@ -174,7 +174,7 @@ const Action = ({ hero, name, value}: { hero: HeroDataModel, name: string, value
                     rollSkillCheck(hero.parent, name, value, e)
                 }}>
                 <div className="text-lg text-left ml-1 mr-1">{name}</div>
-                <div className="bg-section-header-fill font-bold text-xl text-text-section-header w-1/4 text-center flex items-center justify-center">{value}</div>
+                <div className="bg-section-header-fill font-bold text-2xl text-text-section-header w-1/4 text-center flex items-center justify-center">{value}</div>
             </div>
         </div>
     )
@@ -192,14 +192,14 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string value: number formula: string }) => {
+export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
     return (
         <div className={`font-eskapade text-lg flex cursor-pointer ${borderClasses}`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
                 rollSkillCheck(hero.parent, name, value, e)
             }
         }>
-            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center flex items-center justify-center">
+            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-2xl flex items-center justify-center">
                 <span>{value}</span>
             </div>
             <div className="ml-1 flex flex-col">
