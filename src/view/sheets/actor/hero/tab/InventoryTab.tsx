@@ -5,7 +5,7 @@ import { coinsAsString } from "../../../../../model/common/CoinValue"
 
 const inventoryTabDiv = "w-full my-1"
 const infoBoxLayout = "bg-wealth-fill border border-solid border-table-border items-center w-full px-2 py-1"
-const infoBoxText = "text-text-special text-sm"
+const infoBoxText = "text-section-header-fill text-sm"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -23,7 +23,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 
 const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
     const capacity = hero.inventory.capacity || 2
-    const bulk = capacity - (hero.inventory.emptySlots || 0)
+    const bulk = capacity - (hero.inventory.emptySlots || capacity)
     const isFull = bulk/capacity >= 1
     return (
         <div className={infoBoxLayout +" "+ infoBoxText}>
@@ -31,7 +31,7 @@ const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
             <span className="text-md float-right">
                 {bulk} / {hero.inventory.capacity}
             </span>
-            <div className="h-[12px] -mx-1 mt-2 mb-2 border border-solid border-table-border rounded-md">
+            <div className="h-[12px] -mx-1 my-2 border border-solid border-table-border rounded-md">
                 <Gague bulk={bulk} capacity={capacity} isFull={isFull} />
             </div>
         </div>
@@ -39,17 +39,20 @@ const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Wealth = ({ hero }: { hero: HeroDataModel }) => {
-    const g = { v: hero.inventory.coins.g || 0, type: lang.VGLITE.HeroSheet.gold }
-    const s = { v: hero.inventory.coins.s || 0, type: lang.VGLITE.HeroSheet.silver }
-    const c = { v: hero.inventory.coins.c || 0, type: lang.VGLITE.HeroSheet.copper }
+    const g = { value: hero.inventory.coins.g || 0, denomination: lang.VGLITE.HeroSheet.gold }
+    const s = { value: hero.inventory.coins.s || 0, denomination: lang.VGLITE.HeroSheet.silver }
+    const c = { value: hero.inventory.coins.c || 0, denomination: lang.VGLITE.HeroSheet.copper }
+
+    
+
     return (
         <div className={infoBoxLayout +" "+ infoBoxText}>
             <div className="flex items-center justify-between">
                 <CoinsIcon />
-                <div className="flex float-right gap-2">
-                    <CoinContainer v={g.v} type={g.type} />
-                    <CoinContainer v={s.v} type={s.type} />
-                    <CoinContainer v={c.v} type={c.type} />
+                <div className="flex gap-2">
+                    <CoinContainer value={g.value} denomination={g.denomination} />
+                    <CoinContainer value={s.value} denomination={s.denomination} />
+                    <CoinContainer value={c.value} denomination={c.denomination} />
                 </div>
             </div>
         </div>
@@ -92,16 +95,16 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
 
 const CoinsIcon = () => {
     return (
-        <div className="text-text-primary border border-solid border-text-primary rounded p-1">
+        <div className="text-section-header-fill border border-solid border-section-header-fill rounded p-1">
             <Coins size={18} />
         </div>
     )
 }
-const CoinContainer = ({ v, type }: { v: number, type: string }) => {
+const CoinContainer = ({ value, denomination }: { value: number, denomination: string }) => {
     return (
         <div className="text-right">
-            <div className="text-text-primary text-2xl font-eskapade">{v}</div>
-            <div className="text-text-tertiary text-xs">{type}</div>
+            <div className="text-text-primary text-2xl font-eskapade">{value}</div>
+            <div className="text-text-tertiary text-xs">{denomination}</div>
         </div>
     )
 }
