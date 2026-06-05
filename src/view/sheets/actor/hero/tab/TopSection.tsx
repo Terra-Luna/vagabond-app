@@ -38,7 +38,7 @@ interface Armor {
 }
 export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
     return (
-        <div className="flex text-3xl font-eskapade font-bold mt-0.5 mb-0.5 ml-4 mr-4 justify-evenly">
+        <div className="flex text-3xl font-eskapade font-bold mt-1 mb-1 ml-4 mr-4 justify-evenly">
             <div className="flex items-center">
                 <Heart className="text-ic-hp fill-ic-hp" size={20} />
                 &nbsp;
@@ -76,7 +76,7 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
     const trackerClasses = `flex gap-1 items-center`
 
     return (
-        <div className="w-full flex flex-col justify-between">
+        <div className="w-full flex flex-col justify-between mt-0.5">
             <Header title={lang.VGLITE.HeroSheet.trackers} />
             <div className="flex gap-2">
                 <Tracker
@@ -113,7 +113,7 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     const localizeSpeed = (type: (keyof typeof lang.VGLITE.Speeds), speed: number) => localizeString(lang.VGLITE.Speeds[type], { speed: speed.toString() })
 
     return (
-        <div>
+        <div className="mt-0.5">
             <Header title={lang.VGLITE.HeroSheet.speeds} />
             <div className="flex items-center justify-around">
                 <Speed name={lang.VGLITE.Speeds.turn} value={localizeSpeed('turnSpeed', turn)} />

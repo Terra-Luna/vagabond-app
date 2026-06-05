@@ -13,6 +13,7 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { EditableNameField } from "../../../component/EditableTextField"
+import { Divider } from "../../../component/Header"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -98,7 +99,8 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
-    return <div>
+    return <div className="mt-1">
+        <div className="h-px bg-text-tertiary w-full mt-1" />
         <Tabs>
             <TabList>
                 <Tab>
