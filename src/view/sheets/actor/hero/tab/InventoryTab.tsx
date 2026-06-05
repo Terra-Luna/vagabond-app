@@ -2,6 +2,7 @@ import { Coins } from "lucide-react"
 import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { coinsAsString } from "../../../../../model/common/CoinValue"
+import { EditableTextField } from "../../../../component/EditableTextField"
 
 const inventoryTabDiv = "w-full my-1"
 const infoBoxLayout = "bg-wealth-fill border border-solid border-table-border items-center w-full px-2 py-1"
@@ -42,17 +43,14 @@ const Wealth = ({ hero }: { hero: HeroDataModel }) => {
     const g = { value: hero.inventory.coins.g || 0, denomination: lang.VGLITE.HeroSheet.gold }
     const s = { value: hero.inventory.coins.s || 0, denomination: lang.VGLITE.HeroSheet.silver }
     const c = { value: hero.inventory.coins.c || 0, denomination: lang.VGLITE.HeroSheet.copper }
-
-    
-
     return (
         <div className={infoBoxLayout +" "+ infoBoxText}>
             <div className="flex items-center justify-between">
                 <CoinsIcon />
                 <div className="flex gap-2">
-                    <CoinContainer value={g.value} denomination={g.denomination} />
-                    <CoinContainer value={s.value} denomination={s.denomination} />
-                    <CoinContainer value={c.value} denomination={c.denomination} />
+                    <CoinContainer hero={hero} value={g.value} denomination={g.denomination} />
+                    <CoinContainer hero={hero} value={s.value} denomination={s.denomination} />
+                    <CoinContainer hero={hero} value={c.value} denomination={c.denomination} />
                 </div>
             </div>
         </div>
@@ -100,19 +98,35 @@ const CoinsIcon = () => {
         </div>
     )
 }
-const CoinContainer = ({ value, denomination }: { value: number, denomination: string }) => {
+
+//<EditableTextField 
+// initialValue={hero.mana.current?.toString() ?? ""} 
+// updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }} 
+// />
+const CoinContainer = ({ hero, value, denomination }: { hero: HeroDataModel, value: number, denomination: string }) => {
     return (
         <div className="text-right">
-            <div className="text-text-primary text-2xl font-eskapade">{value}</div>
+            <div className="text-text-primary text-2xl font-eskapade">
+                <EditableTextField
+                    initialValue={value.toString() ?? ""}
+                    updateProps={{
+                        actor: hero.parent,
+                        propertyPath: ['inventory', 'coins', denomination.toLocaleLowerCase()[0]]
+                    }}
+                />
+            </div>
             <div className="text-text-tertiary text-xs">{denomination}</div>
         </div>
     )
 }
 
+/**
+ * This gague isn't working quite right, the width ratio isn't calculating right.
+ * Might be an issue or limitation with Tailwind.
+ */
 const Gague = ({ bulk, capacity, isFull }: { bulk: number, capacity: number, isFull: boolean }) => {
     const width = "w-" + bulk + "/" + capacity + " "
     const fillColor = isFull ? "bg-destructive-action " : "bg-section-header-fill "
-    console.log(width, fillColor)
     return (
         <div className={width + fillColor + "h-[10px] rounded-md"} />
     )
