@@ -33,9 +33,10 @@
   --color-skill-border: ;
   --color-stat-block-fill: ;
   --color-wealth-fill: ;
+  --color-wealth-denom-label: ;
   --color-table-border: ;
   --color-table-row-odd: ;
-    --color-table-row-even: ;
+  --color-table-row-even: ;
   --color-text-table-item: ;
   --color-ic-hp: ;
   --color-text-hp-current: ;
@@ -61,12 +62,12 @@
   --color-magical: ;
   --color-fire: ;
   --color-cold: ;
-    --color-zap: ;
-    --color-acid: ;
-    --color-necrotic: ;
-    --color-psychic: ;
-    --color-healing: ;
-    --color-physical: ;
+  --color-zap: ;
+  --color-acid: ;
+  --color-necrotic: ;
+  --color-psychic: ;
+  --color-healing: ;
+  --color-physical: ;
 }
 
 .light {
@@ -105,9 +106,10 @@
   --color-stat-block-fill: #6a2e2a;
 
   --color-wealth-fill: #f0e6d2;
+  --color-wealth-denom-label: #bb4d00;
   --color-table-border: #966e50;
   --color-table-row-odd: #e2c38c;
-    --color-table-row-even: #faf0e6;
+  --color-table-row-even: #faf0e6;
   --color-text-table-item: #53514a;
 
   --color-ic-hp: #e7000b;
@@ -178,10 +180,11 @@
   --color-skill-border: #44403b;
   --color-stat-block-fill: #c5b358;
 
-  --color-wealth-fill: ##1c1917;
+  --color-wealth-fill: #1c1917;
+  --color-wealth-denom-label: #bb4d00;
   --color-table-border: #44403b;
   --color-table-row-odd: #1c1917;
-    --color-table-row-even: #292524;
+  --color-table-row-even: #292524;
   --color-text-table-item: #eae8e7;
 
   --color-ic-hp: #e7000b;

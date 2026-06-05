@@ -43,8 +43,10 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     }, [value, onSave, updateProps])
 
     const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {
+        console.log(e.code)
         switch (e.code) {
             case "Enter":
+            case "NumpadEnter":
                 e.preventDefault()
                 if (await save()) {
                     setIsInEditMode(false)

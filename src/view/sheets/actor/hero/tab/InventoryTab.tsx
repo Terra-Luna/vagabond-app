@@ -24,7 +24,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 
 const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
     const capacity = hero.inventory.capacity || 2
-    const bulk = capacity - (hero.inventory.emptySlots || capacity)
+    const bulk = capacity - (hero.inventory.emptySlots ?? capacity)
     const isFull = bulk/capacity >= 1
     return (
         <div className={infoBoxLayout +" "+ infoBoxText}>
@@ -33,7 +33,7 @@ const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
                 {bulk} / {hero.inventory.capacity}
             </span>
             <div className="h-[12px] -mx-1 my-2 border border-solid border-table-border rounded-md">
-                <Gague bulk={bulk} capacity={capacity} isFull={isFull} />
+                <Gauge bulk={bulk} capacity={capacity} isFull={isFull} />
             </div>
         </div>
     )
@@ -45,12 +45,12 @@ const Wealth = ({ hero }: { hero: HeroDataModel }) => {
     const c = { value: hero.inventory.coins.c || 0, denomination: lang.VGLITE.HeroSheet.copper }
     return (
         <div className={infoBoxLayout +" "+ infoBoxText}>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center">
                 <CoinsIcon />
                 <div className="flex gap-2">
-                    <CoinContainer hero={hero} value={g.value} denomination={g.denomination} />
-                    <CoinContainer hero={hero} value={s.value} denomination={s.denomination} />
-                    <CoinContainer hero={hero} value={c.value} denomination={c.denomination} />
+                    <CoinContainer hero={hero} value={g.value} denomination={g.denomination} path='g' />
+                    <CoinContainer hero={hero} value={s.value} denomination={s.denomination} path='s' />
+                    <CoinContainer hero={hero} value={c.value} denomination={c.denomination} path='c' />
                 </div>
             </div>
         </div>
@@ -71,11 +71,17 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
             </thead>
             <tbody className="text-regular">{
                 items.map(i => (
-                    <tr key={i.parent._id} className="even:bg-table-row-even odd:bg-table-row-odd">
+                    <tr
+                        key={i.parent._id}
+                        className="even:bg-table-row-even odd:bg-table-row-odd"
+                        onClick={() =>
+                            openItemSheet(hero, i.parent._id)
+                        }
+                    >
                         {
                             (i.quantity || 0) > 1 ?
-                                <td className="pl-1 py-1">{i.name} (x{i.quantity})</td> :
-                                <td className="pl-1 py-1">{i.name}</td>
+                                <td className="px-2 py-1">{i.name} (x{i.quantity})</td> :
+                                <td className="px-2 py-1">{i.name}</td>
                         }
                         <td className="text-center">{i.slots}</td>
                         <td className="text-center">{coinsAsString(i.value)}</td>
@@ -91,43 +97,63 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
+/**
+ * Sub-components...
+ */
 const CoinsIcon = () => {
     return (
-        <div className="text-section-header-fill border border-solid border-section-header-fill rounded p-1">
-            <Coins size={18} />
+        <div
+            className="mx-1 cursor-pointer"
+            onClick={() =>
+                ui.notifications?.info("Todo: make an interface for adding/subtracting coin values...")
+            }
+        >
+            <Coins size={22} />
         </div>
     )
 }
 
-//<EditableTextField 
-// initialValue={hero.mana.current?.toString() ?? ""} 
-// updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }} 
-// />
-const CoinContainer = ({ hero, value, denomination }: { hero: HeroDataModel, value: number, denomination: string }) => {
+const CoinContainer = ({ hero, value, denomination, path }: { hero: HeroDataModel, value: number, denomination: string, path: string }) => {
     return (
-        <div className="text-right">
-            <div className="text-text-primary text-2xl font-eskapade">
+        <div className={"text-right px-1"}>
+            <div className="text-text-primary text-2xl font-eskapade font-bold cursor-pointer">
                 <EditableTextField
                     initialValue={value.toString() ?? ""}
                     updateProps={{
                         actor: hero.parent,
-                        propertyPath: ['inventory', 'coins', denomination.toLocaleLowerCase()[0]]
+                        propertyPath: ['inventory', 'coins', path]
                     }}
                 />
             </div>
-            <div className="text-text-tertiary text-xs">{denomination}</div>
+            <div className={"text-wealth-denom-label text-xs"}>{denomination}</div>
         </div>
     )
 }
 
-/**
- * This gague isn't working quite right, the width ratio isn't calculating right.
- * Might be an issue or limitation with Tailwind.
- */
-const Gague = ({ bulk, capacity, isFull }: { bulk: number, capacity: number, isFull: boolean }) => {
-    const width = "w-" + bulk + "/" + capacity + " "
-    const fillColor = isFull ? "bg-destructive-action " : "bg-section-header-fill "
+const Gauge = ({ bulk, capacity, isFull }: { bulk: number, capacity: number, isFull: boolean }) => {
+    const width = Math.min(bulk / capacity * 100, 100)
+    console.log(width)
+    const fillColor = isFull ? "bg-destructive-action " : "bg-section-header-fill"
     return (
-        <div className={width + fillColor + "h-[10px] rounded-md"} />
+        <div
+            className={fillColor + " h-[10px] rounded-md"}
+            style={{
+                width: `${width}%`, transition: "width 0.8s ease-in-out"
+            }} />
     )
+}
+
+const openItemSheet = (actor: any, itemId: string ) => {
+    const item = actor.parent.items.get(itemId)
+    if (item) {
+        item.sheet.render(true)
+    }
+    else {
+        ui.notifications?.warn("Item not found!")
+    }
+}
+
+const deleteItem = (actor: any, itemId: string) => {
+    console.log(actor, itemId)
+    actor.parent.deleteEmbeddedDocuments("Item", [itemId])
 }
