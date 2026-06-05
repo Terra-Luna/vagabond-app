@@ -132,7 +132,6 @@ const CoinContainer = ({ hero, value, denomination, path }: { hero: HeroDataMode
 
 const Gauge = ({ bulk, capacity, isFull }: { bulk: number, capacity: number, isFull: boolean }) => {
     const width = Math.min(bulk / capacity * 100, 100)
-    console.log(width)
     const fillColor = isFull ? "bg-destructive-action " : "bg-section-header-fill"
     return (
         <div
@@ -154,6 +153,5 @@ const openItemSheet = (actor: any, itemId: string ) => {
 }
 
 const deleteItem = (actor: any, itemId: string) => {
-    console.log(actor, itemId)
     actor.parent.deleteEmbeddedDocuments("Item", [itemId])
 }
