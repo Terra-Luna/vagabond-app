@@ -22,7 +22,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
     }, [mana])
     
     return (
-        <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 ml-4 justify-evenly">
+        <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
             <div className="flex items-center">
                 <span className="text-lg justify-bottom">Mana:&nbsp;&nbsp;</span>
                 <Sparkle className="text-mana" size={20}

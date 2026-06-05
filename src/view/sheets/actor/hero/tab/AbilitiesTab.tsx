@@ -8,18 +8,14 @@ import { SkillCard } from "../../../../component/SkillCard"
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="mt-1">
-            <div className="ml-2 mr-2">
-                <Header title={lang.VGLITE.HeroSheet.ancestry} />
-            </div>
+            <Header title={lang.VGLITE.HeroSheet.ancestry} />
             <SkillCard
                 title={`${hero.ancestry !== undefined ? hero.ancestry?.name + " Traits": ''}`}
                 subtitles={[['Type', hero.ancestry?.beingType], ['Size', hero.ancestry?.beingSize || '']]}
                 description={ancestryFullDescription(hero.ancestry as any)}
             />
             
-            <div className="mt-3 ml-2 mr-2">
-                <Header title={lang.VGLITE.HeroSheet.class} />
-            </div>
+            <Header title={lang.VGLITE.HeroSheet.class} />
             {
                 hero.class?.features?.filter(f =>
                     f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK'
@@ -33,9 +29,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 ))
             }
             
-            <div className="mt-3 ml-2 mr-2">
-                <Header title={lang.VGLITE.HeroSheet.perks} />
-            </div>
+            <Header title={lang.VGLITE.HeroSheet.perks} />
             {
                 hero.perks.map(p => (
                     <SkillCard

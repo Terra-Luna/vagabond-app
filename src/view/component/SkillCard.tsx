@@ -2,7 +2,7 @@ import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from
 import { Collapsible, CollapsibleHeaderProps } from "./Collapsible"
 import { Divider } from "./Header"
 
-const cardLayout = "ml-2 mr-2 mt-1 mb-1"
+const cardLayout = "mt-1 mb-1"
 
 const cardHeaderLayout = "flex items-center pt-2 pb-1 pl-2 pr-2 bg-section-header-fill"
 const cardHeaderStyle = "text-text-section-header text-xl font-eskapade font-bold rounded-t-lg"

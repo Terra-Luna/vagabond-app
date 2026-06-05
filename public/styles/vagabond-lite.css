@@ -32,9 +32,10 @@
   --color-skill-bg-fill: ;
   --color-skill-border: ;
   --color-stat-block-fill: ;
+  --color-wealth-fill: ;
   --color-table-border: ;
-  --color-table-fill-odd: ;
-  --color-table-fill-even: ;
+  --color-table-row-odd: ;
+    --color-table-row-even: ;
   --color-text-table-item: ;
   --color-ic-hp: ;
   --color-text-hp-current: ;
@@ -59,7 +60,7 @@
   --color-destructive-action: ;
   --color-magical: ;
   --color-fire: ;
-    --color-cold: ;
+  --color-cold: ;
     --color-zap: ;
     --color-acid: ;
     --color-necrotic: ;
@@ -103,9 +104,10 @@
   --color-skill-border: #d6d3d1;
   --color-stat-block-fill: #6a2e2a;
 
+  --color-wealth-fill: #f0e6d2;
   --color-table-border: #966e50;
-  --color-table-fill-odd: #faf0e6;
-  --color-table-fill-even: #f4efea;
+  --color-table-row-odd: #e2c38c;
+    --color-table-row-even: #faf0e6;
   --color-text-table-item: #53514a;
 
   --color-ic-hp: #e7000b;
@@ -175,9 +177,10 @@
   --color-skill-border: #44403b;
   --color-stat-block-fill: #c5b358;
 
+  --color-wealth-fill: ##1c1917;
   --color-table-border: #44403b;
-  --color-table-fill-odd: #292524;
-  --color-table-fill-even: #44403c;
+  --color-table-row-odd: #1c1917;
+    --color-table-row-even: #292524;
   --color-text-table-item: #eae8e7;
 
   --color-ic-hp: #e7000b;
@@ -281,5 +284,7 @@
 .react-tabs__tab-panel--selected {
   display: block;
   height: 600px;
+  margin-left: 4px;
+    margin-right: 4px;
   overflow-y: auto;
 }

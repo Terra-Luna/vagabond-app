@@ -504,10 +504,21 @@
       "ancestry": "ANCESTRY",
       "class": "CLASS",
       "perks": "PERKS",
+      "encumbrance": "ENCUMBRANCE",
+      "wealth": "WEALTH",
+      "gold": "GOLD",
+      "silver": "SILVER",
+      "copper": "COPPER",
       "tab-main": "Main",
       "tab-inv": "Inventory",
       "tab-magic": "Magic",
-      "tab-abilities": "Abilities"
+      "tab-abilities": "Abilities",
+      "Inventory": {
+        "item": "ITEM",
+        "slots": "SLOTS",
+        "value": "VALUE",
+        "equip": "EQUIP"
+      }
     },
     "ItemSheet": {
       "type": "Type",

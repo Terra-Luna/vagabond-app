@@ -8,7 +8,7 @@ import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] ml-1 mt-1 gap-1">
+        <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] my-1 gap-1">
             <div className="">
                 <Skills hero={hero} />
             </div>

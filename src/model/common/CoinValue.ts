@@ -9,6 +9,33 @@ export const coinSchema = () => {
     }
 }
 
+export const coinsAsString = (coins: any) => {
+    let coinString = ''
+    if (coins.c > 0) {
+        coinString = coins.c + "c"
+    }
+    if (coins.s > 0) {
+        if (coinString.length > 0) {
+            coinString = coins.s + "s, " + coinString
+        }
+        else {
+            coinString = coins.s + "s"
+        }
+    }
+    if (coins.g > 0) {
+        if (coinString.length > 0) {
+            coinString = coins.g + "g, " + coinString
+        }
+        else {
+            coinString = coins.g + "g"
+        }
+    }
+    if (coinString.length == 0) {
+        coinString = "-"
+    }
+    return coinString
+}
+
 export const consolidateCoins = (coins: any) => {
     var copperToSilver = Math.floor(coins.c / 100)
     coins.s += copperToSilver
