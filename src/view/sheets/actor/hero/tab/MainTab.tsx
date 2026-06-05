@@ -12,6 +12,8 @@ export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
             </div>
             <div className="flex flex-col items-center mx-1 gap-y-2">
                 <Attacks hero={hero} />
+                <Weapons hero={hero} />
+                <Armor hero={hero} />
             </div>
         </div>
     )
@@ -71,8 +73,9 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         return hero.inventory.items.filter(it => it.isEquipped && it.category === "Weapon")
     }
     return (
-        <div>
-
+        <div className="w-full">
+            <Header title={lang.VGLITE.HeroSheet.weapons} />
+            
         </div>
     )
 }
@@ -82,8 +85,9 @@ const Armor = ({ hero }: { hero: HeroDataModel }) => {
         return hero.inventory.items.filter(it => it.isEquipped && it.category === "Armor")
     }
     return (
-        <div>
-
+        <div className="w-full">
+            <Header title={lang.VGLITE.HeroSheet.armor} />
+            
         </div>
     )
 }
