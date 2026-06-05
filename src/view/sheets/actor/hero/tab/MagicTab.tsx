@@ -20,7 +20,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
     const updateMana = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
-    
+
     return (
         <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
             <div className="flex items-center">
@@ -42,7 +42,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                 &nbsp;
                 <span>{hero.mana.maxCast}</span>
             </div>
-            <button className="flex items-center bg-btn-primary-fill text-xl text-btn-primary-text rounded-lg px-2 cursor-pointer" onClick={
+            <button className="hover:[box-shadow:0_4px_6px_var(--color-mana-50)] flex items-center bg-btn-primary-fill text-xl text-btn-primary-text rounded-lg px-2 cursor-pointer hover:scale-105" onClick={
                 () => ui.notifications?.info("Feature coming soon!")
             }>
                 <span className="mr-2">Cast</span>
