@@ -124,7 +124,7 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-export const Speed = ({ name, value }: { name: string value: string }) => (
+export const Speed = ({ name, value }: { name: string, value: string }) => (
     <div className="flex flex-col items-center">
         <div className="font-eskapade text-2xl font-bold text-text-primary">{value}</div>
         <div className="text-text-aux font-bold -mt-1">{name}</div>
