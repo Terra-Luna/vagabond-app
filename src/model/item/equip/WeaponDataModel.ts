@@ -81,15 +81,15 @@ export function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
     const nonFist = equippedWeapons.filter(it => it.grip.style !== 'F')
     
     if (weapon.grip.style === 'F' && equippedWeapons.filter(it => it.grip.state === 'F').length < 2) {
-        weapon.isEquipped = true
+        weapon.parent.update({ 'system.isEquipped': true })
         weapon.grip.state = 'F'
     }
     else if (weapon.grip.style === '2H' && nonFist.length == 0) {
-        weapon.isEquipped = true
+        weapon.parent.update({ 'system.isEquipped': true })
         weapon.grip.state = '2H'
     }
     else if ((weapon.grip.style === '1H' || weapon.grip.style === 'V') && nonFist.length < 2) {
-        weapon.isEquipped = true
+        weapon.parent.update({ 'system.isEquipped': true })
         weapon.grip.state = '1H'
     }
     else {
@@ -101,7 +101,7 @@ export function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
 }
 
 export function unEquipWeapon(weapon: WeaponDataModel) {
-    weapon.isEquipped = false
+    weapon.parent.update({ 'system.isEquipped': false })
 }
 
 export class WeaponError extends VgLiteError<string> { }

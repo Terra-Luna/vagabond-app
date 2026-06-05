@@ -3,6 +3,8 @@ import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import lang from "../../../../../../public/lang/en.json"
 import { Header } from "../../../../component/Header";
 import { rollDamage, rollSkillCheck } from "../../../../../combat/dice-rolls";
+import WeaponDataModel from "../../../../../model/item/equip/WeaponDataModel";
+import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -75,19 +77,41 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />
-            
+            {
+                (hero.inventory.items.filter(it => it.isEquippedWeaponOrShield) as unknown[] as WeaponDataModel[]).map(it => (
+                    <Weapon
+                        key={it.name}
+                        name={it.name}
+                        icon={it.parent.icon}
+                        properties={it.properties.reduce((props, p) => { return props + p }, '')}
+                        grip={it.grip.style}
+                        state={it.grip.state}
+                        dmg1Hand={it.damage.oneHand}
+                        dmg2Hand={it.damage.twoHand}
+                        range={it.range}
+                    />
+                ))
+            }
+        </div>
+    )
+}
+
+const Weapon = ({name, icon, properties, grip, state, dmg1Hand, dmg2Hand, range}: {
+    name: string, icon: string, properties: string, grip: string, state: string, dmg1Hand, dmg2Hand, range
+}) => {
+    return (
+        <div className="text-text-primary">
+            <span>{icon} {name} {properties} {grip} {state} {dmg1Hand} {dmg2Hand} {range}</span>
         </div>
     )
 }
 
 const Armor = ({ hero }: { hero: HeroDataModel }) => {
-    let armor = () => {
-        return hero.inventory.items.filter(it => it.isEquipped && it.category === "Armor")
-    }
+    const armor = hero.inventory.items.find(it => it.isEquippedArmor) as unknown as ArmorDataModel
     return (
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.armor} />
-            
+            <div className="text-text-primary">{armor?.name} {armor?.rating} {armor?.material}</div>
         </div>
     )
 }

@@ -6,7 +6,7 @@ import HeroDataModel from "../HeroDataModel"
 export const inventorySchema = () => {
     return {
         coins: new fields.SchemaField({ ...coinSchema() }),
-        items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() })),
+        items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() }), { initial: [] }),
         capacity: new fields.NumberField({ ...requiredInteger, initial: 2 }),
         emptySlots: new fields.NumberField({ ...requiredInteger, initial: 2 })
     }
@@ -14,9 +14,9 @@ export const inventorySchema = () => {
 
 export function setInventoryData(hero: HeroDataModel) {
     consolidateCoins(hero.inventory.coins)
-    hero.inventory.items = hero.parent.items.find((i: any) => isInventoryItem(i))
+    hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
     hero.inventory.capacity = Number(hero.stats.might) + 8 + hero.bonus.inventorySlots! - hero.fatigue!
-    const bulk = hero.inventory.items?.reduce((sum, i) => { return sum! + i.slots! * i.quantity! }, 0)
+    const bulk = hero.inventory?.items?.reduce((sum, i) => { return sum! + i.slots! * i.quantity! }, 0)
     hero.inventory.emptySlots = hero.inventory.capacity - bulk
 }
 
@@ -27,4 +27,4 @@ export const isInventoryItem = (item: any): boolean => {
         item.type === 'sundry' ||
         item.type === 'alchemical' ||
         item.type === 'container'
-}
+}   

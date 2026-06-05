@@ -21,7 +21,7 @@ export default class HeroSheet extends VgLiteActorSheet {
 }
 
 const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
-    const hero = actor.system;
+    const hero = actor.system
     return (
         <div>
             <HeroSheetHeader hero={hero} sheet={sheet} />

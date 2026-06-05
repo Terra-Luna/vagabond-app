@@ -74,14 +74,14 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setXpToNextLevel(this)
         setMaxHP(this)
         setManaValues(this)
-        setArmorRating(this)
         setSaves(this)
         setSkillDifficulties(this)
         setSpeeds(this)
         setSenses(this)
-        setInventoryData(this)
         validateCurrentHP(this)
         validateCurrentLuck(this)
+        setInventoryData(this)
+        setArmorRating(this)
     }
 
 }

@@ -3,6 +3,8 @@ import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import { EditableTextField } from "../../../../component/EditableTextField";
 import { SkillCard } from "../../../../component/SkillCard";
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon";
+import { useCallback } from "react";
+import { updateDocument } from "../../../../../utils/documentUtils";
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -14,11 +16,19 @@ export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
+    const mana = hero.mana.current
+    const updateMana = useCallback((auxClick: boolean) => {
+        updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
+    }, [mana])
+    
     return (
         <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 ml-4 justify-evenly">
             <div className="flex items-center">
                 <span className="text-lg justify-bottom">Mana:&nbsp;&nbsp;</span>
-                <Sparkle className="text-mana" size={20} />
+                <Sparkle className="text-mana" size={20}
+                    onClick={() => updateMana(false)}
+                    onAuxClick={() => updateMana(true)}
+                />
                 &nbsp;
                 <span className="cursor-pointer text-mana">
                     <EditableTextField initialValue={hero.mana.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }} />

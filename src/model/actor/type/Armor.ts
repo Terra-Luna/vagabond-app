@@ -15,5 +15,7 @@ export function setArmorRating(hero: HeroDataModel) {
 }
 
 const getArmor = (hero: HeroDataModel): ArmorDataModel => {
-    return hero.inventory.items.find(i => i.category === 'Armor' && i.isEquipped) as unknown as ArmorDataModel
+    const armor = hero.inventory.items.find(i => i.isEquippedArmor) as unknown as ArmorDataModel
+    console.log(armor)
+    return armor
 }

@@ -54,13 +54,13 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
 }
 
 export function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
-    const equippedArmor = hero.inventory.items.filter(it => it.isEquipped && it.category === "Armor")
+    const equippedArmor = hero.inventory.items.filter(it => it.isEquipped && it.category === "Armor") as unknown[] as ArmorDataModel[]
     equippedArmor.forEach(it => {
-        it.isEquipped = false
+        it.parent.update({ 'system.isEquipped': false })
     })
-    armor.isEquipped = true
+    armor.parent.update({ 'system.isEquipped': true })
 }
 
 export function unequipArmor(armor: ArmorDataModel) {
-    armor.isEquipped = false
+    armor.parent.update({ 'system.isEquipped': false })
 }

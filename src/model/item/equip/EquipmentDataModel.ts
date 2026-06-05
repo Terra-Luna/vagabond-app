@@ -2,7 +2,7 @@ import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { itemBonusSchema } from "../../actor/type/Bonus"
 import { addCoins as addCoins, coinSchema } from "../../common/CoinValue"
-import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 /**
@@ -18,14 +18,20 @@ const baseEquipmentSchema = () => {
         isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),
         category: new fields.StringField({ ...requiredString, options: Object.values(lang.VGLITE.EquipmentCategories) }),
-        bonus: new fields.SchemaField({ ...itemBonusSchema() }),
         relicEffects: new fields.ArrayField(
             new fields.SchemaField({
                 type: new fields.StringField({ ...requiredString, choices: ['BONUS', 'CURSED', 'PROTECTION', 'MOVEMENT', 'SENSES', 'UTILITY', 'UNIQUE', 'UTILITY', 'FABLED'] }),
                 power: new fields.SchemaField({}),
                 addedCoinValue: new fields.SchemaField({ ...coinSchema() })
             })
-        )
+        ),
+
+        /**
+         * Derived
+         */
+        bonus: new fields.SchemaField({ ...itemBonusSchema() }),
+        isEquippedWeaponOrShield: new fields.BooleanField({ initial: false }),
+        isEquippedArmor: new fields.BooleanField({ initial: false })
     }
 }
 
@@ -45,6 +51,8 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
         if (this.relicEffects.length > 0) {
             this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
         }
+        this.isEquippedWeaponOrShield = this.isEquipped && this.typeName === 'Weapon'
+        this.isEquippedArmor = this.isEquipped && this.typeName === 'Armor'
     }
 
     abstract typeName: String
