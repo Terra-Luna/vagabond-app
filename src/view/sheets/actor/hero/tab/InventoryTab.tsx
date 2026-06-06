@@ -58,7 +58,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className={"flex " + infoBoxLayout}>
             <CoinsIcon />
-            <div className="flex">
+            <div className="flex -mr-1">
                 <CoinValue hero={hero} value={g.value} denomination={g.denomination} path='g' />
                 <CoinValue hero={hero} value={s.value} denomination={s.denomination} path='s' />
                 <CoinValue hero={hero} value={c.value} denomination={c.denomination} path='c' />
@@ -70,7 +70,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
 const CoinsIcon = () => {
     return (
         <div
-            className="mx-1 cursor-pointer"
+            className="-ml-1 mr-2 cursor-pointer"
             onClick={() =>
                 ui.notifications?.info("TODO: make an interface for adding/subtracting coin amts...")
             }
