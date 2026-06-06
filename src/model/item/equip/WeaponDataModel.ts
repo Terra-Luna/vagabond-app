@@ -64,22 +64,30 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
 }
 
 export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
-    const equippedWeapons = hero.parent.items.filter((it: any) =>
-        it.type === "weapon" && it.system.isEquipped
-    )
-    const nonFist = equippedWeapons.filter((it: any) => it.system.grip.style !== 'F')
+    const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
+    const fistWeapons = equippedWeapons.filter((it: any) => it.system.grip.style === 'F')
+    const heldWeapons = equippedWeapons.filter((it: any) => it.system.grip.style !== 'F')
+    let openFists = 2 - fistWeapons.length
+    let openHands = 2 - (heldWeapons.length === 0 ? 0 : (
+        heldWeapons.length === 2 ? 2 : (
+            heldWeapons[0].system.grip.state === '2H' ? 2 : 1
+        )
+    ))
 
-    if (weapon.grip.style === 'F' && equippedWeapons.filter((it: any) => it.system.grip.state === 'F').length < 2) {
+    console.log(heldWeapons.length)
+    console.log(weapon.grip.style, openFists, openHands)
+
+    if (openFists > 0 && weapon.grip.style === 'F') {
         weapon.parent.update({ 'system.isEquipped': true })
         weapon.parent.update({ 'system.grip.state': 'F' })
     }
-    else if (weapon.grip.style === '2H' && nonFist.length == 0) {
-        weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': '2H' })
-    }
-    else if ((weapon.grip.style === '1H' || weapon.grip.style === 'V') && nonFist.length < 2) {
+    else if (openHands > 0 && (weapon.grip.style === '1H' || weapon.grip.style === 'V')) {
         weapon.parent.update({ 'system.isEquipped': true })
         weapon.parent.update({ 'system.grip.state': '1H' })
+    }
+    else if (openHands > 1 && weapon.grip.style === '2H') {
+        weapon.parent.update({ 'system.isEquipped': true })
+        weapon.parent.update({ 'system.grip.state': '2H' })
     }
     else {
         ui.notifications?.warn("Cannot equip any more weapons!")
@@ -88,6 +96,17 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
 
 export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataModel) {
     if (weapon.grip.style === 'V') {
-        weapon.parent.update({ 'system.grip.state': weapon.grip.state === '1H' ? '2H' : '1H' })
+        if (weapon.grip.state === '1H') {
+            const equppedWeapons = hero.parent.items.filter((it: any) => it.type === 'weapon' && it.system.isEquipped && it.system.grip.style != 'F')
+            if (equppedWeapons.length > 1) {
+                ui.notifications?.warn("Unequip another 1H weapon before 2-handing.")
+            }
+            else {
+                weapon.parent.update({ 'system.grip.state': '2H' })
+            }
+        }
+        else {
+            weapon.parent.update({ 'system.grip.state': '1H' })
+        }
     }
 }

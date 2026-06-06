@@ -3,7 +3,7 @@ import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import lang from "../../../../../../public/lang/en.json"
 import { Header, ItemDivider } from "../../../../component/Header";
 import { rollDamage, rollSkillCheck } from "../../../../../combat/dice-rolls";
-import WeaponDataModel from "../../../../../model/item/equip/WeaponDataModel";
+import WeaponDataModel, { toggleGripState } from "../../../../../model/item/equip/WeaponDataModel";
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
@@ -76,10 +76,14 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                     <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
                         <div className="line-clamp-1">{w.name}</div>
                         <div className="flex justify-end">
-                            <div className={gripStyle + " mr-2"}>{w.grip.style}</div>
+                            <div className={gripStyle + " mr-2"} onClick={() => toggleGripState(hero, w)}>{w.grip.state}</div>
                             <div className="flex content-right">
-                                <div className={dmgStyle} onClick={() => rollDamage(hero.parent, w.damage.oneHand)}>{w.damage.oneHand}</div>
-                                {w.damage.twoHand !== w.damage.oneHand ? <><div>&nbsp;|&nbsp;</div><div className={dmgStyle} onClick={() => rollDamage(hero.parent, w.damage.twoHand)}>{w.damage.twoHand}</div></> : <></>}
+                                <div
+                                    className={dmgStyle}
+                                    onClick={() =>
+                                        rollDamage(hero.parent, w.grip.state === '1H' ? w.damage.oneHand : w.damage.twoHand)
+                                    }>{w.grip.state === '1H' ? w.damage.oneHand : w.damage.twoHand}
+                                </div>
                             </div>
                         </div>
                         <div className={propsStyle}>{w.properties.reduce((props, p) => { return props + p + ', ' }, '').replace(/,\s*$/, "")}</div>
