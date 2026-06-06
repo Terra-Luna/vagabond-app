@@ -13,7 +13,6 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { EditableNameField } from "../../../component/EditableTextField"
-import { Divider } from "../../../component/Header"
 
 const locale = lang.VGLITE.HeroSheet
 

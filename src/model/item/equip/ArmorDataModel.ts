@@ -40,27 +40,12 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
 
         super.prepareDerivedData()
     }
-
-    override typeName: String = "Armor"
-    override onEquip(hero: HeroDataModel) {
-        equipArmor(hero, this)
-    }
-
-    override onUnEquip(hero: HeroDataModel) {
-        unequipArmor(this)
-    }
-        
-    override onUse() { }
 }
 
-export function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
-    const equippedArmor = hero.inventory.items.filter(it => it.isEquipped && it.category === "Armor") as unknown[] as ArmorDataModel[]
-    equippedArmor.forEach(it => {
-        it.parent.update({ 'system.isEquipped': false })
+export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
+    const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
+    equippedArmor.forEach((it: any) => {
+        it.update({ 'system.isEquipped': false })
     })
     armor.parent.update({ 'system.isEquipped': true })
-}
-
-export function unequipArmor(armor: ArmorDataModel) {
-    armor.parent.update({ 'system.isEquipped': false })
 }

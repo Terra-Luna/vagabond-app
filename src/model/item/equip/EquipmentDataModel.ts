@@ -1,5 +1,4 @@
 import lang from "../../../../public/lang/en.json"
-import HeroDataModel from "../../actor/HeroDataModel"
 import { itemBonusSchema } from "../../actor/type/Bonus"
 import { addCoins as addCoins, coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
@@ -51,12 +50,7 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
         if (this.relicEffects.length > 0) {
             this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
         }
-        this.isEquippedWeaponOrShield = this.isEquipped && this.typeName === 'Weapon'
-        this.isEquippedArmor = this.isEquipped && this.typeName === 'Armor'
+        this.isEquippedWeaponOrShield = this.isEquipped && this.parent.type === 'weapon'
+        this.isEquippedArmor = this.isEquipped && this.parent.type === 'armor'
     }
-
-    abstract typeName: String
-    abstract onEquip(hero: HeroDataModel)
-    abstract onUnEquip(hero: HeroDataModel)
-    abstract onUse()
 }

@@ -32,6 +32,40 @@ const longsword = {
 }
 await Item.create(longsword)
 
+const shotgun = {
+    name: 'Shotgun',
+    type: 'weapon',
+    system: {
+        name: 'Shotgun',
+        description: '',
+        range: 'Near',
+        damage: {
+            oneHand: '1d10',
+            twoHand: '1d10'
+        },
+        grip: {
+            style: '2H',
+            state: '2H'
+        },
+        properties: ['Brutal, Ranged'],
+        explodeData: {
+            canExplode: false,
+            explodesOn: []
+        },
+        material: 'Standard',
+        isCrude: false,
+        slots: 2,
+        quantity: 1,
+        isStackable: false,
+        isEquippable: true,
+        isEquipped: false,
+        category: 'Weapons',
+        value: { g: 1, s: 60, c: 0 },
+        relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
+    }
+}
+await Item.create(shotgun)
+
 const shield = {
     name: 'Standard Shield',
     type: 'weapon',

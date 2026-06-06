@@ -1,7 +1,6 @@
 import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
-import VgLiteError from "../../common/VgLiteError"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
@@ -62,47 +61,33 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
 
         super.prepareDerivedData()
     }
-
-    override typeName: String = 'Weapon'
-
-    override onEquip(hero: HeroDataModel) {
-        equipWeapon(hero, this)
-    }
-
-    override onUnEquip(hero: HeroDataModel) {
-        unEquipWeapon(this)
-    }
-
-    override onUse() { }
 }
 
-export function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
-    const equippedWeapons = hero.inventory.items.filter(it => it.category === "Weapon" && it.isEquipped) as WeaponDataModel[]
-    const nonFist = equippedWeapons.filter(it => it.grip.style !== 'F')
-    
-    if (weapon.grip.style === 'F' && equippedWeapons.filter(it => it.grip.state === 'F').length < 2) {
+export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
+    const equippedWeapons = hero.parent.items.filter((it: any) =>
+        it.type === "weapon" && it.system.isEquipped
+    )
+    const nonFist = equippedWeapons.filter((it: any) => it.system.grip.style !== 'F')
+
+    if (weapon.grip.style === 'F' && equippedWeapons.filter((it: any) => it.system.grip.state === 'F').length < 2) {
         weapon.parent.update({ 'system.isEquipped': true })
-        weapon.grip.state = 'F'
+        weapon.parent.update({ 'system.grip.state': 'F' })
     }
     else if (weapon.grip.style === '2H' && nonFist.length == 0) {
         weapon.parent.update({ 'system.isEquipped': true })
-        weapon.grip.state = '2H'
+        weapon.parent.update({ 'system.grip.state': '2H' })
     }
     else if ((weapon.grip.style === '1H' || weapon.grip.style === 'V') && nonFist.length < 2) {
         weapon.parent.update({ 'system.isEquipped': true })
-        weapon.grip.state = '1H'
+        weapon.parent.update({ 'system.grip.state': '1H' })
     }
     else {
-        throw new WeaponError({
-            name: NOT_ENOUGH_HANDS_ERROR.name,
-            message: NOT_ENOUGH_HANDS_ERROR.message
-        })
+        ui.notifications?.warn("Cannot equip any more weapons!")
     }
 }
 
-export function unEquipWeapon(weapon: WeaponDataModel) {
-    weapon.parent.update({ 'system.isEquipped': false })
+export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataModel) {
+    if (weapon.grip.style === 'V') {
+        weapon.parent.update({ 'system.grip.state': weapon.grip.state === '1H' ? '2H' : '1H' })
+    }
 }
-
-export class WeaponError extends VgLiteError<string> { }
-export const NOT_ENOUGH_HANDS_ERROR = { name: 'NOT_ENOUGH_HANDS_ERROR', message: 'Hands are full' }

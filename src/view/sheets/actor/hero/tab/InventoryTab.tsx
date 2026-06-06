@@ -3,6 +3,8 @@ import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
+import { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
+import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
@@ -106,21 +108,25 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                     <tr
                         key={i.parent._id}
                         className="even:bg-table-row-even/50 odd:bg-table-row-odd/50"
-                        onClick={() =>
-                            openItemSheet(hero, i.parent._id)
-                        }
                     >
                         {
                             (i.quantity || 0) > 1 ?
-                                <td className="px-2 py-1">{i.name} (x{i.quantity})</td> :
-                                <td className="px-2 py-1">{i.name}</td>
+                                <td className="px-2 py-1" onClick={() => openItemSheet(hero, i.parent._id)}>{i.name} (x{i.quantity})</td> :
+                                <td className="px-2 py-1" onClick={() => openItemSheet(hero, i.parent._id)}>{i.name}</td>
                         }
                         <td className="text-center">{i.slots}</td>
                         <td className="text-center">{coinsAsString(i.value)}</td>
                         {
-                            i.isEquippable ? <td className="text-center">{
-                                i.isEquipped ? 'X' : ''
-                            }</td> : <></>
+                            i.isEquippable ?
+                                <td className="text-center">
+                                    <input
+                                        className="cursor-pointer"
+                                        type="checkbox"
+                                        checked={i.isEquipped} onChange={
+                                            () => toggleEquipState(hero, i.parent._id)
+                                        }
+                                    />
+                                </td> : <></>
                         }
                     </tr>
                 ))
@@ -129,8 +135,8 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const openItemSheet = (actor: any, itemId: string ) => {
-    const item = actor.parent.items.get(itemId)
+const openItemSheet = (hero: HeroDataModel, itemId: string ) => {
+    const item = hero.parent.items.get(itemId)
     if (item) {
         item.sheet.render(true)
     }
@@ -139,6 +145,33 @@ const openItemSheet = (actor: any, itemId: string ) => {
     }
 }
 
-const deleteItem = (actor: any, itemId: string) => {
-    actor.parent.deleteEmbeddedDocuments("Item", [itemId])
+const toggleEquipState = async (hero: HeroDataModel, itemId: string) => {
+    const item = hero.parent.items.get(itemId)
+    console.log("Item isEquipped:", item.system.isEquipped)
+    if (item.system.isEquipped) {
+        await item.update({ 'system.isEquipped': false })
+    }
+    else {
+        if (item) {
+            if (item.type === 'armor') {
+                console.log("Equipping armor:", item.system)
+                await equipArmor(hero, item.system)
+            }
+            else if (item.type === 'weapon') {
+                console.log("Equipping weapon:", item.system)
+                await equipWeapon(hero, item.system)
+            }
+            else {
+                console.log("Equipping tool:", item.system)
+                await item.update({ 'system.isEquipped': true })
+            }
+        }
+        else {
+            ui.notifications?.warn("Item not found!")
+        }
+    }
+}
+
+const deleteItem = (hero: HeroDataModel, itemId: string) => {
+    hero.parent.deleteEmbeddedDocuments("Item", [itemId])
 }

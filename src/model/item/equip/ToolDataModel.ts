@@ -1,4 +1,3 @@
-import HeroDataModel from "../../actor/HeroDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 /**
@@ -17,9 +16,4 @@ export default class GearDataModel extends EquipmentDataModel<ToolSchema> {
             ...toolSchema()
         }
     }
-
-    override typeName: String = "Tool"
-    override onEquip(hero: HeroDataModel) { }
-    override onUnEquip(hero: HeroDataModel) { }
-    override onUse() { }
 }

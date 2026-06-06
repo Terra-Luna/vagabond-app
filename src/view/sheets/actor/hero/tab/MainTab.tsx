@@ -72,7 +72,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />
             {
-                equippedWeapons.map(w => (<>
+                equippedWeapons?.map(w => (<div key={w.parent._id}>
                     <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
                         <div className="line-clamp-1">{w.name}</div>
                         <div className="flex justify-end">
@@ -86,7 +86,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         <div className={propsStyle + " text-right mr-1"}>{w.range}</div>
                     </div>
                     <ItemDivider />
-                </>))
+                </div>))
             }
         </div>
     )
@@ -99,13 +99,13 @@ const Armor = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.armor} />
             <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1">
-                <div className="line-clamp-1">{armor.name}</div>
+                <div className="line-clamp-1">{armor?.name || '-'}</div>
                 <div className="flex justify-end items-center">
                     <Shield className="mr-1" size={16} />
-                    <div className="line-clamp-1 text-right mr-1">{armor.rating}</div>
+                    <div className="line-clamp-1 text-right mr-1">{armor?.rating || '-'}</div>
                 </div>
-                <div className={propsStyle}>{armor.category}</div>
-                <div className={propsStyle + " text-right mr-1"}>{armor.material}</div>
+                <div className={propsStyle}>{armor?.category || '-'}</div>
+                <div className={propsStyle + " text-right mr-1"}>{armor?.material || '-'}</div>
             </div>
             <ItemDivider />
         </div>

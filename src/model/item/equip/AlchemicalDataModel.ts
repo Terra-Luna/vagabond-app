@@ -1,5 +1,4 @@
 import lang from "../../../../public/lang/en.json"
-import HeroDataModel from "../../actor/HeroDataModel"
 import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
@@ -20,9 +19,4 @@ export default class AlchemicalItemDataModel extends EquipmentDataModel<Alchemic
             ...alchemicalSchema()
         }
     }
-
-    override typeName: String = "Alchemical"
-    override onEquip(hero: HeroDataModel) { }
-    override onUnEquip(hero: HeroDataModel) { }
-    override onUse() { }
 }
