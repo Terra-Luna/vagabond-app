@@ -10,7 +10,7 @@ const cardHeaderStyle = "text-text-section-header text-xl font-eskapade font-bol
 const cardSubheaderLayout = "flex items-center border-r-1 border-solid border-table-border"
 const cardSubheaderStyle = "flex text-text-section-header text-sm pb-1 pl-2 pr-8 bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
 
-const cardBodyLayout = "bg-body-fill rounded-b-lg p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border rounded-b-lg"
+const cardBodyLayout = "rounded-b-lg p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border rounded-b-lg"
 const cardBodyStyle = "text-text-primary text-sm antialiased"
 
 export const SkillCard = ({ title, subtitles, description }: {
