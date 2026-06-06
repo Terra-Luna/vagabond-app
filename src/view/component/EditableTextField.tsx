@@ -17,6 +17,10 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     const shouldSelectInputRef = useRef(false)
 
     useEffect(() => {
+        setValue(initialValue)
+    }, [initialValue])
+
+    useEffect(() => {
         if (shouldSelectInputRef.current && isInEditMode) {
             inputRef.current?.select()
             shouldSelectInputRef.current = false
@@ -34,6 +38,8 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     }, [initialValue, value])
 
     const save = useCallback(async () => {
+        setIsInEditMode(false)
+        
         if (onSave) {
             return onSave(value)
         }
@@ -64,7 +70,7 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     if (isInEditMode) {
         return <input ref={inputRef} className="w-auto field-sizing-content" type="text" value={value}
             onChange={e => setValue(e.target.value)}
-            onBlur={reset}
+            onBlur={save}
             onKeyDown={handleSpecialKeypresses} />
     }
     else {

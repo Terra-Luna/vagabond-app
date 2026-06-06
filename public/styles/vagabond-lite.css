@@ -267,8 +267,8 @@
 
 .react-tabs__tab-panel--selected {
   display: block;
-  height: 600px;
+  height: 260px;
   margin-left: 4px;
-    margin-right: 4px;
+  margin-right: 4px;
   overflow-y: auto;
 }

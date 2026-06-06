@@ -20,12 +20,13 @@ export interface AncestryComponentProps {
 
 const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel> }) => {
     const ancestry = item.system
+    console.log({ ancestry })
     return (
         <div className="">
             <AncestrySheetHeader {...{ ancestry }} />
             <div className="ml-2 mt-1 mr-2">
                 <LabelledField label={lang.VGLITE.AncestrySheet.description} className="text-text-primary font-paradigm">
-                    <RichTextField />
+                    <RichTextField defaultValue={ancestry.description} />
                 </LabelledField>
                 <Traits ancestry={ancestry} />
             </div>

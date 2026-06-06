@@ -111,6 +111,16 @@ Hooks.on("renderCombatTracker", (app, html, data) => {
     })
 })
 
+Hooks.on("renderItemSheetV2", (_, html) => {
+    $(html).find('[data-action="close"]').each((_: any, btn: HTMLElement) => {
+        console.log({ btn })
+        btn.onclick = (e) => {
+            alert("Perish")
+            // e.stopPropagation(); e.preventDefault();
+        }
+    })
+})
+
 // Register sheets
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
