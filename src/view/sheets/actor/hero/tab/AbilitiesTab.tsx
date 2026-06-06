@@ -15,19 +15,21 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 description={ancestryFullDescription(hero.ancestry as any)}
             />
             
-            <Header title={lang.VGLITE.HeroSheet.class} />
-            {
-                hero.class?.features?.filter(f =>
-                    f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK'
-                ).map(f => (
-                    <SkillCard
-                        key={f.name}
-                        title={f.name}
-                        subtitles={[[`${hero.class.name}`, `Level ${f.level}`]]}
-                        description={f.description}
-                    />
-                ))
-            }
+            <div className="my-2">
+                <Header title={lang.VGLITE.HeroSheet.class} />
+                {
+                    hero.class?.features?.filter(f =>
+                        f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK'
+                    ).map(f => (
+                        <SkillCard
+                            key={f.name}
+                            title={f.name}
+                            subtitles={[[`${hero.class.name}`, `Level ${f.level}`]]}
+                            description={f.description}
+                        />
+                    ))
+                }
+            </div>
             
             <Header title={lang.VGLITE.HeroSheet.perks} />
             {

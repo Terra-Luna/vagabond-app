@@ -16,7 +16,7 @@ export const coinsAsString = (coins: any) => {
     }
     if (coins.s > 0) {
         if (coinString.length > 0) {
-            coinString = coins.s + "s, " + coinString
+            coinString = coins.s + "s " + coinString
         }
         else {
             coinString = coins.s + "s"
@@ -24,7 +24,7 @@ export const coinsAsString = (coins: any) => {
     }
     if (coins.g > 0) {
         if (coinString.length > 0) {
-            coinString = coins.g + "g, " + coinString
+            coinString = coins.g + "g " + coinString
         }
         else {
             coinString = coins.g + "g"
