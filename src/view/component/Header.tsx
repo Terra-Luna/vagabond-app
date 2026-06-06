@@ -8,6 +8,6 @@ export const Header = ({ title }: { title: string }) => {
     )
 }
 
-const divider = "h-px w-full"
+const divider = "h-px grow"
 export const Divider = () => <div className={divider + " bg-section-header-line mx-1"} />
 export const ItemDivider = () => <div className={divider + " bg-skill-divider"} />
