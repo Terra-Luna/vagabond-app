@@ -37,10 +37,20 @@ interface Armor {
     rating: number | null
 }
 export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
+    const hp = hero.health.current
+    const updateHp = useCallback((auxClick: boolean) => {
+        updateDocument(hero.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
+    }, [hp])
+
     return (
         <div className="flex text-3xl font-eskapade font-bold mt-1 mb-1 ml-4 mr-4 justify-evenly">
             <div className="flex items-center">
-                <Heart className="text-ic-hp fill-ic-hp" size={20} />
+                <Heart
+                    className="text-ic-hp fill-ic-hp"
+                    size={24}
+                    onClick={() => updateHp(false)}
+                    onAuxClick={() => updateHp(true)}
+                />
                 &nbsp;
                 <span className="text-text-hp-current">
                     <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
@@ -48,8 +58,8 @@ export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, arm
                 <span className="slash">&nbsp;/&nbsp;</span>
                 <span className="text-text-hp-max">{health.max}</span>
             </div>
-            <div className="flex items-center">
-                <Shield className="text-ic-armor-border fill-ic-armor-fill" size={20} />
+            <div className="flex items-center ml-2">
+                <Shield className="text-ic-armor-border fill-ic-armor-fill" size={24} />
                 &nbsp;
                 <span className="rating">{armor.rating}</span>
             </div>
@@ -170,9 +180,7 @@ const Action = ({ hero, name, value}: { hero: HeroDataModel, name: string, value
     return (
         <div className="flex w-full justify-between items-center border border-solid border-section-header-fill">
             <div className="flex items-center justify-between w-full font-eskapade font-bold cursor-pointer" onClick={
-                async (e: React.MouseEvent<HTMLDivElement>) => {
-                    rollSkillCheck(hero.parent, name, value, e)
-                }}>
+                async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }}>
                 <div className="text-lg text-left ml-1 mr-1">{name}</div>
                 <div className="bg-section-header-fill font-bold text-2xl text-text-section-header w-1/4 text-center flex items-center justify-center">{value}</div>
             </div>
@@ -195,9 +203,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
     return (
         <div className={`font-eskapade text-lg flex cursor-pointer ${borderClasses}`} onClick={
-            async (e: React.MouseEvent<HTMLDivElement>) => {
-                rollSkillCheck(hero.parent, name, value, e)
-            }
+            async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }
         }>
             <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-2xl flex items-center justify-center">
                 <span>{value}</span>

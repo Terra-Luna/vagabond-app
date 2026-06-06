@@ -63,6 +63,12 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
     }
 }
 
+/**
+ * Shows a UI warning notification if the Hero doesn't have enough
+ * free hands available to equip the given weapon.
+ * @param hero
+ * @param weapon 
+ */
 export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
     const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
     const fistWeapons = equippedWeapons.filter((it: any) => it.system.grip.style === 'F')
@@ -74,18 +80,15 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
         )
     ))
 
-    console.log(heldWeapons.length)
-    console.log(weapon.grip.style, openFists, openHands)
-
-    if (openFists > 0 && weapon.grip.style === 'F') {
+    if (weapon.grip.style === 'F' && openFists > 0) {
         weapon.parent.update({ 'system.isEquipped': true })
         weapon.parent.update({ 'system.grip.state': 'F' })
     }
-    else if (openHands > 0 && (weapon.grip.style === '1H' || weapon.grip.style === 'V')) {
+    else if ((weapon.grip.style === '1H' || weapon.grip.style === 'V') && openHands > 0) {
         weapon.parent.update({ 'system.isEquipped': true })
         weapon.parent.update({ 'system.grip.state': '1H' })
     }
-    else if (openHands > 1 && weapon.grip.style === '2H') {
+    else if (weapon.grip.style === '2H' && openHands > 1) {
         weapon.parent.update({ 'system.isEquipped': true })
         weapon.parent.update({ 'system.grip.state': '2H' })
     }
@@ -94,6 +97,13 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
     }
 }
 
+/**
+ * Toggles Versatile weapons between 1H and and 2H mode. If
+ * the Hero doesn't have a free hand availalble, a UI warning
+ * notification is shown to the user.
+ * @param hero 
+ * @param weapon 
+ */
 export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataModel) {
     if (weapon.grip.style === 'V') {
         if (weapon.grip.state === '1H') {

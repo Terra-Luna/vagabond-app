@@ -24,7 +24,6 @@ const longsword = {
         quantity: 1,
         isStackable: false,
         isEquippable: true,
-        isEquipped: false,
         category: 'Weapons',
         value: { g: 0, s: 40, c: 0 },
         relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
@@ -55,16 +54,47 @@ const shotgun = {
         material: 'Standard',
         isCrude: false,
         slots: 2,
-        quantity: 1,
         isStackable: false,
         isEquippable: true,
-        isEquipped: false,
         category: 'Weapons',
         value: { g: 1, s: 60, c: 0 },
         relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
     }
 }
 await Item.create(shotgun)
+
+const caestus = {
+    name: 'Caestus',
+    type: 'weapon',
+    system: {
+        name: 'Caestus',
+        description: '',
+        range: 'Close',
+        damage: {
+            oneHand: '1d4',
+            twoHand: '1d4'
+        },
+        grip: {
+            style: 'F',
+            state: 'F'
+        },
+        properties: ['Brawl'],
+        explodeData: {
+            canExplode: false,
+            explodesOn: []
+        },
+        material: 'Standard',
+        isCrude: false,
+        slots: 1,
+        isStackable: false,
+        isEquippable: true,
+        isEquipped: false,
+        category: 'Weapons',
+        value: { g: 0, s: 40, c: 0 },
+        relicEffects: []
+    }
+}
+await Item.create(caestus)
 
 const shield = {
     name: 'Standard Shield',
@@ -89,13 +119,11 @@ const shield = {
         material: 'Standard',
         isCrude: false,
         slots: 2,
-        quantity: 1,
         isStackable: false,
         isEquippable: true,
-        isEquipped: false,
         category: 'Weapons',
         value: { g: 0, s: 75, c: 0 },
-        relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
+        relicEffects: []
     }
 }
 await Item.create(shield)
@@ -117,7 +145,7 @@ const heavy_armor = {
         isEquipped: false,
         category: 'Armor',
         value: { g: 1, s: 0, c: 0 },
-        relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
+        relicEffects: []
     }
 }
 await Item.create(heavy_armor)
