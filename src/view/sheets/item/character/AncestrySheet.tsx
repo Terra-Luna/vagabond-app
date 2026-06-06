@@ -19,15 +19,18 @@ export interface AncestryComponentProps {
 
 const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel> }) => {
     const ancestry = item.system
+    const richTextRef = useRef();
     return (
         <div className="">
             <AncestrySheetHeader {...{ ancestry }} />
+            <LabelledField label="Sup" className="text-text-header-secondary">
+                <RichTextField ref={richTextRef} />
+            </LabelledField>
         </div>
     )
 }
 
 const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
-    const richTextRef = useRef();
 
     return <SheetHeader name={
         <EditableNameField actor={ancestry.parent} />
@@ -45,9 +48,6 @@ const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
                     updatePath={['beingType']}
                     value={ancestry.beingType} />
             </div>
-            <LabelledField label="Sup" className="text-text-header-secondary">
-                <RichTextField ref={richTextRef} />
-            </LabelledField>
         </>
     } />
 }
