@@ -110,7 +110,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                 </tr>
             </thead>
             <tbody className="text-regular">{
-                items.map(i => (
+                items.map((i: any) => (
                     <tr
                         key={i.parent._id}
                         className="even:bg-table-row-even odd:bg-table-row-odd"
