@@ -23,10 +23,11 @@
   },
   "type": "module",
   "dependencies": {
+    "@lexical/react": "^0.45.0",
     "@tailwindcss/vite": "^4.3.0",
+    "lexical": "^0.45.0",
     "lint": "1.2.2",
     "lucide-react": "^1.16.0",
-    "quill": "2.0.3",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "react-draggable": "4.5.0",
