@@ -14,7 +14,7 @@ const borderClasses = "border border-solid border-sheet-header-fill"
 export const Avatar = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <img
-            className={`${borderClasses} rounded-lg object-contain w-[200px] h-[200px]`}
+            className={`${borderClasses} bg-sheet-header-fill/10 rounded-lg object-contain h-[200px] w-full`}
             src={hero.parent.img}
             alt={hero.parent.name}
             onClick={async (event) => {

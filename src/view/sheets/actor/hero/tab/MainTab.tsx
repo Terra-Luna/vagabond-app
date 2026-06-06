@@ -8,9 +8,9 @@ import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-[44%_56%] my-1">
+        <div className="grid grid-cols-1 lg:grid-cols-[44%_55%] my-1 gap-x-1">
             <Skills hero={hero} />
-            <div className="flex flex-col items-center mx-1 gap-y-2">
+            <div className="flex flex-col items-center gap-y-2">
                 <Attacks hero={hero} />
                 <Weapons hero={hero} />
                 <Armor hero={hero} />
@@ -52,12 +52,7 @@ const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel
             <div className="flex items-center ml-1">
                 <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className="flex justify-between ml-2 mt-1 w-full font-eskapade font-bold align-middle cursor-pointer" onClick={
-                    async (e: React.MouseEvent<HTMLDivElement>) => {
-                        rollSkillCheck(hero.parent, name, value, e)
-                        if (isAttack) {
-                            rollDamage(hero.parent, '8d8', '2d4', 1, 1, true, [1,2,7,8])
-                        }
-                    }
+                    async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }
                 }>
                     <div>{name}</div>
                     <div className={(isAttack ? 'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center': 'text-xl mr-2')}>{value}</div>
@@ -71,20 +66,20 @@ const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     const equippedWeapons = hero.inventory.items.filter(it => it.isEquippedWeaponOrShield) as unknown[] as WeaponDataModel[]
     const gripStyle = "text-text-aux text-center font-eskapade"
-    const dmgStyle = "text-text-dmg font-eskapade text-xl text-right line-clamp-1"
+    const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
     return (
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />
             {
                 equippedWeapons.map(w => (<>
-                    <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1">
+                    <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
                         <div className="line-clamp-1">{w.name}</div>
                         <div className="flex justify-end">
                             <div className={gripStyle + " mr-2"}>{w.grip.style}</div>
                             <div className="flex content-right">
-                                <div className={dmgStyle}>{w.damage.oneHand}</div>
-                                {w.damage.twoHand !== w.damage.oneHand ? <><div>&nbsp;|&nbsp;</div><div className={dmgStyle}>{w.damage.twoHand}</div></> : <></>}
+                                <div className={dmgStyle} onClick={() => rollDamage(hero.parent, w.damage.oneHand)}>{w.damage.oneHand}</div>
+                                {w.damage.twoHand !== w.damage.oneHand ? <><div>&nbsp;|&nbsp;</div><div className={dmgStyle} onClick={() => rollDamage(hero.parent, w.damage.twoHand)}>{w.damage.twoHand}</div></> : <></>}
                             </div>
                         </div>
                         <div className={propsStyle}>{w.properties.reduce((props, p) => { return props + p + ', ' }, '').replace(/,\s*$/, "")}</div>

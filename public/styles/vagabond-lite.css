@@ -8,7 +8,6 @@
   --color-text-header-primary: ;
   --color-text-header-secondary: ;
   --color-text-header-tertiary: ;
-  --color-portrait-fill-bg: ;
   --color-portrait-border: ;
   --color-body-fill: ;
   --color-text-tab-active: ;
@@ -76,9 +75,8 @@
   --color-text-header-secondary: #eeeeed;
   --color-text-header-tertiary: #e1dbd9;
 
-  --color-portrait-fill-bg: rgba(0; 0; 0; .1);
   --color-portrait-border: #352f28;
-  --color-body-fill: #faf0e6;
+  --color-body-fill: rgba(0; 0; 0; 0);
 
   --color-text-tab-active: #53514a;
   --color-text-tab-inactive: #b7b0a7;
@@ -100,7 +98,7 @@
 
   --color-ic-skill-trained: #3d5541;
   --color-ic-skill-untrained: #aeb2a4;
-  --color-skill-divider: #e7e5e4;
+  --color-skill-divider: #b7b0a7;
   --color-skill-bg-fill: #f4efea;
   --color-skill-border: #d6d3d1;
   --color-stat-block-fill: #6a2e2a;
@@ -151,9 +149,8 @@
   --color-text-header-secondary: #e7e5e4;
   --color-text-header-tertiary: #8a8580;
 
-  --color-portrait-fill-bg: rgba(0; 0; 0; .1);
   --color-portrait-border: #675e38;
-  --color-body-fill: #292524;
+  --color-body-fill: rgba(0; 0; 0; 0);
 
   --color-text-tab-active: #c5b358;
   --color-text-tab-inactive: #675e38;

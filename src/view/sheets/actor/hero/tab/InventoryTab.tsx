@@ -4,13 +4,12 @@ import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
 
-const inventoryTabDiv = "w-full"
-const infoBoxLayout = "content-center bg-wealth-fill border border-solid border-table-border items-center w-full px-2 py-1"
+const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className={inventoryTabDiv}>
+        <div className="w-full">
             <div className="flex justify-between gap-1">
                 <Encumbrance hero={hero} />
                 <CoinPurse hero={hero} />
@@ -27,7 +26,7 @@ const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
     const bulk = capacity - (hero.inventory.emptySlots ?? capacity)
     const isFull = bulk/capacity >= 1
     return (
-        <div className={infoBoxLayout +" "+ infoBoxText}>
+        <div className={infoBoxLayout +" px-2 "+ infoBoxText}>
             {lang.VGLITE.HeroSheet.encumbrance}
             <span className="text-md float-right">
                 {bulk} / {hero.inventory.capacity}
@@ -56,9 +55,15 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     const s = { value: hero.inventory.coins.s || 0, denomination: lang.VGLITE.HeroSheet.silver }
     const c = { value: hero.inventory.coins.c || 0, denomination: lang.VGLITE.HeroSheet.copper }
     return (
-        <div className={"flex " + infoBoxLayout}>
-            <CoinsIcon />
-            <div className="flex -mr-1">
+        <div className={"flex pl-2 " + infoBoxLayout}>
+            <div 
+                className="cursor-pointer content-center"
+                onClick={() =>
+                    ui.notifications?.info("TODO: make an interface for adding/subtracting coin amts...")
+                }>
+                    <Coins className="text-wealth-denom-label" size={28} />
+            </div>
+            <div className="flex content-center justify-end w-full">
                 <CoinValue hero={hero} value={g.value} denomination={g.denomination} path='g' />
                 <CoinValue hero={hero} value={s.value} denomination={s.denomination} path='s' />
                 <CoinValue hero={hero} value={c.value} denomination={c.denomination} path='c' />
@@ -67,23 +72,10 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const CoinsIcon = () => {
-    return (
-        <div
-            className="-ml-1 mr-2 cursor-pointer"
-            onClick={() =>
-                ui.notifications?.info("TODO: make an interface for adding/subtracting coin amts...")
-            }
-        >
-            <Coins className="text-wealth-denom-label" size={28} />
-        </div>
-    )
-}
-
 const CoinValue = ({ hero, value, denomination, path }: { hero: HeroDataModel, value: number, denomination: string, path: string }) => {
     return (
-        <div className="flex mr-1">
-            <div className="text-text-primary text-3xl font-eskapade font-bold cursor-pointer">
+        <div className="flex pr-2">
+            <div className="text-text-primary text-3xl font-eskapade font cursor-pointer">
                 <EditableTextField
                     initialValue={value.toString() ?? ""}
                     updateProps={{
@@ -113,7 +105,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                 items.map((i: any) => (
                     <tr
                         key={i.parent._id}
-                        className="even:bg-table-row-even odd:bg-table-row-odd"
+                        className="even:bg-table-row-even/50 odd:bg-table-row-odd/50"
                         onClick={() =>
                             openItemSheet(hero, i.parent._id)
                         }
