@@ -11,9 +11,9 @@ const initialConfig = {
     onError: (error) => console.error(error),
 };
 
-export const RichTextField = () => {
+export const RichTextField = ({ width = "100%", height = 100 }: { width?: number | string, height?: number }) => {
     return (
-        <IFrameWrapper>
+        <IFrameWrapper width={width} height={height}>
             <LexicalComposer initialConfig={initialConfig}>
                 <RichTextPlugin
                     contentEditable={<ContentEditable className='border border-solid border-sheet-header-fill' />}

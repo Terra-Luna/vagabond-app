@@ -14,7 +14,7 @@ import HeroSheet from "./view/sheets/actor/hero/HeroSheet"
 import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
 import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
-import { AncestrySheet } from "./view/sheets/item/character/AncestrySheet"
+import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 

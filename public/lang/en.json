@@ -524,6 +524,31 @@
     "ItemSheet": {
       "type": "Type",
       "size": "Size"
+    },
+    "AncestrySheet": {
+      "description": "Description",
+      "traits": "Traits",
+      "newTrait": "New Trait",
+      "name": "Name",
+      "modifiers": "Modifiers",
+      "targetStat": "Target Stat",
+      "type": "Type",
+      "value": "Value",
+      "ModifierTypes": {
+        "bonus": "Bonus",
+        "set": "Set",
+        "formula": "Formula"
+      },
+      "grants": "Grants",
+      "GrantsTypes": {
+        "perk": "Perk",
+        "spell": "Spell",
+        "training": "Training"
+      },
+      "direct": "Direct",
+      "choice": "Choice",
+      "count": "Count",
+      "ignorePrerequisites": "Ignore Prerequisites"
     }
   }
 }
