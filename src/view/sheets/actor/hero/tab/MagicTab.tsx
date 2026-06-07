@@ -55,9 +55,9 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
 const Spells = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div>{
-            hero.spells.map(sp => (
+            hero.spells.map((sp: any) => (
                 <SkillCard
-                    key={sp.parent.name}
+                    key={sp.parent._id}
                     title={sp.parent.name}
                     subtitles={[['Base dmg', sp.damageType]]}
                     description={sp.description}

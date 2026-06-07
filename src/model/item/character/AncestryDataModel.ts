@@ -37,6 +37,7 @@ export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
     }
 }
 
+
 /**
  * Apply Active Effects directly to the ancestry object so they can
  * be removed if a GM needs to swap a Hero's race. This should be
