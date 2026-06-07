@@ -18,6 +18,7 @@ import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestryShe
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
+import { runAllMacros } from "./macro/all-macros"
 
 // add our fonts
 const fontFaces = [
@@ -156,4 +157,6 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
 foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet, {
     types: ['ancestry'],
     makeDefault: true
-})
+});
+
+(window as any).runVgLiteDebugMacros = runAllMacros
