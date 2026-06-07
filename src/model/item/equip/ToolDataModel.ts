@@ -9,7 +9,7 @@ const toolSchema = () => {
 
 export type ToolSchema = ReturnType<typeof toolSchema> & EquipmentSchema
 
-export default class GearDataModel extends EquipmentDataModel<ToolSchema> {
+export default class ToolDataModel extends EquipmentDataModel<ToolSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

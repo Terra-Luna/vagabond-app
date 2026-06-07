@@ -10,7 +10,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         <div className="mt-1">
             <Header title={lang.VGLITE.HeroSheet.ancestry} />
             <SkillCard
-                title={`${hero.ancestry !== undefined ? hero.ancestry?.name + " Traits": ''}`}
+                title={`${hero.ancestry !== undefined ? hero.ancestry?.parent?.name + " Traits": ''}`}
                 subtitles={[['Type', hero.ancestry?.beingType], ['Size', hero.ancestry?.beingSize || '']]}
                 description={ancestryFullDescription(hero.ancestry as any)}
             />
@@ -24,7 +24,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         <SkillCard
                             key={f.name}
                             title={f.name}
-                            subtitles={[[`${hero.class.name}`, `Level ${f.level}`]]}
+                            subtitles={[[`${hero.class.parent.name}`, `Level ${f.level}`]]}
                             description={f.description}
                         />
                     ))
@@ -35,8 +35,8 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             {
                 hero.perks.map(p => (
                     <SkillCard
-                        key={p.name}
-                        title={p.name}
+                        key={p.parent.name}
+                        title={p.parent.name}
                         subtitles={
                             p.prerequisites.map(pr => (
                                 [`${toPascalCase(pr.type!)}`, `${pr.type === 'SPELL' ? pr.spell : (

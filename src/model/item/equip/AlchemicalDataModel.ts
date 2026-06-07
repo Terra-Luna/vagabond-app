@@ -1,12 +1,16 @@
 import lang from "../../../../public/lang/en.json"
-import { fields, optionalString, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemicalSchema = () => {
     return {
-        type: new fields.StringField({ ...requiredString, initial: 'Acid', choices: Object.values(lang.VGLITE.AlchemyCategories).map(it => it.name) }),
+        type: new fields.StringField({
+            ...optionalString,
+            initial: lang.VGLITE.AlchemyCategories.unk.name,
+            choices: Object.values(lang.VGLITE.AlchemyCategories).map(it => it.name)
+        }),
         damage: new fields.StringField({ ...optionalString }),
-        damageType: new fields.StringField({ ...optionalString, choices: Object.values(lang.VGLITE.DamageTypes) })
+        damageType: new fields.StringField({ ...damageTypeOptions() })
     }
 }
 

@@ -15,7 +15,7 @@ import { savesSchema, setSaves } from "./type/Saves"
 import { setSenses } from "./type/Senses"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
-import { applyStatBonuses, statsSchema, validateCurrentLuck } from "./type/Stats"
+import { statsSchema, validateCurrentLuck } from "./type/Stats"
 
 const heroSchema = () => {
     return {
@@ -29,7 +29,6 @@ const heroSchema = () => {
         fatigue: new fields.NumberField({ ...requiredInteger, initial: 0, max: 5 }),
         mana: new fields.SchemaField({ ...manaSchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
-        bonus: new fields.SchemaField({ ...heroBonusSchema() }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
         actions: new fields.ArrayField(
             new fields.StringField(
@@ -43,7 +42,8 @@ const heroSchema = () => {
         ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
         perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
-        spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() }))
+        spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
+        bonus: new fields.SchemaField({ ...heroBonusSchema() })
     }
 }
 
@@ -70,7 +70,6 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
         this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: any }) => it.system)
         this.spells = this.parent.items.filter((i: { type: string }) => i.type === 'spell')?.map((it: { system: any }) => it.system)
-        applyStatBonuses(this)
         setXpToNextLevel(this)
         setMaxHP(this)
         setManaValues(this)

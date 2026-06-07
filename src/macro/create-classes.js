@@ -1,8 +1,12 @@
+const folder = "Classes"
+if (!game.folders?.getName(folder)) {
+    await Folder.create({ name: folder, type: "Item" })
+}
 const magus = {
-    'name': 'Magus',
-    'type': 'class',
+    name: 'Magus',
+    type: 'class',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Magus',
         description: 'Spellblades, gishes, arcane knights, and eldritch tricksters all. Magi are arcane specialists who blend magic and martial prowess.',
         action: 'Attack/Cast',
         move: 'Flexible',

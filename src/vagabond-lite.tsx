@@ -5,7 +5,7 @@ import ClassDataModel from "./model/item/character/ClassDataModel"
 import ArmorDataModel from "./model/item/equip/ArmorDataModel"
 import WeaponDataModel from "./model/item/equip/WeaponDataModel"
 import SundryDataModel from "./model/item/equip/SundryDataModel"
-import AncestryDataModel, { applyAncestralTraits } from "./model/item/character/AncestryDataModel"
+import AncestryDataModel from "./model/item/character/AncestryDataModel"
 import SpellDataModel from "./model/item/character/SpellDataModel"
 import PerkDataModel from "./model/item/character/PerkDataModel"
 import NpcDataModel from "./model/actor/NpcDataModel"
@@ -17,8 +17,8 @@ import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
+import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
 
-// add our fonts
 // add our fonts
 const fontFaces = [
     new FontFace(
@@ -54,21 +54,21 @@ Hooks.once("init", () => {
         CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.npc = NpcDataModel,
         // Items
-        CONFIG.Item.dataModels.container = ContainerDataModel,
-        CONFIG.Item.dataModels.armor = ArmorDataModel,
-        CONFIG.Item.dataModels.weapon = WeaponDataModel,
         CONFIG.Item.dataModels.alchemical = AlchemicalItemDataModel,
-        CONFIG.Item.dataModels.tool = ToolDataModel,
-        CONFIG.Item.dataModels.sundry = SundryDataModel,
-        CONFIG.Item.dataModels.starterPack = StarterPackDataModel,
         CONFIG.Item.dataModels.ancestry = AncestryDataModel,
+        CONFIG.Item.dataModels.armor = ArmorDataModel,
+        CONFIG.Item.dataModels.container = ContainerDataModel,
         CONFIG.Item.dataModels.class = ClassDataModel,
         CONFIG.Item.dataModels.perk = PerkDataModel,
         CONFIG.Item.dataModels.spell = SpellDataModel,
+        CONFIG.Item.dataModels.starterPack = StarterPackDataModel,
+        CONFIG.Item.dataModels.sundry = SundryDataModel,
+        CONFIG.Item.dataModels.tool = ToolDataModel,
+        CONFIG.Item.dataModels.weapon = WeaponDataModel,
         // Combat
         CONFIG.Combat.documentClass = VgLiteCombat,
         CONFIG.Combatant.documentClass = VgLiteCombatant,
-        CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
+        CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect
     )
 })
 
@@ -94,6 +94,27 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
         console.log("Already has:", item.type, item.name)
         return false
     }
+
+    if (isInventoryItem(item) && item.system.isStackable) {
+        const stack = actor.items.find((it: { name: any }) => it.name === item.name)
+        if (stack) {
+            console.log("Adding item to stack of:", item.name, stack.system.quantity)
+            stack.update({ 'system.quantity': stack.system.quantity + 1 })
+            stackStackables(item.parent.system)
+            return false
+        }
+    }
+})
+
+Hooks.on("preDeleteItem", (item: any, options, userId) => {
+    if (item.system.isStackable) {
+        const count = item.system.quantity
+        if (count > 1) {
+            item.update({ 'system.quantity': count - 1 })
+            return false
+        }
+    }
+    return true
 })
 
 Hooks.on("renderCombatTracker", (app, html, data) => {

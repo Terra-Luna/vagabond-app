@@ -1,8 +1,13 @@
+const folder = "Ancestries"
+if (!game.folders?.getName(folder)) {
+    await Folder.create({ name: folder, type: "Item" })
+}
+
 const human = {
     name: 'Human',
     type: 'ancestry',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Human',
         description: 'Humans are social beings that tend to be central in the development of major, diverse melting pot civilizations. Their tendency to develop wide, sprawling empires anad a huge pool of cultures makes them extrememly adaptable adventurers.',
         beingType: 'Humanlike',
         beingSize: 'Medium',
@@ -48,9 +53,9 @@ await Item.create(human)
 const elf = {
     name: 'Elf',
     type: 'ancestry',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Elf',
-        description: 'Elves are known for their tall height, etherial beauty, and inquisitive passion to witness awe. This passion embodies itself in their clothing, language, arts, and cuisine, as evles seek to make every moment one worth savoring. Of all the peoples that inhabit the world, it is likely no other lives as peacefully and permissively with the fae, fauna, and flora as elves.',
+        description: 'Elves are known for their tall height, ethereal beauty, and inquisitive passion to witness awe. This passion embodies itself in their clothing, language, arts, and cuisine, as elves seek to make every moment one worth savoring. Of all the peoples that inhabit the world, it is likely no other lives as peacefully and permissively with the fae, fauna, and flora as elves.',
         beingType: 'Fae',
         beingSize: 'Medium',
         senses: [],

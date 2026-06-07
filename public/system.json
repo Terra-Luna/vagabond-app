@@ -44,7 +44,17 @@
       "npc": {}
     },
     "Item": {
+      "alchemical": {
+        "htmlFields": [
+          "description"
+        ]
+      },
       "ancestry": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "armor": {
         "htmlFields": [
           "description"
         ]
@@ -52,6 +62,11 @@
       "class": {
         "htmlFields": [
           "description"
+        ]
+      },
+      "container": {
+        "htmlFields": [
+          "descripton"
         ]
       },
       "perk": {
@@ -64,27 +79,22 @@
           "description"
         ]
       },
-      "armor": {
-        "htmlFields": [
-          "description"
-        ]
-      },
-      "weapon": {
-        "htmlFields": [
-          "description"
-        ]
-      },
-      "alchemical": {
-        "htmlFields": [
-          "description"
-        ]
-      },
-      "gear": {
+      "starterpack": {
         "htmlFields": [
           "description"
         ]
       },
       "sundry": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "tool": {
+        "htmlFields": [
+          "description"
+        ]
+      },
+      "weapon": {
         "htmlFields": [
           "description"
         ]
@@ -100,6 +110,50 @@
       "path": "packs/adversaries.db",
       "ownership": {
         "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "ancestries",
+      "label": "Ancestries",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/ancestries.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "classes",
+      "label": "Classes",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/classes.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "perks",
+      "label": "Perks",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/perks.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "spells",
+      "label": "Spells",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/spells.db",
+      "ownership": {
+        "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       }
     },
@@ -137,11 +191,11 @@
       }
     },
     {
-      "name": "gear",
-      "label": "Gear",
+      "name": "tools",
+      "label": "Tools",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/gear.db",
+      "path": "packs/tools.db",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -157,46 +211,12 @@
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
       }
-    },
-    {
-      "name": "spells",
-      "label": "Spells",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/spells.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "ancestries",
-      "label": "Ancestries",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/ancestries.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
-    },
-    {
-      "name": "classes",
-      "label": "Classes",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/classes.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
     }
   ],
   "esmodules": [
     "vagabond-lite.js"
   ],
-  "styles": [
-  ],
+  "styles": [],
   "languages": [
     {
       "lang": "en",

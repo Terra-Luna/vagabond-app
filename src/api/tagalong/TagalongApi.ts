@@ -9,56 +9,61 @@ interface TagalongHero {
         class: string,
         level: number,
         xp: number,
-
         statArray: number[],
-        assignedStats: {
-            might: number,
-            dexterity: number,
-            awareness: number,
-            reason: number,
-            presence: number,
-            luck: number
-        }
+        assignedStats: TagalongStats,
         strongPotentialStat: string,
         trained_skills: string[],
         active_actions: string[],
         known_spells: string[],
-        selected_perks: {
-            source: string,
-            id: string,
-            name: string
-        }[]
-
+        selected_perks: TagalongPerk[]
         current_hp: number,
         fatigue: number,
         current_luck: number,
         studied_dice: number,
         current_wealth: { g: number, s: number, c: number }
-
-        inventory: {
-            id: string,
-            name: string,
-            computedName: string,
-            type: string,
-            category: string,
-            quantity: number
-            slots: number,
-            total_slots: number,
-            value: { g: number, s: number, c: number }
-            notes: string,
-            is_eqiupped: boolean,
-            is_custom: boolean,
-            //Weapon
-            range: string,
-            damage: string,
-            grip: string,
-            active_grip: string,
-            properties: string[],
-            //Armor
-            might_req: number,
-            armor_rating: number
-        }
+        inventory: TagalongItem[]
     }
+}
+
+interface TagalongStats {
+    might: number,
+    dexterity: number,
+    awareness: number,
+    reason: number,
+    presence: number,
+    luck: number
+}
+
+interface TagalongPerk {
+    source: string,
+    id: string,
+    name: string
+}
+
+export interface TagalongItem {
+    id: string,
+    name: string,
+    computedName: string,
+    notes: string,
+    type: string,
+    category: string,
+    quantity: number,
+    slots: number,
+    total_slots: number,
+    value: { g: number, s: number, c: number },
+    can_equip: boolean,
+    is_eqiupped: boolean,
+    is_custom: boolean,
+    //Weapon
+    range: string,
+    damage: string,
+    grip: string,
+    active_grip: string,
+    properties: string[],
+    //Armor
+    might_req: number,
+    armor_rating: number,
+    material: string
 }
 
 
@@ -79,7 +84,7 @@ export async function fetchHero(url: URL): Promise<TagalongHero> {
     const response = await fetch(request)
     const json = await response.json()
 
-    console.log("Data fetched from Vagabond Tagalong:", json)
+    console.log("Data fetched from Vagabond Tagalong:", requestUrl, json)
 
     return json as TagalongHero
 }

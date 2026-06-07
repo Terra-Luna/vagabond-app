@@ -1,8 +1,7 @@
-import { fields, requiredString } from "../common/sharedSchemas"
+import { fields } from "../common/sharedSchemas"
 
 const baseItemSchema = () => {
     return {
-        name: new fields.StringField({ ...requiredString }),
         description: new fields.HTMLField()
     }
 }

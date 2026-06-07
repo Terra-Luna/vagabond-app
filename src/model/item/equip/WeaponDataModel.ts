@@ -45,20 +45,7 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         }
     }
 
-    /**
-     * May have some issues with these derivatiosn being self-referrenctial.
-     * If that's the case, re-work it and add new props such as "finalSlots"
-     * or something.
-     */
     override async prepareDerivedData() {
-        if (this.material === 'Adamant') {
-            this.bonus.flatAtkDmg! += 1
-            this.bonus.slots! += 1
-        }
-        else if (this.material === "Mythral") {
-            this.bonus.slots! -= 1
-        }
-
         super.prepareDerivedData()
     }
 }

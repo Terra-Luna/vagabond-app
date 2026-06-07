@@ -1,8 +1,13 @@
+const folder = "Equipment"
+if (!game.folders?.getName(folder)) {
+    await Folder.create({ name: folder, type: "Item" })
+}
+
 const longsword = {
     name: 'Longsword',
     type: 'weapon',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Longsword',
         description: '',
         range: 'Close',
         damage: {
@@ -34,8 +39,8 @@ await Item.create(longsword)
 const shotgun = {
     name: 'Shotgun',
     type: 'weapon',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Shotgun',
         description: '',
         range: 'Near',
         damage: {
@@ -66,8 +71,8 @@ await Item.create(shotgun)
 const caestus = {
     name: 'Caestus',
     type: 'weapon',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Caestus',
         description: '',
         range: 'Close',
         damage: {
@@ -99,8 +104,8 @@ await Item.create(caestus)
 const shield = {
     name: 'Standard Shield',
     type: 'weapon',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Standard Shield',
         description: '',
         range: 'Close',
         damage: {
@@ -131,10 +136,10 @@ await Item.create(shield)
 const heavy_armor = {
     name: 'Heavy Armor',
     type: 'armor',
+    folder: game.folders?.getName(folder)?.id,
     system: {
-        name: 'Heavy Armor',
         description: '',
-        type: 'heavy',
+        armorType: 'heavy',
         rating: 3,
         mightReq: 5,
         material: 'Orichalcum',

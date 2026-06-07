@@ -1,6 +1,5 @@
 import lang from "../../../../public/lang/en.json"
 import { ActiveEffectMode } from "../../../document/VgLiteActiveEffect"
-import HeroDataModel from "../../actor/HeroDataModel"
 import { sensesSchema } from "../../actor/type/Senses"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
@@ -38,7 +37,13 @@ export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
     }
 }
 
-export async function applyAncestralTraits(hero: HeroDataModel, ancestry: AncestryDataModel) {
+/**
+ * Apply Active Effects directly to the ancestry object so they can
+ * be removed if a GM needs to swap a Hero's race. This should be
+ * called upon saving changes to a Hero's ancestry sheet.
+ * @param ancestry 
+ */
+export async function applyAncestralTraits(ancestry: AncestryDataModel) {
     ancestry?.traits?.forEach(t => {
         t.modifiers?.forEach(m => {
             const effect = {
@@ -46,7 +51,7 @@ export async function applyAncestralTraits(hero: HeroDataModel, ancestry: Ancest
                 icon: 'icons/svg/upgrade.svg',
                 changes: [
                     {
-                        key: `system.bonus.${m.targetStat}`,
+                        key: `system.stats.${m.targetStat}`,
                         value: m.value,
                         mode: m.type == 'BONUS' ?
                             ActiveEffectMode.ADD : (

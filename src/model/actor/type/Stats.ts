@@ -33,15 +33,6 @@ export const baseStatBlocks: number[][] = [
     [7, 6, 4, 2, 2, 2]
 ]
 
-export function applyStatBonuses(hero: HeroDataModel) {
-    hero.stats.might! += hero.bonus.might!
-    hero.stats.dexterity! += hero.bonus.dexterity!
-    hero.stats.awareness! += hero.bonus.awareness!
-    hero.stats.reason! += hero.bonus.reason!
-    hero.stats.presence! += hero.bonus.presence!
-    hero.stats.luck! += hero.bonus.luck!
-}
-
 export function validateCurrentLuck(hero: HeroDataModel) {
     if (hero.stats.currentLuck! > hero.stats.luck!) {
         hero.stats.currentLuck = hero.stats.luck!

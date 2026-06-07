@@ -57,8 +57,8 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
         <div>{
             hero.spells.map(sp => (
                 <SkillCard
-                    key={sp.name}
-                    title={sp.name}
+                    key={sp.parent.name}
+                    title={sp.parent.name}
                     subtitles={[['Base dmg', sp.damageType]]}
                     description={sp.description}
                 />

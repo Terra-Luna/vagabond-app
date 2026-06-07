@@ -1,12 +1,11 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import VgLiteError from "../../common/VgLiteError"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 export const containerSchema = () => {
     return {
         capacity: new fields.NumberField({ ...requiredInteger, initial: 2 }),
         emptySlots: new fields.NumberField({ ...requiredInteger, initial: 2 }),
-        items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() }))
+        items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() }), { initial: [] })
     }
 }
 

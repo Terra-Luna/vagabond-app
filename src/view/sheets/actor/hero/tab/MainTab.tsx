@@ -64,7 +64,7 @@ const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel
 }
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
-    const equippedWeapons = hero.inventory.items.filter(it => it.isEquippedWeaponOrShield) as unknown[] as WeaponDataModel[]
+    const equippedWeapons = hero.inventory.items.filter(it => it.isEquippedWeapon) as unknown[] as WeaponDataModel[]
     const gripStyle = "text-text-aux text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
@@ -74,7 +74,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
             {
                 equippedWeapons?.map(w => (<div key={w.parent._id}>
                     <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
-                        <div className="line-clamp-1">{w.name}</div>
+                        <div className="line-clamp-1">{w.parent.name}</div>
                         <div className="flex justify-end">
                             <div className={gripStyle + " mr-2"} onClick={() => toggleGripState(hero, w)}>{w.grip.state}</div>
                             <div className="flex content-right">
@@ -103,7 +103,7 @@ const Armor = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.armor} />
             <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1">
-                <div className="line-clamp-1">{armor?.name || '-'}</div>
+                <div className="line-clamp-1">{armor?.parent.name || '-'}</div>
                 <div className="flex justify-end items-center">
                     <Shield className="mr-1" size={16} />
                     <div className="line-clamp-1 text-right mr-1">{armor?.rating || '-'}</div>

@@ -1,30 +1,35 @@
 import HeroDataModel from "../../model/actor/HeroDataModel"
+import { isInventoryItem, stackStackables } from "../../model/actor/type/Inventory"
 import VgLiteError from "../../model/common/VgLiteError"
 import { applyAncestralTraits } from "../../model/item/character/AncestryDataModel"
-import PerkDataModel from "../../model/item/character/PerkDataModel"
-import SpellDataModel from "../../model/item/character/SpellDataModel"
 import { updateDocument } from "../../utils/documentUtils"
-import { fetchHero } from "./TagalongApi"
+import { fetchHero, TagalongItem } from "./TagalongApi"
+import TagalongItemCreator from "./TagalongItemCreator"
 
 /**
  * Sample link: 
  *      (Orphenia) https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01
  * Imports hero data from www.vgbnd.app and maps it to the system hero data model.
- * @param hero 
+ * 
+ * TODO: update this to query for existing Items in our compendia instead
+ *          --> const pack = game.packs.get(compendiumPackName)...
+ * 
+ * @param hero
  * @param tagalongUrl
  */
-export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) => {
+export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
     try {
+        ui.notifications?.info("Importing character data from www.vgbnd.app, please wait...")
         const url = new URL(tagalongUrl)
         const res = (await fetchHero(url)).character
 
         /**
-         * Build a list of failed item lookups.
+         * Build a list of failed item lookups...
          */
         const failures: string[] = []
 
         /**
-         * Update the Hero's data model.
+         * Update the Hero's data model...
          */
         await updateDocument(hero.parent, {
             tagalongId: res.id,
@@ -64,7 +69,6 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
 
             inventory: {
                 coins: res.current_wealth
-                // TODO: decide whether we want to deal with importing items.
             },
 
             health: { current: res.current_hp },
@@ -73,13 +77,12 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         })
 
         /**
-         * Lookup matching Ancestry.
+         * Lookup matching Ancestry...
          */
         const ancestry = game.items?.find(it =>
-            it.type === 'ancestry' &&
-            it.name.toUpperCase() === res.ancestry.toUpperCase()
+            it.type === 'ancestry' && it.name.toUpperCase() === res.ancestry.toUpperCase()
         ) as any
-        if (ancestry == undefined) {
+        if (!ancestry) {
             failures.push(`Ancestry: ${res.ancestry}`)
         }
 
@@ -87,21 +90,19 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
          * Lookup matching Class.
          */
         const clazz = game.items?.find(it =>
-            it.type === 'class' &&
-            it.name.toUpperCase() === res.class.toUpperCase()
+            it.type === 'class' && it.name.toUpperCase() === res.class.toUpperCase()
         ) as any
-        if (clazz == undefined) {
+        if (!clazz) {
             failures.push(`Class: ${res.class}`)
         }
 
         /**
-         * Lookup matching Perks.
+         * Lookup matching Perks...
          */
-        const perks: PerkDataModel[] = []
+        const perks = []
         res.selected_perks.forEach(p => {
             const perk = game.items?.find(it =>
-                it.type === 'perk' &&
-                it.name.toUpperCase() === p.name.toUpperCase()
+                it.type === 'perk' && it.name.toUpperCase() === p.name.toUpperCase()
             )
             if (perk == undefined) {
                 failures.push(`Perk: ${p.name}`)
@@ -112,28 +113,27 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
         })
 
         /**
-         * Lookup matching Spells.
+         * Lookup matching Spells...
          */
-        const spells: SpellDataModel[] = []
+        const spells = []
         res.known_spells.forEach(s => {
-            const spell = game.items?.find(it =>
-                it.type === 'spell' &&
-                it.name.toUpperCase() === s.toUpperCase()
+            const systemSpell = game.items?.find(it =>
+                it.type === 'spell' && it.name.toUpperCase() === s.toUpperCase()
             )
-            if (spell == undefined) {
+            if (systemSpell == undefined) {
                 failures.push(`Spell: ${s}`)
             }
             else {
-                spells.push(spell)
+                spells.push(systemSpell)
             }
         })
 
         /**
-         * Add complex objects and arrays as Embedded Documents.
+         * Add complex objects and arrays as Embedded Documents...
          */
         if (ancestry != undefined) {
             await hero.parent.createEmbeddedDocuments("Item", [ancestry])
-            const heroAncestry = hero.parent.items.find(i => i.type === 'ancestry')
+            const heroAncestry = hero.parent.items.find((i: { type: string }) => i.type === 'ancestry')
             if (res.strongPotentialStat != null) {
                 await updateDocument(heroAncestry, {
                     'traits': [
@@ -157,20 +157,51 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
                     'chosenSpells': [res.ancestry_bonus_spell]
                 })
             }
-            applyAncestralTraits(hero, heroAncestry.system)
+            /**
+             * Finalize ancestry by applying active effects.
+             */
+            applyAncestralTraits(heroAncestry.system)
         }
+
         if (clazz != undefined) {
             await hero.parent.createEmbeddedDocuments("Item", [clazz])
         }
+
         if (perks.length > 0) {
             await hero.parent.createEmbeddedDocuments("Item", perks)
         }
+
         if (spells.length > 0) {
             await hero.parent.createEmbeddedDocuments("Item", spells)
         }
 
         /**
-         * Show any import failures.
+         * Import character inventory...
+         * First, check for any incoming new items and create them.
+         * Second, collect all matching items from the system 
+         */
+        const newItems: TagalongItem[] = []
+        res.inventory.forEach(tagalongItem => {
+            const systemItem = game.items?.getName(tagalongItem.name)
+            if (systemItem == undefined && newItems.map(it => it.name).indexOf(tagalongItem.name) == -1) {
+                newItems.push(tagalongItem)
+            }
+        })
+        const converter = new TagalongItemCreator(hero, newItems)
+        await converter.convert()
+        converter.errors.forEach(e => { failures.push(e) })
+
+        res.inventory.forEach(async tagalongItem => {
+            const sysItem = game.items?.find(it => it.name === tagalongItem.name && isInventoryItem(it))
+            if (sysItem) {
+                await hero.parent.createEmbeddedDocuments("Item", [sysItem])
+                await new Promise((resolve) => setTimeout(resolve, 3000))
+                await stackStackables(hero)
+            }
+        })
+
+        /**
+         * Show any import failures...
          */
         if (failures.length > 0) {
             ui.notifications?.warn("These items weren't able to be imported and will need to be configured manually...")
@@ -178,11 +209,10 @@ export const fetchAndUpdate = async (hero: HeroDataModel, tagalongUrl: string) =
                 ui.notifications?.warn(f)
             })
         }
-        else {
-            ui.notifications?.success(`${res.name}'s info has been imported successfully.`)
-        }
+        ui.notifications?.success(`${res.name}'s info has been imported!`)
     }
     catch (e) {
+        console.log(e)
         throw tagalongError((e as Error).message)
     }
 }

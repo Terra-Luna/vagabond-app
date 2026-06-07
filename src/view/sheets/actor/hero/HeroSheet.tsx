@@ -66,7 +66,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
             <div className="flex text-text-header-secondary ml-2 pb-1">
                 <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                 <span>&nbsp;•&nbsp;</span>
-                <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry?.name || '', class: hero.class?.name || "Vagabond" })}</span>
+                <span>{localizeString(locale.AncestryAndClass, { ancestry: hero.ancestry?.parent?.name || '', class: hero.class?.parent?.name || "Vagabond" })}</span>
                 <div className="ml-auto mr-2">
                     <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
                 </div>

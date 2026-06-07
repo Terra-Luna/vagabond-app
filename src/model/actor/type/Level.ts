@@ -1,8 +1,11 @@
 import { fields } from "../../common/sharedSchemas"
 import HeroDataModel from "../HeroDataModel"
 
+/**
+ * TODO: make these configurable system variables
+ */
 export const MAX_LEVEL = 10
-export const XP_CURVE = 5 //TODO: make this a configurable system option
+export const XP_CURVE = 10
 
 export const levelSchema = () => {
     return {

@@ -11,20 +11,19 @@ export const speedSchema = () => {
 
 export function setSpeeds(hero: HeroDataModel) {
     const dex = hero.stats.dexterity!
-    const bonus = Number(hero.bonus.speed || 0)
     if (dex < 4) {
-        hero.speed.turn = 25 + bonus
-        hero.speed.crawl = (25 + bonus) * 3
+        hero.speed.turn = 25
+        hero.speed.crawl = hero.speed.turn * 3
         hero.speed.travel = 5
     }
     else if (dex < 6) {
-        hero.speed.turn = 30 + bonus
-        hero.speed.crawl = (30 + bonus) * 3
+        hero.speed.turn = 30
+        hero.speed.crawl = hero.speed.turn * 3
         hero.speed.travel = 6
     }
     else {
-        hero.speed.turn = 35 + bonus
-        hero.speed.crawl = (35 + bonus) * 3
+        hero.speed.turn = 35
+        hero.speed.crawl = hero.speed.turn * 3
         hero.speed.travel = 7
     }
 }

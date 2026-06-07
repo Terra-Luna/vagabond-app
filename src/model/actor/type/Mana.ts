@@ -12,11 +12,9 @@ export const manaSchema = () => {
 export function setManaValues(hero: HeroDataModel) {
     const cls = hero.class
     if (cls != undefined && cls.castingSkill != null) {
-        hero.mana.max = hero.level.current! * cls.manaMultiplier! + hero.bonus.maxMana!
+        hero.mana.max = hero.level.current! * cls.manaMultiplier!
         hero.mana.maxCast =
             hero.level.current! < 1 ? 0 :
-                Math.ceil((hero.level.current!) / 2) +
-                Number(hero.stats[cls?.maxManaStat?.toLowerCase() || '']) +
-                hero.bonus.maxCast!
+            Math.ceil((hero.level.current!) / 2) + Number(hero.stats[cls?.maxManaStat?.toLowerCase() || ''])
     }
 }

@@ -6,18 +6,17 @@
       "npc": "NPC"
     },
     "Item": {
+      "alchemical": "Alchemical",
       "ancestry": "Ancestry",
+      "armor": "Armor",
+      "container": "Container",
       "class": "Class",
       "perk": "Perk",
       "spell": "Spell",
-      "container": "Container",
-      "equipment": "Equipment",
-      "armor": "Armor",
-      "weapon": "Weapon",
-      "alchemical": "Alchemical",
-      "tool": "Tool",
+      "starterpack": "Starter Pack",
       "sundry": "Sundry",
-      "starter": "Starter pack"
+      "tool": "Tool",
+      "weapon": "Weapon"
     }
   },
   "VGLITE": {
@@ -49,6 +48,10 @@
       "torch": {
         "name": "Torch",
         "description": ""
+      },
+      "unk": {
+        "name": "Unknown",
+        "description": "Unknown"
       }
     },
     "Ranges": {
@@ -484,7 +487,8 @@
       "outdoors": "Outdoors",
       "personal": "Personal Items",
       "tools": "Tools",
-      "trade": "Trade Goods"
+      "trade": "Trade Goods",
+      "other": "Other"
     },
     "HeroSheet": {
       "Identity": "Identity",

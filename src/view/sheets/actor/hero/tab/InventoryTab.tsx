@@ -5,6 +5,7 @@ import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
 import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
+import { deleteItems, openItemSheet } from "../../../../../model/actor/type/Inventory"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
@@ -111,8 +112,16 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                     >
                         {
                             (i.quantity || 0) > 1 ?
-                                <td className="px-2 py-1" onClick={() => openItemSheet(hero, i.parent._id)}>{i.name} (x{i.quantity})</td> :
-                                <td className="px-2 py-1" onClick={() => openItemSheet(hero, i.parent._id)}>{i.name}</td>
+                                <td
+                                    className="px-2 py-1"
+                                    onClick={() => onItemClicked(hero, i.parent._id, false)}
+                                    onAuxClick={() => onItemClicked(hero, i.parent._id, true)}
+                                >{i.parent.name} (x{i.quantity})</td> :
+                                <td
+                                    className="px-2 py-1"
+                                    onClick={() => onItemClicked(hero, i.parent._id, false)}
+                                    onAuxClick={() => onItemClicked(hero, i.parent._id, true)}
+                                >{i.parent.name}</td>
                         }
                         <td className="text-center">{i.slots}</td>
                         <td className="text-center">{coinsAsString(i.value)}</td>
@@ -126,7 +135,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                                             () => toggleEquipState(hero, i.parent._id)
                                         }
                                     />
-                                </td> : <></>
+                                </td> : <td className="text-center" />
                         }
                     </tr>
                 ))
@@ -135,14 +144,8 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const openItemSheet = (hero: HeroDataModel, itemId: string ) => {
-    const item = hero.parent.items.get(itemId)
-    if (item) {
-        item.sheet.render(true)
-    }
-    else {
-        ui.notifications?.warn("Item not found!")
-    }
+const onItemClicked = (hero: HeroDataModel, itemId: string, isAuxClick: boolean) => {
+    isAuxClick ? openItemSheet(hero, itemId) : deleteItems(hero, [itemId])
 }
 
 const toggleEquipState = async (hero: HeroDataModel, itemId: string) => {
@@ -170,8 +173,4 @@ const toggleEquipState = async (hero: HeroDataModel, itemId: string) => {
             ui.notifications?.warn("Item not found!")
         }
     }
-}
-
-const deleteItem = (hero: HeroDataModel, itemId: string) => {
-    hero.parent.deleteEmbeddedDocuments("Item", [itemId])
 }
