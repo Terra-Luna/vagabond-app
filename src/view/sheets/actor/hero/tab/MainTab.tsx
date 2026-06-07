@@ -5,6 +5,7 @@ import { Header, ItemDivider } from "../../../../component/Header";
 import { rollDamage, rollSkillCheck } from "../../../../../combat/dice-rolls";
 import WeaponDataModel, { toggleGripState } from "../../../../../model/item/equip/WeaponDataModel";
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
+import { getId } from "../../../../../utils/modelUtil";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -72,7 +73,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />
             {
-                equippedWeapons?.map(w => (<div key={w.parent._id}>
+                equippedWeapons?.map(w => (<div key={getId(w)}>
                     <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
                         <div className="line-clamp-1">{w.parent.name}</div>
                         <div className="flex justify-end">

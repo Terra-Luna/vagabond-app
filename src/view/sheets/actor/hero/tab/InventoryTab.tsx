@@ -6,6 +6,7 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
 import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
 import { deleteItems, openItemSheet } from "../../../../../model/actor/type/Inventory"
+import { getId } from "../../../../../utils/modelUtil"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
@@ -107,21 +108,21 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
             <tbody className="text-regular">{
                 items.map((i: any) => (
                     <tr
-                        key={i.parent._id}
+                        key={getId(i)}
                         className="even:bg-table-row-even/50 odd:bg-table-row-odd/50"
                     >
                         {
                             (i.quantity || 0) > 1 ?
                                 <td
                                     className="px-2 py-1"
-                                    onClick={() => onItemClicked(hero, i.parent._id, true)}
-                                    onAuxClick={() => onItemClicked(hero, i.parent._id, false)}
+                                    onClick={() => onItemClicked(hero, getId(i), true)}
+                                    onAuxClick={() => onItemClicked(hero, getId(i), false)}
                                 >
                                     {i.parent.name} (x{i.quantity})
                                 </td> : <td
                                     className="px-2 py-1"
-                                    onClick={() => onItemClicked(hero, i.parent._id, true)}
-                                    onAuxClick={() => onItemClicked(hero, i.parent._id, false)}
+                                    onClick={() => onItemClicked(hero, getId(i), true)}
+                                    onAuxClick={() => onItemClicked(hero, getId(i), false)}
                                 >
                                     {i.parent.name}
                                 </td>
@@ -135,7 +136,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                                         className="cursor-pointer"
                                         type="checkbox"
                                         checked={i.isEquipped} onChange={
-                                            () => toggleEquipState(hero, i.parent._id)
+                                            () => toggleEquipState(hero, getId(i))
                                         }
                                     />
                                 </td> : <td className="text-center" />

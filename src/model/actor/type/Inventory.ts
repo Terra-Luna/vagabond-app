@@ -1,4 +1,5 @@
 import { groupBy } from "../../../utils/collectionUtil"
+import { getId } from "../../../utils/modelUtil"
 import { coinSchema, consolidateCoins } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import EquipmentDataModel from "../../item/equip/EquipmentDataModel"
@@ -33,7 +34,7 @@ export const stackStackables = async (hero: HeroDataModel) => {
                 await (items as any[])[0].update({ 'system.quantity': (items as any[]).length })
                 await deleteItems(
                     hero,
-                    (items as any[]).filter((it: any) => it.system.quantity === 1).map((it: any) => it._id)
+                    (items as any[]).filter((it: any) => it.system.quantity === 1).map(it => getId(it))
                 )
             }
         })

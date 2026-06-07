@@ -19,6 +19,7 @@ import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
+import { getId } from "./utils/modelUtil"
 
 // add our fonts
 const fontFaces = [
@@ -119,7 +120,7 @@ Hooks.on("preDeleteItem", (item: any, options, userId) => {
 Hooks.on("renderCombatTracker", (app, html, data) => {
     $(html).find('.combatant').each((_: any, li: any) => {
         const actorId = $(li).attr('data-combatant-id')
-        const combatant = Array.from(game.combat?.combatants).find(it => it._id === actorId) as VgLiteCombatant
+        const combatant = Array.from(game.combat?.combatants as any)?.find(it => getId(it) === actorId) as VgLiteCombatant
         $(li).find('.token-initiative').replaceWith(`<div class="vglite-take-init-btn">GO</div>`)
         /**
          * TODO: 
@@ -141,17 +142,19 @@ Hooks.on("renderItemSheetV2", (_, html) => {
     })
 })
 
-// Register sheets
+// @ts-ignore
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
     makeDefault: true
 })
 
+// @ts-ignore
 foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
     types: ['perk'],
     makeDefault: true
 })
 
+// @ts-ignore
 foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet, {
     types: ['ancestry'],
     makeDefault: true

@@ -5,6 +5,7 @@ import { SkillCard } from "../../../../component/SkillCard";
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon";
 import { useCallback } from "react";
 import { updateDocument } from "../../../../../utils/documentUtils";
+import { getId } from "../../../../../utils/modelUtil";
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -57,7 +58,7 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
         <div>{
             hero.spells.map((sp: any) => (
                 <SkillCard
-                    key={sp.parent._id}
+                    key={getId(sp)}
                     title={sp.parent.name}
                     subtitles={[['Base dmg', sp.damageType]]}
                     description={sp.description}

@@ -46,6 +46,7 @@ const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDat
 }
 
 const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteActorSheet }) => {
+    hero.tagalongId
     const deliveryRef = useRef<SpellDelivery>(null)
 
     const [_, forceUpdate] = useState(false)
