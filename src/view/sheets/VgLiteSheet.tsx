@@ -56,6 +56,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
 
     protected _onClose(options) {
         super._onClose(options)
+        this._reactRoot?.unmount()
         this._reactRoot = null
     }
 

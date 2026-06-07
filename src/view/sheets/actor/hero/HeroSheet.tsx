@@ -4,7 +4,7 @@ import { localizeString } from "../../../../utils/localeUtils"
 import { Menu } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
 import { IconButton } from "../../../component/IconButton"
-import { useCallback, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 import { Actions, Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab/TopSection"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
@@ -13,6 +13,7 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { EditableNameField } from "../../../component/EditableTextField"
+import { importHero } from "../../../../api/tagalong/TagalongImporter"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -22,6 +23,18 @@ export default class HeroSheet extends VgLiteActorSheet {
 
 const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
     const hero = actor.system
+    useEffect(() => {
+        const listener = (e: KeyboardEvent) => {
+            if (e.ctrlKey && e.shiftKey && e.code === "KeyI") {
+                importHero(hero, "https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01")
+                e.preventDefault()
+                e.stopPropagation()
+            }
+        }
+        window.addEventListener("keydown", listener)
+
+        return () => { window.removeEventListener("keydown", listener) }
+    }, [])
     return (
         <div>
             <HeroSheetHeader hero={hero} sheet={sheet} />
