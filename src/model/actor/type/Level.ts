@@ -16,5 +16,5 @@ export const levelSchema = () => {
 }
 
 export function setXpToNextLevel(hero: HeroDataModel) {
-    return (hero.level.current! + 1) * XP_CURVE
+    hero.level.xpToLevel = (hero.level.current! + 1) * XP_CURVE
 }

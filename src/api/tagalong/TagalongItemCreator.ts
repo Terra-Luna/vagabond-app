@@ -22,7 +22,7 @@ export default class TagalongItemCreator {
                 console.log("Tagalong Item Creator: Creating folder:", this.importsFolder)
                 await Folder.create({ name: this.importsFolder, type: "Item" })
             }
-            this.items.forEach(async i => {
+            for (const i of this.items) {
                 console.log("Tagalong Item Creator: Creating item", i)
                 switch (i.type) {
                     case ItemType.ALCHEMY: {
@@ -54,7 +54,7 @@ export default class TagalongItemCreator {
                         break
                     }
                 }
-            })
+            }
             console.log("Tagalong Item Creator: Item Creation Complete!")
             await new Promise((resolve) => setTimeout(resolve, 1000))
         }
@@ -86,7 +86,7 @@ export default class TagalongItemCreator {
             system: {
                 description: item.notes,
                 category: lang.VGLITE.EquipmentCategories.armor,
-                armorType: item.might_req <= 3 ? 'light' : (item.might_req <= 4 ? 'medium': 'heavy'),
+                armorType: item.might_req <= 3 ? 'light' : (item.might_req <= 4 ? 'medium' : 'heavy'),
                 rating: item.armor_rating,
                 mightReq: item.might_req,
                 material: Object.values(lang.VGLITE.Metals)[item.material]?.name ?? lang.VGLITE.Metals.standard.name,
