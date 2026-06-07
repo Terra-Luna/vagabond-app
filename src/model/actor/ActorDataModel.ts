@@ -24,13 +24,3 @@ export default abstract class ActorDataModel<T extends BaseActorSchema> extends 
         super.prepareBaseData()
     }
 }
-
-/**
- * Helper function to check Actor types against system models.
- * E.g.: if (is<HeroDataModel>(actor)) { ... }
- * @param actor 
- * @returns 
- */
-export const is = <T>(actor: Actor): boolean => {
-    return <T><unknown>actor !== undefined
-}

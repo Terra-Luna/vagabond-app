@@ -7,6 +7,7 @@ describe('level functions', () => {
         const hero = {
             level: { current: 3, xpToLevel: 0 }
         }
-        expect(setXpToNextLevel(hero as unknown as HeroDataModel)).toBe(20)
+        setXpToNextLevel(hero as unknown as HeroDataModel)
+        expect(hero.level.xpToLevel).toBe(40)
     })
 })
