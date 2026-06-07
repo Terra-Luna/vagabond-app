@@ -96,9 +96,8 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
     }
 
     if (isInventoryItem(item) && item.system.isStackable) {
-        const stack = actor.items.find((it: { name: any }) => it.name === item.name)
-        if (stack?.length > 0) {
-            console.log("Adding item to stack of:", item.name, stack.system.quantity)
+        const stack = actor.items.find((it: any) => it.name === item.name)
+        if (stack != undefined) {
             stack.update({ 'system.quantity': stack.system.quantity + 1 })
             stackStackables(item.parent.system)
             return false
