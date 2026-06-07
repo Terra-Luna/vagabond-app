@@ -25,7 +25,6 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
-    console.log(hero.inventory.capacity)
     const capacity = hero.inventory.capacity || 10
     const bulk = capacity - (hero.inventory.emptySlots ?? capacity)
     const isFull = bulk/capacity >= 1

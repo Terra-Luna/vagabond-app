@@ -192,7 +192,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         await converter.convert()
         converter.errors.forEach(e => { failures.push(e) })
 
-        const createAllItems = res.inventory.map(tagalongItem => {
+        const createAllItems = res.inventory.map(async tagalongItem => {
             const sysItem = game.items?.find(it => it.name === tagalongItem.name && isInventoryItem(it))
             if (sysItem) {
                 await hero.parent.createEmbeddedDocuments("Item", [sysItem])
