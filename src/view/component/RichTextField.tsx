@@ -3,24 +3,43 @@ import { ContentEditable } from '@lexical/react/LexicalContentEditable';
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
 import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { EditorRefPlugin } from '@lexical/react/LexicalEditorRefPlugin';
 
 import { IFrameWrapper } from './IFrameWrapper';
+import { $insertNodes, LexicalEditor } from 'lexical';
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
+import { useRef } from 'react';
 
-export const RichTextField = ({ width = "100%", height = 100, defaultValue = '' }: { width?: number | string, height?: number, defaultValue?: string }) => {
+export const RichTextField = ({ width = "100%", height = 100, defaultValue = '', onChange }: { width?: number | string, height?: number, defaultValue?: string, onChange?: (html: string) => void }) => {
+
     const initialConfig = {
-        namespace: 'MyEditor',
+        namespace: 'VgLiteEditor',
         onError: (error) => console.error(error),
-        editorState: `{"root":{"children":[{"children":[{"detail":0,"format":0,"mode":"normal","style":"","text":"${defaultValue}","type":"text","version":1}],"direction":"ltr","format":"","indent":0,"type":"paragraph","version":1}],"direction":"ltr","format":"","indent":0,"type":"root","version":1}}`
+        editorState: (editor) => {
+            $insertNodes($generateNodesFromDOM(editor, new DOMParser().parseFromString(defaultValue, 'text/html')))
+        }
     };
+
+    const editorRef = useRef<LexicalEditor>(null);
+
     return (
         <IFrameWrapper width={width} height={height}>
             <div className='border border-solid border-sheet-header-fill'>
                 <LexicalComposer initialConfig={initialConfig}>
+                    {onChange ? <OnChangePlugin onChange={(editorState) => {
+                        editorState.read(() => {
+                            if (editorRef.current) {
+                                onChange($generateHtmlFromNodes(editorRef.current))
+                            }
+                        }, { editor: editorRef.current })
+                    }} /> : undefined}
                     <RichTextPlugin
                         contentEditable={<ContentEditable className='px-1' />}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
                     <HistoryPlugin />
+                    <EditorRefPlugin editorRef={editorRef} />
                 </LexicalComposer>
             </div>
         </IFrameWrapper>

@@ -1,14 +1,14 @@
-import { FoundryItem, ItemSheetHeader, VgLiteItemSheet } from "../../VgLiteItemSheet";
+import { FoundryItem, VgLiteItemSheet } from "../../VgLiteItemSheet";
 import AncestryDataModel from "../../../../../model/item/character/AncestryDataModel";
 import { SheetHeader } from "../../../../component/SheetHeader";
-import { EditableNameField, EditableTextField } from "../../../../component/EditableTextField";
+import { EditableNameField } from "../../../../component/EditableTextField";
 import lang from "../../../../../../public/lang/en.json";
-import { updateDocument } from "../../../../../utils/documentUtils";
 import { DropDown } from "../../../../component/Dropdown";
 import { LabelledField } from "../../../../component/LabelledField";
 import { RichTextField } from "../../../../component/RichTextField";
-import { useRef } from "react";
+import { useCallback } from "react";
 import { Trait } from "./Trait";
+import { updateDocument } from "../../../../../utils/documentUtils";
 
 export class AncestrySheet extends VgLiteItemSheet {
     Component = AncestryReactComponent
@@ -20,13 +20,17 @@ export interface AncestryComponentProps {
 
 const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel> }) => {
     const ancestry = item.system
-    console.log({ ancestry })
+
+    const onDescriptionChange = useCallback((val) => {
+        updateDocument(ancestry.parent, { 'description': val })
+    }, [ancestry])
+
     return (
         <div className="">
             <AncestrySheetHeader {...{ ancestry }} />
             <div className="ml-2 mt-1 mr-2">
                 <LabelledField label={lang.VGLITE.AncestrySheet.description} className="text-text-primary font-paradigm">
-                    <RichTextField defaultValue={ancestry.description} />
+                    <RichTextField defaultValue={ancestry.description} onChange={onDescriptionChange} />
                 </LabelledField>
                 <Traits ancestry={ancestry} />
             </div>

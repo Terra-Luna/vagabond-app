@@ -23,6 +23,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@lexical/html": "^0.45.0",
     "@lexical/react": "^0.45.0",
     "@tailwindcss/vite": "^4.3.0",
     "lexical": "^0.45.0",
