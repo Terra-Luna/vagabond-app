@@ -191,14 +191,15 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         await converter.convert()
         converter.errors.forEach(e => { failures.push(e) })
 
-        res.inventory.forEach(async tagalongItem => {
+        const createAllItems = res.inventory.map(tagalongItem => {
             const sysItem = game.items?.find(it => it.name === tagalongItem.name && isInventoryItem(it))
             if (sysItem) {
-                await hero.parent.createEmbeddedDocuments("Item", [sysItem])
-                await new Promise((resolve) => setTimeout(resolve, 3000))
-                await stackStackables(hero)
+                return hero.parent.createEmbeddedDocuments("Item", [sysItem])
             }
         })
+
+        await Promise.all(createAllItems)
+        await stackStackables(hero)
 
         /**
          * Show any import failures...
