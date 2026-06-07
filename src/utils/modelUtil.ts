@@ -15,3 +15,15 @@ type RemapValues<T> = {
 type remapped = RemapValues<myDumbObject>;
 
 const hi: remapped = {name: "hi!", cringe: "no"}
+
+
+
+
+
+
+
+
+
+export const getName = (obj: any): string => {
+    return obj?.parent?.name ?? ''
+}
