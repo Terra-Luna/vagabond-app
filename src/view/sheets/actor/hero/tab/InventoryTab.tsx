@@ -57,6 +57,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     const g = { value: hero.inventory.coins.g || 0, denomination: lang.VGLITE.HeroSheet.gold }
     const s = { value: hero.inventory.coins.s || 0, denomination: lang.VGLITE.HeroSheet.silver }
     const c = { value: hero.inventory.coins.c || 0, denomination: lang.VGLITE.HeroSheet.copper }
+    console.log("Coin Purse:", g.value, s.value, c.value)
     return (
         <div className={"flex pl-2 " + infoBoxLayout}>
             <div 
@@ -114,13 +115,13 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             (i.quantity || 0) > 1 ?
                                 <td
                                     className="px-2 py-1"
-                                    onClick={() => onItemClicked(hero, i.parent._id, false)}
-                                    onAuxClick={() => onItemClicked(hero, i.parent._id, true)}
+                                    onClick={() => onItemClicked(hero, i.parent._id, true)}
+                                    onAuxClick={() => onItemClicked(hero, i.parent._id, false)}
                                 >{i.parent.name} (x{i.quantity})</td> :
                                 <td
                                     className="px-2 py-1"
-                                    onClick={() => onItemClicked(hero, i.parent._id, false)}
-                                    onAuxClick={() => onItemClicked(hero, i.parent._id, true)}
+                                    onClick={() => onItemClicked(hero, i.parent._id, true)}
+                                    onAuxClick={() => onItemClicked(hero, i.parent._id, false)}
                                 >{i.parent.name}</td>
                         }
                         <td className="text-center">{i.slots}</td>
