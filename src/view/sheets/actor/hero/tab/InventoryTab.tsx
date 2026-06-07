@@ -25,7 +25,8 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
-    const capacity = hero.inventory.capacity || 2
+    console.log(hero.inventory.capacity)
+    const capacity = hero.inventory.capacity || 10
     const bulk = capacity - (hero.inventory.emptySlots ?? capacity)
     const isFull = bulk/capacity >= 1
     return (
@@ -54,10 +55,9 @@ const Gauge = ({ bulk, capacity, isFull }: { bulk: number, capacity: number, isF
 }
 
 const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
-    const g = { value: hero.inventory.coins.g || 0, denomination: lang.VGLITE.HeroSheet.gold }
-    const s = { value: hero.inventory.coins.s || 0, denomination: lang.VGLITE.HeroSheet.silver }
-    const c = { value: hero.inventory.coins.c || 0, denomination: lang.VGLITE.HeroSheet.copper }
-    console.log("Coin Purse:", g.value, s.value, c.value)
+    const g = { value: hero.inventory.coins.g || 0, label: lang.VGLITE.HeroSheet.gold }
+    const s = { value: hero.inventory.coins.s || 0, label: lang.VGLITE.HeroSheet.silver }
+    const c = { value: hero.inventory.coins.c || 0, label: lang.VGLITE.HeroSheet.copper }
     return (
         <div className={"flex pl-2 " + infoBoxLayout}>
             <div 
@@ -68,15 +68,15 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                     <Coins className="text-wealth-denom-label" size={28} />
             </div>
             <div className="flex content-center justify-end w-full">
-                <CoinValue hero={hero} value={g.value} denomination={g.denomination} path='g' />
-                <CoinValue hero={hero} value={s.value} denomination={s.denomination} path='s' />
-                <CoinValue hero={hero} value={c.value} denomination={c.denomination} path='c' />
+                <CoinValue hero={hero} value={g.value} label={g.label} path='g' />
+                <CoinValue hero={hero} value={s.value} label={s.label} path='s' />
+                <CoinValue hero={hero} value={c.value} label={c.label} path='c' />
             </div>
         </div>
     )
 }
 
-const CoinValue = ({ hero, value, denomination, path }: { hero: HeroDataModel, value: number, denomination: string, path: string }) => {
+const CoinValue = ({ hero, value, label: denomination, path }: { hero: HeroDataModel, value: number, label: string, path: string }) => {
     return (
         <div className="flex pr-2">
             <div className="text-text-primary text-3xl font-eskapade font cursor-pointer min-w-[2ch] text-right">
@@ -154,22 +154,18 @@ const onItemClicked = (hero: HeroDataModel, itemId: string, isAuxClick: boolean)
 
 const toggleEquipState = async (hero: HeroDataModel, itemId: string) => {
     const item = hero.parent.items.get(itemId)
-    console.log("Item isEquipped:", item.system.isEquipped)
     if (item.system.isEquipped) {
         await item.update({ 'system.isEquipped': false })
     }
     else {
         if (item) {
             if (item.type === 'armor') {
-                console.log("Equipping armor:", item.system)
                 await equipArmor(hero, item.system)
             }
             else if (item.type === 'weapon') {
-                console.log("Equipping weapon:", item.system)
                 await equipWeapon(hero, item.system)
             }
             else {
-                console.log("Equipping tool:", item.system)
                 await item.update({ 'system.isEquipped': true })
             }
         }

@@ -26,10 +26,10 @@ export const setInventoryData = (hero: HeroDataModel) => {
 
 export const stackStackables = async (hero: HeroDataModel) => {
     const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.isStackable)
-    if (stackables) {
+    if (stackables?.length > 0) {
         Object.values(groupBy('name', stackables)).forEach(async items => {
             if ((items as any[]).length > 1) {
-                console.log(items)
+                console.log("Stacking items:", items)
                 await (items as any[])[0].update({ 'system.quantity': (items as any[]).length })
                 await deleteItems(
                     hero,

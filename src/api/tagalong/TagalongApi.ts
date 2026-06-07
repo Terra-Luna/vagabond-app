@@ -17,6 +17,7 @@ interface TagalongHero {
         known_spells: string[],
         selected_perks: TagalongPerk[]
         current_hp: number,
+        current_mana: number,
         fatigue: number,
         current_luck: number,
         studied_dice: number,

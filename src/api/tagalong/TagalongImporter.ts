@@ -72,6 +72,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
             },
 
             health: { current: res.current_hp },
+            mana: { current: res.current_mana },
             fatigue: res.fatigue,
             studied: res.studied_dice
         })
@@ -195,7 +196,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
             const sysItem = game.items?.find(it => it.name === tagalongItem.name && isInventoryItem(it))
             if (sysItem) {
                 await hero.parent.createEmbeddedDocuments("Item", [sysItem])
-                await new Promise((resolve) => setTimeout(resolve, 3000))
+                await new Promise((resolve) => setTimeout(resolve, 1000))
                 await stackStackables(hero)
             }
         })

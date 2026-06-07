@@ -83,7 +83,6 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
      */
     const uniqueItemTypes = ['ancestry', 'class']
     if (uniqueItemTypes.indexOf(item.type) > -1 && actor.items.find((i: { type: string }) => i.type === item.type)) {
-        console.log("Cannot add another", item.type)
         return false
     }
 
@@ -92,13 +91,12 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
      */
     const uniqueItems = ['perk', 'spell']
     if (uniqueItems.indexOf(item.type) > -1 && actor.items.find((i: { type: any; name: any }) => i.type === item.type && i.name === item.name)) {
-        console.log("Already has:", item.type, item.name)
         return false
     }
 
     if (isInventoryItem(item) && item.system.isStackable) {
         const stack = actor.items.find((it: { name: any }) => it.name === item.name)
-        if (stack) {
+        if (stack?.length > 0) {
             console.log("Adding item to stack of:", item.name, stack.system.quantity)
             stack.update({ 'system.quantity': stack.system.quantity + 1 })
             stackStackables(item.parent.system)

@@ -56,7 +56,7 @@ export default class TagalongItemCreator {
                 }
             })
             console.log("Tagalong Item Creator: Item Creation Complete!")
-            await new Promise((resolve) => setTimeout(resolve, 3000))
+            await new Promise((resolve) => setTimeout(resolve, 1000))
         }
     }
 
