@@ -79,7 +79,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
 const CoinValue = ({ hero, value, denomination, path }: { hero: HeroDataModel, value: number, denomination: string, path: string }) => {
     return (
         <div className="flex pr-2">
-            <div className="text-text-primary text-3xl font-eskapade font cursor-pointer">
+            <div className="text-text-primary text-3xl font-eskapade font cursor-pointer min-w-[2ch] text-right">
                 <EditableTextField
                     initialValue={value.toString() ?? ""}
                     updateProps={{
