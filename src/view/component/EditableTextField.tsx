@@ -38,15 +38,17 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     }, [initialValue, value])
 
     const save = useCallback(async () => {
-        setIsInEditMode(false)
-        
+        let ret
         if (onSave) {
-            return onSave(value)
+            ret = await onSave(value)
         }
         else {
-            return updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
+            ret = await updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
         }
-    }, [value, onSave, updateProps])
+
+        reset()
+        return ret
+    }, [value, onSave, updateProps, reset])
 
     const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {
         switch (e.code) {

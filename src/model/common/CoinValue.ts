@@ -36,16 +36,15 @@ export const coinsAsString = (coins: any) => {
     return coinString
 }
 
-// 101 0 0 -> 99s -> 100 99 0
-export const consolidateCoins = (coins: any) => {
-    console.log("Consolidating Coins - Start:", coins)
+export const consolidateCoins = (coinsIn: any): { g: number, s: number, c: number } => {
+    const coins = coinsIn
     var copperToSilver = Math.floor(coins.c / 100)
     coins.s += copperToSilver
     coins.c = Math.floor(coins.c % 100)
     var silverToGold = Math.floor(coins.s / 100)
     coins.g += silverToGold
     coins.s = Math.floor(coins.s % 100)
-    console.log("Consolidating Coins - End:", coins)
+    return coins
 }
 
 export const addCoins = (coins: any[]) => {

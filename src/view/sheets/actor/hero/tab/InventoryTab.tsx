@@ -117,12 +117,15 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                                     className="px-2 py-1"
                                     onClick={() => onItemClicked(hero, i.parent._id, true)}
                                     onAuxClick={() => onItemClicked(hero, i.parent._id, false)}
-                                >{i.parent.name} (x{i.quantity})</td> :
-                                <td
+                                >
+                                    {i.parent.name} (x{i.quantity})
+                                </td> : <td
                                     className="px-2 py-1"
                                     onClick={() => onItemClicked(hero, i.parent._id, true)}
                                     onAuxClick={() => onItemClicked(hero, i.parent._id, false)}
-                                >{i.parent.name}</td>
+                                >
+                                    {i.parent.name}
+                                </td>
                         }
                         <td className="text-center">{i.slots}</td>
                         <td className="text-center">{coinsAsString(i.value)}</td>

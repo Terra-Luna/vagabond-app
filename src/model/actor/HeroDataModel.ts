@@ -59,7 +59,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override async _onCreate(data: any, options: any, userId: string) {
         console.log("Creating Hero:", this)
-        this.health.current = 2
+        this.parent.update({ 'system.health.current': 2 })
         this.parent.update({ 'prototypeToken.actorLink': true })
         super._onCreate(data, options, userId)
     }
@@ -70,17 +70,17 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
         this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: any }) => it.system)
         this.spells = this.parent.items.filter((i: { type: string }) => i.type === 'spell')?.map((it: { system: any }) => it.system)
+        setInventoryData(this)
         setXpToNextLevel(this)
         setMaxHP(this)
         setManaValues(this)
         setSaves(this)
-        setSkillDifficulties(this)
         setSpeeds(this)
-        setSenses(this)
-        validateCurrentHP(this)
-        validateCurrentLuck(this)
-        setInventoryData(this)
+        setSkillDifficulties(this)
         setArmorRating(this)
+        validateCurrentLuck(this)
+        validateCurrentHP(this)
+        setSenses(this)
     }
 
 }
