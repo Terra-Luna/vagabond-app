@@ -135,8 +135,8 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
             })
             hero.parent.updateEmbeddedDocuments("Item", sortingUpdate)
         }
-        catch (e) {
-            console.log(e)
+        catch (error) {
+            console.log(error)
         }
         finally {
             setDragIndex(null)
