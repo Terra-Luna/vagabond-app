@@ -45,14 +45,18 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
         setIsInEditMode(false)
     }, [initialValue, value])
 
-    const save = useCallback(() => {
-        forceRerender()
+    const save = useCallback(async () => {
+        let ret
         if (onSave) {
-            return onSave(value)
+            ret = await onSave(value)
         }
         else {
-            return updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
+            ret = await updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
         }
+
+        forceRerender()
+        setIsInEditMode(false)
+        return ret
     }, [value, onSave, updateProps, forceRerender])
 
     const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {

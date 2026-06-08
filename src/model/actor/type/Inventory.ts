@@ -3,7 +3,6 @@ import { getId, getName } from "../../../utils/modelUtil"
 import { coinSchema, consolidateCoins } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "../../item/equip/EquipmentDataModel"
-import { BaseItemSchema } from "../../item/ItemDataModel"
 import HeroDataModel from "../HeroDataModel"
 
 export const inventorySchema = () => {
@@ -19,7 +18,6 @@ export const inventorySchema = () => {
 }
 
 export const setInventoryData = (hero: HeroDataModel) => {
-    hero.inventory.coins = consolidateCoins(hero.inventory.coins)
     hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
     hero.inventory.capacity = Number(hero.stats.might) + 8 - hero.fatigue!
     const bulk = hero.inventory?.items?.reduce((sum, i) => { return sum! + i.slots! * i.quantity! }, 0)
