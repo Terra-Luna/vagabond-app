@@ -184,7 +184,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         const newItems: TagalongItem[] = []
         res.inventory.forEach(tagalongItem => {
             const systemItem = game.items?.getName(tagalongItem.name)
-            if (systemItem == undefined && newItems.map(it => it.name).indexOf(tagalongItem.name) == -1) {
+            if (systemItem == undefined && newItems.map(it => it.name.toUpperCase()).indexOf(tagalongItem.name.toUpperCase()) == -1) {
                 newItems.push(tagalongItem)
             }
         })

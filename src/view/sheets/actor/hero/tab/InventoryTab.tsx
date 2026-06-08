@@ -29,7 +29,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
     const capacity = hero.inventory.capacity || 10
     const bulk = capacity - (hero.inventory.emptySlots ?? capacity)
-    const isFull = bulk/capacity >= 1
+    const isOverEncumbered = bulk/capacity > 1
     return (
         <div className={infoBoxLayout +" px-2 "+ infoBoxText}>
             {lang.VGLITE.HeroSheet.encumbrance}
@@ -37,15 +37,15 @@ const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
                 {bulk} / {hero.inventory.capacity}
             </span>
             <div className="h-[12px] my-1 -mx-1 border border-solid border-table-border rounded-md">
-                <Gauge bulk={bulk} capacity={capacity} isFull={isFull} />
+                <Gauge bulk={bulk} capacity={capacity} isFull={isOverEncumbered} />
             </div>
         </div>
     )
 }
 
-const Gauge = ({ bulk, capacity, isFull }: { bulk: number, capacity: number, isFull: boolean }) => {
+const Gauge = ({ bulk, capacity, isFull: isOverEncumbered }: { bulk: number, capacity: number, isFull: boolean }) => {
     const width = Math.min(bulk / capacity * 100, 100)
-    const fillColor = isFull ? "bg-destructive-action " : "bg-section-header-fill"
+    const fillColor = isOverEncumbered ? "bg-destructive-action " : "bg-section-header-fill"
     return (
         <div
             className={fillColor + " h-[10px] rounded-md"}
@@ -167,7 +167,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             onAuxClick={() => onItemClicked(hero, getId(i), false)}
                         >
                             <span className="flex">
-                                <img src={i.parent.img} alt={getName(i)} width="24" height="24" className="mr-2 roudned-sm" />
+                                <img src={i.parent.img} alt={getName(i)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill" />
                                 {itemNameQty(i)}
                             </span>
                         </td>

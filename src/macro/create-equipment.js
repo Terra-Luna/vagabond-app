@@ -7,6 +7,7 @@ export default async function createEquipment() {
     const longsword = {
         name: 'Longsword',
         type: 'weapon',
+        img: 'icons/weapons/swords/sword-guard.webp',
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
@@ -40,6 +41,7 @@ export default async function createEquipment() {
     const shotgun = {
         name: 'Shotgun',
         type: 'weapon',
+        img: 'icons/weapons/guns/gun-double-barrel.webp',
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
@@ -72,6 +74,7 @@ export default async function createEquipment() {
     const caestus = {
         name: 'Caestus',
         type: 'weapon',
+        img: 'icons/weapons/fist/fist-knuckles-spiked-brown.webp',
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
@@ -105,6 +108,7 @@ export default async function createEquipment() {
     const shield = {
         name: 'Standard Shield',
         type: 'weapon',
+        img: 'icons/equipment/shield/heater-steel-grey.webp',
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
@@ -137,6 +141,7 @@ export default async function createEquipment() {
     const heavy_armor = {
         name: 'Heavy Armor',
         type: 'armor',
+        img: 'icons/equipment/chest/breastplate-banded-blue.webp',
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
