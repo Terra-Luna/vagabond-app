@@ -1,4 +1,5 @@
 import lang from "../../../public/lang/en.json"
+import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
@@ -64,8 +65,8 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super._onCreate(data, options, userId)
     }
 
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
+    override async prepareBaseData() {
+        super.prepareBaseData()
         this.ancestry = this.parent.items.find((i: { type: string }) => i.type === 'ancestry')?.system
         this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
         this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: any }) => it.system)
@@ -83,6 +84,18 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSenses(this)
     }
 
+    override async _preUpdate(changes, options, user) {
+        await super._preUpdate(changes, options, user)
+        const coinChanges = (changes.system as any)?.inventory?.coins
+        if (coinChanges !== undefined) {
+            console.log("Intercepting coin changes", coinChanges)
+            const { g, s, c } = this.inventory.coins
+            const newG = coinChanges.g ?? g;
+            const newS = coinChanges.s ?? s;
+            const newC = coinChanges.c ?? c;
+            (changes.system as any).inventory.coins = consolidateCoins({ g: newG, s: newS, c: newC })
+        }
+    }
 }
 
 export function getSkillByName(hero: HeroDataModel, skillName: string): { name: string, value: number, isTrained: boolean } {
