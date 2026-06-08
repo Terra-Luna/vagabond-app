@@ -4,7 +4,13 @@ import { getId } from '../../utils/modelUtil'
 import HeroDataModel from '../../model/actor/HeroDataModel'
 import EquipmentDataModel, { EquipmentSchema } from '../../model/item/equip/EquipmentDataModel'
 
+/**
+ * A reusable context menu!
+ * @param param0
+ * @returns 
+ */
 export const VgLiteContextMenu = ({ options, position }: { options: any, position: { x: number, y: number } }) => {
+    console.log(position.x, position.y)
     return (
         <div className={`absolute top-" + ${position.y} + " left-" + ${ position.x }`}>
             {
@@ -18,7 +24,7 @@ export const VgLiteContextMenu = ({ options, position }: { options: any, positio
     )
 }
 
-const useContextMenu = () => {
+export const useContextMenu = () => {
     const [options, setOptions] = useState([])
     const [position, setPosition] = useState({ x: 0, y: 0 })
     const [menuVisible, setMenuVisible] = useState(false)
@@ -37,7 +43,6 @@ const useContextMenu = () => {
 
     return { menuVisible, options, position, showMenu, hideMenu }
 }
-export default useContextMenu
 
 /**
  * Target-specific context menu options...

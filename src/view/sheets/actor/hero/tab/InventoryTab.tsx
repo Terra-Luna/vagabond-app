@@ -8,7 +8,7 @@ import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
 import { itemNameQty, openItemSheet, sortedItems } from "../../../../../model/actor/type/Inventory"
 import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
 import { useState } from "react"
-import useContextMenu, { ItemContextMenu, itemContextMenuOptions, VgLiteContextMenu } from "../../../../component/ContextMenu"
+import { itemContextMenuOptions, useContextMenu, VgLiteContextMenu } from "../../../../component/ContextMenu"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
