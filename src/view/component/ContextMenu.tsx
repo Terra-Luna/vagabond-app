@@ -3,6 +3,7 @@ import { deleteItems, openItemSheet } from '../../model/actor/type/Inventory'
 import { getId } from '../../utils/modelUtil'
 import HeroDataModel from '../../model/actor/HeroDataModel'
 import EquipmentDataModel, { EquipmentSchema } from '../../model/item/equip/EquipmentDataModel'
+import { useDimensions } from '../context/DimensionsContext'
 
 /**
  * A reusable context menu!
@@ -12,7 +13,7 @@ import EquipmentDataModel, { EquipmentSchema } from '../../model/item/equip/Equi
 export const VgLiteContextMenu = ({ options, position }: { options: any, position: { x: number, y: number } }) => {
     console.log(position.x, position.y)
     return (
-        <div className={`absolute top-" + ${position.y} + " left-" + ${ position.x }`}>
+        <div className="bg-sheet-header-fill" style={{ position: 'absolute', top: position.y, left: position.x }}>
             {
                 options.map((option, index) => (
                     <div key={index} onClick={option.action}>
@@ -27,13 +28,14 @@ export const VgLiteContextMenu = ({ options, position }: { options: any, positio
 export const useContextMenu = () => {
     const [options, setOptions] = useState([])
     const [position, setPosition] = useState({ x: 0, y: 0 })
+    const { top, left } = useDimensions()
     const [menuVisible, setMenuVisible] = useState(false)
 
     const showMenu = useCallback((e, options) => {
-        e.stopPropagation()    
+        e.stopPropagation()
         e.preventDefault()
         setOptions(options)
-        setPosition({ x: e.pageX, y: e.pageY })
+        setPosition({ x: e.clientX, y: e.clientY })
         setMenuVisible(true)
     }, []);
 
@@ -41,7 +43,7 @@ export const useContextMenu = () => {
         setMenuVisible(false)
     }, [])
 
-    return { menuVisible, options, position, showMenu, hideMenu }
+    return { menuVisible, options, position: { x: position.x - left, y: position.y - top }, showMenu, hideMenu }
 }
 
 /**
