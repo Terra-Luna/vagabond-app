@@ -29,7 +29,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
             this._reactRoot = ReactDom.createRoot(scaduRoot)
         }
 
-        this.renderWithWrappers({ theme: this._getTheme() })
+        this.renderWithWrappers({ theme: this._getTheme(), position: this.position })
     }
 
     _replaceHTML() { } // no-op, implemented just to comply with sheets api
@@ -46,12 +46,10 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         const minWidth = 420
         const minHeight = 500
         const { width, height, top, left } = position
-
         const realWidth = width === "auto" ? width : Math.max(minWidth, width)
         const realHeight = height === "auto" ? height : Math.max(minHeight, height)
 
-        this.renderWithWrappers({ width: realWidth, height: realHeight, theme: this._getTheme(), top, left })
-
+        this.renderWithWrappers({ theme: this._getTheme(), position: { width: realWidth, height: realHeight, top, left } })
         return super._updatePosition({ ...position, width: realWidth, height: realHeight })
     }
 
@@ -61,7 +59,9 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot = null
     }
 
-    renderWithWrappers({ width = 1, height = 1, theme = "light", top = 1, left = 1 }: { width?: number, height?: number, top?: number, left?: number, theme: string }) {
+    renderWithWrappers({ theme = "light", position }: { theme: string, position: { width: number, height: number, top: number, left: number } }) {
+        const { width, height, top, left } = position
+
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <style>{vgliteStyles}</style>

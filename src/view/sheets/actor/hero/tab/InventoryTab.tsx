@@ -101,7 +101,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     const [dragIndex, setDragIndex] = useState<number | null>(null)
     const [dragItem, setDragItem] = useState<any>(null)
     const [targetItem, setTargetItem] = useState<any>(null)
-    const { menuVisible, options, position, showMenu, hideMenu } = useContextMenu()
+    const { showMenu, hideMenu, menu } = useContextMenu()
 
     const handleContextMenu = (e: any, item: EquipmentDataModel<EquipmentSchema>) => {
         showMenu(e, itemContextMenuOptions(hero, item))
@@ -202,7 +202,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                     ))
                 }</tbody>
             </table>
-            { menuVisible && <VgLiteContextMenu options={options} position={position} /> }
+            { menu }
         </>
     )
 }

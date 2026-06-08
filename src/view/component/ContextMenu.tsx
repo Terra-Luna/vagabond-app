@@ -37,13 +37,15 @@ export const useContextMenu = () => {
         setOptions(options)
         setPosition({ x: e.clientX, y: e.clientY })
         setMenuVisible(true)
-    }, []);
+    }, [])
 
     const hideMenu = useCallback(() => {
         setMenuVisible(false)
     }, [])
 
-    return { menuVisible, options, position: { x: position.x - left, y: position.y - top }, showMenu, hideMenu }
+    const menu = menuVisible ? <VgLiteContextMenu options={options} position={{ x: position.x - left, y: position.y - top }} /> : undefined
+
+    return { menuVisible, showMenu, hideMenu, menu }
 }
 
 /**
@@ -54,6 +56,6 @@ export const itemContextMenuOptions = (hero: HeroDataModel, item: EquipmentDataM
         { id: 1, label: 'Use', action: () => { console.log("Using item!") } },
         { id: 2, label: 'View details', action: () => { openItemSheet(hero, getId(item)) } },
         { id: 3, label: '????', action: () => { console.log("????") } },
-        { id: 4, label: 'Discard', action: () => { deleteItems(hero, [getId(item)])} }
+        { id: 4, label: 'Discard', action: () => { deleteItems(hero, [getId(item)]) } }
     ]
 }
