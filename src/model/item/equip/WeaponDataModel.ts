@@ -107,3 +107,7 @@ export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataMod
         }
     }
 }
+
+export const gripStateDamage = (w: WeaponDataModel): string => {
+    return w.grip.state === '2H' ? w.damage.twoHand : w.damage.oneHand
+}

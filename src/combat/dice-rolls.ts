@@ -1,3 +1,5 @@
+import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponDataModel"
+
 /**
  * Rolls a skill check and posts the results to chat.
  * Returns a SkillCheckResult enum value.
@@ -108,6 +110,13 @@ class DamageRollResult {
  * support the concept of adding a bonus based on the total number of dice
  * rolled.
  */
+export const rollWeaponDamage = async (
+    actor: Actor,
+    weapon: WeaponDataModel
+): Promise<DamageRollResult> => {
+    return rollDamage(actor, gripStateDamage(weapon))
+}
+
 export const rollDamage = async (
     actor: Actor,
     dmgFormula: string,

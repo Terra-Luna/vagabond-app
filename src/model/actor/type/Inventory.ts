@@ -1,8 +1,9 @@
 import { groupBy } from "../../../utils/collectionUtil"
-import { getId } from "../../../utils/modelUtil"
+import { getId, getName } from "../../../utils/modelUtil"
 import { coinSchema, consolidateCoins } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import EquipmentDataModel from "../../item/equip/EquipmentDataModel"
+import EquipmentDataModel, { EquipmentSchema } from "../../item/equip/EquipmentDataModel"
+import { BaseItemSchema } from "../../item/ItemDataModel"
 import HeroDataModel from "../HeroDataModel"
 
 export const inventorySchema = () => {
@@ -39,6 +40,14 @@ export const stackStackables = async (hero: HeroDataModel) => {
             }
         })
     }
+}
+
+export const itemNameQty = (item: EquipmentDataModel<EquipmentSchema>): string => {
+    return item.quantity === 1 ? getName(item) : `${getName(item)} (x${item.quantity})`
+}
+
+export const sortedItems = <T>(items: T[]): T[] => {
+    return items.sort((a: any, b: any) => a.parent.sort === 0 ? 999999 : a.parent.sort - b.parent.sort)
 }
 
 export const isInventoryItem = (item: any): boolean => {

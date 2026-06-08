@@ -5,8 +5,8 @@ import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
 import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
-import { deleteItems, openItemSheet } from "../../../../../model/actor/type/Inventory"
-import { getId, getName } from "../../../../../utils/modelUtil"
+import { deleteItems, itemNameQty, openItemSheet, sortedItems } from "../../../../../model/actor/type/Inventory"
+import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
 import { useState } from "react"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
@@ -95,7 +95,7 @@ const CoinValue = ({ hero, value, label: denomination, path }: { hero: HeroDataM
 }
 
 const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
-    const items = hero.inventory.items.sort((a: any, b: any) => a.parent.sort === 0 ? 999999 : a.parent.sort - b.parent.sort)
+    const items = sortedItems(hero.inventory.items)
     const [dragIndex, setDragIndex] = useState<number | null>(null)
     const [dragItem, setDragItem] = useState<any>(null)
     const [targetItem, setTargetItem] = useState<any>(null)
@@ -108,7 +108,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         setDragItem(items[index])
     }
 
-    const onDragOver = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
+    const onDragEnter = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
         if (dragIndex === null || dragIndex === index) return
         e.preventDefault()
         e.stopPropagation()
@@ -118,22 +118,14 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         console.log("Dragging:", getName(dragItem), "over:", getName(targetItem))
     }
 
-    const onDragEnd = (e: React.DragEvent<HTMLTableRowElement>) => {
+    const onDragEnd = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
+        if (dragIndex === null || dragIndex === index) return
         e.preventDefault()
         e.stopPropagation()
-        console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem))
+        console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]))
 
         try {
-            const sorted = foundry.utils.performIntegerSort(dragItem.parent, {
-                target: targetItem.parent,
-                siblings: items.map((it: any) => it.parent)
-            })
-            const sortingUpdate = sorted.map((it: any) => {
-                const update = it.update
-                update._id = it.target._id
-                return update
-            })
-            hero.parent.updateEmbeddedDocuments("Item", sortingUpdate)
+            itemSortHandler(hero, dragItem, targetItem, items)
         }
         catch (error) {
             console.log(error)
@@ -159,28 +151,19 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                     <tr
                         key={getId(i)}
                         className={index === dragIndex ? "bg-text-fatigue-current" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}
-                        draggable="true"
+                        draggable
                         onDragStart={(e) => onDragStart(e, index)}
-                        onDragEnter={(e) => e.preventDefault()}
-                        onDragOver={(e) => onDragOver(e, index)}
-                        onDragEnd={(e) => onDragEnd(e)}
+                        onDragEnter={(e) => onDragEnter(e, index)}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDragEnd={(e) => onDragEnd(e, index)}
                     >
-                        {
-                            (i.quantity || 0) > 1 ?
-                                <td
-                                    className="px-2 py-1"
-                                    onClick={() => onItemClicked(hero, getId(i), true)}
-                                    onAuxClick={() => onItemClicked(hero, getId(i), false)}
-                                >
-                                    {i.parent.name} (x{i.quantity})
-                                </td> : <td
-                                    className="px-2 py-1"
-                                    onClick={() => onItemClicked(hero, getId(i), true)}
-                                    onAuxClick={() => onItemClicked(hero, getId(i), false)}
-                                >
-                                    {i.parent.name}
-                                </td>
-                        }
+                        <td
+                            className="px-2 py-1"
+                            onClick={() => onItemClicked(hero, getId(i), true)}
+                            onAuxClick={() => onItemClicked(hero, getId(i), false)}
+                        >
+                            {itemNameQty(i)}
+                        </td>
                         <td className="text-center">{i.slots}</td>
                         <td className="text-center">{coinsAsString(i.value)}</td>
                         {
