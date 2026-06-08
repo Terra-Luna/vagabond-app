@@ -6,7 +6,8 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
 import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
 import { deleteItems, openItemSheet } from "../../../../../model/actor/type/Inventory"
-import { getId } from "../../../../../utils/modelUtil"
+import { getId, getName } from "../../../../../utils/modelUtil"
+import { useState } from "react"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
@@ -94,7 +95,55 @@ const CoinValue = ({ hero, value, label: denomination, path }: { hero: HeroDataM
 }
 
 const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
-    const items = hero.inventory.items
+    const items = hero.inventory.items.sort((a: any, b: any) => a.parent.sort === 0 ? 999999 : a.parent.sort - b.parent.sort)
+    const [dragIndex, setDragIndex] = useState<number | null>(null)
+    const [dragItem, setDragItem] = useState<any>(null)
+    const [targetItem, setTargetItem] = useState<any>(null)
+
+    const onDragStart = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
+        e.stopPropagation()
+        e.dataTransfer.dropEffect = "move"
+        console.log("Dragging:", getName(items[index]))
+        setDragIndex(index)
+        setDragItem(items[index])
+    }
+
+    const onDragOver = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
+        if (dragIndex === null || dragIndex === index) return
+        e.preventDefault()
+        e.stopPropagation()
+        e.dataTransfer.dropEffect = "move"
+        setDragIndex(index)
+        setTargetItem(items[index])
+        console.log("Dragging:", getName(dragItem), "over:", getName(targetItem))
+    }
+
+    const onDragEnd = (e: React.DragEvent<HTMLTableRowElement>) => {
+        e.preventDefault()
+        e.stopPropagation()
+        console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem))
+
+        try {
+            const sorted = foundry.utils.performIntegerSort(dragItem.parent, {
+                target: targetItem.parent,
+                siblings: items.map((it: any) => it.parent)
+            })
+            const sortingUpdate = sorted.map((it: any) => {
+                const update = it.update
+                update._id = it.target._id
+                return update
+            })
+            hero.parent.updateEmbeddedDocuments("Item", sortingUpdate)
+        }
+        catch (e) {
+            console.log(e)
+        }
+        finally {
+            setDragIndex(null)
+            setDragItem(null)
+        }
+    }
+
     return (
         <table className="table-auto w-full">
             <thead className="bg-section-header-fill text-text-section-header text-sm">
@@ -106,10 +155,15 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                 </tr>
             </thead>
             <tbody className="text-regular">{
-                items.map((i: any) => (
+                items.map((i: any, index: number) => (
                     <tr
                         key={getId(i)}
-                        className="even:bg-table-row-even/50 odd:bg-table-row-odd/50"
+                        className={index === dragIndex ? "bg-text-fatigue-current" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}
+                        draggable="true"
+                        onDragStart={(e) => onDragStart(e, index)}
+                        onDragEnter={(e) => e.preventDefault()}
+                        onDragOver={(e) => onDragOver(e, index)}
+                        onDragEnd={(e) => onDragEnd(e)}
                     >
                         {
                             (i.quantity || 0) > 1 ?
