@@ -77,7 +77,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const CoinValue = ({ hero, value, label: denomination, path }: { hero: HeroDataModel, value: number, label: string, path: string }) => {
+const CoinValue = ({ hero, value, label: label, path }: { hero: HeroDataModel, value: number, label: string, path: string }) => {
     return (
         <div className="flex pr-2">
             <div className="text-text-primary text-3xl font-eskapade font cursor-pointer min-w-[2ch] text-right">
@@ -89,7 +89,7 @@ const CoinValue = ({ hero, value, label: denomination, path }: { hero: HeroDataM
                     }}
                 />
             </div>
-            <div className={"text-wealth-denom-label text-sm content-end"}>{denomination}</div>
+            <div className={"text-wealth-denom-label text-sm content-end"}>{label}</div>
         </div>
     )
 }
@@ -103,7 +103,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     const onDragStart = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
         e.stopPropagation()
         e.dataTransfer.dropEffect = "move"
-        console.log("Dragging:", getName(items[index]))
+        //console.log("Dragging:", getName(items[index]))
         setDragIndex(index)
         setDragItem(items[index])
     }
@@ -115,14 +115,18 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         e.dataTransfer.dropEffect = "move"
         setDragIndex(index)
         setTargetItem(items[index])
-        console.log("Dragging:", getName(dragItem), "over:", getName(targetItem))
+        //console.log("Dragging:", getName(dragItem), "over:", getName(targetItem))
     }
 
     const onDragEnd = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
-        if (dragIndex === null || dragIndex === index) return
+        if (dragIndex === null || dragIndex === index) {
+            setDragIndex(null)
+            setDragItem(null)
+            return
+        }
         e.preventDefault()
         e.stopPropagation()
-        console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]))
+        //console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]))
 
         try {
             itemSortHandler(hero, dragItem, targetItem, items)
@@ -140,7 +144,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         <table className="table-auto w-full">
             <thead className="bg-section-header-fill text-text-section-header text-sm">
                 <tr>
-                    <th className="text-left pl-1">{lang.VGLITE.HeroSheet.Inventory.item}</th>
+                    <th className="text-left pl-2">{/*lang.VGLITE.HeroSheet.Inventory.item*/}</th>
                     <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.slots}</th>
                     <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.value}</th>
                     <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.equip}</th>
@@ -162,7 +166,10 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             onClick={() => onItemClicked(hero, getId(i), true)}
                             onAuxClick={() => onItemClicked(hero, getId(i), false)}
                         >
-                            {itemNameQty(i)}
+                            <span className="flex">
+                                <img src={i.parent.img} alt={getName(i)} width="24" height="24" className="mr-2 roudned-sm" />
+                                {itemNameQty(i)}
+                            </span>
                         </td>
                         <td className="text-center">{i.slots}</td>
                         <td className="text-center">{coinsAsString(i.value)}</td>
