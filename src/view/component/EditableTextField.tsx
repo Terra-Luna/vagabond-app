@@ -15,14 +15,6 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     const [value, setValue] = useState(initialValue)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const shouldSelectInputRef = useRef(false)
-    const [rerenderToggle, setRerenderToggle] = useState(false)
-
-    const forceRerender = useCallback(() => {
-        // Weird things happen when say our initialValue is X, our value changes to Y, and save() results in our value changing back to X
-        //   in that situation, our initialValue doesn't change - it was X before the update, then it was X after the update
-        //   so we wouldn't rerender. lets us force a rerender if we want to be sure to catch updates
-        setRerenderToggle(!rerenderToggle)
-    }, [rerenderToggle])
 
     useEffect(() => {
         setValue(initialValue)
@@ -54,10 +46,10 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
             ret = await updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
         }
 
-        forceRerender()
+        reset() // todo make these not flash
         setIsInEditMode(false)
         return ret
-    }, [value, onSave, updateProps, forceRerender])
+    }, [value, onSave, updateProps])
 
     const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {
         switch (e.code) {
