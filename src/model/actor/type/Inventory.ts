@@ -3,7 +3,6 @@ import { getId, getName } from "../../../utils/modelUtil"
 import { coinSchema, consolidateCoins } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "../../item/equip/EquipmentDataModel"
-import { BaseItemSchema } from "../../item/ItemDataModel"
 import HeroDataModel from "../HeroDataModel"
 
 export const inventorySchema = () => {

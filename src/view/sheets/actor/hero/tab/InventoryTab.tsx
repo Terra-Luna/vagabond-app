@@ -5,9 +5,11 @@ import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
 import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
-import { deleteItems, itemNameQty, openItemSheet, sortedItems } from "../../../../../model/actor/type/Inventory"
+import { itemNameQty, openItemSheet, sortedItems } from "../../../../../model/actor/type/Inventory"
 import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
 import { useState } from "react"
+import useContextMenu, { ItemContextMenu, itemContextMenuOptions, VgLiteContextMenu } from "../../../../component/ContextMenu"
+import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
@@ -99,6 +101,11 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     const [dragIndex, setDragIndex] = useState<number | null>(null)
     const [dragItem, setDragItem] = useState<any>(null)
     const [targetItem, setTargetItem] = useState<any>(null)
+    const { menuVisible, options, position, showMenu, hideMenu } = useContextMenu()
+
+    const handleContextMenu = (e: any, item: EquipmentDataModel<EquipmentSchema>) => {
+        showMenu(e, itemContextMenuOptions(hero, item))
+    }
 
     const onDragStart = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
         e.stopPropagation()
@@ -141,59 +148,67 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     }
 
     return (
-        <table className="table-auto w-full">
-            <thead className="bg-section-header-fill text-text-section-header text-sm">
-                <tr>
-                    <th className="text-left pl-2">{/*lang.VGLITE.HeroSheet.Inventory.item*/}</th>
-                    <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.slots}</th>
-                    <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.value}</th>
-                    <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.equip}</th>
-                </tr>
-            </thead>
-            <tbody className="text-regular">{
-                items.map((i: any, index: number) => (
-                    <tr
-                        key={getId(i)}
-                        className={index === dragIndex ? "bg-text-fatigue-current" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}
-                        draggable
-                        onDragStart={(e) => onDragStart(e, index)}
-                        onDragEnter={(e) => onDragEnter(e, index)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDragEnd={(e) => onDragEnd(e, index)}
-                    >
-                        <td
-                            className="px-2 py-1"
-                            onClick={() => onItemClicked(hero, getId(i), true)}
-                            onAuxClick={() => onItemClicked(hero, getId(i), false)}
-                        >
-                            <span className="flex">
-                                <img src={i.parent.img} alt={getName(i)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill" />
-                                {itemNameQty(i)}
-                            </span>
-                        </td>
-                        <td className="text-center">{i.slots}</td>
-                        <td className="text-center">{coinsAsString(i.value)}</td>
-                        {
-                            i.isEquippable ?
-                                <td className="text-center">
-                                    <input
-                                        className="cursor-pointer"
-                                        type="checkbox"
-                                        checked={i.isEquipped} onChange={
-                                            () => toggleEquipState(hero, getId(i))
-                                        }
-                                    />
-                                </td> : <td className="text-center" />
-                        }
+        <>
+            <table className="table-auto w-full">
+                <thead className="bg-section-header-fill text-text-section-header text-sm">
+                    <tr>
+                        <th className="text-left pl-2">{/*lang.VGLITE.HeroSheet.Inventory.item*/}</th>
+                        <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.slots}</th>
+                        <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.value}</th>
+                        <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.equip}</th>
                     </tr>
-                ))
-            }</tbody>
-        </table>
+                </thead>
+                <tbody className="text-regular">{
+                    items.map((i: any, index: number) => (
+                        <tr
+                            key={getId(i)}
+                            className={index === dragIndex ? "bg-text-fatigue-current" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}
+                            draggable
+                            onDragStart={(e) => onDragStart(e, index)}
+                            onDragEnter={(e) => onDragEnter(e, index)}
+                            onDragOver={(e) => e.preventDefault()}
+                            onDragEnd={(e) => onDragEnd(e, index)}
+                            onClick={hideMenu}
+                            onContextMenu={(e) => {
+                                e.stopPropagation()
+                                e.preventDefault()
+                                {handleContextMenu(e, i)}
+                            }}
+                        >
+                            <td
+                                className="px-2 py-1"
+                                onClick={() => onItemClicked(hero, getId(i))}
+                            >
+                                <span className="flex">
+                                    <img src={i.parent.img} alt={getName(i)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill" />
+                                    {itemNameQty(i)}
+                                </span>
+                            </td>
+                            <td className="text-center">{i.slots}</td>
+                            <td className="text-center">{coinsAsString(i.value)}</td>
+                            {
+                                i.isEquippable ?
+                                    <td className="text-center">
+                                        <input
+                                            className="cursor-pointer"
+                                            type="checkbox"
+                                            checked={i.isEquipped} onChange={
+                                                () => toggleEquipState(hero, getId(i))
+                                            }
+                                        />
+                                    </td> : <td className="text-center" />
+                            }
+                        </tr>
+                    ))
+                }</tbody>
+            </table>
+            { menuVisible && <VgLiteContextMenu options={options} position={position} /> }
+        </>
     )
 }
 
-const onItemClicked = (hero: HeroDataModel, itemId: string, isAuxClick: boolean) => {
-    isAuxClick ? openItemSheet(hero, itemId) : deleteItems(hero, [itemId])
+const onItemClicked = (hero: HeroDataModel, itemId: string) => {
+    openItemSheet(hero, itemId)
 }
 
 const toggleEquipState = async (hero: HeroDataModel, itemId: string) => {
