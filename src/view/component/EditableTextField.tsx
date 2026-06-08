@@ -1,6 +1,6 @@
 import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react";
 import VgLiteError from "../../model/common/VgLiteError";
-import { updateDocumentAtPath } from "../../utils/documentUtils";
+import { getDocumentAtPath, updateDocumentAtPath } from "../../utils/documentUtils";
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet";
 
 export const EditableTextField = ({ initialValue, onSave, updateProps }: { initialValue: string, onSave?: (value: string) => Promise<boolean>, updateProps?: { actor: any, propertyPath: string[] } }) => {
@@ -44,11 +44,14 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
         }
         else {
             ret = await updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
+            if (!ret || getDocumentAtPath(ret, updateProps!.propertyPath) === initialValue) {
+                reset()
+            }
         }
 
-        reset()
+        setIsInEditMode(false)
         return ret
-    }, [value, onSave, updateProps, reset])
+    }, [value, onSave, updateProps, reset, initialValue])
 
     const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {
         switch (e.code) {
