@@ -160,4 +160,20 @@ export default async function createEquipment() {
         }
     }
     await Item.create(heavy_armor)
+
+    const alchemistfire = {
+        name: "Alchemists Fire",
+        type: 'alchemical',
+        system: {
+            description: 'A flammable, tar-like fluid that ignites when exposed to oxygen, dealing 2d6 damage and Burning (Cd6) a hit Target.',
+            category: 'Alchemy',
+            damage: '',
+            damageType: '',
+            slots: 1,
+            quantity: 1,
+            isStackable: true,
+            value: { g: 2, s: 50 }
+        }
+    }
+    await Item.create(alchemistfire)
 }

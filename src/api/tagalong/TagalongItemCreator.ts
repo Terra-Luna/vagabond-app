@@ -25,7 +25,8 @@ export default class TagalongItemCreator {
             for (const i of this.items) {
                 console.log("Tagalong Item Creator: Creating item", i)
                 switch (i.type) {
-                    case ItemType.ALCHEMY: {
+                    case ItemType.ALCHEMY:
+                    case ItemType.MEDICINE: {
                         await this.handleAlchemyItem(i)
                         break
                     }
@@ -63,7 +64,7 @@ export default class TagalongItemCreator {
     private async handleAlchemyItem(item: TagalongItem) {
         await this.createAndAddItem({
             name: item.name,
-            type: 'alchemy',
+            type: 'alchemical',
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
@@ -173,7 +174,7 @@ export default class TagalongItemCreator {
                 slots: item.slots,
                 quantity: 1,
                 isStackable: true,
-                value: item.value,
+                value: item.value
             }
         })
     }
@@ -199,7 +200,8 @@ export default class TagalongItemCreator {
 enum ItemType {
     ARMOR = "Armor",
     WEAPON = "Weapon",
-    ALCHEMY = "Alchemy & Medicine",
+    ALCHEMY = "Alchemy",
+    MEDICINE = "Alchemy & Medicine",
     GEAR = "Gear",
     OTHER = ""
 }

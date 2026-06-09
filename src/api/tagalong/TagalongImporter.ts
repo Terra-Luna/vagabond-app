@@ -80,7 +80,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Lookup matching Ancestry...
          */
-        const ancestry = game.items?.find(it =>
+        const ancestry = game.items?.find((it: any) =>
             it.type === 'ancestry' && it.name.toUpperCase() === res.ancestry.toUpperCase()
         ) as any
         if (!ancestry) {
@@ -90,7 +90,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Lookup matching Class.
          */
-        const clazz = game.items?.find(it =>
+        const clazz = game.items?.find((it: any) =>
             it.type === 'class' && it.name.toUpperCase() === res.class.toUpperCase()
         ) as any
         if (!clazz) {
@@ -100,9 +100,9 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Lookup matching Perks...
          */
-        const perks = []
+        const perks: any[] = []
         res.selected_perks.forEach(p => {
-            const perk = game.items?.find(it =>
+            const perk = game.items?.find((it: any) =>
                 it.type === 'perk' && it.name.toUpperCase() === p.name.toUpperCase()
             )
             if (perk == undefined) {
@@ -116,9 +116,9 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Lookup matching Spells...
          */
-        const spells = []
+        const spells: any[] = []
         res.known_spells.forEach(s => {
-            const systemSpell = game.items?.find(it =>
+            const systemSpell = game.items?.find((it: any) =>
                 it.type === 'spell' && it.name.toUpperCase() === s.toUpperCase()
             )
             if (systemSpell == undefined) {
@@ -183,7 +183,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
          */
         const newItems: TagalongItem[] = []
         res.inventory.forEach(tagalongItem => {
-            const systemItem = game.items?.getName(tagalongItem.name)
+            const systemItem = game.items?.find(it => it.name.toUpperCase() === tagalongItem.name.toUpperCase())
             if (systemItem == undefined && newItems.map(it => it.name.toUpperCase()).indexOf(tagalongItem.name.toUpperCase()) == -1) {
                 newItems.push(tagalongItem)
             }

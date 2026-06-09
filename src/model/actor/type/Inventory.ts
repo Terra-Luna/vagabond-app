@@ -1,6 +1,6 @@
 import { groupBy } from "../../../utils/collectionUtil"
 import { getId, getName } from "../../../utils/modelUtil"
-import { coinSchema, consolidateCoins } from "../../common/CoinValue"
+import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "../../item/equip/EquipmentDataModel"
 import HeroDataModel from "../HeroDataModel"
@@ -25,17 +25,14 @@ export const setInventoryData = (hero: HeroDataModel) => {
 }
 
 export const stackStackables = async (hero: HeroDataModel) => {
-    const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.isStackable)
+    const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.isStackable) as Item[]
     if (stackables?.length > 0) {
-        Object.values(groupBy('name', stackables)).forEach(async items => {
-            if ((items as any[]).length > 1) {
-                console.log("Stacking items:", items)
-                await (items as any[])[0].update({ 'system.quantity': (items as any[]).length })
-                await deleteItems(
-                    hero,
-                    (items as any[]).filter((it: any) => it.system.quantity === 1).map(it => getId(it))
-                )
-            }
+        ((Object.values(groupBy('name', stackables))) as any[][]).filter(it => it.length > 1).forEach(async items => {
+            await items[0].update({ 'system.quantity': items.length })
+            await deleteItems(
+                hero,
+                items.filter(it => it.system.quantity === 1).map(it => it._id)
+            )
         })
     }
 }
