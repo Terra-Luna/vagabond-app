@@ -184,6 +184,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         const newItems: TagalongItem[] = []
         res.inventory.forEach(tagalongItem => {
             const systemItem = game.items?.find(it => it.name.toUpperCase() === tagalongItem.name.toUpperCase())
+            console.log(systemItem)
             if (systemItem == undefined && newItems.map(it => it.name.toUpperCase()).indexOf(tagalongItem.name.toUpperCase()) == -1) {
                 newItems.push(tagalongItem)
             }
@@ -193,7 +194,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         converter.errors.forEach(e => { failures.push(e) })
 
         const createAllItems = res.inventory.map(async tagalongItem => {
-            const sysItem = game.items?.find(it => it.name === tagalongItem.name && isInventoryItem(it))
+            const sysItem = game.items?.find(it => it.name.toUpperCase() === tagalongItem.name.toUpperCase() && isInventoryItem(it))
             if (sysItem) {
                 await hero.parent.createEmbeddedDocuments("Item", [sysItem])
                 await new Promise((resolve) => setTimeout(resolve, 1000))
