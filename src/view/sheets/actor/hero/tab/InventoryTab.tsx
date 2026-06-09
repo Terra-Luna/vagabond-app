@@ -10,6 +10,7 @@ import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
 import { useState } from "react"
 import { itemContextMenuOptions, useContextMenu, VgLiteContextMenu } from "../../../../component/ContextMenu"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
+import { useDragDrop } from "../../../../component/DragDrop"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
@@ -58,9 +59,6 @@ const Gauge = ({ bulk, capacity, isFull: isOverEncumbered }: { bulk: number, cap
 }
 
 const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
-    const g = { value: hero.inventory.coins.g || 0, label: lang.VGLITE.HeroSheet.gold }
-    const s = { value: hero.inventory.coins.s || 0, label: lang.VGLITE.HeroSheet.silver }
-    const c = { value: hero.inventory.coins.c || 0, label: lang.VGLITE.HeroSheet.copper }
     return (
         <div className={"flex pl-2 " + infoBoxLayout}>
             <div 
@@ -71,15 +69,15 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                     <Coins className="text-wealth-denom-label" size={28} />
             </div>
             <div className="flex content-center justify-end w-full">
-                <CoinValue hero={hero} value={g.value} label={g.label} path='g' />
-                <CoinValue hero={hero} value={s.value} label={s.label} path='s' />
-                <CoinValue hero={hero} value={c.value} label={c.label} path='c' />
+                <CoinValue hero={hero} value={hero.inventory.coins.g ?? 0} label={lang.VGLITE.HeroSheet.gold} path='g' />
+                <CoinValue hero={hero} value={hero.inventory.coins.s ?? 0} label={lang.VGLITE.HeroSheet.silver} path='s' />
+                <CoinValue hero={hero} value={hero.inventory.coins.c ?? 0} label={lang.VGLITE.HeroSheet.copper} path='c' />
             </div>
         </div>
     )
 }
 
-const CoinValue = ({ hero, value, label: label, path }: { hero: HeroDataModel, value: number, label: string, path: string }) => {
+const CoinValue = ({ hero, value, label, path }: { hero: HeroDataModel, value: number, label: string, path: string }) => {
     return (
         <div className="flex pr-2">
             <div className="text-text-primary text-3xl font-eskapade font cursor-pointer min-w-[2ch] text-right">
@@ -98,21 +96,26 @@ const CoinValue = ({ hero, value, label: label, path }: { hero: HeroDataModel, v
 
 const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     const items = sortedItems(hero.inventory.items)
-    const [dragIndex, setDragIndex] = useState<number | null>(null)
+    const { dragIndex, dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
+        items,
+        () => itemSortHandler(hero, dragItem, targetItem ?? items[items.length - 1], items)
+    )
+    /* const [dragIndex, setDragIndex] = useState<number | null>(null)
     const [dragItem, setDragItem] = useState<any>(null)
-    const [targetItem, setTargetItem] = useState<any>(null)
+    const [targetItem, setTargetItem] = useState<any>(null) */
     const { showMenu, hideMenu, menu } = useContextMenu()
 
     const handleContextMenu = (e: any, item: EquipmentDataModel<EquipmentSchema>) => {
         showMenu(e, itemContextMenuOptions(hero, item))
     }
 
-    const onDragStart = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
+   /*  const onDragStart = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
         e.stopPropagation()
         e.dataTransfer.dropEffect = "move"
-        //console.log("Dragging:", getName(items[index]))
         setDragIndex(index)
         setDragItem(items[index])
+        setTargetItem(items[index])
+        //console.log("Dragging:", getName(dragItem), index)
     }
 
     const onDragEnter = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
@@ -122,21 +125,23 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         e.dataTransfer.dropEffect = "move"
         setDragIndex(index)
         setTargetItem(items[index])
-        //console.log("Dragging:", getName(dragItem), "over:", getName(targetItem))
+        //console.log("Dragging:", getName(dragItem), "above:", getName(targetItem), index)
     }
 
     const onDragEnd = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
         if (dragIndex === null || dragIndex === index) {
             setDragIndex(null)
             setDragItem(null)
+            setTargetItem(null)
             return
         }
         e.preventDefault()
         e.stopPropagation()
-        //console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]))
+        setTargetItem(items[index])
+        //console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]), index)
 
         try {
-            itemSortHandler(hero, dragItem, targetItem, items)
+            itemSortHandler(hero, dragItem, targetItem ?? items[items.length - 1], items)
         }
         catch (error) {
             console.log(error)
@@ -144,8 +149,9 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         finally {
             setDragIndex(null)
             setDragItem(null)
+            setTargetItem(null)
         }
-    }
+    } */
 
     return (
         <>
@@ -166,7 +172,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             draggable
                             onDragStart={(e) => onDragStart(e, index)}
                             onDragEnter={(e) => onDragEnter(e, index)}
-                            onDragOver={(e) => e.preventDefault()}
+                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onClick={hideMenu}
                             onContextMenu={(e) => {

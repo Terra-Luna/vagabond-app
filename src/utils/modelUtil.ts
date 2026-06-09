@@ -15,9 +15,11 @@ export const getName = (obj: any): string => {
  * @param targetItem 
  * @param siblings 
  */
-export const itemSortHandler = (actor: ActorDataModel<BaseActorSchema>, dragItem: any, targetItem: any, siblings: any[]) => {
+export const itemSortHandler = async (actor: ActorDataModel<BaseActorSchema>, dragItem: any, targetItem: any, siblings: any[]) => {
+    const sortBefore = siblings.indexOf(targetItem) < siblings.indexOf(dragItem)
     const sorted = foundry.utils.performIntegerSort(dragItem.parent, {
         target: targetItem.parent,
+        sortBefore: sortBefore,
         siblings: siblings.map((it: any) => it.parent)
     })
     const sortingUpdate = sorted.map((it: any) => {
@@ -25,5 +27,5 @@ export const itemSortHandler = (actor: ActorDataModel<BaseActorSchema>, dragItem
         update._id = it.target._id
         return update
     })
-    actor.parent.updateEmbeddedDocuments("Item", sortingUpdate)
+    await actor.parent.updateEmbeddedDocuments("Item", sortingUpdate)
 }

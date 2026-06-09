@@ -11,7 +11,7 @@ import { useDimensions } from '../context/DimensionsContext'
  * @returns 
  */
 export const VgLiteContextMenu = ({ options, position }: { options: any, position: { x: number, y: number } }) => {
-    console.log(position.x, position.y)
+    //console.log(position.x, position.y)
     return (
         <div className="bg-sheet-header-fill" style={{ position: 'absolute', top: position.y, left: position.x }}>
             {

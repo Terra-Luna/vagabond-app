@@ -5,8 +5,9 @@ import { Header, ItemDivider } from "../../../../component/Header";
 import { rollDamage, rollSkillCheck, rollWeaponDamage } from "../../../../../combat/dice-rolls";
 import WeaponDataModel, { gripStateDamage, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel";
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
-import { getId } from "../../../../../utils/modelUtil";
+import { getId, itemSortHandler } from "../../../../../utils/modelUtil";
 import { sortedItems } from "../../../../../model/actor/type/Inventory";
+import { useDragDrop } from "../../../../component/DragDrop";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -70,29 +71,44 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     const gripStyle = "text-text-aux text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
+    const { dragIndex, dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
+            equippedWeapons,
+            () => itemSortHandler(
+                hero, dragItem, targetItem ?? equippedWeapons[equippedWeapons.length - 1], equippedWeapons
+            )
+        )
     return (
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />
             {
-                equippedWeapons?.map(w => (<div key={getId(w)}>
-                    <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1" draggable onDragStart={(e) => console.log(e.currentTarget)}>
-                        <div className="line-clamp-1">{w.parent.name}</div>
-                        <div className="flex justify-end">
-                            <div className={gripStyle + " mr-2"} onClick={() => toggleGripState(hero, w)}>{w.grip.state}</div>
-                            <div className="flex content-right">
-                                <div
-                                    className={dmgStyle}
-                                    onClick={() => rollWeaponDamage(hero.parent, w)}
-                                >
-                                    {gripStateDamage(w)}
+                equippedWeapons?.map((w: WeaponDataModel, index: number) => (
+                    <div key={getId(w)}>
+                        <div
+                            className="grid grid-cols-[53%_47%] place-content-between -gap-y-1"
+                            draggable
+                                onDragStart={(e) => onDragStart(e, index)}
+                                onDragEnter={(e) => onDragEnter(e, index)}
+                                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                onDragEnd={(e) => onDragEnd(e, index)}
+                        >
+                            <div className="line-clamp-1">{w.parent.name}</div>
+                            <div className="flex justify-end">
+                                <div className={gripStyle + " mr-2"} onClick={() => toggleGripState(hero, w)}>{w.grip.state}</div>
+                                <div className="flex content-right">
+                                    <div
+                                        className={dmgStyle}
+                                        onClick={() => rollWeaponDamage(hero.parent, w)}
+                                    >
+                                        {gripStateDamage(w)}
+                                    </div>
                                 </div>
                             </div>
+                            <div className={propsStyle}>{w.properties.reduce((props, p) => { return props + p + ', ' }, '').replace(/,\s*$/, "")}</div>
+                            <div className={propsStyle + " text-right mr-1"}>{w.range}</div>
                         </div>
-                        <div className={propsStyle}>{w.properties.reduce((props, p) => { return props + p + ', ' }, '').replace(/,\s*$/, "")}</div>
-                        <div className={propsStyle + " text-right mr-1"}>{w.range}</div>
+                        <ItemDivider />
                     </div>
-                    <ItemDivider />
-                </div>))
+                ))
             }
         </div>
     )
