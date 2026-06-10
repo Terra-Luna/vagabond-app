@@ -8,6 +8,7 @@ import { rollSkillCheck } from "../../../../../combat/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { importHero } from "../../../../../api/tagalong/TagalongImporter"
+import { glowOnHover } from "../../../VgLiteSheet"
 
 const borderClasses = "border border-solid border-sheet-header-fill"
 
@@ -41,18 +42,17 @@ export const HPAndArmorDisplay = ({ health, armor, hero }: { health: Health, arm
     const updateHp = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
     }, [hp])
-
     return (
         <div className="flex text-3xl font-eskapade font-bold mt-1 mb-1 ml-4 mr-4 justify-evenly">
             <div className="flex items-center">
                 <Heart
-                    className="text-ic-hp fill-ic-hp"
+                    className={`text-ic-hp fill-ic-hp ${glowOnHover} cursor-pointer`}
                     size={24}
                     onClick={() => updateHp(false)}
                     onAuxClick={() => updateHp(true)}
                 />
                 &nbsp;
-                <span className="text-text-hp-current">
+                <span className={`text-text-hp-current ${glowOnHover} cursor-pointer`}>
                     <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
                 </span>
                 <span className="slash">&nbsp;/&nbsp;</span>
@@ -105,9 +105,8 @@ export const Trackers = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
-
 const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
-    <div className="flex items-center flex-col text-text-primary w-1/3 border-2 cursor-pointer"
+    <div className={`flex items-center flex-col text-text-primary w-1/3 border-2 ${glowOnHover} cursor-pointer`}
         onClick={() => onClick(false)}
         onAuxClick={() => onClick(true)}
     >
@@ -133,8 +132,7 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
-
-export const Speed = ({ name, value }: { name: string, value: string }) => (
+const Speed = ({ name, value }: { name: string, value: string }) => (
     <div className="flex flex-col items-center">
         <div className="font-eskapade text-2xl font-bold text-text-primary">{value}</div>
         <div className="text-text-aux font-bold -mt-1">{name}</div>
@@ -151,7 +149,6 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
         }</div>
     )
 }
-
 const Stat = ({ name, value }: { name: string, value: number }) => {
     return (
         <div className="text-text-special basis-[32%] font-bold text-center mx-[1px] mt-1 mb-1">
@@ -175,11 +172,10 @@ export const Actions = ({ hero, actions }: { hero: HeroDataModel, actions: {name
         </div>        
     )
 }
-
 const Action = ({ hero, name, value}: { hero: HeroDataModel, name: string, value: number }) => {
     return (
         <div className="flex w-full justify-between items-center border border-solid border-section-header-fill">
-            <div className="flex items-center justify-between w-full font-eskapade font-bold cursor-pointer" onClick={
+            <div className={`flex items-center justify-between w-full font-eskapade font-bold ${glowOnHover} cursor-pointer`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }}>
                 <div className="text-lg text-left ml-1 mr-1">{name}</div>
                 <div className="bg-section-header-fill font-bold text-2xl text-text-section-header w-1/4 text-center flex items-center justify-center">{value}</div>
@@ -199,10 +195,9 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
-
-export const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
+const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
     return (
-        <div className={`font-eskapade text-lg flex cursor-pointer ${borderClasses}`} onClick={
+        <div className={`font-eskapade text-lg flex ${glowOnHover} cursor-pointer ${borderClasses}`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }
         }>
             <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-2xl flex items-center justify-center">

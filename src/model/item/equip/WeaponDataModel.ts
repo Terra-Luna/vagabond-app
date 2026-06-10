@@ -60,8 +60,8 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
     const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
     const fistWeapons = equippedWeapons.filter((it: any) => it.system.grip.style === 'F')
     const heldWeapons = equippedWeapons.filter((it: any) => it.system.grip.style !== 'F')
-    let openFists = 2 - fistWeapons.length
-    let openHands = 2 - (heldWeapons.length === 0 ? 0 : (
+    const openFists = 2 - fistWeapons.length
+    const openHands = 2 - (heldWeapons.length === 0 ? 0 : (
         heldWeapons.length === 2 ? 2 : (
             heldWeapons[0].system.grip.state === '2H' ? 2 : 1
         )

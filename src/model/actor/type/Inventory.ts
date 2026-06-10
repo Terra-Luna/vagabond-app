@@ -1,5 +1,5 @@
 import { groupBy } from "../../../utils/collectionUtil"
-import { getId, getName } from "../../../utils/modelUtil"
+import { getName } from "../../../utils/modelUtil"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "../../item/equip/EquipmentDataModel"
@@ -9,7 +9,6 @@ export const inventorySchema = () => {
     return {
         coins: new fields.SchemaField({ ...coinSchema() }),
         capacity: new fields.NumberField({ ...requiredInteger, initial: 2 }),
-        emptySlots: new fields.NumberField({ ...requiredInteger, initial: 2 }),
         /**
          * Derived from Actor's Embedded Documents.
          */
@@ -17,11 +16,17 @@ export const inventorySchema = () => {
     }
 }
 
+export const getEncumbranceInfo = (hero: HeroDataModel): { bulk: number, capacity: number, isOverEncumbered: boolean } => {
+    const capacity = hero.inventory.capacity ?? 10
+    const bulk = hero.inventory.items.reduce((sum, i) => { return sum + (i.slots ?? 0) }, 0)
+    const isOverEncumbered = bulk / capacity > 1
+    return { bulk, capacity, isOverEncumbered }
+}
+
 export const setInventoryData = (hero: HeroDataModel) => {
     hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
     hero.inventory.capacity = Number(hero.stats.might) + 8 - hero.fatigue!
     const bulk = hero.inventory?.items?.reduce((sum, i) => { return sum! + i.slots! * i.quantity! }, 0)
-    hero.inventory.emptySlots = hero.inventory.capacity - bulk
 }
 
 export const stackStackables = async (hero: HeroDataModel) => {

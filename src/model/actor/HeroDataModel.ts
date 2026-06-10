@@ -90,8 +90,8 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (coinChanges !== undefined) {
             //console.log("Intercepting coin changes", coinChanges)
             const { g, s, c } = this.inventory.coins
-            const newG = coinChanges.g ?? g;
-            const newS = coinChanges.s ?? s;
+            const newG = coinChanges.g ?? g
+            const newS = coinChanges.s ?? s
             const newC = coinChanges.c ?? c;
             (changes.system as any).inventory.coins = consolidateCoins({ g: newG, s: newS, c: newC })
         }

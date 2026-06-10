@@ -16,6 +16,7 @@ const baseEquipmentSchema = () => {
         isStackable: new fields.BooleanField({ initial: false }),
         isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),
+        isConsumable: new fields.BooleanField({ initial: false }),
         relicEffects: new fields.ArrayField(
             new fields.SchemaField({
                 type: new fields.StringField({ ...requiredString, choices: ['BONUS', 'CURSED', 'PROTECTION', 'MOVEMENT', 'SENSES', 'UTILITY', 'UNIQUE', 'FABLED'] }),
@@ -49,5 +50,18 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
         }
         this.isEquippedWeapon = this.isEquipped && this.parent.type === 'weapon'
         this.isEquippedArmor = this.isEquipped && this.parent.type === 'armor'
+    }
+}
+
+export const setEquipState = async (item: any, isEquipped: boolean) => {
+    if (item.system !== undefined) {
+        if (item.system.isEquippable && item.system.isEquipped != isEquipped) {
+            await item.update({ 'system.isEquipped': isEquipped })
+        }
+    }
+    else {
+        if (item.isEquippable && item.isEquipped != isEquipped) {
+            await item.parent.update({ 'system.isEquipped': isEquipped })
+        }
     }
 }

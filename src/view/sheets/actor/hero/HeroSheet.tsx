@@ -6,7 +6,6 @@ import lang from "../../../../../public/lang/en.json"
 import { IconButton } from "../../../component/IconButton"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
-import { Actions, Avatar, HPAndArmorDisplay, Saves, Speeds, Stats, Trackers } from "./tab/TopSection"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { MainTab } from "./tab/MainTab"
 import { InventoryTab } from "./tab/InventoryTab"
@@ -15,6 +14,7 @@ import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { EditableNameField } from "../../../component/EditableTextField"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
 import { getName } from "../../../../utils/modelUtil"
+import { Avatar, Stats, Actions, HPAndArmorDisplay, Saves, Speeds, Trackers } from "./tab/TopSection"
 
 const locale = lang.VGLITE.HeroSheet
 

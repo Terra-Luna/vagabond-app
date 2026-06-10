@@ -8,6 +8,7 @@
   --color-text-header-primary: ;
   --color-text-header-secondary: ;
   --color-text-header-tertiary: ;
+  --color-sheet-main-fill: ;
   --color-portrait-border: ;
   --color-text-tab-active: ;
   --color-text-tab-inactive: ;
@@ -22,7 +23,7 @@
   --color-text-special: ;
   --color-text-aux: ;
   --color-text-dmg: ;
-  --color-text-highlight: ;
+  --color-text-glow: ;
   --color-text-bold: ;
   --color-ic-skill-trained: ;
   --color-ic-skill-untrained: ;
@@ -57,6 +58,9 @@
   --color-btn-secondary-hover: ;
   --color-btn-secondary-text: ;
   --color-destructive-action: ;
+  --color-context-menu-fill: ;
+  --color-context-menu-hover: ;
+  --color-context-menu-text: ;
   --color-magical: ;
   --color-fire: ;
   --color-cold: ;
@@ -73,6 +77,7 @@
   --color-text-header-primary: #eeeeed;
   --color-text-header-secondary: #eeeeed;
   --color-text-header-tertiary: #e1dbd9;
+  --color-sheet-main-fill: #faf0e6;
   --color-portrait-border: #352f28;
   --color-text-tab-active: #53514a;
   --color-text-tab-inactive: #b7b0a7;
@@ -81,14 +86,14 @@
   --color-section-header-fill: #6a2e2a;
   --color-section-header-line: #b59795;
   --color-text-section-header: #eeeeed;
-  --color-text-primary: #1c1917;
+  --color-text-primary: #080707;
   --color-text-secondary: #44403b;
   --color-text-tertiary: #6f5e53;
   --color-text-special: #6a2e2a;
   --color-text-aux: #747069;
   --color-text-dmg: #e7000b;
-  --color-text-highlight: #292524;
-  --color-text-bold: #292524;
+  --color-text-glow: #6a2e2a;
+  --color-text-bold: #1d1a19;
   --color-ic-skill-trained: #3d5541;
   --color-ic-skill-untrained: #aeb2a4;
   --color-skill-divider: #b7b0a7;
@@ -123,6 +128,9 @@
   --color-btn-secondary-hover: #d6a593;
   --color-btn-secondary-text: #3d2622;
   --color-destructive-action: #f72b35;
+  --color-context-menu-fill: #d7ccc8;
+  --color-context-menu-hover: #d6a593;
+  --color-context-menu-text: #080707;
   --color-magical: #155dfc;
   --color-fire: #DE671E;
   --color-cold: #00D0FF;
@@ -135,10 +143,11 @@
 }
 
 .dark {
-  --color-sheet-header-fill: #1c1917;
+  --color-sheet-header-fill: #080707;
   --color-text-header-primary: #ab9b4b;
   --color-text-header-secondary: #e7e5e4;
   --color-text-header-tertiary: #8a8580;
+  --color-sheet-main-fill: #1d1a19;
   --color-portrait-border: #675e38;
   --color-text-tab-active: #ab9b4b;
   --color-text-tab-inactive: #675e38;
@@ -146,26 +155,26 @@
   --color-scroll-bar-track: #221f21;
   --color-section-header-fill: #ab9b4b;
   --color-section-header-line: #918444;
-  --color-text-section-header: #1c1917;
+  --color-text-section-header: #080707;
   --color-text-primary: #e7e5e4;
   --color-text-secondary: #a6a09b;
   --color-text-tertiary: #79716b;
   --color-text-special: #e7e5e4;
   --color-text-aux: #c1bebd;
   --color-text-dmg: #ee5e61;
-  --color-text-highlight: #e2c38c;
+  --color-text-glow: #c5b358;
   --color-text-bold: #c1af56;
   --color-ic-skill-trained: #ab9b4b;
   --color-ic-skill-untrained: #57534d;
   --color-skill-divider: #47412e;
-  --color-skill-bg-fill: #292524;
+  --color-skill-bg-fill: #1d1a19;
   --color-skill-border: #44403b;
   --color-stat-block-fill: #ab9b4b;
-  --color-wealth-fill: #1c1917;
+  --color-wealth-fill: #080707;
   --color-wealth-denom-label: #bb4d00;
   --color-table-border: #44403b;
-  --color-table-row-odd: #1c1917;
-  --color-table-row-even: #292524;
+  --color-table-row-odd: #080707;
+  --color-table-row-even: #1d1a19;
   --color-text-table-item: #eae8e7;
   --color-ic-hp: #e7000b;
   --color-text-hp-current: #e7000b;
@@ -183,11 +192,14 @@
   --color-ic-equipped: #ab9b4b;
   --color-btn-primary-fill: #ab9b4b;
   --color-btn-primary-hover: #c5bb82;
-  --color-btn-primary-text: #1c1917;
+  --color-btn-primary-text: #080707;
   --color-btn-secondary-fill: #44403b;
   --color-btn-secondary-hover: #636363;
   --color-btn-secondary-text: #e7e5e4;
   --color-destructive-action: #f72b35;
+  --color-context-menu-fill: #1d1a19;
+  --color-context-menu-hover: #080707;
+  --color-context-menu-text: #e7e5e4;
   --color-magical: #155dfc;
   --color-fire: #DE671E;
   --color-cold: #00D0FF;

@@ -2,12 +2,14 @@ import { Shield, Star } from "lucide-react";
 import HeroDataModel from "../../../../../model/actor/HeroDataModel";
 import lang from "../../../../../../public/lang/en.json"
 import { Header, ItemDivider } from "../../../../component/Header";
-import { rollDamage, rollSkillCheck, rollWeaponDamage } from "../../../../../combat/dice-rolls";
+import { rollSkillCheck, rollWeaponDamage } from "../../../../../combat/dice-rolls";
 import WeaponDataModel, { gripStateDamage, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel";
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
 import { getId, itemSortHandler } from "../../../../../utils/modelUtil";
 import { sortedItems } from "../../../../../model/actor/type/Inventory";
 import { useDragDrop } from "../../../../component/DragDrop";
+import { useContextMenu, weaponsContextMenuOptions } from "../../../../component/ContextMenu";
+import { glowOnHover } from "../../../VgLiteSheet";
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -54,7 +56,7 @@ const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel
         <>
             <div className="flex items-center ml-1">
                 <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
-                <div className="flex justify-between ml-2 mt-1 w-full font-eskapade font-bold align-middle cursor-pointer" onClick={
+                <div className={`flex justify-between ml-2 mt-1 w-full font-eskapade font-bold align-middle ${glowOnHover} cursor-pointer`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }
                 }>
                     <div>{name}</div>
@@ -76,7 +78,12 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
             () => itemSortHandler(
                 hero, dragItem, targetItem ?? equippedWeapons[equippedWeapons.length - 1], equippedWeapons
             )
-        )
+    )
+    const { showMenu, setMenuVisible, hideMenu, menu } = useContextMenu()
+    const handleContextMenu = (e: any, weapon: WeaponDataModel) => {
+        showMenu(e, weaponsContextMenuOptions(hero, weapon, () => setMenuVisible(false)))
+    }
+    
     return (
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />
@@ -84,19 +91,26 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                 equippedWeapons?.map((w: WeaponDataModel, index: number) => (
                     <div key={getId(w)}>
                         <div
-                            className="grid grid-cols-[53%_47%] place-content-between -gap-y-1"
+                            className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab"
                             draggable
-                                onDragStart={(e) => onDragStart(e, index)}
-                                onDragEnter={(e) => onDragEnter(e, index)}
-                                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                                onDragEnd={(e) => onDragEnd(e, index)}
+                            onDragStart={(e) => onDragStart(e, index)}
+                            onDragEnter={(e) => onDragEnter(e, index)}
+                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                            onDragEnd={(e) => onDragEnd(e, index)}
+                            onClick={hideMenu}
+                            onContextMenu={(e) => {
+                                e.stopPropagation()
+                                e.preventDefault()
+                                handleContextMenu(e, w)
+                            }}
+                            
                         >
-                            <div className="line-clamp-1">{w.parent.name}</div>
+                            <div className={`line-clamp-1 ${glowOnHover}`}>{w.parent.name}</div>
                             <div className="flex justify-end">
-                                <div className={gripStyle + " mr-2"} onClick={() => toggleGripState(hero, w)}>{w.grip.state}</div>
+                                <div className={`${gripStyle} mr-2 ${glowOnHover} cursor-pointer`} onClick={() => toggleGripState(hero, w)}>{w.grip.state}</div>
                                 <div className="flex content-right">
                                     <div
-                                        className={dmgStyle}
+                                        className={`${dmgStyle} ${glowOnHover}`}
                                         onClick={() => rollWeaponDamage(hero.parent, w)}
                                     >
                                         {gripStateDamage(w)}
@@ -110,6 +124,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                     </div>
                 ))
             }
+            { menu }
         </div>
     )
 }

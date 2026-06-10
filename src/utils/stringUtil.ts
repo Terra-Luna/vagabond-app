@@ -4,5 +4,5 @@ export function toPascalCase(s: string) {
         .replace(/[-_]+|[^\p{L}\p{N}]/gu, ' ') // Replaces dashes, underscores, and special characters with spaces
         .toLowerCase() // Converts the entire string to lowercase
         .replace(/(?:^|\s)(\p{L})/gu, (_, letter) => letter.toUpperCase()) // Capitalizes the first letter of each word
-        .replace(/\s+/g, ''); // Removes all spaces
+        .replace(/\s+/g, '') // Removes all spaces
 }

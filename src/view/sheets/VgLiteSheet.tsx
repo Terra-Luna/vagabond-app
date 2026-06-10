@@ -65,7 +65,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <style>{vgliteStyles}</style>
-                <div className={`${theme} vglite-themed-content font-paradigm tracking-wider`}>
+                <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider`}>
                     <this.Component {...this.getReactProps()} width={width} height={height} />
                 </div>
             </DimensionsContext.Provider>
@@ -76,3 +76,5 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         return { sheet: this }
     }
 }
+
+export const glowOnHover = "hover:[text-shadow:0_0_10px_var(--color-text-glow)]"

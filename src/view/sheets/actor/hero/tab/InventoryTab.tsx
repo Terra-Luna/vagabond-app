@@ -3,14 +3,14 @@ import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
-import { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
-import { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
-import { itemNameQty, openItemSheet, sortedItems } from "../../../../../model/actor/type/Inventory"
+import ArmorDataModel, { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
+import WeaponDataModel, { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
+import { getEncumbranceInfo, itemNameQty, openItemSheet, sortedItems } from "../../../../../model/actor/type/Inventory"
 import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
-import { useState } from "react"
-import { itemContextMenuOptions, useContextMenu, VgLiteContextMenu } from "../../../../component/ContextMenu"
-import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
+import { itemContextMenuOptions, useContextMenu } from "../../../../component/ContextMenu"
+import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../../../../model/item/equip/EquipmentDataModel"
 import { useDragDrop } from "../../../../component/DragDrop"
+import { glowOnHover } from "../../../VgLiteSheet"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"
@@ -30,9 +30,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
-    const capacity = hero.inventory.capacity || 10
-    const bulk = capacity - (hero.inventory.emptySlots ?? capacity)
-    const isOverEncumbered = bulk/capacity > 1
+    const { bulk, capacity, isOverEncumbered } = getEncumbranceInfo(hero)
     return (
         <div className={infoBoxLayout +" px-2 "+ infoBoxText}>
             {lang.VGLITE.HeroSheet.encumbrance}
@@ -62,7 +60,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className={"flex pl-2 " + infoBoxLayout}>
             <div 
-                className="cursor-pointer content-center"
+                className={`${glowOnHover} cursor-pointer content-center`}
                 onClick={() =>
                     ui.notifications?.info("TODO: make an interface for adding/subtracting coin amts...")
                 }>
@@ -80,7 +78,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
 const CoinValue = ({ hero, value, label, path }: { hero: HeroDataModel, value: number, label: string, path: string }) => {
     return (
         <div className="flex pr-2">
-            <div className="text-text-primary text-3xl font-eskapade font cursor-pointer min-w-[2ch] text-right">
+            <div className={`text-text-primary text-3xl font-eskapade cursor-pointer min-w-[2ch] text-right ${glowOnHover}`}>
                 <EditableTextField
                     initialValue={value.toString() ?? ""}
                     updateProps={{
@@ -100,62 +98,16 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         items,
         () => itemSortHandler(hero, dragItem, targetItem ?? items[items.length - 1], items)
     )
-    /* const [dragIndex, setDragIndex] = useState<number | null>(null)
-    const [dragItem, setDragItem] = useState<any>(null)
-    const [targetItem, setTargetItem] = useState<any>(null) */
-    const { showMenu, hideMenu, menu } = useContextMenu()
-
+    const { showMenu, setMenuVisible, hideMenu, menu } = useContextMenu()
     const handleContextMenu = (e: any, item: EquipmentDataModel<EquipmentSchema>) => {
-        showMenu(e, itemContextMenuOptions(hero, item))
+        showMenu(e, itemContextMenuOptions(hero, item, () => setMenuVisible(false)))
     }
-
-   /*  const onDragStart = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
-        e.stopPropagation()
-        e.dataTransfer.dropEffect = "move"
-        setDragIndex(index)
-        setDragItem(items[index])
-        setTargetItem(items[index])
-        //console.log("Dragging:", getName(dragItem), index)
-    }
-
-    const onDragEnter = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
-        if (dragIndex === null || dragIndex === index) return
-        e.preventDefault()
-        e.stopPropagation()
-        e.dataTransfer.dropEffect = "move"
-        setDragIndex(index)
-        setTargetItem(items[index])
-        //console.log("Dragging:", getName(dragItem), "above:", getName(targetItem), index)
-    }
-
-    const onDragEnd = (e: React.DragEvent<HTMLTableRowElement>, index: number) => {
-        if (dragIndex === null || dragIndex === index) {
-            setDragIndex(null)
-            setDragItem(null)
-            setTargetItem(null)
-            return
-        }
-        e.preventDefault()
-        e.stopPropagation()
-        setTargetItem(items[index])
-        //console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]), index)
-
-        try {
-            itemSortHandler(hero, dragItem, targetItem ?? items[items.length - 1], items)
-        }
-        catch (error) {
-            console.log(error)
-        }
-        finally {
-            setDragIndex(null)
-            setDragItem(null)
-            setTargetItem(null)
-        }
-    } */
 
     return (
         <>
-            <table className="table-auto w-full">
+            <table
+                className="table-auto w-full"
+            >
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
                         <th className="text-left pl-2">{/*lang.VGLITE.HeroSheet.Inventory.item*/}</th>
@@ -168,7 +120,11 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                     items.map((i: any, index: number) => (
                         <tr
                             key={getId(i)}
-                            className={index === dragIndex ? "bg-text-fatigue-current" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}
+                            className={
+                                index === dragIndex ?
+                                    "bg-text-fatigue-current" : `even:bg-table-row-even/50 odd:bg-table-row-odd/50 cursor-grab ${glowOnHover}`
+                                    
+                            }
                             draggable
                             onDragStart={(e) => onDragStart(e, index)}
                             onDragEnter={(e) => onDragEnter(e, index)}
@@ -183,10 +139,10 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                         >
                             <td
                                 className="px-2 py-1"
-                                onClick={() => onItemClicked(hero, getId(i))}
+                                onDoubleClick={() => onItemClicked(hero, getId(i))}
                             >
                                 <span className="flex">
-                                    <img src={i.parent.img} alt={getName(i)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill" />
+                                    <img src={i.parent.img} alt={getName(i)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill/60" />
                                     {itemNameQty(i)}
                                 </span>
                             </td>
@@ -196,10 +152,10 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                                 i.isEquippable ?
                                     <td className="text-center">
                                         <input
-                                            className="cursor-pointer"
+                                            className={`h-4 w-4 accent-color-section-header-fill ${glowOnHover} cursor-pointer`}
                                             type="checkbox"
                                             checked={i.isEquipped} onChange={
-                                                () => toggleEquipState(hero, getId(i))
+                                                async () => await toggleEquipState(hero, i)
                                             }
                                         />
                                     </td> : <td className="text-center" />
@@ -217,21 +173,20 @@ const onItemClicked = (hero: HeroDataModel, itemId: string) => {
     openItemSheet(hero, itemId)
 }
 
-const toggleEquipState = async (hero: HeroDataModel, itemId: string) => {
-    const item = hero.parent.items.get(itemId)
-    if (item.system.isEquipped) {
-        await item.update({ 'system.isEquipped': false })
+const toggleEquipState = async (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+    if (item.isEquipped) {
+        await setEquipState(item, false)
     }
     else {
         if (item) {
-            if (item.type === 'armor') {
-                await equipArmor(hero, item.system)
+            if (item instanceof ArmorDataModel) {
+                await equipArmor(hero, item)
             }
-            else if (item.type === 'weapon') {
-                await equipWeapon(hero, item.system)
+            else if (item instanceof WeaponDataModel) {
+                await equipWeapon(hero, item)
             }
             else {
-                await item.update({ 'system.isEquipped': true })
+                await setEquipState(item, true)
             }
         }
         else {

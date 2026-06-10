@@ -1,7 +1,7 @@
 import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import EquipmentDataModel from "./EquipmentDataModel"
+import EquipmentDataModel, { setEquipState } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
 const armorSchema = () => {
@@ -30,8 +30,10 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
 
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
     const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
-    equippedArmor.forEach((it: any) => {
-        it.update({ 'system.isEquipped': false })
+    equippedArmor.forEach(async (it: any) => {
+        console.log("Unequipping armor:", it)
+        await setEquipState(it, false)
     })
-    armor.parent.update({ 'system.isEquipped': true })
+    console.log("Equipping armor:", armor)
+    await setEquipState(armor, true)
 }

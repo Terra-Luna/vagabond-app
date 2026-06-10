@@ -21,7 +21,7 @@ const effectData = {
 	name: 'Backpack',
 	origin: doc.uuid,
 	changes: [
-		{ key: 'system.inventory.capacity', mode: '2', value: 5, priority: 20 }
+		{ key: 'system.inventory.capacity', mode: '2', value: 2, priority: 20 }
 	],
 	disabled: false,
     transfer: true

@@ -1,11 +1,12 @@
-import { Sparkle, Sparkles } from "lucide-react";
-import HeroDataModel from "../../../../../model/actor/HeroDataModel";
-import { EditableTextField } from "../../../../component/EditableTextField";
-import { SkillCard } from "../../../../component/SkillCard";
-import { DamageTypeIcon } from "../../../../component/DamageTypeIcon";
-import { useCallback } from "react";
-import { updateDocument } from "../../../../../utils/documentUtils";
-import { getId } from "../../../../../utils/modelUtil";
+import { Sparkle, Sparkles } from "lucide-react"
+import HeroDataModel from "../../../../../model/actor/HeroDataModel"
+import { EditableTextField } from "../../../../component/EditableTextField"
+import { SkillCard } from "../../../../component/SkillCard"
+import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
+import { useCallback } from "react"
+import { updateDocument } from "../../../../../utils/documentUtils"
+import { getId } from "../../../../../utils/modelUtil"
+import { glowOnHover } from "../../../VgLiteSheet"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -26,12 +27,12 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
         <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
             <div className="flex items-center">
                 <span className="text-lg justify-bottom">Mana:&nbsp;&nbsp;</span>
-                <Sparkle className="text-mana" size={20}
+                <Sparkle className={`text-mana ${glowOnHover} cursor-pointer`} size={20}
                     onClick={() => updateMana(false)}
                     onAuxClick={() => updateMana(true)}
                 />
                 &nbsp;
-                <span className="cursor-pointer text-mana">
+                <span className={`${glowOnHover} cursor-pointer text-mana`}>
                     <EditableTextField initialValue={hero.mana.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }} />
                 </span>
                 <span className="slash">&nbsp;/&nbsp;</span>
@@ -43,7 +44,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                 &nbsp;
                 <span>{hero.mana.maxCast}</span>
             </div>
-            <button className="hover:[box-shadow:0_4px_6px_var(--color-mana-50)] flex items-center bg-btn-primary-fill text-xl text-btn-primary-text rounded-lg px-2 cursor-pointer hover:scale-105" onClick={
+            <button className={`flex items-center bg-btn-primary-fill text-xl text-btn-primary-text rounded-lg px-2 ${glowOnHover} cursor-pointer hover:scale-105`} onClick={
                 () => ui.notifications?.info("Feature coming soon!")
             }>
                 <span className="mr-2">Cast</span>
