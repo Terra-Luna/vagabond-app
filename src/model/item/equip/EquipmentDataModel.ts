@@ -43,6 +43,13 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
             this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
         }
     }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
+        if (this.isStackable) {
+            this.slots = this.quantity! * this.slots!
+        }
+    }
 }
 
 export const setEquipState = async (item: any, isEquipped: boolean) => {
