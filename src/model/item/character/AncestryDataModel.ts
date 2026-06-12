@@ -61,7 +61,6 @@ export async function applyAncestralTraits(ancestry: AncestryDataModel) {
                     }
                 ]
             }
-            console.log("Creating active ancestral effect:", effect)
             ancestry.parent.createEmbeddedDocuments('ActiveEffect', [effect])
         })
     })

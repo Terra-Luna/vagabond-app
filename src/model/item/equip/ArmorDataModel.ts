@@ -31,9 +31,7 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
     const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
     equippedArmor.forEach(async (it: any) => {
-        console.log("Unequipping armor:", it)
         await setEquipState(it, false)
     })
-    console.log("Equipping armor:", armor)
     await setEquipState(armor, true)
 }

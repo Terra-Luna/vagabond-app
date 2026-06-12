@@ -23,13 +23,7 @@ const baseEquipmentSchema = () => {
                 power: new fields.SchemaField({}),
                 addedCoinValue: new fields.SchemaField({ ...coinSchema() })
             })
-        ),
-
-        /**
-         * Derived
-         */
-        isEquippedWeapon: new fields.BooleanField({ initial: false }),
-        isEquippedArmor: new fields.BooleanField({ initial: false })
+        )
     }
 }
 
@@ -43,13 +37,15 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
         }
     }
 
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
+    override async prepareBaseData() {
+        super.prepareBaseData()
         if (this.relicEffects.length > 0) {
             this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
         }
-        this.isEquippedWeapon = this.isEquipped && this.parent.type === 'weapon'
-        this.isEquippedArmor = this.isEquipped && this.parent.type === 'armor'
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
     }
 }
 

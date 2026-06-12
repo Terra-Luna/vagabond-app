@@ -20,7 +20,7 @@ export const useDragDrop = (items: any[], onDrop: () => void) => {
         setDragIndex(index)
         setDragItem(items[index])
         setTargetItem(items[index])
-        console.log("Dragging:", getName(dragItem), index)
+        //console.log("Dragging:", getName(dragItem), index)
     }
 
     const onDragEnter = (e: any, index: number) => {
@@ -30,7 +30,7 @@ export const useDragDrop = (items: any[], onDrop: () => void) => {
         e.dataTransfer.dropEffect = "move"
         setDragIndex(index)
         setTargetItem(items[index])
-        console.log("Dragging:", getName(dragItem), "above:", getName(targetItem), index)
+        //console.log("Dragging:", getName(dragItem), "above:", getName(targetItem), index)
     }
 
     const onDragEnd = (e: any, index: number) => {
@@ -41,7 +41,7 @@ export const useDragDrop = (items: any[], onDrop: () => void) => {
         e.preventDefault()
         e.stopPropagation()
         setTargetItem(items[index])
-        console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]), index)
+        //console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]), index)
 
         try {
             onDrop()

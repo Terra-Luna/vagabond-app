@@ -111,3 +111,7 @@ export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataMod
 export const gripStateDamage = (w: WeaponDataModel): string => {
     return w.grip.state === '2H' ? w.damage.twoHand : w.damage.oneHand
 }
+
+export const isEquippedWWeapon = (item: any): boolean => {
+    return item.parent.type === 'weapon' && item.isEquipped
+}

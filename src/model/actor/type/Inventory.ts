@@ -26,7 +26,6 @@ export const getEncumbranceInfo = (hero: HeroDataModel): { bulk: number, capacit
 export const setInventoryData = (hero: HeroDataModel) => {
     hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
     hero.inventory.capacity = Number(hero.stats.might) + 8 - hero.fatigue!
-    const bulk = hero.inventory?.items?.reduce((sum, i) => { return sum! + i.slots! * i.quantity! }, 0)
 }
 
 export const stackStackables = async (hero: HeroDataModel) => {

@@ -1,15 +1,16 @@
-import { Shield, Star } from "lucide-react";
-import HeroDataModel from "../../../../../model/actor/HeroDataModel";
+import { Shield, Star } from "lucide-react"
+import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import lang from "../../../../../../public/lang/en.json"
-import { Header, ItemDivider } from "../../../../component/Header";
-import { rollSkillCheck, rollWeaponDamage } from "../../../../../combat/dice-rolls";
-import WeaponDataModel, { gripStateDamage, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel";
-import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel";
-import { getId, itemSortHandler } from "../../../../../utils/modelUtil";
-import { sortedItems } from "../../../../../model/actor/type/Inventory";
-import { useDragDrop } from "../../../../component/DragDrop";
-import { useContextMenu, weaponsContextMenuOptions } from "../../../../component/ContextMenu";
-import { glowOnHover } from "../../../VgLiteSheet";
+import { Header, ItemDivider } from "../../../../component/Header"
+import { rollSkillCheck, rollWeaponDamage } from "../../../../../combat/dice-rolls"
+import WeaponDataModel, { gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
+import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
+import { getId, itemSortHandler } from "../../../../../utils/modelUtil"
+import { sortedItems } from "../../../../../model/actor/type/Inventory"
+import { useDragDrop } from "../../../../component/DragDrop"
+import { useContextMenu, weaponsContextMenuOptions } from "../../../../component/ContextMenu"
+import { glowOnHover } from "../../../VgLiteSheet"
+import { getArmor } from "../../../../../model/actor/type/Armor"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -69,11 +70,11 @@ const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel
 }
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
-    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => it.isEquippedWeapon) as unknown[] as WeaponDataModel[])
+    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWWeapon(it)) as unknown[] as WeaponDataModel[])
     const gripStyle = "text-text-aux text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
-    const { dragIndex, dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
+    const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
             equippedWeapons,
             () => itemSortHandler(
                 hero, dragItem, targetItem ?? equippedWeapons[equippedWeapons.length - 1], equippedWeapons
@@ -130,7 +131,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Armor = ({ hero }: { hero: HeroDataModel }) => {
-    const armor = hero.inventory.items.find(it => it.isEquippedArmor) as unknown as ArmorDataModel
+    const armor = getArmor(hero) as unknown as ArmorDataModel
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
     return (
         <div className="w-full">

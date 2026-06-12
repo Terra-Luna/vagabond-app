@@ -237,7 +237,7 @@ function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
             return true
         }
     }
-    console.log("Unsafe explosions detected!", formula, explodesOn)
+    //console.log("Unsafe explosions detected!", formula, explodesOn)
     return false
 }
 
