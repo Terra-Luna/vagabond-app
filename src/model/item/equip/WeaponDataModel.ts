@@ -44,6 +44,11 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
             ...weaponSchema()
         }
     }
+
+    override async prepareBaseData() {
+        super.prepareBaseData()
+        this.isEquippable = true
+    }
 }
 
 /**

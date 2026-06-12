@@ -23,4 +23,9 @@ export default class AlchemicalItemDataModel extends EquipmentDataModel<Alchemic
             ...alchemicalSchema()
         }
     }
+
+    override async prepareBaseData() {
+        super.prepareBaseData()
+        this.isStackable = true
+    }
 }

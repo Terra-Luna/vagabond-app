@@ -73,7 +73,6 @@ export default class TagalongItemCreator {
                 damageType: '',
                 slots: 1,
                 quantity: 1,
-                isStackable: true,
                 value: item.value
             }
         })
@@ -93,7 +92,6 @@ export default class TagalongItemCreator {
                 material: Object.values(lang.VGLITE.Metals)[item.material]?.name ?? lang.VGLITE.Metals.standard.name,
                 slots: item.slots,
                 quantity: 1,
-                isEquippable: true,
                 isEquipped: item.is_eqiupped,
                 value: item.value,
                 relicEffects: []
@@ -122,7 +120,6 @@ export default class TagalongItemCreator {
                 material: Object.values(lang.VGLITE.Metals)[item.material]?.name ?? lang.VGLITE.Metals.standard.name,
                 slots: item.slots,
                 quantity: 1,
-                isEquippable: true,
                 isEquipped: item.is_eqiupped,
                 value: item.value,
                 relicEffects: []
@@ -140,7 +137,6 @@ export default class TagalongItemCreator {
                 category: lang.VGLITE.EquipmentCategories.containers,
                 slots: item.slots,
                 quantity: 1,
-                isStackable: true,
                 value: item.value,
                 relicEffects: []
             }
@@ -157,8 +153,7 @@ export default class TagalongItemCreator {
                 category: Object.values(lang.VGLITE.EquipmentCategories)[item.category] ?? lang.VGLITE.EquipmentCategories.other,
                 value: item.value,
                 slots: item.slots,
-                quantity: 1,
-                isEquippable: true
+                quantity: 1
             }
         })
     }
@@ -173,7 +168,6 @@ export default class TagalongItemCreator {
                 category: Object.values(lang.VGLITE.EquipmentCategories)[item.category] ?? lang.VGLITE.EquipmentCategories.other,
                 slots: item.slots,
                 quantity: 1,
-                isStackable: true,
                 value: item.value
             }
         })

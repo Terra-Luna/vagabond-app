@@ -29,8 +29,6 @@ export default async function createEquipment() {
             isCrude: false,
             slots: 2,
             quantity: 1,
-            isStackable: false,
-            isEquippable: true,
             category: 'Weapons',
             value: { g: 0, s: 40, c: 0 },
             relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
@@ -62,8 +60,6 @@ export default async function createEquipment() {
             material: 'Standard',
             isCrude: false,
             slots: 2,
-            isStackable: false,
-            isEquippable: true,
             category: 'Weapons',
             value: { g: 1, s: 60, c: 0 },
             relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
@@ -95,8 +91,6 @@ export default async function createEquipment() {
             material: 'Standard',
             isCrude: false,
             slots: 1,
-            isStackable: false,
-            isEquippable: true,
             isEquipped: false,
             category: 'Weapons',
             value: { g: 0, s: 40, c: 0 },
@@ -129,8 +123,6 @@ export default async function createEquipment() {
             material: 'Standard',
             isCrude: false,
             slots: 2,
-            isStackable: false,
-            isEquippable: true,
             category: 'Weapons',
             value: { g: 0, s: 75, c: 0 },
             relicEffects: []
@@ -151,8 +143,6 @@ export default async function createEquipment() {
             material: 'Orichalcum',
             slots: 3,
             quantity: 1,
-            isStackable: false,
-            isEquippable: true,
             isEquipped: false,
             category: 'Armor',
             value: { g: 1, s: 0, c: 0 },
@@ -171,7 +161,6 @@ export default async function createEquipment() {
             damageType: '',
             slots: 1,
             quantity: 1,
-            isStackable: true,
             value: { g: 2, s: 50 }
         }
     }

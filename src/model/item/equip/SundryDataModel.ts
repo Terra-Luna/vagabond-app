@@ -17,4 +17,9 @@ export default class SundryDataModel extends EquipmentDataModel<SundrySchema> {
             ...sundrySchema()
         }
     }
+
+    override async prepareBaseData() {
+        super.prepareBaseData()
+        this.isStackable = true
+    }
 }
