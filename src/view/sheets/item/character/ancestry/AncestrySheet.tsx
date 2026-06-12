@@ -39,6 +39,8 @@ const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel>
 }
 
 const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
+        window.adatest = ancestry
+
     let traits
     if (ancestry.traits.length === 0) {
         traits = <Trait trait={{ name: lang.VGLITE.AncestrySheet.newTrait }} startExpanded />
@@ -47,7 +49,7 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
         traits = ancestry.traits.map(trait => <Trait trait={trait} />)
     }
 
-    return <div className="mt-2">{traits}</div>
+    return <div className="mt-2 pb-2">{traits}</div>
 }
 
 const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {

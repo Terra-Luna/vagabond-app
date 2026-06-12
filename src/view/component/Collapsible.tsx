@@ -11,13 +11,13 @@ interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }
 
-export const Collapsible = ({ title, Header, content, startCollapsed = false }: { title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean }) => {
+export const Collapsible = ({ title, Header, content, startCollapsed = false, className }: { title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean, className?: string }) => {
     const [isCollapsed, setCollapsed] = useState(startCollapsed)
     const toggleCollapsed = useCallback(() => {
         setCollapsed(!isCollapsed)
     }, [isCollapsed])
     return (
-        <div>
+        <div className={className}>
             <Header title={title} isCollapsed={isCollapsed} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={
                 <button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>
             } />
