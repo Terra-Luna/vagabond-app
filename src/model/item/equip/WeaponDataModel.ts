@@ -44,10 +44,6 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
             ...weaponSchema()
         }
     }
-
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-    }
 }
 
 /**

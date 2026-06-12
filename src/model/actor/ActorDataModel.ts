@@ -19,8 +19,4 @@ export default abstract class ActorDataModel<T extends BaseActorSchema> extends 
             ...baseActorSchema()
         }
     }
-
-    override async prepareDerivedData() {
-        super.prepareBaseData()
-    }
 }

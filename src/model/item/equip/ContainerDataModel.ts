@@ -18,10 +18,6 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
             ...containerSchema()
         }
     }
-
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-    }
 }
 
 /**

@@ -19,8 +19,8 @@ export default class NpcDataModel extends ActorDataModel<NpcSchema> {
         }
     }
 
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-        this.inventory.items = this.parent.items.filter(i => isInventoryItem(i))
+    override async prepareBaseData() {
+        super.prepareBaseData()
+        this.inventory.items = this.parent.items.filter((i: any) => isInventoryItem(i))
     }
 }

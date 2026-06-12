@@ -22,10 +22,6 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
             ...armorSchema()
         }
     }
-
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-    }
 }
 
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {

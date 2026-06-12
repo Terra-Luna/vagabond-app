@@ -41,15 +41,12 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
         }
     }
 
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
+    override async prepareBaseData() {
+        super.prepareBaseData()
         this.health.max = this.beingSize?.toUpperCase() === "SMALL" ? this.hitDice : Math.floor(this.hitDice! * 4.5)
-        this.threatLevel = this.setThreatLevel()
+        this.threatLevel = setThreatLevel(this)
     }
 
-    setThreatLevel(): number {
-        return setThreatLevel(this)
-    }
 }
 
 /**
