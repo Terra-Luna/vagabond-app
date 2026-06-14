@@ -20,6 +20,17 @@ const locale = lang.VGLITE.HeroSheet
 
 export default class HeroSheet extends VgLiteActorSheet {
     Component = HeroSheetReactComponent
+
+    static DEFAULT_OPTIONS = {
+        position: {
+            width: 440,
+            height: 1060
+        },
+        window: {
+            resizable: true
+        }
+    }
+
 }
 
 const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
@@ -37,7 +48,7 @@ const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDat
         return () => { window.removeEventListener("keydown", listener) }
     }, [])
     return (
-        <div>
+        <div className="@container h-full">
             <HeroSheetHeader hero={hero} sheet={sheet} />
             <HeroSheetUpperSection hero={hero} />
             <HeroSheetTabbedSection hero={hero} />
@@ -92,7 +103,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 ml-1 mr-1 mt-1 gap-1">
+        <div className="grid @sm:grid-cols-1 @md:grid-cols-2 ml-1 mr-1 mt-1 gap-1">
             <div>
                 <Avatar hero={hero} />
                 <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
@@ -115,7 +126,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     return <div className="mt-1">
         <div className="h-px bg-text-tertiary w-full mt-1" />
-        <Tabs>
+        <Tabs className="overflow-y-auto">
             <TabList>
                 <Tab>
                     {locale["tab-main"]}
@@ -137,7 +148,9 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <InventoryTab hero={hero} />
             </TabPanel>
             {
-                hero.spells?.length > 0 ? <TabPanel><MagicTab hero={hero} /></TabPanel> : <></>
+                hero.spells?.length > 0 ? <TabPanel>
+                    <MagicTab hero={hero} />
+                </TabPanel> : <></>
             }
             <TabPanel>
                 <AbilitiesTab hero={hero} />
