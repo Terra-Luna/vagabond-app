@@ -11,7 +11,7 @@ import { $insertNodes, LexicalEditor } from 'lexical';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-export const RichTextField = ({ width = "100%", height = 100, defaultValue = '', onChange }: { width?: number | string, height?: number, defaultValue?: string, onChange?: (html: string) => void }) => {
+export const RichTextField = ({ width = "100%", height = 100, defaultValue = '', onChange, className }: { width?: number | string, height?: number, defaultValue?: string, onChange?: (html: string) => void, className?: string }) => {
 
     const [trackRerender, setTrackRerender] = useState(false)
 
@@ -36,7 +36,7 @@ export const RichTextField = ({ width = "100%", height = 100, defaultValue = '',
 
     return (
         <IFrameWrapper width={width} height={height}>
-            <div className='border border-solid border-sheet-header-fill'>
+            <div className={`border ${className}`}>
                 <LexicalComposer initialConfig={initialConfig}>
                     {onChange ? <OnChangePlugin onChange={(editorState) => {
                         editorState.read(() => {

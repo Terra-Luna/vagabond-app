@@ -529,20 +529,41 @@
       "type": "Type",
       "size": "Size"
     },
+    "Modifiers": {
+      "TargetStat": {
+        "maxHp": "MAX HP",
+        "maxMana": "MAX MANA",
+        "maxSlost": "MAX SLOTS",
+        "speed": "SPEED",
+        "armor": "ARMOR",
+        "castingMaxStat": "CASTING MAX STAT",
+        "breatherHealing": "BREATHER HEALING",
+        "statBonusPoints": "STAT BONUS POINTS",
+        "luckRecovery": "LUCK RECOVERY",
+        "breatherStudied": "BREATHER STUDIED",
+        "breatherMana": "BREATHER MANA",
+        "breatherLuck": "BREATHER LUCK",
+        "restLuck": "REST LUCK",
+        "restStudy": "REST STUDY",
+        "maxManaSpend": "MAX MANA SPEND"
+      },
+      "ModifierTypes": {
+        "BONUS": "BONUS",
+        "SET": "SET",
+        "FORMULA": "FORMULA"
+      }
+    },
     "AncestrySheet": {
       "description": "Description",
       "traits": "Traits",
+      "addTrait": "Add Trait",
       "newTrait": "New Trait",
+      "newModifier": "New Modifier",
       "name": "Name",
       "modifiers": "Modifiers",
       "targetStat": "Target Stat",
       "type": "Type",
       "value": "Value",
-      "ModifierTypes": {
-        "bonus": "Bonus",
-        "set": "Set",
-        "formula": "Formula"
-      },
       "grants": "Grants",
       "GrantsTypes": {
         "perk": "Perk",

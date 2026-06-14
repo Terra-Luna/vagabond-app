@@ -10,10 +10,14 @@ export const IFrameWrapper = ({ children, skipStyleInjection, width, height }: {
     const iDoc = iFrameRef.current?.contentWindow?.document || iFrameRef.current?.contentDocument
     const portalRoot = iDoc?.body;
 
+    const theme = (game.settings as any).get("core", "uiConfig").colorScheme.applications
+
     const fullChildren = (
         <>
             {!skipStyleInjection && <style>{vgliteStyles}</style>}
-            {children}
+            <div className={theme}>
+                {children}
+            </div>
         </>
     )
 

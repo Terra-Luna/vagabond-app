@@ -25,7 +25,7 @@ export const rangeOptions = () => {
 }
 
 export const beingSizeOptions = () => {
-    const sizes = Object.values(locale.VGLITE.Sizes)
+    const sizes = Object.keys(locale.VGLITE.Sizes)
     return {
         choices: sizes,
         initital: sizes[0]
@@ -33,7 +33,7 @@ export const beingSizeOptions = () => {
 }
 
 export const beingTypeOptions = () => {
-    const beingTypes = Object.values(locale.VGLITE.BeingTypes)
+    const beingTypes = Object.keys(locale.VGLITE.BeingTypes)
     return {
         choices: beingTypes,
         initial: beingTypes[0]

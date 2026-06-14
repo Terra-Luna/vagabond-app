@@ -1,4 +1,5 @@
 import VgLiteError from "../model/common/VgLiteError"
+import lang from "../../public/lang/en.json"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
     // find all {{var}} instances
@@ -24,3 +25,7 @@ export const localizeString = (localeString: string, args: Record<string, string
 
     return localizedString
 }
+
+export const createDropdownEntries = (localeObj) => Object.entries(localeObj).map(([value, label]) => ({ label, value } as { label: string, value: any }))
+
+export const createStatDropdownEntryies = () => Object.entries(lang.VGLITE.Stat).map(([value, inner]) => ({ value, label: inner.abbr }))

@@ -9,6 +9,9 @@ import { RichTextField } from "../../../../component/RichTextField";
 import { useCallback, useEffect } from "react";
 import { Trait } from "./Trait";
 import { updateDocument } from "../../../../../utils/documentUtils";
+import { createDropdownEntries } from "../../../../../utils/localeUtils";
+import { ButtonWithIcon } from "../../../../component/ButtonWithIcon";
+import { LucidePlus } from "lucide-react";
 
 export class AncestrySheet extends VgLiteItemSheet {
     Component = AncestryReactComponent
@@ -39,24 +42,39 @@ const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel>
 }
 
 const addNewBlankTrait = (ancestry: AncestryDataModel) => {
-    updateDocument(ancestry.parent, { traits: [{ name: lang.VGLITE.AncestrySheet.newTrait }] })
+    const traits = foundry.utils.deepClone(ancestry.traits)
+    traits.push({ name: lang.VGLITE.AncestrySheet.newTrait } as any)
+    updateDocument(ancestry.parent, { traits })
 }
 
 const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
+    const addTrait = useCallback(() => {
+        addNewBlankTrait(ancestry)
+    }, [ancestry])
 
     // Add a new trait if the ancestry doesn't have any
     useEffect(() => {
         if (ancestry.traits.length === 0) {
-            addNewBlankTrait(ancestry)
+            addTrait()
         }
-    }, [ancestry])
+    }, [addTrait])
 
-    return <div className="mt-2 pb-2">{ancestry.traits.map((trait, idx) => <Trait
-        trait={trait}
-        key={"trait" + idx}
-        ancestry={ancestry}
-        index={idx}
-        startExpanded={ancestry.traits.length === 1} />)}</div>
+    return <div className="mt-2 pb-2">
+        <div className="flex text-2xl justify-between">
+            {lang.VGLITE.AncestrySheet.traits}
+            <ButtonWithIcon label={lang.VGLITE.AncestrySheet.addTrait} icon={<LucidePlus />} onClick={addTrait} />
+        </div>
+        <div className="flex flex-col gap-4 mt-2">
+            {ancestry.traits.map((trait, idx) => (
+                <Trait
+                    trait={trait}
+                    key={"trait" + idx}
+                    ancestry={ancestry}
+                    index={idx}
+                    startExpanded={ancestry.traits.length === 1} />
+            ))}</div>
+    </div>
+
 }
 
 const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
@@ -66,14 +84,14 @@ const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
         <>
             <div className="text-text-header-secondary flex gap-2">
                 <DropDown label={lang.VGLITE.ItemSheet.size}
-                    options={Object.values(lang.VGLITE.Sizes)}
+                    options={createDropdownEntries(lang.VGLITE.Sizes)}
                     parent={ancestry.parent}
-                    updatePath={['beingSize']}
+                    updateMechanism={{ updatePath: ['beingSize'] }}
                     value={ancestry.beingSize} />
                 <DropDown label={lang.VGLITE.ItemSheet.type}
-                    options={Object.values(lang.VGLITE.BeingTypes)}
+                    options={createDropdownEntries(lang.VGLITE.BeingTypes)}
                     parent={ancestry.parent}
-                    updatePath={['beingType']}
+                    updateMechanism={{ updatePath: ['beingType'] }}
                     value={ancestry.beingType} />
             </div>
         </>

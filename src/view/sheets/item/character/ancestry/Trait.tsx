@@ -8,21 +8,44 @@ import { RichTextField } from "../../../../component/RichTextField"
 import { DropDown } from "../../../../component/Dropdown"
 import AncestryDataModel from "../../../../../model/item/character/AncestryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
+import { createDropdownEntries, createStatDropdownEntryies } from "../../../../../utils/localeUtils"
 
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
 
 const addNewBlankModifier = (ancestry: AncestryDataModel, traitIdx) => {
-    updateDocument(ancestry.parent, { traits: [{ name: lang.VGLITE.AncestrySheet.newTrait }] })
+    const modifiers = foundry.utils.deepClone(ancestry.traits[traitIdx].modifiers)
+
+    modifiers.push({ targetStat: "MIT", type: "BONUS", value: "0" })
+    ancestry.updateTraitValue("modifiers", modifiers, traitIdx)
+}
+
+const addNewBlankGrant = (ancestry: AncestryDataModel, traitIdx) => {
+    const grants = foundry.utils.deepClone(ancestry.traits[traitIdx].grants)
+    grants.push({ count: 1, ignorePrerequisites: false, type: "PERK", perkOptions: [], spellOptions: [], trainingOptions: [] })
+    ancestry.updateTraitValue("grants", grants, traitIdx)
 }
 
 export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait: TraitModel, startExpanded?: boolean, ancestry: AncestryDataModel, index: number }) => {
     const typedTrait = trait as unknown as TypedTrait
     const { name } = typedTrait
 
+    useEffect(() => {
+        if (!trait.modifiers || (trait.modifiers as any).length === 0) {
+            addNewBlankModifier(ancestry, index)
+        }
+        if (!trait.grants || (trait.grants as any).length === 0) {
+            addNewBlankGrant(ancestry, index)
+        }
+    }, [ancestry, trait])
+
     const onUpdateName = useCallback((newName) => {
         return ancestry.updateTraitValue("name", newName, index)
+    }, [ancestry, index])
+
+    const onUpdateDescription = useCallback((newDesc) => {
+        return ancestry.updateTraitValue("description", newDesc, index)
     }, [ancestry, index])
 
     return (
@@ -43,7 +66,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
 
                     <div>
                         <LabelledField label={lang.VGLITE.AncestrySheet.description}>
-                            <RichTextField defaultValue={trait.description} onChange={() => { }} />
+                            <RichTextField defaultValue={trait.description} onChange={onUpdateDescription} className="text-text-header-primary" />
                         </LabelledField>
                     </div>
 
@@ -72,11 +95,30 @@ interface ModifierProps {
 }
 
 const Modifier = ({ modifier, startExpanded = false, ancestry, index, traitIndex }: ModifierProps) => {
-    return <>
-        <DropDown label={lang.VGLITE.ItemSheet.size}
-            options={Object.values(lang.VGLITE.Sizes)}
+
+    const updateModifier = useCallback((propName: string, value: any) => {
+        return ancestry.updateModifierValue(propName, value, traitIndex, index)
+    }, [ancestry, traitIndex, index])
+
+    const onUpdateTargetStat = useCallback((val) => updateModifier("targetStat", val), [updateModifier])
+    const onUpdateType = useCallback((val) => updateModifier("type", val), [updateModifier])
+    const onUpdateValue = useCallback((val) => updateModifier("value", val), [updateModifier])
+
+    return <div className="pb-2 flex justify-around">
+        <DropDown label={lang.VGLITE.AncestrySheet.targetStat}
+            options={createDropdownEntries(lang.VGLITE.Modifiers.TargetStat)}
             parent={ancestry.parent}
-            updatePath={['ancestry', 'traits', traitIndex.toString(), 'modifiers', index.toString(), 'targetStat']}
+            updateMechanism={{ onChange: onUpdateTargetStat }}
             value={modifier.targetStat} />
-    </>
+        <DropDown label={lang.VGLITE.AncestrySheet.type}
+            options={createDropdownEntries(lang.VGLITE.Modifiers.ModifierTypes)}
+            parent={ancestry.parent}
+            updateMechanism={{ onChange: onUpdateType }}
+            value={modifier.type} />
+        <LabelledField label={lang.VGLITE.AncestrySheet.value}>
+            <div className="text-lg text-center">
+                <EditableTextField initialValue={modifier.value} onSave={onUpdateValue} />
+            </div>
+        </LabelledField>
+    </div>
 }

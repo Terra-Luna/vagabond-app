@@ -38,7 +38,14 @@ export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
     updateTraitValue(traitField: string, traitValue: any, traitIndex: number) {
         const traits = foundry.utils.deepClone(this.traits)
         traits[traitIndex][`${traitField}`] = traitValue
-        return updateDocument(this.parent, {traits})
+        return updateDocument(this.parent, { traits })
+    }
+
+    updateModifierValue(modifierField: string, modifierValue: any, traitIndex: number, modifierIndex) {
+        const modifiers = foundry.utils.deepClone(this.traits[traitIndex].modifiers)
+        window.adatest = {modifierField, modifierValue, modifiers}
+        modifiers[modifierIndex][`${modifierField}`] = modifierValue
+        return this.updateTraitValue("modifiers", modifiers, traitIndex)
     }
 }
 

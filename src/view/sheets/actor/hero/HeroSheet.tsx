@@ -3,7 +3,7 @@ import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
 import { Menu } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
-import { IconButton } from "../../../component/IconButton"
+import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
@@ -87,7 +87,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
         <div className="bg-sheet-header-fill font-eskapade">
             <div className="text-text-header-primary text-4xl font-bold ml-2 flex">
                 <EditableNameField actor={hero.parent} />
-                <IconButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
+                <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
             </div>
             <div className="flex text-text-header-secondary ml-2 pb-1">
                 <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>

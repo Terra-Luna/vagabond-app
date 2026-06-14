@@ -2,17 +2,25 @@ import { useCallback } from "react"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { LabelledField } from "./LabelledField"
 
-export const DropDown = ({ label, value, options, updatePath, parent }: { label: string, value: any, options: any[], updatePath: string[], parent: any }) => {
+type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
+
+export const DropDown = ({ label, value, options, updateMechanism, parent }: { label: string, value: any, options: { label: string; value: string; }[], updateMechanism: UpdateMechanism, parent: any }) => {
     const onChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-        updateDocumentAtPath(parent, updatePath, e.target.value)
-    }, [parent, updatePath])
+        const { onChange: onChangeFn, updatePath } = updateMechanism
+        if (updatePath) {
+            updateDocumentAtPath(parent, updatePath, e.target.value)
+        }
+        else {
+            onChangeFn(e.target.value)
+        }
+    }, [parent, updateMechanism])
 
     return (
         <div className="">
             <LabelledField label={label} >
                 <div className="vglite-dropdown-select">
                     <Select value={value} onChange={onChange}>
-                        {options.map(it => <Option key={'label' + it}>{it}</Option>)}
+                        {options.map(it => <Option key={'label' + it.value} value={it.value}>{it.label}</Option>)}
                     </Select>
                 </div>
             </LabelledField>
