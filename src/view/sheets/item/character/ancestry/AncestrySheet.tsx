@@ -6,7 +6,7 @@ import lang from "../../../../../../public/lang/en.json";
 import { DropDown } from "../../../../component/Dropdown";
 import { LabelledField } from "../../../../component/LabelledField";
 import { RichTextField } from "../../../../component/RichTextField";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { Trait } from "./Trait";
 import { updateDocument } from "../../../../../utils/documentUtils";
 
@@ -38,18 +38,25 @@ const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel>
     )
 }
 
+const addNewBlankTrait = (ancestry: AncestryDataModel) => {
+    updateDocument(ancestry.parent, { traits: [{ name: lang.VGLITE.AncestrySheet.newTrait }] })
+}
+
 const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
-        window.adatest = ancestry
 
-    let traits
-    if (ancestry.traits.length === 0) {
-        traits = <Trait trait={{ name: lang.VGLITE.AncestrySheet.newTrait }} startExpanded />
-    }
-    else {
-        traits = ancestry.traits.map(trait => <Trait trait={trait} />)
-    }
+    // Add a new trait if the ancestry doesn't have any
+    useEffect(() => {
+        if (ancestry.traits.length === 0) {
+            addNewBlankTrait(ancestry)
+        }
+    }, [ancestry])
 
-    return <div className="mt-2 pb-2">{traits}</div>
+    return <div className="mt-2 pb-2">{ancestry.traits.map((trait, idx) => <Trait
+        trait={trait}
+        key={"trait" + idx}
+        ancestry={ancestry}
+        index={idx}
+        startExpanded={ancestry.traits.length === 1} />)}</div>
 }
 
 const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {

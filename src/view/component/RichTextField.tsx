@@ -9,9 +9,20 @@ import { EditorRefPlugin } from '@lexical/react/LexicalEditorRefPlugin';
 import { IFrameWrapper } from './IFrameWrapper';
 import { $insertNodes, LexicalEditor } from 'lexical';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const RichTextField = ({ width = "100%", height = 100, defaultValue = '', onChange }: { width?: number | string, height?: number, defaultValue?: string, onChange?: (html: string) => void }) => {
+
+    const [trackRerender, setTrackRerender] = useState(false)
+
+    const forceRerender = useCallback(() => {
+        setTrackRerender(!trackRerender)
+    }, [trackRerender])
+
+    useEffect(() => {
+        // for whatever reason, the very first render of a RTF doesn't seem to actually work correctly. So we force a rerender on mount
+        forceRerender()
+    }, [])
 
     const initialConfig = {
         namespace: 'VgLiteEditor',
