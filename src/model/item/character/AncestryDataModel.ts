@@ -6,7 +6,7 @@ import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../.
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 import PerkDataModel from "./PerkDataModel"
 import SpellDataModel from "./SpellDataModel"
-import { grantSchema, traitSchema } from "./traitsAndFeatures"
+import { traitSchema } from "./traitsAndFeatures"
 
 const ancestrySchema = () => {
     return {
@@ -43,7 +43,6 @@ export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
 
     updateModifierValue(modifierField: string, modifierValue: any, traitIndex: number, modifierIndex) {
         const modifiers = foundry.utils.deepClone(this.traits[traitIndex].modifiers)
-        window.adatest = {modifierField, modifierValue, modifiers}
         modifiers[modifierIndex][`${modifierField}`] = modifierValue
         return this.updateTraitValue("modifiers", modifiers, traitIndex)
     }
