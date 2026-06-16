@@ -14,7 +14,7 @@ import { getArmor } from "../../../../../model/actor/type/Armor"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid @sm:grid-cols-1 @md:grid-cols-[44%_55%] my-1 gap-x-1">
+        <div className="grid @sm:grid-cols-[44%_55%] my-1 gap-x-1">
             <Skills hero={hero} />
             <div className="flex flex-col items-center gap-y-2">
                 <Attacks hero={hero} />

@@ -197,15 +197,15 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 }
 const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
     return (
-        <div className={`font-eskapade text-lg flex ${glowOnHover} cursor-pointer ${borderClasses}`} onClick={
+        <div className={`font-eskapade text-lg flex justify-between ${glowOnHover} cursor-pointer ${borderClasses}`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }
         }>
-            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-2xl flex items-center justify-center">
-                <span>{value}</span>
-            </div>
             <div className="ml-1 flex flex-col">
                 <span className="font-bold">{name}</span>
                 <span className="text-text-aux font-paradigm text-xs -mt-1 mb-0.5">[{formula}]</span>
+            </div>
+            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-2xl flex items-center justify-center">
+                <span>{value}</span>
             </div>
         </div>
     )
