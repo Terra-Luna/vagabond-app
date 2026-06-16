@@ -15,6 +15,7 @@ import { EditableNameField } from "../../../component/EditableTextField"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
 import { getName } from "../../../../utils/modelUtil"
 import { Avatar, Stats, Actions, HPAndArmorDisplay, Saves, Speeds, Trackers } from "./tab/TopSection"
+import { useDimensions } from "../../../context/DimensionsContext"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -35,6 +36,7 @@ export default class HeroSheet extends VgLiteActorSheet {
 
 const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
     const hero = actor.system
+    const { height } = useDimensions()
     useEffect(() => {
         const listener = (e: KeyboardEvent) => {
             if (e.ctrlKey && e.shiftKey && e.code === "KeyI") {
@@ -48,7 +50,7 @@ const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDat
         return () => { window.removeEventListener("keydown", listener) }
     }, [])
     return (
-        <div className="@container h-full">
+        <div className="@container flex flex-col" style={{ height: height - 38 }}>
             <HeroSheetHeader hero={hero} sheet={sheet} />
             <HeroSheetUpperSection hero={hero} />
             <HeroSheetTabbedSection hero={hero} />
@@ -124,9 +126,10 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
-    return <div className="mt-1">
+    const tabPanelClasses = "min-h-0 grow overflow-y-auto"
+    return <div className="mt-1 flex flex-col min-h-0 grow">
         <div className="h-px bg-text-tertiary w-full mt-1" />
-        <Tabs className="overflow-y-auto">
+        <Tabs className="flex flex-col min-h-0 grow">
             <TabList>
                 <Tab>
                     {locale["tab-main"]}
@@ -141,20 +144,20 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                     {locale["tab-abilities"]}
                 </Tab>
             </TabList>
-            <TabPanel>
+            <TabPanel className={tabPanelClasses}>
                 <MainTab hero={hero} />
             </TabPanel>
-            <TabPanel>
+            <TabPanel className={tabPanelClasses}>
                 <InventoryTab hero={hero} />
             </TabPanel>
             {
-                hero.spells?.length > 0 ? <TabPanel>
+                hero.spells?.length > 0 ? <TabPanel className={tabPanelClasses}>
                     <MagicTab hero={hero} />
                 </TabPanel> : <></>
             }
-            <TabPanel>
+            <TabPanel className={tabPanelClasses}>
                 <AbilitiesTab hero={hero} />
             </TabPanel>
         </Tabs>
-    </div>
+    </div >
 }
