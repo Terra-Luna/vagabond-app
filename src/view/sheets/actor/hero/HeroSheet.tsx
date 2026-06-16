@@ -50,7 +50,7 @@ const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDat
         return () => { window.removeEventListener("keydown", listener) }
     }, [])
     return (
-        <div className="@container flex flex-col" style={{ height: height - 38 }}>
+        <div className="@container flex flex-col grow min-h-0">
             <HeroSheetHeader hero={hero} sheet={sheet} />
             <HeroSheetUpperSection hero={hero} />
             <HeroSheetTabbedSection hero={hero} />

@@ -4,6 +4,7 @@ import vgliteStyles from "../../../public/styles/vagabond-lite.css?inline"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
+    _toolbarHeight: number = 0
 
     static DEFAULT_OPTIONS = {
         position: {
@@ -36,6 +37,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
 
     async _onRender(context, options) {
         super._onRender(context, options)
+        this._toolbarHeight = this.element.children[0].getBoundingClientRect().height
     }
 
     _getTheme() {
@@ -60,13 +62,14 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     }
 
     renderWithWrappers({ theme = "light", position }: { theme: string, position: { width: number, height: number, top: number, left: number } }) {
-        const { width, height, top, left } = position
+        let { width, height, top, left } = position
+        height -= this._toolbarHeight!
 
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <style>{vgliteStyles}</style>
-                <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider`}>
-                    <this.Component {...this.getReactProps()} width={width} height={height} />
+                <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col`} style={{ height }}>
+                    <this.Component {...this.getReactProps()} />
                 </div>
             </DimensionsContext.Provider>
         );
