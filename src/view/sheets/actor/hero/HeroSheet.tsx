@@ -126,9 +126,9 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
-    const tabPanelClasses = "min-h-0 grow overflow-y-auto"
+    const tabPanelClasses = "min-h-0 overflow-y-auto"
     return <div className="mt-1 flex flex-col min-h-0 grow">
-        <div className="h-px bg-text-tertiary w-full mt-1" />
+        <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />
         <Tabs className="flex flex-col min-h-0 grow">
             <TabList>
                 <Tab>
