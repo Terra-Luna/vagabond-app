@@ -56,7 +56,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
 
 const Spells = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid @sm:grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 my-1 gap-x-1">{
+        <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 my-1 gap-x-1 gap-y-0.5">{
             hero.spells.map((sp: any) => (
                 <SkillCard
                     key={getId(sp)}

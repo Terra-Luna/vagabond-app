@@ -12,19 +12,17 @@ export const SkillCard = ({ title, subtitles, description }: {
     title: string, subtitles: CardSubHeaderValues, description: string
 }) => {
     return (
-        <div className="mt-1 mb-1">
-            <Collapsible
-                startCollapsed
-                title={title}
-                Header={CardHeader}
-                content={(
-                    <>
-                        <CardSubHeader content={subtitles} />
-                        <CardBody description={description} />
-                    </>
-                )}
-            />
-        </div >
+        <Collapsible
+            startCollapsed
+            title={title}
+            Header={CardHeader}
+            content={(
+                <>
+                    <CardSubHeader content={subtitles} />
+                    <CardBody description={description} />
+                </>
+            )}
+        />
     )
 }
 
@@ -35,7 +33,7 @@ export const SkillCard = ({ title, subtitles, description }: {
  *    ]
  */
 type CardSubHeaderValues = [subKey: string, subValue: string][]
-const CardSubHeader = ({ content }: { content: CardSubHeaderValues }) => {
+export const CardSubHeader = ({ content }: { content: CardSubHeaderValues }) => {
     return (
         <div className={cardSubheaderLayout}>
             <div className={cardSubheaderStyle}>{formatSubHeader(content)}</div>

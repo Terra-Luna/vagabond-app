@@ -32,7 +32,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                         <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
                     </span>
                 </div>
-                <div className="absolute -right-1 bottom-1.5 flex items-center justify-center border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                <div className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[36px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
                     <span className={`text-2xl text-text-hp-max px-1 ${glowOnHover} cursor-pointer`}>{health.max}</span>
                 </div>
             </div>

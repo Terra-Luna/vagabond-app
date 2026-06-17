@@ -4,11 +4,12 @@ import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
 
 const adversarySchema = () => {
-    const f = foundry.data.fields
     return {
-        beingSize: new fields.StringField({ ...requiredString, initial: 'Medium', choices: Object.values(lang.VGLITE.Sizes) }),
+        beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(lang.VGLITE.Sizes) }),
+        beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(lang.VGLITE.BeingTypes) }),
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
+        description: new fields.HTMLField(),
         zone: new fields.ArrayField(new fields.StringField({ ...zonePreferences() })),
         movement: new fields.ArrayField(
             new fields.SchemaField({

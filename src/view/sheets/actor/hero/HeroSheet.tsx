@@ -1,8 +1,9 @@
-import HeroDataModel from "../../../../model/actor/HeroDataModel"
-import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
-import { localizeString } from "../../../../utils/localeUtils"
-import { ChevronDown, Menu } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
+import HeroDataModel from "../../../../model/actor/HeroDataModel"
+import { localizeString } from "../../../../utils/localeUtils"
+import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
+import { EditableNameField } from "../../../component/EditableTextField"
+import { Menu } from "lucide-react"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
@@ -11,16 +12,15 @@ import { MainTab } from "./tab/MainTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
-import { EditableNameField } from "../../../component/EditableTextField"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
 import { getName } from "../../../../utils/modelUtil"
 import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider, useStatsDrawerStatus } from "./tab/TopSection"
+import ActorDataModel, { BaseActorSchema } from "../../../../model/actor/ActorDataModel"
 
 const locale = lang.VGLITE.HeroSheet
 
 export default class HeroSheet extends VgLiteActorSheet {
     Component = HeroSheetReactComponent
-
     static DEFAULT_OPTIONS = {
         position: {
             width: 420,
@@ -30,7 +30,6 @@ export default class HeroSheet extends VgLiteActorSheet {
             resizable: true
         }
     }
-
 }
 
 const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
@@ -88,8 +87,10 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
             {/* MAIN STATS ARRAY */}
             <Stats hero={hero} />
 
-            <HeroPortrait hero={hero} />
+            {/* PORTRAIT */}
+            <Portrait actor={hero} />
 
+            {/* MAIN HEADER CONTENT + MENU BUTTON */}
             <div className="bg-sheet-header-fill font-eskapade grow ml-[123px]">
                 <div className="text-text-header-primary text-4xl font-bold mt-1 ml-2 flex">
                     <EditableNameField actor={hero.parent} />
@@ -108,25 +109,26 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
     )
 }
 
-const HeroPortrait = ({ hero }: { hero: HeroDataModel }) => {
+export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
     return (
         <img
             className={`absolute bg-transparent object-contain h-[178px] w-[120px] ml-1`}
-            src={hero.parent.img}
-            alt={hero.parent.name}
+            src={actor.parent.img}
+            alt={actor.parent.name}
             onClick={async (event) => {
-                if (hero.tagalongId == undefined) {
+                // TODO: migrate the tagalong import into the hero sheet burger menu.
+                if (actor instanceof HeroDataModel && actor.tagalongId == undefined) {
                     const tagalongLink = prompt('Enter character link from Vagabond Tagalong App')
                     if (tagalongLink != null) {
-                        importHero(hero, tagalongLink)
+                        importHero(actor, tagalongLink)
                     }
                 }
                 else {
                     new foundry.applications.apps.ImagePopout(
-                        hero.parent.img, {
-                            src: hero.parent.img,
-                            uuid: hero.parent.uuid,
-                            window: { title: hero.parent.name }
+                        actor.parent.img, {
+                            src: actor.parent.img,
+                            uuid: actor.parent.uuid,
+                            window: { title: actor.parent.name }
                     }
                     ).render(true)
                 }

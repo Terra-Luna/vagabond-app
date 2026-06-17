@@ -140,8 +140,29 @@ export default async function createEquipment() {
             armorType: 'heavy',
             rating: 3,
             mightReq: 5,
-            material: 'Orichalcum',
+            material: 'Standard',
             slots: 3,
+            quantity: 1,
+            isEquipped: false,
+            category: 'Armor',
+            value: { g: 2, s: 0, c: 0 },
+            relicEffects: []
+        }
+    }
+    await Item.create(heavy_armor)
+
+    const med_armor = {
+        name: 'Medium Armor',
+        type: 'armor',
+        img: 'icons/equipment/chest/breastplate-quilted-brown.webp',
+        folder: game.folders?.getName(folder)?.id,
+        system: {
+            description: '',
+            armorType: 'medium',
+            rating: 2,
+            mightReq: 4,
+            material: 'Standard',
+            slots: 2,
             quantity: 1,
             isEquipped: false,
             category: 'Armor',
@@ -149,7 +170,28 @@ export default async function createEquipment() {
             relicEffects: []
         }
     }
-    await Item.create(heavy_armor)
+    await Item.create(med_armor)
+
+    const light_armor = {
+        name: 'Light Armor',
+        type: 'armor',
+        img: 'icons/equipment/chest/shirt-collared-green.webp',
+        folder: game.folders?.getName(folder)?.id,
+        system: {
+            description: '',
+            armorType: 'light',
+            rating: 1,
+            mightReq: 3,
+            material: 'Standard',
+            slots: 2,
+            quantity: 1,
+            isEquipped: false,
+            category: 'Armor',
+            value: { g: 0, s: 50, c: 0 },
+            relicEffects: []
+        }
+    }
+    await Item.create(light_armor)
 
     const alchemistfire = {
         name: "Alchemist's Fire",

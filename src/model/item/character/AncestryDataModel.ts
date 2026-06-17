@@ -1,7 +1,6 @@
 import lang from "../../../../public/lang/en.json"
 import { ActiveEffectMode } from "../../../document/VgLiteActiveEffect"
 import { updateDocument } from "../../../utils/documentUtils"
-import { sensesSchema } from "../../actor/type/Senses"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 import PerkDataModel from "./PerkDataModel"
@@ -10,7 +9,7 @@ import { traitSchema } from "./traitsAndFeatures"
 
 const ancestrySchema = () => {
     return {
-        senses: new fields.ArrayField(new fields.SchemaField({ ...sensesSchema() }), { initial: [] }),
+        senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Senses) }), { initial: [] }),
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() }),
         traits: new fields.ArrayField(new fields.SchemaField({ ...traitSchema() }), { initial: [] }),

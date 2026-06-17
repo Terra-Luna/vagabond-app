@@ -20,6 +20,7 @@ import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
 import { getId } from "./utils/modelUtil"
+import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 
 // add our fonts
 const fontFaces = [
@@ -105,6 +106,16 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
     }
 })
 
+Hooks.on("createItem", (item, options, userId) => {
+    if (!item.parent || item.parent.documentName !== "Actor") return
+    console.log(options)
+    if (isInventoryItem(item)) {
+        const items = item.parent.items
+        const newSortVal = Math.max.apply(Math, items.map(function (i) { return i.sort })) + 1000
+        item.update({ 'sort': newSortVal })
+    }
+})
+
 Hooks.on("preDeleteItem", (item: any, options, userId) => {
     if (item.system.isStackable) {
         const count = item.system.quantity
@@ -144,6 +155,12 @@ Hooks.on("renderItemSheetV2", (_, html) => {
 // @ts-ignore
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
+    makeDefault: true
+})
+
+// @ts-ignore
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', AdversarySheet, {
+    types: ['adversary'],
     makeDefault: true
 })
 

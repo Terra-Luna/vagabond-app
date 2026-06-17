@@ -6,17 +6,21 @@ import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
+    const beingSize = lang.VGLITE.Sizes[hero.ancestry?.beingSize ?? '']
+    const beingType = lang.VGLITE.BeingTypes[hero.ancestry?.beingType ?? '']
     return (
-        <div className="mt-1">
+        <div>
             <Header title={lang.VGLITE.HeroSheet.ancestry} />
+            <div className="mt-0.5" />
             <SkillCard
                 title={`${hero.ancestry !== undefined ? hero.ancestry?.parent?.name + " Traits": ''}`}
-                subtitles={[['Type', hero.ancestry?.beingType], ['Size', hero.ancestry?.beingSize || '']]}
+                subtitles={[['Size', beingSize ?? ''], ['Type', beingType ?? '']]}
                 description={ancestryFullDescription(hero.ancestry as any)}
             />
             
             <div className="my-2">
                 <Header title={lang.VGLITE.HeroSheet.class} />
+                <div className="mt-0.5" />
                 <div className={abilitiesGrid}>
                     {
                         hero.class?.features?.filter(f =>
@@ -34,6 +38,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             </div>
             
             <Header title={lang.VGLITE.HeroSheet.perks} />
+            <div className="mt-0.5" />
             <div className={abilitiesGrid}>
                 {
                     hero.perks.map((p: any) => (
@@ -59,4 +64,4 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 @xl:grid-cols-3 gap-x-1"
+const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"

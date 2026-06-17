@@ -1,6 +1,5 @@
-import lang from "../../../public/lang/en.json"
 import { consolidateCoins } from "../common/CoinValue"
-import { fields, optionalString, requiredInteger, requiredString } from "../common/sharedSchemas"
+import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
 import AncestryDataModel from "../item/character/AncestryDataModel"
 import ClassDataModel from "../item/character/ClassDataModel"
 import PerkDataModel from "../item/character/PerkDataModel"
@@ -13,7 +12,6 @@ import { inventorySchema, setInventoryData } from "./type/Inventory"
 import { levelSchema, setXpToNextLevel } from "./type/Level"
 import { manaSchema, setManaValues } from "./type/Mana"
 import { savesSchema, setSaves } from "./type/Saves"
-import { setSenses } from "./type/Senses"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
 import { statsSchema, validateCurrentLuck } from "./type/Stats"
@@ -74,12 +72,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSkillDifficulties(this)
         validateCurrentLuck(this)
         validateCurrentHP(this)
-        setSenses(this)
         setArmorRating(this)
-    }
-
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
     }
 
     override async _preUpdate(changes, options, user) {
@@ -94,6 +87,7 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             (changes.system as any).inventory.coins = consolidateCoins({ g: newG, s: newS, c: newC })
         }
     }
+
 }
 
 export function getSkillByName(hero: HeroDataModel, skillName: string): { name: string, value: number, isTrained: boolean } {
