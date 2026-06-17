@@ -110,7 +110,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
             >
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
-                        <th className="text-left pl-2">{/*lang.VGLITE.HeroSheet.Inventory.item*/}</th>
+                        <th className="text-left pl-2">{lang.VGLITE.HeroSheet.Inventory.item}</th>
                         <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.slots}</th>
                         <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.value}</th>
                         <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.equip}</th>
@@ -122,7 +122,8 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             key={getId(i)}
                             className={
                                 index === dragIndex ?
-                                    "bg-text-fatigue-current" : `even:bg-table-row-even/50 odd:bg-table-row-odd/50 cursor-grab ${glowOnHover}`
+                                    "bg-text-fatigue-current" :
+                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 cursor-grab ${glowOnHover}`
                                     
                             }
                             draggable

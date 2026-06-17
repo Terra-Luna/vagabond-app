@@ -1,4 +1,4 @@
-import HeroDataModel, { getSkillByName } from "../../../../model/actor/HeroDataModel"
+import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
 import { Menu } from "lucide-react"
@@ -14,8 +14,7 @@ import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { EditableNameField } from "../../../component/EditableTextField"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
 import { getName } from "../../../../utils/modelUtil"
-import { Avatar, Stats, Actions, HPAndArmorDisplay, Saves, Speeds, Trackers } from "./tab/TopSection"
-import { useDimensions } from "../../../context/DimensionsContext"
+import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider } from "./tab/TopSection"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -36,7 +35,6 @@ export default class HeroSheet extends VgLiteActorSheet {
 
 const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
     const hero = actor.system
-    const { height } = useDimensions()
     useEffect(() => {
         const listener = (e: KeyboardEvent) => {
             if (e.ctrlKey && e.shiftKey && e.code === "KeyI") {
@@ -81,55 +79,95 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                 applications: curTheme === "dark" ? "light" : "dark"
             }
         })
-
         sheet._renderHTML()
     }, [sheet])
 
     return (
-        <div className="bg-sheet-header-fill font-eskapade">
-            <div className="text-text-header-primary text-4xl font-bold ml-2 flex">
-                <EditableNameField actor={hero.parent} />
-                <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
-            </div>
-            <div className="flex text-text-header-secondary ml-2 pb-1">
-                <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
-                <span>&nbsp;•&nbsp;</span>
-                <span>{localizeString(locale.AncestryAndClass, { ancestry: getName(hero.ancestry) || '', class: getName(hero.class) || "Vagabond" })}</span>
-                <div className="ml-auto mr-2">
-                    <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+        <div className="flex">
+            <HeroPortrait hero={hero} />
+            <div className="bg-sheet-header-fill font-eskapade grow">
+                <div className="text-text-header-primary text-5xl font-bold mt-1 ml-2 flex">
+                    <EditableNameField actor={hero.parent} />
+                    <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
+                </div>
+                <div className="flex text-text-header-secondary ml-2 pb-1">
+                    <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
+                    <span>&nbsp;•&nbsp;</span>
+                    <span>{localizeString(locale.AncestryAndClass, { ancestry: getName(hero.ancestry) || '', class: getName(hero.class) || "Vagabond" })}</span>
+                    <div className="ml-auto mr-2">
+                        <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+                    </div>
                 </div>
             </div>
         </div>
     )
 }
 
+const HeroPortrait = ({ hero }: { hero: HeroDataModel }) => {
+    return (
+        <img
+            className={`bg-sheet-header-fill/10 object-contain h-[80px] w-[72px] border border-solid border-transparent border-b-sheet-header-fill`}
+            src={hero.parent.img}
+            alt={hero.parent.name}
+            onClick={async (event) => {
+                if (hero.tagalongId == undefined) {
+                    const tagalongLink = prompt('Enter character link from Vagabond Tagalong App')
+                    if (tagalongLink != null) {
+                        importHero(hero, tagalongLink)
+                    }
+                }
+                else {
+                    new foundry.applications.apps.ImagePopout(
+                        hero.parent.img, {
+                            src: hero.parent.img,
+                            uuid: hero.parent.uuid,
+                            window: { title: hero.parent.name }
+                    }
+                    ).render(true)
+                }
+            }}
+        />
+    )
+}
+
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid @sm:grid-cols-1 @md:grid-cols-2 ml-1 mr-1 mt-1 gap-1">
-            <div>
-                <Avatar hero={hero} />
-                <HPAndArmorDisplay health={hero.health} armor={hero.armor} hero={hero} />
-                <Trackers hero={hero} />
-                <Speeds hero={hero} />
-            </div>
-            <div className="flex flex-col items-center gap-y-2">
+        <div className="flex">
+            <StatsDrawerContextProvider>
+                {/* MAIN STATS ARRAY */}
                 <Stats hero={hero} />
-                {
-                    hero.actions.length > 0 ? (
-                        <Actions hero={hero} actions={hero.actions.map(a => getSkillByName(hero, a))} />
-                    ) : null
-                }
-                <Saves hero={hero} />
-            </div>
+            
+                {/* UPPER SECTION */}
+                <div className="grid @sm:grid-cols-1 @md:grid-cols-1 ml-1 mr-1 mt-1 gap-1 w-full">
+                    {/* HP, ARMOR, FATIGUE HUD */}
+                    <HPArmorFatigueHUD health={hero.health} armor={hero.armor} hero={hero} />
+                    
+                    {/* SPEEDS, SAVES, & TRACKERS */}
+                    <div className="flex w-full space-x-1">
+                        <div className="w-full">
+                            <Speeds hero={hero} />
+                            <div className="flex w-full justify-center space-x-4 mt-2">
+                                <Luck hero={hero} />
+                                <Studied hero={hero} />
+                            </div>
+                        </div>
+                        <Saves hero={hero} />
+                    </div>
+                    
+                    {/* SKILL CHECKS AND DIFFICULTIES */}
+                    <Skills hero={hero} />
+
+                </div>
+            </StatsDrawerContextProvider>
         </div>
     )
 }
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     const tabPanelClasses = "min-h-0 overflow-y-auto"
-    return <div className="mt-1 flex flex-col min-h-0 grow">
+    return <div className="-mt-1 flex flex-col min-h-0 grow">
         <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />
-        <Tabs className="flex flex-col min-h-0 grow">
+        <Tabs className="flex flex-col min-h-0 grow text-lg">
             <TabList>
                 <Tab>
                     {locale["tab-main"]}

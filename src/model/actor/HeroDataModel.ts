@@ -31,11 +31,6 @@ const heroSchema = () => {
         mana: new fields.SchemaField({ ...manaSchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
-        actions: new fields.ArrayField(
-            new fields.StringField(
-                { ...requiredString, options: Object.values(lang.VGLITE.Skills).map(it => it.name) }
-            ), { initial: ['Melee', 'Ranged'], max: 2 }
-        ),
 
         /**
          * Derived from embedded documents...

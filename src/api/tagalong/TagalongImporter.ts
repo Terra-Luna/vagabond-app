@@ -65,8 +65,6 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
                 survival: { isTrained: isTrained('Survival', res.trained_skills) }
             },
 
-            actions: res.active_actions,
-
             inventory: {
                 coins: res.current_wealth
             },

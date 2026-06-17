@@ -7,6 +7,7 @@ import { useDimensions } from '../context/DimensionsContext'
 import { ItemDivider } from './Header'
 import WeaponDataModel, { equipWeapon } from '../../model/item/equip/WeaponDataModel'
 import { rollDamage, rollWeaponDamage } from '../../combat/dice-rolls'
+import ArmorDataModel, { equipArmor } from '../../model/item/equip/ArmorDataModel'
 
 /**
  * A reusable context menu!
@@ -77,9 +78,13 @@ export const itemContextMenuOptions = (
             id: id, label: item.isEquipped ? 'Unequip' : 'Equip', action: () => {
                 hideMenu()
                 item.isEquipped ? setEquipState(item, false) : (
-                    (item instanceof WeaponDataModel) ? equipWeapon(hero, item) : 
-                        setEquipState(item, false)
-                    )
+                    (item instanceof WeaponDataModel) ?
+                        equipWeapon(hero, item) : (
+                            item instanceof ArmorDataModel ?
+                                equipArmor(hero, item) :
+                                    setEquipState(item, false)
+                        )
+                )
             }
         })
         id += 1
