@@ -35,7 +35,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                     <ChevronDown size={28} />
                 </div> : <></>
             }
-            <div className="flex grow items-center justify-between mt-1 mx-6">
+            <div className="flex grow items-center justify-between mt-1 mx-4">
                 {/* HP CURRENT / MAX */}
                 <div className="relative items-center justify-center w-[96px] h-[96px]">
                     <span className="absolute -top-0.5 w-full text-center text-text-primary pb-1">HIT POINTS</span>
