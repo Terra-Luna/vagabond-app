@@ -526,20 +526,19 @@
       }
     },
     "AdversarySheet": {
-        "info": "{{beingSize}} {{beingType}}",
-        "tl": "TL: {{tl}}",
-        "hd": "HD: {{hd}}",
-        "zone": "Zone: {{zone}}",
-        "senses": "Senses: {{senses}}",
-        "armor": "Armor: {{rating}} [as {{type}}]",
-        "immune": "Immune: {{immunities}}",
-        "weak": "Weak: {{weaknesses}}",
-        "status_immunities": "Status Immune: {{immunities}}",
+        "tl": "TL:",
+        "hd": "HD:",
+        "zone": "Zone:",
+        "senses": "Senses:",
+        "armor": "Armor:",
+        "immune": "Immune:",
+        "weak": "Weak:",
+        "status_immunities": "Status Immune:",
         "actions": "Actions",
         "abilities": "Abilities",
-        "speed": "Speed: {{spd}}'",
-        "appearing": "# Appearing: {{num}}",
-        "morale": "Morale: {{morale}}"
+        "speed": "Speed:",
+        "appearing": "# Appearing:",
+        "morale": "Morale:"
     },
     "ItemSheet": {
       "type": "Type",
