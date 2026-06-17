@@ -152,7 +152,7 @@ export default async function createEquipment() {
     await Item.create(heavy_armor)
 
     const alchemistfire = {
-        name: "Alchemists Fire",
+        name: "Alchemist's Fire",
         type: 'alchemical',
         system: {
             description: 'A flammable, tar-like fluid that ignites when exposed to oxygen, dealing 2d6 damage and Burning (Cd6) a hit Target.',
@@ -165,4 +165,28 @@ export default async function createEquipment() {
         }
     }
     await Item.create(alchemistfire)
+
+    const backpack = {
+        name: "Backpack",
+        type: 'container',
+        img: 'icons/containers/bags/pack-engraved-leather-leaf-tan.webp',
+        folder: game.folders?.getName(folder)?.id,
+        system: {
+            slots: 0,
+            capacity: 2
+        }
+    }
+    await Item.create(backpack)
+    const bp = game.items.getName("Backpack")
+    const backpackEffect = {
+        name: 'Backpack',
+        origin: bp.uuid,
+        changes: [
+            { key: 'system.inventory.capacity', mode: '2', value: 2, priority: 20 }
+        ],
+        disabled: false,
+        transfer: true
+    }
+    await bp.createEmbeddedDocuments('ActiveEffect', [backpackEffect])
+
 }

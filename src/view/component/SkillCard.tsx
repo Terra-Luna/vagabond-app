@@ -1,8 +1,6 @@
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'react-html-parser'
 import { Collapsible } from "./Collapsible"
-import { CardHeader } from './CardHeader';
-
-const cardLayout = "mt-1 mb-1"
+import { CardHeader } from './CardHeader'
 
 const cardSubheaderLayout = "flex items-center border-r-1 border-solid border-table-border"
 const cardSubheaderStyle = "flex text-text-section-header text-sm pb-1 pl-2 pr-8 bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
@@ -14,7 +12,7 @@ export const SkillCard = ({ title, subtitles, description }: {
     title: string, subtitles: CardSubHeaderValues, description: string
 }) => {
     return (
-        <div className={cardLayout}>
+        <div className="mt-1 mb-1">
             <Collapsible
                 startCollapsed
                 title={title}

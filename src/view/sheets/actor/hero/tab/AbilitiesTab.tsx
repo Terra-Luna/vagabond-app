@@ -36,7 +36,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             <Header title={lang.VGLITE.HeroSheet.perks} />
             <div className={abilitiesGrid}>
                 {
-                    hero.perks.map(p => (
+                    hero.perks.map((p: any) => (
                         <SkillCard
                             key={p.parent.name}
                             title={p.parent.name}
@@ -59,4 +59,4 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const abilitiesGrid = "grid @sm:grid-cols-1 @md:grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-x-1"
+const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 @xl:grid-cols-3 gap-x-1"

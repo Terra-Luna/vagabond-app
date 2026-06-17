@@ -54,9 +54,9 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     override async _onCreate(data: any, options: any, userId: string) {
-        this.parent.update({ 'system.health.current': 2 })
-        this.parent.update({ 'prototypeToken.actorLink': true })
         super._onCreate(data, options, userId)
+        this.parent.update({ 'prototypeToken.actorLink': true })
+        this.parent.update({ 'system.health.current': 2 })
     }
 
     override async prepareBaseData() {

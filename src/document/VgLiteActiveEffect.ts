@@ -16,12 +16,12 @@ const shells = types.map( t => new Item.implementation({name: t, type: t}));
 shells.forEach( s => console.log(`'${s.type}'`, 'type Items have the following attribute keys available:\nsystem.\n', s.toObject().system));
 
 //Create an ActiveEffect
-const doc = game.actors.getName("Orphenia")
+const doc = game.items.getName("Backpack")
 const effectData = {
-	name: 'Tough',
+	name: 'Backpack',
 	origin: doc.uuid,
 	changes: [
-		{ key: 'system.armor.rating', mode: '2', value: 2, priority: 20 }
+		{ key: 'system.inventory.capacity', mode: '2', value: 2, priority: 20 }
 	],
 	disabled: false,
     transfer: true

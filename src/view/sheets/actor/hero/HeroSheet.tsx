@@ -108,11 +108,10 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
     )
 }
 
-export const portraitWidth = "[120px]"
 const HeroPortrait = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <img
-            className={`absolute bg-sheet-header-fill/10 object-contain h-[174px] w-${portraitWidth} ml-1 border border-solid border-sheet-header-fill`}
+            className={`absolute bg-transparent object-contain h-[178px] w-[120px] ml-1`}
             src={hero.parent.img}
             alt={hero.parent.name}
             onClick={async (event) => {

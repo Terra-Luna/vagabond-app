@@ -8,7 +8,6 @@ import { rollSkillCheck } from "../../../../../combat/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { glowOnHover } from "../../../VgLiteSheet"
-import { portraitWidth } from "../HeroSheet"
 
 interface Health {
     current: number | null
@@ -23,7 +22,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
         updateDocument(hero.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
     }, [hp])
     return (
-        <div className={`flex grow items-center justify-between ml-${portraitWidth} mt-1`}>
+        <div className={`flex grow items-center justify-between ml-[120px] mt-1`}>
             {/* HP CURRENT / MAX */}
             <div className="relative items-center justify-center w-[96px] h-[96px]">
                 <span className="absolute -top-0.5 w-full text-center text-text-primary pb-1">HIT POINTS</span>
