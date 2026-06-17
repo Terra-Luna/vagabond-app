@@ -26,6 +26,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
             vgLiteDiv.setAttribute("class", "vglite-root")
             const reactRootElem = this.element.appendChild(vgLiteDiv)
 
+            this.element.style.setProperty("overflow", "visible")
+ 
             const scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
             this._reactRoot = ReactDom.createRoot(scaduRoot)
         }
@@ -68,7 +70,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <style>{vgliteStyles}</style>
-                <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col`} style={{ height }}>
+                <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
                     <this.Component {...this.getReactProps()} />
                 </div>
             </DimensionsContext.Provider>

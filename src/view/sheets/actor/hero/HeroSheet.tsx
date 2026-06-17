@@ -1,7 +1,7 @@
 import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { localizeString } from "../../../../utils/localeUtils"
-import { Menu } from "lucide-react"
+import { ChevronDown, Menu } from "lucide-react"
 import lang from "../../../../../public/lang/en.json"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { useCallback, useEffect, useRef, useState } from "react"
@@ -14,7 +14,7 @@ import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { EditableNameField } from "../../../component/EditableTextField"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
 import { getName } from "../../../../utils/modelUtil"
-import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider } from "./tab/TopSection"
+import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider, useStatsDrawerStatus } from "./tab/TopSection"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -48,16 +48,17 @@ const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDat
         return () => { window.removeEventListener("keydown", listener) }
     }, [])
     return (
-        <div className="@container flex flex-col grow min-h-0">
-            <HeroSheetHeader hero={hero} sheet={sheet} />
-            <HeroSheetUpperSection hero={hero} />
-            <HeroSheetTabbedSection hero={hero} />
+        <div className="@container flex flex-col grow min-h-0 overflow-y-hidden">
+             <StatsDrawerContextProvider>
+                <HeroSheetHeader hero={hero} sheet={sheet} />
+                <HeroSheetUpperSection hero={hero} />
+                <HeroSheetTabbedSection hero={hero} />
+            </StatsDrawerContextProvider>
         </div>
     )
 }
 
 const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteActorSheet }) => {
-    hero.tagalongId
     const deliveryRef = useRef<SpellDelivery>(null)
 
     const [_, forceUpdate] = useState(false)
@@ -84,9 +85,13 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 
     return (
         <div className="flex">
+            {/* MAIN STATS ARRAY */}
+            <Stats hero={hero} />
+
             <HeroPortrait hero={hero} />
-            <div className="bg-sheet-header-fill font-eskapade grow">
-                <div className="text-text-header-primary text-5xl font-bold mt-1 ml-2 flex">
+
+            <div className="bg-sheet-header-fill font-eskapade grow ml-[123px]">
+                <div className="text-text-header-primary text-4xl font-bold mt-1 ml-2 flex">
                     <EditableNameField actor={hero.parent} />
                     <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
                 </div>
@@ -103,10 +108,11 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
     )
 }
 
+export const portraitWidth = "[120px]"
 const HeroPortrait = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <img
-            className={`bg-sheet-header-fill/10 object-contain h-[80px] w-[72px] border border-solid border-transparent border-b-sheet-header-fill`}
+            className={`absolute bg-sheet-header-fill/10 object-contain h-[174px] w-${portraitWidth} ml-1 border border-solid border-sheet-header-fill`}
             src={hero.parent.img}
             alt={hero.parent.name}
             onClick={async (event) => {
@@ -133,32 +139,26 @@ const HeroPortrait = ({ hero }: { hero: HeroDataModel }) => {
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="flex">
-            <StatsDrawerContextProvider>
-                {/* MAIN STATS ARRAY */}
-                <Stats hero={hero} />
-            
-                {/* UPPER SECTION */}
-                <div className="grid @sm:grid-cols-1 @md:grid-cols-1 ml-1 mr-1 mt-1 gap-1 w-full">
-                    {/* HP, ARMOR, FATIGUE HUD */}
-                    <HPArmorFatigueHUD health={hero.health} armor={hero.armor} hero={hero} />
-                    
-                    {/* SPEEDS, SAVES, & TRACKERS */}
-                    <div className="flex w-full space-x-1">
-                        <div className="w-full">
-                            <Speeds hero={hero} />
-                            <div className="flex w-full justify-center space-x-4 mt-2">
-                                <Luck hero={hero} />
-                                <Studied hero={hero} />
-                            </div>
+            {/* UPPER SECTION */}
+            <div className="grid @sm:grid-cols-1 @md:grid-cols-1 ml-1 mr-1 mt-1 gap-1 w-full">
+                {/* HP, ARMOR, FATIGUE HUD */}
+                <HPArmorFatigueHUD health={hero.health} armor={hero.armor} hero={hero} />
+                
+                {/* SPEEDS, SAVES, & TRACKERS */}
+                <div className="flex w-full space-x-1">
+                    <div className="w-full">
+                        <Speeds hero={hero} />
+                        <div className="flex w-full justify-center space-x-4 mt-2">
+                            <Luck hero={hero} />
+                            <Studied hero={hero} />
                         </div>
-                        <Saves hero={hero} />
                     </div>
-                    
-                    {/* SKILL CHECKS AND DIFFICULTIES */}
-                    <Skills hero={hero} />
-
+                    <Saves hero={hero} />
                 </div>
-            </StatsDrawerContextProvider>
+                
+                {/* SKILL CHECKS AND DIFFICULTIES */}
+                <Skills hero={hero} />
+            </div>
         </div>
     )
 }

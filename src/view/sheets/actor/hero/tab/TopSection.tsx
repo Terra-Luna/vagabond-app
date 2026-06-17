@@ -1,4 +1,4 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronUp, ChevronDown } from "lucide-react"
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { createContext, ReactNode, useCallback, useContext, useState } from "react"
 import lang from "../../../../../../public/lang/en.json"
@@ -8,6 +8,7 @@ import { rollSkillCheck } from "../../../../../combat/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { glowOnHover } from "../../../VgLiteSheet"
+import { portraitWidth } from "../HeroSheet"
 
 interface Health {
     current: number | null
@@ -21,50 +22,36 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
     const updateHp = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
     }, [hp])
-    const { isStatsDrawerOpen, toggleStatsDrawer } = useStatsDrawerStatus()
-
     return (
-        <div className="flex">
-            { /* STATS DRAWER TOGGLE CHEVRON */}
-            {!isStatsDrawerOpen ?                
-                <div
-                    className="text-text-primary w-[54px] h-[54px] -ml-3 -mt-1 pl-3 pr-2 bg-sheet-header-fill/10 border-4 border-double border-section-header-fill border-t-transparent border-l-transparent rounded-br-lg"
-                    onClick={toggleStatsDrawer}
-                >
-                    <span>Stats</span>
-                    <ChevronDown size={28} />
-                </div> : <></>
-            }
-            <div className="flex grow items-center justify-between mt-1 mx-4">
-                {/* HP CURRENT / MAX */}
-                <div className="relative items-center justify-center w-[96px] h-[96px]">
-                    <span className="absolute -top-0.5 w-full text-center text-text-primary pb-1">HIT POINTS</span>
-                    <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
-                    <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
-                        <span className={`text-5xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
-                            <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
-                        </span>
-                    </div>
-                    <div className="absolute right-0 bottom-2 flex items-center justify-center border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
-                        <span className={`text-2xl text-text-hp-max px-1 ${glowOnHover} cursor-pointer`}>{health.max}</span>
-                    </div>
+        <div className={`flex grow items-center justify-between ml-${portraitWidth} mt-1`}>
+            {/* HP CURRENT / MAX */}
+            <div className="relative items-center justify-center w-[96px] h-[96px]">
+                <span className="absolute -top-0.5 w-full text-center text-text-primary pb-1">HIT POINTS</span>
+                <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
+                <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
+                    <span className={`text-5xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
+                        <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
+                    </span>
                 </div>
-                <Divider />
-                {/* ARMOR RATING */}
-                <div className="relative items-center justify-center w-[76px] h-[76px]">
-                    <span className="absolute -top-3 w-full text-center text-text-primary">ARMOR</span>
-                    <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <span className={`text-5xl text-text-armor font-eskapade font-bold`}>
-                            {armor.rating}
-                        </span>
-                    </div>
+                <div className="absolute -right-1 bottom-1.5 flex items-center justify-center border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                    <span className={`text-2xl text-text-hp-max px-1 ${glowOnHover} cursor-pointer`}>{health.max}</span>
                 </div>
-                <Divider />
-                {/* FATIGUE TRACKER */}
-                <div className="ml-6">
-                    <Fatigue hero={hero} />
+            </div>
+            <Divider />
+            {/* ARMOR RATING */}
+            <div className="relative items-center justify-center w-[76px] h-[76px]">
+                <span className="absolute -top-3 w-full text-center text-text-primary">ARMOR</span>
+                <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
+                <div className="absolute inset-0 flex items-center justify-center">
+                    <span className={`text-5xl text-text-armor font-eskapade font-bold`}>
+                        {armor.rating}
+                    </span>
                 </div>
+            </div>
+            <Divider />
+            {/* FATIGUE TRACKER */}
+            <div className="ml-6">
+                <Fatigue hero={hero} />
             </div>
         </div>
     )
@@ -83,7 +70,8 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
             <span>{lang.VGLITE.HeroSheet.fatigue}</span>
             <span className="font-eskapade font-bold text-5xl">{
                 <div className={trackerLayout + " text-text-fatigue-current"}>
-                    <LucideHeartOff size={28} />{fatigue}
+                    <LucideHeartOff size={28} />
+                    <span className="min-w-[1ch]">{fatigue}</span>
                 </div>
             }</span>
         </div>
@@ -210,23 +198,20 @@ export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDa
 }
 
 export const Stats = ({ hero }: { hero: HeroDataModel }) => {
-    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
+    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck' ]
     const { isStatsDrawerOpen, toggleStatsDrawer } = useStatsDrawerStatus()
-    /**
-     * TODO: figure out how to make the stats array trasition/collapse up into the portrait
-     *       and supply a ChevronDown to re-expand it.
-     */
+
     return (
         <>{
-            isStatsDrawerOpen ? <div className="pt-1 pb-1 -ml-1 space-y-4 bg-sheet-header-fill/10 rounded-br-lg border-4 border-double border-section-header-fill border-t-transparent">
+            isStatsDrawerOpen ? <div className="absolute pt-1 pb-1 mt-1 -ml-11.5 space-y-4 bg-sheet-main-fill/75 rounded-bl-lg rounded-tl-lg border-2 border-solid border-section-header-fill border-r-transparent">
                 {
                     stats.map(stat => (
                         <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
-                    ))            
+                    ))
                 }
-                <div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
-                    <ChevronUp size={28} />
-                </div>
+                {<div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
+                    <ChevronRight size={28} />
+                </div>}
             </div> : <></>
         }</>
     )
@@ -260,4 +245,4 @@ export const StatsDrawerContextProvider = ({ children }) => {
     )
 }
 
-const useStatsDrawerStatus = () => useContext(StatsDrawerContext)
+export const useStatsDrawerStatus = () => useContext(StatsDrawerContext)
