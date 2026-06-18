@@ -34,7 +34,7 @@ const Encumbrance = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className={infoBoxLayout +" px-2 "+ infoBoxText}>
             {lang.VGLITE.HeroSheet.encumbrance}
-            <span className="text-md float-right">
+            <span className="text-base float-right">
                 {bulk} / {hero.inventory.capacity}
             </span>
             <div className="h-[12px] my-1 -mx-1 border border-solid border-table-border rounded-md">

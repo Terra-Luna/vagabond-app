@@ -11,7 +11,7 @@ export default async function createEquipment() {
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
-            range: 'Close',
+            range: 'close',
             damage: {
                 oneHand: '1d8',
                 twoHand: '1d10'
@@ -20,16 +20,16 @@ export default async function createEquipment() {
                 style: 'V',
                 state: '1H'
             },
-            properties: ['Keen'],
+            properties: ['keen'],
             explodeData: {
                 canExplode: false,
                 explodesOn: []
             },
-            material: 'Standard',
+            material: 'standard',
             isCrude: false,
             slots: 2,
             quantity: 1,
-            category: 'Weapons',
+            category: 'weapons',
             value: { g: 0, s: 40, c: 0 },
             relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
         }
@@ -43,7 +43,7 @@ export default async function createEquipment() {
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
-            range: 'Near',
+            range: 'near',
             damage: {
                 oneHand: '1d10',
                 twoHand: '1d10'
@@ -52,15 +52,15 @@ export default async function createEquipment() {
                 style: '2H',
                 state: '2H'
             },
-            properties: ['Brutal, Ranged'],
+            properties: ['brutal', 'ranged'],
             explodeData: {
                 canExplode: false,
                 explodesOn: []
             },
-            material: 'Standard',
+            material: 'standard',
             isCrude: false,
             slots: 2,
-            category: 'Weapons',
+            category: 'weapons',
             value: { g: 1, s: 60, c: 0 },
             relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
         }
@@ -74,7 +74,7 @@ export default async function createEquipment() {
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
-            range: 'Close',
+            range: 'close',
             damage: {
                 oneHand: '1d4',
                 twoHand: '1d4'
@@ -83,16 +83,16 @@ export default async function createEquipment() {
                 style: 'F',
                 state: 'F'
             },
-            properties: ['Brawl'],
+            properties: ['brawl'],
             explodeData: {
                 canExplode: false,
                 explodesOn: []
             },
-            material: 'Standard',
+            material: 'standard',
             isCrude: false,
             slots: 1,
             isEquipped: false,
-            category: 'Weapons',
+            category: 'weapons',
             value: { g: 0, s: 40, c: 0 },
             relicEffects: []
         }
@@ -106,7 +106,7 @@ export default async function createEquipment() {
         folder: game.folders?.getName(folder)?.id,
         system: {
             description: '',
-            range: 'Close',
+            range: 'close',
             damage: {
                 oneHand: '1d4',
                 twoHand: '1d4'
@@ -115,15 +115,15 @@ export default async function createEquipment() {
                 style: '1H',
                 state: '1H'
             },
-            properties: ['Shield'],
+            properties: ['shield'],
             explodeData: {
                 canExplode: false,
                 explodesOn: []
             },
-            material: 'Standard',
+            material: 'standard',
             isCrude: false,
             slots: 2,
-            category: 'Weapons',
+            category: 'weapons',
             value: { g: 0, s: 75, c: 0 },
             relicEffects: []
         }
@@ -140,11 +140,11 @@ export default async function createEquipment() {
             armorType: 'heavy',
             rating: 3,
             mightReq: 5,
-            material: 'Standard',
+            material: 'standard',
             slots: 3,
             quantity: 1,
             isEquipped: false,
-            category: 'Armor',
+            category: 'armor',
             value: { g: 2, s: 0, c: 0 },
             relicEffects: []
         }
@@ -161,11 +161,11 @@ export default async function createEquipment() {
             armorType: 'medium',
             rating: 2,
             mightReq: 4,
-            material: 'Standard',
+            material: 'standard',
             slots: 2,
             quantity: 1,
             isEquipped: false,
-            category: 'Armor',
+            category: 'armor',
             value: { g: 1, s: 0, c: 0 },
             relicEffects: []
         }
@@ -182,11 +182,11 @@ export default async function createEquipment() {
             armorType: 'light',
             rating: 1,
             mightReq: 3,
-            material: 'Standard',
+            material: 'standard',
             slots: 2,
             quantity: 1,
             isEquipped: false,
-            category: 'Armor',
+            category: 'armor',
             value: { g: 0, s: 50, c: 0 },
             relicEffects: []
         }
@@ -196,9 +196,10 @@ export default async function createEquipment() {
     const alchemistfire = {
         name: "Alchemist's Fire",
         type: 'alchemical',
+        folder: game.folders?.getName(folder)?.id,
         system: {
             description: 'A flammable, tar-like fluid that ignites when exposed to oxygen, dealing 2d6 damage and Burning (Cd6) a hit Target.',
-            category: 'Alchemy',
+            category: 'alchemy',
             damage: '',
             damageType: '',
             slots: 1,
@@ -215,7 +216,8 @@ export default async function createEquipment() {
         folder: game.folders?.getName(folder)?.id,
         system: {
             slots: 0,
-            capacity: 2
+            capacity: 2,
+            category: 'containers'
         }
     }
     await Item.create(backpack)

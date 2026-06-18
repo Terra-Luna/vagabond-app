@@ -87,8 +87,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={propsStyle}>{w.properties.reduce((props, p) => { return props + p + ', ' }, '').replace(/,\s*$/, "")}</div>
-                            <div className={propsStyle + " text-right mr-1"}>{w.range}</div>
+                            <div className={propsStyle}>{w.properties.reduce((props, p) => { return props + lang.VGLITE.WeaponProps[p].name + ', ' }, '').replace(/,\s*$/, "")}</div>
+                            <div className={propsStyle + " text-right mr-1"}>{lang.VGLITE.Ranges[w.range]}</div>
                         </div>
                         <ItemDivider />
                     </div>
@@ -106,13 +106,13 @@ const Armor = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.armor} />
             <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1">
-                <div className="text-lg line-clamp-1">{armor?.parent.name || '-'}</div>
+                <div className="text-lg line-clamp-1">{armor?.parent.name ?? '-'}</div>
                 <div className="flex justify-end items-center">
                     <Shield className="mr-1" size={18} />
-                    <div className="line-clamp-1 text-lg text-right mr-1">{armor?.rating || '-'}</div>
+                    <div className="line-clamp-1 text-lg text-right mr-1">{armor?.rating ?? '-'}</div>
                 </div>
-                <div className={propsStyle}>{armor?.category || '-'}</div>
-                <div className={propsStyle + " text-right mr-1"}>{armor?.material || '-'}</div>
+                <div className={propsStyle}>{lang.VGLITE.EquipmentCategories[armor?.category] ?? '-'}</div>
+                <div className={propsStyle + " text-right mr-1"}>{lang.VGLITE.Metals[armor?.material]?.name ?? '-'}</div>
             </div>
             <ItemDivider />
         </div>

@@ -471,7 +471,7 @@
     },
     "EquipmentCategories": {
       "armor": "Armor",
-      "weapon": "Weapons",
+      "weapons": "Weapons",
       "alchemy": "Alchemy & Medicine",
       "beasts": "Beasts & Husbandry",
       "astrnonomy": "Astronomy & Navigation",
@@ -491,6 +491,8 @@
       "other": "Other"
     },
     "HeroSheet": {
+      "hp": "HIT POINTS",
+      "armor": "ARMOR",
       "Identity": "Identity",
       "Level": "Level {{level}}",
       "AncestryAndClass": "{{ancestry}} {{class}}",
@@ -504,7 +506,6 @@
       "skills": "SKILLS",
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
-      "armor": "ARMOR",
       "ancestry": "ANCESTRY",
       "class": "CLASS",
       "perks": "PERKS",
@@ -527,10 +528,12 @@
     },
     "AdversarySheet": {
         "tl": "TL:",
-        "hd": "HD:",
+        "hd": "HIT DICE",
+        "hp": "HIT POINTS",
+        "armor": "ARMOR",
         "zone": "Zone:",
         "senses": "Senses:",
-        "armor": "Armor:",
+        "as": "as:",
         "immune": "Immune:",
         "weak": "Weak:",
         "status_immunities": "Status Immune:",

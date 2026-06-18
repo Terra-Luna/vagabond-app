@@ -18,7 +18,7 @@ const ancestrySchema = () => {
         chosenTrainings: new fields.ArrayField(
             new fields.StringField({
                 ...requiredString,
-                choices: Object.values(lang.VGLITE.Skills).map(it => it.name)
+                choices: Object.keys(lang.VGLITE.Skills)
             })
         )
     }

@@ -9,7 +9,7 @@ const armorSchema = () => {
         armorType: new fields.StringField({ reuired: false, initial: 'light', choices: ['light', 'medium', 'heavy'] }),
         rating: new fields.NumberField({ integer: true, min: 0, initial: 1 }),
         mightReq: new fields.NumberField({ ...requiredInteger, initial: 3 }),
-        material: new fields.StringField({ ...requiredString, initial: 'Standard', choices: Object.values(lang.VGLITE.Metals).map(it => it.name) })
+        material: new fields.StringField({ ...requiredString, initial: 'standard', choices: Object.keys(lang.VGLITE.Metals) })
     }
 }
 

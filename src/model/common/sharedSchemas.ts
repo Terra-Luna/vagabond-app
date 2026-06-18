@@ -8,16 +8,8 @@ export const standardInteger = { integer: true, min: 0, initial: 0 }
 export const requiredInteger = { required: true, integer: true, min: 0 }
 export const uncappedInteger = { required: true, integer: true, initial: 0 }
 
-export const statOptions = () => {
-    const stats = Object.values(locale.VGLITE.Stat)
-    return {
-        choices: stats.map(i => i.long),
-        initial: ''
-    }
-}
-
 export const rangeOptions = () => {
-    const ranges = Object.values(locale.VGLITE.Ranges)
+    const ranges = Object.keys(locale.VGLITE.Ranges)
     return {
         choices: ranges,
         initial: ranges[0]
@@ -41,7 +33,7 @@ export const beingTypeOptions = () => {
 }
 
 export const zonePreferences = () => {
-    const zones = Object.values(locale.VGLITE.Zones)
+    const zones = Object.keys(locale.VGLITE.Zones)
     return {
         choices: zones,
         initial: zones[0]
@@ -49,7 +41,7 @@ export const zonePreferences = () => {
 }
 
 export const damageTypeOptions = () => {
-    const damageTypes = Object.values(locale.VGLITE.DamageTypes)
+    const damageTypes = Object.keys(locale.VGLITE.DamageTypes)
     return {
         choices: damageTypes,
         initial: damageTypes[0]
@@ -58,6 +50,6 @@ export const damageTypeOptions = () => {
 
 export const effectSchema = () => {
     return {
-        type: new fields.StringField({ ...requiredString, options: ['TEMPORARY', 'PASSIVE', 'INAC'] })
+        type: new fields.StringField({ ...requiredString, choices: ['TEMPORARY', 'PASSIVE', 'INAC'] })
     }
 }

@@ -1,7 +1,7 @@
-import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react";
-import VgLiteError from "../../model/common/VgLiteError";
-import { getDocumentAtPath, updateDocumentAtPath } from "../../utils/documentUtils";
-import { FoundryActor } from "../sheets/actor/VgLiteActorSheet";
+import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react"
+import VgLiteError from "../../model/common/VgLiteError"
+import { updateDocumentAtPath } from "../../utils/documentUtils"
+import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 
 export const EditableTextField = ({ initialValue, onSave, updateProps }: { initialValue: string, onSave?: (value: string) => Promise<boolean>, updateProps?: { actor: any, propertyPath: string[] } }) => {
     if (onSave && updateProps) {

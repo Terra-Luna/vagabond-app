@@ -91,18 +91,24 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
             <Portrait actor={hero} />
 
             {/* MAIN HEADER CONTENT + MENU BUTTON */}
-            <div className="bg-sheet-header-fill font-eskapade grow ml-[123px]">
-                <div className="text-text-header-primary text-4xl font-bold mt-1 ml-2 flex">
-                    <EditableNameField actor={hero.parent} />
-                    <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
-                </div>
-                <div className="flex text-text-header-secondary ml-2 pb-1">
-                    <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
-                    <span>&nbsp;•&nbsp;</span>
-                    <span>{localizeString(locale.AncestryAndClass, { ancestry: getName(hero.ancestry) || '', class: getName(hero.class) || "Vagabond" })}</span>
-                    <div className="ml-auto mr-2">
-                        <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+            <div className="flex flex-col grow">
+                <div className="bg-sheet-header-fill font-eskapade grow">
+                    <div className="text-text-header-primary text-4xl font-bold mt-1 ml-2 flex">
+                        <EditableNameField actor={hero.parent} />
+                        <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
                     </div>
+                    <div className="flex text-text-header-secondary ml-2 pb-1">
+                        <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
+                        <span>&nbsp;•&nbsp;</span>
+                        <span>{localizeString(locale.AncestryAndClass, { ancestry: getName(hero.ancestry) || '', class: getName(hero.class) || "Vagabond" })}</span>
+                        <div className="ml-auto mr-2">
+                            <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+                        </div>
+                    </div>
+                </div>
+                {/* HP, ARMOR, FATIGUE HUD */}
+                <div className="flex grow grid @sm:grid-cols-1 @md:grid-cols-1 mt-1 gap-1 w-full">
+                    <HPArmorFatigueHUD health={hero.health} armor={hero.armor} hero={hero} />
                 </div>
             </div>
         </div>
@@ -112,7 +118,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
     return (
         <img
-            className={`absolute bg-transparent object-contain h-[178px] w-[120px] ml-1`}
+            className={`bg-transparent object-contain h-[178px] w-[120px] ml-1`}
             src={actor.parent.img}
             alt={actor.parent.name}
             onClick={async (event) => {
@@ -142,9 +148,6 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
         <div className="flex">
             {/* UPPER SECTION */}
             <div className="grid @sm:grid-cols-1 @md:grid-cols-1 ml-1 mr-1 mt-1 gap-1 w-full">
-                {/* HP, ARMOR, FATIGUE HUD */}
-                <HPArmorFatigueHUD health={hero.health} armor={hero.armor} hero={hero} />
-                
                 {/* SPEEDS, SAVES, & TRACKERS */}
                 <div className="flex w-full space-x-1">
                     <div className="w-full">

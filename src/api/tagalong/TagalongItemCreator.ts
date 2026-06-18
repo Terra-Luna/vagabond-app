@@ -89,7 +89,7 @@ export default class TagalongItemCreator {
                 armorType: item.might_req <= 3 ? 'light' : (item.might_req <= 4 ? 'medium' : 'heavy'),
                 rating: item.armor_rating,
                 mightReq: item.might_req,
-                material: Object.values(lang.VGLITE.Metals)[item.material]?.name ?? lang.VGLITE.Metals.standard.name,
+                material: Object.keys(lang.VGLITE.Metals)[item.material.toLowerCase()] ?? 'standard',
                 slots: item.slots,
                 quantity: 1,
                 isEquipped: item.is_eqiupped,
@@ -117,7 +117,7 @@ export default class TagalongItemCreator {
                     state: item.active_grip?.toUpperCase() ?? ''
                 },
                 properties: item.properties,
-                material: Object.values(lang.VGLITE.Metals)[item.material]?.name ?? lang.VGLITE.Metals.standard.name,
+                material: Object.keys(lang.VGLITE.Metals)[item.material.toLowerCase()] ?? 'standard',
                 slots: item.slots,
                 quantity: 1,
                 isEquipped: item.is_eqiupped,
@@ -150,7 +150,7 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: Object.values(lang.VGLITE.EquipmentCategories)[item.category] ?? lang.VGLITE.EquipmentCategories.other,
+                category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category.toLowerCase()] ?? 'other',
                 value: item.value,
                 slots: item.slots,
                 quantity: 1
@@ -165,7 +165,7 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: Object.values(lang.VGLITE.EquipmentCategories)[item.category] ?? lang.VGLITE.EquipmentCategories.other,
+                category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category.toLowerCase()] ?? 'other',
                 slots: item.slots,
                 quantity: 1,
                 value: item.value

@@ -27,5 +27,4 @@ export const localizeString = (localeString: string, args: Record<string, string
 }
 
 export const createDropdownEntries = (localeObj) => Object.entries(localeObj).map(([value, label]) => ({ label, value } as { label: string, value: any }))
-
 export const createStatDropdownEntryies = () => Object.entries(lang.VGLITE.Stat).map(([value, inner]) => ({ value, label: inner.abbr }))

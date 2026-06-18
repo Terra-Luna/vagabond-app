@@ -19,7 +19,7 @@ const weaponSchema = () => {
         }),
         properties: new fields.ArrayField(
             new fields.StringField({
-                ...requiredString, options: Object.values(lang.VGLITE.WeaponProps).map(it => it.name)
+                ...requiredString, choices: Object.keys(lang.VGLITE.WeaponProps)
             }),
             { initial: [] }
         ),
@@ -30,7 +30,9 @@ const weaponSchema = () => {
                 { initial: [] }
             )
         }),
-        material: new fields.StringField({ ...requiredString, initial: 'Standard', choices: Object.values(lang.VGLITE.Metals).map(it => it.name) }),
+        material: new fields.StringField({
+            ...requiredString, initial: 'standard', choices: Object.keys(lang.VGLITE.Metals)
+        }),
         isCrude: new fields.BooleanField({ initial: false })
     }
 }

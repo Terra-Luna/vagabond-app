@@ -22,10 +22,10 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
         updateDocument(hero.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
     }, [hp])
     return (
-        <div className={`flex grow items-center justify-between ml-[120px] mt-1`}>
+        <div className={`flex grow items-center justify-between mt-1`}>
             {/* HP CURRENT / MAX */}
             <div className="relative items-center justify-center w-[96px] h-[96px]">
-                <span className="absolute -top-0.5 w-full text-center text-text-primary pb-1">HIT POINTS</span>
+                <span className="absolute -top-0.5 w-full text-center text-xs text-text-primary pb-1">{lang.VGLITE.HeroSheet.hp}</span>
                 <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
                 <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
                     <span className={`text-5xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
@@ -39,7 +39,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
             <Divider />
             {/* ARMOR RATING */}
             <div className="relative items-center justify-center w-[76px] h-[76px]">
-                <span className="absolute -top-3 w-full text-center text-text-primary">ARMOR</span>
+                <span className="absolute -top-3 w-full text-center text-xs text-text-primary">{lang.VGLITE.HeroSheet.armor}</span>
                 <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                 <div className="absolute inset-0 flex items-center justify-center">
                     <span className={`text-5xl text-text-armor font-eskapade font-bold`}>
@@ -66,7 +66,7 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
             onClick={() => updateFatigue(false)}
             onAuxClick={() => updateFatigue(true)}
         >
-            <span>{lang.VGLITE.HeroSheet.fatigue}</span>
+            <span className="text-xs">{lang.VGLITE.HeroSheet.fatigue}</span>
             <span className="font-eskapade font-bold text-5xl">{
                 <div className={trackerLayout + " text-text-fatigue-current"}>
                     <LucideHeartOff size={28} />

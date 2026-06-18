@@ -6,8 +6,8 @@ const alchemicalSchema = () => {
     return {
         type: new fields.StringField({
             ...optionalString,
-            initial: lang.VGLITE.AlchemyCategories.unk.name,
-            choices: Object.values(lang.VGLITE.AlchemyCategories).map(it => it.name)
+            initial: 'unk',
+            choices: Object.keys(lang.VGLITE.AlchemyCategories)
         }),
         damage: new fields.StringField({ ...optionalString }),
         damageType: new fields.StringField({ ...damageTypeOptions() })

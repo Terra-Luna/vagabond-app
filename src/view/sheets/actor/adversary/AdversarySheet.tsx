@@ -1,13 +1,19 @@
-    import { useCallback } from "react"
+import { useCallback } from "react"
 import lang from "../../../../../public/lang/en.json"
 import AdversaryDataModel from "../../../../model/actor/AdversaryDataModel"
 import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
-import { Divider } from "../../../component/Header"
 import { Portrait } from "../hero/HeroSheet"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { updateDocument } from "../../../../utils/documentUtils"
+import { RichTextField } from "../../../component/RichTextField"
+import { createDropdownEntries } from "../../../../utils/localeUtils"
+import { DropDown } from "../../../component/Dropdown"
+import { Shield } from "lucide-react"
+import { glowOnHover } from "../../VgLiteSheet"
 
 const locale = lang.VGLITE.AdversarySheet
+const statLabelStyle = `text-sm font-paradigm content-center`
+const statValueStyle = `text-xl font-eskapade font-bold content-center ${glowOnHover} cursor-pointer`
 
 export default class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
@@ -25,52 +31,153 @@ export default class AdversarySheet extends VgLiteActorSheet {
 const AdversarySheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<AdversaryDataModel>, sheet: VgLiteActorSheet }) => {
     const adv = actor.system
     return (
-        <div className="@container flex flex-col grow">
-            <AdversarySheetHeader adv={adv} />
-            <Description adv={adv} />
-            <StatBlock adv={adv} />
+        <div className="flex grow">
+            <div className="flex flex-col border border-solid border-transparent border-r-section-header-fill">
+                <Portrait actor={adv} />
+                <div className="flex flex-col grow">
+                    <HPArmorHUD adv={adv} />
+                </div>
+            </div>
+            <div className="grow">
+                <AdversarySheetHeader adv={adv} />
+                <Description adv={adv} />
+                <StatBlock adv={adv} />
+            </div>
+        </div>
+    )
+}
+
+const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
+    const headerStyle = "text-xs font-paradigm"
+    const hp = adv.health.current
+    const updateHp = useCallback((auxClick: boolean) => {
+        updateDocument(adv.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
+    }, [hp])
+    return (
+        <div className="text-center space-y-4 border border-solid border-transparent border-t-section-header-fill">
+            {/* HIT DICE */}
+            <div className="text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
+                <p className={headerStyle}>{locale.hd}</p>
+                <p className={`text-3xl font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
+                    <EditableTextField
+                        initialValue={adv.hitDice?.toString() ?? '1'}
+                        updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
+                    />
+                </p>
+            </div>
+            
+            {/* HP CURRENT / MAX */}
+            <div className="text-text-primary w-full">
+                <p className={`${headerStyle} ${glowOnHover} cursor-pointer`} onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                    {locale.hp}
+                </p>
+                <div className="flex font-eskapade font-bold w-full justify-center">
+                    <p className={`text-text-hp-current text-3xl ${glowOnHover} cursor-pointer`}>
+                        <EditableTextField initialValue={adv.health.current?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }} />
+                    </p>
+                    <p className="text-text-primary text-5xl font-regular">/</p>
+                    <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                        {adv.health.max}
+                    </p>
+                </div>
+            </div>
+
+            {/* ARMOR RATING & INFO */}
+            <div className="text-text-primary w-full justify-center">
+                <p className={headerStyle}>{locale.armor}</p>
+                <div className="relative w-[52px] h-[52px] ml-auto mr-auto">
+                    <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <div className={`text-4xl text-text-armor font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
+                            <EditableTextField initialValue={adv.armor.rating?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating']}} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="flex w-full justify-center -mt-4">
+                <p className={statLabelStyle}>{locale.as}&nbsp;</p>
+                <p className={`content-center ${glowOnHover} cursor-pointer`}>
+                    <EditableTextField initialValue={adv.armor.as ?? 'Unarmored'} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }} />
+                </p>
+            </div>
         </div>
     )
 }
 
 const AdversarySheetHeader = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div className="flex">
-            <Portrait actor={adv} />
-            <div className="bg-sheet-header-fill font-eskapade grow ml-[123px]">
-                <div className="text-text-header-primary text-2xl font-bold mt-1 ml-2 flex">
-                    <EditableNameField actor={adv.parent} />
-                    <div className="flex ml-auto mr-2 mt-1 text-md">
-                        <span>{locale.hd}&nbsp;</span>
-                        <EditableTextField
-                            initialValue={adv.hitDice?.toString() ?? '1'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
-                        />
-                    </div>
-                </div>
-                <div className="flex text-text-header-secondary ml-2 pb-1">
-                    <span>{`${lang.VGLITE.Sizes[adv.beingSize]} • ${lang.VGLITE.BeingTypes[adv.beingType]}`}</span>
-                    <div className="ml-auto mr-2">
-                        <span className="font-eskapade font-bold text-md">{`${locale.tl} ${adv.threatLevel}`}</span>
-                    </div>
+        <div className="bg-sheet-header-fill font-eskapade p-2">
+            <div className="text-2xl text-text-header-primary font-bold flex">
+                <EditableNameField actor={adv.parent} />
+                <div className="flex ml-auto">
+                    <span className="text-lg">{`${locale.tl} ${adv.threatLevel}`}</span>
                 </div>
             </div>
+            <TraitSelectors adv={adv} />
+        </div>
+    )
+}
+
+const TraitSelectors = ({ adv }: { adv: AdversaryDataModel }) => {
+    return (
+        <div className="flex gap-2 text-text-header-secondary">
+            <DropDown label=''
+                options={createDropdownEntries(lang.VGLITE.Sizes)}
+                parent={adv.parent}
+                updateMechanism={{ updatePath: ['beingSize'] }}
+                value={adv.beingSize}
+            />
+            <DropDown label=''
+                options={createDropdownEntries(lang.VGLITE.BeingTypes)}
+                parent={adv.parent}
+                updateMechanism={{ updatePath: ['beingType'] }}
+                value={adv.beingType}
+            />
         </div>
     )
 }
 
 const Description = ({ adv }: { adv: AdversaryDataModel }) => {
+    const onDescriptionChange = useCallback((descr) => {
+        updateDocument(adv.parent, { 'description': descr })
+    }, [adv])
     return (
-        <div className="ml-[123px] py-1 italic border-2 border-dotted border-transparent border-b-section-header-fill">
-            {adv.description + "A relentless hunter of living air, capable of directly locating any scent that lingers in the winds."}
+        <div className="pb-1 border border-dotted border-transparent border-b-section-header-fill">
+            <div className="h-[72px] p-0.5">
+                <RichTextField
+                    height={72}
+                    defaultValue={adv.description}
+                    onChange={onDescriptionChange}
+                    className="bg-transparent"
+                />
+            </div>
         </div>
     )
 }
 
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div>
+        <div className="p-1">
 
+            {/* ZONE */}
+            <div className="flex text-text-primary">
+                <p className={statLabelStyle}>{locale.zone}&nbsp;</p>
+                <DropDown label=''
+                    options={createDropdownEntries(lang.VGLITE.Zones)}
+                    parent={adv.parent}
+                    updateMechanism={{ updatePath: ['zone'] }}
+                    value={adv.zone}
+                />
+            </div>
+
+            {/* MORALE */}
+            <div className="flex text-text-primary">
+                <p className={statLabelStyle}>{locale.morale}&nbsp;</p>
+                <p className={statValueStyle}>
+                    <EditableTextField initialValue={adv.morale?.toString() ?? '6'} updateProps={{ actor: adv.parent, propertyPath: ['morale'] }} />
+                </p>
+            </div>
+            
         </div>
     )
 }

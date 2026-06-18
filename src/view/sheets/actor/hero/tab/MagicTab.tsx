@@ -1,3 +1,4 @@
+import lang from "../../../../../../public/lang/en.json"
 import { Sparkle, Sparkles } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
@@ -61,7 +62,7 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                 <SkillCard
                     key={getId(sp)}
                     title={sp.parent.name}
-                    subtitles={[['Base dmg', sp.damageType]]}
+                    subtitles={[['Base dmg', lang.VGLITE.DamageTypes[sp.damageType] ?? '-' ]]}
                     description={sp.description}
                 />
             ))

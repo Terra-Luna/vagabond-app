@@ -40,7 +40,7 @@ export const grantSchema = () => {
         count: new fields.NumberField({ ...requiredInteger, initial: 1 }),
         perkOptions: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spellOptions: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
-        trainingOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, options: Object.values(lang.VGLITE.Skills).map(it => it.name) })),
+        trainingOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills) })),
         ignorePrerequisites: new fields.BooleanField({ initial: false })
     }
 }

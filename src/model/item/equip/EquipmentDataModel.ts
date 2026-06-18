@@ -9,7 +9,7 @@ import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
  */
 const baseEquipmentSchema = () => {
     return {
-        category: new fields.StringField({ ...requiredString, options: Object.values(lang.VGLITE.EquipmentCategories) }),
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories) }),
         value: new fields.SchemaField({ ...coinSchema() }),
         slots: new fields.NumberField({ integer: true, min: 0 }),
         quantity: new fields.NumberField({ ...requiredInteger, initial: 1 }),

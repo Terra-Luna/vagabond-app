@@ -3,9 +3,7 @@ import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const spellSchema = () => {
     return {
-        // What flavor of damage does this spell do?
         damageType: new fields.StringField({ ...damageTypeOptions() }),
-        // Does this spell apply a burn effect?
         effectAppliesBurn: new fields.BooleanField({ initial: false }),
         effectBurnCountdown: new fields.StringField({ ...requiredString, initial: '-' }),
     }

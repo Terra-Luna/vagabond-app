@@ -8,8 +8,10 @@ import { SkillCard } from "../../../../component/SkillCard"
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const beingSize = lang.VGLITE.Sizes[hero.ancestry?.beingSize ?? '']
     const beingType = lang.VGLITE.BeingTypes[hero.ancestry?.beingType ?? '']
+    console.log(hero.perks.map(it => it.prerequisites))
+    
     return (
-        <div>
+        <div className="py-1">
             <Header title={lang.VGLITE.HeroSheet.ancestry} />
             <div className="mt-0.5" />
             <SkillCard
@@ -49,7 +51,9 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                 p.prerequisites.map(pr => (
                                     [`${toPascalCase(pr.type!)}`, `${pr.type === 'SPELL' ? pr.spell : (
                                             pr.type === 'TRAINING' ? (
-                                                pr.skillNames.length == 1 ? pr.skillNames[0] : `${pr.skillNames[0]} ${pr.andOr} ${pr.skillNames[1]}`
+                                                pr.skillNames.length == 1 ?
+                                                    `${lang.VGLITE.Skills[pr.skillNames[0]].name}` :
+                                                    `${lang.VGLITE.Skills[pr.skillNames[0]].name} ${pr.andOr} ${lang.VGLITE.Skills[pr.skillNames[1]].name}`
                                             ) : `${pr.stat} +${pr.value}`
                                         )
                                     }`]
