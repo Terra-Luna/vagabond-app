@@ -19,6 +19,13 @@ export default class NpcDataModel extends ActorDataModel<NpcSchema> {
         }
     }
 
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        this.parent.update({ 'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL })
+        this.parent.update({ 'prototypeToken.actorLink': true })
+        this.parent.update({ 'system.health.current': 1 })
+    }
+
     override async prepareBaseData() {
         super.prepareBaseData()
         this.inventory.items = this.parent.items.filter((i: any) => isInventoryItem(i))

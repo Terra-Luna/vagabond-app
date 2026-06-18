@@ -118,7 +118,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
     return (
         <img
-            className={`bg-transparent object-contain h-[178px] w-[120px] ml-1`}
+            className={`bg-transparent object-contain h-[154px] w-[110px]`}
             src={actor.parent.img}
             alt={actor.parent.name}
             onClick={async (event) => {

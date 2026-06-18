@@ -22,27 +22,27 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
         updateDocument(hero.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
     }, [hp])
     return (
-        <div className={`flex grow items-center justify-between mt-1`}>
+        <div className={`flex grow items-center justify-between mt-1 mx-1`}>
             {/* HP CURRENT / MAX */}
-            <div className="relative items-center justify-center w-[96px] h-[96px]">
+            <div className="relative items-center justify-center w-[80px] h-[80px]">
                 <span className="absolute -top-0.5 w-full text-center text-xs text-text-primary pb-1">{lang.VGLITE.HeroSheet.hp}</span>
                 <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
                 <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
-                    <span className={`text-5xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
+                    <span className={`text-4xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
                         <EditableTextField initialValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
                     </span>
                 </div>
-                <div className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[36px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
-                    <span className={`text-2xl text-text-hp-max px-1 ${glowOnHover} cursor-pointer`}>{health.max}</span>
+                <div className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                    <span className={`text-xl text-text-hp-max px-1 ${glowOnHover} cursor-pointer`}>{health.max}</span>
                 </div>
             </div>
             <Divider />
             {/* ARMOR RATING */}
-            <div className="relative items-center justify-center w-[76px] h-[76px]">
+            <div className="relative items-center justify-center w-[60px] h-[60px]">
                 <span className="absolute -top-3 w-full text-center text-xs text-text-primary">{lang.VGLITE.HeroSheet.armor}</span>
                 <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                 <div className="absolute inset-0 flex items-center justify-center">
-                    <span className={`text-5xl text-text-armor font-eskapade font-bold`}>
+                    <span className={`text-3xl text-text-armor font-eskapade font-bold`}>
                         {armor.rating}
                     </span>
                 </div>
@@ -67,7 +67,7 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
             onAuxClick={() => updateFatigue(true)}
         >
             <span className="text-xs">{lang.VGLITE.HeroSheet.fatigue}</span>
-            <span className="font-eskapade font-bold text-5xl">{
+            <span className="font-eskapade font-bold text-4xl">{
                 <div className={trackerLayout + " text-text-fatigue-current"}>
                     <LucideHeartOff size={28} />
                     <span className="min-w-[1ch]">{fatigue}</span>

@@ -20,8 +20,8 @@ export default class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 420,
-            height: 300
+            width: 440,
+            height: 280
         },
         window: {
             resizable: false
@@ -56,11 +56,6 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
         updateDocument(adv.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
     }, [hp])
 
-    const onUpdateHD = useCallback((hd) => {
-        adv.parent.update({ 'system.health.current': calcAdversaryMaxHP(hd, adv.beingSize) })
-        return adv.parent.update({ 'system.hitDice': hd })
-    }, [adv])
-
     return (
         <div className="text-center space-y-4 border border-solid border-transparent border-t-table-border">
             {/* HIT DICE */}
@@ -69,8 +64,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                 <p className={`text-3xl font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
                     <EditableTextField
                         initialValue={adv.hitDice?.toString() ?? '1'}
-                        onSave={onUpdateHD}
-                        //updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
+                        updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
                     />
                 </p>
             </div>
@@ -152,9 +146,9 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
     }, [adv])
     return (
         <div className="pb-1 border border-dotted border-transparent border-b-table-border">
-            <div className="h-[72px] p-0.5">
+            <div className="h-[75px] p-0.5">
                 <RichTextField
-                    height={72}
+                    height={75}
                     defaultValue={adv.description}
                     onChange={onDescriptionChange}
                     className="bg-transparent"
@@ -177,6 +171,12 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                     updateMechanism={{ updatePath: ['zone'] }}
                     value={adv.zone}
                 />
+
+                <p className={statLabelStyle}>{locale.speed}&nbsp;</p>
+                <p className={statValueStyle}>
+                    <EditableTextField initialValue={adv.movement[0]?.speed?.toString() ?? '30'} updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }} />
+                </p>
+
             </div>
 
             {/* MORALE */}

@@ -31,7 +31,7 @@ export const DropDown = ({ label, value, options, updateMechanism, parent }: { l
 const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {
     return <select className={`
         border border-solid border-table-border
-        rounded py-1 text-sm shadow-sm
+        rounded py-0.5 text-sm shadow-sm
         ${props.className}`} {...props} />
 }
 

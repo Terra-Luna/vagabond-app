@@ -1,4 +1,5 @@
 import lang from "../../../public/lang/en.json"
+import { getName } from "../../utils/modelUtil"
 import { fields, requiredString, zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
@@ -7,17 +8,20 @@ const adversarySchema = () => {
     return {
         beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(lang.VGLITE.Sizes) }),
         beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(lang.VGLITE.BeingTypes) }),
-        hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
         description: new fields.HTMLField(),
-        zone: new fields.ArrayField(new fields.StringField({ ...zonePreferences() })),
+        hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
+        zone: new fields.ArrayField(
+            new fields.StringField({ ...zonePreferences() }),
+            { initial: [Object.keys(lang.VGLITE.Zones)[0]] }
+        ),
         movement: new fields.ArrayField(
             new fields.SchemaField({
                 speed: new fields.NumberField({ integer: true, min: 0 }),
                 type: new fields.StringField({
                     choices: ['walk', 'fly', 'cling', 'climb', 'phase', 'swim']
                 })
-            })
+            }), { initial: [{ speed: 30, type: 'walk' }] }
         ),
         morale: new fields.NumberField({ integer: true, min: 2, max: 12 }),
         numberAppearing: new fields.StringField({ initial: '1d4' }),
@@ -42,8 +46,30 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
         }
     }
 
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        console.log(data, options)
+        this.parent.update({ 'prototypeToken.name': data.name })
+    }
+
+    override async _onUpdate(changed, options, userId) {
+        super._onUpdate(changed, options, userId)
+        if (changed.name) {
+            this.parent.update({ 'prototypeToken.name': changed.name })
+        }
+        if (changed?.system?.hitDice || changed?.system?.beingSize) {
+            this.parent.update({
+                'system.health.current': calcAdversaryMaxHP(
+                    changed.system.hitDice ?? this.hitDice!,
+                    changed.system.beingSize ?? this.beingSize
+                )
+            })
+        }
+    }
+
     override async prepareBaseData() {
         super.prepareBaseData()
+        this.parent.prototypeToken.name = getName(this)
         this.health.max = calcAdversaryMaxHP(this.hitDice ?? 1, this.beingSize)
         this.threatLevel = setThreatLevel(this)
     }
