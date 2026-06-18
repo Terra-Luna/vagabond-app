@@ -95,10 +95,10 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                             <EditableTextField initialValue={adv.armor.rating?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating']}} />
                         </div>
                     </div>
+                    <p className={`absolute bottom-0 -right-1.5 ${statLabelStyle}`}>{locale.as}</p>
                 </div>
             </div>
             <div className="flex w-full justify-center -mt-4">
-                <p className={statLabelStyle}>{locale.as}&nbsp;</p>
                 <p className={`content-center ${glowOnHover} cursor-pointer`}>
                     <EditableTextField initialValue={adv.armor.as ?? 'Unarmored'} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }} />
                 </p>

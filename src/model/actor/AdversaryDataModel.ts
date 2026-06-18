@@ -11,10 +11,7 @@ const adversarySchema = () => {
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
         description: new fields.HTMLField(),
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
-        zone: new fields.ArrayField(
-            new fields.StringField({ ...zonePreferences() }),
-            { initial: [Object.keys(lang.VGLITE.Zones)[0]] }
-        ),
+        zone: new fields.StringField({ ...zonePreferences() }),
         movement: new fields.ArrayField(
             new fields.SchemaField({
                 speed: new fields.NumberField({ integer: true, min: 0 }),
