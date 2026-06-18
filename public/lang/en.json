@@ -153,12 +153,20 @@
         "description": ""
       }
     },
+    "Movement": {
+      "walk": "Walk",
+      "fly": "Fly",
+      "cling": "Cling",
+      "climb": "Climb",
+      "phase": "Phase",
+      "swim": "Swim"
+    },
     "BeingTypes": {
       "humanlike": "Humanlike",
       "fae": "Fae",
       "cryptid": "Cryptid",
       "artificial": "Artificial",
-      "beasts": "Beasts",
+      "beast": "Beast",
       "outers": "Outers",
       "primordial": "Primordial",
       "undead": "Undead",

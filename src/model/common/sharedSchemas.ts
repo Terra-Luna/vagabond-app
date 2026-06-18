@@ -40,6 +40,14 @@ export const zonePreferences = () => {
     }
 }
 
+export const movementTypes = () => {
+    const moveTypes = Object.keys(locale.VGLITE.Movement)
+    return {
+        choices: moveTypes,
+        initial: moveTypes[0]
+    }
+}
+
 export const damageTypeOptions = () => {
     const damageTypes = Object.keys(locale.VGLITE.DamageTypes)
     return {

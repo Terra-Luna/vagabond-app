@@ -1,6 +1,6 @@
 import lang from "../../../public/lang/en.json"
 import { getName } from "../../utils/modelUtil"
-import { fields, requiredString, zonePreferences } from "../common/sharedSchemas"
+import { fields, movementTypes, requiredString, zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
 
@@ -12,14 +12,10 @@ const adversarySchema = () => {
         description: new fields.HTMLField(),
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         zone: new fields.StringField({ ...zonePreferences() }),
-        movement: new fields.ArrayField(
-            new fields.SchemaField({
-                speed: new fields.NumberField({ integer: true, min: 0 }),
-                type: new fields.StringField({
-                    choices: ['walk', 'fly', 'cling', 'climb', 'phase', 'swim']
-                })
-            }), { initial: [{ speed: 30, type: 'walk' }] }
-        ),
+        movement: new fields.SchemaField({
+            speed: new fields.NumberField({ integer: true, min: 0 }),
+            type: new fields.StringField({ ...movementTypes() })
+        }),
         morale: new fields.NumberField({ integer: true, min: 2, max: 12 }),
         numberAppearing: new fields.StringField({ initial: '1d4' }),
         actions: new fields.ArrayField(new fields.SchemaField({ ...adversaryActionSchema() })),

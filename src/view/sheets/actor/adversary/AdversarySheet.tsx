@@ -13,7 +13,7 @@ import { glowOnHover } from "../../VgLiteSheet"
 import { getId } from "../../../../utils/modelUtil"
 
 const locale = lang.VGLITE.AdversarySheet
-const statLabelStyle = `text-sm font-paradigm content-center`
+const statLabelStyle = `text-sm font-paradigm font-regular content-center`
 const statValueStyle = `text-xl font-eskapade font-bold content-center ${glowOnHover} cursor-pointer`
 
 export default class AdversarySheet extends VgLiteActorSheet {
@@ -123,7 +123,7 @@ const AdversarySheetHeader = ({ adv }: { adv: AdversaryDataModel }) => {
 
 const TraitSelectors = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div className="flex gap-2 text-text-header-secondary">
+        <div className="flex gap-2 text-text-header-secondary mt-1">
             <DropDown label=''
                 options={createDropdownEntries(lang.VGLITE.Sizes)}
                 parent={adv.parent}
@@ -162,8 +162,8 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
         <div className="p-1">
 
-            {/* ZONE */}
-            <div className="flex text-text-primary">
+            {/* ROW 1: ZONE & SPEED */}
+            <div className="flex text-text-primary content-center">
                 <p className={statLabelStyle}>{locale.zone}&nbsp;</p>
                 <DropDown label=''
                     options={createDropdownEntries(lang.VGLITE.Zones)}
@@ -173,10 +173,17 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                 />
 
                 <p className={statLabelStyle}>{locale.speed}&nbsp;</p>
-                <p className={statValueStyle}>
-                    <EditableTextField initialValue={adv.movement[0]?.speed?.toString() ?? '30'} updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }} />
+                <p className={`flex ${statValueStyle}`}>
+                    <EditableTextField initialValue={adv.movement?.speed?.toString() ?? '30'} updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }} />
+                    <div className={statLabelStyle}>
+                        <DropDown label=''
+                            options={createDropdownEntries(lang.VGLITE.Movement)}
+                            parent={adv.parent}
+                            updateMechanism={{ updatePath: ['movement', 'type'] }}
+                            value={adv.movement.type}
+                        />
+                    </div>
                 </p>
-
             </div>
 
             {/* MORALE */}
