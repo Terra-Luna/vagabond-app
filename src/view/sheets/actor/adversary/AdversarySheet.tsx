@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import lang from "../../../../../public/lang/en.json"
-import AdversaryDataModel from "../../../../model/actor/AdversaryDataModel"
+import AdversaryDataModel, { calcAdversaryMaxHP } from "../../../../model/actor/AdversaryDataModel"
 import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
 import { Portrait } from "../hero/HeroSheet"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
@@ -10,6 +10,7 @@ import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { DropDown } from "../../../component/Dropdown"
 import { Shield } from "lucide-react"
 import { glowOnHover } from "../../VgLiteSheet"
+import { getId } from "../../../../utils/modelUtil"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm font-paradigm content-center`
@@ -32,7 +33,7 @@ const AdversarySheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<Ad
     const adv = actor.system
     return (
         <div className="flex grow">
-            <div className="flex flex-col border border-solid border-transparent border-r-section-header-fill">
+            <div className="flex flex-col border border-solid border-transparent border-r-table-border">
                 <Portrait actor={adv} />
                 <div className="flex flex-col grow">
                     <HPArmorHUD adv={adv} />
@@ -50,25 +51,33 @@ const AdversarySheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<Ad
 const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     const headerStyle = "text-xs font-paradigm"
     const hp = adv.health.current
-    const updateHp = useCallback((auxClick: boolean) => {
+
+    const incrementHP = useCallback((auxClick: boolean) => {
         updateDocument(adv.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
     }, [hp])
+
+    const onUpdateHD = useCallback((hd) => {
+        adv.parent.update({ 'system.health.current': calcAdversaryMaxHP(hd, adv.beingSize) })
+        return adv.parent.update({ 'system.hitDice': hd })
+    }, [adv])
+
     return (
-        <div className="text-center space-y-4 border border-solid border-transparent border-t-section-header-fill">
+        <div className="text-center space-y-4 border border-solid border-transparent border-t-table-border">
             {/* HIT DICE */}
             <div className="text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
                 <p className={headerStyle}>{locale.hd}</p>
                 <p className={`text-3xl font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
                     <EditableTextField
                         initialValue={adv.hitDice?.toString() ?? '1'}
-                        updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
+                        onSave={onUpdateHD}
+                        //updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
                     />
                 </p>
             </div>
             
             {/* HP CURRENT / MAX */}
             <div className="text-text-primary w-full">
-                <p className={`${headerStyle} ${glowOnHover} cursor-pointer`} onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                <p className={`${headerStyle} ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                     {locale.hp}
                 </p>
                 <div className="flex font-eskapade font-bold w-full justify-center">
@@ -76,7 +85,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                         <EditableTextField initialValue={adv.health.current?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }} />
                     </p>
                     <p className="text-text-primary text-5xl font-regular">/</p>
-                    <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                    <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                         {adv.health.max}
                     </p>
                 </div>
@@ -142,7 +151,7 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
         updateDocument(adv.parent, { 'description': descr })
     }, [adv])
     return (
-        <div className="pb-1 border border-dotted border-transparent border-b-section-header-fill">
+        <div className="pb-1 border border-dotted border-transparent border-b-table-border">
             <div className="h-[72px] p-0.5">
                 <RichTextField
                     height={72}

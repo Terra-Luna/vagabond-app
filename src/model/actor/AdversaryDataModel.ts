@@ -44,14 +44,14 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
 
     override async prepareBaseData() {
         super.prepareBaseData()
-        this.health.max = calcAdversaryMaxHP(this)
+        this.health.max = calcAdversaryMaxHP(this.hitDice ?? 1, this.beingSize)
         this.threatLevel = setThreatLevel(this)
     }
 
 }
 
-export const calcAdversaryMaxHP = (adv: AdversaryDataModel): number => {
-    return adv.beingSize?.toUpperCase() === "SMALL" ? adv.hitDice ?? 1 : Math.floor(adv.hitDice! * 4.5)
+export const calcAdversaryMaxHP = (hitDice: number, size: string): number => {
+    return size.toUpperCase() === "SMALL" ? hitDice ?? 1 : Math.floor(hitDice! * 4.5)
 }
 
 /**
