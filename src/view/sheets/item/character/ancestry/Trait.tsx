@@ -9,7 +9,7 @@ import { DropDown } from "../../../../component/Dropdown"
 import AncestryDataModel from "../../../../../model/item/character/AncestryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { useCallback, useEffect } from "react"
-import { createDropdownEntries, createStatDropdownEntryies } from "../../../../../utils/localeUtils"
+import { createDropdownEntries, createStatDropdownEntries } from "../../../../../utils/localeUtils"
 
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
