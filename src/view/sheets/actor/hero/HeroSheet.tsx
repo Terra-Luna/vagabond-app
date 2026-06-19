@@ -135,9 +135,25 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
                             src: actor.parent.img,
                             uuid: actor.parent.uuid,
                             window: { title: actor.parent.name }
-                    }
+                        }
                     ).render(true)
                 }
+            }}
+            onAuxClick={(event) => {
+                new foundry.applications.apps.FilePicker({
+                    type: "image",
+                    current: actor.parent.img,
+                    callback: async (path) => {
+                        await actor.parent.update({ img: path })
+                        await actor.parent.update({ 'prototypeToken.texture.src': path })
+                        await actor.parent.update({ 'prototypeToken.texture.scaleX': 1 })
+                        await actor.parent.update({ 'prototypeToken.texture.scaleY': 1 })
+                        await actor.parent.update({ 'prototypeToken.ring.enabled': 'false' })
+                        await actor.parent.update({ 'prototypeToken.ring.subject.scale': 1 })
+                        await actor.parent.update({ 'prototypeToken.ring.subject.texture': '' })
+                        console.log("Portrait updated:", actor, path)
+                    }
+                }).render()
             }}
         />
     )
