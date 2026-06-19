@@ -148,8 +148,6 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
                         await actor.parent.update({ 'prototypeToken.texture.src': path })
                         await actor.parent.update({ 'prototypeToken.texture.scaleX': 1 })
                         await actor.parent.update({ 'prototypeToken.texture.scaleY': 1 })
-                        await actor.parent.update({ 'prototypeToken.ring.enabled': 'false' })
-                        await actor.parent.update({ 'prototypeToken.ring.subject.scale': 1 })
                         await actor.parent.update({ 'prototypeToken.ring.subject.texture': '' })
                         console.log("Portrait updated:", actor, path)
                     }
