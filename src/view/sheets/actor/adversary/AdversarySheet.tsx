@@ -162,7 +162,7 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
 
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div className="p-1 ml-2">
+        <div className="p-1 mx-2">
             <div className="grid grid-flow-row grid-cols-2 grid-rows-4 text-text-primary">
                 
                 {/* ZONE */}
@@ -179,7 +179,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                 </div>
 
                 {/* SPEED */}
-                <div className="flex items-center">
+                <div className="flex items-center justify-end">
                     <p className={statLabelStyle}>{locale.speed}&nbsp;</p>
                     <div className="flex space-x-1">
                         <p className={`flex space-x-1 ${statValueStyle}`}>
@@ -211,7 +211,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                 </div>
 
                 {/* NUBMER APPEARING */}
-                <div className="flex items-center">
+                <div className="flex items-center justify-end">
                     <p className={statLabelStyle}>{locale.appearing}&nbsp;</p>
                     <p className={statValueStyle}>
                         <EditableTextField
@@ -234,7 +234,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
 
                 {/* SENSES */}
                 <div>
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-end">
                         <p className={statLabelStyle}>{locale.senses}&nbsp;</p>
                         <p className={statValueStyle}>+</p>
                     </div>
@@ -256,7 +256,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
 
                 {/* STATUS IMMUNITIES */}
                 <div>
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-end">
                         <p className={statLabelStyle}>{locale.status_immunities}&nbsp;</p>
                         <p className={statValueStyle}>+</p>
                     </div>
