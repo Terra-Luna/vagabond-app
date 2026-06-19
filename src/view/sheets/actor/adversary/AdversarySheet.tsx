@@ -1,16 +1,17 @@
 import { useCallback } from "react"
 import lang from "../../../../../public/lang/en.json"
-import AdversaryDataModel, { calcAdversaryMaxHP } from "../../../../model/actor/AdversaryDataModel"
+import AdversaryDataModel from "../../../../model/actor/AdversaryDataModel"
 import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
 import { Portrait } from "../hero/HeroSheet"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
-import { updateDocument } from "../../../../utils/documentUtils"
+import { getDocumentAtPath, updateDocument } from "../../../../utils/documentUtils"
 import { RichTextField } from "../../../component/RichTextField"
 import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { DropDown } from "../../../component/Dropdown"
-import { Shield } from "lucide-react"
+import { Shield, SquarePen } from "lucide-react"
 import { glowOnHover } from "../../VgLiteSheet"
 import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
+import { useOptionsSelectionMenu } from "../../../component/OptionsSelectionMenu"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
@@ -163,7 +164,7 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
         <div className="p-1 mx-2">
-            <div className="grid grid-flow-row grid-cols-2 grid-rows-4 text-text-primary">
+            <div className="grid grid-flow-row grid-cols-2 grid-rows-4 gap-y-2 text-text-primary">
                 
                 {/* ZONE */}
                 <div className="flex items-center">
@@ -221,49 +222,81 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                     </p>
                 </div>
 
-                {/* DAMAGE WEAKNESSES */}
-                <div>
-                    <div className="flex items-center">
-                        <p className={statLabelStyle}>{locale.weak}&nbsp;</p>
-                        <p className={statValueStyle}>+</p>
-                    </div>
-                    <div className="flex space-x-1">
-                        { adv.dmgWeaknesses.map(it => ( <DamageTypeIcon dmgType={it!} />)) }
-                    </div>
-                </div>
+                <SelectableDamageTypes adv={adv} label={locale.weak} path={['dmgWeaknesses']} />
+                <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
+                <SelectableDamageTypes adv={adv} label={locale.immune} path={['dmgImmunities']} />
+                <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
 
-                {/* SENSES */}
-                <div>
-                    <div className="flex items-center justify-end">
-                        <p className={statLabelStyle}>{locale.senses}&nbsp;</p>
-                        <p className={statValueStyle}>+</p>
-                    </div>
-                    <div className="flex space-x-1">
-                        {adv.senses.map(it => (<p>{it}</p>)) }
-                    </div>
-                </div>
+            </div>
+        </div>
+    )
+}
 
-                {/* DAMAGE IMMUNITIES */}
-                <div>
-                    <div className="flex items-center">
-                        <p className={statLabelStyle}>{locale.immune}&nbsp;</p>
-                        <p className={statValueStyle}>+</p>
-                    </div>
-                    <div className="flex space-x-1">
-                        { adv.dmgImmunities.map(it => (<DamageTypeIcon dmgType={it!} />)) }
-                    </div>
-                </div>
+const SelectableDamageTypes = (
+    { adv, label, path }: {
+        adv: AdversaryDataModel,
+        label: string,
+        path: string[]
+    }
+) => {
+    const field = getDocumentAtPath(adv.parent, path)
+    const options = Object.keys(lang.VGLITE.DamageTypes).filter(k => k != 'none').map(k => (
+        { key: k, value: lang.VGLITE.DamageTypes[k], isSelected: field.indexOf(k) > -1 }
+    ))
+    const { menuVisible, showMenu, menu } = useOptionsSelectionMenu()
+    const handleOptionsMenu = (event: any) => {
+        showMenu(event, adv.parent, path, options)
+    }
+    return (
+        <div>
+            <div className="flex items-center">
+                <p className={statLabelStyle}>{label}&nbsp;</p>
+                <SquarePen size={14} className={statValueStyle} onClick={(e) => handleOptionsMenu(e)} />
+                { menuVisible ? menu : <></> }
+            </div>
+            <div className="flex space-x-1">
+                {
+                    field.map((it: any) => (
+                        <div key={it} className="content-center">
+                            <DamageTypeIcon dmgType={it} />
+                        </div>
+                    ))
+                }
+            </div>
+        </div>
+    )
+}
 
-                {/* STATUS IMMUNITIES */}
-                <div>
-                    <div className="flex items-center justify-end">
-                        <p className={statLabelStyle}>{locale.status_immunities}&nbsp;</p>
-                        <p className={statValueStyle}>+</p>
-                    </div>
-                    <div className="flex space-x-1">
-                        {adv.statusImmunities.map(it => (<p>{it}</p>)) }
-                    </div>
-                </div>
+const SelectableTextField = (
+    { adv, label, path, localeObj }: {
+        adv: AdversaryDataModel,
+        label: string,
+        path: string[],
+        localeObj: any
+    }
+) => {
+    const field = getDocumentAtPath(adv.parent, path)
+    const { menuVisible, showMenu, menu } = useOptionsSelectionMenu()
+    const handleOptionsMenu = (event: any) => {
+        showMenu(
+            event, adv.parent, path, Object.keys(localeObj).map(k => (
+                { key: k, value: localeObj[k].name, isSelected: field.indexOf(k) > -1 }
+            ))
+        )
+    }
+    return (
+        <div>
+            <div className="flex items-center justify-end">
+                <p className={statLabelStyle}>{label}&nbsp;</p>
+                <SquarePen size={14} className={statValueStyle} onClick={(e) => handleOptionsMenu(e)} />
+                { menuVisible ? menu : <></> }
+            </div>
+            <div className="flex space-x-1 justify-end">
+                {
+                    field.map((it: any) => (
+                        <div key={it} className="italic">{localeObj[it].name}</div>
+                    ))
+                }
             </div>
         </div>
     )

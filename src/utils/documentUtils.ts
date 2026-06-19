@@ -24,11 +24,10 @@ export const updateDocumentAtPath = async (actor: { system: any, update: any }, 
 }
 
 export const getDocumentAtPath = (doc: { system: any }, path: string[]) => {
-    let currentLevel = doc.system
+    let currentNode = doc.system
     for (const nextStep of path) {
-        currentLevel = currentLevel[nextStep]
-        if (currentLevel == null) return currentLevel
+        currentNode = currentNode[nextStep]
+        if (currentNode == null) return currentNode
     }
-
-    return currentLevel
+    return currentNode
 }

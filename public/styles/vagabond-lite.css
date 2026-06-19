@@ -66,10 +66,13 @@
   --color-cold: ;
   --color-zap: ;
   --color-acid: ;
+  --color-poison: ;
   --color-necrotic: ;
   --color-psychic: ;
   --color-healing: ;
   --color-physical: ;
+  --color-white: ;
+  --color-black: ;
 }
 
 .light {
@@ -134,12 +137,14 @@
   --color-magical: #155dfc;
   --color-fire: #DE671E;
   --color-cold: #00D0FF;
-  --color-zap: #FFFF56;
+  --color-shock: #FFFF56;
   --color-acid: #80E31C;
+  --color-poison: #3b680d;
   --color-necrotic: #009800;
   --color-psychic: #E938DD;
   --color-healing: #00FF00;
-  --color-physical: #e7e8f0;
+  --color-physical: #080707;
+  --color-black: #000000;
 }
 
 .dark {
@@ -203,12 +208,15 @@
   --color-magical: #155dfc;
   --color-fire: #DE671E;
   --color-cold: #00D0FF;
-  --color-zap: #FFFF56;
+  --color-shock: #FFFF56;
   --color-acid: #80E31C;
+  --color-poison: #3b680d;
   --color-necrotic: #009800;
   --color-psychic: #E938DD;
   --color-healing: #00FF00;
   --color-physical: #e7e8f0;
+  --color-white: #ffffff;
+  --color-black: #000000;
 }
 
 .react-tabs {
