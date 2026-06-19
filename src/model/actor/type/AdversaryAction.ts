@@ -13,7 +13,10 @@ export const adversaryActionSchema = () => {
         area: new fields.StringField({ required: false }),
         save: new fields.StringField({ required: false }),
         effect: new fields.StringField({ required: false }),
-        usage: new fields.SchemaField({ uses: new fields.StringField({ required: false }), requiresFocus: new fields.BooleanField({ initial: false }) })
+        usage: new fields.SchemaField({
+            uses: new fields.StringField({ required: false }),
+            requiresFocus: new fields.BooleanField({ initial: false })
+        })
     }
 }
 

@@ -48,7 +48,7 @@ export const RichTextField = ({
 
     const Placeholder = () => {
         return (
-            <div className="absolute p-1 text-sm text-text-primary italic">Enter text...</div>
+            <div className="absolute p-1 text-sm text-text-primary italic" style={{pointerEvents: 'none'}}>Enter text...</div>
         )
     }
 

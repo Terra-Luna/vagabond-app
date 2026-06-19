@@ -51,8 +51,14 @@ export const movementTypes = () => {
 export const damageTypeOptions = () => {
     const damageTypes = Object.keys(locale.VGLITE.DamageTypes)
     return {
-        choices: damageTypes,
-        initial: damageTypes[0]
+        choices: damageTypes
+    }
+}
+
+export const statusEffOptions = () => {
+    const statusFx = Object.keys(locale.VGLITE.StatusConditions)
+    return {
+        choices: statusFx
     }
 }
 

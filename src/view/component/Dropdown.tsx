@@ -16,7 +16,7 @@ export const DropDown = ({ label, value, options, updateMechanism, parent }: { l
     }, [parent, updateMechanism])
 
     return (
-        <div className="">
+        <div>
             <LabelledField label={label} >
                 <div className="vglite-dropdown-select">
                     <Select value={value} onChange={onChange}>
@@ -30,9 +30,11 @@ export const DropDown = ({ label, value, options, updateMechanism, parent }: { l
 
 const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {
     return <select className={`
+        font-eskapade font-bold
         border border-solid border-table-border
         rounded py-0.5 text-sm shadow-sm
-        ${props.className}`} {...props} />
+        ${props.className}
+    `} {...props} />
 }
 
 const Option = (props: React.DetailedHTMLProps<React.OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>) => {

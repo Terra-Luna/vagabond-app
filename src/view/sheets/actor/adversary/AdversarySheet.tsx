@@ -10,11 +10,11 @@ import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { DropDown } from "../../../component/Dropdown"
 import { Shield } from "lucide-react"
 import { glowOnHover } from "../../VgLiteSheet"
-import { getId } from "../../../../utils/modelUtil"
+import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
 
 const locale = lang.VGLITE.AdversarySheet
-const statLabelStyle = `text-sm font-paradigm font-regular content-center`
-const statValueStyle = `text-xl font-eskapade font-bold content-center ${glowOnHover} cursor-pointer`
+const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
+const statValueStyle = `text-xl text-stat-block-fill font-eskapade font-bold content-center ${glowOnHover} cursor-pointer`
 
 export default class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
@@ -32,7 +32,7 @@ export default class AdversarySheet extends VgLiteActorSheet {
 const AdversarySheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<AdversaryDataModel>, sheet: VgLiteActorSheet }) => {
     const adv = actor.system
     return (
-        <div className="flex grow">
+        <div className="@container flex grow">
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
                 <Portrait actor={adv} />
                 <div className="flex flex-col grow">
@@ -43,6 +43,8 @@ const AdversarySheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<Ad
                 <AdversarySheetHeader adv={adv} />
                 <Description adv={adv} />
                 <StatBlock adv={adv} />
+                <Actions adv={adv} />
+                <Abilities adv={adv} />
             </div>
         </div>
     )
@@ -57,7 +59,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     }, [hp])
 
     return (
-        <div className="text-center space-y-4 border border-solid border-transparent border-t-table-border">
+        <div className="text-center space-y-4">
             {/* HIT DICE */}
             <div className="text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
                 <p className={headerStyle}>{locale.hd}</p>
@@ -78,7 +80,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                     <p className={`text-text-hp-current text-3xl ${glowOnHover} cursor-pointer`}>
                         <EditableTextField initialValue={adv.health.current?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }} />
                     </p>
-                    <p className="text-text-primary text-5xl font-regular">/</p>
+                    <p className="text-text-primary text-5xl font-normal">/</p>
                     <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                         {adv.health.max}
                     </p>
@@ -146,9 +148,9 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
     }, [adv])
     return (
         <div className="pb-1 border border-dotted border-transparent border-b-table-border">
-            <div className="h-[75px] p-0.5">
+            <div className="h-[54px] p-0.5">
                 <RichTextField
-                    height={75}
+                    height={54}
                     defaultValue={adv.description}
                     onChange={onDescriptionChange}
                     className="bg-transparent"
@@ -160,40 +162,125 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
 
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div className="p-1">
-
-            {/* ROW 1: ZONE & SPEED */}
-            <div className="flex text-text-primary content-center">
-                <p className={statLabelStyle}>{locale.zone}&nbsp;</p>
-                <DropDown label=''
-                    options={createDropdownEntries(lang.VGLITE.Zones)}
-                    parent={adv.parent}
-                    updateMechanism={{ updatePath: ['zone'] }}
-                    value={adv.zone}
-                />
-
-                <p className={statLabelStyle}>{locale.speed}&nbsp;</p>
-                <p className={`flex ${statValueStyle}`}>
-                    <EditableTextField initialValue={adv.movement?.speed?.toString() ?? '30'} updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }} />
-                    <div className={statLabelStyle}>
+        <div className="p-1 ml-2">
+            <div className="grid grid-flow-row grid-cols-2 grid-rows-4 text-text-primary">
+                
+                {/* ZONE */}
+                <div className="flex items-center">
+                    <p className={statLabelStyle}>{locale.zone}&nbsp;</p>
+                    <div className="text-stat-block-fill">
                         <DropDown label=''
-                            options={createDropdownEntries(lang.VGLITE.Movement)}
+                            options={createDropdownEntries(lang.VGLITE.Zones)}
                             parent={adv.parent}
-                            updateMechanism={{ updatePath: ['movement', 'type'] }}
-                            value={adv.movement.type}
+                            updateMechanism={{ updatePath: ['zone'] }}
+                            value={adv.zone}
                         />
                     </div>
-                </p>
-            </div>
+                </div>
 
-            {/* MORALE */}
-            <div className="flex text-text-primary">
-                <p className={statLabelStyle}>{locale.morale}&nbsp;</p>
-                <p className={statValueStyle}>
-                    <EditableTextField initialValue={adv.morale?.toString() ?? '6'} updateProps={{ actor: adv.parent, propertyPath: ['morale'] }} />
-                </p>
+                {/* SPEED */}
+                <div className="flex items-center">
+                    <p className={statLabelStyle}>{locale.speed}&nbsp;</p>
+                    <div className="flex space-x-1">
+                        <p className={`flex space-x-1 ${statValueStyle}`}>
+                            <EditableTextField
+                                initialValue={adv.movement?.speed?.toString() ?? '30'}
+                                updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
+                            />
+                        </p>
+                        <div className="text-stat-block-fill">
+                            <DropDown label=''
+                                options={createDropdownEntries(lang.VGLITE.Movement)}
+                                parent={adv.parent}
+                                updateMechanism={{ updatePath: ['movement', 'type'] }}
+                                value={adv.movement.type}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* MORALE */}
+                <div className="flex items-center">
+                    <p className={statLabelStyle}>{locale.morale}&nbsp;</p>
+                    <p className={statValueStyle}>
+                        <EditableTextField
+                            initialValue={adv.morale?.toString() ?? '6'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
+                        />
+                    </p>
+                </div>
+
+                {/* NUBMER APPEARING */}
+                <div className="flex items-center">
+                    <p className={statLabelStyle}>{locale.appearing}&nbsp;</p>
+                    <p className={statValueStyle}>
+                        <EditableTextField
+                            initialValue={adv.numberAppearing?.toString() ?? '1'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
+                        />
+                    </p>
+                </div>
+
+                {/* DAMAGE WEAKNESSES */}
+                <div>
+                    <div className="flex items-center">
+                        <p className={statLabelStyle}>{locale.weak}&nbsp;</p>
+                        <p className={statValueStyle}>+</p>
+                    </div>
+                    <div className="flex space-x-1">
+                        { adv.dmgWeaknesses.map(it => ( <DamageTypeIcon dmgType={it!} />)) }
+                    </div>
+                </div>
+
+                {/* SENSES */}
+                <div>
+                    <div className="flex items-center">
+                        <p className={statLabelStyle}>{locale.senses}&nbsp;</p>
+                        <p className={statValueStyle}>+</p>
+                    </div>
+                    <div className="flex space-x-1">
+                        {adv.senses.map(it => (<p>{it}</p>)) }
+                    </div>
+                </div>
+
+                {/* DAMAGE IMMUNITIES */}
+                <div>
+                    <div className="flex items-center">
+                        <p className={statLabelStyle}>{locale.immune}&nbsp;</p>
+                        <p className={statValueStyle}>+</p>
+                    </div>
+                    <div className="flex space-x-1">
+                        { adv.dmgImmunities.map(it => (<DamageTypeIcon dmgType={it!} />)) }
+                    </div>
+                </div>
+
+                {/* STATUS IMMUNITIES */}
+                <div>
+                    <div className="flex items-center">
+                        <p className={statLabelStyle}>{locale.status_immunities}&nbsp;</p>
+                        <p className={statValueStyle}>+</p>
+                    </div>
+                    <div className="flex space-x-1">
+                        {adv.statusImmunities.map(it => (<p>{it}</p>)) }
+                    </div>
+                </div>
             </div>
-            
+        </div>
+    )
+}
+
+const Actions = ({ adv }: { adv: AdversaryDataModel }) => {
+    return (
+        <div className="ml-2">
+            <p className="font-eskapade font-bold text-xl">{locale.actions}</p>
+        </div>
+    )
+}
+
+const Abilities = ({ adv }: { adv: AdversaryDataModel }) => {
+    return (
+        <div className="ml-2">
+            <p className="font-eskapade font-bold text-xl">{locale.abilities}</p>
         </div>
     )
 }

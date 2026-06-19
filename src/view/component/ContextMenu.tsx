@@ -6,7 +6,7 @@ import EquipmentDataModel, { EquipmentSchema, setEquipState } from '../../model/
 import { useDimensions } from '../context/DimensionsContext'
 import { ItemDivider } from './Header'
 import WeaponDataModel, { equipWeapon } from '../../model/item/equip/WeaponDataModel'
-import { rollDamage, rollWeaponDamage } from '../../combat/dice-rolls'
+import { rollWeaponDamage } from '../../combat/dice-rolls'
 import ArmorDataModel, { equipArmor } from '../../model/item/equip/ArmorDataModel'
 
 /**

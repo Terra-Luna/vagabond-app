@@ -1,43 +1,46 @@
+import lang from "../../../public/lang/en.json"
 import { Brain, Cross, Droplets, Flame, Skull, Snowflake, Wand, Zap } from "lucide-react"
 
-export const DamageTypeIcon = ({ dmgType }: { dmgType: string }) => {
+export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
+    size = size ? size : 18
+
     switch (dmgType) {
-        case 'physical': {
-            return (<div></div>)
+        case lang.VGLITE.DamageTypes.physical: {
+            return (<img src='icons/svg/combat.svg' height={size} width={size} alt={lang.VGLITE.DamageTypes.physical} />)
         }
-        case 'blunt': {
-            return (<div></div>)
+        case lang.VGLITE.DamageTypes.blunt: {
+            return (<img src='systems/vagabond-lite/assets/icons/dmg/blunt.svg' height={size} width={size} alt={lang.VGLITE.DamageTypes.blunt} />)
         }
-        case 'piercing': {
-            return (<div></div>)
+        case lang.VGLITE.DamageTypes.piercing: {
+            return (<img src='systems/vagabond-lite/assets/icons/dmg/pierce.svg' height={size} width={size} alt={lang.VGLITE.DamageTypes.piercing} />)
         }
-        case 'slashing': {
-            return (<div></div>)
+        case lang.VGLITE.DamageTypes.slashing: {
+            return (<img src='systems/vagabond-lite/assets/icons/dmg/slash.svg' height={size} width={size} alt={lang.VGLITE.DamageTypes.slashing} />)
         }
-        case 'magical': {
-            return (<Wand />)
+        case lang.VGLITE.DamageTypes.magical: {
+            return (<Wand size={size} strokeWidth={1} aria-label='magic' className='text-magical' />)
         }
-        case 'fire': {
-            return (<Flame />)
+        case lang.VGLITE.DamageTypes.fire: {
+            return (<Flame size={18} strokeWidth={1} aria-label='fire' className='text-fire' />)
         }
-        case 'cold': {
-            return (<Snowflake />)
+        case lang.VGLITE.DamageTypes.cold: {
+            return (<Snowflake size={size} strokeWidth={1} aria-label='cold' className='text-cold' />)
         }
-        case 'shock': {
-            return (<Zap /> )
+        case lang.VGLITE.DamageTypes.shock: {
+            return (<Zap size={size} strokeWidth={1} aria-label='shock' className='text-shock' /> )
         }
-        case 'acid': {
-            return (<Droplets /> )
+        case lang.VGLITE.DamageTypes.acid: {
+            return (<Droplets size={size} strokeWidth={1} aria-label='acid' className='text-acid' /> )
         }
-        case 'necrotic': {
-            return (<Skull /> )
+        case lang.VGLITE.DamageTypes.necrotic: {
+            return (<Skull size={size} strokeWidth={1} aria-label='necrotic' className='text-necrotic' /> )
         }
-        case 'psychic': {
-            return (<Brain /> )
+        case lang.VGLITE.DamageTypes.psychic: {
+            return (<Brain size={size} strokeWidth={1} aria-label='psychic' className='text-psychic' /> )
         }
-        case 'healing': {
-            return (<Cross /> )
+        case lang.VGLITE.DamageTypes.healing: {
+            return (<Cross size={size} strokeWidth={1} aria-label='healing' className='text-healing' /> )
         }
     }
-    return <></>
+    return <p>{dmgType}</p>
 }

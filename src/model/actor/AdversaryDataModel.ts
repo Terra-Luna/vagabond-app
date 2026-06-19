@@ -1,6 +1,6 @@
 import lang from "../../../public/lang/en.json"
 import { getName } from "../../utils/modelUtil"
-import { fields, movementTypes, requiredString, zonePreferences } from "../common/sharedSchemas"
+import { damageTypeOptions, fields, movementTypes, requiredString, statusEffOptions, zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
 
@@ -18,6 +18,9 @@ const adversarySchema = () => {
         }),
         morale: new fields.NumberField({ integer: true, min: 2, max: 12 }),
         numberAppearing: new fields.StringField({ initial: '1d4' }),
+        dmgImmunities: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
+        dmgWeaknesses: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
+        statusImmunities: new fields.ArrayField(new fields.StringField({ ...statusEffOptions() })),
         actions: new fields.ArrayField(new fields.SchemaField({ ...adversaryActionSchema() })),
         combo: new fields.SchemaField({ ...adversaryActionComboSchema() }),
         abilities: new fields.ArrayField(
