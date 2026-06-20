@@ -3,7 +3,7 @@ import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { localizeString } from "../../../../utils/localeUtils"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { EditableNameField } from "../../../component/EditableTextField"
-import { Menu } from "lucide-react"
+import { Menu, Trash } from "lucide-react"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
@@ -13,7 +13,7 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
-import { getName } from "../../../../utils/modelUtil"
+import { getId, getName } from "../../../../utils/modelUtil"
 import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider, useStatsDrawerStatus } from "./tab/TopSection"
 import ActorDataModel, { BaseActorSchema } from "../../../../model/actor/ActorDataModel"
 
@@ -116,45 +116,57 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 }
 
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
-    return (
+    const menuId = `portrait_ctx_menu_${getId(actor)}`
+
+    const importFromVgbndApp = async (e) => {
+        const tagalongLink = prompt(
+            'Enter character link from Vagabond Tagalong App',
+            'https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01'
+        )
+        if (tagalongLink != null) {
+            importHero(actor as HeroDataModel, tagalongLink)
+        }
+    }
+
+    const viewImage = (e) => {
+        new foundry.applications.apps.ImagePopout(
+            actor.parent.img, {
+                src: actor.parent.img,
+                uuid: actor.parent.uuid,
+                window: { title: actor.parent.name }
+            }
+        ).render(true)
+    }
+
+    const setImage = (e) => {
+        console.log("Clicked", e)
+        new foundry.applications.apps.FilePicker({
+            type: "image",
+            current: actor.parent.img,
+            callback: async (path) => {
+                await actor.parent.update({ img: path })
+                await actor.parent.update({ 'prototypeToken.texture.src': path })
+                await actor.parent.update({ 'prototypeToken.texture.scaleX': 1 })
+                await actor.parent.update({ 'prototypeToken.texture.scaleY': 1 })
+                await actor.parent.update({ 'prototypeToken.ring.subject.texture': path })
+            }
+        }).render()
+    }
+
+    const removeImage = async (e) => {
+        await actor.parent.update({ img: '' })
+        await actor.parent.update({ 'prototypeToken.texture.src': '' })
+        await actor.parent.update({ 'prototypeToken.ring.enabled': false })
+        await actor.parent.update({ 'prototypeToken.ring.subject.texture': '' })
+    }
+
+    return (<>
         <img
-            className={`bg-transparent object-contain h-[154px] w-[110px]`}
+            className={`bg-transparent object-cover h-[154px] w-[110px]`}
             src={actor.parent.img}
             alt={actor.parent.name}
-            onClick={async (event) => {
-                // TODO: migrate the tagalong import into the hero sheet burger menu.
-                if (actor instanceof HeroDataModel && actor.tagalongId == undefined) {
-                    const tagalongLink = prompt('Enter character link from Vagabond Tagalong App')
-                    if (tagalongLink != null) {
-                        importHero(actor, tagalongLink)
-                    }
-                }
-                else {
-                    new foundry.applications.apps.ImagePopout(
-                        actor.parent.img, {
-                            src: actor.parent.img,
-                            uuid: actor.parent.uuid,
-                            window: { title: actor.parent.name }
-                        }
-                    ).render(true)
-                }
-            }}
-            onAuxClick={(event) => {
-                new foundry.applications.apps.FilePicker({
-                    type: "image",
-                    current: actor.parent.img,
-                    callback: async (path) => {
-                        await actor.parent.update({ img: path })
-                        await actor.parent.update({ 'prototypeToken.texture.src': path })
-                        await actor.parent.update({ 'prototypeToken.texture.scaleX': 1 })
-                        await actor.parent.update({ 'prototypeToken.texture.scaleY': 1 })
-                        await actor.parent.update({ 'prototypeToken.ring.subject.texture': '' })
-                        console.log("Portrait updated:", actor, path)
-                    }
-                }).render()
-            }}
         />
-    )
+    </>)
 }
 
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {

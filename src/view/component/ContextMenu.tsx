@@ -9,8 +9,8 @@ import WeaponDataModel, { equipWeapon } from '../../model/item/equip/WeaponDataM
 import { rollWeaponDamage } from '../../combat/dice-rolls'
 import ArmorDataModel, { equipArmor } from '../../model/item/equip/ArmorDataModel'
 
-export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border border-solid border-table-border"
-export const ctxMenuTextStyle = "font-eskapade font-bold hover:bg-context-menu-hover py-1 px-2"
+export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border border-solid border-table-border z-99 pointer-events-none"
+export const ctxMenuTextStyle = "text-lg font-eskapade font-bold hover:bg-context-menu-hover py-1 px-2 z-99 pointer-events-auto"
 
 /**
  * A reusable context menu!
