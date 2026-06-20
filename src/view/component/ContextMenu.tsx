@@ -9,6 +9,9 @@ import WeaponDataModel, { equipWeapon } from '../../model/item/equip/WeaponDataM
 import { rollWeaponDamage } from '../../combat/dice-rolls'
 import ArmorDataModel, { equipArmor } from '../../model/item/equip/ArmorDataModel'
 
+export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border border-solid border-table-border"
+export const ctxMenuTextStyle = "font-eskapade font-bold hover:bg-context-menu-hover py-1 px-2"
+
 /**
  * A reusable context menu!
  * @param param0
@@ -19,14 +22,14 @@ export const VgLiteContextMenu = ({ options, position }: { options: any, positio
     const y = Number.isNaN(position.y) ? 0 : position.y
     return (
         <div
-            className="bg-context-menu-fill text-context-menu-text border border-solid border-table-border"
+            className={ctxMenuContainerStyle}
             style={{ position: 'absolute', top: y, left: x }}
         >
             <ItemDivider />
             {
                 options.map((option, index) => (
                     <div key={index ?? 0}>
-                        <div className="py-1 px-2 font-eskapade font-bold hover:bg-context-menu-hover" onClick={option.action}>
+                        <div className={ctxMenuTextStyle} onClick={option.action}>
                             {option.label}
                         </div>
                         <ItemDivider />
