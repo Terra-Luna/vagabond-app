@@ -3,7 +3,7 @@ import HeroDataModel from "../../../../model/actor/HeroDataModel"
 import { localizeString } from "../../../../utils/localeUtils"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
 import { EditableNameField } from "../../../component/EditableTextField"
-import { Menu, Trash } from "lucide-react"
+import { Menu } from "lucide-react"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { SpellDelivery, Sphere } from "../../../../combat/spellcasting/SpellDelivery"
@@ -13,9 +13,11 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
-import { getId, getName } from "../../../../utils/modelUtil"
-import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider, useStatsDrawerStatus } from "./tab/TopSection"
+import { getName } from "../../../../utils/modelUtil"
+import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider } from "./tab/TopSection"
 import ActorDataModel, { BaseActorSchema } from "../../../../model/actor/ActorDataModel"
+import { ctxMenuContainerStyle, ctxMenuTextStyle } from "../../../component/ContextMenu"
+import { ControlledMenu, MenuItem } from '@szhsin/react-menu'
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -116,8 +118,6 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 }
 
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
-    const menuId = `portrait_ctx_menu_${getId(actor)}`
-
     const importFromVgbndApp = async (e) => {
         const tagalongLink = prompt(
             'Enter character link from Vagabond Tagalong App',
@@ -127,7 +127,6 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
             importHero(actor as HeroDataModel, tagalongLink)
         }
     }
-
     const viewImage = (e) => {
         new foundry.applications.apps.ImagePopout(
             actor.parent.img, {
@@ -137,8 +136,7 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
             }
         ).render(true)
     }
-
-    const setImage = (e) => {
+    const editImage = (e) => {
         console.log("Clicked", e)
         new foundry.applications.apps.FilePicker({
             type: "image",
@@ -152,7 +150,6 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
             }
         }).render()
     }
-
     const removeImage = async (e) => {
         await actor.parent.update({ img: '' })
         await actor.parent.update({ 'prototypeToken.texture.src': '' })
@@ -160,13 +157,37 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
         await actor.parent.update({ 'prototypeToken.ring.subject.texture': '' })
     }
 
-    return (<>
-        <img
-            className={`bg-transparent object-cover h-[154px] w-[110px]`}
-            src={actor.parent.img}
-            alt={actor.parent.name}
-        />
-    </>)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [menuAnchorPoint, setMenuAnchorPoint] = useState({ x: 0, y: 0 })
+
+    return (
+        <div onContextMenu={(e) => {
+            if (typeof document.hasFocus === 'function' && !document.hasFocus()) return
+            e.stopPropagation()
+            e.preventDefault()
+            setMenuAnchorPoint({ x: e.clientX, y: e.clientY })
+            setIsMenuOpen(true)
+        }}>
+            <img
+                className={`bg-transparent object-cover h-[154px] w-[110px]`}
+                src={actor.parent.img}
+                alt={actor.parent.name}
+            />
+            <ControlledMenu
+                menuClassName={ctxMenuContainerStyle}
+                itemProp=""
+                anchorPoint={menuAnchorPoint}
+                state={isMenuOpen ? 'open' : 'closed'}
+                direction="right"
+                onClose={() => setIsMenuOpen(false)}
+            >
+                <MenuItem className={ctxMenuTextStyle} onClick={importFromVgbndApp}>Import</MenuItem>
+                <MenuItem className={ctxMenuTextStyle} onClick={viewImage}>View</MenuItem>
+                <MenuItem className={ctxMenuTextStyle} onClick={editImage}>Edit</MenuItem>
+                <MenuItem className={ctxMenuTextStyle} onClick={removeImage}>Remove</MenuItem>
+            </ControlledMenu>
+        </div>
+    )
 }
 
 const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {

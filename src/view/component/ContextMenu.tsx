@@ -9,8 +9,8 @@ import WeaponDataModel, { equipWeapon } from '../../model/item/equip/WeaponDataM
 import { rollWeaponDamage } from '../../combat/dice-rolls'
 import ArmorDataModel, { equipArmor } from '../../model/item/equip/ArmorDataModel'
 
-export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border border-solid border-table-border z-99 pointer-events-none"
-export const ctxMenuTextStyle = "text-lg font-eskapade font-bold hover:bg-context-menu-hover py-1 px-2 z-99 pointer-events-auto"
+export const ctxMenuContainerStyle = "shadow-xl bg-context-menu-fill text-context-menu-text border border-solid border-table-border pr-2 z-99"
+export const ctxMenuTextStyle = "text-lg font-eskapade font-bold hover:bg-context-menu-hover px-2 z-99"
 
 /**
  * A reusable context menu!
@@ -47,6 +47,7 @@ export const useContextMenu = () => {
     const [menuVisible, setMenuVisible] = useState(false)
 
     const showMenu = useCallback((e, options) => {
+        if (typeof document.hasFocus === 'function' && !document.hasFocus()) return
         e.stopPropagation()
         e.preventDefault()
         setOptions(options)
