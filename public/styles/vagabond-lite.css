@@ -288,3 +288,15 @@
   margin-left: 4px;
   margin-right: 4px;
 }
+
+.szh-menu {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+.szh-menu__item:hover,
+.szh-menu__item:focus,
+.szh-menu__item--hover {
+  outline: none !important;
+  box-shadow: none !important;
+}
