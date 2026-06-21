@@ -123,6 +123,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             { key: `use_${getId(item)}`, icon: Triangle, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => { useItem(hero, getId(item)) } },
                             { key: `equip_${getId(item)}`, icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => { equipItem(hero, item) } },
                             { key: `ueq_${getId(item)}`, icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUnequip, action: () => { setEquipState(item, false) } },
+                            { key: `view_${getId(item)}`, icon: MessagesSquare, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => { openItemSheet(hero, getId(item)) } },
                             { key: `chat_${getId(item)}`, icon: MessagesSquare, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => { sendItemToChat(hero, item) } },
                             { key: `del_${getId(item)}`, icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => { deleteItems(hero, [getId(item)]) }, isDestructive: true }
                         ])}}

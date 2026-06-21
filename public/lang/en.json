@@ -533,6 +533,7 @@
         "equip": "EQUIP",
         "effects": "EFFECTS",
         "ctxUse": "Use",
+        "ctxView": "View",
         "ctxChat": "Send to chat",
         "ctxEquip": "Equip",
         "ctxUnequip": "Unequip",

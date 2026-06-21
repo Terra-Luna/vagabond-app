@@ -12,14 +12,14 @@ export const ctxMenuDestructiveTextStyle = "text-destructive-action text-lg font
  *
 
 const Component = () => {
-    const { onCtxMenu, Menu } = useContextMenu()
+    const { onCtxMenu, ContextMenu } = useContextMenu()
     return(
-        <div onContenxtMenu={(e) => onCtxMenu(e)}>
-            <div>Right click on me!</div>
-            <Menu menuItems={[
+        <div onContenxtMenu={(e) => onCtxMenu(e, [
                 { key: `someUniqueId`, icon: Sword, label: 'Attack', action: () => someFunction(arg1, arg2) },
                 ...
-            ]} />
+            ])}>
+            <div>Right click on me!</div>
+            <ContextMenu />
         </div>
     )
 }
