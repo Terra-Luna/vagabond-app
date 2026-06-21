@@ -29,8 +29,8 @@ export const OptionsSelectionMenu = ({ actor, label, path, options }: { actor: A
                                 >
                                     {
                                         opt.isSelected ?
-                                            <p className={`font-bold ${glowOnHover}`}>{opt.value}</p> :
-                                            <p className={`font-normal ${glowOnHover}`}>{opt.value}</p>
+                                            <p className={`text-stat-block-fill font-bold ${glowOnHover}`}>{opt.value}</p> :
+                                            <p className={`text-text-primary font-normal ${glowOnHover}`}>{opt.value}</p>
                                     }
                                 </MenuItem>
                             ))

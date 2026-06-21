@@ -89,13 +89,13 @@ export const setThreatLevel = (adv: AdversaryDataModel): number => {
     var b = adv.health.max! / 10
     var c = 0
     if (adv?.combo?.actions?.length > 0) {
-        adv.combo?.actions?.forEach(act => c += Number(act.damage.avg) || 0)
+        adv.combo?.actions?.forEach(act => c += Number(act.damage.avg) ?? 0)
     }
     else {
-        adv.actions?.forEach(act => c += Number(act.damage.avg) || 0)
-        c = c / adv.actions?.length || 0
+        adv.actions?.forEach(act => c += Number(act.damage.avg) ?? 0)
+        c = c / (adv.actions?.length ?? 1)
     }
     c = c / 6
 
-    return Number(((a + b) / 4 + (c || 0)).toFixed(2))
+    return Number(((a + b) / 4 + (c ?? 0)).toFixed(2))
 }
