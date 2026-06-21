@@ -16,7 +16,7 @@ import { importHero } from "../../../../api/tagalong/TagalongImporter"
 import { getName } from "../../../../utils/modelUtil"
 import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider } from "./tab/TopSection"
 import ActorDataModel, { BaseActorSchema } from "../../../../model/actor/ActorDataModel"
-import { useContextMenu } from "../../../component/ContextMenu"
+import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -118,6 +118,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
+    
     const importFromVgbndApp = async () => {
         const tagalongLink = prompt(
             'Enter character link from Vagabond Tagalong App',
@@ -155,20 +156,20 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
         await actor.parent.update({ 'prototypeToken.ring.enabled': false })
         await actor.parent.update({ 'prototypeToken.ring.subject.texture': '' })
     }
+
+    const contextMenuItems: CtxMenuItem[] = []
+    if (actor instanceof HeroDataModel && actor.tagalongId == null) {
+        contextMenuItems.push({ icon: Import, label: 'Import hero', action: () => importFromVgbndApp() })
+    }
+    contextMenuItems.push(
+        { icon: Eye, label: 'View', action: () => viewImage() },
+        { icon: Pencil, label: 'Edit', action: () => editImage() },
+        { icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
+    )
+
     return (
-        <div onContextMenu={
-            (e) => onCtxMenu(e, [
-                { icon: Import, label: 'Import', action: () => importFromVgbndApp() },
-                { icon: Eye, label: 'View', action: () => viewImage() },
-                { icon: Pencil, label: 'Edit', action: () => editImage() },
-                { icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
-            ])
-        }>
-            <img
-                className={`bg-transparent object-cover h-[154px] w-[110px]`}
-                src={actor.parent.img}
-                alt={actor.parent.name}
-            />
+        <div onContextMenu={(e) => onCtxMenu(e, contextMenuItems)}>
+            <img className={`bg-transparent object-cover h-[154px] w-[110px]`} src={actor.parent.img} alt={actor.parent.name} />
             <ContextMenu />
         </div>
     )

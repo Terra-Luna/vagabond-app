@@ -2,7 +2,6 @@ import lang from "../../../../public/lang/en.json"
 import { addCoins as addCoins, coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import { equipArmor } from "./ArmorDataModel"
 
 /**
  * Anything a hero can have in their inventory.

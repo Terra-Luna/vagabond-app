@@ -535,6 +535,7 @@
         "ctxUse": "Use",
         "ctxView": "View",
         "ctxChat": "Send to chat",
+        "ctxGrip": "Change grip",
         "ctxEquip": "Equip",
         "ctxUnequip": "Unequip",
         "ctxDelete": "Delete"

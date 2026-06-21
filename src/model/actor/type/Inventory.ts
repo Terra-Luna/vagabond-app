@@ -1,5 +1,5 @@
 import lang from "../../../../public/lang/en.json"
-import { Eye, Hand, HandFist, MessageSquareText, Trash, Triangle } from "lucide-react"
+import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash, Triangle } from "lucide-react"
 import { groupBy } from "../../../utils/collectionUtil"
 import { getId, getName } from "../../../utils/modelUtil"
 import { CtxMenuItem } from "../../../view/component/ContextMenu"
@@ -7,8 +7,9 @@ import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import ArmorDataModel, { equipArmor } from "../../item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../item/equip/EquipmentDataModel"
-import WeaponDataModel, { equipWeapon } from "../../item/equip/WeaponDataModel"
+import WeaponDataModel, { equipWeapon, toggleGripState } from "../../item/equip/WeaponDataModel"
 import HeroDataModel from "../HeroDataModel"
+import { rollWeaponDamage } from "../../../combat/dice-rolls"
 
 export const inventorySchema = () => {
     return {
@@ -110,17 +111,37 @@ export const deleteItems = async (hero: HeroDataModel, itemIds: string[]) => {
     await hero.parent.deleteEmbeddedDocuments("Item", itemIds)
 }
 
+export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataModel): CtxMenuItem[] => {
+    const menuItems: CtxMenuItem[] = [
+        { icon: Sword, label: 'Attack', action: () => rollWeaponDamage(hero.parent, weapon) },
+    ]
+    if (weapon.grip.style === 'V') {
+        menuItems.push(
+            { icon: HandFist, label: 'Change grip', action: () => toggleGripState(hero, weapon) }
+        )
+    }
+    menuItems.push(
+        { icon: Hand, label: 'Unequip', action: () => setEquipState(weapon, false) }
+    )
+    return menuItems
+}
+
 export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
     if (item.isEquippable) {
         if (item.isEquipped) {
+            if (item instanceof WeaponDataModel && item.grip.style === 'V') {
+                menuItems.push({
+                    icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(hero, item)
+                })
+            }
             menuItems.push({
-                icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => setEquipState(item, false)
+                icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(item, false)
             })
         }
         else {
             menuItems.push({
-                icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => {
+                icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => {
                     item instanceof WeaponDataModel ? equipWeapon(hero, item as WeaponDataModel) : (
                         item instanceof ArmorDataModel ? equipArmor(hero, item as ArmorDataModel) :
                             setEquipState(item, true)
@@ -137,7 +158,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
     menuItems.push(
         { icon: Eye, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) },
         { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) },
-        { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => deleteItems(hero, [getId(item)]) }
+        { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(hero, [getId(item)]), isDestructive: true }
     )
     return menuItems
 }

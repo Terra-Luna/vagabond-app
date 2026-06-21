@@ -1,4 +1,4 @@
-import { Hand, Shield, Sword } from "lucide-react"
+import { Shield } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import lang from "../../../../../../public/lang/en.json"
 import { Header, ItemDivider } from "../../../../component/Header"
@@ -6,13 +6,12 @@ import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
 import WeaponDataModel, { gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
 import { getId, itemSortHandler } from "../../../../../utils/modelUtil"
-import { sortedItems } from "../../../../../model/actor/type/Inventory"
+import { sortedItems, weaponContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { glowOnHover } from "../../../VgLiteSheet"
 import { getArmor } from "../../../../../model/actor/type/Armor"
 import { Skill } from "./TopSection"
-import { setEquipState } from "../../../../../model/item/equip/EquipmentDataModel"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -64,10 +63,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         onDragEnter={(e) => onDragEnter(e, index)}
                         onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                         onDragEnd={(e) => onDragEnd(e, index)}
-                        onContextMenu={(e) => onCtxMenu(e, [
-                            { icon: Sword, label: 'Attack', action: () => rollWeaponDamage(hero.parent, weapon) },
-                            { icon: Hand, label: 'Unequip', action: () => setEquipState(weapon, false) }
-                        ])}
+                        onContextMenu={(e) => onCtxMenu(e, weaponContextMenuItems(hero, weapon))}
                     >
                         <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">
                             <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>

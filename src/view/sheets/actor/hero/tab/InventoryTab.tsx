@@ -1,11 +1,11 @@
-import { Coins, Eye, Hand, HandFist, MessageSquareText, MessagesSquare, Trash, Triangle } from "lucide-react"
+import { Coins } from "lucide-react"
 import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import ArmorDataModel, { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
 import WeaponDataModel, { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
-import { deleteItems, equipItem, equipmentContextMenuItems, getEncumbranceInfo, itemNameQty, openItemSheet, sendItemToChat, sortedItems, useItem } from "../../../../../model/actor/type/Inventory"
+import { equipmentContextMenuItems, getEncumbranceInfo, itemNameQty, openItemSheet, sortedItems } from "../../../../../model/actor/type/Inventory"
 import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../../../../model/item/equip/EquipmentDataModel"
@@ -100,59 +100,61 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         () => itemSortHandler(hero, dragItem, targetItem ?? items[items.length - 1], items)
     )
 
-    return (<>
-        <table className="table-auto w-full">
-            <thead className="bg-section-header-fill text-text-section-header text-sm">
-                <tr>
-                    <th className="text-left pl-2">{lang.VGLITE.HeroSheet.Inventory.item}</th>
-                    <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.slots}</th>
-                    <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.value}</th>
-                    <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.equip}</th>
-                </tr>
-            </thead>
-            <tbody className="text-regular">{
-                items.map((item: EquipmentDataModel<EquipmentSchema>, index: number) => (
-                    <tr
-                        key={getId(item)}
-                        className={
-                            index === dragIndex ?
-                                "bg-text-fatigue-current" :
-                                `even:bg-table-row-even/50 odd:bg-table-row-odd/50 cursor-grab ${glowOnHover}`
-                        }
-                        onContextMenu={(e) => { onCtxMenu(e, equipmentContextMenuItems(hero, item))}}
-                        onDoubleClick={() => openItemSheet(item)}
-                        draggable
-                        onDragStart={(e) => onDragStart(e, index)}
-                        onDragEnter={(e) => onDragEnter(e, index)}
-                        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                        onDragEnd={(e) => onDragEnd(e, index)}
-                    >
-                        <td className="px-2 py-1">
-                            <span className="flex">
-                                <img src={item.parent.img} alt={getName(item)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill/60" />
-                                {itemNameQty(item)}
-                            </span>
-                        </td>
-                        <td className="text-center">{item.slots}</td>
-                        <td className="text-center">{coinsAsString(item.value)}</td>
-                        {
-                            item.isEquippable ?
-                                <td className="text-center">
-                                    <input
-                                        className={`h-4 w-4 accent-color-section-header-fill ${glowOnHover} cursor-pointer`}
-                                        type="checkbox"
-                                        checked={item.isEquipped} onChange={
-                                            async () => await toggleEquipState(hero, item)
-                                        }
-                                    />
-                                </td> : <td className="text-center" />
-                        }
+    return (
+        <div className="overflow-auto">
+            <table className="table-auto w-full">
+                <thead className="bg-section-header-fill text-text-section-header text-sm">
+                    <tr>
+                        <th className="text-left pl-2">{lang.VGLITE.HeroSheet.Inventory.item}</th>
+                        <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.slots}</th>
+                        <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.value}</th>
+                        <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.equip}</th>
                     </tr>
-                ))
-            }</tbody>
-        </table>
-        <ContextMenu />
-    </>)
+                </thead>
+                <tbody className="text-regular">{
+                    items.map((item: EquipmentDataModel<EquipmentSchema>, index: number) => (
+                        <tr
+                            key={getId(item)}
+                            className={
+                                index === dragIndex ?
+                                    "bg-text-fatigue-current" :
+                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 cursor-grab ${glowOnHover}`
+                            }
+                        onContextMenu={(e) => { onCtxMenu(e, equipmentContextMenuItems(hero, item))}}
+                            onDoubleClick={() => openItemSheet(item)}
+                            draggable
+                            onDragStart={(e) => onDragStart(e, index)}
+                            onDragEnter={(e) => onDragEnter(e, index)}
+                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                            onDragEnd={(e) => onDragEnd(e, index)}
+                        >
+                            <td className="px-2 py-1">
+                                <span className="flex">
+                                    <img src={item.parent.img} alt={getName(item)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill/60" />
+                                    {itemNameQty(item)}
+                                </span>
+                            </td>
+                            <td className="text-center">{item.slots}</td>
+                            <td className="text-center">{coinsAsString(item.value)}</td>
+                            {
+                                item.isEquippable ?
+                                    <td className="text-center">
+                                        <input
+                                            className={`h-4 w-4 accent-color-section-header-fill ${glowOnHover} cursor-pointer`}
+                                            type="checkbox"
+                                            checked={item.isEquipped} onChange={
+                                                async () => await toggleEquipState(hero, item)
+                                            }
+                                        />
+                                    </td> : <td className="text-center" />
+                            }
+                        </tr>
+                    ))
+                }</tbody>
+            </table>
+            <ContextMenu />
+        </div>
+    )
 }
 
 
