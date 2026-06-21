@@ -215,6 +215,8 @@
       "poison": "Poison",
       "necrotic": "Necrotic",
       "psychic": "Psychic",
+      "silvered": "Silvered",
+      "coldiron": "Cold Iron",
       "healing": "Healing"
     },
     "Saves": {

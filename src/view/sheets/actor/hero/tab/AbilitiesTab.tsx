@@ -1,6 +1,7 @@
 import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
+import { getName } from "../../../../../utils/modelUtil"
 import { toPascalCase } from "../../../../../utils/stringUtil"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
@@ -8,14 +9,13 @@ import { SkillCard } from "../../../../component/SkillCard"
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const beingSize = lang.VGLITE.Sizes[hero.ancestry?.beingSize ?? '']
     const beingType = lang.VGLITE.BeingTypes[hero.ancestry?.beingType ?? '']
-    console.log(hero.perks.map(it => it.prerequisites))
     
     return (
         <div className="py-1">
             <Header title={lang.VGLITE.HeroSheet.ancestry} />
             <div className="mt-0.5" />
             <SkillCard
-                title={`${hero.ancestry !== undefined ? hero.ancestry?.parent?.name + " Traits": ''}`}
+                title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits": ''}`}
                 subtitles={[['Size', beingSize ?? ''], ['Type', beingType ?? '']]}
                 description={ancestryFullDescription(hero.ancestry as any)}
             />
@@ -31,7 +31,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             <SkillCard
                                 key={f.name}
                                 title={f.name}
-                                subtitles={[[`${hero.class.parent.name}`, `Level ${f.level}`]]}
+                                subtitles={[[`${getName(hero.class)}`, `Level ${f.level}`]]}
                                 description={f.description}
                             />
                         ))

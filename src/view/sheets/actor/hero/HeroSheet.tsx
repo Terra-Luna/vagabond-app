@@ -25,7 +25,7 @@ export default class HeroSheet extends VgLiteActorSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 420,
-            height: 1060
+            height: 900
         },
         window: {
             resizable: true

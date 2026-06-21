@@ -18,15 +18,17 @@ const adversarySchema = () => {
         }),
         morale: new fields.NumberField({ integer: true, min: 2, max: 12 }),
         numberAppearing: new fields.StringField({ initial: '1d4' }),
+
         dmgImmunities: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
         dmgWeaknesses: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
         statusImmunities: new fields.ArrayField(new fields.StringField({ ...statusEffOptions() })),
-        actions: new fields.ArrayField(new fields.SchemaField({ ...adversaryActionSchema() })),
+
+        actions: new fields.ArrayField(new fields.SchemaField({ ...adversaryActionSchema() }), { initial: [] }),
         combo: new fields.SchemaField({ ...adversaryActionComboSchema() }),
         abilities: new fields.ArrayField(
             new fields.SchemaField({
                 name: new fields.StringField({ required: true, initial: '' }),
-                description: new fields.StringField({ required: true, initital: '' }),
+                description: new fields.HTMLField({ required: true, initital: '' }),
             })
         )
     }
@@ -44,7 +46,6 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
 
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
-        console.log(data, options)
         this.parent.update({ 'prototypeToken.name': data.name })
     }
 

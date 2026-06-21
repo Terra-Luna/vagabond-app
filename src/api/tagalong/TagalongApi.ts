@@ -85,8 +85,6 @@ export async function fetchHero(url: URL): Promise<TagalongHero> {
     const response = await fetch(request)
     const json = await response.json()
 
-    console.log("Data fetched from Vagabond Tagalong:", requestUrl, json)
-
     return json as TagalongHero
 }
 

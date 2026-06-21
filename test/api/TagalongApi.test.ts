@@ -17,7 +17,6 @@ describe('tagalong api tests', () => {
         //Setup & Execute
         const hero = await fetchHero(testUrl)
         //Verify
-        console.log(hero)
         expect(hero.character.name).toBe("Orphenia")
     }) */
 })

@@ -1,79 +1,71 @@
-import { X } from "lucide-react"
-import { useCallback, useState } from "react"
-import { updateDocumentAtPath } from "../../utils/documentUtils"
-import { useDimensions } from "../context/DimensionsContext"
+import { SquarePen } from "lucide-react"
+import { getDocumentAtPath, updateDocumentAtPath } from "../../utils/documentUtils"
 import { glowOnHover } from "../sheets/VgLiteSheet"
+import { Menu, MenuItem } from '@szhsin/react-menu'
+import { DamageTypeIcon } from "./DamageTypeIcon"
 
-export const OptionsSelectionMenu = (
-    { actor, path, options, position, hideMenu }: {
-        actor: any,
-        path: string[],
-        options: { key: string, value: any, isSelected: boolean }[],
-        position: { x: number, y: number },
-        hideMenu: () => {}
-    }
-) => {
-    const x = Number.isNaN(position.x) ? 0 : position.x
-    const y = Number.isNaN(position.y) ? 0 : position.y
+interface OptionsSelectionMenuOption {
+    key: string
+    value: string
+    isSelected: boolean
+}
 
-    const updateSelections = (option: { key: string, value: string, isSelected: boolean }) => {
-        options.find(o => o.key === option.key)!.isSelected = !option.isSelected
-        console.log("Updating options:", options.filter(o => o.isSelected))
-        updateDocumentAtPath(actor, path, options.filter(o => o.isSelected).map(o => o.key))
-    }
-
+export const OptionsSelectionMenu = ({ actor, label, path, options }: { actor: Actor, label: string, path: string[], options: OptionsSelectionMenuOption[] }) => {
     return (
-        <div
-            className="p-2 bg-context-menu-fill border border-solid border-table-border rounded-md"
-            style={{ position: 'absolute', top: y, left: x }}
-        >
-            <X size={18} className={`relative ml-auto mb-auto ${glowOnHover}`} onClick={() => { hideMenu() }} />
-            <div className="columns-3">
-                {
-                    options.map(option => (
-                        option.isSelected ?
-                            <p key={option.key} className={`text-stat-block-fill font-bold ${glowOnHover}`} onClick={() => updateSelections(option)}>
-                                {option.value}
-                            </p> :
-                            <p key={option.key} className={`text-text-primary font-normal ${glowOnHover}`} onClick={() => updateSelections(option)}>
-                                {option.value}
-                            </p>
-                    ))
-                }
+        <div>
+            <div className="flex items-center">
+                {label}
+                <Menu menuButton={<SquarePen size={16} className="text-stat-block-fill ml-2" />}>
+                    <div className="columns-3 bg-context-menu-fill border border-solid border-table-border rounded-md p-2">
+                        {
+                            options.map(opt => (
+                                <MenuItem
+                                    key={opt.key}
+                                    onClick={(e) => {
+                                        e.keepOpen = true
+                                        options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
+                                        updateDocumentAtPath(actor, path, options.filter(it => it.isSelected).map(it => it.key))
+                                    }}
+                                >
+                                    {
+                                        opt.isSelected ?
+                                            <p className={`font-bold ${glowOnHover}`}>{opt.value}</p> :
+                                            <p className={`font-normal ${glowOnHover}`}>{opt.value}</p>
+                                    }
+                                </MenuItem>
+                            ))
+                        }
+                    </div>
+                </Menu>
             </div>
         </div>
     )
 }
 
-export const useOptionsSelectionMenu = () => {
-    const [actor, setActor] = useState(null)
-    const [path, setPath] = useState([])
-    const [options, setOptions] = useState([])
-    const [position, setPosition] = useState({ x: 0, y: 0 })
-    const { top, left } = useDimensions()
-    const [menuVisible, setMenuVisible] = useState(false)
+export const DamageTypeIconDisplay = ({ dmgTypes }: { dmgTypes: any[] }) => {
+    return (
+        <div className="flex flex-wrap w-full">
+            {
+                dmgTypes.map((dmgType: any) => (
+                    <div key={dmgType} className="content-center">
+                        <DamageTypeIcon dmgType={dmgType} />
+                    </div>
+                ))
+            }
+        </div>
+    )
+}
 
-    const showMenu = useCallback((e: any, actor, path, options) => {
-        setActor(actor)
-        setPath(path)
-        setOptions(options)
-        setPosition({ x: e.clientX, y: e.clientY })
-        setMenuVisible(true)
-    }, [])
-
-    const hideMenu = useCallback(() => {
-        setMenuVisible(false)
-    }, [])
-
-    const menu = menuVisible ?
-        <OptionsSelectionMenu
-            actor={actor}
-            path={path}
-            options={options}
-            position={{ x: position.x - left, y: position.y - top }}
-            hideMenu={() => hideMenu}
-        />
-        : undefined
-
-    return { menuVisible, showMenu, menu }
+export const StringOptionsDisplay = ({ options }: { options: any[] }) => {
+    return (
+        <div className="flex flex-wrap w-full gap-x-1 justify-end text-right">
+            {
+                options.map((opt: any) => (
+                    <div key={opt} className="content-center italic">
+                        {opt}
+                    </div>
+                ))
+            }
+        </div>
+    )
 }

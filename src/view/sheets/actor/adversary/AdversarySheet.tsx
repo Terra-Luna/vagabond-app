@@ -1,17 +1,19 @@
-import { useCallback } from "react"
+import { useCallback, useState } from "react"
 import lang from "../../../../../public/lang/en.json"
 import AdversaryDataModel from "../../../../model/actor/AdversaryDataModel"
 import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
 import { Portrait } from "../hero/HeroSheet"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
-import { getDocumentAtPath, updateDocument } from "../../../../utils/documentUtils"
+import { getDocumentAtPath, updateDocument, updateDocumentAtPath } from "../../../../utils/documentUtils"
 import { RichTextField } from "../../../component/RichTextField"
 import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { DropDown } from "../../../component/Dropdown"
-import { Shield, SquarePen } from "lucide-react"
+import { Cross, Plus, Shield, SquarePen } from "lucide-react"
 import { glowOnHover } from "../../VgLiteSheet"
 import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
-import { useOptionsSelectionMenu } from "../../../component/OptionsSelectionMenu"
+import { Menu, MenuItem } from '@szhsin/react-menu'
+import { DamageTypeIconDisplay, OptionsSelectionMenu, StringOptionsDisplay } from "../../../component/OptionsSelectionMenu"
+import { Button } from "../../../component/Button"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
@@ -21,31 +23,33 @@ export default class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 440,
-            height: 280
+            width: 400,
+            height: 480
         },
         window: {
-            resizable: false
+            resizable: true
         }
     }
 }
 
-const AdversarySheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<AdversaryDataModel>, sheet: VgLiteActorSheet }) => {
+const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
     const adv = actor.system
     return (
-        <div className="@container flex grow">
+        <div className="@container flex grow overflow-y-hidden">
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
                 <Portrait actor={adv} />
-                <div className="flex flex-col grow">
+                <div className="flex flex-col grow p-2">
                     <HPArmorHUD adv={adv} />
                 </div>
             </div>
-            <div className="grow">
+            <div className="flex flex-col grow">
                 <AdversarySheetHeader adv={adv} />
-                <Description adv={adv} />
-                <StatBlock adv={adv} />
-                <Actions adv={adv} />
-                <Abilities adv={adv} />
+                <div className="overflow-y-auto">
+                    <Description adv={adv} />
+                    <StatBlock adv={adv} />
+                    <Actions adv={adv} />
+                    <Abilities adv={adv} />
+                </div>
             </div>
         </div>
     )
@@ -78,7 +82,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                     {locale.hp}
                 </p>
                 <div className="flex font-eskapade font-bold w-full justify-center">
-                    <p className={`text-text-hp-current text-3xl ${glowOnHover} cursor-pointer`}>
+                    <p className={`text-text-hp-current text-3xl min-w-[3ch] ${glowOnHover} cursor-pointer`}>
                         <EditableTextField initialValue={adv.health.current?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }} />
                     </p>
                     <p className="text-text-primary text-5xl font-normal">/</p>
@@ -164,7 +168,7 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
         <div className="p-1 mx-2">
-            <div className="grid grid-flow-row grid-cols-2 grid-rows-4 gap-y-2 text-text-primary">
+            <div className="grid grid-flow-row auto-rows-max grid-cols-2 gap-y-2 text-text-primary">
                 
                 {/* ZONE */}
                 <div className="flex items-center">
@@ -222,9 +226,9 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                     </p>
                 </div>
 
-                <SelectableDamageTypes adv={adv} label={locale.weak} path={['dmgWeaknesses']} />
+                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
                 <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
-                <SelectableDamageTypes adv={adv} label={locale.immune} path={['dmgImmunities']} />
+                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
                 <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
 
             </div>
@@ -232,33 +236,60 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     )
 }
 
-const SelectableDamageTypes = (
-    { adv, label, path }: {
-        adv: AdversaryDataModel,
-        label: string,
-        path: string[]
-    }
-) => {
+const DamageTypeSelector = ({ adv, label, path, localeObj }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any }) => {
     const field = getDocumentAtPath(adv.parent, path)
-    const options = Object.keys(lang.VGLITE.DamageTypes).filter(k => k != 'none').map(k => (
-        { key: k, value: lang.VGLITE.DamageTypes[k], isSelected: field.indexOf(k) > -1 }
+    const damageTypes = Object.keys(localeObj).filter(k => k != 'none').map(k => (
+        { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }
     ))
-    const { menuVisible, showMenu, menu } = useOptionsSelectionMenu()
-    const handleOptionsMenu = (event: any) => {
-        showMenu(event, adv.parent, path, options)
-    }
     return (
-        <div>
-            <div className="flex items-center">
-                <p className={statLabelStyle}>{label}&nbsp;</p>
-                <SquarePen size={14} className={statValueStyle} onClick={(e) => handleOptionsMenu(e)} />
-                { menuVisible ? menu : <></> }
+        <div className="space-y-1">
+            <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={damageTypes} />
+            <DamageTypeIconDisplay dmgTypes={getDocumentAtPath(adv.parent, path)} />
+        </div>
+    )
+}
+
+const SelectableTextField = ({ adv, label, path, localeObj }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any}) => {
+    const field = getDocumentAtPath(adv.parent, path)
+    const options = Object.keys(localeObj).filter(k => k != 'none').map(k => (
+        { key: k, value: localeObj[k].name, isSelected: field.indexOf(k) > -1 }
+    ))
+    return (
+        <div className="ml-auto justify-items-end text-right space-y-1">
+            <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={options} />
+            <StringOptionsDisplay options={options.filter(o => o.isSelected).map(o => o.value)} />
+        </div>
+    )
+}
+
+const Actions = ({ adv }: { adv: AdversaryDataModel }) => {
+    return (
+        <div className="ml-2 mt-2">
+            {/* HEADER W/ ADD BUTTON */}
+            <div className="flex items-center gap-x-2">
+                <p className="font-eskapade font-bold text-text-primary text-xl">{locale.actions}</p>
+                <Plus
+                    size={16}
+                    className={`text-stat-block-fill ${glowOnHover}`}
+                    onClick={() => {
+                        updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, { name: 'New action' }])
+                    }}
+                />
             </div>
-            <div className="flex space-x-1">
+            {/* DISPLAY COMBO FIRST */}
+            <div>
+                { adv.combo.name !== '' ? <p className="font-paradigm font-bold">{adv.combo.name}</p> : <></> }
+            </div>
+            {/* DISPLAY ALL ACTIONS */}
+            <div>
                 {
-                    field.map((it: any) => (
-                        <div key={it} className="content-center">
-                            <DamageTypeIcon dmgType={it} />
+                    adv.actions.map(act => (
+                        <div key={act.name} className="flex flex-wrap">
+                            <p className="font-bold">{act.name}&nbsp;</p>
+                            <p className="">{act.effect}&nbsp;</p>
+                            <p className="text-stat-block-fill font-eskapade font-bold">{act.damage.roll}&nbsp;</p>
+                            <p className="">|&nbsp;{act.damage.avg}&nbsp;</p>
+                            <p className="">{act.recharge}</p>
                         </div>
                     ))
                 }
@@ -267,53 +298,29 @@ const SelectableDamageTypes = (
     )
 }
 
-const SelectableTextField = (
-    { adv, label, path, localeObj }: {
-        adv: AdversaryDataModel,
-        label: string,
-        path: string[],
-        localeObj: any
-    }
-) => {
-    const field = getDocumentAtPath(adv.parent, path)
-    const { menuVisible, showMenu, menu } = useOptionsSelectionMenu()
-    const handleOptionsMenu = (event: any) => {
-        showMenu(
-            event, adv.parent, path, Object.keys(localeObj).map(k => (
-                { key: k, value: localeObj[k].name, isSelected: field.indexOf(k) > -1 }
-            ))
-        )
-    }
+const Abilities = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div>
-            <div className="flex items-center justify-end">
-                <p className={statLabelStyle}>{label}&nbsp;</p>
-                <SquarePen size={14} className={statValueStyle} onClick={(e) => handleOptionsMenu(e)} />
-                { menuVisible ? menu : <></> }
+        <div className="ml-2 mt-2">
+            <div className="flex items-center gap-x-2">
+                <p className="font-eskapade font-bold text-text-primary text-xl">{locale.abilities}</p>
+                <Plus
+                    size={16}
+                    className={`text-stat-block-fill ${glowOnHover}`}
+                    onClick={() => {
+                        updateDocumentAtPath(adv.parent, ['abilities'], [...adv.abilities, { name: 'New ability', description: 'New ability description...'}])
+                    }}
+                />
             </div>
-            <div className="flex space-x-1 justify-end">
+            <div>
                 {
-                    field.map((it: any) => (
-                        <div key={it} className="italic">{localeObj[it].name}</div>
+                    adv.abilities.map(ab => (
+                        <div key={ab.name}>
+                            <p>{ab.name}</p>
+                            <p>{ab.description}</p>
+                        </div>
                     ))
                 }
             </div>
-        </div>
-    )
-}
-
-const Actions = ({ adv }: { adv: AdversaryDataModel }) => {
-    return (
-        <div className="ml-2">
-            <p className="font-eskapade font-bold text-xl">{locale.actions}</p>
-        </div>
-    )
-}
-
-const Abilities = ({ adv }: { adv: AdversaryDataModel }) => {
-    return (
-        <div className="ml-2">
-            <p className="font-eskapade font-bold text-xl">{locale.abilities}</p>
         </div>
     )
 }
