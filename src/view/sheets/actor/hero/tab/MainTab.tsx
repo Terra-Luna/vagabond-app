@@ -1,4 +1,4 @@
-import { Shield } from "lucide-react"
+import { Hand, Shield, Sword } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import lang from "../../../../../../public/lang/en.json"
 import { Header, ItemDivider } from "../../../../component/Header"
@@ -8,10 +8,11 @@ import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
 import { getId, itemSortHandler } from "../../../../../utils/modelUtil"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { useDragDrop } from "../../../../component/DragDrop"
-import { useContextMenu, weaponsContextMenuOptions } from "../../../../component/ContextMenu"
+import { useContextMenu } from "../../../../component/ContextMenu"
 import { glowOnHover } from "../../../VgLiteSheet"
 import { getArmor } from "../../../../../model/actor/type/Armor"
 import { Skill } from "./TopSection"
+import { setEquipState } from "../../../../../model/item/equip/EquipmentDataModel"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -39,6 +40,7 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
+    const { onCtxMenu, ContextMenu } = useContextMenu()
     const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWWeapon(it)) as unknown[] as WeaponDataModel[])
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
@@ -49,52 +51,45 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                 hero, dragItem, targetItem ?? equippedWeapons[equippedWeapons.length - 1], equippedWeapons
             )
     )
-    const { showMenu, setMenuVisible, hideMenu, menu } = useContextMenu()
-    const handleContextMenu = (e: any, weapon: WeaponDataModel) => {
-        showMenu(e, weaponsContextMenuOptions(hero, weapon, () => setMenuVisible(false)))
-    }
     
     return (
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />
             {
-                equippedWeapons?.map((w: WeaponDataModel, index: number) => (
-                    <div key={getId(w)}>
-                        <div
-                            className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab"
-                            draggable
-                            onDragStart={(e) => onDragStart(e, index)}
-                            onDragEnter={(e) => onDragEnter(e, index)}
-                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                            onDragEnd={(e) => onDragEnd(e, index)}
-                            onClick={hideMenu}
-                            onContextMenu={(e) => {
-                                e.stopPropagation()
-                                e.preventDefault()
-                                handleContextMenu(e, w)
-                            }}
-                            
-                        >
-                            <div className={`text-lg line-clamp-1`}>{w.parent.name}</div>
+                equippedWeapons?.map((weapon: WeaponDataModel, index: number) => (
+                    <div
+                        key={getId(weapon)}
+                        draggable
+                        onDragStart={(e) => onDragStart(e, index)}
+                        onDragEnter={(e) => onDragEnter(e, index)}
+                        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                        onDragEnd={(e) => onDragEnd(e, index)}
+                        onContextMenu={(e) => onCtxMenu(e, [
+                            { key: `atk_${getId(weapon)}`, icon: Sword, label: 'Attack', action: () => rollWeaponDamage(hero.parent, weapon) },
+                            { key: `unequip_${getId(weapon)}`, icon: Hand, label: 'Unequip', action: () => setEquipState(weapon, false) }
+                        ])}
+                    >
+                        <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">
+                            <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
                             <div className="flex justify-end">
-                                <div className={`${gripStyle} mr-2 ${glowOnHover} cursor-pointer`} onClick={() => toggleGripState(hero, w)}>{w.grip.state}</div>
+                                <div className={`${gripStyle} mr-2 ${glowOnHover} cursor-pointer`} onClick={() => toggleGripState(hero, weapon)}>{weapon.grip.state}</div>
                                 <div className="flex content-right">
                                     <div
                                         className={`${dmgStyle} ${glowOnHover}`}
-                                        onClick={() => rollWeaponDamage(hero.parent, w)}
+                                        onClick={() => rollWeaponDamage(hero.parent, weapon)}
                                     >
-                                        {gripStateDamage(w)}
+                                        {gripStateDamage(weapon)}
                                     </div>
                                 </div>
                             </div>
-                            <div className={propsStyle}>{w.properties.reduce((props, p) => { return props + lang.VGLITE.WeaponProps[p].name + ', ' }, '').replace(/,\s*$/, "")}</div>
-                            <div className={propsStyle + " text-right mr-1"}>{lang.VGLITE.Ranges[w.range]}</div>
+                            <div className={propsStyle}>{weapon.properties.reduce((props, p) => { return props + lang.VGLITE.WeaponProps[p].name + ', ' }, '').replace(/,\s*$/, "")}</div>
+                            <div className={propsStyle + " text-right mr-1"}>{lang.VGLITE.Ranges[weapon.range]}</div>
                         </div>
                         <ItemDivider />
                     </div>
                 ))
             }
-            { menu }
+            <ContextMenu />
         </div>
     )
 }

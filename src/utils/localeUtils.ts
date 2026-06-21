@@ -1,5 +1,5 @@
-import VgLiteError from "../model/common/VgLiteError"
 import lang from "../../public/lang/en.json"
+import VgLiteError from "../model/common/VgLiteError"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
     // find all {{var}} instances

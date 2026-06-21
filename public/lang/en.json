@@ -531,7 +531,12 @@
         "slots": "SLOTS",
         "value": "VALUE",
         "equip": "EQUIP",
-        "effects": "EFFECTS"
+        "effects": "EFFECTS",
+        "ctxUse": "Use",
+        "ctxChat": "Send to chat",
+        "ctxEquip": "Equip",
+        "ctxUnequip": "Unequip",
+        "ctxDelete": "Delete"
       }
     },
     "AdversarySheet": {

@@ -13,10 +13,10 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
-import { getName } from "../../../../utils/modelUtil"
+import { getId, getName } from "../../../../utils/modelUtil"
 import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider } from "./tab/TopSection"
 import ActorDataModel, { BaseActorSchema } from "../../../../model/actor/ActorDataModel"
-import { useNewContextMenu } from "../../../component/ContextMenu"
+import { useContextMenu } from "../../../component/ContextMenu"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -117,7 +117,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
 }
 
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
-    const { onCtxMenu, Menu } = useNewContextMenu()
+    const { onCtxMenu, ContextMenu } = useContextMenu()
     const importFromVgbndApp = async () => {
         const tagalongLink = prompt(
             'Enter character link from Vagabond Tagalong App',
@@ -156,18 +156,20 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
         await actor.parent.update({ 'prototypeToken.ring.subject.texture': '' })
     }
     return (
-        <div onContextMenu={(e) => onCtxMenu(e)}>
+        <div onContextMenu={
+            (e) => onCtxMenu(e, [
+                { key: `portrait_import_${getId(actor)}`, icon: Import, label: 'Import', action: () => importFromVgbndApp() },
+                { key: `portrait_view_${getId(actor)}`, icon: Eye, label: 'View', action: () => viewImage() },
+                { key: `portrait_edit_${getId(actor)}`, icon: Pencil, label: 'Edit', action: () => editImage() },
+                { key: `portrait_remove_${getId(actor)}`, icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
+            ])
+        }>
             <img
                 className={`bg-transparent object-cover h-[154px] w-[110px]`}
                 src={actor.parent.img}
                 alt={actor.parent.name}
             />
-            <Menu items={[
-                { icon: Import, label: 'Import', action: () => importFromVgbndApp() },
-                { icon: Eye, label: 'View', action: () => viewImage() },
-                { icon: Pencil, label: 'Edit', action: () => editImage() },
-                { icon: Trash, label: 'Remove', action: () => removeImage(), isDescructive: true }
-            ]} />
+            <ContextMenu />
         </div>
     )
 }

@@ -1,8 +1,10 @@
 import { groupBy } from "../../../utils/collectionUtil"
-import { getName } from "../../../utils/modelUtil"
+import { getId, getName } from "../../../utils/modelUtil"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import EquipmentDataModel, { EquipmentSchema } from "../../item/equip/EquipmentDataModel"
+import ArmorDataModel, { equipArmor } from "../../item/equip/ArmorDataModel"
+import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../item/equip/EquipmentDataModel"
+import WeaponDataModel, { equipWeapon } from "../../item/equip/WeaponDataModel"
 import HeroDataModel from "../HeroDataModel"
 
 export const inventorySchema = () => {
@@ -56,6 +58,36 @@ export const isInventoryItem = (item: any): boolean => {
         item.type === 'sundry' ||
         item.type === 'alchemical' ||
         item.type === 'container'
+}
+
+export const useItem = async (hero: HeroDataModel, itemId: string) => {
+    const item = hero.parent.items.get(itemId)
+    if (item) {
+        await deleteItems(hero, [getId(item)])
+        sendItemToChat(hero, item)
+    }
+    else {
+        ui.notifications?.warn("Item not found!")
+    }
+}
+
+export const sendItemToChat = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+    ChatMessage.create({
+        speaker: { actor: getId(hero), alias: getName(hero) },
+        content: `<h4>${getName(hero)} </h4><p> used item: ${getName(item)}</p>`
+    })
+}
+
+export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+    if (item.parent.type instanceof ArmorDataModel) {
+        equipArmor(hero, item as ArmorDataModel)
+    }
+    else if (item.parent.type instanceof WeaponDataModel) {
+        equipWeapon(hero, item as WeaponDataModel)
+    }
+    else if (item.isEquippable) {
+        setEquipState(item, true)
+    }
 }
 
 export const openItemSheet = (hero: HeroDataModel, itemId: string) => {
