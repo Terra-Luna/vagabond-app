@@ -60,8 +60,7 @@ export const isInventoryItem = (item: any): boolean => {
         item.type === 'container'
 }
 
-export const useItem = async (hero: HeroDataModel, itemId: string) => {
-    const item = hero.parent.items.get(itemId)
+export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
     if (item) {
         await deleteItems(hero, [getId(item)])
         sendItemToChat(hero, item)
@@ -90,10 +89,9 @@ export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<Equipmen
     }
 }
 
-export const openItemSheet = (hero: HeroDataModel, itemId: string) => {
-    const item = hero.parent.items.get(itemId)
+export const openItemSheet = (item: EquipmentDataModel<EquipmentSchema>) => {
     if (item) {
-        item.sheet.render(true)
+        item.parent.sheet.render(true)
     }
     else {
         ui.notifications?.warn("Item not found!")

@@ -65,8 +65,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                         onDragEnd={(e) => onDragEnd(e, index)}
                         onContextMenu={(e) => onCtxMenu(e, [
-                            { key: `atk_${getId(weapon)}`, icon: Sword, label: 'Attack', action: () => rollWeaponDamage(hero.parent, weapon) },
-                            { key: `unequip_${getId(weapon)}`, icon: Hand, label: 'Unequip', action: () => setEquipState(weapon, false) }
+                            { icon: Sword, label: 'Attack', action: () => rollWeaponDamage(hero.parent, weapon) },
+                            { icon: Hand, label: 'Unequip', action: () => setEquipState(weapon, false) }
                         ])}
                     >
                         <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">

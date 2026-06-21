@@ -15,7 +15,7 @@ const Component = () => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return(
         <div onContenxtMenu={(e) => onCtxMenu(e, [
-                { key: `someUniqueId`, icon: Sword, label: 'Attack', action: () => someFunction(arg1, arg2) },
+                { icon: Sword, label: 'Attack', action: () => someFunction(arg1, arg2) },
                 ...
             ])}>
             <div>Right click on me!</div>
@@ -26,7 +26,6 @@ const Component = () => {
 
  */
 interface CtxMenuItem {
-    key: string,
     icon: any
     label: string
     action: (e: any) => void
@@ -58,7 +57,7 @@ export const useContextMenu = () => {
             >
                 {
                     menuItems.map((item) => (
-                        <div key={item.key}>
+                        <div key={item.label}>
                             <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : ctxMenuTextStyle} onClick={item.action}>
                                 {item.icon ?
                                     <div className="flex items-center">

@@ -13,7 +13,7 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
-import { getId, getName } from "../../../../utils/modelUtil"
+import { getName } from "../../../../utils/modelUtil"
 import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider } from "./tab/TopSection"
 import ActorDataModel, { BaseActorSchema } from "../../../../model/actor/ActorDataModel"
 import { useContextMenu } from "../../../component/ContextMenu"
@@ -158,10 +158,10 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
     return (
         <div onContextMenu={
             (e) => onCtxMenu(e, [
-                { key: `portrait_import_${getId(actor)}`, icon: Import, label: 'Import', action: () => importFromVgbndApp() },
-                { key: `portrait_view_${getId(actor)}`, icon: Eye, label: 'View', action: () => viewImage() },
-                { key: `portrait_edit_${getId(actor)}`, icon: Pencil, label: 'Edit', action: () => editImage() },
-                { key: `portrait_remove_${getId(actor)}`, icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
+                { icon: Import, label: 'Import', action: () => importFromVgbndApp() },
+                { icon: Eye, label: 'View', action: () => viewImage() },
+                { icon: Pencil, label: 'Edit', action: () => editImage() },
+                { icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
             ])
         }>
             <img
