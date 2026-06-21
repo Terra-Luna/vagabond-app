@@ -48,7 +48,7 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
                     <StatBlock adv={adv} />
                     <Actions adv={adv} setIsAddActionOpen={setIsAddActionOpen} />
                     {/* <Abilities adv={adv} /> */}
-                    <AddActionWindow adv={adv} isAddActionOpen={isAddActionOpen} setIsAddActionOpen={setIsAddActionOpen} />
+                    <NewActionWindow adv={adv} isAddActionOpen={isAddActionOpen} setIsAddActionOpen={setIsAddActionOpen} />
                 </div>
             </div>
         </div>
@@ -297,7 +297,7 @@ const useAddActionMenu = () => {
     return { isAddActionOpen, setIsAddActionOpen }
 }
 // const ripper = canvas.tokens.placeables.find(t => t.name === "Dimension Ripper").actor.system
-const AddActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: AdversaryDataModel, isAddActionOpen: boolean,setIsAddActionOpen: Dispatch<SetStateAction<boolean>> }) => {
+const NewActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: AdversaryDataModel, isAddActionOpen: boolean,setIsAddActionOpen: Dispatch<SetStateAction<boolean>> }) => {
     const [newAction, setNewAction] = useState({
         name: 'New action', effect: '-', damage: { roll: 'd4', avg: '2', type: 'physical' }, recharge: '-'
     })
@@ -330,6 +330,8 @@ const AddActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: Ad
         {
             isAddActionOpen ? <div className="aboslute bg-context-menu-fill border border-solid border-stat-block-fill rounded-sm mx-4 mb-8 p-2">
                 <p className="text-xl font-eskapade font-bold">Add Action...</p>
+                
+                {/* ACTION NAME */}
                 <div className="flex">
                     <p>Name:&nbsp;</p>
                     <p className={`font-eskapade font-bold ${glowOnHover}`}>
@@ -337,6 +339,7 @@ const AddActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: Ad
                     </p>
                 </div>
 
+                {/* EFFECT DESCRIPTION */}
                 <div className="flex">
                     <p>Effect:&nbsp;</p>
                     <p className={`font-eskapade font-bold ${glowOnHover}`}>
@@ -344,6 +347,7 @@ const AddActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: Ad
                     </p>
                 </div>
 
+                {/* DAMAGE ROLL */}
                 <div className="flex">
                     <p>Damage:&nbsp;</p>
                     <p className={`font-eskapade font-bold ${glowOnHover}`}>
@@ -351,6 +355,7 @@ const AddActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: Ad
                     </p>
                 </div>
 
+                {/* DAMAGE AVG */}
                 <div className="flex">
                     <p>Damage Avg:&nbsp;</p>
                     <p className={`font-eskapade font-bold ${glowOnHover}`}>
@@ -358,6 +363,7 @@ const AddActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: Ad
                     </p>
                 </div>
 
+                {/* DAMAGE TYPE */}
                 <div className="flex">
                     <p>Damage Type:&nbsp;</p>
                     <p className={`font-eskapade font-bold ${glowOnHover}`}>
@@ -365,6 +371,7 @@ const AddActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: Ad
                     </p>
                 </div>
 
+                {/* RECHARGE */}
                 <div className="flex">
                     <p>Recharge:&nbsp;</p>
                     <p className={`font-eskapade font-bold ${glowOnHover}`}>
