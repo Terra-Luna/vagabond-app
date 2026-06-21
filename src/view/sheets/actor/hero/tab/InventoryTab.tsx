@@ -5,7 +5,7 @@ import { coinsAsString } from "../../../../../model/common/CoinValue"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import ArmorDataModel, { equipArmor } from "../../../../../model/item/equip/ArmorDataModel"
 import WeaponDataModel, { equipWeapon } from "../../../../../model/item/equip/WeaponDataModel"
-import { deleteItems, equipItem, getEncumbranceInfo, itemNameQty, openItemSheet, sendItemToChat, sortedItems, useItem } from "../../../../../model/actor/type/Inventory"
+import { deleteItems, equipItem, equipmentContextMenuItems, getEncumbranceInfo, itemNameQty, openItemSheet, sendItemToChat, sortedItems, useItem } from "../../../../../model/actor/type/Inventory"
 import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../../../../model/item/equip/EquipmentDataModel"
@@ -119,14 +119,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                                 "bg-text-fatigue-current" :
                                 `even:bg-table-row-even/50 odd:bg-table-row-odd/50 cursor-grab ${glowOnHover}`
                         }
-                        onContextMenu={(e) => { onCtxMenu(e, [
-                            { icon: Triangle, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => { useItem(hero, item) } },
-                            { icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => { equipItem(hero, item) } },
-                            { icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUnequip, action: () => { setEquipState(item, false) } },
-                            { icon: Eye, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => { openItemSheet(item) } },
-                            { icon: MessagesSquare, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => { sendItemToChat(hero, item) } },
-                            { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => { deleteItems(hero, [getId(item)]) }, isDestructive: true }
-                        ])}}
+                        onContextMenu={(e) => { onCtxMenu(e, equipmentContextMenuItems(hero, item))}}
                         onDoubleClick={() => openItemSheet(item)}
                         draggable
                         onDragStart={(e) => onDragStart(e, index)}

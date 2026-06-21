@@ -290,9 +290,9 @@
 }
 
 .szh-menu {
-  border: none;
   outline: none;
   box-shadow: none;
+  width: max-content;
 }
 .szh-menu__item:hover,
 .szh-menu__item:focus,

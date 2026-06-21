@@ -1,5 +1,8 @@
+import lang from "../../../../public/lang/en.json"
+import { Eye, Hand, HandFist, MessageSquareText, Trash, Triangle } from "lucide-react"
 import { groupBy } from "../../../utils/collectionUtil"
 import { getId, getName } from "../../../utils/modelUtil"
+import { CtxMenuItem } from "../../../view/component/ContextMenu"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import ArmorDataModel, { equipArmor } from "../../item/equip/ArmorDataModel"
@@ -65,7 +68,10 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
         if (item.isConsumable) {
             await deleteItems(hero, [getId(item)])
         }
-        sendItemToChat(hero, item)
+        ChatMessage.create({
+            speaker: { actor: getId(hero), alias: getName(hero) },
+            content: `<h4>${getName(hero)} </h4><p> used item: ${getName(item)}</p>`
+        })
     }
     else {
         ui.notifications?.warn("Item not found!")
@@ -75,7 +81,7 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
 export const sendItemToChat = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
     ChatMessage.create({
         speaker: { actor: getId(hero), alias: getName(hero) },
-        content: `<h4>${getName(hero)} </h4><p> used item: ${getName(item)}</p>`
+        content: `<h4>${getName(hero)} </h4><p> linked item: ${getName(item)}</p>`
     })
 }
 
@@ -102,4 +108,36 @@ export const openItemSheet = (item: EquipmentDataModel<EquipmentSchema>) => {
 
 export const deleteItems = async (hero: HeroDataModel, itemIds: string[]) => {
     await hero.parent.deleteEmbeddedDocuments("Item", itemIds)
+}
+
+export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
+    const menuItems: CtxMenuItem[] = []
+    if (item.isEquippable) {
+        if (item.isEquipped) {
+            menuItems.push({
+                icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => setEquipState(item, false)
+            })
+        }
+        else {
+            menuItems.push({
+                icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => {
+                    item instanceof WeaponDataModel ? equipWeapon(hero, item as WeaponDataModel) : (
+                        item instanceof ArmorDataModel ? equipArmor(hero, item as ArmorDataModel) :
+                            setEquipState(item, true)
+                    )
+                }
+            })
+        }
+    }
+    else if (item.isConsumable) {
+        menuItems.push({
+            icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item)
+        })
+    }
+    menuItems.push(
+        { icon: Eye, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) },
+        { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) },
+        { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => deleteItems(hero, [getId(item)]) }
+    )
+    return menuItems
 }
