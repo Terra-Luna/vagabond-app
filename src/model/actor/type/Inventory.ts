@@ -62,7 +62,9 @@ export const isInventoryItem = (item: any): boolean => {
 
 export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
     if (item) {
-        await deleteItems(hero, [getId(item)])
+        if (item.isConsumable) {
+            await deleteItems(hero, [getId(item)])
+        }
         sendItemToChat(hero, item)
     }
     else {
