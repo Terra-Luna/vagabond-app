@@ -1,4 +1,4 @@
-import { Coins } from "lucide-react"
+import { Coins, Hand, HandFist } from "lucide-react"
 import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { coinsAsString } from "../../../../../model/common/CoinValue"
@@ -119,7 +119,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             className={
                                 index === dragIndex ?
                                     "bg-text-fatigue-current" :
-                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 cursor-grab ${glowOnHover}`
+                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 ${glowOnHover}`
                             }
                         onContextMenu={(e) => { onCtxMenu(e, equipmentContextMenuItems(hero, item))}}
                             onDoubleClick={() => openItemSheet(item)}
@@ -129,7 +129,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                             onDragEnd={(e) => onDragEnd(e, index)}
                         >
-                            <td className="px-2 py-1">
+                            <td className="px-2 py-1 cursor-grab">
                                 <span className="flex">
                                     <img src={item.parent.img} alt={getName(item)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill/60" />
                                     {itemNameQty(item)}
@@ -139,14 +139,12 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             <td className="text-center">{coinsAsString(item.value)}</td>
                             {
                                 item.isEquippable ?
-                                    <td className="text-center">
-                                        <input
-                                            className={`h-4 w-4 accent-color-section-header-fill ${glowOnHover} cursor-pointer`}
-                                            type="checkbox"
-                                            checked={item.isEquipped} onChange={
-                                                async () => await toggleEquipState(hero, item)
-                                            }
-                                        />
+                                    <td className="items-center">
+                                        {
+                                            item.isEquipped ?
+                                                <HandFist size={18} className='w-full justify-center text-stat-block-fill fill-stat-block-fill/50 cursor-pointer' onClick={ async () => await toggleEquipState(hero, item) } /> :
+                                                <Hand size={18} className='w-full justify-center text-stat-block-fill cursor-pointer' onClick={ async () => await toggleEquipState(hero, item) } />
+                                        }
                                     </td> : <td className="text-center" />
                             }
                         </tr>

@@ -8,6 +8,7 @@ import { useCallback } from "react"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { getId } from "../../../../../utils/modelUtil"
 import { glowOnHover } from "../../../VgLiteSheet"
+import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -49,12 +50,12 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                 &nbsp;
                 <span>{hero.mana.maxCast}</span>
             </div>
-            <button className={`flex items-center bg-btn-primary-fill text-xl text-btn-primary-text rounded-lg px-2 ${glowOnHover} cursor-pointer hover:scale-105`} onClick={
-                () => ui.notifications?.info("Feature coming soon!")
-            }>
-                <span className="mr-2">Cast</span>
-                <DamageTypeIcon dmgType={'magical'} />
-            </button>
+            <div className="px-1"/>
+            <SecondaryButton
+                children={<p className="text-lg">Cast</p>}
+                icon={<DamageTypeIcon dmgType={'magical'} />}
+                onClick={() => ui.notifications?.info("Feature coming soon!")}
+            />
         </div>
     )
 }

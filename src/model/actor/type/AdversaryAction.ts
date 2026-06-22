@@ -1,4 +1,4 @@
-import { damageTypeOptions, fields, optionalString, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalInteger, optionalString, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import WeaponDataModel from "../../item/equip/WeaponDataModel"
 
 /**
@@ -7,10 +7,10 @@ import WeaponDataModel from "../../item/equip/WeaponDataModel"
 export const adversaryActionSchema = () => {
     return {
         name: new fields.StringField({ required: true }),
-        effect: new fields.HTMLField(),
+        effect: new fields.StringField({ ...optionalString }),
         damage: new fields.SchemaField({
-            roll: new fields.StringField({ required: true }),
-            avg: new fields.NumberField({ ...requiredInteger }),
+            roll: new fields.StringField({ ...optionalString }),
+            avg: new fields.NumberField({ ...optionalInteger }),
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
         recharge: new fields.StringField({ ...optionalString }),

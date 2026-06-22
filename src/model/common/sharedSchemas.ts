@@ -5,6 +5,7 @@ export const fields = foundry.data.fields
 export const optionalString = { required: false, nullable: true, blank: false }
 export const requiredString = { required: true, nullable: false, initial: '' }
 export const standardInteger = { integer: true, min: 0, initial: 0 }
+export const optionalInteger = { nullable: true, integer: true }
 export const requiredInteger = { required: true, integer: true, min: 0, nullable: false }
 export const uncappedInteger = { required: true, integer: true, initial: 0 }
 
@@ -51,8 +52,9 @@ export const movementTypes = () => {
 export const damageTypeOptions = () => {
     const damageTypes = Object.keys(locale.VGLITE.DamageTypes)
     return {
-        required: true,
-        nullable: false,
+        required: false,
+        nullable: true,
+        blank: false,
         choices: damageTypes
     }
 }

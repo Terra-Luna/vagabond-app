@@ -10,8 +10,8 @@ import { useCallback, useEffect } from "react";
 import { Trait } from "./Trait";
 import { updateDocument } from "../../../../../utils/documentUtils";
 import { createDropdownEntries } from "../../../../../utils/localeUtils";
-import { ButtonWithIcon } from "../../../../component/ButtonWithIcon";
 import { LucidePlus } from "lucide-react";
+import { PrimaryButton } from "../../../../component/Button";
 
 export class AncestrySheet extends VgLiteItemSheet {
     Component = AncestryReactComponent
@@ -62,7 +62,7 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
     return <div className="mt-2 pb-2">
         <div className="flex text-2xl justify-between">
             {lang.VGLITE.AncestrySheet.traits}
-            <ButtonWithIcon label={lang.VGLITE.AncestrySheet.addTrait} icon={<LucidePlus />} onClick={addTrait} />
+            <PrimaryButton children={lang.VGLITE.AncestrySheet.addTrait} icon={<LucidePlus />} onClick={addTrait} />
         </div>
         <div className="flex flex-col gap-4 mt-2">
             {ancestry.traits.map((trait, idx) => (

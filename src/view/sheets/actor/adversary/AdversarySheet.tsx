@@ -8,10 +8,11 @@ import { getDocumentAtPath, updateDocument, updateDocumentAtPath } from "../../.
 import { RichTextField } from "../../../component/RichTextField"
 import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { DropDown } from "../../../component/Dropdown"
-import { Plus, Shield } from "lucide-react"
+import { PenSquare, Plus, Save, Shield, Trash } from "lucide-react"
 import { glowOnHover } from "../../VgLiteSheet"
 import { DamageTypeIconDisplay, OptionsSelectionMenu, StringOptionsDisplay } from "../../../component/OptionsSelectionMenu"
-import { Button } from "../../../component/Button"
+import { DestructiveButton, PrimaryButton } from "../../../component/Button"
+import { useContextMenu } from "../../../component/ContextMenu"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
@@ -32,7 +33,7 @@ export default class AdversarySheet extends VgLiteActorSheet {
 
 const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
     const adv = actor.system
-    const { isAddActionOpen, setIsAddActionOpen } = useAddActionMenu()
+    const { isAddActionOpen, setIsAddActionOpen, editTarget, setEditTarget } = useAddActionMenu()
     return (
         <div className="@container flex grow overflow-y-hidden">
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
@@ -46,10 +47,10 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
                 <div className="overflow-y-auto">
                     <Description adv={adv} />
                     <StatBlock adv={adv} />
-                    <Actions adv={adv} setIsAddActionOpen={setIsAddActionOpen} />
+                    <Actions adv={adv} setIsAddActionOpen={setIsAddActionOpen} setEditTarget={setEditTarget} />
                     {/* <Abilities adv={adv} /> */}
                     { isAddActionOpen ? 
-                        <NewActionWindow adv={adv} setIsAddActionOpen={setIsAddActionOpen} /> : undefined
+                        <NewActionWindow adv={adv} setIsAddActionOpen={setIsAddActionOpen} editTarget={editTarget} setEditTarget={setEditTarget} /> : undefined
                     }
                 </div>
             </div>
@@ -279,7 +280,8 @@ const SelectableTextField = ({ adv, label, path, localeObj }: { adv: AdversaryDa
     )
 }
 
-const Actions = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>> }) => {
+const Actions = ({ adv, setIsAddActionOpen, setEditTarget }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>>, setEditTarget: Dispatch<SetStateAction<any>> }) => {
+    const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="ml-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
@@ -295,7 +297,15 @@ const Actions = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel, setIsAd
             <div>
                 {
                     adv.actions.map(act => (
-                        <div key={act.name} className="flex flex-wrap">
+                        <div key={act.name} className="flex flex-wrap" onContextMenu={(e) => onCtxMenu(e, [
+                            {
+                                icon: PenSquare, label: 'Edit', action: () => {
+                                    setEditTarget(act)
+                                    setIsAddActionOpen(true)
+                                }
+                            },
+                            { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
+                        ])}>
                             <p className="font-bold">{act.name}&nbsp;</p>
                             <p className="">{act.effect}&nbsp;</p>
                             <p className="text-stat-block-fill font-eskapade font-bold">{act.damage.roll}&nbsp;</p>
@@ -305,19 +315,30 @@ const Actions = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel, setIsAd
                     ))
                 }
             </div>
+            <ContextMenu />
         </div>
     )
 }
 
+const deleteAction = (adv: AdversaryDataModel, action: any) => {
+    console.log(adv.actions.filter(it => it != action))
+    updateDocumentAtPath( adv.parent, ['actions'], adv.actions.filter(it => it != action))
+}
+
 const useAddActionMenu = () => {
     const [isAddActionOpen, setIsAddActionOpen] = useState(false)
-    return { isAddActionOpen, setIsAddActionOpen }
+    const [editTarget, setEditTarget] = useState(null)
+    return { isAddActionOpen, setIsAddActionOpen, editTarget, setEditTarget }
 }
-// const ripper = canvas.tokens.placeables.find(t => t.name === "Dimension Ripper").actor.system
-const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>> }) => {
-    const [newAction, setNewActionInternal] = useState({
-        name: null, effect: null, damage: { roll: null, avg: null, type: 'physical' }, recharge: null
-    })
+
+interface AdversaryAction {
+    name: string, effect: string, damage: { roll: string, avg: number, type: string }, recharge: string
+}
+
+const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTarget }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>>, editTarget?: AdversaryAction | null, setEditTarget: Dispatch<SetStateAction<any>>}) => {
+    const editTargetIndex = adv.actions.indexOf(editTarget as any)
+    const [newAction, setNewActionInternal] = editTarget == null ?
+        useState<AdversaryAction>() : useState<AdversaryAction>(editTarget as AdversaryAction)
 
     const setNewAction = useCallback(async (action: any) => {
         setNewActionInternal(action)
@@ -333,15 +354,15 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
     }, [setNewAction, newAction])
 
     const updateDamageRoll = useCallback(async (roll: string | null) => {
-        return setNewAction({...newAction, damage: {...newAction.damage, roll: roll}})
+        return setNewAction({...newAction, damage: {...newAction?.damage, roll: roll}})
     }, [setNewAction, newAction])
 
     const updateDamageAvg = useCallback(async (avg: string | null) => {
-        return setNewAction({...newAction, damage: {...newAction.damage, avg: avg}})
+        return setNewAction({...newAction, damage: {...newAction?.damage, avg: avg}})
     }, [setNewAction, newAction])
 
     const updateDamageType = useCallback(async (type: string | null) => {
-        return setNewAction({...newAction, damage: {...newAction.damage, type: type}})
+        return setNewAction({...newAction, damage: {...newAction?.damage, type: type}})
     }, [setNewAction, newAction])
 
     const updateRecharge = useCallback(async (rchg: string | null) => {
@@ -352,68 +373,80 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
         <div className="aboslute bg-context-menu-fill border border-solid border-stat-block-fill rounded-sm mx-4 mb-8 p-2">
             <p className="text-xl font-eskapade font-bold">Add Action...</p>
             
-            {/* ACTION NAME */}
-            <div className="flex">
-                <p>Name:&nbsp;</p>
-                <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField
-                        boundValue={newAction.name} onSave={updateName} placeholder='Claws [Melee, Near]' />
-                </p>
-            </div>
+            <div className="space-y-2">
+                {/* ACTION NAME */}
+                <div className="flex">
+                    <p>Name:&nbsp;</p>
+                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <EditableTextField boundValue={newAction?.name ?? null} onSave={updateName} placeholder='Claws [Melee, Near]' />
+                    </p>
+                </div>
 
-            {/* EFFECT DESCRIPTION */}
-            <div className="flex">
-                <p>Effect:&nbsp;</p>
-                <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.effect} onSave={updateEffect} placeholder='Effect description...' />
-                </p>
-            </div>
+                {/* EFFECT DESCRIPTION */}
+                <div className="flex">
+                    <p>Effect:&nbsp;</p>
+                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <EditableTextField boundValue={newAction?.effect ?? null} onSave={updateEffect} placeholder='Effect description...' />
+                    </p>
+                </div>
 
-            {/* DAMAGE ROLL */}
-            <div className="flex">
-                <p>Damage:&nbsp;</p>
-                <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.damage.roll} onSave={updateDamageRoll} placeholder='2d4+1' />
-                </p>
-            </div>
+                {/* DAMAGE ROLL */}
+                <div className="flex">
+                    <p>Damage:&nbsp;</p>
+                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <EditableTextField boundValue={newAction?.damage?.roll ?? null} onSave={updateDamageRoll} placeholder='XdY+Z' />
+                    </p>
+                </div>
 
-            {/* DAMAGE AVG */}
-            <div className="flex">
-                <p>Damage Avg:&nbsp;</p>
-                <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.damage.avg} onSave={updateDamageAvg} placeholder='5' />
-                </p>
-            </div>
+                {/* DAMAGE AVG */}
+                <div className="flex">
+                    <p>Damage Avg:&nbsp;</p>
+                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <EditableTextField boundValue={newAction?.damage?.avg?.toString() ?? null} onSave={updateDamageAvg} placeholder='0' />
+                    </p>
+                </div>
 
-            {/* DAMAGE TYPE */}
-            <div className="flex">
-                <p>Damage Type:&nbsp;</p>
-                <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.damage.type} onSave={updateDamageType} />
-                </p>
-            </div>
+                {/* DAMAGE TYPE */}
+                <div className="flex">
+                    <p>Damage Type:&nbsp;</p>
+                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <EditableTextField boundValue={newAction?.damage?.type ?? null} onSave={updateDamageType} />
+                    </p>
+                </div>
 
-            {/* RECHARGE */}
-            <div className="flex">
-                <p>Recharge:&nbsp;</p>
-                <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.recharge} onSave={updateRecharge} placeholder="Cd4" />
-                </p>
+                {/* RECHARGE */}
+                <div className="flex">
+                    <p>Recharge:&nbsp;</p>
+                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <EditableTextField boundValue={newAction?.recharge ?? null} onSave={updateRecharge} placeholder="CdX" />
+                    </p>
+                </div>
             </div>
 
             {/* SAVE & CANCEL BUTTONS*/}
             <div className="flex w-full justify-between mt-8">
-                <Button className={`${destructiveButtonClasses}`} onClick={() => setIsAddActionOpen(false)}>Cancel</Button>
-                <Button className={`${primaryButtonClasses}`} onClick={() => {
-                    updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
+                <DestructiveButton onClick={() => {
+                    setEditTarget(null)
                     setIsAddActionOpen(false)
-                }}>Save</Button>
+                }}>
+                    Cancel
+                </DestructiveButton>
+                <PrimaryButton icon={<Save size={14} />} onClick={() => {
+                    if (editTarget == null) {
+                        updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
+                    }
+                    else {
+                        let actions = adv.actions
+                        console.log(actions, newAction)
+                        actions[editTargetIndex] = newAction as any
+                        updateDocumentAtPath(adv.parent, ['actions'], [...actions])
+                    }
+                    setEditTarget(null)
+                    setIsAddActionOpen(false)
+                }}>
+                    Save
+                </PrimaryButton>
             </div>
         </div>
     )
 }
-
-const buttonShaping = "border border-solid border-stat-block-fill rounded-sm px-2 py-1"
-const primaryButtonClasses = `text-btn-primary-text bg-btn-primary-fill ${buttonShaping}`
-const secondaryButtonClasses = `text-btn-secondary-text bg-btn-secondary-fill ${buttonShaping}`
-const destructiveButtonClasses = `text-destructive-action bg-btn-secondary-fill ${buttonShaping}`
