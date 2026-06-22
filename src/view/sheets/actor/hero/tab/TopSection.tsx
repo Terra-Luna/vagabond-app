@@ -29,7 +29,11 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                 <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
                 <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
                     <span className={`text-4xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
-                        <EditableTextField boundValue={health.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }} />
+                        <EditableTextField
+                            boundValue={health.current?.toString() ?? ""}
+                            updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }}
+                            placeholder="0"
+                        />
                     </span>
                 </div>
                 <div className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>

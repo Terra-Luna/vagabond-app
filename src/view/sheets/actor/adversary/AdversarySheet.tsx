@@ -74,6 +74,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                     <EditableTextField
                         boundValue={adv.hitDice?.toString() ?? '1'}
                         updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
+                        placeholder="1"
                     />
                 </p>
             </div>
@@ -85,7 +86,10 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                 </p>
                 <div className="flex font-eskapade font-bold w-full justify-center">
                     <p className={`text-text-hp-current text-3xl min-w-[3ch] ${glowOnHover} cursor-pointer`}>
-                        <EditableTextField boundValue={adv.health.current?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }} />
+                        <EditableTextField
+                            boundValue={adv.health.current?.toString() ?? ''}
+                            updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }}
+                            placeholder="0" />
                     </p>
                     <p className="text-text-primary text-5xl font-normal">/</p>
                     <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
@@ -101,7 +105,11 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                     <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div className={`text-4xl text-text-armor font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
-                            <EditableTextField boundValue={adv.armor.rating?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating']}} />
+                            <EditableTextField
+                                boundValue={adv.armor.rating?.toString() ?? ''}
+                                updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating'] }}
+                                placeholder="0"
+                            />
                         </div>
                     </div>
                     <p className={`absolute bottom-0 -right-1.5 ${statLabelStyle}`}>{locale.as}</p>
@@ -109,7 +117,11 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
             </div>
             <div className="flex w-full justify-center -mt-4">
                 <p className={`content-center ${glowOnHover} cursor-pointer`}>
-                    <EditableTextField boundValue={adv.armor.as ?? 'Unarmored'} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }} />
+                    <EditableTextField
+                        boundValue={adv.armor.as ?? 'Unarmored'}
+                        updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }}
+                        placeholder="Unarmored"
+                    />
                 </p>
             </div>
         </div>
@@ -193,6 +205,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                             <EditableTextField
                                 boundValue={adv.movement?.speed?.toString() ?? '30'}
                                 updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
+                                placeholder="30"
                             />
                         </p>
                         <div className="text-stat-block-fill">
@@ -213,6 +226,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                         <EditableTextField
                             boundValue={adv.morale?.toString() ?? '6'}
                             updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
+                            placeholder="6"
                         />
                     </p>
                 </div>
@@ -224,6 +238,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                         <EditableTextField
                             boundValue={adv.numberAppearing?.toString() ?? '1'}
                             updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
+                            placeholder="1d6"
                         />
                     </p>
                 </div>
@@ -341,7 +356,8 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
             <div className="flex">
                 <p>Name:&nbsp;</p>
                 <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.name} onSave={updateName} placeholder='Claws [Melee, Near]' />
+                    <EditableTextField
+                        boundValue={newAction.name} onSave={updateName} placeholder='Claws [Melee, Near]' />
                 </p>
             </div>
 

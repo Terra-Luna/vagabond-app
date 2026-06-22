@@ -85,6 +85,7 @@ const CoinValue = ({ hero, value, label, path }: { hero: HeroDataModel, value: n
                         actor: hero.parent,
                         propertyPath: ['inventory', 'coins', path]
                     }}
+                    placeholder="0"
                 />
             </div>
             <div className={"text-wealth-denom-label text-sm content-end"}>{label}</div>
