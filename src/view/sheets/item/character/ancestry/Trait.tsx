@@ -59,7 +59,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
                     <div>
                         <LabelledField className="font-paradigm" label={locale.name}>
                             <div className="font-eskapade text-2xl">
-                                <EditableTextField initialValue={name} onSave={onUpdateName} />
+                                <EditableTextField boundValue={name} onSave={onUpdateName} />
                             </div>
                         </LabelledField>
                     </div>
@@ -117,7 +117,7 @@ const Modifier = ({ modifier, startExpanded = false, ancestry, index, traitIndex
             value={modifier.type} />
         <LabelledField label={lang.VGLITE.AncestrySheet.value}>
             <div className="text-lg text-center">
-                <EditableTextField initialValue={modifier.value} onSave={onUpdateValue} />
+                <EditableTextField boundValue={modifier.value} onSave={onUpdateValue} />
             </div>
         </LabelledField>
     </div>

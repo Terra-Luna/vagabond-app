@@ -48,7 +48,9 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
                     <StatBlock adv={adv} />
                     <Actions adv={adv} setIsAddActionOpen={setIsAddActionOpen} />
                     {/* <Abilities adv={adv} /> */}
-                    <NewActionWindow adv={adv} isAddActionOpen={isAddActionOpen} setIsAddActionOpen={setIsAddActionOpen} />
+                    { isAddActionOpen ? 
+                        <NewActionWindow adv={adv} setIsAddActionOpen={setIsAddActionOpen} /> : undefined
+                    }
                 </div>
             </div>
         </div>
@@ -70,7 +72,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                 <p className={headerStyle}>{locale.hd}</p>
                 <p className={`text-3xl font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
                     <EditableTextField
-                        initialValue={adv.hitDice?.toString() ?? '1'}
+                        boundValue={adv.hitDice?.toString() ?? '1'}
                         updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
                     />
                 </p>
@@ -83,7 +85,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                 </p>
                 <div className="flex font-eskapade font-bold w-full justify-center">
                     <p className={`text-text-hp-current text-3xl min-w-[3ch] ${glowOnHover} cursor-pointer`}>
-                        <EditableTextField initialValue={adv.health.current?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }} />
+                        <EditableTextField boundValue={adv.health.current?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }} />
                     </p>
                     <p className="text-text-primary text-5xl font-normal">/</p>
                     <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
@@ -99,7 +101,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                     <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div className={`text-4xl text-text-armor font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
-                            <EditableTextField initialValue={adv.armor.rating?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating']}} />
+                            <EditableTextField boundValue={adv.armor.rating?.toString() ?? ''} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating']}} />
                         </div>
                     </div>
                     <p className={`absolute bottom-0 -right-1.5 ${statLabelStyle}`}>{locale.as}</p>
@@ -107,7 +109,7 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
             </div>
             <div className="flex w-full justify-center -mt-4">
                 <p className={`content-center ${glowOnHover} cursor-pointer`}>
-                    <EditableTextField initialValue={adv.armor.as ?? 'Unarmored'} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }} />
+                    <EditableTextField boundValue={adv.armor.as ?? 'Unarmored'} updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }} />
                 </p>
             </div>
         </div>
@@ -189,7 +191,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                     <div className="flex space-x-1">
                         <p className={`flex space-x-1 ${statValueStyle}`}>
                             <EditableTextField
-                                initialValue={adv.movement?.speed?.toString() ?? '30'}
+                                boundValue={adv.movement?.speed?.toString() ?? '30'}
                                 updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
                             />
                         </p>
@@ -209,7 +211,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                     <p className={statLabelStyle}>{locale.morale}&nbsp;</p>
                     <p className={statValueStyle}>
                         <EditableTextField
-                            initialValue={adv.morale?.toString() ?? '6'}
+                            boundValue={adv.morale?.toString() ?? '6'}
                             updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
                         />
                     </p>
@@ -220,7 +222,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                     <p className={statLabelStyle}>{locale.appearing}&nbsp;</p>
                     <p className={statValueStyle}>
                         <EditableTextField
-                            initialValue={adv.numberAppearing?.toString() ?? '1'}
+                            boundValue={adv.numberAppearing?.toString() ?? '1'}
                             updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
                         />
                     </p>
@@ -297,99 +299,102 @@ const useAddActionMenu = () => {
     return { isAddActionOpen, setIsAddActionOpen }
 }
 // const ripper = canvas.tokens.placeables.find(t => t.name === "Dimension Ripper").actor.system
-const NewActionWindow = ({ adv, isAddActionOpen, setIsAddActionOpen }: { adv: AdversaryDataModel, isAddActionOpen: boolean,setIsAddActionOpen: Dispatch<SetStateAction<boolean>> }) => {
-    const [newAction, setNewAction] = useState({
+const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>> }) => {
+    const [newAction, setNewActionInternal] = useState({
         name: 'New action', effect: '-', damage: { roll: 'd4', avg: '2', type: 'physical' }, recharge: '-'
     })
+
+    const setNewAction = useCallback(async (action: any) => {
+        setNewActionInternal(action)
+        return true
+    }, [])
+
     const updateName = useCallback(async (name: string) => {
-        newAction.name = name
-        return true
-    }, [newAction])
+        return setNewAction({...newAction, name: name})
+    }, [setNewAction, newAction])
+
     const updateEffect = useCallback(async (eff: string) => {
-        newAction.effect = eff
-        return true
-    }, [newAction])
+        return setNewAction({...newAction, effect: eff})
+    }, [setNewAction, newAction])
+
     const updateDamageRoll = useCallback(async (roll: string) => {
-        newAction.damage.roll = roll
-        return true
-    }, [newAction])
+        return setNewAction({...newAction, damage: {...newAction.damage, roll: roll}})
+    }, [setNewAction, newAction])
+
     const updateDamageAvg = useCallback(async (avg: string) => {
-        newAction.damage.avg = avg
-        return true
-    }, [newAction])
+        return setNewAction({...newAction, damage: {...newAction.damage, avg: avg}})
+    }, [setNewAction, newAction])
+
     const updateDamageType = useCallback(async (type: string) => {
-        newAction.damage.type = type
-        return true
-    }, [newAction])
+        return setNewAction({...newAction, damage: {...newAction.damage, type: type}})
+    }, [setNewAction, newAction])
+
     const updateRecharge = useCallback(async (rchg: string) => {
-        newAction.recharge = rchg
-        return true
-    }, [newAction])
+        return setNewAction({...newAction, recharge: rchg})
+    }, [setNewAction, newAction])
     
-    return (<>
-        {
-            isAddActionOpen ? <div className="aboslute bg-context-menu-fill border border-solid border-stat-block-fill rounded-sm mx-4 mb-8 p-2">
-                <p className="text-xl font-eskapade font-bold">Add Action...</p>
-                
-                {/* ACTION NAME */}
-                <div className="flex">
-                    <p>Name:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField initialValue={newAction.name} onSave={updateName} />
-                    </p>
-                </div>
+    return (
+        <div className="aboslute bg-context-menu-fill border border-solid border-stat-block-fill rounded-sm mx-4 mb-8 p-2">
+            <p className="text-xl font-eskapade font-bold">Add Action...</p>
+            
+            {/* ACTION NAME */}
+            <div className="flex">
+                <p>Name:&nbsp;</p>
+                <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                    <EditableTextField boundValue={newAction.name} onSave={updateName} />
+                </p>
+            </div>
 
-                {/* EFFECT DESCRIPTION */}
-                <div className="flex">
-                    <p>Effect:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField initialValue={newAction.effect} onSave={updateEffect} />
-                    </p>
-                </div>
+            {/* EFFECT DESCRIPTION */}
+            <div className="flex">
+                <p>Effect:&nbsp;</p>
+                <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                    <EditableTextField boundValue={newAction.effect} onSave={updateEffect} />
+                </p>
+            </div>
 
-                {/* DAMAGE ROLL */}
-                <div className="flex">
-                    <p>Damage:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField initialValue={newAction.damage.roll} onSave={updateDamageRoll} />
-                    </p>
-                </div>
+            {/* DAMAGE ROLL */}
+            <div className="flex">
+                <p>Damage:&nbsp;</p>
+                <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                    <EditableTextField boundValue={newAction.damage.roll} onSave={updateDamageRoll} />
+                </p>
+            </div>
 
-                {/* DAMAGE AVG */}
-                <div className="flex">
-                    <p>Damage Avg:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField initialValue={newAction.damage.avg} onSave={updateDamageAvg} />
-                    </p>
-                </div>
+            {/* DAMAGE AVG */}
+            <div className="flex">
+                <p>Damage Avg:&nbsp;</p>
+                <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                    <EditableTextField boundValue={newAction.damage.avg} onSave={updateDamageAvg} />
+                </p>
+            </div>
 
-                {/* DAMAGE TYPE */}
-                <div className="flex">
-                    <p>Damage Type:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField initialValue={newAction.damage.type} onSave={updateDamageType} />
-                    </p>
-                </div>
+            {/* DAMAGE TYPE */}
+            <div className="flex">
+                <p>Damage Type:&nbsp;</p>
+                <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                    <EditableTextField boundValue={newAction.damage.type} onSave={updateDamageType} />
+                </p>
+            </div>
 
-                {/* RECHARGE */}
-                <div className="flex">
-                    <p>Recharge:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField initialValue={newAction.recharge} onSave={updateRecharge} />
-                    </p>
-                </div>
+            {/* RECHARGE */}
+            <div className="flex">
+                <p>Recharge:&nbsp;</p>
+                <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                    <EditableTextField boundValue={newAction.recharge} onSave={updateRecharge} />
+                </p>
+            </div>
 
-                {/* SAVE & CANCEL BUTTONS*/}
-                <div className="flex w-full justify-between mt-8">
-                    <Button className={`${destructiveButtonClasses}`} onClick={() => setIsAddActionOpen(false)}>Cancel</Button>
-                    <Button className={`${primaryButtonClasses}`} onClick={() => {
-                        updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
-                        setIsAddActionOpen(false)
-                    }}>Save</Button>
-                </div>
-            </div> : <></>
-        }
-    </>)
+            {/* SAVE & CANCEL BUTTONS*/}
+            <div className="flex w-full justify-between mt-8">
+                <Button className={`${destructiveButtonClasses}`} onClick={() => setIsAddActionOpen(false)}>Cancel</Button>
+                <Button className={`${primaryButtonClasses}`} onClick={() => {
+                    updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
+                    setIsAddActionOpen(false)
+                }}>Save</Button>
+            </div>
+        </div>
+    )
 }
 
 const buttonShaping = "border border-solid border-stat-block-fill rounded-sm px-2 py-1"

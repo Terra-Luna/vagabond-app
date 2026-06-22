@@ -3,7 +3,7 @@ import VgLiteError from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 
-export const EditableTextField = ({ initialValue, onSave, updateProps }: { initialValue: string, onSave?: (value: string) => Promise<boolean>, updateProps?: { actor: any, propertyPath: string[] } }) => {
+export const EditableTextField = ({ boundValue, onSave, updateProps }: { boundValue: string, onSave?: (value: string) => Promise<boolean>, updateProps?: { actor: any, propertyPath: string[] } }) => {
     if (onSave && updateProps) {
         throw new VgLiteError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
     }
@@ -12,13 +12,9 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     }
 
     const [isInEditMode, setIsInEditMode] = useState(false)
-    const [value, setValue] = useState(initialValue)
+    const [editModeValue, setEditModeValue] = useState(boundValue)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const shouldSelectInputRef = useRef(false)
-
-    useEffect(() => {
-        setValue(initialValue)
-    }, [initialValue])
 
     useEffect(() => {
         if (shouldSelectInputRef.current && isInEditMode) {
@@ -30,26 +26,26 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
     const enterEditMode = useCallback(() => {
         setIsInEditMode(true)
         shouldSelectInputRef.current = true
-    }, [])
+        setEditModeValue(boundValue)
+    }, [boundValue])
 
     const reset = useCallback(() => {
-        setValue(initialValue)
+        setEditModeValue(boundValue)
         setIsInEditMode(false)
-    }, [initialValue, value])
+    }, [boundValue, editModeValue])
 
     const save = useCallback(async () => {
         let ret
         if (onSave) {
-            ret = await onSave(value)
+            ret = await onSave(editModeValue)
         }
         else {
-            ret = await updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, value);
+            ret = await updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, editModeValue);
         }
 
-        reset() // todo make these not flash
         setIsInEditMode(false)
         return ret
-    }, [value, onSave, updateProps])
+    }, [editModeValue, onSave, updateProps])
 
     const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {
         switch (e.code) {
@@ -67,16 +63,16 @@ export const EditableTextField = ({ initialValue, onSave, updateProps }: { initi
         }
 
         e.stopPropagation() // otherwise wasd results in movement
-    }, [value, onSave, initialValue, reset])
+    }, [editModeValue, onSave, boundValue, reset])
 
     if (isInEditMode) {
-        return <input ref={inputRef} className="w-auto field-sizing-content" type="text" value={value}
-            onChange={e => setValue(e.target.value)}
+        return <input ref={inputRef} className="w-auto field-sizing-content" type="text" value={editModeValue}
+            onChange={e => setEditModeValue(e.target.value)}
             onBlur={save}
             onKeyDown={handleSpecialKeypresses} />
     }
     else {
-        return <span onDoubleClick={enterEditMode}>{value}</span>
+        return <span onDoubleClick={enterEditMode}>{boundValue}</span>
     }
 }
 
@@ -85,5 +81,5 @@ export const EditableNameField = ({ actor }: { actor: FoundryActor<any> }) => {
         return !!await actor.update({ name: newName })
     }, [actor])
 
-    return <EditableTextField initialValue={(actor as any).name} onSave={updateName} />
+    return <EditableTextField boundValue={(actor as any).name} onSave={updateName} />
 }

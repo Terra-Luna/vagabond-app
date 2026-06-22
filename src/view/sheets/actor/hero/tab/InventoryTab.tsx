@@ -80,7 +80,7 @@ const CoinValue = ({ hero, value, label, path }: { hero: HeroDataModel, value: n
         <div className="flex pr-2">
             <div className={`text-text-primary text-3xl font-eskapade cursor-pointer min-w-[2ch] text-right ${glowOnHover}`}>
                 <EditableTextField
-                    initialValue={value.toString() ?? ""}
+                    boundValue={value.toString() ?? ""}
                     updateProps={{
                         actor: hero.parent,
                         propertyPath: ['inventory', 'coins', path]

@@ -34,7 +34,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                 />
                 &nbsp;
                 <span className={`${glowOnHover} cursor-pointer text-mana`}>
-                    <EditableTextField initialValue={hero.mana.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }} />
+                    <EditableTextField boundValue={hero.mana.current?.toString() ?? ""} updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }} />
                 </span>
                 <span className="slash">&nbsp;/&nbsp;</span>
                 <span className="text-mana">{hero.mana.max}</span>
