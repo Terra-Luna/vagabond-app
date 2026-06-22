@@ -6,14 +6,15 @@ import WeaponDataModel from "../../item/equip/WeaponDataModel"
  */
 export const adversaryActionSchema = () => {
     return {
-        name: new fields.StringField({ required: true, initial: 'Claws [Melee Attack]' }),
+        name: new fields.StringField({ required: true }),
         effect: new fields.HTMLField(),
         damage: new fields.SchemaField({
-            roll: new fields.StringField({ required: true, initial: '1d4' }),
-            avg: new fields.NumberField({ ...requiredInteger, initial: 2 }),
+            roll: new fields.StringField({ required: true }),
+            avg: new fields.NumberField({ ...requiredInteger }),
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
-        recharge: new fields.StringField({ ...optionalString })
+        recharge: new fields.StringField({ ...optionalString }),
+        comboCount: new fields.NumberField({ ...requiredInteger, initial: 0 })
     }
 }
 

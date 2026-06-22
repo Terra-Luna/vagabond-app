@@ -2,10 +2,10 @@ import locale from "../../../public/lang/en.json"
 
 export const fields = foundry.data.fields
 
-export const optionalString = { required: false, nullable: true }
+export const optionalString = { required: false, nullable: true, blank: false }
 export const requiredString = { required: true, nullable: false, initial: '' }
 export const standardInteger = { integer: true, min: 0, initial: 0 }
-export const requiredInteger = { required: true, integer: true, min: 0 }
+export const requiredInteger = { required: true, integer: true, min: 0, nullable: false }
 export const uncappedInteger = { required: true, integer: true, initial: 0 }
 
 export const rangeOptions = () => {

@@ -301,7 +301,7 @@ const useAddActionMenu = () => {
 // const ripper = canvas.tokens.placeables.find(t => t.name === "Dimension Ripper").actor.system
 const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>> }) => {
     const [newAction, setNewActionInternal] = useState({
-        name: 'New action', effect: '-', damage: { roll: 'd4', avg: '2', type: 'physical' }, recharge: '-'
+        name: null, effect: null, damage: { roll: null, avg: null, type: 'physical' }, recharge: null
     })
 
     const setNewAction = useCallback(async (action: any) => {
@@ -309,27 +309,27 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
         return true
     }, [])
 
-    const updateName = useCallback(async (name: string) => {
+    const updateName = useCallback(async (name: string | null) => {
         return setNewAction({...newAction, name: name})
     }, [setNewAction, newAction])
 
-    const updateEffect = useCallback(async (eff: string) => {
+    const updateEffect = useCallback(async (eff: string | null) => {
         return setNewAction({...newAction, effect: eff})
     }, [setNewAction, newAction])
 
-    const updateDamageRoll = useCallback(async (roll: string) => {
+    const updateDamageRoll = useCallback(async (roll: string | null) => {
         return setNewAction({...newAction, damage: {...newAction.damage, roll: roll}})
     }, [setNewAction, newAction])
 
-    const updateDamageAvg = useCallback(async (avg: string) => {
+    const updateDamageAvg = useCallback(async (avg: string | null) => {
         return setNewAction({...newAction, damage: {...newAction.damage, avg: avg}})
     }, [setNewAction, newAction])
 
-    const updateDamageType = useCallback(async (type: string) => {
+    const updateDamageType = useCallback(async (type: string | null) => {
         return setNewAction({...newAction, damage: {...newAction.damage, type: type}})
     }, [setNewAction, newAction])
 
-    const updateRecharge = useCallback(async (rchg: string) => {
+    const updateRecharge = useCallback(async (rchg: string | null) => {
         return setNewAction({...newAction, recharge: rchg})
     }, [setNewAction, newAction])
     
@@ -341,7 +341,7 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
             <div className="flex">
                 <p>Name:&nbsp;</p>
                 <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.name} onSave={updateName} />
+                    <EditableTextField boundValue={newAction.name} onSave={updateName} placeholder='Claws [Melee, Near]' />
                 </p>
             </div>
 
@@ -349,7 +349,7 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
             <div className="flex">
                 <p>Effect:&nbsp;</p>
                 <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.effect} onSave={updateEffect} />
+                    <EditableTextField boundValue={newAction.effect} onSave={updateEffect} placeholder='Effect description...' />
                 </p>
             </div>
 
@@ -357,7 +357,7 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
             <div className="flex">
                 <p>Damage:&nbsp;</p>
                 <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.damage.roll} onSave={updateDamageRoll} />
+                    <EditableTextField boundValue={newAction.damage.roll} onSave={updateDamageRoll} placeholder='2d4+1' />
                 </p>
             </div>
 
@@ -365,7 +365,7 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
             <div className="flex">
                 <p>Damage Avg:&nbsp;</p>
                 <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.damage.avg} onSave={updateDamageAvg} />
+                    <EditableTextField boundValue={newAction.damage.avg} onSave={updateDamageAvg} placeholder='5' />
                 </p>
             </div>
 
@@ -381,7 +381,7 @@ const NewActionWindow = ({ adv, setIsAddActionOpen }: { adv: AdversaryDataModel,
             <div className="flex">
                 <p>Recharge:&nbsp;</p>
                 <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                    <EditableTextField boundValue={newAction.recharge} onSave={updateRecharge} />
+                    <EditableTextField boundValue={newAction.recharge} onSave={updateRecharge} placeholder="Cd4" />
                 </p>
             </div>
 

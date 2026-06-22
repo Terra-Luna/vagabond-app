@@ -3,7 +3,13 @@ import VgLiteError from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 
-export const EditableTextField = ({ boundValue, onSave, updateProps }: { boundValue: string, onSave?: (value: string) => Promise<boolean>, updateProps?: { actor: any, propertyPath: string[] } }) => {
+export const EditableTextField = (
+    { boundValue, onSave, updateProps, placeholder = "Enter text..." }: { 
+        boundValue: string | null, 
+        onSave?: (value: string | null) => Promise<boolean>, 
+        updateProps?: { actor: any, propertyPath: string[] },
+        placeholder?: string
+}) => {
     if (onSave && updateProps) {
         throw new VgLiteError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
     }
@@ -65,8 +71,9 @@ export const EditableTextField = ({ boundValue, onSave, updateProps }: { boundVa
         e.stopPropagation() // otherwise wasd results in movement
     }, [editModeValue, onSave, boundValue, reset])
 
-    if (isInEditMode) {
-        return <input ref={inputRef} className="w-auto field-sizing-content" type="text" value={editModeValue}
+    if (isInEditMode || boundValue === '' || boundValue == null) {
+        const inputStyle = (editModeValue === '' || editModeValue == null) ? "field-sizing-content border border-solid border-stat-block-fill rounded-xs px-1" : "w-auto field-sizing-content"
+        return <input ref={inputRef} className={inputStyle} type="text" value={editModeValue ?? ''} placeholder={placeholder}
             onChange={e => setEditModeValue(e.target.value)}
             onBlur={save}
             onKeyDown={handleSpecialKeypresses} />
@@ -77,7 +84,7 @@ export const EditableTextField = ({ boundValue, onSave, updateProps }: { boundVa
 }
 
 export const EditableNameField = ({ actor }: { actor: FoundryActor<any> }) => {
-    const updateName = useCallback(async (newName: string) => {
+    const updateName = useCallback(async (newName: string | null) => {
         return !!await actor.update({ name: newName })
     }, [actor])
 
