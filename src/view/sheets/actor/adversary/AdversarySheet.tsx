@@ -23,7 +23,7 @@ export default class AdversarySheet extends VgLiteActorSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 400,
-            height: 480
+            height: 700
         },
         window: {
             resizable: true
@@ -290,8 +290,10 @@ const Actions = ({ adv, setIsAddActionOpen, setEditTarget }: { adv: AdversaryDat
                 <Plus size={16} className="text-stat-block-fill" onClick={() => setIsAddActionOpen(true)} />
             </div>
             {/* DISPLAY COMBO FIRST */}
-            <div>
-                { adv.combo.name !== '' ? <p className="font-paradigm font-bold">{adv.combo.name}</p> : <></> }
+            <div onContextMenu={(e) => onCtxMenu(e, [
+                { icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }
+            ])}>
+                { adv.combo.name !== '' ? <p className="font-paradigm font-bold">Combo: {adv.combo.name}</p> : <></> }
             </div>
             {/* DISPLAY ALL ACTIONS */}
             <div>
@@ -321,8 +323,11 @@ const Actions = ({ adv, setIsAddActionOpen, setEditTarget }: { adv: AdversaryDat
 }
 
 const deleteAction = (adv: AdversaryDataModel, action: any) => {
-    console.log(adv.actions.filter(it => it != action))
-    updateDocumentAtPath( adv.parent, ['actions'], adv.actions.filter(it => it != action))
+    updateDocumentAtPath(adv.parent, ['actions'], adv.actions.filter(it => it != action))
+}
+
+const deleteCombo = (adv: AdversaryDataModel) => {
+    updateDocumentAtPath(adv.parent, ['combo'], null)
 }
 
 const useAddActionMenu = () => {
@@ -337,9 +342,8 @@ interface AdversaryAction {
 
 const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTarget }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>>, editTarget?: AdversaryAction | null, setEditTarget: Dispatch<SetStateAction<any>>}) => {
     const editTargetIndex = adv.actions.indexOf(editTarget as any)
-    const [newAction, setNewActionInternal] = editTarget == null ?
-        useState<AdversaryAction>() : useState<AdversaryAction>(editTarget as AdversaryAction)
-
+    const [newAction, setNewActionInternal] = editTarget == null ? useState<AdversaryAction>() : useState<AdversaryAction>(editTarget as AdversaryAction)
+    
     const setNewAction = useCallback(async (action: any) => {
         setNewActionInternal(action)
         return true
@@ -368,76 +372,164 @@ const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTa
     const updateRecharge = useCallback(async (rchg: string | null) => {
         return setNewAction({...newAction, recharge: rchg})
     }, [setNewAction, newAction])
+
+    const [comboName, setComboName] = useState<string | null>(null)
+    const [isCombo, setIsCombo] = useState(false)
+    const [comboSelections, setComboSelections] = useState<{ action: AdversaryAction, comboCount: string | null }[]>([])
+   
+    const updateComboName = useCallback(async (name: string | null) => {
+        setComboName(name)
+        return true
+    }, [])
+
+    const updateComboSelections = (action: AdversaryAction) => {
+        console.log(comboSelections, comboSelections.find(it => it.action.name === action.name))
+        if (comboSelections.length === 0 || comboSelections.findIndex(it => it.action.name === action.name) === -1) {
+            setComboSelections([...comboSelections, { action: action as AdversaryAction, comboCount: null }])
+        }
+        else {
+            setComboSelections(comboSelections.filter(it => it.action.name !== action.name))
+        }
+        console.log(comboSelections)
+    }
+
+    const udpateComboCount = async (action: AdversaryAction, count: string | null) => {
+        const comboAction = comboSelections.find(it => it.action.name === action.name)
+        if (comboAction) {
+            comboAction.comboCount = count
+        }
+        setComboSelections(comboSelections)
+        return true
+    }
     
+    /**
+     * VIEW
+     */
     return (
-        <div className="aboslute bg-context-menu-fill border border-solid border-stat-block-fill rounded-sm mx-4 mb-8 p-2">
-            <p className="text-xl font-eskapade font-bold">Add Action...</p>
-            
-            <div className="space-y-2">
-                {/* ACTION NAME */}
-                <div className="flex">
-                    <p>Name:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField boundValue={newAction?.name ?? null} onSave={updateName} placeholder='Claws [Melee, Near]' />
-                    </p>
-                </div>
-
-                {/* EFFECT DESCRIPTION */}
-                <div className="flex">
-                    <p>Effect:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField boundValue={newAction?.effect ?? null} onSave={updateEffect} placeholder='Effect description...' />
-                    </p>
-                </div>
-
-                {/* DAMAGE ROLL */}
-                <div className="flex">
-                    <p>Damage:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField boundValue={newAction?.damage?.roll ?? null} onSave={updateDamageRoll} placeholder='XdY+Z' />
-                    </p>
-                </div>
-
-                {/* DAMAGE AVG */}
-                <div className="flex">
-                    <p>Damage Avg:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField boundValue={newAction?.damage?.avg?.toString() ?? null} onSave={updateDamageAvg} placeholder='0' />
-                    </p>
-                </div>
-
-                {/* DAMAGE TYPE */}
-                <div className="flex">
-                    <p>Damage Type:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField boundValue={newAction?.damage?.type ?? null} onSave={updateDamageType} />
-                    </p>
-                </div>
-
-                {/* RECHARGE */}
-                <div className="flex">
-                    <p>Recharge:&nbsp;</p>
-                    <p className={`font-eskapade font-bold ${glowOnHover}`}>
-                        <EditableTextField boundValue={newAction?.recharge ?? null} onSave={updateRecharge} placeholder="CdX" />
-                    </p>
-                </div>
+        <div className="aboslute bg-context-menu-fill border border-solid border-stat-block-fill rounded-sm mx-4 mb-8 p-2 space-y-2">
+            <div>
+                <p className="text-xl font-eskapade font-bold mb-1">Add Action...</p>
+                {
+                    adv.actions.length > 0 ?
+                        <div className="flex space-x-2">
+                            <input
+                                type="checkbox"
+                                checked={isCombo}
+                                onChange={() => setIsCombo(!isCombo)}
+                            />
+                            <p>Action Combo</p>
+                        </div> : undefined
+                }
             </div>
+
+            {
+                isCombo ? <div className="space-y-1">
+                    <div className="flex">
+                        <p>Combo Name:&nbsp;</p>
+                        <EditableTextField boundValue={comboName} onSave={updateComboName} placeholder='Enter name...' />
+                    </div>
+                    {
+                        adv.actions.map((act) => (
+                            <div key={act.name} className="flex content-center">
+                                <input
+                                    type="checkbox"
+                                    checked={comboSelections.findIndex(it => it.action.name === act.name) > -1}
+                                    onChange={() => updateComboSelections(act as AdversaryAction)}
+                                    className="mx-2"
+                                />
+                                {act.name}
+                                <EditableTextField
+                                    boundValue={comboSelections.find(it => it.action.name === act.name)?.comboCount ?? null}
+                                    onSave={(count) => udpateComboCount(act as AdversaryAction, count)}
+                                    placeholder="1"
+                                />
+                            </div>
+                        ))
+                    }
+                </div> :
+                <div className="space-y-2">
+                    {/* ACTION NAME */}
+                    <div className="flex">
+                        <p>Name:&nbsp;</p>
+                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <EditableTextField boundValue={newAction?.name ?? null} onSave={updateName} placeholder='Claws [Melee, Near]' />
+                        </p>
+                    </div>
+
+                    {/* EFFECT DESCRIPTION */}
+                    <div className="flex">
+                        <p>Effect:&nbsp;</p>
+                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <EditableTextField boundValue={newAction?.effect ?? null} onSave={updateEffect} placeholder='Effect description...' />
+                        </p>
+                    </div>
+
+                    {/* DAMAGE ROLL */}
+                    <div className="flex">
+                        <p>Damage:&nbsp;</p>
+                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <EditableTextField boundValue={newAction?.damage?.roll ?? null} onSave={updateDamageRoll} placeholder='XdY+Z' />
+                        </p>
+                    </div>
+
+                    {/* DAMAGE AVG */}
+                    <div className="flex">
+                        <p>Damage Avg:&nbsp;</p>
+                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <EditableTextField boundValue={newAction?.damage?.avg?.toString() ?? null} onSave={updateDamageAvg} placeholder='0' />
+                        </p>
+                    </div>
+
+                    {/* DAMAGE TYPE */}
+                    <div className="flex">
+                        <p>Damage Type:&nbsp;</p>
+                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <EditableTextField boundValue={newAction?.damage?.type ?? null} onSave={updateDamageType} />
+                        </p>
+                    </div>
+
+                    {/* RECHARGE */}
+                    <div className="flex">
+                        <p>Recharge:&nbsp;</p>
+                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <EditableTextField boundValue={newAction?.recharge ?? null} onSave={updateRecharge} placeholder="CdX" />
+                        </p>
+                    </div>
+                </div>
+            }
 
             {/* SAVE & CANCEL BUTTONS*/}
             <div className="flex w-full justify-between mt-8">
                 <DestructiveButton onClick={() => {
+                    console.log(comboSelections)
                     setEditTarget(null)
                     setIsAddActionOpen(false)
                 }}>
                     Cancel
                 </DestructiveButton>
                 <PrimaryButton icon={<Save size={14} />} onClick={() => {
-                    if (editTarget == null) {
+                    if (isCombo) {
+                        if (comboSelections.length > 0 && comboSelections.every(it => it.comboCount)) {
+                            let comboActions: any[] = []
+                            comboSelections.forEach(cs => {
+                                comboActions.push({ ...adv.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount })
+                            })
+                            updateDocumentAtPath(adv.parent, ['combo'], { name: comboName, actions: comboActions })
+                        }
+                        else {
+                            ui.notifications?.error("Error: [Name] and [Count] are required fields and at least 1 action must be selected.")
+                            return
+                        }
+                    }
+                    else if (!newAction?.name) {
+                        ui.notifications?.error("Error: [Name] is a required field.")
+                        return
+                    }
+                    else if (editTarget == null) {
                         updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
                     }
                     else {
                         let actions = adv.actions
-                        console.log(actions, newAction)
                         actions[editTargetIndex] = newAction as any
                         updateDocumentAtPath(adv.parent, ['actions'], [...actions])
                     }

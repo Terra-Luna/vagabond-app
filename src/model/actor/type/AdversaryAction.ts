@@ -13,8 +13,7 @@ export const adversaryActionSchema = () => {
             avg: new fields.NumberField({ ...optionalInteger }),
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
-        recharge: new fields.StringField({ ...optionalString }),
-        comboCount: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        recharge: new fields.StringField({ ...optionalString })
     }
 }
 
@@ -24,6 +23,10 @@ export const adversaryActionSchema = () => {
 export const adversaryActionComboSchema = () => {
     return {
         name: new fields.StringField({ ...requiredString }),
-        actions: new fields.ArrayField(new fields.SchemaField({ ...adversaryActionSchema() }))
+        actions: new fields.ArrayField(
+            new fields.SchemaField({
+                ...adversaryActionSchema(),
+                comboCount: new fields.NumberField({ ...requiredInteger })
+            }))
     }
 }

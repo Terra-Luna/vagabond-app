@@ -5,8 +5,8 @@ describe('set threat level', () => {
     test('set tl with combo', () => {
         //Setup
         const actions = [
-            { damage: { roll: '1d6', avg: 3 } },
-            { damage: { roll: '1d8', avg: 4 } }
+            { damage: { roll: '1d6', avg: 3 }, comboCount: 1 },
+            { damage: { roll: '1d8', avg: 4 }, comboCount: 1 }
         ]
         const adv = {
             health: { max: 31 },
