@@ -13,6 +13,9 @@ import { glowOnHover } from "../../VgLiteSheet"
 import { DamageTypeIconDisplay, OptionsSelectionMenu, StringOptionsDisplay } from "../../../component/OptionsSelectionMenu"
 import { DestructiveButton, PrimaryButton } from "../../../component/Button"
 import { useContextMenu } from "../../../component/ContextMenu"
+import { rollDamage } from "../../../../combat/dice-rolls"
+import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
+import { subMenuLayout, tableBorderRounded } from "../../../common/border-styles"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
@@ -182,9 +185,9 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
 
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div className="p-1 mx-2">
-            <div className="grid grid-flow-row auto-rows-max grid-cols-2 gap-y-2 text-text-primary">
-                
+        <div className="flex p-2 justify-between">
+            {/* LEFT COLUMN */}
+            <div className="flex flex-col gap-y-2">
                 {/* ZONE */}
                 <div className="flex items-center">
                     <p className={statLabelStyle}>{locale.zone}&nbsp;</p>
@@ -197,9 +200,26 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                         />
                     </div>
                 </div>
+                {/* MORALE */}
+                <div className="flex items-center">
+                    <p className={statLabelStyle}>{locale.morale}&nbsp;</p>
+                    <p className={statValueStyle}>
+                        <EditableTextField
+                            boundValue={adv.morale?.toString() ?? '6'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
+                            placeholder="6"
+                        />
+                    </p>
+                </div>
+                {/* WEAKNESS & IMMUNITY */}
+                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
+                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
+            </div>
 
+            {/* RIGHT COLUMN */}
+            <div className="flex flex-col items-end gap-y-2">
                 {/* SPEED */}
-                <div className="flex items-center justify-end">
+                <div className="flex items-center">
                     <p className={statLabelStyle}>{locale.speed}&nbsp;</p>
                     <div className="flex space-x-1">
                         <p className={`flex space-x-1 ${statValueStyle}`}>
@@ -219,19 +239,6 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                         </div>
                     </div>
                 </div>
-
-                {/* MORALE */}
-                <div className="flex items-center">
-                    <p className={statLabelStyle}>{locale.morale}&nbsp;</p>
-                    <p className={statValueStyle}>
-                        <EditableTextField
-                            boundValue={adv.morale?.toString() ?? '6'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
-                            placeholder="6"
-                        />
-                    </p>
-                </div>
-
                 {/* NUBMER APPEARING */}
                 <div className="flex items-center justify-end">
                     <p className={statLabelStyle}>{locale.appearing}&nbsp;</p>
@@ -243,12 +250,9 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                         />
                     </p>
                 </div>
-
-                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
+                {/* SENSENS & STATUS IMMUNITIES */}
                 <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
-                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
                 <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
-
             </div>
         </div>
     )
@@ -283,23 +287,27 @@ const SelectableTextField = ({ adv, label, path, localeObj }: { adv: AdversaryDa
 const Actions = ({ adv, setIsAddActionOpen, setEditTarget }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>>, setEditTarget: Dispatch<SetStateAction<any>> }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
-        <div className="ml-2 mt-2">
+        <div className="mx-2 mt-4">
             {/* HEADER W/ ADD BUTTON */}
             <div className="flex items-center gap-x-2">
                 <p className="font-eskapade font-bold text-text-primary text-xl">{locale.actions}</p>
-                <Plus size={16} className="text-stat-block-fill" onClick={() => setIsAddActionOpen(true)} />
+                <Plus size={18} strokeWidth={4} className={`text-stat-block-fill cursor-pointer ${glowOnHover}`} onClick={() => setIsAddActionOpen(true)} />
             </div>
             {/* DISPLAY COMBO FIRST */}
-            <div onContextMenu={(e) => onCtxMenu(e, [
-                { icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }
-            ])}>
-                { adv.combo.name !== '' ? <p className="font-paradigm font-bold">Combo: {adv.combo.name}</p> : <></> }
+            <div onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}>
+                {
+                    adv.combo.name !== '' ?
+                        <div className={`flex w-full gap-x-2 p-2 mb-2 ${tableBorderRounded}`}>
+                            <p className="font-paradigm font-bold">Combo:</p>
+                            <p>{adv.combo.name}</p>
+                        </div> : <></>
+                }
             </div>
             {/* DISPLAY ALL ACTIONS */}
-            <div>
+            <div className="grid grid-cols-2 gap-2">
                 {
                     adv.actions.map(act => (
-                        <div key={act.name} className="flex flex-wrap" onContextMenu={(e) => onCtxMenu(e, [
+                        <div key={act.name} className={`h-fit p-2 ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: PenSquare, label: 'Edit', action: () => {
                                     setEditTarget(act)
@@ -308,11 +316,27 @@ const Actions = ({ adv, setIsAddActionOpen, setEditTarget }: { adv: AdversaryDat
                             },
                             { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
                         ])}>
-                            <p className="font-bold">{act.name}&nbsp;</p>
-                            <p className="">{act.effect}&nbsp;</p>
-                            <p className="text-stat-block-fill font-eskapade font-bold">{act.damage.roll}&nbsp;</p>
-                            <p className="">|&nbsp;{act.damage.avg}&nbsp;</p>
-                            <p className="">{act.recharge}</p>
+                            <div className="flex justify-between gap-x-2">
+                                <p className="font-bold">{act.name}</p>
+                                <div className='w-[16px]'>
+                                    <DamageTypeIcon dmgType={act.damage.type ?? ''} size={16} />
+                                </div>
+                            </div>
+                            
+                            <p className="">{act.effect}</p>
+                            <div className="flex gap-2 ml-2">
+                                <p>Dmg:</p>
+                                <p className={`text-lg text-text-dmg font-eskapade font-bold cursor-pointer ${glowOnHover}`} onClick={() => rollDamage(adv.parent, act.damage.roll ?? '')}>
+                                    {act.damage.roll}
+                                </p>
+                                <p>|</p>
+                                <p className={`text-lg text-text-dmg font-eskapade font-bold cursor-pointer ${glowOnHover}`} onClick={() => rollDamage(adv.parent, act.damage.avg?.toString() ?? '')}>
+                                    {act.damage.avg}
+                                </p>
+                            </div>
+                            {
+                                act.recharge != null && act.recharge != '' ? <p className="ml-2">Recharge: {act.recharge}</p> : <></>
+                            }
                         </div>
                     ))
                 }
@@ -406,11 +430,11 @@ const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTa
      * VIEW
      */
     return (
-        <div className="aboslute bg-context-menu-fill border border-solid border-stat-block-fill rounded-sm mx-4 mb-8 p-2 space-y-2">
+        <div className={subMenuLayout}>
             <div>
-                <p className="text-xl font-eskapade font-bold mb-1">Add Action...</p>
+                <p className="text-xl font-eskapade font-bold mb-1">{editTarget ? "Edit Action" : "New Action"}</p>
                 {
-                    adv.actions.length > 0 ?
+                    editTarget == null && adv.actions.length > 0 ?
                         <div className="flex space-x-2">
                             <input
                                 type="checkbox"
@@ -451,49 +475,49 @@ const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTa
                     {/* ACTION NAME */}
                     <div className="flex">
                         <p>Name:&nbsp;</p>
-                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <div className={`font-eskapade font-bold ${glowOnHover}`}>
                             <EditableTextField boundValue={newAction?.name ?? null} onSave={updateName} placeholder='Claws [Melee, Near]' />
-                        </p>
+                        </div>
                     </div>
 
                     {/* EFFECT DESCRIPTION */}
                     <div className="flex">
                         <p>Effect:&nbsp;</p>
-                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <div className={`font-eskapade font-bold ${glowOnHover}`}>
                             <EditableTextField boundValue={newAction?.effect ?? null} onSave={updateEffect} placeholder='Effect description...' />
-                        </p>
-                    </div>
+                        </div>
+                    </div> 
 
                     {/* DAMAGE ROLL */}
                     <div className="flex">
                         <p>Damage:&nbsp;</p>
-                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <div className={`font-eskapade font-bold ${glowOnHover}`}>
                             <EditableTextField boundValue={newAction?.damage?.roll ?? null} onSave={updateDamageRoll} placeholder='XdY+Z' />
-                        </p>
+                        </div>
                     </div>
 
                     {/* DAMAGE AVG */}
                     <div className="flex">
                         <p>Damage Avg:&nbsp;</p>
-                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <div className={`font-eskapade font-bold ${glowOnHover}`}>
                             <EditableTextField boundValue={newAction?.damage?.avg?.toString() ?? null} onSave={updateDamageAvg} placeholder='0' />
-                        </p>
+                        </div>
                     </div>
 
                     {/* DAMAGE TYPE */}
                     <div className="flex">
                         <p>Damage Type:&nbsp;</p>
-                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <div className={`font-eskapade font-bold ${glowOnHover}`}>
                             <EditableTextField boundValue={newAction?.damage?.type ?? null} onSave={updateDamageType} />
-                        </p>
+                        </div>
                     </div>
 
                     {/* RECHARGE */}
                     <div className="flex">
                         <p>Recharge:&nbsp;</p>
-                        <p className={`font-eskapade font-bold ${glowOnHover}`}>
+                        <div className={`font-eskapade font-bold ${glowOnHover}`}>
                             <EditableTextField boundValue={newAction?.recharge ?? null} onSave={updateRecharge} placeholder="CdX" />
-                        </p>
+                        </div>
                     </div>
                 </div>
             }
@@ -539,6 +563,25 @@ const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTa
                     Save
                 </PrimaryButton>
             </div>
+        </div>
+    )
+}
+
+const useAddAbilityMenu = () => {
+    const [isAddAbilityMenuOpen, setIsAddAbilityMenuOpen] = useState(false)
+    const [editTargetAbility, setEditTargetAbility] = useState(null)
+    return { isAddAbilityMenuOpen, setIsAddAbilityMenuOpen, editTargetAbility, setEditTargetAbility }
+}
+
+interface AdversaryAbility {
+    name: string, description: string
+}
+
+const NewAbilityWindow = ({ adv, setIsMenuOpen, editTarget = null, setEditTarget }: { adv: AdversaryDataModel, setIsMenuOpen: Dispatch<SetStateAction<boolean>>, editTarget?: AdversaryAbility | null, setEditTarget: Dispatch<SetStateAction<any>> }) => {
+    
+    return (
+        <div className={subMenuLayout}>
+            
         </div>
     )
 }
