@@ -157,11 +157,11 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
     const rootElement = html.querySelector('.vglite-react-chat-root') as HTMLElement
     if (!rootElement) return
 
-
     const blueprint = message.getFlag("vagabond-lite" as any, "blueprint")
     if (!blueprint) return
 
-    const root = createRoot(rootElement)
+    const scaduRoot = rootElement.attachShadow({ mode: 'open' })
+    const root = createRoot(scaduRoot)
     root.render(rehydrateElement(blueprint))
 })
 
