@@ -20,6 +20,16 @@
     }
   },
   "VGLITE": {
+    "RollResult": {
+      "crit": "CRITICAL SUCCESS",
+      "success": "SUCCESS",
+      "failure": "FAILURE"
+    },
+    "FavorHinder": {
+      "favor": "Favored",
+      "hinder": "Hindered",
+      "none": ""
+    },
     "AlchemyCategories": {
       "acid": {
         "name": "Acid",

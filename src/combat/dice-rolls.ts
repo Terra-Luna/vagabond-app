@@ -1,48 +1,38 @@
 import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponDataModel"
+import lang from "../../public/lang/en.json"
 
-/**
- * Rolls a skill check and posts the results to chat.
- * Returns a SkillCheckResult enum value.
- */
-export enum FavorHinder {
-    None, Favored, Hindered
-}
-export enum CritSuccessFail {
-    Crit = "CRIT",
-    Success = "SUCCESS",
-    Fail = "FAILURE"
-}
 export interface SkillCheckResult {
     skillName: string,
     difficulty: number,
-    favorHinder: FavorHinder,
+    favorHinder: string,
     d20: number,
     d6: number,
     total: number,
-    result: CritSuccessFail
+    result: string,
+    rolls: any[]
 }
 export const rollSkillCheck = async (
     skillName: string,
     difficulty: number,
     clickEvent: React.MouseEvent<HTMLDivElement>,
-    favorHinder: FavorHinder = FavorHinder.None,
+    favorHinder: string = lang.VGLITE.FavorHinder.none,
     critsOn: number = 20
 ): Promise<SkillCheckResult> => {
     /**
      * Override favorHinder with shift/ctrl key hold.
      */
     if (clickEvent.shiftKey) {
-        favorHinder = FavorHinder.Favored
+        favorHinder = lang.VGLITE.FavorHinder.favor
     }
     else if (clickEvent.ctrlKey) {
-        favorHinder = FavorHinder.Hindered
+        favorHinder = lang.VGLITE.FavorHinder.hinder
     }
 
     /**
      * Build roll formula and evaluate.
      */
     let formula = `1d20`
-    favorHinder === FavorHinder.Favored ? formula += `+1d6` : (favorHinder === FavorHinder.Hindered ? formula += `-1d6` : {})
+    favorHinder === lang.VGLITE.FavorHinder.favor ? formula += `+1d6` : (favorHinder === lang.VGLITE.FavorHinder.hinder ? formula += `-1d6` : {})
     const roll = await new Roll(formula).evaluate()
 
     /**
@@ -63,7 +53,8 @@ export const rollSkillCheck = async (
         d20: d20Res,
         d6: d6Res,
         total: roll.total,
-        result: isCrit ? CritSuccessFail.Crit : (isSuccess ? CritSuccessFail.Success : CritSuccessFail.Fail)
+        result: isCrit ? lang.VGLITE.RollResult.crit : (isSuccess ? lang.VGLITE.RollResult.success : lang.VGLITE.RollResult.failure),
+        rolls: [roll]
     }
 }
 

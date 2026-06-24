@@ -5,7 +5,6 @@ import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { EditorRefPlugin } from '@lexical/react/LexicalEditorRefPlugin';
-
 import { IFrameWrapper } from './IFrameWrapper';
 import { $insertNodes, LexicalEditor } from 'lexical';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';

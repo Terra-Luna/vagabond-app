@@ -24,7 +24,6 @@
   --color-text-aux: ;
   --color-text-dmg: ;
   --color-text-glow: ;
-  --color-text-bold: ;
   --color-ic-skill-trained: ;
   --color-ic-skill-untrained: ;
   --color-skill-divider: ;
@@ -73,6 +72,8 @@
   --color-physical: ;
   --color-white: ;
   --color-black: ;
+  --color-success: ;
+  --color-failure: ;
 }
 
 .light {
@@ -96,7 +97,6 @@
   --color-text-aux: #747069;
   --color-text-dmg: #e7000b;
   --color-text-glow: #6a2e2a;
-  --color-text-bold: #1d1a19;
   --color-ic-skill-trained: #3d5541;
   --color-ic-skill-untrained: #aeb2a4;
   --color-skill-divider: #b7b0a7;
@@ -145,6 +145,8 @@
   --color-healing: #00FF00;
   --color-physical: #080707;
   --color-black: #000000;
+  --color-success: #eafff2;
+  --color-failure: #ffe4e4;
 }
 
 .dark {
@@ -168,7 +170,6 @@
   --color-text-aux: #c1bebd;
   --color-text-dmg: #ee5e61;
   --color-text-glow: #c5b358;
-  --color-text-bold: #c1af56;
   --color-ic-skill-trained: #c5b358;
   --color-ic-skill-untrained: #57534d;
   --color-skill-divider: #47412e;
@@ -217,6 +218,8 @@
   --color-physical: #e7e8f0;
   --color-white: #ffffff;
   --color-black: #000000;
+  --color-success: #166534;
+  --color-failure: #b91c1c;
 }
 
 .react-tabs {
