@@ -4,19 +4,20 @@ import { Minus, Plus } from 'lucide-react'
 import { tableBorder } from '../common/border-styles'
 import { DiceRoll } from './DiceRoll'
 import { ChatCardBanner } from "./ChatCardBanner"
+import { BaseChatCardHost } from "./BaseChatCardHost"
 
 const chatCardBodyStyle = `${tableBorder} rounded-md text-text-primary text-lg font-eskapade font-bold bg-sheet-main-fill`
 
 export const SkillCheckChatCard = ({ portrait, result }: { portrait: string, result: SkillCheckResult }) => {
     const [resultTextColor] = result.result === lang.VGLITE.RollResult.failure ? ['text-failure'] : ['text-success']
     return (
-        <div className={chatCardBodyStyle}>
-            <ChatCardBanner portrait={portrait} title={result.skillName} />
-            <div className="p-2">
+        <BaseChatCardHost
+            banner={<ChatCardBanner portrait={portrait} title={`${result.skillName} Check`} />}
+            contents={<>
                 <DiceGraphics d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
                 <TotalsFooter total={result.total} difficulty={result.difficulty} csf={result.result} resultTextColor={resultTextColor} />
-            </div>
-        </div>
+            </>}
+        />
     )
 }
 

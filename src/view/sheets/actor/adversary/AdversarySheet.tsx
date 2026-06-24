@@ -553,7 +553,7 @@ const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
             <ActionMenuHeader label={locale.abilities} onClick={() => setIsAddMenuOpen(true)} />
             {
                 adv.abilities.map(ability => (
-                    <div onContextMenu={(e) => onCtxMenu(e, [
+                    <div key={ability.name} onContextMenu={(e) => onCtxMenu(e, [
                         { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(ability); setIsAddMenuOpen(true); } },
                         { icon: Trash, label: 'Delete', action: () => deleteAbility(adv, ability), isDestructive: true }
                     ])}>
