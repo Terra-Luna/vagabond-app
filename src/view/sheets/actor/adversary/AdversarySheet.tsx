@@ -194,28 +194,22 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
             {/* LEFT COLUMN */}
             <div className="flex flex-col gap-y-2">
                 {/* ZONE */}
-                <div className="flex items-center">
-                    <p className={statLabelStyle}>{locale.zone}&nbsp;</p>
-                    <div className="text-stat-block-fill">
-                        <DropDown label=''
-                            options={createDropdownEntries(lang.VGLITE.Zones)}
-                            parent={adv.parent}
-                            updateMechanism={{ updatePath: ['zone'] }}
-                            value={adv.zone}
-                        />
-                    </div>
-                </div>
+                <StatBlockField label={locale.zone} content={
+                    <DropDown label=''
+                        options={createDropdownEntries(lang.VGLITE.Zones)}
+                        parent={adv.parent}
+                        updateMechanism={{ updatePath: ['zone'] }}
+                        value={adv.zone}
+                    />
+                } />
                 {/* MORALE */}
-                <div className="flex items-center">
-                    <p className={statLabelStyle}>{locale.morale}&nbsp;</p>
-                    <p className={statValueStyle}>
-                        <EditableTextField
-                            boundValue={adv.morale?.toString() ?? '6'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
-                            placeholder="6"
-                        />
-                    </p>
-                </div>
+                <StatBlockField label={locale.morale} content={
+                    <EditableTextField
+                        boundValue={adv.morale?.toString() ?? '6'}
+                        updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
+                        placeholder="6"
+                    />
+                } />
                 {/* WEAKNESS & IMMUNITY */}
                 <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
                 <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
@@ -224,8 +218,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
             {/* RIGHT COLUMN */}
             <div className="flex flex-col items-end gap-y-2">
                 {/* SPEED */}
-                <div className="flex items-center">
-                    <p className={statLabelStyle}>{locale.speed}&nbsp;</p>
+                <StatBlockField label={locale.speed} content={
                     <div className="flex space-x-1">
                         <p className={`flex space-x-1 ${statValueStyle}`}>
                             <EditableTextField
@@ -243,22 +236,28 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                             />
                         </div>
                     </div>
-                </div>
+                } />
                 {/* NUBMER APPEARING */}
-                <div className="flex items-center justify-end">
-                    <p className={statLabelStyle}>{locale.appearing}&nbsp;</p>
-                    <p className={statValueStyle}>
-                        <EditableTextField
-                            boundValue={adv.numberAppearing?.toString() ?? '1'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
-                            placeholder="1d6"
-                        />
-                    </p>
-                </div>
+                <StatBlockField label={locale.appearing} content={
+                    <EditableTextField
+                        boundValue={adv.numberAppearing?.toString() ?? '1'}
+                        updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
+                        placeholder="1d6"
+                    />
+                } />
                 {/* SENSENS & STATUS IMMUNITIES */}
                 <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
                 <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
             </div>
+        </div>
+    )
+}
+
+const StatBlockField = ({ label, content }) => {
+    return (
+        <div className="flex items-center space-x-2">
+            <p className={statLabelStyle}>{label}</p>
+            <div className={statValueStyle}>{content}</div>
         </div>
     )
 }
@@ -456,24 +455,23 @@ const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarg
 
             {
                 isCombo ? <div className="space-y-1">
-                    <div className="flex">
-                        <p>Combo Name:&nbsp;</p>
+                    <div className="flex space-x-2">
+                        <p>Combo Name:</p>
                         <EditableTextField boundValue={comboName} onSave={updateComboName} placeholder='Enter name...' />
                     </div>
                     {
                         adv.actions.map((act) => (
-                            <div key={act.name} className="flex content-center">
+                            <div key={act.name} className="flex content-center space-x-1">
                                 <input
                                     type="checkbox"
                                     checked={comboSelections.findIndex(it => it.action.name === act.name) > -1}
                                     onChange={() => updateComboSelections(act as AdversaryAction)}
-                                    className="mx-2"
                                 />
-                                {act.name}
+                                <div>{act.name}: x</div>
                                 <EditableTextField
                                     boundValue={comboSelections.find(it => it.action.name === act.name)?.comboCount ?? null}
                                     onSave={(count) => udpateComboCount(act as AdversaryAction, count)}
-                                    placeholder="1"
+                                    placeholder="#"
                                 />
                             </div>
                         ))
