@@ -15,7 +15,7 @@ const centeredAlignment = "absolute top-1/2 left-1/2 transform -translate-x-1/2 
 const textStyle = "text-2xl text-center font-eskapade font-bold"
 const textBg = "bg-sheet-main-fill rounded-full p-0.5"
 
-export const DiceRoll = ({ faces, result }: { faces: number, result: number }) => {
+export const DiceRoll = ({ faces, result, exploded = false }: { faces: number, result: number, exploded?: boolean }) => {
     return (
         <div className="relative w-[56px] h-[56px]">
             <DieIcon faces={faces} size={56} />

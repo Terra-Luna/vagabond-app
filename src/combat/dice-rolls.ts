@@ -60,15 +60,15 @@ export const rollSkillCheck = async (
 }
 
 /**
- * Basic class to help organize damage roll results. Marks
+ * Basic interface to help organize damage roll results. Marks
  * exploded rolls with an asterisk.
  */
-export class DamageRollResult {
-    atkName: string = ''
-    bonus: number = 0
-    total: number = 0
-    rollsSummary: { result: number, dieSize: number, exploded: boolean }[] = []
-    rolls: any[] = []
+export interface DamageRollResult {
+    atkName: string
+    bonus: number
+    total: number
+    rollsSummary: { result: number, dieSize: number, exploded: boolean }[]
+    rolls: any[]
 }
 
 export const rollDamage = async (
@@ -105,13 +105,17 @@ export const rollDamage = async (
             return total + getResults(roll).length
         }, 0)
 
-    const result = new DamageRollResult()
-    result.atkName = atkName
-    result.bonus = (totalDice * perDieDmgBonus) + flatDmgBonus
-    result.total =
-        damageRoll.total + bonusDamageRoll.total +
-        explosions.reduce((total, roll) => { return total + roll.total }, 0) +
-        result.bonus
+    const totalBonus = (totalDice * perDieDmgBonus) + flatDmgBonus
+    const result = {
+        atkName: atkName,
+        bonus: totalBonus,
+        total: damageRoll.total + bonusDamageRoll.total +
+            explosions.reduce((total, roll) => { return total + roll.total }, 0) +
+            totalBonus,
+        rollsSummary: [],
+        rolls: [damageRoll, bonusDamageRoll]
+    } as DamageRollResult
+
     getResults(damageRoll).forEach(r => {
         result.rollsSummary.push({
             result: r.result,
