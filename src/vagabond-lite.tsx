@@ -1,3 +1,5 @@
+// @ts-ignore
+import vgliteStyles from '../public/styles/vagabond-lite.css?inline'
 import AlchemicalItemDataModel from "./model/item/equip/AlchemicalDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
@@ -22,8 +24,10 @@ import { runAllMacros } from "./macro/all-macros"
 import { getId } from "./utils/modelUtil"
 import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
-import { rehydrateElement } from "./view/chat/ChatCardSerilizer"
-import { SkillCheckChatCard } from "./view/chat/ChatCard"
+import { rehydrateElement } from "./view/chat/ChatCardManager"
+import { SkillCheckChatCard } from "./view/chat/SkillCheckCard"
+import { DamageRollCard } from "./view/chat/DamageRollCard"
+import { TrackerUpdateChatCard } from "./view/chat/TrackerUpdateChatCard"
 
 // add our fonts
 const fontFaces = [
@@ -162,7 +166,15 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 
     const scaduRoot = rootElement.attachShadow({ mode: 'open' })
     const root = createRoot(scaduRoot)
-    root.render(rehydrateElement(blueprint))
+
+    root.render(
+        <div>
+            <style>{vgliteStyles}</style>
+            <div className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
+                {rehydrateElement(blueprint)}
+            </div>
+        </div>
+    )
 })
 
 // @ts-ignore
@@ -192,5 +204,7 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet
 (window as any).runVgLiteDebugMacros = runAllMacros
 
 export const ComponentRegistry = {
-    "SkillCheckChatCard": SkillCheckChatCard
+    "SkillCheckChatCard": SkillCheckChatCard,
+    "DamageRollCard": DamageRollCard,
+    "TrackerUpdateChatCard": TrackerUpdateChatCard
 }

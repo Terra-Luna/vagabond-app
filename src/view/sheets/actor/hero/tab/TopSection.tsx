@@ -8,7 +8,8 @@ import { rollSkillCheck } from "../../../../../combat/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { glowOnHover } from "../../../VgLiteSheet"
-import { sendVgLiteChatMessage, SkillCheckChatCard } from "../../../../chat/ChatCard"
+import { SkillCheckChatCard } from "../../../../chat/SkillCheckCard"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 
 interface Health {
     current: number | null
