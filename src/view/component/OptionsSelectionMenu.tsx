@@ -15,7 +15,7 @@ export const OptionsSelectionMenu = ({ actor, label, path, options }: { actor: A
         <div>
             <div className="flex items-center">
                 {label}
-                <Menu menuButton={<SquarePen size={16} className="text-stat-block-fill ml-2" />}>
+                <Menu menuButton={<SquarePen size={16} className={`text-stat-block-fill ml-2 cursor-pointer ${glowOnHover}`} />}>
                     <div className="columns-3 bg-context-menu-fill border border-solid border-table-border rounded-md p-2">
                         {
                             options.map(opt => (

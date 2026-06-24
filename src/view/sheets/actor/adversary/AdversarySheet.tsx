@@ -16,6 +16,8 @@ import { useContextMenu } from "../../../component/ContextMenu"
 import { rollDamage } from "../../../../combat/dice-rolls"
 import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
 import { subMenuLayout, tableBorderRounded } from "../../../common/border-styles"
+import { EnrichedContent } from "../../../component/EnrichedContent"
+import { damageRoll } from "../../../common/text-styles"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
@@ -36,7 +38,8 @@ export default class AdversarySheet extends VgLiteActorSheet {
 
 const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
     const adv = actor.system
-    const { isAddActionOpen, setIsAddActionOpen, editTarget, setEditTarget } = useAddActionMenu()
+    const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
+    const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
     return (
         <div className="@container flex grow overflow-y-hidden">
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
@@ -50,10 +53,13 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
                 <div className="overflow-y-auto">
                     <Description adv={adv} />
                     <StatBlock adv={adv} />
-                    <Actions adv={adv} setIsAddActionOpen={setIsAddActionOpen} setEditTarget={setEditTarget} />
-                    {/* <Abilities adv={adv} /> */}
+                    <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
+                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
                     { isAddActionOpen ? 
-                        <NewActionWindow adv={adv} setIsAddActionOpen={setIsAddActionOpen} editTarget={editTarget} setEditTarget={setEditTarget} /> : undefined
+                        <NewActionWindow adv={adv} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
+                    }
+                    {isAddAbilityOpen ?
+                        <NewAbilityWindow adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
                     }
                 </div>
             </div>
@@ -176,7 +182,6 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
                     height={54}
                     defaultValue={adv.description}
                     onChange={onDescriptionChange}
-                    className="bg-transparent"
                 />
             </div>
         </div>
@@ -185,7 +190,7 @@ const Description = ({ adv }: { adv: AdversaryDataModel }) => {
 
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
-        <div className="flex p-2 justify-between">
+        <div className="flex py-2 px-4 justify-between">
             {/* LEFT COLUMN */}
             <div className="flex flex-col gap-y-2">
                 {/* ZONE */}
@@ -284,61 +289,64 @@ const SelectableTextField = ({ adv, label, path, localeObj }: { adv: AdversaryDa
     )
 }
 
-const Actions = ({ adv, setIsAddActionOpen, setEditTarget }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>>, setEditTarget: Dispatch<SetStateAction<any>> }) => {
+const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="mx-2 mt-4">
             {/* HEADER W/ ADD BUTTON */}
-            <div className="flex items-center gap-x-2">
-                <p className="font-eskapade font-bold text-text-primary text-xl">{locale.actions}</p>
-                <Plus size={18} strokeWidth={4} className={`text-stat-block-fill cursor-pointer ${glowOnHover}`} onClick={() => setIsAddActionOpen(true)} />
-            </div>
+            <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
             {/* DISPLAY COMBO FIRST */}
             <div onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}>
                 {
                     adv.combo.name !== '' ?
-                        <div className={`flex w-full gap-x-2 p-2 mb-2 ${tableBorderRounded}`}>
+                        <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
                             <p className="font-paradigm font-bold">Combo:</p>
                             <p>{adv.combo.name}</p>
                         </div> : <></>
                 }
             </div>
             {/* DISPLAY ALL ACTIONS */}
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-1">
                 {
-                    adv.actions.map(act => (
-                        <div key={act.name} className={`h-fit p-2 ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
-                            {
-                                icon: PenSquare, label: 'Edit', action: () => {
-                                    setEditTarget(act)
-                                    setIsAddActionOpen(true)
-                                }
-                            },
-                            { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
-                        ])}>
-                            <div className="flex justify-between gap-x-2">
-                                <p className="font-bold">{act.name}</p>
-                                <div className='w-[16px]'>
-                                    <DamageTypeIcon dmgType={act.damage.type ?? ''} size={16} />
+                    adv.actions.sort((a, b) => a.name.length - b.name.length).map((act, i) => {
+                        const spanCls = (i === adv.actions.length - 1) && (adv.actions.length % 2) ? 'col-span-2' : ''
+                        return (
+                            <div key={act.name} className={`p-2 ${spanCls} ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
+                                { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
+                                { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
+                            ])}>
+                                {/* ACTION NAME */}
+                                <div className="flex justify-between gap-x-2">
+                                    <p className="font-bold">{act.name}</p>
+                                    <div className='w-[16px]'>
+                                        <DamageTypeIcon dmgType={act.damage.type ?? ''} size={16} />
+                                    </div>
+                                </div>
+                                {/* ACTION TRAITS... */}
+                                <div className="ml-2">
+                                    <EnrichedContent content={act.effect} />
+                                    {
+                                        act.damage.roll ?
+                                            <div className="flex gap-2">
+                                                <p>Dmg:</p>
+                                                <p className={damageRoll} onClick={() => rollDamage(adv.parent, act.damage.roll ?? '')}>
+                                                    {act.damage.roll}
+                                                </p>
+                                                <p>|</p>
+                                                <p className={damageRoll} onClick={() => rollDamage(adv.parent, act.damage.avg?.toString() ?? '')}>
+                                                    {act.damage.avg}
+                                                </p>
+                                            </div> : <></>
+                                    }
+                                    {
+                                        act.recharge != null && act.recharge != '' ?
+                                            <div className="flex gap-x-2"> {'Recharge'}<EnrichedContent content={act.recharge} /></div>
+                                            : <></>
+                                    }
                                 </div>
                             </div>
-                            
-                            <p className="">{act.effect}</p>
-                            <div className="flex gap-2 ml-2">
-                                <p>Dmg:</p>
-                                <p className={`text-lg text-text-dmg font-eskapade font-bold cursor-pointer ${glowOnHover}`} onClick={() => rollDamage(adv.parent, act.damage.roll ?? '')}>
-                                    {act.damage.roll}
-                                </p>
-                                <p>|</p>
-                                <p className={`text-lg text-text-dmg font-eskapade font-bold cursor-pointer ${glowOnHover}`} onClick={() => rollDamage(adv.parent, act.damage.avg?.toString() ?? '')}>
-                                    {act.damage.avg}
-                                </p>
-                            </div>
-                            {
-                                act.recharge != null && act.recharge != '' ? <p className="ml-2">Recharge: {act.recharge}</p> : <></>
-                            }
-                        </div>
-                    ))
+                        )
+                    })
                 }
             </div>
             <ContextMenu />
@@ -356,15 +364,15 @@ const deleteCombo = (adv: AdversaryDataModel) => {
 
 const useAddActionMenu = () => {
     const [isAddActionOpen, setIsAddActionOpen] = useState(false)
-    const [editTarget, setEditTarget] = useState(null)
-    return { isAddActionOpen, setIsAddActionOpen, editTarget, setEditTarget }
+    const [editActionTarget, setEditActionTarget] = useState(null)
+    return { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget }
 }
 
 interface AdversaryAction {
     name: string, effect: string, damage: { roll: string, avg: number, type: string }, recharge: string
 }
 
-const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTarget }: { adv: AdversaryDataModel, setIsAddActionOpen: Dispatch<SetStateAction<boolean>>, editTarget?: AdversaryAction | null, setEditTarget: Dispatch<SetStateAction<any>>}) => {
+const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
     const editTargetIndex = adv.actions.indexOf(editTarget as any)
     const [newAction, setNewActionInternal] = editTarget == null ? useState<AdversaryAction>() : useState<AdversaryAction>(editTarget as AdversaryAction)
     
@@ -523,65 +531,159 @@ const NewActionWindow = ({ adv, setIsAddActionOpen, editTarget = null, setEditTa
             }
 
             {/* SAVE & CANCEL BUTTONS*/}
-            <div className="flex w-full justify-between mt-8">
-                <DestructiveButton onClick={() => {
-                    console.log(comboSelections)
-                    setEditTarget(null)
-                    setIsAddActionOpen(false)
-                }}>
-                    Cancel
-                </DestructiveButton>
-                <PrimaryButton icon={<Save size={14} />} onClick={() => {
-                    if (isCombo) {
-                        if (comboSelections.length > 0 && comboSelections.every(it => it.comboCount)) {
-                            let comboActions: any[] = []
-                            comboSelections.forEach(cs => {
-                                comboActions.push({ ...adv.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount })
-                            })
-                            updateDocumentAtPath(adv.parent, ['combo'], { name: comboName, actions: comboActions })
-                        }
-                        else {
-                            ui.notifications?.error("Error: [Name] and [Count] are required fields and at least 1 action must be selected.")
-                            return
-                        }
-                    }
-                    else if (!newAction?.name) {
-                        ui.notifications?.error("Error: [Name] is a required field.")
-                        return
-                    }
-                    else if (editTarget == null) {
-                        updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
-                    }
-                    else {
-                        let actions = adv.actions
-                        actions[editTargetIndex] = newAction as any
-                        updateDocumentAtPath(adv.parent, ['actions'], [...actions])
-                    }
-                    setEditTarget(null)
-                    setIsAddActionOpen(false)
-                }}>
-                    Save
-                </PrimaryButton>
-            </div>
+            <AddMenuButtons
+                onSave={() => saveNewAction(adv, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex)}
+                setEditTarget={setEditTarget}
+                setIsAddMenuOpen={setIsAddMenuOpen}
+            />
+        </div>
+    )
+}
+
+const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
+    const { onCtxMenu, ContextMenu } = useContextMenu()
+    return (
+        <div className="m-2 space-y-1">
+            <ActionMenuHeader label={locale.abilities} onClick={() => setIsAddMenuOpen(true)} />
+            {
+                adv.abilities.map(ability => (
+                    <div onContextMenu={(e) => onCtxMenu(e, [
+                        { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(ability); setIsAddMenuOpen(true); } },
+                        { icon: Trash, label: 'Delete', action: () => deleteAbility(adv, ability), isDestructive: true }
+                    ])}>
+                        <div className={`${tableBorderRounded} p-2`}>
+                            <p className="font-paradigm font-bold">{ability.name}</p>
+                            <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" />
+                        </div>
+                    </div>
+                ))
+            }
+            <ContextMenu />
+        </div>
+    )
+}
+
+const NewAbilityWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
+    const editTargetIndex = adv.abilities.indexOf(editTarget as any)
+    const [newAbility, setNewAbilityInternal] = editTarget == null ? useState<AdversaryAbility>() : useState<AdversaryAbility>(editTarget as AdversaryAbility)
+    const setNewAbility = useCallback(async (ability: any) => {
+        setNewAbilityInternal(ability)
+        return true
+    }, [])
+
+    const updateName = useCallback(async (name: string | null) => {
+        return setNewAbility({ ...newAbility, name: name })
+    }, [setNewAbility, newAbility])
+
+    const updateDescription = useCallback(async (eff: string | null) => {
+        return setNewAbility({ ...newAbility, description: eff })
+    }, [setNewAbility, newAbility])
+
+    /**
+     * VIEW
+     */
+    return (
+        <div className={subMenuLayout}>
+            <EditableTextField boundValue={newAbility?.name ?? ''} onSave={updateName} placeholder="New ability..." />
+            <RichTextField defaultValue={newAbility?.description} onChange={updateDescription} className="text-xs font-paradigm font-normal" />
+            {/* SAVE & CANCEL BUTTONS*/}
+            <AddMenuButtons
+                onSave={() => saveNewAbility(adv, newAbility, editTarget, editTargetIndex)}
+                setEditTarget={setEditTarget}
+                setIsAddMenuOpen={setIsAddMenuOpen}
+            />
         </div>
     )
 }
 
 const useAddAbilityMenu = () => {
-    const [isAddAbilityMenuOpen, setIsAddAbilityMenuOpen] = useState(false)
-    const [editTargetAbility, setEditTargetAbility] = useState(null)
-    return { isAddAbilityMenuOpen, setIsAddAbilityMenuOpen, editTargetAbility, setEditTargetAbility }
+    const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)
+    const [editAbilityTarget, setEditAbilityTarget] = useState(null)
+    return { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget }
 }
 
 interface AdversaryAbility {
     name: string, description: string
 }
 
-const NewAbilityWindow = ({ adv, setIsMenuOpen, editTarget = null, setEditTarget }: { adv: AdversaryDataModel, setIsMenuOpen: Dispatch<SetStateAction<boolean>>, editTarget?: AdversaryAbility | null, setEditTarget: Dispatch<SetStateAction<any>> }) => {
-    
+const ActionMenuHeader = ({ label, onClick }) => {
     return (
-        <div className={subMenuLayout}>
-            
-        </div>
+        < div className="flex items-center gap-x-2" >
+            <p className="font-eskapade font-bold text-text-primary text-xl">{label}</p>
+            <AddNewIconButton onClick={onClick} />
+        </div >
     )
+}
+
+const AddNewIconButton = ({ onClick }) => {
+    return (
+        <Plus size={18} strokeWidth={4} className={`text-stat-block-fill cursor-pointer ${glowOnHover}`} onClick={onClick} />
+    )
+}
+
+const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
+    return (
+        < div className="flex w-full justify-between mt-8" >
+            <DestructiveButton onClick={() => {
+                setEditTarget(null)
+                setIsAddMenuOpen(false)
+            }}>
+                Cancel
+            </DestructiveButton>
+            <PrimaryButton icon={<Save size={14} />} onClick={() => {
+                onSave()
+                setEditTarget(null)
+                setIsAddMenuOpen(false)
+            }}>
+                Save
+            </PrimaryButton>
+        </div >
+    )
+}
+
+const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex) => {
+    if (isCombo) {
+        if (comboSelections.length > 0 && comboSelections.every(it => it.comboCount)) {
+            let comboActions: any[] = []
+            comboSelections.forEach(cs => {
+                comboActions.push({ ...adv.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount })
+            })
+            updateDocumentAtPath(adv.parent, ['combo'], { name: comboName, actions: comboActions })
+        }
+        else {
+            ui.notifications?.error("Error: [Name] and [Count] are required fields and at least 1 action must be selected.")
+            return
+        }
+    }
+    else if (!newAction?.name) {
+        ui.notifications?.error("Error: [Name] is a required field.")
+        return
+    }
+    else if (editTarget == null) {
+        updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
+    }
+    else {
+        let actions = adv.actions
+        actions[editTargetIndex] = newAction
+        updateDocumentAtPath(adv.parent, ['actions'], [...actions])
+    }
+}
+
+const saveNewAbility = (adv, newAbility, editTarget, editTargetIndex) => {
+    if (!newAbility?.name) {
+        ui.notifications?.error("Error: [Name] is a required field.")
+        return
+    }
+    else if (editTarget == null) {
+        updateDocumentAtPath(adv.parent, ['abilities'], [...adv.abilities, newAbility])
+    }
+    else {
+        let abilities = adv.abilities
+        abilities[editTargetIndex] = newAbility
+        updateDocumentAtPath(adv.parent, ['abilities'], [...abilities])
+    }
+}
+
+const deleteAbility = (adv: AdversaryDataModel, ability: any) => {
+    updateDocumentAtPath(adv.parent, ['abilities'], adv.abilities.filter(it => it != ability))
 }
