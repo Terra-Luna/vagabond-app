@@ -145,8 +145,8 @@
   --color-healing: #00FF00;
   --color-physical: #080707;
   --color-black: #000000;
-  --color-success: #eafff2;
-  --color-failure: #ffe4e4;
+  --color-success: #289652;
+  --color-failure: #b91c1c;
 }
 
 .dark {
@@ -218,8 +218,8 @@
   --color-physical: #e7e8f0;
   --color-white: #ffffff;
   --color-black: #000000;
-  --color-success: #166534;
-  --color-failure: #b91c1c;
+  --color-success: #4cb675;
+  --color-failure: #cf3131;
 }
 
 .react-tabs {
