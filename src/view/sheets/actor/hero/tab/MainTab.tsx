@@ -12,6 +12,8 @@ import { useContextMenu } from "../../../../component/ContextMenu"
 import { glowOnHover } from "../../../VgLiteSheet"
 import { getArmor } from "../../../../../model/actor/type/Armor"
 import { Skill } from "./TopSection"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
+import { DamageRollCard } from "../../../../chat/DamageRollCard"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -63,7 +65,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         onDragEnter={(e) => onDragEnter(e, index)}
                         onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                         onDragEnd={(e) => onDragEnd(e, index)}
-                        onContextMenu={(e) => onCtxMenu(e, weaponContextMenuItems(hero, weapon))}
+                        onContextMenu={async (e) => onCtxMenu(e, weaponContextMenuItems(hero, weapon))}
                     >
                         <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">
                             <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
@@ -72,7 +74,10 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                 <div className="flex content-right">
                                     <div
                                         className={`${dmgStyle} ${glowOnHover}`}
-                                        onClick={() => rollWeaponDamage(hero.parent, weapon)}
+                                        onClick={async () => {
+                                            const dmgRoll = await rollWeaponDamage(weapon)
+                                            sendVgLiteChatMessage(hero, <DamageRollCard portrait={hero.parent.prototypeToken.texture.src} result={dmgRoll} />, dmgRoll.rolls)
+                                        }}
                                     >
                                         {gripStateDamage(weapon)}
                                     </div>

@@ -18,6 +18,8 @@ import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
 import { subMenuLayout, tableBorderRounded } from "../../../common/border-styles"
 import { EnrichedContent } from "../../../component/EnrichedContent"
 import { damageRoll } from "../../../common/text-styles"
+import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
+import { DamageRollCard } from "../../../chat/DamageRollCard"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
@@ -328,11 +330,17 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                         act.damage.roll ?
                                             <div className="flex gap-2">
                                                 <p>Dmg:</p>
-                                                <p className={damageRoll} onClick={() => rollDamage(adv.parent, act.damage.roll ?? '')}>
+                                                <p className={damageRoll} onClick={async () => {
+                                                    const result = await rollDamage(act.name, act.damage.roll ?? '')
+                                                    sendVgLiteChatMessage(adv, <DamageRollCard portrait={adv.parent.prototypeToken.texture.src} result={result} />, result.rolls)
+                                                }}>
                                                     {act.damage.roll}
                                                 </p>
                                                 <p>|</p>
-                                                <p className={damageRoll} onClick={() => rollDamage(adv.parent, act.damage.avg?.toString() ?? '')}>
+                                                <p className={damageRoll} onClick={async () => {
+                                                    const result = await rollDamage(act.name, act.damage.avg ?? '')
+                                                    sendVgLiteChatMessage(adv, <DamageRollCard portrait={adv.parent.prototypeToken.texture.src} result={result} />, result.rolls)
+                                                }}>
                                                     {act.damage.avg}
                                                 </p>
                                             </div> : <></>

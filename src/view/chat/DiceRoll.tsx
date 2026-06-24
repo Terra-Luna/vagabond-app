@@ -27,7 +27,8 @@ export const DiceRoll = ({ faces, result }: { faces: number, result: number }) =
 }
 
 const DieIcon = ({ faces, size }: { faces: number, size: number }) => {
-    const steez = `h-[${size}px] w-[${size}px] fill-stat-block-fill stroke-stat-block-fill`
+    const steez = `h-[${size}px] w-[${size}px] fill-text-secondary stroke-text-secondary stroke-1`
+    console.log(steez)
     if (faces === 20) return <D20 className={steez} />
     else if (faces === 12) return <D12 className={steez} />
     else if (faces === 10) return <D10 className={steez} />

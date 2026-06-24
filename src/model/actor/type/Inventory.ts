@@ -10,6 +10,9 @@ import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../item/e
 import WeaponDataModel, { equipWeapon, toggleGripState } from "../../item/equip/WeaponDataModel"
 import HeroDataModel from "../HeroDataModel"
 import { rollWeaponDamage } from "../../../combat/dice-rolls"
+import { sendVgLiteChatMessage } from "../../../view/chat/ChatCardManager"
+import { DamageRollCard } from "../../../view/chat/DamageRollCard"
+import { createElement } from "react"
 
 export const inventorySchema = () => {
     return {
@@ -113,7 +116,14 @@ export const deleteItems = async (hero: HeroDataModel, itemIds: string[]) => {
 
 export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataModel): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = [
-        { icon: Sword, label: 'Attack', action: () => rollWeaponDamage(hero.parent, weapon) },
+        {
+            icon: Sword,
+            label: 'Attack',
+            action: async () => {
+                const dmgRoll = await rollWeaponDamage(weapon)
+                sendVgLiteChatMessage(hero, createElement(DamageRollCard, { portrait: hero.parent.prototypeToken.texture.src, result: dmgRoll }), dmgRoll.rolls)
+            }
+        }
     ]
     if (weapon.grip.style === 'V') {
         menuItems.push(
