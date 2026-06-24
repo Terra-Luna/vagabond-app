@@ -157,7 +157,7 @@ const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: strin
     return (
         <div className={`flex justify-between items-center font-eskapade text-lg ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
-                sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.img} result={await rollSkillCheck(name, value, e)} />)
+                sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.prototypeToken.texture.src} result={await rollSkillCheck(name, value, e)} />)
             }
         }>
             <div className="ml-1 flex flex-col">
@@ -193,7 +193,7 @@ export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDa
                 <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover} cursor-pointer`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
-                        sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.img} result={await rollSkillCheck(name, value, e)} />)
+                        sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.prototypeToken.texture.src} result={await rollSkillCheck(name, value, e)} />)
                     }
                 }>
                     <div>{name}</div>

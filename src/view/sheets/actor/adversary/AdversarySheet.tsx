@@ -54,10 +54,10 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
                     <Description adv={adv} />
                     <StatBlock adv={adv} />
                     <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
-                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
-                    { isAddActionOpen ? 
+                    {isAddActionOpen ?
                         <NewActionWindow adv={adv} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
                     }
+                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
                     {isAddAbilityOpen ?
                         <NewAbilityWindow adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
                     }
