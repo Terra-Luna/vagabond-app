@@ -73,19 +73,19 @@ export class DamageRollResult {
 
 export const rollDamage = async (
     atkName: string,
-    dmgFormula: string,
+    dmgFormula: string | number,
     bonusDieFormula: string = '0',
     flatDmgBonus: number = 0,
     perDieDmgBonus: number = 0,
     canExplode: boolean = false,
     explodesOn: number[] = []
 ): Promise<DamageRollResult> => {
-    const damageRoll = await new Roll(dmgFormula).evaluate()
+    const damageRoll = await new Roll(dmgFormula.toString()).evaluate()
     const bonusDamageRoll = await new Roll(bonusDieFormula).evaluate()
     const explosions: Roll.Evaluated<Roll>[] = []
 
     if (canExplode) {
-        if (isSafeToExplode(dmgFormula, explodesOn)) {
+        if (isSafeToExplode(dmgFormula.toString(), explodesOn)) {
             if (explodesOn.length < 1) {
                 // Default: explode on max val if not otherwise specified.
                 explodesOn.push(damageRoll.dice[0].faces as number)
