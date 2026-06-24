@@ -8,6 +8,7 @@ import { rollSkillCheck } from "../../../../../combat/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { glowOnHover } from "../../../VgLiteSheet"
+import { sendVgLiteChatMessage, SkillCheckChatCard } from "../../../../chat/ChatCard"
 
 interface Health {
     current: number | null
@@ -155,7 +156,9 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
     return (
         <div className={`flex justify-between items-center font-eskapade text-lg ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
-            async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }
+            async (e: React.MouseEvent<HTMLDivElement>) => {
+                sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.img} result={await rollSkillCheck(name, value, e)} />)
+            }
         }>
             <div className="ml-1 flex flex-col">
                 <span className="text-xl font-bold">{name}</span>
@@ -189,7 +192,9 @@ export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDa
             <div className="flex items-center ml-1">
                 <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover} cursor-pointer`} onClick={
-                    async (e: React.MouseEvent<HTMLDivElement>) => { rollSkillCheck(hero.parent, name, value, e) }
+                    async (e: React.MouseEvent<HTMLDivElement>) => {
+                        sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.img} result={await rollSkillCheck(name, value, e)} />)
+                    }
                 }>
                     <div>{name}</div>
                     <div className={(isAttack ? 'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center': 'text-xl mr-2')}>{value}</div>

@@ -7,12 +7,22 @@ import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponData
 export enum FavorHinder {
     None, Favored, Hindered
 }
-export enum SkillCheckResult {
-    Crit, Success, Failure
+export enum CritSuccessFail {
+    Crit = "CRIT",
+    Success = "SUCCESS",
+    Fail = "FAILURE"
+}
+export interface SkillCheckResult {
+    skillName: string,
+    difficulty: number,
+    favorHinder: FavorHinder,
+    d20: number,
+    d6: number,
+    total: number,
+    result: CritSuccessFail
 }
 export const rollSkillCheck = async (
-    actor: Actor,
-    skill: string,
+    skillName: string,
     difficulty: number,
     clickEvent: React.MouseEvent<HTMLDivElement>,
     favorHinder: FavorHinder = FavorHinder.None,
@@ -29,55 +39,32 @@ export const rollSkillCheck = async (
     }
 
     /**
-     * Load the required rolls.
+     * Build roll formula and evaluate.
      */
-    const rolls = [await new Roll('1d20').evaluate()]
-    if (favorHinder != FavorHinder.None) {
-        rolls.push(await new Roll('1d6').evaluate())
-    }
+    let formula = `1d20`
+    favorHinder === FavorHinder.Favored ? formula += `+1d6` : (favorHinder === FavorHinder.Hindered ? formula += `-1d6` : {})
+    const roll = await new Roll(formula).evaluate()
 
     /**
-     * Process roll results.
+     * Extract roll results...
      */
-    const d20Result = getResults(rolls[0])[0].result
-    let favorHinderResult = 0
-    let skillCheckTotal = d20Result
-    if (rolls.length > 1) {
-        favorHinderResult = getResults(rolls[1])[0].result
-        favorHinder == FavorHinder.Favored ?
-            skillCheckTotal += favorHinderResult :
-            skillCheckTotal = Math.max(0, skillCheckTotal - favorHinderResult)
+    const isSuccess = roll.total >= difficulty
+    const terms = roll.terms.filter((term): term is foundry.dice.terms.DiceTerm => term instanceof foundry.dice.terms.DiceTerm)
+    const d20Term = terms.find(it => it.faces === 20)
+    const d6Term = terms.find(it => it.faces === 6)
+    const d20Res = d20Term?.results.find(r => r.active)?.result ?? 0
+    const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
+    const isCrit = d20Res >= critsOn
+
+    return {
+        skillName: skillName,
+        difficulty: difficulty,
+        favorHinder: favorHinder,
+        d20: d20Res,
+        d6: d6Res,
+        total: roll.total,
+        result: isCrit ? CritSuccessFail.Crit : (isSuccess ? CritSuccessFail.Success : CritSuccessFail.Fail)
     }
-
-    /**
-     * Determine final result as crit, success, or failure.
-     */
-    const result = d20Result >= critsOn ? SkillCheckResult.Crit : (
-        skillCheckTotal >= difficulty ? SkillCheckResult.Success : SkillCheckResult.Failure
-    )
-
-    /**
-     * Placeholder string builder to send a basic summary to chat.
-     */
-    const summary = `Result: ${SkillCheckResult[result]}`
-    let rollSummary = `${d20Result}`
-    if (favorHinder == FavorHinder.Favored) {
-        rollSummary += `+${favorHinderResult} (${skillCheckTotal})`
-    }
-    else if (favorHinder == FavorHinder.Hindered) {
-        rollSummary += `-${favorHinderResult} (${skillCheckTotal})`
-    }
-
-    /**
-     * TODO: build the contents of SkillCheckCard.tsx and apply them here.
-     */
-    ChatMessage.create({
-        speaker: { actor: actor.id, alias: actor.name },
-        content: `<h4>${skill} Check</h4><p>${rollSummary} vs. ${difficulty}<br>${summary}</p>`,
-        rolls: [...rolls]
-    })
-
-    return result
 }
 
 /**

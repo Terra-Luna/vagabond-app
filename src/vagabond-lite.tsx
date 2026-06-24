@@ -21,6 +21,9 @@ import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
 import { getId } from "./utils/modelUtil"
 import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
+import { createRoot } from "react-dom/client"
+import { rehydrateElement } from "./view/chat/ChatCardSerilizer"
+import { SkillCheckChatCard } from "./view/chat/ChatCard"
 
 // add our fonts
 const fontFaces = [
@@ -150,6 +153,18 @@ Hooks.on("renderItemSheetV2", (_, html) => {
     })
 })
 
+Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
+    const rootElement = html.querySelector('.vglite-react-chat-root') as HTMLElement
+    if (!rootElement) return
+
+
+    const blueprint = message.getFlag("vagabond-lite" as any, "blueprint")
+    if (!blueprint) return
+
+    const root = createRoot(rootElement)
+    root.render(rehydrateElement(blueprint))
+})
+
 // @ts-ignore
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
@@ -175,3 +190,7 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet
 });
 
 (window as any).runVgLiteDebugMacros = runAllMacros
+
+export const ComponentRegistry = {
+    "SkillCheckChatCard": SkillCheckChatCard
+}
