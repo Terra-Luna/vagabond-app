@@ -1,15 +1,17 @@
 import lang from "../../../public/lang/en.json"
 import { SkillCheckResult } from '../../combat/dice-rolls'
 import { Minus, Plus } from 'lucide-react'
-import { DiceRoll } from './DiceRoll'
-import { ChatCardBanner } from "./ChatCardBanner"
-import { BaseChatCardHost } from "./BaseChatCardHost"
+import { DiceRoll } from './component/DiceRoll'
+import { ChatCardBanner } from "./component/ChatCardBanner"
+import { BaseChatCardHost } from "./component/BaseChatCardHost"
+import { getTokenImg } from "../../utils/modelUtil"
 
-export const SkillCheckChatCard = ({ portrait, result }: { portrait: string, result: SkillCheckResult }) => {
+export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
+    const actor = game.actors?.get(actorId)
     const [resultTextColor] = result.result === lang.VGLITE.RollResult.failure ? ['text-failure'] : ['text-success']
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={portrait} title={`${result.skillName} Check`} />}
+            banner={<ChatCardBanner portrait={getTokenImg(actor)} title={`${result.skillName} Check`} />}
             contents={<>
                 <DiceGraphics d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
                 <TotalsFooter total={result.total} difficulty={result.difficulty} csf={result.result} resultTextColor={resultTextColor} />

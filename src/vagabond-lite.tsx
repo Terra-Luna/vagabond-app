@@ -115,7 +115,6 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
 
 Hooks.on("createItem", (item, options, userId) => {
     if (!item.parent || item.parent.documentName !== "Actor") return
-    console.log(options)
     if (isInventoryItem(item)) {
         const items = item.parent.items
         const newSortVal = Math.max.apply(Math, items.map(function (i) { return i.sort })) + 1000
@@ -158,23 +157,35 @@ Hooks.on("renderItemSheetV2", (_, html) => {
 })
 
 Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
-    const rootElement = html.querySelector('.vglite-react-chat-root') as HTMLElement
-    if (!rootElement) return
+    const renderVgLiteChatMessages = () => {
+        const rootElement = html.querySelector('.vglite-react-chat-root') as HTMLElement
+        if (!rootElement) return
 
-    const blueprint = message.getFlag("vagabond-lite" as any, "blueprint")
-    if (!blueprint) return
+        const blueprint = message.getFlag("vagabond-lite" as any, "blueprint")
+        if (!blueprint) return
 
-    const scaduRoot = rootElement.attachShadow({ mode: 'open' })
-    const root = createRoot(scaduRoot)
+        const scaduRoot = rootElement.attachShadow({ mode: 'open' })
+        const root = createRoot(scaduRoot)
 
-    root.render(
-        <div>
-            <style>{vgliteStyles}</style>
-            <div className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
-                {rehydrateElement(blueprint)}
+        root.render(
+            <div>
+                <style>{vgliteStyles}</style>
+                <div className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
+                    {rehydrateElement(blueprint)}
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
+
+    if (canvas?.ready) {
+        renderVgLiteChatMessages()
+    }
+    else {
+        Hooks.once("canvasReady", () => {
+            renderVgLiteChatMessages()
+        })
+    }
+
 })
 
 // @ts-ignore

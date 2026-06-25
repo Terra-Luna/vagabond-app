@@ -116,11 +116,8 @@ export const rollDamage = async (
         rollsSummary: buildRollSummary(damageRollTerms, explosionTerms, explodesOn),
         rolls: [damageRoll]
     } as DamageRollResult
-
-    console.log(result)
     result.rolls = [damageRoll]
     if (canExplode) result.rolls.push(combinedExplosions)
-
     return result
 }
 
@@ -172,13 +169,11 @@ function mergeExplosions(explosions: Roll.Evaluated<Roll<EmptyObject>>[]): Roll.
  * @returns 
  */
 function isSafeToExplode(faces: number | undefined, explodesOn: number[]): boolean {
-    //console.log("Checking explosion safety:", formula, explodesOn)
     for (let i = 1; i <= (faces ?? 0); i++) {
         if (explodesOn.indexOf(i) === -1) {
             return true
         }
     }
-    //console.log("Unsafe explosions detected!", formula, explodesOn)
     return false
 }
 

@@ -20,6 +20,7 @@ import { EnrichedContent } from "../../../component/EnrichedContent"
 import { damageRoll } from "../../../common/text-styles"
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
 import { DamageRollCard } from "../../../chat/DamageRollCard"
+import { getId, getTargets } from "../../../../utils/modelUtil"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
@@ -334,8 +335,8 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                                     const result = await rollDamage(act.name, act.damage.type, act.damage.roll ?? '')
                                                     sendVgLiteChatMessage(adv,
                                                         <DamageRollCard
-                                                            portrait={adv.parent.prototypeToken.texture.src}
-                                                            targetIds={Array.from(game.user?.targets ?? []).map(t => t.id) as string[]}
+                                                            actorId={getId(adv)}
+                                                            targetIds={getTargets()}
                                                             result={result}
                                                         />, result.rolls
                                                     )
@@ -347,8 +348,8 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                                     const result = await rollDamage(act.name, act.damage.type, act.damage.avg ?? '')
                                                     sendVgLiteChatMessage(adv,
                                                         <DamageRollCard
-                                                            portrait={adv.parent.prototypeToken.texture.src}
-                                                            targetIds={Array.from(game.user?.targets ?? []).map(t => t.id) as string[]}
+                                                            actorId={getId(adv)}
+                                                            targetIds={getTargets()}
                                                             result={result} />, result.rolls)
                                                 }}>
                                                     {act.damage.avg}
@@ -432,14 +433,12 @@ const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarg
     }, [])
 
     const updateComboSelections = (action: AdversaryAction) => {
-        console.log(comboSelections, comboSelections.find(it => it.action.name === action.name))
         if (comboSelections.length === 0 || comboSelections.findIndex(it => it.action.name === action.name) === -1) {
             setComboSelections([...comboSelections, { action: action as AdversaryAction, comboCount: null }])
         }
         else {
             setComboSelections(comboSelections.filter(it => it.action.name !== action.name))
         }
-        console.log(comboSelections)
     }
 
     const udpateComboCount = async (action: AdversaryAction, count: string | null) => {

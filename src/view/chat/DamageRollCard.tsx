@@ -2,14 +2,16 @@ import { Plus } from 'lucide-react'
 import { DamageRollResult } from '../../combat/dice-rolls'
 import { DamageTypeIcon } from '../component/DamageTypeIcon'
 import { Divider } from '../component/Header'
-import { BaseChatCardHost } from './BaseChatCardHost'
-import { ChatCardBanner } from './ChatCardBanner'
-import { DiceRoll } from './DiceRoll'
+import { BaseChatCardHost } from './component/BaseChatCardHost'
+import { ChatCardBanner } from './component/ChatCardBanner'
+import { DiceRoll } from './component/DiceRoll'
+import { getTokenImg } from '../../utils/modelUtil'
 
-export const DamageRollCard = ({ portrait, targetIds, result }: { portrait: string, targetIds: string[], result: DamageRollResult }) => {
+export const DamageRollCard = ({ actorId, targetIds, result }: { actorId: string, targetIds: string[], result: DamageRollResult }) => {
+    const actor = game.actors?.get(actorId)
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={portrait} title={result.atkName} />}
+            banner={<ChatCardBanner portrait={getTokenImg(actor)} title={result.atkName} />}
             contents={<>
                 <Targets targetIds={targetIds} />
                 <div className="flex flex-wrap grow gap-x-2 mt-2 justify-center">

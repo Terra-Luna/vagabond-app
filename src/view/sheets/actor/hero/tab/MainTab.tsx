@@ -5,7 +5,7 @@ import { Header, ItemDivider } from "../../../../component/Header"
 import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
 import WeaponDataModel, { gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
-import { getId, itemSortHandler } from "../../../../../utils/modelUtil"
+import { getId, getTargets, itemSortHandler } from "../../../../../utils/modelUtil"
 import { sortedItems, weaponContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { useContextMenu } from "../../../../component/ContextMenu"
@@ -77,8 +77,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                         onClick={async () => {
                                             const dmgRoll = await rollWeaponDamage(weapon)
                                             sendVgLiteChatMessage(hero, <DamageRollCard
-                                                portrait={hero.parent.prototypeToken.texture.src}
-                                                targetIds={Array.from(game.user?.targets ?? []).map(t => t.id) as string[]}
+                                                actorId={getId(hero)}
+                                                targetIds={getTargets()}
                                                 result={dmgRoll} />, dmgRoll.rolls
                                             )
                                         }}

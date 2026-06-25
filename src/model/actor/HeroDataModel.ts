@@ -80,7 +80,6 @@ export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         await super._preUpdate(changes, options, user)
         const coinChanges = (changes.system as any)?.inventory?.coins
         if (coinChanges !== undefined) {
-            //console.log("Intercepting coin changes", coinChanges)
             const { g, s, c } = this.inventory.coins
             const newG = coinChanges.g ?? g
             const newS = coinChanges.s ?? s

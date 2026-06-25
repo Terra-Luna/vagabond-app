@@ -1,7 +1,7 @@
 import lang from "../../../../public/lang/en.json"
 import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash, Triangle } from "lucide-react"
 import { groupBy } from "../../../utils/collectionUtil"
-import { getId, getName } from "../../../utils/modelUtil"
+import { getId, getName, getTargets } from "../../../utils/modelUtil"
 import { CtxMenuItem } from "../../../view/component/ContextMenu"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
@@ -121,7 +121,12 @@ export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataMo
             label: 'Attack',
             action: async () => {
                 const dmgRoll = await rollWeaponDamage(weapon)
-                sendVgLiteChatMessage(hero, createElement(DamageRollCard, { portrait: hero.parent.prototypeToken.texture.src, result: dmgRoll }), dmgRoll.rolls)
+                sendVgLiteChatMessage(hero, createElement(
+                    DamageRollCard, {
+                    actorId: getId(hero),
+                    targetIds: getTargets(),
+                    result: dmgRoll
+                }), dmgRoll.rolls)
             }
         }
     ]

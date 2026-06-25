@@ -8,6 +8,19 @@ export const getName = (obj: any): string => {
     return obj?.parent?.name ?? ''
 }
 
+export const getPortrait = (obj: any): string => {
+    return obj.img
+}
+
+export const getTokenImg = (obj: any): string => {
+    return obj.prototypeToken.texture.src
+}
+
+export const getTargets = (): string[] => {
+    const targetIds = Array.from(game.user?.targets ?? []).map(t => t.id)
+    return targetIds
+}
+
 /**
  * Updates the given items' sort properties according to user preference.
  * @param actor 
