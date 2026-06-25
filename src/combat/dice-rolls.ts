@@ -1,6 +1,7 @@
 import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponDataModel"
 import lang from "../../public/lang/en.json"
 import { getName } from "../utils/modelUtil"
+import { AnyObject, EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
 export interface SkillCheckResult {
     skillName: string,
@@ -40,7 +41,7 @@ export const rollSkillCheck = async (
      * Extract roll results...
      */
     const isSuccess = roll.total >= difficulty
-    const terms = roll.terms.filter((term): term is foundry.dice.terms.DiceTerm => term instanceof foundry.dice.terms.DiceTerm)
+    const terms = getDiceTerms(roll)
     const d20Term = terms.find(it => it.faces === 20)
     const d6Term = terms.find(it => it.faces === 6)
     const d20Res = d20Term?.results.find(r => r.active)?.result ?? 0
@@ -76,102 +77,92 @@ export const rollDamage = async (
     atkName: string,
     dmgType: string,
     dmgFormula: string | number,
-    bonusDieFormula: string = '0',
-    flatDmgBonus: number = 0,
     perDieDmgBonus: number = 0,
     canExplode: boolean = false,
     explodesOn: number[] = []
 ): Promise<DamageRollResult> => {
     const damageRoll = await new Roll(dmgFormula.toString()).evaluate()
-    const bonusDamageRoll = await new Roll(bonusDieFormula).evaluate()
-    const explosions: Roll.Evaluated<Roll>[] = []
+    const damageRollTerms = getDiceTerms(damageRoll)
+    const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
 
     if (canExplode) {
-        if (isSafeToExplode(dmgFormula.toString(), explodesOn)) {
+        const biggestDieSize = Math.max.apply(Math, damageRollTerms.map(function (t) { return t.faces ?? 0 }))
+        if (isSafeToExplode(biggestDieSize, explodesOn)) {
             if (explodesOn.length < 1) {
                 // Default: explode on max val if not otherwise specified.
-                explodesOn.push(damageRoll.dice[0].faces as number)
+                explodesOn.push(biggestDieSize)
             }
-            await processExplosions(damageRoll, explosions, explodesOn)
+            await processExplosions(
+                damageRollTerms.filter(t => t.faces === biggestDieSize),
+                explosions,
+                explodesOn
+            )
         }
         else {
             canExplode = false
-            explodesOn = []
         }
     }
 
-    const totalDice =
-        getResults(damageRoll).length +
-        getResults(bonusDamageRoll).length +
-        explosions.reduce((total, roll) => {
-            return total + getResults(roll).length
-        }, 0)
-
-    const totalBonus = (totalDice * perDieDmgBonus) + flatDmgBonus
+    const combinedExplosions = canExplode ? mergeExplosions(explosions) : null
+    const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
+    const totalDice = damageRollTerms.length + explosionTerms.length
+    const perDieBonus = (totalDice * perDieDmgBonus)
+    const totalBonus = perDieBonus + getFlatDamageBonus(damageRoll)
     const result = {
         atkName: atkName,
         dmgType: dmgType,
+        total: damageRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
         bonus: totalBonus,
-        total: damageRoll.total + bonusDamageRoll.total +
-            explosions.reduce((total, roll) => { return total + roll.total }, 0) +
-            totalBonus,
-        rollsSummary: [],
-        rolls: [damageRoll, bonusDamageRoll]
+        rollsSummary: buildRollSummary(damageRollTerms, explosionTerms, explodesOn),
+        rolls: [damageRoll]
     } as DamageRollResult
 
-    getResults(damageRoll).forEach(r => {
-        result.rollsSummary.push({
-            result: r.result,
-            dieSize: damageRoll.dice[0].faces as number,
-            exploded: explodesOn.indexOf(r.result) > -1
-        })
-    })
-    explosions.forEach(ex => {
-        getResults(ex).forEach(r => {
-            result.rollsSummary.push({
-                result: r.result,
-                dieSize: damageRoll.dice[0].faces as number,
-                exploded: explodesOn.indexOf(r.result) > -1
-            })
-        })
-    })
-    getResults(bonusDamageRoll).forEach(r => {
-        result.rollsSummary.push({
-            result: r.result,
-            dieSize: bonusDamageRoll.dice[0].faces as number,
-            exploded: false
-        })
-    })
-    result.rolls = [damageRoll, bonusDamageRoll]
-
     console.log(result)
+    result.rolls = [damageRoll]
+    if (canExplode) result.rolls.push(combinedExplosions)
+
     return result
 }
 
 /**
  * Recursive function to compound exploding dice into
  * the given 'explosions' parameter.
- * @param damageRoll
+ * @param damageRollTerms
  * @param explosions 
  * @param explodesOn 
  */
 async function processExplosions(
-    damageRoll: Roll.Evaluated<Roll>,
+    damageRollTerms: foundry.dice.terms.DiceTerm[],
     explosions: Roll.Evaluated<Roll>[],
     explodesOn: number[]
 ) {
     let count = 0
-    getResults(damageRoll).forEach(r => {
-        if (explodesOn.indexOf(r.result) > -1) {
-            count += 1
-        }
+    damageRollTerms.forEach(term => {
+        term.results.forEach(r => {
+            if (explodesOn.indexOf(r.result) > -1) {
+                count += 1
+            }
+        })
     })
 
     if (count > 0) {
-        const explosionRoll = await new Roll(`${count}d${getFaces(damageRoll)}`).evaluate()
+        const explosionRoll = await new Roll(`${count}d${damageRollTerms[0].faces}`).evaluate()
         explosions.push(explosionRoll)
-        await processExplosions(explosionRoll, explosions, explodesOn)
+        await processExplosions(getDiceTerms(explosionRoll), explosions, explodesOn)
     }
+}
+
+function mergeExplosions(explosions: Roll.Evaluated<Roll<EmptyObject>>[]): Roll.Evaluated<Roll> {
+    const combinedExplosionTerms = explosions.reduce<foundry.dice.terms.RollTerm[]>((sum, current, index) => {
+        if (index > 0) {
+            sum.push(new foundry.dice.terms.OperatorTerm({ operator: "+" }))
+        }
+        return sum.concat(current.terms)
+    }, [])
+    const combinedExplosions = Roll.fromTerms(combinedExplosionTerms)
+    combinedExplosions["_evaluated"] = true
+    combinedExplosions["_total"] = (combinedExplosions as any)._evaluateTotal()
+    return combinedExplosions as Roll.Evaluated<Roll>
 }
 
 /**
@@ -180,10 +171,9 @@ async function processExplosions(
  * @param explodesOn 
  * @returns 
  */
-function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
-    const dieSize = Number(formula.split('d')[1])
+function isSafeToExplode(faces: number | undefined, explodesOn: number[]): boolean {
     //console.log("Checking explosion safety:", formula, explodesOn)
-    for (let i = 1; i <= dieSize; i++) {
+    for (let i = 1; i <= (faces ?? 0); i++) {
         if (explodesOn.indexOf(i) === -1) {
             return true
         }
@@ -197,19 +187,75 @@ function isSafeToExplode(formula: string, explodesOn: number[]): boolean {
  * @param roll 
  * @returns 
  */
-function getResults(roll: Roll.Evaluated<Roll>): { result: number }[] {
-    const results = (roll.terms[0] as unknown as { results: [{ result: number }] }).results
-    return results !== undefined ? results : []
+function getResults(roll: Roll.Evaluated<Roll>): foundry.dice.terms.DiceTerm.Result[] {
+    const terms = getDiceTerms(roll)
+    const results = terms.flatMap(t => t.results)
+    return results
+}
+
+function getDiceTerms(roll: Roll.Evaluated<Roll<EmptyObject>>): foundry.dice.terms.DiceTerm[] {
+    return roll.terms.filter((term): term is foundry.dice.terms.DiceTerm => term instanceof foundry.dice.terms.DiceTerm)
 }
 
 /**
- * Returns die size for the given roll's first dice - should be
- * reliable since we won't be doing rolls of mixed die sizes.
- * @param roll 
+ * This is complicated, yet the most reliable way to get the flat damage bonus.
+ * On a formula such as: 1d20+5-1d4, simply subtracting the total from the dice
+ * total won't account for the d4 subtraction. Alternatively, if a negative bonus
+ * would take the roll's total below 0, other bugs occur.
+ * @param roll
  * @returns 
  */
-function getFaces(roll: Roll.Evaluated<Roll>): number {
-    return roll.dice[0].faces as number
+function getFlatDamageBonus(roll: Roll.Evaluated<Roll<EmptyObject>>): number {
+    let bonus = 0
+    roll.terms.forEach((term, i) => {
+        if (i === 0 && isNumericTerm(term)) {
+            const nextTerm = roll.terms[i + 1]
+            if (isOperatorTerm(nextTerm)) {
+                bonus += performOperatorCalc(asOperator(nextTerm), asNumeric(term))
+            }
+        }
+        else if (isNumericTerm(term) && isOperatorTerm(roll.terms[i - 1])) {
+            bonus += performOperatorCalc(asOperator(roll.terms[i - 1]), asNumeric(term))
+        }
+    })
+    return bonus
+}
+
+function performOperatorCalc(operator: foundry.dice.terms.OperatorTerm, numericTerm: foundry.dice.terms.NumericTerm): number {
+    return (operator.operator === '+') ? numericTerm.number : -numericTerm.number
+}
+
+const isNumericTerm = (term: any): boolean => {
+    return term instanceof foundry.dice.terms.NumericTerm
+}
+const asNumeric = (term: any): foundry.dice.terms.NumericTerm => {
+    return term as foundry.dice.terms.NumericTerm
+}
+
+const isOperatorTerm = (term: any): boolean => {
+    return term instanceof foundry.dice.terms.OperatorTerm
+}
+
+const asOperator = (term: any): foundry.dice.terms.OperatorTerm => {
+    return term as foundry.dice.terms.OperatorTerm
+}
+
+function buildRollSummary(
+    damageRollTerms: foundry.dice.terms.DiceTerm[],
+    explosionTerms: foundry.dice.terms.DiceTerm[] | null,
+    explodesOn: number[]
+) {
+    let summary: { result: number, dieSize: number, exploded: boolean }[] = []
+    damageRollTerms.concat(explosionTerms ?? []).forEach(term => {
+        term.results.forEach(res => {
+            summary.push({
+                result: res.result,
+                dieSize: term.faces as number,
+                exploded: explodesOn.indexOf(res.result) > -1
+            })
+        })
+    })
+    return summary
 }
 
 /**

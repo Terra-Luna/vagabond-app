@@ -1,15 +1,15 @@
 // @ts-ignore
-import D20 from "../../../public/assets/icons/dice/d20-grey.svg?react"
+import D20 from "../../../public/assets/icons/dice/d20.svg?react"
 // @ts-ignore
-import D12 from "../../../public/assets/icons/dice/d12-grey.svg?react"
+import D12 from "../../../public/assets/icons/dice/d12.svg?react"
 // @ts-ignore
-import D10 from "../../../public/assets/icons/dice/d10-grey.svg?react"
+import D10 from "../../../public/assets/icons/dice/d10.svg?react"
 // @ts-ignore
-import D8 from "../../../public/assets/icons/dice/d8-grey.svg?react"
+import D8 from "../../../public/assets/icons/dice/d8.svg?react"
 // @ts-ignore
-import D6 from "../../../public/assets/icons/dice/d6-grey.svg?react"
+import D6 from "../../../public/assets/icons/dice/d6.svg?react"
 // @ts-ignore
-import D4 from "../../../public/assets/icons/dice/d4-grey.svg?react"
+import D4 from "../../../public/assets/icons/dice/d4.svg?react"
 
 
 const centeredAlignment = "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
