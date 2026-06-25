@@ -10,6 +10,7 @@ import { updateDocument } from "../../../../../utils/documentUtils"
 import { glowOnHover } from "../../../VgLiteSheet"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
+import { getId } from "../../../../../utils/modelUtil"
 
 interface Health {
     current: number | null
@@ -159,7 +160,7 @@ const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: strin
         <div className={`flex justify-between items-center font-eskapade text-lg ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
             async (e: React.MouseEvent<HTMLDivElement>) => {
                 const skillCheck = await rollSkillCheck(name, value, e)
-                sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.prototypeToken.texture.src} result={skillCheck} />, skillCheck.rolls)
+                sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
             }
         }>
             <div className="ml-1 flex flex-col">
@@ -196,7 +197,7 @@ export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDa
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover} cursor-pointer`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
                         const skillCheck = await rollSkillCheck(name, value, e)
-                        sendVgLiteChatMessage(hero, <SkillCheckChatCard portrait={hero.parent.prototypeToken.texture.src} result={skillCheck} />, skillCheck.rolls)
+                        sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                     }
                 }>
                     <div>{name}</div>
