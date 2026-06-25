@@ -5,7 +5,7 @@ import { Divider } from '../component/Header'
 import { BaseChatCardHost } from './component/BaseChatCardHost'
 import { ChatCardBanner } from './component/ChatCardBanner'
 import { DiceRoll } from './component/DiceRoll'
-import { getTokenImg } from '../../utils/modelUtil'
+import { getCanvasToken, getTokenImg } from '../../utils/modelUtil'
 
 export const DamageRollCard = ({ actorId, targetIds, result }: { actorId: string, targetIds: string[], result: DamageRollResult }) => {
     const actor = game.actors?.get(actorId)
@@ -30,10 +30,12 @@ export const DamageRollCard = ({ actorId, targetIds, result }: { actorId: string
                             </div>
                     }
                 </div>
-                <div className="w-fit">
-                    <DamageTypeIcon dmgType={result.dmgType} size={24} />
+                <div className="flex">
+                    <p className="text-3xl text-text-primary">{result.total}</p>
+                    <div className="w-fit">
+                        <DamageTypeIcon dmgType={result.dmgType} size={24} />
+                    </div>
                 </div>
-                <p>{result.total}</p>
             </>}
         />
     )
@@ -41,25 +43,23 @@ export const DamageRollCard = ({ actorId, targetIds, result }: { actorId: string
 
 const Targets = ({ targetIds }: { targetIds: string[] }) => {
     const targets = targetIds.map(id => (
-        { id: id, src: canvas?.tokens?.get(id)?.document.texture.src ?? '' }
+        { id: id, src: getTokenImg(getCanvasToken(id)) }
     ))
+    console.log(targetIds)
     return (
         <div className="flex space-x-1 justify-center items-center">
-            {
-                targets.length > 0 ?
-                    <>
-                        <Divider />
-                        {targets.filter(it => it.src != null && it.src.length > 0).map(target => (
-                            <img
-                                key={target.id}
-                                className={`object-contain h-[32px] w-[32px]`}
-                                src={target.src}
-                                alt={'target'}
-                            />
-                        ))}
-                        <Divider />
-                    </> : <></>
-            }
+            {<>
+                <Divider />
+                {targets.filter(it => it.src != null && it.src.length > 0).map(target => (
+                    <img
+                        key={target.id}
+                        className={`object-contain h-[32px] w-[32px]`}
+                        src={target.src}
+                        alt={'target'}
+                    />
+                ))}
+                <Divider />
+            </>}
         </div>
     )
 }

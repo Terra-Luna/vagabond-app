@@ -9,16 +9,20 @@ export const getName = (obj: any): string => {
 }
 
 export const getPortrait = (obj: any): string => {
-    return obj.img
+    return obj?.img ?? null
 }
 
 export const getTokenImg = (obj: any): string => {
-    return obj.prototypeToken.texture.src
+    return (obj?.document?.texture?.src ?? obj?.prototypeToken?.texture?.src) ?? null
 }
 
 export const getTargets = (): string[] => {
     const targetIds = Array.from(game.user?.targets ?? []).map(t => t.id)
     return targetIds
+}
+
+export const getCanvasToken = (id) => {
+    return canvas?.tokens?.get(id)
 }
 
 /**
