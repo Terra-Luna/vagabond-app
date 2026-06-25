@@ -18,7 +18,7 @@ export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = fals
     return (
         <div className={`relative ${textSize}`}>
             <div className="relative inline-flex items-center justify-center">
-                <DieIcon faces={faces} />
+                <DieIcon faces={faces} exploded={exploded} />
                 <p className={`${centeredAlignment} text-[0.8em] text-text-section-header h-[1em] w-[1em]`}>
                     {result}
                 </p>
@@ -27,13 +27,14 @@ export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = fals
     )
 }
 
-const DieIcon = ({ faces }: { faces: number }) => {
+const DieIcon = ({ faces }: { faces: number, exploded: boolean }) => {
     const steez = `w-[1em] h-[1em]`
-    if (faces === 20) return <D20 className={steez} fill={'var(--color-section-header-fill'} />
-    else if (faces === 12) return <D12 className={steez} fill={'var(--color-section-header-fill'} />
-    else if (faces === 10) return <D10 className={steez} fill={'var(--color-section-header-fill'} />
-    else if (faces === 8) return <D8 className={steez} fill={'var(--color-section-header-fill'} />
-    else if (faces === 6) return <D6 className={steez} fill={'var(--color-section-header-fill'} />
-    else if (faces === 4) return <D4 className={steez} fill={'var(--color-section-header-fill'} />
+    const color = `var(--color-section-header-fill)`
+    if (faces === 20) return <D20 className={steez} fill={color} />
+    else if (faces === 12) return <D12 className={steez} fill={color} />
+    else if (faces === 10) return <D10 className={steez} fill={color} />
+    else if (faces === 8) return <D8 className={steez} fill={color} />
+    else if (faces === 6) return <D6 className={steez} fill={color} />
+    else if (faces === 4) return <D4 className={steez} fill={color} />
     else return <></>
 }

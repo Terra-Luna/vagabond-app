@@ -22,7 +22,7 @@ export const DamageRollCard = ({ portrait, targetIds, result }: { portrait: stri
                     }
                     {
                         result.bonus === 0 ? <></> :
-                            <div className="flex">
+                            <div className="flex h-full content-center">
                                 <Plus size={24} />
                                 <p className="text-4xl">{result.bonus}</p>
                             </div>

@@ -105,8 +105,8 @@ export const rollDamage = async (
 
     const combinedExplosions = canExplode ? mergeExplosions(explosions) : null
     const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
-    const totalDice = damageRollTerms.length + explosionTerms.length
-    const perDieBonus = (totalDice * perDieDmgBonus)
+    const totalDice = getResults(damageRoll).length + (canExplode ? getResults(combinedExplosions!).length : 0)
+    const perDieBonus = totalDice * perDieDmgBonus
     const totalBonus = perDieBonus + getFlatDamageBonus(damageRoll)
     const result = {
         atkName: atkName,
