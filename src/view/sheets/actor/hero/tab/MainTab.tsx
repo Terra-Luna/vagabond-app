@@ -76,7 +76,11 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                         className={`${dmgStyle} ${glowOnHover}`}
                                         onClick={async () => {
                                             const dmgRoll = await rollWeaponDamage(weapon)
-                                            sendVgLiteChatMessage(hero, <DamageRollCard portrait={hero.parent.prototypeToken.texture.src} result={dmgRoll} />, dmgRoll.rolls)
+                                            sendVgLiteChatMessage(hero, <DamageRollCard
+                                                portrait={hero.parent.prototypeToken.texture.src}
+                                                targetIds={Array.from(game.user?.targets ?? []).map(t => t.id) as string[]}
+                                                result={dmgRoll} />, dmgRoll.rolls
+                                            )
                                         }}
                                     >
                                         {gripStateDamage(weapon)}

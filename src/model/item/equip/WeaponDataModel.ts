@@ -1,6 +1,6 @@
 import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
-import { fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
@@ -9,7 +9,8 @@ const weaponSchema = () => {
         range: new fields.StringField({ ...rangeOptions(), required: false }),
         damage: new fields.SchemaField({
             oneHand: new fields.StringField({ required: false, initial: '1d4' }),
-            twoHand: new fields.StringField({ required: false, initial: '1d4' })
+            twoHand: new fields.StringField({ required: false, initial: '1d4' }),
+            type: new fields.StringField({ ...damageTypeOptions() })
         }),
         grip: new fields.SchemaField({
             style: new fields.StringField({

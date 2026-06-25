@@ -1,12 +1,9 @@
 import lang from "../../../public/lang/en.json"
 import { SkillCheckResult } from '../../combat/dice-rolls'
 import { Minus, Plus } from 'lucide-react'
-import { tableBorder } from '../common/border-styles'
 import { DiceRoll } from './DiceRoll'
 import { ChatCardBanner } from "./ChatCardBanner"
 import { BaseChatCardHost } from "./BaseChatCardHost"
-
-const chatCardBodyStyle = `${tableBorder} rounded-md text-text-primary text-lg font-eskapade font-bold bg-sheet-main-fill`
 
 export const SkillCheckChatCard = ({ portrait, result }: { portrait: string, result: SkillCheckResult }) => {
     const [resultTextColor] = result.result === lang.VGLITE.RollResult.failure ? ['text-failure'] : ['text-success']
@@ -24,7 +21,7 @@ export const SkillCheckChatCard = ({ portrait, result }: { portrait: string, res
 const DiceGraphics = ({ d20, d6, favHinder }) => {
     return (
         <div className="flex gap-x-2 mt-2 justify-center">
-            <DiceRoll faces={20} result={d20} />
+            <DiceRoll faces={20} result={d20} textSize="text-5xl" />
             {
                 favHinder !== lang.VGLITE.FavorHinder.none ?
                     <div className="flex gap-x-2">
@@ -33,7 +30,9 @@ const DiceGraphics = ({ d20, d6, favHinder }) => {
                                 <Plus size={24} strokeWidth={4} /> :
                                 <Minus size={24} strokeWidth={4} />
                         }</div>
-                        <DiceRoll faces={6} result={d6} />
+                        <div className="h-full content-center">
+                            <DiceRoll faces={6} result={d6} textSize="text-4xl" />
+                        </div>
                     </div> : <></>
             }
         </div>

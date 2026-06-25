@@ -65,6 +65,7 @@ export const rollSkillCheck = async (
  */
 export interface DamageRollResult {
     atkName: string
+    dmgType: string
     bonus: number
     total: number
     rollsSummary: { result: number, dieSize: number, exploded: boolean }[]
@@ -73,6 +74,7 @@ export interface DamageRollResult {
 
 export const rollDamage = async (
     atkName: string,
+    dmgType: string,
     dmgFormula: string | number,
     bonusDieFormula: string = '0',
     flatDmgBonus: number = 0,
@@ -108,6 +110,7 @@ export const rollDamage = async (
     const totalBonus = (totalDice * perDieDmgBonus) + flatDmgBonus
     const result = {
         atkName: atkName,
+        dmgType: dmgType,
         bonus: totalBonus,
         total: damageRoll.total + bonusDamageRoll.total +
             explosions.reduce((total, roll) => { return total + roll.total }, 0) +
@@ -217,5 +220,5 @@ function getFaces(roll: Roll.Evaluated<Roll>): number {
  * rolled.
  */
 export const rollWeaponDamage = async (weapon: WeaponDataModel): Promise<DamageRollResult> => {
-    return rollDamage(getName(weapon), gripStateDamage(weapon))
+    return rollDamage(getName(weapon), weapon.damage.type ?? '', gripStateDamage(weapon))
 }

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useState } from "react"
+import { useCallback, useState } from "react"
 import lang from "../../../../../public/lang/en.json"
 import AdversaryDataModel from "../../../../model/actor/AdversaryDataModel"
 import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
@@ -309,7 +309,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
             {/* DISPLAY ALL ACTIONS */}
             <div className="grid grid-cols-2 gap-1">
                 {
-                    adv.actions.sort((a, b) => a.name.length - b.name.length).map((act, i) => {
+                    adv.actions.map((act, i) => {
                         const spanCls = (i === adv.actions.length - 1) && (adv.actions.length % 2) ? 'col-span-2' : ''
                         return (
                             <div key={act.name} className={`p-2 ${spanCls} ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
@@ -331,15 +331,25 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                             <div className="flex gap-2">
                                                 <p>Dmg:</p>
                                                 <p className={damageRoll} onClick={async () => {
-                                                    const result = await rollDamage(act.name, act.damage.roll ?? '')
-                                                    sendVgLiteChatMessage(adv, <DamageRollCard portrait={adv.parent.prototypeToken.texture.src} result={result} />, result.rolls)
+                                                    const result = await rollDamage(act.name, act.damage.type, act.damage.roll ?? '')
+                                                    sendVgLiteChatMessage(adv,
+                                                        <DamageRollCard
+                                                            portrait={adv.parent.prototypeToken.texture.src}
+                                                            targetIds={Array.from(game.user?.targets ?? []).map(t => t.id) as string[]}
+                                                            result={result}
+                                                        />, result.rolls
+                                                    )
                                                 }}>
                                                     {act.damage.roll}
                                                 </p>
                                                 <p>|</p>
                                                 <p className={damageRoll} onClick={async () => {
-                                                    const result = await rollDamage(act.name, act.damage.avg ?? '')
-                                                    sendVgLiteChatMessage(adv, <DamageRollCard portrait={adv.parent.prototypeToken.texture.src} result={result} />, result.rolls)
+                                                    const result = await rollDamage(act.name, act.damage.type, act.damage.avg ?? '')
+                                                    sendVgLiteChatMessage(adv,
+                                                        <DamageRollCard
+                                                            portrait={adv.parent.prototypeToken.texture.src}
+                                                            targetIds={Array.from(game.user?.targets ?? []).map(t => t.id) as string[]}
+                                                            result={result} />, result.rolls)
                                                 }}>
                                                     {act.damage.avg}
                                                 </p>
