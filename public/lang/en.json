@@ -353,6 +353,16 @@
         "abbr": "LUK"
       }
     },
+    "Resources": {
+      "luck": {
+        "name": "Luck",
+        "description": "You can spend 1 Luck to do the following:</br><b>Advantage:</b> Grant Favor on a d20 roll.</br><b>Fluke:</b> Reroll an unresolved die you rolled.<br><b>Plot Armor (variant):</b> Once per Round, if you are reduced to 0 HP, you can spend 1 Luck to regain d6 HP."
+      },
+      "studied": {
+        "name": "Studied Die",
+        "description": "You can spend a Studied die to gain Favor on a d20 roll you make in the next day. You must do so before the d20 roll resolves. You lose any unspent Studied dice after a day."
+      }
+    },
     "Skills": {
       "arcana": {
         "name": "Arcana",
@@ -521,6 +531,8 @@
       "studied": "STUDIED",
       "fatigue": "FATIGUE",
       "luck": "LUCK",
+      "gained": "Gained a",
+      "spent": "Spent a",
       "saves": "SAVES",
       "speeds": "SPEED",
       "skills": "SKILLS",

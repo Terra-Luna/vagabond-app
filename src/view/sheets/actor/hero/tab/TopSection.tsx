@@ -11,6 +11,7 @@ import { glowOnHover } from "../../../VgLiteSheet"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { getId } from "../../../../../utils/modelUtil"
+import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 
 interface Health {
     current: number | null
@@ -87,6 +88,7 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
     const currentLuck = hero.stats.currentLuck
     const updateLuck = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
+        sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"luck"} />)
     }, [currentLuck])
     return (
         <Tracker
@@ -100,6 +102,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
     const { studied } = hero
     const updateStudied = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { studied: (studied ?? 0) + (auxClick ? 1 : -1) })
+        sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"studied"} />)
     }, [studied])
     return (
         <Tracker
