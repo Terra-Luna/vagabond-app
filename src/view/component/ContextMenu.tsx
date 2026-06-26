@@ -3,7 +3,7 @@ import { Divider, ItemDivider } from './Header'
 import { ControlledMenu, MenuItem } from '@szhsin/react-menu'
 
 export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99"
-export const ctxMenuTextStyle = "text-lg font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"
+export const ctxMenuTextStyle = "text-base font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"
 export const ctxMenuDestructiveTextStyle = "text-destructive-action text-lg font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"
 
 /**
