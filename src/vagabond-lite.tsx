@@ -211,7 +211,7 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
 foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet, {
     types: ['ancestry'],
     makeDefault: true
-});
+})
 
 (window as any).runVgLiteDebugMacros = runAllMacros
 
