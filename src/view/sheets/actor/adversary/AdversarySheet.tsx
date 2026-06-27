@@ -25,7 +25,7 @@ import ReactHtmlParser from 'react-html-parser'
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
-const statValueStyle = `text-2xl text-stat-block-fill font-eskapade font-bold`
+const statValueStyle = `text-lg text-stat-block-fill font-eskapade font-bold`
 
 export default class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
@@ -227,7 +227,7 @@ const Description = ({ adv, isEditMode }) => {
 
 const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
     return (<>
-        <div className="flex flex-wrap justify-between gap-x-12 gap-y-2 w-full p-1">
+        <div className="flex flex-wrap justify-between gap-x-12 gap-y-2 w-full px-2 mb-1">
             {/* ZONE */}
             <StatBlockField label={locale.zone} content={<>
                 {
@@ -238,7 +238,7 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                             updateMechanism={{ updatePath: ['zone'] }}
                             value={adv.zone}
                         /> :
-                        <p className="text-base">{lang.VGLITE.Zones[adv.zone]}</p>
+                        <p className={statValueStyle}>{lang.VGLITE.Zones[adv.zone]}</p>
                 }
             </>} />
             {/* SPEED */}
@@ -274,7 +274,7 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                             updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
                             placeholder="6"
                         /> :
-                        <p className="text-base">{adv.morale}</p>
+                        <p className={statValueStyle}>{adv.morale}</p>
                 }
 
             </>} />
@@ -289,12 +289,12 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                 }
             </>} />
             {/* SENSENS & STATUS IMMUNITIES */}
-            <div className="w-full space-y-2">
+            <div className="w-full">
                 <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} isEditMode={isEditMode} />
                 <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} isEditMode={isEditMode} />
             </div>
             {/* WEAKNESS & IMMUNITY */}
-            <div className="w-full space-y-2">
+            <div className="w-full">
                 <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
                 <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
             </div>
@@ -318,8 +318,8 @@ const DamageTypeSelector = ({ adv, label, path, localeObj, isEditMode }: { adv: 
     ))
     return (<>
         {
-            !isEditMode && field === 0 ? <></> :
-                <div className="flex space-x-2">
+            !isEditMode && field.length === 0 ? <></> :
+                <div className="flex space-x-2 mt-2">
                     {
                         isEditMode ?
                             <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={damageTypes} /> :
@@ -339,7 +339,7 @@ const SelectableTextField = ({ adv, label, path, localeObj, isEditMode }: { adv:
     return (<>
         {
             !isEditMode && field.length === 0 ? <></> :
-                <div className="flex space-x-2">
+                <div className="flex space-x-2 mt-2">
                     {
                         isEditMode ?
                             <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={options} /> :
