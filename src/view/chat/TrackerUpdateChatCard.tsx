@@ -10,7 +10,6 @@ const resources = lang.VGLITE.Resources
 export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: string, verb: string, resource: string }) => {
     const hero = game.actors?.get(heroId)
     const res = resources[resource]
-    console.log(res)
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner portrait={getTokenImg(hero)} title={`${verb} ${res.name}`} />}

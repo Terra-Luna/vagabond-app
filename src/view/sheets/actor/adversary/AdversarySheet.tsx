@@ -8,7 +8,7 @@ import { getDocumentAtPath, updateDocument, updateDocumentAtPath } from "../../.
 import { RichTextField } from "../../../component/RichTextField"
 import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { DropDown } from "../../../component/Dropdown"
-import { PenSquare, Plus, Save, Shield, Trash } from "lucide-react"
+import { Lock, LockKeyhole, LockKeyholeOpen, LockOpen, PenSquare, Plus, Save, Shield, Trash, Unlock } from "lucide-react"
 import { glowOnHover } from "../../VgLiteSheet"
 import { DamageTypeIconDisplay, OptionsSelectionMenu, StringOptionsDisplay } from "../../../component/OptionsSelectionMenu"
 import { DestructiveButton, PrimaryButton } from "../../../component/Button"
@@ -21,10 +21,11 @@ import { damageRoll } from "../../../common/text-styles"
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
 import { DamageRollCard } from "../../../chat/DamageRollCard"
 import { getId, getTargets } from "../../../../utils/modelUtil"
+import ReactHtmlParser from 'react-html-parser'
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
-const statValueStyle = `text-xl text-stat-block-fill font-eskapade font-bold content-center ${glowOnHover} cursor-pointer`
+const statValueStyle = `text-xl text-stat-block-fill font-eskapade font-bold content-center`
 
 export default class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
@@ -41,6 +42,7 @@ export default class AdversarySheet extends VgLiteActorSheet {
 
 const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
     const adv = actor.system
+    const [isEditMode, setIsEditMode] = useState(false)
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
     return (
@@ -48,19 +50,19 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
                 <Portrait actor={adv} />
                 <div className="flex flex-col grow p-2">
-                    <HPArmorHUD adv={adv} />
+                    <HPArmorHUD adv={adv} isEditMode={isEditMode} />
                 </div>
             </div>
             <div className="flex flex-col grow">
-                <AdversarySheetHeader adv={adv} />
+                <AdversarySheetHeader adv={adv} isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
                 <div className="overflow-y-auto">
-                    <Description adv={adv} />
-                    <StatBlock adv={adv} />
-                    <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
+                    <Description adv={adv} isEditMode={isEditMode} />
+                    <StatBlock adv={adv} isEditMode={isEditMode} />
+                    <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} isEditMode={isEditMode} />
                     {isAddActionOpen ?
                         <NewActionWindow adv={adv} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
                     }
-                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
+                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} isEditMode={isEditMode} />
                     {isAddAbilityOpen ?
                         <NewAbilityWindow adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
                     }
@@ -70,7 +72,7 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
     )
 }
 
-const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
+const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
     const headerStyle = "text-xs font-paradigm"
     const hp = adv.health.current
 
@@ -81,14 +83,30 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
         <div className="text-center space-y-4">
             {/* HIT DICE */}
+            <div className="flex space-x-2 text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
+                <p className={`${headerStyle} content-center`}>{locale.tl}</p>
+                <p className={`text-xl text-stat-block-fill font-eskapade font-bold`}>
+                    {
+                        /* isEditMode ? <EditableTextField
+                            boundValue={adv.threatLevel?.toString() ?? '0'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['threatLevel'] }}
+                            placeholder="1"
+                        /> : */ <p>{adv.threatLevel}</p>
+                    }
+                </p>
+            </div>
+
+            {/* HIT DICE */}
             <div className="text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
                 <p className={headerStyle}>{locale.hd}</p>
-                <p className={`text-3xl font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
-                    <EditableTextField
-                        boundValue={adv.hitDice?.toString() ?? '1'}
-                        updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
-                        placeholder="1"
-                    />
+                <p className={`text-3xl text-stat-block-fill font-eskapade font-bold`}>
+                    {
+                        isEditMode ? <EditableTextField
+                            boundValue={adv.hitDice?.toString() ?? '1'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
+                            placeholder="1"
+                        /> : <p>{adv.hitDice}</p>
+                    }
                 </p>
             </div>
             
@@ -141,81 +159,114 @@ const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     )
 }
 
-const AdversarySheetHeader = ({ adv }: { adv: AdversaryDataModel }) => {
+const AdversarySheetHeader = ({ adv, isEditMode, setIsEditMode }) => {
     return (
         <div className="bg-sheet-header-fill font-eskapade p-2">
             <div className="text-2xl text-text-header-primary font-bold flex">
                 <EditableNameField actor={adv.parent} />
-                <div className="flex ml-auto">
-                    <span className="text-lg">{`${locale.tl} ${adv.threatLevel}`}</span>
+                <div className="flex text-text-header-tertiary cursor-pointer ml-auto mr-1" onClick={() => setIsEditMode(!isEditMode)}>
+                    {
+                        isEditMode ? <LockKeyholeOpen size={18} strokeWidth={2} /> : <LockKeyhole size={18} strokeWidth={2} />
+                    }
                 </div>
             </div>
-            <TraitSelectors adv={adv} />
+            <TraitSelectors adv={adv} isEditMode={isEditMode} />
         </div>
     )
 }
 
-const TraitSelectors = ({ adv }: { adv: AdversaryDataModel }) => {
+const TraitSelectors = ({ adv, isEditMode }) => {
     return (
         <div className="flex gap-2 text-text-header-secondary mt-1">
-            <DropDown label=''
-                options={createDropdownEntries(lang.VGLITE.Sizes)}
-                parent={adv.parent}
-                updateMechanism={{ updatePath: ['beingSize'] }}
-                value={adv.beingSize}
-            />
-            <DropDown label=''
-                options={createDropdownEntries(lang.VGLITE.BeingTypes)}
-                parent={adv.parent}
-                updateMechanism={{ updatePath: ['beingType'] }}
-                value={adv.beingType}
-            />
+            {
+                isEditMode ? <>
+                    <DropDown label=''
+                        options={createDropdownEntries(lang.VGLITE.Sizes)}
+                        parent={adv.parent}
+                        updateMechanism={{ updatePath: ['beingSize'] }}
+                        value={adv.beingSize}
+                    />
+                    <DropDown label=''
+                        options={createDropdownEntries(lang.VGLITE.BeingTypes)}
+                        parent={adv.parent}
+                        updateMechanism={{ updatePath: ['beingType'] }}
+                        value={adv.beingType}
+                    />
+                    <DropDown label=''
+                        options={createDropdownEntries(lang.VGLITE.BeingSubtypes)}
+                        parent={adv.parent}
+                        updateMechanism={{ updatePath: ['beingSubtype'] }}
+                        value={adv.beingSubtype}
+                    />
+                </> :
+                    <>
+                        <p>{lang.VGLITE.Sizes[adv.beingSize]}</p>
+                        <p>{lang.VGLITE.BeingTypes[adv.beingType]}</p>
+                        <p>{lang.VGLITE.BeingSubtypes[adv.beingSubtype]}</p>
+                    </>
+            }
         </div>
     )
 }
 
-const Description = ({ adv }: { adv: AdversaryDataModel }) => {
+const Description = ({ adv, isEditMode }) => {
     const onDescriptionChange = useCallback((descr) => {
         updateDocument(adv.parent, { 'description': descr })
     }, [adv])
     return (
         <div className="pb-1 border border-dotted border-transparent border-b-table-border">
-            <div className="h-[54px] p-0.5">
-                <RichTextField
-                    height={54}
-                    defaultValue={adv.description}
-                    onChange={onDescriptionChange}
-                />
-            </div>
-        </div>
-    )
+            {
+                isEditMode ?
+                    <div className="h-[54px] p-0.5">
+                        <RichTextField
+                            height={54}
+                            defaultValue={adv.description}
+                            onChange={onDescriptionChange}
+                        />
+                    </div> :
+                    <div className="px-2 text-justify font-light italic">
+                        {adv.description.length > 0 && adv.description != "<p></p>" ?
+                            <div>{ReactHtmlParser(adv.description)}</div> : <></>
+                        }
+                    </div>
+            }
+        </div>)
 }
 
-const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
+const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
     return (
         <div className="flex py-2 px-4 justify-between">
             {/* LEFT COLUMN */}
             <div className="flex flex-col gap-y-2">
                 {/* ZONE */}
-                <StatBlockField label={locale.zone} content={
-                    <DropDown label=''
-                        options={createDropdownEntries(lang.VGLITE.Zones)}
-                        parent={adv.parent}
-                        updateMechanism={{ updatePath: ['zone'] }}
-                        value={adv.zone}
-                    />
-                } />
+                <StatBlockField label={locale.zone} content={<>
+                    {
+                        isEditMode ?
+                            <DropDown label=''
+                                options={createDropdownEntries(lang.VGLITE.Zones)}
+                                parent={adv.parent}
+                                updateMechanism={{ updatePath: ['zone'] }}
+                                value={adv.zone}
+                            /> :
+                            <p className="text-base">{lang.VGLITE.Zones[adv.zone]}</p>
+                    }
+                </>} />
                 {/* MORALE */}
-                <StatBlockField label={locale.morale} content={
-                    <EditableTextField
-                        boundValue={adv.morale?.toString() ?? '6'}
-                        updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
-                        placeholder="6"
-                    />
-                } />
+                <StatBlockField label={locale.morale} content={<>
+                    {
+                        isEditMode ?
+                            <EditableTextField
+                                boundValue={adv.morale?.toString() ?? '6'}
+                                updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
+                                placeholder="6"
+                            /> :
+                            <p className="text-base">{adv.morale}</p>
+                    }
+
+                </>} />
                 {/* WEAKNESS & IMMUNITY */}
-                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
-                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
+                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
+                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
             </div>
 
             {/* RIGHT COLUMN */}
@@ -223,34 +274,40 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                 {/* SPEED */}
                 <StatBlockField label={locale.speed} content={
                     <div className="flex space-x-1">
-                        <p className={`flex space-x-1 ${statValueStyle}`}>
-                            <EditableTextField
-                                boundValue={adv.movement?.speed?.toString() ?? '30'}
-                                updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
-                                placeholder="30"
-                            />
-                        </p>
+                        <div className={`flex space-x-1 ${statValueStyle}`}>
+                            {
+                                isEditMode ? <EditableTextField
+                                    boundValue={adv.movement?.speed?.toString() ?? '30'}
+                                    updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
+                                    placeholder="30"
+                                /> : <p>{adv.movement.speed}</p>
+                            }
+                        </div>
                         <div className="text-stat-block-fill">
-                            <DropDown label=''
-                                options={createDropdownEntries(lang.VGLITE.Movement)}
-                                parent={adv.parent}
-                                updateMechanism={{ updatePath: ['movement', 'type'] }}
-                                value={adv.movement.type}
-                            />
+                            {
+                                isEditMode ? <DropDown label=''
+                                    options={createDropdownEntries(lang.VGLITE.Movement)}
+                                    parent={adv.parent}
+                                    updateMechanism={{ updatePath: ['movement', 'type'] }}
+                                    value={lang.VGLITE.Movement[adv.movement.type]}
+                                /> : <p>{adv.movement.type}</p>
+                            }
                         </div>
                     </div>
                 } />
                 {/* NUBMER APPEARING */}
-                <StatBlockField label={locale.appearing} content={
-                    <EditableTextField
-                        boundValue={adv.numberAppearing?.toString() ?? '1'}
-                        updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
-                        placeholder="1d6"
-                    />
-                } />
+                <StatBlockField label={locale.appearing} content={<>
+                    {
+                        isEditMode ? <EditableTextField
+                            boundValue={adv.numberAppearing?.toString() ?? '1'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
+                            placeholder="1d6"
+                        /> : <p>{adv.numberAppearing}</p>
+                    }
+                </>} />
                 {/* SENSENS & STATUS IMMUNITIES */}
-                <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
-                <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
+                <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} isEditMode={isEditMode} />
+                <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} isEditMode={isEditMode} />
             </div>
         </div>
     )
@@ -258,45 +315,59 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
 
 const StatBlockField = ({ label, content }) => {
     return (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center content-center space-x-2">
             <p className={statLabelStyle}>{label}</p>
             <div className={statValueStyle}>{content}</div>
         </div>
     )
 }
 
-const DamageTypeSelector = ({ adv, label, path, localeObj }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any }) => {
+const DamageTypeSelector = ({ adv, label, path, localeObj, isEditMode }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any, isEditMode: boolean }) => {
     const field = getDocumentAtPath(adv.parent, path)
     const damageTypes = Object.keys(localeObj).filter(k => k != 'none').map(k => (
         { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }
     ))
-    return (
-        <div className="space-y-1">
-            <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={damageTypes} />
-            <DamageTypeIconDisplay dmgTypes={getDocumentAtPath(adv.parent, path)} />
-        </div>
-    )
+    return (<>
+        {
+            !isEditMode && getDocumentAtPath(adv.parent, path).length === 0 ? <></> :
+                <div className="space-y-1">
+                    {
+                        isEditMode ?
+                            <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={damageTypes} /> :
+                            <p className={statLabelStyle}>{label}</p>
+                    }
+                    <DamageTypeIconDisplay dmgTypes={getDocumentAtPath(adv.parent, path)} />
+                </div>
+        }
+    </>)
 }
 
-const SelectableTextField = ({ adv, label, path, localeObj }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any}) => {
+const SelectableTextField = ({ adv, label, path, localeObj, isEditMode }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any, isEditMode: boolean }) => {
     const field = getDocumentAtPath(adv.parent, path)
     const options = Object.keys(localeObj).filter(k => k != 'none').map(k => (
         { key: k, value: localeObj[k].name, isSelected: field.indexOf(k) > -1 }
     ))
-    return (
-        <div className="ml-auto justify-items-end text-right space-y-1">
-            <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={options} />
-            <StringOptionsDisplay options={options.filter(o => o.isSelected).map(o => o.value)} />
-        </div>
-    )
+    return (<>
+        {
+            !isEditMode && getDocumentAtPath(adv.parent, path).length === 0 ? <></> :
+                <div className="ml-auto justify-items-end text-right space-y-1">
+                    {
+                        isEditMode ?
+                            <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={options} /> :
+                            <p className={statLabelStyle}>{label}</p>
+                    }
+                    <StringOptionsDisplay options={options.filter(o => o.isSelected).map(o => o.value)} />
+                </div>
+        }
+    </>)
 }
 
-const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
+const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
-            <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
+            <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
             {/* DISPLAY COMBO FIRST */}
             <div onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}>
                 {
@@ -372,12 +443,12 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     )
 }
 
-const deleteAction = (adv: AdversaryDataModel, action: any) => {
-    updateDocumentAtPath(adv.parent, ['actions'], adv.actions.filter(it => it != action))
-}
-
 const deleteCombo = (adv: AdversaryDataModel) => {
     updateDocumentAtPath(adv.parent, ['combo'], null)
+}
+
+const deleteAction = (adv: AdversaryDataModel, action: any) => {
+    updateDocumentAtPath(adv.parent, ['actions'], adv.actions.filter(it => it != action))
 }
 
 const useAddActionMenu = () => {
@@ -555,11 +626,11 @@ const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarg
     )
 }
 
-const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
+const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="m-2 space-y-1">
-            <ActionMenuHeader label={locale.abilities} onClick={() => setIsAddMenuOpen(true)} />
+            <ActionMenuHeader label={locale.abilities} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
             {
                 adv.abilities.map(ability => (
                     <div key={ability.name} onContextMenu={(e) => onCtxMenu(e, [
@@ -621,12 +692,14 @@ interface AdversaryAbility {
     name: string, description: string
 }
 
-const ActionMenuHeader = ({ label, onClick }) => {
+const ActionMenuHeader = ({ label, onClick, isEditMode }) => {
     return (
-        < div className="flex items-center gap-x-2" >
+        <div className="flex items-center gap-x-2">
             <p className="font-eskapade font-bold text-text-primary text-xl">{label}</p>
-            <AddNewIconButton onClick={onClick} />
-        </div >
+            {
+                isEditMode ? <AddNewIconButton onClick={onClick} /> : <></>
+            }
+        </div>
     )
 }
 

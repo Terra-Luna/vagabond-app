@@ -182,6 +182,12 @@
       "undead": "Undead",
       "hellspawn": "Hellspawn"
     },
+    "BeingSubtypes": {
+      "none": "",
+      "hellspawn": "Hellspawn",
+      "beyonder": "Beyonder",
+      "divine": "Divine"
+    },
     "AncestryTypes": {
       "draken": "Draken",
       "dwarf": "Dwarf",

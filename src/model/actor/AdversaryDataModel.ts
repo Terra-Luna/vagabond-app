@@ -1,6 +1,6 @@
 import lang from "../../../public/lang/en.json"
 import { getName } from "../../utils/modelUtil"
-import { damageTypeOptions, fields, movementTypes, requiredString, statusEffOptions, zonePreferences } from "../common/sharedSchemas"
+import { damageTypeOptions, fields, movementTypes, optionalString, requiredString, statusEffOptions, zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
 
@@ -8,6 +8,7 @@ const adversarySchema = () => {
     return {
         beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(lang.VGLITE.Sizes) }),
         beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(lang.VGLITE.BeingTypes) }),
+        beingSubtype: new fields.StringField({ ...optionalString, initial: 'none', choices: Object.keys(lang.VGLITE.BeingSubtypes) }),
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
         description: new fields.HTMLField(),
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),

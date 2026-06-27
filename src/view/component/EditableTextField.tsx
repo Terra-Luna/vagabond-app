@@ -2,6 +2,7 @@ import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react"
 import VgLiteError from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
+import { glowOnHover } from "../sheets/VgLiteSheet"
 
 export const EditableTextField = (
     { boundValue, onSave, updateProps, placeholder = "Enter text..." }: { 
@@ -79,7 +80,7 @@ export const EditableTextField = (
             onKeyDown={handleSpecialKeypresses} />
     }
     else {
-        return <span onDoubleClick={enterEditMode}>{boundValue}</span>
+        return <span onDoubleClick={enterEditMode} className={`${glowOnHover}`}>{boundValue}</span>
     }
 }
 
