@@ -294,7 +294,7 @@ const SelectableTextField = ({ adv, label, path, localeObj }: { adv: AdversaryDa
 const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
-        <div className="mx-2 mt-4">
+        <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
             <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
             {/* DISPLAY COMBO FIRST */}
@@ -303,7 +303,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                     adv.combo.name !== '' ?
                         <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
                             <p className="font-paradigm font-bold">Combo:</p>
-                            <p>{adv.combo.name}</p>
+                            <p className="text-text-secondary">{adv.combo.name}</p>
                         </div> : <></>
                 }
             </div>
@@ -326,11 +326,11 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                 </div>
                                 {/* ACTION TRAITS... */}
                                 <div className="ml-2">
-                                    <EnrichedContent content={act.effect} />
+                                    <EnrichedContent content={act.effect} styleClasses="text-text-secondary" />
                                     {
                                         act.damage.roll ?
                                             <div className="flex gap-2">
-                                                <p>Dmg:</p>
+                                                <p className="text-text-secondary">Dmg:</p>
                                                 <p className={damageRoll} onClick={async () => {
                                                     const result = await rollDamage(act.name, act.damage.type, act.damage.roll ?? '')
                                                     sendVgLiteChatMessage(adv,
@@ -358,7 +358,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                     }
                                     {
                                         act.recharge != null && act.recharge != '' ?
-                                            <div className="flex gap-x-2"> {'Recharge'}<EnrichedContent content={act.recharge} /></div>
+                                            <div className="flex gap-x-2 text-text-secondary"> {'Recharge'}<EnrichedContent content={act.recharge} /></div>
                                             : <></>
                                     }
                                 </div>

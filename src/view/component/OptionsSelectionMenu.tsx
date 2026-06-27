@@ -61,7 +61,7 @@ export const StringOptionsDisplay = ({ options }: { options: any[] }) => {
         <div className="flex flex-wrap w-full gap-x-1 justify-end text-right">
             {
                 options.map((opt: any) => (
-                    <div key={opt} className="content-center italic">
+                    <div key={opt} className="content-center text-text-secondary italic">
                         {opt}
                     </div>
                 ))

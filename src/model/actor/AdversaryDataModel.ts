@@ -91,6 +91,9 @@ export const setThreatLevel = (adv: AdversaryDataModel): number => {
 
     if (adv.combo != null && adv.combo.actions != null && adv.combo.actions.length > 0) {
         adv.combo?.actions?.forEach(act => c += (Number(act.damage.avg) * Number(act.comboCount)))
+        adv.actions
+            ?.filter(act => adv.combo.actions.findIndex(it => it.name === act.name) < 0)
+            .forEach(act => c += Number(act.damage.avg ?? 0))
     }
     else {
         adv.actions?.forEach(act => c += Number(act.damage.avg) ?? 0)

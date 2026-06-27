@@ -43,7 +43,6 @@ const Targets = ({ targetIds }: { targetIds: string[] }) => {
     const targets = targetIds.map(id => (
         { id: id, src: getTokenImg(getCanvasToken(id)) }
     ))
-    console.log(targetIds)
     return (
         <div className="flex space-x-1 justify-center items-center">
             {<>
