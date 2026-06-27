@@ -32,12 +32,10 @@ function getArmor(target) {
 }
 
 function calculateDamage(damage, armor) {
-    console.log(damage - armor)
     return Math.max(0, damage - armor)
 }
 
 function updateHP(target, hp) {
-    console.log(target)
     // @ts-ignore
     target?.parent.update({ "system.health.current": hp })
 }

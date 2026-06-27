@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Divider, ItemDivider } from './Header'
+import { Divider } from './Header'
 import { ControlledMenu, MenuItem } from '@szhsin/react-menu'
 
 export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99"

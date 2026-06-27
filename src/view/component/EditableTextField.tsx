@@ -3,6 +3,7 @@ import VgLiteError from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 import { glowOnHover } from "../sheets/VgLiteSheet"
+import { Tooltip } from "./Tooltip"
 
 export const EditableTextField = (
     { boundValue, onSave, updateProps, placeholder = "Enter text..." }: { 
@@ -80,7 +81,16 @@ export const EditableTextField = (
             onKeyDown={handleSpecialKeypresses} />
     }
     else {
-        return <span onDoubleClick={enterEditMode} className={`${glowOnHover}`}>{boundValue}</span>
+        return (
+            <Tooltip text={'Double-click to Edit'}>
+                <div
+                    onDoubleClick={enterEditMode}
+                    className={`${glowOnHover}`}
+                >
+                    {boundValue}
+                </div>
+            </Tooltip>
+        )
     }
 }
 

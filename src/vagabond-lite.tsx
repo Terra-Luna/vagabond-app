@@ -27,7 +27,7 @@ import { createRoot } from "react-dom/client"
 import { rehydrateElement } from "./view/chat/ChatCardManager"
 import { SkillCheckChatCard } from "./view/chat/SkillCheckChatCard"
 import { TrackerUpdateChatCard } from "./view/chat/TrackerUpdateChatCard"
-import { AbilityChatCard } from './view/chat/AbilityChatCard'
+import { AbilityChatCard, ComboChatCard } from './view/chat/AbilityChatCard'
 import { DamageRollChatCard } from './view/chat/DamageRollChatCard'
 
 // add our fonts
@@ -219,5 +219,6 @@ export const ComponentRegistry = {
     "SkillCheckChatCard": SkillCheckChatCard,
     "DamageRollChatCard": DamageRollChatCard,
     "TrackerUpdateChatCard": TrackerUpdateChatCard,
-    "AbilityChatCard": AbilityChatCard
+    "AbilityChatCard": AbilityChatCard,
+    "ComboChatCard": ComboChatCard
 }

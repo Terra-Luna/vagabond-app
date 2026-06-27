@@ -1,59 +1,78 @@
+import { ReactElement } from "react"
 import lang from "../../../public/lang/en.json"
 import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Wand, Zap } from "lucide-react"
+import { Tooltip } from "./Tooltip"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
     size = size ? size : 20
+    let element: ReactElement | undefined
     switch (lang.VGLITE.DamageTypes[dmgType]) {
         case lang.VGLITE.DamageTypes.magical: {
-            return (<Wand size={size} className='text-magical' />)
+            element = <Wand size={size} className='text-magical' />
+            break
         }
         case lang.VGLITE.DamageTypes.fire: {
-            return (<Flame size={size} className='text-fire' />)
+            element = <Flame size={size} className='text-fire' />
+            break
         }
         case lang.VGLITE.DamageTypes.cold: {
-            return (<Snowflake size={size} className='text-cold' />)
+            element = <Snowflake size={size} className='text-cold' />
+            break
         }
         case lang.VGLITE.DamageTypes.shock: {
-            return (<Zap size={size} className='text-shock' />)
+            element = <Zap size={size} className='text-shock' />
+            break
         }
         case lang.VGLITE.DamageTypes.acid: {
-            return (<Droplets size={size} className='text-acid' />)
+            element = <Droplets size={size} className='text-acid' />
+            break
         }
         case lang.VGLITE.DamageTypes.poison: {
-            return (<FlaskRound size={size} className='text-poison' />)
+            element = <FlaskRound size={size} className='text-poison' />
+            break
         }
         case lang.VGLITE.DamageTypes.necrotic: {
-            return (<Skull size={size} className='text-necrotic' />)
+            element = <Skull size={size} className='text-necrotic' />
+            break
         }
         case lang.VGLITE.DamageTypes.psychic: {
-            return (<Brain size={size} className='text-psychic' />)
+            element = <Brain size={size} className='text-psychic' />
+            break
         }
         case lang.VGLITE.DamageTypes.healing: {
-            return (<Cross size={size} className='text-healing' />)
+            element = <Cross size={size} className='text-healing' />
+            break
         }
         case lang.VGLITE.DamageTypes.physical: {
-            return (
-                <div className={`bg-white rounded-full p-0.5`}>
-                    <HandFist size={size-2} className='text-black' />
-                </div>
-            )
+            element = <div className={`bg-white rounded-full p-0.5`}>
+                <HandFist size={size - 2} className='text-black' />
+            </div>
+            break
         }
         case lang.VGLITE.DamageTypes.blunt: {
-            return <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/blunt.svg'} size={size} />
+            element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/blunt.svg'} size={size} />
+            break 
         }
         case lang.VGLITE.DamageTypes.piercing: {
-            return <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/pierce.svg'} size={size} />
+            element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/pierce.svg'} size={size} />
+            break
         }
         case lang.VGLITE.DamageTypes.slashing: {
-            return <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/slash.svg'} size={size} />
+            element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/slash.svg'} size={size} />
+            break
         }
     }
-    return <p>{lang.VGLITE.DamageTypes[dmgType]}</p>
+    if (element === undefined) {
+        element = <p>{lang.VGLITE.DamageTypes[dmgType]}</p>
+    }
+    return (
+        <Tooltip text={lang.VGLITE.DamageTypes[dmgType]} children={element} />
+    )
 }
 
 const CustomIcon = ({ path, size }: { path: string, size: number }) => {
     return (
-        <div className="bg-white rounded-full p-0.5">
+        <div className="bg-white rounded-full p-0.5 h-fit">
             <img
                 src={path}
                 height={`${size-2}px`}

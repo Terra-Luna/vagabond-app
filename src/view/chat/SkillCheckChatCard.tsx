@@ -4,7 +4,7 @@ import { Minus, Plus } from 'lucide-react'
 import { DiceRoll } from './component/DiceRoll'
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
-import { getTokenImg } from "../../utils/modelUtil"
+import { getName, getTokenImg } from "../../utils/modelUtil"
 
 export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
     const actor = game.actors?.get(actorId)
@@ -44,10 +44,10 @@ const DiceGraphics = ({ d20, d6, favHinder }) => {
 const TotalsFooter = ({ total, difficulty, csf, resultTextColor }) => {
     return (
         <div className="flex mt-2 space-x-2 h-fit items-end">
-            <p className="font-paradigm font-normal">Total:</p>
-            <p className="text-4xl mr-4">{total}</p>
-            <p className="font-paradigm font-normal">vs:</p>
-            <p className="text-xl">{difficulty}</p>
+            <p className="font-paradigm font-normal text-text-secondary">Total:</p>
+            <p className="text-5xl mr-4">{total}</p>
+            <p className="font-paradigm font-normal text-text-secondary">vs:</p>
+            <p className="text-2xl">{difficulty}</p>
             <p className={`${resultTextColor} text-xl ml-auto mr-2 [text-shadow:0_0_10px_var(--color-text-glow)]`}>{csf}</p>
         </div>
     )

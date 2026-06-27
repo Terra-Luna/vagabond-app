@@ -10,9 +10,32 @@ import D8 from "../../../../public/assets/icons/dice/d8.svg?react"
 import D6 from "../../../../public/assets/icons/dice/d6.svg?react"
 // @ts-ignore
 import D4 from "../../../../public/assets/icons/dice/d4.svg?react"
+import { DamageRollResult } from "../../../combat/dice-rolls"
+import { Plus } from "lucide-react"
 
 
 const centeredAlignment = "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
+
+export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
+    return (
+        <div className="flex flex-wrap grow gap-x-2 mt-2 justify-center">
+            {
+                result.rollsSummary.map((r, index) => (
+                    <div key={index}>
+                        <DiceRoll faces={r.dieSize} result={r.result} textSize={"text-4xl"} exploded={r.exploded} />
+                    </div>
+                ))
+            }
+            {
+                result.bonus === 0 ? <></> :
+                    <div className="flex space-x-2">
+                        <div className="h-full content-center text-text-secondary"><Plus size={24} /></div>
+                        <p className="h-full conent center text-4xl">{result.bonus}</p>
+                    </div>
+            }
+        </div>
+    )
+}
 
 export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = false }: {
     faces: number,

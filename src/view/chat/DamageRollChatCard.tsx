@@ -3,11 +3,11 @@ import { DamageRollResult } from '../../combat/dice-rolls'
 import { DamageTypeIcon } from '../component/DamageTypeIcon'
 import { BaseChatCardHost } from './component/BaseChatCardHost'
 import { ChatCardBanner } from './component/ChatCardBanner'
-import { DiceRoll } from './component/DiceRoll'
+import { DamageRolls, DiceRoll } from './component/DiceRoll'
 import { MenuItem, Menu } from '@szhsin/react-menu'
 import { glowOnHover } from '../sheets/VgLiteSheet'
 import { TargetsDisplay } from './component/TargetsDisplay'
-import { getTokenImg } from '../../utils/modelUtil'
+import { getName, getTokenImg } from '../../utils/modelUtil'
 import { applyDamage, applyHealing } from '../../combat/damage-handler'
 
 export const DamageRollChatCard = ({ actorId, tokenIds, result }: { actorId: string, tokenIds: string[], result: DamageRollResult }) => {
@@ -17,32 +17,17 @@ export const DamageRollChatCard = ({ actorId, tokenIds, result }: { actorId: str
             banner={<ChatCardBanner portrait={getTokenImg(actor)} title={result.atkName} />}
             contents={<>
                 <TargetsDisplay tokenIds={tokenIds} />
-                <div className="flex flex-wrap grow gap-x-2 mt-2 justify-center">
-                    {
-                        result.rollsSummary.map((r, index) => (
-                            <div key={index}>
-                                <DiceRoll faces={r.dieSize} result={r.result} textSize={"text-4xl"} exploded={r.exploded} />
-                            </div>
-                        ))
-                    }
-                    {
-                        result.bonus === 0 ? <></> :
-                            <div className="flex">
-                                <div className="h-full content-center"><Plus size={24} /></div>
-                                <p className="h-full conent center text-4xl">{result.bonus}</p>
-                            </div>
-                    }
-                </div>
+                <DamageRolls result={result} />
                 <TotalDmgFooter total={result.total} dmgType={result.dmgType} tokenIds={tokenIds} />
             </>}
         />
     )
 }
 
-const TotalDmgFooter = ({ total, dmgType, tokenIds }) => {
+export const TotalDmgFooter = ({ total, dmgType, tokenIds }) => {
     return (
-        <div className="flex h-full w-full items-center justify-center space-x-2">
-            <p className="text-xl text-text-secondary font-paradigm mr-2">Total:</p>
+        <div className="flex h-full w-full items-end justify-center space-x-2">
+            <p className="text-xl text-text-secondary font-paradigm font-normal mr-2">Total:</p>
             <p className="text-3xl text-text-primary">{total}</p>
             <div className="w-fit">
                 <DamageTypeIcon dmgType={dmgType} size={18} />

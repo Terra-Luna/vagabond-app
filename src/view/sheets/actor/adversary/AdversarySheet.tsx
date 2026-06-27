@@ -13,7 +13,7 @@ import { glowOnHover } from "../../VgLiteSheet"
 import { DamageTypeIconDisplay, OptionsSelectionMenu, StringOptionsDisplay } from "../../../component/OptionsSelectionMenu"
 import { DestructiveButton, PrimaryButton } from "../../../component/Button"
 import { useContextMenu } from "../../../component/ContextMenu"
-import { rollDamage } from "../../../../combat/dice-rolls"
+import { DamageRollResult, rollDamage } from "../../../../combat/dice-rolls"
 import { DamageTypeIcon } from "../../../component/DamageTypeIcon"
 import { subMenuLayout, tableBorderRounded } from "../../../common/border-styles"
 import { EnrichedContent } from "../../../component/EnrichedContent"
@@ -22,8 +22,9 @@ import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
 import { getId, getTargets } from "../../../../utils/modelUtil"
 import ReactHtmlParser from 'react-html-parser'
 import { DamageRollChatCard } from "../../../chat/DamageRollChatCard"
-import { AbilityChatCard } from "../../../chat/AbilityChatCard"
+import { AbilityChatCard, ComboChatCard } from "../../../chat/AbilityChatCard"
 import { stripHtml } from "../../../../utils/stringUtil"
+import { Tooltip } from "../../../component/Tooltip"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
@@ -110,12 +111,12 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                     {locale.hp}
                 </p>
                 <div className="flex font-eskapade font-bold w-full justify-center">
-                    <p className={`text-text-hp-current text-3xl min-w-[3ch] ${glowOnHover} cursor-pointer`}>
+                    <div className={`text-text-hp-current text-3xl min-w-[3ch] ${glowOnHover} cursor-pointer`}>
                         <EditableTextField
                             boundValue={adv.health.current?.toString() ?? ''}
                             updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }}
                             placeholder="0" />
-                    </p>
+                    </div>
                     <p className="text-text-primary text-5xl font-normal">/</p>
                     <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                         {adv.health.max}
@@ -141,13 +142,13 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                 </div>
             </div>
             <div className="flex w-full justify-center -mt-4">
-                <p className={`content-center ${glowOnHover} cursor-pointer`}>
+                <div className={`content-center ${glowOnHover} cursor-pointer`}>
                     <EditableTextField
                         boundValue={adv.armor.as ?? 'Unarmored'}
                         updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }}
                         placeholder="Unarmored"
                     />
-                </p>
+                </div>
             </div>
         </div>
     )
@@ -160,7 +161,9 @@ const AdversarySheetHeader = ({ adv, isEditMode, setIsEditMode }) => {
                 <EditableNameField actor={adv.parent} />
                 <div className="flex text-text-header-tertiary cursor-pointer ml-auto mr-1" onClick={() => setIsEditMode(!isEditMode)}>
                     {
-                        isEditMode ? <LockKeyholeOpen size={18} strokeWidth={2} /> : <LockKeyhole size={18} strokeWidth={2} />
+                        isEditMode ?
+                            <Tooltip text="Lock" children={<LockKeyholeOpen size={18} strokeWidth={2} />} /> :
+                            <Tooltip text="Unlock to Edit" children={<LockKeyhole size={18} strokeWidth={2} />} />
                     }
                 </div>
             </div>
@@ -360,7 +363,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
             {/* DISPLAY COMBO FIRST */}
             <div
                 className={`${glowOnHover} cursor-pointer`}
-                onClick={() => onClickAction(adv, lang.VGLITE.AdversarySheet.combo, adv.combo.actions.map(it => it.comboCount + "x " + it.name + ": " + it.effect).join("<br>"), '', '', '')}
+                onClick={() => onClickActionCombo(adv)}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}
             >
                 {
@@ -429,6 +432,25 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
     )
 }
 
+const onClickActionCombo = async (adv: AdversaryDataModel) => {
+    const rolls: DamageRollResult[] = []
+    for (let action = 0; action < adv.combo.actions.length; action++) {
+        const act = adv.combo.actions[action]
+        for (let count = 0; count < (act.comboCount ?? 0); count++) {
+            const result = await rollDamage(act.name, act.damage.type ?? '', act.damage.roll ?? '')
+            rolls.push(result)
+        }
+    }
+    sendVgLiteChatMessage(
+        adv,
+        <ComboChatCard
+            actorId={getId(adv)}
+            rolls={rolls}
+            tokenIds={getTargets()}
+        />, rolls.flatMap(r => r.rolls)
+    )
+}
+
 const onClickAction = async (adv: AdversaryDataModel, name: string, description: string, dmgType: string, roll?: string, avgDmg?: string) => {
     /**
      * TODO: create a config item to toggle between using damage rolls vs. flat damage.
@@ -445,9 +467,7 @@ const onClickAction = async (adv: AdversaryDataModel, name: string, description:
         )
     }
     else {
-        sendVgLiteChatMessage(adv,
-            <AbilityChatCard actorId={getId(adv)} title={name} description={description} tokenIds={getTargets()} />
-        )
+        sendVgLiteChatMessage(adv, <AbilityChatCard actorId={getId(adv)} title={name} description={description} tokenIds={getTargets()} />)
     }
 }
 
@@ -465,8 +485,8 @@ const useAddActionMenu = () => {
     return { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget }
 }
 
-interface AdversaryAction {
-    name: string, effect: string, damage: { roll: string, avg: number, type: string }, recharge: string
+export interface AdversaryAction {
+    name: string, effect: string, damage: { roll: string, avg: number, type: string }, recharge: string, comboCount: number
 }
 
 const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
@@ -641,11 +661,15 @@ const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
             <ActionMenuHeader label={locale.abilities} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
             {
                 adv.abilities.map(ability => (
-                    <div key={ability.name} onContextMenu={(e) => onCtxMenu(e, [
-                        { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(ability); setIsAddMenuOpen(true); } },
-                        { icon: Trash, label: 'Delete', action: () => deleteAbility(adv, ability), isDestructive: true }
-                    ])}>
-                        <div className={`${tableBorderRounded} p-2`}>
+                    <div
+                        key={ability.name}
+                        onClick={() => onClickAction(adv, ability.name, ability.description, '', '', '')}
+                        onContextMenu={(e) => onCtxMenu(e, [
+                            { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(ability); setIsAddMenuOpen(true); } },
+                            { icon: Trash, label: 'Delete', action: () => deleteAbility(adv, ability), isDestructive: true }
+                        ])}
+                    >
+                        <div className={`${tableBorderRounded} ${glowOnHover} cursor-pointer p-2`}>
                             <p className="font-paradigm font-bold">{ability.name}</p>
                             <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" />
                         </div>

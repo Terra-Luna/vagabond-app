@@ -1,7 +1,7 @@
 import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponDataModel"
 import lang from "../../public/lang/en.json"
 import { getName } from "../utils/modelUtil"
-import { AnyObject, EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
+import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
 export interface SkillCheckResult {
     skillName: string,
