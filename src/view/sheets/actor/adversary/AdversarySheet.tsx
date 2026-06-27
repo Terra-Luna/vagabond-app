@@ -8,7 +8,7 @@ import { getDocumentAtPath, updateDocument, updateDocumentAtPath } from "../../.
 import { RichTextField } from "../../../component/RichTextField"
 import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { DropDown } from "../../../component/Dropdown"
-import { Lock, LockKeyhole, LockKeyholeOpen, LockOpen, PenSquare, Plus, Save, Shield, Trash, Unlock } from "lucide-react"
+import { LockKeyhole, LockKeyholeOpen, PenSquare, Plus, Save, Shield, Trash } from "lucide-react"
 import { glowOnHover } from "../../VgLiteSheet"
 import { DamageTypeIconDisplay, OptionsSelectionMenu, StringOptionsDisplay } from "../../../component/OptionsSelectionMenu"
 import { DestructiveButton, PrimaryButton } from "../../../component/Button"
@@ -19,9 +19,11 @@ import { subMenuLayout, tableBorderRounded } from "../../../common/border-styles
 import { EnrichedContent } from "../../../component/EnrichedContent"
 import { damageRoll } from "../../../common/text-styles"
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
-import { DamageRollCard } from "../../../chat/DamageRollCard"
 import { getId, getTargets } from "../../../../utils/modelUtil"
 import ReactHtmlParser from 'react-html-parser'
+import { DamageRollChatCard } from "../../../chat/DamageRollChatCard"
+import { AbilityChatCard } from "../../../chat/AbilityChatCard"
+import { stripHtml } from "../../../../utils/stringUtil"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
@@ -217,9 +219,7 @@ const Description = ({ adv, isEditMode }) => {
                         />
                     </div> :
                     <div className="px-2 text-justify font-light italic">
-                        {adv.description.length > 0 && adv.description != "<p></p>" ?
-                            <div>{ReactHtmlParser(adv.description)}</div> : <></>
-                        }
+                        {stripHtml(adv.description).length > 0 ? <div>{ReactHtmlParser(adv.description)}</div> : <></>}
                     </div>
             }
         </div>)
@@ -373,7 +373,11 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                     adv.actions.map((act, i) => {
                         const spanCls = (i === adv.actions.length - 1) && (adv.actions.length % 2) ? 'col-span-2' : ''
                         return (
-                            <div key={act.name} className={`p-2 ${spanCls} ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
+                            <div
+                                key={act.name}
+                                className={`p-2 ${spanCls} ${tableBorderRounded}`}
+                                onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}
+                                onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
                                 { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
                             ])}>
@@ -391,25 +395,14 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                                         act.damage.roll ?
                                             <div className="flex gap-2">
                                                 <p className="text-text-secondary">Dmg:</p>
-                                                <p className={damageRoll} onClick={async () => {
-                                                    const result = await rollDamage(act.name, act.damage.type, act.damage.roll ?? '')
-                                                    sendVgLiteChatMessage(adv,
-                                                        <DamageRollCard
-                                                            actorId={getId(adv)}
-                                                            targetIds={getTargets()}
-                                                            result={result}
-                                                        />, result.rolls
-                                                    )
-                                                }}>
-                                                    {act.damage.roll}
-                                                </p>
+                                                <p className={damageRoll}>{act.damage.roll}</p>
                                                 <p>|</p>
                                                 <p className={damageRoll} onClick={async () => {
                                                     const result = await rollDamage(act.name, act.damage.type, act.damage.avg ?? '')
                                                     sendVgLiteChatMessage(adv,
-                                                        <DamageRollCard
+                                                        <DamageRollChatCard
                                                             actorId={getId(adv)}
-                                                            targetIds={getTargets()}
+                                                            tokenIds={getTargets()}
                                                             result={result} />, result.rolls)
                                                 }}>
                                                     {act.damage.avg}
@@ -430,6 +423,28 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
             <ContextMenu />
         </div>
     )
+}
+
+const onClickAction = async (adv: AdversaryDataModel, name: string, description: string, dmgType: string, roll?: string, avgDmg?: string) => {
+    /**
+     * TODO: create a config item to toggle between using damage rolls vs. flat damage.
+     */
+    if (roll) {
+        const result = await rollDamage(name, dmgType, roll ?? '')
+        sendVgLiteChatMessage(
+            adv,
+            <DamageRollChatCard
+                actorId={getId(adv)}
+                tokenIds={getTargets()}
+                result={result}
+            />, result.rolls
+        )
+    }
+    else {
+        sendVgLiteChatMessage(adv,
+            <AbilityChatCard actorId={getId(adv)} title={name} description={description} tokenIds={getTargets()} />
+        )
+    }
 }
 
 const deleteCombo = (adv: AdversaryDataModel) => {

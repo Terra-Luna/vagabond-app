@@ -11,7 +11,7 @@ import WeaponDataModel, { equipWeapon, toggleGripState } from "../../item/equip/
 import HeroDataModel from "../HeroDataModel"
 import { rollWeaponDamage } from "../../../combat/dice-rolls"
 import { sendVgLiteChatMessage } from "../../../view/chat/ChatCardManager"
-import { DamageRollCard } from "../../../view/chat/DamageRollCard"
+import { DamageRollChatCard } from "../../../view/chat/DamageRollChatCard"
 import { createElement } from "react"
 
 export const inventorySchema = () => {
@@ -122,11 +122,9 @@ export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataMo
             action: async () => {
                 const dmgRoll = await rollWeaponDamage(weapon)
                 sendVgLiteChatMessage(hero, createElement(
-                    DamageRollCard, {
-                    actorId: getId(hero),
-                    targetIds: getTargets(),
-                    result: dmgRoll
-                }), dmgRoll.rolls)
+                    DamageRollChatCard,
+                    { actorId: getId(hero), tokenIds: getTargets(), result: dmgRoll }
+                ), dmgRoll.rolls)
             }
         }
     ]

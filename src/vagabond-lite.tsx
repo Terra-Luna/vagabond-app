@@ -25,9 +25,10 @@ import { getId } from "./utils/modelUtil"
 import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
 import { rehydrateElement } from "./view/chat/ChatCardManager"
-import { SkillCheckChatCard } from "./view/chat/SkillCheckCard"
-import { DamageRollCard } from "./view/chat/DamageRollCard"
+import { SkillCheckChatCard } from "./view/chat/SkillCheckChatCard"
 import { TrackerUpdateChatCard } from "./view/chat/TrackerUpdateChatCard"
+import { AbilityChatCard } from './view/chat/AbilityChatCard'
+import { DamageRollChatCard } from './view/chat/DamageRollChatCard'
 
 // add our fonts
 const fontFaces = [
@@ -216,6 +217,7 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet
 
 export const ComponentRegistry = {
     "SkillCheckChatCard": SkillCheckChatCard,
-    "DamageRollCard": DamageRollCard,
-    "TrackerUpdateChatCard": TrackerUpdateChatCard
+    "DamageRollChatCard": DamageRollChatCard,
+    "TrackerUpdateChatCard": TrackerUpdateChatCard,
+    "AbilityChatCard": AbilityChatCard
 }

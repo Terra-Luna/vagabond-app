@@ -15,5 +15,5 @@ export function validateCurrentHP(hero: HeroDataModel) {
 }
 
 export function setMaxHP(hero: HeroDataModel) {
-    hero.health.max = hero.stats.might! * (hero.level.current || 1)
+    hero.health.max = hero.fatigue == 5 ? 0 : hero.stats.might! * (hero.level.current || 1)
 }

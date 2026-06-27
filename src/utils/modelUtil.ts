@@ -17,8 +17,8 @@ export const getTokenImg = (obj: any): string => {
 }
 
 export const getTargets = (): string[] => {
-    const targetIds = Array.from(game.user?.targets ?? []).map(t => t.id)
-    return targetIds
+    const tokenIds = Array.from(game.user?.targets ?? []).map(t => t.id)
+    return tokenIds
 }
 
 export const getCanvasToken = (id) => {

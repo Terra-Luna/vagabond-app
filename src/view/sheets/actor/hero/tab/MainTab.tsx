@@ -13,7 +13,7 @@ import { glowOnHover } from "../../../VgLiteSheet"
 import { getArmor } from "../../../../../model/actor/type/Armor"
 import { Skill } from "./TopSection"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
-import { DamageRollCard } from "../../../../chat/DamageRollCard"
+import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -76,9 +76,9 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                         className={`${dmgStyle} ${glowOnHover}`}
                                         onClick={async () => {
                                             const dmgRoll = await rollWeaponDamage(weapon)
-                                            sendVgLiteChatMessage(hero, <DamageRollCard
+                                            sendVgLiteChatMessage(hero, <DamageRollChatCard
                                                 actorId={getId(hero)}
-                                                targetIds={getTargets()}
+                                                tokenIds={getTargets()}
                                                 result={dmgRoll} />, dmgRoll.rolls
                                             )
                                         }}

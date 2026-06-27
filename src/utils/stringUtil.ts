@@ -6,3 +6,9 @@ export function toPascalCase(s: string): string {
         .replace(/(?:^|\s)(\p{L})/gu, (_, letter) => letter.toUpperCase()) // Capitalizes the first letter of each word
         .replace(/\s+/g, '') // Removes all spaces
 }
+
+export function stripHtml(html) {
+    let tmp = document.createElement("DIV");
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || "";
+}
