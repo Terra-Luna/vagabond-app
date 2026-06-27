@@ -227,7 +227,7 @@ const Description = ({ adv, isEditMode }) => {
 
 const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
     return (<>
-        <div className="flex flex-wrap justify-between gap-x-12 gap-y-2 w-full px-2 mb-1">
+        <div className="flex flex-wrap justify-between gap-x-8 gap-y-2 w-full px-2 mb-1">
             {/* ZONE */}
             <StatBlockField label={locale.zone} content={<>
                 {
@@ -358,11 +358,15 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
             {/* HEADER W/ ADD BUTTON */}
             <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
             {/* DISPLAY COMBO FIRST */}
-            <div onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}>
+            <div
+                className={`${glowOnHover} cursor-pointer`}
+                onClick={() => onClickAction(adv, lang.VGLITE.AdversarySheet.combo, adv.combo.actions.map(it => it.comboCount + "x " + it.name + ": " + it.effect).join("<br>"), '', '', '')}
+                onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}
+            >
                 {
                     adv.combo.name !== '' ?
                         <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
-                            <p className="font-paradigm font-bold">Combo:</p>
+                            <p className="font-paradigm font-bold">{lang.VGLITE.AdversarySheet.combo}:</p>
                             <p className="text-text-secondary">{adv.combo.name}</p>
                         </div> : <></>
                 }
@@ -375,7 +379,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                         return (
                             <div
                                 key={act.name}
-                                className={`p-2 ${spanCls} ${tableBorderRounded}`}
+                                className={`p-2 ${spanCls} ${tableBorderRounded} ${glowOnHover} cursor-pointer`}
                                 onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}
                                 onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },

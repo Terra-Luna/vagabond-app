@@ -582,6 +582,7 @@
         "immune": "Immune:",
         "weak": "Weak:",
         "status_immunities": "Status Immune:",
+        "combo": "Combo",
         "actions": "Actions",
         "abilities": "Abilities",
         "speed": "Speed:",
