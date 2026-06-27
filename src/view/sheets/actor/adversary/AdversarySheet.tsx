@@ -24,8 +24,8 @@ import { getId, getTargets } from "../../../../utils/modelUtil"
 import ReactHtmlParser from 'react-html-parser'
 
 const locale = lang.VGLITE.AdversarySheet
-const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal content-center`
-const statValueStyle = `text-xl text-stat-block-fill font-eskapade font-bold content-center`
+const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
+const statValueStyle = `text-2xl text-stat-block-fill font-eskapade font-bold`
 
 export default class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
@@ -81,25 +81,17 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
     }, [hp])
 
     return (
-        <div className="text-center space-y-4">
-            {/* HIT DICE */}
-            <div className="flex space-x-2 text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
+        <div className="text-center space-y-4 mt-0.5">
+            {/* THREAT LEVEL */}
+            <div className="flex space-x-2 text-text-primary justify-center content-center w-full ml-auto mr-auto">
                 <p className={`${headerStyle} content-center`}>{locale.tl}</p>
-                <p className={`text-xl text-stat-block-fill font-eskapade font-bold`}>
-                    {
-                        /* isEditMode ? <EditableTextField
-                            boundValue={adv.threatLevel?.toString() ?? '0'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['threatLevel'] }}
-                            placeholder="1"
-                        /> : */ <p>{adv.threatLevel}</p>
-                    }
-                </p>
+                <p className={`text-lg text-stat-block-fill font-eskapade font-bold`}>{adv.threatLevel}</p>
             </div>
 
             {/* HIT DICE */}
             <div className="text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
                 <p className={headerStyle}>{locale.hd}</p>
-                <p className={`text-3xl text-stat-block-fill font-eskapade font-bold`}>
+                <div className={`text-3xl text-stat-block-fill font-eskapade font-bold`}>
                     {
                         isEditMode ? <EditableTextField
                             boundValue={adv.hitDice?.toString() ?? '1'}
@@ -107,7 +99,7 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                             placeholder="1"
                         /> : <p>{adv.hitDice}</p>
                     }
-                </p>
+                </div>
             </div>
             
             {/* HP CURRENT / MAX */}
@@ -234,88 +226,85 @@ const Description = ({ adv, isEditMode }) => {
 }
 
 const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
-    return (
-        <div className="flex py-2 px-4 justify-between">
-            {/* LEFT COLUMN */}
-            <div className="flex flex-col gap-y-2">
-                {/* ZONE */}
-                <StatBlockField label={locale.zone} content={<>
-                    {
-                        isEditMode ?
-                            <DropDown label=''
-                                options={createDropdownEntries(lang.VGLITE.Zones)}
-                                parent={adv.parent}
-                                updateMechanism={{ updatePath: ['zone'] }}
-                                value={adv.zone}
-                            /> :
-                            <p className="text-base">{lang.VGLITE.Zones[adv.zone]}</p>
-                    }
-                </>} />
-                {/* MORALE */}
-                <StatBlockField label={locale.morale} content={<>
-                    {
-                        isEditMode ?
-                            <EditableTextField
-                                boundValue={adv.morale?.toString() ?? '6'}
-                                updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
-                                placeholder="6"
-                            /> :
-                            <p className="text-base">{adv.morale}</p>
-                    }
-
-                </>} />
-                {/* WEAKNESS & IMMUNITY */}
-                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
-                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
-            </div>
-
-            {/* RIGHT COLUMN */}
-            <div className="flex flex-col items-end gap-y-2">
-                {/* SPEED */}
-                <StatBlockField label={locale.speed} content={
-                    <div className="flex space-x-1">
-                        <div className={`flex space-x-1 ${statValueStyle}`}>
-                            {
-                                isEditMode ? <EditableTextField
-                                    boundValue={adv.movement?.speed?.toString() ?? '30'}
-                                    updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
-                                    placeholder="30"
-                                /> : <p>{adv.movement.speed}</p>
-                            }
-                        </div>
-                        <div className="text-stat-block-fill">
-                            {
-                                isEditMode ? <DropDown label=''
-                                    options={createDropdownEntries(lang.VGLITE.Movement)}
-                                    parent={adv.parent}
-                                    updateMechanism={{ updatePath: ['movement', 'type'] }}
-                                    value={lang.VGLITE.Movement[adv.movement.type]}
-                                /> : <p>{adv.movement.type}</p>
-                            }
-                        </div>
+    return (<>
+        <div className="flex flex-wrap justify-between gap-x-12 gap-y-2 w-full p-1">
+            {/* ZONE */}
+            <StatBlockField label={locale.zone} content={<>
+                {
+                    isEditMode ?
+                        <DropDown label=''
+                            options={createDropdownEntries(lang.VGLITE.Zones)}
+                            parent={adv.parent}
+                            updateMechanism={{ updatePath: ['zone'] }}
+                            value={adv.zone}
+                        /> :
+                        <p className="text-base">{lang.VGLITE.Zones[adv.zone]}</p>
+                }
+            </>} />
+            {/* SPEED */}
+            <StatBlockField label={locale.speed} content={
+                <div className="flex space-x-1">
+                    <div className={`flex space-x-1 ${statValueStyle}`}>
+                        {
+                            isEditMode ? <EditableTextField
+                                boundValue={adv.movement?.speed?.toString() ?? '30'}
+                                updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
+                                placeholder="30"
+                            /> : <p>{adv.movement.speed}</p>
+                        }
                     </div>
-                } />
-                {/* NUBMER APPEARING */}
-                <StatBlockField label={locale.appearing} content={<>
-                    {
-                        isEditMode ? <EditableTextField
-                            boundValue={adv.numberAppearing?.toString() ?? '1'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
-                            placeholder="1d6"
-                        /> : <p>{adv.numberAppearing}</p>
-                    }
-                </>} />
-                {/* SENSENS & STATUS IMMUNITIES */}
+                    <div className="text-stat-block-fill">
+                        {
+                            isEditMode ? <DropDown label=''
+                                options={createDropdownEntries(lang.VGLITE.Movement)}
+                                parent={adv.parent}
+                                updateMechanism={{ updatePath: ['movement', 'type'] }}
+                                value={lang.VGLITE.Movement[adv.movement.type]}
+                            /> : <p>{adv.movement.type}</p>
+                        }
+                    </div>
+                </div>
+            } />
+            {/* MORALE */}
+            <StatBlockField label={locale.morale} content={<>
+                {
+                    isEditMode ?
+                        <EditableTextField
+                            boundValue={adv.morale?.toString() ?? '6'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
+                            placeholder="6"
+                        /> :
+                        <p className="text-base">{adv.morale}</p>
+                }
+
+            </>} />
+            {/* NUBMER APPEARING */}
+            <StatBlockField label={locale.appearing} content={<>
+                {
+                    isEditMode ? <EditableTextField
+                        boundValue={adv.numberAppearing?.toString() ?? '1'}
+                        updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
+                        placeholder="1d6"
+                    /> : <p>{adv.numberAppearing}</p>
+                }
+            </>} />
+            {/* SENSENS & STATUS IMMUNITIES */}
+            <div className="w-full space-y-2">
                 <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} isEditMode={isEditMode} />
                 <SelectableTextField adv={adv} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} isEditMode={isEditMode} />
             </div>
+            {/* WEAKNESS & IMMUNITY */}
+            <div className="w-full space-y-2">
+                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
+                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
+            </div>
         </div>
-    )
+    </>)
 }
 
 const StatBlockField = ({ label, content }) => {
     return (
-        <div className="flex items-center content-center space-x-2">
+        <div className="flex space-x-2">
             <p className={statLabelStyle}>{label}</p>
             <div className={statValueStyle}>{content}</div>
         </div>
@@ -329,14 +318,14 @@ const DamageTypeSelector = ({ adv, label, path, localeObj, isEditMode }: { adv: 
     ))
     return (<>
         {
-            !isEditMode && getDocumentAtPath(adv.parent, path).length === 0 ? <></> :
-                <div className="space-y-1">
+            !isEditMode && field === 0 ? <></> :
+                <div className="flex space-x-2">
                     {
                         isEditMode ?
                             <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={damageTypes} /> :
                             <p className={statLabelStyle}>{label}</p>
                     }
-                    <DamageTypeIconDisplay dmgTypes={getDocumentAtPath(adv.parent, path)} />
+                    <DamageTypeIconDisplay dmgTypes={field} />
                 </div>
         }
     </>)
@@ -349,8 +338,8 @@ const SelectableTextField = ({ adv, label, path, localeObj, isEditMode }: { adv:
     ))
     return (<>
         {
-            !isEditMode && getDocumentAtPath(adv.parent, path).length === 0 ? <></> :
-                <div className="ml-auto justify-items-end text-right space-y-1">
+            !isEditMode && field.length === 0 ? <></> :
+                <div className="flex space-x-2">
                     {
                         isEditMode ?
                             <OptionsSelectionMenu actor={adv.parent} label={label} path={path} options={options} /> :

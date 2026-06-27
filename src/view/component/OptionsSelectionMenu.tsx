@@ -58,14 +58,6 @@ export const DamageTypeIconDisplay = ({ dmgTypes }: { dmgTypes: any[] }) => {
 
 export const StringOptionsDisplay = ({ options }: { options: any[] }) => {
     return (
-        <div className="flex flex-wrap w-full gap-x-1 justify-end text-right">
-            {
-                options.map((opt: any) => (
-                    <div key={opt} className="content-center text-text-secondary italic">
-                        {opt}
-                    </div>
-                ))
-            }
-        </div>
+        <p className="flex flex-wrap text-text-secondary font-paradigm font-normal">{options.join(", ")}</p>
     )
 }

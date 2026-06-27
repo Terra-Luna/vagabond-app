@@ -87,7 +87,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={propsStyle}>{weapon.properties.reduce((props, p) => { return props + lang.VGLITE.WeaponProps[p].name + ', ' }, '').replace(/,\s*$/, "")}</div>
+                            <div className={propsStyle}>{weapon.properties.map(p => lang.VGLITE.WeaponProps[p].name).join(", ")}</div>
                             <div className={propsStyle + " text-right mr-1"}>{lang.VGLITE.Ranges[weapon.range]}</div>
                         </div>
                         <ItemDivider />
