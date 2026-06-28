@@ -568,7 +568,8 @@
         "ctxGrip": "Change grip",
         "ctxEquip": "Equip",
         "ctxUnequip": "Unequip",
-        "ctxDelete": "Delete"
+        "ctxDelete": "Delete",
+        "ctxDeleteAll": "Delete All"
       }
     },
     "AdversarySheet": {

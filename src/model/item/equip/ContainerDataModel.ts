@@ -25,8 +25,8 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
  */
 export function addItem(container: ContainerDataModel, item: EquipmentDataModel<EquipmentSchema>, allowContainerNesting: boolean = false) {
     if (allowContainerNesting || item.parent.type != "container") {
-        const emptySlots = container.items.reduce((sum, i) => { return sum + (i.slots ?? 0) }, 0)
-        if (emptySlots! >= item.slots!) {
+        const emptySlots = container.items.reduce((sum, i) => { return sum + (i.bulk.slots ?? 0) }, 0)
+        if (emptySlots! >= item.bulk.slots!) {
             container.items.push(item)
         }
         else {

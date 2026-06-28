@@ -1,5 +1,5 @@
 import lang from "../../../../public/lang/en.json"
-import { addCoins as addCoins, coinSchema } from "../../common/CoinValue"
+import { addCoins as addCoins, coinSchema, multiplyCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
@@ -11,9 +11,14 @@ const baseEquipmentSchema = () => {
     return {
         category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories) }),
         value: new fields.SchemaField({ ...coinSchema() }),
-        slots: new fields.NumberField({ integer: true, min: 0 }),
-        quantity: new fields.NumberField({ ...requiredInteger, initial: 1 }),
-        isStackable: new fields.BooleanField({ initial: false }),
+        totalValue: new fields.SchemaField({ ...coinSchema() }),
+        bulk: new fields.SchemaField({
+            slots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            isStackable: new fields.BooleanField({ initial: false }),
+            stackSize: new fields.NumberField({ ...requiredInteger, initial: 1 }),
+            quantity: new fields.NumberField({ ...requiredInteger, initial: 1 }),
+            totalSlots: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        }),
         isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),
         isConsumable: new fields.BooleanField({ initial: false }),
@@ -42,12 +47,16 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
         if (this.relicEffects.length > 0) {
             this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
         }
+        this.totalValue = multiplyCoins(this.value, Math.max(1, this.bulk.quantity))
     }
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        if (this.isStackable) {
-            this.slots = this.quantity! * this.slots!
+        if (this.bulk.isStackable) {
+            this.bulk.totalSlots = getStackSlots(this as EquipmentDataModel<any>)
+        }
+        else {
+            this.bulk.totalSlots = this.bulk.slots
         }
     }
 }
@@ -63,4 +72,10 @@ export const setEquipState = async (item: any, isEquipped: boolean) => {
             await item.parent.update({ 'system.isEquipped': isEquipped })
         }
     }
+}
+
+export const getStackSlots = (stack: EquipmentDataModel<EquipmentSchema>): number => {
+    const slots = stack.bulk.slots ?? 0
+    const qty = stack.bulk.quantity ?? 0
+    return slots > 0 ? qty * slots : Math.floor(qty / stack.bulk.stackSize)
 }

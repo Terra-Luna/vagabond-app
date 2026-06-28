@@ -107,7 +107,7 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
     if (isInventoryItem(item) && item.system.isStackable) {
         const stack = actor.items.find((it: any) => it.name === item.name)
         if (stack != undefined) {
-            stack.update({ 'system.quantity': stack.system.quantity + 1 })
+            stack.update({ 'system.bulk.quantity': stack.system.bulk.quantity + 1 })
             stackStackables(item.parent.system)
             return false
         }
@@ -124,10 +124,10 @@ Hooks.on("createItem", (item, options, userId) => {
 })
 
 Hooks.on("preDeleteItem", (item: any, options, userId) => {
-    if (item.system.isStackable) {
-        const count = item.system.quantity
+    if (item.system.isStackable && item.parent) {
+        const count = item.system.bulk.quantity
         if (count > 1) {
-            item.update({ 'system.quantity': count - 1 })
+            item.update({ 'system.bulk.quantity': count - 1 })
             return false
         }
     }
@@ -193,25 +193,25 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
     makeDefault: true
-})
+});
 
 // @ts-ignore
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', AdversarySheet, {
     types: ['adversary'],
     makeDefault: true
-})
+});
 
 // @ts-ignore
 foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
     types: ['perk'],
     makeDefault: true
-})
+});
 
 // @ts-ignore
 foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet, {
     types: ['ancestry'],
     makeDefault: true
-})
+});
 
 (window as any).runVgLiteDebugMacros = runAllMacros
 

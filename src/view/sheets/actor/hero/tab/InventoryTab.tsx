@@ -135,8 +135,8 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                                     {itemNameQty(item)}
                                 </span>
                             </td>
-                            <td className="text-center">{item.slots}</td>
-                            <td className="text-center">{coinsAsString(item.value)}</td>
+                            <td className="text-center">{item.bulk.totalSlots}</td>
+                            <td className="text-center">{coinsAsString(item.totalValue)}</td>
                             {
                                 item.isEquippable ?
                                     <td className="items-center">
@@ -155,8 +155,6 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
-
-
 
 const toggleEquipState = async (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
     if (item.isEquipped) {

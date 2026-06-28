@@ -27,7 +27,7 @@ export const inventorySchema = () => {
 
 export const getEncumbranceInfo = (hero: HeroDataModel): { bulk: number, capacity: number, isOverEncumbered: boolean } => {
     const capacity = hero.inventory.capacity ?? 10
-    const bulk = hero.inventory.items.reduce((sum, i) => { return sum + (i.slots ?? 0) }, 0)
+    const bulk = hero.inventory.items.reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
     const isOverEncumbered = bulk / capacity > 1
     return { bulk, capacity, isOverEncumbered }
 }
@@ -41,17 +41,17 @@ export const stackStackables = async (hero: HeroDataModel) => {
     const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.isStackable) as Item[]
     if (stackables?.length > 0) {
         ((Object.values(groupBy('name', stackables))) as any[][]).filter(it => it.length > 1).forEach(async items => {
-            await items[0].update({ 'system.quantity': items.length })
+            await items[0].update({ 'system.bulk.quantity': items.length })
             await deleteItems(
                 hero,
-                items.filter(it => it.system.quantity === 1).map(it => it._id)
+                items.filter(it => it.system.bulk.quantity === 1).map(it => it._id)
             )
         })
     }
 }
 
 export const itemNameQty = (item: EquipmentDataModel<EquipmentSchema>): string => {
-    return item.quantity === 1 ? getName(item) : `${getName(item)} (x${item.quantity})`
+    return item.bulk.quantity === 1 ? getName(item) : `${getName(item)} (x${item.bulk.quantity})`
 }
 
 export const sortedItems = <T>(items: T[]): T[] => {
@@ -173,5 +173,18 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) },
         { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(hero, [getId(item)]), isDestructive: true }
     )
+    if (item.bulk.isStackable && item.bulk.quantity > 1) {
+        menuItems.push(
+            {
+                icon: Trash,
+                label: lang.VGLITE.HeroSheet.Inventory.ctxDeleteAll,
+                action: async () => {
+                    await item.parent.update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
+                    deleteItems(hero, [getId(item)])
+                },
+                isDestructive: true
+            }
+        )
+    }
     return menuItems
 }

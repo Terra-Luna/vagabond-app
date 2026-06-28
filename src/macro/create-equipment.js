@@ -27,8 +27,12 @@ export default async function createEquipment() {
             },
             material: 'standard',
             isCrude: false,
-            slots: 2,
-            quantity: 1,
+            bulk: {
+                slots: 2,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             category: 'weapons',
             value: { g: 0, s: 40, c: 0 },
             relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
@@ -59,7 +63,12 @@ export default async function createEquipment() {
             },
             material: 'standard',
             isCrude: false,
-            slots: 2,
+            bulk: {
+                slots: 2,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             category: 'weapons',
             value: { g: 1, s: 60, c: 0 },
             relicEffects: [] // { type: string, power: schema, addedCoinValue: { ...coinSchema() }}
@@ -90,7 +99,12 @@ export default async function createEquipment() {
             },
             material: 'standard',
             isCrude: false,
-            slots: 1,
+            bulk: {
+                slots: 1,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             isEquipped: false,
             category: 'weapons',
             value: { g: 0, s: 40, c: 0 },
@@ -122,7 +136,12 @@ export default async function createEquipment() {
             },
             material: 'standard',
             isCrude: false,
-            slots: 2,
+            bulk: {
+                slots: 2,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             category: 'weapons',
             value: { g: 0, s: 75, c: 0 },
             relicEffects: []
@@ -141,8 +160,12 @@ export default async function createEquipment() {
             rating: 3,
             mightReq: 5,
             material: 'standard',
-            slots: 3,
-            quantity: 1,
+            bulk: {
+                slots: 3,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             isEquipped: false,
             category: 'armor',
             value: { g: 2, s: 0, c: 0 },
@@ -162,7 +185,12 @@ export default async function createEquipment() {
             rating: 2,
             mightReq: 4,
             material: 'standard',
-            slots: 2,
+            bulk: {
+                slots: 2,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             quantity: 1,
             isEquipped: false,
             category: 'armor',
@@ -183,8 +211,12 @@ export default async function createEquipment() {
             rating: 1,
             mightReq: 3,
             material: 'standard',
-            slots: 2,
-            quantity: 1,
+            bulk: {
+                slots: 2,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             isEquipped: false,
             category: 'armor',
             value: { g: 0, s: 50, c: 0 },
@@ -192,6 +224,26 @@ export default async function createEquipment() {
         }
     }
     await Item.create(light_armor)
+
+    const materials_20 = {
+        name: "Materials",
+        type: 'sundry',
+        folder: game.folders?.getName(folder)?.id,
+        system: {
+            description: '',
+            category: 'alchemy',
+            damage: '',
+            damageType: '',
+            bulk: {
+                slots: 0,
+                quantity: 20,
+                isStackable: true,
+                stackSize: 20
+            },
+            value: { s: 5 }
+        }
+    }
+    await Item.create(materials_20)
 
     const alchemistfire = {
         name: "Alchemist's Fire",
@@ -202,8 +254,12 @@ export default async function createEquipment() {
             category: 'alchemy',
             damage: '',
             damageType: '',
-            slots: 1,
-            quantity: 1,
+            bulk: {
+                slots: 2,
+                quantity: 1,
+                isStackable: true,
+                stackSize: 1
+            },
             value: { g: 2, s: 50 }
         }
     }
@@ -215,7 +271,12 @@ export default async function createEquipment() {
         img: 'icons/containers/bags/pack-engraved-leather-leaf-tan.webp',
         folder: game.folders?.getName(folder)?.id,
         system: {
-            slots: 0,
+            bulk: {
+                slots: 0,
+                quantity: 1,
+                isStackable: false,
+                stackSize: 1
+            },
             capacity: 2,
             category: 'containers'
         }

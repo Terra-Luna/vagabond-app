@@ -71,8 +71,10 @@ export default class TagalongItemCreator {
                 category: lang.VGLITE.EquipmentCategories.alchemy,
                 damage: '',
                 damageType: '',
-                slots: 1,
-                quantity: 1,
+                bulk: {
+                    slots: 1,
+                    quantity: 1
+                },
                 value: item.value
             }
         })
@@ -90,8 +92,10 @@ export default class TagalongItemCreator {
                 rating: item.armor_rating,
                 mightReq: item.might_req,
                 material: Object.keys(lang.VGLITE.Metals)[item.material.toLowerCase()] ?? 'standard',
-                slots: item.slots,
-                quantity: 1,
+                bulk: {
+                    slots: item.slots,
+                    quantity: 1
+                },
                 isEquipped: item.is_eqiupped,
                 value: item.value,
                 relicEffects: []
@@ -106,7 +110,7 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: lang.VGLITE.EquipmentCategories.weapon,
+                category: lang.VGLITE.EquipmentCategories.weapons,
                 damage: {
                     oneHand: `1${item.damage}`,
                     twoHand: item.grip === 'V' ? `1d${Number(item.damage.replace('d', '')) + 2}` : `1${item.damage}`
@@ -118,8 +122,10 @@ export default class TagalongItemCreator {
                 },
                 properties: item.properties,
                 material: Object.keys(lang.VGLITE.Metals)[item.material.toLowerCase()] ?? 'standard',
-                slots: item.slots,
-                quantity: 1,
+                bulk: {
+                    slots: item.slots,
+                    quantity: 1
+                },
                 isEquipped: item.is_eqiupped,
                 value: item.value,
                 relicEffects: []
@@ -135,8 +141,10 @@ export default class TagalongItemCreator {
             system: {
                 description: item.notes,
                 category: lang.VGLITE.EquipmentCategories.containers,
-                slots: item.slots,
-                quantity: 1,
+                bulk: {
+                    slots: item.slots,
+                    quantity: 1
+                },
                 value: item.value,
                 relicEffects: []
             }
@@ -152,8 +160,12 @@ export default class TagalongItemCreator {
                 description: item.notes,
                 category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category.toLowerCase()] ?? 'other',
                 value: item.value,
-                slots: item.slots,
-                quantity: 1
+                bulk: {
+                    slots: item.slots,
+                    quantity: 1,
+                    isStackable: true,
+                    stackSize: 10
+                }
             }
         })
     }
@@ -166,9 +178,13 @@ export default class TagalongItemCreator {
             system: {
                 description: item.notes,
                 category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category.toLowerCase()] ?? 'other',
-                slots: item.slots,
-                quantity: 1,
-                value: item.value
+                value: item.value,
+                bulk: {
+                    slots: item.slots,
+                    quantity: 1,
+                    isStackable: true,
+                    stackSize: 10
+                }
             }
         })
     }
