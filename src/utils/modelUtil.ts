@@ -1,15 +1,15 @@
 import ActorDataModel, { BaseActorSchema } from "../model/actor/ActorDataModel"
 
 export const getId = (obj: any): string => {
-    return obj?.parent?._id ?? ''
+    return obj?._id ?? obj?.parent?._id ?? ''
 }
 
 export const getName = (obj: any): string => {
-    return obj?.parent?.name ?? ''
+    return obj?.name ?? obj?.parent?.name ?? ''
 }
 
 export const getPortrait = (obj: any): string => {
-    return obj?.img ?? null
+    return obj?.img ?? obj?.parent?.img
 }
 
 export const getTokenImg = (obj: any): string => {

@@ -13,6 +13,7 @@ import { rollWeaponDamage } from "../../../combat/dice-rolls"
 import { sendVgLiteChatMessage } from "../../../view/chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../view/chat/DamageRollChatCard"
 import { createElement } from "react"
+import { ItemChatCard } from "../../../view/chat/ItemChatCard"
 
 export const inventorySchema = () => {
     return {
@@ -83,17 +84,14 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
 }
 
 export const sendItemToChat = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
-    ChatMessage.create({
-        speaker: { actor: getId(hero), alias: getName(hero) },
-        content: `<h4>${getName(hero)} </h4><p> linked item: ${getName(item)}</p>`
-    })
+    sendVgLiteChatMessage(hero, createElement(ItemChatCard, { itemId: getId(item) }))
 }
 
 export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
-    if (item.parent.type instanceof ArmorDataModel) {
+    if (item.parent instanceof ArmorDataModel) {
         equipArmor(hero, item as ArmorDataModel)
     }
-    else if (item.parent.type instanceof WeaponDataModel) {
+    else if (item.parent instanceof WeaponDataModel) {
         equipWeapon(hero, item as WeaponDataModel)
     }
     else if (item.isEquippable) {

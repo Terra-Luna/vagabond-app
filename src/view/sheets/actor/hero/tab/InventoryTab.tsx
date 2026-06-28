@@ -121,7 +121,7 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                                     "bg-text-fatigue-current" :
                                     `even:bg-table-row-even/50 odd:bg-table-row-odd/50 ${glowOnHover}`
                             }
-                        onContextMenu={(e) => { onCtxMenu(e, equipmentContextMenuItems(hero, item))}}
+                            onContextMenu={(e) => { onCtxMenu(e, equipmentContextMenuItems(hero, item)) }}
                             onDoubleClick={() => openItemSheet(item)}
                             draggable
                             onDragStart={(e) => onDragStart(e, index)}

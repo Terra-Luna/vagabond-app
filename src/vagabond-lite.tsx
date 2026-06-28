@@ -29,6 +29,7 @@ import { SkillCheckChatCard } from "./view/chat/SkillCheckChatCard"
 import { TrackerUpdateChatCard } from "./view/chat/TrackerUpdateChatCard"
 import { AbilityChatCard, ComboChatCard } from './view/chat/AbilityChatCard'
 import { DamageRollChatCard } from './view/chat/DamageRollChatCard'
+import { ItemChatCard } from './view/chat/ItemChatCard'
 
 // add our fonts
 const fontFaces = [
@@ -216,9 +217,10 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet
 (window as any).runVgLiteDebugMacros = runAllMacros
 
 export const ComponentRegistry = {
-    "SkillCheckChatCard": SkillCheckChatCard,
-    "DamageRollChatCard": DamageRollChatCard,
-    "TrackerUpdateChatCard": TrackerUpdateChatCard,
     "AbilityChatCard": AbilityChatCard,
-    "ComboChatCard": ComboChatCard
+    "ComboChatCard": ComboChatCard,
+    "DamageRollChatCard": DamageRollChatCard,
+    "ItemChatCard": ItemChatCard,
+    "SkillCheckChatCard": SkillCheckChatCard,
+    "TrackerUpdateChatCard": TrackerUpdateChatCard
 }

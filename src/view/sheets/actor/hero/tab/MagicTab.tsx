@@ -70,7 +70,7 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
             <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 my-1 gap-x-1 gap-y-0.5">
                 {
                     hero.spells.map((sp: any) => (
-                        <div onContextMenu={(e) => onCtxMenu(e, [
+                        <div key={getId(sp)} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
                                     hero,
@@ -91,7 +91,6 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                             }
                         ])}>
                             <SkillCard
-                                key={getId(sp)}
                                 title={sp.parent.name}
                                 subtitles={[['Base dmg', lang.VGLITE.DamageTypes[sp.damageType] ?? '-']]}
                                 description={sp.description}
