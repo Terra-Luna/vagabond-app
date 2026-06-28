@@ -107,18 +107,18 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
             
             {/* HP CURRENT / MAX */}
             <div className="text-text-primary w-full">
-                <p className={`${headerStyle} ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
+                <p className={`${headerStyle} ${glowOnHover}`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                     {locale.hp}
                 </p>
                 <div className="flex font-eskapade font-bold w-full justify-center">
-                    <div className={`text-text-hp-current text-3xl min-w-[3ch] ${glowOnHover} cursor-pointer`}>
+                    <div className={`text-text-hp-current text-3xl min-w-[3ch] ${glowOnHover}`}>
                         <EditableTextField
                             boundValue={adv.health.current?.toString() ?? ''}
                             updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }}
                             placeholder="0" />
                     </div>
                     <p className="text-text-primary text-5xl font-normal">/</p>
-                    <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover} cursor-pointer`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
+                    <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover}`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                         {adv.health.max}
                     </p>
                 </div>
@@ -130,24 +130,28 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                 <div className="relative w-[52px] h-[52px] ml-auto mr-auto">
                     <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className={`text-4xl text-text-armor font-eskapade font-bold ${glowOnHover} cursor-pointer`}>
-                            <EditableTextField
-                                boundValue={adv.armor.rating?.toString() ?? ''}
-                                updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating'] }}
-                                placeholder="0"
-                            />
+                        <div className={`text-4xl text-text-armor font-eskapade font-bold ${glowOnHover}`}>
+                            {
+                                isEditMode ? <EditableTextField
+                                    boundValue={adv.armor.rating?.toString() ?? ''}
+                                    updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating'] }}
+                                    placeholder="0"
+                                /> : <p>{adv.armor.rating}</p>
+                            }
                         </div>
                     </div>
                     <p className={`absolute bottom-0 -right-1.5 ${statLabelStyle}`}>{locale.as}</p>
                 </div>
             </div>
             <div className="flex w-full justify-center -mt-4">
-                <div className={`content-center ${glowOnHover} cursor-pointer`}>
-                    <EditableTextField
-                        boundValue={adv.armor.as ?? 'Unarmored'}
-                        updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }}
-                        placeholder="Unarmored"
-                    />
+                <div className={`content-center ${glowOnHover}`}>
+                    {
+                        isEditMode ? <EditableTextField
+                            boundValue={adv.armor.as ?? 'Unarmored'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }}
+                            placeholder="Unarmored"
+                        /> : <p>{adv.armor.as}</p>
+                    }
                 </div>
             </div>
         </div>
@@ -159,7 +163,7 @@ const AdversarySheetHeader = ({ adv, isEditMode, setIsEditMode }) => {
         <div className="bg-sheet-header-fill font-eskapade p-2">
             <div className="text-2xl text-text-header-primary font-bold flex">
                 <EditableNameField actor={adv.parent} />
-                <div className="flex text-text-header-tertiary cursor-pointer ml-auto mr-1" onClick={() => setIsEditMode(!isEditMode)}>
+                <div className="flex text-text-header-tertiary ml-auto mr-1" onClick={() => setIsEditMode(!isEditMode)}>
                     {
                         isEditMode ?
                             <Tooltip text="Lock" children={<LockKeyholeOpen size={18} strokeWidth={2} />} /> :
@@ -362,7 +366,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
             <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
             {/* DISPLAY COMBO FIRST */}
             <div
-                className={`${glowOnHover} cursor-pointer`}
+                className={`${glowOnHover}`}
                 onClick={() => onClickActionCombo(adv)}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}
             >
@@ -382,7 +386,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                         return (
                             <div
                                 key={act.name}
-                                className={`p-2 ${spanCls} ${tableBorderRounded} ${glowOnHover} cursor-pointer`}
+                                className={`p-2 ${spanCls} ${tableBorderRounded} ${glowOnHover}`}
                                 onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}
                                 onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
@@ -669,7 +673,7 @@ const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                             { icon: Trash, label: 'Delete', action: () => deleteAbility(adv, ability), isDestructive: true }
                         ])}
                     >
-                        <div className={`${tableBorderRounded} ${glowOnHover} cursor-pointer p-2`}>
+                        <div className={`${tableBorderRounded} ${glowOnHover} p-2`}>
                             <p className="font-paradigm font-bold">{ability.name}</p>
                             <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" />
                         </div>
@@ -737,7 +741,7 @@ const ActionMenuHeader = ({ label, onClick, isEditMode }) => {
 
 const AddNewIconButton = ({ onClick }) => {
     return (
-        <Plus size={18} strokeWidth={4} className={`text-stat-block-fill cursor-pointer ${glowOnHover}`} onClick={onClick} />
+        <Plus size={18} strokeWidth={4} className={`text-stat-block-fill ${glowOnHover}`} onClick={onClick} />
     )
 }
 
