@@ -16,7 +16,7 @@ export const Tooltip = ({ text, children }) => {
             setTimeout(() => {
                 setDisplayText(text)
                 setOpen(true)
-            }, 666)
+            }, 777)
         )
     }
 

@@ -3,7 +3,11 @@ import { ComponentRegistry } from '../../vagabond-lite'
 import ActorDataModel, { BaseActorSchema } from '../../model/actor/ActorDataModel'
 import { getId, getName } from '../../utils/modelUtil'
 
-export const sendVgLiteChatMessage = async (actor: ActorDataModel<BaseActorSchema>, card: React.ReactElement, rolls: any[] = []) => {
+export const sendVgLiteChatMessage = async (
+    actor: ActorDataModel<BaseActorSchema>,
+    card: React.ReactElement,
+    rolls: any[] = []
+) => {
     const blueprint = serializeElement(card)
     const chatRoot = `<div class="vglite-react-chat-root"/>`
     await ChatMessage.create({

@@ -9,14 +9,20 @@ import { DamageRolls } from "./component/DiceRoll"
 import { TargetsDisplay } from "./component/TargetsDisplay"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 
-export const AbilityChatCard = ({ actorId, title, description, tokenIds }: { actorId: string, title: string, description: string, tokenIds: string[] }) => {
+export const AbilityChatCard = ({ actorId, title, description, tokenIds, dmgType = 'none' }: {
+    actorId: string, title: string, description: string, tokenIds: string[], dmgType?: string
+}) => {
     const actor = game.actors?.get(actorId)
+    console.log(dmgType)
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner portrait={getTokenImg(actor)} title={title} />}
             contents={
                 <div className="space-x-2 text-base text-text-secondary font-paradigm font-normal">
                     <TargetsDisplay tokenIds={tokenIds} />
+                    {
+                        dmgType !== 'none' ? <div className="float-left mr-1"><DamageTypeIcon dmgType={dmgType} size={24} /></div> : <></>
+                    }
                     <EnrichedContent content={description} />
                 </div>
             }

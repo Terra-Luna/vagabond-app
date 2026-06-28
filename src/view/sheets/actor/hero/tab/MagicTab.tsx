@@ -1,5 +1,5 @@
 import lang from "../../../../../../public/lang/en.json"
-import { Sparkle, Sparkles } from "lucide-react"
+import { MessageSquareText, Sparkle, Sparkles, Trash } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { SkillCard } from "../../../../component/SkillCard"
@@ -8,7 +8,10 @@ import { useCallback } from "react"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { getId } from "../../../../../utils/modelUtil"
 import { glowOnHover } from "../../../VgLiteSheet"
-import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
+import { SecondaryButton } from "../../../../component/Button"
+import { useContextMenu } from "../../../../component/ContextMenu"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
+import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -50,7 +53,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                 &nbsp;
                 <span>{hero.mana.maxCast}</span>
             </div>
-            <div className="px-1"/>
+            <div className="px-1" />
             <SecondaryButton
                 children={<p className="text-lg">Cast</p>}
                 icon={<DamageTypeIcon dmgType={'magical'} />}
@@ -61,16 +64,43 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Spells = ({ hero }: { hero: HeroDataModel }) => {
+    const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
-        <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 my-1 gap-x-1 gap-y-0.5">{
-            hero.spells.map((sp: any) => (
-                <SkillCard
-                    key={getId(sp)}
-                    title={sp.parent.name}
-                    subtitles={[['Base dmg', lang.VGLITE.DamageTypes[sp.damageType] ?? '-' ]]}
-                    description={sp.description}
-                />
-            ))
-        }</div>
+        <div>
+            <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 my-1 gap-x-1 gap-y-0.5">
+                {
+                    hero.spells.map((sp: any) => (
+                        <div onContextMenu={(e) => onCtxMenu(e, [
+                            {
+                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
+                                    hero,
+                                    <AbilityChatCard
+                                        actorId={getId(hero)}
+                                        title={sp.parent.name}
+                                        description={sp.description}
+                                        tokenIds={[]}
+                                        dmgType={sp.damageType}
+                                    />
+                                )
+                            },
+                            {
+                                icon: Trash,
+                                label: 'Remove',
+                                action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) },
+                                isDestructive: true
+                            }
+                        ])}>
+                            <SkillCard
+                                key={getId(sp)}
+                                title={sp.parent.name}
+                                subtitles={[['Base dmg', lang.VGLITE.DamageTypes[sp.damageType] ?? '-']]}
+                                description={sp.description}
+                            />
+                        </div>
+                    ))
+                }
+            </div>
+            <ContextMenu />
+        </div>
     )
 }
