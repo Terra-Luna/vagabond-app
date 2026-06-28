@@ -12,6 +12,7 @@ import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { getId } from "../../../../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
+import { Tooltip } from "../../../../component/Tooltip"
 
 interface Health {
     current: number | null
@@ -160,20 +161,22 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 }
 const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
     return (
-        <div className={`flex justify-between items-center font-eskapade text-lg ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
-            async (e: React.MouseEvent<HTMLDivElement>) => {
-                const skillCheck = await rollSkillCheck(name, value, e)
-                sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
-            }
-        }>
-            <div className="ml-1 flex flex-col">
-                <span className="text-xl font-bold">{name}</span>
-                {/* <span className="text-text-aux font-paradigm text-xs -mt-1 mb-0.5">[{formula}]</span> */}
+        <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
+            <div className={`flex justify-between items-center font-eskapade text-lg ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
+                async (e: React.MouseEvent<HTMLDivElement>) => {
+                    const skillCheck = await rollSkillCheck(name, value, e)
+                    sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                }
+            }>
+                <div className="ml-1 flex flex-col">
+                    <span className="text-xl font-bold">{name}</span>
+                    {/* <span className="text-text-aux font-paradigm text-xs -mt-1 mb-0.5">[{formula}]</span> */}
+                </div>
+                <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-3xl flex items-center justify-center">
+                    <span>{value}</span>
+                </div>
             </div>
-            <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-3xl flex items-center justify-center">
-                <span>{value}</span>
-            </div>
-        </div>
+        </Tooltip>
     )
 }
 
@@ -184,7 +187,7 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
             <Header title={lang.VGLITE.HeroSheet.skills} />
             <div className="grid @sm:grid-cols-2 gap-x-2">
                 {
-                    skills.map(sk => (                    
+                    skills.map(sk => (
                         <Skill key={sk} hero={hero} isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isAttack={false} />
                     ))
                 }
@@ -194,21 +197,28 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
 }
 export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel, isTrained: boolean, name: string, value: number, isAttack: boolean }) => {
     return (
-        <div className="w-full">
-            <div className="flex items-center ml-1">
-                <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
-                <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover} cursor-pointer`} onClick={
-                    async (e: React.MouseEvent<HTMLDivElement>) => {
-                        const skillCheck = await rollSkillCheck(name, value, e)
-                        sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
-                    }
-                }>
-                    <div>{name}</div>
-                    <div className={(isAttack ? 'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center': 'text-xl mr-2')}>{value}</div>
+        <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
+            <div className="w-full">
+                <div className="flex items-center ml-1">
+                    <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
+                    <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover} cursor-pointer`} onClick={
+                        async (e: React.MouseEvent<HTMLDivElement>) => {
+                            const skillCheck = await rollSkillCheck(name, value, e)
+                            sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                        }
+                    }>
+                        <div>{name}</div>
+                        <div className={(isAttack ?
+                            'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center' :
+                            'text-xl mr-2'
+                        )}>
+                            {value}
+                        </div>
+                    </div>
                 </div>
+                <ItemDivider />
             </div>
-            <ItemDivider />
-        </div>
+        </Tooltip>
     )
 }
 

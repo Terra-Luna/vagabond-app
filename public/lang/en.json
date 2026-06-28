@@ -542,6 +542,7 @@
       "saves": "SAVES",
       "speeds": "SPEED",
       "skills": "SKILLS",
+      "skills_tooltip": "[Shift]: Favored<br>[Ctrl]: Hindered",
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
       "ancestry": "ANCESTRY",
