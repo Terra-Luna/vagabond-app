@@ -1,13 +1,13 @@
-import { Cross, Plus, Sword, Wrench } from 'lucide-react'
+import { Cross, Sword, Wrench } from 'lucide-react'
 import { DamageRollResult } from '../../combat/dice-rolls'
 import { DamageTypeIcon } from '../component/DamageTypeIcon'
 import { BaseChatCardHost } from './component/BaseChatCardHost'
 import { ChatCardBanner } from './component/ChatCardBanner'
-import { DamageRolls, DiceRoll } from './component/DiceRoll'
+import { DamageRolls } from './component/DiceRoll'
 import { MenuItem, Menu } from '@szhsin/react-menu'
 import { glowOnHover } from '../sheets/VgLiteSheet'
 import { TargetsDisplay } from './component/TargetsDisplay'
-import { getName, getTokenImg } from '../../utils/modelUtil'
+import { getTokenImg } from '../../utils/modelUtil'
 import { applyDamage, applyHealing } from '../../combat/damage-handler'
 
 export const DamageRollChatCard = ({ actorId, tokenIds, result }: { actorId: string, tokenIds: string[], result: DamageRollResult }) => {

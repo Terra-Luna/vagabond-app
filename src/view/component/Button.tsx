@@ -1,5 +1,3 @@
-// todo combine the 3 button files into this one
-
 import { ReactNode } from "react"
 import { glowOnHover } from "../sheets/VgLiteSheet"
 import { Trash } from "lucide-react"

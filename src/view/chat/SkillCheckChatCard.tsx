@@ -4,7 +4,7 @@ import { Minus, Plus } from 'lucide-react'
 import { DiceRoll } from './component/DiceRoll'
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
-import { getName, getTokenImg } from "../../utils/modelUtil"
+import { getTokenImg } from "../../utils/modelUtil"
 
 export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
     const actor = game.actors?.get(actorId)
