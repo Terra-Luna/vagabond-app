@@ -3,7 +3,9 @@ import ArmorDataModel from "../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import WeaponDataModel from "../../model/item/equip/WeaponDataModel"
 import { getName, getPortrait } from "../../utils/modelUtil"
+import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
+import { Tooltip } from "../component/Tooltip"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 
@@ -46,9 +48,9 @@ const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> 
 const ArmorCardContents = ({ item }: { item: ArmorDataModel }) => {
     return (
         <ItemCardBody>
-            <p>{item.armorType}</p>
-            <p>{item.rating}</p>
-            <p>{item.material}</p>
+            <ItemCardProp label={lang.VGLITE.ItemSheet.type} children={lang.VGLITE.ArmorTypes[item.armorType].name} />
+            <ItemCardProp label={lang.VGLITE.ItemSheet.armor} children={item.rating} />
+            <ItemCardProp label={lang.VGLITE.ItemSheet.material} children={lang.VGLITE.Metals[item.material].name} />
         </ItemCardBody>
     )
 }
@@ -56,11 +58,29 @@ const ArmorCardContents = ({ item }: { item: ArmorDataModel }) => {
 const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
     return (
         <ItemCardBody>
-            <p>{item.damage.oneHand}</p>
-            <p>{item.damage.twoHand}</p>
-            <p>{item.range}</p>
-            <p>{item.damage.type}</p>
-            <p>{lang.VGLITE.Metals[item.material].name}</p>
+            <div className="flex space-x-2">
+                <ItemCardProp label={lang.VGLITE.ItemSheet.damage} children={
+                    item.grip.style === 'V' ?
+                        <div className="flex space-x-2">
+                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.oneH}: ${item.damage.oneHand},`} />
+                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.twoH}: ${item.damage.twoHand}`} />
+                        </div> : (
+                            item.grip.style === '1H' ?
+                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.oneH}: ${item.damage.oneHand}`} /> :
+                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.twoH}: ${item.damage.twoHand}`} />
+                        )
+                } />
+                <DamageTypeIcon dmgType={item.damage.type as string} size={18} />
+            </div>
+            <ItemCardProp label={lang.VGLITE.ItemSheet.props} children={
+                item.properties.map(prop => (
+                    <Tooltip key={prop} text={lang.VGLITE.WeaponProps[prop].description}>
+                        <p className="italic">{item.properties.map(it => lang.VGLITE.WeaponProps[it].name).join(", ")}</p>
+                    </Tooltip>
+                ))
+            } />
+            <ItemCardProp label={lang.VGLITE.ItemSheet.range} children={lang.VGLITE.Ranges[item.range]} />
+            <ItemCardProp label={lang.VGLITE.ItemSheet.material} children={lang.VGLITE.Metals[item.material].name} />
         </ItemCardBody>
     )
 }
@@ -71,4 +91,21 @@ const ItemCardBody = ({ children }) => {
             {children}
         </div>
     )
+}
+
+const ItemCardProp = ({ label, children }) => {
+    return (
+        <div className="flex space-x-2">
+            <ItemCardLabel label={label} />
+            <ItemCardValue children={children} />
+        </div>
+    )
+}
+
+const ItemCardLabel = ({ label }: { label: string }) => {
+    return <p className="text-base text-text-primary font-eskapade font-bold">{`${label}:`}</p>
+}
+
+const ItemCardValue = ({ children }) => {
+    return <div className="text-base text-text-secondary font-paradigm font-normal">{children}</div>
 }

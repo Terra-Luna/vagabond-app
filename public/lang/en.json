@@ -592,6 +592,14 @@
         "morale": "Morale:"
     },
     "ItemSheet": {
+      "armor": "Armor",
+      "grip": "Grip",
+      "damage": "Damage",
+      "oneH": "1H",
+      "twoH": "2H",
+      "range": "Range",
+      "props": "Properties",
+      "material": "Material",
       "type": "Type",
       "size": "Size"
     },

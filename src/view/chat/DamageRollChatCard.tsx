@@ -26,20 +26,20 @@ export const DamageRollChatCard = ({ actorId, tokenIds, result }: { actorId: str
 
 export const TotalDmgFooter = ({ total, dmgType, tokenIds }) => {
     return (
-        <div className="flex h-full w-full items-end justify-center space-x-2">
+        <div className="flex h-full w-full items-center justify-center space-x-2">
             <p className="text-xl text-text-secondary font-paradigm font-normal mr-2">Total:</p>
             <p className="text-3xl text-text-primary">{total}</p>
-            <div className="w-fit">
-                <DamageTypeIcon dmgType={dmgType} size={18} />
+            <div className="flex w-fit h-full space-x-4">
+                <DamageTypeIcon dmgType={dmgType} size={26} />
+                {game.user?.isGM ? <GMToolsMenu tokenIds={tokenIds} damage={total} /> : <></>}
             </div>
-            {game.user?.isGM ? <GMToolsMenu tokenIds={tokenIds} damage={total} /> : <></>}
         </div>
     )
 }
 
 const GMToolsMenu = ({ tokenIds, damage }: { tokenIds: string[], damage: number }) => {
     return (<>
-        <Menu direction={"top"} align={"end"} menuButton={<Wrench size={18} className={`text-stat-block-fill ml-2 cursor-pointer overflow-visible ${glowOnHover}`} />}>
+        <Menu direction={"top"} align={"end"} menuButton={<Wrench size={20} className={`text-stat-block-fill ml-2 cursor-pointer overflow-visible ${glowOnHover}`} />}>
             <div className="bg-context-menu-fill text-base text-left border border-solid border-table-border rounded-sm p-2 space-y-2">
                 {/* APPLY HEALING */}
                 <MenuItem onClick={(e) => applyHealing(tokenIds, damage)}>

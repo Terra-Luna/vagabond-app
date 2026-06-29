@@ -27,9 +27,7 @@ export const Tooltip = ({ text, children }) => {
 
     return (
         <div>
-            <div
-                ref={ref}
-                {...anchorProps}
+            <div ref={ref} {...anchorProps}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
@@ -39,7 +37,7 @@ export const Tooltip = ({ text, children }) => {
                 {...hoverProps}
                 gap={10}
                 direction={"top"}
-                align={"center"}
+                align={"start"}
                 state={isOpen ? 'open' : 'closed'}
                 // @ts-ignore
                 anchorRef={ref}

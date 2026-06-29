@@ -1,6 +1,14 @@
 import { tableBorder } from "../../common/border-styles";
 
-const chatCardBodyStyle = `${tableBorder} rounded-md text-text-primary text-lg font-eskapade font-bold bg-sheet-main-fill`
+const chatCardBodyStyle = `
+    ${tableBorder} 
+    rounded-md 
+    text-text-primary 
+    text-lg 
+    font-eskapade 
+    font-bold 
+    bg-sheet-main-fill
+`
 
 export const BaseChatCardHost = ({ banner, contents }) => {
     return (
