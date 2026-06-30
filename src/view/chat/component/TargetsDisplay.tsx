@@ -12,9 +12,8 @@ export const TargetsDisplay = ({ tokenIds }: { tokenIds: string[] }) => {
                     {<>
                         <p className="mr-1 text-text-secondary font-paradigm font-normal">Targets: </p>
                         {targets.map(target => (
-                            <Tooltip text={target.token?.name} children={
+                            <Tooltip key={target.id} text={target.token?.name} children={
                                 <img
-                                    key={target.id}
                                     src={target.src}
                                     alt={target.token?.name}
                                     className={`object-contain h-[38px] w-[38px] cursor-pointer`}
