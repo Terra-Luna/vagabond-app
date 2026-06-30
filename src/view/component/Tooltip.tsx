@@ -53,6 +53,8 @@ export const Tooltip = ({ text, children }) => {
 const tooltipBox = `
     text-sm
     text-context-menu-text
+    font-paradigm
+    font-normal
     bg-context-menu-fill
     border border-solid border-table-border
     px-1 py-0.5

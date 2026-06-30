@@ -588,7 +588,8 @@
       "abilities": "Abilities",
       "speed": "Speed:",
       "appearing": "# Appearing:",
-      "morale": "Morale:"
+      "morale": "Morale:",
+      "combo": "Combo"
     },
     "ItemSheet": {
       "armor": "Armor",

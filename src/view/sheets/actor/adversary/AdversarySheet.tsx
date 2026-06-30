@@ -137,7 +137,7 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                 <div className="relative w-[52px] h-[52px] ml-auto mr-auto">
                     <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <div className={`text-4xl text-text-armor font-eskapade font-bold ${glowOnHover}`}>
+                        <div className={`text-4xl text-text-armor font-eskapade font-bold`}>
                             <EditableTextField
                                 boundValue={adv.armor.rating?.toString() ?? ''}
                                 updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating'] }}
@@ -150,7 +150,7 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                 </div>
             </div>
             <div className="flex w-full justify-center -mt-4">
-                <div className={`content-center ${glowOnHover}`}>
+                <div className={`content-center`}>
                     <EditableTextField
                         boundValue={adv.armor.as ?? 'Unarmored'}
                         updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }}
