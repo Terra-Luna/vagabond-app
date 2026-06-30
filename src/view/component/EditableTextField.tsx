@@ -6,11 +6,12 @@ import { glowOnHover } from "../sheets/VgLiteSheet"
 import { Tooltip } from "./Tooltip"
 
 export const EditableTextField = (
-    { boundValue, onSave, updateProps, placeholder = "Enter text..." }: { 
+    { boundValue, onSave, updateProps, placeholder = "Enter text...", isGlobalEditMode = true }: {
         boundValue: string | null, 
         onSave?: (value: string | null) => Promise<boolean>, 
         updateProps?: { actor: any, propertyPath: string[] },
-        placeholder?: string
+        placeholder?: string,
+        isGlobalEditMode?: boolean
 }) => {
     if (onSave && updateProps) {
         throw new VgLiteError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
@@ -81,16 +82,17 @@ export const EditableTextField = (
             onKeyDown={handleSpecialKeypresses} />
     }
     else {
-        return (
-            <Tooltip text={'Double-click to Edit'}>
-                <div
-                    onDoubleClick={enterEditMode}
-                    className={`${glowOnHover}`}
-                >
-                    {boundValue}
-                </div>
-            </Tooltip>
-        )
+        return (<>
+            {
+                isGlobalEditMode ?
+                    <Tooltip text={'Double-click to Edit'}>
+                        <div onDoubleClick={enterEditMode} className={`${glowOnHover}`}>
+                            {boundValue}
+                        </div >
+                    </Tooltip > :
+                    <div>{boundValue}</div>
+            }
+        </>)
     }
 }
 

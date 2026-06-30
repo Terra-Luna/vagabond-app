@@ -30,6 +30,7 @@ import { TrackerUpdateChatCard } from "./view/chat/TrackerUpdateChatCard"
 import { AbilityChatCard, ComboChatCard } from './view/chat/AbilityChatCard'
 import { DamageRollChatCard } from './view/chat/DamageRollChatCard'
 import { ItemChatCard } from './view/chat/ItemChatCard'
+import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
 
 // add our fonts
 const fontFaces = [
@@ -227,6 +228,12 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
 // @ts-ignore
 foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet, {
     types: ['ancestry'],
+    makeDefault: true
+});
+
+// @ts-ignore
+foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet, {
+    types: ['alchemical', 'armor', 'weapon', 'tool', 'sundry', 'container', 'starterPack'],
     makeDefault: true
 });
 

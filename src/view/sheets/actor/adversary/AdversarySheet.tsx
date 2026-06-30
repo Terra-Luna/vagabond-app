@@ -89,13 +89,12 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
             <div className="flex space-x-2 text-text-primary justify-center content-center w-full ml-auto mr-auto">
                 <p className={`${headerStyle} content-center`}>{locale.tl}</p>
                 <div className={`text-lg text-stat-block-fill font-eskapade font-bold`}>
-                    {
-                        isEditMode ? <EditableTextField
-                            boundValue={adv.threatLevelOverride?.toString() ?? adv.threatLevel?.toString() ?? ''}
-                            updateProps={{ actor: adv.parent, propertyPath: ['threatLevelOverride'] }}
-                            placeholder={adv.threatLevel?.toString() ?? '1.00'}
-                        /> : <p>{(adv.threatLevelOverride ?? 0) > 0 ? adv.threatLevelOverride : adv.threatLevel}</p>
-                    }
+                    <EditableTextField
+                        boundValue={adv.threatLevelOverride?.toString() ?? adv.threatLevel?.toString() ?? ''}
+                        updateProps={{ actor: adv.parent, propertyPath: ['threatLevelOverride'] }}
+                        placeholder={adv.threatLevel?.toString() ?? '1.00'}
+                        isGlobalEditMode={isEditMode}
+                    />
                 </div>
             </div>
 
