@@ -45,6 +45,32 @@ export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
         modifiers[modifierIndex][`${modifierField}`] = modifierValue
         return this.updateTraitValue("modifiers", modifiers, traitIndex)
     }
+
+    removeModifier(modifier: any, traitIndex: number) {
+        const idx = this.traits[traitIndex].modifiers.indexOf(modifier)
+
+        const modifiers = foundry.utils.deepClone(this.traits[traitIndex].modifiers)
+        if (idx !== -1) {
+            modifiers.splice(idx, 1)
+            this.updateTraitValue("modifiers", modifiers, traitIndex)
+        }
+    }
+
+    updateGrantValue(grantField: string, grantValue: any, traitIndex: number, grantIndex) {
+        const grants = foundry.utils.deepClone(this.traits[traitIndex].grants)
+        grants[grantIndex][`${grantField}`] = grantValue
+        return this.updateTraitValue("grants", grants, traitIndex)
+    }
+
+    removeGrant(grant: any, traitIndex: number) {
+        const idx = this.traits[traitIndex].grants.indexOf(grant)
+
+        const grants = foundry.utils.deepClone(this.traits[traitIndex].grants)
+        if (idx !== -1) {
+            grants.splice(idx, 1)
+            this.updateTraitValue("grants", grants, traitIndex)
+        }
+    }
 }
 
 /**

@@ -37,6 +37,7 @@ export type Modifier = ReturnType<typeof modifierSchema>
 export const grantSchema = () => {
     return {
         type: new fields.StringField({ ...requiredString, choices: ['PERK', 'SPELL', 'TRAINING'], initial: 'PERK' }),
+        specific: new fields.BooleanField({ required: true, initial: true }),
         count: new fields.NumberField({ ...requiredInteger, initial: 1 }),
         perkOptions: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spellOptions: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),

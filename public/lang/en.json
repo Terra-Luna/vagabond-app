@@ -574,22 +574,21 @@
       }
     },
     "AdversarySheet": {
-        "tl": "TL:",
-        "hd": "HIT DICE",
-        "hp": "HIT POINTS",
-        "armor": "ARMOR",
-        "zone": "Zone:",
-        "senses": "Senses:",
-        "as": "as:",
-        "immune": "Immune:",
-        "weak": "Weak:",
-        "status_immunities": "Status Immune:",
-        "combo": "Combo",
-        "actions": "Actions",
-        "abilities": "Abilities",
-        "speed": "Speed:",
-        "appearing": "# Appearing:",
-        "morale": "Morale:"
+      "tl": "TL:",
+      "hd": "HIT DICE",
+      "hp": "HIT POINTS",
+      "armor": "ARMOR",
+      "zone": "Zone:",
+      "senses": "Senses:",
+      "as": "as:",
+      "immune": "Immune to:",
+      "weak": "Weak vs:",
+      "status_immunities": "Status Immune:",
+      "actions": "Actions",
+      "abilities": "Abilities",
+      "speed": "Speed:",
+      "appearing": "# Appearing:",
+      "morale": "Morale:"
     },
     "ItemSheet": {
       "armor": "Armor",
@@ -627,12 +626,22 @@
         "FORMULA": "FORMULA"
       }
     },
+    "Grants": {
+      "Type": {
+        "PERK": "PERK",
+        "SPELL": "SPELL",
+        "TRAINING": "TRAINING"
+      }
+    },
     "AncestrySheet": {
       "description": "Description",
       "traits": "Traits",
       "addTrait": "Add Trait",
       "newTrait": "New Trait",
+      "addModifier": "Add Modifier",
       "newModifier": "New Modifier",
+      "addGrant": "Add Grant",
+      "newGrant": "New Grant",
       "name": "Name",
       "modifiers": "Modifiers",
       "targetStat": "Target Stat",
@@ -647,7 +656,9 @@
       "direct": "Direct",
       "choice": "Choice",
       "count": "Count",
-      "ignorePrerequisites": "Ignore Prerequisites"
+      "ignorePrerequisites": "Ignore Prerequisites",
+      "specificId": "Specific ID",
+      "filter": "Filter"
     }
   }
 }
