@@ -102,13 +102,12 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
             <div className="text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
                 <p className={headerStyle}>{locale.hd}</p>
                 <div className={`text-3xl text-stat-block-fill font-eskapade font-bold`}>
-                    {
-                        isEditMode ? <EditableTextField
-                            boundValue={adv.hitDice?.toString() ?? '1'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
-                            placeholder="1"
-                        /> : <p>{adv.hitDice}</p>
-                    }
+                    <EditableTextField
+                        boundValue={adv.hitDice?.toString() ?? '1'}
+                        updateProps={{ actor: adv.parent, propertyPath: ['hitDice'] }}
+                        placeholder="1"
+                        isGlobalEditMode={isEditMode}
+                    />
                 </div>
             </div>
             
@@ -122,7 +121,8 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                         <EditableTextField
                             boundValue={adv.health.current?.toString() ?? ''}
                             updateProps={{ actor: adv.parent, propertyPath: ['health', 'current'] }}
-                            placeholder="0" />
+                            placeholder="0"
+                        />
                     </div>
                     <p className="text-text-primary text-5xl font-normal">/</p>
                     <p className={`text-text-hp-max text-xl mt-3 ${glowOnHover}`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
@@ -138,13 +138,12 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
                     <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div className={`text-4xl text-text-armor font-eskapade font-bold ${glowOnHover}`}>
-                            {
-                                isEditMode ? <EditableTextField
-                                    boundValue={adv.armor.rating?.toString() ?? ''}
-                                    updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating'] }}
-                                    placeholder="0"
-                                /> : <p>{adv.armor.rating}</p>
-                            }
+                            <EditableTextField
+                                boundValue={adv.armor.rating?.toString() ?? ''}
+                                updateProps={{ actor: adv.parent, propertyPath: ['armor', 'rating'] }}
+                                placeholder="0"
+                                isGlobalEditMode={isEditMode}
+                            />
                         </div>
                     </div>
                     <p className={`absolute bottom-0 -right-1.5 ${statLabelStyle}`}>{locale.as}</p>
@@ -152,13 +151,12 @@ const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: 
             </div>
             <div className="flex w-full justify-center -mt-4">
                 <div className={`content-center ${glowOnHover}`}>
-                    {
-                        isEditMode ? <EditableTextField
-                            boundValue={adv.armor.as ?? 'Unarmored'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }}
-                            placeholder="Unarmored"
-                        /> : <p>{adv.armor.as}</p>
-                    }
+                    <EditableTextField
+                        boundValue={adv.armor.as ?? 'Unarmored'}
+                        updateProps={{ actor: adv.parent, propertyPath: ['armor', 'as'] }}
+                        placeholder="Unarmored"
+                        isGlobalEditMode={isEditMode}
+                    />
                 </div>
             </div>
         </div>
@@ -259,13 +257,12 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
             <StatBlockField label={locale.speed} content={
                 <div className="flex space-x-1">
                     <div className={`flex space-x-1 ${statValueStyle}`}>
-                        {
-                            isEditMode ? <EditableTextField
-                                boundValue={adv.movement?.speed?.toString() ?? '30'}
-                                updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
-                                placeholder="30"
-                            /> : <p>{adv.movement.speed}</p>
-                        }
+                        <EditableTextField
+                            boundValue={adv.movement?.speed?.toString() ?? '30'}
+                            updateProps={{ actor: adv.parent, propertyPath: ['movement', 'speed'] }}
+                            placeholder="30"
+                            isGlobalEditMode={isEditMode}
+                        />
                     </div>
                     <div className="text-stat-block-fill">
                         {
@@ -280,28 +277,23 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                 </div>
             } />
             {/* MORALE */}
-            <StatBlockField label={locale.morale} content={<>
-                {
-                    isEditMode ?
-                        <EditableTextField
-                            boundValue={adv.morale?.toString() ?? '6'}
-                            updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
-                            placeholder="6"
-                        /> :
-                        <p className={statValueStyle}>{adv.morale}</p>
-                }
-
-            </>} />
+            <StatBlockField label={locale.morale} content={
+                <EditableTextField
+                    boundValue={adv.morale?.toString() ?? '6'}
+                    updateProps={{ actor: adv.parent, propertyPath: ['morale'] }}
+                    placeholder="6"
+                    isGlobalEditMode={isEditMode}
+                />
+            } />
             {/* NUBMER APPEARING */}
-            <StatBlockField label={locale.appearing} content={<>
-                {
-                    isEditMode ? <EditableTextField
-                        boundValue={adv.numberAppearing?.toString() ?? '1'}
-                        updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
-                        placeholder="1d6"
-                    /> : <p>{adv.numberAppearing}</p>
-                }
-            </>} />
+            <StatBlockField label={locale.appearing} content={
+                <EditableTextField
+                    boundValue={adv.numberAppearing?.toString() ?? '1'}
+                    updateProps={{ actor: adv.parent, propertyPath: ['numberAppearing'] }}
+                    placeholder="1d6"
+                    isGlobalEditMode={isEditMode}
+                />
+            } />
             {/* SENSENS & STATUS IMMUNITIES */}
             <div className="w-full">
                 <SelectableTextField adv={adv} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} isEditMode={isEditMode} />

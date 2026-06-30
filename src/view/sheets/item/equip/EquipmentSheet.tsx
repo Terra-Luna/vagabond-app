@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ArmorDataModel from "../../../../model/item/equip/ArmorDataModel";
+import ArmorDataModel, { ArmorSchema } from "../../../../model/item/equip/ArmorDataModel";
 import EquipmentDataModel, { EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel";
 import { Divider } from "../../../component/Header";
 import { FoundryItem, VgLiteItemSheet } from "../VgLiteItemSheet";
@@ -9,6 +9,14 @@ import { LockKeyhole, LockKeyholeOpen } from "lucide-react";
 import { ArmorSheet } from "./type/ArmorSheet";
 import SundryDataModel from "../../../../model/item/equip/SundryDataModel";
 import { SundrySheet } from "./type/SundrySheet";
+import { ToolSheet } from "./type/ToolSheet";
+import ToolDataModel from "../../../../model/item/equip/ToolDataModel";
+import AlchemicalItemDataModel from "../../../../model/item/equip/AlchemicalDataModel";
+import { AlchemicalSheet } from "./type/AlchemicalSheet";
+import StarterPackDataModel from "../../../../model/item/equip/StarterPackDataModel";
+import { StarterPackSheet } from "./type/StarterPackSheet";
+import ContainerDataModel from "../../../../model/item/equip/ContainerDataModel";
+import { ContainerSheet } from "./type/ContainerSheet";
 
 export class EquipmentSheet extends VgLiteItemSheet {
     Component = EquipmentSheetReactComponent
@@ -25,6 +33,32 @@ export class EquipmentSheet extends VgLiteItemSheet {
 
 const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDataModel<EquipmentSchema>> }) => {
     const [isEditMode, setIsEditMode] = useState(false)
+    let sheet: React.ReactElement
+    if (item.system instanceof AlchemicalItemDataModel) {
+        sheet = <AlchemicalSheet item={item as any} isEditMode={isEditMode} />
+    }
+    else if (item.system instanceof ArmorDataModel) {
+        sheet = <ArmorSheet item={item as any} isEditMode={isEditMode} />
+    }
+    else if (item.system instanceof ContainerDataModel) {
+        sheet = <ContainerSheet item={item as any} isEditMode={isEditMode} />
+    }
+    else if (item.system instanceof StarterPackDataModel) {
+        sheet = <StarterPackSheet item={item as any} isEditMode={isEditMode} />
+    }
+    else if (item.system instanceof SundryDataModel) {
+        sheet = <SundrySheet item={item as any} isEditMode={isEditMode} />
+    }
+    else if (item.system instanceof ToolDataModel) {
+        sheet = <ToolSheet item={item as any} isEditMode={isEditMode} />
+    }
+    else if (item.system instanceof WeaponDataModel) {
+        sheet = <WeaponSheet item={item as any} isEditMode={isEditMode} />
+    }
+    else {
+        sheet = <></>
+    }
+
     return (
         <BaseEquipmentSheetHost
             header={<EquipmentSheetHeader
@@ -33,18 +67,7 @@ const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDat
                 isEditMode={isEditMode}
                 setIsEditMode={setIsEditMode}
             />}
-            children={<>
-                if (item instanceof ArmorDataModel) {
-                    <ArmorSheet item={item as FoundryItem<ArmorDataModel>} isEditMode={isEditMode} />
-                }
-
-                else if (item instanceof WeaponDataModel) {
-                    <WeaponSheet item={item as FoundryItem<WeaponDataModel>} isEditMode={isEditMode} />
-                }
-                else {
-                    <SundrySheet item={item as FoundryItem<SundryDataModel>} isEditMode={isEditMode} />
-                }
-            </>}
+            children={sheet}
         />
     )
 }
@@ -58,10 +81,10 @@ export const EquipmentSheetHeader = ({ img, name, isEditMode, setIsEditMode }: {
                 <img className={`object-contain h-[54px] w-[54px] p-0.5`} src={img} alt={''} />
             }
             <div className="flex w-full items-center text-text-section-header">
-                <div className="text-xl mr-1">{name}</div>
+                <div className="text-2xl mr-1">{name}</div>
                 <Divider />
                 <div onClick={() => setIsEditMode(!isEditMode)}>
-                    isEditMode ? <LockKeyholeOpen size={18} /> : <LockKeyhole size={18} />
+                    {isEditMode ? <LockKeyholeOpen size={18} /> : <LockKeyhole size={18} />}
                 </div>
             </div>
         </div>

@@ -233,7 +233,7 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet
 
 // @ts-ignore
 foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet, {
-    types: ['alchemical', 'armor', 'weapon', 'tool', 'sundry', 'container', 'starterPack'],
+    types: ['alchemical', 'armor', 'container', 'starterPack', 'sundry', 'tool', 'weapon'],
     makeDefault: true
 });
 
