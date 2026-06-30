@@ -19,17 +19,17 @@ import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
 
-const addNewBlankModifier = (ancestry: AncestryDataModel, traitIdx) => {
+export const addNewBlankModifier = (ancestry: AncestryDataModel, traitIdx) => {
     const modifiers = foundry.utils.deepClone(ancestry.traits[traitIdx].modifiers)
 
     modifiers.push({ targetStat: "MIT", type: "BONUS", value: "0" })
-    ancestry.updateTraitValue("modifiers", modifiers, traitIdx)
+    return ancestry.updateTraitValue("modifiers", modifiers, traitIdx)
 }
 
-const addNewBlankGrant = (ancestry: AncestryDataModel, traitIdx) => {
+export const addNewBlankGrant = (ancestry: AncestryDataModel, traitIdx) => {
     const grants = foundry.utils.deepClone(ancestry.traits[traitIdx].grants)
     grants.push({ count: 1, ignorePrerequisites: false, type: "PERK", perkOptions: [], spellOptions: [], trainingOptions: [] })
-    ancestry.updateTraitValue("grants", grants, traitIdx)
+    return ancestry.updateTraitValue("grants", grants, traitIdx)
 }
 
 export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait: TraitModel, startExpanded?: boolean, ancestry: AncestryDataModel, index: number }) => {
@@ -43,15 +43,6 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
     const addGrant = useCallback(() => {
         addNewBlankGrant(ancestry, index)
     }, [ancestry, index])
-
-    useEffect(() => {
-        if (!trait.modifiers || (trait.modifiers as any).length === 0) {
-            addNewBlankModifier(ancestry, index)
-        }
-        if (!trait.grants || (trait.grants as any).length === 0) {
-            addNewBlankGrant(ancestry, index)
-        }
-    }, [ancestry, trait])
 
     const onUpdateName = useCallback((newName) => {
         return ancestry.updateTraitValue("name", newName, index)
@@ -204,6 +195,7 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
     const onUpdateGrantType = useCallback((val) => updateGrant("type", val), [updateGrant])
     const onUpdateDirectOrChoice = useCallback((val) => updateGrant("specific", val === "direct"), [updateGrant])
     const onUpdateCount = useCallback((val) => updateGrant("count", val), [updateGrant])
+    const onUpdateIngorePrereqs = useCallback(val => updateGrant("ignorePrerequisites", val), [updateGrant])
     // const onUpdateType = useCallback((val) => updateModifier("type", val), [updateModifier])
     // const onUpdateValue = useCallback((val) => updateModifier("value", val), [updateModifier])
     const removeGrant = useCallback(() => {
@@ -229,16 +221,20 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
             <div className="ml-4 pb-2">
                 {grant.specific ? <DropDown label={lang.VGLITE.AncestrySheet.specificId} options={[{ label: "to do", value: "get all the values" }]} parent={ancestry.parent} updateMechanism={{ onChange: () => { } }} value={"get all the values"} />
                     : (
-                        <div className="flex gap-2">
+                        <div className="flex flex-col gap-2">
                             <LabelledField label={lang.VGLITE.AncestrySheet.count}>
-                                <div className="text-lg text-center border border-solid px-1">
-                                    <EditableTextField boundValue={grant.count as unknown as string} onSave={onUpdateCount} />
+                                <div className="flex gap-2">
+                                    <div className="text-lg text-center border border-solid px-1">
+                                        <EditableTextField boundValue={grant.count as unknown as string} onSave={onUpdateCount} />
+                                    </div>
+                                    <SingleSelect
+                                        canUnselect
+                                        options={[{ label: lang.VGLITE.AncestrySheet.ignorePrerequisites, value: true }]}
+                                        setValue={onUpdateIngorePrereqs}
+                                        value={!!grant.ignorePrerequisites} />
                                 </div>
                             </LabelledField>
-                            <SingleSelect
-                                options={[{ label: lang.VGLITE.AncestrySheet.direct, value: 'direct' }, { label: lang.VGLITE.AncestrySheet.choice, value: 'choice' }]}
-                                setValue={onUpdateDirectOrChoice}
-                                value={grant.specific ? "direct" : "choice"} />
+                            <DropDown label={lang.VGLITE.AncestrySheet.filter} options={[{ label: 'Perk List', value: 'todo' }]} parent={ancestry.parent} updateMechanism={{ onChange: () => { } }} value={'todo'} />
                         </div>
                     )}
 
