@@ -230,8 +230,10 @@ const Description = ({ adv, isEditMode }) => {
                             onChange={onDescriptionChange}
                         />
                     </div> :
-                    <div className="px-2 text-justify font-light italic h-[54px] overflow-y-auto">
-                        {stripHtml(adv.description).length > 0 ? <div>{ReactHtmlParser(adv.description)}</div> : <></>}
+                    <div className="px-2 text-justify font-light italic">
+                        {stripHtml(adv.description).length > 0 ?
+                            <div className="h-[54px] overflow-y-auto">{ReactHtmlParser(adv.description)}</div> : <></>
+                        }
                     </div>
             }
         </div>)
