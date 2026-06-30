@@ -29,12 +29,14 @@ const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel>
     }, [ancestry])
 
     return (
-        <div className="">
+        <div className="flex flex-col grow min-h-0 overflow-y-auto">
             <AncestrySheetHeader {...{ ancestry }} />
             <div className="ml-2 mt-1 mr-2">
-                <LabelledField label={lang.VGLITE.AncestrySheet.description} className="text-text-primary font-paradigm">
-                    <RichTextField defaultValue={ancestry.description} onChange={onDescriptionChange} />
-                </LabelledField>
+                <div className="pb-1 border border-dotted border-transparent border-b-table-border">
+                    <LabelledField label={lang.VGLITE.AncestrySheet.description} className="text-text-primary font-paradigm">
+                        <RichTextField defaultValue={ancestry.description} onChange={onDescriptionChange} height={100} />
+                    </LabelledField>
+                </div>
                 <Traits ancestry={ancestry} />
             </div>
         </div>

@@ -7,7 +7,7 @@ const primaryButtonClasses = `text-btn-primary-text bg-btn-primary-fill ${button
 const secondaryButtonClasses = `text-btn-secondary-text bg-btn-secondary-fill ${buttonShaping}`
 const destructiveButtonClasses = `text-destructive-action bg-btn-secondary-fill ${buttonShaping}`
 
-export const PrimaryButton = ({ children, icon=null, onClick }: { children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const PrimaryButton = ({ children, icon = null, onClick }: { children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
     return (
         <button onClick={onClick} className={primaryButtonClasses}>
             {icon ? icon : undefined}
@@ -17,7 +17,7 @@ export const PrimaryButton = ({ children, icon=null, onClick }: { children: Reac
     )
 }
 
-export const SecondaryButton = ({ children, icon=null, onClick }: { children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const SecondaryButton = ({ children, icon = null, onClick }: { children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
     return (
         <button onClick={onClick} className={secondaryButtonClasses}>
             {icon ? icon : undefined}
@@ -27,12 +27,14 @@ export const SecondaryButton = ({ children, icon=null, onClick }: { children: Re
     )
 }
 
-export const DestructiveButton = ({ children, icon=<Trash size={ 14} />, onClick }: { children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const DestructiveButton = ({ children, icon = <Trash size={14} />, onClick }: { children?: ReactNode, icon?: ReactNode, onClick: () => any }) => {
     return (
         <button onClick={onClick} className={destructiveButtonClasses}>
             {icon}
-            <div className="mx-0.5" />
-            {children}
+            {children ? <>            <
+                div className="mx-0.5" />
+                {children}
+            </> : undefined}
         </button>
     )
 }

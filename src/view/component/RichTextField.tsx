@@ -47,7 +47,7 @@ export const RichTextField = ({
 
     const Placeholder = () => {
         return (
-            <div className="absolute p-1 text-sm text-text-primary italic" style={{pointerEvents: 'none'}}>Enter text...</div>
+            <div className="absolute p-1 text-sm  italic" style={{pointerEvents: 'none'}}>Enter text...</div>
         )
     }
 
@@ -58,7 +58,7 @@ export const RichTextField = ({
                     <div className="flex flex-col min-h-full min-w-full bg-transparent">
                         <div className="flex grow-1 relative">
                         <RichTextPlugin
-                            contentEditable={<ContentEditable className="p-1 min-h-full min-w-full text-text-primary text-sm leading-5" />}
+                            contentEditable={<ContentEditable className="p-1 min-h-full min-w-full text-sm leading-5" />}
                             placeholder={<Placeholder />}
                             ErrorBoundary={LexicalErrorBoundary}
                         />
