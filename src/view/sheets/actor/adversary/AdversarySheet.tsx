@@ -230,7 +230,7 @@ const Description = ({ adv, isEditMode }) => {
                             onChange={onDescriptionChange}
                         />
                     </div> :
-                    <div className="px-2 text-justify font-light italic">
+                    <div className="px-2 text-justify font-light italic h-[54px] overflow-y-auto">
                         {stripHtml(adv.description).length > 0 ? <div>{ReactHtmlParser(adv.description)}</div> : <></>}
                     </div>
             }
@@ -239,7 +239,7 @@ const Description = ({ adv, isEditMode }) => {
 
 const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
     return (<>
-        <div className="flex flex-wrap justify-between gap-x-8 gap-y-2 w-full px-2 mb-1">
+        <div className="flex flex-wrap justify-between gap-x-8 gap-y-2 w-full px-2 mt-1 mb-1">
             {/* ZONE */}
             <StatBlockField label={locale.zone} content={<>
                 {
@@ -365,7 +365,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
             <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
             {/* DISPLAY COMBO FIRST */}
             <div
-                className={`${glowOnHover}`}
+                className={`${glowOnHover} cursor-pointer`}
                 onClick={() => onClickActionCombo(adv)}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}
             >
@@ -385,14 +385,13 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                         return (
                             <div
                                 key={act.name}
-                                className={`p-2 ${spanCls} ${tableBorderRounded} ${glowOnHover}`}
-                                onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}
+                                className={`p-2 ${spanCls} ${tableBorderRounded}`}
                                 onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
                                 { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
                             ])}>
                                 {/* ACTION NAME */}
-                                <div className="flex justify-between gap-x-2">
+                                <div className={`flex justify-between gap-x-2 ${glowOnHover} cursor-pointer`} onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}>
                                     <p className="font-bold">{act.name}</p>
                                     <div className='w-[16px]'>
                                         <DamageTypeIcon dmgType={act.damage.type ?? ''} size={16} />
@@ -403,7 +402,7 @@ const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                                     <EnrichedContent content={act.effect} styleClasses="text-text-secondary" />
                                     {
                                         act.damage.roll ?
-                                            <div className="flex gap-2">
+                                            <div className={`flex gap-2 ${glowOnHover}`} onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}>
                                                 <p className="text-text-secondary">Dmg:</p>
                                                 <p className={damageRoll}>{act.damage.roll}</p>
                                                 <p>|</p>
@@ -666,14 +665,15 @@ const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
                 adv.abilities.map(ability => (
                     <div
                         key={ability.name}
-                        onClick={() => onClickAction(adv, ability.name, ability.description, '', '', '')}
                         onContextMenu={(e) => onCtxMenu(e, [
                             { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(ability); setIsAddMenuOpen(true); } },
                             { icon: Trash, label: 'Delete', action: () => deleteAbility(adv, ability), isDestructive: true }
                         ])}
                     >
-                        <div className={`${tableBorderRounded} ${glowOnHover} p-2`}>
-                            <p className="font-paradigm font-bold">{ability.name}</p>
+                        <div className={`${tableBorderRounded} p-2`}>
+                            <p className={`font-paradigm font-bold ${glowOnHover} cursor-pointer`} onClick={() => onClickAction(adv, ability.name, ability.description, '', '', '')}>
+                                {ability.name}
+                            </p>
                             <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" />
                         </div>
                     </div>

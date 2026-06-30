@@ -10,7 +10,7 @@ const adversarySchema = () => {
         beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(lang.VGLITE.BeingTypes) }),
         beingSubtype: new fields.StringField({ ...optionalString, initial: 'none', choices: Object.keys(lang.VGLITE.BeingSubtypes) }),
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
-        threatLevelOverride: new fields.NumberField({ integer: false, min: 0, initial: 0.00 }),
+        threatLevelOverride: new fields.NumberField({ integer: false, min: 0, initial: null }),
         description: new fields.HTMLField(),
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         zone: new fields.StringField({ ...zonePreferences() }),

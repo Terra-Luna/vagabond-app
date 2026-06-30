@@ -53,7 +53,7 @@ export const RichTextField = ({
 
     return (
         <IFrameWrapper width={width} height={height}>
-            <div className={`${className}`}>
+            <div className={`${className} text-text-primary font-paradigm font-normal`}>
                 <LexicalComposer initialConfig={initialConfig}>
                     <div className="flex flex-col min-h-full min-w-full bg-transparent">
                         <div className="flex grow-1 relative">
