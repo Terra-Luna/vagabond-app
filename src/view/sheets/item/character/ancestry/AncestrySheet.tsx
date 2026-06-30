@@ -7,7 +7,7 @@ import { DropDown } from "../../../../component/Dropdown";
 import { LabelledField } from "../../../../component/LabelledField";
 import { RichTextField } from "../../../../component/RichTextField";
 import { useCallback, useEffect } from "react";
-import { Trait } from "./Trait";
+import { addNewBlankGrant, addNewBlankModifier, Trait } from "./Trait";
 import { updateDocument } from "../../../../../utils/documentUtils";
 import { createDropdownEntries } from "../../../../../utils/localeUtils";
 import { LucidePlus } from "lucide-react";
@@ -43,10 +43,12 @@ const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel>
     )
 }
 
-const addNewBlankTrait = (ancestry: AncestryDataModel) => {
+const addNewBlankTrait = async (ancestry: AncestryDataModel) => {
     const traits = foundry.utils.deepClone(ancestry.traits)
     traits.push({ name: lang.VGLITE.AncestrySheet.newTrait } as any)
-    updateDocument(ancestry.parent, { traits })
+    const newAncestry = (await updateDocument(ancestry.parent, { traits })).system
+
+    addNewBlankGrant(newAncestry, traits.length - 1).then(updated => addNewBlankModifier(updated.system, traits.length - 1))
 }
 
 const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
