@@ -1,8 +1,8 @@
 import { VGLITE as lang } from "../../../../../public/lang/en.json"
-import { useState } from "react"
+import { useCallback, useState } from "react"
 import ArmorDataModel from "../../../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
-import { Divider } from "../../../component/Header"
+import { Divider, ItemDivider } from "../../../component/Header"
 import { FoundryItem, VgLiteItemSheet } from "../VgLiteItemSheet"
 import WeaponDataModel from "../../../../model/item/equip/WeaponDataModel"
 import { WeaponSheet } from "./type/WeaponSheet"
@@ -19,13 +19,13 @@ import { StarterPackSheet } from "./type/StarterPackSheet"
 import ContainerDataModel from "../../../../model/item/equip/ContainerDataModel"
 import { ContainerSheet } from "./type/ContainerSheet"
 import { EditableTextField } from "../../../component/EditableTextField"
-import ReactHtmlParser from "react-html-parser"
 import { DropDown } from "../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../utils/localeUtils"
 import { Description } from "../../shared/Description"
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
 import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
+import { Checkbox } from "../../../component/Checkbox"
 
 export class EquipmentSheet extends VgLiteItemSheet {
     Component = EquipmentSheetReactComponent
@@ -66,25 +66,31 @@ const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDat
         sheet = <WeaponSheet item={item as any} isEditMode={isEditMode} />
     }
     else {
-        sheet = <div>{ReactHtmlParser(item.system.description)}</div>
+        sheet = <></>
     }
 
     const baseContent = <div>
-        <Description obj={item} isEditMode={isEditMode} />
-        <CategorySelection item={item} isEditMode={isEditMode} />
+        <Bulk item={item} isEditMode={isEditMode} />
         <ItemValue item={item} isEditMode={isEditMode} />
+        <ItemDivider />
     </div>
 
     return (
         <BaseEquipmentSheetHost
             header={
-                <EquipmentSheetHeader
+                <EquipmentSheetBanner
                     item={item}
                     isEditMode={isEditMode}
                     setIsEditMode={setIsEditMode}
                 />
             }
-            children={<EquipmentSheetBody children={<>{baseContent}{sheet}</>} />}
+            children={<EquipmentSheetBody children={<>
+                {<Description obj={item} isEditMode={isEditMode} />}
+                <CategorySelection item={item} isEditMode={isEditMode} />
+                {sheet}
+                <ItemDivider />
+                {baseContent}
+            </>} />}
         />
     )
 }
@@ -98,7 +104,7 @@ export const BaseEquipmentSheetHost = ({ header, children }: { header: React.Rea
     )
 }
 
-export const EquipmentSheetHeader = ({ item, isEditMode, setIsEditMode }: {
+export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
     item: FoundryItem<EquipmentDataModel<EquipmentSchema>>, isEditMode: boolean, setIsEditMode: any
 }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
@@ -161,16 +167,48 @@ export const EquipmentSheetBody = ({ children }: { children: React.ReactElement 
     )
 }
 
-export const ItemSheetProperty = ({ label, value }) => {
+export const ItemSheetPropLabel = ({ label }) => {
+    return <p className="font-paradigm font-bold">{label}:</p>
+}
+export const ItemSheetPropValue = ({ value, styleOverride }) => {
+    return <div className={`${styleOverride.length === 0 ? "font-eskapade text-xl text-stat-block-fill" : styleOverride}`}>
+        {value}
+    </div>
+}
+export const ItemSheetProperty = ({ label, value, styleOverride = "" }) => {
     return (
         <div className="flex gap-x-2 items-center mt-1">
-            <p className="font-paradigm font-bold">{label}:</p>
-            <div className="font-eskapade text-lg">{value}</div>
+            <ItemSheetPropLabel label={label} />
+            <ItemSheetPropValue value={value} styleOverride={styleOverride} />
         </div>
     )
 }
 
-export const CategorySelection = ({ item, isEditMode }) => {
+const Bulk = ({ item, isEditMode }) => {
+    const onCheckStackable = useCallback((isChecked) => {
+        item.update({ 'system.bulk.isStackable': isChecked })
+    }, [item.system.bulk.isStackable])
+    return (
+        <div className="flex w-full justify-between">
+            <ItemSheetProperty label={lang.ItemSheet.slots} value={
+                <EditableTextField
+                    boundValue={item.system.bulk.slots}
+                    updateProps={{ object: item, path: ['bulk', 'slots'] }}
+                    placeholder="0"
+                    isGlobalEditMode={isEditMode}
+                />
+            } />
+            <Checkbox
+                label={lang.ItemSheet.stackable}
+                onCheckedChanged={onCheckStackable}
+                checked={item.system.bulk.isStackable}
+                isGlobalEditMode={isEditMode}
+            />
+        </div>
+    )
+}
+
+const CategorySelection = ({ item, isEditMode }) => {
     return (
         <ItemSheetProperty label={lang.ItemSheet.category} value={
             isEditMode ? <DropDown
@@ -179,7 +217,7 @@ export const CategorySelection = ({ item, isEditMode }) => {
                 updateMechanism={{ updatePath: ['category'] }}
                 parent={item}
             /> : <>{lang.EquipmentCategories[item.system.category]}</>
-        } />
+        } styleOverride={"font-eskapade text-stat-block-fill"} />
     )
 }
 
@@ -198,7 +236,7 @@ export const ItemValue = ({ item, isEditMode }) => {
 const CoinDisplay = ({ item, label, path, isEditMode }) => {
     return (
         <div className="flex">
-            <div className={`text-text-primary text-2xl font-eskapade min-w-[2ch] text-right`}>
+            <div className={`text-text-primary text-xl font-eskapade min-w-[2ch] text-right`}>
                 <EditableTextField
                     boundValue={item.system.value[path]}
                     updateProps={{ object: item, path: ['value', path] }}
@@ -206,7 +244,7 @@ const CoinDisplay = ({ item, label, path, isEditMode }) => {
                     isGlobalEditMode={isEditMode}
                 />
             </div>
-            <div className={"text-wealth-denom-label text-sm content-end"}>{label}</div>
+            <div className={"text-wealth-denom-label text-xs content-end"}>{label}</div>
         </div>
     )
 }

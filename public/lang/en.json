@@ -593,7 +593,11 @@
     },
     "ItemSheet": {
       "description": "Description",
+      "general": "General",
       "category": "Category",
+      "slots": "Slots",
+      "stackable": "Stackable",
+      "stackSize": "Stack Size",
       "value": "Value",
       "g": "G",
       "s": "S",

@@ -84,7 +84,7 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
 }
 
 export const sendItemToChat = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
-    sendVgLiteChatMessage(hero, createElement(ItemChatCard, { itemId: getId(item) }))
+    sendVgLiteChatMessage(hero, createElement(ItemChatCard, { itemId: getId(item), itemName: getName(item) }))
 }
 
 export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
