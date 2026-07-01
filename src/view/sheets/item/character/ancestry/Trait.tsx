@@ -15,6 +15,7 @@ import { LucidePlus, LucideTrash2 } from "lucide-react"
 import { Typography } from "../../../../component/Typography"
 import { SingleSelect } from "../../../../component/Toggle"
 import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
+import { Checkbox } from "../../../../component/Checkbox"
 
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
@@ -223,15 +224,11 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
                     : (
                         <div className="flex flex-col gap-2">
                             <LabelledField label={lang.VGLITE.AncestrySheet.count}>
-                                <div className="flex gap-2">
+                                <div className="flex gap-3">
                                     <div className="text-lg text-center border border-solid px-1">
                                         <EditableTextField boundValue={grant.count as unknown as string} onSave={onUpdateCount} />
                                     </div>
-                                    <SingleSelect
-                                        canUnselect
-                                        options={[{ label: lang.VGLITE.AncestrySheet.ignorePrerequisites, value: true }]}
-                                        setValue={onUpdateIngorePrereqs}
-                                        value={!!grant.ignorePrerequisites} />
+                                    <Checkbox label={lang.VGLITE.AncestrySheet.ignorePrerequisites} checked={!!grant.ignorePrerequisites} onCheckedChanged={onUpdateIngorePrereqs} />
                                 </div>
                             </LabelledField>
                             <DropDown label={lang.VGLITE.AncestrySheet.filter} options={[{ label: 'Perk List', value: 'todo' }]} parent={ancestry.parent} updateMechanism={{ onChange: () => { } }} value={'todo'} />
