@@ -122,8 +122,9 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
         return false
     }
 
-    if (isInventoryItem(item) && item.system.isStackable) {
+    if (isInventoryItem(item) && item.system.bulk.isStackable) {
         const stack = actor.items.find((it: any) => it.name === item.name)
+        console.log(item.name, stack)
         if (stack != undefined) {
             stack.update({ 'system.bulk.quantity': stack.system.bulk.quantity + 1 })
             stackStackables(item.parent.system)
@@ -142,7 +143,7 @@ Hooks.on("createItem", (item, options, userId) => {
 })
 
 Hooks.on("preDeleteItem", (item: any, options, userId) => {
-    if (item.system.isStackable && item.parent) {
+    if (item.system.bulk.isStackable && item.parent) {
         const count = item.system.bulk.quantity
         if (count > 1) {
             item.update({ 'system.bulk.quantity': count - 1 })

@@ -30,7 +30,7 @@ export const ActionMenuHeader = ({ label, onClick, isEditMode }) => {
 
 export const AddNewIconButton = ({ onClick }) => {
     return (
-        <Plus size={18} strokeWidth={4} className={`text-stat-block-fill ${glowOnHover}`} onClick={onClick} />
+        <Plus size={18} strokeWidth={4} className={`text-stat-block-fill ${glowOnHover} cursor-pointer`} onClick={onClick} />
     )
 }
 

@@ -30,6 +30,9 @@ export const Tooltip = ({ text, children }) => {
             <div ref={ref} {...anchorProps}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
+                onClick={handleMouseLeave}
+                onAuxClick={handleMouseLeave}
+                onDoubleClick={handleMouseLeave}
             >
                 {children}
             </div>

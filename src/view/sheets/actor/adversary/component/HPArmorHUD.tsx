@@ -18,7 +18,7 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
     return (
         <div className="text-center space-y-4 mt-0.5">
             {/* THREAT LEVEL */}
-            <div className="flex space-x-2 text-text-primary justify-center content-center w-full ml-auto mr-auto">
+            <div className="flex space-x-2 text-text-primary justify-center content-center w-full mx-auto">
                 <p className={`${headerStyle} content-center`}>{locale.AdversarySheet.tl}</p>
                 <div className={`text-lg text-stat-block-fill font-eskapade font-bold`}>
                     <EditableTextField
@@ -31,9 +31,9 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
             </div>
 
             {/* HIT DICE */}
-            <div className="text-text-primary justify-center content-center w-full ml-auto mr-auto mt-4">
+            <div className="text-text-primary justify-center content-center w-full mx-auto mt-4">
                 <p className={headerStyle}>{locale.AdversarySheet.hd}</p>
-                <div className={`text-3xl text-stat-block-fill font-eskapade font-bold`}>
+                <div className={`text-3xl text-stat-block-fill font-eskapade font-bold mx-4`}>
                     <EditableTextField
                         boundValue={adv.hitDice?.toString() ?? '1'}
                         updateProps={{ object: adv.parent, path: ['hitDice'] }}
@@ -54,6 +54,7 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
                             boundValue={adv.health.current?.toString() ?? ''}
                             updateProps={{ object: adv.parent, path: ['health', 'current'] }}
                             placeholder="0"
+                            hideBorderOnEditMode={true}
                         />
                     </div>
                     <p className="text-text-primary text-5xl font-normal">/</p>
@@ -66,7 +67,7 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
             {/* ARMOR RATING & INFO */}
             <div className="text-text-primary w-full justify-center">
                 <p className={headerStyle}>{locale.AdversarySheet.armor}</p>
-                <div className="relative w-[52px] h-[52px] ml-auto mr-auto">
+                <div className="relative w-[52px] h-[52px] mx-auto">
                     <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div className={`text-4xl text-text-armor font-eskapade font-bold`}>

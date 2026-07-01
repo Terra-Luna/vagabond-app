@@ -38,6 +38,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                             boundValue={health.current?.toString() ?? ""}
                             updateProps={{ object: hero.parent, path: ['health', 'current'] }}
                             placeholder="0"
+                            hideBorderOnEditMode={true}
                         />
                     </span>
                 </div>

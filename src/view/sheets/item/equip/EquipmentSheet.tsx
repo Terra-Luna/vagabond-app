@@ -26,6 +26,7 @@ import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
 import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
 import { Checkbox } from "../../../component/Checkbox"
+import { sheetPropLabel } from "../../../common/text-styles"
 
 export class EquipmentSheet extends VgLiteItemSheet {
     Component = EquipmentSheetReactComponent
@@ -72,20 +73,23 @@ const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDat
     const baseContent = <div>
         <Bulk item={item} isEditMode={isEditMode} />
         <ItemValue item={item} isEditMode={isEditMode} />
+        <div className="mt-1" />
         <ItemDivider />
     </div>
 
     return (
         <BaseEquipmentSheetHost
-            header={
+            header={<>
                 <EquipmentSheetBanner
                     item={item}
                     isEditMode={isEditMode}
                     setIsEditMode={setIsEditMode}
                 />
-            }
+                <div className="my-1">
+                    {<Description obj={item} isEditMode={isEditMode} />}
+                </div>
+            </>}
             children={<EquipmentSheetBody children={<>
-                {<Description obj={item} isEditMode={isEditMode} />}
                 <CategorySelection item={item} isEditMode={isEditMode} />
                 {sheet}
                 <ItemDivider />
@@ -168,7 +172,7 @@ export const EquipmentSheetBody = ({ children }: { children: React.ReactElement 
 }
 
 export const ItemSheetPropLabel = ({ label }) => {
-    return <p className="font-paradigm font-bold">{label}:</p>
+    return <p className={sheetPropLabel}>{label}:</p>
 }
 export const ItemSheetPropValue = ({ value, styleOverride }) => {
     return <div className={`${styleOverride.length === 0 ? "font-eskapade text-xl text-stat-block-fill" : styleOverride}`}>
@@ -189,7 +193,7 @@ const Bulk = ({ item, isEditMode }) => {
         item.update({ 'system.bulk.isStackable': isChecked })
     }, [item.system.bulk.isStackable])
     return (
-        <div className="flex w-full justify-between">
+        <div>
             <ItemSheetProperty label={lang.ItemSheet.slots} value={
                 <EditableTextField
                     boundValue={item.system.bulk.slots}
@@ -198,12 +202,23 @@ const Bulk = ({ item, isEditMode }) => {
                     isGlobalEditMode={isEditMode}
                 />
             } />
-            <Checkbox
-                label={lang.ItemSheet.stackable}
-                onCheckedChanged={onCheckStackable}
-                checked={item.system.bulk.isStackable}
-                isGlobalEditMode={isEditMode}
-            />
+            <ItemSheetProperty label={lang.ItemSheet.stackable} value={
+                <Checkbox
+                    label={''}
+                    onCheckedChanged={onCheckStackable}
+                    checked={item.system.bulk.isStackable}
+                    inverted={true}
+                    isGlobalEditMode={isEditMode}
+                />
+            } />
+            <ItemSheetProperty label={lang.ItemSheet.stackSize} value={
+                <EditableTextField
+                    boundValue={item.system.bulk.stackSize}
+                    updateProps={{ object: item, path: ['bulk', 'stackSize'] }}
+                    placeholder="100"
+                    isGlobalEditMode={isEditMode}
+                />
+            } />
         </div>
     )
 }

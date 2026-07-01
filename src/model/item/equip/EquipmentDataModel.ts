@@ -14,7 +14,7 @@ const baseEquipmentSchema = () => {
         bulk: new fields.SchemaField({
             slots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             isStackable: new fields.BooleanField({ initial: false }),
-            stackSize: new fields.NumberField({ ...requiredInteger, initial: 1 }),
+            stackSize: new fields.NumberField({ ...requiredInteger, initial: 100 }),
             quantity: new fields.NumberField({ ...requiredInteger, initial: 1 }),
             totalSlots: new fields.NumberField({ ...requiredInteger, initial: 0 })
         }),
@@ -23,7 +23,11 @@ const baseEquipmentSchema = () => {
         isConsumable: new fields.BooleanField({ initial: false }),
         relicEffects: new fields.ArrayField(
             new fields.SchemaField({
-                type: new fields.StringField({ ...requiredString, choices: ['BONUS', 'CURSED', 'PROTECTION', 'MOVEMENT', 'SENSES', 'UTILITY', 'UNIQUE', 'FABLED'] }),
+                type: new fields.StringField({
+                    ...requiredString, choices: [
+                        'BONUS', 'CURSED', 'PROTECTION', 'MOVEMENT', 'SENSES', 'UTILITY', 'UNIQUE', 'FABLED'
+                    ]
+                }),
                 power: new fields.SchemaField({}),
                 addedCoinValue: new fields.SchemaField({ ...coinSchema() })
             })

@@ -39,7 +39,7 @@ export const setInventoryData = (hero: HeroDataModel) => {
 }
 
 export const stackStackables = async (hero: HeroDataModel) => {
-    const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.isStackable) as Item[]
+    const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.bulk.isStackable) as Item[]
     if (stackables?.length > 0) {
         ((Object.values(groupBy('name', stackables))) as any[][]).filter(it => it.length > 1).forEach(async items => {
             await items[0].update({ 'system.bulk.quantity': items.length })

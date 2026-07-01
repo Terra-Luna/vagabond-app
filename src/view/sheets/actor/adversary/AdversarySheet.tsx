@@ -69,7 +69,7 @@ const AdversarySheetHeader = ({ adv, isEditMode, setIsEditMode }) => {
     return (
         <div className="bg-sheet-header-fill font-eskapade p-2">
             <div className="text-2xl text-text-header-primary font-bold flex">
-                <EditableNameField actor={adv.parent} />
+                <EditableNameField actor={adv.parent} isGlobalEditMode={isEditMode} />
                 <div className="flex text-text-header-tertiary ml-auto mr-1" onClick={() => setIsEditMode(!isEditMode)}>
                     {
                         isEditMode ?
@@ -150,8 +150,8 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                                 options={createDropdownEntries(lang.VGLITE.Movement)}
                                 parent={adv.parent}
                                 updateMechanism={{ updatePath: ['movement', 'type'] }}
-                                value={lang.VGLITE.Movement[adv.movement.type]}
-                            /> : <p>{adv.movement.type}</p>
+                                value={adv.movement.type}
+                            /> : <p>{lang.VGLITE.Movement[adv.movement.type]}</p>
                         }
                     </div>
                 </div>
@@ -190,7 +190,7 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
 
 const StatBlockField = ({ label, content }) => {
     return (
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 items-center">
             <p className={statLabelStyle}>{label}</p>
             <div className={statValueStyle}>{content}</div>
         </div>
