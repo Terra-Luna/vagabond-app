@@ -36,7 +36,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                     <span className={`text-4xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
                         <EditableTextField
                             boundValue={health.current?.toString() ?? ""}
-                            updateProps={{ actor: hero.parent, propertyPath: ['health', 'current'] }}
+                            updateProps={{ object: hero.parent, path: ['health', 'current'] }}
                             placeholder="0"
                         />
                     </span>

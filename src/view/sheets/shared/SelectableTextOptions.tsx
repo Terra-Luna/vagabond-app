@@ -1,0 +1,24 @@
+import { getDocumentAtPath } from "../../../utils/documentUtils"
+import { OptionsSelectionMenu, StringOptionsDisplay } from "../../component/OptionsSelectionMenu"
+
+export const SelectableTextOptions = ({ obj, label, path, localeObj, isEditMode }: {
+    obj: any, label: string, path: string[], localeObj: any, isEditMode: boolean
+}) => {
+    const field = getDocumentAtPath(obj, path)
+    const options = Object.keys(localeObj).filter(k => k != 'none').map(k => (
+        { key: k, value: localeObj[k].name, isSelected: field.indexOf(k) > -1 }
+    ))
+    return (<>
+        {
+            !isEditMode && field.length === 0 ? <></> :
+                <div className="flex space-x-2 mt-2">
+                    {
+                        isEditMode ?
+                            <OptionsSelectionMenu obj={obj} label={label} path={path} options={options} /> :
+                            <p className="text-sm text-text-primary font-paradigm font-normal">{label}</p>
+                    }
+                    <StringOptionsDisplay options={options.filter(o => o.isSelected).map(o => o.value)} />
+                </div>
+        }
+    </>)
+}

@@ -13,7 +13,6 @@ export const AbilityChatCard = ({ actorId, title, description, tokenIds, dmgType
     actorId: string, title: string, description: string, tokenIds: string[], dmgType?: string
 }) => {
     const actor = game.actors?.get(actorId)
-    console.log(dmgType)
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner portrait={getTokenImg(actor)} title={title} />}

@@ -1,9 +1,10 @@
 import lang from "../../../../public/lang/en.json"
-import { damageTypeOptions, fields, optionalString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemicalSchema = () => {
     return {
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'alchemy' }),
         type: new fields.StringField({
             ...optionalString,
             initial: 'unk',
@@ -26,6 +27,6 @@ export default class AlchemicalItemDataModel extends EquipmentDataModel<Alchemic
 
     override async prepareBaseData() {
         super.prepareBaseData()
-        this.isStackable = true
+        this.bulk.isStackable = true
     }
 }

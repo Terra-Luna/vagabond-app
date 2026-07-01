@@ -4,7 +4,7 @@ import ActorDataModel, { BaseActorSchema } from '../../model/actor/ActorDataMode
 import { getId, getName } from '../../utils/modelUtil'
 
 export const sendVgLiteChatMessage = async (
-    actor: ActorDataModel<BaseActorSchema>,
+    actor: ActorDataModel<BaseActorSchema> | null,
     card: React.ReactElement,
     rolls: any[] = []
 ) => {

@@ -1,3 +1,5 @@
+import lang from "../../../../public/lang/en.json"
+import { fields, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 /**
@@ -5,7 +7,9 @@ import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
  * Eg.: magnifying glass, compass, books...
  */
 const sundrySchema = () => {
-    return {}
+    return {
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'other' }),
+    }
 }
 
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema
@@ -16,10 +20,5 @@ export default class SundryDataModel extends EquipmentDataModel<SundrySchema> {
             ...super.defineSchema(),
             ...sundrySchema()
         }
-    }
-
-    override async prepareBaseData() {
-        super.prepareBaseData()
-        this.isStackable = true
     }
 }

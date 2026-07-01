@@ -58,4 +58,5 @@ const tooltipBox = `
     bg-context-menu-fill
     border border-solid border-table-border
     px-1 py-0.5
+    z-999
 `

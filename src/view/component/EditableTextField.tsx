@@ -9,7 +9,7 @@ export const EditableTextField = (
     { boundValue, onSave, updateProps, placeholder = "Enter text...", isGlobalEditMode = true }: {
         boundValue: string | null, 
         onSave?: (value: string | null) => Promise<boolean>, 
-        updateProps?: { actor: any, propertyPath: string[] },
+        updateProps?: { object: any, path: string[] },
         placeholder?: string,
         isGlobalEditMode?: boolean
 }) => {
@@ -49,7 +49,7 @@ export const EditableTextField = (
             ret = await onSave(editModeValue)
         }
         else {
-            ret = await updateDocumentAtPath(updateProps!.actor, updateProps!.propertyPath, editModeValue);
+            ret = await updateDocumentAtPath(updateProps!.object, updateProps!.path, editModeValue);
         }
 
         setIsInEditMode(false)

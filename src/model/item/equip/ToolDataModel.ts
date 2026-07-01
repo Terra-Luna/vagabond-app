@@ -1,10 +1,14 @@
+import lang from "../../../../public/lang/en.json"
+import { fields, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 /**
  * Anything a Hero can equip that isn't a weapon or armor.
  */
 const toolSchema = () => {
-    return {}
+    return {
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'tools' }),
+    }
 }
 
 export type ToolSchema = ReturnType<typeof toolSchema> & EquipmentSchema

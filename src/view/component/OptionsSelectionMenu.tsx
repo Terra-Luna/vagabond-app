@@ -10,7 +10,7 @@ interface OptionsSelectionMenuOption {
     isSelected: boolean
 }
 
-export const OptionsSelectionMenu = ({ actor, label, path, options }: { actor: Actor, label: string, path: string[], options: OptionsSelectionMenuOption[] }) => {
+export const OptionsSelectionMenu = ({ obj, label, path, options }: { obj: any, label: string, path: string[], options: OptionsSelectionMenuOption[] }) => {
     return (
         <div>
             <div className="flex items-center">
@@ -24,7 +24,7 @@ export const OptionsSelectionMenu = ({ actor, label, path, options }: { actor: A
                                     onClick={(e) => {
                                         e.keepOpen = true
                                         options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
-                                        updateDocumentAtPath(actor, path, options.filter(it => it.isSelected).map(it => it.key))
+                                        updateDocumentAtPath(obj, path, options.filter(it => it.isSelected).map(it => it.key))
                                     }}
                                 >
                                     {

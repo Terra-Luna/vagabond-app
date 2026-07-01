@@ -4,7 +4,13 @@ import { LabelledField } from "./LabelledField"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
-export const DropDown = ({ label, value, options, updateMechanism, parent }: { label: string, value: any, options: { label: string; value: string; }[], updateMechanism: UpdateMechanism, parent: any }) => {
+export const DropDown = ({ label = '', value, options, updateMechanism, parent }: {
+    label?: string,
+    value: any,
+    options: { label: string; value: string; }[],
+    updateMechanism: UpdateMechanism,
+    parent: any
+}) => {
     const onChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
         const { onChange: onChangeFn, updatePath } = updateMechanism
         if (updatePath) {

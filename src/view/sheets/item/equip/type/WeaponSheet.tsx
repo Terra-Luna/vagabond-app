@@ -9,7 +9,7 @@ export const WeaponSheet = ({ item, isEditMode }: {
     return (
         <EquipmentSheetBody>
             <div>
-                asd;flkjasd;flkasdf
+
             </div>
         </EquipmentSheetBody>
     )

@@ -1,8 +1,10 @@
-import { fields, requiredInteger } from "../../common/sharedSchemas"
+import lang from "../../../../public/lang/en.json"
+import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 export const containerSchema = () => {
     return {
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'containers' }),
         capacity: new fields.NumberField({ ...requiredInteger, initial: 2 }),
         items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() }), { initial: [] })
     }

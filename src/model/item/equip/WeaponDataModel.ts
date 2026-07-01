@@ -6,6 +6,7 @@ import { EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
     return {
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'weapons' }),
         range: new fields.StringField({ ...rangeOptions(), required: false }),
         damage: new fields.SchemaField({
             oneHand: new fields.StringField({ required: false, initial: '1d4' }),

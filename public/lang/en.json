@@ -592,11 +592,20 @@
       "combo": "Combo"
     },
     "ItemSheet": {
+      "description": "Description",
+      "category": "Category",
+      "value": "Value",
+      "g": "G",
+      "s": "S",
+      "c": "C",
       "armor": "Armor",
       "grip": "Grip",
+      "grips": {
+        "v": "V",
+        "oneH": "1H",
+        "twoH": "2H"
+      },
       "damage": "Damage",
-      "oneH": "1H",
-      "twoH": "2H",
       "range": "Range",
       "props": "Properties",
       "material": "Material",

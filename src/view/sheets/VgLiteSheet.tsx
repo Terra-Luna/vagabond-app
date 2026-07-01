@@ -48,8 +48,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     }
 
     _updatePosition(position) {
-        const minWidth = 420
-        const minHeight = 500
+        const minWidth = 400
+        const minHeight = 248
         const { width, height, top, left } = position
         const realWidth = width === "auto" ? width : Math.max(minWidth, width)
         const realHeight = height === "auto" ? height : Math.max(minHeight, height)

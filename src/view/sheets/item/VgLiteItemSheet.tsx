@@ -1,4 +1,4 @@
-const { api, sheets } = foundry.applications
+const { sheets } = foundry.applications
 import ItemDataModel, { BaseItemSchema } from "../../../model/item/ItemDataModel"
 import { VgLiteSheetMixin } from "../VgLiteSheet";
 

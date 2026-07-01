@@ -1,11 +1,13 @@
+import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { coinSchema } from "../../common/CoinValue"
-import { fields } from "../../common/sharedSchemas"
+import { fields, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 import EquipmentDataModel from "./EquipmentDataModel"
 
 export const starterPackSchema = () => {
     return {
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'other' }),
         items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() })),
         coins: new fields.SchemaField({ ...coinSchema() })
     }

@@ -1,5 +1,5 @@
 import lang from "../../../../public/lang/en.json"
-import { addCoins as addCoins, coinSchema, multiplyCoins } from "../../common/CoinValue"
+import { addCoins as addCoins, coinSchema, consolidateCoins, multiplyCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
@@ -9,7 +9,6 @@ import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
  */
 const baseEquipmentSchema = () => {
     return {
-        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories) }),
         value: new fields.SchemaField({ ...coinSchema() }),
         totalValue: new fields.SchemaField({ ...coinSchema() }),
         bulk: new fields.SchemaField({
@@ -57,6 +56,18 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
         }
         else {
             this.bulk.totalSlots = this.bulk.slots
+        }
+    }
+
+    override async _preUpdate(changes, options, user) {
+        await super._preUpdate(changes, options, user)
+        const coinChanges = (changes.system as any)?.value
+        if (coinChanges !== undefined) {
+            const { g, s, c } = this.value
+            const newG = coinChanges.g ?? g
+            const newS = coinChanges.s ?? s
+            const newC = coinChanges.c ?? c;
+            (changes.system as any).value = consolidateCoins({ g: newG, s: newS, c: newC })
         }
     }
 }

@@ -82,8 +82,8 @@ const CoinValue = ({ hero, value, label, path }: { hero: HeroDataModel, value: n
                 <EditableTextField
                     boundValue={value.toString() ?? ""}
                     updateProps={{
-                        actor: hero.parent,
-                        propertyPath: ['inventory', 'coins', path]
+                        object: hero.parent,
+                        path: ['inventory', 'coins', path]
                     }}
                     placeholder="0"
                 />

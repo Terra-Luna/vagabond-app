@@ -6,19 +6,20 @@ import { getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { Tooltip } from "../component/Tooltip"
+import { ItemValue } from "../sheets/item/equip/EquipmentSheet"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 
-export const ItemChatCard = ({ itemId }: { itemId: string }) => {
+export const ItemChatCard = ({ itemId, itemName }: { itemId: string, itemName: string }) => {
     const actor = game.actors?.find(it => it.items.has(itemId))
-    const item = actor?.items.get(itemId)
+    const item = actor?.items.get(itemId) ?? game.items?.get(itemId) ?? game.items?.getName(itemName)
     const equipment = item?.system as EquipmentDataModel<EquipmentSchema>
     if (equipment === undefined) return <p className="font-xs font-paradigm font-normal italic">Item removed</p>
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner portrait={getPortrait(item)} title={getName(item)} />}
             contents={
-                <div>
+                <div className="font-paradigm font-normal text-lg">
                     <EnrichedContent content={equipment.description} />
                     <ItemCardContents item={equipment} />
                 </div>
@@ -36,7 +37,7 @@ const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> 
     }
     else {
         return (
-            <ItemCardBody>
+            <ItemCardBody item={item}>
                 <div>
 
                 </div>
@@ -47,7 +48,7 @@ const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> 
 
 const ArmorCardContents = ({ item }: { item: ArmorDataModel }) => {
     return (
-        <ItemCardBody>
+        <ItemCardBody item={item}>
             <ItemCardProp label={lang.VGLITE.ItemSheet.type} children={lang.VGLITE.ArmorTypes[item.armorType].name} />
             <ItemCardProp label={lang.VGLITE.ItemSheet.armor} children={item.rating} />
             <ItemCardProp label={lang.VGLITE.ItemSheet.material} children={lang.VGLITE.Metals[item.material].name} />
@@ -57,17 +58,17 @@ const ArmorCardContents = ({ item }: { item: ArmorDataModel }) => {
 
 const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
     return (
-        <ItemCardBody>
+        <ItemCardBody item={item}>
             <div className="flex space-x-2">
                 <ItemCardProp label={lang.VGLITE.ItemSheet.damage} children={
                     item.grip.style === 'V' ?
                         <div className="flex space-x-2">
-                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.oneH}: ${item.damage.oneHand},`} />
-                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.twoH}: ${item.damage.twoHand}`} />
+                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.oneH}: ${item.damage.oneHand},`} />
+                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.twoH}: ${item.damage.twoHand}`} />
                         </div> : (
                             item.grip.style === '1H' ?
-                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.oneH}: ${item.damage.oneHand}`} /> :
-                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.twoH}: ${item.damage.twoHand}`} />
+                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.oneH}: ${item.damage.oneHand}`} /> :
+                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.twoH}: ${item.damage.twoHand}`} />
                         )
                 } />
                 <DamageTypeIcon dmgType={item.damage.type as string} size={18} />
@@ -85,10 +86,11 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
     )
 }
 
-const ItemCardBody = ({ children }) => {
+const ItemCardBody = ({ item, children }) => {
     return (
         <div className="text-base text-text-primary font-paradigm font-normal">
             {children}
+            <ItemValue item={item.parent} isEditMode={false} />
         </div>
     )
 }

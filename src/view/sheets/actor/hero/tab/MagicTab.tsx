@@ -40,7 +40,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                 <span className={`${glowOnHover} cursor-pointer text-mana`}>
                     <EditableTextField
                         boundValue={hero.mana.current?.toString() ?? ""}
-                        updateProps={{ actor: hero.parent, propertyPath: ['mana', 'current'] }}
+                        updateProps={{ object: hero.parent, path: ['mana', 'current'] }}
                         placeholder="0"
                     />
                 </span>
