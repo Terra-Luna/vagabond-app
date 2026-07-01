@@ -101,7 +101,7 @@ const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDat
 
 export const BaseEquipmentSheetHost = ({ header, children }: { header: React.ReactElement, children: React.ReactElement }) => {
     return (
-        <div className="bg-sheet-main-fill">
+        <div className="bg-sheet-main-fill overflow-y-auto">
             {header}
             {children}
         </div>
