@@ -30,9 +30,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
     )
 }
 
-const Range = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+const Range = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <DropDown
             label={lang.ItemSheet.range}
@@ -44,9 +42,7 @@ const Range = ({ item }: {
     )
 }
 
-const Grip = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+const Grip = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <DropDown
             label={lang.ItemSheet.grip}
@@ -58,9 +54,7 @@ const Grip = ({ item }: {
     )
 }
 
-const Damage = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+const Damage = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     const gripStyle = item.system.grip.style
     return (
         <div>
@@ -100,9 +94,7 @@ const Damage = ({ item }: {
     )
 }
 
-const DamageType = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+const DamageType = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <DropDown
             label={lang.ItemSheet.damageType}
@@ -114,9 +106,7 @@ const DamageType = ({ item }: {
     )
 }
 
-export const ExplodingDiceItemConfig = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     const { isEditMode } = useEditMode()
     const onCheckExplodable = useCallback((canExplode) => {
         item.update({ 'system.explodeData.canExplode': canExplode } as Record<string, boolean>)
@@ -156,9 +146,7 @@ export const ExplodingDiceItemConfig = ({ item }: {
     )
 }
 
-const Properties = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+const Properties = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
             <div className="flex gap-x-1 items-center">
@@ -176,9 +164,7 @@ const weaponProps = (item: Item & { system: WeaponDataModel }) => {
     ))
 }
 
-const Material = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+const Material = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <DropDown
             label={lang.ItemSheet.material}
