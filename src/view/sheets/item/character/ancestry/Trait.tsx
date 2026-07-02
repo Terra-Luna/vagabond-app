@@ -167,7 +167,7 @@ const Modifier = ({ modifier, startExpanded = false, ancestry, index, traitIndex
             </div>
             <div className="flex ml-4 pb-2">
                 <LabelledField label={lang.VGLITE.AncestrySheet.value}>
-                    <div className="text-lg text-center border border-solid w-full px-1">
+                    <div className="text-lg text-center px-1">
                         <EditableTextField boundValue={modifier.value} onSave={onUpdateValue} />
                     </div>
                 </LabelledField>
@@ -223,7 +223,7 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
                         <div className="flex flex-col gap-2">
                             <LabelledField label={lang.VGLITE.AncestrySheet.count}>
                                 <div className="flex gap-3">
-                                    <div className="text-lg text-center border border-solid px-1">
+                                    <div className="text-lg text-center">
                                         <EditableTextField boundValue={grant.count as unknown as string} onSave={onUpdateCount} />
                                     </div>
                                     <Checkbox label={lang.VGLITE.AncestrySheet.ignorePrerequisites} checked={!!grant.ignorePrerequisites} onCheckedChanged={onUpdateIngorePrereqs} />
