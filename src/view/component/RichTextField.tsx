@@ -9,6 +9,7 @@ import { IFrameWrapper } from './IFrameWrapper';
 import { $insertNodes, LexicalEditor } from 'lexical';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEditMode } from '../context/EditModeContext';
 
 export const RichTextField = ({
     width = "100%",
@@ -17,13 +18,14 @@ export const RichTextField = ({
     onChange,
     className
 }: {
-        width?: number | string,
-        height?: number | string,
-        defaultValue?: string,
-        onChange?: (html: string) => void,
-        className?: string
+    width?: number | string,
+    height?: number | string,
+    defaultValue?: string,
+    onChange?: (html: string) => void,
+    className?: string
 }) => {
 
+    const { isEditMode } = useEditMode()
     const [trackRerender, setTrackRerender] = useState(false)
 
     const forceRerender = useCallback(() => {
@@ -35,19 +37,25 @@ export const RichTextField = ({
         forceRerender()
     }, [])
 
+    const editorRef = useRef<LexicalEditor>(null);
+
+    useEffect(() => {
+        // toggle readonly on the editor when editMode changes
+        editorRef.current?.setEditable(isEditMode)
+    }, [isEditMode])
+
     const initialConfig = {
         namespace: 'VgLiteEditor',
         onError: (error) => console.error(error),
         editorState: (editor) => {
             $insertNodes($generateNodesFromDOM(editor, new DOMParser().parseFromString(defaultValue, 'text/html')))
-        }
+        },
+        editable: isEditMode,
     };
-
-    const editorRef = useRef<LexicalEditor>(null);
 
     const Placeholder = () => {
         return (
-            <div className="absolute p-1 text-sm  italic" style={{pointerEvents: 'none'}}>Enter text...</div>
+            <div className="absolute p-1 text-sm  italic" style={{ pointerEvents: 'none' }}>Enter text...</div>
         )
     }
 
@@ -57,21 +65,21 @@ export const RichTextField = ({
                 <LexicalComposer initialConfig={initialConfig}>
                     <div className="flex flex-col min-h-full min-w-full bg-transparent">
                         <div className="flex grow-1 relative">
-                        <RichTextPlugin
-                            contentEditable={<ContentEditable className="p-1 min-h-full min-w-full text-sm leading-5" />}
-                            placeholder={<Placeholder />}
-                            ErrorBoundary={LexicalErrorBoundary}
-                        />
-                        {onChange ? <OnChangePlugin onChange={(editorState) => {
-                            editorState.read(() => {
-                                if (editorRef.current) {
-                                    onChange($generateHtmlFromNodes(editorRef.current))
-                                }
-                            }, { editor: editorRef.current })
-                        }} /> : undefined}
-                        <HistoryPlugin />
-                        <EditorRefPlugin editorRef={editorRef} />
-                    </div>
+                            <RichTextPlugin
+                                contentEditable={<ContentEditable className="p-1 min-h-full min-w-full text-sm leading-5" />}
+                                placeholder={<Placeholder />}
+                                ErrorBoundary={LexicalErrorBoundary}
+                            />
+                            {onChange ? <OnChangePlugin onChange={(editorState) => {
+                                editorState.read(() => {
+                                    if (editorRef.current) {
+                                        onChange($generateHtmlFromNodes(editorRef.current))
+                                    }
+                                }, { editor: editorRef.current })
+                            }} /> : undefined}
+                            <HistoryPlugin />
+                            <EditorRefPlugin editorRef={editorRef} />
+                        </div>
                     </div>
                 </LexicalComposer>
             </div>

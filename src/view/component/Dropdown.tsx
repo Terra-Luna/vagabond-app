@@ -36,7 +36,7 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
                                 )}
                             </Select>
                         </div> :
-                        <p className="text-lg font-eskapade font-bold text-stat-block-fill">
+                        <p className="text-lg font-eskapade font-bold text-stat-block-fill bg-sheet-main-fill p-0.5 rounded">
                             {options.find(o => o.value === value)?.label ?? ''}
                         </p>
                 }

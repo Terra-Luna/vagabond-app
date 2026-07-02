@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useEditMode } from "../context/EditModeContext";
 
 interface SingleSelectProps {
     options: { label: string; value: any }[];
@@ -10,6 +11,7 @@ interface SingleSelectProps {
 export const SingleSelect = ({ options, value, setValue, canUnselect }: SingleSelectProps) => {
     const selectedClass = "bg-sheet-header-fill text-text-header-primary border-text-header-primary px-1"
     const unselectedClass = "px-1"
+    const { isEditMode } = useEditMode()
 
     const handleOptClick = useCallback((clickedVal) => {
         if (clickedVal === value) {
@@ -27,7 +29,7 @@ export const SingleSelect = ({ options, value, setValue, canUnselect }: SingleSe
             {options.map(opt => {
                 const isSelected = opt.value === value
                 return (
-                    <button className={isSelected ? selectedClass : unselectedClass} title={opt.label} onClick={() => handleOptClick(opt.value)}>{opt.label}</button>
+                    <button className={isSelected ? selectedClass : unselectedClass} title={opt.label} onClick={isEditMode ? () => handleOptClick(opt.value) : undefined}>{opt.label}</button>
                 );
             })}
         </div>

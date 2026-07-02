@@ -12,6 +12,7 @@ import { updateDocument } from "../../../../../utils/documentUtils";
 import { createDropdownEntries } from "../../../../../utils/localeUtils";
 import { LucidePlus } from "lucide-react";
 import { PrimaryButton } from "../../../../component/Button";
+import { useEditMode } from "../../../../context/EditModeContext";
 
 export class AncestrySheet extends VgLiteItemSheet {
     Component = AncestryReactComponent
@@ -52,6 +53,7 @@ const addNewBlankTrait = async (ancestry: AncestryDataModel) => {
 }
 
 const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
+    const { isEditMode } = useEditMode()
     const addTrait = useCallback(() => {
         addNewBlankTrait(ancestry)
     }, [ancestry])
@@ -66,7 +68,7 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
     return <div className="mt-2 pb-2">
         <div className="flex text-2xl justify-between">
             {lang.VGLITE.AncestrySheet.traits}
-            <PrimaryButton children={lang.VGLITE.AncestrySheet.addTrait} icon={<LucidePlus />} onClick={addTrait} />
+            {isEditMode ? <PrimaryButton children={lang.VGLITE.AncestrySheet.addTrait} icon={<LucidePlus />} onClick={addTrait} /> : undefined}
         </div>
         <div className="flex flex-col gap-4 mt-2">
             {ancestry.traits.map((trait, idx) => (
@@ -81,8 +83,12 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
 }
 
 const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
+    const { editModeToggleBtn } = useEditMode()
     return <SheetHeader name={
-        <EditableNameField actor={ancestry.parent} />
+        <div className="flex">
+            <EditableNameField actor={ancestry.parent} />
+            <div className="ml-auto mt-2">{editModeToggleBtn}</div>
+        </div>
     } subtitle={
         <>
             <div className="text-text-section-header flex gap-2">

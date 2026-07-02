@@ -14,6 +14,7 @@ import { Typography } from "../../../../component/Typography"
 import { SingleSelect } from "../../../../component/Toggle"
 import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
 import { Checkbox } from "../../../../component/Checkbox"
+import { useEditMode } from "../../../../context/EditModeContext"
 
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
@@ -32,6 +33,7 @@ export const addNewBlankGrant = (ancestry: AncestryDataModel, traitIdx) => {
 }
 
 export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait: TraitModel, startExpanded?: boolean, ancestry: AncestryDataModel, index: number }) => {
+    const { isEditMode } = useEditMode()
     const typedTrait = trait as unknown as TypedTrait
     const { name } = typedTrait
 
@@ -77,7 +79,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
                     <div className="bg-sheet-main-fill text-text-primary p-4">
                         <div className="flex mb-2 pb-2 border border-dotted border-transparent border-b-table-border justify-between">
                             <Typography variant="subheader">{lang.VGLITE.AncestrySheet.modifiers}</Typography>
-                            <PrimaryButton children={lang.VGLITE.AncestrySheet.addModifier} icon={<LucidePlus />} onClick={addModifier} />
+                            {isEditMode ? <PrimaryButton children={lang.VGLITE.AncestrySheet.addModifier} icon={<LucidePlus />} onClick={addModifier} /> : undefined}
                         </div>
                         <div className="flex flex-col gap-2">
                             {trait.modifiers?.map((mod, modIdx) => (
@@ -96,7 +98,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
                     <div className="bg-sheet-main-fill text-text-primary p-4">
                         <div className="flex mb-2 pb-2 border border-dotted border-transparent border-b-table-border justify-between">
                             <Typography variant="subheader">{lang.VGLITE.AncestrySheet.grants}</Typography>
-                            <PrimaryButton children={lang.VGLITE.AncestrySheet.addGrant} icon={<LucidePlus />} onClick={addGrant} />
+                            {isEditMode ? <PrimaryButton children={lang.VGLITE.AncestrySheet.addGrant} icon={<LucidePlus />} onClick={addGrant} /> : undefined}
                         </div>
                         <div className="flex flex-col gap-2">
                             {trait.grants?.map((grant, grantIdx) => (
@@ -125,11 +127,14 @@ interface ModifierProps {
 }
 
 const GrantOrModifier = ({ remove, children }: { remove: () => void; children: ReactNode }) => {
+    const { isEditMode } = useEditMode()
     return (
         <div className="flex border-solid border p-1">
-            <div className="flex flex-col justify-center ml-2">
-                <DestructiveButton icon={<LucideTrash2 />} onClick={remove} />
-            </div>
+            {isEditMode ? (
+                <div className="flex flex-col justify-center ml-2">
+                    <DestructiveButton icon={<LucideTrash2 />} onClick={remove} />
+                </div>
+            ) : undefined}
             <div className="flex flex-col">
                 {children}
             </div>
@@ -195,8 +200,6 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
     const onUpdateDirectOrChoice = useCallback((val) => updateGrant("specific", val === "direct"), [updateGrant])
     const onUpdateCount = useCallback((val) => updateGrant("count", val), [updateGrant])
     const onUpdateIngorePrereqs = useCallback(val => updateGrant("ignorePrerequisites", val), [updateGrant])
-    // const onUpdateType = useCallback((val) => updateModifier("type", val), [updateModifier])
-    // const onUpdateValue = useCallback((val) => updateModifier("value", val), [updateModifier])
     const removeGrant = useCallback(() => {
         ancestry.removeGrant(grant, traitIndex)
     }, [grant, ancestry, traitIndex])
