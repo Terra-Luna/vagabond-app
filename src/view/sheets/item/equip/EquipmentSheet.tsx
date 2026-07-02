@@ -1,5 +1,5 @@
 import { VGLITE as lang } from "../../../../../public/lang/en.json"
-import { useCallback, useState } from "react"
+import { useCallback } from "react"
 import ArmorDataModel from "../../../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
 import { Divider, ItemDivider } from "../../../component/Header"
@@ -44,7 +44,6 @@ export class EquipmentSheet extends VgLiteItemSheet {
 }
 
 const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
-    const { setEditMode } = useEditMode()
     let sheet: React.ReactElement
 
     if (item.system instanceof AlchemicalItemDataModel) {
@@ -83,12 +82,8 @@ const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: Equipme
     return (
         <BaseEquipmentSheetHost
             header={<>
-                <EquipmentSheetBanner
-                    item={item}
-                />
-                <div className="my-1">
-                    {<Description obj={item} />}
-                </div>
+                <EquipmentSheetBanner item={item} />
+                <div className="my-1">{<Description obj={item} />}</div>
             </>}
             children={<EquipmentSheetBody children={<>
                 {sheet}

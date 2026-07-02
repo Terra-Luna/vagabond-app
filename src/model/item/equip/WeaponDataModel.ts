@@ -32,8 +32,7 @@ const weaponSchema = () => {
         }),
         material: new fields.StringField({
             ...requiredString, initial: 'standard', choices: Object.keys(lang.VGLITE.Metals)
-        }),
-        isCrude: new fields.BooleanField({ initial: false })
+        })
     }
 }
 
@@ -97,12 +96,14 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
 export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataModel) {
     if (weapon.grip.style === 'V') {
         if (weapon.grip.state === 'H') {
-            const equppedWeapons = hero.parent.items.filter((it: any) => it.type === 'weapon' && it.system.isEquipped && it.system.grip.style != 'F')
+            const equppedWeapons = hero.parent.items.filter((it) =>
+                it.type === 'weapon' && it.system.isEquipped && it.system.grip.style != 'F'
+            )
             if (equppedWeapons.length > 1) {
                 ui.notifications?.warn("Unequip another 1H weapon before 2-handing.")
             }
             else {
-                weapon.parent.update({ 'system.grip.state': 'H' })
+                weapon.parent.update({ 'system.grip.state': 'HH' })
             }
         }
         else {

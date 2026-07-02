@@ -2,9 +2,7 @@ import AlchemicalItemDataModel from "../../../../../model/item/equip/AlchemicalD
 import { useEditMode } from "../../../../context/EditModeContext"
 import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
 
-export const AlchemicalSheet = ({ item }: {
-    item: Item & { system: AlchemicalItemDataModel }
-}) => {
+export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
     const { isEditMode } = useEditMode()
     return (
         <EquipmentSheetSubtypeBody>

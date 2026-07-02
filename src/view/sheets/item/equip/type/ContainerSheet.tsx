@@ -2,9 +2,7 @@ import ContainerDataModel from "../../../../../model/item/equip/ContainerDataMod
 import { useEditMode } from "../../../../context/EditModeContext"
 import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
 
-export const ContainerSheet = ({ item }: {
-    item: Item & { system: ContainerDataModel }
-}) => {
+export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataModel } }) => {
     const { isEditMode } = useEditMode()
 
     return (

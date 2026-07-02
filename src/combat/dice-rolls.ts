@@ -105,7 +105,7 @@ export const rollDamage = async (
 
     const combinedExplosions = canExplode ? mergeExplosions(explosions) : null
     const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
-    const totalDice = getResults(damageRoll).length + (canExplode ? getResults(combinedExplosions!).length : 0)
+    const totalDice = getResults(damageRoll)?.length + (canExplode ? (getResults(combinedExplosions!)?.length ?? 0) : 0)
     const perDieBonus = totalDice * perDieDmgBonus
     const totalBonus = perDieBonus + getFlatDamageBonus(damageRoll)
     const result = {
@@ -117,7 +117,7 @@ export const rollDamage = async (
         rolls: [damageRoll]
     } as DamageRollResult
     result.rolls = [damageRoll]
-    if (canExplode) result.rolls.push(combinedExplosions)
+    if (canExplode && combinedExplosions) result.rolls.push(combinedExplosions)
     return result
 }
 
@@ -149,13 +149,14 @@ async function processExplosions(
     }
 }
 
-function mergeExplosions(explosions: Roll.Evaluated<Roll<EmptyObject>>[]): Roll.Evaluated<Roll> {
+function mergeExplosions(explosions: Roll.Evaluated<Roll<EmptyObject>>[]): Roll.Evaluated<Roll> | null {
     const combinedExplosionTerms = explosions.reduce<foundry.dice.terms.RollTerm[]>((sum, current, index) => {
         if (index > 0) {
             sum.push(new foundry.dice.terms.OperatorTerm({ operator: "+" }))
         }
-        return sum.concat(current.terms)
+        return sum.concat(current?.terms)
     }, [])
+    if (combinedExplosionTerms?.length === 0) return null
     const combinedExplosions = Roll.fromTerms(combinedExplosionTerms)
     combinedExplosions["_evaluated"] = true
     combinedExplosions["_total"] = (combinedExplosions as any)._evaluateTotal()
@@ -184,12 +185,12 @@ function isSafeToExplode(faces: number | undefined, explodesOn: number[]): boole
  */
 function getResults(roll: Roll.Evaluated<Roll>): foundry.dice.terms.DiceTerm.Result[] {
     const terms = getDiceTerms(roll)
-    const results = terms.flatMap(t => t.results)
+    const results = terms?.flatMap(t => t.results)
     return results
 }
 
 function getDiceTerms(roll: Roll.Evaluated<Roll<EmptyObject>>): foundry.dice.terms.DiceTerm[] {
-    return roll.terms.filter((term): term is foundry.dice.terms.DiceTerm => term instanceof foundry.dice.terms.DiceTerm)
+    return roll?.terms?.filter((term): term is foundry.dice.terms.DiceTerm => term instanceof foundry.dice.terms.DiceTerm)
 }
 
 /**

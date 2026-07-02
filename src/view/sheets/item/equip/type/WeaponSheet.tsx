@@ -10,9 +10,7 @@ import { useCallback } from "react"
 import { removeWhitespace } from "../../../../../utils/stringUtil"
 import { useEditMode } from "../../../../context/EditModeContext"
 
-export const WeaponSheet = ({ item }: {
-    item: Item & { system: WeaponDataModel }
-}) => {
+export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <EquipmentSheetSubtypeBody>
             <div className="space-y-4">

@@ -622,6 +622,11 @@
       "V": "Versatile",
       "F": "Fist"
     },
+    "GripsAbbr": {
+      "H": "1H",
+      "HH": "2H",
+      "F": "F"
+    },
     "Modifiers": {
       "TargetStat": {
         "maxHp": "MAX HP",

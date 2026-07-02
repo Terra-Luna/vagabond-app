@@ -4,9 +4,7 @@ import SundryDataModel from "../../../../../model/item/equip/SundryDataModel"
 import { Checkbox } from "../../../../component/Checkbox"
 import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheet"
 
-export const SundrySheet = ({ item }: {
-    item: Item & { system: SundryDataModel }
-}) => {
+export const SundrySheet = ({ item }: { item: Item & { system: SundryDataModel } }) => {
     const onCheckConsumable = useCallback((isChecked) => {
         item.update({ 'system.isConsumable': isChecked } as Record<string, boolean>)
     }, [item])

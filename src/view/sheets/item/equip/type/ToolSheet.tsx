@@ -1,4 +1,3 @@
-import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import ToolDataModel from "../../../../../model/item/equip/ToolDataModel"
 import { useEditMode } from "../../../../context/EditModeContext"
 import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
