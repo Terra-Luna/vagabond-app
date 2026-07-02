@@ -25,7 +25,7 @@ import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
 import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
 import { Checkbox } from "../../../component/Checkbox"
-import { sheetPropLabel } from "../../../common/text-styles"
+import { sheetPropLabel, sheetPropValue } from "../../../common/text-styles"
 import { VgLiteItemSheet } from "../VgLiteItemSheet"
 import { getId } from "../../../../utils/modelUtil"
 
@@ -71,7 +71,7 @@ const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: Equipme
         sheet = <></>
     }
 
-    const baseContent = <div className="flex flex-wrap justify-between gap-x-12 gap-y-4 w-full">
+    const baseContent = <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
         <Bulk item={item} isEditMode={isEditMode} />
         <div className="space-y-2">
             <ItemValue item={item} isEditMode={isEditMode} />
@@ -102,7 +102,7 @@ const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: Equipme
 
 export const BaseEquipmentSheetHost = ({ header, children }: { header: React.ReactElement, children: React.ReactElement }) => {
     return (
-        <div className="bg-sheet-main-fill overflow-y-auto">
+        <div className="bg-sheet-main-fill h-full overflow-y-auto border-2 border-solid border-section-header-fill/60 rounded-b-md">
             {header}
             {children}
         </div>
@@ -167,26 +167,26 @@ export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
 }
 
 const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
-    return <div className="text-text-primary px-2">{children}</div>
+    return <div className="text-text-primary px-3 py-1">{children}</div>
 }
 
 export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactElement }) => {
-    return <div className="my-1">{children}</div>
+    return <div className="my-2">{children}</div>
 }
 
 export const ItemSheetPropLabel = ({ label }) => {
     return <p className={sheetPropLabel}>{label}</p>
 }
-export const ItemSheetPropValue = ({ value, styleOverride = '' }) => {
-    return <div className={`${styleOverride.length === 0 ? "font-eskapade text-xl text-stat-block-fill" : styleOverride}`}>
+export const ItemSheetPropValue = ({ value }) => {
+    return <div className={`${sheetPropValue} text-stat-block-fill`}>
         {value}
     </div>
 }
-export const ItemSheetProperty = ({ label, value, styleOverride = "" }) => {
+export const ItemSheetProperty = ({ label, value }) => {
     return (
         <div className="flex gap-x-2 items-center mt-1">
             <ItemSheetPropLabel label={label} />
-            <ItemSheetPropValue value={value} styleOverride={styleOverride} />
+            <ItemSheetPropValue value={value} />
         </div>
     )
 }
@@ -205,14 +205,17 @@ const Bulk = ({ item, isEditMode }) => {
                     isGlobalEditMode={isEditMode}
                 />
             } />
-            <ItemSheetProperty label={lang.ItemSheet.stackable} value={
-                <Checkbox
-                    label={''}
-                    onCheckedChanged={onCheckStackable}
-                    checked={item.system.bulk.isStackable}
-                    isGlobalEditMode={isEditMode}
-                />
-            } />
+            {
+                isEditMode || item.system.bulk.isStackable ? 
+                    <ItemSheetProperty label={lang.ItemSheet.stackable} value={
+                        <Checkbox
+                            label={''}
+                            onCheckedChanged={onCheckStackable}
+                            checked={item.system.bulk.isStackable}
+                            isGlobalEditMode={isEditMode}
+                        />
+                    } /> : <></>
+            }
             {
                 item.system.bulk.isStackable ? 
                     <ItemSheetProperty label={lang.ItemSheet.stackSize} value={
@@ -239,23 +242,6 @@ const CategorySelection = ({ item, isEditMode }) => {
             isGlobalEditMode={isEditMode}
         />
     )
-    /* return (<>
-        {
-            isEditMode ?
-                <DropDown
-                    label={lang.ItemSheet.category}
-                    value={item.system.category}
-                    options={createDropdownEntries(lang.EquipmentCategories)}
-                    updateMechanism={{ updatePath: ['category'] }}
-                    parent={item}
-                    isGlobalEditMode={isEditMode}
-                /> :
-                <div>
-                    <ItemSheetPropLabel label={lang.ItemSheet.category} />
-                    <ItemSheetPropValue value={lang.EquipmentCategories[item.system.category]} />
-                </div>
-        }
-    </>) */
 }
 
 export const ItemValue = ({ item, isEditMode }) => {

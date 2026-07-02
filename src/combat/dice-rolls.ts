@@ -261,5 +261,12 @@ function buildRollSummary(
  * rolled.
  */
 export const rollWeaponDamage = async (weapon: WeaponDataModel): Promise<DamageRollResult> => {
-    return rollDamage(getName(weapon), weapon.damage.type ?? '', gripStateDamage(weapon))
+    return rollDamage(
+        getName(weapon),
+        weapon.damage.type ?? '',
+        gripStateDamage(weapon),
+        0,
+        weapon.explodeData.canExplode,
+        weapon.explodeData.explodesOn as number[] ?? []
+    )
 }

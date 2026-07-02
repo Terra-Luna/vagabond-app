@@ -1,26 +1,30 @@
 import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import WeaponDataModel from "../../../../../model/item/equip/WeaponDataModel"
-import { EquipmentSheetSubtypeBody, ItemSheetPropLabel } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody, ItemSheetPropLabel, ItemSheetPropValue } from "../EquipmentSheet"
 import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
+import { Checkbox } from "../../../../component/Checkbox"
+import { useCallback } from "react"
+import { removeWhitespace } from "../../../../../utils/stringUtil"
 
 export const WeaponSheet = ({ item, isEditMode }: { 
     item: Item & { system: WeaponDataModel }, isEditMode: boolean
 }) => {
     return (
-        <EquipmentSheetSubtypeBody><>
-            <div className="flex justify-between">
-                <Range item={item} isEditMode={isEditMode} />
-                <Grip item={item} isEditMode={isEditMode} />
+        <EquipmentSheetSubtypeBody>
+            <div className="space-y-4">
+                <div className="flex gap-x-4 justify-between">
+                    <Grip item={item} isEditMode={isEditMode} />
+                    <Range item={item} isEditMode={isEditMode} />
+                    <DamageType item={item} isEditMode={isEditMode} />
+                </div>
                 <Damage item={item} isEditMode={isEditMode} />
-                <DamageType item={item} isEditMode={isEditMode} />
-            </div>
-            <div className="flex justify-between">
+                <ExplodingDiceItemConfig item={item} isEditMode={isEditMode} />
                 <Properties item={item} isEditMode={isEditMode} />
             </div>
-        </></EquipmentSheetSubtypeBody>
+        </EquipmentSheetSubtypeBody>
     )
 }
 
@@ -79,9 +83,9 @@ const Damage = ({ item, isEditMode }: {
 }) => {
     const gripStyle = item.system.grip.style
     return (
-        <div className="flex-col">
+        <div>
             <ItemSheetPropLabel label={lang.ItemSheet.damage} />
-            <div className="flex-col text-text-secondary text-base font-paradigm">
+            <div className="flex gap-x-2 items-center text-text-secondary text-base font-paradigm">
                 {
                     gripStyle === 'H' || gripStyle === 'V' || gripStyle === 'F' ?
                         <div className="flex gap-x-2">
@@ -95,6 +99,9 @@ const Damage = ({ item, isEditMode }: {
                                 />
                             </div>
                         </div> : <></>
+                }
+                {
+                    gripStyle === 'V' ? <p className="text-2xl text-text-primary">|</p> : <></>
                 }
                 {
                     gripStyle === 'V' || gripStyle === 'HH' ?
@@ -127,5 +134,48 @@ const DamageType = ({ item, isEditMode }: {
             parent={item}
             isGlobalEditMode={isEditMode}
         />
+    )
+}
+
+export const ExplodingDiceItemConfig = ({ item, isEditMode }: {
+    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+}) => {
+    const onCheckExplodable = useCallback((canExplode) => {
+        item.update({ 'system.explodeData.canExplode': canExplode } as Record<string, boolean>)
+    }, [item.system.explodeData.canExplode])
+
+    const onUpdateExplodesOn = useCallback(async (explodesOn) => {
+        await item.update({ 'system.explodeData.explodesOn': removeWhitespace(explodesOn).split(",") } as Record<string, string[]>)
+        return explodesOn
+    }, [item.system.explodeData.explodesOn])
+
+    return (
+        <>
+            {
+                isEditMode || item.system.explodeData.canExplode ?
+                    <div className="flex gap-x-4 my-2">
+                        <Checkbox
+                            label={lang.ItemSheet.canExplode}
+                            onCheckedChanged={onCheckExplodable}
+                            checked={item.system.explodeData.canExplode}
+                            isGlobalEditMode={isEditMode}
+                        />
+                        {
+                            item.system.explodeData.canExplode ?
+                                <div className="flex gap-x-2 items-center">
+                                    <ItemSheetPropLabel label={`${lang.ItemSheet.explodesOn}:`} />
+                                    <ItemSheetPropValue value={
+                                        <EditableTextField
+                                            boundValue={item.system.explodeData.explodesOn.join(", ")}
+                                            onSave={onUpdateExplodesOn}
+                                            placeholder="7, 8"
+                                            isGlobalEditMode={isEditMode}
+                                        />
+                                    } />
+                                </div> : <></>
+                        }
+                    </div> : <></>
+            }
+        </>
     )
 }

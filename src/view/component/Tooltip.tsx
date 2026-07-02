@@ -11,6 +11,7 @@ export const Tooltip = ({ text, children }) => {
     const [delayHandler, setDelayHandler] = useState(null)
 
     const handleMouseEnter = (e: any) => {
+        setOpen(false)
         setDelayHandler(
             // @ts-ignore
             setTimeout(() => {
@@ -31,8 +32,6 @@ export const Tooltip = ({ text, children }) => {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onClick={handleMouseLeave}
-                onAuxClick={handleMouseLeave}
-                onDoubleClick={handleMouseLeave}
             >
                 {children}
             </div>

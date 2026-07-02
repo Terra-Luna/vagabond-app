@@ -12,3 +12,7 @@ export function stripHtml(html) {
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
 }
+
+export function removeWhitespace(s: string): string {
+    return s.replace(/\s/g, "")
+}
