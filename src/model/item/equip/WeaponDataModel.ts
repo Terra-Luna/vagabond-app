@@ -14,10 +14,8 @@ const weaponSchema = () => {
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
         grip: new fields.SchemaField({
-            style: new fields.StringField({
-                required: false, initial: '1H', choices: ['1H', '2H', 'V', 'F']
-            }),
-            state: new fields.StringField({ required: true, initial: '1H', choices: ['1H', '2H', 'F'] })
+            style: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Grips), initial: 'H' }),
+            state: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Grips), initial: 'H' })
         }),
         properties: new fields.ArrayField(
             new fields.StringField({
@@ -68,7 +66,7 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
     const openFists = 2 - fistWeapons.length
     const openHands = 2 - (heldWeapons.length === 0 ? 0 : (
         heldWeapons.length === 2 ? 2 : (
-            heldWeapons[0].system.grip.state === '2H' ? 2 : 1
+            heldWeapons[0].system.grip.state === 'HH' ? 2 : 1
         )
     ))
 
@@ -76,13 +74,13 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
         weapon.parent.update({ 'system.isEquipped': true })
         weapon.parent.update({ 'system.grip.state': 'F' })
     }
-    else if ((weapon.grip.style === '1H' || weapon.grip.style === 'V') && openHands > 0) {
+    else if ((weapon.grip.style === 'H' || weapon.grip.style === 'V') && openHands > 0) {
         weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': '1H' })
+        weapon.parent.update({ 'system.grip.state': 'H' })
     }
-    else if (weapon.grip.style === '2H' && openHands > 1) {
+    else if (weapon.grip.style === 'HH' && openHands > 1) {
         weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': '2H' })
+        weapon.parent.update({ 'system.grip.state': 'HH' })
     }
     else {
         ui.notifications?.warn("Cannot equip any more weapons!")
@@ -90,31 +88,31 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
 }
 
 /**
- * Toggles Versatile weapons between 1H and and 2H mode. If
+ * Toggles Versatile weapons between H and and HH mode. If
  * the Hero doesn't have a free hand availalble, a UI warning
  * notification is shown to the user.
- * @param hero 
- * @param weapon 
+ * @param hero
+ * @param weapon
  */
 export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataModel) {
     if (weapon.grip.style === 'V') {
-        if (weapon.grip.state === '1H') {
+        if (weapon.grip.state === 'H') {
             const equppedWeapons = hero.parent.items.filter((it: any) => it.type === 'weapon' && it.system.isEquipped && it.system.grip.style != 'F')
             if (equppedWeapons.length > 1) {
                 ui.notifications?.warn("Unequip another 1H weapon before 2-handing.")
             }
             else {
-                weapon.parent.update({ 'system.grip.state': '2H' })
+                weapon.parent.update({ 'system.grip.state': 'H' })
             }
         }
         else {
-            weapon.parent.update({ 'system.grip.state': '1H' })
+            weapon.parent.update({ 'system.grip.state': 'H' })
         }
     }
 }
 
 export const gripStateDamage = (w: WeaponDataModel): string => {
-    return w.grip.state === '2H' ? w.damage.twoHand : w.damage.oneHand
+    return w.grip.state === 'HH' ? w.damage.twoHand : w.damage.oneHand
 }
 
 export const isEquippedWWeapon = (item: any): boolean => {

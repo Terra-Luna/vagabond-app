@@ -8,8 +8,8 @@ import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { RichTextField } from "../../../../component/RichTextField"
-import { glowOnHover } from "../../../VgLiteSheet"
 import { ActionMenuHeader, onClickAction, AddMenuButtons } from "./Action"
+import { glowOnHover } from "../../../../common/text-styles"
 
 export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()

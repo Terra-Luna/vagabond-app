@@ -1,17 +1,14 @@
-const { api, sheets } = foundry.applications;
-import { FoundryItem, ItemSheetHeader, VgLiteItemSheet } from "../VgLiteItemSheet";
-import SpellDataModel from "../../../../model/item/character/SpellDataModel";
+import { VgLiteItemSheet } from "../VgLiteItemSheet"
+import SpellDataModel from "../../../../model/item/character/SpellDataModel"
 
-// @ts-expect-error
-export class PerkSheet extends VgLiteItemSheet {
-    Component = PerkReactComponent
+export class SpellSheet extends VgLiteItemSheet {
+    Component = SpellReactComponent
 }
 
-const PerkReactComponent = ({ item }: { item: FoundryItem<SpellDataModel> }) => {
-    const spell = item.system
+const SpellReactComponent = ({ item }: { item: Item & { system: SpellDataModel } }) => {
     return (
-        <div id="spell-sheet-div">
-            <ItemSheetHeader item={spell}/>
+        <div>
+
         </div>
     )
 }

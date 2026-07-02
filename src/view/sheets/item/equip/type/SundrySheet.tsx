@@ -1,16 +1,25 @@
-import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
+import { useCallback } from "react"
+import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import SundryDataModel from "../../../../../model/item/equip/SundryDataModel"
-import { FoundryItem } from "../../VgLiteItemSheet"
-import { CategorySelection, EquipmentDescription, EquipmentSheetBody, ItemValue } from "../EquipmentSheet"
+import { Checkbox } from "../../../../component/Checkbox"
+import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheet"
 
 export const SundrySheet = ({ item, isEditMode }: {
-    item: FoundryItem<EquipmentDataModel<EquipmentSchema>> & SundryDataModel, isEditMode: boolean
+    item: Item & { system: SundryDataModel }, isEditMode: boolean
 }) => {
+    const onCheckConsumable = useCallback((isChecked) => {
+        item.update({ 'system.isConsumable': isChecked } as Record<string, boolean>)
+    }, [item])
     return (
-        <EquipmentSheetBody>
-            <div>
-
-            </div>
-        </EquipmentSheetBody>
+        <EquipmentSheetSubtypeBody>
+            <ItemSheetProperty label={lang.ItemSheet.consumable} value={
+                <Checkbox
+                    label=''
+                    onCheckedChanged={onCheckConsumable}
+                    checked={item.system.isConsumable}
+                    isGlobalEditMode={isEditMode}
+                />
+            } />
+        </EquipmentSheetSubtypeBody>
     )
 }

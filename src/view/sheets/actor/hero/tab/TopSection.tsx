@@ -7,12 +7,12 @@ import { localizeString } from "../../../../../utils/localeUtils"
 import { rollSkillCheck } from "../../../../../combat/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
-import { glowOnHover } from "../../../VgLiteSheet"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { getId } from "../../../../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 import { Tooltip } from "../../../../component/Tooltip"
+import { glowOnHover } from "../../../../common/text-styles"
 
 interface Health {
     current: number | null

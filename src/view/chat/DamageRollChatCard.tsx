@@ -5,10 +5,10 @@ import { BaseChatCardHost } from './component/BaseChatCardHost'
 import { ChatCardBanner } from './component/ChatCardBanner'
 import { DamageRolls } from './component/DiceRoll'
 import { MenuItem, Menu } from '@szhsin/react-menu'
-import { glowOnHover } from '../sheets/VgLiteSheet'
 import { TargetsDisplay } from './component/TargetsDisplay'
 import { getTokenImg } from '../../utils/modelUtil'
 import { applyDamage, applyHealing } from '../../combat/damage-handler'
+import { glowOnHover } from '../common/text-styles'
 
 export const DamageRollChatCard = ({ actorId, tokenIds, result }: { actorId: string, tokenIds: string[], result: DamageRollResult }) => {
     const actor = game.actors?.get(actorId)

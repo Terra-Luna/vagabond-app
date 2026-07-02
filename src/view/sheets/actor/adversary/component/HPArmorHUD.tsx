@@ -4,7 +4,7 @@ import { useCallback } from "react"
 import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { EditableTextField } from "../../../../component/EditableTextField"
-import { glowOnHover } from "../../../VgLiteSheet"
+import { glowOnHover } from "../../../../common/text-styles"
 
 export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
     const headerStyle = "text-xs font-paradigm"

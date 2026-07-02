@@ -180,7 +180,7 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                 <SelectableTextOptions obj={adv.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} isEditMode={isEditMode} />
             </div>
             {/* WEAKNESS & IMMUNITY */}
-            <div className="w-full">
+            <div className="w-full gap-y-1">
                 <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
                 <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
             </div>

@@ -18,7 +18,7 @@ export default async function createEquipment() {
             },
             grip: {
                 style: 'V',
-                state: '1H'
+                state: 'H'
             },
             properties: ['keen'],
             explodeData: {
@@ -53,8 +53,8 @@ export default async function createEquipment() {
                 twoHand: '1d10'
             },
             grip: {
-                style: '2H',
-                state: '2H'
+                style: 'HH',
+                state: 'HH'
             },
             properties: ['brutal', 'ranged'],
             explodeData: {
@@ -126,8 +126,8 @@ export default async function createEquipment() {
                 twoHand: '1d4'
             },
             grip: {
-                style: '1H',
-                state: '1H'
+                style: 'H',
+                state: 'H'
             },
             properties: ['shield'],
             explodeData: {

@@ -1,16 +1,14 @@
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
-import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { FoundryItem } from "../../VgLiteItemSheet"
-import { EquipmentSheetBody } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
 
 export const ArmorSheet = ({ item, isEditMode }: {
-    item: FoundryItem<EquipmentDataModel<EquipmentSchema>> & ArmorDataModel, isEditMode: boolean
+    item: Item & { system: ArmorDataModel }, isEditMode: boolean
 }) => {
     return (
-        <EquipmentSheetBody>
+        <EquipmentSheetSubtypeBody>
             <div>
                 
             </div>
-        </EquipmentSheetBody>
+        </EquipmentSheetSubtypeBody>
     )
 }

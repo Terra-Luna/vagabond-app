@@ -179,8 +179,7 @@
       "beast": "Beast",
       "outer": "Outer",
       "primordial": "Primordial",
-      "undead": "Undead",
-      "hellspawn": "Hellspawn"
+      "undead": "Undead"
     },
     "BeingSubtypes": {
       "none": "",
@@ -595,6 +594,7 @@
       "description": "Description",
       "general": "General",
       "category": "Category",
+      "consumable": "Consumable",
       "slots": "Slots",
       "stackable": "Stackable",
       "stackSize": "Stack Size",
@@ -604,17 +604,19 @@
       "c": "C",
       "armor": "Armor",
       "grip": "Grip",
-      "grips": {
-        "v": "V",
-        "oneH": "1H",
-        "twoH": "2H"
-      },
       "damage": "Damage",
+      "damageType": "Damage Type",
       "range": "Range",
       "props": "Properties",
       "material": "Material",
       "type": "Type",
       "size": "Size"
+    },
+    "Grips": {
+      "H": "1-Handed",
+      "HH": "2-Handed",
+      "V": "Versatile",
+      "F": "Fist"
     },
     "Modifiers": {
       "TargetStat": {

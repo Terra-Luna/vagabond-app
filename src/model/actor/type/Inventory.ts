@@ -73,10 +73,9 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
         if (item.isConsumable) {
             await deleteItems(hero, [getId(item)])
         }
-        ChatMessage.create({
-            speaker: { actor: getId(hero), alias: getName(hero) },
-            content: `<h4>${getName(hero)} </h4><p> used item: ${getName(item)}</p>`
-        })
+        sendVgLiteChatMessage(hero, createElement(ItemChatCard, {
+            itemId: getId(item), itemName: `Used: ${getName(item)}`, isConsumable: item.isConsumable
+        }))
     }
     else {
         ui.notifications?.warn("Item not found!")

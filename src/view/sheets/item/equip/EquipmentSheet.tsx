@@ -3,7 +3,6 @@ import { useCallback, useState } from "react"
 import ArmorDataModel from "../../../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
 import { Divider, ItemDivider } from "../../../component/Header"
-import { FoundryItem, VgLiteItemSheet } from "../VgLiteItemSheet"
 import WeaponDataModel from "../../../../model/item/equip/WeaponDataModel"
 import { WeaponSheet } from "./type/WeaponSheet"
 import { LockKeyhole, LockKeyholeOpen, MessageSquareText, Pencil } from "lucide-react"
@@ -27,6 +26,8 @@ import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
 import { Checkbox } from "../../../component/Checkbox"
 import { sheetPropLabel } from "../../../common/text-styles"
+import { VgLiteItemSheet } from "../VgLiteItemSheet"
+import { getId } from "../../../../utils/modelUtil"
 
 export class EquipmentSheet extends VgLiteItemSheet {
     Component = EquipmentSheetReactComponent
@@ -41,7 +42,7 @@ export class EquipmentSheet extends VgLiteItemSheet {
     }
 }
 
-const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDataModel<EquipmentSchema>> }) => {
+const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const [isEditMode, setIsEditMode] = useState(false)
     let sheet: React.ReactElement
 
@@ -70,11 +71,12 @@ const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDat
         sheet = <></>
     }
 
-    const baseContent = <div>
+    const baseContent = <div className="flex flex-wrap justify-between gap-x-12 gap-y-4 w-full">
         <Bulk item={item} isEditMode={isEditMode} />
-        <ItemValue item={item} isEditMode={isEditMode} />
-        <div className="mt-1" />
-        <ItemDivider />
+        <div className="space-y-2">
+            <ItemValue item={item} isEditMode={isEditMode} />
+            <CategorySelection item={item} isEditMode={isEditMode} />
+        </div>
     </div>
 
     return (
@@ -90,7 +92,6 @@ const EquipmentSheetReactComponent = ({ item }: { item: FoundryItem<EquipmentDat
                 </div>
             </>}
             children={<EquipmentSheetBody children={<>
-                <CategorySelection item={item} isEditMode={isEditMode} />
                 {sheet}
                 <ItemDivider />
                 {baseContent}
@@ -109,14 +110,14 @@ export const BaseEquipmentSheetHost = ({ header, children }: { header: React.Rea
 }
 
 export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
-    item: FoundryItem<EquipmentDataModel<EquipmentSchema>>, isEditMode: boolean, setIsEditMode: any
+    item: Item & { system: EquipmentDataModel<EquipmentSchema> }, isEditMode: boolean, setIsEditMode: any
 }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const editImage = () => {
         new foundry.applications.apps.FilePicker({
             type: "image",
-            current: item.img,
+            current: item.img as any,
             callback: async (path) => {
                 // @ts-ignore
                 await item.update({ 'img': path })
@@ -129,7 +130,7 @@ export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
         { icon: Pencil, label: 'Edit', action: () => editImage() },
         {
             icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
-                null, <ItemChatCard itemId={item._id} itemName={item.name} />
+                null, <ItemChatCard itemId={getId(item)} itemName={item.name} />
             )
         }
     )
@@ -165,16 +166,18 @@ export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
     </>)
 }
 
-export const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
-    return (
-        <div className="text-text-primary p-2">{children}</div>
-    )
+const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
+    return <div className="text-text-primary px-2">{children}</div>
+}
+
+export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactElement }) => {
+    return <div className="my-1">{children}</div>
 }
 
 export const ItemSheetPropLabel = ({ label }) => {
-    return <p className={sheetPropLabel}>{label}:</p>
+    return <p className={sheetPropLabel}>{label}</p>
 }
-export const ItemSheetPropValue = ({ value, styleOverride }) => {
+export const ItemSheetPropValue = ({ value, styleOverride = '' }) => {
     return <div className={`${styleOverride.length === 0 ? "font-eskapade text-xl text-stat-block-fill" : styleOverride}`}>
         {value}
     </div>
@@ -207,33 +210,41 @@ const Bulk = ({ item, isEditMode }) => {
                     label={''}
                     onCheckedChanged={onCheckStackable}
                     checked={item.system.bulk.isStackable}
-                    inverted={true}
                     isGlobalEditMode={isEditMode}
                 />
             } />
-            <ItemSheetProperty label={lang.ItemSheet.stackSize} value={
-                <EditableTextField
-                    boundValue={item.system.bulk.stackSize}
-                    updateProps={{ object: item, path: ['bulk', 'stackSize'] }}
-                    placeholder="100"
-                    isGlobalEditMode={isEditMode}
-                />
-            } />
+            {
+                item.system.bulk.isStackable ? 
+                    <ItemSheetProperty label={lang.ItemSheet.stackSize} value={
+                        <EditableTextField
+                            boundValue={item.system.bulk.stackSize}
+                            updateProps={{ object: item, path: ['bulk', 'stackSize'] }}
+                            placeholder="100"
+                            isGlobalEditMode={isEditMode}
+                        />
+                    } /> : <></>
+            }
         </div>
     )
 }
 
 const CategorySelection = ({ item, isEditMode }) => {
-    return (
-        <ItemSheetProperty label={lang.ItemSheet.category} value={
-            isEditMode ? <DropDown
-                value={item.system.category}
-                options={createDropdownEntries(lang.EquipmentCategories)}
-                updateMechanism={{ updatePath: ['category'] }}
-                parent={item}
-            /> : <>{lang.EquipmentCategories[item.system.category]}</>
-        } styleOverride={"font-eskapade text-stat-block-fill"} />
-    )
+    return (<>
+        {
+            isEditMode ?
+                <DropDown
+                    label={lang.ItemSheet.category}
+                    value={item.system.category}
+                    options={createDropdownEntries(lang.EquipmentCategories)}
+                    updateMechanism={{ updatePath: ['category'] }}
+                    parent={item}
+                /> :
+                <div>
+                    <ItemSheetPropLabel label={lang.ItemSheet.category} />
+                    <ItemSheetPropValue value={lang.EquipmentCategories[item.system.category]} />
+                </div>
+        }
+    </>)
 }
 
 export const ItemValue = ({ item, isEditMode }) => {

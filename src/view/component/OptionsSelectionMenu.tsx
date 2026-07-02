@@ -1,8 +1,8 @@
 import { SquarePen } from "lucide-react"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
-import { glowOnHover } from "../sheets/VgLiteSheet"
 import { Menu, MenuItem } from '@szhsin/react-menu'
 import { DamageTypeIcon } from "./DamageTypeIcon"
+import { menuOptionContainer, menuOptionText, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
 
 interface OptionsSelectionMenuOption {
     key: string
@@ -10,33 +10,38 @@ interface OptionsSelectionMenuOption {
     isSelected: boolean
 }
 
-export const OptionsSelectionMenu = ({ obj, label, path, options }: { obj: any, label: string, path: string[], options: OptionsSelectionMenuOption[] }) => {
+export const OptionsSelectionMenu = ({ obj, label, path, options, isGlobalEditMode = true }: {
+    obj: any, label: string, path: string[], options: OptionsSelectionMenuOption[], isGlobalEditMode?: boolean
+}) => {
     return (
         <div>
             <div className="flex items-center">
                 {label}
-                <Menu menuButton={<SquarePen size={16} className={`text-stat-block-fill ml-2 cursor-pointer ${glowOnHover}`} />}>
-                    <div className="bg-context-menu-fill text-left border border-solid border-table-border rounded-sm p-2">
-                        {
-                            options.map(opt => (
-                                <MenuItem
-                                    key={opt.key}
-                                    onClick={(e) => {
-                                        e.keepOpen = true
-                                        options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
-                                        updateDocumentAtPath(obj, path, options.filter(it => it.isSelected).map(it => it.key))
-                                    }}
-                                >
-                                    {
-                                        opt.isSelected ?
-                                            <p className={`text-stat-block-fill font-bold ${glowOnHover}`}>{opt.value}</p> :
-                                            <p className={`text-text-primary font-normal ${glowOnHover}`}>{opt.value}</p>
-                                    }
-                                </MenuItem>
-                            ))
-                        }
-                    </div>
-                </Menu>
+                {
+                    isGlobalEditMode ? 
+                        <Menu menuButton={<SquarePen size={16} className={menuOptionText} />}>
+                            <div className={menuOptionContainer}>
+                                {
+                                    options.map(opt => (
+                                        <MenuItem
+                                            key={opt.key}
+                                            onClick={(e) => {
+                                                e.keepOpen = true
+                                                options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
+                                                updateDocumentAtPath(obj, path, options.filter(it => it.isSelected).map(it => it.key))
+                                            }}
+                                        >
+                                            {
+                                                opt.isSelected ?
+                                                    <p className={menuOptionTextSelected}>{opt.value}</p> :
+                                                    <p className={menuOptionTextDefault}>{opt.value}</p>
+                                            }
+                                        </MenuItem>
+                                    ))
+                                }
+                            </div>
+                        </Menu> : <></>
+                }
             </div>
         </div>
     )

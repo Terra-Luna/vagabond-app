@@ -2,8 +2,8 @@ import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react"
 import VgLiteError from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
-import { glowOnHover } from "../sheets/VgLiteSheet"
 import { Tooltip } from "./Tooltip"
+import { glowOnHover } from "../common/text-styles"
 
 const editModeBorder = "border border-solid border-table-border px-1"
 
@@ -107,5 +107,5 @@ export const EditableNameField = ({ actor, isGlobalEditMode }: { actor: FoundryA
         return !!await actor.update({ name: newName })
     }, [actor])
 
-    return <EditableTextField boundValue={(actor as any).name} onSave={updateName} isGlobalEditMode={isGlobalEditMode} />
+    return <EditableTextField boundValue={(actor as any).name} onSave={updateName} isGlobalEditMode={isGlobalEditMode} hideBorderOnEditMode={true} />
 }

@@ -9,12 +9,11 @@ import { ComboChatCard, AbilityChatCard } from "../../../../chat/AbilityChatCard
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
-import { damageRoll } from "../../../../common/text-styles"
+import { damageRoll, glowOnHover } from "../../../../common/text-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
-import { glowOnHover } from "../../../VgLiteSheet"
 import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
 
 export const ActionMenuHeader = ({ label, onClick, isEditMode }) => {

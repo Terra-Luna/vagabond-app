@@ -10,7 +10,7 @@ import { getId, getName, itemSortHandler } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../../../../model/item/equip/EquipmentDataModel"
 import { useDragDrop } from "../../../../component/DragDrop"
-import { glowOnHover } from "../../../VgLiteSheet"
+import { glowOnHover } from "../../../../common/text-styles"
 
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
 const infoBoxText = "text-section-header-fill text-sm"

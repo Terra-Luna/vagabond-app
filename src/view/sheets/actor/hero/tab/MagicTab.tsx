@@ -7,11 +7,11 @@ import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { useCallback } from "react"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { getId } from "../../../../../utils/modelUtil"
-import { glowOnHover } from "../../../VgLiteSheet"
 import { SecondaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
+import { glowOnHover } from "../../../../common/text-styles"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

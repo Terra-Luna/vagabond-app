@@ -1,4 +1,4 @@
-import { FoundryItem, VgLiteItemSheet } from "../../VgLiteItemSheet";
+import { VgLiteItemSheet } from "../../VgLiteItemSheet";
 import AncestryDataModel from "../../../../../model/item/character/AncestryDataModel";
 import { SheetHeader } from "../../../../component/SheetHeader";
 import { EditableNameField } from "../../../../component/EditableTextField";
@@ -21,7 +21,7 @@ export interface AncestryComponentProps {
     ancestry: AncestryDataModel;
 }
 
-const AncestryReactComponent = ({ item }: { item: FoundryItem<AncestryDataModel> }) => {
+const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } }) => {
     const ancestry = item.system
 
     const onDescriptionChange = useCallback((val) => {
@@ -78,7 +78,6 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
                     startExpanded={ancestry.traits.length === 1} />
             ))}</div>
     </div>
-
 }
 
 const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
@@ -86,7 +85,7 @@ const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
         <EditableNameField actor={ancestry.parent} isGlobalEditMode={true} />
     } subtitle={
         <>
-            <div className="text-text-header-secondary flex gap-2">
+            <div className="text-text-section-header flex gap-2">
                 <DropDown label={lang.VGLITE.ItemSheet.size}
                     options={createDropdownEntries(lang.VGLITE.Sizes)}
                     parent={ancestry.parent}

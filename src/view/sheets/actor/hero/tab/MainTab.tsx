@@ -9,11 +9,11 @@ import { getId, getTargets, itemSortHandler } from "../../../../../utils/modelUt
 import { sortedItems, weaponContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { useContextMenu } from "../../../../component/ContextMenu"
-import { glowOnHover } from "../../../VgLiteSheet"
 import { getArmor } from "../../../../../model/actor/type/Armor"
 import { Skill } from "./TopSection"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
+import { glowOnHover } from "../../../../common/text-styles"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

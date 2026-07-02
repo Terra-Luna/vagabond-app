@@ -1,16 +1,14 @@
 import AlchemicalItemDataModel from "../../../../../model/item/equip/AlchemicalDataModel"
-import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { FoundryItem } from "../../VgLiteItemSheet"
-import { EquipmentSheetBody } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
 
 export const AlchemicalSheet = ({ item, isEditMode }: {
-    item: FoundryItem<EquipmentDataModel<EquipmentSchema>> & AlchemicalItemDataModel, isEditMode: boolean
+    item: Item & { system: AlchemicalItemDataModel }, isEditMode: boolean
 }) => {
     return (
-        <EquipmentSheetBody>
+        <EquipmentSheetSubtypeBody>
             <div>
                 
             </div>
-        </EquipmentSheetBody>
+        </EquipmentSheetSubtypeBody>
     )
 }

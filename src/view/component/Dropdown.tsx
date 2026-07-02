@@ -1,6 +1,7 @@
 import { useCallback } from "react"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { LabelledField } from "./LabelledField"
+import { menuOptionContainer, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles";
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
@@ -24,7 +25,7 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
     return (
         <div>
             <LabelledField label={label} >
-                <div className="vglite-dropdown-select">
+                <div>
                     <Select value={value} onChange={onChange}>
                         {options.map(it => <Option key={'label' + it.value} value={it.value}>{it.label}</Option>)}
                     </Select>
@@ -37,6 +38,8 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
 const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {
     return <select className={`
         font-eskapade font-bold
+        text-stat-block-fill
+        bg-sheet-main-fill
         border border-solid border-table-border
         rounded py-0.5 text-sm shadow-sm
         ${props.className}
@@ -45,7 +48,7 @@ const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSe
 
 const Option = (props: React.DetailedHTMLProps<React.OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>) => {
     return <option className={`
-        bg-btn-primary-fill text-btn-primary-text checked:bg-btn-secondary-text
+        ${menuOptionContainer} ${menuOptionTextDefault} checked:${menuOptionTextSelected}
         ${props.className}`}
         {...props}
     />

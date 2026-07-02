@@ -3,6 +3,7 @@ import { fields, requiredInteger, requiredString } from "../../common/sharedSche
 import PerkDataModel from "./PerkDataModel"
 import SpellDataModel from "./SpellDataModel"
 
+export type ClassFeature = ReturnType<typeof classFeatureSchema>
 export const classFeatureSchema = () => {
     return {
         level: new fields.NumberField({ ...requiredInteger }),
@@ -13,6 +14,7 @@ export const classFeatureSchema = () => {
     }
 }
 
+export type Trait = ReturnType<typeof traitSchema>
 export const traitSchema = () => {
     return {
         name: new fields.StringField({ ...requiredString }),
@@ -22,8 +24,7 @@ export const traitSchema = () => {
     }
 }
 
-export type Trait = ReturnType<typeof traitSchema>
-
+export type Modifier = ReturnType<typeof modifierSchema>
 export const modifierSchema = () => {
     return {
         targetStat: new fields.StringField({ ...requiredString }),
@@ -32,8 +33,7 @@ export const modifierSchema = () => {
     }
 }
 
-export type Modifier = ReturnType<typeof modifierSchema>
-
+export type Grant = ReturnType<typeof grantSchema>
 export const grantSchema = () => {
     return {
         type: new fields.StringField({ ...requiredString, choices: ['PERK', 'SPELL', 'TRAINING'], initial: 'PERK' }),
@@ -45,5 +45,3 @@ export const grantSchema = () => {
         ignorePrerequisites: new fields.BooleanField({ initial: false })
     }
 }
-
-export type Grant = ReturnType<typeof grantSchema>

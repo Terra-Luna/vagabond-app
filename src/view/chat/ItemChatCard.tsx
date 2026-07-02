@@ -10,14 +10,16 @@ import { ItemValue } from "../sheets/item/equip/EquipmentSheet"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 
-export const ItemChatCard = ({ itemId, itemName }: { itemId: string, itemName: string }) => {
+export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
+    itemId: string, itemName: string, isConsumable?: boolean
+}) => {
     const actor = game.actors?.find(it => it.items.has(itemId))
     const item = actor?.items.get(itemId) ?? game.items?.get(itemId) ?? game.items?.getName(itemName)
     const equipment = item?.system as EquipmentDataModel<EquipmentSchema>
     if (equipment === undefined) return <p className="font-xs font-paradigm font-normal italic">Item removed</p>
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={getPortrait(item)} title={getName(item)} />}
+            banner={<ChatCardBanner portrait={getPortrait(item)} title={isConsumable ? `Used: ${getName(item)}` : `${getName(item)}`} />}
             contents={
                 <div className="font-paradigm font-normal text-lg">
                     <EnrichedContent content={equipment.description} />
@@ -63,12 +65,12 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
                 <ItemCardProp label={lang.VGLITE.ItemSheet.damage} children={
                     item.grip.style === 'V' ?
                         <div className="flex space-x-2">
-                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.oneH}: ${item.damage.oneHand},`} />
-                            <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.twoH}: ${item.damage.twoHand}`} />
+                            <ItemCardValue children={`${lang.VGLITE.Grips.H}: ${item.damage.oneHand},`} />
+                            <ItemCardValue children={`${lang.VGLITE.Grips.HH}: ${item.damage.twoHand}`} />
                         </div> : (
-                            item.grip.style === '1H' ?
-                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.oneH}: ${item.damage.oneHand}`} /> :
-                                <ItemCardValue children={`${lang.VGLITE.ItemSheet.grips.twoH}: ${item.damage.twoHand}`} />
+                            item.grip.style === 'H' ?
+                                <ItemCardValue children={`${lang.VGLITE.Grips.H}: ${item.damage.oneHand}`} /> :
+                                <ItemCardValue children={`${lang.VGLITE.Grips.HH}: ${item.damage.twoHand}`} />
                         )
                 } />
                 <DamageTypeIcon dmgType={item.damage.type as string} size={18} />

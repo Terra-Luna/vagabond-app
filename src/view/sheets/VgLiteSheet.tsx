@@ -82,5 +82,3 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         return { sheet: this }
     }
 }
-
-export const glowOnHover = "hover:[text-shadow:0_0_10px_var(--color-text-glow)]"
