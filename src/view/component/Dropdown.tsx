@@ -5,12 +5,13 @@ import { menuOptionContainer, menuOptionTextDefault, menuOptionTextSelected } fr
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
-export const DropDown = ({ label = '', value, options, updateMechanism, parent }: {
+export const DropDown = ({ label = '', value, options, updateMechanism, parent, isGlobalEditMode = true }: {
     label?: string,
     value: any,
     options: { label: string; value: string; }[],
     updateMechanism: UpdateMechanism,
-    parent: any
+    parent: any,
+    isGlobalEditMode?: boolean
 }) => {
     const onChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
         const { onChange: onChangeFn, updatePath } = updateMechanism
@@ -24,12 +25,18 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
 
     return (
         <div>
-            <LabelledField label={label} >
-                <div>
-                    <Select value={value} onChange={onChange}>
-                        {options.map(it => <Option key={'label' + it.value} value={it.value}>{it.label}</Option>)}
-                    </Select>
-                </div>
+            <LabelledField label={label}>
+                {
+                    isGlobalEditMode ?
+                        <div>
+                            <Select value={value} onChange={onChange}>
+                                {options.map(it => <Option key={'label' + it.value} value={it.value}>{it.label}</Option>)}
+                            </Select>
+                        </div> :
+                        <p className="text-lg font-eskapade font-bold text-stat-block-fill">
+                            {options.find(o => o.value === value)?.label ?? ''}
+                        </p>
+                }
             </LabelledField>
         </div>
     )

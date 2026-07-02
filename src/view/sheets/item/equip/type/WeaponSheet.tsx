@@ -1,6 +1,6 @@
 import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import WeaponDataModel from "../../../../../model/item/equip/WeaponDataModel"
-import { EquipmentSheetSubtypeBody, ItemSheetProperty, ItemSheetPropLabel, ItemSheetPropValue } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody, ItemSheetPropLabel } from "../EquipmentSheet"
 import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
@@ -27,43 +27,31 @@ export const WeaponSheet = ({ item, isEditMode }: {
 const Range = ({ item, isEditMode }: {
     item: Item & { system: WeaponDataModel }, isEditMode: boolean
 }) => {
-    return (<>
-        {
-            isEditMode ?
-                <DropDown
-                    label={lang.ItemSheet.range}
-                    value={item.system.range}
-                    options={createDropdownEntries(lang.Ranges)}
-                    updateMechanism={{ updatePath: ['range'] }}
-                    parent={item}
-                /> :
-                <div>
-                    <ItemSheetPropLabel label={lang.ItemSheet.range} />
-                    <ItemSheetPropValue value={lang.Ranges[item.system.range]} />
-                </div>
-        }
-    </>)
+    return (
+        <DropDown
+            label={lang.ItemSheet.range}
+            value={item.system.range}
+            options={createDropdownEntries(lang.Ranges)}
+            updateMechanism={{ updatePath: ['range'] }}
+            parent={item}
+            isGlobalEditMode={isEditMode}
+        />
+    )
 }
 
 const Grip = ({ item, isEditMode }: {
     item: Item & { system: WeaponDataModel }, isEditMode: boolean
 }) => {
-    return (<>
-        {
-            isEditMode ?
-                <DropDown
-                    label={lang.ItemSheet.grip}
-                    value={item.system.grip.style}
-                    options={createDropdownEntries(lang.Grips)}
-                    updateMechanism={{ updatePath: ['grip', 'style'] }}
-                    parent={item}
-                /> :
-                <div>
-                    <ItemSheetPropLabel label={lang.ItemSheet.grip} />
-                    <ItemSheetPropValue value={lang.Grips[item.system.grip.style]} />
-                </div>
-        }
-    </>)
+    return (
+        <DropDown
+            label={lang.ItemSheet.grip}
+            value={item.system.grip.style}
+            options={createDropdownEntries(lang.Grips)}
+            updateMechanism={{ updatePath: ['grip', 'style'] }}
+            parent={item}
+            isGlobalEditMode={isEditMode}
+        />
+    )
 }
 
 const Properties = ({ item, isEditMode }: {
@@ -130,20 +118,14 @@ const Damage = ({ item, isEditMode }: {
 const DamageType = ({ item, isEditMode }: {
     item: Item & { system: WeaponDataModel }, isEditMode: boolean
 }) => {
-    return (<>
-        {
-            isEditMode ?
-                <DropDown
-                    label={lang.ItemSheet.damageType}
-                    value={item.system.damage.type}
-                    options={createDropdownEntries(lang.DamageTypes)}
-                    updateMechanism={{ updatePath: ['damage', 'type'] }}
-                    parent={item}
-                /> :
-                <div>
-                    <ItemSheetPropLabel label={lang.ItemSheet.damageType} />
-                    <ItemSheetPropValue value={lang.DamageTypes[item.system.damage.type ?? 'none']} />
-                </div>
-        }
-    </>)
+    return (
+        <DropDown
+            label={lang.ItemSheet.damageType}
+            value={item.system.damage.type}
+            options={createDropdownEntries(lang.DamageTypes)}
+            updateMechanism={{ updatePath: ['damage', 'type'] }}
+            parent={item}
+            isGlobalEditMode={isEditMode}
+        />
+    )
 }

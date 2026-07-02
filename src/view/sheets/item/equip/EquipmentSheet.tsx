@@ -229,7 +229,17 @@ const Bulk = ({ item, isEditMode }) => {
 }
 
 const CategorySelection = ({ item, isEditMode }) => {
-    return (<>
+    return (
+        <DropDown
+            label={lang.ItemSheet.category}
+            value={item.system.category}
+            options={createDropdownEntries(lang.EquipmentCategories)}
+            updateMechanism={{ updatePath: ['category'] }}
+            parent={item}
+            isGlobalEditMode={isEditMode}
+        />
+    )
+    /* return (<>
         {
             isEditMode ?
                 <DropDown
@@ -238,13 +248,14 @@ const CategorySelection = ({ item, isEditMode }) => {
                     options={createDropdownEntries(lang.EquipmentCategories)}
                     updateMechanism={{ updatePath: ['category'] }}
                     parent={item}
+                    isGlobalEditMode={isEditMode}
                 /> :
                 <div>
                     <ItemSheetPropLabel label={lang.ItemSheet.category} />
                     <ItemSheetPropValue value={lang.EquipmentCategories[item.system.category]} />
                 </div>
         }
-    </>)
+    </>) */
 }
 
 export const ItemValue = ({ item, isEditMode }) => {
