@@ -21,7 +21,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 </div>
                 <Damage item={item} />
                 <ExplodingDiceItemConfig item={item} />
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center">
                     <Properties item={item} />
                     <Material item={item} />
                 </div>
@@ -161,7 +161,7 @@ const Properties = ({ item }: {
 }) => {
     return (
         <div>
-            <div className="flex gap-x-1">
+            <div className="flex gap-x-1 items-center">
                 <ItemSheetPropLabel label={lang.ItemSheet.props} />
                 <OptionsSelectionMenu obj={item} label={''} path={['properties']} options={weaponProps(item)} />
             </div>

@@ -1,4 +1,4 @@
-import { Coins, Hand, HandFist } from "lucide-react"
+import { Coins, Hand, HandFist, Shield } from "lucide-react"
 import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { coinsAsString } from "../../../../../model/common/CoinValue"
@@ -140,11 +140,14 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                             {
                                 item.isEquippable ?
                                     <td className="items-center">
-                                        {
-                                            item.isEquipped ?
-                                                <HandFist size={18} className='w-full justify-center text-stat-block-fill fill-stat-block-fill/50 cursor-pointer' onClick={ async () => await toggleEquipState(hero, item) } /> :
-                                                <Hand size={18} className='w-full justify-center text-stat-block-fill cursor-pointer' onClick={ async () => await toggleEquipState(hero, item) } />
-                                        }
+                                        <EquipStateIcon
+                                            type={item.parent.type}
+                                            isEquipped={item.isEquipped}
+                                            gripState={(item as any).grip?.state}
+                                            toggleEquipState={
+                                                async () => await toggleEquipState(hero, item)
+                                            }
+                                        />
                                     </td> : <td className="text-center" />
                             }
                         </tr>
@@ -152,6 +155,34 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                 }</tbody>
             </table>
             <ContextMenu />
+        </div>
+    )
+}
+
+const equippedIconStyle = "w-full justify-center text-stat-block-fill fill-stat-block-fill/80 cursor-pointer"
+const unEquipedIconStyle = "w-full justify-center text-stat-block-fill cursor-pointer"
+const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { type: string, isEquipped: boolean, gripState: string, toggleEquipState: () => void }) => {
+    return (
+        <div onClick={toggleEquipState}>
+            {
+                type === 'armor' ?
+                    <div>{
+                        isEquipped ?
+                            <Shield size={18} className={equippedIconStyle} /> :
+                            <Shield size={18} className={unEquipedIconStyle} />
+                    }</div> : <></>
+            }
+            {
+                type === 'weapon' ?
+                    <div>{
+                        isEquipped ?
+                            <div className="flex items-center -space-x-5 font-eskapade text-text-secondary">
+                                <p>{lang.VGLITE.GripsAbbr[gripState]}</p>
+                                <HandFist size={18} className={equippedIconStyle} />
+                            </div> :
+                            <Hand size={18} className={unEquipedIconStyle} />
+                    }</div> : <></>
+            }
         </div>
     )
 }

@@ -53,11 +53,11 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/blunt.svg'} size={size} />
             break 
         }
-        case lang.VGLITE.DamageTypes.piercing: {
+        case lang.VGLITE.DamageTypes.pierce: {
             element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/pierce.svg'} size={size} />
             break
         }
-        case lang.VGLITE.DamageTypes.slashing: {
+        case lang.VGLITE.DamageTypes.slash: {
             element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/slash.svg'} size={size} />
             break
         }
@@ -77,7 +77,7 @@ const CustomIcon = ({ path, size }: { path: string, size: number }) => {
                 src={path}
                 height={`${size-2}px`}
                 width={`${size-2}px`}
-                alt={lang.VGLITE.DamageTypes.slashing}
+                alt={''}
             />
         </div>
     )

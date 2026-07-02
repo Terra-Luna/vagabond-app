@@ -86,11 +86,14 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
+
 export const Luck = ({ hero }: { hero: HeroDataModel }) => {
     const currentLuck = hero.stats.currentLuck
     const updateLuck = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
-        sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"luck"} />)
+        if ((auxClick && hero.stats.currentLuck < hero.stats.luck!) || (!auxClick && hero.stats.currentLuck > 0)) {
+            sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"luck"} />)
+        }
+        updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })        
     }, [currentLuck])
     return (
         <Tracker
@@ -100,11 +103,14 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
         </Tracker>
     )
 }
+
 export const Studied = ({ hero }: { hero: HeroDataModel }) => {
     const { studied } = hero
     const updateStudied = useCallback((auxClick: boolean) => {
+        if (auxClick || (!auxClick && hero.studied > 0)) {
+            sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"studied"} />)
+        }
         updateDocument(hero.parent, { studied: (studied ?? 0) + (auxClick ? 1 : -1) })
-        sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"studied"} />)
     }, [studied])
     return (
         <Tracker
@@ -114,6 +120,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
         </Tracker>
     )
 }
+
 const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
     <div className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 ${glowOnHover} cursor-pointer`}
         onClick={() => onClick(false)}
@@ -123,6 +130,7 @@ const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode,
         <span className="font-eskapade font-bold text-4xl -mt-1 mb-1">{content}</span>
     </div>
 )
+
 const trackerLayout = `flex gap-1 items-center`
 
 export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
