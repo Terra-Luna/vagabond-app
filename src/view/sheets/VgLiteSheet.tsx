@@ -6,6 +6,7 @@ import { DimensionsContext } from "../context/DimensionsContext"
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
     _toolbarHeight: number = 0
+    _isCollapsed: boolean = false
 
     static DEFAULT_OPTIONS = {
         position: {
@@ -28,9 +29,15 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
             const reactRootElem = this.element.appendChild(vgLiteDiv)
 
             this.element.style.setProperty("overflow", "visible")
- 
+
             const scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
             this._reactRoot = ReactDom.createRoot(scaduRoot)
+
+            const header = this.element.querySelector('.window-header');
+            header.addEventListener('dblclick', () => {
+                this._isCollapsed = !this._isCollapsed
+                this.render()
+            });
         }
 
         this.renderWithWrappers({ theme: this._getTheme(), position: this.position })
@@ -67,6 +74,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     renderWithWrappers({ theme = "light", position }: { theme: string, position: { width: number, height: number, top: number, left: number } }) {
         let { width, height, top, left } = position
         height -= this._toolbarHeight!
+
+        this.element.style.setProperty("overflow", this._isCollapsed ? "hidden" : "visible")
 
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
