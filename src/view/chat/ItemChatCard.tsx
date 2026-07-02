@@ -92,7 +92,7 @@ const ItemCardBody = ({ item, children }) => {
     return (
         <div className="text-base text-text-primary font-paradigm font-normal">
             {children}
-            <ItemValue item={item.parent} isEditMode={false} />
+            <ItemValue item={item.parent} />
         </div>
     )
 }

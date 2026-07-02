@@ -13,29 +13,27 @@ import { useEditMode } from "../../../../context/EditModeContext"
 export const WeaponSheet = ({ item }: {
     item: Item & { system: WeaponDataModel }
 }) => {
-    const { isEditMode } = useEditMode()
-
     return (
         <EquipmentSheetSubtypeBody>
             <div className="space-y-4">
                 <div className="flex gap-x-4 justify-between">
-                    <Grip item={item} isEditMode={isEditMode} />
-                    <Range item={item} isEditMode={isEditMode} />
-                    <DamageType item={item} isEditMode={isEditMode} />
+                    <Grip item={item} />
+                    <Range item={item} />
+                    <DamageType item={item} />
                 </div>
-                <Damage item={item} isEditMode={isEditMode} />
-                <ExplodingDiceItemConfig item={item} isEditMode={isEditMode} />
+                <Damage item={item} />
+                <ExplodingDiceItemConfig item={item} />
                 <div className="flex justify-between">
-                    <Properties item={item} isEditMode={isEditMode} />
-                    <Material item={item} isEditMode={isEditMode} />
+                    <Properties item={item} />
+                    <Material item={item} />
                 </div>
             </div>
         </EquipmentSheetSubtypeBody>
     )
 }
 
-const Range = ({ item, isEditMode }: {
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+const Range = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
     return (
         <DropDown
@@ -44,13 +42,12 @@ const Range = ({ item, isEditMode }: {
             options={createDropdownEntries(lang.Ranges)}
             updateMechanism={{ updatePath: ['range'] }}
             parent={item}
-            isGlobalEditMode={isEditMode}
         />
     )
 }
 
-const Grip = ({ item, isEditMode }: {
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+const Grip = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
     return (
         <DropDown
@@ -59,13 +56,12 @@ const Grip = ({ item, isEditMode }: {
             options={createDropdownEntries(lang.Grips)}
             updateMechanism={{ updatePath: ['grip', 'style'] }}
             parent={item}
-            isGlobalEditMode={isEditMode}
         />
     )
 }
 
-const Damage = ({ item, isEditMode }: {
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+const Damage = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
     const gripStyle = item.system.grip.style
     return (
@@ -81,7 +77,6 @@ const Damage = ({ item, isEditMode }: {
                                     boundValue={item.system.damage.oneHand}
                                     updateProps={{ object: item, path: ['damage', 'oneHand'] }}
                                     placeholder="1d6"
-                                    isGlobalEditMode={isEditMode}
                                 />
                             </div>
                         </div> : <></>
@@ -98,7 +93,6 @@ const Damage = ({ item, isEditMode }: {
                                     boundValue={item.system.damage.twoHand}
                                     updateProps={{ object: item, path: ['damage', 'twoHand'] }}
                                     placeholder="1d10"
-                                    isGlobalEditMode={isEditMode}
                                 />
                             </div>
                         </div> : <></>
@@ -108,8 +102,8 @@ const Damage = ({ item, isEditMode }: {
     )
 }
 
-const DamageType = ({ item, isEditMode }: {
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+const DamageType = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
     return (
         <DropDown
@@ -118,14 +112,14 @@ const DamageType = ({ item, isEditMode }: {
             options={createDropdownEntries(lang.DamageTypes)}
             updateMechanism={{ updatePath: ['damage', 'type'] }}
             parent={item}
-            isGlobalEditMode={isEditMode}
         />
     )
 }
 
-export const ExplodingDiceItemConfig = ({ item, isEditMode }: {
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+export const ExplodingDiceItemConfig = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
+    const { isEditMode } = useEditMode()
     const onCheckExplodable = useCallback((canExplode) => {
         item.update({ 'system.explodeData.canExplode': canExplode } as Record<string, boolean>)
     }, [item.system.explodeData.canExplode])
@@ -144,7 +138,6 @@ export const ExplodingDiceItemConfig = ({ item, isEditMode }: {
                             label={lang.ItemSheet.canExplode}
                             onCheckedChanged={onCheckExplodable}
                             checked={item.system.explodeData.canExplode}
-                            isGlobalEditMode={isEditMode}
                         />
                         {
                             item.system.explodeData.canExplode ?
@@ -155,7 +148,6 @@ export const ExplodingDiceItemConfig = ({ item, isEditMode }: {
                                             boundValue={item.system.explodeData.explodesOn.join(", ")}
                                             onSave={onUpdateExplodesOn}
                                             placeholder="7, 8"
-                                            isGlobalEditMode={isEditMode}
                                         />
                                     } />
                                 </div> : <></>
@@ -166,14 +158,14 @@ export const ExplodingDiceItemConfig = ({ item, isEditMode }: {
     )
 }
 
-const Properties = ({ item, isEditMode }: {
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+const Properties = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
     return (
         <div>
             <div className="flex gap-x-1">
                 <ItemSheetPropLabel label={lang.ItemSheet.props} />
-                <OptionsSelectionMenu obj={item} label={''} path={['properties']} options={weaponProps(item)} isGlobalEditMode={isEditMode} />
+                <OptionsSelectionMenu obj={item} label={''} path={['properties']} options={weaponProps(item)} />
             </div>
             <StringOptionsDisplay options={item.system.properties.map(it => lang.WeaponProps[it].name)} />
         </div>
@@ -186,8 +178,8 @@ const weaponProps = (item: Item & { system: WeaponDataModel }) => {
     ))
 }
 
-const Material = ({ item, isEditMode }: {
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+const Material = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
     return (
         <DropDown
@@ -196,7 +188,6 @@ const Material = ({ item, isEditMode }: {
             options={createDropdownEntriesFromObj(lang.Metals)}
             updateMechanism={{ updatePath: ['material'] }}
             parent={item}
-            isGlobalEditMode={isEditMode}
         />
     )
 }

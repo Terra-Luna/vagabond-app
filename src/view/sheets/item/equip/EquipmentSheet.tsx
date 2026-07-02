@@ -152,7 +152,6 @@ export const EquipmentSheetBanner = ({ item }: {
                     boundValue={item.name}
                     updateProps={{ object: item, path: ['name'] }}
                     placeholder={"Item name..."}
-                    isGlobalEditMode={isEditMode}
                 />
                 <Divider />
                 <div className="mr-2" onClick={() => setEditMode(!isEditMode)}>
@@ -204,7 +203,6 @@ const Bulk = ({ item }) => {
                     boundValue={item.system.bulk.slots}
                     updateProps={{ object: item, path: ['bulk', 'slots'] }}
                     placeholder="0"
-                    isGlobalEditMode={isEditMode}
                 />
             } />
             {
@@ -214,7 +212,6 @@ const Bulk = ({ item }) => {
                             label={''}
                             onCheckedChanged={onCheckStackable}
                             checked={item.system.bulk.isStackable}
-                            isGlobalEditMode={isEditMode}
                         />
                     } /> : <></>
             }
@@ -225,7 +222,6 @@ const Bulk = ({ item }) => {
                             boundValue={item.system.bulk.stackSize}
                             updateProps={{ object: item, path: ['bulk', 'stackSize'] }}
                             placeholder="100"
-                            isGlobalEditMode={isEditMode}
                         />
                     } /> : <></>
             }
@@ -234,8 +230,6 @@ const Bulk = ({ item }) => {
 }
 
 const CategorySelection = ({ item }) => {
-    const { isEditMode } = useEditMode()
-
     return (
         <DropDown
             label={lang.ItemSheet.category}
@@ -243,7 +237,6 @@ const CategorySelection = ({ item }) => {
             options={createDropdownEntries(lang.EquipmentCategories)}
             updateMechanism={{ updatePath: ['category'] }}
             parent={item}
-            isGlobalEditMode={isEditMode}
         />
     )
 }

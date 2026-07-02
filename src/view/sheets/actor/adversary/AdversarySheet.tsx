@@ -175,13 +175,13 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
             } />
             {/* SENSENS & STATUS IMMUNITIES */}
             <div className="w-full">
-                <SelectableTextOptions obj={adv.parent} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} isEditMode={isEditMode} />
-                <SelectableTextOptions obj={adv.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} isEditMode={isEditMode} />
+                <SelectableTextOptions obj={adv.parent} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
+                <SelectableTextOptions obj={adv.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
             </div>
             {/* WEAKNESS & IMMUNITY */}
             <div className="w-full gap-y-1">
-                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
-                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} isEditMode={isEditMode} />
+                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
+                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
             </div>
         </div>
     </>)
@@ -196,7 +196,8 @@ const StatBlockField = ({ label, content }) => {
     )
 }
 
-const DamageTypeSelector = ({ adv, label, path, localeObj, isEditMode }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any, isEditMode: boolean }) => {
+const DamageTypeSelector = ({ adv, label, path, localeObj }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any }) => {
+    const { isEditMode } = useEditMode()
     const field = getDocumentAtPath(adv.parent, path)
     const damageTypes = Object.keys(localeObj).filter(k => k != 'none').map(k => (
         { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }

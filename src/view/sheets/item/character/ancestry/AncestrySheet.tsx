@@ -82,7 +82,7 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
 
 const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
     return <SheetHeader name={
-        <EditableNameField actor={ancestry.parent} isGlobalEditMode={true} />
+        <EditableNameField actor={ancestry.parent} />
     } subtitle={
         <>
             <div className="text-text-section-header flex gap-2">

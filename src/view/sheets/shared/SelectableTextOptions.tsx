@@ -1,9 +1,11 @@
 import { getDocumentAtPath } from "../../../utils/documentUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../component/OptionsSelectionMenu"
+import { useEditMode } from "../../context/EditModeContext"
 
-export const SelectableTextOptions = ({ obj, label, path, localeObj, isEditMode }: {
-    obj: any, label: string, path: string[], localeObj: any, isEditMode: boolean
+export const SelectableTextOptions = ({ obj, label, path, localeObj }: {
+    obj: any, label: string, path: string[], localeObj: any
 }) => {
+    const { isEditMode } = useEditMode()
     const field = getDocumentAtPath(obj, path)
     const options = Object.keys(localeObj).filter(k => k != 'none').map(k => (
         { key: k, value: localeObj[k].name, isSelected: field.indexOf(k) > -1 }

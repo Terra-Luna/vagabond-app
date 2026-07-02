@@ -101,7 +101,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
             <div className="flex flex-col grow">
                 <div className="bg-sheet-header-fill font-eskapade grow">
                     <div className="text-text-header-primary text-4xl font-bold mt-1 ml-2 flex">
-                        <EditableNameField actor={hero.parent} isGlobalEditMode={false} />
+                        <EditableNameField actor={hero.parent} />
                         <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
                     </div>
                     <div className="flex text-text-header-secondary ml-2 pb-1">

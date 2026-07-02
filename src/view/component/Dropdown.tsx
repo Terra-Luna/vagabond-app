@@ -2,17 +2,19 @@ import { useCallback } from "react"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { LabelledField } from "./LabelledField"
 import { menuOptionContainer, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles";
+import { useEditMode } from "../context/EditModeContext";
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
-export const DropDown = ({ label = '', value, options, updateMechanism, parent, isGlobalEditMode = true }: {
+export const DropDown = ({ label = '', value, options, updateMechanism, parent }: {
     label?: string,
     value: any,
     options: { label: string, value: string }[],
     updateMechanism: UpdateMechanism,
     parent: any,
-    isGlobalEditMode?: boolean
 }) => {
+    const { isEditMode } = useEditMode()
+
     const onChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
         const { onChange: onChangeFn, updatePath } = updateMechanism
         if (updatePath) {
@@ -26,7 +28,7 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent, 
         <div>
             <LabelledField label={label}>
                 {
-                    isGlobalEditMode ?
+                    isEditMode ?
                         <div>
                             <Select value={value} onChange={onChange}>
                                 {options.map(it =>

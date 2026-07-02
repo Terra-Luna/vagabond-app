@@ -3,6 +3,7 @@ import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { Menu, MenuItem } from '@szhsin/react-menu'
 import { DamageTypeIcon } from "./DamageTypeIcon"
 import { menuOptionContainer, menuOptionText, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
+import { useEditMode } from "../context/EditModeContext"
 
 interface OptionsSelectionMenuOption {
     key: string
@@ -10,15 +11,16 @@ interface OptionsSelectionMenuOption {
     isSelected: boolean
 }
 
-export const OptionsSelectionMenu = ({ obj, label, path, options, isGlobalEditMode = true }: {
-    obj: any, label: string, path: string[], options: OptionsSelectionMenuOption[], isGlobalEditMode?: boolean
+export const OptionsSelectionMenu = ({ obj, label, path, options }: {
+    obj: any, label: string, path: string[], options: OptionsSelectionMenuOption[]
 }) => {
+    const { isEditMode } = useEditMode()
     return (
         <div>
             <div className="flex items-center">
                 {label}
                 {
-                    isGlobalEditMode ? 
+                    isEditMode ?
                         <Menu menuButton={<SquarePen size={16} className={menuOptionText} />}>
                             <div className={menuOptionContainer}>
                                 {
