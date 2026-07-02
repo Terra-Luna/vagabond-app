@@ -8,7 +8,7 @@ type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange:
 export const DropDown = ({ label = '', value, options, updateMechanism, parent, isGlobalEditMode = true }: {
     label?: string,
     value: any,
-    options: { label: string; value: string; }[],
+    options: { label: string, value: string }[],
     updateMechanism: UpdateMechanism,
     parent: any,
     isGlobalEditMode?: boolean
@@ -22,7 +22,6 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent, 
             onChangeFn(e.target.value)
         }
     }, [parent, updateMechanism])
-
     return (
         <div>
             <LabelledField label={label}>
@@ -30,7 +29,9 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent, 
                     isGlobalEditMode ?
                         <div>
                             <Select value={value} onChange={onChange}>
-                                {options.map(it => <Option key={'label' + it.value} value={it.value}>{it.label}</Option>)}
+                                {options.map(it =>
+                                    <Option key={'label' + it.value} value={it.value}>{it.label}</Option>
+                                )}
                             </Select>
                         </div> :
                         <p className="text-lg font-eskapade font-bold text-stat-block-fill">
@@ -54,9 +55,10 @@ const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSe
 }
 
 const Option = (props: React.DetailedHTMLProps<React.OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>) => {
-    return <option className={`
-        ${menuOptionContainer} ${menuOptionTextDefault} checked:${menuOptionTextSelected}
-        ${props.className}`}
+    return <option
+        className={`
+            ${menuOptionContainer} ${menuOptionTextDefault} checked:${menuOptionTextSelected} ${props.className}
+        `}
         {...props}
     />
 }

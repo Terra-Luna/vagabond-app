@@ -607,7 +607,7 @@
       "damage": "Damage",
       "damageType": "Damage Type",
       "explodingDice": "Exploding Dice",
-      "canExplode": "Can Explode",
+      "canExplode": "Exploding Dice",
       "explodesOn": "Explodes On",
       "explodesOnTooltip": "Separate values with comma",
       "range": "Range",

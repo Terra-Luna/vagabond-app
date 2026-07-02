@@ -33,8 +33,8 @@ export class EquipmentSheet extends VgLiteItemSheet {
     Component = EquipmentSheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 400,
-            height: 400
+            width: 420,
+            height: 500
         },
         window: {
             resizable: true
@@ -167,7 +167,7 @@ export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
 }
 
 const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
-    return <div className="text-text-primary px-3 py-1">{children}</div>
+    return <div className="text-text-primary px-3 pb-1">{children}</div>
 }
 
 export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactElement }) => {

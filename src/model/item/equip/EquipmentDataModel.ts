@@ -47,6 +47,10 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
 
     override async prepareBaseData() {
         super.prepareBaseData()
+        if ((this as any).material) {
+            const baseValue = this.value
+            this.value = multiplyCoins(baseValue, lang.VGLITE.Metals[(this as any).material].valueMultiplier)
+        }
         if (this.relicEffects.length > 0) {
             this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
         }
