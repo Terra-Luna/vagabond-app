@@ -44,7 +44,6 @@ export class EquipmentSheet extends VgLiteItemSheet {
 }
 
 const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
-    const { setEditMode } = useEditMode()
     let sheet: React.ReactElement
 
     if (item.system instanceof AlchemicalItemDataModel) {
@@ -111,7 +110,7 @@ export const BaseEquipmentSheetHost = ({ header, children }: { header: React.Rea
 export const EquipmentSheetBanner = ({ item }: {
     item: Item & { system: EquipmentDataModel<EquipmentSchema> }
 }) => {
-    const { isEditMode, setEditMode } = useEditMode()
+    const { isEditMode, editModeToggleBtn } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const editImage = () => {
@@ -154,12 +153,7 @@ export const EquipmentSheetBanner = ({ item }: {
                     placeholder={"Item name..."}
                 />
                 <Divider />
-                <div className="mr-2" onClick={() => setEditMode(!isEditMode)}>
-                    {isEditMode ?
-                        <LockKeyholeOpen size={18} strokeWidth={2} /> :
-                        <LockKeyhole size={18} strokeWidth={2} />
-                    }
-                </div>
+                {editModeToggleBtn}
             </div>
         </div>
     </>)

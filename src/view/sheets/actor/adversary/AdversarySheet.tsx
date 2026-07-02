@@ -65,17 +65,13 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
 }
 
 const AdversarySheetHeader = ({ adv }) => {
-    const { isEditMode, toggleEditMode } = useEditMode() // todo use standard button
+    const { editModeToggleBtn } = useEditMode() // todo use standard button
     return (
         <div className="bg-sheet-header-fill font-eskapade p-2">
             <div className="text-2xl text-text-header-primary font-bold flex">
                 <EditableNameField actor={adv.parent} />
-                <div className="flex text-text-header-tertiary ml-auto mr-1" onClick={toggleEditMode}>
-                    {
-                        isEditMode ?
-                            <Tooltip text="Lock" children={<LockKeyholeOpen size={18} strokeWidth={2} />} /> :
-                            <Tooltip text="Unlock to Edit" children={<LockKeyhole size={18} strokeWidth={2} />} />
-                    }
+                <div className="flex text-text-header-tertiary ml-auto">
+                    {editModeToggleBtn}
                 </div>
             </div>
             <TraitSelectors adv={adv} />
