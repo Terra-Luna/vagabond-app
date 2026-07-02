@@ -1,4 +1,5 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react"
+import { LockKeyhole, LockKeyholeOpen } from "lucide-react";
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from "react"
 
 /**
  * This is a variation of a React Context that I really like. 
@@ -10,13 +11,15 @@ interface EditModeContextProps {
     isEditMode: boolean;
     setEditMode: (editMode: boolean) => void;
     toggleEditMode: () => void;
+    editModeToggleBtn: ReactNode;
 }
 
 /** Contexts need default values to conform to what React expects, and it's what the very first render theoretically renders out (I think) but then is immediately "hydrated" by our Provider */
 const DefaultEditModeContextValue: EditModeContextProps = {
     isEditMode: false,
-    setEditMode: (editMode: boolean) => { }, //noop,
-    toggleEditMode: () => { } //noop
+    setEditMode: (editMode: boolean) => { }, //noop
+    toggleEditMode: () => { }, //noop
+    editModeToggleBtn: undefined,
 }
 
 /** This is the react wiring to make a context, all we care about is that now there is a EditModeContext.Provider property we can render out */
@@ -33,8 +36,18 @@ export const EditModeContextProvider = ({ children }) => {
         setIsEditMode(!isEditMode)
     }, [isEditMode])
 
+    // Make a convenient lock icon!
+    const editModeToggleBtn = useMemo(() => (
+        <div className="mr-2" onClick={toggleEditMode}>
+            {isEditMode ?
+                <LockKeyholeOpen size={18} strokeWidth={2} /> :
+                <LockKeyhole size={18} strokeWidth={2} />
+            }
+        </div>
+    ), [toggleEditMode, isEditMode]);
+
     // tbh idk if the memo here does anything, but when I first copied this off a stack overflow 5 years ago it had one
-    const contextValue = useMemo(() => ({ isEditMode, setEditMode, toggleEditMode }), [isEditMode, setEditMode, toggleEditMode])
+    const contextValue = useMemo(() => ({ isEditMode, setEditMode, toggleEditMode, editModeToggleBtn }), [isEditMode, setEditMode, toggleEditMode, editModeToggleBtn])
 
     // render the Provider from the context we created above (outside this function), providing it our values we made with react state
     return <EditModeContext.Provider value={contextValue}>{children}</EditModeContext.Provider>
