@@ -1,5 +1,4 @@
 import lang from "../../../../../public/lang/en.json"
-import { useState } from "react"
 import AdversaryDataModel from "../../../../model/actor/AdversaryDataModel"
 import { EditableNameField, EditableTextField } from "../../../component/EditableTextField"
 import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
@@ -15,6 +14,7 @@ import { HPArmorHUD } from "./component/HPArmorHUD"
 import { Actions, NewActionWindow, useAddActionMenu } from "./component/Action"
 import { Abilities, NewAbilityWindow, useAddAbilityMenu } from "./component/Ability"
 import { SelectableTextOptions } from "../../shared/SelectableTextOptions"
+import { useEditMode } from "../../../context/EditModeContext"
 
 const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
@@ -35,7 +35,6 @@ export default class AdversarySheet extends VgLiteActorSheet {
 
 const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
     const adv = actor.system
-    const [isEditMode, setIsEditMode] = useState(false)
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
     return (
@@ -43,19 +42,19 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
                 <Portrait actor={adv} />
                 <div className="flex flex-col grow p-2">
-                    <HPArmorHUD adv={adv} isEditMode={isEditMode} />
+                    <HPArmorHUD adv={adv} />
                 </div>
             </div>
             <div className="flex flex-col grow">
-                <AdversarySheetHeader adv={adv} isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
+                <AdversarySheetHeader adv={adv} />
                 <div className="overflow-y-auto">
-                    <Description obj={adv.parent} isEditMode={isEditMode} />
-                    <StatBlock adv={adv} isEditMode={isEditMode} />
-                    <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} isEditMode={isEditMode} />
+                    <Description obj={adv.parent} />
+                    <StatBlock adv={adv} />
+                    <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
                     {isAddActionOpen ?
                         <NewActionWindow adv={adv} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
                     }
-                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} isEditMode={isEditMode} />
+                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
                     {isAddAbilityOpen ?
                         <NewAbilityWindow adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
                     }
@@ -65,12 +64,13 @@ const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Adversary
     )
 }
 
-const AdversarySheetHeader = ({ adv, isEditMode, setIsEditMode }) => {
+const AdversarySheetHeader = ({ adv }) => {
+    const { isEditMode, toggleEditMode } = useEditMode() // todo use standard button
     return (
         <div className="bg-sheet-header-fill font-eskapade p-2">
             <div className="text-2xl text-text-header-primary font-bold flex">
-                <EditableNameField actor={adv.parent} isGlobalEditMode={isEditMode} />
-                <div className="flex text-text-header-tertiary ml-auto mr-1" onClick={() => setIsEditMode(!isEditMode)}>
+                <EditableNameField actor={adv.parent} />
+                <div className="flex text-text-header-tertiary ml-auto mr-1" onClick={toggleEditMode}>
                     {
                         isEditMode ?
                             <Tooltip text="Lock" children={<LockKeyholeOpen size={18} strokeWidth={2} />} /> :
@@ -78,12 +78,13 @@ const AdversarySheetHeader = ({ adv, isEditMode, setIsEditMode }) => {
                     }
                 </div>
             </div>
-            <TraitSelectors adv={adv} isEditMode={isEditMode} />
+            <TraitSelectors adv={adv} />
         </div>
     )
 }
 
-const TraitSelectors = ({ adv, isEditMode }) => {
+const TraitSelectors = ({ adv }) => {
+    const { isEditMode } = useEditMode()
     return (
         <div className="flex gap-2 text-text-header-secondary mt-1">
             {
@@ -117,7 +118,8 @@ const TraitSelectors = ({ adv, isEditMode }) => {
     )
 }
 
-const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
+const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
+    const { isEditMode } = useEditMode()
     return (<>
         <div className="flex flex-wrap justify-between gap-x-8 gap-y-2 w-full px-2 mt-1 mb-1">
             {/* ZONE */}
@@ -141,7 +143,6 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                             boundValue={adv.movement?.speed?.toString() ?? '30'}
                             updateProps={{ object: adv.parent, path: ['movement', 'speed'] }}
                             placeholder="30"
-                            isGlobalEditMode={isEditMode}
                         />
                     </div>
                     <div className="text-stat-block-fill">
@@ -162,7 +163,6 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                     boundValue={adv.morale?.toString() ?? '6'}
                     updateProps={{ object: adv.parent, path: ['morale'] }}
                     placeholder="6"
-                    isGlobalEditMode={isEditMode}
                 />
             } />
             {/* NUBMER APPEARING */}
@@ -171,7 +171,6 @@ const StatBlock = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: b
                     boundValue={adv.numberAppearing?.toString() ?? '1'}
                     updateProps={{ object: adv.parent, path: ['numberAppearing'] }}
                     placeholder="1d6"
-                    isGlobalEditMode={isEditMode}
                 />
             } />
             {/* SENSENS & STATUS IMMUNITIES */}

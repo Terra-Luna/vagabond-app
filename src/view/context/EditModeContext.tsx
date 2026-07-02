@@ -41,4 +41,4 @@ export const EditModeContextProvider = ({ children }) => {
 }
 
 /** Consuming children just use this and can destructure it to get any of {isEditMode, setEditMode, toggleEditMode} they want */
-export const useEditMode = useContext(EditModeContext)
+export const useEditMode = () => useContext(EditModeContext)

@@ -28,6 +28,7 @@ import { Checkbox } from "../../../component/Checkbox"
 import { sheetPropLabel, sheetPropValue } from "../../../common/text-styles"
 import { VgLiteItemSheet } from "../VgLiteItemSheet"
 import { getId } from "../../../../utils/modelUtil"
+import { useEditMode } from "../../../context/EditModeContext"
 
 export class EquipmentSheet extends VgLiteItemSheet {
     Component = EquipmentSheetReactComponent
@@ -43,39 +44,39 @@ export class EquipmentSheet extends VgLiteItemSheet {
 }
 
 const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
-    const [isEditMode, setIsEditMode] = useState(false)
+    const { setEditMode } = useEditMode()
     let sheet: React.ReactElement
 
     if (item.system instanceof AlchemicalItemDataModel) {
-        sheet = <AlchemicalSheet item={item as any} isEditMode={isEditMode} />
+        sheet = <AlchemicalSheet item={item as any} />
     }
     else if (item.system instanceof ArmorDataModel) {
-        sheet = <ArmorSheet item={item as any} isEditMode={isEditMode} />
+        sheet = <ArmorSheet item={item as any} />
     }
     else if (item.system instanceof ContainerDataModel) {
-        sheet = <ContainerSheet item={item as any} isEditMode={isEditMode} />
+        sheet = <ContainerSheet item={item as any} />
     }
     else if (item.system instanceof StarterPackDataModel) {
-        sheet = <StarterPackSheet item={item as any} isEditMode={isEditMode} />
+        sheet = <StarterPackSheet item={item as any} />
     }
     else if (item.system instanceof SundryDataModel) {
-        sheet = <SundrySheet item={item as any} isEditMode={isEditMode} />
+        sheet = <SundrySheet item={item as any} />
     }
     else if (item.system instanceof ToolDataModel) {
-        sheet = <ToolSheet item={item as any} isEditMode={isEditMode} />
+        sheet = <ToolSheet item={item as any} />
     }
     else if (item.system instanceof WeaponDataModel) {
-        sheet = <WeaponSheet item={item as any} isEditMode={isEditMode} />
+        sheet = <WeaponSheet item={item as any} />
     }
     else {
         sheet = <></>
     }
 
     const baseContent = <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
-        <Bulk item={item} isEditMode={isEditMode} />
+        <Bulk item={item} />
         <div className="space-y-2">
-            <ItemValue item={item} isEditMode={isEditMode} />
-            <CategorySelection item={item} isEditMode={isEditMode} />
+            <ItemValue item={item} />
+            <CategorySelection item={item} />
         </div>
     </div>
 
@@ -84,11 +85,9 @@ const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: Equipme
             header={<>
                 <EquipmentSheetBanner
                     item={item}
-                    isEditMode={isEditMode}
-                    setIsEditMode={setIsEditMode}
                 />
                 <div className="my-1">
-                    {<Description obj={item} isEditMode={isEditMode} />}
+                    {<Description obj={item} />}
                 </div>
             </>}
             children={<EquipmentSheetBody children={<>
@@ -109,9 +108,10 @@ export const BaseEquipmentSheetHost = ({ header, children }: { header: React.Rea
     )
 }
 
-export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
-    item: Item & { system: EquipmentDataModel<EquipmentSchema> }, isEditMode: boolean, setIsEditMode: any
+export const EquipmentSheetBanner = ({ item }: {
+    item: Item & { system: EquipmentDataModel<EquipmentSchema> }
 }) => {
+    const { isEditMode, setEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const editImage = () => {
@@ -155,7 +155,7 @@ export const EquipmentSheetBanner = ({ item, isEditMode, setIsEditMode }: {
                     isGlobalEditMode={isEditMode}
                 />
                 <Divider />
-                <div className="mr-2" onClick={() => setIsEditMode(!isEditMode)}>
+                <div className="mr-2" onClick={() => setEditMode(!isEditMode)}>
                     {isEditMode ?
                         <LockKeyholeOpen size={18} strokeWidth={2} /> :
                         <LockKeyhole size={18} strokeWidth={2} />
@@ -191,7 +191,9 @@ export const ItemSheetProperty = ({ label, value }) => {
     )
 }
 
-const Bulk = ({ item, isEditMode }) => {
+const Bulk = ({ item }) => {
+    const { isEditMode } = useEditMode()
+
     const onCheckStackable = useCallback((isChecked) => {
         item.update({ 'system.bulk.isStackable': isChecked })
     }, [item.system.bulk.isStackable])
@@ -206,7 +208,7 @@ const Bulk = ({ item, isEditMode }) => {
                 />
             } />
             {
-                isEditMode || item.system.bulk.isStackable ? 
+                isEditMode || item.system.bulk.isStackable ?
                     <ItemSheetProperty label={lang.ItemSheet.stackable} value={
                         <Checkbox
                             label={''}
@@ -217,7 +219,7 @@ const Bulk = ({ item, isEditMode }) => {
                     } /> : <></>
             }
             {
-                item.system.bulk.isStackable ? 
+                item.system.bulk.isStackable ?
                     <ItemSheetProperty label={lang.ItemSheet.stackSize} value={
                         <EditableTextField
                             boundValue={item.system.bulk.stackSize}
@@ -231,7 +233,9 @@ const Bulk = ({ item, isEditMode }) => {
     )
 }
 
-const CategorySelection = ({ item, isEditMode }) => {
+const CategorySelection = ({ item }) => {
+    const { isEditMode } = useEditMode()
+
     return (
         <DropDown
             label={lang.ItemSheet.category}
@@ -244,19 +248,20 @@ const CategorySelection = ({ item, isEditMode }) => {
     )
 }
 
-export const ItemValue = ({ item, isEditMode }) => {
+export const ItemValue = ({ item }) => {
     return (
         <ItemSheetProperty label={lang.ItemSheet.value} value={
             <div className="flex gap-x-1">
-                <CoinDisplay item={item} label={lang.ItemSheet.g} path={'g'} isEditMode={isEditMode} />
-                <CoinDisplay item={item} label={lang.ItemSheet.s} path={'s'} isEditMode={isEditMode} />
-                <CoinDisplay item={item} label={lang.ItemSheet.c} path={'c'} isEditMode={isEditMode} />
+                <CoinDisplay item={item} label={lang.ItemSheet.g} path={'g'} />
+                <CoinDisplay item={item} label={lang.ItemSheet.s} path={'s'} />
+                <CoinDisplay item={item} label={lang.ItemSheet.c} path={'c'} />
             </div>
         } />
     )
 }
 
-const CoinDisplay = ({ item, label, path, isEditMode }) => {
+const CoinDisplay = ({ item, label, path }) => {
+
     return (
         <div className="flex">
             <div className={`text-text-primary text-xl font-eskapade min-w-[2ch] text-right`}>
@@ -264,7 +269,6 @@ const CoinDisplay = ({ item, label, path, isEditMode }) => {
                     boundValue={item.system.value[path]}
                     updateProps={{ object: item, path: ['value', path] }}
                     placeholder="0"
-                    isGlobalEditMode={isEditMode}
                 />
             </div>
             <div className={"text-wealth-denom-label text-xs content-end"}>{label}</div>

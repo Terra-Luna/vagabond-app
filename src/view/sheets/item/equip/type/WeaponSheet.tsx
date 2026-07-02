@@ -8,10 +8,13 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useCallback } from "react"
 import { removeWhitespace } from "../../../../../utils/stringUtil"
+import { useEditMode } from "../../../../context/EditModeContext"
 
-export const WeaponSheet = ({ item, isEditMode }: { 
-    item: Item & { system: WeaponDataModel }, isEditMode: boolean
+export const WeaponSheet = ({ item }: {
+    item: Item & { system: WeaponDataModel }
 }) => {
+    const { isEditMode } = useEditMode()
+
     return (
         <EquipmentSheetSubtypeBody>
             <div className="space-y-4">

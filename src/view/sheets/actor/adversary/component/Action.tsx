@@ -15,8 +15,10 @@ import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
+import { useEditMode } from "../../../../context/EditModeContext"
 
-export const ActionMenuHeader = ({ label, onClick, isEditMode }) => {
+export const ActionMenuHeader = ({ label, onClick }) => {
+    const { isEditMode } = useEditMode()
     return (
         <div className="flex items-center gap-x-2">
             <p className="font-eskapade font-bold text-text-primary text-xl">{label}</p>
@@ -33,12 +35,12 @@ export const AddNewIconButton = ({ onClick }) => {
     )
 }
 
-export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
+export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
-            <ActionMenuHeader label={locale.AdversarySheet.actions} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
+            <ActionMenuHeader label={locale.AdversarySheet.actions} onClick={() => setIsAddMenuOpen(true)} />
             {/* DISPLAY COMBO FIRST */}
             <div
                 className={`${glowOnHover} cursor-pointer`}

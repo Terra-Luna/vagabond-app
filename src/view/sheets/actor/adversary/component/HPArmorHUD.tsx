@@ -5,14 +5,15 @@ import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { glowOnHover } from "../../../../common/text-styles"
+import { useEditMode } from "../../../../context/EditModeContext"
 
-export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEditMode: boolean }) => {
+export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     const headerStyle = "text-xs font-paradigm"
     const hp = adv.health.current
     const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
 
     const incrementHP = useCallback((auxClick: boolean) => {
-        updateDocument(adv.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
+        updateDocument(adv.parent, { health: { current: (hp ?? 0) + (auxClick ? 1 : -1) } })
     }, [hp])
 
     return (
@@ -25,7 +26,6 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
                         boundValue={adv.threatLevelOverride?.toString() ?? adv.threatLevel?.toString() ?? ''}
                         updateProps={{ object: adv.parent, path: ['threatLevelOverride'] }}
                         placeholder={adv.threatLevel?.toString() ?? '1.00'}
-                        isGlobalEditMode={isEditMode}
                     />
                 </div>
             </div>
@@ -38,11 +38,10 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
                         boundValue={adv.hitDice?.toString() ?? '1'}
                         updateProps={{ object: adv.parent, path: ['hitDice'] }}
                         placeholder="1"
-                        isGlobalEditMode={isEditMode}
                     />
                 </div>
             </div>
-            
+
             {/* HP CURRENT / MAX */}
             <div className="text-text-primary w-full">
                 <p className={`${headerStyle} ${glowOnHover}`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
@@ -75,7 +74,6 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
                                 boundValue={adv.armor.rating?.toString() ?? ''}
                                 updateProps={{ object: adv.parent, path: ['armor', 'rating'] }}
                                 placeholder="0"
-                                isGlobalEditMode={isEditMode}
                             />
                         </div>
                     </div>
@@ -88,7 +86,6 @@ export const HPArmorHUD = ({ adv, isEditMode }: { adv: AdversaryDataModel, isEdi
                         boundValue={adv.armor.as ?? 'Unarmored'}
                         updateProps={{ object: adv.parent, path: ['armor', 'as'] }}
                         placeholder="Unarmored"
-                        isGlobalEditMode={isEditMode}
                     />
                 </div>
             </div>

@@ -11,11 +11,11 @@ import { RichTextField } from "../../../../component/RichTextField"
 import { ActionMenuHeader, onClickAction, AddMenuButtons } from "./Action"
 import { glowOnHover } from "../../../../common/text-styles"
 
-export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget, isEditMode }) => {
+export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="m-2 space-y-1">
-            <ActionMenuHeader label={locale.AdversarySheet.abilities} onClick={() => setIsAddMenuOpen(true)} isEditMode={isEditMode} />
+            <ActionMenuHeader label={locale.AdversarySheet.abilities} onClick={() => setIsAddMenuOpen(true)} />
             {
                 adv.abilities.map(ability => (
                     <div

@@ -3,8 +3,11 @@ import { updateDocument } from "../../../utils/documentUtils"
 import { stripHtml } from "../../../utils/stringUtil"
 import { RichTextField } from "../../component/RichTextField"
 import ReactHtmlParser from 'react-html-parser'
+import { useEditMode } from "../../context/EditModeContext"
 
-export const Description = ({ obj, isEditMode }) => {
+export const Description = ({ obj }) => {
+    const { isEditMode } = useEditMode()
+    
     const onDescriptionChange = useCallback((descr) => {
         updateDocument(obj, { 'description': descr })
     }, [obj.system])

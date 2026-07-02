@@ -16,6 +16,7 @@ import { importHero } from "../../../../api/tagalong/TagalongImporter"
 import { getName } from "../../../../utils/modelUtil"
 import { Stats, HPArmorFatigueHUD, Saves, Speeds, Luck, Studied, Skills, StatsDrawerContextProvider } from "./tab/TopSection"
 import { Portrait } from "../component/ActorPortrait"
+import { useEditMode } from "../../../context/EditModeContext"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -46,9 +47,15 @@ const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDat
 
         return () => { window.removeEventListener("keydown", listener) }
     }, [])
+
+    const { setEditMode } = useEditMode()
+    useEffect(() => {
+        setEditMode(true)
+    }, [])
+
     return (
         <div className="@container flex flex-col grow min-h-0 overflow-y-hidden">
-             <StatsDrawerContextProvider>
+            <StatsDrawerContextProvider>
                 <HeroSheetHeader hero={hero} sheet={sheet} />
                 <HeroSheetUpperSection hero={hero} />
                 <HeroSheetTabbedSection hero={hero} />
@@ -131,7 +138,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                     </div>
                     <Saves hero={hero} />
                 </div>
-                
+
                 {/* SKILL CHECKS AND DIFFICULTIES */}
                 <Skills hero={hero} />
             </div>

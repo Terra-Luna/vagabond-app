@@ -4,18 +4,20 @@ import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 import { Tooltip } from "./Tooltip"
 import { glowOnHover } from "../common/text-styles"
+import { useEditMode } from "../context/EditModeContext"
 
 const editModeBorder = "border border-solid border-table-border px-1"
 
 export const EditableTextField = (
-    { boundValue, onSave, updateProps, placeholder = "Enter text...", isGlobalEditMode = true, hideBorderOnEditMode = false }: {
-        boundValue: string | null, 
-        onSave?: (value: string | null) => Promise<boolean>, 
+    { boundValue, onSave, updateProps, placeholder = "Enter text...", hideBorderOnEditMode = false }: {
+        boundValue: string | null,
+        onSave?: (value: string | null) => Promise<boolean>,
         updateProps?: { object: any, path: string[] },
         placeholder?: string,
-        isGlobalEditMode?: boolean,
         hideBorderOnEditMode?: boolean
-}) => {
+    }) => {
+    const { isEditMode: enabled } = useEditMode()
+
     if (onSave && updateProps) {
         throw new VgLiteError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
     }
@@ -87,7 +89,7 @@ export const EditableTextField = (
     else {
         return (<>
             {
-                isGlobalEditMode ?
+                enabled ?
                     <Tooltip text={'Double-click to Edit'}>
                         <div
                             onDoubleClick={enterEditMode}
@@ -102,10 +104,10 @@ export const EditableTextField = (
     }
 }
 
-export const EditableNameField = ({ actor, isGlobalEditMode }: { actor: FoundryActor<any>, isGlobalEditMode: boolean }) => {
+export const EditableNameField = ({ actor }: { actor: FoundryActor<any> }) => {
     const updateName = useCallback(async (newName: string | null) => {
         return !!await actor.update({ name: newName })
     }, [actor])
 
-    return <EditableTextField boundValue={(actor as any).name} onSave={updateName} isGlobalEditMode={isGlobalEditMode} hideBorderOnEditMode={true} />
+    return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
 }
