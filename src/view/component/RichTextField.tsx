@@ -9,7 +9,7 @@ import { IFrameWrapper } from './IFrameWrapper';
 import { $insertNodes, LexicalEditor } from 'lexical';
 import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useEditMode } from '../context/EditModeContext';
+import { useEditMode } from '../context/EditModeContext/Hooks';
 
 export const RichTextField = ({
     width = "100%",

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useEditMode } from "../context/EditModeContext";
+import { useEditMode } from "../context/EditModeContext/Hooks";
 
 interface SingleSelectProps {
     options: { label: string; value: any }[];

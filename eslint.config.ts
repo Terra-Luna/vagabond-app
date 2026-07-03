@@ -5,6 +5,7 @@ import pluginReact from "eslint-plugin-react"
 import simpleImportSort from "eslint-plugin-simple-import-sort"
 import globals from "globals"
 import tseslint from "typescript-eslint"
+import { reactRefresh } from 'eslint-plugin-react-refresh';
 
 export default defineConfig([
   {
@@ -27,4 +28,5 @@ export default defineConfig([
   },
   pluginReact.configs.flat['jsx-runtime'],
   { files: ["**/*.json"], plugins: { json }, language: "json/json", extends: ["json/recommended"] },
+  reactRefresh.configs.vite()
 ])

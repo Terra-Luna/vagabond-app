@@ -5,7 +5,7 @@ import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { glowOnHover } from "../../../../common/text-styles"
-import { useEditMode } from "../../../../context/EditModeContext"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 
 export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     const headerStyle = "text-xs font-paradigm"

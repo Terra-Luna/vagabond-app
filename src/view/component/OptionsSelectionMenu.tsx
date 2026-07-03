@@ -3,7 +3,7 @@ import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { Menu, MenuItem } from '@szhsin/react-menu'
 import { DamageTypeIcon } from "./DamageTypeIcon"
 import { menuOptionContainer, menuOptionText, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
-import { useEditMode } from "../context/EditModeContext"
+import { useEditMode } from "../context/EditModeContext/Hooks"
 
 interface OptionsSelectionMenuOption {
     key: string

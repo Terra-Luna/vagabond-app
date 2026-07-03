@@ -8,8 +8,8 @@
     "vite-no": "pnpm vite --open 0",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
     "clean-": "echo Y | rmdir /s dist && pnpm clean",
-    "lint": "eslint src/*",
-    "lint:fix": "eslint --fix src/*"
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src"
   },
   "keywords": [],
   "author": "",
@@ -49,6 +49,7 @@
     "@vitejs/plugin-react": "6.0.1",
     "eslint": "10.3.0",
     "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-refresh": "^0.5.3",
     "eslint-plugin-simple-import-sort": "13.0.0",
     "globals": "^17.7.0",
     "jest": "30.4.1",

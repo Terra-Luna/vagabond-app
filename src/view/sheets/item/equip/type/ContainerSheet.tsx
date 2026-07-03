@@ -1,14 +1,12 @@
-import { useCallback } from "react"
-import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import ActorDataModel, { BaseActorSchema } from "../../../../../model/actor/ActorDataModel"
-import { containerItemContextMenuItems, sortedItems } from "../../../../../model/actor/type/Inventory"
+import { sortedItems, containerItemContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import ContainerDataModel, { containerItems } from "../../../../../model/item/equip/ContainerDataModel"
+import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
-import { useEditMode } from "../../../../context/EditModeContext"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
 import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheet"
-import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 
 export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataModel } }) => {
     const { isEditMode } = useEditMode()

@@ -1,7 +1,7 @@
 import vgliteStyles from "../../../public/styles/vagabond-lite.css?inline"
 import ReactDom from "react-dom/client"
 import { DimensionsContext } from "../context/DimensionsContext"
-import { EditModeContextProvider } from "../context/EditModeContext"
+import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null

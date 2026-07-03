@@ -1,6 +1,5 @@
-import { useCallback } from "react"
 import SundryDataModel from "../../../../../model/item/equip/SundryDataModel"
-import { ConsumableToggle, EquipmentSheetSubtypeBody } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody, ConsumableToggle } from "../EquipmentSheetComponent"
 
 export const SundrySheet = ({ item }: { item: Item & { system: SundryDataModel } }) => {
     return (

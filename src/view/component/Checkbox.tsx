@@ -1,6 +1,6 @@
 import { LucideCheckSquare, LucideSquare } from "lucide-react"
 import { sheetPropLabel } from "../common/text-styles"
-import { useEditMode } from "../context/EditModeContext"
+import { useEditMode } from "../context/EditModeContext/Hooks"
 
 interface CheckboxProps {
     label: string

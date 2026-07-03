@@ -1,5 +1,5 @@
 import StarterPackDataModel from "../../../../../model/item/equip/StarterPackDataModel"
-import { useEditMode } from "../../../../context/EditModeContext"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
 
 export const StarterPackSheet = ({ item }: { item: Item & { system: StarterPackDataModel } }) => {

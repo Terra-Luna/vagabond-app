@@ -8,8 +8,9 @@ import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { RichTextField } from "../../../../component/RichTextField"
-import { ActionMenuHeader, onClickAction, AddMenuButtons } from "./Action"
+import { ActionMenuHeader, AddMenuButtons } from "./Action"
 import { glowOnHover } from "../../../../common/text-styles"
+import { onClickAction } from "./hooksAndUtils"
 
 export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
@@ -70,12 +71,6 @@ export const NewAbilityWindow = ({ adv, setIsAddMenuOpen, editTarget = null, set
             />
         </div>
     )
-}
-
-export const useAddAbilityMenu = () => {
-    const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)
-    const [editAbilityTarget, setEditAbilityTarget] = useState(null)
-    return { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget }
 }
 
 interface AdversaryAbility {

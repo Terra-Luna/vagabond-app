@@ -14,7 +14,6 @@ import ToolDataModel from "./model/item/equip/ToolDataModel"
 import HeroSheet from "./view/sheets/actor/hero/HeroSheet"
 import StarterPackDataModel from "./model/item/equip/StarterPackDataModel"
 import ContainerDataModel from "./model/item/equip/ContainerDataModel"
-import { PerkSheet } from "./view/sheets/item/character/PerkSheet"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
@@ -30,6 +29,7 @@ import { DamageRollChatCard } from './view/chat/DamageRollChatCard'
 import { ItemChatCard } from './view/chat/ItemChatCard'
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
 import { ReactNode } from 'react'
+import { PerkSheet } from './view/sheets/item/character/Sheets'
 
 // add our fonts
 const fontFaces = [

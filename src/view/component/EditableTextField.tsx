@@ -4,7 +4,7 @@ import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 import { Tooltip } from "./Tooltip"
 import { glowOnHover } from "../common/text-styles"
-import { useEditMode } from "../context/EditModeContext"
+import { useEditMode } from "../context/EditModeContext/Hooks"
 
 const editModeBorder = "border border-solid border-table-border px-1"
 

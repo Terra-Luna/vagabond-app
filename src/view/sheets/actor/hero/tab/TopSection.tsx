@@ -13,6 +13,7 @@ import { getId } from "../../../../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 import { Tooltip } from "../../../../component/Tooltip"
 import { glowOnHover } from "../../../../common/text-styles"
+import { useStatsDrawerStatus } from "./StatsDrawer/hooks"
 
 interface Health {
     current: number | null
@@ -24,7 +25,7 @@ interface Armor {
 export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
     const hp = hero.health.current
     const updateHp = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { health: { current: (hp??0) + (auxClick ? 1 : -1) }})
+        updateDocument(hero.parent, { health: { current: (hp ?? 0) + (auxClick ? 1 : -1) } })
     }, [hp])
     return (
         <div className={`flex grow items-center justify-between mt-1 mx-1`}>
@@ -93,7 +94,7 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
         if ((auxClick && hero.stats.currentLuck < hero.stats.luck!) || (!auxClick && hero.stats.currentLuck > 0)) {
             sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"luck"} />)
         }
-        updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })        
+        updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
     }, [currentLuck])
     return (
         <Tracker
@@ -232,7 +233,7 @@ export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDa
 }
 
 export const Stats = ({ hero }: { hero: HeroDataModel }) => {
-    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck' ]
+    const stats = ['might', 'dexterity', 'awareness', 'reason', 'presence', 'luck']
     const { isStatsDrawerOpen, toggleStatsDrawer } = useStatsDrawerStatus()
 
     return (
@@ -260,23 +261,3 @@ const Stat = ({ name, value }: { name: string, value: number }) => {
         </div>
     )
 }
-
-const StatsDrawerContext = createContext({
-    isStatsDrawerOpen: true,
-    toggleStatsDrawer: () => {  }
-})
-
-export const StatsDrawerContextProvider = ({ children }) => {
-    const [isStatsDrawerOpen, setIsStatsDrawerOpen] = useState(true)
-    const toggleStatsDrawer = useCallback(() => setIsStatsDrawerOpen(!isStatsDrawerOpen), [isStatsDrawerOpen])
-    return (
-        <StatsDrawerContext.Provider value={{
-            isStatsDrawerOpen,
-            toggleStatsDrawer
-        }}>
-            {children}
-        </StatsDrawerContext.Provider>
-    )
-}
-
-export const useStatsDrawerStatus = () => useContext(StatsDrawerContext)

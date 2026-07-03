@@ -200,7 +200,7 @@ export class VgLiteCombatant<SubType extends Combatant.SubType = Combatant.SubTy
  * Wrap the combatant in an interface to provide activations prop.
  */
 interface Activations { max?: number, value?: number }
-declare module "fvtt-types/configuration" {
+declare module "fvtt-types/configuration" { // what is this?
     interface FlagConfig {
         Combatant: {
             'vagabond-lite': {

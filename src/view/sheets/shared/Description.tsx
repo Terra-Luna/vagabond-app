@@ -3,7 +3,7 @@ import { updateDocument } from "../../../utils/documentUtils"
 import { stripHtml } from "../../../utils/stringUtil"
 import { RichTextField } from "../../component/RichTextField"
 import ReactHtmlParser from 'react-html-parser'
-import { useEditMode } from "../../context/EditModeContext"
+import { useEditMode } from "../../context/EditModeContext/Hooks"
 
 export const Description = ({ obj }) => {
     const { isEditMode } = useEditMode()

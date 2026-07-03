@@ -1,6 +1,5 @@
 import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import WeaponDataModel from "../../../../../model/item/equip/WeaponDataModel"
-import { EquipmentSheetSubtypeBody, ItemSheetPropLabel, ItemSheetPropValue, Material } from "../EquipmentSheet"
 import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
@@ -8,8 +7,9 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useCallback } from "react"
 import { removeWhitespace } from "../../../../../utils/stringUtil"
-import { useEditMode } from "../../../../context/EditModeContext"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import AlchemicalItemDataModel from "../../../../../model/item/equip/AlchemicalItemDataModel"
+import { EquipmentSheetSubtypeBody, Material, ItemSheetPropLabel, ItemSheetPropValue } from "../EquipmentSheetComponent"
 
 export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (

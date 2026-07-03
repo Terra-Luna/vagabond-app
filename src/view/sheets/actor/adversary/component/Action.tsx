@@ -15,7 +15,8 @@ import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
-import { useEditMode } from "../../../../context/EditModeContext"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { onClickAction } from "./hooksAndUtils"
 
 export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()
@@ -131,38 +132,12 @@ const onClickActionCombo = async (adv: AdversaryDataModel) => {
     )
 }
 
-export const onClickAction = async (adv: AdversaryDataModel, name: string, description: string, dmgType: string, roll?: string, avgDmg?: string) => {
-    /**
-     * TODO: create a config item to toggle between using damage rolls vs. flat damage.
-     */
-    if (roll) {
-        const result = await rollDamage(name, dmgType, roll ?? '')
-        sendVgLiteChatMessage(
-            adv,
-            <DamageRollChatCard
-                actorId={getId(adv)}
-                tokenIds={getTargets()}
-                result={result}
-            />, result.rolls
-        )
-    }
-    else {
-        sendVgLiteChatMessage(adv, <AbilityChatCard actorId={getId(adv)} title={name} description={description} tokenIds={getTargets()} />)
-    }
-}
-
 const deleteCombo = (adv: AdversaryDataModel) => {
     updateDocumentAtPath(adv.parent, ['combo'], null)
 }
 
 const deleteAction = (adv: AdversaryDataModel, action: any) => {
     updateDocumentAtPath(adv.parent, ['actions'], adv.actions.filter(it => it != action))
-}
-
-export const useAddActionMenu = () => {
-    const [isAddActionOpen, setIsAddActionOpen] = useState(false)
-    const [editActionTarget, setEditActionTarget] = useState(null)
-    return { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget }
 }
 
 export interface AdversaryAction {

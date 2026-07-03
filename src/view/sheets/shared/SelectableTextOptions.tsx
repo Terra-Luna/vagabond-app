@@ -1,6 +1,6 @@
 import { getDocumentAtPath } from "../../../utils/documentUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../component/OptionsSelectionMenu"
-import { useEditMode } from "../../context/EditModeContext"
+import { useEditMode } from "../../context/EditModeContext/Hooks"
 
 export const SelectableTextOptions = ({ obj, label, path, localeObj }: {
     obj: any, label: string, path: string[], localeObj: any

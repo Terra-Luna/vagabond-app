@@ -6,7 +6,7 @@ import { getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { Tooltip } from "../component/Tooltip"
-import { ItemValue } from "../sheets/item/equip/EquipmentSheet"
+import { ItemValue } from "../sheets/item/equip/EquipmentSheetComponent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 
@@ -31,7 +31,7 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
 }
 
 const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> }) => {
- if (item instanceof ArmorDataModel) {
+    if (item instanceof ArmorDataModel) {
         return <ArmorCardContents item={item} />
     }
     else if (item instanceof WeaponDataModel) {
