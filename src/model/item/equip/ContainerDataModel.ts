@@ -54,7 +54,7 @@ export async function addItem(container: ContainerDataModel, item: Item & { syst
         if ((item.type as string) === 'container') {
             ui.notifications?.warn("Cannot place containers within containers!")
         }
-        if (container.emptySlots >= item.system.bulk.totalSlots) {
+        if (container.emptySlots > 0 && container.emptySlots >= item.system.bulk.totalSlots) {
             const itemIds = [...container.itemIds]
             if (!itemIds.includes(item.id)) {
                 itemIds.push(item.id)
