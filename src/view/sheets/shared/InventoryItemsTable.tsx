@@ -2,20 +2,21 @@ import { Shield, HandFist, Hand } from "lucide-react"
 import { VGLITE as lang } from "../../../../public/lang/en.json"
 import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import HeroDataModel from "../../../model/actor/HeroDataModel"
-import { openItemSheet, itemNameQty } from "../../../model/actor/type/Inventory"
+import { openItemSheet, itemNameQty, inventoryItemDragDropHandler } from "../../../model/actor/type/Inventory"
 import { coinsAsString } from "../../../model/common/CoinValue"
 import ArmorDataModel, { equipArmor } from "../../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
 import WeaponDataModel, { equipWeapon } from "../../../model/item/equip/WeaponDataModel"
-import { inventoryItemDragDropHandler, getId, getName } from "../../../utils/modelUtil"
+import { getId, getName } from "../../../utils/modelUtil"
 import { glowOnHover } from "../../common/text-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 
-export const InventoryItemsTable = ({ actor, items, contextMenuItems }: {
-    actor: ActorDataModel<BaseActorSchema> | undefined,
+export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipColumn = true }: {
+    actor: ActorDataModel<BaseActorSchema> | null,
     items: EquipmentDataModel<EquipmentSchema>[],
-    contextMenuItems: (item: EquipmentDataModel<EquipmentSchema>) => CtxMenuItem[]
+    contextMenuItems: (item: EquipmentDataModel<EquipmentSchema>) => CtxMenuItem[],
+    showEquipColumn?: boolean
 }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
         
@@ -26,13 +27,15 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems }: {
 
     return (
         <div className="overflow-auto">
-            <table className="table-fixed w-full">
+            <table className="table-fixed w-full border border-solid border-table-border">
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
                         <th className="text-left pl-2 w-5/9">{lang.HeroSheet.Inventory.item}</th>
                         <th className="text-center">{lang.HeroSheet.Inventory.slots}</th>
                         <th className="text-center">{lang.HeroSheet.Inventory.value}</th>
-                        <th className="text-center">{lang.HeroSheet.Inventory.equip}</th>
+                        {
+                            showEquipColumn ? <th className="text-center">{lang.HeroSheet.Inventory.equip}</th> : <></>
+                        }
                     </tr>
                 </thead>
                 <tbody className="font-eskapade">{
@@ -66,17 +69,20 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems }: {
                             <td className="text-center font-normal">{item.bulk.totalSlots}</td>
                             <td className="text-center font-normal">{coinsAsString(item.totalValue)}</td>
                             {
-                                item.isEquippable ?
-                                    <td className="items-center">
-                                        <EquipStateIcon
-                                            type={item.parent.type}
-                                            isEquipped={item.isEquipped}
-                                            gripState={(item as any).grip?.state}
-                                            toggleEquipState={
-                                                async () => await toggleEquipState(actor as HeroDataModel, item)
-                                            }
-                                        />
-                                    </td> : <td className="text-center" />
+                                !showEquipColumn ? <></> : (
+                                    item.isEquippable ?
+                                        <td className="items-center">
+                                            <EquipStateIcon
+                                                type={item.parent.type}
+                                                isEquipped={item.isEquipped}
+                                                gripState={(item as any).grip?.state}
+                                                toggleEquipState={
+                                                    async () => await toggleEquipState(actor as HeroDataModel, item)
+                                                }
+                                            />
+                                        </td> :
+                                        <td className="text-center" />
+                                )
                             }
                         </tr>
                     ))

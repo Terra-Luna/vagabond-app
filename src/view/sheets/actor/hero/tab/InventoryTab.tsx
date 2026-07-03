@@ -2,7 +2,7 @@ import { Coins } from "lucide-react"
 import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
-import { equipmentContextMenuItems, getContainers, getEncumbranceInfo, sortedItems } from "../../../../../model/actor/type/Inventory"
+import { equipmentContextMenuItems, getContainers, getEncumbranceInfo, isInContainer, sortedItems } from "../../../../../model/actor/type/Inventory"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { glowOnHover } from "../../../../common/text-styles"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
@@ -18,7 +18,11 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
             <div className="border border-solid border-table-border mt-1 w-full">
                 <InventoryItemsTable
                     actor={hero}
-                    items={sortedItems(hero.inventory.items as EquipmentDataModel<EquipmentSchema>[]).filter(it => !isInContainer(it, getContainers(hero)))}
+                    items={
+                        sortedItems<EquipmentDataModel<EquipmentSchema>>(
+                            hero.inventory.items as EquipmentDataModel<EquipmentSchema>[]
+                        ).filter(it => !isInContainer(it, getContainers(hero)))
+                    }
                     contextMenuItems={(item) => equipmentContextMenuItems(hero, item)} />
             </div>
         </div>
@@ -60,8 +64,4 @@ const CoinValue = ({ hero, value, label, path }: { hero: HeroDataModel, value: n
             <div className={"text-wealth-denom-label text-sm content-end"}>{label}</div>
         </div>
     )
-}
-
-const isInContainer = (item, containers) => {
-    return containers.find(c => c.itemIds.includes(item.parent.id)) !== undefined
 }

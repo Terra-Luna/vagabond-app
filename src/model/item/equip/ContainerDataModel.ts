@@ -1,5 +1,3 @@
-import lang from "../../../../public/lang/en.json"
-import { deleteItems } from "../../actor/type/Inventory"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
@@ -25,8 +23,8 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
         this.parent.update({
-            'system.isConsumable': false,
-            'system.bulk.stackSize': 1
+            'system.bulk.stackSize': 1,
+            'system.bulk.slots': 0
         })
     }
 
@@ -36,7 +34,7 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
     }
 
     override async prepareDerivedData() {
-        const bulk = containerItems(this).reduce((sum, i) => { return sum + (i.system.bulk.slots ?? 0) }, 0)
+        const bulk = containerItems(this).reduce((sum, i) => { return sum + (i.system.bulk.totalSlots ?? 0) }, 0)
         this.emptySlots = this.capacity - bulk
     }
 
@@ -51,6 +49,7 @@ export const containerItems = (container: ContainerDataModel) => {
 }
 
 export async function addItem(container: ContainerDataModel, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
+    console.log(item.id, container.parent.id)
     if (item.id && item.id !== container.parent.id) {
         if ((item.type as string) === 'container') {
             ui.notifications?.warn("Cannot place containers within containers!")

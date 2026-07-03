@@ -1,21 +1,22 @@
+import { useCallback } from "react"
 import { VGLITE as lang } from "../../../../../../public/lang/en.json"
-import { containerItemContextMenuItems } from "../../../../../model/actor/type/Inventory"
+import ActorDataModel, { BaseActorSchema } from "../../../../../model/actor/ActorDataModel"
+import { containerItemContextMenuItems, sortedItems } from "../../../../../model/actor/type/Inventory"
 import ContainerDataModel, { containerItems } from "../../../../../model/item/equip/ContainerDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
 import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheet"
+import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 
 export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataModel } }) => {
     const { isEditMode } = useEditMode()
-
-    console.log(item.actor)
-
+    const owner = item?.actor?.system as ActorDataModel<BaseActorSchema> | null
     return (
         <EquipmentSheetSubtypeBody>
-            <div className="space-y-8 mb-8">
-                <div className="flex gap-x-4 justify-start items-center">
+            <div className="mb-8">
+                <div className="flex gap-x-4 justify-center items-center mb-2">
                     {
                         isEditMode ?
                             <ItemSheetProperty
@@ -36,12 +37,10 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
                     }} />
                 </div>
                 <InventoryItemsTable
-                    actor={item.actor}
-                    items={containerItems(item.system).map(it => it.system)}
-                    contextMenuItems={(targetItem) => {
-                        console.log(targetItem)
-                        containerItemContextMenuItems(item.actor?.system, targetItem, item)
-                    }}
+                    actor={owner}
+                    items={sortedItems<EquipmentDataModel<EquipmentSchema>>(containerItems(item.system).map(it => it.system))}
+                    contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
+                    showEquipColumn={false}
                 />
             </div>
         </EquipmentSheetSubtypeBody>

@@ -5,8 +5,8 @@ import { Header, ItemDivider } from "../../../../component/Header"
 import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
 import WeaponDataModel, { gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
-import { getId, getTargets, inventoryItemDragDropHandler } from "../../../../../utils/modelUtil"
-import { sortedItems, weaponContextMenuItems } from "../../../../../model/actor/type/Inventory"
+import { getId, getTargets } from "../../../../../utils/modelUtil"
+import { inventoryItemDragDropHandler, sortedItems, weaponContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { getArmor } from "../../../../../model/actor/type/Armor"
@@ -42,7 +42,7 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWWeapon(it)) as any[] as WeaponDataModel[])
+    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWWeapon(it)) as WeaponDataModel[])
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"

@@ -15,7 +15,7 @@ import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../item/e
 import WeaponDataModel, { equipWeapon, toggleGripState } from "../../item/equip/WeaponDataModel"
 import HeroDataModel from "../HeroDataModel"
 import AlchemicalItemDataModel from "../../item/equip/AlchemicalItemDataModel"
-import ContainerDataModel, { extractItem } from "../../item/equip/ContainerDataModel"
+import ContainerDataModel, { addItem, extractItem } from "../../item/equip/ContainerDataModel"
 import { CapacityInfo } from "../../../view/sheets/shared/CapacityGauge"
 import ActorDataModel, { BaseActorSchema } from "../ActorDataModel"
 
@@ -32,7 +32,7 @@ export const inventorySchema = () => {
 
 export const getEncumbranceInfo = (hero: HeroDataModel): CapacityInfo => {
     const capacity = hero.inventory.capacity ?? 10
-    const bulk = hero.inventory.items.reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
+    const bulk = hero.inventory.items.filter(i => !isInContainer(i, getContainers(hero))).reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
     const isOverEncumbered = bulk / capacity > 1
     return { bulk, capacity, isOverEncumbered }
 }
@@ -44,6 +44,10 @@ export const setInventoryData = (hero: HeroDataModel) => {
 
 export const getContainers = (hero: HeroDataModel): ContainerDataModel[] => {
     return hero.parent.items.filter(it => it.type === 'container').map(it => it.system as ContainerDataModel[])
+}
+
+export const isInContainer = (item, containers) => {
+    return containers.find(c => c.itemIds.includes(item.parent.id)) !== undefined
 }
 
 export const stackStackables = async (hero: HeroDataModel) => {
@@ -63,8 +67,8 @@ export const itemNameQty = (item: EquipmentDataModel<EquipmentSchema>): string =
     return item.bulk.quantity === 1 ? getName(item) : `${getName(item)} (x${item.bulk.quantity})`
 }
 
-export const sortedItems = (items: EquipmentDataModel<EquipmentSchema>[]): EquipmentDataModel<EquipmentSchema>[] => {
-    return items.sort((a: any, b: any) => a.parent.sort === 0 ? 999999 : a.parent.sort - b.parent.sort)
+export const sortedItems = <T>(items: EquipmentDataModel<EquipmentSchema>[]): T[] => {
+    return items.sort((a: any, b: any) => a.parent.sort === 0 ? 999999 : a.parent.sort - b.parent.sort) as T[]
 }
 
 export const isInventoryItem = (item: any): boolean => {
@@ -123,8 +127,8 @@ export const openItemSheet = (item: EquipmentDataModel<EquipmentSchema>) => {
     }
 }
 
-export const deleteItems = async (actor: ActorDataModel<BaseActorSchema>, itemIds: string[]) => {
-    await actor.parent.deleteEmbeddedDocuments("Item", itemIds)
+export const deleteItems = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
+    await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds)
 }
 
 export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataModel): CtxMenuItem[] => {
@@ -191,12 +195,12 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
 }
 
 export const containerItemContextMenuItems = (
-    actor: ActorDataModel<BaseActorSchema>,
+    actor: ActorDataModel<BaseActorSchema> | null,
     item: EquipmentDataModel<EquipmentSchema>,
     container: ContainerDataModel
 ): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
-    if (item.isConsumable && actor.parent.type === 'hero') {
+    if (item.isConsumable && actor?.parent?.type === 'hero') {
         menuItems.push(useItemContextOption(actor as HeroDataModel, item))
     }
     menuItems.push(viewItemSheetContextOption(item))
@@ -217,7 +221,7 @@ const sendItemToChatContextOption = (hero: HeroDataModel, item: EquipmentDataMod
     return { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
 }
 
-const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema>, item: EquipmentDataModel<EquipmentSchema>) => {
+const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
     return { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
 }
 
@@ -230,5 +234,39 @@ const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema>, ite
             deleteItems(actor, [getId(item)])
         },
         isDestructive: true
+    }
+}
+
+/**
+ * Updates the given items' sort properties according to user preference.
+ * Places items into containers.
+ * @param actor 
+ * @param dragItem 
+ * @param targetItem 
+ * @param siblings 
+ */
+export const inventoryItemDragDropHandler = async (
+    actor: ActorDataModel<BaseActorSchema> | null,
+    dragItem: EquipmentDataModel<EquipmentSchema>,
+    targetItem: EquipmentDataModel<EquipmentSchema>,
+    siblings: EquipmentDataModel<EquipmentSchema>[]
+) => {
+    if (actor === undefined) return
+    if (targetItem.parent.type === 'container' && dragItem.parent.type !== 'container' && !dragItem.isEquipped) {
+        addItem(targetItem as ContainerDataModel, dragItem.parent)
+    }
+    else {
+        const sortBefore = siblings.indexOf(targetItem) < siblings.indexOf(dragItem)
+        const sorted = foundry.utils.performIntegerSort(dragItem.parent, {
+            target: targetItem.parent,
+            sortBefore: sortBefore,
+            siblings: siblings.map(it => it.parent)
+        })
+        const sortingUpdate = sorted.map((it: any) => {
+            const update = it.update
+            update._id = it.target._id
+            return update
+        })
+        await actor?.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
     }
 }
