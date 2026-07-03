@@ -45,8 +45,7 @@ export const EnrichedContent = ({ content, styleClasses = '' }) => {
         if (!contentLink) return
         foundry.applications.ux.TextEditor.getContentLink(e).then((uuid) => {
             if (uuid) {
-                // @ts-ignore
-                fromUuid(uuid).then((document) => document?.sheet.render(true))
+                fromUuid(uuid).then((document) => (document as any)?.sheet.render(true))
             }
         })
     }

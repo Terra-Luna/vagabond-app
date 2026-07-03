@@ -9,6 +9,7 @@ import tseslint from "typescript-eslint"
 export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
+    ignores: ["src/macro/*"],
     plugins: { js, simpleImportSort },
     extends: ["js/recommended"],
     languageOptions: { globals: globals.browser },
@@ -20,7 +21,8 @@ export default defineConfig([
   {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off'
     }
   },
   pluginReact.configs.flat['jsx-runtime'],

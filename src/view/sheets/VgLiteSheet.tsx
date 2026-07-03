@@ -1,4 +1,3 @@
-// @ts-ignore
 import vgliteStyles from "../../../public/styles/vagabond-lite.css?inline"
 import ReactDom from "react-dom/client"
 import { DimensionsContext } from "../context/DimensionsContext"
@@ -23,7 +22,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     async _renderHTML() {
         if (!this._reactRoot) {
             const defaultWindowContent = this.element.getElementsByClassName('window-content')?.[0]
-            defaultWindowContent && this.element.removeChild(defaultWindowContent)
+            if (defaultWindowContent) this.element.removeChild(defaultWindowContent)
 
             const vgLiteDiv = document.createElement('div')
             vgLiteDiv.setAttribute("class", "vglite-root")
@@ -73,7 +72,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     }
 
     renderWithWrappers({ theme = "light", position }: { theme: string, position: { width: number, height: number, top: number, left: number } }) {
-        let { width, height, top, left } = position
+        const { width, top, left } = position
+        let { height } = position
         height -= this._toolbarHeight!
 
         this.element.style.setProperty("overflow", this._isCollapsed ? "hidden" : "visible")
@@ -81,7 +81,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <EditModeContextProvider>
-                    <style>{vgliteStyles}</style>
+                    <style>{vgliteStyles as any}</style>
                     <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
                         <this.Component {...this.getReactProps()} />
                     </div>

@@ -36,6 +36,5 @@ function calculateDamage(damage, armor) {
 }
 
 function updateHP(target, hp) {
-    // @ts-ignore
     target?.parent.update({ "system.health.current": hp })
 }

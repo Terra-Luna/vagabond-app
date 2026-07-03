@@ -20,7 +20,6 @@ import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
 import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
-import { getId } from "./utils/modelUtil"
 import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
 import { rehydrateElement } from "./view/chat/ChatCardManager"
@@ -30,6 +29,7 @@ import { AbilityChatCard, ComboChatCard } from './view/chat/AbilityChatCard'
 import { DamageRollChatCard } from './view/chat/DamageRollChatCard'
 import { ItemChatCard } from './view/chat/ItemChatCard'
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
+import { ReactNode } from 'react'
 
 // add our fonts
 const fontFaces = [
@@ -84,7 +84,7 @@ Hooks.once("init", () => {
     )
 })
 
-Hooks.on("updateActor", async (actor, updateData, options, userId) => {
+Hooks.on("updateActor", async (actor, updateData, _options, _userId) => {
     const hpValue = foundry.utils.getProperty(updateData, "system.health.current") as number | undefined
     if (hpValue == null) return
     const isDead = actor.statuses.has("dead")
@@ -100,7 +100,7 @@ Hooks.on("updateActor", async (actor, updateData, options, userId) => {
     }
 })
 
-Hooks.on("preCreateItem", (item: any, options, userId) => {
+Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     if (!item.parent || item.parent.documentName !== "Actor") return
 
     const actor = item.parent
@@ -131,16 +131,16 @@ Hooks.on("preCreateItem", (item: any, options, userId) => {
     }
 })
 
-Hooks.on("createItem", (item, options, userId) => {
+Hooks.on("createItem", (item, _options, _userId) => {
     if (!item.parent || item.parent.documentName !== "Actor") return
     if (isInventoryItem(item)) {
         const items = item.parent.items
-        const newSortVal = Math.max.apply(Math, items.map(function (i) { return i.sort })) + 1000
+        const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
         item.update({ 'sort': newSortVal })
     }
 })
 
-Hooks.on("preDeleteItem", (item: any, options, userId) => {
+Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
     if (item.system.bulk.isStackable && item.parent) {
         const count = item.system.bulk.quantity
         if (count > 1) {
@@ -151,10 +151,11 @@ Hooks.on("preDeleteItem", (item: any, options, userId) => {
     return true
 })
 
-Hooks.on("renderCombatTracker", (app, html, data) => {
+Hooks.on("renderCombatTracker", (_app, html, _data) => {
     $(html).find('.combatant').each((_: any, li: any) => {
-        const actorId = $(li).attr('data-combatant-id')
-        const combatant = Array.from(game.combat?.combatants as any)?.find(it => getId(it) === actorId) as VgLiteCombatant
+        // commented out for eslint
+        //const actorId = $(li).attr('data-combatant-id')
+        //const combatant = Array.from(game.combat?.combatants as any)?.find(it => getId(it) === actorId) as VgLiteCombatant
         $(li).find('.token-initiative').replaceWith(`<div class="vglite-take-init-btn">GO</div>`)
         /**
          * TODO: 
@@ -187,7 +188,7 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 
         root.render(
             <div>
-                <style>{vgliteStyles}</style>
+                <style>{vgliteStyles as unknown as ReactNode}</style>
                 <div className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
                     {rehydrateElement(blueprint)}
                 </div>
@@ -206,32 +207,27 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 
 })
 
-// @ts-ignore
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, {
     types: ['hero'],
     makeDefault: true
 });
 
-// @ts-ignore
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', AdversarySheet, {
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', AdversarySheet as any, {
     types: ['adversary'],
     makeDefault: true
 });
 
-// @ts-ignore
-foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
+foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet as any, {
     types: ['perk'],
     makeDefault: true
 });
 
-// @ts-ignore
-foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet, {
+foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet as any, {
     types: ['ancestry'],
     makeDefault: true
 });
 
-// @ts-ignore
-foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet, {
+foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet as any, {
     types: ['alchemical', 'armor', 'container', 'starterPack', 'sundry', 'tool', 'weapon'],
     makeDefault: true
 });

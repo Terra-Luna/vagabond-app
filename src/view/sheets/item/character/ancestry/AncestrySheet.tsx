@@ -73,7 +73,7 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
         <div className="flex flex-col gap-4 mt-2">
             {ancestry.traits.map((trait, idx) => (
                 <Trait
-                    trait={trait}
+                    trait={trait as any}
                     key={"trait" + idx}
                     ancestry={ancestry}
                     index={idx}

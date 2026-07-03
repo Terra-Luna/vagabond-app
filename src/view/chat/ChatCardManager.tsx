@@ -90,6 +90,5 @@ export function rehydrateElement(blueprint: any): React.ReactNode {
     const { children: _, ...cleanProps } = blueprint.props || {}
 
     // 4. Pass the capitalized variable reference or the sanitized lowercase string
-    // @ts-ignore
-    return React.createElement(FinalType, cleanProps, children)
+    return React.createElement(FinalType as any, cleanProps, children)
 }
