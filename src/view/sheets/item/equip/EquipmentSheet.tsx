@@ -112,7 +112,6 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
             type: "image",
             current: item.img as any,
             callback: async (path) => {
-                // @ts-ignore
                 await item.update({ 'img': path })
             }
         }).render()

@@ -3,17 +3,16 @@ import { ControlledMenu, useHover } from '@szhsin/react-menu'
 import ReactHtmlParser from 'react-html-parser'
 
 export const Tooltip = ({ text, children }) => {
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
     const [isOpen, setOpen] = useState(false)
     const { anchorProps, hoverProps } = useHover(isOpen, setOpen)
 
     const [displayText, setDisplayText] = useState(null)
-    const [delayHandler, setDelayHandler] = useState(null)
+    const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null)
 
     const handleMouseEnter = (e: any) => {
         setOpen(false)
         setDelayHandler(
-            // @ts-ignore
             setTimeout(() => {
                 setDisplayText(text)
                 setOpen(true)
@@ -41,8 +40,7 @@ export const Tooltip = ({ text, children }) => {
                 direction={"top"}
                 align={"start"}
                 state={isOpen ? 'open' : 'closed'}
-                // @ts-ignore
-                anchorRef={ref}
+                anchorRef={ref as React.RefObject<HTMLDivElement>}
             >
                 <div className={tooltipBox}>
                     {ReactHtmlParser(displayText)}

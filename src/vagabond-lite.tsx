@@ -206,31 +206,31 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 
 })
 
-// @ts-ignore
+// @ts-expect-error
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet, {
     types: ['hero'],
     makeDefault: true
 });
 
-// @ts-ignore
+// @ts-expect-error
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', AdversarySheet, {
     types: ['adversary'],
     makeDefault: true
 });
 
-// @ts-ignore
+// @ts-expect-error
 foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet, {
     types: ['perk'],
     makeDefault: true
 });
 
-// @ts-ignore
+// @ts-expect-error
 foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet, {
     types: ['ancestry'],
     makeDefault: true
 });
 
-// @ts-ignore
+// @ts-expect-error
 foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet, {
     types: ['alchemical', 'armor', 'container', 'starterPack', 'sundry', 'tool', 'weapon'],
     makeDefault: true

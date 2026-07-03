@@ -1,4 +1,3 @@
-// @ts-ignore
 import vgliteStyles from "../../../public/styles/vagabond-lite.css?inline"
 import ReactDom from "react-dom/client"
 import { DimensionsContext } from "../context/DimensionsContext"

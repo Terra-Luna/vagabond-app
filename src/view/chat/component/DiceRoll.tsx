@@ -1,14 +1,8 @@
-// @ts-ignore
 import D20 from "../../../../public/assets/icons/dice/d20.svg?react"
-// @ts-ignore
 import D12 from "../../../../public/assets/icons/dice/d12.svg?react"
-// @ts-ignore
 import D10 from "../../../../public/assets/icons/dice/d10.svg?react"
-// @ts-ignore
 import D8 from "../../../../public/assets/icons/dice/d8.svg?react"
-// @ts-ignore
 import D6 from "../../../../public/assets/icons/dice/d6.svg?react"
-// @ts-ignore
 import D4 from "../../../../public/assets/icons/dice/d4.svg?react"
 import { DamageRollResult } from "../../../combat/dice-rolls"
 import { Plus } from "lucide-react"
