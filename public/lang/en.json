@@ -570,6 +570,7 @@
         "equip": "EQUIP",
         "effects": "EFFECTS",
         "ctxUse": "Use",
+        "ctxExtract": "Extract",
         "ctxView": "View",
         "ctxChat": "Send to chat",
         "ctxGrip": "Change grip",
@@ -623,6 +624,7 @@
       "range": "Range",
       "props": "Properties",
       "material": "Material",
+      "capacity": "Capacity",
       "type": "Type",
       "size": "Size"
     },

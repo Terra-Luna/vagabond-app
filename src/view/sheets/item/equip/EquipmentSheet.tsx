@@ -132,7 +132,7 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
             {item.img == null ? <></> :
                 <div>
                     <img
-                        className={`object-contain border border-solid border-wealth-denom-label rounded-sm mb-0.5`}
+                        className={`object-contain border border-solid border-text-header-primary rounded-sm mb-0.5`}
                         width={56}
                         height={56}
                         src={item.img}
@@ -168,7 +168,7 @@ export const ItemSheetPropLabel = ({ label }) => {
 }
 
 export const ItemSheetPropValue = ({ value }) => {
-    return <div className={`${sheetPropValue} text-stat-block-fill`}>
+    return <div className={`${sheetPropValue}`}>
         {value}
     </div>
 }

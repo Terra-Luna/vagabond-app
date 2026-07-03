@@ -1,8 +1,7 @@
-import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash, Triangle } from "lucide-react"
+import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash, Undo } from "lucide-react"
 import { createElement } from "react"
-
 import lang from "../../../../public/lang/en.json"
-import { rollWeaponDamage } from "../../../combat/dice-rolls"
+import { rollDamage, rollWeaponDamage } from "../../../combat/dice-rolls"
 import { groupBy } from "../../../utils/collectionUtil"
 import { getId, getName, getTargets } from "../../../utils/modelUtil"
 import { sendVgLiteChatMessage } from "../../../view/chat/ChatCardManager"
@@ -16,6 +15,9 @@ import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../item/e
 import WeaponDataModel, { equipWeapon, toggleGripState } from "../../item/equip/WeaponDataModel"
 import HeroDataModel from "../HeroDataModel"
 import AlchemicalItemDataModel from "../../item/equip/AlchemicalItemDataModel"
+import ContainerDataModel, { extractItem } from "../../item/equip/ContainerDataModel"
+import { CapacityInfo } from "../../../view/sheets/shared/CapacityGauge"
+import ActorDataModel, { BaseActorSchema } from "../ActorDataModel"
 
 export const inventorySchema = () => {
     return {
@@ -28,7 +30,7 @@ export const inventorySchema = () => {
     }
 }
 
-export const getEncumbranceInfo = (hero: HeroDataModel): { bulk: number, capacity: number, isOverEncumbered: boolean } => {
+export const getEncumbranceInfo = (hero: HeroDataModel): CapacityInfo => {
     const capacity = hero.inventory.capacity ?? 10
     const bulk = hero.inventory.items.reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
     const isOverEncumbered = bulk / capacity > 1
@@ -38,6 +40,10 @@ export const getEncumbranceInfo = (hero: HeroDataModel): { bulk: number, capacit
 export const setInventoryData = (hero: HeroDataModel) => {
     hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
     hero.inventory.capacity = Number(hero.stats.might) + 8 - hero.fatigue!
+}
+
+export const getContainers = (hero: HeroDataModel): ContainerDataModel[] => {
+    return hero.parent.items.filter(it => it.type === 'container').map(it => it.system as ContainerDataModel[])
 }
 
 export const stackStackables = async (hero: HeroDataModel) => {
@@ -57,7 +63,7 @@ export const itemNameQty = (item: EquipmentDataModel<EquipmentSchema>): string =
     return item.bulk.quantity === 1 ? getName(item) : `${getName(item)} (x${item.bulk.quantity})`
 }
 
-export const sortedItems = <T>(items: T[]): T[] => {
+export const sortedItems = (items: EquipmentDataModel<EquipmentSchema>[]): EquipmentDataModel<EquipmentSchema>[] => {
     return items.sort((a: any, b: any) => a.parent.sort === 0 ? 999999 : a.parent.sort - b.parent.sort)
 }
 
@@ -117,8 +123,8 @@ export const openItemSheet = (item: EquipmentDataModel<EquipmentSchema>) => {
     }
 }
 
-export const deleteItems = async (hero: HeroDataModel, itemIds: string[]) => {
-    await hero.parent.deleteEmbeddedDocuments("Item", itemIds)
+export const deleteItems = async (actor: ActorDataModel<BaseActorSchema>, itemIds: string[]) => {
+    await actor.parent.deleteEmbeddedDocuments("Item", itemIds)
 }
 
 export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataModel): CtxMenuItem[] => {
@@ -171,27 +177,58 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         }
     }
     else if (item.isConsumable) {
-        menuItems.push({
-            icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item)
-        })
+        menuItems.push(useItemContextOption(hero, item))
     }
     menuItems.push(
-        { icon: Eye, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) },
-        { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) },
-        { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(hero, [getId(item)]), isDestructive: true }
+        viewItemSheetContextOption(item),
+        sendItemToChatContextOption(hero, item),
+        deleteItemContextOption(hero, item)
     )
     if (item.bulk.isStackable && item.bulk.quantity > 1) {
-        menuItems.push(
-            {
-                icon: Trash,
-                label: lang.VGLITE.HeroSheet.Inventory.ctxDeleteAll,
-                action: async () => {
-                    await item.parent.update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
-                    deleteItems(hero, [getId(item)])
-                },
-                isDestructive: true
-            }
-        )
+        menuItems.push(deleteAllItemsContextOption(hero, item))
     }
     return menuItems
+}
+
+export const containerItemContextMenuItems = (
+    actor: ActorDataModel<BaseActorSchema>,
+    item: EquipmentDataModel<EquipmentSchema>,
+    container: ContainerDataModel
+): CtxMenuItem[] => {
+    const menuItems: CtxMenuItem[] = []
+    if (item.isConsumable && actor.parent.type === 'hero') {
+        menuItems.push(useItemContextOption(actor as HeroDataModel, item))
+    }
+    menuItems.push(viewItemSheetContextOption(item))
+    menuItems.push({ icon: Undo, label: lang.VGLITE.HeroSheet.Inventory.ctxExtract, action: () => extractItem(container, item.parent) })
+    menuItems.push(deleteItemContextOption(actor, item))
+    return menuItems
+}
+
+const useItemContextOption = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+    return { icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
+}
+
+const viewItemSheetContextOption = (item: EquipmentDataModel<EquipmentSchema>) => {
+    return { icon: Eye, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) }
+}
+
+const sendItemToChatContextOption = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+    return { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
+}
+
+const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema>, item: EquipmentDataModel<EquipmentSchema>) => {
+    return { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
+}
+
+const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema>, item: EquipmentDataModel<EquipmentSchema>) => {
+    return {
+        icon: Trash,
+        label: lang.VGLITE.HeroSheet.Inventory.ctxDeleteAll,
+        action: async () => {
+            await item.parent.update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
+            deleteItems(actor, [getId(item)])
+        },
+        isDestructive: true
+    }
 }

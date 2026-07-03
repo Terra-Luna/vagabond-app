@@ -79,6 +79,22 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
             (changes.system as any).value = consolidateCoins({ g: newG, s: newS, c: newC })
         }
     }
+
+    override async _onDelete(options: any, userId: string): Promise<void> {
+        await super._onDelete(options, userId)
+        /**
+         * Check PC's containers and cleanup the deleted item's ID.
+         */
+        if (game.user?.id === userId) {
+            const containers = this.parent.actor.items.filter(i =>
+                i.type === 'container' && i.system.itemIds.includes(this.parent.id)
+            )
+            for (const container of containers) {
+                const itemIds = container.system.itemIds ?? []
+                await container.update({ 'system.itemIds': itemIds.filter(id => id !== this.parent.id) })
+            }
+        }
+    }
 }
 
 export const setEquipState = async (item: any, isEquipped: boolean) => {
