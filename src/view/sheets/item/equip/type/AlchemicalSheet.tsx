@@ -1,9 +1,9 @@
 import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import AlchemicalItemDataModel from "../../../../../model/item/equip/AlchemicalItemDataModel"
 import { DropDown } from "../../../../component/Dropdown"
-import { ConsumableToggle, EquipmentSheetSubtypeBody, ItemSheetProperty, ItemSheetPropLabel } from "../EquipmentSheet"
 import { DamageType, ExplodingDiceItemConfig, ItemDamageTextField } from "./WeaponSheet"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
+import { ConsumableToggle, EquipmentSheetSubtypeBody, ItemSheetPropLabel } from "../EquipmentSheetComponent"
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
     return (
@@ -20,7 +20,7 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
                                         (item.system.damage.type === 'mana' ? lang.DamageTypes.mana :
                                             lang.ItemSheet.damage
                                         )
-                                    }`}
+                                        }`}
                                 />
                                 <ItemDamageTextField item={item} label={''} path={'oneHand'} />
                             </div>

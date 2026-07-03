@@ -6,7 +6,7 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
-import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheetComponent"
 
 export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataModel } }) => {
     const { isEditMode } = useEditMode()

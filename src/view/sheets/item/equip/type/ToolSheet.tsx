@@ -1,5 +1,5 @@
 import ToolDataModel from "../../../../../model/item/equip/ToolDataModel"
-import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody } from "../EquipmentSheetComponent"
 
 export const ToolSheet = ({ item }: { item: Item & { system: ToolDataModel } }) => {
     return (
