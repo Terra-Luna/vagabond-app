@@ -28,7 +28,7 @@ export const addNewBlankModifier = (ancestry: AncestryDataModel, traitIdx) => {
 
 export const addNewBlankGrant = (ancestry: AncestryDataModel, traitIdx) => {
     const grants = foundry.utils.deepClone(ancestry.traits[traitIdx].grants)
-    grants.push({ count: 1, ignorePrerequisites: false, type: "PERK", perkOptions: [], spellOptions: [], trainingOptions: [] })
+    grants.push({ count: 1, ignorePrerequisites: false, type: "PERK", perkOptions: [], spellOptions: [], trainingOptions: [] } as any)
     return ancestry.updateTraitValue("grants", grants, traitIdx)
 }
 
@@ -71,7 +71,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
 
                     <div>
                         <LabelledField label={lang.VGLITE.AncestrySheet.description}>
-                            <RichTextField defaultValue={trait.description} className="text-text-header-primary" onChange={onUpdateDescription} height={30} />
+                            <RichTextField defaultValue={trait.description as unknown as string} className="text-text-header-primary" onChange={onUpdateDescription} height={30} />
                         </LabelledField>
                     </div>
 
@@ -82,7 +82,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
                             {isEditMode ? <PrimaryButton children={lang.VGLITE.AncestrySheet.addModifier} icon={<LucidePlus />} onClick={addModifier} /> : undefined}
                         </div>
                         <div className="flex flex-col gap-2">
-                            {trait.modifiers?.map((mod, modIdx) => (
+                            {(trait.modifiers as any)?.map((mod, modIdx) => (
                                 <Modifier key={'mod' + modIdx}
                                     ancestry={ancestry}
                                     modifier={mod}
@@ -101,7 +101,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
                             {isEditMode ? <PrimaryButton children={lang.VGLITE.AncestrySheet.addGrant} icon={<LucidePlus />} onClick={addGrant} /> : undefined}
                         </div>
                         <div className="flex flex-col gap-2">
-                            {trait.grants?.map((grant, grantIdx) => (
+                            {(trait.grants as any)?.map((grant, grantIdx) => (
                                 <Grant key={'grant' + grantIdx}
                                     ancestry={ancestry}
                                     grant={grant}
@@ -142,7 +142,7 @@ const GrantOrModifier = ({ remove, children }: { remove: () => void; children: R
     )
 }
 
-const Modifier = ({ modifier, startExpanded = false, ancestry, index, traitIndex }: ModifierProps) => {
+const Modifier = ({ modifier, ancestry, index, traitIndex }: ModifierProps) => {
 
     const updateModifier = useCallback((propName: string, value: any) => {
         return ancestry.updateModifierValue(propName, value, traitIndex, index)
@@ -173,7 +173,7 @@ const Modifier = ({ modifier, startExpanded = false, ancestry, index, traitIndex
             <div className="flex ml-4 pb-2">
                 <LabelledField label={lang.VGLITE.AncestrySheet.value}>
                     <div className="text-lg text-center px-1">
-                        <EditableTextField boundValue={modifier.value} onSave={onUpdateValue} />
+                        <EditableTextField boundValue={modifier.value as any} onSave={onUpdateValue} />
                     </div>
                 </LabelledField>
             </div>

@@ -25,7 +25,7 @@ export const IFrameWrapper = (
 
     const fullChildren = (
         <>
-            {!skipStyleInjection && <style>{vgliteStyles}</style>}
+            {!skipStyleInjection && <style>{vgliteStyles as any}</style>}
             <div className={theme}>
                 {children}
             </div>

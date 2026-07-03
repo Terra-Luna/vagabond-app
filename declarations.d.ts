@@ -9,6 +9,7 @@ declare module '*.css?inline' {
 }
 
 declare module '*.svg?react' {
-  const classes: { readonly [key: string]: string };
-  export default classes;
+  import { FunctionComponent } from "react";
+  const node: FunctionComponent<{ className: string, fill: any }>;
+  export default node;
 }

@@ -87,7 +87,7 @@ export const rollDamage = async (
     const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
 
     if (canExplode) {
-        const biggestDieSize = Math.max.apply(Math, damageRollTerms.map(function (t) { return t.faces ?? 0 }))
+        const biggestDieSize = Math.max(...damageRollTerms.map(function (t) { return t.faces ?? 0 }))
         if (isSafeToExplode(biggestDieSize, explodesOn)) {
             if (explodesOn.length < 1) {
                 // Default: explode on max val if not otherwise specified.

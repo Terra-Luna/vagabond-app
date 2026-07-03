@@ -21,8 +21,8 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     override async startCombat(): Promise<this> {
         this._playCombatSound("startEncounter")
         //return super.startCombat()
-        const data = { round: 1, turn: null }
-        Hooks.callAll("combatStart", this, data)
+        const data = { round: 1, turn: 0 } // todo terra is this ok?
+        Hooks.callAll("combatStart", this as any, data)
         await this.resetActivations()
         await this.update(data)
         return this
@@ -38,7 +38,7 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
                 }
             }
         })
-        return await this.updateEmbeddedDocuments("Combatant", updates)
+        return await this.updateEmbeddedDocuments("Combatant", updates) as any
     }
 
     override async resetAll(): Promise<this> {
@@ -49,7 +49,7 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     }
 
     override async nextTurn(): Promise<this> {
-        const data = { turn: null }
+        const data = { turn: 0, round: 0 }
         const options = { advanceTime: 0, direction: 0 }
         Hooks.callAll("combatTurn", this, data, options)
         await this.update(data, options as any)
@@ -61,7 +61,7 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
             return this
         }
         else {
-            const data = { turn: null }
+            const data = { turn: 0, round: 0 }
             const options = { advanceTime: -CONFIG.time.turnTime, direction: -1 }
             Hooks.callAll("combatTurn", this, data, options)
             await this.update(data, options as any)
@@ -83,9 +83,9 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     override async previousRound(): Promise<this> {
         await this.resetActivations()
         const round = Math.max(this.round - 1, 0)
-        let advanceTime = 0
+        const advanceTime = 0 // the commented out line below doesn't do anything, but if it starts to, this needs to be let
         if (round > 0) {
-            advanceTime -= CONFIG.time.roundTime
+            //advanceTime -= CONFIG.time.roundTime
         }
         else {
             const data = { round, turn: null }
@@ -105,13 +105,13 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         }
         else {
             const combatant = this.getEmbeddedDocument("Combatant", id, {})
-            if (!combatant?.system.activations.value) {
+            if ((!combatant?.system as any).activations.value) {
                 return this
             }
             else {
-                await combatant?.modifyCurrentActivations(-1)
+                await (combatant as any)?.modifyCurrentActivations(-1)
                 const turn = this.turns.findIndex(i => i.id === id)
-                const data = { turn }
+                const data = { turn, round: 0 }
                 const options = { advanceTime: CONFIG.time.turnTime, direction: 1 as const }
                 Hooks.callAll("combatTurn", this, data, options)
                 return this.update(data, options)
@@ -130,7 +130,7 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     }
 
     protected async requestActivation(id: string): Promise<this> {
-        Hooks.callAll("VgLiteCombatRequestActivate", this, id)
+        //Hooks.callAll("VgLiteCombatRequestActivate", this, id) commented out for removing squigglies
         return this
     }
 
@@ -165,7 +165,7 @@ export class VgLiteCombatant<SubType extends Combatant.SubType = Combatant.SubTy
     }
 
     get activations(): Activations {
-        return this.system.activations
+        return (this.system as any).activations
     }
 
     async addActivations(acts: number): Promise<this | undefined> {
@@ -173,7 +173,7 @@ export class VgLiteCombatant<SubType extends Combatant.SubType = Combatant.SubTy
             return this
         }
         else {
-            return this.update({
+            return (this as any).update({
                 'system.activations': {
                     max: Math.max((this.activations.max ?? 1) + acts, 1),
                     value: Math.max((this.activations.value ?? 0) + acts, 0)
@@ -187,7 +187,7 @@ export class VgLiteCombatant<SubType extends Combatant.SubType = Combatant.SubTy
             return this
         }
         else {
-            return this.update({
+            return (this as any).update({
                 'system.activations': {
                     value: Math.clamp((this.activations?.value ?? 0) + acts, 0, this.activations?.max ?? 1)
                 }

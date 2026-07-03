@@ -1,8 +1,8 @@
-import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash, Triangle } from "lucide-react"
+import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash } from "lucide-react"
 import { createElement } from "react"
 
 import lang from "../../../../public/lang/en.json"
-import { rollWeaponDamage } from "../../../combat/dice-rolls"
+import { rollDamage, rollWeaponDamage } from "../../../combat/dice-rolls"
 import { groupBy } from "../../../utils/collectionUtil"
 import { getId, getName, getTargets } from "../../../utils/modelUtil"
 import { sendVgLiteChatMessage } from "../../../view/chat/ChatCardManager"

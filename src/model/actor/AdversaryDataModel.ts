@@ -98,7 +98,7 @@ export const setThreatLevel = (adv: AdversaryDataModel): number => {
             .forEach(act => c += Number(act.damage.avg ?? 0))
     }
     else {
-        adv.actions?.forEach(act => c += Number(act.damage.avg) ?? 0)
+        adv.actions?.forEach(act => { const avg = Number(act.damage.avg); c += isNaN(avg) ? 0 : avg; })
         c = c / (adv.actions?.length || 1)
     }
 
