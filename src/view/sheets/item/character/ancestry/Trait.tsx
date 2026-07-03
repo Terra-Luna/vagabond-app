@@ -22,7 +22,7 @@ interface TypedTrait { name: string; description: string }
 export const addNewBlankModifier = (ancestry: AncestryDataModel, traitIdx) => {
     const modifiers = foundry.utils.deepClone(ancestry.traits[traitIdx].modifiers)
 
-    modifiers.push({ targetStat: "MIT", type: "BONUS", value: "0" })
+    modifiers.push({ targetStat: "MAX HP", type: "BONUS", value: "0" })
     return ancestry.updateTraitValue("modifiers", modifiers, traitIdx)
 }
 
@@ -34,7 +34,7 @@ export const addNewBlankGrant = (ancestry: AncestryDataModel, traitIdx) => {
 
 export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait: TraitModel, startExpanded?: boolean, ancestry: AncestryDataModel, index: number }) => {
     const { isEditMode } = useEditMode()
-    const typedTrait = trait as unknown as TypedTrait
+    const typedTrait = trait as any as TypedTrait
     const { name } = typedTrait
 
     const addModifier = useCallback(() => {
@@ -227,7 +227,7 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
                             <LabelledField label={lang.VGLITE.AncestrySheet.count}>
                                 <div className="flex gap-3">
                                     <div className="text-lg text-center">
-                                        <EditableTextField boundValue={grant.count as unknown as string} onSave={onUpdateCount} />
+                                        <EditableTextField boundValue={grant.count as any as string} onSave={onUpdateCount} />
                                     </div>
                                     <Checkbox label={lang.VGLITE.AncestrySheet.ignorePrerequisites} checked={!!grant.ignorePrerequisites} onCheckedChanged={onUpdateIngorePrereqs} />
                                 </div>

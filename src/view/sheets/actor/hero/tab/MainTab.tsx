@@ -42,7 +42,7 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWWeapon(it)) as unknown[] as WeaponDataModel[])
+    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWWeapon(it)) as any[] as WeaponDataModel[])
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
@@ -100,7 +100,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Armor = ({ hero }: { hero: HeroDataModel }) => {
-    const armor = getArmor(hero) as unknown as ArmorDataModel
+    const armor = getArmor(hero) as any as ArmorDataModel
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
     return (
         <div className="w-full">

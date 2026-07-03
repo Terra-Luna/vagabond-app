@@ -357,7 +357,7 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
 const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex) => {
     if (isCombo) {
         if (comboSelections.length > 0 && comboSelections.every(it => it.comboCount)) {
-            let comboActions: any[] = []
+            const comboActions: any[] = []
             comboSelections.forEach(cs => {
                 comboActions.push({ ...adv.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount })
             })
@@ -376,7 +376,7 @@ const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, edit
         updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
     }
     else {
-        let actions = adv.actions
+        const actions = adv.actions
         actions[editTargetIndex] = newAction
         updateDocumentAtPath(adv.parent, ['actions'], [...actions])
     }

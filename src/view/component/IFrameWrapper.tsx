@@ -33,6 +33,34 @@ export const IFrameWrapper = (
         </>
     )
 
+    // add our fonts
+    const fontFaces = [
+        new FontFace(
+            'Eskapade',
+            'url("systems/vagabond-lite/assets/fonts/eskapade-black.ttf")',
+            { weight: 'bold', style: 'normal', }
+        ),
+        new FontFace(
+            'Eskapade',
+            'url("systems/vagabond-lite/assets/fonts/eskapade-regular.ttf")',
+            { weight: 'normal', style: 'normal', }
+        ),
+        new FontFace(
+            'Paradigm',
+            'url("systems/vagabond-lite/assets/fonts/paradigm-regular.otf")',
+            { weight: 'normal', style: 'normal', }
+        ),
+        new FontFace(
+            'Paradigm',
+            'url("systems/vagabond-lite/assets/fonts/paradigm-bold.otf")',
+            { weight: 'bold', style: 'normal', }
+        ),
+    ];
+
+    Promise.all(fontFaces.map(face => face.load())).then(fonts => fonts.forEach(
+        font => iDoc?.fonts.add(font)
+    ))
+
     return (
         <iframe ref={iFrameRef} width={width} height={height}>
             {portalRoot && createPortal(fullChildren, portalRoot)}

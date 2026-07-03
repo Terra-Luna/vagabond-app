@@ -38,10 +38,10 @@ export const coinsAsString = (coins: any) => {
 
 export const consolidateCoins = (coinsIn: any): { g: number, s: number, c: number } => {
     const coins = coinsIn
-    var copperToSilver = Math.floor(coins.c / 100)
+    const copperToSilver = Math.floor(coins.c / 100)
     coins.s += copperToSilver
     coins.c = Math.floor(coins.c % 100)
-    var silverToGold = Math.floor(coins.s / 100)
+    const silverToGold = Math.floor(coins.s / 100)
     coins.g += silverToGold
     coins.s = Math.floor(coins.s % 100)
     return coins

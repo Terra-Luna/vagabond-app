@@ -1,4 +1,3 @@
-// @ts-ignore
 import vgliteStyles from '../public/styles/vagabond-lite.css?inline'
 import AlchemicalItemDataModel from "./model/item/equip/AlchemicalItemDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"

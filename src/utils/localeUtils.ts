@@ -33,7 +33,7 @@ export const createDropdownEntries = (localeObj) => {
 }
 
 export const createDropdownEntriesFromObj = (localObj) => {
-    let options = {}
+    const options = {}
     Object.keys(localObj).forEach(key => {
         options[key] = localObj[key].name
     })

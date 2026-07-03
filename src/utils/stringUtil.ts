@@ -8,9 +8,9 @@ export function toPascalCase(s: string): string {
 }
 
 export function stripHtml(html) {
-    let tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    const tmp = document.createElement("DIV")
+    tmp.innerHTML = html
+    return tmp.textContent || tmp.innerText || ""
 }
 
 export function removeWhitespace(s: string): string {

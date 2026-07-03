@@ -91,7 +91,7 @@ const saveNewAbility = (adv, newAbility, editTarget, editTargetIndex) => {
         updateDocumentAtPath(adv.parent, ['abilities'], [...adv.abilities, newAbility])
     }
     else {
-        let abilities = adv.abilities
+        const abilities = adv.abilities
         abilities[editTargetIndex] = newAbility
         updateDocumentAtPath(adv.parent, ['abilities'], [...abilities])
     }

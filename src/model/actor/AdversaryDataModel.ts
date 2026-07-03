@@ -87,9 +87,9 @@ export const calcAdversaryMaxHP = (hitDice: number, size: string): number => {
  *      TL = (a + b) / 4 + c
  */
 export const setThreatLevel = (adv: AdversaryDataModel): number => {
-    var a = adv.armor.rating! * 2
-    var b = adv.health.max! / 10
-    var c = 0
+    const a = adv.armor.rating! * 2
+    const b = adv.health.max! / 10
+    let c = 0
 
     if (adv.combo != null && adv.combo.actions != null && adv.combo.actions.length > 0) {
         adv.combo?.actions?.forEach(act => c += (Number(act.damage.avg) * Number(act.comboCount)))

@@ -1,7 +1,8 @@
-import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponDataModel"
-import lang from "../../public/lang/en.json"
-import { getName } from "../utils/modelUtil"
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
+
+import lang from "../../public/lang/en.json"
+import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponDataModel"
+import { getName } from "../utils/modelUtil"
 
 export interface SkillCheckResult {
     skillName: string,
@@ -241,7 +242,7 @@ function buildRollSummary(
     explosionTerms: foundry.dice.terms.DiceTerm[] | null,
     explodesOn: number[]
 ) {
-    let summary: { result: number, dieSize: number, exploded: boolean }[] = []
+    const summary: { result: number, dieSize: number, exploded: boolean }[] = []
     damageRollTerms.concat(explosionTerms ?? []).forEach(term => {
         term.results.forEach(res => {
             summary.push({
