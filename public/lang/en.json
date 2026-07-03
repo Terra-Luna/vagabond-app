@@ -73,17 +73,23 @@
       "light": {
         "name": "Light",
         "rating": 1,
-        "slots": 2
+        "slots": 2,
+        "mitReq": 3,
+        "value": {"g": 0, "s": 50, "c": 0}
       },
       "medium": {
         "name": "Medium",
         "rating": 2,
-        "slots": 2
+        "slots": 2,
+        "mitReq": 4,
+        "value": {"g": 1, "s": 0, "c": 0}
       },
       "heavy": {
         "name": "Heavy",
         "rating": 3,
-        "slots": 3
+        "slots": 3,
+        "mitReq": 5,
+        "value": {"g": 2, "s": 0, "c": 0}
       }
     },
     "Zones": {
@@ -232,7 +238,8 @@
       "psychic": "Psychic",
       "silvered": "Silvered",
       "coldiron": "Cold Iron",
-      "healing": "Healing"
+      "healing": "Healing",
+      "mana": "Mana"
     },
     "Saves": {
       "reflex": "Reflex",
@@ -594,6 +601,7 @@
       "description": "Description",
       "general": "General",
       "category": "Category",
+      "alchCategory": "Alchemy Category",
       "consumable": "Consumable",
       "slots": "Slots",
       "stackable": "Stackable",
@@ -603,6 +611,8 @@
       "s": "S",
       "c": "C",
       "armor": "Armor",
+      "armorType": "Armor Type",
+      "mitReq": "Might Req.",
       "grip": "Grip",
       "damage": "Damage",
       "damageType": "Damage Type",

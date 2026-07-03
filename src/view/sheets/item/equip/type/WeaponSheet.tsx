@@ -1,14 +1,15 @@
 import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import WeaponDataModel from "../../../../../model/item/equip/WeaponDataModel"
-import { EquipmentSheetSubtypeBody, ItemSheetPropLabel, ItemSheetPropValue } from "../EquipmentSheet"
+import { EquipmentSheetSubtypeBody, ItemSheetPropLabel, ItemSheetPropValue, Material } from "../EquipmentSheet"
 import { DropDown } from "../../../../component/Dropdown"
-import { createDropdownEntries, createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
+import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useCallback } from "react"
 import { removeWhitespace } from "../../../../../utils/stringUtil"
 import { useEditMode } from "../../../../context/EditModeContext"
+import AlchemicalItemDataModel from "../../../../../model/item/equip/AlchemicalItemDataModel"
 
 export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
@@ -62,39 +63,38 @@ const Damage = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
             <div className="flex gap-x-2 items-center text-text-secondary text-base font-paradigm">
                 {
                     gripStyle === 'H' || gripStyle === 'V' || gripStyle === 'F' ?
-                        <div className="flex gap-x-2">
-                            <ItemSheetPropLabel label={lang.Grips.H} />
-                            <div className="text-stat-block-fill text-xl font-eskapade font-bold">
-                                <EditableTextField
-                                    boundValue={item.system.damage.oneHand}
-                                    updateProps={{ object: item, path: ['damage', 'oneHand'] }}
-                                    placeholder="1d6"
-                                />
-                            </div>
-                        </div> : <></>
+                        <ItemDamageTextField item={item} label={lang.Grips.H} path={'oneHand'} />
+                        : <></>
                 }
                 {
                     gripStyle === 'V' ? <p className="text-2xl text-text-primary">|</p> : <></>
                 }
                 {
                     gripStyle === 'V' || gripStyle === 'HH' ?
-                        <div className="flex gap-x-2">
-                            <ItemSheetPropLabel label={lang.Grips.HH} />
-                            <div className="text-stat-block-fill text-xl font-eskapade font-bold">
-                                <EditableTextField
-                                    boundValue={item.system.damage.twoHand}
-                                    updateProps={{ object: item, path: ['damage', 'twoHand'] }}
-                                    placeholder="1d10"
-                                />
-                            </div>
-                        </div> : <></>
+                        <ItemDamageTextField item={item} label={lang.Grips.HH} path={'twoHand'} />
+                        : <></>
                 }
             </div>
         </div>
     )
 }
 
-const DamageType = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+export const ItemDamageTextField = ({ item, label, path }) => {
+    return (
+        <div className="flex gap-x-2">
+            <ItemSheetPropLabel label={label} />
+            <div className="text-stat-block-fill text-xl font-eskapade font-bold">
+                <EditableTextField
+                    boundValue={item.system.damage[path]}
+                    updateProps={{ object: item, path: ['damage', path] }}
+                    placeholder="1d6"
+                />
+            </div>
+        </div>
+    )
+}
+
+export const DamageType = ({ item }: { item: Item & { system: WeaponDataModel | AlchemicalItemDataModel } }) => {
     return (
         <DropDown
             label={lang.ItemSheet.damageType}
@@ -106,7 +106,7 @@ const DamageType = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     )
 }
 
-export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: WeaponDataModel | AlchemicalItemDataModel } }) => {
     const { isEditMode } = useEditMode()
     const onCheckExplodable = useCallback((canExplode) => {
         item.update({ 'system.explodeData.canExplode': canExplode } as Record<string, boolean>)
@@ -162,16 +162,4 @@ const weaponProps = (item: Item & { system: WeaponDataModel }) => {
     return Object.entries(lang.WeaponProps).map(prop => (
         { key: prop[0], value: prop[1].name, isSelected: item.system.properties.indexOf(prop[0]) > -1 }
     ))
-}
-
-const Material = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
-    return (
-        <DropDown
-            label={lang.ItemSheet.material}
-            value={item.system.material}
-            options={createDropdownEntriesFromObj(lang.Metals)}
-            updateMechanism={{ updatePath: ['material'] }}
-            parent={item}
-        />
-    )
 }

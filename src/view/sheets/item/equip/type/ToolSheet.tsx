@@ -1,14 +1,16 @@
 import ToolDataModel from "../../../../../model/item/equip/ToolDataModel"
-import { useEditMode } from "../../../../context/EditModeContext"
 import { EquipmentSheetSubtypeBody } from "../EquipmentSheet"
 
 export const ToolSheet = ({ item }: { item: Item & { system: ToolDataModel } }) => {
-    const { isEditMode } = useEditMode()
-    
     return (
         <EquipmentSheetSubtypeBody>
-            <div>
+            <div className="space-y-4">
+                <div className="flex gap-x-4 justify-between">
 
+                </div>
+                <div className="flex justify-between items-center">
+
+                </div>
             </div>
         </EquipmentSheetSubtypeBody>
     )

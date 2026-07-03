@@ -6,8 +6,7 @@ import { EquipmentSchema } from "./EquipmentDataModel"
 
 const armorSchema = () => {
     return {
-        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'armor' }),
-        armorType: new fields.StringField({ reuired: false, initial: 'light', choices: ['light', 'medium', 'heavy'] }),
+        armorType: new fields.StringField({ reuired: false, initial: 'medium', choices: Object.keys(lang.VGLITE.ArmorTypes) }),
         rating: new fields.NumberField({ integer: true, min: 0, initial: 1 }),
         mightReq: new fields.NumberField({ ...requiredInteger, initial: 3 }),
         material: new fields.StringField({ ...requiredString, initial: 'standard', choices: Object.keys(lang.VGLITE.Metals) })
@@ -22,6 +21,15 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
             ...super.defineSchema(),
             ...armorSchema()
         }
+    }
+
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        this.parent.update({
+            'system.category': 'armor',
+            'system.isConsumable': false,
+            'system.bulk.stackSize': 1
+        })
     }
 
     override async prepareBaseData() {

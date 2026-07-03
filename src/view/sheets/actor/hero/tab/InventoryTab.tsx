@@ -103,16 +103,16 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className="overflow-auto">
-            <table className="table-auto w-full">
+            <table className="table-fixed w-full">
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
-                        <th className="text-left pl-2">{lang.VGLITE.HeroSheet.Inventory.item}</th>
+                        <th className="text-left pl-2 w-5/9">{lang.VGLITE.HeroSheet.Inventory.item}</th>
                         <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.slots}</th>
                         <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.value}</th>
                         <th className="text-center">{lang.VGLITE.HeroSheet.Inventory.equip}</th>
                     </tr>
                 </thead>
-                <tbody className="text-regular">{
+                <tbody className="font-eskapade">{
                     items.map((item: EquipmentDataModel<EquipmentSchema>, index: number) => (
                         <tr
                             key={getId(item)}
@@ -131,12 +131,17 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
                         >
                             <td className="px-2 py-1 cursor-grab">
                                 <span className="flex">
-                                    <img src={item.parent.img} alt={getName(item)} width="24" height="24" className="mr-2 rounded-sm border border-solid border-section-header-fill/60" />
-                                    {itemNameQty(item)}
+                                    <img
+                                        src={item.parent.img}
+                                        alt={getName(item)}
+                                        width="24" height="24"
+                                        className="mr-2 rounded-sm border border-solid border-section-header-fill/60"
+                                    />
+                                    <p className="line-clamp-1">{itemNameQty(item)}</p>
                                 </span>
                             </td>
-                            <td className="text-center">{item.bulk.totalSlots}</td>
-                            <td className="text-center">{coinsAsString(item.totalValue)}</td>
+                            <td className="text-center font-normal">{item.bulk.totalSlots}</td>
+                            <td className="text-center font-normal">{coinsAsString(item.totalValue)}</td>
                             {
                                 item.isEquippable ?
                                     <td className="items-center">
@@ -159,11 +164,11 @@ const InventoryItems = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const equippedIconStyle = "w-full justify-center text-stat-block-fill fill-stat-block-fill/80 cursor-pointer"
-const unEquipedIconStyle = "w-full justify-center text-stat-block-fill cursor-pointer"
 const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { type: string, isEquipped: boolean, gripState: string, toggleEquipState: () => void }) => {
+    const equippedIconStyle = "w-full justify-center text-stat-block-fill fill-stat-block-fill/80 cursor-pointer"
+    const unEquipedIconStyle = "w-full justify-center text-stat-block-fill cursor-pointer"
     return (
-        <div onClick={toggleEquipState}>
+        <div onClick={toggleEquipState} onDoubleClick={(e) => { e.stopPropagation() }}>
             {
                 type === 'armor' ?
                     <div>{
@@ -176,12 +181,19 @@ const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { typ
                 type === 'weapon' ?
                     <div>{
                         isEquipped ?
-                            <div className="flex items-center -space-x-5 font-eskapade text-text-secondary">
+                            <div className="flex items-center -space-x-4 font-eskapade text-text-secondary">
                                 <p>{lang.VGLITE.GripsAbbr[gripState]}</p>
                                 <HandFist size={18} className={equippedIconStyle} />
                             </div> :
                             <Hand size={18} className={unEquipedIconStyle} />
-                    }</div> : <></>
+                    }</div> :
+                    <div>{
+                        type !== 'armor' && type !== 'weapon' ? <>{
+                            isEquipped ?
+                                <HandFist size={18} className={equippedIconStyle} /> :
+                                <Hand size={18} className={unEquipedIconStyle} />
+                        }</> : <></>
+                    }</div>
             }
         </div>
     )

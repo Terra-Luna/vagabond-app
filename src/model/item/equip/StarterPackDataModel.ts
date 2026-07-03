@@ -7,7 +7,6 @@ import EquipmentDataModel from "./EquipmentDataModel"
 
 export const starterPackSchema = () => {
     return {
-        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'other' }),
         items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() })),
         coins: new fields.SchemaField({ ...coinSchema() })
     }
@@ -21,6 +20,15 @@ export default class StarterPackDataModel extends ItemDataModel<StarterPackSchem
             ...super.defineSchema(),
             ...starterPackSchema()
         }
+    }
+
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        this.parent.update({
+            'system.category': 'container',
+            'system.isConsumable': false,
+            'system.bulk.stackSize': 1
+        })
     }
 }
 

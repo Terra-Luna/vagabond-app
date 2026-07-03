@@ -9,11 +9,12 @@ import ArmorDataModel, { equipArmor } from "../../item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../item/equip/EquipmentDataModel"
 import WeaponDataModel, { equipWeapon, toggleGripState } from "../../item/equip/WeaponDataModel"
 import HeroDataModel from "../HeroDataModel"
-import { rollWeaponDamage } from "../../../combat/dice-rolls"
+import { rollDamage, rollWeaponDamage } from "../../../combat/dice-rolls"
 import { sendVgLiteChatMessage } from "../../../view/chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../view/chat/DamageRollChatCard"
 import { createElement } from "react"
 import { ItemChatCard } from "../../../view/chat/ItemChatCard"
+import AlchemicalItemDataModel from "../../item/equip/AlchemicalItemDataModel"
 
 export const inventorySchema = () => {
     return {
@@ -73,9 +74,17 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
         if (item.isConsumable) {
             await deleteItems(hero, [getId(item)])
         }
-        sendVgLiteChatMessage(hero, createElement(ItemChatCard, {
-            itemId: getId(item), itemName: `Used: ${getName(item)}`, isConsumable: item.isConsumable
-        }))
+        if (item instanceof AlchemicalItemDataModel && item.damage.type !== 'none') {
+            const damageRoll = await rollDamage(getName(item), item.damage.type ?? 'none', item.damage.oneHand, 0, item.explodeData.canExplode, item.explodeData.explodesOn as number[])
+            sendVgLiteChatMessage(hero, createElement(DamageRollChatCard, {
+                actorId: getId(hero), tokenIds: getTargets(), result: damageRoll
+            }))
+        }
+        else {
+            sendVgLiteChatMessage(hero, createElement(ItemChatCard, {
+                itemId: getId(item), itemName: `Used: ${getName(item)}`, isConsumable: item.isConsumable
+            }))
+        }
     }
     else {
         ui.notifications?.warn("Item not found!")

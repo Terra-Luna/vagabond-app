@@ -1,5 +1,3 @@
-import lang from "../../../../public/lang/en.json"
-import { fields, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 /**
@@ -7,9 +5,7 @@ import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
  * Eg.: magnifying glass, compass, books...
  */
 const sundrySchema = () => {
-    return {
-        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'other' }),
-    }
+    return {}
 }
 
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema
@@ -20,5 +16,15 @@ export default class SundryDataModel extends EquipmentDataModel<SundrySchema> {
             ...super.defineSchema(),
             ...sundrySchema()
         }
+    }
+
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        this.parent.update({
+            'system.isConsumable': false,
+            'system.bulk.isStackable': true,
+            'system.bulk.slots': 0,
+            'system.bulk.stackSize': 10
+        })
     }
 }

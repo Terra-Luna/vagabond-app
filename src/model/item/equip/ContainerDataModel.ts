@@ -4,7 +4,6 @@ import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 
 export const containerSchema = () => {
     return {
-        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'containers' }),
         capacity: new fields.NumberField({ ...requiredInteger, initial: 2 }),
         items: new fields.ArrayField(new fields.SchemaField({ ...EquipmentDataModel.defineSchema() }), { initial: [] })
     }
@@ -19,6 +18,19 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
             ...super.defineSchema(),
             ...containerSchema()
         }
+    }
+
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        this.parent.update({
+            'system.isConsumable': false,
+            'system.bulk.stackSize': 1
+        })
+    }
+
+    override async prepareBaseData() {
+        super.prepareBaseData()
+        this.bulk.isStackable = false
     }
 }
 

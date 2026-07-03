@@ -1,6 +1,6 @@
 import { ReactElement } from "react"
 import lang from "../../../public/lang/en.json"
-import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Wand, Zap } from "lucide-react"
+import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Sparkle, Wand, Zap } from "lucide-react"
 import { Tooltip } from "./Tooltip"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
@@ -41,6 +41,10 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         }
         case lang.VGLITE.DamageTypes.healing: {
             element = <Cross size={size} className='text-healing' />
+            break
+        }
+        case lang.VGLITE.DamageTypes.mana: {
+            element = <Sparkle size={size} className='text-mana' />
             break
         }
         case lang.VGLITE.DamageTypes.physical: {

@@ -5,13 +5,13 @@ import EquipmentDataModel, { EquipmentSchema } from "../../../../model/item/equi
 import { Divider, ItemDivider } from "../../../component/Header"
 import WeaponDataModel from "../../../../model/item/equip/WeaponDataModel"
 import { WeaponSheet } from "./type/WeaponSheet"
-import { LockKeyhole, LockKeyholeOpen, MessageSquareText, Pencil } from "lucide-react"
+import { MessageSquareText, Pencil } from "lucide-react"
 import { ArmorSheet } from "./type/ArmorSheet"
 import SundryDataModel from "../../../../model/item/equip/SundryDataModel"
 import { SundrySheet } from "./type/SundrySheet"
 import { ToolSheet } from "./type/ToolSheet"
 import ToolDataModel from "../../../../model/item/equip/ToolDataModel"
-import AlchemicalItemDataModel from "../../../../model/item/equip/AlchemicalDataModel"
+import AlchemicalItemDataModel from "../../../../model/item/equip/AlchemicalItemDataModel"
 import { AlchemicalSheet } from "./type/AlchemicalSheet"
 import StarterPackDataModel from "../../../../model/item/equip/StarterPackDataModel"
 import { StarterPackSheet } from "./type/StarterPackSheet"
@@ -19,7 +19,7 @@ import ContainerDataModel from "../../../../model/item/equip/ContainerDataModel"
 import { ContainerSheet } from "./type/ContainerSheet"
 import { EditableTextField } from "../../../component/EditableTextField"
 import { DropDown } from "../../../component/Dropdown"
-import { createDropdownEntries } from "../../../../utils/localeUtils"
+import { createDropdownEntries, createDropdownEntriesFromObj } from "../../../../utils/localeUtils"
 import { Description } from "../../shared/Description"
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
 import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
@@ -71,7 +71,7 @@ const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: Equipme
         sheet = <></>
     }
 
-    const baseContent = <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
+    const sharedContent = <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
         <Bulk item={item} />
         <div className="space-y-2">
             <ItemValue item={item} />
@@ -88,7 +88,7 @@ const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: Equipme
             children={<EquipmentSheetBody children={<>
                 {sheet}
                 <ItemDivider />
-                {baseContent}
+                {sharedContent}
             </>} />}
         />
     )
@@ -103,10 +103,8 @@ export const BaseEquipmentSheetHost = ({ header, children }: { header: React.Rea
     )
 }
 
-export const EquipmentSheetBanner = ({ item }: {
-    item: Item & { system: EquipmentDataModel<EquipmentSchema> }
-}) => {
-    const { isEditMode, editModeToggleBtn } = useEditMode()
+export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
+    const { editModeToggleBtn } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const editImage = () => {
@@ -134,7 +132,9 @@ export const EquipmentSheetBanner = ({ item }: {
             {item.img == null ? <></> :
                 <div>
                     <img
-                        className={`object-contain h-[54px] w-[54px] p-0.5`}
+                        className={`object-contain border border-solid border-wealth-denom-label rounded-sm mb-0.5`}
+                        width={56}
+                        height={56}
                         src={item.img}
                         alt={''}
                         onContextMenu={(e) => onCtxMenu(e, contextMenuItems)}
@@ -166,11 +166,13 @@ export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactE
 export const ItemSheetPropLabel = ({ label }) => {
     return <p className={sheetPropLabel}>{label}</p>
 }
+
 export const ItemSheetPropValue = ({ value }) => {
     return <div className={`${sheetPropValue} text-stat-block-fill`}>
         {value}
     </div>
 }
+
 export const ItemSheetProperty = ({ label, value }) => {
     return (
         <div className="flex gap-x-2 items-center mt-1">
@@ -244,7 +246,6 @@ export const ItemValue = ({ item }) => {
 }
 
 const CoinDisplay = ({ item, label, path }) => {
-
     return (
         <div className="flex">
             <div className={`text-text-primary text-xl font-eskapade min-w-[2ch] text-right`}>
@@ -256,5 +257,30 @@ const CoinDisplay = ({ item, label, path }) => {
             </div>
             <div className={"text-wealth-denom-label text-xs content-end"}>{label}</div>
         </div>
+    )
+}
+
+export const Material = ({ item }: { item: Item & { system: { material: string } } }) => {
+    return (
+        <DropDown
+            label={lang.ItemSheet.material}
+            value={item.system.material}
+            options={createDropdownEntriesFromObj(lang.Metals)}
+            updateMechanism={{ updatePath: ['material'] }}
+            parent={item}
+        />
+    )
+}
+
+export const ConsumableToggle = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
+    const onCheckConsumable = useCallback((isChecked) => {
+        item.update({ 'system.isConsumable': isChecked } as Record<string, boolean>)
+    }, [item])
+    return (
+        <Checkbox
+            label={lang.ItemSheet.consumable}
+            onCheckedChanged={onCheckConsumable}
+            checked={item.system.isConsumable}
+        />
     )
 }

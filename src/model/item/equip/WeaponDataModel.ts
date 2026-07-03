@@ -6,7 +6,6 @@ import { EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
     return {
-        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'weapons' }),
         range: new fields.StringField({ ...rangeOptions(), required: false }),
         damage: new fields.SchemaField({
             oneHand: new fields.StringField({ required: false, initial: '1d4' }),
@@ -46,9 +45,18 @@ export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         }
     }
 
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        this.parent.update({
+            'system.category': 'weapons'
+        })
+    }
+
     override async prepareBaseData() {
         super.prepareBaseData()
         this.isEquippable = true
+        this.isConsumable = false
+        this.bulk.isStackable = false
     }
 }
 

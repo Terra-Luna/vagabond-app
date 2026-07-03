@@ -1,6 +1,6 @@
 // @ts-ignore
 import vgliteStyles from '../public/styles/vagabond-lite.css?inline'
-import AlchemicalItemDataModel from "./model/item/equip/AlchemicalDataModel"
+import AlchemicalItemDataModel from "./model/item/equip/AlchemicalItemDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
 import ClassDataModel from "./model/item/character/ClassDataModel"
