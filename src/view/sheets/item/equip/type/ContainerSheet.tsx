@@ -2,6 +2,7 @@ import ActorDataModel, { BaseActorSchema } from "../../../../../model/actor/Acto
 import { sortedItems, containerItemContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import ContainerDataModel, { containerItems } from "../../../../../model/item/equip/ContainerDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
+import { vgLiteLang as lang } from "../../../../../utils/lang"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { CapacityGauge } from "../../../shared/CapacityGauge"

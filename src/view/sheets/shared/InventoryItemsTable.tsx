@@ -1,5 +1,4 @@
 import { Shield, HandFist, Hand } from "lucide-react"
-import { VGLITE as lang } from "../../../../public/lang/en.json"
 import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import HeroDataModel from "../../../model/actor/HeroDataModel"
 import { openItemSheet, itemNameQty, inventoryItemDragDropHandler } from "../../../model/actor/type/Inventory"
@@ -11,6 +10,7 @@ import { getId, getName } from "../../../utils/modelUtil"
 import { glowOnHover } from "../../common/text-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
+import { vgLiteLang } from "../../../utils/lang"
 
 export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipColumn = true }: {
     actor: ActorDataModel<BaseActorSchema> | null,
@@ -30,11 +30,11 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
             <table className="table-fixed w-full border border-solid border-table-border">
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
-                        <th className="text-left pl-2 w-5/9">{lang.HeroSheet.Inventory.item}</th>
-                        <th className="text-center">{lang.HeroSheet.Inventory.slots}</th>
-                        <th className="text-center">{lang.HeroSheet.Inventory.value}</th>
+                        <th className="text-left pl-2 w-5/9">{vgLiteLang.HeroSheet.Inventory.item}</th>
+                        <th className="text-center">{vgLiteLang.HeroSheet.Inventory.slots}</th>
+                        <th className="text-center">{vgLiteLang.HeroSheet.Inventory.value}</th>
                         {
-                            showEquipColumn ? <th className="text-center">{lang.HeroSheet.Inventory.equip}</th> : <></>
+                            showEquipColumn ? <th className="text-center">{vgLiteLang.HeroSheet.Inventory.equip}</th> : <></>
                         }
                     </tr>
                 </thead>
@@ -111,7 +111,7 @@ const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { typ
                     <div>{
                         isEquipped ?
                             <div className="flex items-center -space-x-4 font-eskapade text-text-secondary">
-                                <p>{lang.GripsAbbr[gripState]}</p>
+                                <p>{vgLiteLang.GripsAbbr[gripState]}</p>
                                 <HandFist size={18} className={equippedIconStyle} />
                             </div> :
                             <Hand size={18} className={unEquipedIconStyle} />
