@@ -1,4 +1,3 @@
-import lang from "../../../../../public/lang/en.json"
 import { Menu } from "lucide-react"
 import { useEffect, useRef, useState, useCallback } from "react"
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs"
@@ -18,6 +17,7 @@ import { MagicTab } from "./tab/MagicTab"
 import { MainTab } from "./tab/MainTab"
 import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills } from "./tab/TopSection"
 import { StatsDrawerContextProvider } from "./tab/StatsDrawer/StatsDrawerContextProvider"
+import { lang } from "../../../../utils/lang"
 
 const locale = lang.VGLITE.HeroSheet
 

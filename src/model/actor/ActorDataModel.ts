@@ -1,4 +1,4 @@
-import lang from "../../../public/lang/en.json"
+import { lang } from "../../utils/lang"
 import { fields, requiredString } from "../common/sharedSchemas"
 import { armorSchema } from "./type/Armor"
 import { healthSchema } from "./type/Health"

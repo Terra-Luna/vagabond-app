@@ -1,4 +1,3 @@
-import lang from "../../../../../../public/lang/en.json";
 
 import { LucidePlus } from "lucide-react";
 import { useCallback, useEffect } from "react";
@@ -14,6 +13,7 @@ import { SheetHeader } from "../../../../component/SheetHeader";
 import { useEditMode } from "../../../../context/EditModeContext/Hooks";
 import { addNewBlankGrant, addNewBlankModifier } from "./utils";
 import { Trait } from "./Trait";
+import { lang } from "../../../../../utils/lang";
 
 interface AncestryComponentProps {
     ancestry: AncestryDataModel;

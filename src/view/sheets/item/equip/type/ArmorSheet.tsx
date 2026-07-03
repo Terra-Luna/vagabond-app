@@ -1,11 +1,12 @@
 import { useEffect } from "react"
-import { VGLITE as lang } from "../../../../../../public/lang/en.json"
 import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { Shield } from "lucide-react"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EquipmentSheetSubtypeBody, ItemSheetProperty, Material } from "../EquipmentSheetComponent"
+import { lang as fullLang } from "../../../../../utils/lang"
+const lang = fullLang.VGLITE
 
 export const ArmorSheet = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
     return (

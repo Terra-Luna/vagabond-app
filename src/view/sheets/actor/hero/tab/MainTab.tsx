@@ -1,6 +1,5 @@
 import { Shield } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
-import lang from "../../../../../../public/lang/en.json"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
 import WeaponDataModel, { gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
@@ -14,6 +13,7 @@ import { Skill } from "./TopSection"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { glowOnHover } from "../../../../common/text-styles"
+import { lang } from "../../../../../utils/lang"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

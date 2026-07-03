@@ -1,4 +1,3 @@
-import lang from "../../../../public/lang/en.json"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredString } from "../../common/sharedSchemas"

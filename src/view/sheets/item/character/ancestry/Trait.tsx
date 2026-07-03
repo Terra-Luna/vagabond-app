@@ -1,4 +1,3 @@
-import lang from "../../../../../../public/lang/en.json"
 import { Collapsible } from "../../../../component/Collapsible"
 import { Trait as TraitModel, Grant, Modifier } from "../../../../../model/item/character/traitsAndFeatures"
 import { CardHeader } from "../../../../component/CardHeader"
@@ -16,6 +15,7 @@ import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { addNewBlankModifier, addNewBlankGrant } from "./utils"
+import { lang } from "../../../../../utils/lang"
 
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
@@ -156,7 +156,6 @@ const Modifier = ({ modifier, ancestry, index, traitIndex }: ModifierProps) => {
                     parent={ancestry.parent}
                     updateMechanism={{ onChange: onUpdateType }}
                     value={modifier.type} />
-
             </div>
             <div className="flex ml-4 pb-2">
                 <LabelledField label={lang.VGLITE.AncestrySheet.value}>

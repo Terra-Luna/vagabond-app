@@ -1,4 +1,3 @@
-import lang from "../../../public/lang/en.json"
 import { Equal } from "lucide-react"
 import { DamageRollResult } from "../../combat/dice-rolls"
 import { getTokenImg } from "../../utils/modelUtil"
@@ -8,6 +7,7 @@ import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DamageRolls } from "./component/DiceRoll"
 import { TargetsDisplay } from "./component/TargetsDisplay"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
+import { lang } from "../../utils/lang"
 
 export const AbilityChatCard = ({ actorId, title, description, tokenIds, dmgType = 'none' }: {
     actorId: string, title: string, description: string, tokenIds: string[], dmgType?: string

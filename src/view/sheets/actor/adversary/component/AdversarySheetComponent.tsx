@@ -1,4 +1,3 @@
-import lang from "../../../../../../public/lang/en.json"
 import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
 import { getDocumentAtPath } from "../../../../../utils/documentUtils"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
@@ -14,8 +13,10 @@ import { Abilities, NewAbilityWindow } from "./Ability"
 import { Actions, NewActionWindow } from "./Action"
 import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
 import { HPArmorHUD } from "./HPArmorHUD"
+import { lang  } from "../../../../../utils/lang"
 
 const locale = lang.VGLITE.AdversarySheet
+
 const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
 const statValueStyle = `text-lg text-stat-block-fill font-eskapade font-bold`
 

@@ -1,4 +1,4 @@
-import lang from "../../../../public/lang/en.json"
+import { lang } from "../../../utils/lang"
 import { fields, optionalString, requiredInteger, requiredString, standardInteger } from "../../common/sharedSchemas"
 import { starterPackSchema } from "../equip/StarterPackDataModel"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"

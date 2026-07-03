@@ -1,7 +1,7 @@
-import vgliteStyles from "../../../public/styles/vagabond-lite.css?inline"
 import ReactDom from "react-dom/client"
 import { DimensionsContext } from "../context/DimensionsContext"
 import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
+import { vgLiteStyles } from "../../utils/styleUtils"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
@@ -81,7 +81,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <EditModeContextProvider>
-                    <style>{vgliteStyles as any}</style>
+                    <style>{vgLiteStyles}</style>
                     <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
                         <this.Component {...this.getReactProps()} />
                     </div>

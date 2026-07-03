@@ -1,4 +1,3 @@
-import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
 import { getName } from "../../../../../utils/modelUtil"

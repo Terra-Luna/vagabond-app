@@ -1,5 +1,4 @@
-import locale from "../../../public/lang/en.json"
-
+import { lang as locale } from "../../utils/lang"
 export const fields = foundry.data.fields
 
 export const optionalString = { required: false, nullable: true, blank: false }

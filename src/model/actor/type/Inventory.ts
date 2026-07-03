@@ -1,6 +1,5 @@
 import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash, Undo } from "lucide-react"
 import { createElement } from "react"
-import lang from "../../../../public/lang/en.json"
 import { rollDamage, rollWeaponDamage } from "../../../combat/dice-rolls"
 import { groupBy } from "../../../utils/collectionUtil"
 import { getId, getName, getTargets } from "../../../utils/modelUtil"
@@ -18,6 +17,7 @@ import AlchemicalItemDataModel from "../../item/equip/AlchemicalItemDataModel"
 import ContainerDataModel, { addItem, extractItem } from "../../item/equip/ContainerDataModel"
 import { CapacityInfo } from "../../../view/sheets/shared/CapacityGauge"
 import ActorDataModel, { BaseActorSchema } from "../ActorDataModel"
+import { lang } from "../../../utils/lang"
 
 export const inventorySchema = () => {
     return {

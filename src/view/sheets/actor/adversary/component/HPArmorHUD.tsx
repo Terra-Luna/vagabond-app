@@ -1,11 +1,10 @@
-import { VGLITE as locale } from "../../../../../../public/lang/en.json"
 import { Shield } from "lucide-react"
 import { useCallback } from "react"
 import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { glowOnHover } from "../../../../common/text-styles"
-import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { vgLiteLang as locale } from "../../../../../utils/lang"
 
 export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     const headerStyle = "text-xs font-paradigm"

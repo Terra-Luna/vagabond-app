@@ -1,9 +1,9 @@
 import { BookMarked, Clover } from "lucide-react"
-import lang from "../../../public/lang/en.json"
 import { getTokenImg } from "../../utils/modelUtil"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import ReactHtmlParser from 'react-html-parser'
+import { lang } from "../../utils/lang"
 
 const resources = lang.VGLITE.Resources
 

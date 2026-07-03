@@ -1,6 +1,5 @@
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { Header } from "../../../../component/Header"
-import lang from "../../../../../../public/lang/en.json" // todo correct language import
 
 const locale = lang.VGLITE.HeroSheet;
 

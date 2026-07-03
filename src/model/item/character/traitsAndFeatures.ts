@@ -1,4 +1,4 @@
-import lang from "../../../../public/lang/en.json"
+import { lang } from "../../../utils/lang"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import PerkDataModel from "./PerkDataModel"
 import SpellDataModel from "./SpellDataModel"

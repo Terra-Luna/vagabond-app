@@ -1,4 +1,3 @@
-import vgliteStyles from '../public/styles/vagabond-lite.css?inline'
 import AlchemicalItemDataModel from "./model/item/equip/AlchemicalItemDataModel"
 import AdversaryDataModel from "./model/actor/AdversaryDataModel"
 import HeroDataModel from "./model/actor/HeroDataModel"
@@ -22,14 +21,9 @@ import { runAllMacros } from "./macro/all-macros"
 import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
 import { rehydrateElement } from "./view/chat/ChatCardManager"
-import { SkillCheckChatCard } from "./view/chat/SkillCheckChatCard"
-import { TrackerUpdateChatCard } from "./view/chat/TrackerUpdateChatCard"
-import { AbilityChatCard, ComboChatCard } from './view/chat/AbilityChatCard'
-import { DamageRollChatCard } from './view/chat/DamageRollChatCard'
-import { ItemChatCard } from './view/chat/ItemChatCard'
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
-import { ReactNode } from 'react'
 import { PerkSheet } from './view/sheets/item/character/Sheets'
+import { vgLiteStyles } from "./utils/styleUtils"
 
 // add our fonts
 const fontFaces = [
@@ -188,7 +182,7 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 
         root.render(
             <div>
-                <style>{vgliteStyles as unknown as ReactNode}</style>
+                <style>{vgLiteStyles}</style>
                 <div className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
                     {rehydrateElement(blueprint)}
                 </div>
@@ -233,12 +227,3 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentShee
 });
 
 (window as any).runVgLiteDebugMacros = runAllMacros
-
-export const ComponentRegistry = {
-    "AbilityChatCard": AbilityChatCard,
-    "ComboChatCard": ComboChatCard,
-    "DamageRollChatCard": DamageRollChatCard,
-    "ItemChatCard": ItemChatCard,
-    "SkillCheckChatCard": SkillCheckChatCard,
-    "TrackerUpdateChatCard": TrackerUpdateChatCard
-}

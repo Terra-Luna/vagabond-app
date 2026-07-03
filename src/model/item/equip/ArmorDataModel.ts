@@ -1,4 +1,4 @@
-import lang from "../../../../public/lang/en.json"
+import { lang } from "../../../utils/lang"
 import HeroDataModel from "../../actor/HeroDataModel"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { setEquipState } from "./EquipmentDataModel"

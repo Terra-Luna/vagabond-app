@@ -1,5 +1,4 @@
 import { Coins } from "lucide-react"
-import lang from "../../../../../../public/lang/en.json"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { equipmentContextMenuItems, getContainers, getEncumbranceInfo, isInContainer, sortedItems } from "../../../../../model/actor/type/Inventory"
@@ -7,6 +6,7 @@ import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/e
 import { glowOnHover } from "../../../../common/text-styles"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
+import { lang } from "../../../../../utils/lang"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

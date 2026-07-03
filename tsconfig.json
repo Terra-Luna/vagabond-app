@@ -9,6 +9,7 @@
             "ES2020"
         ],
         "types": [
+            "vite/client",
             "@league-of-foundry-developers/foundry-vtt-types"
         ],
         "esModuleInterop": true,

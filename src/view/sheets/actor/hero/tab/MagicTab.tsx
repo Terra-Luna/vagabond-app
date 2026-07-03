@@ -1,4 +1,3 @@
-import lang from "../../../../../../public/lang/en.json"
 import { MessageSquareText, Sparkle, Sparkles, Trash } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"

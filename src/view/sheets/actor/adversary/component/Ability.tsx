@@ -1,4 +1,3 @@
-import { VGLITE as locale } from "../../../../../../public/lang/en.json"
 import { PenSquare, Trash } from "lucide-react"
 import { useState, useCallback } from "react"
 import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
@@ -11,6 +10,7 @@ import { RichTextField } from "../../../../component/RichTextField"
 import { ActionMenuHeader, AddMenuButtons } from "./Action"
 import { glowOnHover } from "../../../../common/text-styles"
 import { onClickAction } from "./hooksAndUtils"
+import { vgLiteLang as locale } from "../../../../../utils/lang"
 
 export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()

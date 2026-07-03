@@ -1,4 +1,3 @@
-import { VGLITE as lang } from "../../../../../public/lang/en.json"
 import { Pencil, MessageSquareText } from "lucide-react"
 import { useCallback } from "react"
 import AlchemicalItemDataModel from "../../../../model/item/equip/AlchemicalItemDataModel"
@@ -28,6 +27,8 @@ import { StarterPackSheet } from "./type/StarterPackSheet"
 import { SundrySheet } from "./type/SundrySheet"
 import { ToolSheet } from "./type/ToolSheet"
 import { WeaponSheet } from "./type/WeaponSheet"
+import { lang as fullLang } from "../../../../utils/lang"
+const lang = fullLang.VGLITE
 
 export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     let sheet: React.ReactElement

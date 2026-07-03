@@ -1,4 +1,4 @@
-import lang from "../../../../public/lang/en.json"
+import { lang } from "../../../utils/lang"
 import { addCoins as addCoins, coinSchema, consolidateCoins, multiplyCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"

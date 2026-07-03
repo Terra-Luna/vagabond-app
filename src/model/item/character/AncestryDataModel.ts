@@ -1,6 +1,6 @@
-import lang from "../../../../public/lang/en.json"
 import { ActiveEffectMode } from "../../../document/VgLiteActiveEffect"
 import { updateDocument } from "../../../utils/documentUtils"
+import { lang } from "../../../utils/lang"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 import PerkDataModel from "./PerkDataModel"

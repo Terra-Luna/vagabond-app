@@ -1,4 +1,4 @@
-import { VGLITE as locale } from "../../../../../../public/lang/en.json"
+import { vgLiteLang as locale } from "../../../../../utils/lang"
 import { Trash, PenSquare, Plus, Save } from "lucide-react"
 import { useState, useCallback } from "react"
 import { rollDamage, DamageRollResult } from "../../../../../combat/dice-rolls"

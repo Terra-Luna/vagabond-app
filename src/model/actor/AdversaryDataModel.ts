@@ -1,4 +1,4 @@
-import lang from "../../../public/lang/en.json"
+import { lang } from "../../utils/lang"
 import { getName } from "../../utils/modelUtil"
 import { damageTypeOptions, fields, movementTypes, optionalString, requiredString, statusEffOptions, zonePreferences } from "../common/sharedSchemas"
 import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"

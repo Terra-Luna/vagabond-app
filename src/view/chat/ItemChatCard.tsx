@@ -1,7 +1,7 @@
-import lang from "../../../public/lang/en.json"
 import ArmorDataModel from "../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import WeaponDataModel from "../../model/item/equip/WeaponDataModel"
+import { lang } from "../../utils/lang"
 import { getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"

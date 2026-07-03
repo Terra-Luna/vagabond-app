@@ -1,7 +1,6 @@
 import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
-import { createContext, ReactNode, useCallback, useContext, useState } from "react"
-import lang from "../../../../../../public/lang/en.json"
+import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
 import { localizeString } from "../../../../../utils/localeUtils"
 import { rollSkillCheck } from "../../../../../combat/dice-rolls"
@@ -14,6 +13,7 @@ import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 import { Tooltip } from "../../../../component/Tooltip"
 import { glowOnHover } from "../../../../common/text-styles"
 import { useStatsDrawerStatus } from "./StatsDrawer/hooks"
+import { lang } from "../../../../../utils/lang"
 
 interface Health {
     current: number | null

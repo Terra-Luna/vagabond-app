@@ -1,4 +1,4 @@
-import lang from "../../../../public/lang/en.json"
+import { lang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
 

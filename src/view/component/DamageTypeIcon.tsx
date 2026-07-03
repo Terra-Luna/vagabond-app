@@ -1,7 +1,7 @@
 import { ReactElement } from "react"
-import lang from "../../../public/lang/en.json"
 import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Sparkle, Wand, Zap } from "lucide-react"
 import { Tooltip } from "./Tooltip"
+import { lang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
     size = size ? size : 20

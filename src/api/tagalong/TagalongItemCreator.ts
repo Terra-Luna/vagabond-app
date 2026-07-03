@@ -1,5 +1,5 @@
-import lang from "../../../public/lang/en.json"
 import HeroDataModel from "../../model/actor/HeroDataModel"
+import { lang } from "../../utils/lang"
 import { TagalongItem } from "./TagalongApi"
 
 export default class TagalongItemCreator {

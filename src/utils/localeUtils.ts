@@ -1,4 +1,3 @@
-import lang from "../../public/lang/en.json"
 import VgLiteError from "../model/common/VgLiteError"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
