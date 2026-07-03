@@ -81,24 +81,27 @@ export const EditableTextField = (
 
     if (isInEditMode || boundValue === '' || boundValue == null) {
         const inputStyle = (editModeValue === '' || editModeValue == null) ? "field-sizing-content border border-solid border-stat-block-fill rounded-xs px-1" : "w-auto field-sizing-content"
-        return <input ref={inputRef} className={inputStyle} type="text" value={editModeValue ?? ''} placeholder={placeholder}
-            onChange={e => setEditModeValue(e.target.value)}
-            onBlur={save}
-            onKeyDown={handleSpecialKeypresses} />
+        return <div className="overflow-hidden">
+            <input ref={inputRef} className={inputStyle} type="text" value={editModeValue ?? ''} placeholder={placeholder}
+                onChange={e => setEditModeValue(e.target.value)}
+                onBlur={save}
+                onKeyDown={handleSpecialKeypresses} />
+        </div>
     }
     else {
+        const divStyle = "overflow-hidden whitespace-normal text-wrap"
         return (<>
             {
                 enabled ?
                     <Tooltip text={'Double-click to Edit'}>
                         <div
                             onDoubleClick={enterEditMode}
-                            className={`${glowOnHover} ${hideBorderOnEditMode ? "" : editModeBorder}`}
+                            className={`${glowOnHover} ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}
                         >
                             {boundValue}
                         </div >
                     </Tooltip > :
-                    <div>{boundValue}</div>
+                    <div className={divStyle}>{boundValue}</div>
             }
         </>)
     }
