@@ -8,9 +8,8 @@
     "vite-no": "pnpm vite --open 0",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
     "clean-": "echo Y | rmdir /s dist && pnpm clean",
-    "lint": "eslint --quiet src/*",
-    "lint:fix": "eslint --quiet . --fix",
-    "lint:full": "eslint src/*"
+    "lint": "eslint src/*",
+    "lint:fix": "eslint --fix src/*"
   },
   "keywords": [],
   "author": "",
