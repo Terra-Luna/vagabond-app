@@ -11,6 +11,7 @@ import "../styles/vagabond-lite.css"
 const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement }
 
 const removeAndSaveVgLiteStyleTag = () => {
+    // todo - figure out what ID this tag gets in prod
     const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement;
     if (vgLiteStyleTag) {
         vgLiteStyleTag.remove();
