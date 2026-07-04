@@ -139,8 +139,8 @@ Hooks.on("updateItem", (item, changed, options, userId) => {
     const actor = item.actor
     if (!actor) return
 
-    const containers = actor.items?.filter(it => (it.type as string) === 'container') as Item & { system: ContainerDataModel }[]
-    const container = containers.find(c => c.system.itemIds.includes(getId(item)))
+    const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
+    const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
     if (!container) return
 
     for (const app of foundry.applications.instances.values()) {
