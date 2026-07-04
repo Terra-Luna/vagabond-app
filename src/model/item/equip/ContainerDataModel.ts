@@ -1,7 +1,6 @@
 import { getId } from "../../../utils/modelUtil"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema, getTotalSlots } from "./EquipmentDataModel"
-import { isEquippedWWeapon } from "./WeaponDataModel"
 
 export const containerSchema = () => {
     return {
@@ -38,9 +37,12 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
 export const itemsInContainer = (container: ContainerDataModel) => {
     const actor = container.parent.actor
     if (!actor) return []
-    return container.itemIds.map(id => 
-        actor.items.get(id)
-    ) as Item & { system: EquipmentDataModel<EquipmentSchema> }[]
+    const items: Item[] = []
+    container.itemIds.forEach(id => {
+        const item = actor.items.get(id)
+        if (item) items.push(item)
+    })
+    return items as unknown as Item & { system: EquipmentDataModel<EquipmentSchema> }[]
 }
 
 export const allItemIdsInContainers = (actor: any): string[] => {

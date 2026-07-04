@@ -16,7 +16,7 @@ import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
-import { getContainers, isInContainer, isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
+import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
 import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
@@ -139,10 +139,13 @@ Hooks.on("updateItem", (item, changed, options, userId) => {
     const actor = item.actor
     if (!actor) return
 
+    /**
+     * This will cause container sheets to refresh themselves when their
+     * underyling items (ref'd by item-ID) are updated.
+     */
     const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
     const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
     if (!container) return
-
     for (const app of foundry.applications.instances.values()) {
         const docApp = app as any
         if (docApp.document && getId(container) === docApp.document.id) {

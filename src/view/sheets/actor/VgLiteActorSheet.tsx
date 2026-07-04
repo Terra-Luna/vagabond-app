@@ -3,7 +3,7 @@ import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils
 import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { extractItemFromContainer } from "../../../model/item/equip/ContainerDataModel"
 import { VgLiteSheetMixin } from "../VgLiteSheet"
-import { deleteItems, deleteItemStack } from "../../../model/actor/type/Inventory"
+import { deleteItemStack } from "../../../model/actor/type/Inventory"
 
 export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {
     update: (data: Record<keyof T, any>) => any

@@ -48,7 +48,13 @@ export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> 
 
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
-        this.parent.update({ 'prototypeToken.name': data.name })
+        this.parent.update({
+            'prototypeToken.name': data.name,
+            'prototypeToken.sight.enabled': true,
+            'prototypeToken.sight.range': 500,
+            'prototypeToken.occludable.radius': 8,
+            'system.health.current': 4
+        })
     }
 
     override async _onUpdate(changed, options, userId) {

@@ -1,9 +1,7 @@
 import { lang } from "../../../utils/lang"
-import { getContainers } from "../../actor/type/Inventory"
 import { addCoins as addCoins, coinSchema, consolidateCoins, multiplyCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import ContainerDataModel from "./ContainerDataModel"
 
 /**
  * Anything a hero can have in their inventory.
