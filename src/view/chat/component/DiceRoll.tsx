@@ -4,8 +4,11 @@ import D10 from "../../../icons/dice/d10.svg?react"
 import D8 from "../../../icons/dice/d8.svg?react"
 import D6 from "../../../icons/dice/d6.svg?react"
 import D4 from "../../../icons/dice/d4.svg?react"
-import { DamageRollResult } from "../../../combat/dice-rolls"
+import { DamageRollResult, rollCountdownDie } from "../../../combat/dice-rolls"
 import { Plus } from "lucide-react"
+import { glowOnHover } from "../../common/text-styles"
+import { sendVgLiteChatMessage } from "../ChatCardManager"
+import { CountdownRollChatCard } from "../CountdownRollChatCard"
 
 const centeredAlignment = "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
 
@@ -30,7 +33,18 @@ export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
                 !result.appliesBurn || result.burnDuration.length === 0 ? <></> :
                     <div className="flex space-x-2 items-center">
                         <div className="h-full content-center text-text-secondary"><Plus size={18} /></div>
-                        <p className="h-full text-xl content-center">{result.burnDuration}</p>
+                        <p
+                            className={`h-full text-xl content-center ${glowOnHover} cursor-pointer`}
+                            onClick={async () => {
+                                const cdRes = await rollCountdownDie({
+                                    name: result.atkName,
+                                    duration: result.burnDuration
+                                })
+                                sendVgLiteChatMessage(null, <CountdownRollChatCard result={cdRes!} />, cdRes!.rolls)
+                            }}
+                        >
+                            {result.burnDuration}
+                        </p>
                     </div>
             }
         </div>
