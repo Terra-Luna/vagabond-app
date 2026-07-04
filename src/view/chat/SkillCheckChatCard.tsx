@@ -4,10 +4,11 @@ import { DiceRoll } from './component/DiceRoll'
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { getTokenImg } from "../../utils/modelUtil"
+import { vgLiteLang } from '../../utils/lang'
 
 export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
     const actor = game.actors?.get(actorId)
-    const [resultTextColor] = result.result === lang.VGLITE.RollResult.failure ? ['text-failure'] : ['text-success']
+    const [resultTextColor] = result.result === vgLiteLang.RollResult.failure ? ['text-failure'] : ['text-success']
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner portrait={getTokenImg(actor)} title={`${result.skillName} Check`} />}
@@ -24,10 +25,10 @@ const DiceGraphics = ({ d20, d6, favHinder }) => {
         <div className="flex gap-x-2 mt-2 justify-center">
             <DiceRoll faces={20} result={d20} textSize="text-5xl" />
             {
-                favHinder !== lang.VGLITE.FavorHinder.none ?
+                favHinder !== vgLiteLang.FavorHinder.none ?
                     <div className="flex gap-x-2">
                         <div className="h-full content-center">{
-                            favHinder === lang.VGLITE.FavorHinder.favor ?
+                            favHinder === vgLiteLang.FavorHinder.favor ?
                                 <Plus size={24} strokeWidth={4} /> :
                                 <Minus size={24} strokeWidth={4} />
                         }</div>

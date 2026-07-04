@@ -54,7 +54,6 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             onDragEnter={(e) => onDragEnter(e, index)}
                             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                             onDragEnd={(e) => onDragEnd(e, index)}
-                            data-item-id={getId(item)}
                         >
                             <td className="px-2 py-1 cursor-grab">
                                 <span className="flex">
@@ -64,7 +63,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                         width="28" height="28"
                                         className="mr-2 rounded-sm border border-solid border-section-header-fill/60"
                                     />
-                                    <p className="line-clamp-1">{itemNameQty(item)}</p>
+                                    <p className="items-center line-clamp-1">{itemNameQty(item)}</p>
                                 </span>
                             </td>
                             <td className="text-center font-normal">{item.bulk.totalSlots}</td>
@@ -129,7 +128,7 @@ const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { typ
     )
 }
 
-const toggleEquipState = async (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+async function toggleEquipState(hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) {
     if (item.isEquipped) {
         await setEquipState(item, false)
     }

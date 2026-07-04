@@ -83,7 +83,7 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
 
 export const BaseEquipmentSheetHost = ({ header, children }: { header: React.ReactElement, children: React.ReactElement }) => {
     return (
-        <div className="bg-sheet-main-fill h-full overflow-y-auto border-2 border-solid border-section-header-fill/60 rounded-b-md">
+        <div className="bg-sheet-main-fill h-full overflow-y-auto border-2 border-solid border-section-header-fill/80 border-top-transparent rounded-b-md">
             {header}
             {children}
         </div>

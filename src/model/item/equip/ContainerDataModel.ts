@@ -49,7 +49,6 @@ export const containerItems = (container: ContainerDataModel) => {
 }
 
 export async function addItem(container: ContainerDataModel, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
-    console.log(item.id, container.parent.id)
     if (item.id && item.id !== container.parent.id) {
         if ((item.type as string) === 'container') {
             ui.notifications?.warn("Cannot place containers within containers!")
