@@ -11,6 +11,7 @@ import { useContextMenu } from "../../../../component/ContextMenu"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { glowOnHover } from "../../../../common/text-styles"
+import { vgLiteLang } from "../../../../../utils/lang"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -91,7 +92,7 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                         ])}>
                             <SkillCard
                                 title={sp.parent.name}
-                                subtitles={[['Base dmg', lang.VGLITE.DamageTypes[sp.damageType] ?? '-']]}
+                                subtitles={[['Base dmg', vgLiteLang.DamageTypes[sp.damageType] ?? '-']]}
                                 description={sp.description}
                             />
                         </div>

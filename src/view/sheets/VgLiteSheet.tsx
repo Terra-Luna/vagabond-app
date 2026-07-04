@@ -15,7 +15,13 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         },
         window: {
             resizable: false
-        }
+        },
+        dragDrop: [
+            {
+                dragSelector: ".draggable",
+                dropSelector: ".vglite-root"
+            }
+        ]
     }
 
     // Prep our react root and shadow dom if needed, and render

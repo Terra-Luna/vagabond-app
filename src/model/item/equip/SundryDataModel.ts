@@ -18,13 +18,4 @@ export default class SundryDataModel extends EquipmentDataModel<SundrySchema> {
         }
     }
 
-    override async _onCreate(data: any, options: any, userId: string) {
-        super._onCreate(data, options, userId)
-        this.parent.update({
-            'system.isConsumable': false,
-            'system.bulk.isStackable': true,
-            'system.bulk.slots': 0,
-            'system.bulk.stackSize': 10
-        })
-    }
 }

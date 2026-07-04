@@ -2,6 +2,7 @@ import { lang } from "../../../utils/lang"
 import { addCoins as addCoins, coinSchema, consolidateCoins, multiplyCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import ContainerDataModel from "./ContainerDataModel"
 
 /**
  * Anything a hero can have in their inventory.
@@ -60,12 +61,7 @@ export default abstract class EquipmentDataModel<T extends EquipmentSchema> exte
 
     override async prepareDerivedData() {
         super.prepareDerivedData()
-        if (this.bulk.isStackable) {
-            this.bulk.totalSlots = getStackSlots(this as EquipmentDataModel<any>)
-        }
-        else {
-            this.bulk.totalSlots = this.bulk.slots
-        }
+        this.bulk.totalSlots = getTotalSlots(this)
     }
 
     override async _preUpdate(changes, options, user) {
@@ -107,6 +103,15 @@ export const setEquipState = async (item: any, isEquipped: boolean) => {
         if (item.isEquippable && item.isEquipped != isEquipped) {
             await item.parent.update({ 'system.isEquipped': isEquipped })
         }
+    }
+}
+
+export const getTotalSlots = (item: any): number => {
+    if (item?.bulk?.isStackable) {
+        return getStackSlots(item)
+    }
+    else {
+        return item?.bulk?.slots ?? 0
     }
 }
 

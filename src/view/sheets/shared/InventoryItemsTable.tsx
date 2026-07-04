@@ -44,12 +44,12 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             key={getId(item)}
                             className={
                                 index === dragIndex ?
-                                    "bg-text-fatigue-current inventory-table-drag-source" :
-                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 ${glowOnHover}`
+                                    "bg-text-fatigue-current draggable" :
+                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 ${glowOnHover} draggable`
                             }
                             onContextMenu={(e) => { onCtxMenu(e, contextMenuItems(item)) }}
                             onDoubleClick={() => openItemSheet(item)}
-                            draggable
+                            draggable={true}
                             onDragStart={(e) => onDragStart(e, index)}
                             onDragEnter={(e) => onDragEnter(e, index)}
                             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}

@@ -38,9 +38,7 @@ export default class AlchemicalItemDataModel extends EquipmentDataModel<Alchemic
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
         this.parent.update({
-            'system.category': 'alchemy',
-            'system.isConsumable': true,
-            'system.bulk.stackSize': 1
+            'system.category': 'alchemy'
         })
     }
 

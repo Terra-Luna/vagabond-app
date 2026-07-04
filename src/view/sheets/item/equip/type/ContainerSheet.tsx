@@ -16,7 +16,7 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
     return (
         <EquipmentSheetSubtypeBody>
             <div className="mb-8">
-                <div className="flex gap-x-4 justify-center items-center mb-2">
+                <div className="flex gap-x-4 mb-2">
                     {
                         isEditMode ?
                             <ItemSheetProperty
@@ -31,7 +31,7 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
                             /> : <></>
                     }
                     <CapacityGauge label={lang.ItemSheet.capacity} capacityInfo={{
-                        bulk: (item.system.capacity - item.system.emptySlots),
+                        bulk: item.system.capacity - item.system.emptySlots,
                         capacity: item.system.capacity,
                         isOverEncumbered: false
                     }} />

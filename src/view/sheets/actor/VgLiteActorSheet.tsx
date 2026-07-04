@@ -1,5 +1,6 @@
-const { sheets } = foundry.applications;
+const { sheets } = foundry.applications
 import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel"
+import EquipmentDataModel, { EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { VgLiteSheetMixin } from "../VgLiteSheet"
 
 export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {
@@ -10,4 +11,11 @@ export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {
 export abstract class VgLiteActorSheet extends VgLiteSheetMixin(sheets.ActorSheetV2) {
     getReactProps() { return { ...super.getReactProps(), actor: this.actor } }
     abstract Component: React.ComponentType<any>
+
+    override async _renderHTML() {
+        super._renderHTML()
+
+        console.log("VgLiteActorSheet _renderHTML()", this.actor)
+
+    }
 }

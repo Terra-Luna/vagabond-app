@@ -26,9 +26,7 @@ export default class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
         this.parent.update({
-            'system.category': 'armor',
-            'system.isConsumable': false,
-            'system.bulk.stackSize': 1
+            'system.category': 'armor'
         })
     }
 

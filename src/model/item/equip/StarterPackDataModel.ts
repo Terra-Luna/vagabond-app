@@ -24,9 +24,7 @@ export default class StarterPackDataModel extends ItemDataModel<StarterPackSchem
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
         this.parent.update({
-            'system.category': 'container',
-            'system.isConsumable': false,
-            'system.bulk.stackSize': 1
+            'system.category': 'container'
         })
     }
 }

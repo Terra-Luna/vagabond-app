@@ -20,9 +20,7 @@ export default class ToolDataModel extends EquipmentDataModel<ToolSchema> {
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
         this.parent.update({
-            'system.category': 'tools',
-            'system.isConsumable': false,
-            'system.bulk.stackSize': 1
+            'system.category': 'tools'
         })
     }
 
