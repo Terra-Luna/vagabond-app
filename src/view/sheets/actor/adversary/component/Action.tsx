@@ -1,11 +1,11 @@
-import { vgLiteLang as locale } from "../../../../../utils/lang"
+import { vgLiteLang as locale, vgLiteLang } from "../../../../../utils/lang"
 import { Trash, PenSquare, Plus, Save } from "lucide-react"
 import { useState, useCallback } from "react"
 import { rollDamage, DamageRollResult } from "../../../../../combat/dice-rolls"
 import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
-import { ComboChatCard, AbilityChatCard } from "../../../../chat/AbilityChatCard"
+import { ComboChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
@@ -17,6 +17,8 @@ import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
+import { DropDown } from "../../../../component/Dropdown"
+import { createDropdownEntries } from "../../../../../utils/localeUtils"
 
 export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()
@@ -37,6 +39,7 @@ export const AddNewIconButton = ({ onClick }) => {
 }
 
 export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
+    const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="mx-2 mt-2">
@@ -108,7 +111,7 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                     })
                 }
             </div>
-            <ContextMenu />
+            {isEditMode ? <ContextMenu /> : <></>}
         </div>
     )
 }
@@ -285,7 +288,14 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         <div className="flex">
                             <p>Damage Type:&nbsp;</p>
                             <div className={`font-eskapade font-bold ${glowOnHover}`}>
-                                <EditableTextField boundValue={newAction?.damage?.type ?? null} onSave={updateDamageType} />
+                                <DropDown
+                                    value={newAction?.damage?.type ?? null}
+                                    options={createDropdownEntries(vgLiteLang.DamageTypes)}
+                                    updateMechanism={{
+                                        onChange: updateDamageType
+                                    }}
+                                    parent={undefined}
+                                />
                             </div>
                         </div>
 

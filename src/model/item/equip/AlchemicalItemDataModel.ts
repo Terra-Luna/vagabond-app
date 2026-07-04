@@ -10,8 +10,10 @@ const alchemicalSchema = () => {
             choices: Object.keys(lang.VGLITE.AlchemyCategories)
         }),
         damage: new fields.SchemaField({
-            oneHand: new fields.StringField({ required: false, initial: '1d6' }),
-            type: new fields.StringField({ ...damageTypeOptions() })
+            oneHand: new fields.StringField({ ...optionalString, initial: '1d6' }),
+            type: new fields.StringField({ ...damageTypeOptions() }),
+            appliesBurn: new fields.BooleanField({ initial: false }),
+            burnCountdown: new fields.StringField({ ...optionalString, initial: 'Cd4' })
         }),
         explodeData: new fields.SchemaField({
             canExplode: new fields.BooleanField({ initial: false }),

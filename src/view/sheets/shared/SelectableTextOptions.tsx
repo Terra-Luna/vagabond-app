@@ -17,7 +17,7 @@ export const SelectableTextOptions = ({ obj, label, path, localeObj }: {
                     {
                         isEditMode ?
                             <OptionsSelectionMenu obj={obj} label={label} path={path} options={options} /> :
-                            <p className="text-sm text-text-primary font-paradigm font-normal">{label}</p>
+                            <p className="text-sm text-text-primary font-paradigm font-normal">{label}:</p>
                     }
                     <StringOptionsDisplay options={options.filter(o => o.isSelected).map(o => o.value)} />
                 </div>

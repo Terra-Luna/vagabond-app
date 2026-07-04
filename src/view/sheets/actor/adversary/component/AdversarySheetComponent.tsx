@@ -163,8 +163,8 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
             </div>
             {/* WEAKNESS & IMMUNITY */}
             <div className="w-full gap-y-1">
-                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
                 <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
+                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
             </div>
         </div>
     </>)
@@ -192,7 +192,7 @@ const DamageTypeSelector = ({ adv, label, path, localeObj }: { adv: AdversaryDat
                     {
                         isEditMode ?
                             <OptionsSelectionMenu obj={adv.parent} label={label} path={path} options={damageTypes} /> :
-                            <p className={statLabelStyle}>{label}</p>
+                            <p className={statLabelStyle}>{label}:</p>
                     }
                     <DamageTypeIconDisplay dmgTypes={field} />
                 </div>

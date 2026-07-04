@@ -12,4 +12,9 @@ export default class HeroSheet extends VgLiteActorSheet {
             resizable: true
         }
     }
+
+    async _onDropItem(event: DragEvent, data: Record<string, any>) {
+        const result = await super._onDropItem(event, data)
+        console.log(event, data)
+    }
 }

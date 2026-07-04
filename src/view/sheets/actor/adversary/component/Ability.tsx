@@ -11,8 +11,10 @@ import { ActionMenuHeader, AddMenuButtons } from "./Action"
 import { glowOnHover } from "../../../../common/text-styles"
 import { onClickAction } from "./hooksAndUtils"
 import { vgLiteLang as locale } from "../../../../../utils/lang"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 
 export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
+    const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="m-2 space-y-1">
@@ -35,7 +37,7 @@ export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                     </div>
                 ))
             }
-            <ContextMenu />
+            {isEditMode ? <ContextMenu /> : <></>}
         </div>
     )
 }

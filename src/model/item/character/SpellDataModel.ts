@@ -4,8 +4,8 @@ import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 const spellSchema = () => {
     return {
         damageType: new fields.StringField({ ...damageTypeOptions() }),
-        effectAppliesBurn: new fields.BooleanField({ initial: false }),
-        effectBurnCountdown: new fields.StringField({ ...requiredString, initial: '-' }),
+        appliesBurn: new fields.BooleanField({ initial: false }),
+        burnCountdown: new fields.StringField({ ...optionalString, initial: 'Cd4' }),
     }
 }
 
