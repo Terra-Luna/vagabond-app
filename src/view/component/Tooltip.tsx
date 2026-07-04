@@ -2,13 +2,22 @@ import { useRef, useState } from 'react'
 import { ControlledMenu, useHover } from '@szhsin/react-menu'
 import ReactHtmlParser from 'react-html-parser'
 
+/**
+ * This is disabled due to some performance concerns and glitches where
+ * all of a sheet's tooltips would mysteriously open.
+ * 
+ * TODO: look into these issues.
+ * 
+ * @param param0 
+ * @returns 
+ */
 export const Tooltip = ({ text, children }) => {
-    const ref = useRef<HTMLDivElement>(null)
+    /* const ref = useRef<HTMLDivElement>(null)
     const [isOpen, setOpen] = useState(false)
     const { anchorProps, hoverProps } = useHover(isOpen, setOpen)
-    const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null)
+    const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null) */
 
-    const handleMouseEnter = (e: any) => {
+    /* const handleMouseEnter = (e: any) => {
         setOpen(false)
         setDelayHandler(
             setTimeout(() => { setOpen(true) }, 777)
@@ -18,7 +27,7 @@ export const Tooltip = ({ text, children }) => {
     const handleMouseLeave = () => {
         setOpen(false)
         clearTimeout(delayHandler as any)
-    }
+    } */
 
     return (
         <div>
