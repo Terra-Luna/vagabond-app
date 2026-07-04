@@ -104,7 +104,7 @@ const TraitSelectors = ({ adv }) => {
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     const { isEditMode } = useEditMode()
     return (<>
-        <div className="flex flex-wrap justify-between gap-x-8 gap-y-2 w-full px-2 mt-1 mb-1">
+        <div className="flex flex-wrap justify-between gap-x-8 gap-y-2 w-full px-2 mt-1 mb-4">
             {/* ZONE */}
             <StatBlockField label={locale.zone} content={<>
                 {
@@ -157,12 +157,12 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                 />
             } />
             {/* SENSENS & STATUS IMMUNITIES */}
-            <div className="w-full">
+            <div className="w-full space-y-4">
                 <SelectableTextOptions obj={adv.parent} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
                 <SelectableTextOptions obj={adv.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
             </div>
             {/* WEAKNESS & IMMUNITY */}
-            <div className="w-full gap-y-1">
+            <div className="w-full space-y-4">
                 <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
                 <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
             </div>

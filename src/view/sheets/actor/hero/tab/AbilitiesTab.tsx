@@ -1,17 +1,18 @@
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
+import { vgLiteLang } from "../../../../../utils/lang"
 import { getName } from "../../../../../utils/modelUtil"
 import { toPascalCase } from "../../../../../utils/stringUtil"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
-    const beingSize = lang.VGLITE.Sizes[hero.ancestry?.beingSize ?? '']
-    const beingType = lang.VGLITE.BeingTypes[hero.ancestry?.beingType ?? '']
+    const beingSize = vgLiteLang.Sizes[hero.ancestry?.beingSize ?? '']
+    const beingType = vgLiteLang.BeingTypes[hero.ancestry?.beingType ?? '']
     
     return (
         <div className="py-1">
-            <Header title={lang.VGLITE.HeroSheet.ancestry} />
+            <Header title={vgLiteLang.HeroSheet.ancestry} />
             <div className="mt-0.5" />
             <SkillCard
                 title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits": ''}`}
@@ -20,7 +21,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             />
             
             <div className="my-2">
-                <Header title={lang.VGLITE.HeroSheet.class} />
+                <Header title={vgLiteLang.HeroSheet.class} />
                 <div className="mt-0.5" />
                 <div className={abilitiesGrid}>
                     {
@@ -38,7 +39,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 </div>
             </div>
             
-            <Header title={lang.VGLITE.HeroSheet.perks} />
+            <Header title={vgLiteLang.HeroSheet.perks} />
             <div className="mt-0.5" />
             <div className={abilitiesGrid}>
                 {
@@ -51,8 +52,8 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                     [`${toPascalCase(pr.type!)}`, `${pr.type === 'SPELL' ? pr.spell : (
                                             pr.type === 'TRAINING' ? (
                                                 pr.skillNames.length == 1 ?
-                                                    `${lang.VGLITE.Skills[pr.skillNames[0]].name}` :
-                                                    `${lang.VGLITE.Skills[pr.skillNames[0]].name} ${pr.andOr} ${lang.VGLITE.Skills[pr.skillNames[1]].name}`
+                                                `${vgLiteLang.Skills[pr.skillNames[0]].name}` :
+                                                `${vgLiteLang.Skills[pr.skillNames[0]].name} ${pr.andOr} ${vgLiteLang.Skills[pr.skillNames[1]].name}`
                                             ) : `${pr.stat} +${pr.value}`
                                         )
                                     }`]
