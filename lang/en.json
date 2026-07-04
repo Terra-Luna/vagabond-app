@@ -619,6 +619,8 @@
       "grip": "Grip",
       "damage": "Damage",
       "damageType": "Damage Type",
+      "burn": "Applies Burn",
+      "duration": "Duration",
       "explodingDice": "Exploding Dice",
       "canExplode": "Exploding Dice",
       "explodesOn": "Explodes On",

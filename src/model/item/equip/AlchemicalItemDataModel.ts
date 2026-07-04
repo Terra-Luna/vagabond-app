@@ -13,7 +13,7 @@ const alchemicalSchema = () => {
             oneHand: new fields.StringField({ ...optionalString, initial: '1d6' }),
             type: new fields.StringField({ ...damageTypeOptions() }),
             appliesBurn: new fields.BooleanField({ initial: false }),
-            burnCountdown: new fields.StringField({ ...optionalString, initial: 'Cd4' })
+            burnCountdown: new fields.StringField({ ...optionalString, blank: true, initial: '' })
         }),
         explodeData: new fields.SchemaField({
             canExplode: new fields.BooleanField({ initial: false }),

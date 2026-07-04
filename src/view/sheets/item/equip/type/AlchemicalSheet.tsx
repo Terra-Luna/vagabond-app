@@ -2,11 +2,15 @@ import AlchemicalItemDataModel from "../../../../../model/item/equip/AlchemicalI
 import { DropDown } from "../../../../component/Dropdown"
 import { DamageType, ExplodingDiceItemConfig, ItemDamageTextField } from "./WeaponSheet"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
-import { ConsumableToggle, EquipmentSheetSubtypeBody, ItemSheetPropLabel } from "../EquipmentSheetComponent"
+import { ConsumableToggle, EquipmentSheetSubtypeBody, ItemSheetPropLabel, ItemSheetPropValue } from "../EquipmentSheetComponent"
 import { lang as fullLang } from "../../../../../utils/lang"
+import { EditableTextField } from "../../../../component/EditableTextField"
+import { Checkbox } from "../../../../component/Checkbox"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 const lang = fullLang.VGLITE
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
+    const { isEditMode } = useEditMode()
     return (
         <EquipmentSheetSubtypeBody>
             <div className="space-y-4">
@@ -14,16 +18,40 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
                     <DamageType item={item} />
                     {
                         item.system.damage.type === 'none' ? <></> :
-                            <div>
-                                <ItemSheetPropLabel
-                                    label={`${item.system.damage.type === 'healing' ?
-                                        lang.DamageTypes.healing :
-                                        (item.system.damage.type === 'mana' ? lang.DamageTypes.mana :
-                                            lang.ItemSheet.damage
-                                        )
-                                        }`}
-                                />
-                                <ItemDamageTextField item={item} label={''} path={'oneHand'} />
+                            <div className="flex gap-x-8">
+                                <div>
+                                    <ItemSheetPropLabel
+                                        label={`
+                                            ${item.system.damage.type === 'healing' ?
+                                                lang.DamageTypes.healing :
+                                                (item.system.damage.type === 'mana' ? lang.DamageTypes.mana :
+                                                    lang.ItemSheet.damage
+                                                )
+                                            }
+                                        `}
+                                    />
+                                    <ItemDamageTextField item={item} label={''} path={'oneHand'} />
+                                </div>
+                                {
+                                    isEditMode || item.system.damage.appliesBurn ?
+                                        <div>
+                                            <Checkbox
+                                                label={lang.ItemSheet.burn}
+                                                onCheckedChanged={() =>
+                                                    item.update({ 'system.damage.appliesBurn': !item.system.damage.appliesBurn } as Record<string, boolean>)
+                                                }
+                                                checked={item.system.damage.appliesBurn}
+                                            />
+                                            <ItemSheetPropLabel label={lang.ItemSheet.duration} />
+                                            <ItemSheetPropValue value={
+                                                <EditableTextField
+                                                    boundValue={item.system.damage.burnCountdown}
+                                                    updateProps={{ object: item, path: ['damage', 'burnCountdown'] }}
+                                                    placeholder="Cd4"
+                                                />
+                                            } />
+                                        </div> : <></>
+                                }
                             </div>
                     }
                 </div>
