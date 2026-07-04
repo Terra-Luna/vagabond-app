@@ -64,7 +64,14 @@ export const stackStackables = async (hero: HeroDataModel) => {
 }
 
 export const itemNameQty = (item: EquipmentDataModel<EquipmentSchema>): string => {
-    return item.bulk.quantity === 1 ? getName(item) : `${getName(item)} (x${item.bulk.quantity})`
+    let name = getName(item)
+    if (item instanceof ContainerDataModel) {
+        name += ` (${(item.capacity) - item.emptySlots}/${item.capacity})`
+    }
+    else {
+        item.bulk.quantity > 1 ? name += ` (x${item.bulk.quantity})` : {}
+    }
+    return name
 }
 
 export const sortedItems = <T>(items: EquipmentDataModel<EquipmentSchema>[]): T[] => {
@@ -206,6 +213,9 @@ export const containerItemContextMenuItems = (
     menuItems.push(viewItemSheetContextOption(item))
     menuItems.push({ icon: Undo, label: lang.VGLITE.HeroSheet.Inventory.ctxExtract, action: () => extractItem(container, item.parent) })
     menuItems.push(deleteItemContextOption(actor, item))
+    if (item.bulk.isStackable && item.bulk.quantity > 1) {
+        menuItems.push(deleteAllItemsContextOption(actor, item))
+    }
     return menuItems
 }
 
@@ -225,7 +235,7 @@ const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema> | null, 
     return { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
 }
 
-const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema>, item: EquipmentDataModel<EquipmentSchema>) => {
+const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
     return {
         icon: Trash,
         label: lang.VGLITE.HeroSheet.Inventory.ctxDeleteAll,

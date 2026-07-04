@@ -34,7 +34,7 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
     }
 
     override async prepareDerivedData() {
-        const bulk = containerItems(this).reduce((sum, i) => { return sum + (i.system.bulk.totalSlots ?? 0) }, 0)
+        const bulk = containerItems(this).reduce((sum, i) => { return sum + (i?.system?.bulk?.totalSlots ?? 0) }, 0)
         this.emptySlots = this.capacity - bulk
     }
 

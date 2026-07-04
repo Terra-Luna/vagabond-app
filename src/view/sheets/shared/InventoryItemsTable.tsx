@@ -44,7 +44,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             key={getId(item)}
                             className={
                                 index === dragIndex ?
-                                    "bg-text-fatigue-current" :
+                                    "bg-text-fatigue-current inventory-table-drag-source" :
                                     `even:bg-table-row-even/50 odd:bg-table-row-odd/50 ${glowOnHover}`
                             }
                             onContextMenu={(e) => { onCtxMenu(e, contextMenuItems(item)) }}
@@ -54,6 +54,8 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             onDragEnter={(e) => onDragEnter(e, index)}
                             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                             onDragEnd={(e) => onDragEnd(e, index)}
+                            data-item-id={getId(item)}
+                            data-actor-id={getId(actor)}
                         >
                             <td className="px-2 py-1 cursor-grab">
                                 <span className="flex">

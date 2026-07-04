@@ -1,4 +1,3 @@
-import { useDragDrop } from "../../../component/DragDrop"
 import { VgLiteActorSheet } from "../VgLiteActorSheet"
 import { HeroSheetReactComponent } from "./HeroSheetComponent"
 
@@ -14,9 +13,4 @@ export default class HeroSheet extends VgLiteActorSheet {
         }
     }
 
-    async _onDropItem(event: DragEvent, data: Record<string, any>) {
-        const result = await super._onDropItem(event, data)
-        console.log(event, data)
-    }
-    
 }

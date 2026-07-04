@@ -2,7 +2,7 @@ import ActorDataModel, { BaseActorSchema } from "../../../../../model/actor/Acto
 import { sortedItems, containerItemContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import ContainerDataModel, { containerItems } from "../../../../../model/item/equip/ContainerDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { vgLiteLang as lang } from "../../../../../utils/lang"
+import { vgLiteLang as lang, vgLiteLang } from "../../../../../utils/lang"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
@@ -12,6 +12,7 @@ import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheetC
 export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataModel } }) => {
     const { isEditMode } = useEditMode()
     const owner = item?.actor?.system as ActorDataModel<BaseActorSchema> | null
+    const contents = sortedItems<EquipmentDataModel<EquipmentSchema>>(containerItems(item.system).map(it => it.system))
     return (
         <EquipmentSheetSubtypeBody>
             <div className="mb-8">
@@ -35,12 +36,16 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
                         isOverEncumbered: false
                     }} />
                 </div>
-                <InventoryItemsTable
-                    actor={owner}
-                    items={sortedItems<EquipmentDataModel<EquipmentSchema>>(containerItems(item.system).map(it => it.system))}
-                    contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
-                    showEquipColumn={false}
-                />
+                {
+                    contents.length === 0 ?
+                        <p className="italic">{vgLiteLang.ItemSheet.drag}</p> :
+                        <InventoryItemsTable
+                            actor={owner}
+                            items={contents}
+                            contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
+                            showEquipColumn={false}
+                        />
+                }
             </div>
         </EquipmentSheetSubtypeBody>
     )

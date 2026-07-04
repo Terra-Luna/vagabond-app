@@ -599,6 +599,7 @@
       "combo": "Combo"
     },
     "ItemSheet": {
+      "drag": "Drag items into container...",
       "description": "Description",
       "general": "General",
       "category": "Category",
@@ -624,7 +625,7 @@
       "range": "Range",
       "props": "Properties",
       "material": "Material",
-      "capacity": "Capacity",
+      "capacity": "CAPACITY",
       "type": "Type",
       "size": "Size"
     },
