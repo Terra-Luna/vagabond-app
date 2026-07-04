@@ -14,7 +14,7 @@ import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../item/e
 import WeaponDataModel, { equipWeapon, toggleGripState } from "../../item/equip/WeaponDataModel"
 import HeroDataModel from "../HeroDataModel"
 import AlchemicalItemDataModel from "../../item/equip/AlchemicalItemDataModel"
-import ContainerDataModel, { addItem, extractItem } from "../../item/equip/ContainerDataModel"
+import ContainerDataModel, { addItemToContainer, extractItemFromContainer } from "../../item/equip/ContainerDataModel"
 import { CapacityInfo } from "../../../view/sheets/shared/CapacityGauge"
 import ActorDataModel, { BaseActorSchema } from "../ActorDataModel"
 import { lang } from "../../../utils/lang"
@@ -47,7 +47,7 @@ export const getContainers = (hero: HeroDataModel): ContainerDataModel[] => {
 }
 
 export const isInContainer = (item, containers) => {
-    return containers.find(c => c.itemIds.includes(item.parent.id)) !== undefined
+    return containers.find(c => c.itemIds.includes(item?.parent?.id ?? item.id)) !== undefined
 }
 
 export const stackStackables = async (hero: HeroDataModel) => {
@@ -138,6 +138,13 @@ export const deleteItems = async (actor: ActorDataModel<BaseActorSchema> | null,
     await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds)
 }
 
+export const deleteItemStack = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
+    for (const id of itemIds) {
+        await actor?.parent.items.get(id).update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
+    }
+    await deleteItems(actor, itemIds)
+}
+
 export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataModel): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = [
         {
@@ -211,7 +218,7 @@ export const containerItemContextMenuItems = (
         menuItems.push(useItemContextOption(actor as HeroDataModel, item))
     }
     menuItems.push(viewItemSheetContextOption(item))
-    menuItems.push({ icon: Undo, label: lang.VGLITE.HeroSheet.Inventory.ctxExtract, action: () => extractItem(container, item.parent) })
+    menuItems.push({ icon: Undo, label: lang.VGLITE.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
     menuItems.push(deleteItemContextOption(actor, item))
     if (item.bulk.isStackable && item.bulk.quantity > 1) {
         menuItems.push(deleteAllItemsContextOption(actor, item))
@@ -263,7 +270,7 @@ export const inventoryItemDragDropHandler = async (
 ) => {
     if (actor === undefined) return
     if (targetItem.parent.type === 'container' && dragItem.parent.type !== 'container' && !dragItem.isEquipped) {
-        addItem(targetItem as ContainerDataModel, dragItem.parent)
+        addItemToContainer(targetItem as ContainerDataModel, dragItem.parent)
     }
     else {
         const sortBefore = siblings.indexOf(targetItem) < siblings.indexOf(dragItem)

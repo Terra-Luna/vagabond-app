@@ -607,6 +607,7 @@
       "consumable": "Consumable",
       "slots": "Slots",
       "stackable": "Stackable",
+      "qty": "Quantity",
       "stackSize": "Stack Size",
       "value": "Value",
       "g": "G",

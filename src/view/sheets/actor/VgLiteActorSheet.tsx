@@ -1,8 +1,9 @@
 const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel"
-import { extractItem } from "../../../model/item/equip/ContainerDataModel"
+import { extractItemFromContainer } from "../../../model/item/equip/ContainerDataModel"
 import { VgLiteSheetMixin } from "../VgLiteSheet"
+import { deleteItems, deleteItemStack } from "../../../model/actor/type/Inventory"
 
 export interface FoundryActor<T extends ActorDataModel<BaseActorSchema>> {
     update: (data: Record<keyof T, any>) => any
@@ -28,20 +29,42 @@ export abstract class VgLiteActorSheet extends VgLiteSheetMixin(sheets.ActorShee
         const itemId = (dragData as any).id
         if (!itemId) return super._onDrop(event)
 
+        const originalOwner = game.actors?.get((dragData as any).owner._id) as Actor & { system: ActorDataModel<BaseActorSchema> }
         const droppedItem = this.actor.items.get(itemId)
-        if (!droppedItem) return super._onDrop(event)
+
+        /**
+         * If the actor doesn't already have this item, check to see if this
+         * is an inter-actor item transfer.
+         */
+        if (!droppedItem) {
+            if (originalOwner) {
+                super._onDrop(event)
+                await deleteItemStack(originalOwner?.system, [itemId])
+                return true
+            }
+            else {
+                return super._onDrop(event)
+            }
+        }
 
         const container = this.actor.items.find(item => {
             return item.type === 'container' && item.system?.itemIds?.includes(itemId)
         })
 
         /**
-         * If the function got this far, extract the item from the container
-         * back to the actor's main inventory.
+         * Extract the item from the container back to the actor's main inventory.
          */
         if (container) {
-            extractItem(container.system, droppedItem)
-            this.render()
+            extractItemFromContainer(container.system, droppedItem)
+            return true
+        }
+
+        /**
+         * Complete an inter-actor item transfer of an existing item.
+         */
+        if (originalOwner && originalOwner.id !== droppedItem.actor.id) {
+            super._onDrop(event)
+            await deleteItemStack(originalOwner?.system, [itemId])
             return true
         }
 

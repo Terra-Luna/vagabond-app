@@ -1,6 +1,6 @@
 const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
-import ContainerDataModel, { addItem } from "../../../model/item/equip/ContainerDataModel"
+import ContainerDataModel, { addItemToContainer } from "../../../model/item/equip/ContainerDataModel"
 import { VgLiteSheetMixin } from "../VgLiteSheet"
 
 export abstract class VgLiteItemSheet extends VgLiteSheetMixin(sheets.ItemSheetV2) {
@@ -28,9 +28,7 @@ export abstract class VgLiteItemSheet extends VgLiteSheetMixin(sheets.ItemSheetV
             /**
              * If the function got this far, add the item to this container.
              */
-            addItem(this.item.system, droppedItem)
-            this.render()
-            return true
+            return addItemToContainer(this.item.system, droppedItem)
         }
 
         return super._onDrop(event)

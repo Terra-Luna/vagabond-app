@@ -20,13 +20,13 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
 }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
         
-    const { dragIndex, dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
+    const { dragIndex, dragItem, targetItem, onDragStart, onDragEnter, onDragLeave, onDragEnd } = useDragDrop(
         items,
         () => inventoryItemDragDropHandler(actor, dragItem, targetItem ?? items[items.length - 1], items)
     )
 
     return (
-        <div className="overflow-auto">
+        <div className="overflow-auto" onDragLeave={(e) => onDragLeave(e)}>
             <table className="table-fixed w-full border border-solid border-table-border">
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>

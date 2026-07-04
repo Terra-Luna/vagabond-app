@@ -31,8 +31,8 @@ export const DestructiveButton = ({ children, icon = <Trash size={14} />, onClic
     return (
         <button onClick={onClick} className={destructiveButtonClasses}>
             {icon}
-            {children ? <>            <
-                div className="mx-0.5" />
+            {children ? <>
+                <div className="mx-0.5" />
                 {children}
             </> : undefined}
         </button>

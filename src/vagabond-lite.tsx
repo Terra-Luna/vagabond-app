@@ -16,7 +16,7 @@ import ContainerDataModel from "./model/item/equip/ContainerDataModel"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import VgLiteActiveEffect from './document/VgLiteActiveEffect'
-import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
+import { getContainers, isInContainer, isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
 import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
@@ -24,6 +24,7 @@ import { rehydrateElement } from "./view/chat/ChatCardManager"
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
 import { PerkSheet } from './view/sheets/item/character/Sheets'
 import { vgLiteStyles } from "./utils/styleUtils"
+import { getId } from "./utils/modelUtil"
 
 // add our fonts
 const fontFaces = [
@@ -131,6 +132,22 @@ Hooks.on("createItem", (item, _options, _userId) => {
         const items = item.parent.items
         const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
         item.update({ 'sort': newSortVal })
+    }
+})
+
+Hooks.on("updateItem", (item, changed, options, userId) => {
+    const actor = item.actor
+    if (!actor) return
+
+    const containers = actor.items?.filter(it => (it.type as string) === 'container') as Item & { system: ContainerDataModel }[]
+    const container = containers.find(c => c.system.itemIds.includes(getId(item)))
+    if (!container) return
+
+    for (const app of foundry.applications.instances.values()) {
+        const docApp = app as any
+        if (docApp.document && getId(container) === docApp.document.id) {
+            docApp.render()
+        }
     }
 })
 

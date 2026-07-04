@@ -1,15 +1,17 @@
 import { useState } from "react"
-import { getId, getName, getUuid } from "../../utils/modelUtil"
+import { getId, getUuid } from "../../utils/modelUtil"
+import EquipmentDataModel, { EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
+import ContainerDataModel from "../../model/item/equip/ContainerDataModel"
 
 /**
- * Provides drag-drop functionality for anything. Consuming
+ * Provides drag-drop functionality for inventory items. Consuming
  * function must provide a method for what to do with the item
  * being dragged when it's dropped.
  * @param items 
  * @param onDrop 
  * @returns 
  */
-export const useDragDrop = (items: any[], onDrop: () => void) => {
+export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop: () => void) => {
     const [dragIndex, setDragIndex] = useState<number | null>(null)
     const [dragItem, setDragItem] = useState<any>(null)
     const [targetItem, setTargetItem] = useState<any>(null)
@@ -19,11 +21,16 @@ export const useDragDrop = (items: any[], onDrop: () => void) => {
         setDragIndex(index)
         setDragItem(items[index])
         setTargetItem(items[index])
-        const dragData = { type: "Item", id: getId(items[index]), uuid: getUuid(items[index]) }
-        //console.log("Dragging:", getName(items[index]), index, dragData)
+        const dragData = {
+            type: "Item",
+            id: getId(items[index]),
+            uuid: getUuid(items[index]),
+            owner: items[index].parent.actor
+        }
         e.dataTransfer.setData("text/plain", JSON.stringify(dragData))
         e.dataTransfer.effectAllowed = "move"
         e.dataTransfer.dropEffect = "move"
+        //console.log("Dragging:", getName(items[index]), index, dragData)
     }
 
     const onDragEnter = (e: any, index: number) => {
@@ -34,6 +41,14 @@ export const useDragDrop = (items: any[], onDrop: () => void) => {
         setDragIndex(index)
         setTargetItem(items[index])
         //console.log("Dragging:", getName(dragItem), "above:", getName(targetItem), index)
+    }
+
+    const onDragLeave = (e: any) => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (!e.currentTarget.contains(e.relatedTarget)) {
+            setTargetItem(null)
+        }
     }
 
     const onDragEnd = (e: any, index: number) => {
@@ -69,6 +84,7 @@ export const useDragDrop = (items: any[], onDrop: () => void) => {
         targetItem,
         onDragStart,
         onDragEnter,
+        onDragLeave,
         onDragEnd
     }
 }

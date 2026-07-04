@@ -1,6 +1,7 @@
 import { getId } from "../../../utils/modelUtil"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema, getTotalSlots } from "./EquipmentDataModel"
+import { isEquippedWWeapon } from "./WeaponDataModel"
 
 export const containerSchema = () => {
     return {
@@ -27,41 +28,72 @@ export default class ContainerDataModel extends EquipmentDataModel<ContainerSche
     }
 
     override async prepareDerivedData() {
-        const items = containerItems(this)
+        const items = itemsInContainer(this)
         const bulk = items.reduce((sum, i) => { return sum + getTotalSlots(i?.system) }, 0)
         this.emptySlots = this.capacity - bulk
     }
 
 }
 
-export const containerItems = (container: ContainerDataModel) => {
+export const itemsInContainer = (container: ContainerDataModel) => {
     const actor = container.parent.actor
     if (!actor) return []
-    return container.itemIds.map(id =>
+    return container.itemIds.map(id => 
         actor.items.get(id)
     ) as Item & { system: EquipmentDataModel<EquipmentSchema> }[]
 }
 
-export async function addItem(container: ContainerDataModel, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
+export const allItemIdsInContainers = (actor: any): string[] => {
+    const containers = actor.items.filter(it => (it.type === 'container')) as Item & { system: ContainerDataModel }[]
+    return containers.map(c => c.system.itemIds).flat()
+}
+
+const containerWithItem = (actor, itemId): Item & { system: ContainerDataModel } | null => {
+    const containers = actor.items.filter(it => it.type === 'container') as Item & { system: ContainerDataModel }[]
+    return containers?.find(it => it.system.itemIds.includes(itemId)) as any
+}
+
+export async function addItemToContainer(container: ContainerDataModel, item: Item & { system: EquipmentDataModel<EquipmentSchema> }): Promise<boolean> {
     const itemId = getId(item)
     if (itemId && itemId !== container.parent.id && !container.itemIds.includes(itemId)) {
         if ((item.type as string) === 'container') {
             ui.notifications?.warn("Cannot place containers within containers!")
+            return false
+        }
+        if (item.system.isEquipped) {
+            ui.notifications?.warn("Unequip gear before placing in storage!")
+            return false
         }
         if (container.emptySlots > 0 && container.emptySlots >= item.system.bulk.totalSlots) {
             const itemIds = [...container.itemIds]
             if (!itemIds.includes(itemId)) {
                 itemIds.push(itemId)
+                /**
+                 * If this item is already in another container, transfer it to the
+                 * new one by removing its ID.
+                 */
+                if (allItemIdsInContainers(item.actor).includes(itemId)) {
+                    const transferContainer = containerWithItem(item.actor, itemId)
+                    transferContainer?.update({
+                        'system.itemIds': transferContainer.system.itemIds.filter(it => it != itemId)
+                    } as Record<string, string[]>)
+                }
+                await container.parent.update({ 'system.itemIds': itemIds })
+                return true
             }
-            await container.parent.update({ 'system.itemIds': itemIds })
+            return false
         }
         else {
             ui.notifications?.warn("Not enough space available in container!")
+            return false
         }
+    }
+    else {
+        return false
     }
 }
 
-export async function extractItem(container: ContainerDataModel, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
+export async function extractItemFromContainer(container: ContainerDataModel, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
     if (item.id) {
         const itemIds = [...container.itemIds]
         if (itemIds.includes(item.id)) {
