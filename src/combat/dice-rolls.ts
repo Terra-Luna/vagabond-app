@@ -69,8 +69,14 @@ export interface DamageRollResult {
     dmgType: string
     bonus: number
     total: number
-    rollsSummary: { result: number, dieSize: number, exploded: boolean }[]
+    rollsSummary: RollSummary[]
     rolls: any[]
+    appliesBurn: boolean
+    burnDuration: string
+}
+
+interface RollSummary {
+    result: number, dieSize: number, exploded: boolean
 }
 
 export const rollDamage = async (
@@ -79,7 +85,9 @@ export const rollDamage = async (
     dmgFormula: string | number,
     perDieDmgBonus: number = 0,
     canExplode: boolean = false,
-    explodesOn: number[] = []
+    explodesOn: number[] = [],
+    appliesBurn: boolean = false,
+    burnDuration: string = ''
 ): Promise<DamageRollResult> => {
     const damageRoll = await new Roll(dmgFormula.toString()).evaluate()
     const damageRollTerms = getDiceTerms(damageRoll)
@@ -114,11 +122,64 @@ export const rollDamage = async (
         total: damageRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
         bonus: totalBonus,
         rollsSummary: buildRollSummary(damageRollTerms, explosionTerms, explodesOn),
-        rolls: [damageRoll]
+        rolls: [damageRoll],
+        appliesBurn: appliesBurn,
+        burnDuration: burnDuration
     } as DamageRollResult
     result.rolls = [damageRoll]
     if (canExplode && combinedExplosions) result.rolls.push(combinedExplosions)
     return result
+}
+
+export interface CountdownResult {
+    name: string
+    duration: string
+    rollSummary: RollSummary
+    rolls: any[]
+    message: string
+}
+export const rollCountdownDie = async (result: CountdownResult): Promise<CountdownResult | null> => {
+    const formula = result.duration
+    if (formula.length === 0) return null
+    // Transform 'cd6' or 'd6' into a Foundry-friendly countdown roll.
+    const foundryRoll = formula.replace(/^c?d(\d+)/i, "1d$1cd")
+    const countdown = await new Roll(foundryRoll).evaluate()
+    const nextDuration = adjustCountdownDuration(countdown.total, foundryRoll.toUpperCase())
+    return {
+        name: result.name,
+        duration: nextDuration,
+        rollSummary: buildRollSummary(getDiceTerms(countdown), null, [])[0],
+        rolls: [countdown],
+        message: nextDuration === '' ?
+            'Countdown has expired' : (
+                foundryRoll != nextDuration ?
+                    `Countdown has reduced to: ${nextDuration.replace(/^1[dD](\d+)[cC][dD]$/, "Cd$1")}...` :
+                    `Countdown continues...`
+            )
+    }
+}
+
+/**
+ * Expected forumla formatting: 1D6CD.
+ * @param result
+ * @param formula 
+ * @returns 
+ */
+function adjustCountdownDuration(result: number, formula: string): string {
+    if (result > 1) {
+        return formula
+    }
+    else if (formula === '1D4CD') {
+        // Countdown has expired by rolling a 1 on a d4.
+        return ''
+    }
+    else {
+        // Countdown has reduced die size. E.g.: Converts CD6 to CD4.
+        const reducedRoll = formula.replace(/([dD])(\d+)/, (match: string, letter: string, faces: string): string => {
+            return letter + (parseInt(faces) - 2)
+        })
+        return reducedRoll
+    }
 }
 
 /**
@@ -224,6 +285,7 @@ function performOperatorCalc(operator: foundry.dice.terms.OperatorTerm, numericT
 const isNumericTerm = (term: any): boolean => {
     return term instanceof foundry.dice.terms.NumericTerm
 }
+
 const asNumeric = (term: any): foundry.dice.terms.NumericTerm => {
     return term as foundry.dice.terms.NumericTerm
 }

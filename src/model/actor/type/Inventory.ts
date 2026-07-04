@@ -93,7 +93,16 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
             await deleteItems(hero, [getId(item)])
         }
         if (item instanceof AlchemicalItemDataModel && item.damage.type !== 'none') {
-            const damageRoll = await rollDamage(getName(item), item.damage.type ?? 'none', item.damage.oneHand, 0, item.explodeData.canExplode, item.explodeData.explodesOn as number[])
+            const damageRoll = await rollDamage(
+                getName(item),
+                item.damage.type ?? 'none',
+                item.damage.oneHand,
+                0,
+                item.explodeData.canExplode,
+                item.explodeData.explodesOn as number[],
+                item.damage.appliesBurn,
+                item.damage.burnCountdown
+            )
             sendVgLiteChatMessage(hero, createElement(DamageRollChatCard, {
                 actorId: getId(hero), tokenIds: getTargets(), result: damageRoll
             }))

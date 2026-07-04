@@ -21,7 +21,7 @@ const alchemicalSchema = () => {
                 new fields.NumberField({ integer: true, initial: 0, required: false }),
                 { initial: [] }
             )
-        }),
+        })
     }
 }
 

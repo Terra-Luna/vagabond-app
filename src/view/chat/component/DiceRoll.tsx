@@ -24,7 +24,14 @@ export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
                 result.bonus === 0 ? <></> :
                     <div className="flex space-x-2">
                         <div className="h-full content-center text-text-secondary"><Plus size={24} /></div>
-                        <p className="h-full conent center text-4xl">{result.bonus}</p>
+                        <p className="h-full text-4xl">{result.bonus}</p>
+                    </div>
+            }
+            {
+                !result.appliesBurn || result.burnDuration.length === 0 ? <></> :
+                    <div className="flex space-x-2 items-center">
+                        <div className="h-full content-center text-text-secondary"><Plus size={18} /></div>
+                        <p className="h-full text-xl content-center">{result.burnDuration}</p>
                     </div>
             }
         </div>
