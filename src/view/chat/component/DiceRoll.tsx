@@ -7,7 +7,6 @@ import D4 from "../../../icons/dice/d4.svg?react"
 import { DamageRollResult } from "../../../combat/dice-rolls"
 import { Plus } from "lucide-react"
 
-
 const centeredAlignment = "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
 
 export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
