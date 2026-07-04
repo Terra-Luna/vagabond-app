@@ -42,6 +42,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                         boundValue={hero.mana.current?.toString() ?? ""}
                         updateProps={{ object: hero.parent, path: ['mana', 'current'] }}
                         placeholder="0"
+                        hideBorderOnEditMode={true}
                     />
                 </span>
                 <span className="slash">&nbsp;/&nbsp;</span>
