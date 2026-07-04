@@ -116,9 +116,9 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
     return (<>
         <div className="flex space-x-1 items-center bg-section-header-fill px-1 font-eskapade font-bold">
             {item.img == null ? <></> :
-                <div>
+                <div className="mt-0.5 mb-1 mr-2">
                     <img
-                        className={`object-contain border border-solid border-text-header-primary rounded-sm mb-0.5`}
+                        className={`object-contain border border-solid border-text-header-primary rounded-sm`}
                         width={56}
                         height={56}
                         src={item.img}
