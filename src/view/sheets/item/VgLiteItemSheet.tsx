@@ -9,14 +9,13 @@ export abstract class VgLiteItemSheet extends VgLiteSheetMixin(sheets.ItemSheetV
 
     protected async _onDrop(event: DragEvent): Promise<boolean | void> {
         event.preventDefault()
-
+        /**
+         * Handles dragging items from an actor sheet onto an item (container). The item's
+         * info is embedded into the drag event in DragDrop.tsx so it can be passed along
+         * through Foundry's backend data transforms and extracted using their getDragEventData()
+         * util function.
+         */
         if (this.item.system instanceof ContainerDataModel) {
-            /**
-             * Handles dragging items from an actor sheet onto an item (container). The item's
-             * info is embedded into the drag event in DragDrop.tsx so it can be passed along
-             * through Foundry's backend data transforms and extracted using their getDragEventData()
-             * util function.
-             */
             const dragData = foundry.applications.ux.TextEditor.getDragEventData(event)
             if (!dragData || (dragData as any)?.type as JSONValue !== "Item") return super._onDrop(event)
 
@@ -36,4 +35,5 @@ export abstract class VgLiteItemSheet extends VgLiteSheetMixin(sheets.ItemSheetV
 
         return super._onDrop(event)
     }
+    
 }
