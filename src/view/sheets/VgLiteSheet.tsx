@@ -19,7 +19,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         dragDrop: [
             {
                 dragSelector: ".draggable",
-                dropSelector: ".vglite-root"
+                dropSelector: ".sheet-body"
             }
         ]
     }

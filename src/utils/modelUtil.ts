@@ -1,5 +1,9 @@
 export const getId = (obj: any): string => {
-    return obj?._id ?? obj?.parent?._id ?? ''
+    return obj?.id ?? obj?.parent?.id ?? ''
+}
+
+export const getUuid = (obj: any): string => {
+    return obj?.uuid ?? obj?.parent?.uuid
 }
 
 export const getName = (obj: any): string => {

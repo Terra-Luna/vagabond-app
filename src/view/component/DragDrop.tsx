@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { getName } from "../../utils/modelUtil"
+import { getId, getName, getUuid } from "../../utils/modelUtil"
 
 /**
  * Provides drag-drop functionality for anything. Consuming
@@ -16,11 +16,14 @@ export const useDragDrop = (items: any[], onDrop: () => void) => {
 
     const onDragStart = (e: React.DragEvent<any>, index: number) => {
         e.stopPropagation()
-        e.dataTransfer.dropEffect = "move"
         setDragIndex(index)
         setDragItem(items[index])
         setTargetItem(items[index])
-        //console.log("Dragging:", getName(dragItem), index)
+        const dragData = { type: "Item", id: getId(items[index]), uuid: getUuid(items[index]) }
+        //console.log("Dragging:", getName(items[index]), index, dragData)
+        e.dataTransfer.setData("text/plain", JSON.stringify(dragData))
+        e.dataTransfer.effectAllowed = "move"
+        e.dataTransfer.dropEffect = "move"
     }
 
     const onDragEnter = (e: any, index: number) => {

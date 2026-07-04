@@ -1,3 +1,4 @@
+import { getId } from "../../../utils/modelUtil"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import EquipmentDataModel, { EquipmentSchema, getTotalSlots } from "./EquipmentDataModel"
 
@@ -42,14 +43,15 @@ export const containerItems = (container: ContainerDataModel) => {
 }
 
 export async function addItem(container: ContainerDataModel, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
-    if (item.id && item.id !== container.parent.id) {
+    const itemId = getId(item)
+    if (itemId && itemId !== container.parent.id && !container.itemIds.includes(itemId)) {
         if ((item.type as string) === 'container') {
             ui.notifications?.warn("Cannot place containers within containers!")
         }
         if (container.emptySlots > 0 && container.emptySlots >= item.system.bulk.totalSlots) {
             const itemIds = [...container.itemIds]
-            if (!itemIds.includes(item.id)) {
-                itemIds.push(item.id)
+            if (!itemIds.includes(itemId)) {
+                itemIds.push(itemId)
             }
             await container.parent.update({ 'system.itemIds': itemIds })
         }

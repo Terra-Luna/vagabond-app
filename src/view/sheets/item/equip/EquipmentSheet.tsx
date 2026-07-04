@@ -10,6 +10,12 @@ export class EquipmentSheet extends VgLiteItemSheet {
         },
         window: {
             resizable: true
-        }
+        },
+        dragDrop: [
+            {
+                dragSelector: ".draggable",
+                dropSelector: ".sheet-body"
+            }
+        ]
     }
 }
