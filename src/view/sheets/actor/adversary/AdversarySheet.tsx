@@ -10,6 +10,7 @@ export default class AdversarySheet extends VgLiteActorSheet {
         },
         window: {
             resizable: true
-        }
+        },
+        dragDrop: []
     }
 }
