@@ -1,22 +1,18 @@
 import { CollapsibleHeaderProps } from "./Collapsible"
+import { ImageWithDamageTypeBadge } from "./DamageTypeIcon"
 import { Divider } from "./Header"
 
 const cardHeaderLayout = "flex items-center py-1 px-1 bg-section-header-fill"
 const cardHeaderStyle = "text-text-section-header text-xl font-eskapade font-bold"
 
-export const CardHeader = ({ img = '', title, toggleCollapsedButton, toggleCollapsed }: CollapsibleHeaderProps) => {
+export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedButton, toggleCollapsed }: CollapsibleHeaderProps) => {
     return (
         <div onClick={toggleCollapsed} className={
             `${cardHeaderLayout} ${cardHeaderStyle} cursor-pointer`
         }>
             {
-                img && img.length > 0 ?
-                    <img
-                        src={img}
-                        height={32}
-                        width={32}
-                        className="border border-solid border-sheet-main-fill rounded-sm mr-2"
-                    /> : <></>
+                !img || img === '' ? <></> :
+                    <ImageWithDamageTypeBadge img={img} dmgType={dmgType} size={38} classes={"mr-3"} />
             }
             {title}
             <Divider />

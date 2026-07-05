@@ -27,7 +27,8 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         subtitles={[['Size', beingSize ?? ''], ['Type', beingType ?? '']]}
                         description={ancestryFullDescription(hero.ancestry as any)}
                     />
-                </>}
+                </>
+            }
 
             
             <div className="my-2">
@@ -41,7 +42,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             <div key={f.name} onContextMenu={(e) => onCtxMenu(e, [
                                 {
                                     icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
-                                        <AbilityChatCard actorId={getId(hero)} title={f.name} description={f.description} />
+                                        <AbilityChatCard actorId={getId(hero)} img={''} title={f.name} description={f.description} />
                                     )
                                 }
                             ])}>
@@ -64,7 +65,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         <div key={p.parent.id} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
-                                    <AbilityChatCard actorId={getId(hero)} title={p.parent.name} description={p.description} />
+                                    <AbilityChatCard actorId={getId(hero)} img={p.parent.img} title={p.parent.name} description={p.description} />
                                 )
                             },
                             { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(p)]) }, isDestructive: true }

@@ -7,13 +7,14 @@ const cardSubheaderStyle = "flex text-text-section-header text-sm font-eskapade 
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border"
 const cardBodyStyle = "text-text-primary text-sm antialiased"
 
-export const SkillCard = ({ img = '', title, subtitles, description }: {
-    img?: string, title: string, subtitles: CardSubHeaderValues, description: string
+export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, description }: {
+    img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues, description: string
 }) => {
     return (
         <Collapsible
             startCollapsed
             img={img}
+            dmgType={dmgType}
             title={title}
             Header={CardHeader}
             content={(

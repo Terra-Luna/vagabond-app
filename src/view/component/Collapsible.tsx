@@ -3,6 +3,7 @@ import { ReactNode, useCallback, useState } from "react"
 
 export interface CollapsibleHeaderProps {
     img?: string
+    dmgType?: string
     title: string
     toggleCollapsedButton: ReactNode
     toggleCollapsed?: () => void
@@ -11,8 +12,8 @@ interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }
 
-export const Collapsible = ({ img = '', title, Header, content, startCollapsed = false, className }: {
-    img: string, title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean, className?: string
+export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className }: {
+    img?: string, dmgType?: string, title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean, className?: string
 }) => {
     const [isCollapsed, setCollapsed] = useState(startCollapsed)
     const toggleCollapsed = useCallback(() => {
@@ -20,7 +21,7 @@ export const Collapsible = ({ img = '', title, Header, content, startCollapsed =
     }, [isCollapsed])
     return (
         <div className={className}>
-            <Header img={img} title={title} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={
+            <Header img={img} dmgType={dmgType} title={title} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={
                 <button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>
             } />
             {isCollapsed ? <></> : content}

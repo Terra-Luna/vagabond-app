@@ -12,27 +12,27 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case lang.VGLITE.DamageTypes.fire: {
-            element = <Flame size={size} className='text-fire' />
+            element = <Flame size={size} strokeWidth={1} className='text-text-primary fill-fire' />
             break
         }
         case lang.VGLITE.DamageTypes.cold: {
-            element = <Snowflake size={size} className='text-cold' />
+            element = <Snowflake size={size} strokeWidth={1} className='text-text-primary fill-cold' />
             break
         }
         case lang.VGLITE.DamageTypes.shock: {
-            element = <Zap size={size} className='text-shock' />
+            element = <Zap size={size} strokeWidth={1} className='text-text-primary fill-shock' />
             break
         }
         case lang.VGLITE.DamageTypes.acid: {
-            element = <Droplets size={size} className='text-acid' />
+            element = <Droplets size={size} strokeWidth={1} className='text-text-primary fill-acid' />
             break
         }
         case lang.VGLITE.DamageTypes.poison: {
-            element = <FlaskRound size={size} className='text-poison' />
+            element = <FlaskRound size={size} strokeWidth={1} className='text-text-primary fill-poison' />
             break
         }
         case lang.VGLITE.DamageTypes.necrotic: {
-            element = <Skull size={size} className='text-necrotic' />
+            element = <Skull size={size} strokeWidth={1} className='text-text-primary fill-necrotic' />
             break
         }
         case lang.VGLITE.DamageTypes.psychic: {
@@ -40,11 +40,11 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case lang.VGLITE.DamageTypes.healing: {
-            element = <Cross size={size} className='text-healing' />
+            element = <Cross size={size} strokeWidth={1} className='text-text-primary fill-healing' />
             break
         }
         case lang.VGLITE.DamageTypes.mana: {
-            element = <Sparkle size={size} className='text-mana' />
+            element = <Sparkle size={size} strokeWidth={1} className='text-text-primary fill-mana' />
             break
         }
         case lang.VGLITE.DamageTypes.physical: {
@@ -72,6 +72,27 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
     return (
         <Tooltip text={lang.VGLITE.DamageTypes[dmgType]} children={element} />
     )
+}
+
+export const ImageWithDamageTypeBadge = ({ img = '', dmgType = 'none', size = 42, classes = '' }: { img?: string, dmgType?: string, size?: number, classes?: string }) => {
+    const imageSize = { width: `${size}px`, height: `${size}px` }
+    return (<>
+        {
+            img === '' && dmgType === 'none' ? <></> :
+                <div className={`relative float-left overflow-visible ${classes}`} style={imageSize}>
+                    {
+                        !img || img.length === 0 ? <></> :
+                            <img src={img} className="border-solid border-section-header-fill rounded-sm" />
+                    }
+                    {
+                        !dmgType || dmgType === 'none' ? <></> :
+                            <div className="absolute w-8 h-8 z-10 -bottom-2 -right-3">
+                                <DamageTypeIcon dmgType={dmgType} size={28} />
+                            </div>
+                    }
+                </div>
+        }
+    </>)
 }
 
 const CustomIcon = ({ path, size }: { path: string, size: number }) => {

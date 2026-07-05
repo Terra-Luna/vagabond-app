@@ -6,14 +6,15 @@ import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DamageRolls } from "./component/DiceRoll"
 import { TargetsDisplay } from "./component/TargetsDisplay"
-import { DamageTypeIcon } from "../component/DamageTypeIcon"
+import { DamageTypeIcon, ImageWithDamageTypeBadge } from "../component/DamageTypeIcon"
 import { lang, vgLiteLang } from "../../utils/lang"
 import { sendVgLiteChatMessage } from "./ChatCardManager"
 import { CountdownRollChatCard } from "./CountdownRollChatCard"
 import { glowOnHover } from "../common/text-styles"
 
-export const AbilityChatCard = ({ actorId, title, description, tokenIds = [], dmgType = 'none', appliesBurn = false, burnDuration = '' }: {
+export const AbilityChatCard = ({ actorId, img, title, description, tokenIds = [], dmgType = 'none', appliesBurn = false, burnDuration = '' }: {
     actorId: string,
+    img: string,
     title: string,
     description: string,
     tokenIds?: string[],
@@ -28,10 +29,15 @@ export const AbilityChatCard = ({ actorId, title, description, tokenIds = [], dm
             contents={
                 <div className="space-x-2 text-base text-text-secondary font-paradigm font-normal">
                     <TargetsDisplay tokenIds={tokenIds} />
-                    {
-                        dmgType !== 'none' ? <div className="float-left mr-1"><DamageTypeIcon dmgType={dmgType} size={24} /></div> : <></>
-                    }
-                    <EnrichedContent content={description} />
+                    <div>
+                        {
+                            !img || img === '' ? <></> :
+                                <ImageWithDamageTypeBadge img={img} dmgType={dmgType} classes="mr-3" />
+                        }
+                        <div className="text-justify">
+                            <EnrichedContent content={description} />
+                        </div>
+                    </div>
                     {
                         appliesBurn ? <p
                             className={`${glowOnHover} cursor-pointer`}
