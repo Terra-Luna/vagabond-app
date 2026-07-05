@@ -1,4 +1,4 @@
-import { damageTypeOptions, fields, optionalString, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
 const spellSchema = () => {

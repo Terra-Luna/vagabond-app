@@ -4,8 +4,9 @@ import { stripHtml } from "../../../utils/stringUtil"
 import { RichTextField } from "../../component/RichTextField"
 import ReactHtmlParser from 'react-html-parser'
 import { useEditMode } from "../../context/EditModeContext/Hooks"
+import ItemDataModel, { BaseItemSchema } from "../../../model/item/ItemDataModel"
 
-export const Description = ({ obj }) => {
+export const Description = ({ obj, showFullView = false }: { obj: Item & { system: ItemDataModel<BaseItemSchema> }, showFullView?: boolean }) => {
     const { isEditMode } = useEditMode()
     
     const onDescriptionChange = useCallback((descr) => {
@@ -14,19 +15,21 @@ export const Description = ({ obj }) => {
     return (<>
         {
             stripHtml(obj.system.description).length === 0 && !isEditMode ? <></> :
-                <div className="pb-1 border border-dotted border-transparent border-b-table-border">
+                <div className={`${showFullView ? 'h-fit' : ''} pb-1 border border-dotted border-transparent border-b-table-border overflow-hidden`}>
                     {
                         isEditMode ?
-                            <div className="h-[54px] p-0.5">
+                            <div className={`${showFullView ? 'h-fit' : 'h-[54px]'} p-0.5 overflow-hidden'}`}>
                                 <RichTextField
-                                    height={54}
+                                    height={showFullView ? '100%' : 54}
                                     defaultValue={obj.system.description}
                                     onChange={onDescriptionChange}
                                 />
                             </div> :
-                            <div className="px-2 text-justify font-light italic">
+                            <div className={`${showFullView ? 'h-fit' : ''} px-2 text-justify font-light italic overflow-hidden`}>
                                 {stripHtml(obj.system.description).length > 0 ?
-                                    <div className="max-h-[54px] overflow-y-auto">{ReactHtmlParser(obj.system.description)}</div> : <></>
+                                    <div className={`${showFullView ? 'h-fit' : 'max-h-54 overflow-hidden'}`}>
+                                        {ReactHtmlParser(obj.system.description)}
+                                    </div> : <></>
                                 }
                             </div>
                     }

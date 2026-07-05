@@ -22,9 +22,10 @@ import AdversarySheet from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
 import { rehydrateElement } from "./view/chat/ChatCardManager"
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
-import { PerkSheet } from './view/sheets/item/character/Sheets'
+import { PerkSheet, SpellSheet } from './view/sheets/item/character/SkillSheets'
 import { vgLiteStyles } from "./utils/styleUtils"
 import { getId } from "./utils/modelUtil"
+import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 
 // add our fonts
 const fontFaces = [
@@ -155,7 +156,7 @@ Hooks.on("updateItem", (item, changed, options, userId) => {
 })
 
 Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
-    if (item.system.bulk.isStackable && item.parent) {
+    if (item.system.bulk?.isStackable && item.parent) {
         const count = item.system.bulk.quantity
         if (count > 1) {
             item.update({ 'system.bulk.quantity': count - 1 })
@@ -231,8 +232,18 @@ foundry.documents.collections.Actors.registerSheet('vagabond-lite', AdversaryShe
     makeDefault: true
 });
 
+foundry.documents.collections.Items.registerSheet('vagabond-lite', ClassSheet as any, {
+    types: ['class'],
+    makeDefault: true
+});
+
 foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet as any, {
     types: ['perk'],
+    makeDefault: true
+});
+
+foundry.documents.collections.Items.registerSheet('vagabond-lite', SpellSheet as any, {
+    types: ['spell'],
     makeDefault: true
 });
 

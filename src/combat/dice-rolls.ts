@@ -146,7 +146,6 @@ export const rollCountdownDie = async (result: CountdownResult): Promise<Countdo
     const foundryRoll = formula.replace(/^c?d(\d+)/i, "1d$1cd")
     const countdown = await new Roll(foundryRoll).evaluate()
     const nextDuration = adjustCountdownDuration(countdown.total, foundryRoll.toUpperCase())
-    console.log(foundryRoll, nextDuration)
     return {
         name: result.name,
         duration: nextDuration,

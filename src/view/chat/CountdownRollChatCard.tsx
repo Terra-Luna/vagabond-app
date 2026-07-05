@@ -1,16 +1,19 @@
+import { useState } from "react"
 import { CountdownResult, rollCountdownDie } from "../../combat/dice-rolls"
-import { glowOnHover } from "../common/text-styles"
 import { sendVgLiteChatMessage } from "./ChatCardManager"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRoll } from "./component/DiceRoll"
 
 export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) => {
+    const [isReRolled, setIsReRolled] = useState(false)
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner portrait={''} title={result.name} />}
             contents={<>
-                <div className={`flex justify-center w-full ${glowOnHover} cursor-pointer`} onClick={async () => {
+                <div className={`flex justify-center w-full ${isReRolled ? '' : 'cursor-pointer'}`} onClick={async () => {
+                    if (isReRolled) return
+                    setIsReRolled(true)
                     const cdRes = await rollCountdownDie(result)
                     if (!cdRes) return
                     sendVgLiteChatMessage(null, <CountdownRollChatCard result={cdRes} />, cdRes.rolls)

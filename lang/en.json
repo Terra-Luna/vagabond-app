@@ -621,6 +621,7 @@
       "damageType": "Damage Type",
       "burn": "Applies Burn",
       "duration": "Duration",
+      "burnDuration": "Burn Duration",
       "explodingDice": "Exploding Dice",
       "canExplode": "Exploding Dice",
       "explodesOn": "Explodes On",

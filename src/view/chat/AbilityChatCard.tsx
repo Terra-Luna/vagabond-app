@@ -1,5 +1,5 @@
 import { Equal } from "lucide-react"
-import { DamageRollResult } from "../../combat/dice-rolls"
+import { DamageRollResult, rollCountdownDie } from "../../combat/dice-rolls"
 import { getTokenImg } from "../../utils/modelUtil"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
@@ -7,10 +7,19 @@ import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DamageRolls } from "./component/DiceRoll"
 import { TargetsDisplay } from "./component/TargetsDisplay"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
-import { lang } from "../../utils/lang"
+import { lang, vgLiteLang } from "../../utils/lang"
+import { sendVgLiteChatMessage } from "./ChatCardManager"
+import { CountdownRollChatCard } from "./CountdownRollChatCard"
+import { glowOnHover } from "../common/text-styles"
 
-export const AbilityChatCard = ({ actorId, title, description, tokenIds, dmgType = 'none' }: {
-    actorId: string, title: string, description: string, tokenIds: string[], dmgType?: string
+export const AbilityChatCard = ({ actorId, title, description, tokenIds, dmgType = 'none', appliesBurn = false, burnDuration = '' }: {
+    actorId: string,
+    title: string,
+    description: string,
+    tokenIds: string[],
+    dmgType?: string,
+    appliesBurn?: boolean,
+    burnDuration?: string
 }) => {
     const actor = game.actors?.get(actorId)
     return (
@@ -23,6 +32,17 @@ export const AbilityChatCard = ({ actorId, title, description, tokenIds, dmgType
                         dmgType !== 'none' ? <div className="float-left mr-1"><DamageTypeIcon dmgType={dmgType} size={24} /></div> : <></>
                     }
                     <EnrichedContent content={description} />
+                    {
+                        appliesBurn ? <p
+                            className={`${glowOnHover} cursor-pointer`}
+                            onClick={async () => {
+                                const cdRes = await rollCountdownDie({ name: title, duration: burnDuration })
+                                sendVgLiteChatMessage(actor, <CountdownRollChatCard result={cdRes!} />, cdRes!.rolls)
+                            }}
+                        >
+                            {vgLiteLang.ItemSheet.burnDuration}: {burnDuration}
+                        </p> : <></>
+                    }
                 </div>
             }
         />
