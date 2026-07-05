@@ -1,4 +1,4 @@
-import SpellDataModel from "../../../../../model/item/character/SpellDataModel"
+import { SpellDataModel } from "../../../../../model/item/character/SpellDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { Checkbox } from "../../../../component/Checkbox"
