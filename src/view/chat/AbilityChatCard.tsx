@@ -25,7 +25,7 @@ export const AbilityChatCard = ({ actorId, img, title, description, tokenIds = [
     const actor = game.actors?.get(actorId)
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={getTokenImg(actor)} title={title} />}
+            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={title} />}
             contents={
                 <div className="space-x-2 text-base text-text-secondary font-paradigm font-normal">
                     <TargetsDisplay tokenIds={tokenIds} />
@@ -59,7 +59,7 @@ export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, r
     const actor = game.actors?.get(actorId)
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={getTokenImg(actor)} title={lang.VGLITE.AdversarySheet.combo} />}
+            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={lang.VGLITE.AdversarySheet.combo} />}
             contents={
                 <div className="">
                     <TargetsDisplay tokenIds={tokenIds} />

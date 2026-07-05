@@ -14,6 +14,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const beingSize = vgLiteLang.Sizes[hero.ancestry?.beingSize ?? '']
     const beingType = vgLiteLang.BeingTypes[hero.ancestry?.beingType ?? '']
+    const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"
     
     return (
         <div className="py-1">
@@ -29,8 +30,6 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                     />
                 </>
             }
-
-            
             <div className="my-2">
                 <Header title={vgLiteLang.HeroSheet.class} />
                 <div className="mt-0.5" />
@@ -98,5 +97,3 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
-
-const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"

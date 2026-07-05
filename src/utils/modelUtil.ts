@@ -23,6 +23,6 @@ export const getTargets = (): string[] => {
     return tokenIds
 }
 
-export const getCanvasToken = (id) => {
+export const getCanvasToken = (id): Token | undefined => {
     return canvas?.tokens?.get(id)
 }

@@ -2,7 +2,7 @@ import ArmorDataModel from "../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import WeaponDataModel from "../../model/item/equip/WeaponDataModel"
 import { lang } from "../../utils/lang"
-import { getName, getPortrait } from "../../utils/modelUtil"
+import { getId, getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { Tooltip } from "../component/Tooltip"
@@ -19,7 +19,7 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
     if (equipment === undefined) return <p className="font-xs font-paradigm font-normal italic">Item removed</p>
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={getPortrait(item)} title={isConsumable ? `Used: ${getName(item)}` : `${getName(item)}`} />}
+            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getPortrait(item)} title={isConsumable ? `Used: ${getName(item)}` : `${getName(item)}`} />}
             contents={
                 <div className="font-paradigm font-normal text-lg">
                     <EnrichedContent content={equipment.description} />

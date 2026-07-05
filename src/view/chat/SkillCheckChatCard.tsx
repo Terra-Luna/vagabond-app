@@ -11,7 +11,7 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
     const [resultTextColor] = result.result === vgLiteLang.RollResult.failure ? ['text-failure'] : ['text-success']
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={getTokenImg(actor)} title={`${result.skillName} Check`} />}
+            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={`${result.skillName} Check`} />}
             contents={<>
                 <DiceGraphics d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
                 <TotalsFooter total={result.total} difficulty={result.difficulty} csf={result.result} resultTextColor={resultTextColor} />

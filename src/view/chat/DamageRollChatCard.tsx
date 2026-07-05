@@ -14,7 +14,7 @@ export const DamageRollChatCard = ({ actorId, tokenIds, result }: { actorId: str
     const actor = game.actors?.get(actorId)
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={getTokenImg(actor)} title={result.atkName} />}
+            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={result.atkName} />}
             contents={<>
                 <TargetsDisplay tokenIds={tokenIds} />
                 <DamageRolls result={result} />

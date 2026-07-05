@@ -12,7 +12,7 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: stri
     const res = resources[resource]
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner portrait={getTokenImg(hero)} title={`${verb} ${res.name}`} />}
+            banner={<ChatCardBanner tokenId={hero?.getActiveTokens()[0]?.id} portrait={getTokenImg(hero)} title={`${verb} ${res.name}`} />}
             contents={
                 <div className="text-sm text-justify font-paradigm font-normal">
                     <TrackerIcon resource={resource} />
