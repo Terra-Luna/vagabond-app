@@ -68,7 +68,7 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: lang.VGLITE.EquipmentCategories.alchemy,
+                category: 'alchemy',
                 damage: '',
                 damageType: '',
                 bulk: {
@@ -87,11 +87,11 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: lang.VGLITE.EquipmentCategories.armor,
+                category: 'armor',
                 armorType: item.might_req <= 3 ? 'light' : (item.might_req <= 4 ? 'medium' : 'heavy'),
                 rating: item.armor_rating,
                 mightReq: item.might_req,
-                material: Object.keys(lang.VGLITE.Metals)[item.material.toLowerCase()] ?? 'standard',
+                material: Object.keys(lang.VGLITE.Metals)[item.material?.toLowerCase()] ?? 'standard',
                 bulk: {
                     slots: item.slots,
                     quantity: 1
@@ -110,18 +110,19 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: lang.VGLITE.EquipmentCategories.weapons,
+                category: 'weapons',
                 damage: {
                     oneHand: `1${item.damage}`,
-                    twoHand: item.grip === 'V' ? `1d${Number(item.damage.replace('d', '')) + 2}` : `1${item.damage}`
+                    twoHand: item.grip === 'V' ? `1d${Number(item.damage.replace('d', '')) + 2}` : `1${item.damage}`,
+                    type: 'physical'
                 },
-                range: lang.VGLITE.Ranges[item.range.toLowerCase()],
+                range: item.range?.toLowerCase(),
                 grip: {
-                    style: item.grip.toUpperCase(),
-                    state: item.active_grip?.toUpperCase() ?? ''
+                    style: item.grip.toUpperCase() === '1H' ? 'H' : (item.grip.toUpperCase() === '2H' ? 'HH' : item.grip.toUpperCase()),
+                    state: ''
                 },
-                properties: item.properties,
-                material: Object.keys(lang.VGLITE.Metals)[item.material.toLowerCase()] ?? 'standard',
+                properties: item.properties?.map(p => p.toLowerCase()),
+                material: Object.keys(lang.VGLITE.Metals)[item.material?.toLowerCase()] ?? 'standard',
                 bulk: {
                     slots: item.slots,
                     quantity: 1
@@ -140,7 +141,7 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: lang.VGLITE.EquipmentCategories.containers,
+                category: 'containers',
                 bulk: {
                     slots: item.slots,
                     quantity: 1
@@ -158,7 +159,7 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category.toLowerCase()] ?? 'other',
+                category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category?.toLowerCase()] ?? 'other',
                 value: item.value,
                 bulk: {
                     slots: item.slots,
@@ -177,7 +178,7 @@ export default class TagalongItemCreator {
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
-                category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category.toLowerCase()] ?? 'other',
+                category: Object.keys(lang.VGLITE.EquipmentCategories)[item.category?.toLowerCase()] ?? 'other',
                 value: item.value,
                 bulk: {
                     slots: item.slots,

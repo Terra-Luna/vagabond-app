@@ -14,7 +14,7 @@ const prerequisiteSchema = () => {
         type: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.PrerequisiteTypes) }),
         stat: new fields.StringField({ ...optionalString, choices: Object.keys(lang.VGLITE.Stat), initial: Object.keys(lang.VGLITE.Stat)[0] }),
         value: new fields.NumberField({ ...standardInteger }),
-        spell: new fields.StringField({ ...optionalString, initial: 'any' }),
+        spell: new fields.StringField({ ...optionalString, initial: 'Any' }),
         skills: new fields.ArrayField(
             new fields.SchemaField({
                 skillNames: new fields.ArrayField(
@@ -64,6 +64,11 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
         })
     })
     return trainings.join(' | ')
+}
+
+export const perkSpellRerequisiteAsString = (perk: PerkDataModel): string => {
+    const spellPrereqs = perk.prerequisites.filter(it => it.type === 'spell').map(p => p.spell)
+    return removeLastComma(spellPrereqs.join(", "), ' &')
 }
 
 export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {

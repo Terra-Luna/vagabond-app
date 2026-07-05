@@ -1,7 +1,7 @@
 import { MessageSquareText, Trash } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
-import PerkDataModel, { perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
+import PerkDataModel, { perkSpellRerequisiteAsString as perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
 import { toPascalCase } from "../../../../../utils/stringUtil"
@@ -63,9 +63,9 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                 subtitles={
                                     p.prerequisites.map(prereq => (
                                         [
-                                            `${vgLiteLang.PrerequisiteTypes[prereq.type]}`,
+                                            `${prereq.type !== 'stat' ? vgLiteLang.PrerequisiteTypes[prereq.type] : ''}`,
                                             `${prereq.type === 'spell' ?
-                                                toPascalCase(prereq.spell) : (
+                                                perkSpellRerequisitesAsString(p) : (
                                                     prereq.type === 'stat' ?
                                                         perkStatPrerequisitesAsString(p) :
                                                         perkTrainingPrerequisitesAsString(p)

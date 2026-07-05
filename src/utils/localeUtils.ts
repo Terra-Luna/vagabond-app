@@ -43,10 +43,10 @@ export const createDropdownEntriesFromObj = (localObj) => {
 export const createDropdownEntriesForItems = (itemType: string, includeAnyOption: boolean = false) => {
     const items: { value: string, label: string }[] = []
     if (includeAnyOption) {
-        items.push({ value: 'any', label: 'Any' })
+        items.push({ value: 'Any', label: 'Any' })
     }
     game.items?.filter(it => it.type === itemType).map(it => (
-        items.push({ value: it.id, label: it.name })
+        items.push({ value: it.name, label: it.name })
     ))
     return items
 }

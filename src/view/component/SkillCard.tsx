@@ -3,7 +3,7 @@ import { Collapsible } from "./Collapsible"
 import { CardHeader } from './CardHeader'
 
 const cardSubheaderLayout = "flex items-center border-r-1 border-solid border-table-border"
-const cardSubheaderStyle = "flex text-text-section-header text-sm pb-1 pl-2 pr-8 bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
+const cardSubheaderStyle = "flex text-text-section-header text-sm font-eskapade pb-1 pl-2 pr-8 bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
 
 const cardBodyLayout = "rounded-b-lg p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border rounded-b-lg"
 const cardBodyStyle = "text-text-primary text-sm antialiased"
@@ -44,13 +44,18 @@ export const CardSubHeader = ({ content }: { content: CardSubHeaderValues }) => 
 const formatSubHeader = (content: CardSubHeaderValues): string => {
     let subHeader = ''
     content.forEach(c => {
-        let sub = `${c[0]}: ${c[1]}`
+        let sub = `${formatSubheaderPrepend(c[0])} ${c[1]}`
         if (content.indexOf(c) < content.length - 1) {
             sub += "  |  "
         }
         subHeader += sub
     })
     return subHeader
+}
+
+function formatSubheaderPrepend(sub: string): string {
+    if (sub.length === 0 || sub === 'stat') return ''
+    else return `${sub}:`
 }
 
 /**
