@@ -34,12 +34,19 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         hero.class?.features?.filter(f =>
                             f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK'
                         ).map(f => (
-                            <SkillCard
-                                key={f.name}
-                                title={f.name}
-                                subtitles={[[`${getName(hero.class)}`, `Level ${f.level}`]]}
-                                description={f.description}
-                            />
+                            <div key={f.name} onContextMenu={(e) => onCtxMenu(e, [
+                                {
+                                    icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
+                                        <AbilityChatCard actorId={getId(hero)} title={f.name} description={f.description} />
+                                    )
+                                }
+                            ])}>
+                                <SkillCard
+                                    title={f.name}
+                                    subtitles={[[`${getName(hero.class)}`, `Level ${f.level}`]]}
+                                    description={f.description}
+                                />
+                            </div>
                         ))
                     }
                 </div>
@@ -59,6 +66,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(p)]) }, isDestructive: true }
                         ])}>
                             <SkillCard
+                                img={p.parent.img}
                                 title={p.parent.name}
                                 subtitles={
                                     p.prerequisites.map(prereq => (

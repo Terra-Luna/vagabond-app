@@ -80,6 +80,7 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                             { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) }, isDestructive: true }
                         ])}>
                             <SkillCard
+                                img={sp.parent.img}
                                 title={sp.parent.name}
                                 subtitles={[['Base dmg', vgLiteLang.DamageTypes[sp.damageType] ?? '-']]}
                                 description={sp.description}

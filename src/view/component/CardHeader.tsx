@@ -1,15 +1,23 @@
 import { CollapsibleHeaderProps } from "./Collapsible"
 import { Divider } from "./Header"
 
+const cardHeaderLayout = "flex items-center py-1 px-2 bg-section-header-fill"
+const cardHeaderStyle = "text-text-section-header text-xl font-eskapade font-bold"
 
-const cardHeaderLayout = "flex items-center pt-2 pb-1 pl-2 pr-2 bg-section-header-fill"
-const cardHeaderStyle = "text-text-section-header text-xl font-eskapade font-bold rounded-t-lg"
-
-export const CardHeader = ({ title, isCollapsed, toggleCollapsedButton, toggleCollapsed }: CollapsibleHeaderProps) => {
+export const CardHeader = ({ img = '', title, toggleCollapsedButton, toggleCollapsed }: CollapsibleHeaderProps) => {
     return (
         <div onClick={toggleCollapsed} className={
-            `${cardHeaderLayout} ${cardHeaderStyle} ${isCollapsed ? 'rounded-b-lg' : ''} cursor-pointer`
+            `${cardHeaderLayout} ${cardHeaderStyle} cursor-pointer`
         }>
+            {
+                img && img.length > 0 ?
+                    <img
+                        src={img}
+                        height={32}
+                        width={32}
+                        className="border border-solid border-sheet-main-fill rounded-sm mr-2"
+                    /> : <></>
+            }
             {title}
             <Divider />
             {toggleCollapsedButton}
