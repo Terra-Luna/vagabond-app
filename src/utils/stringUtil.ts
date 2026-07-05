@@ -18,7 +18,15 @@ export function removeWhitespace(s: string): string {
 }
 
 export function andOrToSymbol(andOr: string): string {
-    const val = andOr.toLowerCase()
+    const val = andOr?.toLowerCase()
     if (val !== 'and' && val !== 'or') return andOr
     return andOr === 'and' ? '&' : andOr
+}
+
+export function removeLastComma(text: string, andOr: string): string {
+    if (!text.includes(',')) return text
+    if ((text.match(/,/g) || []).length === 1) {
+        return text.replace(/,/, ` ${andOr}`)
+    }
+    return text.replace(/,(?=[^,]*$)/, ` ${andOr}`)
 }

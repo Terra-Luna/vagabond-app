@@ -73,23 +73,11 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                     hero.spells.map((sp: any) => (
                         <div key={getId(sp)} onContextMenu={(e) => onCtxMenu(e, [
                             {
-                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
-                                    hero,
-                                    <AbilityChatCard
-                                        actorId={getId(hero)}
-                                        title={sp.parent.name}
-                                        description={sp.description}
-                                        tokenIds={[]}
-                                        dmgType={sp.damageType}
-                                    />
+                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
+                                    <AbilityChatCard actorId={getId(hero)} title={sp.parent.name} description={sp.description} dmgType={sp.damageType} />
                                 )
                             },
-                            {
-                                icon: Trash,
-                                label: 'Remove',
-                                action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) },
-                                isDestructive: true
-                            }
+                            { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) }, isDestructive: true }
                         ])}>
                             <SkillCard
                                 title={sp.parent.name}

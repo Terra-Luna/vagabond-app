@@ -1,13 +1,18 @@
+import { MessageSquareText, Trash } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
 import PerkDataModel, { perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
-import { getName } from "../../../../../utils/modelUtil"
+import { getId, getName } from "../../../../../utils/modelUtil"
 import { toPascalCase } from "../../../../../utils/stringUtil"
+import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
+import { useContextMenu } from "../../../../component/ContextMenu"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
+    const { onCtxMenu, ContextMenu } = useContextMenu()
     const beingSize = vgLiteLang.Sizes[hero.ancestry?.beingSize ?? '']
     const beingType = vgLiteLang.BeingTypes[hero.ancestry?.beingType ?? '']
     
@@ -45,29 +50,38 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             <div className={abilitiesGrid}>
                 {
                     hero.perks.map((p: any) => (
-                        <SkillCard
-                            key={p.parent.id}
-                            title={p.parent.name}
-                            subtitles={
-                                p.prerequisites.map(prereq => (
-                                    [
-                                        `${vgLiteLang.PrerequisiteTypes[prereq.type]}`,
-                                        `${prereq.type === 'spell' ?
-                                            toPascalCase(prereq.spell) : (
-                                                prereq.type === 'stat' ?
-                                                    perkStatPrerequisitesAsString(p) :
-                                                    perkTrainingPrerequisitesAsString(p)
+                        <div key={p.parent.id} onContextMenu={(e) => onCtxMenu(e, [
+                            {
+                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
+                                    <AbilityChatCard actorId={getId(hero)} title={p.parent.name} description={p.description} />
+                                )
+                            },
+                            { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(p)]) }, isDestructive: true }
+                        ])}>
+                            <SkillCard
+                                title={p.parent.name}
+                                subtitles={
+                                    p.prerequisites.map(prereq => (
+                                        [
+                                            `${vgLiteLang.PrerequisiteTypes[prereq.type]}`,
+                                            `${prereq.type === 'spell' ?
+                                                toPascalCase(prereq.spell) : (
+                                                    prereq.type === 'stat' ?
+                                                        perkStatPrerequisitesAsString(p) :
+                                                        perkTrainingPrerequisitesAsString(p)
 
-                                            )
-                                        }`
-                                    ]
-                                ))
-                            }
-                            description={p.description}
-                        />
+                                                )
+                                            }`
+                                        ]
+                                    ))
+                                }
+                                description={p.description}
+                            />
+                        </div>
                     ))
                 }
             </div>
+            <ContextMenu />
         </div>
     )
 }

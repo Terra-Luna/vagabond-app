@@ -1,5 +1,5 @@
 import { lang, vgLiteLang } from "../../../utils/lang"
-import { andOrToSymbol } from "../../../utils/stringUtil"
+import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
 import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
@@ -60,7 +60,7 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
             s.skillNames.forEach(n => {
                 skillNames.push(vgLiteLang.Skills[n].name)
             })
-            trainings.push(skillNames.join(` ${andOrToSymbol(s.andOr)} `))
+            trainings.push(removeLastComma(skillNames.join(', '), andOrToSymbol(s.andOr)))
         })
     })
     return trainings.join(' | ')

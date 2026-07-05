@@ -12,11 +12,11 @@ import { sendVgLiteChatMessage } from "./ChatCardManager"
 import { CountdownRollChatCard } from "./CountdownRollChatCard"
 import { glowOnHover } from "../common/text-styles"
 
-export const AbilityChatCard = ({ actorId, title, description, tokenIds, dmgType = 'none', appliesBurn = false, burnDuration = '' }: {
+export const AbilityChatCard = ({ actorId, title, description, tokenIds = [], dmgType = 'none', appliesBurn = false, burnDuration = '' }: {
     actorId: string,
     title: string,
     description: string,
-    tokenIds: string[],
+    tokenIds?: string[],
     dmgType?: string,
     appliesBurn?: boolean,
     burnDuration?: string
