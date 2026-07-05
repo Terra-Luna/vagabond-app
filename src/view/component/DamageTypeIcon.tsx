@@ -12,27 +12,27 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case lang.VGLITE.DamageTypes.fire: {
-            element = <Flame size={size} strokeWidth={1} className='text-text-primary fill-fire' />
+            element = <Flame size={size} strokeWidth={1} className='text-black fill-fire' />
             break
         }
         case lang.VGLITE.DamageTypes.cold: {
-            element = <Snowflake size={size} strokeWidth={1} className='text-text-primary fill-cold' />
+            element = <Snowflake size={size} strokeWidth={1} className='text-black fill-cold' />
             break
         }
         case lang.VGLITE.DamageTypes.shock: {
-            element = <Zap size={size} strokeWidth={1} className='text-text-primary fill-shock' />
+            element = <Zap size={size} strokeWidth={1} className='text-black fill-shock' />
             break
         }
         case lang.VGLITE.DamageTypes.acid: {
-            element = <Droplets size={size} strokeWidth={1} className='text-text-primary fill-acid' />
+            element = <Droplets size={size} strokeWidth={1} className='text-black fill-acid' />
             break
         }
         case lang.VGLITE.DamageTypes.poison: {
-            element = <FlaskRound size={size} strokeWidth={1} className='text-text-primary fill-poison' />
+            element = <FlaskRound size={size} strokeWidth={1} className='text-black fill-poison' />
             break
         }
         case lang.VGLITE.DamageTypes.necrotic: {
-            element = <Skull size={size} strokeWidth={1} className='text-text-primary fill-necrotic' />
+            element = <Skull size={size} strokeWidth={1} className='text-black fill-necrotic' />
             break
         }
         case lang.VGLITE.DamageTypes.psychic: {
@@ -40,11 +40,11 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case lang.VGLITE.DamageTypes.healing: {
-            element = <Cross size={size} strokeWidth={1} className='text-text-primary fill-healing' />
+            element = <Cross size={size} strokeWidth={1} className='text-black fill-healing' />
             break
         }
         case lang.VGLITE.DamageTypes.mana: {
-            element = <Sparkle size={size} strokeWidth={1} className='text-text-primary fill-mana' />
+            element = <Sparkle size={size} strokeWidth={1} className='text-black fill-mana' />
             break
         }
         case lang.VGLITE.DamageTypes.physical: {
@@ -74,15 +74,15 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
     )
 }
 
-export const ImageWithDamageTypeBadge = ({ img = '', dmgType = 'none', size = 42, classes = '' }: { img?: string, dmgType?: string, size?: number, classes?: string }) => {
+export const ImageWithDamageTypeBadge = ({ img = '', dmgType = 'none', size = 42, className = '' }: { img?: string, dmgType?: string, size?: number, className?: string }) => {
     const imageSize = { width: `${size}px`, height: `${size}px` }
     return (<>
         {
             img === '' && dmgType === 'none' ? <></> :
-                <div className={`relative float-left overflow-visible ${classes}`} style={imageSize}>
+                <div className={`relative float-left ${className}`} style={imageSize}>
                     {
                         !img || img.length === 0 ? <></> :
-                            <img src={img} className="border-solid border-section-header-fill rounded-sm" />
+                            <img src={img} className="border border-solid border-text-section-header rounded-sm" />
                     }
                     {
                         !dmgType || dmgType === 'none' ? <></> :

@@ -15,10 +15,13 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
         <EquipmentSheetSubtypeBody>
             <div className="space-y-4">
                 <div className="flex gap-x-8 justify-start items-start">
-                    <DamageType item={item} />
+                    {
+                        !isEditMode && item.system.damage.type === 'none' ? <></> :
+                            <DamageType item={item} />
+                    }
                     {
                         item.system.damage.type === 'none' ? <></> :
-                            <div className="flex gap-x-8">
+                            <div className="flex gap-x-8 items-top">
                                 <div>
                                     <ItemSheetPropLabel
                                         label={`
