@@ -255,7 +255,7 @@ const Stat = ({ name, value }: { name: string, value: number }) => {
     return (
         <div className="text-text-special font-bold text-center">
             {name}
-            <div className="flex items-center justify-center text-text-section-header font-eskapade text-4xl">
+            <div className="flex items-center justify-center text-text-stat-block font-eskapade text-4xl">
                 <span className="bg-stat-block-fill min-w-[42px] pb-1">{value}</span>
             </div>
         </div>

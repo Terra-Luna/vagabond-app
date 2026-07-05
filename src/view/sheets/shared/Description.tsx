@@ -15,7 +15,7 @@ export const Description = ({ obj, showFullView = false }: { obj: Item & { syste
     return (<>
         {
             stripHtml(obj.system.description).length === 0 && !isEditMode ? <></> :
-                <div className={`${showFullView ? 'h-fit' : ''} pb-1 border border-dotted border-transparent border-b-table-border overflow-hidden`}>
+                <div className={`${showFullView ? 'h-fit' : ''} py-1 border border-dotted border-transparent border-b-table-border overflow-hidden`}>
                     {
                         isEditMode ?
                             <div className={`${showFullView ? 'h-fit' : 'h-[54px]'} p-0.5 overflow-hidden'}`}>

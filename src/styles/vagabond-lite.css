@@ -29,6 +29,7 @@
   --color-skill-divider: ;
   --color-skill-bg-fill: ;
   --color-skill-border: ;
+  --color-text-stat-block: ;
   --color-stat-block-fill: ;
   --color-wealth-fill: ;
   --color-wealth-denom-label: ;
@@ -50,6 +51,7 @@
   --color-text-fatigue-current: ;
   --color-mana: ;
   --color-ic-equipped: ;
+  --color-text-encumbrance: ;
   --color-btn-primary-fill: ;
   --color-btn-primary-hover: ;
   --color-btn-primary-text: ;
@@ -60,6 +62,8 @@
   --color-context-menu-fill: ;
   --color-context-menu-hover: ;
   --color-context-menu-text: ;
+  --color-dice: ;
+  --color-dice-text: ;
   --color-magical: ;
   --color-fire: ;
   --color-cold: ;
@@ -78,37 +82,38 @@
 }
 
 .light {
-  --color-sheet-header-fill: #6a2e2a;
+  --color-sheet-header-fill: #181818;
   --color-text-header-primary: #eeeeed;
-  --color-text-header-secondary: #eeeeed;
-  --color-text-header-tertiary: #e1dbd9;
-  --color-sheet-main-fill: #faf0e6;
+  --color-text-header-secondary: #d2b450;
+  --color-text-header-tertiary: #212e41;
+  --color-sheet-main-fill: #fbfbfb;
   --color-portrait-border: #352f28;
   --color-text-tab-active: #53514a;
   --color-text-tab-inactive: #b7b0a7;
   --color-scroll-bar-handle: #cdcdcd;
   --color-scroll-bar-track: #f0f0f0;
-  --color-section-header-fill: #6a2e2a;
-  --color-section-header-line: #b59795;
+  --color-section-header-fill: #181818;
+  --color-section-header-line: #212e41;
   --color-text-section-header: #eeeeed;
   --color-text-primary: #181818;
   --color-text-secondary: #44403b;
   --color-text-tertiary: #6f5e53;
-  --color-text-special: #6a2e2a;
+  --color-text-special: #181818;
   --color-text-aux: #747069;
   --color-text-dmg: #e7000b;
-  --color-text-glow: #6a2e2a;
+  --color-text-glow: #212e41;
   --color-ic-skill-trained: #3d5541;
   --color-ic-skill-untrained: #aeb2a4;
   --color-skill-divider: #b7b0a7;
   --color-skill-bg-fill: #f4efea;
   --color-skill-border: #d6d3d1;
-  --color-stat-block-fill: #6a2e2a;
+  --color-text-stat-block: #e1dbd9;
+  --color-stat-block-fill: #181818;
   --color-wealth-fill: #f0e6d2;
   --color-wealth-denom-label: #bb4d00;
-  --color-table-border: #966e50;
+  --color-table-border: #181818;
   --color-table-row-odd: #e2c38c;
-  --color-table-row-even: #faf0e6;
+  --color-table-row-even: #fbfbfb;
   --color-text-table-item: #53514a;
   --color-ic-hp: #e7000b;
   --color-text-hp-current: #e7000b;
@@ -125,7 +130,8 @@
   --color-mana: #155dfc;
   --color-mana-50: #155dfc80;
   --color-ic-equipped: #3d5541;
-  --color-btn-primary-fill: #6a2e2a;
+  --color-text-encumbrance: #181818;
+  --color-btn-primary-fill: #181818;
   --color-btn-primary-hover: #fdfbf7;
   --color-btn-primary-text: #eeeeed;
   --color-btn-secondary-fill: #d7ccc8;
@@ -135,6 +141,8 @@
   --color-context-menu-fill: #d7ccc8;
   --color-context-menu-hover: #d6a593;
   --color-context-menu-text: #181818;
+  --color-dice: #212e41;
+  --color-dice-text: #ffffff;
   --color-magical: #155dfc;
   --color-fire: #DE671E;
   --color-cold: #00D0FF;
@@ -152,18 +160,18 @@
 
 .dark {
   --color-sheet-header-fill: #181818;
-  --color-text-header-primary: #d2b450;
-  --color-text-header-secondary: #e7e5e4;
-  --color-text-header-tertiary: #8a8580;
+  --color-text-header-primary: #eeeeed;
+  --color-text-header-secondary: #d2b450;
+  --color-text-header-tertiary: #d2b450;
   --color-sheet-main-fill: #292524;
   --color-portrait-border: #675e38;
-  --color-text-tab-active: #d2b450;
+  --color-text-tab-active: #d1c8c0;
   --color-text-tab-inactive: #675e38;
   --color-scroll-bar-handle: #787677;
   --color-scroll-bar-track: #221f21;
-  --color-section-header-fill: #d2b450;
+  --color-section-header-fill: #181818;
   --color-section-header-line: #212e41;
-  --color-text-section-header: #181818;
+  --color-text-section-header: #eeeeed;
   --color-text-primary: #e7e5e4;
   --color-text-secondary: #d1c8c0;
   --color-text-tertiary: #79716b;
@@ -176,10 +184,11 @@
   --color-skill-divider: #47412e;
   --color-skill-bg-fill: #1d1a19;
   --color-skill-border: #44403b;
-  --color-stat-block-fill: #d2b450;
+  --color-text-stat-block: #d2b450;
+  --color-stat-block-fill: #181818;
   --color-wealth-fill: #181818;
   --color-wealth-denom-label: #bb4d00;
-  --color-table-border: #44403b;
+  --color-table-border: #445877;
   --color-table-row-odd: #181818;
   --color-table-row-even: ##212e41;
   --color-text-table-item: #eae8e7;
@@ -197,6 +206,7 @@
   --color-ic-fatigue: #a59f9a;
   --color-text-fatigue-current: #a59f9a;
   --color-ic-equipped: #d2b450;
+  --color-text-encumbrance: #d2b450;
   --color-btn-primary-fill: #d2b450;
   --color-btn-primary-hover: #c5bb82;
   --color-btn-primary-text: #181818;
@@ -207,6 +217,8 @@
   --color-context-menu-fill: #1d1a19;
   --color-context-menu-hover: #181818;
   --color-context-menu-text: #d2b450;
+  --color-dice: #d2b450;
+  --color-dice-text: #212e41;
   --color-magical: #155dfc;
   --color-fire: #DE671E;
   --color-cold: #00D0FF;

@@ -16,7 +16,7 @@ import { Trait } from "./Trait";
 import { lang } from "../../../../../utils/lang";
 
 interface AncestryComponentProps {
-    ancestry: AncestryDataModel;
+    ancestry: AncestryDataModel
 }
 
 export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } }) => {

@@ -1,3 +1,5 @@
+import { vgLiteLang } from "../../../utils/lang"
+import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { damageTypeOptions, fields, optionalString } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
@@ -18,9 +20,8 @@ export default class SpellDataModel extends ItemDataModel<SpellSchema> {
             ...spellSchema()
         }
     }
+}
 
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-        
-    }
+export const spellDamageBase = (spell: SpellDataModel): CardSubHeaderValues[] => {
+    return [{ label: 'Damage Base', value: vgLiteLang.DamageTypes[spell.damageType] }]
 }

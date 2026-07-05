@@ -54,7 +54,8 @@ export const damageTypeOptions = () => {
         required: false,
         nullable: true,
         blank: false,
-        choices: damageTypes
+        choices: damageTypes,
+        initial: 'none'
     }
 }
 

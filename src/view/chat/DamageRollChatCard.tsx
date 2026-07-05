@@ -9,12 +9,20 @@ import { TargetsDisplay } from './component/TargetsDisplay'
 import { getTokenImg } from '../../utils/modelUtil'
 import { applyDamage, applyHealing } from '../../combat/damage-handler'
 import { glowOnHover } from '../common/text-styles'
+import { vgLiteLang } from '../../utils/lang'
 
-export const DamageRollChatCard = ({ actorId, tokenIds, result }: { actorId: string, tokenIds: string[], result: DamageRollResult }) => {
+export const DamageRollChatCard = ({ actorId, tokenIds, result }: {
+    actorId: string, tokenIds: string[], result: DamageRollResult
+}) => {
     const actor = game.actors?.get(actorId)
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={result.atkName} />}
+            banner={<ChatCardBanner
+                tokenId={actor?.getActiveTokens()[0]?.id}
+                portrait={getTokenImg(actor)}
+                title={result.atkName}
+                subtitle={[{ label: "Damage Type", value: vgLiteLang.DamageTypes[result.dmgType] }]}
+            />}
             contents={<>
                 <TargetsDisplay tokenIds={tokenIds} />
                 <DamageRolls result={result} />
@@ -39,27 +47,27 @@ export const TotalDmgFooter = ({ total, dmgType, tokenIds }) => {
 
 const GMToolsMenu = ({ tokenIds, damage }: { tokenIds: string[], damage: number }) => {
     return (<>
-        <Menu direction={"top"} align={"end"} menuButton={<Wrench size={20} className={`text-stat-block-fill ml-2 cursor-pointer overflow-visible ${glowOnHover}`} />}>
+        <Menu direction={"top"} align={"end"} menuButton={<Wrench size={20} className={`text-text-header-tertiary ml-2 cursor-pointer overflow-visible ${glowOnHover}`} />}>
             <div className="bg-context-menu-fill text-base text-left border border-solid border-table-border rounded-sm p-2 space-y-2">
                 {/* APPLY HEALING */}
                 <MenuItem onClick={(e) => applyHealing(tokenIds, damage)}>
                     <div className="flex items-center space-x-2">
                         <Cross size={14} className="text-ic-luck fill-ic-luck" />
-                        <p className={`text-stat-block-fill font-bold ${glowOnHover}`}>Apply Healing</p>
+                        <p className={`text-text-header-tertiary font-bold ${glowOnHover}`}>Apply Healing</p>
                     </div>
                 </MenuItem>
                 {/* APPLY HALF DAMAGE */}
                 <MenuItem onClick={(e) => applyDamage(tokenIds, damage, true)}>
                     <div className="flex items-center space-x-2">
-                        <Sword size={14} className="text-stat-block-fill" />
-                        <p className={`text-stat-block-fill font-bold ${glowOnHover}`}>Apply 1/2 Damage</p>
+                        <Sword size={14} className="text-text-header-tertiary" />
+                        <p className={`text-text-header-tertiary font-bold ${glowOnHover}`}>Apply 1/2 Damage</p>
                     </div>
                 </MenuItem>
                 {/* APPLY DAMAGE */}
                 <MenuItem onClick={(e) => applyDamage(tokenIds, damage)}>
                     <div className="flex items-center space-x-2">
-                        <Sword size={14} className="text-stat-block-fill fill-stat-block-fill" />
-                        <p className={`text-stat-block-fill font-bold ${glowOnHover}`}>Apply Damage</p>
+                        <Sword size={14} className="text-text-header-tertiary fill-text-header-tertiary" />
+                        <p className={`text-text-header-tertiary font-bold ${glowOnHover}`}>Apply Damage</p>
                     </div>
                 </MenuItem>
             </div>

@@ -8,6 +8,5 @@ export const Header = ({ title }: { title: string }) => {
     )
 }
 
-const divider = "h-px grow"
-export const Divider = () => <div className={divider + " bg-section-header-line mx-1"} />
-export const ItemDivider = () => <div className={divider + " bg-skill-divider"} />
+export const Divider = () => <div className={"grow h-[2px] bg-section-header-line mx-1"} />
+export const ItemDivider = () => <div className={"grow h-[1px] bg-skill-divider"} />

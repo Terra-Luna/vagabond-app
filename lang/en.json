@@ -603,7 +603,7 @@
       "description": "Description",
       "general": "General",
       "category": "Category",
-      "alchCategory": "Alchemy Category",
+      "alchCategory": "Type",
       "consumable": "Consumable",
       "slots": "Slots",
       "stackable": "Stackable",
@@ -618,6 +618,7 @@
       "mitReq": "Might Req.",
       "grip": "Grip",
       "damage": "Damage",
+      "dmg": "Dmg",
       "damageType": "Damage Type",
       "burn": "Applies Burn",
       "duration": "Duration",
@@ -646,10 +647,10 @@
         "other": "Other"
     },
     "Grips": {
-      "H": "1-Handed",
-      "HH": "2-Handed",
-      "V": "Versatile",
-      "F": "Fist"
+      "H": "1H",
+      "HH": "2H",
+      "V": "V",
+      "F": "F"
     },
     "GripsAbbr": {
       "H": "1H",

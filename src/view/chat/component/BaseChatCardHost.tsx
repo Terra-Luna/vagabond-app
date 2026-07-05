@@ -1,8 +1,7 @@
 import { tableBorder } from "../../common/border-styles";
 
 const chatCardBodyStyle = `
-    ${tableBorder} 
-    rounded-md 
+    ${tableBorder}
     text-text-primary 
     text-lg 
     font-eskapade 

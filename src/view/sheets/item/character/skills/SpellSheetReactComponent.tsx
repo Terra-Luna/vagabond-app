@@ -12,19 +12,17 @@ export const SpellSheetReactComponent = ({ item }: { item: Item & { system: Spel
     const { isEditMode } = useEditMode()
     return (
         <BaseSkillSheetComponent item={item} content={<>
-            {
-                isEditMode || item.system.damageType !== 'none' ? <DamageTypeSelection spell={item} /> : <></>
-            }
-            {
-                isEditMode || item.system.appliesBurn ? <BurnSettings spell={item} /> : <></>
-            }
+            <div className="space-y-4">
+                {isEditMode ? <DamageTypeSelection spell={item} /> : <></>}
+                {isEditMode || item.system.appliesBurn ? <BurnSettings spell={item} /> : <></>}
+            </div>
         </>} />
     )
 }
 
 const DamageTypeSelection = ({ spell }: { spell: Item & { system: SpellDataModel } }) => {
     return (
-        <div className="flex gap-x-2">
+        <div className="gap-y-4">
             <ItemSheetPropLabel label={vgLiteLang.ItemSheet.damageType} />
             <DropDown
                 value={spell.system.damageType}
@@ -38,7 +36,7 @@ const DamageTypeSelection = ({ spell }: { spell: Item & { system: SpellDataModel
 
 const BurnSettings = ({ spell }: { spell: Item & { system: SpellDataModel } }) => {
     return (
-        <div className="gap-y-4">
+        <div className="flex gap-x-2">
             <Checkbox
                 label={vgLiteLang.ItemSheet.burn}
                 onCheckedChanged={() => spell.update({ 'system.appliesBurn': !spell.system.appliesBurn } as Record<string, boolean>)}

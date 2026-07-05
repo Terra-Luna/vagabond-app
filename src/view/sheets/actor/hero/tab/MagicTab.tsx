@@ -12,6 +12,7 @@ import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { glowOnHover } from "../../../../common/text-styles"
 import { vgLiteLang } from "../../../../../utils/lang"
+import { spellDamageBase } from "../../../../../model/item/character/SpellDataModel"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -74,7 +75,13 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                         <div key={getId(sp)} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
-                                    <AbilityChatCard actorId={getId(hero)} img={sp.parent.img} title={sp.parent.name} description={sp.description} dmgType={sp.damageType} />
+                                    <AbilityChatCard
+                                        actorId={getId(hero)}
+                                        img={sp.parent.img}
+                                        title={sp.parent.name}
+                                        subtitle={spellDamageBase(sp)}
+                                        description={sp.description}
+                                    />
                                 )
                             },
                             { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) }, isDestructive: true }
@@ -83,7 +90,7 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                                 img={sp.parent.img}
                                 dmgType={sp.damageType}
                                 title={sp.parent.name}
-                                subtitles={[['Base dmg', vgLiteLang.DamageTypes[sp.damageType] ?? '-']]}
+                                subtitles={[{ label: 'Damage Base', value: vgLiteLang.DamageTypes[sp.damageType] }]}
                                 description={sp.description}
                             />
                         </div>

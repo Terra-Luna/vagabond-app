@@ -6,7 +6,7 @@ import { Tooltip } from "./Tooltip"
 import { glowOnHover } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 
-const editModeBorder = "border border-solid border-table-border px-1"
+const editModeBorder = "border border-solid border-text-secondary px-1"
 
 export const EditableTextField = (
     { boundValue, onSave, updateProps, placeholder = "Enter text...", hideBorderOnEditMode = false }: {
@@ -80,7 +80,7 @@ export const EditableTextField = (
     }, [editModeValue, onSave, boundValue, reset])
 
     if (isInEditMode || boundValue === '' || boundValue == null) {
-        const inputStyle = (editModeValue === '' || editModeValue == null) ? "field-sizing-content border border-solid border-stat-block-fill rounded-xs px-1" : "w-auto field-sizing-content"
+        const inputStyle = (editModeValue === '' || editModeValue == null) ? "field-sizing-content border border-solid border-text-secondary rounded-xs px-1" : "w-auto field-sizing-content"
         return <div className="overflow-hidden">
             <input ref={inputRef} className={inputStyle} type="text" value={editModeValue ?? ''} placeholder={placeholder}
                 onChange={e => setEditModeValue(e.target.value)}

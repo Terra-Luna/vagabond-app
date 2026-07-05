@@ -5,8 +5,8 @@ export class EquipmentSheet extends VgLiteItemSheet {
     Component = EquipmentSheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 420,
-            height: 500
+            width: 380,
+            height: 420
         },
         window: {
             resizable: true

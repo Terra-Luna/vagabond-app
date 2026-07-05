@@ -67,25 +67,26 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
     </div>
 
     return (
-        <BaseEquipmentSheetHost
-            header={<>
-                <EquipmentSheetBanner item={item} />
-                <div className="my-1">{<Description obj={item} />}</div>
-            </>}
-            children={<EquipmentSheetBody children={<>
+        <BaseEquipmentSheetComponent item={item} children={
+            <EquipmentSheetBody><>
                 {sheet}
                 <ItemDivider />
                 {sharedContent}
-            </>} />}
-        />
+            </></EquipmentSheetBody>
+        } />
     )
 }
 
-export const BaseEquipmentSheetHost = ({ header, children }: { header: React.ReactElement, children: React.ReactElement }) => {
+export const BaseEquipmentSheetComponent = ({ item, children }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, children: React.ReactElement }) => {
     return (
-        <div className="bg-sheet-main-fill h-full overflow-y-auto border-2 border-solid border-section-header-fill/80 border-top-transparent rounded-b-md">
-            {header}
-            {children}
+        <div className="flex flex-col grow overflow-hidden">
+            <EquipmentSheetBanner item={item} />
+            <div className="flex-1 -mt-2 overflow-y-auto border-4 border-solid border-stat-block-fill/80 border-t-transparent rounded-b-md">
+                <Description obj={item} />
+                <div className="flex justify-between mt-2 mx-2 gap-y-4">
+                    {children}
+                </div>
+            </div>
         </div>
     )
 }
@@ -142,15 +143,15 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
 }
 
 const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
-    return <div className="text-text-primary px-3 pb-1">{children}</div>
+    return <div className="text-text-primary px-3 bg-sheet-main-fill rounded-md w-full">{children}</div>
 }
 
 export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactElement }) => {
     return <div className="my-2">{children}</div>
 }
 
-export const ItemSheetPropLabel = ({ label, fontWeight = "font-normal" }) => {
-    return <p className={`${sheetPropLabel} ${fontWeight}`}>{label}</p>
+export const ItemSheetPropLabel = ({ label, className = "font-bold" }) => {
+    return <p className={`${sheetPropLabel} ${className}`}>{label}</p>
 }
 
 export const ItemSheetPropValue = ({ value }) => {

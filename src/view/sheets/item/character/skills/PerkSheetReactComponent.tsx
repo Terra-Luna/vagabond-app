@@ -16,21 +16,24 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
         <BaseSkillSheetComponent item={item} content={
             <div>
                 <div className="flex gap-x-2 items-center">
-                    <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} fontWeight={"font-bold"} />
                     {
-                        isEditMode ?
+                        isEditMode ? <>
+                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} fontWeight={"font-bold"} />
                             <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer"
                                 onClick={() => addPerkPrerequisite(item)}
-                            /> : <></>
+                            /></> : <></>
                     }
                 </div>
-                <div className="space-y-0.5 mb-8">
-                    {
-                        item.system.prerequisites.map((_, index) => (
-                            <Prerequisite key={index} perk={item} prereqIndex={index} />
-                        ))
-                    }
-                </div>
+                {
+                    !isEditMode ? <></> :
+                        <div className="space-y-0.5 mb-8">
+                            {
+                                item.system.prerequisites.map((_, index) => (
+                                    <Prerequisite key={index} perk={item} prereqIndex={index} />
+                                ))
+                            }
+                        </div>
+                }
             </div>
         } />
     )

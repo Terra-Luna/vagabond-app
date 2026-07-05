@@ -6,8 +6,8 @@ export class PerkSheet extends VgLiteItemSheet {
     Component = PerkSheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 420,
-            height: 500
+            width: 380,
+            height: 280
         },
         window: {
             resizable: true

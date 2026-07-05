@@ -11,28 +11,34 @@ import { lang, vgLiteLang } from "../../utils/lang"
 import { sendVgLiteChatMessage } from "./ChatCardManager"
 import { CountdownRollChatCard } from "./CountdownRollChatCard"
 import { glowOnHover } from "../common/text-styles"
+import { CardSubHeaderValues } from "../component/SkillCard"
 
-export const AbilityChatCard = ({ actorId, img, title, description, tokenIds = [], dmgType = 'none', appliesBurn = false, burnDuration = '' }: {
+export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], description, tokenIds = [], appliesBurn = false, burnDuration = '' }: {
     actorId: string,
-    img: string,
+    img?: string,
     title: string,
+    subtitle?: CardSubHeaderValues[],
     description: string,
     tokenIds?: string[],
-    dmgType?: string,
     appliesBurn?: boolean,
     burnDuration?: string
 }) => {
     const actor = game.actors?.get(actorId)
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={title} />}
+            banner={<ChatCardBanner
+                tokenId={actor?.getActiveTokens()[0]?.id}
+                portrait={getTokenImg(actor)}
+                title={title}
+                subtitle={subtitle}
+            />}
             contents={
                 <div className="space-x-2 text-base text-text-secondary font-paradigm font-normal">
                     <TargetsDisplay tokenIds={tokenIds} />
                     <div>
                         {
                             !img || img === '' ? <></> :
-                                <ImageWithDamageTypeBadge img={img} dmgType={dmgType} classes="mr-3" />
+                                <ImageWithDamageTypeBadge img={img} size={46} className="mr-2" />
                         }
                         <div className="text-justify">
                             <EnrichedContent content={description} />
@@ -59,7 +65,11 @@ export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, r
     const actor = game.actors?.get(actorId)
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={lang.VGLITE.AdversarySheet.combo} />}
+            banner={<ChatCardBanner
+                tokenId={actor?.getActiveTokens()[0]?.id}
+                portrait={getTokenImg(actor)}
+                title={lang.VGLITE.AdversarySheet.combo} />
+            }
             contents={
                 <div className="">
                     <TargetsDisplay tokenIds={tokenIds} />

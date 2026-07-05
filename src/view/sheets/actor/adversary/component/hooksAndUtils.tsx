@@ -34,6 +34,11 @@ export const onClickAction = async (adv: AdversaryDataModel, name: string, descr
         )
     }
     else {
-        sendVgLiteChatMessage(adv, <AbilityChatCard actorId={getId(adv)} title={name} description={description} tokenIds={getTargets()} />)
+        sendVgLiteChatMessage(adv, <AbilityChatCard
+            actorId={getId(adv)}
+            title={name}
+            description={description}
+            tokenIds={getTargets()}
+        />)
     }
 }

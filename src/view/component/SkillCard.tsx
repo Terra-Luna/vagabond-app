@@ -2,13 +2,15 @@ import ReactHtmlParser from 'react-html-parser'
 import { Collapsible } from "./Collapsible"
 import { CardHeader } from './CardHeader'
 
-const cardSubheaderLayout = "flex items-center border-r-1 border-solid border-table-border -mt-0.5"
-const cardSubheaderStyle = "flex text-text-section-header text-sm font-eskapade font-bold py-1 pl-2 pr-8 bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
+const cardSubheaderLayout = "flex -mt-0.5"
+const cardSubheaderStyle = "flex gap-x-2 py-1 pl-2 pr-8 items-center bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
+const cardSubheaderLabel = "text-sm text-text-header-secondary font-eskapade font-bold"
+const cardSubheaderValue = "text-base text-text-header-primary font-eskapade font-normal"
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border"
 const cardBodyStyle = "text-text-primary text-sm antialiased"
 
 export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, description }: {
-    img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues, description: string
+    img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues[], description: string
 }) => {
     return (
         <Collapsible
@@ -19,7 +21,7 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
             Header={CardHeader}
             content={(
                 <>
-                    <CardSubHeader content={subtitles} />
+                    <CardSubHeader values={subtitles} />
                     <CardBody description={description} />
                 </>
             )}
@@ -33,30 +35,22 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
  *      { key: "Size", value: "Medium" }
  *    ]
  */
-type CardSubHeaderValues = [subKey: string, subValue: string][]
-export const CardSubHeader = ({ content }: { content: CardSubHeaderValues }) => {
+export type CardSubHeaderValues = { label: string, value: string }
+export const CardSubHeader = ({ values, showRightBorder = true }: { values: CardSubHeaderValues[], showRightBorder?: boolean }) => {
     return (
-        <div className={cardSubheaderLayout}>
-            <div className={cardSubheaderStyle}>{formatSubHeader(content)}</div>
+        <div className={`${cardSubheaderLayout} ${showRightBorder ? 'border-r-1 border-solid border-table-border' : ''}`}>
+            <div className={cardSubheaderStyle}>
+                {
+                    values.map((content, index) => (
+                        <div key={content.label + index} className="flex gap-x-1">
+                            <p className={cardSubheaderLabel}>{content.label}:</p>
+                            <p className={cardSubheaderValue}>{content.value}</p>
+                        </div>
+                    ))
+                }
+            </div>
         </div>
     )
-}
-
-const formatSubHeader = (content: CardSubHeaderValues): string => {
-    let subHeader = ''
-    content.forEach(c => {
-        let sub = `${formatSubheaderPrepend(c[0])} ${c[1]}`
-        if (content.indexOf(c) < content.length - 1) {
-            sub += "  |  "
-        }
-        subHeader += sub
-    })
-    return subHeader
-}
-
-function formatSubheaderPrepend(sub: string): string {
-    if (sub.length === 0 || sub === 'stat') return ''
-    else return `${sub}:`
 }
 
 /**

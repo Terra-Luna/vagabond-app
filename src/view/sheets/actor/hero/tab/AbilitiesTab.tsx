@@ -1,7 +1,7 @@
 import { MessageSquareText, Trash } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
-import { perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
+import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
@@ -25,7 +25,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                     <SkillCard
                         img={(hero.ancestry as any).parent.img}
                         title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
-                        subtitles={[['Size', beingSize ?? ''], ['Type', beingType ?? '']]}
+                        subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
                         description={ancestryFullDescription(hero.ancestry as any)}
                     />
                 </>
@@ -47,7 +47,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             ])}>
                                 <SkillCard
                                     title={f.name}
-                                    subtitles={[[`${getName(hero.class)}`, `Level ${f.level}`]]}
+                                    subtitles={[{ label: getName(hero.class), value: `Level ${f.level}` }]}
                                     description={f.description}
                                 />
                             </div>
@@ -64,7 +64,13 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         <div key={p.parent.id} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
-                                    <AbilityChatCard actorId={getId(hero)} img={p.parent.img} title={p.parent.name} description={p.description} />
+                                    <AbilityChatCard
+                                        actorId={getId(hero)}
+                                        img={p.parent.img}
+                                        title={p.parent.name}
+                                        subtitle={perkPrerequisites(p)}
+                                        description={p.description}
+                                    />
                                 )
                             },
                             { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(p)]) }, isDestructive: true }
@@ -72,21 +78,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             <SkillCard
                                 img={p.parent.img}
                                 title={p.parent.name}
-                                subtitles={
-                                    p.prerequisites.map(prereq => (
-                                        [
-                                            `${prereq.type !== 'stat' ? vgLiteLang.PrerequisiteTypes[prereq.type] : ''}`,
-                                            `${prereq.type === 'spell' ?
-                                                perkSpellRerequisitesAsString(p) : (
-                                                    prereq.type === 'stat' ?
-                                                        perkStatPrerequisitesAsString(p) :
-                                                        perkTrainingPrerequisitesAsString(p)
-
-                                                )
-                                            }`
-                                        ]
-                                    ))
-                                }
+                                subtitles={perkPrerequisites(p)}
                                 description={p.description}
                             />
                         </div>

@@ -2,7 +2,7 @@ import ArmorDataModel from "../../model/item/equip/ArmorDataModel"
 import EquipmentDataModel, { EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import WeaponDataModel from "../../model/item/equip/WeaponDataModel"
 import { lang } from "../../utils/lang"
-import { getId, getName, getPortrait } from "../../utils/modelUtil"
+import { getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { Tooltip } from "../component/Tooltip"
@@ -62,7 +62,7 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
     return (
         <ItemCardBody item={item}>
             <div className="flex space-x-2">
-                <ItemCardProp label={lang.VGLITE.ItemSheet.damage} children={
+                <ItemCardProp label={lang.VGLITE.ItemSheet.dmg} children={
                     item.grip.style === 'V' ?
                         <div className="flex space-x-2">
                             <ItemCardValue children={`${lang.VGLITE.Grips.H}: ${item.damage.oneHand},`} />

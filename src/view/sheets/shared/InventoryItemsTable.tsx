@@ -95,8 +95,8 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
 }
 
 const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { type: string, isEquipped: boolean, gripState: string, toggleEquipState: () => void }) => {
-    const equippedIconStyle = "w-full justify-center text-stat-block-fill fill-stat-block-fill/80 cursor-pointer"
-    const unEquipedIconStyle = "w-full justify-center text-stat-block-fill cursor-pointer"
+    const equippedIconStyle = "w-full justify-center text-ic-equipped fill-ic-equipped/80 cursor-pointer"
+    const unEquipedIconStyle = "w-full justify-center text-ic-equipped cursor-pointer"
     return (
         <div onClick={toggleEquipState} onDoubleClick={(e) => { e.stopPropagation() }}>
             {

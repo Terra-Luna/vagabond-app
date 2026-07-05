@@ -11,10 +11,15 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
     const [resultTextColor] = result.result === vgLiteLang.RollResult.failure ? ['text-failure'] : ['text-success']
     return (
         <BaseChatCardHost
-            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getTokenImg(actor)} title={`${result.skillName} Check`} />}
+            banner={<ChatCardBanner
+                tokenId={actor?.getActiveTokens()[0]?.id}
+                portrait={getTokenImg(actor)}
+                title={`${result.skillName} Check`}
+                subtitle={[{ label: "Difficulty", value: result.difficulty.toString() }]}
+            />}
             contents={<>
                 <DiceGraphics d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
-                <TotalsFooter total={result.total} difficulty={result.difficulty} csf={result.result} resultTextColor={resultTextColor} />
+                <TotalsFooter total={result.total} csf={result.result} resultTextColor={resultTextColor} />
             </>}
         />
     )
@@ -41,13 +46,11 @@ const DiceGraphics = ({ d20, d6, favHinder }) => {
     )
 }
 
-const TotalsFooter = ({ total, difficulty, csf, resultTextColor }) => {
+const TotalsFooter = ({ total, csf, resultTextColor }) => {
     return (
         <div className="flex mt-2 space-x-2 h-fit items-end">
             <p className="font-paradigm font-normal text-text-secondary">Total:</p>
             <p className="text-5xl mr-4">{total}</p>
-            <p className="font-paradigm font-normal text-text-secondary">vs:</p>
-            <p className="text-2xl">{difficulty}</p>
             <p className={`${resultTextColor} text-xl ml-auto mr-2 [text-shadow:0_0_10px_var(--color-text-glow)]`}>{csf}</p>
         </div>
     )

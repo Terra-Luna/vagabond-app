@@ -1,5 +1,6 @@
 import { lang, vgLiteLang } from "../../../utils/lang"
 import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
+import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
 import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
 
@@ -42,11 +43,45 @@ export default class PerkDataModel extends ItemDataModel<PerkSchema> {
     }
 }
 
+export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {
+    perk.update(
+        {
+            'system.prerequisites': [
+                ...perk.system.prerequisites,
+                { type: Object.keys(lang.VGLITE.PrerequisiteTypes)[0] }
+            ]
+        } as Record<string, any[]>)
+}
+
+export function deletePerkPrerequisite(perk: Item & { system: PerkDataModel }, deleteIndex: number) {
+    perk.update({
+        'system.prerequisites': [
+            ...perk.system.prerequisites.filter((_, index) => index !== deleteIndex)
+        ]
+    } as Record<string, any>)
+}
+
+export const perkPrerequisites = (perk: PerkDataModel): CardSubHeaderValues[] => {
+    const values: CardSubHeaderValues[] = []
+    const spellReqs = perkSpellRerequisitesAsString(perk)
+    const statReqs = perkStatPrerequisitesAsString(perk)
+    const trainedReqs = perkTrainingPrerequisitesAsString(perk)
+    if (spellReqs !== '') values.push({ label: 'Spell', value: spellReqs })
+    if (statReqs !== '') values.push({ label: 'Stat', value: statReqs })
+    if (trainedReqs !== '') values.push({ label: 'Trained', value: trainedReqs })
+    return values
+}
+
+export const perkSpellRerequisitesAsString = (perk: PerkDataModel): string => {
+    const spellPrereqs = perk.prerequisites.filter(it => it.type === 'spell').map(p => p.spell)
+    return removeLastComma(spellPrereqs.join(", "), ' &')
+}
+
 export const perkStatPrerequisitesAsString = (perk: PerkDataModel): string => {
     const statPrereqs = perk.prerequisites.filter(it => it.type === 'stat')
     let stats: string[] = []
     statPrereqs.forEach(s => {
-        stats.push(`${vgLiteLang.Stat[s.stat].name}: ${s.value}+`)
+        stats.push(`${vgLiteLang.Stat[s.stat].abbr} ${s.value}+`)
     })
     return stats.join(" | ")
 }
@@ -64,27 +99,4 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
         })
     })
     return trainings.join(' | ')
-}
-
-export const perkSpellRerequisitesAsString = (perk: PerkDataModel): string => {
-    const spellPrereqs = perk.prerequisites.filter(it => it.type === 'spell').map(p => p.spell)
-    return removeLastComma(spellPrereqs.join(", "), ' &')
-}
-
-export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {
-    perk.update(
-        {
-            'system.prerequisites': [
-                ...perk.system.prerequisites,
-                { type: Object.keys(lang.VGLITE.PrerequisiteTypes)[0] }
-            ]
-        } as Record<string, any[]>)
-}
-
-export function deletePerkPrerequisite(perk: Item & { system: PerkDataModel }, deleteIndex: number) {
-    perk.update({
-        'system.prerequisites': [
-            ...perk.system.prerequisites.filter((_, index) => index !== deleteIndex)
-        ]
-    } as Record<string, any>)
 }

@@ -61,7 +61,7 @@ export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = fals
         <div className={`relative ${textSize}`}>
             <div className="relative inline-flex items-center justify-center">
                 <DieIcon faces={faces} exploded={exploded} />
-                <p className={`${centeredAlignment} text-[0.8em] text-text-section-header h-[1em] w-[1em]`}>
+                <p className={`${centeredAlignment} text-[0.8em] text-dice-text h-[1em] w-[1em]`}>
                     {result}
                 </p>
             </div>
@@ -71,7 +71,7 @@ export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = fals
 
 const DieIcon = ({ faces }: { faces: number, exploded: boolean }) => {
     const steez = `w-[1em] h-[1em]`
-    const color = `var(--color-section-header-fill)`
+    const color = `var(--color-dice)`
     if (faces === 20) return <D20 className={steez} fill={color} />
     else if (faces === 12) return <D12 className={steez} fill={color} />
     else if (faces === 10) return <D10 className={steez} fill={color} />

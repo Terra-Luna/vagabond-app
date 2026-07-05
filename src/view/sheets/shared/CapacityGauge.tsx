@@ -1,5 +1,5 @@
 const infoBoxLayout = "content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
-const infoBoxText = "text-section-header-fill text-sm"
+const infoBoxText = "text-text-encumbrance text-sm"
 
 export interface CapacityInfo {
     bulk: number, capacity: number, isOverEncumbered: boolean
@@ -21,7 +21,7 @@ export const CapacityGauge = ({ label, capacityInfo}: { label: string, capacityI
 
 export const Gauge = ({ bulk, capacity, isFull: isOverEncumbered }: { bulk: number, capacity: number, isFull: boolean }) => {
     const width = Math.min(bulk / capacity * 100, 100)
-    const fillColor = isOverEncumbered ? "bg-destructive-action " : "bg-section-header-fill"
+    const fillColor = isOverEncumbered ? "bg-destructive-action " : "bg-text-encumbrance"
     return (
         <div
             className={fillColor + " h-[10px] rounded-md"}

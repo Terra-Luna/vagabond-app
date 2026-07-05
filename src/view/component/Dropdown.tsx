@@ -37,7 +37,7 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
                                 )}
                             </Select>
                         </div> :
-                        <p className="text-lg font-eskapade font-bold text-stat-block-fill bg-sheet-main-fill p-0.5 rounded">
+                        <p className="text-lg font-eskapade text-text-primary bg-sheet-main-fill p-0.5 rounded">
                             {options.find(o => o.value === value)?.label ?? ''}
                         </p>
                 }
@@ -48,10 +48,10 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
 
 const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {
     return <select className={`
-        font-eskapade font-bold
-        text-stat-block-fill
+        font-eskapade
+        text-text-primary
         bg-sheet-main-fill
-        border border-solid border-table-border
+        border border-solid border-text-primary/50
         rounded py-0.5 text-sm shadow-sm
         ${props.className}
     `} {...props} />
@@ -60,7 +60,7 @@ const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSe
 const Option = (props: React.DetailedHTMLProps<React.OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>) => {
     return <option
         className={`
-            ${menuOptionContainer} ${menuOptionTextDefault} checked:${menuOptionTextSelected} ${props.className}
+            ${menuOptionContainer} ${menuOptionTextDefault} ${props.className}
         `}
         {...props}
     />
