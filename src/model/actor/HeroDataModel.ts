@@ -1,10 +1,10 @@
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
-import AncestryDataModel from "../item/character/AncestryDataModel"
-import ClassDataModel from "../item/character/ClassDataModel"
-import PerkDataModel from "../item/character/PerkDataModel"
-import SpellDataModel from "../item/character/SpellDataModel"
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import { AncestryDataModel } from "../item/character/AncestryDataModel"
+import { ClassDataModel } from "../item/character/ClassDataModel"
+import { PerkDataModel } from "../item/character/PerkDataModel"
+import { SpellDataModel } from "../item/character/SpellDataModel"
+import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
 import { setArmorRating } from "./type/Armor"
 import { heroBonusSchema } from "./type/Bonus"
 import { setMaxHP, validateCurrentHP } from "./type/Health"
@@ -43,7 +43,7 @@ const heroSchema = () => {
 
 export type HeroDataModelSchema = ReturnType<typeof heroSchema> & BaseActorSchema
 
-export default class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
+export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

@@ -1,9 +1,9 @@
 import { Shield } from "lucide-react"
-import HeroDataModel from "../../../../../model/actor/HeroDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
-import WeaponDataModel, { gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
-import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
+import { WeaponDataModel, gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
+import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
 import { inventoryItemDragDropHandler, sortedItems, weaponContextMenuItems } from "../../../../../model/actor/type/Inventory"
 import { useDragDrop } from "../../../../component/DragDrop"
@@ -47,12 +47,12 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
     const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
-            equippedWeapons,
+        equippedWeapons,
         () => inventoryItemDragDropHandler(
-                hero, dragItem, targetItem ?? equippedWeapons[equippedWeapons.length - 1], equippedWeapons
-            )
+            hero, dragItem, targetItem ?? equippedWeapons[equippedWeapons.length - 1], equippedWeapons
+        )
     )
-    
+
     return (
         <div className="w-full">
             <Header title={lang.VGLITE.HeroSheet.weapons} />

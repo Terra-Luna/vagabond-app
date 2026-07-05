@@ -1,8 +1,8 @@
-import HeroDataModel from "../../actor/HeroDataModel"
+import { HeroDataModel } from "../../actor/HeroDataModel"
 import { coinSchema } from "../../common/CoinValue"
-import { fields, requiredString } from "../../common/sharedSchemas"
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import EquipmentDataModel from "./EquipmentDataModel"
+import { fields } from "../../common/sharedSchemas"
+import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
+import { EquipmentDataModel } from "./EquipmentDataModel"
 
 export const starterPackSchema = () => {
     return {
@@ -13,7 +13,7 @@ export const starterPackSchema = () => {
 
 export type StarterPackSchema = ReturnType<typeof starterPackSchema> & BaseItemSchema
 
-export default class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
+export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

@@ -1,5 +1,5 @@
 import { fields } from "../../common/sharedSchemas"
-import HeroDataModel from "../HeroDataModel"
+import { HeroDataModel } from "../HeroDataModel"
 
 /**
  * TODO: make these configurable system variables

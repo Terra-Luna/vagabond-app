@@ -1,11 +1,11 @@
 import { Shield, HandFist, Hand } from "lucide-react"
-import ActorDataModel, { BaseActorSchema } from "../../../model/actor/ActorDataModel"
-import HeroDataModel from "../../../model/actor/HeroDataModel"
+import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { openItemSheet, itemNameQty, inventoryItemDragDropHandler } from "../../../model/actor/type/Inventory"
 import { coinsAsString } from "../../../model/common/CoinValue"
-import ArmorDataModel, { equipArmor } from "../../../model/item/equip/ArmorDataModel"
-import EquipmentDataModel, { EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
-import WeaponDataModel, { equipWeapon } from "../../../model/item/equip/WeaponDataModel"
+import { ArmorDataModel, equipArmor } from "../../../model/item/equip/ArmorDataModel"
+import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
+import { WeaponDataModel, equipWeapon } from "../../../model/item/equip/WeaponDataModel"
 import { getId, getName } from "../../../utils/modelUtil"
 import { glowOnHover } from "../../common/text-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
@@ -19,7 +19,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
     showEquipColumn?: boolean
 }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-        
+
     const { dragIndex, dragItem, targetItem, onDragStart, onDragEnter, onDragLeave, onDragEnd } = useDragDrop(
         items,
         () => inventoryItemDragDropHandler(actor, dragItem, targetItem ?? items[items.length - 1], items)

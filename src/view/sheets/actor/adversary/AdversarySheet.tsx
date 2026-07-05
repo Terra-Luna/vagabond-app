@@ -1,7 +1,7 @@
 import { VgLiteActorSheet } from "../VgLiteActorSheet"
 import { AdversarySheetReactComponent } from "./component/AdversarySheetComponent"
 
-export default class AdversarySheet extends VgLiteActorSheet {
+export class AdversarySheet extends VgLiteActorSheet {
     Component = AdversarySheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {

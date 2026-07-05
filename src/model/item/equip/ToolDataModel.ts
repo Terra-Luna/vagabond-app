@@ -1,4 +1,4 @@
-import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 /**
  * Anything a Hero can equip that isn't a weapon or armor.
@@ -9,7 +9,7 @@ const toolSchema = () => {
 
 export type ToolSchema = ReturnType<typeof toolSchema> & EquipmentSchema
 
-export default class ToolDataModel extends EquipmentDataModel<ToolSchema> {
+export class ToolDataModel extends EquipmentDataModel<ToolSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

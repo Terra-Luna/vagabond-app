@@ -1,4 +1,4 @@
-import StarterPackDataModel from "../../../../../model/item/equip/StarterPackDataModel"
+import { StarterPackDataModel } from "../../../../../model/item/equip/StarterPackDataModel"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { EquipmentSheetSubtypeBody } from "../EquipmentSheetComponent"
 

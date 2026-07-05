@@ -1,4 +1,4 @@
-import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
+import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { getDocumentAtPath } from "../../../../../utils/documentUtils"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"

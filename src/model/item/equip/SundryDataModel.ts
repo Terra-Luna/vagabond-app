@@ -1,4 +1,4 @@
-import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 /**
  * Random items with no discrete use-case.
@@ -10,7 +10,7 @@ const sundrySchema = () => {
 
 export type SundrySchema = ReturnType<typeof sundrySchema> & EquipmentSchema
 
-export default class SundryDataModel extends EquipmentDataModel<SundrySchema> {
+export class SundryDataModel extends EquipmentDataModel<SundrySchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

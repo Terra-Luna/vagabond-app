@@ -1,7 +1,7 @@
 import { lang } from "../../utils/lang"
 import { getName } from "../../utils/modelUtil"
 import { damageTypeOptions, fields, movementTypes, optionalString, requiredString, statusEffOptions, zonePreferences } from "../common/sharedSchemas"
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
 import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
 
 const adversarySchema = () => {
@@ -38,7 +38,7 @@ const adversarySchema = () => {
 
 export type AdversarySchema = ReturnType<typeof adversarySchema> & BaseActorSchema
 
-export default class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
+export class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

@@ -1,6 +1,6 @@
 const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
-import ContainerDataModel, { addItemToContainer } from "../../../model/item/equip/ContainerDataModel"
+import { ContainerDataModel, addItemToContainer } from "../../../model/item/equip/ContainerDataModel"
 import { VgLiteSheetMixin } from "../VgLiteSheet"
 
 export abstract class VgLiteItemSheet extends VgLiteSheetMixin(sheets.ItemSheetV2) {

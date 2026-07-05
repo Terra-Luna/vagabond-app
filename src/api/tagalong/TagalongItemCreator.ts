@@ -1,8 +1,8 @@
-import HeroDataModel from "../../model/actor/HeroDataModel"
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { lang } from "../../utils/lang"
 import { TagalongItem } from "./TagalongApi"
 
-export default class TagalongItemCreator {
+export class TagalongItemCreator {
 
     hero: HeroDataModel
     items: TagalongItem[]
@@ -202,7 +202,6 @@ export default class TagalongItemCreator {
             this.errors.push(`Item creation failure: ${systemItem.name}`)
         }
     }
-
 }
 
 /**

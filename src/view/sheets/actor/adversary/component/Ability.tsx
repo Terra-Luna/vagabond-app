@@ -1,6 +1,6 @@
 import { PenSquare, Trash } from "lucide-react"
 import { useState, useCallback } from "react"
-import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
+import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"

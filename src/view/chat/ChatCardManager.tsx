@@ -1,6 +1,6 @@
-import React, { ReactElement } from 'react'
-import { getId, getName } from '../../utils/modelUtil'
-import { ComponentRegistry } from '../../ComponentRegistry'
+import React, { ReactElement } from "react"
+import { ComponentRegistry } from "../../ComponentRegistry"
+import { getId, getName } from "../../utils/modelUtil"
 
 export const sendVgLiteChatMessage = async (
     actor: any,

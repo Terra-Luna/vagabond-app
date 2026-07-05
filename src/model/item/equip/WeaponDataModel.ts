@@ -1,7 +1,7 @@
 import { lang } from "../../../utils/lang"
-import HeroDataModel from "../../actor/HeroDataModel"
+import { HeroDataModel } from "../../actor/HeroDataModel"
 import { damageTypeOptions, fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
-import EquipmentDataModel from "./EquipmentDataModel"
+import { EquipmentDataModel } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
@@ -37,7 +37,7 @@ const weaponSchema = () => {
 
 export type WeaponSchema = ReturnType<typeof weaponSchema> & EquipmentSchema
 
-export default class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
+export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

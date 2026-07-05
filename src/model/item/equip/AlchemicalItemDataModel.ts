@@ -1,6 +1,6 @@
 import { lang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredString } from "../../common/sharedSchemas"
-import EquipmentDataModel, { EquipmentSchema } from "./EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemicalSchema = () => {
     return {
@@ -27,7 +27,7 @@ const alchemicalSchema = () => {
 
 export type AlchemicalSchema = ReturnType<typeof alchemicalSchema> & EquipmentSchema
 
-export default class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema> {
+export class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

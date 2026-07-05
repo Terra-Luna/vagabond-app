@@ -1,5 +1,5 @@
 import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react"
-import VgLiteError from "../../model/common/VgLiteError"
+import { VgLiteError}  from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 import { Tooltip } from "./Tooltip"

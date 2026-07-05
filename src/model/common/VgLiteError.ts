@@ -1,4 +1,4 @@
-export default class VgLiteError<T extends string> extends Error {
+export class VgLiteError<T extends string> extends Error {
     name: T
     message: string
     cause: any

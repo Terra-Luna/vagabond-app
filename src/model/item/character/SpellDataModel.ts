@@ -1,7 +1,7 @@
 import { vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { damageTypeOptions, fields, optionalString } from "../../common/sharedSchemas"
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import { fields, damageTypeOptions, optionalString } from "../../common/sharedSchemas"
+import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const spellSchema = () => {
     return {
@@ -13,7 +13,7 @@ const spellSchema = () => {
 
 export type SpellSchema = ReturnType<typeof spellSchema> & BaseItemSchema
 
-export default class SpellDataModel extends ItemDataModel<SpellSchema> {
+export class SpellDataModel extends ItemDataModel<SpellSchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),

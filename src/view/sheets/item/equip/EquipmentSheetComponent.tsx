@@ -1,13 +1,13 @@
 import { Pencil, MessageSquareText } from "lucide-react"
 import { useCallback } from "react"
-import AlchemicalItemDataModel from "../../../../model/item/equip/AlchemicalItemDataModel"
-import ArmorDataModel from "../../../../model/item/equip/ArmorDataModel"
-import ContainerDataModel from "../../../../model/item/equip/ContainerDataModel"
-import EquipmentDataModel, { EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
-import StarterPackDataModel from "../../../../model/item/equip/StarterPackDataModel"
-import SundryDataModel from "../../../../model/item/equip/SundryDataModel"
-import ToolDataModel from "../../../../model/item/equip/ToolDataModel"
-import WeaponDataModel from "../../../../model/item/equip/WeaponDataModel"
+import { AlchemicalItemDataModel } from "../../../../model/item/equip/AlchemicalItemDataModel"
+import { ArmorDataModel } from "../../../../model/item/equip/ArmorDataModel"
+import { ContainerDataModel } from "../../../../model/item/equip/ContainerDataModel"
+import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
+import { StarterPackDataModel } from "../../../../model/item/equip/StarterPackDataModel"
+import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
+import { ToolDataModel } from "../../../../model/item/equip/ToolDataModel"
+import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
 import { createDropdownEntries, createDropdownEntriesFromObj } from "../../../../utils/localeUtils"
 import { getId } from "../../../../utils/modelUtil"
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
@@ -187,13 +187,13 @@ const Bulk = ({ item }) => {
             {
                 isEditMode || item.system.bulk.isStackable ?
                     <div>
-                    <ItemSheetProperty label={lang.ItemSheet.stackable} value={
-                        <Checkbox
-                            label={''}
-                            onCheckedChanged={onCheckStackable}
-                            checked={item.system.bulk.isStackable}
-                        />
-                    } />
+                        <ItemSheetProperty label={lang.ItemSheet.stackable} value={
+                            <Checkbox
+                                label={''}
+                                onCheckedChanged={onCheckStackable}
+                                checked={item.system.bulk.isStackable}
+                            />
+                        } />
                         <ItemSheetProperty label={lang.ItemSheet.qty} value={
                             <EditableTextField
                                 boundValue={item.system.bulk.quantity}

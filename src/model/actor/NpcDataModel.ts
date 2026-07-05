@@ -1,5 +1,5 @@
 import { fields } from "../common/sharedSchemas"
-import ActorDataModel, { BaseActorSchema } from "./ActorDataModel"
+import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
 import { inventorySchema, isInventoryItem } from "./type/Inventory"
 
 const npcSchema = () => {
@@ -11,7 +11,7 @@ const npcSchema = () => {
 export type NpcSchema = ReturnType<typeof npcSchema> & BaseActorSchema
 export type Npc = NpcDataModel & NpcSchema
 
-export default class NpcDataModel extends ActorDataModel<NpcSchema> {
+export class NpcDataModel extends ActorDataModel<NpcSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),
