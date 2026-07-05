@@ -17,8 +17,8 @@ import { lang  } from "../../../../../utils/lang"
 
 const locale = lang.VGLITE.AdversarySheet
 
-const statLabelStyle = `text-sm text-text-primary font-paradigm font-normal`
-const statValueStyle = `text-lg text-stat-block-fill font-eskapade font-bold`
+const statLabelStyle = `text-sm text-text-header-secondary font-eskapade font-bold`
+const statValueStyle = `text-lg text-text-primary font-eskapade font-normal`
 
 export const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
     const adv = actor.system
@@ -52,12 +52,12 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Ad
 }
 
 const AdversarySheetHeader = ({ adv }) => {
-    const { editModeToggleBtn } = useEditMode() // todo use standard button
+    const { editModeToggleBtn } = useEditMode()
     return (
         <div className="bg-sheet-header-fill font-eskapade p-2">
             <div className="text-2xl text-text-header-primary font-bold flex">
                 <EditableNameField actor={adv.parent} />
-                <div className="flex text-text-header-tertiary ml-auto">
+                <div className="flex ml-auto mt-4">
                     {editModeToggleBtn}
                 </div>
             </div>
@@ -72,19 +72,19 @@ const TraitSelectors = ({ adv }) => {
         <div className="flex gap-2 text-text-header-secondary mt-1">
             {
                 isEditMode ? <>
-                    <DropDown label=''
+                    <DropDown
                         options={createDropdownEntries(lang.VGLITE.Sizes)}
                         parent={adv.parent}
                         updateMechanism={{ updatePath: ['beingSize'] }}
                         value={adv.beingSize}
                     />
-                    <DropDown label=''
+                    <DropDown
                         options={createDropdownEntries(lang.VGLITE.BeingTypes)}
                         parent={adv.parent}
                         updateMechanism={{ updatePath: ['beingType'] }}
                         value={adv.beingType}
                     />
-                    <DropDown label=''
+                    <DropDown
                         options={createDropdownEntries(lang.VGLITE.BeingSubtypes)}
                         parent={adv.parent}
                         updateMechanism={{ updatePath: ['beingSubtype'] }}
@@ -109,13 +109,12 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
             <StatBlockField label={locale.zone} content={<>
                 {
                     isEditMode ?
-                        <DropDown label=''
+                        <DropDown
                             options={createDropdownEntries(lang.VGLITE.Zones)}
                             parent={adv.parent}
                             updateMechanism={{ updatePath: ['zone'] }}
                             value={adv.zone}
-                        /> :
-                        <p className={statValueStyle}>{lang.VGLITE.Zones[adv.zone]}</p>
+                        /> : <p className={statValueStyle}>{lang.VGLITE.Zones[adv.zone]}</p>
                 }
             </>} />
             {/* SPEED */}
@@ -128,14 +127,15 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                             placeholder="30"
                         />
                     </div>
-                    <div className="text-stat-block-fill">
+                    <div>
                         {
-                            isEditMode ? <DropDown label=''
-                                options={createDropdownEntries(lang.VGLITE.Movement)}
-                                parent={adv.parent}
-                                updateMechanism={{ updatePath: ['movement', 'type'] }}
-                                value={adv.movement.type}
-                            /> : <p>{lang.VGLITE.Movement[adv.movement.type]}</p>
+                            isEditMode ?
+                                <DropDown
+                                    options={createDropdownEntries(lang.VGLITE.Movement)}
+                                    parent={adv.parent}
+                                    updateMechanism={{ updatePath: ['movement', 'type'] }}
+                                    value={adv.movement.type}
+                                /> : <p>{lang.VGLITE.Movement[adv.movement.type]}</p>
                         }
                     </div>
                 </div>

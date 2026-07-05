@@ -582,7 +582,7 @@
     },
     "AdversarySheet": {
       "tl": "TL",
-      "hd": "HIT DICE",
+      "hd": "HD",
       "hp": "HIT POINTS",
       "armor": "ARMOR",
       "zone": "Zone",

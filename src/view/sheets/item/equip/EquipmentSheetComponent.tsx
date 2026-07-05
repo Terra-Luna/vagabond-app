@@ -143,7 +143,7 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
 }
 
 const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
-    return <div className="text-text-primary px-3 bg-sheet-main-fill rounded-md w-full">{children}</div>
+    return <div className="text-text-primary bg-sheet-main-fill rounded-md w-full">{children}</div>
 }
 
 export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactElement }) => {

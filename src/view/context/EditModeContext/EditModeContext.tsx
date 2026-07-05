@@ -15,10 +15,10 @@ export const EditModeContextProvider = ({ children }) => {
 
     // Make a convenient lock icon!
     const editModeToggleBtn = useMemo(() => (
-        <div className="mr-2" onClick={toggleEditMode}>
+        <div className="mr-2 cursor-pointer" onClick={toggleEditMode}>
             {isEditMode ?
-                <LockKeyholeOpen size={18} strokeWidth={2} /> :
-                <LockKeyhole size={18} strokeWidth={2} />
+                <LockKeyholeOpen size={18} strokeWidth={2} className="text-text-header-secondary" /> :
+                <LockKeyhole size={18} strokeWidth={2} className="text-text-header-secondary" />
             }
         </div>
     ), [toggleEditMode, isEditMode]);
