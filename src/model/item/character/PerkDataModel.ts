@@ -2,7 +2,7 @@ import { lang, vgLiteLang } from "../../../utils/lang"
 import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {
     return {
@@ -30,7 +30,7 @@ const prerequisiteSchema = () => {
 
 export type PerkSchema = ReturnType<typeof perkSchema> & BaseItemSchema
 
-export default class PerkDataModel extends ItemDataModel<PerkSchema> {
+export class PerkDataModel extends ItemDataModel<PerkSchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),
@@ -79,7 +79,7 @@ export const perkSpellRerequisitesAsString = (perk: PerkDataModel): string => {
 
 export const perkStatPrerequisitesAsString = (perk: PerkDataModel): string => {
     const statPrereqs = perk.prerequisites.filter(it => it.type === 'stat')
-    let stats: string[] = []
+    const stats: string[] = []
     statPrereqs.forEach(s => {
         stats.push(`${vgLiteLang.Stat[s.stat].abbr} ${s.value}+`)
     })
@@ -88,7 +88,7 @@ export const perkStatPrerequisitesAsString = (perk: PerkDataModel): string => {
 
 export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string => {
     const trainedPrereqs = perk.prerequisites.filter(it => it.type === 'trained')
-    let trainings: string[] = []
+    const trainings: string[] = []
     trainedPrereqs.forEach(p => {
         p.skills.forEach(s => {
             const skillNames: string[] = []

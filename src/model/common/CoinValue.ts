@@ -1,5 +1,5 @@
 import { fields, requiredInteger } from "./sharedSchemas"
-import VgLiteError from "./VgLiteError"
+import { VgLiteError}  from "./VgLiteError"
 
 export const coinSchema = () => {
     return {

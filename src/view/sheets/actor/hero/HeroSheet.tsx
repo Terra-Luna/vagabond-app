@@ -1,7 +1,7 @@
 import { VgLiteActorSheet } from "../VgLiteActorSheet"
 import { HeroSheetReactComponent } from "./HeroSheetComponent"
 
-export default class HeroSheet extends VgLiteActorSheet {
+export class HeroSheet extends VgLiteActorSheet {
     Component = HeroSheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {

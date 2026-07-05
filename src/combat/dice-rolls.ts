@@ -1,5 +1,5 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
-import WeaponDataModel, { gripStateDamage } from "../model/item/equip/WeaponDataModel"
+import { WeaponDataModel, gripStateDamage } from "../model/item/equip/WeaponDataModel"
 import { getName } from "../utils/modelUtil"
 import { lang } from "../utils/lang"
 

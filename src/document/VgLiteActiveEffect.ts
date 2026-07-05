@@ -35,7 +35,7 @@ await doc.createEmbeddedDocuments('ActiveEffect', [effectData])
  * active effects for Classes, Ancestries, Equipment, etc... On-save, the path property can 
  * be used to apply the effect via #addActiveEffect(), below.
  */
-export default class VgLiteActiveEffect<
+export class VgLiteActiveEffect<
     SubType extends ActiveEffect.SubType = ActiveEffect.SubType
 > extends ActiveEffect<SubType> {
 

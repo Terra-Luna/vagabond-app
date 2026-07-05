@@ -1,5 +1,5 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import HeroDataModel from "../HeroDataModel"
+import { HeroDataModel } from "../HeroDataModel"
 
 const MAX_STAT_VALUE: number = 7 // TODO: <-- make this configurable via system settings?
 const statProps = { integer: true, min: 2, max: MAX_STAT_VALUE, initial: 2 }

@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import ArmorDataModel from "../../../../../model/item/equip/ArmorDataModel"
+import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { Shield } from "lucide-react"

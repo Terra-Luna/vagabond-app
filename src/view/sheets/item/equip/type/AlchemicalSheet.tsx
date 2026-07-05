@@ -1,4 +1,4 @@
-import AlchemicalItemDataModel from "../../../../../model/item/equip/AlchemicalItemDataModel"
+import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
 import { DropDown } from "../../../../component/Dropdown"
 import { DamageType, ExplodingDiceItemConfig, ItemDamageTextField } from "./WeaponSheet"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"

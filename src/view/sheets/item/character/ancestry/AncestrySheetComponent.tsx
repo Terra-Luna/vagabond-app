@@ -1,7 +1,7 @@
 
 import { LucidePlus } from "lucide-react";
 import { useCallback, useEffect } from "react";
-import AncestryDataModel from "../../../../../model/item/character/AncestryDataModel";
+import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel";
 import { updateDocument } from "../../../../../utils/documentUtils";
 import { createDropdownEntries } from "../../../../../utils/localeUtils";
 import { PrimaryButton } from "../../../../component/Button";

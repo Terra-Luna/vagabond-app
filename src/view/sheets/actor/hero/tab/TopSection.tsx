@@ -1,5 +1,5 @@
 import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight } from "lucide-react"
-import HeroDataModel from "../../../../../model/actor/HeroDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
 import { localizeString } from "../../../../../utils/localeUtils"

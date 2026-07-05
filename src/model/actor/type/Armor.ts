@@ -1,6 +1,6 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import ArmorDataModel from "../../item/equip/ArmorDataModel"
-import HeroDataModel from "../HeroDataModel"
+import { ArmorDataModel } from "../../item/equip/ArmorDataModel"
+import { HeroDataModel } from "../HeroDataModel"
 
 export const armorSchema = () => {
     return {

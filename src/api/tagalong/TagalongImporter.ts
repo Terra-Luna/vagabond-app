@@ -1,10 +1,10 @@
-import HeroDataModel from "../../model/actor/HeroDataModel"
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { isInventoryItem, stackStackables } from "../../model/actor/type/Inventory"
-import VgLiteError from "../../model/common/VgLiteError"
+import { VgLiteError}  from "../../model/common/VgLiteError"
 import { applyAncestralTraits } from "../../model/item/character/AncestryDataModel"
 import { updateDocument } from "../../utils/documentUtils"
 import { fetchHero, TagalongItem } from "./TagalongApi"
-import TagalongItemCreator from "./TagalongItemCreator"
+import { TagalongItemCreator } from "./TagalongItemCreator"
 
 /**
  * Sample link: 

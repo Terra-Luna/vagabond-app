@@ -1,6 +1,6 @@
 import { getId } from "../../../utils/modelUtil"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import EquipmentDataModel, { EquipmentSchema, getTotalSlots } from "./EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "./EquipmentDataModel"
 
 export const containerSchema = () => {
     return {
@@ -13,7 +13,7 @@ export const containerSchema = () => {
 export type ContainerSchema = ReturnType<typeof containerSchema> & EquipmentSchema
 export type Container = ContainerDataModel & EquipmentDataModel<ContainerSchema>
 
-export default class ContainerDataModel extends EquipmentDataModel<ContainerSchema> {
+export class ContainerDataModel extends EquipmentDataModel<ContainerSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),

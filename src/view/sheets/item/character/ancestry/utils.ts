@@ -1,4 +1,4 @@
-import AncestryDataModel from "../../../../../model/item/character/AncestryDataModel"
+import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel"
 
 export const addNewBlankModifier = (ancestry: AncestryDataModel, traitIdx) => {
     const modifiers = foundry.utils.deepClone(ancestry.traits[traitIdx].modifiers)

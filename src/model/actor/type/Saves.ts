@@ -1,5 +1,5 @@
 import { fields, requiredInteger, uncappedInteger } from "../../common/sharedSchemas"
-import HeroDataModel from "../HeroDataModel"
+import { HeroDataModel } from "../HeroDataModel"
 
 export const savesSchema = () => {
     return {

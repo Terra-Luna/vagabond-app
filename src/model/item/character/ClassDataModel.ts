@@ -1,7 +1,7 @@
 import { lang } from "../../../utils/lang"
 import { fields, optionalString, requiredInteger, requiredString, standardInteger } from "../../common/sharedSchemas"
 import { starterPackSchema } from "../equip/StarterPackDataModel"
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
+import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 import { classFeatureSchema } from "./traitsAndFeatures"
 
 const classSchema = () => {
@@ -31,7 +31,7 @@ const classSchema = () => {
 
 export type ClassSchema = ReturnType<typeof classSchema> & BaseItemSchema
 
-export default class ClassDataModel extends ItemDataModel<ClassSchema> {
+export class ClassDataModel extends ItemDataModel<ClassSchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),

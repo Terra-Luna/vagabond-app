@@ -2,9 +2,9 @@ import { ActiveEffectMode } from "../../../document/VgLiteActiveEffect"
 import { updateDocument } from "../../../utils/documentUtils"
 import { lang } from "../../../utils/lang"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
-import ItemDataModel, { BaseItemSchema } from "../ItemDataModel"
-import PerkDataModel from "./PerkDataModel"
-import SpellDataModel from "./SpellDataModel"
+import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
+import { PerkDataModel } from "./PerkDataModel"
+import { SpellDataModel } from "./SpellDataModel"
 import { traitSchema } from "./traitsAndFeatures"
 
 const ancestrySchema = () => {
@@ -26,7 +26,7 @@ const ancestrySchema = () => {
 
 export type AncestrySchema = ReturnType<typeof ancestrySchema> & BaseItemSchema
 
-export default class AncestryDataModel extends ItemDataModel<AncestrySchema> {
+export class AncestryDataModel extends ItemDataModel<AncestrySchema> {
     static override defineSchema() {
         return {
             ...super.defineSchema(),

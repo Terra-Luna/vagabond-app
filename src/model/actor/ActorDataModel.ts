@@ -13,7 +13,7 @@ export const baseActorSchema = () => {
 
 export type BaseActorSchema = ReturnType<typeof baseActorSchema>
 
-export default abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.abstract.TypeDataModel<T, any> {
+export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.abstract.TypeDataModel<T, any> {
     static defineSchema() {
         return {
             ...baseActorSchema()

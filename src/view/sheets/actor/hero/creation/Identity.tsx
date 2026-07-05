@@ -1,4 +1,4 @@
-import HeroDataModel from "../../../../../model/actor/HeroDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { Header } from "../../../../component/Header"
 
 const locale = lang.VGLITE.HeroSheet;

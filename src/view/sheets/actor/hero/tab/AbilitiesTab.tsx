@@ -1,5 +1,4 @@
 import { MessageSquareText, Trash } from "lucide-react"
-import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
 import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
@@ -9,6 +8,7 @@ import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()

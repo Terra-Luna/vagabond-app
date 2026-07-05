@@ -1,7 +1,7 @@
 import { lang } from "../../../utils/lang"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import PerkDataModel from "./PerkDataModel"
-import SpellDataModel from "./SpellDataModel"
+import { PerkDataModel } from "./PerkDataModel"
+import { SpellDataModel } from "./SpellDataModel"
 
 export type ClassFeature = ReturnType<typeof classFeatureSchema>
 export const classFeatureSchema = () => {

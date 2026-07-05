@@ -1,5 +1,5 @@
 import { MessageSquareText, Sparkle, Sparkles, Trash } from "lucide-react"
-import HeroDataModel from "../../../../../model/actor/HeroDataModel"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { SkillCard } from "../../../../component/SkillCard"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"

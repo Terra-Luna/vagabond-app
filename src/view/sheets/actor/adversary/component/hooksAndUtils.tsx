@@ -1,5 +1,5 @@
 import { useState } from "react"
-import AdversaryDataModel from "../../../../../model/actor/AdversaryDataModel"
+import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { rollDamage } from "../../../../../combat/dice-rolls"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { getId, getTargets } from "../../../../../utils/modelUtil"

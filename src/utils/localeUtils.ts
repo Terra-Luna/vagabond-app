@@ -1,5 +1,4 @@
-import VgLiteError from "../model/common/VgLiteError"
-import { getDocumentAtPath } from "./documentUtils"
+import { VgLiteError } from "../model/common/VgLiteError"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
     // find all {{var}} instances

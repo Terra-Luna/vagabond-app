@@ -1,7 +1,7 @@
 import { Import, Eye, Pencil, Trash } from "lucide-react"
 import { importHero } from "../../../../api/tagalong/TagalongImporter"
-import ActorDataModel, { BaseActorSchema } from "../../../../model/actor/ActorDataModel"
-import HeroDataModel from "../../../../model/actor/HeroDataModel"
+import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
+import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
