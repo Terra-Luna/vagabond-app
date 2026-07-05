@@ -341,27 +341,27 @@
     },
     "Stat": {
       "might": {
-        "long": "Might",
+        "name": "Might",
         "abbr": "MIT"
       },
       "dexterity": {
-        "long": "Dexterity",
+        "name": "Dexterity",
         "abbr": "DEX"
       },
       "awareness": {
-        "long": "Awareness",
+        "name": "Awareness",
         "abbr": "AWR"
       },
       "reason": {
-        "long": "Reason",
+        "name": "Reason",
         "abbr": "RSN"
       },
       "presence": {
-        "long": "Presence",
+        "name": "Presence",
         "abbr": "PRS"
       },
       "luck": {
-        "long": "Luck",
+        "name": "Luck",
         "abbr": "LUK"
       }
     },
@@ -631,7 +631,19 @@
       "material": "Material",
       "capacity": "CAPACITY",
       "type": "Type",
-      "size": "Size"
+      "size": "Size",
+      "prerequisites": "Prerequisites",
+      "prereqType": "Type",
+      "stat": "Stat",
+      "min": "Min",
+      "skills": "Skills",
+      "spell": "Spell"
+    },
+    "PrerequisiteTypes": {
+        "stat": "Stat",
+        "trained": "Trained",
+        "spell": "Spell",
+        "other": "Other"
     },
     "Grips": {
       "H": "1-Handed",

@@ -1,5 +1,6 @@
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
+import PerkDataModel, { perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getName } from "../../../../../utils/modelUtil"
 import { toPascalCase } from "../../../../../utils/stringUtil"
@@ -45,18 +46,21 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 {
                     hero.perks.map((p: any) => (
                         <SkillCard
-                            key={p.parent.name}
+                            key={p.parent.id}
                             title={p.parent.name}
                             subtitles={
-                                p.prerequisites.map(pr => (
-                                    [`${toPascalCase(pr.type!)}`, `${pr.type === 'SPELL' ? pr.spell : (
-                                            pr.type === 'TRAINING' ? (
-                                                pr.skillNames.length == 1 ?
-                                                `${vgLiteLang.Skills[pr.skillNames[0]].name}` :
-                                                `${vgLiteLang.Skills[pr.skillNames[0]].name} ${pr.andOr} ${vgLiteLang.Skills[pr.skillNames[1]].name}`
-                                            ) : `${pr.stat} +${pr.value}`
-                                        )
-                                    }`]
+                                p.prerequisites.map(prereq => (
+                                    [
+                                        `${vgLiteLang.PrerequisiteTypes[prereq.type]}`,
+                                        `${prereq.type === 'spell' ?
+                                            toPascalCase(prereq.spell) : (
+                                                prereq.type === 'stat' ?
+                                                    perkStatPrerequisitesAsString(p) :
+                                                    perkTrainingPrerequisitesAsString(p)
+
+                                            )
+                                        }`
+                                    ]
                                 ))
                             }
                             description={p.description}

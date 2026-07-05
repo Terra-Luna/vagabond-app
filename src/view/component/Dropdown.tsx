@@ -1,8 +1,8 @@
 import { useCallback } from "react"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { LabelledField } from "./LabelledField"
-import { menuOptionContainer, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles";
-import { useEditMode } from "../context/EditModeContext/Hooks";
+import { menuOptionContainer, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
+import { useEditMode } from "../context/EditModeContext/Hooks"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
@@ -11,7 +11,7 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
     value: any,
     options: { label: string, value: string }[],
     updateMechanism: UpdateMechanism,
-    parent: any,
+    parent: any
 }) => {
     const { isEditMode } = useEditMode()
 
@@ -24,6 +24,7 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
             onChangeFn(e.target.value)
         }
     }, [parent, updateMechanism])
+
     return (
         <div>
             <LabelledField label={label}>

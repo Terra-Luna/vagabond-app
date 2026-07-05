@@ -1,4 +1,5 @@
 import VgLiteError from "../model/common/VgLiteError"
+import { getDocumentAtPath } from "./documentUtils"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
     // find all {{var}} instances
@@ -37,4 +38,15 @@ export const createDropdownEntriesFromObj = (localObj) => {
         options[key] = localObj[key].name
     })
     return createDropdownEntries(options)
+}
+
+export const createDropdownEntriesForItems = (itemType: string, includeAnyOption: boolean = false) => {
+    const items: { value: string, label: string }[] = []
+    if (includeAnyOption) {
+        items.push({ value: 'any', label: 'Any' })
+    }
+    game.items?.filter(it => it.type === itemType).map(it => (
+        items.push({ value: it.id, label: it.name })
+    ))
+    return items
 }

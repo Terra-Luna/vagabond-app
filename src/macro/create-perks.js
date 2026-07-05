@@ -23,8 +23,10 @@ export default async function createPerks() {
                     stat: '',
                     value: 0,
                     spell: 'Any',
-                    skillNames: ['melee', 'ranged'],
-                    andOr: 'or'
+                    skills: {
+                        skillNames: ['melee', 'ranged'],
+                        andOr: 'or'
+                    }
                 }
             ],
             modifiers: []

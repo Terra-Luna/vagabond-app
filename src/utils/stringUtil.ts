@@ -16,3 +16,9 @@ export function stripHtml(html) {
 export function removeWhitespace(s: string): string {
     return s.replace(/\s/g, "")
 }
+
+export function andOrToSymbol(andOr: string): string {
+    const val = andOr.toLowerCase()
+    if (val !== 'and' && val !== 'or') return andOr
+    return andOr === 'and' ? '&' : andOr
+}

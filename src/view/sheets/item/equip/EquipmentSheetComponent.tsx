@@ -149,8 +149,8 @@ export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactE
     return <div className="my-2">{children}</div>
 }
 
-export const ItemSheetPropLabel = ({ label }) => {
-    return <p className={sheetPropLabel}>{label}</p>
+export const ItemSheetPropLabel = ({ label, fontWeight = "font-normal" }) => {
+    return <p className={`${sheetPropLabel} ${fontWeight}`}>{label}</p>
 }
 
 export const ItemSheetPropValue = ({ value }) => {
