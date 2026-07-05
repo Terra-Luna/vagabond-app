@@ -2,8 +2,8 @@ import ReactHtmlParser from 'react-html-parser'
 import { Collapsible } from "./Collapsible"
 import { CardHeader } from './CardHeader'
 
-const cardSubheaderLayout = "flex items-center border-r-1 border-solid border-table-border"
-const cardSubheaderStyle = "flex text-text-section-header text-sm font-eskapade pb-1 pl-2 pr-8 bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
+const cardSubheaderLayout = "flex items-center border-r-1 border-solid border-table-border -mt-0.5"
+const cardSubheaderStyle = "flex text-text-section-header text-sm font-eskapade font-bold py-1 pl-2 pr-8 bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border"
 const cardBodyStyle = "text-text-primary text-sm antialiased"
 

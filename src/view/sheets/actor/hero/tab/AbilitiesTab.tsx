@@ -1,10 +1,9 @@
 import { MessageSquareText, Trash } from "lucide-react"
 import HeroDataModel from "../../../../../model/actor/HeroDataModel"
 import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
-import PerkDataModel, { perkSpellRerequisiteAsString as perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
+import { perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
-import { toPascalCase } from "../../../../../utils/stringUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { useContextMenu } from "../../../../component/ContextMenu"
@@ -18,13 +17,18 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     
     return (
         <div className="py-1">
-            <Header title={vgLiteLang.HeroSheet.ancestry} />
-            <div className="mt-0.5" />
-            <SkillCard
-                title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits": ''}`}
-                subtitles={[['Size', beingSize ?? ''], ['Type', beingType ?? '']]}
-                description={ancestryFullDescription(hero.ancestry as any)}
-            />
+            {
+                !hero.ancestry ? <></> : <>
+                    <Header title={vgLiteLang.HeroSheet.ancestry} />
+                    <div className="mt-0.5" />
+                    <SkillCard
+                        img={(hero.ancestry as any).parent.img}
+                        title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
+                        subtitles={[['Size', beingSize ?? ''], ['Type', beingType ?? '']]}
+                        description={ancestryFullDescription(hero.ancestry as any)}
+                    />
+                </>}
+
             
             <div className="my-2">
                 <Header title={vgLiteLang.HeroSheet.class} />

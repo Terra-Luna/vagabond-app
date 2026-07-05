@@ -66,7 +66,7 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
     return trainings.join(' | ')
 }
 
-export const perkSpellRerequisiteAsString = (perk: PerkDataModel): string => {
+export const perkSpellRerequisitesAsString = (perk: PerkDataModel): string => {
     const spellPrereqs = perk.prerequisites.filter(it => it.type === 'spell').map(p => p.spell)
     return removeLastComma(spellPrereqs.join(", "), ' &')
 }
