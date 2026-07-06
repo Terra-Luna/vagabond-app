@@ -43,7 +43,7 @@ export const isInventoryItem = (item: any): boolean => {
         item.type === 'container'
 }
 
-export const openItemSheet = (item: EquipmentDataModel<EquipmentSchema>) => {
+export const openItemSheet = (item: any) => {
     if (item) {
         item.parent.sheet.render(true)
     }

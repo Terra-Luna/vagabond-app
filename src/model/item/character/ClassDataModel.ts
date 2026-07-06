@@ -9,14 +9,15 @@ const classSchema = () => {
         action: new fields.StringField({ ...requiredString }),
         move: new fields.StringField({ ...requiredString }),
         complexity: new fields.NumberField({ ...requiredInteger, min: 1, max: 5, initial: 1}),
-        icons: new fields.ArrayField(new fields.StringField({ ...requiredString })),
-        playstyle: new fields.StringField({ ...requiredString }),
         keyStats: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Stat) }), { initial: [] }),
         startingPacks: new fields.ArrayField(new fields.SchemaField({ ...starterPackSchema() })),
 
-        requiredTraining: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills) })),
-        electiveTrainingCount: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        electivePoolOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills) })),
+        training: new fields.SchemaField({
+            weaponTraining: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: ['melee', 'ranged', 'brawl', 'finesse'] }), { initial: [] }),
+            requiredTraining: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills).filter(it => !['melee', 'ranged', 'brawl', 'finesse'].includes(it)) })),
+            electivePoolOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: [...Object.keys(lang.VGLITE.Skills), 'any'] })),
+            electiveTrainingCount: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        }),
 
         castingSkill: new fields.StringField({ ...optionalString, choices: Object.keys(lang.VGLITE.Skills) }),
         maxManaStat: new fields.StringField({ ...optionalString, choices: Object.keys(lang.VGLITE.Stat) }),

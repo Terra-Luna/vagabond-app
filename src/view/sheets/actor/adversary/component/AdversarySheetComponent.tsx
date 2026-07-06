@@ -8,7 +8,6 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { Description } from "../../../shared/Description"
 import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
 import { Portrait } from "../../component/ActorPortrait"
-import { FoundryActor } from "../../VgLiteActorSheet"
 import { Abilities, NewAbilityWindow } from "./Ability"
 import { Actions, NewActionWindow } from "./Action"
 import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
@@ -20,7 +19,7 @@ const locale = lang.VGLITE.AdversarySheet
 const statLabelStyle = `text-sm text-text-header-tertiary font-eskapade font-bold`
 const statValueStyle = `text-lg text-text-primary font-eskapade font-normal`
 
-export const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
+export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel } }) => {
     const adv = actor.system
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
@@ -35,7 +34,7 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<Ad
             <div className="flex flex-col grow">
                 <AdversarySheetHeader adv={adv} />
                 <div className="overflow-y-auto">
-                    <Description obj={adv.parent} />
+                    <Description item={adv.parent} />
                     <StatBlock adv={adv} />
                     <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
                     {isAddActionOpen ?

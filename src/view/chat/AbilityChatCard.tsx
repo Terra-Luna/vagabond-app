@@ -9,9 +9,10 @@ import { vgLiteLang } from "../../utils/lang"
 import { glowOnHover } from "../common/text-styles"
 import { CardSubHeaderValues } from "../component/SkillCard"
 import { sendCountdownRollMessage } from "./ChatCardSerializer"
+import { CountdownRollChatCard } from "./CountdownChatCard"
 
 export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], description, tokenIds = [], appliesBurn = false, burnDuration = '' }: {
-    actorId: string,
+    actorId: string | null,
     img?: string,
     title: string,
     subtitle?: CardSubHeaderValues[],
@@ -20,7 +21,7 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
     appliesBurn?: boolean,
     burnDuration?: string
 }) => {
-    const actor = game.actors?.get(actorId)
+    const actor = actorId !== null ? game.actors?.get(actorId) : null
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner
@@ -46,7 +47,7 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
                             className={`${glowOnHover} cursor-pointer`}
                             onClick={async () => {
                                 const cdRes = await rollCountdownDie({ name: title, duration: burnDuration })
-                                sendCountdownRollMessage(cdRes)
+                                sendCountdownRollMessage(cdRes, CountdownRollChatCard)
                             }}
                         >
                             {vgLiteLang.ItemSheet.burnDuration}: {burnDuration}

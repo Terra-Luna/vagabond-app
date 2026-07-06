@@ -27,14 +27,15 @@ export const SkillSheetBanner = ({ skill }: { skill: Item & { system: any } }) =
         {
             icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
                 null, <AbilityChatCard
-                actorId={skill.actor!.id!}
-                img={skill.img ?? ''}
-                title={skill.name}
-                description={skill.system.description}
-                tokenIds={[]}
-                appliesBurn={skill.system?.appliesBurn ?? false}
-                burnDuration={skill.system?.burnCountdown ?? ''}
-            />)
+                    actorId={skill.actor?.id ?? null}
+                    img={skill.img ?? ''}
+                    title={skill.name}
+                    description={skill.system.description}
+                    tokenIds={[]}
+                    appliesBurn={skill.system?.appliesBurn ?? false}
+                    burnDuration={skill.system?.burnCountdown ?? ''}
+                />
+            )
         }
     )
 

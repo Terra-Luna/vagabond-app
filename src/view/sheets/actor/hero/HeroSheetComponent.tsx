@@ -10,7 +10,7 @@ import { EditableNameField } from "../../../component/EditableTextField"
 import { IconOnlyButton } from "../../../component/IconOnlyButton"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { Portrait } from "../component/ActorPortrait"
-import { FoundryActor, VgLiteActorSheet } from "../VgLiteActorSheet"
+import { VgLiteActorSheet } from "../VgLiteActorSheet"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
@@ -18,10 +18,11 @@ import { MainTab } from "./tab/MainTab"
 import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills } from "./tab/TopSection"
 import { StatsDrawerContextProvider } from "./tab/StatsDrawer/StatsDrawerContextProvider"
 import { lang } from "../../../../utils/lang"
+import { openItemSheet } from "../../../../model/actor/type/Inventory"
 
 const locale = lang.VGLITE.HeroSheet
 
-export const HeroSheetReactComponent = ({ actor, sheet }: { actor: FoundryActor<HeroDataModel>, sheet: VgLiteActorSheet }) => {
+export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { system: HeroDataModel }, sheet: VgLiteActorSheet }) => {
     const hero = actor.system
     useEffect(() => {
         const listener = (e: KeyboardEvent) => {
@@ -95,7 +96,10 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                     <div className="flex text-text-header-secondary ml-2 pb-1">
                         <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                         <span>&nbsp;•&nbsp;</span>
-                        <span>{localizeString(locale.AncestryAndClass, { ancestry: getName(hero.ancestry) || '', class: getName(hero.class) || "Vagabond" })}</span>
+                        <div className="flex gap-x-1 cursor-pointer">
+                            <p onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</p>
+                            <p onClick={() => openItemSheet(hero.class)}>{getName(hero.class) ?? "Vagabond"}</p>
+                        </div>
                         <div className="ml-auto mr-2">
                             <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
                         </div>

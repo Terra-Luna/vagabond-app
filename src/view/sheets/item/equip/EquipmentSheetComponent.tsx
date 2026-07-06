@@ -18,11 +18,13 @@ import { SundrySheet } from "./sheet/SundrySheet"
 import { ToolSheet } from "./sheet/ToolSheet"
 import { WeaponSheet } from "./sheet/WeaponSheet"
 import { lang as fullLang } from "../../../../utils/lang"
-import { BaseEquipmentSheetComponent } from "./component/BaseEquipmentSheetComponent"
 import { CategorySelection } from "./component/ItemCategorySelectionComponent"
 import { ItemSheetProperty } from "./component/ItemSheetLabelComponent"
 import { ItemValue } from "./component/ItemValueComponent"
 import { AlchemicalSheet } from "./sheet/AlchemicalSheet"
+import { BaseItemSheetComponent } from "../shared/BaseItemSheetComponent"
+import { EquipmentSheetBanner } from "./component/EquipmentSheetBanner"
+import { Description } from "../../shared/Description"
 const lang = fullLang.VGLITE
 
 export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
@@ -62,13 +64,17 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
     </div>
 
     return (
-        <BaseEquipmentSheetComponent item={item} children={
-            <EquipmentSheetBody><>
-                {sheet}
-                <ItemDivider />
-                {sharedContent}
-            </></EquipmentSheetBody>
-        } />
+        <BaseItemSheetComponent
+            banner={<EquipmentSheetBanner item={item} />}
+            description={<Description item={item} />}
+            body={
+                <>
+                    {sheet}
+                    <ItemDivider />
+                    {sharedContent}
+                </>
+            }
+        />
     )
 }
 

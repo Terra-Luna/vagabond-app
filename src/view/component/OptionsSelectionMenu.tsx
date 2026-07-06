@@ -5,20 +5,20 @@ import { DamageTypeIcon } from "./DamageTypeIcon"
 import { menuOptionContainer, menuOptionText, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 
-interface OptionsSelectionMenuOption {
+export interface OptionsSelectionMenuOption {
     key: string
     value: string
     isSelected: boolean
 }
 
 export const OptionsSelectionMenu = ({ obj, label, path, options }: {
-    obj: any, label: string, path: string[], options: OptionsSelectionMenuOption[]
+    obj: any, label?: string, path: string[], options: OptionsSelectionMenuOption[]
 }) => {
     const { isEditMode } = useEditMode()
     return (
         <div>
             <div className="flex items-center">
-                {label}
+                {label ? label : <></>}
                 {
                     isEditMode ?
                         <Menu menuButton={<SquarePen size={16} className={menuOptionText} />}>

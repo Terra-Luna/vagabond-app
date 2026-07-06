@@ -13,7 +13,7 @@ export const BaseSkillSheetComponent = ({ item, content }) => {
                     border-t-transparent 
                     rounded-b-md
                 `}>
-                <Description obj={item} showFullView={true} />
+                <Description item={item} showFullView={true} />
                 <div className="flex justify-between mt-2 mx-2 gap-y-4">
                     {content}
                 </div>
