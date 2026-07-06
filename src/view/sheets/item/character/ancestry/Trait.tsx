@@ -50,7 +50,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
             content={(
                 <div className="mx-2 flex flex-col gap-4">
                     <div>
-                        <LabelledField className="font-paradigm" label={locale.name}>
+                        <LabelledField label={locale.name} variant="alternate">
                             <div className="font-eskapade text-2xl">
                                 <EditableTextField boundValue={name || lang.VGLITE.AncestrySheet.newTrait} onSave={onUpdateName} />
                             </div>
@@ -58,7 +58,7 @@ export const Trait = ({ trait, startExpanded = false, ancestry, index }: { trait
                     </div>
 
                     <div>
-                        <LabelledField label={lang.VGLITE.AncestrySheet.description}>
+                        <LabelledField variant="alternate" label={lang.VGLITE.AncestrySheet.description}>
                             <RichTextField defaultValue={trait.description as unknown as string} className="text-text-header-primary" onChange={onUpdateDescription} height={30} />
                         </LabelledField>
                     </div>
@@ -129,7 +129,7 @@ const GrantOrModifier = ({ remove, children }: { remove: () => void; children: R
         </div>
     )
 }
-
+ 
 const Modifier = ({ modifier, ancestry, index, traitIndex }: ModifierProps) => {
 
     const updateModifier = useCallback((propName: string, value: any) => {
@@ -211,7 +211,7 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
                 {grant.specific ? <DropDown label={lang.VGLITE.AncestrySheet.specificId} options={[{ label: "to do", value: "get all the values" }]} parent={ancestry.parent} updateMechanism={{ onChange: () => { } }} value={"get all the values"} />
                     : (
                         <div className="flex flex-col gap-2">
-                            <LabelledField label={lang.VGLITE.AncestrySheet.count}>
+                            <LabelledField variant="alternate" label={lang.VGLITE.AncestrySheet.count}>
                                 <div className="flex gap-3">
                                     <div className="text-lg text-center">
                                         <EditableTextField boundValue={grant.count as any as string} onSave={onUpdateCount} />

@@ -1,8 +1,8 @@
 import { ReactNode } from "react"
-import { sheetPropLabel } from "../common/text-styles"
+import { sheetPropLabel, sheetPropLabelVariant } from "../common/text-styles"
 
-export const LabelledField = ({ label, children, className }: { label: string, children: ReactNode, className?: string }) => {
-    const labelStyle = `${className != null ? className : `${sheetPropLabel} font-bold`}`
+export const LabelledField = ({ label, children, className, variant = "standard" }: { label: string, children: ReactNode, className?: string, variant?: "standard" | "alternate" }) => {
+    const labelStyle = `${className != null ? className : `${variant === "standard" ? sheetPropLabel : sheetPropLabelVariant} font-bold`}`
     return (
         <div>
             <div className={labelStyle}>{label}</div>

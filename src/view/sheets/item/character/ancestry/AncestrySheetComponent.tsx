@@ -31,7 +31,7 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
             <AncestrySheetHeader {...{ ancestry }} />
             <div className="ml-2 mt-1 mr-2">
                 <div className="pb-1 border border-dotted border-transparent border-b-table-border">
-                    <LabelledField label={lang.VGLITE.AncestrySheet.description} className="text-text-primary font-paradigm">
+                    <LabelledField variant="alternate" label={lang.VGLITE.AncestrySheet.description} className="text-text-primary font-paradigm">
                         <RichTextField defaultValue={ancestry.description} onChange={onDescriptionChange} height={100} />
                     </LabelledField>
                 </div>
@@ -90,11 +90,13 @@ const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
         <>
             <div className="text-text-section-header flex gap-2">
                 <DropDown label={lang.VGLITE.ItemSheet.size}
+                    variant="alternate"
                     options={createDropdownEntries(lang.VGLITE.Sizes)}
                     parent={ancestry.parent}
                     updateMechanism={{ updatePath: ['beingSize'] }}
                     value={ancestry.beingSize} />
                 <DropDown label={lang.VGLITE.ItemSheet.type}
+                    variant="alternate"
                     options={createDropdownEntries(lang.VGLITE.BeingTypes)}
                     parent={ancestry.parent}
                     updateMechanism={{ updatePath: ['beingType'] }}

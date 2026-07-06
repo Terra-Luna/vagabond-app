@@ -6,12 +6,13 @@ import { useEditMode } from "../context/EditModeContext/Hooks"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
-export const DropDown = ({ label = '', value, options, updateMechanism, parent }: {
+export const DropDown = ({ label = '', value, options, updateMechanism, parent, variant = "standard" }: {
     label?: string,
     value: any,
     options: { label: string, value: string }[],
     updateMechanism: UpdateMechanism,
-    parent: any
+    parent: any,
+    variant?: "standard" | "alternate"
 }) => {
     const { isEditMode } = useEditMode()
 
@@ -27,7 +28,7 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent }
 
     return (
         <div>
-            <LabelledField label={label}>
+            <LabelledField label={label} variant={variant}>
                 {
                     isEditMode ?
                         <div>
