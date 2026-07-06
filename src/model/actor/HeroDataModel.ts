@@ -20,7 +20,6 @@ import { savesSchema, setSaves } from "./type/Saves"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
 import { statsSchema, validateCurrentLuck } from "./type/Stats"
-import { AlignVerticalSpaceBetween } from "lucide-react"
 
 const heroSchema = () => {
     return {
@@ -127,22 +126,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (pendingResourceTrackerUpdate) {
             sendVgLiteChatMessage(this.parent, createElement(TrackerUpdateChatCard, { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource }))
         }
-
-        const hpValue = foundry.utils.getProperty(changes, "system.health.current") as number | undefined
-        if (hpValue !== undefined) {
-            const isDead = this.parent.statuses.has("dead")
-            if (hpValue <= 0) {
-                if (!isDead) {
-                    await this.parent.toggleStatusEffect("dead", { active: true, overlay: true })
-                }
-            }
-            else {
-                if (isDead) {
-                    await this.parent.toggleStatusEffect("dead", { active: false, overlay: false })
-                }
-            }
-        }
-
     }
 
 }
