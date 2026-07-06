@@ -1,7 +1,6 @@
 import { createElement } from "react"
 import { vgLiteLang } from "../../utils/lang"
 import { getId } from "../../utils/modelUtil"
-import { sendVgLiteChatMessage } from "../../view/chat/ChatCardManager"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
@@ -10,16 +9,16 @@ import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
 import { SpellDataModel } from "../item/character/SpellDataModel"
 import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
-import { setArmorRating } from "./type/Armor"
 import { heroBonusSchema } from "./type/Bonus"
-import { setMaxHP, validateCurrentHP } from "./type/Health"
-import { inventorySchema, setInventoryData } from "./type/Inventory"
-import { levelSchema, setXpToNextLevel } from "./type/Level"
-import { manaSchema, setManaValues } from "./type/Mana"
-import { savesSchema, setSaves } from "./type/Saves"
-import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
-import { setSpeeds, speedSchema } from "./type/Speed"
-import { statsSchema, validateCurrentLuck } from "./type/Stats"
+import { inventorySchema, isInventoryItem } from "./type/Inventory"
+import { levelSchema } from "./type/Level"
+import { manaSchema } from "./type/Mana"
+import { savesSchema } from "./type/Saves"
+import { skillsSchema } from "./type/Skills"
+import { speedSchema } from "./type/Speed"
+import { statsSchema } from "./type/Stats"
+import { ArmorDataModel } from "../item/equip/ArmorDataModel"
+import { sendVgLiteChatMessage } from "../../utils/chatMessageUtil"
 
 const heroSchema = () => {
     return {
@@ -130,7 +129,98 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
 }
 
-export function getSkillByName(hero: HeroDataModel, skillName: string): { name: string, value: number, isTrained: boolean } {
-    const skill = hero.skills[skillName.toLowerCase()]
-    return { name: skillName, value: skill.value, isTrained: skill.isTrained }
+function validateCurrentHP(hero: HeroDataModel) {
+    if (hero.health.current! > hero.health.max!) {
+        hero.health.current = hero.health.max!
+    }
+}
+
+function setMaxHP(hero: HeroDataModel) {
+    hero.health.max = hero.fatigue == 5 ? 0 : hero.stats.might! * (hero.level.current || 1)
+}
+
+function validateCurrentLuck(hero: HeroDataModel) {
+    if (hero.stats.currentLuck! > hero.stats.luck!) {
+        hero.stats.currentLuck = hero.stats.luck!
+    }
+}
+
+export function setArmorRating(hero: HeroDataModel) {
+    const equippedArmor = getArmor(hero)
+    hero.armor.rating = equippedArmor?.rating ?? 0
+}
+
+export const getArmor = (hero: HeroDataModel): ArmorDataModel => {
+    return hero.inventory.items.find((i: any) =>
+        i.parent.type === 'armor' && i.isEquipped
+    ) as unknown as ArmorDataModel
+}
+
+function setSpeeds(hero: HeroDataModel) {
+    const dex = hero.stats.dexterity!
+    if (dex < 4) {
+        hero.speed.turn = 25
+        hero.speed.crawl = hero.speed.turn * 3
+        hero.speed.travel = 5
+    }
+    else if (dex < 6) {
+        hero.speed.turn = 30
+        hero.speed.crawl = hero.speed.turn * 3
+        hero.speed.travel = 6
+    }
+    else {
+        hero.speed.turn = 35
+        hero.speed.crawl = hero.speed.turn * 3
+        hero.speed.travel = 7
+    }
+}
+
+function setSkillDifficulties(hero: HeroDataModel) {
+    const skills = hero.skills
+    const stats = hero.stats
+    skills.brawl.value = setSkill(Number(stats.might), skills.brawl.isTrained)
+    skills.finesse.value = setSkill(Number(stats.dexterity), skills.finesse.isTrained)
+    skills.melee.value = setSkill(Number(stats.might), skills.melee.isTrained)
+    skills.ranged.value = setSkill(Number(stats.awareness), skills.ranged.isTrained)
+    skills.arcana.value = setSkill(Number(stats.reason), skills.arcana.isTrained)
+    skills.craft.value = setSkill(Number(stats.reason), skills.craft.isTrained)
+    skills.detect.value = setSkill(Number(stats.awareness), skills.detect.isTrained)
+    skills.influence.value = setSkill(Number(stats.presence), skills.influence.isTrained)
+    skills.leadership.value = setSkill(Number(stats.presence), skills.leadership.isTrained)
+    skills.medicine.value = setSkill(Number(stats.reason), skills.medicine.isTrained)
+    skills.mysticism.value = setSkill(Number(stats.awareness), skills.mysticism.isTrained)
+    skills.performance.value = setSkill(Number(stats.presence), skills.performance.isTrained)
+    skills.sneak.value = setSkill(Number(stats.dexterity), skills.sneak.isTrained)
+    skills.survival.value = setSkill(Number(stats.awareness), skills.survival.isTrained)
+}
+
+function setSkill(stat: number, isTrained: boolean): number {
+    return isTrained ? (20 - stat * 2) : (20 - stat)
+}
+
+function setSaves(hero: HeroDataModel) {
+    const base = 20
+    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
+    hero.saves.endure = base - (hero.stats.might! * 2)
+    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)
+}
+
+function setManaValues(hero: HeroDataModel) {
+    const cls = hero.class
+    if (cls != undefined && cls.castingSkill != null) {
+        hero.mana.max = hero.level.current! * cls.manaMultiplier!
+        hero.mana.maxCast =
+            hero.level.current! < 1 ? 0 :
+                Math.ceil((hero.level.current!) / 2) + Number(hero.stats[cls?.maxManaStat?.toLowerCase() || ''])
+    }
+}
+
+function setXpToNextLevel(hero: HeroDataModel) {
+    const XP_CURVE = 10
+    hero.level.xpToLevel = (hero.level.current! + 1) * XP_CURVE
+}
+
+function setInventoryData(hero: HeroDataModel) {
+    hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
+    hero.inventory.capacity = Number(hero.stats.might) + 8 - hero.fatigue!
 }

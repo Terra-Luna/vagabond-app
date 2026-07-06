@@ -1,5 +1,4 @@
-import { damageTypeOptions, fields, optionalInteger, optionalString, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import { WeaponDataModel } from "../../item/equip/WeaponDataModel"
+import { damageTypeOptions, fields, optionalInteger, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 
 /**
  * A detailed adversary offensive action.

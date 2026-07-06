@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { CountdownResult, rollCountdownDie } from "../../combat/dice-rolls"
-import { sendVgLiteChatMessage } from "./ChatCardManager"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRoll } from "./component/DiceRoll"
+import { sendCountdownRollMessage } from "../../utils/chatMessageUtil"
 
 export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) => {
     const [isReRolled, setIsReRolled] = useState(false)
@@ -16,7 +16,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
                     setIsReRolled(true)
                     const cdRes = await rollCountdownDie(result)
                     if (!cdRes) return
-                    sendVgLiteChatMessage(null, <CountdownRollChatCard result={cdRes} />, cdRes.rolls)
+                    sendCountdownRollMessage(cdRes)
                 }}>
                     <DiceRoll faces={result!.rollSummary!.dieSize} result={result!.rollSummary!.result} />
                 </div>

@@ -1,19 +1,20 @@
 import { Shield } from "lucide-react"
-import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { Header, ItemDivider } from "../../../../component/Header"
 import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
-import { WeaponDataModel, gripStateDamage, isEquippedWWeapon, toggleGripState } from "../../../../../model/item/equip/WeaponDataModel"
+import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataModel"
+import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
+import { WeaponDataModel, isEquippedWWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
+import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
+import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
-import { inventoryItemDragDropHandler, sortedItems, weaponContextMenuItems } from "../../../../../model/actor/type/Inventory"
-import { useDragDrop } from "../../../../component/DragDrop"
-import { useContextMenu } from "../../../../component/ContextMenu"
-import { getArmor } from "../../../../../model/actor/type/Armor"
-import { Skill } from "./TopSection"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { glowOnHover } from "../../../../common/text-styles"
-import { lang } from "../../../../../utils/lang"
+import { useContextMenu } from "../../../../component/ContextMenu"
+import { useDragDrop } from "../../../../component/DragDrop"
+import { Header, ItemDivider } from "../../../../component/Header"
+import { Skill } from "./TopSection"
+import { vgLiteLang } from "../../../../../utils/lang"
+
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -31,11 +32,11 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
     const { melee, brawl, finesse, ranged } = hero.skills
     return (
         <div className="w-full">
-            <Header title={lang.VGLITE.HeroSheet.attacks} />
-            <Skill hero={hero} name={lang.VGLITE.Attacks.melee} value={melee.value!} isTrained={melee.isTrained} isAttack={true} />
-            <Skill hero={hero} name={lang.VGLITE.Attacks.brawl} value={brawl.value!} isTrained={brawl.isTrained} isAttack={true} />
-            <Skill hero={hero} name={lang.VGLITE.Attacks.finesse} value={finesse.value!} isTrained={finesse.isTrained} isAttack={true} />
-            <Skill hero={hero} name={lang.VGLITE.Attacks.ranged} value={ranged.value!} isTrained={ranged.isTrained} isAttack={true} />
+            <Header title={vgLiteLang.HeroSheet.attacks} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.melee} value={melee.value!} isTrained={melee.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.brawl} value={brawl.value!} isTrained={brawl.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.finesse} value={finesse.value!} isTrained={finesse.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.ranged} value={ranged.value!} isTrained={ranged.isTrained} isAttack={true} />
         </div>
     )
 }
@@ -55,7 +56,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className="w-full">
-            <Header title={lang.VGLITE.HeroSheet.weapons} />
+            <Header title={vgLiteLang.HeroSheet.weapons} />
             {
                 equippedWeapons?.map((weapon: WeaponDataModel, index: number) => (
                     <div
@@ -70,7 +71,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">
                             <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
                             <div className="flex justify-end">
-                                <div className={`${gripStyle} mr-2 ${glowOnHover} cursor-pointer`} onClick={() => toggleGripState(hero, weapon)}>{lang.VGLITE.GripsAbbr[weapon.grip.state]}</div>
+                                <div className={`${gripStyle} mr-2 ${glowOnHover} cursor-pointer`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
                                 <div className="flex content-right">
                                     <div
                                         className={`${dmgStyle} ${glowOnHover}`}
@@ -87,8 +88,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={propsStyle}>{weapon.properties.map(p => lang.VGLITE.WeaponProps[p].name).join(", ")}</div>
-                            <div className={propsStyle + " text-right mr-1"}>{lang.VGLITE.Ranges[weapon.range]}</div>
+                            <div className={propsStyle}>{weapon.properties.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
+                            <div className={propsStyle + " text-right mr-1"}>{vgLiteLang.Ranges[weapon.range]}</div>
                         </div>
                         <ItemDivider />
                     </div>
@@ -104,15 +105,15 @@ const Armor = ({ hero }: { hero: HeroDataModel }) => {
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
     return (
         <div className="w-full">
-            <Header title={lang.VGLITE.HeroSheet.armor} />
+            <Header title={vgLiteLang.HeroSheet.armor} />
             <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1">
                 <div className="text-lg line-clamp-1">{armor?.parent.name ?? '-'}</div>
                 <div className="flex justify-end items-center">
                     <Shield className="mr-1" size={18} />
                     <div className="line-clamp-1 text-lg text-right mr-1">{armor?.rating ?? '-'}</div>
                 </div>
-                <div className={propsStyle}>{lang.VGLITE.EquipmentCategories[armor?.category] ?? '-'}</div>
-                <div className={propsStyle + " text-right mr-1"}>{lang.VGLITE.Metals[armor?.material]?.name ?? '-'}</div>
+                <div className={propsStyle}>{vgLiteLang.EquipmentCategories[armor?.category] ?? '-'}</div>
+                <div className={propsStyle + " text-right mr-1"}>{vgLiteLang.Metals[armor?.material]?.name ?? '-'}</div>
             </div>
             <ItemDivider />
         </div>

@@ -8,9 +8,11 @@ import { useCallback } from "react"
 import { removeWhitespace } from "../../../../../utils/stringUtil"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
-import { EquipmentSheetSubtypeBody, Material, ItemSheetPropLabel, ItemSheetPropValue } from "../EquipmentSheetComponent"
 import { lang as fullLang } from "../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
+import { Material } from "../component/MaterialSelectionComponent"
+import { ItemSheetPropLabel, ItemSheetPropValue } from "../component/ItemSheetLabelComponent"
+import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 
 const lang = fullLang.VGLITE
 

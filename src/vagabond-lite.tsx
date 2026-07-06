@@ -16,7 +16,7 @@ import { ContainerDataModel } from "./model/item/equip/ContainerDataModel"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import { VgLiteActiveEffect } from './document/VgLiteActiveEffect'
-import { isInventoryItem, stackStackables } from "./model/actor/type/Inventory"
+import { isInventoryItem } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
 import { AdversarySheet } from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
@@ -26,6 +26,7 @@ import { PerkSheet, SpellSheet } from './view/sheets/item/character/SkillSheets'
 import { vgLiteStyles } from "./utils/styleUtils"
 import { getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
+import { stackStackables } from "./utils/heroInventoryUtil"
 
 // add our fonts
 const fontFaces = [

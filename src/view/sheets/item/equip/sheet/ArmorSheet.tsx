@@ -4,8 +4,10 @@ import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { Shield } from "lucide-react"
 import { EditableTextField } from "../../../../component/EditableTextField"
-import { EquipmentSheetSubtypeBody, ItemSheetProperty, Material } from "../EquipmentSheetComponent"
 import { lang as fullLang } from "../../../../../utils/lang"
+import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
+import { Material } from "../component/MaterialSelectionComponent"
 const lang = fullLang.VGLITE
 
 export const ArmorSheet = ({ item }: { item: Item & { system: ArmorDataModel } }) => {

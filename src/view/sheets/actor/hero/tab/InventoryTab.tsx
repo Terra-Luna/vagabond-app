@@ -1,12 +1,13 @@
 import { Coins } from "lucide-react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
-import { equipmentContextMenuItems, getContainers, getEncumbranceInfo, isInContainer, sortedItems } from "../../../../../model/actor/type/Inventory"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { glowOnHover } from "../../../../common/text-styles"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
 import { lang } from "../../../../../utils/lang"
+import { sortedItems, isInContainer } from "../../../../../model/actor/type/Inventory"
+import { getEncumbranceInfo, getContainers, equipmentContextMenuItems } from "../../../../../utils/heroInventoryUtil"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

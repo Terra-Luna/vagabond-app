@@ -1,4 +1,3 @@
-import { Pencil, MessageSquareText } from "lucide-react"
 import { useCallback } from "react"
 import { AlchemicalItemDataModel } from "../../../../model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "../../../../model/item/equip/ArmorDataModel"
@@ -8,26 +7,22 @@ import { StarterPackDataModel } from "../../../../model/item/equip/StarterPackDa
 import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
 import { ToolDataModel } from "../../../../model/item/equip/ToolDataModel"
 import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
-import { createDropdownEntries, createDropdownEntriesFromObj } from "../../../../utils/localeUtils"
-import { getId } from "../../../../utils/modelUtil"
-import { sendVgLiteChatMessage } from "../../../chat/ChatCardManager"
-import { ItemChatCard } from "../../../chat/ItemChatCard"
-import { sheetPropLabel, sheetPropValue } from "../../../common/text-styles"
 import { Checkbox } from "../../../component/Checkbox"
-import { useContextMenu, CtxMenuItem } from "../../../component/ContextMenu"
-import { DropDown } from "../../../component/Dropdown"
 import { EditableTextField } from "../../../component/EditableTextField"
-import { ItemDivider, Divider } from "../../../component/Header"
+import { ItemDivider } from "../../../component/Header"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
-import { Description } from "../../shared/Description"
-import { AlchemicalSheet } from "./type/AlchemicalSheet"
-import { ArmorSheet } from "./type/ArmorSheet"
-import { ContainerSheet } from "./type/ContainerSheet"
-import { StarterPackSheet } from "./type/StarterPackSheet"
-import { SundrySheet } from "./type/SundrySheet"
-import { ToolSheet } from "./type/ToolSheet"
-import { WeaponSheet } from "./type/WeaponSheet"
+import { ArmorSheet } from "./sheet/ArmorSheet"
+import { ContainerSheet } from "./sheet/ContainerSheet"
+import { StarterPackSheet } from "./sheet/StarterPackSheet"
+import { SundrySheet } from "./sheet/SundrySheet"
+import { ToolSheet } from "./sheet/ToolSheet"
+import { WeaponSheet } from "./sheet/WeaponSheet"
 import { lang as fullLang } from "../../../../utils/lang"
+import { BaseEquipmentSheetComponent } from "./component/BaseEquipmentSheetComponent"
+import { CategorySelection } from "./component/ItemCategorySelectionComponent"
+import { ItemSheetProperty } from "./component/ItemSheetLabelComponent"
+import { ItemValue } from "./component/ItemValueComponent"
+import { AlchemicalSheet } from "./sheet/AlchemicalSheet"
 const lang = fullLang.VGLITE
 
 export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
@@ -77,96 +72,8 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
     )
 }
 
-export const BaseEquipmentSheetComponent = ({ item, children }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> }, children: React.ReactElement }) => {
-    return (
-        <div className="flex flex-col grow overflow-hidden">
-            <EquipmentSheetBanner item={item} />
-            <div className="flex-1 -mt-2 overflow-y-auto border-4 border-solid border-stat-block-fill/80 border-t-transparent rounded-b-md">
-                <Description obj={item} />
-                <div className="flex justify-between mt-2 mx-2 gap-y-4">
-                    {children}
-                </div>
-            </div>
-        </div>
-    )
-}
-
-export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
-    const { editModeToggleBtn } = useEditMode()
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-
-    const editImage = () => {
-        new foundry.applications.apps.FilePicker({
-            type: "image",
-            current: item.img as any,
-            callback: async (path) => {
-                await item.update({ 'img': path })
-            }
-        }).render()
-    }
-
-    const contextMenuItems: CtxMenuItem[] = []
-    contextMenuItems.push(
-        { icon: Pencil, label: 'Edit', action: () => editImage() },
-        {
-            icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
-                null, <ItemChatCard itemId={getId(item)} itemName={item.name} />
-            )
-        }
-    )
-    return (<>
-        <div className="flex space-x-1 items-center bg-section-header-fill px-1 font-eskapade font-bold">
-            {item.img == null ? <></> :
-                <div className="mt-0.5 mb-1 mr-2">
-                    <img
-                        className={`object-contain border border-solid border-text-header-primary rounded-sm`}
-                        width={56}
-                        height={56}
-                        src={item.img}
-                        alt={''}
-                        onContextMenu={(e) => onCtxMenu(e, contextMenuItems)}
-                    />
-                    <ContextMenu />
-                </div>
-            }
-            <div className="flex gap-x-1 w-full items-center text-2xl text-text-section-header">
-                <EditableTextField
-                    boundValue={item.name}
-                    updateProps={{ object: item, path: ['name'] }}
-                    placeholder={"Item name..."}
-                />
-                <Divider />
-                {editModeToggleBtn}
-            </div>
-        </div>
-    </>)
-}
-
 const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
     return <div className="text-text-primary bg-sheet-main-fill rounded-md w-full">{children}</div>
-}
-
-export const EquipmentSheetSubtypeBody = ({ children }: { children: React.ReactElement }) => {
-    return <div className="my-2">{children}</div>
-}
-
-export const ItemSheetPropLabel = ({ label, className = "font-bold" }) => {
-    return <p className={`${sheetPropLabel} ${className}`}>{label}</p>
-}
-
-export const ItemSheetPropValue = ({ value }) => {
-    return <div className={`${sheetPropValue}`}>
-        {value}
-    </div>
-}
-
-export const ItemSheetProperty = ({ label, value }) => {
-    return (
-        <div className="flex gap-x-2 items-center mt-1">
-            <ItemSheetPropLabel label={label} />
-            <ItemSheetPropValue value={value} />
-        </div>
-    )
 }
 
 const Bulk = ({ item }) => {
@@ -214,69 +121,5 @@ const Bulk = ({ item }) => {
                     } /> : <></>
             }
         </div>
-    )
-}
-
-const CategorySelection = ({ item }) => {
-    return (
-        <DropDown
-            label={lang.ItemSheet.category}
-            value={item.system.category}
-            options={createDropdownEntries(lang.EquipmentCategories)}
-            updateMechanism={{ updatePath: ['category'] }}
-            parent={item}
-        />
-    )
-}
-
-export const ItemValue = ({ item }) => {
-    return (
-        <ItemSheetProperty label={lang.ItemSheet.value} value={
-            <div className="flex gap-x-1">
-                <CoinDisplay item={item} label={lang.ItemSheet.g} path={'g'} />
-                <CoinDisplay item={item} label={lang.ItemSheet.s} path={'s'} />
-                <CoinDisplay item={item} label={lang.ItemSheet.c} path={'c'} />
-            </div>
-        } />
-    )
-}
-
-const CoinDisplay = ({ item, label, path }) => {
-    return (
-        <div className="flex">
-            <div className={`text-text-primary text-xl font-eskapade min-w-[2ch] text-right`}>
-                <EditableTextField
-                    boundValue={item.system.value[path]}
-                    updateProps={{ object: item, path: ['value', path] }}
-                    placeholder="0"
-                />
-            </div>
-            <div className={"text-wealth-denom-label text-xs content-end"}>{label}</div>
-        </div>
-    )
-}
-
-export const Material = ({ item }: { item: Item & { system: { material: string } } }) => {
-    return (
-        <DropDown
-            label={lang.ItemSheet.material}
-            value={item.system.material}
-            options={createDropdownEntriesFromObj(lang.Metals)}
-            updateMechanism={{ updatePath: ['material'] }}
-            parent={item}
-        />
-    )
-}
-
-export const ConsumableToggle = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
-    const onCheckConsumable = useCallback((isChecked) => {
-        item.update({ 'system.isConsumable': isChecked } as Record<string, boolean>)
-    }, [item])
-    return (
-        <Checkbox
-            label={lang.ItemSheet.consumable}
-            onCheckedChanged={onCheckConsumable}
-            checked={item.system.isConsumable}
-        />
     )
 }

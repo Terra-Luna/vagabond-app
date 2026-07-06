@@ -1,7 +1,6 @@
 import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react"
 import { VgLiteError}  from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
-import { FoundryActor } from "../sheets/actor/VgLiteActorSheet"
 import { Tooltip } from "./Tooltip"
 import { glowOnHover } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
@@ -107,9 +106,9 @@ export const EditableTextField = (
     }
 }
 
-export const EditableNameField = ({ actor }: { actor: FoundryActor<any> }) => {
+export const EditableNameField = ({ actor }: { actor: Actor }) => {
     const updateName = useCallback(async (newName: string | null) => {
-        return !!await actor.update({ name: newName })
+        return !!await actor.update({ name: newName } as Record<string, string>)
     }, [actor])
 
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />

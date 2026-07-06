@@ -1,5 +1,4 @@
 import { fields, requiredInteger } from "../../common/sharedSchemas"
-import { HeroDataModel } from "../HeroDataModel"
 
 const MAX_STAT_VALUE: number = 7 // TODO: <-- make this configurable via system settings?
 const statProps = { integer: true, min: 2, max: MAX_STAT_VALUE, initial: 2 }
@@ -32,9 +31,3 @@ export const baseStatBlocks: number[][] = [
     [7, 5, 5, 2, 2, 2],
     [7, 6, 4, 2, 2, 2]
 ]
-
-export function validateCurrentLuck(hero: HeroDataModel) {
-    if (hero.stats.currentLuck! > hero.stats.luck!) {
-        hero.stats.currentLuck = hero.stats.luck!
-    }
-}

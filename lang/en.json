@@ -242,9 +242,21 @@
       "mana": "Mana"
     },
     "Saves": {
-      "reflex": "Reflex",
-      "endure": "Endure",
-      "will": "Will"
+      "reflex": {
+        "name": "Reflex",
+        "formula": "[DEX + AWR]",
+        "description": "Avoid area effects and attacks"
+      },
+      "endure": {
+        "name": "Endure",
+        "formula": "[MIT + MIT]",
+        "description": "Withstand poison and dead"
+      },
+      "will": {
+        "name": "Will",
+        "formula": "[RSN + PRS]",
+        "description": "Resist curses and enthrallment"
+      }
     },
     "Attacks": {
       "melee": "Melee",

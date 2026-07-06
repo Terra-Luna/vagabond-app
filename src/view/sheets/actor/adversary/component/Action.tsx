@@ -6,7 +6,6 @@ import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataMode
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
 import { ComboChatCard } from "../../../../chat/AbilityChatCard"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
 import { damageRoll, glowOnHover } from "../../../../common/text-styles"
@@ -19,6 +18,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
+import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
 
 export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()

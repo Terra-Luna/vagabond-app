@@ -1,7 +1,6 @@
 import { lang } from "../../../utils/lang"
-import { HeroDataModel } from "../../actor/HeroDataModel"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import { EquipmentDataModel, setEquipState } from "./EquipmentDataModel"
+import { EquipmentDataModel } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
 const armorSchema = () => {
@@ -35,12 +34,4 @@ export class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
         this.isEquippable = true
         this.bulk.isStackable = false
     }
-}
-
-export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
-    const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
-    equippedArmor.forEach(async (it: any) => {
-        await setEquipState(it, false)
-    })
-    await setEquipState(armor, true)
 }

@@ -1,4 +1,3 @@
-import { HeroDataModel } from "../../actor/HeroDataModel"
 import { coinSchema } from "../../common/CoinValue"
 import { fields } from "../../common/sharedSchemas"
 import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
@@ -27,8 +26,4 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
             'system.category': 'container'
         })
     }
-}
-
-export const applyStarterPack = async (hero: HeroDataModel, pack: StarterPackDataModel) => {
-    await hero.parent.createEmbeddedDocuments("Item", [pack.items])
 }

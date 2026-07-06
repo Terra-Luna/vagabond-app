@@ -6,7 +6,7 @@ import { getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { Tooltip } from "../component/Tooltip"
-import { ItemValue } from "../sheets/item/equip/EquipmentSheetComponent"
+import { ItemValue } from "../sheets/item/equip/component/ItemValueComponent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 

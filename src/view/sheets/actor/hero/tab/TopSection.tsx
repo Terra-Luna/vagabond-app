@@ -7,13 +7,12 @@ import { rollSkillCheck } from "../../../../../combat/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { getId } from "../../../../../utils/modelUtil"
-import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 import { Tooltip } from "../../../../component/Tooltip"
 import { glowOnHover } from "../../../../common/text-styles"
 import { useStatsDrawerStatus } from "./StatsDrawer/hooks"
 import { lang } from "../../../../../utils/lang"
+import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
 
 interface Health {
     current: number | null
@@ -153,32 +152,31 @@ const Speed = ({ name, value }: { name: string, value: string }) => (
 )
 
 export const Saves = ({ hero }: { hero: HeroDataModel }) => {
-    const { reflex, endure, will } = hero.saves
     return (
         <div className="w-full flex flex-col gap-y-0.5">
             <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save hero={hero} name={lang.VGLITE.Saves.reflex} value={reflex!} formula="DEX + AWR" />
-            <Save hero={hero} name={lang.VGLITE.Saves.endure} value={endure!} formula="MIT + MIT" />
-            <Save hero={hero} name={lang.VGLITE.Saves.will} value={will!} formula="RSN + PRS" />
+            <Save hero={hero} save={{ ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex }} />
+            <Save hero={hero} save={{ ...lang.VGLITE.Saves.endure, value: hero.saves.endure }} />
+            <Save hero={hero} save={{ ...lang.VGLITE.Saves.will, value: hero.saves.will }} />
         </div>
     )
 }
-const Save = ({ hero, name, value, formula }: { hero: HeroDataModel, name: string, value: number, formula: string }) => {
+const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formula: string, description: string, value: number } }) => {
     return (
         <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
             <div className={`flex justify-between items-center font-eskapade text-lg ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
-                    const skillCheck = await rollSkillCheck(name, value, e)
+                    const skillCheck = await rollSkillCheck(save.name, save.value, e)
                     sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                 }
             }>
-                <div className="ml-1 flex flex-col">
-                    <span className="text-xl font-bold">{name}</span>
-                    {/* <span className="text-text-aux font-paradigm text-xs -mt-1 mb-0.5">[{formula}]</span> */}
+                <div className="ml-1 flex">
+                    <p className="text-xl font-bold">{save.name}</p>
+                    <p className="text-xs float-right">{save.formula}</p>
                 </div>
-                <div className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-3xl flex items-center justify-center">
-                    <span>{value}</span>
-                </div>
+                <p className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-3xl flex items-center justify-center">
+                    {save.value}
+                </p>
             </div>
         </Tooltip>
     )

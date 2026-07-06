@@ -10,7 +10,8 @@ export class HeroSheet extends VgLiteActorSheet {
         },
         window: {
             resizable: true
-        }
+        },
+        dragDrop: []
     }
 
 }

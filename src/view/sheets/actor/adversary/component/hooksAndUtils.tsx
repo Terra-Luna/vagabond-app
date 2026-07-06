@@ -1,10 +1,10 @@
 import { useState } from "react"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { rollDamage } from "../../../../../combat/dice-rolls"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
+import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
 
 export const useAddAbilityMenu = () => {
     const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)

@@ -8,10 +8,10 @@ import { DamageRolls } from "./component/DiceRoll"
 import { TargetsDisplay } from "./component/TargetsDisplay"
 import { DamageTypeIcon, ImageWithDamageTypeBadge } from "../component/DamageTypeIcon"
 import { lang, vgLiteLang } from "../../utils/lang"
-import { sendVgLiteChatMessage } from "./ChatCardManager"
 import { CountdownRollChatCard } from "./CountdownRollChatCard"
 import { glowOnHover } from "../common/text-styles"
 import { CardSubHeaderValues } from "../component/SkillCard"
+import { sendVgLiteChatMessage } from "../../utils/chatMessageUtil"
 
 export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], description, tokenIds = [], appliesBurn = false, burnDuration = '' }: {
     actorId: string,

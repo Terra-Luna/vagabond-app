@@ -1,5 +1,4 @@
 import { Pencil, MessageSquareText } from "lucide-react"
-import { sendVgLiteChatMessage } from "../../../../../chat/ChatCardManager"
 import { useContextMenu, CtxMenuItem } from "../../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../../component/EditableTextField"
 import { Divider } from "../../../../../component/Header"
@@ -8,6 +7,7 @@ import { AbilityChatCard } from "../../../../../chat/AbilityChatCard"
 import { CardSubHeader, CardSubHeaderValues } from "../../../../../component/SkillCard"
 import { SpellDataModel, spellDamageBase } from "../../../../../../model/item/character/SpellDataModel"
 import { PerkDataModel, perkPrerequisites } from "../../../../../../model/item/character/PerkDataModel"
+import { sendVgLiteChatMessage } from "../../../../../../utils/chatMessageUtil"
 
 export const SkillSheetBanner = ({ skill }: { skill: Item & { system: any } }) => {
     const { editModeToggleBtn } = useEditMode()

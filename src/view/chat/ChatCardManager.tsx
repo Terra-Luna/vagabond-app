@@ -1,23 +1,5 @@
 import React, { ReactElement } from "react"
 import { ComponentRegistry } from "../../ComponentRegistry"
-import { getId, getName } from "../../utils/modelUtil"
-
-export const sendVgLiteChatMessage = async (
-    actor: any,
-    card: React.ReactElement,
-    rolls: any[] = []
-) => {
-    const blueprint = serializeElement(card)
-    const chatRoot = `<div class="vglite-react-chat-root"/>`
-    await ChatMessage.create({
-        speaker: { actor: getId(actor), alias: getName(actor) },
-        content: chatRoot,
-        rolls: rolls,
-        flags: {
-            "vagabond-lite": { blueprint }
-        } as any
-    })
-}
 
 interface ElementBlueprint {
     type: string
@@ -28,7 +10,7 @@ interface ElementBlueprint {
 }
 
 // Recursively converts a live ReactElement tree into serializable JSON
-function serializeElement(element: ReactElement): ElementBlueprint {
+export function serializeElement(element: ReactElement): ElementBlueprint {
     const { type, props } = element
 
     // Resolve component name if it's a functional/class component, otherwise use string tag

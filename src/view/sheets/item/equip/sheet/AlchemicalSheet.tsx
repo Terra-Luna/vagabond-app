@@ -1,12 +1,14 @@
 import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
 import { DropDown } from "../../../../component/Dropdown"
-import { DamageType, ExplodingDiceItemConfig, ItemDamageTextField } from "./WeaponSheet"
+import { DamageType, ExplodingDiceItemConfig, ItemDamageTextField } from "../sheet/WeaponSheet"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
-import { ConsumableToggle, EquipmentSheetSubtypeBody, ItemSheetPropLabel, ItemSheetPropValue } from "../EquipmentSheetComponent"
 import { lang as fullLang } from "../../../../../utils/lang"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { ConsumableToggle } from "../component/ConsumableItemToggleComponent"
+import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { ItemSheetPropLabel, ItemSheetPropValue } from "../component/ItemSheetLabelComponent"
 const lang = fullLang.VGLITE
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {

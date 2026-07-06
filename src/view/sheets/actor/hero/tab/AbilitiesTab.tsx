@@ -4,11 +4,11 @@ import { perkPrerequisites } from "../../../../../model/item/character/PerkDataM
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
+import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()

@@ -1,6 +1,6 @@
 import { Undo } from "lucide-react"
 import { ActorDataModel, BaseActorSchema } from "../../../../../model/actor/ActorDataModel"
-import { sortedItems, containerItemContextMenuItems } from "../../../../../model/actor/type/Inventory"
+import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ContainerDataModel, itemsInContainer } from "../../../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { vgLiteLang as lang, vgLiteLang } from "../../../../../utils/lang"
@@ -9,7 +9,9 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
-import { EquipmentSheetSubtypeBody, ItemSheetProperty } from "../EquipmentSheetComponent"
+import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
+import { containerItemContextMenuItems } from "../../../../../utils/heroInventoryUtil"
 
 export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataModel } }) => {
     const { isEditMode } = useEditMode()

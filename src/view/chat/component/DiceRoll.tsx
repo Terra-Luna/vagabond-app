@@ -7,8 +7,7 @@ import D4 from "../../../icons/dice/d4.svg?react"
 import { DamageRollResult, rollCountdownDie } from "../../../combat/dice-rolls"
 import { Plus } from "lucide-react"
 import { glowOnHover } from "../../common/text-styles"
-import { sendVgLiteChatMessage } from "../ChatCardManager"
-import { CountdownRollChatCard } from "../CountdownRollChatCard"
+import { sendCountdownRollMessage } from "../../../utils/chatMessageUtil"
 
 const centeredAlignment = "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
 
@@ -40,7 +39,7 @@ export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
                                     name: result.atkName,
                                     duration: result.burnDuration
                                 })
-                                sendVgLiteChatMessage(null, <CountdownRollChatCard result={cdRes!} />, cdRes!.rolls)
+                                sendCountdownRollMessage(cdRes)
                             }}
                         >
                             {result.burnDuration}

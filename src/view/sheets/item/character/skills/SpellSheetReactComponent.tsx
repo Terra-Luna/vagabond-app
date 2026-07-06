@@ -5,7 +5,7 @@ import { Checkbox } from "../../../../component/Checkbox"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { ItemSheetPropLabel, ItemSheetPropValue } from "../../equip/EquipmentSheetComponent"
+import { ItemSheetPropLabel, ItemSheetPropValue } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 
 export const SpellSheetReactComponent = ({ item }: { item: Item & { system: SpellDataModel } }) => {

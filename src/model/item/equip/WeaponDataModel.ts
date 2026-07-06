@@ -1,5 +1,4 @@
 import { lang } from "../../../utils/lang"
-import { HeroDataModel } from "../../actor/HeroDataModel"
 import { damageTypeOptions, fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
@@ -57,66 +56,6 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         this.isEquippable = true
         this.isConsumable = false
         this.bulk.isStackable = false
-    }
-}
-
-/**
- * Shows a UI warning notification if the Hero doesn't have enough
- * free hands available to equip the given weapon.
- * @param hero
- * @param weapon 
- */
-export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
-    const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
-    const fistWeapons = equippedWeapons.filter((it: any) => it.system.grip.style === 'F')
-    const heldWeapons = equippedWeapons.filter((it: any) => it.system.grip.style !== 'F')
-    const openFists = 2 - fistWeapons.length
-    const openHands = 2 - (heldWeapons.length === 0 ? 0 : (
-        heldWeapons.length === 2 ? 2 : (
-            heldWeapons[0].system.grip.state === 'HH' ? 2 : 1
-        )
-    ))
-
-    if (weapon.grip.style === 'F' && openFists > 0) {
-        weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': 'F' })
-    }
-    else if ((weapon.grip.style === 'H' || weapon.grip.style === 'V') && openHands > 0) {
-        weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': 'H' })
-    }
-    else if (weapon.grip.style === 'HH' && openHands > 1) {
-        weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': 'HH' })
-    }
-    else {
-        ui.notifications?.warn("Cannot equip any more weapons!")
-    }
-}
-
-/**
- * Toggles Versatile weapons between H and and HH mode. If
- * the Hero doesn't have a free hand availalble, a UI warning
- * notification is shown to the user.
- * @param hero
- * @param weapon
- */
-export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataModel) {
-    if (weapon.grip.style === 'V') {
-        if (weapon.grip.state === 'H') {
-            const equppedWeapons = hero.parent.items.filter((it) =>
-                it.type === 'weapon' && it.system.isEquipped && it.system.grip.style != 'F'
-            )
-            if (equppedWeapons.length > 1) {
-                ui.notifications?.warn("Unequip another 1H weapon before 2-handing.")
-            }
-            else {
-                weapon.parent.update({ 'system.grip.state': 'HH' })
-            }
-        }
-        else {
-            weapon.parent.update({ 'system.grip.state': 'H' })
-        }
     }
 }
 

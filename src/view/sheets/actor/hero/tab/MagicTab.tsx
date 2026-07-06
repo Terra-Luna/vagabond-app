@@ -8,11 +8,11 @@ import { updateDocument } from "../../../../../utils/documentUtils"
 import { getId } from "../../../../../utils/modelUtil"
 import { SecondaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardManager"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { glowOnHover } from "../../../../common/text-styles"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { spellDamageBase } from "../../../../../model/item/character/SpellDataModel"
+import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

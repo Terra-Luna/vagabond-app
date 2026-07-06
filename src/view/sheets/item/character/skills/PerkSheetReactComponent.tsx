@@ -1,14 +1,14 @@
 import { Plus, Trash } from "lucide-react"
-import PerkDataModel, { addPerkPrerequisite, deletePerkPrerequisite } from "../../../../../model/item/character/PerkDataModel"
-import { vgLiteLang } from "../../../../../utils/lang"
-import { ItemSheetPropLabel } from "../../equip/EquipmentSheetComponent"
-import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
-import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { DropDown } from "../../../../component/Dropdown"
-import { createDropdownEntries, createDropdownEntriesForItems, createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { useCallback } from "react"
-import { SingleSelect } from "../../../../component/SingleSelect"
+import { PerkDataModel, addPerkPrerequisite, deletePerkPrerequisite } from "../../../../../model/item/character/PerkDataModel"
+import { vgLiteLang } from "../../../../../utils/lang"
+import { createDropdownEntries, createDropdownEntriesFromObj, createDropdownEntriesForItems } from "../../../../../utils/localeUtils"
 import { andOrToSymbol } from "../../../../../utils/stringUtil"
+import { DropDown } from "../../../../component/Dropdown"
+import { SingleSelect } from "../../../../component/SingleSelect"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
+import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 
 export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -18,7 +18,7 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
                 <div className="flex gap-x-2 items-center">
                     {
                         isEditMode ? <>
-                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} fontWeight={"font-bold"} />
+                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} className={"font-bold"} />
                             <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer"
                                 onClick={() => addPerkPrerequisite(item)}
                             /></> : <></>
