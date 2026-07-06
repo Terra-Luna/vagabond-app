@@ -1,6 +1,5 @@
-import { describe, expect, test } from "@jest/globals";
-import HeroDataModel from "../../../../src/model/actor/HeroDataModel";
-import { setSaves } from "../../../../src/model/actor/type/Saves";
+import { describe, expect, test } from "@jest/globals"
+import { setSaves, HeroDataModel } from "../../../../src/model/actor/HeroDataModel"
 
 describe('hero derived data tests', () => {
     test('test save calculations', () => {

@@ -1,6 +1,5 @@
-import { describe, expect, test } from "@jest/globals";
-import { setXpToNextLevel } from "../../../../src/model/actor/type/Level";
-import HeroDataModel from "../../../../src/model/actor/HeroDataModel";
+import { describe, expect, test } from "@jest/globals"
+import { setXpToNextLevel, HeroDataModel } from "../../../../src/model/actor/HeroDataModel"
 
 describe('level functions', () => {
     test('xp to next level', () => {

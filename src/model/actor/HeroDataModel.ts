@@ -129,17 +129,17 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
 }
 
-function validateCurrentHP(hero: HeroDataModel) {
+export function validateCurrentHP(hero: HeroDataModel) {
     if (hero.health.current! > hero.health.max!) {
         hero.health.current = hero.health.max!
     }
 }
 
-function setMaxHP(hero: HeroDataModel) {
+export function setMaxHP(hero: HeroDataModel) {
     hero.health.max = hero.fatigue == 5 ? 0 : hero.stats.might! * (hero.level.current || 1)
 }
 
-function validateCurrentLuck(hero: HeroDataModel) {
+export function validateCurrentLuck(hero: HeroDataModel) {
     if (hero.stats.currentLuck! > hero.stats.luck!) {
         hero.stats.currentLuck = hero.stats.luck!
     }
@@ -156,7 +156,7 @@ export const getArmor = (hero: HeroDataModel): ArmorDataModel => {
     ) as unknown as ArmorDataModel
 }
 
-function setSpeeds(hero: HeroDataModel) {
+export function setSpeeds(hero: HeroDataModel) {
     const dex = hero.stats.dexterity!
     if (dex < 4) {
         hero.speed.turn = 25
@@ -175,7 +175,7 @@ function setSpeeds(hero: HeroDataModel) {
     }
 }
 
-function setSkillDifficulties(hero: HeroDataModel) {
+export function setSkillDifficulties(hero: HeroDataModel) {
     const skills = hero.skills
     const stats = hero.stats
     skills.brawl.value = setSkill(Number(stats.might), skills.brawl.isTrained)
@@ -194,18 +194,18 @@ function setSkillDifficulties(hero: HeroDataModel) {
     skills.survival.value = setSkill(Number(stats.awareness), skills.survival.isTrained)
 }
 
-function setSkill(stat: number, isTrained: boolean): number {
+export function setSkill(stat: number, isTrained: boolean): number {
     return isTrained ? (20 - stat * 2) : (20 - stat)
 }
 
-function setSaves(hero: HeroDataModel) {
+export function setSaves(hero: HeroDataModel) {
     const base = 20
     hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
     hero.saves.endure = base - (hero.stats.might! * 2)
     hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)
 }
 
-function setManaValues(hero: HeroDataModel) {
+export function setManaValues(hero: HeroDataModel) {
     const cls = hero.class
     if (cls != undefined && cls.castingSkill != null) {
         hero.mana.max = hero.level.current! * cls.manaMultiplier!
@@ -215,7 +215,7 @@ function setManaValues(hero: HeroDataModel) {
     }
 }
 
-function setXpToNextLevel(hero: HeroDataModel) {
+export function setXpToNextLevel(hero: HeroDataModel) {
     const XP_CURVE = 10
     hero.level.xpToLevel = (hero.level.current! + 1) * XP_CURVE
 }

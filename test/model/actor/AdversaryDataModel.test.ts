@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import AdversaryDataModel, { setThreatLevel } from "../../../src/model/actor/AdversaryDataModel"
+import { AdversaryDataModel, setThreatLevel } from "../../model/actor/AdversaryDataModel"
 
 describe('set threat level', () => {
     test('set tl with combo', () => {
@@ -14,7 +14,7 @@ describe('set threat level', () => {
             combo: { actions: actions }
         } 
         //Execute
-        var tl = setThreatLevel(adv as unknown as AdversaryDataModel)
+        const tl = setThreatLevel(adv as unknown as AdversaryDataModel)
         //Verify
         expect(tl).toBe(3.44)
     })
@@ -31,7 +31,7 @@ describe('set threat level', () => {
             actions: actions
         } 
         //Execute
-        var tl = setThreatLevel(adv as unknown as AdversaryDataModel)
+        const tl = setThreatLevel(adv as unknown as AdversaryDataModel)
         //Verify
         expect(tl).toBe(3.11)
     })
@@ -43,7 +43,7 @@ describe('set threat level', () => {
             armor: { rating: 3 }
         }
         //Execute
-        var tl = setThreatLevel(adv as unknown as AdversaryDataModel)
+        const tl = setThreatLevel(adv as unknown as AdversaryDataModel)
         //Verify
         expect(tl).toBe(2.27)
     })
