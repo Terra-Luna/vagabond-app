@@ -1,8 +1,7 @@
-import React from "react"
+import React, { Component, FunctionComponent } from "react"
 import { createElement, ReactElement } from "react"
 import { CountdownResult } from "../../combat/dice-rolls"
 import { getId, getName } from "../../utils/modelUtil"
-import { CountdownRollChatCard } from "./CountdownChatCard"
 
 interface ElementBlueprint {
     type: string
@@ -29,9 +28,9 @@ export const sendVgLiteChatMessage = async (
     })
 }
 
-export function sendCountdownRollMessage(cdRes: CountdownResult | null) {
+export function sendCountdownRollMessage(cdRes: CountdownResult | null, Component: FunctionComponent<{ result: CountdownResult }>) {
     if (!cdRes) return
-    sendVgLiteChatMessage(null, createElement(CountdownRollChatCard, { result: cdRes }))
+    sendVgLiteChatMessage(null, createElement(Component, { result: cdRes }))
 }
 
 // Recursively converts a live ReactElement tree into serializable JSON

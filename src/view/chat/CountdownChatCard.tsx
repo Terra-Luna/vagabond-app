@@ -16,7 +16,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
                     setIsReRolled(true)
                     const cdRes = await rollCountdownDie(result)
                     if (!cdRes) return
-                    sendCountdownRollMessage(cdRes)
+                    sendCountdownRollMessage(cdRes, CountdownRollChatCard)
                 }}>
                     <DiceRoll faces={result!.rollSummary!.dieSize} result={result!.rollSummary!.result} />
                 </div>
@@ -25,3 +25,4 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
         />
     )
 }
+
