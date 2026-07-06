@@ -24,7 +24,7 @@ export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()
     return (
         <div className="flex items-center gap-x-2">
-            <p className="font-eskapade font-bold text-text-header-secondary text-xl">{label}</p>
+            <p className="font-eskapade font-bold text-text-header-tertiary text-xl">{label}</p>
             {
                 isEditMode ? <AddNewIconButton onClick={onClick} /> : <></>
             }
@@ -34,7 +34,7 @@ export const ActionMenuHeader = ({ label, onClick }) => {
 
 export const AddNewIconButton = ({ onClick }) => {
     return (
-        <Plus size={18} strokeWidth={4} className={`text-text-header-secondary ${glowOnHover} cursor-pointer`} onClick={onClick} />
+        <Plus size={18} strokeWidth={4} className={`text-text-header-tertiary ${glowOnHover} cursor-pointer`} onClick={onClick} />
     )
 }
 

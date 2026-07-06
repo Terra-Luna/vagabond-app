@@ -7,7 +7,7 @@ import { glowOnHover } from "../../../../common/text-styles"
 import { vgLiteLang as locale } from "../../../../../utils/lang"
 
 export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
-    const headerStyle = "text-sm font-eskapade text-text-header-secondary"
+    const headerStyle = "text-sm text-text-header-tertiary font-eskapade font-bold content-center"
     const hp = adv.health.current
 
     const incrementHP = useCallback((auxClick: boolean) => {
@@ -19,8 +19,8 @@ export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
             <div>
                 {/* THREAT LEVEL */}
                 <div className="flex space-x-2 text-text-primary content-center">
-                    <p className={`${headerStyle} content-center`}>{locale.AdversarySheet.tl}</p>
-                    <div className={`text-lg text-text-header-primary font-eskapade font-bold`}>
+                    <p className={`${headerStyle}`}>{locale.AdversarySheet.tl}</p>
+                    <div className={`text-lg text-text-primary font-eskapade font-bold`}>
                         <EditableTextField
                             boundValue={adv.threatLevelOverride?.toString() ?? adv.threatLevel?.toString() ?? ''}
                             updateProps={{ object: adv.parent, path: ['threatLevelOverride'] }}
@@ -31,8 +31,8 @@ export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
 
                 {/* HIT DICE */}
                 <div className="flex space-x-2 text-text-primary content-center">
-                    <p className={`${headerStyle} content-center`}>{locale.AdversarySheet.hd}</p>
-                    <div className={`text-lg text-text-header-primary font-eskapade font-bold`}>
+                    <p className={`${headerStyle}`}>{locale.AdversarySheet.hd}</p>
+                    <div className={`text-lg text-text-primary font-eskapade font-bold`}>
                         <EditableTextField
                             boundValue={adv.hitDice?.toString() ?? '1'}
                             updateProps={{ object: adv.parent, path: ['hitDice'] }}

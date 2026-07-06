@@ -17,7 +17,7 @@ import { lang  } from "../../../../../utils/lang"
 
 const locale = lang.VGLITE.AdversarySheet
 
-const statLabelStyle = `text-sm text-text-header-secondary font-eskapade font-bold`
+const statLabelStyle = `text-sm text-text-header-tertiary font-eskapade font-bold`
 const statValueStyle = `text-lg text-text-primary font-eskapade font-normal`
 
 export const AdversarySheetReactComponent = ({ actor }: { actor: FoundryActor<AdversaryDataModel> }) => {
@@ -57,7 +57,7 @@ const AdversarySheetHeader = ({ adv }) => {
         <div className="bg-sheet-header-fill font-eskapade p-2">
             <div className="text-2xl text-text-header-primary font-bold flex">
                 <EditableNameField actor={adv.parent} />
-                <div className="flex ml-auto mt-4">
+                <div className="flex ml-auto mt-2">
                     {editModeToggleBtn}
                 </div>
             </div>
