@@ -12,33 +12,33 @@ import ReactHtmlParser from 'react-html-parser'
  * @returns 
  */
 export const Tooltip = ({ text, children }) => {
-    /* const ref = useRef<HTMLDivElement>(null)
+    const ref = useRef<HTMLDivElement>(null)
     const [isOpen, setOpen] = useState(false)
     const { anchorProps, hoverProps } = useHover(isOpen, setOpen)
-    const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null) */
+    const [delayHandler, setDelayHandler] = useState<NodeJS.Timeout | null>(null)
 
-    /* const handleMouseEnter = (e: any) => {
+    const handleMouseEnter = (e: any) => {
         setOpen(false)
         setDelayHandler(
-            setTimeout(() => { setOpen(true) }, 777)
+            setTimeout(() => { setOpen(true) }, 1000)
         )
     }
 
     const handleMouseLeave = () => {
         setOpen(false)
         clearTimeout(delayHandler as any)
-    } */
+    }
 
     return (
         <div>
-            <div /* ref={ref} {...anchorProps}
+            <div ref={ref} {...anchorProps}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={handleMouseLeave} */
+                onClick={handleMouseLeave}
             >
                 {children}
             </div>
-            {/* <ControlledMenu
+            <ControlledMenu
                 {...hoverProps}
                 gap={10}
                 direction={"top"}
@@ -49,7 +49,7 @@ export const Tooltip = ({ text, children }) => {
                 <div className={tooltipBox}>
                     {ReactHtmlParser(text)}
                 </div>
-            </ControlledMenu> */}
+            </ControlledMenu>
         </div>
     )
 }

@@ -165,7 +165,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formula: string, description: string, value: number } }) => {
     return (
         <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
-            <div className={`flex font-eskapade ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
+            <div className={`flex font-eskapade ${glowOnHover} cursor-pointer border border-solid border-table-border/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await rollSkillCheck(save.name, save.value, e)
                     sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)

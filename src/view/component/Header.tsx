@@ -12,4 +12,4 @@ export const Header = ({ title, collapseButton }: { title: string, collapseButto
 }
 
 export const Divider = () => <div className={"grow h-[2px] bg-section-header-line mx-1"} />
-export const ItemDivider = () => <div className={"grow h-[1px] bg-skill-divider"} />
+export const ItemDivider = () => <div className={"grow h-[1px] bg-table-border/50"} />
