@@ -1,3 +1,8 @@
+import { createElement } from "react"
+import { vgLiteLang } from "../../utils/lang"
+import { getId } from "../../utils/modelUtil"
+import { sendVgLiteChatMessage } from "../../view/chat/ChatCardManager"
+import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
 import { AncestryDataModel } from "../item/character/AncestryDataModel"
@@ -15,6 +20,7 @@ import { savesSchema, setSaves } from "./type/Saves"
 import { setDifficulties as setSkillDifficulties, skillsSchema } from "./type/Skills"
 import { setSpeeds, speedSchema } from "./type/Speed"
 import { statsSchema, validateCurrentLuck } from "./type/Stats"
+import { AlignVerticalSpaceBetween } from "lucide-react"
 
 const heroSchema = () => {
     return {
@@ -90,6 +96,53 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             const newC = coinChanges.c ?? c;
             (changes.system as any).inventory.coins = consolidateCoins({ g: newG, s: newS, c: newC })
         }
+
+        const luckUpdate = foundry.utils.getProperty(changes, "system.stats.currentLuck") as number | undefined
+        if (luckUpdate !== undefined) {
+            if (luckUpdate <= this.stats.luck!) {
+                const previousLuck = this.stats.currentLuck
+                console.log(luckUpdate, previousLuck)
+                if (previousLuck !== luckUpdate) {
+                    const verb = previousLuck < luckUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
+                    (options as any).resourceTrackerUpdate = { verb: verb, resource: 'luck' }
+                }
+            }
+        }
+
+        const studiedUpdate = foundry.utils.getProperty(changes, "system.studied") as number | undefined
+        if (studiedUpdate !== undefined) {
+            const previousStudied = this.studied
+            if (previousStudied !== studiedUpdate) {
+                const verb = previousStudied < studiedUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
+                (options as any).resourceTrackerUpdate = { verb: verb, resource: 'studied' }
+            }
+        }
+    }
+
+    override async _onUpdate(changes, options, userId) {
+        super._onUpdate(changes, options, userId)
+        if (userId !== game.user!.id) return
+
+        const pendingResourceTrackerUpdate = (options as any).resourceTrackerUpdate
+        if (pendingResourceTrackerUpdate) {
+            sendVgLiteChatMessage(this.parent, createElement(TrackerUpdateChatCard, { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource }))
+        }
+
+        const hpValue = foundry.utils.getProperty(changes, "system.health.current") as number | undefined
+        if (hpValue !== undefined) {
+            const isDead = this.parent.statuses.has("dead")
+            if (hpValue <= 0) {
+                if (!isDead) {
+                    await this.parent.toggleStatusEffect("dead", { active: true, overlay: true })
+                }
+            }
+            else {
+                if (isDead) {
+                    await this.parent.toggleStatusEffect("dead", { active: false, overlay: false })
+                }
+            }
+        }
+
     }
 
 }

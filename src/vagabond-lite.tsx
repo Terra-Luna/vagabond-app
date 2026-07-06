@@ -80,22 +80,6 @@ Hooks.once("init", () => {
     )
 })
 
-Hooks.on("updateActor", async (actor, updateData, _options, _userId) => {
-    const hpValue = foundry.utils.getProperty(updateData, "system.health.current") as number | undefined
-    if (hpValue == null) return
-    const isDead = actor.statuses.has("dead")
-    if (hpValue <= 0) {
-        if (!isDead) {
-            await actor.toggleStatusEffect("dead", { active: true, overlay: true })
-        }
-    }
-    else {
-        if (isDead) {
-            await actor.toggleStatusEffect("dead", { active: false, overlay: false })
-        }
-    }
-})
-
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     if (!item.parent || item.parent.documentName !== "Actor") return
 

@@ -68,7 +68,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
 }
 
 export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
-    const fatigue = hero.fatigue
+    const { fatigue } = hero
     const updateFatigue = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) })
     }, [fatigue])
@@ -89,12 +89,9 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 export const Luck = ({ hero }: { hero: HeroDataModel }) => {
-    const currentLuck = hero.stats.currentLuck
+    const { currentLuck } = hero.stats
     const updateLuck = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
-        if ((auxClick && hero.stats.currentLuck < currentLuck!) || (!auxClick && currentLuck > 0)) {
-            sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"luck"} />)
-        }
     }, [currentLuck])
     return (
         <Tracker
@@ -109,9 +106,6 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
     const { studied } = hero
     const updateStudied = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { studied: (studied ?? 0) + (auxClick ? 1 : -1) })
-        if (auxClick || (!auxClick && studied > 0)) {
-            sendVgLiteChatMessage(hero, <TrackerUpdateChatCard heroId={getId(hero)} verb={auxClick ? lang.VGLITE.HeroSheet.gained : lang.VGLITE.HeroSheet.spent} resource={"studied"} />)
-        }
     }, [studied])
     return (
         <Tracker

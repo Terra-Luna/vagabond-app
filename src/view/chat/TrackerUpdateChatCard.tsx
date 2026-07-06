@@ -17,9 +17,9 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: stri
 
     const res = resources[resource]
     const remaining = resource === 'luck' ?
-        hero.system.stats.currentLuck + (verb === gained ? 1 : -1) : (
+        hero.system.stats.currentLuck : (
             resource === 'studied' ?
-                hero.system.studied + (verb === gained ? 1 : -1) : ''
+                hero.system.studied : ''
         )
     const subtitle: CardSubHeaderValues[] = []
     subtitle.push({ label: `${res.name} Remaining`, value: remaining.toString() })
