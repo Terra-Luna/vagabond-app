@@ -4,7 +4,7 @@ import { rollDamage } from "../../../../../combat/dice-rolls"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
-import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 
 export const useAddAbilityMenu = () => {
     const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)

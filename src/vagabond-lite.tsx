@@ -20,15 +20,15 @@ import { isInventoryItem } from "./model/actor/type/Inventory"
 import { runAllMacros } from "./macro/all-macros"
 import { AdversarySheet } from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
-import { rehydrateElement } from "./view/chat/ChatCardManager"
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
 import { PerkSheet, SpellSheet } from './view/sheets/item/character/SkillSheets'
 import { vgLiteStyles } from "./utils/styleUtils"
 import { getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
+import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
 
-// add our fonts
+// Add our fonts
 const fontFaces = [
     new FontFace(
         'Eskapade',

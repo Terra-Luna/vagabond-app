@@ -5,8 +5,9 @@ const chatCardBodyStyle = `
     text-text-primary 
     text-lg 
     font-eskapade 
-    font-bold 
+    font-bold
     bg-sheet-main-fill
+    rounded-md
 `
 
 export const BaseChatCardHost = ({ banner, contents }) => {

@@ -12,7 +12,7 @@ import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { glowOnHover } from "../../../../common/text-styles"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { spellDamageBase } from "../../../../../model/item/character/SpellDataModel"
-import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 
 export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

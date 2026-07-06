@@ -1,5 +1,9 @@
-import { AbilityChatCard, ComboChatCard } from "./view/chat/AbilityChatCard"
-import { CountdownRollChatCard } from "./view/chat/CountdownRollChatCard"
+import { AbilityChatCard } from "./view/chat/AbilityChatCard"
+import { ComboChatCard } from "./view/chat/ComboChatCard"
+import { DamageRolls } from "./view/chat/component/DamageRolls"
+import { DiceRoll } from "./view/chat/component/DiceRoll"
+import { DieIcon } from "./view/chat/component/DieIcon"
+import { CountdownRollChatCard } from "./view/chat/CountdownChatCard"
 import { DamageRollChatCard } from "./view/chat/DamageRollChatCard"
 import { ItemChatCard } from "./view/chat/ItemChatCard"
 import { SkillCheckChatCard } from "./view/chat/SkillCheckChatCard"
@@ -10,6 +14,9 @@ export const ComponentRegistry = {
     "ComboChatCard": ComboChatCard,
     "CountdownRollChatCard": CountdownRollChatCard,
     "DamageRollChatCard": DamageRollChatCard,
+    "DamageRolls": DamageRolls,
+    "DiceRoll": DiceRoll,
+    "DieIcon": DieIcon,
     "ItemChatCard": ItemChatCard,
     "SkillCheckChatCard": SkillCheckChatCard,
     "TrackerUpdateChatCard": TrackerUpdateChatCard

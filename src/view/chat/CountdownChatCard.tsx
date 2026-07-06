@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { createElement, useState } from "react"
 import { CountdownResult, rollCountdownDie } from "../../combat/dice-rolls"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRoll } from "./component/DiceRoll"
-import { sendCountdownRollMessage } from "../../utils/chatMessageUtil"
+import { sendCountdownRollMessage } from "./ChatCardSerializer"
 
 export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) => {
     const [isReRolled, setIsReRolled] = useState(false)

@@ -1,45 +1,5 @@
-import React, { ReactElement } from "react"
+import { createElement } from "react"
 import { ComponentRegistry } from "../../ComponentRegistry"
-
-interface ElementBlueprint {
-    type: string
-    props: {
-        children?: ElementBlueprint | ElementBlueprint[] | string | number
-        [key: string]: any
-    }
-}
-
-// Recursively converts a live ReactElement tree into serializable JSON
-export function serializeElement(element: ReactElement): ElementBlueprint {
-    const { type, props } = element
-
-    // Resolve component name if it's a functional/class component, otherwise use string tag
-    const typeName = typeof type === 'function' ? type.name : (type as string)
-
-    const serializedProps: Record<string, any> = {}
-
-    for (const [key, value] of Object.entries(props as any)) {
-        if (key === 'children') {
-            if (React.isValidElement(value)) {
-                serializedProps.children = serializeElement(value)
-            }
-            else if (Array.isArray(value)) {
-                serializedProps.children = value.map(child =>
-                    React.isValidElement(child) ? serializeElement(child) : child
-                )
-            }
-            else {
-                serializedProps.children = value // string, number, etc.
-            }
-        }
-        else if (typeof value !== 'function') {
-            // Strips out runtime callbacks/functions which cannot be serialized
-            serializedProps[key] = value
-        }
-    }
-
-    return { type: typeName, props: serializedProps }
-}
 
 export function rehydrateElement(blueprint: any): React.ReactNode {
     if (!blueprint || typeof blueprint !== 'object') return blueprint
@@ -71,5 +31,5 @@ export function rehydrateElement(blueprint: any): React.ReactNode {
     const { children: _, ...cleanProps } = blueprint.props || {}
 
     // 4. Pass the capitalized variable reference or the sanitized lowercase string
-    return React.createElement(FinalType as any, cleanProps, children)
+    return createElement(FinalType as any, cleanProps, children)
 }

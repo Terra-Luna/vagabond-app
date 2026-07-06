@@ -8,7 +8,7 @@ import { useContextMenu } from "../../../../component/ContextMenu"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()

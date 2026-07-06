@@ -6,7 +6,6 @@ import { setEquipState, EquipmentDataModel, EquipmentSchema } from "../model/ite
 import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { DamageRollChatCard } from "../view/chat/DamageRollChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
-import { sendVgLiteChatMessage } from "./chatMessageUtil"
 import { lang } from "./lang"
 import { getId, getName, getTargets } from "./modelUtil"
 import { isInContainer, isInventoryItem, openItemSheet } from "../model/actor/type/Inventory"
@@ -18,6 +17,7 @@ import { groupBy } from "./collectionUtil"
 import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
 import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
+import { sendVgLiteChatMessage } from "../view/chat/ChatCardSerializer"
 
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
     const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)

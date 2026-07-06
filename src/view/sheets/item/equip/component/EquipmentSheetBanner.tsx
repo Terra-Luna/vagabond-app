@@ -6,7 +6,7 @@ import { useContextMenu, CtxMenuItem } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 
 export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const { editModeToggleBtn } = useEditMode()

@@ -18,7 +18,7 @@ import { skillsSchema } from "./type/Skills"
 import { speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
-import { sendVgLiteChatMessage } from "../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../view/chat/ChatCardSerializer"
 
 const heroSchema = () => {
     return {

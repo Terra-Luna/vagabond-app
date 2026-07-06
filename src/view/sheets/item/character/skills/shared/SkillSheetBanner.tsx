@@ -7,7 +7,7 @@ import { AbilityChatCard } from "../../../../../chat/AbilityChatCard"
 import { CardSubHeader, CardSubHeaderValues } from "../../../../../component/SkillCard"
 import { SpellDataModel, spellDamageBase } from "../../../../../../model/item/character/SpellDataModel"
 import { PerkDataModel, perkPrerequisites } from "../../../../../../model/item/character/PerkDataModel"
-import { sendVgLiteChatMessage } from "../../../../../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../../../../chat/ChatCardSerializer"
 
 export const SkillSheetBanner = ({ skill }: { skill: Item & { system: any } }) => {
     const { editModeToggleBtn } = useEditMode()

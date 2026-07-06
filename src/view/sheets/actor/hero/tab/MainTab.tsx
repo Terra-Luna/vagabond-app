@@ -4,7 +4,6 @@ import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataMode
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { WeaponDataModel, isEquippedWWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
-import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
@@ -14,6 +13,7 @@ import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {

@@ -1,54 +1,4 @@
-import D20 from "../../../icons/dice/d20.svg?react"
-import D12 from "../../../icons/dice/d12.svg?react"
-import D10 from "../../../icons/dice/d10.svg?react"
-import D8 from "../../../icons/dice/d8.svg?react"
-import D6 from "../../../icons/dice/d6.svg?react"
-import D4 from "../../../icons/dice/d4.svg?react"
-import { DamageRollResult, rollCountdownDie } from "../../../combat/dice-rolls"
-import { Plus } from "lucide-react"
-import { glowOnHover } from "../../common/text-styles"
-import { sendCountdownRollMessage } from "../../../utils/chatMessageUtil"
-
-const centeredAlignment = "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
-
-export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
-    return (
-        <div className="flex flex-wrap grow gap-x-2 mt-2 justify-center">
-            {
-                result.rollsSummary.map((r, index) => (
-                    <div key={index}>
-                        <DiceRoll faces={r.dieSize} result={r.result} textSize={"text-4xl"} exploded={r.exploded} />
-                    </div>
-                ))
-            }
-            {
-                result.bonus === 0 ? <></> :
-                    <div className="flex space-x-2">
-                        <div className="h-full content-center text-text-secondary"><Plus size={24} /></div>
-                        <p className="h-full text-4xl">{result.bonus}</p>
-                    </div>
-            }
-            {
-                !result.appliesBurn || result.burnDuration.length === 0 ? <></> :
-                    <div className="flex space-x-2 items-center">
-                        <div className="h-full content-center text-text-secondary"><Plus size={18} /></div>
-                        <p
-                            className={`h-full text-xl content-center ${glowOnHover} cursor-pointer`}
-                            onClick={async () => {
-                                const cdRes = await rollCountdownDie({
-                                    name: result.atkName,
-                                    duration: result.burnDuration
-                                })
-                                sendCountdownRollMessage(cdRes)
-                            }}
-                        >
-                            {result.burnDuration}
-                        </p>
-                    </div>
-            }
-        </div>
-    )
-}
+import { DieIcon } from "./DieIcon"
 
 export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = false }: {
     faces: number,
@@ -56,6 +6,7 @@ export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = fals
     textSize?: string,
     exploded?: boolean
 }) => {
+    const centeredAlignment = "absolute flex items-center justify-center top-1/2 right-1/2 transform translate-x-1/2 -translate-y-1/2"
     return (
         <div className={`relative ${textSize}`}>
             <div className="relative inline-flex items-center justify-center">
@@ -66,16 +17,4 @@ export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = fals
             </div>
         </div>
     )
-}
-
-const DieIcon = ({ faces }: { faces: number, exploded: boolean }) => {
-    const steez = `w-[1em] h-[1em]`
-    const color = `var(--color-dice)`
-    if (faces === 20) return <D20 className={steez} fill={color} />
-    else if (faces === 12) return <D12 className={steez} fill={color} />
-    else if (faces === 10) return <D10 className={steez} fill={color} />
-    else if (faces === 8) return <D8 className={steez} fill={color} />
-    else if (faces === 6) return <D6 className={steez} fill={color} />
-    else if (faces === 4) return <D4 className={steez} fill={color} />
-    else return <></>
 }

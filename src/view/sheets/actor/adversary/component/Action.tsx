@@ -5,7 +5,6 @@ import { rollDamage, DamageRollResult } from "../../../../../combat/dice-rolls"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
-import { ComboChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
 import { damageRoll, glowOnHover } from "../../../../common/text-styles"
@@ -18,7 +17,8 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
-import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { ComboChatCard } from "../../../../chat/ComboChatCard"
 
 export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()

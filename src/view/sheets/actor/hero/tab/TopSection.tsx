@@ -12,7 +12,7 @@ import { Tooltip } from "../../../../component/Tooltip"
 import { glowOnHover } from "../../../../common/text-styles"
 import { useStatsDrawerStatus } from "./StatsDrawer/hooks"
 import { lang } from "../../../../../utils/lang"
-import { sendVgLiteChatMessage } from "../../../../../utils/chatMessageUtil"
+import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 
 interface Health {
     current: number | null

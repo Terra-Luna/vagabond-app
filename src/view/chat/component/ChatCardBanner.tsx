@@ -7,7 +7,7 @@ export const ChatCardBanner = ({ tokenId = '', portrait, title, subtitle = [] }:
 }) => {
     return (
         <div>
-            <div className={`flex space-x-1 items-center bg-section-header-fill px-1 font-eskapade font-bold`}>
+            <div className={`flex space-x-1 items-center bg-section-header-fill rounded-t-md px-1 font-eskapade font-bold`}>
                 {portrait == null || portrait.length === 0 ? <></> :
                     <img
                         className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer" src={portrait} alt={''}

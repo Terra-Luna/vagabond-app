@@ -3,13 +3,13 @@ import { DamageRollResult } from '../../combat/dice-rolls'
 import { DamageTypeIcon } from '../component/DamageTypeIcon'
 import { BaseChatCardHost } from './component/BaseChatCardHost'
 import { ChatCardBanner } from './component/ChatCardBanner'
-import { DamageRolls } from './component/DiceRoll'
 import { MenuItem, Menu } from '@szhsin/react-menu'
 import { TargetsDisplay } from './component/TargetsDisplay'
 import { getTokenImg } from '../../utils/modelUtil'
 import { applyDamage, applyHealing } from '../../combat/damage-handler'
 import { glowOnHover } from '../common/text-styles'
 import { vgLiteLang } from '../../utils/lang'
+import { DamageRolls } from './component/DamageRolls'
 
 export const DamageRollChatCard = ({ actorId, tokenIds, result }: {
     actorId: string, tokenIds: string[], result: DamageRollResult
