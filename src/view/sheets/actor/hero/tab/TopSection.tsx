@@ -164,19 +164,22 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formula: string, description: string, value: number } }) => {
     return (
         <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
-            <div className={`flex justify-between items-center font-eskapade text-lg ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
+            <div className={`flex font-eskapade ${glowOnHover} cursor-pointer border border-solid border-sheet-header-fill`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await rollSkillCheck(save.name, save.value, e)
                     sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                 }
             }>
-                <div className="ml-1 flex">
-                    <p className="text-xl font-bold">{save.name}</p>
-                    <p className="text-xs float-right">{save.formula}</p>
+                <div className="mx-1 w-full">
+                    <div className="flex justify-between">
+                        <span className="-mt-1 text-xl font-bold">{save.name}</span>
+                        <span className="mt-0.5 text-xs text-text-tertiary font-paradigm font-regular">{save.formula}</span>
+                    </div>
+                    <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1">{save.description}</span>
                 </div>
-                <p className="bg-section-header-fill font-bold text-text-section-header w-1/5 text-center text-3xl flex items-center justify-center">
+                <div className="flex w-1/4 items-center justify-center text-3xl text-text-section-header font-bold bg-section-header-fill">
                     {save.value}
-                </p>
+                </div>
             </div>
         </Tooltip>
     )

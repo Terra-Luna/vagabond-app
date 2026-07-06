@@ -1,4 +1,4 @@
-import { createElement, useState } from "react"
+import { useState } from "react"
 import { CountdownResult, rollCountdownDie } from "../../combat/dice-rolls"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
