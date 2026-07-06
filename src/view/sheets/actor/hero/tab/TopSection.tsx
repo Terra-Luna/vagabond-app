@@ -13,6 +13,7 @@ import { glowOnHover } from "../../../../common/text-styles"
 import { useStatsDrawerStatus } from "./StatsDrawer/hooks"
 import { lang } from "../../../../../utils/lang"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { CollapsibleSection } from "../../../../component/Collapsible"
 
 interface Health {
     current: number | null
@@ -189,14 +190,15 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     const skills = ['arcana', 'brawl', 'craft', 'detect', 'finesse', 'influence', 'leadership', 'medicine', 'mysticism', 'performance', 'sneak', 'survival']
     return (
         <div>
-            <Header title={lang.VGLITE.HeroSheet.skills} />
-            <div className="grid @sm:grid-cols-2 gap-x-2">
-                {
-                    skills.map(sk => (
-                        <Skill key={sk} hero={hero} isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isAttack={false} />
-                    ))
-                }
-            </div>
+            <CollapsibleSection title={lang.VGLITE.HeroSheet.skills} content={
+                <div className="grid @sm:grid-cols-2 gap-x-2">
+                    {
+                        skills.map(sk => (
+                            <Skill key={sk} hero={hero} isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isAttack={false} />
+                        ))
+                    }
+                </div>
+            } />
         </div>
     )
 }

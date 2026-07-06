@@ -1,5 +1,6 @@
 import { LucideChevronDown, LucideChevronUp } from "lucide-react"
 import { ReactNode, useCallback, useState } from "react"
+import { Header } from "./Header"
 
 export interface CollapsibleHeaderProps {
     img?: string
@@ -29,7 +30,21 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     )
 }
 
+export const CollapsibleSection = ({ title, content }: { title: string, content: React.ReactElement }) => {
+    const [isCollapsed, setCollapsed] = useState(false)
+    const toggleCollapsed = useCallback(() => {
+        setCollapsed(!isCollapsed)
+    }, [isCollapsed])
+    return (
+        <div>
+            <div onClick={toggleCollapsed}>
+                <Header title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} />
+            </div>
+            {isCollapsed ? <></> : content}
+        </div>
+    )
+}
+
 const ToggleCollapseIcon = ({ isCollapsed }: { isCollapsed: boolean }) => {
-    if (isCollapsed) return <LucideChevronDown />
-    return <LucideChevronUp />
+    return isCollapsed ? <LucideChevronDown /> : <LucideChevronUp />
 }

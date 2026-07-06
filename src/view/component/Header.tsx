@@ -1,9 +1,12 @@
-export const Header = ({ title }: { title: string }) => {
+export const Header = ({ title, collapseButton }: { title: string, collapseButton?: React.ReactElement }) => {
     return (
         <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-lg">
             <Divider />
             <div>{title}</div>
             <Divider />
+            {
+                collapseButton ? <div className="mr-2">{collapseButton}</div> : <></>
+            }
         </div>
     )
 }
