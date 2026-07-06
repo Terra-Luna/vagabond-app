@@ -19,4 +19,26 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
             ...baseActorSchema()
         }
     }
+
+    override async _onUpdate(changes, options, userId) {
+        super._onUpdate(changes, options, userId)
+
+        /**
+         * Mark an actor as Dead when their HP hits zero...
+         */
+        const hpValue = foundry.utils.getProperty(changes, "system.health.current") as number | undefined
+        if (hpValue !== undefined) {
+            const isDead = this.parent.statuses.has("dead")
+            if (hpValue <= 0) {
+                if (!isDead) {
+                    await this.parent.toggleStatusEffect("dead", { active: true, overlay: true })
+                }
+            }
+            else {
+                if (isDead) {
+                    await this.parent.toggleStatusEffect("dead", { active: false, overlay: false })
+                }
+            }
+        }
+    }
 }
