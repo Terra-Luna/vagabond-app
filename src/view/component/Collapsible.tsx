@@ -1,6 +1,7 @@
 import { LucideChevronDown, LucideChevronUp } from "lucide-react"
 import { ReactNode, useCallback, useState } from "react"
 import { Header } from "./Header"
+import { fields } from "../../model/common/sharedSchemas"
 
 export interface CollapsibleHeaderProps {
     img?: string
@@ -13,8 +14,8 @@ interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }
 
-export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className }: {
-    img?: string, dmgType?: string, title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean, className?: string
+export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className, settingsKey }: {
+    img?: string, dmgType?: string, title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean, className?: string, settingsKey?: string
 }) => {
     const [isCollapsed, setCollapsed] = useState(startCollapsed)
     const toggleCollapsed = useCallback(() => {
@@ -30,11 +31,27 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     )
 }
 
-export const CollapsibleSection = ({ title, content }: { title: string, content: React.ReactElement }) => {
-    const [isCollapsed, setCollapsed] = useState(false)
+export const CollapsibleSection = ({ title, content, settingsKey }: { title: string, content: React.ReactElement, settingsKey?: string }) => {
+    let initialCollapsedValue
+    if (settingsKey) {
+        game.settings?.register("vagabond-lite", settingsKey, {
+            name: "Hero Sheet Skills Collapsed",
+            hint: "Hero Sheet Skills start collapsed",
+            scope: "client",
+            type: new fields.BooleanField(),
+            default: false
+        })
+
+        initialCollapsedValue = game.settings?.get("vagabond-lite", settingsKey)
+    }
+    const [isCollapsed, setCollapsed] = useState(initialCollapsedValue)
     const toggleCollapsed = useCallback(() => {
-        setCollapsed(!isCollapsed)
-    }, [isCollapsed])
+        const newVal = !isCollapsed
+        if (settingsKey) {
+            game.settings?.set("vagabond-lite", settingsKey, newVal)
+        }
+        setCollapsed(newVal)
+    }, [isCollapsed, settingsKey])
     return (
         <div>
             <div onClick={toggleCollapsed}>

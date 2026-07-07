@@ -190,7 +190,7 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     const skills = ['arcana', 'brawl', 'craft', 'detect', 'finesse', 'influence', 'leadership', 'medicine', 'mysticism', 'performance', 'sneak', 'survival']
     return (
         <div>
-            <CollapsibleSection title={lang.VGLITE.HeroSheet.skills} content={
+            <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={lang.VGLITE.HeroSheet.skills} content={
                 <div className="grid @sm:grid-cols-2 gap-x-2">
                     {
                         skills.map(sk => (
