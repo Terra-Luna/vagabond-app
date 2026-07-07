@@ -67,19 +67,14 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
         <BaseItemSheetComponent
             banner={<EquipmentSheetBanner item={item} />}
             description={<Description item={item} />}
-            body={
-                <>
-                    {sheet}
-                    <ItemDivider />
-                    {sharedContent}
-                </>
-            }
+            body={<>
+                {sheet}
+                <ItemDivider />
+                {sharedContent}
+            </>}
+            bodyClassName="text-text-primary bg-sheet-main-fill rounded-md px-4 w-full"
         />
     )
-}
-
-const EquipmentSheetBody = ({ children }: { children: React.ReactElement }) => {
-    return <div className="text-text-primary bg-sheet-main-fill rounded-md w-full">{children}</div>
 }
 
 const Bulk = ({ item }) => {

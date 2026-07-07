@@ -88,7 +88,7 @@ export const ItemDamageTextField = ({ item, label, path }) => {
     return (
         <div className="flex gap-x-2">
             <ItemSheetPropLabel label={label} />
-            <div className="text-text-primary text-xl font-eskapade font-bold">
+            <div className="text-text-primary text-xl font-eskapade">
                 <EditableTextField
                     boundValue={item.system.damage[path]}
                     updateProps={{ object: item, path: ['damage', path] }}
