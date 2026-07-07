@@ -32,7 +32,7 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
             <div className="flex items-center">
-                <span className="text-lg justify-bottom">Mana:&nbsp;&nbsp;</span>
+                <span className="text-lg justify-bottom">{vgLiteLang.HeroSheet.Magic.labelMana}</span>
                 <Sparkle className={`text-mana ${glowOnHover} cursor-pointer`} size={20}
                     onClick={() => updateMana(false)}
                     onAuxClick={() => updateMana(true)}
@@ -46,20 +46,22 @@ const ManaDisplay = ({ hero }: { hero: HeroDataModel }) => {
                         hideBorderOnEditMode={true}
                     />
                 </span>
-                <span className="slash">&nbsp;/&nbsp;</span>
-                <span className="text-mana">{hero.mana.max}</span>
+                <p>/</p>
+                <p>{hero.mana.max}</p>
             </div>
             <div className="flex items-center text-mana">
-                <span className="text-lg text-text-primary">Cast Max:&nbsp;&nbsp;</span>
+                <span className="text-lg text-text-primary">{vgLiteLang.HeroSheet.Magic.labelCastMax}</span>
                 <Sparkles size={20} />
                 &nbsp;
                 <span>{hero.mana.maxCast}</span>
             </div>
             <div className="px-1" />
             <SecondaryButton
-                children={<p className="text-lg">Cast</p>}
+                children={<p className="text-lg">{vgLiteLang.HeroSheet.Magic.btnCast}</p>}
                 icon={<DamageTypeIcon dmgType={'magical'} />}
-                onClick={() => ui.notifications?.info("Feature coming soon!")}
+                onClick={() => {
+
+                }}
             />
         </div>
     )
@@ -74,23 +76,25 @@ const Spells = ({ hero }: { hero: HeroDataModel }) => {
                     hero.spells.map((sp: any) => (
                         <div key={getId(sp)} onContextMenu={(e) => onCtxMenu(e, [
                             {
-                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
-                                    <AbilityChatCard
-                                        actorId={getId(hero)}
-                                        img={sp.parent.img}
-                                        title={sp.parent.name}
-                                        subtitle={spellDamageBase(sp)}
-                                        description={sp.description}
-                                    />
-                                )
+                                icon: MessageSquareText, label: vgLiteLang.ButtonActions.chat, action: () =>
+                                    sendVgLiteChatMessage(
+                                        hero,
+                                        <AbilityChatCard
+                                            actorId={getId(hero)}
+                                            img={sp.parent.img}
+                                            title={sp.parent.name}
+                                            subtitle={spellDamageBase(sp)}
+                                            description={sp.description}
+                                        />
+                                    )
                             },
-                            { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) }, isDestructive: true }
+                            { icon: Trash, label: vgLiteLang.ButtonActions.remove, action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) }, isDestructive: true }
                         ])}>
                             <SkillCard
                                 img={sp.parent.img}
                                 dmgType={sp.damageType}
                                 title={sp.parent.name}
-                                subtitles={[{ label: 'Damage Base', value: vgLiteLang.DamageTypes[sp.damageType] }]}
+                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.damageType] }]}
                                 description={sp.description}
                             />
                         </div>

@@ -589,6 +589,12 @@
         "ctxUnequip": "Unequip",
         "ctxDelete": "Delete",
         "ctxDeleteAll": "Delete All"
+      },
+      "Magic": {
+        "labelMana": "Mana",
+        "labelCastMax": "Cast Max",
+        "labelDmgBase": "Damage Base",
+        "btnCast": "Cast"
       }
     },
     "AdversarySheet": {
@@ -752,6 +758,7 @@
     "ButtonActions": {
       "save": "Save",
       "edit": "Edit",
+      "remove": "Remove",
       "delete": "Delete",
       "cancel": "Cancel",
       "view": "View",
