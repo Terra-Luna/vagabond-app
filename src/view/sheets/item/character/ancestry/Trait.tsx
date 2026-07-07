@@ -16,6 +16,7 @@ import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { addNewBlankModifier, addNewBlankGrant } from "./utils"
 import { lang } from "../../../../../utils/lang"
+import { PerkSelect } from "./PerkSelect"
 
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
@@ -129,7 +130,7 @@ const GrantOrModifier = ({ remove, children }: { remove: () => void; children: R
         </div>
     )
 }
- 
+
 const Modifier = ({ modifier, ancestry, index, traitIndex }: ModifierProps) => {
 
     const updateModifier = useCallback((propName: string, value: any) => {
@@ -187,9 +188,14 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
     const onUpdateDirectOrChoice = useCallback((val) => updateGrant("specific", val === "direct"), [updateGrant])
     const onUpdateCount = useCallback((val) => updateGrant("count", val), [updateGrant])
     const onUpdateIngorePrereqs = useCallback(val => updateGrant("ignorePrerequisites", val), [updateGrant])
+
+    const onUpdateSpecificPerk = useCallback(val => { updateGrant("selectedPerks", [val]) }, [updateGrant])
+
     const removeGrant = useCallback(() => {
         ancestry.removeGrant(grant, traitIndex)
     }, [grant, ancestry, traitIndex])
+
+    const selectedPerk = (grant.selectedPerks as any)?.length ? grant.selectedPerks[0] : undefined
 
     return (
         <GrantOrModifier remove={removeGrant}>
@@ -208,10 +214,10 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
                 </div>
             </div>
             <div className="ml-4 pb-2">
-                {grant.specific ? <DropDown label={lang.VGLITE.AncestrySheet.specificId} options={[{ label: "to do", value: "get all the values" }]} parent={ancestry.parent} updateMechanism={{ onChange: () => { } }} value={"get all the values"} />
+                {grant.specific ? <PerkSelect parent={ancestry.parent} updateMechanism={{ onChange: onUpdateSpecificPerk }} value={selectedPerk} label={lang.VGLITE.AncestrySheet.perkGranted} />
                     : (
                         <div className="flex flex-col gap-2">
-                            <LabelledField variant="alternate" label={lang.VGLITE.AncestrySheet.count}>
+                            <LabelledField label={lang.VGLITE.AncestrySheet.count}>
                                 <div className="flex gap-3">
                                     <div className="text-lg text-center">
                                         <EditableTextField boundValue={grant.count as any as string} onSave={onUpdateCount} />

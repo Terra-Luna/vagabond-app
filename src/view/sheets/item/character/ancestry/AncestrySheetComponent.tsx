@@ -14,6 +14,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks";
 import { addNewBlankGrant, addNewBlankModifier } from "./utils";
 import { Trait } from "./Trait";
 import { lang } from "../../../../../utils/lang";
+import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent";
 
 interface AncestryComponentProps {
     ancestry: AncestryDataModel
@@ -27,17 +28,13 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
     }, [ancestry])
 
     return (
-        <div className="flex flex-col grow min-h-0 overflow-y-auto">
-            <AncestrySheetHeader {...{ ancestry }} />
-            <div className="ml-2 mt-1 mr-2">
-                <div className="pb-1 border border-dotted border-transparent border-b-table-border">
-                    <LabelledField variant="alternate" label={lang.VGLITE.AncestrySheet.description} className="text-text-primary font-paradigm">
-                        <RichTextField defaultValue={ancestry.description} onChange={onDescriptionChange} height={100} />
-                    </LabelledField>
-                </div>
+        <BaseItemSheetComponent
+            bodyClassName="mt-2 mx-2"
+            banner={<AncestrySheetHeader {...{ ancestry }} />}
+            body={<>
                 <Traits ancestry={ancestry} />
-            </div>
-        </div>
+            </>}
+            description={<RichTextField defaultValue={ancestry.description} onChange={onDescriptionChange} height={100} />} />
     )
 }
 
