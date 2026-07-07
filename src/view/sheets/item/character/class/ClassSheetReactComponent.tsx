@@ -1,3 +1,4 @@
+import { ManaStatSelector, MaxManaPerLevelSelector, SpellcastingSkillSelector } from "./component/SpellcastingConfig"
 import { ClassDataModel } from "../../../../../model/item/character/ClassDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
@@ -7,11 +8,12 @@ import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
 import { ItemPortraitComponent } from "../../shared/ItemPortraitComponent"
 import { ClassFeaturesConfig } from "./component/ClassFeaturesConfig"
 import { ComplexityRating } from "./component/ComplexityRating"
-import { KeyStatsSelector } from "./component/KeyStatsSelector"
+import { KeyStatsSelector } from "./component/ClassStatSelector"
 import { StartingPackSelector } from "./component/StartingPackSelector"
 import { TrainingsConfig } from "./component/TrainingsConfig"
 
 export const ClassSheetReactComponent = ({ item }: { item: Item & { system: ClassDataModel } }) => {
+    const { isEditMode } = useEditMode()
     return (
         <BaseItemSheetComponent
             banner={<ClassSheetBanner item={item} />}
@@ -19,6 +21,9 @@ export const ClassSheetReactComponent = ({ item }: { item: Item & { system: Clas
             body={<>
                 <StartingPackSelector item={item} />
                 <KeyStatsSelector item={item} />
+                <SpellcastingSkillSelector item={item} />
+                <ManaStatSelector item={item} />
+                <MaxManaPerLevelSelector item={item} />
                 <ComplexityRating item={item} />
                 <TrainingsConfig item={item} />
                 <ClassFeaturesConfig item={item} />
