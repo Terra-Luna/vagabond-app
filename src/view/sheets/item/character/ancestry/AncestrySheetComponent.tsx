@@ -91,7 +91,7 @@ const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
                     options={createDropdownEntries(lang.VGLITE.Sizes)}
                     parent={ancestry.parent}
                     updateMechanism={{ updatePath: ['beingSize'] }}
-                    value={ancestry.beingSize} />
+                    value={ancestry.beingSize ?? ''} />
                 <DropDown label={lang.VGLITE.ItemSheet.type}
                     variant="alternate"
                     options={createDropdownEntries(lang.VGLITE.BeingTypes)}
