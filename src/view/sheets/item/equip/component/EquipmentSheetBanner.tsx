@@ -7,7 +7,7 @@ import { ItemPortraitComponent } from "../../shared/ItemPortraitComponent"
 export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const { editModeToggleBtn } = useEditMode()
     return (<>
-        <div className="flex space-x-1 items-center bg-section-header-fill px-1 font-eskapade font-bold">
+        <div className="flex space-x-1 items-center bg-section-header-fill py-1 px-2 font-eskapade font-bold">
             <ItemPortraitComponent item={item} />
             <div className="flex gap-x-1 w-full items-center text-2xl text-text-section-header">
                 <EditableTextField

@@ -72,7 +72,7 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
                 <ItemDivider />
                 {sharedContent}
             </>}
-            bodyClassName="text-text-primary bg-sheet-main-fill rounded-md px-4 w-full"
+            bodyClassName="text-text-primary bg-sheet-main-fill rounded-b-md px-4 w-full"
         />
     )
 }
