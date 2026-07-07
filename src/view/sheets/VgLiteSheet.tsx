@@ -2,9 +2,11 @@ import ReactDom from "react-dom/client"
 import { DimensionsContext } from "../context/DimensionsContext"
 import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
 import { vgLiteStyles } from "../../utils/styleUtils"
+import { EmotionCacheContext } from "../context/EmotionCacheContext"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
+    _scaduRoot: any
     _toolbarHeight: number = 0
     _isCollapsed: boolean = false
 
@@ -36,8 +38,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
 
             this.element.style.setProperty("overflow", "visible")
 
-            const scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
-            this._reactRoot = ReactDom.createRoot(scaduRoot)
+            this._scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
+            this._reactRoot = ReactDom.createRoot(this._scaduRoot)
 
             const header = this.element.querySelector('.window-header');
             header.addEventListener('dblclick', () => {
@@ -87,10 +89,12 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._reactRoot!.render(
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <EditModeContextProvider>
-                    <style>{vgLiteStyles}</style>
-                    <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
-                        <this.Component {...this.getReactProps()} />
-                    </div>
+                    <EmotionCacheContext scaduRoot={this._scaduRoot}>
+                        <style>{vgLiteStyles}</style>
+                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
+                            <this.Component {...this.getReactProps()} />
+                        </div>
+                    </EmotionCacheContext>
                 </EditModeContextProvider>
             </DimensionsContext.Provider>
         );

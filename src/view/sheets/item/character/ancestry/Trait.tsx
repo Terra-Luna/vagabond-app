@@ -17,6 +17,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { addNewBlankModifier, addNewBlankGrant } from "./utils"
 import { lang } from "../../../../../utils/lang"
 import { PerkSelect } from "./PerkSelect"
+import { MultiSelect } from "../../../../component/MultiSelect"
 
 const locale = lang.VGLITE.AncestrySheet
 interface TypedTrait { name: string; description: string }
@@ -225,7 +226,8 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
                                     <Checkbox label={lang.VGLITE.AncestrySheet.ignorePrerequisites} checked={!!grant.ignorePrerequisites} onCheckedChanged={onUpdateIngorePrereqs} />
                                 </div>
                             </LabelledField>
-                            <DropDown label={lang.VGLITE.AncestrySheet.filter} options={[{ label: 'Perk List', value: 'todo' }]} parent={ancestry.parent} updateMechanism={{ onChange: () => { } }} value={'todo'} />
+                            <MultiSelect />
+                            {/* <DropDown label={lang.VGLITE.AncestrySheet.filter} options={[{ label: 'Perk List', value: 'todo' }]} parent={ancestry.parent} updateMechanism={{ onChange: () => { } }} value={'todo'} /> */}
                         </div>
                     )}
 
