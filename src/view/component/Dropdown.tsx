@@ -6,15 +6,17 @@ import { useEditMode } from "../context/EditModeContext/Hooks"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
-export const DropDown = ({ label = '', value, options, includeNullOption = false, updateMechanism, parent, variant = "standard" }: {
+interface DropDownProps {
     label?: string,
-    value: any,
-    options: { label: string, value: string }[],
-    includeNullOption?: boolean
+    value: string,
+    options: { label: string, value: any }[],
+    includeNullOption?: boolean,
     updateMechanism: UpdateMechanism,
     parent: any,
     variant?: "standard" | "alternate"
-}) => {
+}
+
+export const DropDown = ({ label = '', value, options, includeNullOption = false, updateMechanism, parent, variant = "standard" }: DropDownProps) => {
     const { isEditMode } = useEditMode()
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {

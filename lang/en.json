@@ -724,7 +724,7 @@
       "choice": "Choice",
       "count": "Count",
       "ignorePrerequisites": "Ignore Prerequisites",
-      "specificId": "Specific ID",
+      "perkGranted": "Perk Granted",
       "filter": "Filter"
     }
   }

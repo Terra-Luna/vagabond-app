@@ -19,7 +19,6 @@ export const updateDocumentAtPath = async (actor: { system: any, update: any }, 
         currentUpdateLevel = currentUpdateLevel[path[i]]
     }
     currentUpdateLevel[path[path.length - 1]] = value
-    console.log(updates)
     return updateDocument(actor, updates)
 }
 

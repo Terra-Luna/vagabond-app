@@ -39,7 +39,7 @@ export const grantSchema = () => {
         type: new fields.StringField({ ...requiredString, choices: ['PERK', 'SPELL', 'TRAINING'], initial: 'PERK' }),
         specific: new fields.BooleanField({ required: true, initial: true }),
         count: new fields.NumberField({ ...requiredInteger, initial: 1 }),
-        perkOptions: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
+        selectedPerks: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
         spellOptions: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
         trainingOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills) })),
         ignorePrerequisites: new fields.BooleanField({ initial: false })
