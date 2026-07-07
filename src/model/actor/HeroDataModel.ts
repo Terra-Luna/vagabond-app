@@ -99,7 +99,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (luckUpdate !== undefined) {
             if (luckUpdate <= this.stats.luck!) {
                 const previousLuck = this.stats.currentLuck
-                console.log(luckUpdate, previousLuck)
                 if (previousLuck !== luckUpdate) {
                     const verb = previousLuck < luckUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
                     (options as any).resourceTrackerUpdate = { verb: verb, resource: 'luck' }
