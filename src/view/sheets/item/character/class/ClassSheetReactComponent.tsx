@@ -48,9 +48,6 @@ const ClassSheetBanner = ({ item }: { item: Item & { system: ClassDataModel } })
                 <Divider />
                 {editModeToggleBtn}
             </div>
-            <div>
-                
-            </div>
         </div>
     )
 }
