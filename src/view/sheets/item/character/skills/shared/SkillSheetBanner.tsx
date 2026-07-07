@@ -8,6 +8,7 @@ import { CardSubHeader, CardSubHeaderValues } from "../../../../../component/Ski
 import { SpellDataModel, spellDamageBase } from "../../../../../../model/item/character/SpellDataModel"
 import { PerkDataModel, perkPrerequisites } from "../../../../../../model/item/character/PerkDataModel"
 import { sendVgLiteChatMessage } from "../../../../../chat/ChatCardSerializer"
+import { vgLiteLang } from "../../../../../../utils/lang"
 
 export const SkillSheetBanner = ({ skill }: { skill: Item & { system: any } }) => {
     const { editModeToggleBtn } = useEditMode()
@@ -23,9 +24,9 @@ export const SkillSheetBanner = ({ skill }: { skill: Item & { system: any } }) =
 
     const contextMenuItems: CtxMenuItem[] = []
     contextMenuItems.push(
-        { icon: Pencil, label: 'Edit', action: () => editImage() },
+        { icon: Pencil, label: vgLiteLang.ButtonActions.edit, action: () => editImage() },
         {
-            icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
+            icon: MessageSquareText, label: vgLiteLang.ButtonActions.chat, action: () => sendVgLiteChatMessage(
                 null, <AbilityChatCard
                     actorId={skill.actor?.id ?? null}
                     img={skill.img ?? ''}
@@ -63,7 +64,7 @@ export const SkillSheetBanner = ({ skill }: { skill: Item & { system: any } }) =
                     <EditableTextField
                         boundValue={skill.name}
                         updateProps={{ object: skill, path: ['name'] }}
-                        placeholder={"Item name..."}
+                        placeholder={vgLiteLang.ItemSheet.placeholder_name}
                     />
                     <Divider />
                     {editModeToggleBtn}

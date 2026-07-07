@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react"
+import { useMemo } from "react"
 import { PerkDataModel } from "../../../../../model/item/character/PerkDataModel"
 import { DropDown } from "../../../../component/Dropdown"
 

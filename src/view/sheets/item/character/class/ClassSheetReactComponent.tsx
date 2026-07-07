@@ -11,6 +11,7 @@ import { ComplexityRating } from "./component/ComplexityRating"
 import { KeyStatsSelector } from "./component/ClassStatSelector"
 import { StartingPackSelector } from "./component/StartingPackSelector"
 import { TrainingsConfig } from "./component/TrainingsConfig"
+import { vgLiteLang } from "../../../../../utils/lang"
 
 export const ClassSheetReactComponent = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     return (
@@ -42,7 +43,7 @@ const ClassSheetBanner = ({ item }: { item: Item & { system: ClassDataModel } })
                     <EditableTextField
                         boundValue={item.name}
                         updateProps={{ object: item, path: ['name'] }}
-                        placeholder={"New class..."}
+                        placeholder={vgLiteLang.ClassSheet.placeholder_classname}
                     />
                 </div>
                 <Divider />

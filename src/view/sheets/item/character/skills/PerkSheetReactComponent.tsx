@@ -144,7 +144,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                             parent={perk}
                         />
                         <DropDown
-                            value={prereq.value?.toString()}
+                            value={prereq.value?.toString() ?? ''}
                             options={[
                                 { label: "3+", value: "3" },
                                 { label: "4+", value: "4" },
@@ -184,7 +184,10 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                                                 {
                                                     isEditMode && skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 ?
                                                         <SingleSelect
-                                                            options={[{ value: 'and', label: 'and' }, { value: 'or', label: 'or' }]}
+                                                            options={[
+                                                                { value: 'and', label: vgLiteLang.PerkSheet.prereqAnd },
+                                                                { value: 'or', label: vgLiteLang.PerkSheet.prereqOr }
+                                                            ]}
                                                             value={skillsGroup.andOr}
                                                             setValue={(selection) => onUpdateAndOr(skillGroupIndex, selection)}
                                                             canUnselect={true}

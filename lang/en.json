@@ -549,7 +549,6 @@
       "armor": "ARMOR",
       "Identity": "Identity",
       "Level": "Level {{level}}",
-      "AncestryAndClass": "{{ancestry}} {{class}}",
       "xp": "XP: {{xp}} / {{nextLevel}}",
       "trackers": "TRACKERS",
       "studied": "STUDIED",
@@ -611,6 +610,7 @@
       "combo": "Combo"
     },
     "ItemSheet": {
+      "placeholder_name": "Item name...",
       "drag": "Drag items into container...",
       "description": "Description",
       "general": "General",
@@ -726,6 +726,42 @@
       "ignorePrerequisites": "Ignore Prerequisites",
       "perkGranted": "Perk Granted",
       "filter": "Filter"
+    },
+    "ClassSheet": {
+      "placeholder_classname": "New class...",
+      "placeholder_featurename": "New feature...",
+      "labelLevel": "Level",
+      "labelName": "Name",
+      "labelDescr": "Description",
+      "labelClassFeat": "Class Features",
+      "labelKeyStats": "Key Stats",
+      "labelComplexity": "Complexity",
+      "labelSpellSkill": "Spellcasting Skill",
+      "labelMaxMana": "Max Mana Stat",
+      "labelManaLevel": "Mana/Level",
+      "labelTraining": "Training",
+      "labelWeapons": "Weapons",
+      "labelSkills": "Skills",
+      "skillJoiner": "and",
+      "skillOptsJoiner": "from"
+    },
+    "PerkSheet": {
+       "prereqAnd": "and",
+       "prereqOr": "or"
+    },
+    "ButtonActions": {
+      "save": "Save",
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "view": "View",
+      "chat": "Send chat",
+      "equip": "Equip",
+      "unequip": "Unequip",
+      "grip": "Change grip",
+      "extract": "Extract",
+      "extractAll": "Extract all",
+      "anyOpt": "Any"
     }
   }
 }

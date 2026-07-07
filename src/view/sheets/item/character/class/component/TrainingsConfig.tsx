@@ -9,22 +9,22 @@ export const TrainingsConfig = ({ item }: { item: Item & { system: ClassDataMode
     const { isEditMode } = useEditMode()
     return (
         <div className="mt-4">
-            <ClassSheetSectionHeader text={"Training"} />
+            <ClassSheetSectionHeader text={vgLiteLang.ClassSheet.labelTraining} />
             <div className="flex gap-x-1">
-                <ClassSheetLabel text={"Weapons:"} />
+                <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelWeapons}:`} />
                 {isEditMode ? <WeaponTrainingSelections item={item} /> : <></>}
                 <ClassSheetText text={item.system.training.weaponTraining.map(k => vgLiteLang.Skills[k].name).join(", ")} />
             </div>
             <div className="flex flex-wrap gap-x-1">
-                <ClassSheetLabel text={"Skills:"} />
+                <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelSkills}:`} />
                 {isEditMode ? <RequiredSkillsSelections item={item} /> : <></>}
                 <ClassSheetText text={item.system.training.requiredTraining.map(k => vgLiteLang.Skills[k].name).join(", ")} />
                 {
                     item.system.training.requiredTraining.length > 0 ?
-                        <ClassSheetText text={"and"} /> : <></>
+                        <ClassSheetText text={vgLiteLang.ClassSheet.skillJoiner} /> : <></>
                 }
                 <SkillElectiveTrainingCount item={item} />
-                <ClassSheetText text={"from"} />
+                <ClassSheetText text={vgLiteLang.ClassSheet.skillOptsJoiner} />
                 {isEditMode ? <OptionalTraingingSelections item={item} /> : <></>}
                 <ClassSheetText text={item.system.training.electivePoolOptions.map(k => vgLiteLang.Skills[k]?.name ?? "Any").join(", ")} />
             </div>
@@ -62,7 +62,7 @@ const OptionalTraingingSelections = ({ item }: { item: Item & { system: ClassDat
     return (
         <ClassSheetSelectionMenu item={item} path={['training', 'electivePoolOptions']} options={
             optionKeys.map(k => (
-                { key: k, value: vgLiteLang.Skills[k]?.name || "Any", isSelected: item.system.training.electivePoolOptions.includes(k as any) }
+                { key: k, value: vgLiteLang.Skills[k]?.name || vgLiteLang.ButtonActions.anyOpt, isSelected: item.system.training.electivePoolOptions.includes(k as any) }
             ))
         } />
     )

@@ -15,7 +15,7 @@ export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: Cla
             {
                 isEditMode || item.system.castingSkill ? 
                     <>
-                        <ClassSheetLabel text={"Spellcasting Skill:"} />
+                        <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelSpellSkill}:`} />
                         <DropDown
                             value={item.system.castingSkill}
                             options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
@@ -37,7 +37,7 @@ export const ManaStatSelector = ({ item }: { item: Item & { system: ClassDataMod
             {
                 isEditMode || item.system.castingSkill ?
                     <div className="flex gap-x-1">
-                        <ClassSheetLabel text={"Max Mana Stat:"} />
+                        <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelMaxMana}:`} />
                         <DropDown
                             value={item.system.maxManaStat}
                             options={createDropdownEntriesFromObj(vgLiteLang.Stat)}
@@ -58,7 +58,7 @@ export const MaxManaPerLevelSelector = ({ item }: { item: Item & { system: Class
             {
                 isEditMode || item.system.castingSkill ?
                     <div className="flex gap-x-1">
-                        <ClassSheetLabel text={"Mana/Level:"} />
+                        <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelManaLevel}:`} />
                         <DropDown
                             value={item.system.manaMultiplier?.toString()}
                             options={[

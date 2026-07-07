@@ -8,7 +8,7 @@ export const KeyStatsSelector = ({ item }: { item: Item & { system: ClassDataMod
     const { isEditMode } = useEditMode()
     return (
         <div className="flex gap-x-1">
-            <ClassSheetLabel text={"Key Stats:"} />
+            <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelKeyStats}:`} />
             {isEditMode ? <StatsSelector item={item} /> : <></>}
             <ClassSheetText text={item.system.keyStats.map(it => vgLiteLang.Stat[it].name).join(", ")} />
         </div>

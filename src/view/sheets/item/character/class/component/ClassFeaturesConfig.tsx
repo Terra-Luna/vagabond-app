@@ -8,6 +8,7 @@ import { EditableTextField } from "../../../../../component/EditableTextField"
 import { RichTextField } from "../../../../../component/RichTextField"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
+import { vgLiteLang } from "../../../../../../utils/lang"
 
 export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -19,7 +20,7 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
     return (
         <div className="mt-4 space-y-1">
             <div className="flex gap-x-1 items-center">
-                <ClassSheetSectionHeader text={"Class Features"} />
+                <ClassSheetSectionHeader text={vgLiteLang.ClassSheet.labelClassFeat} />
                 {isEditMode ? <Plus size={24} strokeWidth={3} className="text-text-header-tertiary cursor-pointer" onClick={onAddNewFeature} /> : <></>}
             </div>
             {
@@ -31,7 +32,7 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
                         if (!isEditMode) return
                         onCtxMenu(e, [{
                             icon: Trash,
-                            label: "Delete",
+                            label: vgLiteLang.ButtonActions.delete,
                             isDestructive: true,
                             action: async () => {
                                 await item.update({ 'system.features': sortedFeats.filter(f => f !== feat) } as Record<string, any>)
@@ -52,7 +53,7 @@ const ClassFeatureCard = ({ item, feat }) => {
     return (
         <SkillCard
             title={feat.name}
-            subtitles={[{ label: item.name, value: `Level ${feat.level}` }]}
+            subtitles={[{ label: item.name, value: `${vgLiteLang.ClassSheet.labelLevel} ${feat.level}` }]}
             description={feat.description}
         />
     )
@@ -82,15 +83,15 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
         <div className="border border-solid border-table-border space-y-1 p-2">
             <div className="flex gap-x-2">
                 <div>
-                    <ClassSheetLabel text={"Name"} />
+                    <ClassSheetLabel text={vgLiteLang.ClassSheet.labelName} />
                     <EditableTextField
                         boundValue={title ?? null}
                         onSave={updateTitle}
-                        placeholder={"New feature..."}
+                        placeholder={vgLiteLang.ClassSheet.placeholder_featurename}
                     />
                 </div>
                 <div>
-                    <ClassSheetLabel text={"Level"} />
+                    <ClassSheetLabel text={vgLiteLang.ClassSheet.labelLevel} />
                     <EditableTextField
                         boundValue={level.toString()}
                         onSave={updateLevel}
@@ -98,7 +99,7 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
                     />
                 </div>
             </div>
-            <ClassSheetLabel text={"Description"} />
+            <ClassSheetLabel text={vgLiteLang.ClassSheet.labelDescr} />
             <RichTextField
                 defaultValue={description}
                 onChange={updateDescription}
