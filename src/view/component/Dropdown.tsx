@@ -6,10 +6,11 @@ import { useEditMode } from "../context/EditModeContext/Hooks"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
-export const DropDown = ({ label = '', value, options, updateMechanism, parent, variant = "standard" }: {
+export const DropDown = ({ label = '', value, options, includeNullOption = false, updateMechanism, parent, variant = "standard" }: {
     label?: string,
     value: any,
     options: { label: string, value: string }[],
+    includeNullOption?: boolean
     updateMechanism: UpdateMechanism,
     parent: any,
     variant?: "standard" | "alternate"
@@ -26,6 +27,10 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent, 
         }
     }, [parent, updateMechanism])
 
+    if (includeNullOption) {
+        options = [{ label: '-', value: '' }, ...options]
+    }
+
     return (
         <div>
             <LabelledField label={label} variant={variant}>
@@ -33,9 +38,13 @@ export const DropDown = ({ label = '', value, options, updateMechanism, parent, 
                     isEditMode ?
                         <div>
                             <Select value={value} onChange={onChange}>
-                                {options.map(it =>
-                                    <Option key={'label' + it.value} value={it.value}>{it.label}</Option>
-                                )}
+                                {
+                                    options.map(it =>
+                                        <Option key={`${it.label} ${it.value}`} value={it.value}>
+                                            {it.label}
+                                        </Option>
+                                    )
+                                }
                             </Select>
                         </div> :
                         <p className="text-lg font-eskapade text-text-primary bg-sheet-main-fill p-0.5 rounded">

@@ -1,13 +1,15 @@
+import { useEffect } from "react"
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../../utils/localeUtils"
 import { DropDown } from "../../../../../component/Dropdown"
-import { EditableTextField } from "../../../../../component/EditableTextField"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
 
 export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
+    useEffect(() => { item.render(true) }, [item.system.castingSkill])
+
     return (
         <div className="flex gap-x-1">
             {
@@ -17,6 +19,7 @@ export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: Cla
                         <DropDown
                             value={item.system.castingSkill}
                             options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
+                            includeNullOption={true}
                             updateMechanism={{ updatePath: ['castingSkill'] }}
                             parent={item}
                         />
@@ -38,6 +41,7 @@ export const ManaStatSelector = ({ item }: { item: Item & { system: ClassDataMod
                         <DropDown
                             value={item.system.maxManaStat}
                             options={createDropdownEntriesFromObj(vgLiteLang.Stat)}
+                            includeNullOption={true}
                             updateMechanism={{ updatePath: ['maxManaStat'] }}
                             parent={item}
                         />
@@ -58,6 +62,7 @@ export const MaxManaPerLevelSelector = ({ item }: { item: Item & { system: Class
                         <DropDown
                             value={item.system.manaMultiplier?.toString()}
                             options={[
+                                { label: '-', value: '0' },
                                 { label: '1', value: '1' },
                                 { label: '2', value: '2' },
                                 { label: '3', value: '3' },

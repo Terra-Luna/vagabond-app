@@ -19,9 +19,9 @@ const classSchema = () => {
             electiveTrainingCount: new fields.NumberField({ ...requiredInteger, initial: 0 })
         }),
 
-        castingSkill: new fields.StringField({ ...optionalString, choices: Object.keys(lang.VGLITE.Skills) }),
-        maxManaStat: new fields.StringField({ ...optionalString, choices: Object.keys(lang.VGLITE.Stat) }),
-        manaMultiplier: new fields.NumberField({ ...standardInteger }),
+        castingSkill: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.VGLITE.Skills)], blank: true }),
+        maxManaStat: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.VGLITE.Stat)], blank: true }),
+        manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         spellsGained: new fields.NumberField({ ...standardInteger }),
         spellGainInterval: new fields.NumberField({ ...standardInteger }),
         startingSpells: new fields.ArrayField(new fields.StringField({ ...requiredString })),

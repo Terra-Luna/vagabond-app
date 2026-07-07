@@ -19,11 +19,14 @@ export const TrainingsConfig = ({ item }: { item: Item & { system: ClassDataMode
                 <ClassSheetLabel text={"Skills:"} />
                 {isEditMode ? <RequiredSkillsSelections item={item} /> : <></>}
                 <ClassSheetText text={item.system.training.requiredTraining.map(k => vgLiteLang.Skills[k].name).join(", ")} />
-                <ClassSheetText text={"and"} />
+                {
+                    item.system.training.requiredTraining.length > 0 ?
+                        <ClassSheetText text={"and"} /> : <></>
+                }
                 <SkillElectiveTrainingCount item={item} />
                 <ClassSheetText text={"from"} />
-                <ClassSheetText text={item.system.training.electivePoolOptions.map(k => vgLiteLang.Skills[k]?.name ?? "Any").join(", ")} />
                 {isEditMode ? <OptionalTraingingSelections item={item} /> : <></>}
+                <ClassSheetText text={item.system.training.electivePoolOptions.map(k => vgLiteLang.Skills[k]?.name ?? "Any").join(", ")} />
             </div>
         </div>
     )

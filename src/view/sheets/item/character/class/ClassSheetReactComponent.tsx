@@ -13,7 +13,6 @@ import { StartingPackSelector } from "./component/StartingPackSelector"
 import { TrainingsConfig } from "./component/TrainingsConfig"
 
 export const ClassSheetReactComponent = ({ item }: { item: Item & { system: ClassDataModel } }) => {
-    const { isEditMode } = useEditMode()
     return (
         <BaseItemSheetComponent
             banner={<ClassSheetBanner item={item} />}
