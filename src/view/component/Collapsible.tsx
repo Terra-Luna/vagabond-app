@@ -33,8 +33,9 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
 
 export const CollapsibleSection = ({ title, content, settingsKey }: { title: string, content: React.ReactElement, settingsKey?: string }) => {
     let initialCollapsedValue
+    const settings = (game.settings! as any)
     if (settingsKey) {
-        game.settings?.register("vagabond-lite", settingsKey, {
+        settings.register("vagabond-lite", settingsKey, {
             name: "Hero Sheet Skills Collapsed",
             hint: "Hero Sheet Skills start collapsed",
             scope: "client",
@@ -42,13 +43,13 @@ export const CollapsibleSection = ({ title, content, settingsKey }: { title: str
             default: false
         })
 
-        initialCollapsedValue = game.settings?.get("vagabond-lite", settingsKey)
+        initialCollapsedValue = settings.get("vagabond-lite", settingsKey)
     }
     const [isCollapsed, setCollapsed] = useState(initialCollapsedValue)
     const toggleCollapsed = useCallback(() => {
         const newVal = !isCollapsed
         if (settingsKey) {
-            game.settings?.set("vagabond-lite", settingsKey, newVal)
+            settings.set("vagabond-lite", settingsKey, newVal)
         }
         setCollapsed(newVal)
     }, [isCollapsed, settingsKey])

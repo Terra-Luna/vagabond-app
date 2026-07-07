@@ -24,6 +24,8 @@
   },
   "type": "module",
   "dependencies": {
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
     "@lexical/html": "0.45.0",
     "@lexical/react": "0.45.0",
     "@szhsin/react-menu": "^4.5.2",
@@ -35,6 +37,7 @@
     "react-dom": "19.2.6",
     "react-draggable": "4.5.0",
     "react-html-parser": "2.0.2",
+    "react-select": "^5.10.2",
     "react-tabs": "6.1.1",
     "tailwindcss": "4.3.0"
   },
