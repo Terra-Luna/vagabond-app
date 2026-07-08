@@ -87,9 +87,6 @@ export abstract class PerTargetDelivery extends SpellDelivery {
 
     override calculateManaCost() {
         this.manaCost = ((this.targets - 1) * this.extraTargetMultiplier) + this.baseManaCost + (Math.max(0, this.damageDice - 1))
-        if (this.applyEffect && this.damageDice > 0) {
-            this.manaCost += 1
-        }
         super.applyEffectManaCost()
     }
 }

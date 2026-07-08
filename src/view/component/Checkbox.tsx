@@ -36,8 +36,8 @@ const Box = ({ checked }) => {
     return (
         <span aria-hidden="true">
             {checked ?
-                <LucideCheckSquare className="text-text-header-tertiary" size={18} /> :
-                <LucideSquare className="text-text-header-tertiary" size={18} />
+                <LucideCheckSquare className="text-text-header-tertiary fill-sheet-main-fill" size={18} /> :
+                <LucideSquare className="text-text-header-tertiary fill-sheet-main-fill" size={18} />
             }
         </span>
     )

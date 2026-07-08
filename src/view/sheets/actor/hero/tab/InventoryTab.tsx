@@ -16,7 +16,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                 <CapacityGauge label={lang.VGLITE.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
                 <CoinPurse hero={hero} />
             </div>
-            <div className="border border-solid border-table-border mt-1 w-full">
+            <div className="border border-solid border-table-border mt-1 mb-8 w-full">
                 <InventoryItemsTable
                     actor={hero}
                     items={

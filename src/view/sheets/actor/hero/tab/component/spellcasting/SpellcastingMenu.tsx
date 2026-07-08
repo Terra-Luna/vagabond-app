@@ -128,7 +128,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         return (<>
             {
                 !isSpellcastingOpen ? <></> :
-                    <div className="font-eskapade font-bold border border-solid border-table-border rounded-sm p-2 space-y-2">
+                    <div className="font-eskapade font-bold bg-table-border/20 border-t-2 border-solid border-t-table-border/20 -mt-1 mb-1 p-2 space-y-2">
                         <div className="flex gap-x-4 items-end bottom text-lg">
                             <SpellSelector spell={spell} spells={spells} setSpellSelection={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelectDelivery={onSelectDelivery} />

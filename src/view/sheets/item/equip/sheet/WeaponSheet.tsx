@@ -109,7 +109,7 @@ export const DamageType = ({ item }: { item: Item & { system: WeaponDataModel | 
                 updateMechanism={{ updatePath: ['damage', 'type'] }}
                 parent={item}
             />
-            <div className="absolute bottom-1 right-1">
+            <div className="absolute bottom-1 right-0">
                 <DamageTypeIcon dmgType={item.system.damage.type} />
             </div>
         </div>

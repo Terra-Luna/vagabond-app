@@ -12,7 +12,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div>
-            <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 my-1 gap-x-1 gap-y-0.5">
+            <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 mb-8 gap-x-1 gap-y-0.5">
                 {
                     hero.spells.map((sp: any) => (
                         <div key={getId(sp)} onContextMenu={(e) => onCtxMenu(e, [

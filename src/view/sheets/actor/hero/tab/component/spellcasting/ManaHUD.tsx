@@ -1,4 +1,4 @@
-import { Sparkle, Sparkles, X } from "lucide-react"
+import { Calculator, Sparkle, Sparkles, X } from "lucide-react"
 import { useCallback } from "react"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
@@ -41,18 +41,17 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                     <Sparkles size={20} className="text-mana" />
                     <p>{hero.mana.maxCast}</p>
                 </div>
-                <div className="ml-auto">
-                    <SecondaryButton
-                        children={<p className="text-lg">{isSpellcastingOpen ? vgLiteLang.ButtonActions.cancel : vgLiteLang.HeroSheet.Magic.btnCast}</p>}
-                        icon={isSpellcastingOpen ? <X size={18} className="text-destructive-action" /> : <DamageTypeIcon dmgType={'magical'} />}
-                        onClick={() => {
-                            setSpells(hero.spells as SpellDataModel[])
-                            setSpell(spell || hero.spells[0] as SpellDataModel)
-                            setIsSpellcastingOpen(!isSpellcastingOpen)
-                        }}
-                    />
-                </div>
 
+                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-table-border/20 ${glowOnHover} cursor-pointer [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
+                    onClick={() => {
+                        setSpells(hero.spells as SpellDataModel[])
+                        setSpell(spell || hero.spells[0] as SpellDataModel)
+                        setIsSpellcastingOpen(!isSpellcastingOpen)
+                    }}
+                >
+                    <DamageTypeIcon dmgType="magical" />
+                    <p className="text-lg">{vgLiteLang.HeroSheet.Magic.btnCast}</p>
+                </div>
             </div>
             <SpellcastingMenu />
         </div>

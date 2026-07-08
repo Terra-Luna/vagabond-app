@@ -553,7 +553,7 @@
         "ctxDeleteAll": "Delete All"
       },
       "Magic": {
-        "labelSelectSpell": "Select Spell",
+        "labelSelectSpell": "Spell",
         "labelMana": "Mana",
         "labelCastMax": "Cast Max",
         "labelDmgBase": "Damage Base",
