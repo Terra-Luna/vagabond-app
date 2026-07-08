@@ -23,7 +23,7 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     size = 0
 
     override updateCastData() {
-        this.manaCost = this.baseManaCost + ((this.size - this.baseSize) / 5) + (this.damageDice - 1)
+        this.manaCost = this.baseManaCost + ((this.size - this.baseSize) / 5) + (Math.max(0, this.damageDice - 1))
         if (this.applyEffect && this.damageDice > 0) {
             this.manaCost += 1
         }
