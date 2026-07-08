@@ -1,5 +1,4 @@
 import { vgLiteLang } from "../../utils/lang"
-import { getTargets } from "../../utils/modelUtil"
 
 /**
  * Use the available update functions for each delivery type
@@ -13,9 +12,9 @@ export abstract class SpellDelivery {
 
     clone() {
         const Ctor = this.constructor as new () => this
-        const updatedDelivery = new Ctor()
-        Object.assign(updatedDelivery, this)
-        return updatedDelivery
+        const clone = new Ctor()
+        Object.assign(clone, this)
+        return clone
     }
 
     applyEffect = false
@@ -73,10 +72,11 @@ export class Line extends AreaOfEffectDelivery {
     override calculateManaCost() {
         super.calculateBaseManaCost()
         if (this.height > 10 || this.width > 5) {
+            const mana = this.manaCost
             const heightMultiplier = (this.height - this.baseHeight) / this.baseHeight
             const widthMultiplier = (this.width - this.baseWidth) / this.baseWidth
-            for (let i = 0; i < heightMultiplier; i++) { this.manaCost *= 2 }
-            for (let i = 0; i < widthMultiplier; i++) { this.manaCost *= 2 }
+            for (let i = 0; i < heightMultiplier; i++) { this.manaCost += mana }
+            for (let i = 0; i < widthMultiplier; i++) { this.manaCost += mana }
         }
         super.applyEffectManaCost()
     }
@@ -129,6 +129,7 @@ export class Glyph extends PerTargetDelivery {
     override description = vgLiteLang.SpellDeliveries.glyph.description
     override targetLabel = vgLiteLang.SpellDeliveries.glyph.targetLabel
     override baseManaCost: number = 2
+    override targetLimit: number = 1
 }
 export class Remote extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.remote.name

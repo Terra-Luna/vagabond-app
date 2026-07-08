@@ -23,44 +23,10 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     const [delivery, setDelivery] = useState<SpellDelivery>()
 
     useEffect(() => {
-        const handleTargetChange = (user, token, isTargeted) => {
-            if (user.id !== game.user?.id) return
-            onUpdateTargetTokens(Array.from(game.user?.targets ?? []))
-        }
-
         const deliveryOptions = getNewDeliveryOptions()
         setDeliveries(deliveryOptions)
         setDelivery(deliveryOptions[0])
-
-        const hookId = Hooks.on('targetToken', handleTargetChange)
-        return () => { Hooks.off('targetToken', hookId) }
     }, [])
-
-    const onSelectSpell = useCallback((spell: any) => {
-        setSpell(hero?.parent.items.get(spell).system)
-        return spell
-    }, [])
-
-    const onSelectDelivery = useCallback((index: number) => {
-        const clone = deliveries[index].clone()
-        const delivs = deliveries.map(d => { return d.clone() })
-        setDeliveries(delivs)
-        setDelivery(clone)
-    }, [delivery])
-
-    const onUpdateTargetCount = useCallback(async (input: string | null) => {
-        if (!delivery) return false
-        const count = Math.max(1, Number(input) || 1)
-        const delivs = deliveries.map(d => {
-            const clone = d.clone()
-            clone.targetCount = count
-            clone.calculateManaCost()
-            return clone
-        })
-        setDeliveries(deliveries)
-        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
-        return true
-    }, [delivery?.targetCount])
 
     const onUpdateTargetTokens = useCallback(async (tokens: Token[]) => {
         if (!delivery) return false
@@ -70,16 +36,50 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
             clone.calculateManaCost()
             return clone
         })
-        setDeliveries(delivs)
         setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
-        return true
-    }, [delivery?.targetTokens])
+        setDeliveries(delivs)
+    }, [delivery, deliveries])
+
+    useEffect(() => {
+        const handleTargetChange = (user, token, isTargeted) => {
+            if (user.id !== game.user?.id) return
+            onUpdateTargetTokens(Array.from(game.user?.targets ?? []))
+        }
+        const hookId = Hooks.on('targetToken', handleTargetChange)
+        return () => { Hooks.off('targetToken', hookId) }
+    }, [onUpdateTargetTokens])
+
+    const onSelectSpell = useCallback((spell: any) => {
+        setSpell(hero?.parent.items.get(spell).system)
+    }, [])
+
+    const onSelectDelivery = useCallback((index: number) => {
+        const clone = deliveries[index].clone()
+        const delivs = deliveries.map(d => { return d.clone() })
+        setDeliveries(delivs)
+        setDelivery(clone)
+    }, [delivery, deliveries])
+
+    const onUpdateTargetCount = useCallback(async (input: string | null) => {
+        if (!delivery) return false
+        const count = Math.max(1, Number(input) || 1)
+        const delivs = deliveries.map(d => {
+            const clone = d.clone()
+            if (!(d instanceof Remote) && !(d instanceof Imbue)) {
+                clone.targetCount = count
+            }
+            clone.calculateManaCost()
+            return clone
+        })
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+        setDeliveries(delivs)
+    }, [delivery, deliveries])
 
     const onUpdateAreaSize = useCallback(async (input: string | null) => {
         if (!delivery) return false
         const size = Math.max((delivery as AreaOfEffectDelivery).baseSize, Number(input) || (delivery as AreaOfEffectDelivery).baseSize)
-        const clone = delivery.clone() as AreaOfEffectDelivery
-        clone.size = size
+        const clone = delivery.clone();
+        (clone as AreaOfEffectDelivery).size = size
         clone.calculateManaCost()
         setDelivery(clone)
         setDeliveries(deliveries.map(d => {
@@ -91,8 +91,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
                 return d
             }
         }))
-        return true
-    }, [(delivery as AreaOfEffectDelivery)?.size])
+    }, [delivery, deliveries])
 
     const onUpdateLineHeight = useCallback((h: string) => {
         if (!delivery) return false
@@ -110,8 +109,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
                 return d
             }
         }))
-        return true
-    }, [(delivery as Line)?.height])
+    }, [delivery, deliveries])
 
     const onUpdateLineWidth = useCallback((w: string) => {
         if (!delivery) return false
@@ -129,8 +127,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
                 return d
             }
         }))
-        return true
-    }, [(delivery as Line)?.width])
+    }, [delivery, deliveries])
 
     const onUpdateDamageDice = useCallback(async (input: string | null) => {
         if (!delivery) return false
@@ -142,10 +139,9 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
             clone.calculateManaCost()
             return clone
         })
-        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
         setDeliveries(delivs)
-        return true
-    }, [delivery?.damageDice])
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+    }, [delivery, deliveries])
 
     const onToggleSpellEffect = useCallback((isChecked: boolean) => {
         if (!delivery) return false
@@ -158,9 +154,9 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
             clone.calculateManaCost()
             return clone
         })
-        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
         setDeliveries(delivs)
-    }, [delivery])
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+    }, [delivery, deliveries])
 
     const onToggleSpellFocus = useCallback((isChecked: boolean) => {
         if (!delivery) return false
@@ -169,9 +165,9 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
             clone.isFocused = isChecked
             return clone
         })
-        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
         setDeliveries(delivs)
-    }, [delivery])
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+    }, [delivery, deliveries])
 
     const renderConfigs = () => {
         if (delivery instanceof AreaOfEffectDelivery) {

@@ -3,7 +3,7 @@ import { SpellcastingLabel } from "./SpellcastingTypography"
 import { NumericCounterInput } from "../../../../../../component/CounterImput"
 
 export const SpellTargetInput = ({ delivery, onUpdateTargetCount, readOnly }: {
-    delivery: PerTargetDelivery, onUpdateTargetCount: (input: string | null) => Promise<boolean>, readOnly: boolean
+    delivery: PerTargetDelivery, onUpdateTargetCount: (input: string | null) => void, readOnly: boolean
 }) => {
     return (
         <div className="flex text-center min-w-[3ch]">
