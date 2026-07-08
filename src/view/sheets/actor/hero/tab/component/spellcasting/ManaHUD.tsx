@@ -24,7 +24,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
             <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
                 <div className="flex gap-x-1 ml-4 items-center">
                     <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelMana} />
-                    <Sparkle className={`text-mana mr-1 ${glowOnHover} cursor-pointer`} size={20} strokeWidth={1} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
+                    <Sparkle className={`text-mana mr-1 ${glowOnHover} cursor-pointer`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
                     <span className="text-mana">
                         <EditableTextField
                             boundValue={hero.mana.current?.toString() ?? ""}
@@ -49,8 +49,17 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                         setIsSpellcastingOpen(!isSpellcastingOpen)
                     }}
                 >
-                    <DamageTypeIcon dmgType="magical" />
-                    <p className="text-lg">{vgLiteLang.HeroSheet.Magic.btnCast}</p>
+                    {
+                        !isSpellcastingOpen ?
+                            <>
+                                <DamageTypeIcon dmgType="magical" />
+                                <p className="text-lg">{vgLiteLang.HeroSheet.Magic.btnCast}</p></> :
+                            <>
+                                <X size={14} />
+                                <p className="text-lg">{vgLiteLang.ButtonActions.close}</p>
+                            </>
+                    }
+
                 </div>
             </div>
             <SpellcastingMenu />
