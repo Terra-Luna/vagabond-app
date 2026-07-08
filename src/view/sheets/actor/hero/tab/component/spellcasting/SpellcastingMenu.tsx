@@ -1,9 +1,9 @@
-import { useCallback, useState } from "react"
+import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { useCallback, useEffect, useState } from "react"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../../../../../../model/item/character/SpellDataModel"
 import { SpellSelector } from "./SpellSelector"
 import { SpellTargetInput } from "./SpellTargetInput"
-import { AreaOfEffectDelivery, getNewDeliveryOptions, Line, PerTargetDelivery, SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { DeliverySelector } from "./DeliverySelectior"
 import { TotalMana } from "./TotalMana"
 import { SpellRangeInput } from "./SpellRangeInput"
@@ -15,13 +15,26 @@ import { SpellEffectToggle } from "./SpellEffectToggle"
 import { SpellFocusToggle } from "./SpellFocusToggle"
 import { LineExpansionInut } from "./LineExpansionInput"
 
-const deliveries = getNewDeliveryOptions()
-
 export const useSpellCastingMenu = (hero: HeroDataModel) => {
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
     const [spells, setSpells] = useState<SpellDataModel[]>(hero.spells as SpellDataModel[])
     const [spell, setSpell] = useState<SpellDataModel>()
-    const [delivery, setDelivery] = useState<SpellDelivery>(deliveries[0])
+    const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
+    const [delivery, setDelivery] = useState<SpellDelivery>()
+
+    useEffect(() => {
+        const handleTargetChange = (user, token, isTargeted) => {
+            if (user.id !== game.user?.id) return
+            onUpdateTargetTokens(Array.from(game.user?.targets ?? []))
+        }
+
+        const deliveryOptions = getNewDeliveryOptions()
+        setDeliveries(deliveryOptions)
+        setDelivery(deliveryOptions[0])
+
+        const hookId = Hooks.on('targetToken', handleTargetChange)
+        return () => { Hooks.off('targetToken', hookId) }
+    }, [])
 
     const onSelectSpell = useCallback((spell: any) => {
         setSpell(hero?.parent.items.get(spell).system)
@@ -29,82 +42,135 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [])
 
     const onSelectDelivery = useCallback((index: number) => {
-        const d = deliveries[index]
-        const ConcreteCtor = d.constructor as new () => SpellDelivery
-        const selectedDelivery = Object.assign(new ConcreteCtor(), d)
-        setDelivery(selectedDelivery)
+        const clone = deliveries[index].clone()
+        const delivs = deliveries.map(d => { return d.clone() })
+        setDeliveries(delivs)
+        setDelivery(clone)
     }, [delivery])
 
     const onUpdateTargetCount = useCallback(async (input: string | null) => {
+        if (!delivery) return false
         const count = Math.max(1, Number(input) || 1)
-        const ConcreteCtor = delivery.constructor as new () => PerTargetDelivery
-        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.targets = count
-        updatedDelivery.calculateManaCost()
-        setDelivery(updatedDelivery)
+        const delivs = deliveries.map(d => {
+            const clone = d.clone()
+            clone.targetCount = count
+            clone.calculateManaCost()
+            return clone
+        })
+        setDeliveries(deliveries)
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
         return true
-    }, [delivery])
+    }, [delivery?.targetCount])
+
+    const onUpdateTargetTokens = useCallback(async (tokens: Token[]) => {
+        if (!delivery) return false
+        const delivs = deliveries.map(d => {
+            const clone = d.clone()
+            clone.targetTokens = tokens
+            clone.calculateManaCost()
+            return clone
+        })
+        setDeliveries(delivs)
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+        return true
+    }, [delivery?.targetTokens])
 
     const onUpdateAreaSize = useCallback(async (input: string | null) => {
+        if (!delivery) return false
         const size = Math.max((delivery as AreaOfEffectDelivery).baseSize, Number(input) || (delivery as AreaOfEffectDelivery).baseSize)
-        const ConcreteCtor = delivery.constructor as new () => AreaOfEffectDelivery
-        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.size = size
-        updatedDelivery.calculateManaCost()
-        setDelivery(updatedDelivery)
+        const clone = delivery.clone() as AreaOfEffectDelivery
+        clone.size = size
+        clone.calculateManaCost()
+        setDelivery(clone)
+        setDeliveries(deliveries.map(d => {
+            if (d.name === delivery.name) {
+                (d as AreaOfEffectDelivery).size = size
+                return d
+            }
+            else {
+                return d
+            }
+        }))
         return true
-    }, [delivery])
-
-    const onUpdateDamageDice = useCallback(async (input: string | null) => {
-        const dmgDice = Math.max(0, Number(input) || 0)
-        const ConcreteCtor = delivery.constructor as new () => SpellDelivery
-        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.damageDice = dmgDice
-        if (updatedDelivery.damageDice === 0) {
-            updatedDelivery.applyEffect = true
-        }
-        updatedDelivery.calculateManaCost()
-        setDelivery(updatedDelivery)
-        return true
-    }, [delivery])
+    }, [(delivery as AreaOfEffectDelivery)?.size])
 
     const onUpdateLineHeight = useCallback((h: string) => {
+        if (!delivery) return false
         const height = Math.max((delivery as Line).baseHeight, Number(h) || (delivery as Line).baseHeight)
-        const ConcreteCtor = delivery.constructor as new () => Line
-        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.height = height
-        updatedDelivery.calculateManaCost()
-        setDelivery(updatedDelivery)
+        const clone = delivery.clone() as Line
+        clone.height = height
+        clone.calculateManaCost()
+        setDelivery(clone)
+        setDeliveries(deliveries.map(d => {
+            if (d.name === delivery.name) {
+                (d as Line).height = height
+                return d
+            }
+            else {
+                return d
+            }
+        }))
         return true
-    }, [delivery])
+    }, [(delivery as Line)?.height])
 
     const onUpdateLineWidth = useCallback((w: string) => {
+        if (!delivery) return false
         const width = Math.max((delivery as Line).baseWidth, Number(w) || (delivery as Line).baseWidth)
-        const ConcreteCtor = delivery.constructor as new () => Line
-        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.width = width
-        updatedDelivery.calculateManaCost()
-        setDelivery(updatedDelivery)
+        const clone = delivery.clone() as Line
+        clone.width = width
+        clone.calculateManaCost()
+        setDelivery(clone)
+        setDeliveries(deliveries.map(d => {
+            if (d.name === delivery.name) {
+                (d as Line).width = width
+                return d
+            }
+            else {
+                return d
+            }
+        }))
         return true
-    }, [delivery])
+    }, [(delivery as Line)?.width])
+
+    const onUpdateDamageDice = useCallback(async (input: string | null) => {
+        if (!delivery) return false
+        const dmgDice = Math.max(0, Number(input) || 0)
+        const delivs = deliveries.map(d => {
+            const clone = d.clone()
+            clone.damageDice = dmgDice
+            if (clone.damageDice === 0) { clone.applyEffect = true }
+            clone.calculateManaCost()
+            return clone
+        })
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+        setDeliveries(delivs)
+        return true
+    }, [delivery?.damageDice])
 
     const onToggleSpellEffect = useCallback((isChecked: boolean) => {
-        const ConcreteCtor = delivery.constructor as new () => SpellDelivery
-        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.applyEffect = isChecked
-        if (!updatedDelivery.applyEffect && updatedDelivery.damageDice === 0) {
-            updatedDelivery.damageDice = 1
-        }
-        updatedDelivery.calculateManaCost()
-        setDelivery(updatedDelivery)
+        if (!delivery) return false
+        const delivs = deliveries.map(d => {
+            const clone = d.clone()
+            clone.applyEffect = isChecked
+            if (!clone.applyEffect && clone.damageDice === 0) {
+                clone.damageDice = 1
+            }
+            clone.calculateManaCost()
+            return clone
+        })
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+        setDeliveries(delivs)
     }, [delivery])
 
     const onToggleSpellFocus = useCallback((isChecked: boolean) => {
-        const ConcreteCtor = delivery.constructor as new () => SpellDelivery
-        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.isFocused = isChecked
-        updatedDelivery.calculateManaCost()
-        setDelivery(updatedDelivery)
+        if (!delivery) return false
+        const delivs = deliveries.map(d => {
+            const clone = d.clone()
+            clone.isFocused = isChecked
+            return clone
+        })
+        setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
+        setDeliveries(delivs)
     }, [delivery])
 
     const renderConfigs = () => {
@@ -118,37 +184,50 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         }
         else if (delivery instanceof PerTargetDelivery) {
             if (delivery.targetLimit === 0) {
-                return <SpellTargetInput delivery={delivery} onUpdateTargetCount={onUpdateTargetCount} />
+                return <SpellTargetInput
+                    delivery={delivery}
+                    onUpdateTargetCount={onUpdateTargetCount}
+                    readOnly={delivery instanceof Remote || delivery instanceof Imbue}
+                />
             }
         }
         return <></>
+    }
+
+    const castSpell = () => {
+        
     }
 
     const SpellcastingMenu = () => {
         return (<>
             {
                 !isSpellcastingOpen ? <></> :
-                    <div className="font-eskapade font-bold bg-table-border/20 border-t-2 border-solid border-t-table-border/20 -mt-1 mb-1 p-2 space-y-2">
+                    <div className="font-eskapade font-bold bg-table-border/10 border-t-2 border-solid border-t-table-border -mt-1 mb-1 p-2 space-y-2">
                         <div className="flex gap-x-4 items-end bottom text-lg">
                             <SpellSelector spell={spell} spells={spells} setSpellSelection={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelectDelivery={onSelectDelivery} />
                             <div className="ml-auto">
-                                <PrimaryButton children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={() => { }} />
+                                <PrimaryButton children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={() => castSpell()} />
                             </div>
                         </div>
                         <div className="flex items-center">
                             {renderConfigs()}
-                            <DamageDiceInput dmgDice={delivery.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
-                            <div className="ml-auto mt-1">
-                                <SpellEffectToggle isEffect={delivery.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
-                                <SpellFocusToggle isFocused={delivery.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
+                            <DamageDiceInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
+                            <div className="ml-auto mt-1 space-y-1">
+                                {
+                                    !(delivery instanceof Imbue) ?
+                                        <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
+                                        : <></>
+
+                                }
+                                <SpellFocusToggle isFocused={delivery?.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
                             </div>
-                            <TotalMana delivery={delivery} />
+                            <TotalMana cost={delivery?.manaCost ?? 0} />
                         </div>
                         {
-                            delivery.manaCost > hero.mana.current ? <SpellcastingErrMsg /> : <></>
+                            (delivery?.manaCost ?? 0) > hero.mana.current ? <SpellcastingErrMsg /> : <></>
                         }
-                        <SpellcastingSubtext text={delivery.description} />
+                        <SpellcastingSubtext text={delivery?.description ?? ''} />
                     </div>
             }
         </>)

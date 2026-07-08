@@ -11,10 +11,19 @@ export abstract class SpellDelivery {
     abstract targetLabel: string
     abstract baseManaCost: number
 
+    clone() {
+        const Ctor = this.constructor as new () => this
+        const updatedDelivery = new Ctor()
+        Object.assign(updatedDelivery, this)
+        return updatedDelivery
+    }
+
     applyEffect = false
     isFocused = false
     damageDice = 1
     manaCost = 0
+    targetCount: number = 1
+    targetTokens: Token[] = []
 
     abstract calculateManaCost()
 
@@ -81,12 +90,18 @@ export class Sphere extends AreaOfEffectDelivery {
 
 export abstract class PerTargetDelivery extends SpellDelivery {
     override baseManaCost = 0
-    targets: number = 1
     extraTargetMultiplier = 1
     targetLimit = 0
 
     override calculateManaCost() {
-        this.manaCost = ((this.targets - 1) * this.extraTargetMultiplier) + this.baseManaCost + (Math.max(0, this.damageDice - 1))
+        let targets: number
+        if (this instanceof Remote || this instanceof Imbue) {
+            targets = Math.max(1, this.targetTokens.length)
+        }
+        else {
+            targets = Math.max(1, this.targetCount)
+        }
+        this.manaCost = ((targets - 1) * this.extraTargetMultiplier) + this.baseManaCost + (Math.max(0, this.damageDice - 1))
         super.applyEffectManaCost()
     }
 }
@@ -135,13 +150,12 @@ export const getNewDeliveryOptions = (): SpellDelivery[] => {
         new Remote(), new Sphere(), new Touch()
     ].sort((a, b) => a.name.localeCompare(b.name))
 
-    const targets = getTargets().length || 1
-    deliveries.filter(d => d instanceof AreaOfEffectDelivery).forEach(d => {
-        d.size = d.baseSize
-        d.calculateManaCost()
-    })
-    deliveries.filter(d => d instanceof PerTargetDelivery).forEach(d => {
-        d.targets = targets
+    deliveries.forEach(d => {
+        d.targetTokens = Array.from(game.user?.targets ?? [])
+        d.targetCount = Math.max(1, d.targetTokens.length)
+        if (d instanceof AreaOfEffectDelivery) {
+            d.size = d.baseSize
+        }
         d.calculateManaCost()
     })
     return deliveries

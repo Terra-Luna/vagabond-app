@@ -1,10 +1,9 @@
-import { Calculator, Sparkle, Sparkles, X } from "lucide-react"
+import { Sparkle, Sparkles, X } from "lucide-react"
 import { useCallback } from "react"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../../../utils/lang"
 import { glowOnHover } from "../../../../../../common/text-styles"
-import { SecondaryButton } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
 import { useSpellCastingMenu } from "./SpellcastingMenu"
@@ -42,7 +41,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                     <p>{hero.mana.maxCast}</p>
                 </div>
 
-                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-table-border/20 ${glowOnHover} cursor-pointer [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
+                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-table-border/10 ${glowOnHover} cursor-pointer [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
                     onClick={() => {
                         setSpells(hero.spells as SpellDataModel[])
                         setSpell(spell || hero.spells[0] as SpellDataModel)

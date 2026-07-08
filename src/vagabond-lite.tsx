@@ -206,7 +206,7 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
     }
 })
 
-Hooks.on("targetToken", (user, token, targeted) => {
+/* Hooks.on("targetToken", (user, token, targeted) => {
     if (!game.user || user.id !== game.user.id) return
     if (targeted) {
         console.log(`You targeted: ${token.name}`)
@@ -214,7 +214,7 @@ Hooks.on("targetToken", (user, token, targeted) => {
     else {
         console.log(`You untargeted: ${token.name}`)
     }
-})
+}) */
 
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, {
     types: ['hero'],

@@ -3,7 +3,6 @@ import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../../../component/Dropdown"
 
 export const SpellSelector = ({ spell, spells, setSpellSelection }) => {
-    console.log(spell.damageType)
     return (
         <div className="flex gap-x-1 items-end text-text-header-tertiary">
             <DropDown
