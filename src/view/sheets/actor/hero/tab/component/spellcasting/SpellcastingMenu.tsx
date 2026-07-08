@@ -6,13 +6,14 @@ import { SpellTargetInput } from "./SpellTargetInput"
 import { AreaOfEffectDelivery, getNewDeliveryOptions, Line, PerTargetDelivery, SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { DeliverySelector } from "./DeliverySelectior"
 import { TotalMana } from "./TotalMana"
-import { AreaSizeInput } from "./AreaSizeInput"
+import { SpellRangeInput } from "./SpellRangeInput"
 import { DamageDiceInput } from "./DamageDiceInput"
 import { PrimaryButton } from "../../../../../../component/Button"
-import { SpellcastingLabel } from "./SpellcastingTypography"
+import { SpellcastingErrMsg, SpellcastingSubtext } from "./SpellcastingTypography"
 import { vgLiteLang } from "../../../../../../../utils/lang"
-import { Checkbox } from "../../../../../../component/Checkbox"
 import { SpellEffectToggle } from "./SpellEffectToggle"
+import { SpellFocusToggle } from "./SpellFocusToggle"
+import { LineExpansionInut } from "./LineExpansionInput"
 
 const deliveries = getNewDeliveryOptions()
 
@@ -39,7 +40,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         const ConcreteCtor = delivery.constructor as new () => PerTargetDelivery
         const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
         updatedDelivery.targets = count
-        updatedDelivery.updateCastData()
+        updatedDelivery.calculateManaCost()
         setDelivery(updatedDelivery)
         return true
     }, [delivery])
@@ -49,7 +50,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         const ConcreteCtor = delivery.constructor as new () => AreaOfEffectDelivery
         const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
         updatedDelivery.size = size
-        updatedDelivery.updateCastData()
+        updatedDelivery.calculateManaCost()
         setDelivery(updatedDelivery)
         return true
     }, [delivery])
@@ -62,17 +63,29 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         if (updatedDelivery.damageDice === 0) {
             updatedDelivery.applyEffect = true
         }
-        updatedDelivery.updateCastData()
+        updatedDelivery.calculateManaCost()
         setDelivery(updatedDelivery)
         return true
     }, [delivery])
 
-    const onCheckedLineExtension = useCallback((isChecked: boolean) => {
+    const onUpdateLineHeight = useCallback((h: string) => {
+        const height = Math.max((delivery as Line).baseHeight, Number(h) || (delivery as Line).baseHeight)
         const ConcreteCtor = delivery.constructor as new () => Line
         const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
-        updatedDelivery.isExtended = isChecked
-        updatedDelivery.updateCastData()
+        updatedDelivery.height = height
+        updatedDelivery.calculateManaCost()
         setDelivery(updatedDelivery)
+        return true
+    }, [delivery])
+
+    const onUpdateLineWidth = useCallback((w: string) => {
+        const width = Math.max((delivery as Line).baseWidth, Number(w) || (delivery as Line).baseWidth)
+        const ConcreteCtor = delivery.constructor as new () => Line
+        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
+        updatedDelivery.width = width
+        updatedDelivery.calculateManaCost()
+        setDelivery(updatedDelivery)
+        return true
     }, [delivery])
 
     const onToggleSpellEffect = useCallback((isChecked: boolean) => {
@@ -82,20 +95,24 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         if (!updatedDelivery.applyEffect && updatedDelivery.damageDice === 0) {
             updatedDelivery.damageDice = 1
         }
-        updatedDelivery.updateCastData()
+        updatedDelivery.calculateManaCost()
+        setDelivery(updatedDelivery)
+    }, [delivery])
+
+    const onToggleSpellFocus = useCallback((isChecked: boolean) => {
+        const ConcreteCtor = delivery.constructor as new () => SpellDelivery
+        const updatedDelivery = Object.assign(new ConcreteCtor(), delivery)
+        updatedDelivery.isFocused = isChecked
+        updatedDelivery.calculateManaCost()
         setDelivery(updatedDelivery)
     }, [delivery])
 
     const renderConfigs = () => {
         if (delivery instanceof AreaOfEffectDelivery) {
             return (<>
-                <AreaSizeInput size={delivery.size} onUpdateAreaSize={onUpdateAreaSize} />
+                <SpellRangeInput size={delivery.size} label={delivery.targetLabel} onUpdateAreaSize={onUpdateAreaSize} />
                 {
-                    delivery instanceof Line ?
-                        <div>
-                            <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelExtend} />
-                            <Checkbox label={''} checked={delivery.isExtended} onCheckedChanged={onCheckedLineExtension} />
-                        </div> : <></>
+                    delivery instanceof Line ? <LineExpansionInut delivery={delivery} onUpdateHeight={onUpdateLineHeight} onUpdateWidth={onUpdateLineWidth} /> : <></>
                 }
             </>)
         }
@@ -112,22 +129,31 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
             {
                 !isSpellcastingOpen ? <></> :
                     <div className="font-eskapade font-bold border border-solid border-table-border rounded-sm p-2 space-y-2">
-                        <div className="flex gap-x-8 items-top text-lg">
+                        <div className="flex gap-x-4 items-end bottom text-lg">
                             <SpellSelector spell={spell} spells={spells} setSpellSelection={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelectDelivery={onSelectDelivery} />
+                            <div className="ml-auto">
+                                <PrimaryButton children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={() => { }} />
+                            </div>
                         </div>
-                        <div className="flex gap-x-4 items-center">
+                        <div className="flex items-center">
                             {renderConfigs()}
                             <DamageDiceInput dmgDice={delivery.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
-                            <SpellEffectToggle isEffect={delivery.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
+                            <div className="ml-auto mt-1">
+                                <SpellEffectToggle isEffect={delivery.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
+                                <SpellFocusToggle isFocused={delivery.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
+                            </div>
                             <TotalMana delivery={delivery} />
-                            <PrimaryButton children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={() => { }} />
                         </div>
+                        {
+                            delivery.manaCost > hero.mana.current ? <SpellcastingErrMsg /> : <></>
+                        }
+                        <SpellcastingSubtext text={delivery.description} />
                     </div>
             }
         </>)
     }
 
-    return { isSpellcastingOpen, setIsSpellcastingOpen, setSpell, setSpells, SpellcastingMenu }
+    return { isSpellcastingOpen, setIsSpellcastingOpen, spell, setSpell, setSpells, SpellcastingMenu }
 }
 

@@ -3,9 +3,11 @@ import { NumericCounterInput } from "../../../../../../component/CounterImput"
 
 export const DamageDiceInput = ({ dmgDice, onUpdateDmgDice }) => {
     return (
-        <div>
+        <div className="ml-auto">
             <Dices size={24} className="text-text-header-tertiary" />
-            <NumericCounterInput value={dmgDice} onUpdateValue={onUpdateDmgDice}/>
+            <span className="text-2xl">
+                <NumericCounterInput value={dmgDice} onUpdateValue={onUpdateDmgDice} />
+            </span>
         </div>
     )
 }

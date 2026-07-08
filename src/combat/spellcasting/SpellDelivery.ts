@@ -8,13 +8,21 @@ import { getTargets } from "../../utils/modelUtil"
 export abstract class SpellDelivery {
     abstract name: string
     abstract description: string
+    abstract targetLabel: string
     abstract baseManaCost: number
 
     applyEffect = false
+    isFocused = false
     damageDice = 1
     manaCost = 0
 
-    abstract updateCastData()
+    abstract calculateManaCost()
+
+    applyEffectManaCost() {
+        if (this.applyEffect && this.damageDice > 0) {
+            this.manaCost += 1
+        }
+    }
 }
 
 export abstract class AreaOfEffectDelivery extends SpellDelivery {
@@ -22,39 +30,52 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     baseSize = 0
     size = 0
 
-    override updateCastData() {
+    protected calculateBaseManaCost() {
         this.manaCost = this.baseManaCost + ((this.size - this.baseSize) / 5) + (Math.max(0, this.damageDice - 1))
-        if (this.applyEffect && this.damageDice > 0) {
-            this.manaCost += 1
-        }
+    }
+
+    override calculateManaCost() {
+        this.calculateBaseManaCost()
+        super.applyEffectManaCost()
     }
 }
 export class Aura extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.aura.name
     override description = vgLiteLang.SpellDeliveries.aura.description
+    override targetLabel = vgLiteLang.SpellDeliveries.aura.targetLabel
     override baseSize: number = 10
 }
 export class Cone extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.cone.name
     override description = vgLiteLang.SpellDeliveries.cone.description
+    override targetLabel = vgLiteLang.SpellDeliveries.cone.targetLabel
     override baseSize: number = 15
 }
 export class Line extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.line.name
     override description = vgLiteLang.SpellDeliveries.line.description
+    override targetLabel = vgLiteLang.SpellDeliveries.line.targetLabel
     baseSize: number = 30
-    isExtended: boolean = false
+    baseHeight: number = 10
+    baseWidth: number = 5
+    height: number = 10
+    width: number = 5
 
-    override updateCastData() {
-        super.updateCastData()
-        if (this.isExtended) {
-            this.manaCost *= 2
+    override calculateManaCost() {
+        super.calculateBaseManaCost()
+        if (this.height > 10 || this.width > 5) {
+            const heightMultiplier = (this.height - this.baseHeight) / this.baseHeight
+            const widthMultiplier = (this.width - this.baseWidth) / this.baseWidth
+            for (let i = 0; i < heightMultiplier; i++) { this.manaCost *= 2 }
+            for (let i = 0; i < widthMultiplier; i++) { this.manaCost *= 2 }
         }
+        super.applyEffectManaCost()
     }
 }
 export class Sphere extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.sphere.name
     override description = vgLiteLang.SpellDeliveries.sphere.description
+    override targetLabel = vgLiteLang.SpellDeliveries.sphere.targetLabel
     baseSize: number = 5
 }
 
@@ -64,42 +85,49 @@ export abstract class PerTargetDelivery extends SpellDelivery {
     extraTargetMultiplier = 1
     targetLimit = 0
 
-    override updateCastData() {
+    override calculateManaCost() {
         this.manaCost = ((this.targets - 1) * this.extraTargetMultiplier) + this.baseManaCost + (Math.max(0, this.damageDice - 1))
         if (this.applyEffect && this.damageDice > 0) {
             this.manaCost += 1
         }
+        super.applyEffectManaCost()
     }
 }
 export class Cube extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.cube.name
     override description = vgLiteLang.SpellDeliveries.cube.description
+    override targetLabel = vgLiteLang.SpellDeliveries.cube.targetLabel
     override baseManaCost: number = 1
 }
 export class Imbue extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.imbue.name
     override description = vgLiteLang.SpellDeliveries.imbue.description
+    override targetLabel = vgLiteLang.SpellDeliveries.imbue.targetLabel
     override extraTargetMultiplier: number = 2
 }
 export class ImbueDelivery extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.imbuedeliv.name
     override description = vgLiteLang.SpellDeliveries.imbuedeliv.description
+    override targetLabel = vgLiteLang.SpellDeliveries.imbuedeliv.targetLabel
     override targetLimit: number = 1
     override baseManaCost: number = 1
 }
 export class Glyph extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.glyph.name
     override description = vgLiteLang.SpellDeliveries.glyph.description
+    override targetLabel = vgLiteLang.SpellDeliveries.glyph.targetLabel
     override baseManaCost: number = 2
 }
 export class Remote extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.remote.name
     override description = vgLiteLang.SpellDeliveries.remote.description
+    override targetLabel = vgLiteLang.SpellDeliveries.remote.targetLabel
     override targetLimit: number = 0
 }
 export class Touch extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.touch.name
     override description = vgLiteLang.SpellDeliveries.touch.description
+    override targetLabel = vgLiteLang.SpellDeliveries.touch.targetLabel
     override targetLimit: number = 1
 }
 
@@ -110,16 +138,14 @@ export const getNewDeliveryOptions = (): SpellDelivery[] => {
         new Remote(), new Sphere(), new Touch()
     ].sort((a, b) => a.name.localeCompare(b.name))
 
-    console.log("Getting new deliveyr options...")
-
     const targets = getTargets().length || 1
     deliveries.filter(d => d instanceof AreaOfEffectDelivery).forEach(d => {
         d.size = d.baseSize
-        d.updateCastData()
+        d.calculateManaCost()
     })
     deliveries.filter(d => d instanceof PerTargetDelivery).forEach(d => {
         d.targets = targets
-        d.updateCastData()
+        d.calculateManaCost()
     })
     return deliveries
 }

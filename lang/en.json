@@ -558,54 +558,65 @@
         "labelCastMax": "Cast Max",
         "labelDmgBase": "Damage Base",
         "labelDelivery": "Delivery",
-        "labelTargets": "Targets",
-        "labelArea": "Area",
-        "labelExtend": "Extend",
+        "labelWidth": "Width",
+        "labelHeight": "Height",
         "labelEffect": "Effect",
+        "labelFocus": "Focus",
         "labelDmgDice": "Damage Dice",
         "labelCost": "Cost",
-        "btnCast": "Cast"
+        "btnCast": "Cast",
+        "manaErrMsg": "Insufficient mana"
       }
     },
      "SpellDeliveries": {
       "aura": {
         "name": "Aura",
+        "targetLabel": "Radius",
         "description": "10' radius from you, affecting Targets of your choice within."
       },
       "cone": {
         "name": "Cone",
+        "targetLabel": "Range",
         "description": "15' cone Area in front of you."
       },
       "cube": {
         "name": "Cube",
+        "targetLabel": "Cubes",
         "description": "5' cube Area you can see."
       },
       "imbue": {
         "name": "Imbue",
+        "targetLabel": "Targets",
         "description": "Targets a Weapon equipped by a willing Being within Far, which can then deliver the Spell as if by Touch if you spend 1 Mana to do so when the attack hits. The Attack Check is used for the Cast Check."
       },
       "imbuedeliv": {
         "name": "Imbue Delivery",
-        "description": "Targets a Weapon equipped by a willing Being within Far, which can then deliver the Spell as if by Touch if you spend 1 Mana to do so when the attack hits. The Attack Check is used for the Cast Check."
+        "targetLabel": "",
+        "description": "Deliver a spell from a previously Imbued weapon as if by touch. The Attack Check is used for the Cast Check."
       },
       "glyph": {
         "name": "Glyph",
+        "targetLabel": "Glyphs",
         "description": "Creates a 5’ square glyph on a Target you can see, where no other glyph is within Close. The Spell is Cast in a 5’ cube from the glyph when you choose, then the glyph disappears."
       },
       "line": {
         "name": "Line",
+        "targetLabel": "Length",
         "description": "5' wide, 30' long, 10' tall Area. Expanding the width by 5' or height by up to 10' doubles the Cost."
       },
       "remote": {
         "name": "Remote",
+        "targetLabel": "Targets",
         "description": "An ambience or bolt on a Target."
       },
       "sphere": {
         "name": "Sphere",
+        "targetLabel": "Radius",
         "description": "5' radius sphere in sight."
       },
       "touch": {
         "name": "Touch",
+        "targetLabel": "",
         "description": "A Close Target, or yourself."
       }
     },

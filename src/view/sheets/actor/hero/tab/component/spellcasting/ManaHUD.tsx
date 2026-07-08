@@ -9,6 +9,7 @@ import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
 import { useSpellCastingMenu } from "./SpellcastingMenu"
 import { SpellDataModel } from "../../../../../../../model/item/character/SpellDataModel"
+import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
     const mana = hero.mana.current
@@ -16,19 +17,15 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
         updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
 
-    const { isSpellcastingOpen, setIsSpellcastingOpen, setSpell, setSpells, SpellcastingMenu } = useSpellCastingMenu(hero)
+    const { isSpellcastingOpen, setIsSpellcastingOpen, spell, setSpell, setSpells, SpellcastingMenu } = useSpellCastingMenu(hero)
 
     return (
         <div>
-            <div className="flex text-3xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
-                <div className="flex items-center">
-                    <span className="text-lg justify-bottom">{vgLiteLang.HeroSheet.Magic.labelMana}</span>
-                    <Sparkle className={`text-mana ${glowOnHover} cursor-pointer`} size={20}
-                        onClick={() => updateMana(false)}
-                        onAuxClick={() => updateMana(true)}
-                    />
-                    &nbsp;
-                    <span className={`${glowOnHover} cursor-pointer text-mana`}>
+            <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
+                <div className="flex gap-x-1 ml-4 items-center">
+                    <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelMana} />
+                    <Sparkle className={`text-mana mr-1 ${glowOnHover} cursor-pointer`} size={20} strokeWidth={1} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
+                    <span className="text-mana">
                         <EditableTextField
                             boundValue={hero.mana.current?.toString() ?? ""}
                             updateProps={{ object: hero.parent, path: ['mana', 'current'] }}
@@ -39,22 +36,23 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                     <p>/</p>
                     <p>{hero.mana.max}</p>
                 </div>
-                <div className="flex items-center text-mana">
-                    <p className="text-lg text-text-primary">{vgLiteLang.HeroSheet.Magic.labelCastMax}</p>
-                    <Sparkles size={20} />
-                    &nbsp;
+                <div className="flex gap-x-1 items-center">
+                    <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelCastMax} />
+                    <Sparkles size={20} className="text-mana" />
                     <p>{hero.mana.maxCast}</p>
                 </div>
-                <div className="px-1" />
-                <SecondaryButton
-                    children={<p className="text-lg">{isSpellcastingOpen ? vgLiteLang.ButtonActions.cancel : vgLiteLang.HeroSheet.Magic.btnCast}</p>}
-                    icon={isSpellcastingOpen ? <X size={18} className="text-destructive-action" /> : <DamageTypeIcon dmgType={'magical'} />}
-                    onClick={() => {
-                        setSpells(hero.spells as SpellDataModel[])
-                        setSpell(hero.spells[0] as SpellDataModel)
-                        setIsSpellcastingOpen(!isSpellcastingOpen)
-                    }}
-                />
+                <div className="ml-auto">
+                    <SecondaryButton
+                        children={<p className="text-lg">{isSpellcastingOpen ? vgLiteLang.ButtonActions.cancel : vgLiteLang.HeroSheet.Magic.btnCast}</p>}
+                        icon={isSpellcastingOpen ? <X size={18} className="text-destructive-action" /> : <DamageTypeIcon dmgType={'magical'} />}
+                        onClick={() => {
+                            setSpells(hero.spells as SpellDataModel[])
+                            setSpell(spell || hero.spells[0] as SpellDataModel)
+                            setIsSpellcastingOpen(!isSpellcastingOpen)
+                        }}
+                    />
+                </div>
+
             </div>
             <SpellcastingMenu />
         </div>

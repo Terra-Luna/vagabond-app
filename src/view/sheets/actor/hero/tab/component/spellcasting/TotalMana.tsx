@@ -1,15 +1,15 @@
 import { Sparkle } from "lucide-react"
 import { SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { vgLiteLang } from "../../../../../../../utils/lang"
-import { SpellcastingLabel } from "./SpellcastingTypography"
+import { SpellcastingLabel, SpellcastingValue } from "./SpellcastingTypography"
 
 export const TotalMana = ({ delivery }: { delivery: SpellDelivery }) => {
     return (
-        <div className="text-center ml-auto">
+        <div className="-space-y-2 ml-auto mr-2 text-center">
             <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelCost} />
             <div className="flex gap-x-1 items-center">
                 <Sparkle size={18} className="text-mana" />
-                <SpellcastingLabel text={delivery.manaCost} />
+                <SpellcastingValue text={delivery.manaCost} />
             </div>
         </div>
     )

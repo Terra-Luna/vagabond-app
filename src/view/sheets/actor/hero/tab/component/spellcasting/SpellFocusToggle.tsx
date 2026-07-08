@@ -2,11 +2,11 @@ import { vgLiteLang } from "../../../../../../../utils/lang"
 import { Checkbox } from "../../../../../../component/Checkbox"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
-export const SpellEffectToggle = ({ isEffect, onSpellEffectToggle }) => {
+export const SpellFocusToggle = ({ isFocused, onToggleSpellFocus }) => {
     return (
         <div className="flex gap-x-0.5 items-center">
-            <Checkbox label={''} onCheckedChanged={onSpellEffectToggle} checked={isEffect} />
-            <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelEffect} />
+            <Checkbox label={''} onCheckedChanged={onToggleSpellFocus} checked={isFocused} />
+            <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelFocus} />
         </div>
     )
 }

@@ -13,7 +13,7 @@ export const Checkbox = ({ label, onCheckedChanged, checked, inverted = false }:
     const { isEditMode } = useEditMode()
     return (
         <label
-            className={`flex items-center gap-1 ${sheetPropLabel} ${isEditMode ? "cursor-pointer" : ""}`}
+            className={`flex items-center ${label.length > 0 ? 'gap-1' : ''} ${sheetPropLabel} ${isEditMode ? "cursor-pointer" : ""}`}
             onClick={() => {
                 if (isEditMode) {
                     onCheckedChanged(!checked)

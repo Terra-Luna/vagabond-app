@@ -35,7 +35,7 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
 
     return (
         <div>
-            <LabelledField label={label} variant={variant}>
+            <LabelledField label={label} variant={variant} className="text-base font-eskapade font-bold">
                 {
                     isEditMode ?
                         <div>

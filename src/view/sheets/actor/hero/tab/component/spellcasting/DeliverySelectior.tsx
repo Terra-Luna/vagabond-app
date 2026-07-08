@@ -1,7 +1,7 @@
-import { getDeliveryDropdownOptions, getNewDeliveryOptions, SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { getDeliveryDropdownOptions, SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { vgLiteLang } from "../../../../../../../utils/lang"
 import { DropDown } from "../../../../../../component/Dropdown"
-import { SpellcastingLabel, SpellcastingSubtext } from "./SpellcastingTypography"
+import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const DeliverySelector = ({ deliveries, currentDelivery, onSelectDelivery }: {
     deliveries: SpellDelivery[], currentDelivery: SpellDelivery, onSelectDelivery: (index: number) => void
@@ -16,7 +16,6 @@ export const DeliverySelector = ({ deliveries, currentDelivery, onSelectDelivery
                     updateMechanism={{ onChange: onSelectDelivery }}
                 />
             </div>
-            <SpellcastingSubtext text={currentDelivery.description} />
         </div>
     )
 }
