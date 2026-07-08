@@ -16,7 +16,7 @@ import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { MainTab } from "./tab/MainTab"
 import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills } from "./tab/TopSection"
-import { StatsDrawerContextProvider } from "./tab/StatsDrawer/StatsDrawerContextProvider"
+import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { lang } from "../../../../utils/lang"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
 

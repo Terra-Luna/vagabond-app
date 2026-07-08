@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { LabelledField } from "./LabelledField"
-import { menuOptionContainer, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
+import { menuOptionContainer, menuOptionTextDefault } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
@@ -12,7 +12,7 @@ interface DropDownProps {
     options: { label: string, value: any }[],
     includeNullOption?: boolean,
     updateMechanism: UpdateMechanism,
-    parent: any,
+    parent?: any,
     variant?: "standard" | "alternate"
 }
 

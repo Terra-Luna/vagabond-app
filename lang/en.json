@@ -131,44 +131,6 @@
         "description": "Can see anything that can think."
       }
     },
-    "SpellDeliveries": {
-      "aura": {
-        "name": "Aura",
-        "description": ""
-      },
-      "cone": {
-        "name": "Cone",
-        "description": ""
-      },
-      "cube": {
-        "name": "Cube",
-        "description": ""
-      },
-      "imbue": {
-        "name": "Imbue",
-        "description": ""
-      },
-      "glyph": {
-        "name": "Glyph",
-        "description": ""
-      },
-      "line": {
-        "name": "Line",
-        "description": ""
-      },
-      "remote": {
-        "name": "Remote",
-        "description": ""
-      },
-      "sphere": {
-        "name": "Sphere",
-        "description": ""
-      },
-      "touch": {
-        "name": "Touch",
-        "description": ""
-      }
-    },
     "Movement": {
       "walk": "Walk",
       "fly": "Fly",
@@ -591,10 +553,60 @@
         "ctxDeleteAll": "Delete All"
       },
       "Magic": {
+        "labelSelectSpell": "Select Spell",
         "labelMana": "Mana",
         "labelCastMax": "Cast Max",
         "labelDmgBase": "Damage Base",
+        "labelDelivery": "Delivery",
+        "labelTargets": "Targets",
+        "labelArea": "Area",
+        "labelExtend": "Extend",
+        "labelEffect": "Effect",
+        "labelDmgDice": "Damage Dice",
+        "labelCost": "Cost",
         "btnCast": "Cast"
+      }
+    },
+     "SpellDeliveries": {
+      "aura": {
+        "name": "Aura",
+        "description": "10' radius from you, affecting Targets of your choice within."
+      },
+      "cone": {
+        "name": "Cone",
+        "description": "15' cone Area in front of you."
+      },
+      "cube": {
+        "name": "Cube",
+        "description": "5' cube Area you can see."
+      },
+      "imbue": {
+        "name": "Imbue",
+        "description": "Targets a Weapon equipped by a willing Being within Far, which can then deliver the Spell as if by Touch if you spend 1 Mana to do so when the attack hits. The Attack Check is used for the Cast Check."
+      },
+      "imbuedeliv": {
+        "name": "Imbue Delivery",
+        "description": "Targets a Weapon equipped by a willing Being within Far, which can then deliver the Spell as if by Touch if you spend 1 Mana to do so when the attack hits. The Attack Check is used for the Cast Check."
+      },
+      "glyph": {
+        "name": "Glyph",
+        "description": "Creates a 5’ square glyph on a Target you can see, where no other glyph is within Close. The Spell is Cast in a 5’ cube from the glyph when you choose, then the glyph disappears."
+      },
+      "line": {
+        "name": "Line",
+        "description": "5' wide, 30' long, 10' tall Area. Expanding the width by 5' or height by up to 10' doubles the Cost."
+      },
+      "remote": {
+        "name": "Remote",
+        "description": "An ambience or bolt on a Target."
+      },
+      "sphere": {
+        "name": "Sphere",
+        "description": "5' radius sphere in sight."
+      },
+      "touch": {
+        "name": "Touch",
+        "description": "A Close Target, or yourself."
       }
     },
     "AdversarySheet": {
