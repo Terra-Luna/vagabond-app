@@ -141,6 +141,11 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             description: 'Adjusts Spell damage by the given value per damage die rolled',
             path: 'system.bonus.perDieSpellDmg'
         },
+        {
+            name: 'Spell Damage Die Size',
+            description: 'Adjusts spell damage die size',
+            path: 'system.mana.spellDamageDie'
+        },
         /**
          * Protective bonuses...
          */

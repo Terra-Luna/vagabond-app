@@ -1,5 +1,5 @@
 import { createElement } from "react"
-import { ComponentRegistry } from "../../ComponentRegistry"
+import { ComponentRegistry } from "../component/ComponentRegistry"
 
 export function rehydrateElement(blueprint: any): React.ReactNode {
     if (!blueprint || typeof blueprint !== 'object') return blueprint
