@@ -1,7 +1,7 @@
 import { DamageRollResult } from "../../combat/dice-rolls"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
-import { getTokenImg } from "../../utils/modelUtil"
+import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import ReactHtmlParser from 'react-html-parser'
 import { CardSubHeaderValues } from "../component/SkillCard"
 import { SpellcastingLabel, SpellcastingSubtext } from "../sheets/actor/hero/tab/component/spellcasting/SpellcastingTypography"
@@ -12,6 +12,7 @@ import { TargetsDisplay } from "./component/TargetsDisplay"
 import { TotalDmgFooter } from "./DamageRollChatCard"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { Sparkle } from "lucide-react"
+import { useState, useCallback } from "react"
 
 export const SpellCastChatCard = ({ heroId, spell, delivery, dmgRoll }: {
     heroId: string, spell: Item & { system: SpellDataModel }, delivery: any, dmgRoll: DamageRollResult | undefined
@@ -24,6 +25,14 @@ export const SpellCastChatCard = ({ heroId, spell, delivery, dmgRoll }: {
         subtitle.push({ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[spell.system.damageType] })
     }
 
+    const [targets, setTargets] = useState(delivery.targetTokenIds.map(id => (
+        { id: id, src: getTokenImg(getCanvasToken(id)), token: getCanvasToken(id) }
+    )).filter(it => it.src != null && it.src.length > 0))
+
+    const onRemoveTarget = useCallback((targetIndex) => {
+        setTargets(targets.filter((_, i) => i !== targetIndex))
+    }, [targets])
+
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner
@@ -34,11 +43,11 @@ export const SpellCastChatCard = ({ heroId, spell, delivery, dmgRoll }: {
             />}
             contents={
                 <div>
-                    <TargetsDisplay tokenIds={delivery.targetTokenIds} />
+                    <TargetsDisplay targets={targets} onRemoveTarget={onRemoveTarget} />
                     {
                         dmgRoll ? <>
                             <DamageRolls result={dmgRoll} />
-                            <TotalDmgFooter total={dmgRoll.total} dmgType={spell.system.damageType} tokenIds={delivery.targetTokenIds} /></> :
+                            <TotalDmgFooter total={dmgRoll.total} dmgType={spell.system.damageType} targets={targets} /></> :
                             <></>
                     }
                     <div className="flex gap-x-1 items-center mt-1">
