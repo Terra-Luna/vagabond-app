@@ -1,21 +1,10 @@
-import { Import, Eye, Pencil, Trash } from "lucide-react"
-import { importHero } from "../../../../api/tagalong/TagalongImporter"
+import { Eye, Pencil, Trash } from "lucide-react"
 import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDataModel"
-import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { CtxMenuItem, useContextMenu } from "../../../component/ContextMenu"
 
 export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    
-    const importFromVgbndApp = async () => {
-        const tagalongLink = prompt(
-            'Enter character link from Vagabond Tagalong App',
-            'https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01'
-        )
-        if (tagalongLink != null) {
-            importHero(actor as HeroDataModel, tagalongLink)
-        }
-    }
+
     const viewImage = () => {
         new foundry.applications.apps.ImagePopout(
             actor.parent.img, {
@@ -46,9 +35,6 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
     }
 
     const contextMenuItems: CtxMenuItem[] = []
-    if (actor instanceof HeroDataModel && actor.tagalongId == null) {
-        contextMenuItems.push({ icon: Import, label: 'Import hero', action: () => importFromVgbndApp() })
-    }
     contextMenuItems.push(
         { icon: Eye, label: 'View', action: () => viewImage() },
         { icon: Pencil, label: 'Edit', action: () => editImage() },

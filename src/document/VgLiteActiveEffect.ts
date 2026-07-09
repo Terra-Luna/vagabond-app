@@ -146,6 +146,11 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             description: 'Adjusts spell damage die size',
             path: 'system.mana.spellDamageDie'
         },
+        {
+            name: 'Spell Crit',
+            description: 'Spell crit target value',
+            path: 'system.mana.spellCrit'
+        },
         /**
          * Protective bonuses...
          */

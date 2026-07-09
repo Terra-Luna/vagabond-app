@@ -19,6 +19,7 @@ import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills } from "
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { lang } from "../../../../utils/lang"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
+import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -54,30 +55,6 @@ export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { sys
 }
 
 const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteActorSheet }) => {
-    const deliveryRef = useRef<SpellDelivery>(null)
-
-    const [_, forceUpdate] = useState(false)
-
-    const openMenu = useCallback((event) => {
-        deliveryRef.current = new Sphere()
-        forceUpdate(!_)
-    }, [])
-
-    const toggleTheme = useCallback((e: React.MouseEvent) => {
-        e.stopPropagation()
-        const curUiConfig = (game.settings as any).get("core", "uiConfig")
-        const curColorScheme = curUiConfig.colorScheme
-        const curTheme = curColorScheme.applications; // this semicolon is needed
-        (game.settings as any).set("core", "uiConfig", {
-            ...curUiConfig,
-            colorScheme: {
-                ...curColorScheme,
-                applications: curTheme === "dark" ? "light" : "dark"
-            }
-        })
-        sheet._renderHTML()
-    }, [sheet])
-
     return (
         <div className="flex">
             {/* MAIN STATS ARRAY */}
@@ -89,9 +66,9 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
             {/* MAIN HEADER CONTENT + MENU BUTTON */}
             <div className="flex flex-col grow">
                 <div className="bg-sheet-header-fill font-eskapade grow">
-                    <div className="text-text-header-primary text-4xl font-bold mt-1 ml-2 flex">
+                    <div className="flex text-text-header-primary text-4xl font-bold mt-1 ml-2">
                         <EditableNameField actor={hero.parent} />
-                        <IconOnlyButton Icon={Menu} size={24} className="ml-auto mr-2" onClick={openMenu} onAuxClick={toggleTheme} />
+                        <HeroSheetMenu hero={hero} sheet={sheet} className="ml-auto" />
                     </div>
                     <div className="flex text-text-header-secondary ml-2 pb-1">
                         <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>

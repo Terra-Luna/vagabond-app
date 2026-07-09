@@ -11,12 +11,6 @@ export const SpellSelector = ({ spell, spells, setSpellSelection }) => {
                 options={spellDropdownOptons(spells)}
                 updateMechanism={{ onChange: setSpellSelection }}
             />
-            {
-                spell?.damageType !== 'none' ?
-                    <div className="mb-1">
-                        <DamageTypeIcon dmgType={spell?.system?.damageType ?? ''} size={24} />
-                    </div> : <></>
-            }
         </div>
     )
 }

@@ -14,10 +14,9 @@ import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { Sparkle } from "lucide-react"
 import { useState, useCallback } from "react"
 
-export const SpellCastChatCard = ({ heroId, spell, delivery, dmgRoll }: {
-    heroId: string, spell: Item & { system: SpellDataModel }, delivery: any, dmgRoll: DamageRollResult | undefined
+export const SpellCastChatCard = ({ heroId, spell, delivery, dmgRoll = undefined }: {
+    heroId: string, spell: Item & { system: SpellDataModel }, delivery: any, dmgRoll?: DamageRollResult | undefined
 }) => {
-    console.log(delivery)
     const actor = game.actors?.get(heroId) as Actor & { system: HeroDataModel }
     
     const subtitle: CardSubHeaderValues[] = []

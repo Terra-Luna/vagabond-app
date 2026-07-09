@@ -17,12 +17,16 @@ import { LineExpansionInut } from "./LineExpansionInput"
 import { sendVgLiteChatMessage } from "../../../../../../chat/ChatCardSerializer"
 import { SpellCastChatCard } from "../../../../../../chat/SpellCastChatCard"
 import { getId } from "../../../../../../../utils/modelUtil"
-import { DamageRollResult, rollDamage } from "../../../../../../../combat/dice-rolls"
+import { DamageRollResult, rollDamage, rollSkillCheck, SkillCheckResult } from "../../../../../../../combat/dice-rolls"
+import { SkillSelector } from "./SkillSelector"
+import { SkillCheckChatCard } from "../../../../../../chat/SkillCheckChatCard"
+import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 
-export const useSpellCastingMenu = (hero: HeroDataModel) => {
+export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => {
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
     const [spells, setSpells] = useState<Item & { system: SpellDataModel }[]>(hero.parent.items.filter(i => i.type === 'spell') as Item & { system: SpellDataModel }[])
     const [spell, setSpell] = useState<Item & { system: SpellDataModel }>()
+    const [skill, setSkill] = useState(hero.class.castingSkill)
     const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
     const [delivery, setDelivery] = useState<SpellDelivery>()
 
@@ -69,6 +73,10 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         setDeliveries(delivs)
         setDelivery(clone)
     }, [delivery, deliveries])
+
+    const onSelectSkill = useCallback((skill: string) => {
+        setSkill(skill)
+    }, [skill])
 
     const onUpdateTargetCount = useCallback(async (input: string | null) => {
         if (!delivery) return
@@ -201,28 +209,39 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         return <></>
     }
 
-    const castSpell = async () => {
+    const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
         if (spell && delivery) {
-            let dmgRoll: DamageRollResult | undefined = undefined
-            if (spell.system.damageType !== 'none' && delivery.damageDice > 0) {
-                dmgRoll = await rollDamage(
+            hero.parent.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) })
+
+            let skillCheck: SkillCheckResult | undefined = undefined
+            console.log(skill)
+            if (delivery.targetTokenIds.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1)) {
+                skillCheck = await rollSkillCheck(vgLiteLang.Skills[skill].name, hero.skills[skill].value, e, vgLiteLang.FavorHinder.none, hero.mana.spellCrit)
+                sendVgLiteChatMessage(hero.parent, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)
+            }
+
+            if (skillCheck?.result !== vgLiteLang.RollResult.failure && spell.system.damageType !== 'none' && delivery.damageDice > 0) {
+                const dmgRoll = await rollDamage(
                     spell.name,
                     spell.system.damageType,
                     `${delivery.damageDice}d${hero.mana.spellDamageDie}`,
-                    0, false, [], //perDieDmgBonus, canExplode, explodesOn
+                    hero.bonus.perDieSpellDmg ?? 0,
+                    false, [], // canExplode, explodesOn
                     spell.system.appliesBurn,
                     spell.system.burnCountdown
                 )
+                sendVgLiteChatMessage(
+                    hero.parent,
+                    <SpellCastChatCard heroId={getId(hero)} spell={spell} delivery={{ ...delivery }} dmgRoll={dmgRoll} />
+                )
             }
-            sendVgLiteChatMessage(
-                hero.parent,
-                <SpellCastChatCard
-                    heroId={getId(hero)}
-                    spell={spell}
-                    delivery={{ ...delivery }}
-                    dmgRoll={dmgRoll}
-                />
-            )
+            else {
+                sendVgLiteChatMessage(
+                    hero.parent,
+                    <SpellCastChatCard heroId={getId(hero)} spell={spell} delivery={{ ...delivery }} />
+                )
+            }
+
             setIsSpellcastingOpen(false)
         }
     }
@@ -231,12 +250,13 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         return (<>
             {
                 !isSpellcastingOpen ? <></> :
-                    <div className="font-eskapade font-bold bg-table-border/10 border border-solid border-t-table-border -mt-1 mb-1 p-2 space-y-2">
-                        <div className="flex gap-x-4 items-end bottom text-lg">
+                    <div className="font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-2 space-y-2">
+                        <div className="flex gap-x-2 items-end bottom text-lg">
                             <SpellSelector spell={spell} spells={spells} setSpellSelection={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelectDelivery={onSelectDelivery} />
+                            <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
                             <div className="ml-auto">
-                                <PrimaryButton children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={castSpell} />
+                                <PrimaryButton icon={<DamageTypeIcon dmgType={spell?.system?.damageType ?? ''} size={18} />} children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={(e) => castSpell(e)} />
                             </div>
                         </div>
                         <div className="flex items-center">

@@ -289,7 +289,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                             <p>Damage Type:&nbsp;</p>
                             <div className={`font-eskapade font-bold ${glowOnHover}`}>
                                 <DropDown
-                                    value={newAction?.damage?.type ?? null}
+                                    value={newAction?.damage?.type ?? ''}
                                     options={createDropdownEntries(vgLiteLang.DamageTypes)}
                                     updateMechanism={{
                                         onChange: updateDamageType

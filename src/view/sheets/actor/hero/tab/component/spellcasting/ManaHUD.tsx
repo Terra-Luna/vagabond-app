@@ -40,7 +40,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                     <p>{hero.mana.maxCast}</p>
                 </div>
 
-                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-table-border/10 ${glowOnHover} cursor-pointer [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
+                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill ${glowOnHover} cursor-pointer [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
                     onClick={() => {
                         setSpells(hero.parent.items.filter(i => i.type === 'spell'))
                         setSpell(spell || hero.parent.items.filter(i => i.type === 'spell')[0])

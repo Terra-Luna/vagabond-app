@@ -7,9 +7,9 @@ const primaryButtonClasses = `text-btn-primary-text bg-btn-primary-fill ${button
 const secondaryButtonClasses = `text-btn-secondary-text ${buttonShaping} border border-solid btn-secondary-text/80`
 const destructiveButtonClasses = `text-destructive-action ${buttonShaping} border border-solid border-destructive-action`
 
-export const PrimaryButton = ({ children, icon = null, onClick }: { children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const PrimaryButton = ({ children, icon = null, onClick }: { children: ReactNode, icon?: ReactNode, onClick: (e) => any }) => {
     return (
-        <button onClick={onClick} className={primaryButtonClasses}>
+        <button onClick={(e) => onClick(e)} className={primaryButtonClasses}>
             {icon ? icon : undefined}
             <div className="mx-0.5" />
             {children}
