@@ -2,12 +2,16 @@ import { useCallback, useState } from "react"
 import { Menu, Moon, Sun, X } from "lucide-react"
 import { VgLiteActorSheet } from "../../VgLiteActorSheet"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { glowOnHover } from "../../../../common/text-styles"
-import { importHero } from "../../../../../api/tagalong/TagalongImporter"
+import { MenuListItem } from "./item/MenuListItem"
+import { importFromVgbndApp } from "./util/vgbnd-import"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
-    const [isDarkMode, setIsDarkMode] = useState(sheet.classList.contains('theme-dark') || (!sheet.classList.contains('theme-light') && document.body.classList.contains('theme-dark')))
+    const [isDarkMode, setIsDarkMode] = useState(
+        sheet.classList.contains('theme-dark') || (
+            !sheet.classList.contains('theme-light') && document.body.classList.contains('theme-dark')
+        )
+    )
 
     const toggleMenu = useCallback(() => {
         setIsOpen(!isOpen)
@@ -18,7 +22,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         setIsDarkMode(!isDarkMode)
         const curUiConfig = (game.settings as any).get("core", "uiConfig")
         const curColorScheme = curUiConfig.colorScheme
-        const curTheme = curColorScheme.applications; // this semicolon is needed
+        const curTheme = curColorScheme.applications;
         (game.settings as any).set("core", "uiConfig", {
             ...curUiConfig,
             colorScheme: {
@@ -57,6 +61,11 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                             <MenuListItem text={"IMPORT"} onClick={() => importFromVgbndApp(hero)} /> :
                             <></>
                     }
+                    {
+                        !hero.class ?
+                            <MenuListItem text={"CREATE"} onClick={() => { }} toggleMenu={toggleMenu} /> :
+                            <></>
+                    }
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />
@@ -66,21 +75,4 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             </div>
         </div>
     )
-}
-
-const MenuListItem = ({ text, onClick, toggleMenu }: { text: string, onClick: any, toggleMenu?: any }) => {
-    return <li className={`${glowOnHover} cursor-pointer`} onClick={() => {
-        onClick()
-        toggleMenu()
-    }}>{text}</li>
-}
-
-const importFromVgbndApp = async (hero) => {
-    const tagalongLink = prompt(
-        'Enter character link from Vagabond Tagalong App',
-        'https://www.vgbnd.app/character/e38db88c-ec28-4b67-a44c-09f0fe199d01'
-    )
-    if (tagalongLink != null) {
-        importHero(hero as HeroDataModel, tagalongLink)
-    }
 }
