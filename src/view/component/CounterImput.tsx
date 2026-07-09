@@ -5,7 +5,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onUpdateValue, in
     value: number, valueAppend?: string, onUpdateValue: (input) => void, incrementBy?: number
 }) => {
     return (
-        <div className="flex">
+        <div className="flex min-w-[2ch]">
             <EditableTextField boundValue={`${value.toString()}${valueAppend}`} onSave={onUpdateValue as any} />
             <div className="flex flex-col mt-1 ml-1">
                 <Plus size={14} className="cursor-pointer" onClick={() => onUpdateValue(value + incrementBy)} />

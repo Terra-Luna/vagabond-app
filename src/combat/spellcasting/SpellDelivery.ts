@@ -22,7 +22,7 @@ export abstract class SpellDelivery {
     damageDice = 1
     manaCost = 0
     targetCount: number = 1
-    targetTokens: Token[] = []
+    targetTokenIds: string[] = []
 
     abstract calculateManaCost()
 
@@ -96,7 +96,7 @@ export abstract class PerTargetDelivery extends SpellDelivery {
     override calculateManaCost() {
         let targets: number
         if (this instanceof Remote || this instanceof Imbue) {
-            targets = Math.max(1, this.targetTokens.length)
+            targets = Math.max(1, this.targetTokenIds.length)
         }
         else {
             targets = Math.max(1, this.targetCount)
@@ -152,8 +152,8 @@ export const getNewDeliveryOptions = (): SpellDelivery[] => {
     ].sort((a, b) => a.name.localeCompare(b.name))
 
     deliveries.forEach(d => {
-        d.targetTokens = Array.from(game.user?.targets ?? [])
-        d.targetCount = Math.max(1, d.targetTokens.length)
+        d.targetTokenIds = Array.from(game.user?.targets ?? []).map(it => it.id)
+        d.targetCount = Math.max(1, d.targetTokenIds.length)
         if (d instanceof AreaOfEffectDelivery) {
             d.size = d.baseSize
         }

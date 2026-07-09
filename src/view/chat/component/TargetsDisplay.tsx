@@ -8,7 +8,7 @@ export const TargetsDisplay = ({ tokenIds }: { tokenIds: string[] }) => {
     return (<>
         {
             targets.length > 0 ?
-                <div className="flex flex-wrap -space-x-3 justify-center items-center px-2">
+                <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
                     {<>
                         <p className="mr-1 text-text-secondary font-paradigm font-normal">Targets: </p>
                         {targets.map(target => (

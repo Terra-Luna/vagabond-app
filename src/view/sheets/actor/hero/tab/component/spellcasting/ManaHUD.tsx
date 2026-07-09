@@ -7,7 +7,6 @@ import { glowOnHover } from "../../../../../../common/text-styles"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
 import { useSpellCastingMenu } from "./SpellcastingMenu"
-import { SpellDataModel } from "../../../../../../../model/item/character/SpellDataModel"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
@@ -43,8 +42,8 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
 
                 <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-table-border/10 ${glowOnHover} cursor-pointer [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
                     onClick={() => {
-                        setSpells(hero.spells as SpellDataModel[])
-                        setSpell(spell || hero.spells[0] as SpellDataModel)
+                        setSpells(hero.parent.items.filter(i => i.type === 'spell'))
+                        setSpell(spell || hero.parent.items.filter(i => i.type === 'spell')[0])
                         setIsSpellcastingOpen(!isSpellcastingOpen)
                     }}
                 >

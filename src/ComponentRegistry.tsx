@@ -7,6 +7,7 @@ import { CountdownRollChatCard } from "./view/chat/CountdownChatCard"
 import { DamageRollChatCard } from "./view/chat/DamageRollChatCard"
 import { ItemChatCard } from "./view/chat/ItemChatCard"
 import { SkillCheckChatCard } from "./view/chat/SkillCheckChatCard"
+import { SpellCastChatCard } from "./view/chat/SpellCastChatCard"
 import { TrackerUpdateChatCard } from "./view/chat/TrackerUpdateChatCard"
 
 export const ComponentRegistry = {
@@ -19,5 +20,6 @@ export const ComponentRegistry = {
     "DieIcon": DieIcon,
     "ItemChatCard": ItemChatCard,
     "SkillCheckChatCard": SkillCheckChatCard,
+    "SpellCastChatCard": SpellCastChatCard,
     "TrackerUpdateChatCard": TrackerUpdateChatCard
 }

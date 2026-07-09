@@ -12,7 +12,7 @@ export const SpellTargetInput = ({ delivery, onUpdateTargetCount, readOnly }: {
                 <span className="text-2xl">
                     {
                         readOnly ?
-                            <p>{delivery.targetTokens.length}</p> :
+                            <p>{delivery.targetTokenIds.length}</p> :
                             <NumericCounterInput value={delivery.targetCount} onUpdateValue={onUpdateTargetCount} />
                     }
                 </span>

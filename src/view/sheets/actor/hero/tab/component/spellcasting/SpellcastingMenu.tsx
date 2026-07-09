@@ -14,11 +14,15 @@ import { vgLiteLang } from "../../../../../../../utils/lang"
 import { SpellEffectToggle } from "./SpellEffectToggle"
 import { SpellFocusToggle } from "./SpellFocusToggle"
 import { LineExpansionInut } from "./LineExpansionInput"
+import { sendVgLiteChatMessage } from "../../../../../../chat/ChatCardSerializer"
+import { SpellCastChatCard } from "../../../../../../chat/SpellCastChatCard"
+import { getId } from "../../../../../../../utils/modelUtil"
+import { DamageRollResult, rollDamage } from "../../../../../../../combat/dice-rolls"
 
 export const useSpellCastingMenu = (hero: HeroDataModel) => {
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
-    const [spells, setSpells] = useState<SpellDataModel[]>(hero.spells as SpellDataModel[])
-    const [spell, setSpell] = useState<SpellDataModel>()
+    const [spells, setSpells] = useState<Item & { system: SpellDataModel }[]>(hero.parent.items.filter(i => i.type === 'spell') as Item & { system: SpellDataModel }[])
+    const [spell, setSpell] = useState<Item & { system: SpellDataModel }>()
     const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
     const [delivery, setDelivery] = useState<SpellDelivery>()
 
@@ -29,10 +33,10 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [])
 
     const onUpdateTargetTokens = useCallback(async (tokens: Token[]) => {
-        if (!delivery) return false
+        if (!delivery) return
         const delivs = deliveries.map(d => {
             const clone = d.clone()
-            clone.targetTokens = tokens
+            clone.targetTokenIds = tokens.map(t => t.id)
             clone.calculateManaCost()
             return clone
         })
@@ -49,9 +53,15 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         return () => { Hooks.off('targetToken', hookId) }
     }, [onUpdateTargetTokens])
 
-    const onSelectSpell = useCallback((spell: any) => {
-        setSpell(hero?.parent.items.get(spell).system)
-    }, [])
+    const onSelectSpell = useCallback((spellId: string) => {
+        const sp = hero?.parent.items.get(spellId)
+        setSpell(sp)
+        console.log(sp)
+        if (delivery && sp?.system.damageType === 'none') {
+            onUpdateDamageDice('0')
+            onToggleSpellEffect(true)
+        }
+    }, [spell, delivery])
 
     const onSelectDelivery = useCallback((index: number) => {
         const clone = deliveries[index].clone()
@@ -61,7 +71,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [delivery, deliveries])
 
     const onUpdateTargetCount = useCallback(async (input: string | null) => {
-        if (!delivery) return false
+        if (!delivery) return
         const count = Math.max(1, Number(input) || 1)
         const delivs = deliveries.map(d => {
             const clone = d.clone()
@@ -76,7 +86,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [delivery, deliveries])
 
     const onUpdateAreaSize = useCallback(async (input: string | null) => {
-        if (!delivery) return false
+        if (!delivery) return
         const size = Math.max((delivery as AreaOfEffectDelivery).baseSize, Number(input) || (delivery as AreaOfEffectDelivery).baseSize)
         const clone = delivery.clone();
         (clone as AreaOfEffectDelivery).size = size
@@ -94,7 +104,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [delivery, deliveries])
 
     const onUpdateLineHeight = useCallback((h: string) => {
-        if (!delivery) return false
+        if (!delivery) return
         const height = Math.max((delivery as Line).baseHeight, Number(h) || (delivery as Line).baseHeight)
         const clone = delivery.clone() as Line
         clone.height = height
@@ -112,7 +122,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [delivery, deliveries])
 
     const onUpdateLineWidth = useCallback((w: string) => {
-        if (!delivery) return false
+        if (!delivery) return
         const width = Math.max((delivery as Line).baseWidth, Number(w) || (delivery as Line).baseWidth)
         const clone = delivery.clone() as Line
         clone.width = width
@@ -130,12 +140,13 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [delivery, deliveries])
 
     const onUpdateDamageDice = useCallback(async (input: string | null) => {
-        if (!delivery) return false
+        if (!delivery) return
         const dmgDice = Math.max(0, Number(input) || 0)
         const delivs = deliveries.map(d => {
             const clone = d.clone()
             clone.damageDice = dmgDice
             if (clone.damageDice === 0) { clone.applyEffect = true }
+            if (spell?.system.damageType === 'none') { clone.damageDice = 0 }
             clone.calculateManaCost()
             return clone
         })
@@ -144,7 +155,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [delivery, deliveries])
 
     const onToggleSpellEffect = useCallback((isChecked: boolean) => {
-        if (!delivery) return false
+        if (!delivery || !isChecked && spell?.system.damageType === 'none') return
         const delivs = deliveries.map(d => {
             const clone = d.clone()
             clone.applyEffect = isChecked
@@ -159,7 +170,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
     }, [delivery, deliveries])
 
     const onToggleSpellFocus = useCallback((isChecked: boolean) => {
-        if (!delivery) return false
+        if (!delivery) return
         const delivs = deliveries.map(d => {
             const clone = d.clone()
             clone.isFocused = isChecked
@@ -190,28 +201,53 @@ export const useSpellCastingMenu = (hero: HeroDataModel) => {
         return <></>
     }
 
-    const castSpell = () => {
-        
+    const castSpell = async () => {
+        if (spell && delivery) {
+            let dmgRoll: DamageRollResult | undefined = undefined
+            if (spell.system.damageType !== 'none' && delivery.damageDice > 0) {
+                dmgRoll = await rollDamage(
+                    spell.name,
+                    spell.system.damageType,
+                    `${delivery.damageDice}d${hero.mana.spellDamageDie}`,
+                    0, false, [], //perDieDmgBonus, canExplode, explodesOn
+                    spell.system.appliesBurn,
+                    spell.system.burnCountdown
+                )
+            }
+            sendVgLiteChatMessage(
+                hero.parent,
+                <SpellCastChatCard
+                    heroId={getId(hero)}
+                    spell={spell}
+                    delivery={{ ...delivery }}
+                    dmgRoll={dmgRoll}
+                />
+            )
+            setIsSpellcastingOpen(false)
+        }
     }
 
     const SpellcastingMenu = () => {
         return (<>
             {
                 !isSpellcastingOpen ? <></> :
-                    <div className="font-eskapade font-bold bg-table-border/10 border-t-2 border-solid border-t-table-border -mt-1 mb-1 p-2 space-y-2">
+                    <div className="font-eskapade font-bold bg-table-border/10 border border-solid border-t-table-border -mt-1 mb-1 p-2 space-y-2">
                         <div className="flex gap-x-4 items-end bottom text-lg">
                             <SpellSelector spell={spell} spells={spells} setSpellSelection={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelectDelivery={onSelectDelivery} />
                             <div className="ml-auto">
-                                <PrimaryButton children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={() => castSpell()} />
+                                <PrimaryButton children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={castSpell} />
                             </div>
                         </div>
                         <div className="flex items-center">
                             {renderConfigs()}
-                            <DamageDiceInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
+                            {
+                                spell?.system?.damageType === 'none' ? <></> :
+                                    <DamageDiceInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
+                            }
                             <div className="ml-auto mt-1 space-y-1">
                                 {
-                                    !(delivery instanceof Imbue) ?
+                                    !(delivery instanceof Imbue) && spell?.system.damageType !== 'none' ?
                                         <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
                                         : <></>
 
