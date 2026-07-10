@@ -7,6 +7,8 @@ import { importFromVgbndApp } from "./util/vgbnd-import"
 import { PopoutWindow } from "../../../../component/PopoutWindow"
 import { HeroCreator } from "../creation/HeroCreator"
 import { useGlobalPopout } from "../../../../GlobalPopoutContainer"
+import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
+import { vgLiteLang } from "../../../../../utils/lang"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -40,7 +42,9 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
 
     const createrPopout = useGlobalPopout()
 
-    // note - this could just be a useCallback that the button calls to render the popup, but that makes it so that if you click "create hero" multiple times, you get multiple popups
+    // Note - this could just be a useCallback that the button calls to render the 
+    // popup, but that makes it so that if you click "create hero" multiple times, 
+    // you get multiple popups.
     useEffect(() => {
         if (isCreatorOpen) {
             createrPopout.renderPopout(<HeroCreator hero={hero.parent} />, "Hero Creator", true)

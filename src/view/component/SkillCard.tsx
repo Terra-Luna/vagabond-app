@@ -38,7 +38,7 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
 export type CardSubHeaderValues = { label: string, value: string }
 export const CardSubHeader = ({ values, showRightBorder = true }: { values: CardSubHeaderValues[], showRightBorder?: boolean }) => {
     return (
-        <div className={`${cardSubheaderLayout} ${showRightBorder ? 'border-r-1 border-solid border-table-border' : ''}`}>
+        <div className={`${cardSubheaderLayout} ${showRightBorder ? 'border-r-2 border-solid border-table-border' : ''}`}>
             <div className={cardSubheaderStyle}>
                 {
                     values.map((content, index) => (
