@@ -15,6 +15,9 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
         { id: 'identity', view: <NameAndAncestry /> },
         { id: 'class-selection', view: <ClassSelection /> },
         { id: 'core-stats', view: <>{renderCoreStats}</> },
+        { id: 'training-selection', view: <>TODO</> },
+        { id: 'perk-selection', view: <>TODO</> },
+        { id: 'equipment-selection', view: <>TODO</> }
     ]
 
     useEffect(() => {
