@@ -3,14 +3,14 @@ import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { EditableTextField } from "../../../../../component/EditableTextField"
 import { Header } from "../../../../../component/Header"
-import { HeroCreationLabel, } from "./HeroCreationTypography"
-import { HeroCreationDropdown } from "./HeroCreationDropdown"
-import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../../../../utils/modelUtil"
 import { AncestryDataModel } from "../../../../../../model/item/character/AncestryDataModel"
 import { AncestryReactComponent } from "../../../../item/character/ancestry/AncestrySheetComponent"
 import { EditModeContextProvider } from "../../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../../context/EditModeContext/EditModeOptions"
-import { useNavButtons } from "./NavButtons"
+import { useNavButtons } from "../../../../../context/navigation/NavButtons"
+import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../../../../utils/modelUtil"
+import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
+import { HeroCreationLabel } from "../component/HeroCreationTypography"
 
 export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const strings = vgLiteLang.HeroCreation
@@ -33,7 +33,7 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const onSelectAncestry = useCallback(async (selection: string) => {
         const item = await getFullItem<AncestryDataModel>(ancestries?.find(it => it._id === selection) ?? null)
         if (item) setAncestryItem(item)
-    }, [ancestries, ancestryItem])
+    }, [ancestries])
 
     const NameAndAncestry = () => {
         return (
@@ -43,7 +43,7 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
                     <HeroCreationLabel text={strings.heroName} />
                     <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />
                 </div>
-                <div className="flex gap-x-4">
+                <div className="flex">
                     <HeroCreationDropdown
                         label={strings.selectAncestry}
                         value={ancestryItem?.id ?? strings.selectAncestry}
@@ -55,13 +55,11 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
                     ancestryItem ?
                         <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
                             <AncestryReactComponent item={ancestryItem} />
-                        </EditModeContextProvider> :
-                        <></>
+                        </EditModeContextProvider> : <></>
                 }
-
             </div>
         )
     }
 
-    return { NameAndAncestry }
+    return { NameAndAncestry, ancestryItem }
 }

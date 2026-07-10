@@ -27,7 +27,7 @@ export const Description = ({ item, showFullView = false, italic = true }: {
                                     onChange={onDescriptionChange}
                                 />
                             </div> :
-                            <div className={`${showFullView ? 'h-fit' : ''} px-2 text-justify font-light ${italic ? 'italic' : ''} overflow-hidden`}>
+                            <div className={`${showFullView ? 'h-fit' : ''} px-2 text-justify text-sm font-paradigm font-light ${italic ? 'italic' : ''} overflow-hidden`}>
                                 {stripHtml(item.system.description).length > 0 ?
                                     <div className={`${showFullView ? 'h-fit' : 'max-h-54 overflow-hidden'}`}>
                                         {ReactHtmlParser(item.system.description)}

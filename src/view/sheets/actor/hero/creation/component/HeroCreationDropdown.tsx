@@ -7,11 +7,13 @@ export const HeroCreationDropdown = ({ label, value, options, onChange }: {
     return (
         <div>
             <HeroCreationLabel text={label} />
+            <div className="text-lg">
             <DropDown
                 value={value}
                 options={options}
                 updateMechanism={{ onChange: onChange }}
-            />
+                />
+            </div>
         </div>
     )
 }

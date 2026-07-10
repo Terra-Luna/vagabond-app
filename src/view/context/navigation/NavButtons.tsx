@@ -1,12 +1,12 @@
 import { ReactNode } from "react"
-import { useNavigationContext } from "../../../../../context/EditModeContext/Hooks"
+import { useNavigationContext } from "../EditModeContext/Hooks"
 
 export const useNavButtons = () => {
     const { backButton, nextButton } = useNavigationContext()
 
     const NavButtons = ({ header }: { header: ReactNode }) => {
         return(
-            <div className="flex gap-x-2 justify-between">
+            <div className="flex gap-x-0.5 justify-between">
                 {backButton}
                 {header}
                 {nextButton}

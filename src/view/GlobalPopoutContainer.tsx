@@ -1,6 +1,6 @@
 import ReactDom from "react-dom/client"
-import { FunctionComponent, ReactNode, useCallback, useRef } from "react";
-import * as sheetUtils from "./sheets/sheetUtils";
+import { FunctionComponent, ReactNode, useCallback, useRef } from "react"
+import * as sheetUtils from "./sheets/sheetUtils"
 
 /** 
  * This pattern has many gotchas! 
@@ -8,8 +8,8 @@ import * as sheetUtils from "./sheets/sheetUtils";
  * It has its own edit mode context, etc.
 */
 class PopoutApplication extends foundry.applications.api.ApplicationV2 {
-    Component?: FunctionComponent;
-    startInEditMode: boolean = false;
+    Component?: FunctionComponent
+    startInEditMode: boolean = false
     onClose?: () => void;
 
     _reactRoot: ReactDom.Root | null = null
@@ -48,8 +48,11 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
     }
 
     static DEFAULT_OPTIONS = {
-        position: { width: 400, height: 300 }
-    };
+        position: { width: 600, height: 600 },
+        window: {
+            resizable: true
+        }
+    }
 }
 
 

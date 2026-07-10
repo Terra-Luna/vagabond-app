@@ -32,15 +32,15 @@ export const useEditMode = () => useContext(EditModeContext)
  *  >>>  Use next and back functions to increment step counter.
  */
 interface NavigationContextProps {
-    currentStep: number
-    setTotalSteps: (steps: number) => void
+    stepId: string
+    registerStepIds: (ids: string[]) => void
     registerOnFinish: (fn: () => void) => void
     backButton: ReactNode
     nextButton: ReactNode
 }
 const DefaultNavigationContextValue: NavigationContextProps = {
-    currentStep: 0,
-    setTotalSteps: () => { },
+    stepId: '',
+    registerStepIds: () => { },
     registerOnFinish: (fn: () => void) => { },
     backButton: undefined,
     nextButton: undefined

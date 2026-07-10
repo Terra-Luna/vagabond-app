@@ -6,7 +6,7 @@ import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
 import { HeroCreator } from "../creation/HeroCreator"
 import { useGlobalPopout } from "../../../../GlobalPopoutContainer"
-import { NavigationContextProvider } from "../creation/component/NavigationContextProvider"
+import { NavigationContextProvider } from "../../../../context/navigation/NavigationContextProvider"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
