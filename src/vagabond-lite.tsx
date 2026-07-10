@@ -95,11 +95,14 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     }
 
     /**
-     * Prevent adding duplicate perks and spells.
+     * Prevent adding duplicate perks and spells (unless the perk can be taken multiple times).
      */
-    const uniqueItems = ['perk', 'spell']
-    if (uniqueItems.indexOf(item.type) > -1 && actor.items.find((i: { type: any; name: any }) => i.type === item.type && i.name === item.name)) {
-        return false
+    if (item.type === 'perk') {
+        return item.system.canTakeMultiple || !actor.item.some(i => i.type === 'perk' && i.name === item.name)
+    }
+
+    if (item.type === 'spell') {
+        return !actor.items.some(i => i.type === 'spell' && i.name === item.name)
     }
 
     if (isInventoryItem(item) && item.system.bulk.isStackable) {

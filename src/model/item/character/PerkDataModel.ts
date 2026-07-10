@@ -6,7 +6,8 @@ import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {
     return {
-        prerequisites: new fields.ArrayField(new fields.SchemaField({ ...prerequisiteSchema() }), { initial: [] })
+        prerequisites: new fields.ArrayField(new fields.SchemaField({ ...prerequisiteSchema() }), { initial: [] }),
+        canTakeMultiple: new fields.BooleanField({ initial: false })
     }
 }
 

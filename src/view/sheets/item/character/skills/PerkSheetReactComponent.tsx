@@ -1,5 +1,5 @@
 import { Plus, Trash } from "lucide-react"
-import { useCallback } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { PerkDataModel, addPerkPrerequisite, deletePerkPrerequisite } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries, createDropdownEntriesFromObj, createDropdownEntriesForItems } from "../../../../../utils/localeUtils"
@@ -9,12 +9,29 @@ import { SingleSelect } from "../../../../component/SingleSelect"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
+import { Checkbox } from "../../../../component/Checkbox"
 
 export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()
+
+    const onSelectMulti = useCallback((isChecked: boolean) => {
+        item.update({ 'system.canTakeMultiple': isChecked } as Record<string, boolean>)
+    }, [item.system.canTakeMultiple])
+
     return (
         <BaseSkillSheetComponent item={item} content={
             <div>
+                {
+                    isEditMode ?
+                        <div className="flex gap-x-1">
+                            <Checkbox
+                                label={''}
+                                onCheckedChanged={onSelectMulti}
+                                checked={item.system.canTakeMultiple}
+                            />
+                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.canTakeMultiple} className={"font-bold"} />
+                        </div> : <></>
+                }
                 <div className="flex gap-x-2 items-center">
                     {
                         isEditMode ? <>
@@ -39,9 +56,16 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
     )
 }
 
-const Prerequisite = async ({ perk, prereqIndex }: { perk: Item & { system: PerkDataModel }, prereqIndex: number }) => {
+const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataModel }, prereqIndex: number }) => {
     const { isEditMode } = useEditMode()
     const prereq = perk.system.prerequisites[prereqIndex]
+    const [spellDropdownItems, setSpellDropdownItems] = useState<{ value: string, label: string }[]>([])
+
+    useEffect(() => {
+        createDropdownEntriesForItems('spell', true).then((spells) => {
+            setSpellDropdownItems(spells)
+        })
+    })
 
     const onUpdateType = useCallback((type) => {
         perk.update({
@@ -161,7 +185,7 @@ const Prerequisite = async ({ perk, prereqIndex }: { perk: Item & { system: Perk
                 prereq.type === 'spell' ?
                     <DropDown
                         value={prereq.spell}
-                        options={await createDropdownEntriesForItems('spell', true)}
+                        options={spellDropdownItems}
                         updateMechanism={{ onChange: onUpdateSpell }}
                         parent={perk}
                     /> : <></>
