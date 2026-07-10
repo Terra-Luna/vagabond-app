@@ -39,7 +39,7 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
     )
 }
 
-const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataModel }, prereqIndex: number }) => {
+const Prerequisite = async ({ perk, prereqIndex }: { perk: Item & { system: PerkDataModel }, prereqIndex: number }) => {
     const { isEditMode } = useEditMode()
     const prereq = perk.system.prerequisites[prereqIndex]
 
@@ -161,7 +161,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                 prereq.type === 'spell' ?
                     <DropDown
                         value={prereq.spell}
-                        options={createDropdownEntriesForItems('spell', true)}
+                        options={await createDropdownEntriesForItems('spell', true)}
                         updateMechanism={{ onChange: onUpdateSpell }}
                         parent={perk}
                     /> : <></>

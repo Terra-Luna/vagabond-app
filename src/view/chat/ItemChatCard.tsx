@@ -1,8 +1,9 @@
+import { inventoryItemTypes } from "../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { lang } from "../../utils/lang"
-import { getName, getPortrait } from "../../utils/modelUtil"
+import { CombinedItemsMultiType, getFullItem, getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { Tooltip } from "../component/Tooltip"
@@ -14,7 +15,27 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
     itemId: string, itemName: string, isConsumable?: boolean
 }) => {
     const actor = game.actors?.find(it => it.items.has(itemId))
-    const item = actor?.items.get(itemId) ?? game.items?.get(itemId) ?? game.items?.getName(itemName)
+    let item = actor?.items.get(itemId) ?? null
+    /**
+     * If the actor ditched the item since it was link, try to find a matching game item...
+     * Don't convert this ItemChatCard component to async or else the chat card rehydrator
+     * won't be able to render it.
+     */
+    if (!item) {
+        CombinedItemsMultiType(inventoryItemTypes()).then((items) => {
+            getFullItem(items.find(it => it._id === itemId) ?? null).then((itById) => {
+                if (itById) {
+                    item = itById
+                }
+                else {
+                    getFullItem(items.find(it => it.name === itemName) ?? null).then((itByName) => {
+                        item = itByName
+                    })
+                }
+            })
+        })
+    }
+
     const equipment = item?.system as EquipmentDataModel<EquipmentSchema>
     if (equipment === undefined) return <p className="font-xs font-paradigm font-normal italic">Item removed</p>
     return (

@@ -8,7 +8,7 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
     return (
         <div>
             {
-                targets.length > 0 ?
+                targets && targets.length > 0 ?
                     <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
                         <p className="mr-1 text-text-secondary font-paradigm font-normal">Targets: </p>
                         {targets.map((target, index) => (

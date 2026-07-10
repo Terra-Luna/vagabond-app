@@ -23,6 +23,7 @@ export const SpellCastChatCard = ({ heroId, spell, delivery, dmgRoll = undefined
     if (delivery.damageDice > 0 && spell.system.damageType !== 'none') {
         subtitle.push({ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[spell.system.damageType] })
     }
+    subtitle.push({ label: vgLiteLang.HeroSheet.Magic.labelMana, value: delivery.manaCost })
 
     const [targets, setTargets] = useState(delivery.targetTokenIds.map(id => (
         { id: id, src: getTokenImg(getCanvasToken(id)), token: getCanvasToken(id) }

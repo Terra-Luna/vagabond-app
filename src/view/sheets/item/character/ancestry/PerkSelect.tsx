@@ -1,16 +1,15 @@
 import { useMemo } from "react"
-import { PerkDataModel } from "../../../../../model/item/character/PerkDataModel"
 import { DropDown } from "../../../../component/Dropdown"
+import { CombinedItems } from "../../../../../utils/modelUtil"
 
-const getAllPerks = () => {
-    // todo make sure this works with compendium packs
-    return game.items?.filter(item => (item as any).type === "perk") as unknown as (PerkDataModel & { _id: string })[]
+const getAllPerks = async () => {
+    return await CombinedItems('perk')
 }
 
-export const PerkSelect = (props: Omit<React.ComponentProps<typeof DropDown>, 'options'>) => {
+export const PerkSelect = async (props: Omit<React.ComponentProps<typeof DropDown>, 'options'>) => {
     const allPerks = getAllPerks()
 
-    const perkOptions = useMemo(() => allPerks.map(perk => ({ label: (perk as any).name, value: perk._id })), [allPerks])
+    const perkOptions = useMemo(async () => (await allPerks).map(perk => ({ label: (perk as any).name, value: perk._id })), [allPerks])
 
-    return <DropDown {...props} options={perkOptions} />
+    return <DropDown {...props} options={await perkOptions} />
 }

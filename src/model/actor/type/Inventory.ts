@@ -34,13 +34,12 @@ export const sortedItems = <T>(items: EquipmentDataModel<EquipmentSchema>[]): T[
     return items.sort((a: any, b: any) => a.parent.sort === 0 ? 999999 : a.parent.sort - b.parent.sort) as T[]
 }
 
-export const isInventoryItem = (item: any): boolean => {
-    return item.type === 'armor' ||
-        item.type === 'weapon' ||
-        item.type === 'tool' ||
-        item.type === 'sundry' ||
-        item.type === 'alchemical' ||
-        item.type === 'container'
+export const isInventoryItem = (item: Item): boolean => {
+    return inventoryItemTypes().includes(item.type)
+}
+
+export const inventoryItemTypes = () => {
+    return ['armor', 'weapon', 'tool', 'sundry', 'alchemical', 'container']
 }
 
 export const openItemSheet = (item: any) => {

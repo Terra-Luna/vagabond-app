@@ -506,10 +506,15 @@
       "trade": "Trade Goods",
       "other": "Other"
     },
+    "HeroCreation": {
+      "identity": "IDENTITY",
+      "heroName": "Hero Name",
+      "selectAncestry": "Select ancestry..."
+
+    },
     "HeroSheet": {
       "hp": "HIT POINTS",
       "armor": "ARMOR",
-      "Identity": "Identity",
       "Level": "Level {{level}}",
       "xp": "XP: {{xp}} / {{nextLevel}}",
       "trackers": "TRACKERS",

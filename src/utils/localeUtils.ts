@@ -1,4 +1,5 @@
 import { VgLiteError } from "../model/common/VgLiteError"
+import { CombinedItems } from "./modelUtil"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
     // find all {{var}} instances
@@ -39,12 +40,12 @@ export const createDropdownEntriesFromObj = (localObj) => {
     return createDropdownEntries(options)
 }
 
-export const createDropdownEntriesForItems = (itemType: string, includeAnyOption: boolean = false) => {
+export const createDropdownEntriesForItems = async (itemType: string, includeAnyOption: boolean = false) => {
     const items: { value: string, label: string }[] = []
     if (includeAnyOption) {
         items.push({ value: 'Any', label: 'Any' })
     }
-    game.items?.filter(it => it.type === itemType).map(it => (
+    (await CombinedItems(itemType)).map(it => (
         items.push({ value: it.name, label: it.name })
     ))
     return items

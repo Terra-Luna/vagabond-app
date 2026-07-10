@@ -152,12 +152,12 @@ const Modifier = ({ modifier, ancestry, index, traitIndex }: ModifierProps) => {
                     options={createDropdownEntries(lang.VGLITE.Modifiers.TargetStat)}
                     parent={ancestry.parent}
                     updateMechanism={{ onChange: onUpdateTargetStat }}
-                    value={modifier.targetStat} />
+                    value={modifier.targetStat as unknown as string} />
                 <DropDown label={lang.VGLITE.AncestrySheet.type}
                     options={createDropdownEntries(lang.VGLITE.Modifiers.ModifierTypes)}
                     parent={ancestry.parent}
                     updateMechanism={{ onChange: onUpdateType }}
-                    value={modifier.type} />
+                    value={modifier.type as unknown as string} />
             </div>
             <div className="flex ml-4 pb-2">
                 <LabelledField label={lang.VGLITE.AncestrySheet.value}>
@@ -205,7 +205,8 @@ const Grant = ({ grant, startExpanded = false, ancestry, index, traitIndex }: Gr
                     options={createDropdownEntries(lang.VGLITE.Grants.Type)}
                     parent={ancestry.parent}
                     updateMechanism={{ onChange: onUpdateGrantType }}
-                    value={grant.type} />
+                    value={grant.type as unknown as string}
+                />
                 <div className="ml-4 self-end">
                     <SingleSelect
                         options={[{ label: lang.VGLITE.AncestrySheet.direct, value: 'direct' }, { label: lang.VGLITE.AncestrySheet.choice, value: 'choice' }]}

@@ -1,9 +1,10 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { isInventoryItem } from "../../model/actor/type/Inventory"
+import { inventoryItemTypes, isInventoryItem } from "../../model/actor/type/Inventory"
 import { VgLiteError}  from "../../model/common/VgLiteError"
 import { applyAncestralTraits } from "../../model/item/character/AncestryDataModel"
 import { updateDocument } from "../../utils/documentUtils"
 import { stackStackables } from "../../utils/heroInventoryUtil"
+import { addItemsToActor, addItemToActor, CombinedItems, CombinedItemsMultiType, TypedIndexEntry } from "../../utils/modelUtil"
 import { fetchHero, TagalongItem } from "./TagalongApi"
 import { TagalongItemCreator } from "./TagalongItemCreator"
 
@@ -79,9 +80,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Lookup matching Ancestry...
          */
-        const ancestry = game.items?.find((it: any) =>
-            it.type === 'ancestry' && it.name.toUpperCase() === res.ancestry.toUpperCase()
-        ) as any
+        const ancestry = (await CombinedItems('ancestry')).find(it => it.name.toUpperCase() === res.ancestry.toUpperCase()) as any
         if (!ancestry) {
             failures.push(`Ancestry: ${res.ancestry}`)
         }
@@ -89,9 +88,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Lookup matching Class.
          */
-        const clazz = game.items?.find((it: any) =>
-            it.type === 'class' && it.name.toUpperCase() === res.class.toUpperCase()
-        ) as any
+        const clazz = (await CombinedItems('class')).find(it => it.name.toUpperCase() === res.class.toUpperCase()) as any
         if (!clazz) {
             failures.push(`Class: ${res.class}`)
         }
@@ -99,40 +96,36 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         /**
          * Lookup matching Perks...
          */
-        const perks: any[] = []
-        res.selected_perks.forEach(p => {
-            const perk = game.items?.find((it: any) =>
-                it.type === 'perk' && it.name.toUpperCase() === p.name.toUpperCase()
-            )
+        const perks: (Item | TypedIndexEntry)[] = []
+        for (const p of res.selected_perks) {
+            const perk = (await CombinedItems('perk')).find(it => it.name.toUpperCase() === p.name.toUpperCase())
             if (perk == undefined) {
                 failures.push(`Perk: ${p.name}`)
             }
             else {
                 perks.push(perk)
             }
-        })
+        }
 
         /**
          * Lookup matching Spells...
          */
-        const spells: any[] = []
-        res.known_spells.forEach(s => {
-            const systemSpell = game.items?.find((it: any) =>
-                it.type === 'spell' && it.name.toUpperCase() === s.toUpperCase()
-            )
+        const spells: (Item | TypedIndexEntry)[] = []
+        for (const s in res.known_spells) {
+            const systemSpell = (await CombinedItems('spell')).find(it => it.name.toUpperCase() === s.toUpperCase())
             if (systemSpell == undefined) {
                 failures.push(`Spell: ${s}`)
             }
             else {
                 spells.push(systemSpell)
             }
-        })
+        }
 
         /**
          * Add complex objects and arrays as Embedded Documents...
          */
         if (ancestry != undefined) {
-            await hero.parent.createEmbeddedDocuments("Item", [ancestry])
+            await addItemToActor(hero.parent, ancestry)
             const heroAncestry = hero.parent.items.find((i: { type: string }) => i.type === 'ancestry')
             if (res.strongPotentialStat != null) {
                 await updateDocument(heroAncestry, {
@@ -148,14 +141,10 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
                 })
             }
             if (res.ancestry_bonus_skill != null) {
-                await updateDocument(heroAncestry, {
-                    'chosenTrainings': [res.ancestry_bonus_skill]
-                })
+                await updateDocument(heroAncestry, { 'chosenTrainings': [res.ancestry_bonus_skill] })
             }
             if (res.ancestry_bonus_spell != null) {
-                await updateDocument(heroAncestry, {
-                    'chosenSpells': [res.ancestry_bonus_spell]
-                })
+                await updateDocument(heroAncestry, { 'chosenSpells': [res.ancestry_bonus_spell] })
             }
             /**
              * Finalize ancestry by applying active effects.
@@ -181,20 +170,20 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
          * Second, collect all matching items from the system 
          */
         const newItems: TagalongItem[] = []
-        res.inventory.forEach(tagalongItem => {
-            const systemItem = game.items?.find(it => it.name.toUpperCase() === tagalongItem.name.toUpperCase())
-            if (systemItem == undefined && newItems.map(it => it.name.toUpperCase()).indexOf(tagalongItem.name.toUpperCase()) == -1) {
+        for (const tagalongItem of res.inventory) {
+            const systemItem = (await CombinedItemsMultiType(inventoryItemTypes())).find(it => it.name.toUpperCase() === tagalongItem.name.toUpperCase())
+            if (!systemItem && !newItems.map(it => it.name.toUpperCase()).includes(tagalongItem.name.toUpperCase())) {
                 newItems.push(tagalongItem)
             }
-        })
+        }
         const converter = new TagalongItemCreator(hero, newItems)
         await converter.convert()
         converter.errors.forEach(e => { failures.push(e) })
 
         const createAllItems = res.inventory.map(async tagalongItem => {
-            const sysItem = game.items?.find(it => it.name.toUpperCase() === tagalongItem.name.toUpperCase() && isInventoryItem(it))
+            const sysItem = (await CombinedItemsMultiType(inventoryItemTypes())).find(it => it.name.toUpperCase() === tagalongItem.name.toUpperCase())
             if (sysItem) {
-                await hero.parent.createEmbeddedDocuments("Item", [sysItem])
+                await addItemToActor(hero.parent, sysItem)
                 await new Promise((resolve) => setTimeout(resolve, 1000))
                 await stackStackables(hero)
             }
