@@ -83,11 +83,11 @@ export const CombinedItems = async (itemType: string): Promise<Array<Item | Type
  * @param item 
  * @returns 
  */
-export async function getFullItem(item: Item | TypedIndexEntry | null): Promise<Item | null> {
-    if (!item || item instanceof Item) return item
+export async function getFullItem<T>(item: Item | TypedIndexEntry | null): Promise<Item & { system: T } | null> {
+    if (!item || item instanceof Item) return item as Item & { system: T }
     const resolvedDocument = await fromUuid(item.uuid)
     if (resolvedDocument instanceof Item) {
-        return resolvedDocument
+        return resolvedDocument as Item & { system: T }
     }
     return null
 }

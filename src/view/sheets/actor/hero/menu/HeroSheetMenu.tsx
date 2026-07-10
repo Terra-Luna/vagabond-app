@@ -62,7 +62,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                             <></>
                     }
                     {
-                        !hero.class ?
+                        !hero.ancestry || !hero.class ?
                             <MenuListItem text={"CREATE"} onClick={() => { }} toggleMenu={toggleMenu} /> :
                             <></>
                     }

@@ -509,7 +509,8 @@
     "HeroCreation": {
       "identity": "IDENTITY",
       "heroName": "Hero Name",
-      "selectAncestry": "Select ancestry..."
+      "selectAncestry": "Select ancestry...",
+      "typeSize": "Type/Size"
 
     },
     "HeroSheet": {

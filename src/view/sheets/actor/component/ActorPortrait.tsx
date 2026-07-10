@@ -43,7 +43,7 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
 
     return (
         <div onContextMenu={(e) => onCtxMenu(e, contextMenuItems)}>
-            <img className={`bg-transparent object-cover h-[154px] w-[110px]`} src={actor.parent.img} alt={actor.parent.name} />
+            <img className={`bg-black/5 border border-solid border-black/5 object-cover h-[154px] w-[110px]`} src={actor.parent.img} alt={actor.parent.name} />
             <ContextMenu />
         </div>
     )

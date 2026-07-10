@@ -20,7 +20,8 @@ interface AncestryComponentProps {
     ancestry: AncestryDataModel
 }
 
-export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } }) => {
+export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } | null }) => {
+    if (!item) return
     const ancestry = item.system
 
     const onDescriptionChange = useCallback((val) => {
