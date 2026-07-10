@@ -16,7 +16,7 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
 
     const onSelectMulti = useCallback((isChecked: boolean) => {
         item.update({ 'system.canTakeMultiple': isChecked } as Record<string, boolean>)
-    }, [item.system.canTakeMultiple])
+    }, [])
 
     return (
         <BaseSkillSheetComponent item={item} content={
