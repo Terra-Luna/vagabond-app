@@ -30,7 +30,7 @@ export const NavigationContextProvider = ({ children }: { children: ReactNode })
                 {`${currentStep + 1 === totalSteps ? vgLiteLang.ButtonActions.finish : vgLiteLang.ButtonActions.next}`}
                 <MoveRight size={14} />
             </div>
-        } onClick={currentStep + 1 === totalSteps ? onNext : () => { console.log("Finished...") }} />
+        } onClick={currentStep + 1 === totalSteps ? () => { console.log("Finished...") } : onNext} />
 
     const contextValue = useMemo(() => ({
         currentStep, setTotalSteps, onNext, onBack, backButton, nextButton
