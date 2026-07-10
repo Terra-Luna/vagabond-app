@@ -1,0 +1,1 @@
+export const getTheme = () => (game.settings as any).get("core", "uiConfig").colorScheme.applications

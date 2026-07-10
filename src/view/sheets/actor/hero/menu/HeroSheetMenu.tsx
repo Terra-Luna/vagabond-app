@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { Menu, Moon, Sun, X } from "lucide-react"
 import { VgLiteActorSheet } from "../../VgLiteActorSheet"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
@@ -6,6 +6,7 @@ import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
 import { PopoutWindow } from "../../../../component/PopoutWindow"
 import { HeroCreator } from "../creation/HeroCreator"
+import { useGlobalPopout } from "../../../../GlobalPopoutContainer"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -36,6 +37,22 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         })
         sheet._renderHTML()
     }, [sheet, isDarkMode])
+
+    const createrPopout = useGlobalPopout()
+
+    // note - this could just be a useCallback that the button calls to render the popup, but that makes it so that if you click "create hero" multiple times, you get multiple popups
+    useEffect(() => {
+        if (isCreatorOpen) {
+            createrPopout.renderPopout(<PopoutWindow
+                title={"Hero Creator"}
+                onClose={() => {
+                    setIsCreatorOpen(false);
+                    createrPopout.closePopout();
+                }}
+                children={<HeroCreator hero={hero.parent} />}
+            />)
+        }
+    }, [isCreatorOpen])
 
     return (<>
         <div className={`relative ${className}`}>
@@ -78,12 +95,5 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 </ul>
             </div>
         </div>
-        {isCreatorOpen && (
-            <PopoutWindow
-                title={"Hero Creator"}
-                onClose={() => setIsCreatorOpen(false)}
-                children={<HeroCreator hero={hero.parent} />}
-            />
-        )}
     </>)
 }
