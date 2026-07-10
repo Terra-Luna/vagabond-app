@@ -38,7 +38,11 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         sheet._renderHTML()
     }, [sheet, isDarkMode])
 
-    const createrPopout = useGlobalPopout()
+    const setCreatorClosed = useCallback(() => {
+        setIsCreatorOpen(false)
+    }, [])
+
+    const createrPopout = useGlobalPopout(setCreatorClosed)
 
     // Note - this could just be a useCallback that the button calls to render the 
     // popup, but that makes it so that if you click "create hero" multiple times, 

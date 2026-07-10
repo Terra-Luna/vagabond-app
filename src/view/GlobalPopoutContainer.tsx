@@ -10,6 +10,7 @@ import * as sheetUtils from "./sheets/sheetUtils";
 class PopoutApplication extends foundry.applications.api.ApplicationV2 {
     Component?: FunctionComponent;
     startInEditMode: boolean = false;
+    onClose?: () => void;
 
     _reactRoot: ReactDom.Root | null = null
     _scaduRoot: any
@@ -34,6 +35,7 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
 
     protected _onClose(options) {
         super._onClose(options)
+        this.onClose?.()
         sheetUtils.onClose(this as any)
     }
 
@@ -51,7 +53,7 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
 }
 
 
-export const useGlobalPopout = () => {
+export const useGlobalPopout = (onClose?: () => void) => {
     const applicationRef = useRef(new PopoutApplication())
 
     const renderPopout = useCallback((content: ReactNode, title: string, editMode = false) => {
@@ -59,6 +61,7 @@ export const useGlobalPopout = () => {
         app.Component = () => content
         app.startInEditMode = editMode
         app.options.window.title = title
+        app.onClose = onClose;
         app.render(true)
     }, [])
 
