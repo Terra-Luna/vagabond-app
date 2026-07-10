@@ -27,9 +27,9 @@ export const useGlobalPopout = () => {
     const { reactRoot, scaduRoot } = createContainerRoot()
     const theme = getTheme()
 
-    const renderPopout = useCallback((content: ReactNode) => {
+    const renderPopout = useCallback((content: ReactNode, editMode = false) => {
         reactRoot.render(
-            <EditModeContextProvider>
+            <EditModeContextProvider startInEditMode={editMode}>
                 <EmotionCacheContext scaduRoot={scaduRoot}>
                     <style>{vgLiteStyles}</style>
                     <div className={`${theme}`}>

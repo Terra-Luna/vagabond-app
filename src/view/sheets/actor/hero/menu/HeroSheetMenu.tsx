@@ -50,7 +50,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     createrPopout.closePopout();
                 }}
                 children={<HeroCreator hero={hero.parent} />}
-            />)
+            />, true)
         }
     }, [isCreatorOpen])
 

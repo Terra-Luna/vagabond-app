@@ -3,9 +3,9 @@ import { useCallback, useMemo, useState } from "react"
 import { EditModeContext } from "./Hooks";
 
 /** Consuming parents just have to add one of these and all their children then get access to useEditMode() for free */
-export const EditModeContextProvider = ({ children }) => {
+export const EditModeContextProvider = ({ children, startInEditMode = false }) => {
     // Set up the react state
-    const [isEditMode, setIsEditMode] = useState(false)
+    const [isEditMode, setIsEditMode] = useState(startInEditMode)
     const setEditMode = useCallback((value: boolean) => {
         setIsEditMode(value)
     }, [])
