@@ -1,47 +1,66 @@
 import ReactDom from "react-dom/client"
-import { vgLiteStyles } from "../utils/styleUtils";
-import { EditModeContextProvider } from "./context/EditModeContext/EditModeContext";
-import { EmotionCacheContext } from "./context/EmotionCacheContext";
-import { getTheme } from "../utils/foundryUtils";
-import { ReactNode, useCallback } from "react";
+import { FunctionComponent, ReactNode, useCallback, useRef } from "react";
+import * as sheetUtils from "./sheets/sheetUtils";
 
 /** 
  * This pattern has many gotchas! 
- * You are basically creating an "orphaned" popup that is now owned by the window.
- * It has its own edit mode context
+ * You are basically creating an "orphaned" popup that is its own scope.
+ * It has its own edit mode context, etc.
 */
-const createContainerRoot = () => {
-    const containerDiv = document.createElement('div')
-    containerDiv.setAttribute('style', "position: absolute;")
-    const reactRootElem = document.body.appendChild(containerDiv)
+class PopoutApplication extends foundry.applications.api.ApplicationV2 {
+    Component?: FunctionComponent;
+    startInEditMode: boolean = false;
 
-    //reactRootElem.setProperty("overflow", "visible") we may want this uncommented eventually
+    _reactRoot: ReactDom.Root | null = null
+    _scaduRoot: any
+    _toolbarHeight: number = 0
+    _isCollapsed: boolean = false
 
-    const scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
-    const reactRoot = ReactDom.createRoot(scaduRoot)
+    // Prep our react root and shadow dom if needed, and render
+    async _renderHTML() {
+        sheetUtils.onRenderHTML(this as any)
+    }
 
-    return { reactRoot, scaduRoot }
+    _replaceHTML() { } // no-op, implemented just to comply with application api
+
+    async _onRender(context, options) {
+        super._onRender(context, options)
+        sheetUtils.onRender(this as any)
+    }
+
+    _updatePosition(position) {
+        return super._updatePosition(sheetUtils.onUpdatePosition(this as any, position))
+    }
+
+    protected _onClose(options) {
+        super._onClose(options)
+        sheetUtils.onClose(this as any)
+    }
+
+    renderWithWrappers({ theme = "light", position }: { theme: string, position: { width: number, height: number, top: number, left: number } }) {
+        sheetUtils.onRenderWithWrappers(this as any, theme, position, this.startInEditMode)
+    }
+
+    protected getReactProps() {
+        return { sheet: this }
+    }
+
+    static DEFAULT_OPTIONS = {
+        position: { width: 400, height: 300 }
+    };
 }
 
+
 export const useGlobalPopout = () => {
-    const { reactRoot, scaduRoot } = createContainerRoot()
-    const theme = getTheme()
+    const applicationRef = useRef(new PopoutApplication())
 
-    const renderPopout = useCallback((content: ReactNode, editMode = false) => {
-        reactRoot.render(
-            <EditModeContextProvider startInEditMode={editMode}>
-                <EmotionCacheContext scaduRoot={scaduRoot}>
-                    <style>{vgLiteStyles}</style>
-                    <div className={`${theme}`}>
-                        {content}
-                    </div>
-                </EmotionCacheContext>
-            </EditModeContextProvider>)
-    }, [reactRoot, scaduRoot, theme])
+    const renderPopout = useCallback((content: ReactNode, title: string, editMode = false) => {
+        const app = applicationRef.current
+        app.Component = () => content
+        app.startInEditMode = editMode
+        app.options.window.title = title
+        app.render(true)
+    }, [])
 
-    const closePopout = useCallback(() => {
-        reactRoot.unmount()
-    }, [reactRoot])
-
-    return { renderPopout, closePopout }
+    return { renderPopout }
 }

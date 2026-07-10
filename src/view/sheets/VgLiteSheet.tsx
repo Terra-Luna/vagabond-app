@@ -1,9 +1,5 @@
 import ReactDom from "react-dom/client"
-import { DimensionsContext } from "../context/DimensionsContext"
-import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
-import { vgLiteStyles } from "../../utils/styleUtils"
-import { EmotionCacheContext } from "../context/EmotionCacheContext"
-import { getTheme } from "../../utils/foundryUtils"
+import { onClose, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "./sheetUtils"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
@@ -29,72 +25,27 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
 
     // Prep our react root and shadow dom if needed, and render
     async _renderHTML() {
-        if (!this._reactRoot) {
-            const defaultWindowContent = this.element.getElementsByClassName('window-content')?.[0]
-            if (defaultWindowContent) this.element.removeChild(defaultWindowContent)
-
-            const vgLiteDiv = document.createElement('div')
-            vgLiteDiv.setAttribute("class", "vglite-root")
-            const reactRootElem = this.element.appendChild(vgLiteDiv)
-
-            this.element.style.setProperty("overflow", "visible")
-
-            this._scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
-            this._reactRoot = ReactDom.createRoot(this._scaduRoot)
-
-            const header = this.element.querySelector('.window-header');
-            header.addEventListener('dblclick', () => {
-                this._isCollapsed = !this._isCollapsed
-                this.render()
-            });
-        }
-
-        this.renderWithWrappers({ theme: getTheme(), position: this.position })
+        onRenderHTML(this as any)
     }
 
     _replaceHTML() { } // no-op, implemented just to comply with sheets api
 
     async _onRender(context, options) {
         super._onRender(context, options)
-        this._toolbarHeight = this.element.children[0].getBoundingClientRect().height
+        onRender(this as any)
     }
 
     _updatePosition(position) {
-        const minWidth = 400
-        const minHeight = 248
-        const { width, height, top, left } = position
-        const realWidth = width === "auto" ? width : Math.max(minWidth, width)
-        const realHeight = height === "auto" ? height : Math.max(minHeight, height)
-
-        this.renderWithWrappers({ theme: getTheme(), position: { width: realWidth, height: realHeight, top, left } })
-        return super._updatePosition({ ...position, width: realWidth, height: realHeight })
+        return super._updatePosition(onUpdatePosition(this as any, position))
     }
 
     protected _onClose(options) {
         super._onClose(options)
-        this._reactRoot?.unmount()
-        this._reactRoot = null
+        onClose(this as any)
     }
 
     renderWithWrappers({ theme = "light", position }: { theme: string, position: { width: number, height: number, top: number, left: number } }) {
-        const { width, top, left } = position
-        let { height } = position
-        height -= this._toolbarHeight!
-
-        this.element.style.setProperty("overflow", this._isCollapsed ? "hidden" : "visible")
-
-        this._reactRoot!.render(
-            <DimensionsContext.Provider value={{ width, height, top, left }}>
-                <EditModeContextProvider>
-                    <EmotionCacheContext scaduRoot={this._scaduRoot}>
-                        <style>{vgLiteStyles}</style>
-                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
-                            <this.Component {...this.getReactProps()} />
-                        </div>
-                    </EmotionCacheContext>
-                </EditModeContextProvider>
-            </DimensionsContext.Provider>
-        );
+        onRenderWithWrappers(this as any, theme, position)
     }
 
     protected getReactProps() {

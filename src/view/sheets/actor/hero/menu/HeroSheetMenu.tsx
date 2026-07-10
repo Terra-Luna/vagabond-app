@@ -43,14 +43,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     // note - this could just be a useCallback that the button calls to render the popup, but that makes it so that if you click "create hero" multiple times, you get multiple popups
     useEffect(() => {
         if (isCreatorOpen) {
-            createrPopout.renderPopout(<PopoutWindow
-                title={"Hero Creator"}
-                onClose={() => {
-                    setIsCreatorOpen(false);
-                    createrPopout.closePopout();
-                }}
-                children={<HeroCreator hero={hero.parent} />}
-            />, true)
+            createrPopout.renderPopout(<HeroCreator hero={hero.parent} />, "Hero Creator", true)
         }
     }, [isCreatorOpen])
 
