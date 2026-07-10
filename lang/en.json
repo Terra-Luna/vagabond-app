@@ -805,7 +805,8 @@
       "extractAll": "Extract all",
       "anyOpt": "Any",
       "back": "Back",
-      "next": "Next"
+      "next": "Next",
+      "finish": "Finish"
     }
   }
 }

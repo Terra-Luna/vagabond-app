@@ -10,27 +10,27 @@ export const NavigationContextProvider = ({ children }: { children: ReactNode })
 
     const onNext = useCallback(() => {
         setCurrentStep(Math.min(totalSteps - 1, currentStep + 1))
-    }, [currentStep])
+    }, [currentStep, totalSteps])
 
     const onBack = useCallback(() => {
         setCurrentStep(Math.max(0, currentStep - 1))
     }, [currentStep])
 
-    const backButton =
+    const backButton = currentStep > 0 ?
         <SecondaryButton children={
             <div className="flex items-center gap-x-2">
                 <MoveLeft size={14} />
                 {vgLiteLang.ButtonActions.back}
             </div>
-        } onClick={onBack} />
+        } onClick={onBack} /> : <></>
 
     const nextButton =
         <PrimaryButton children={
             <div className="flex items-center gap-x-2">
-                {vgLiteLang.ButtonActions.next}
+                {`${currentStep + 1 === totalSteps ? vgLiteLang.ButtonActions.finish : vgLiteLang.ButtonActions.next}`}
                 <MoveRight size={14} />
             </div>
-        } onClick={onNext} />
+        } onClick={currentStep + 1 === totalSteps ? onNext : () => { console.log("Finished...") }} />
 
     const contextValue = useMemo(() => ({
         currentStep, setTotalSteps, onNext, onBack, backButton, nextButton

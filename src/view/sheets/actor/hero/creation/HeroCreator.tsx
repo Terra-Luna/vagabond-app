@@ -6,7 +6,9 @@ import { useNameAndAncestry } from "./component/NameAndAncestry"
 
 export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } }) => {
     const { currentStep, setTotalSteps } = useNavigationContext()
-    useEffect(() => { setTotalSteps(2) }, [])
+    useEffect(() => {
+        setTotalSteps(2)
+    }, [])
 
     const { NameAndAncestry } = useNameAndAncestry(hero)
     const { ClassSelection } = useClassSelection(hero)
