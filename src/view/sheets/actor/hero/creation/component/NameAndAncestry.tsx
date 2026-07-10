@@ -10,9 +10,11 @@ import { AncestryDataModel } from "../../../../../../model/item/character/Ancest
 import { AncestryReactComponent } from "../../../../item/character/ancestry/AncestrySheetComponent"
 import { EditModeContextProvider } from "../../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../../context/EditModeContext/EditModeOptions"
+import { useNavButtons } from "./NavButtons"
 
 export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const strings = vgLiteLang.HeroCreation
+    const { NavButtons } = useNavButtons(() => { }, () => { })
 
     useEffect(() => {
         CombinedItems('ancestry').then((res) => {
@@ -36,7 +38,7 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const NameAndAncestry = () => {
         return (
             <div className="bg-sheet-main-fill space-y-4">
-                <Header title={strings.identity} />
+                <NavButtons header={<Header title={strings.identity} />} />
                 <div>
                     <HeroCreationLabel text={strings.heroName} />
                     <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />

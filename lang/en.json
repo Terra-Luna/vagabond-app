@@ -802,7 +802,9 @@
       "grip": "Change grip",
       "extract": "Extract",
       "extractAll": "Extract all",
-      "anyOpt": "Any"
+      "anyOpt": "Any",
+      "back": "Back",
+      "next": "Next"
     }
   }
 }
