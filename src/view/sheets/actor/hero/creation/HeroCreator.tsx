@@ -5,9 +5,12 @@ import { useClassSelection } from "./component/ClassSelection"
 import { useNameAndAncestry } from "./component/NameAndAncestry"
 
 export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } }) => {
-    const { currentStep, setTotalSteps } = useNavigationContext()
+    const { currentStep, setTotalSteps, registerOnFinish } = useNavigationContext()
     useEffect(() => {
         setTotalSteps(2)
+        registerOnFinish(() => {
+            console.log("TODO: figure out how to wrap this up")
+        })
     }, [])
 
     const { NameAndAncestry } = useNameAndAncestry(hero)
