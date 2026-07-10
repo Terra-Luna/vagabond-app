@@ -3,6 +3,7 @@ import { DimensionsContext } from "../context/DimensionsContext"
 import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
 import { vgLiteStyles } from "../../utils/styleUtils"
 import { EmotionCacheContext } from "../context/EmotionCacheContext"
+import { getTheme } from "../../utils/foundryUtils"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
@@ -48,7 +49,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
             });
         }
 
-        this.renderWithWrappers({ theme: this._getTheme(), position: this.position })
+        this.renderWithWrappers({ theme: getTheme(), position: this.position })
     }
 
     _replaceHTML() { } // no-op, implemented just to comply with sheets api
@@ -58,10 +59,6 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         this._toolbarHeight = this.element.children[0].getBoundingClientRect().height
     }
 
-    _getTheme() {
-        return (game.settings as any).get("core", "uiConfig").colorScheme.applications
-    }
-
     _updatePosition(position) {
         const minWidth = 400
         const minHeight = 248
@@ -69,7 +66,7 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         const realWidth = width === "auto" ? width : Math.max(minWidth, width)
         const realHeight = height === "auto" ? height : Math.max(minHeight, height)
 
-        this.renderWithWrappers({ theme: this._getTheme(), position: { width: realWidth, height: realHeight, top, left } })
+        this.renderWithWrappers({ theme: getTheme(), position: { width: realWidth, height: realHeight, top, left } })
         return super._updatePosition({ ...position, width: realWidth, height: realHeight })
     }
 
