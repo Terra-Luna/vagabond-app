@@ -8,6 +8,7 @@ import { HeroCreationDropdown } from "./HeroCreationDropdown"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../../../../utils/modelUtil"
 import { AncestryDataModel } from "../../../../../../model/item/character/AncestryDataModel"
 import { AncestryReactComponent } from "../../../../item/character/ancestry/AncestrySheetComponent"
+import { SkillCard } from "../../../../../component/SkillCard"
 
 export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const strings = vgLiteLang.HeroCreation
@@ -29,7 +30,6 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const onSelectAncestry = useCallback(async (selection: string) => {
         const item = await getFullItem<AncestryDataModel>(ancestries?.find(it => it._id === selection) ?? null)
         if (item) setAncestryItem(item)
-        console.log(item)
     }, [ancestries, ancestryItem])
 
     const NameAndAncestry = () => {
@@ -47,12 +47,20 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
                         options={ancestryOptions ?? []}
                         onChange={onSelectAncestry}
                     />
-                    <HeroCreationLabeledField
-                        label={strings.typeSize}
-                        value={`${vgLiteLang.BeingTypes[ancestryItem?.system.beingType ?? 'humanlike']} / ${vgLiteLang.Sizes[ancestryItem?.system.beingSize ?? 'medium']}`}
-                    />
                 </div>
-                <AncestryReactComponent item={ancestryItem ?? null} />
+                {
+                    ancestryItem ?
+                        <SkillCard
+                            img={ancestryItem.img ?? ''}
+                            title={ancestryItem.name}
+                            subtitles={[
+                                { label: strings.beingSize, value: vgLiteLang.Sizes[ancestryItem.system.beingSize ?? 'medium'] },
+                                { label: strings.beingType, value: vgLiteLang.BeingTypes[ancestryItem.system.beingType] }
+                            ]}
+                            description={""}
+                        /> : <></>
+                }
+
             </div>
         )
     }

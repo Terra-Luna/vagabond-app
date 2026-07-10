@@ -1,27 +1,21 @@
-
-import { LucidePlus } from "lucide-react";
-import { useCallback, useEffect } from "react";
-import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel";
-import { updateDocument } from "../../../../../utils/documentUtils";
-import { createDropdownEntries } from "../../../../../utils/localeUtils";
-import { PrimaryButton } from "../../../../component/Button";
-import { DropDown } from "../../../../component/Dropdown";
-import { EditableNameField } from "../../../../component/EditableTextField";
-import { LabelledField } from "../../../../component/LabelledField";
-import { RichTextField } from "../../../../component/RichTextField";
-import { SheetHeader } from "../../../../component/SheetHeader";
-import { useEditMode } from "../../../../context/EditModeContext/Hooks";
-import { addNewBlankGrant, addNewBlankModifier } from "./utils";
+import { LucidePlus } from "lucide-react"
+import { useCallback, useEffect } from "react"
+import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel"
+import { updateDocument } from "../../../../../utils/documentUtils"
+import { createDropdownEntries } from "../../../../../utils/localeUtils"
+import { PrimaryButton } from "../../../../component/Button"
+import { DropDown } from "../../../../component/Dropdown"
+import { RichTextField } from "../../../../component/RichTextField"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { addNewBlankGrant, addNewBlankModifier } from "./utils"
 import { Trait } from "./Trait";
-import { lang } from "../../../../../utils/lang";
-import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent";
-
-interface AncestryComponentProps {
-    ancestry: AncestryDataModel
-}
+import { lang } from "../../../../../utils/lang"
+import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
+import { ItemSheetBanner } from "../../shared/ItemSheetBanner"
 
 export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } | null }) => {
     if (!item) return
+    const { isEditMode } = useEditMode()
     const ancestry = item.system
 
     const onDescriptionChange = useCallback((val) => {
@@ -31,8 +25,24 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
     return (
         <BaseItemSheetComponent
             bodyClassName="mt-2 mx-2"
-            banner={<AncestrySheetHeader {...{ ancestry }} />}
+            banner={<ItemSheetBanner item={item} />}
             body={<>
+                {
+                    isEditMode ? <div className="text-header-text-secondary flex gap-2">
+                        <DropDown label={lang.VGLITE.ItemSheet.size}
+                            variant="alternate"
+                            options={createDropdownEntries(lang.VGLITE.Sizes)}
+                            parent={ancestry.parent}
+                            updateMechanism={{ updatePath: ['beingSize'] }}
+                            value={ancestry.beingSize ?? ''} />
+                        <DropDown label={lang.VGLITE.ItemSheet.type}
+                            variant="alternate"
+                            options={createDropdownEntries(lang.VGLITE.BeingTypes)}
+                            parent={ancestry.parent}
+                            updateMechanism={{ updatePath: ['beingType'] }}
+                            value={ancestry.beingType} />
+                    </div> : <></>
+                }
                 <Traits ancestry={ancestry} />
             </>}
             description={<RichTextField defaultValue={ancestry.description} onChange={onDescriptionChange} height={100} />} />
@@ -75,31 +85,4 @@ const Traits = ({ ancestry }: { ancestry: AncestryDataModel }) => {
                     startExpanded={ancestry.traits.length === 1} />
             ))}</div>
     </div>
-}
-
-const AncestrySheetHeader = ({ ancestry }: AncestryComponentProps) => {
-    const { editModeToggleBtn } = useEditMode()
-    return <SheetHeader name={
-        <div className="flex">
-            <EditableNameField actor={ancestry.parent} />
-            <div className="ml-auto mt-2">{editModeToggleBtn}</div>
-        </div>
-    } subtitle={
-        <>
-            <div className="text-text-section-header flex gap-2">
-                <DropDown label={lang.VGLITE.ItemSheet.size}
-                    variant="alternate"
-                    options={createDropdownEntries(lang.VGLITE.Sizes)}
-                    parent={ancestry.parent}
-                    updateMechanism={{ updatePath: ['beingSize'] }}
-                    value={ancestry.beingSize ?? ''} />
-                <DropDown label={lang.VGLITE.ItemSheet.type}
-                    variant="alternate"
-                    options={createDropdownEntries(lang.VGLITE.BeingTypes)}
-                    parent={ancestry.parent}
-                    updateMechanism={{ updatePath: ['beingType'] }}
-                    value={ancestry.beingType} />
-            </div>
-        </>
-    } />
 }

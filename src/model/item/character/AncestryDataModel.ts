@@ -1,6 +1,7 @@
 import { ActiveEffectMode } from "../../../document/VgLiteActiveEffect"
 import { updateDocument } from "../../../utils/documentUtils"
-import { lang } from "../../../utils/lang"
+import { lang, vgLiteLang } from "../../../utils/lang"
+import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
 import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 import { PerkDataModel } from "./PerkDataModel"
@@ -109,4 +110,11 @@ export const ancestryFullDescription = (ancestry: AncestryDataModel): string => 
         description += i[0] + ": " + i[1]
     })
     return description
+}
+
+export const ancestrySizeAndType = (ancestry: AncestryDataModel): CardSubHeaderValues[] => {
+    return [
+        { label: vgLiteLang.HeroCreation.beingSize, value: vgLiteLang.Sizes[ancestry.beingSize ?? 'medium'] },
+        { label: vgLiteLang.HeroCreation.beingType, value: vgLiteLang.BeingTypes[ancestry.beingType] }
+    ]
 }

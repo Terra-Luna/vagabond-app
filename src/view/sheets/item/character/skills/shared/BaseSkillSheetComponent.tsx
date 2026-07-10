@@ -1,10 +1,10 @@
 import { Description } from "../../../../shared/Description"
-import { SkillSheetBanner } from "./SkillSheetBanner"
+import { ItemSheetBanner } from "../../../shared/ItemSheetBanner"
 
 export const BaseSkillSheetComponent = ({ item, content }) => {
     return (
         <div className="flex flex-col grow overflow-hidden">
-            <SkillSheetBanner skill={item} />
+            <ItemSheetBanner item={item} />
             <div className={`
                     flex-1 
                     -mt-8 pt-8

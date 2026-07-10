@@ -510,7 +510,8 @@
       "identity": "IDENTITY",
       "heroName": "Hero Name",
       "selectAncestry": "Select ancestry...",
-      "typeSize": "Type/Size"
+      "beingType": "Type",
+      "beingSize": "Size"
 
     },
     "HeroSheet": {
