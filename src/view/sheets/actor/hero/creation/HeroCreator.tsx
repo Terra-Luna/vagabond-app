@@ -1,10 +1,12 @@
+import { useEffect } from "react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { useNavigationContext } from "../../../../context/EditModeContext/Hooks"
 import { useClassSelection } from "./component/ClassSelection"
 import { useNameAndAncestry } from "./component/NameAndAncestry"
 
 export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } }) => {
-    const { currentStep } = useNavigationContext()
+    const { currentStep, setTotalSteps } = useNavigationContext()
+    useEffect(() => { setTotalSteps(2) }, [])
 
     const { NameAndAncestry } = useNameAndAncestry(hero)
     const { ClassSelection } = useClassSelection(hero)
