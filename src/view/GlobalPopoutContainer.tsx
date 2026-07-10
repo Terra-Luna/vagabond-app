@@ -4,6 +4,7 @@ import { EditModeContextProvider } from "./context/EditModeContext/EditModeConte
 import { EmotionCacheContext } from "./context/EmotionCacheContext";
 import { getTheme } from "../utils/foundryUtils";
 import { ReactNode, useCallback } from "react";
+import { EditModeOptions } from "./context/EditModeContext/EditModeOptions";
 
 /** 
  * This pattern has many gotchas! 
@@ -27,9 +28,9 @@ export const useGlobalPopout = () => {
     const { reactRoot, scaduRoot } = createContainerRoot()
     const theme = getTheme()
 
-    const renderPopout = useCallback((content: ReactNode, editMode = false) => {
+    const renderPopout = useCallback((content: ReactNode, editMode: EditModeOptions = EditModeOptions.NEVER) => {
         reactRoot.render(
-            <EditModeContextProvider startInEditMode={editMode}>
+            <EditModeContextProvider initialEditMode={editMode}>
                 <EmotionCacheContext scaduRoot={scaduRoot}>
                     <style>{vgLiteStyles}</style>
                     <div className={`${theme}`}>

@@ -3,12 +3,14 @@ import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { EditableTextField } from "../../../../../component/EditableTextField"
 import { Header } from "../../../../../component/Header"
-import { HeroCreationLabel, HeroCreationLabeledField } from "./HeroCreationTypography"
+import { HeroCreationLabel, } from "./HeroCreationTypography"
 import { HeroCreationDropdown } from "./HeroCreationDropdown"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../../../../utils/modelUtil"
 import { AncestryDataModel } from "../../../../../../model/item/character/AncestryDataModel"
-import { AncestryReactComponent } from "../../../../item/character/ancestry/AncestrySheetComponent"
 import { SkillCard } from "../../../../../component/SkillCard"
+import { AncestryReactComponent } from "../../../../item/character/ancestry/AncestrySheetComponent"
+import { EditModeContextProvider } from "../../../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../../../context/EditModeContext/EditModeOptions"
 
 export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const strings = vgLiteLang.HeroCreation
@@ -50,15 +52,10 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
                 </div>
                 {
                     ancestryItem ?
-                        <SkillCard
-                            img={ancestryItem.img ?? ''}
-                            title={ancestryItem.name}
-                            subtitles={[
-                                { label: strings.beingSize, value: vgLiteLang.Sizes[ancestryItem.system.beingSize ?? 'medium'] },
-                                { label: strings.beingType, value: vgLiteLang.BeingTypes[ancestryItem.system.beingType] }
-                            ]}
-                            description={""}
-                        /> : <></>
+                        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                            <AncestryReactComponent item={ancestryItem} />
+                        </EditModeContextProvider> :
+                        <></>
                 }
 
             </div>

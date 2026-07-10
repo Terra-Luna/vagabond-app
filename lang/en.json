@@ -507,6 +507,7 @@
       "other": "Other"
     },
     "HeroCreation": {
+      "windowTitle": "Hero Creator",
       "identity": "IDENTITY",
       "heroName": "Hero Name",
       "selectAncestry": "Select ancestry...",
