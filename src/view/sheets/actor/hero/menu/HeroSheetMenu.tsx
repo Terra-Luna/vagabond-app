@@ -4,6 +4,8 @@ import { VgLiteActorSheet } from "../../VgLiteActorSheet"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
+import { PopoutWindow } from "../../../../component/PopoutWindow"
+import { HeroCreator } from "../creation/HeroCreator"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -12,6 +14,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             !sheet.classList.contains('theme-light') && document.body.classList.contains('theme-dark')
         )
     )
+
+    const [isCreatorOpen, setIsCreatorOpen] = useState(false)
 
     const toggleMenu = useCallback(() => {
         setIsOpen(!isOpen)
@@ -33,7 +37,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         sheet._renderHTML()
     }, [sheet, isDarkMode])
 
-    return (
+    return (<>
         <div className={`relative ${className}`}>
             {/* MENU BUTTON */}
             <button onClick={toggleMenu} className="flex items-center justify-center p-2 cursor-pointer">
@@ -63,7 +67,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     }
                     {
                         !hero.ancestry || !hero.class ?
-                            <MenuListItem text={"CREATE"} onClick={() => { }} toggleMenu={toggleMenu} /> :
+                            <MenuListItem text={"CREATE"} onClick={() => setIsCreatorOpen(true)} toggleMenu={toggleMenu} /> :
                             <></>
                     }
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
@@ -74,5 +78,12 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 </ul>
             </div>
         </div>
-    )
+        {isCreatorOpen && (
+            <PopoutWindow
+                title={"Hero Creator"}
+                onClose={() => setIsCreatorOpen(false)}
+                children={<HeroCreator hero={hero.parent} />}
+            />
+        )}
+    </>)
 }

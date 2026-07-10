@@ -16,6 +16,9 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
         CombinedItems('ancestry').then((res) => {
             setAncestries(res)
             setAncestryOptions(res.map(it => ({ value: it._id, label: it.name })))
+            getFullItem<AncestryDataModel>(res[0]).then((item) => {
+                if (item) setAncestryItem(item)
+            })
         })
     }, [])
 
@@ -26,24 +29,27 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const onSelectAncestry = useCallback(async (selection: string) => {
         const item = await getFullItem<AncestryDataModel>(ancestries?.find(it => it._id === selection) ?? null)
         if (item) setAncestryItem(item)
-    }, [ancestryItem])
+        console.log(item)
+    }, [ancestries, ancestryItem])
 
     const NameAndAncestry = () => {
         return (
             <div className="bg-sheet-main-fill space-y-4">
                 <Header title={strings.identity} />
-                <HeroCreationLabel text={strings.heroName} />
-                <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />
-                <div className="flex ga-x-2">
+                <div>
+                    <HeroCreationLabel text={strings.heroName} />
+                    <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />
+                </div>
+                <div className="flex gap-x-4">
                     <HeroCreationDropdown
                         label={strings.selectAncestry}
-                        value={ancestryItem?.name ?? strings.selectAncestry}
+                        value={ancestryItem?.id ?? strings.selectAncestry}
                         options={ancestryOptions ?? []}
                         onChange={onSelectAncestry}
                     />
                     <HeroCreationLabeledField
                         label={strings.typeSize}
-                        value={`${ancestryItem?.system.beingType} / ${ancestryItem?.system.beingSize}`}
+                        value={`${vgLiteLang.BeingTypes[ancestryItem?.system.beingType ?? 'humanlike']} / ${vgLiteLang.Sizes[ancestryItem?.system.beingSize ?? 'medium']}`}
                     />
                 </div>
                 <AncestryReactComponent item={ancestryItem ?? null} />

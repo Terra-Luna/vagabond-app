@@ -1,15 +1,17 @@
-import { useMemo } from "react"
+import { useEffect, useState } from "react"
 import { DropDown } from "../../../../component/Dropdown"
 import { CombinedItems } from "../../../../../utils/modelUtil"
 
-const getAllPerks = async () => {
-    return await CombinedItems('perk')
-}
+export const PerkSelect = (props: Omit<React.ComponentProps<typeof DropDown>, 'options'>) => {
+    const [perkOptions, setPerkOptions] = useState<{ label: string, value: string | null }[]>([])
 
-export const PerkSelect = async (props: Omit<React.ComponentProps<typeof DropDown>, 'options'>) => {
-    const allPerks = getAllPerks()
+    useEffect(() => {
+        CombinedItems('perk').then((perks) => {
+            setPerkOptions(
+                perks.map(p => ({ label: p.name, value: p._id }))
+            )
+        })
+    }, [])
 
-    const perkOptions = useMemo(async () => (await allPerks).map(perk => ({ label: (perk as any).name, value: perk._id })), [allPerks])
-
-    return <DropDown {...props} options={await perkOptions} />
+    return <DropDown {...props} options={perkOptions} />
 }

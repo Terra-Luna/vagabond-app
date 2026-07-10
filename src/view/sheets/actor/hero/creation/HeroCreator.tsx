@@ -5,7 +5,8 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     const { NameAndAncestry } = useNameAndAncestry(hero)
 
     return (
-        <div>
+        <div className="text-text-primary text-lg font-eskapade">
+            
             <NameAndAncestry />
         </div>
     )

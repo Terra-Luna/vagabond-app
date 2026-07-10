@@ -1,5 +1,5 @@
 export const HeroCreationLabel = ({ text }: { text: string }) => {
-    return <p className="text-base text-header-text-tertiary font-eskapade font-bold">{text}</p>
+    return <p className="text-lg text-text-primary font-eskapade font-bold">{text}</p>
 }
 
 export const HeroCreationLabeledField = ({ label, value }: { label: string, value: string }) => {

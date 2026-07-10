@@ -246,6 +246,9 @@ importers:
       react-html-parser:
         specifier: 2.0.2
         version: 2.0.2(react@19.2.6)
+      react-resizable:
+        specifier: ^4.0.2
+        version: 4.0.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
       react-select:
         specifier: ^5.10.2
         version: 5.10.2(@types/react@19.2.6)(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
@@ -3555,6 +3558,12 @@ packages:
 
   react-is@19.2.7:
     resolution: {integrity: sha512-kZFnouyVv7eP/Phmrlo9FK+zcAdriZJvzxXHF1Sl1P377WSGe2G/JxVolhTrB/jeV47lKImhNUsijjHAAbcl/A==}
+
+  react-resizable@4.0.2:
+    resolution: {integrity: sha512-jZD9ghYRmyJCw0+awYctSZ+9pmX1WXQvzDrTovELYc8obC/BShTI2r4c14LIVzeQ+vJZNb0yKM7bG2eqv7Vfyg==}
+    peerDependencies:
+      react: '>= 16.3'
+      react-dom: '>= 16.3'
 
   react-select@5.10.2:
     resolution: {integrity: sha512-Z33nHdEFWq9tfnfVXaiM12rbJmk+QjFEztWLtmXqQhz6Al4UZZ9xc0wiatmGtUOCCnHN0WizL3tCMYRENX4rVQ==}
@@ -7970,6 +7979,13 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.2.7: {}
+
+  react-resizable@4.0.2(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
+    dependencies:
+      prop-types: 15.8.1
+      react: 19.2.6
+      react-dom: 19.2.6(react@19.2.6)
+      react-draggable: 4.5.0(react-dom@19.2.6(react@19.2.6))(react@19.2.6)
 
   react-select@5.10.2(@types/react@19.2.6)(react-dom@19.2.6(react@19.2.6))(react@19.2.6):
     dependencies:

@@ -23,12 +23,12 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
      */
     if (!item) {
         CombinedItemsMultiType(inventoryItemTypes()).then((items) => {
-            getFullItem(items.find(it => it._id === itemId) ?? null).then((itById) => {
+            getFullItem<EquipmentDataModel<EquipmentSchema>>(items.find(it => it._id === itemId) ?? null).then((itById) => {
                 if (itById) {
                     item = itById
                 }
                 else {
-                    getFullItem(items.find(it => it.name === itemName) ?? null).then((itByName) => {
+                    getFullItem<EquipmentDataModel<EquipmentSchema>>(items.find(it => it.name === itemName) ?? null).then((itByName) => {
                         item = itByName
                     })
                 }
