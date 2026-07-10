@@ -35,7 +35,10 @@ interface NavigationContextProps {
     currentStep: number
     onNext: () => void
     onBack: () => void
+    setTotalSteps: (steps: number) => void
+    backButton: ReactNode
+    nextButton: ReactNode
 }
-const DefaultNavigationContextValue: NavigationContextProps = { currentStep: 0, onNext: () => { }, onBack: () => { } }
+const DefaultNavigationContextValue: NavigationContextProps = { currentStep: 0, onNext: () => { }, onBack: () => { }, setTotalSteps: () => { }, backButton: undefined, nextButton: undefined }
 export const NavigationContext = createContext(DefaultNavigationContextValue)
 export const useNavigationContext = () => useContext(NavigationContext)

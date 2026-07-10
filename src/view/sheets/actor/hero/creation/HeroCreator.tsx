@@ -15,7 +15,7 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     ]
 
     return (
-        <div className="text-text-primary text-lg font-eskapade space-y-2">
+        <div className="text-text-primary text-lg font-eskapade space-y-2 p-2">
             {steps[currentStep]}
         </div>
     )

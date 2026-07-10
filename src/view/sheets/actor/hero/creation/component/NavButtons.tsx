@@ -1,27 +1,15 @@
-import { MoveLeft, MoveRight } from "lucide-react"
-import { vgLiteLang } from "../../../../../../utils/lang"
-import { SecondaryButton, PrimaryButton } from "../../../../../component/Button"
 import { ReactNode } from "react"
+import { useNavigationContext } from "../../../../../context/EditModeContext/Hooks"
 
-export const useNavButtons = (onBack, onNext) => {
+export const useNavButtons = () => {
+    const { backButton, nextButton } = useNavigationContext()
+
     const NavButtons = ({ header }: { header: ReactNode }) => {
         return(
             <div className="flex gap-x-2 justify-between">
-                <SecondaryButton children={
-                    <div className="flex items-center gap-x-2">
-                        <MoveLeft size={14} />
-                        {vgLiteLang.ButtonActions.back}
-                    </div>
-                } onClick={onBack} />
-
+                {backButton}
                 {header}
-
-                <PrimaryButton children={
-                    <div className="flex items-center gap-x-2">
-                        {vgLiteLang.ButtonActions.next}
-                        <MoveRight size={14} />
-                    </div>
-                } onClick={onNext} />
+                {nextButton}
             </div>
         )
     }

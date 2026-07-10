@@ -11,12 +11,10 @@ import { AncestryReactComponent } from "../../../../item/character/ancestry/Ance
 import { EditModeContextProvider } from "../../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../../context/EditModeContext/EditModeOptions"
 import { useNavButtons } from "./NavButtons"
-import { useNavigationContext } from "../../../../../context/EditModeContext/Hooks"
 
 export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const strings = vgLiteLang.HeroCreation
-    const { onNext, onBack } = useNavigationContext()
-    const { NavButtons } = useNavButtons(onBack, onNext)
+    const { NavButtons } = useNavButtons()
 
     useEffect(() => {
         CombinedItems('ancestry').then((res) => {

@@ -1,13 +1,11 @@
 import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { Header } from "../../../../../component/Header"
-import { useNavigationContext } from "../../../../../context/EditModeContext/Hooks"
 import { useNavButtons } from "./NavButtons"
 
 export const useClassSelection = (hero: Actor & { system: HeroDataModel }) => {
     const strings = vgLiteLang.HeroCreation
-    const { onNext, onBack } = useNavigationContext()
-    const { NavButtons } = useNavButtons(onBack, onNext)
+    const { NavButtons } = useNavButtons()
 
     const ClassSelection = () => {
         return (
