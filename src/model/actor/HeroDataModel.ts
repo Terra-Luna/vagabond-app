@@ -205,12 +205,23 @@ export function setSaves(hero: HeroDataModel) {
 }
 
 export function setManaValues(hero: HeroDataModel) {
-    const cls = hero.class
-    if (cls != undefined && cls.castingSkill != null) {
-        hero.mana.max = hero.level.current! * cls.manaMultiplier!
-        hero.mana.maxCast =
-            hero.level.current! < 1 ? 0 :
-                Math.ceil((hero.level.current!) / 2) + Number(hero.stats[cls?.maxManaStat?.toLowerCase() || ''])
+    const manaValues = calculateManaValues(
+        hero.level.current ?? 0,
+        Number(hero.stats[hero.class.maxManaStat.toLowerCase() || '']),
+        hero.class
+    )
+    hero.mana.max = manaValues.max
+    hero.mana.maxCast = manaValues.maxCast
+}
+
+export function calculateManaValues(level: number, manaStatVal: number, cls: any): { max: number, maxCast: number } {
+    if (cls && cls.castingSkill) {
+        const max = level * cls.manaMultiplier
+        const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
+        return { max: max, maxCast: maxCast }
+    }
+    else {
+        return { max: 0, maxCast: 0 }
     }
 }
 

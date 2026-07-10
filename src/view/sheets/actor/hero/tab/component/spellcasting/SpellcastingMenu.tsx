@@ -60,7 +60,6 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
     const onSelectSpell = useCallback((spellId: string) => {
         const sp = hero?.parent.items.get(spellId)
         setSpell(sp)
-        console.log(sp)
         if (delivery && sp?.system.damageType === 'none') {
             onUpdateDamageDice('0')
             onToggleSpellEffect(true)
@@ -214,7 +213,6 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
             hero.parent.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) })
 
             let skillCheck: SkillCheckResult | undefined = undefined
-            console.log(skill)
             if (delivery.targetTokenIds.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1)) {
                 skillCheck = await rollSkillCheck(vgLiteLang.Skills[skill].name, hero.skills[skill].value, e, vgLiteLang.FavorHinder.none, hero.mana.spellCrit)
                 sendVgLiteChatMessage(hero.parent, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)

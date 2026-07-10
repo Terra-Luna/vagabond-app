@@ -533,9 +533,13 @@
       "statArrayPool": "STAT ARRAY POOL",
       "statArrayDrag": "Drag a number from the pool below to assign a stat value.",
       "statsRoll": "Roll",
+      "statsReset": "Reset",
       "statsSelect": "or Select",
-      "dropHere": "DROP HERE"
-
+      "dropHere": "DROP HERE",
+      "vitals": "Vitals Preview",
+      "maxhp": "MAX HP",
+      "maxmana": "MAX MANA",
+      "maxcast": "MAX CAST"
     },
     "HeroSheet": {
       "hp": "HIT POINTS",

@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
-import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
+import { calculateManaValues, HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { useNavButtons } from "../../../../../context/navigation/NavButtons"
-import { Header } from "../../../../../component/Header"
+import { Divider, Header } from "../../../../../component/Header"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { SecondaryButton } from "../../../../../component/Button"
-import { Dices } from "lucide-react"
+import { Dices, Undo } from "lucide-react"
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { DraggableStatBlock } from "../component/DraggableStatBlock"
@@ -13,23 +13,32 @@ import { StatDragTarget } from "../component/StatDragTarget"
 
 export const useCoreStats = (hero: Actor & { system: HeroDataModel }, clazz: ClassDataModel | undefined) => {
     const strings = vgLiteLang.HeroCreation
-    const { NavButtons } = useNavButtons()
-    
+    const { NavButtons, setCanProceed } = useNavButtons()
     const stats = vgLiteLang.Stat
-    const keyStats = clazz?.keyStats
     const statBlocks = vgLiteLang.BaseStatBlocks
     const [selectedArr, setSelectedArr] = useState<{ index: number, values: number[], usedIndices: number[] }>()
     const [assignedStats, setAssignedStats] = useState<{ stat: string, value: number | null, poolIndex: number | null }[]>([])
     const [dragOverKey, setDragOverStat] = useState<string | null>(null)
     
     const resetAssignedStats = () => {
+        setCanProceed(false)
         setAssignedStats(Object.keys(stats).map(s => ({ stat: s, value: null, poolIndex: null })))
+        setSelectedArr(prev => {
+            if (!prev) return prev
+            else return { ...prev, usedIndices: [] }
+        })
     }
 
     useEffect(() => {
+        setCanProceed(false)
         setSelectedArr({ index: 0, values: statBlocks[0], usedIndices: [] })
         resetAssignedStats()
     }, [])
+
+    useEffect(() => {
+        if (assignedStats.every(s => s.value !== null)) setCanProceed(true)
+        console.log(assignedStats.every(s => s.value !== null))
+    }, [assignedStats])
 
     const onSelectStatArray = useCallback((index: number) => {
         setSelectedArr({ index: index, values: statBlocks[index], usedIndices: []})
@@ -51,7 +60,6 @@ export const useCoreStats = (hero: Actor & { system: HeroDataModel }, clazz: Cla
             poolIndex: poolIndex
         }
         e.dataTransfer.setData("text/plain", JSON.stringify(payload))
-        console.log("ondragstart", value, poolIndex)
     }
 
     const onDragDrop = (e: React.DragEvent, targetStatKey: string) => {
@@ -84,17 +92,28 @@ export const useCoreStats = (hero: Actor & { system: HeroDataModel }, clazz: Cla
 
     const renderCoreStats = (
         <div className="bg-sheet-main-fill space-y-4">
+            {/* HEADER AND NAVIGATION BUTTONS */}
             <NavButtons header={<Header title={strings.coreStats} />} />
+
             <div className="w-full space-y-2 items-center justify-center text-center">
+                {/* STAT ARRAY HEADER */}
                 <HeroCreationLabel text={strings.statArrayPool} />
                 <HeroCreationSubtext text={strings.statArrayDrag} />
+
                 {/* STAT POOL SELECTION */}
                 <div className="flex gap-x-4 justify-center items-end">
                     <div>
                         <SecondaryButton
-                            icon={<Dices size={14} />}
-                            children={<p className="font-paradigm font-bold">{strings.statsRoll}</p>}
-                            onClick={randomizeStatBlockSelection}
+                            icon={assignedStats.some(stats => stats.value != null) ? <Undo size={14} /> : <Dices size={14} />}
+                            children={
+                                assignedStats.some(stats => stats.value != null) ?
+                                    <p className="font-paradigm font-bold">{strings.statsReset}</p> :
+                                    <p className="font-paradigm font-bold">{strings.statsRoll}</p>
+                            }
+                            onClick={assignedStats.some(stats => stats.value != null) ?
+                                resetAssignedStats :
+                                randomizeStatBlockSelection
+                            }
                         />
                     </div>
                     <span className="font-bold text-left">
@@ -108,15 +127,16 @@ export const useCoreStats = (hero: Actor & { system: HeroDataModel }, clazz: Cla
                         />
                     </span>
                 </div>
-                {/* SELECTED STAT POOL DRAGABLES */}
+
                 <div className="justify-center">
-                    <div
-                        className="flex w-fit gap-x-2 p-2 mx-auto justify-center border border-solid border-table-border rounded-md">
+                    {/* SELECTED STAT POOL DRAGABLES */}
+                    <div className="flex w-fit gap-x-2 p-2 mx-auto justify-center border border-solid border-table-border rounded-md">
                         {
                             selectedArr?.values?.map((it, index) => {
                                 const isUsed = selectedArr.usedIndices.includes(index)
                                 return (
                                     <DraggableStatBlock
+                                        key={index}
                                         index={index}
                                         value={it}
                                         isUsed={isUsed}
@@ -127,7 +147,7 @@ export const useCoreStats = (hero: Actor & { system: HeroDataModel }, clazz: Cla
                         }
                     </div>
                     {/* STAT DRAG TARGETS */}
-                    <div className="grid grid-cols-2 justify-items-center gap-4 px-8 mt-2 mb-12">
+                    <div className="grid grid-cols-[repeat(3,100px)] justify-center text-center gap-4 px-8 mt-2 mb-4">
                         {
                             Object.keys(stats).map((statKey) => {
                                 const currentAssignment = assignedStats.find(item => item.stat === statKey)
@@ -136,7 +156,7 @@ export const useCoreStats = (hero: Actor & { system: HeroDataModel }, clazz: Cla
                                         key={statKey}
                                         stat={statKey}
                                         stats={stats}
-                                        isKeyStat={keyStats?.includes(statKey)}
+                                        isKeyStat={clazz?.keyStats?.includes(statKey)}
                                         onDragDrop={onDragDrop}
                                         currentAssignment={currentAssignment}
                                         dragOverStat={dragOverKey}
@@ -145,6 +165,29 @@ export const useCoreStats = (hero: Actor & { system: HeroDataModel }, clazz: Cla
                                 )
                             })
                         }
+                    </div>
+                </div>
+                {/* VITAL STATS PREVIEW */}
+                <div className="justify-center">
+                    <HeroCreationLabel text={strings.vitals} />
+                    <Divider />
+                    <div className="flex gap-x-2 mt-1 justify-center">
+                        <div className="bg-text-hp-max/20 rounded-md border border-solid border-text-hp-current p-4">
+                            <HeroCreationSubtext text={strings.maxhp} />
+                            <p className="text-4xl text-text-hp-current font-bold">{`${(assignedStats.find(s => s.stat === 'might')?.value ?? 0) * 2}`}</p>
+                        </div>
+                        <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
+                            <HeroCreationSubtext text={strings.maxmana} />
+                            <p className="text-4xl text-mana font-bold">{`
+                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.maxManaStat)?.value ?? 0, clazz).max}
+                            `}</p>
+                        </div>
+                        <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
+                            <HeroCreationSubtext text={strings.maxcast} />
+                            <p className="text-4xl text-mana font-bold">{`
+                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.maxManaStat)?.value ?? 0, clazz).maxCast}
+                            `}</p>
+                        </div>
                     </div>
                 </div>
             </div>

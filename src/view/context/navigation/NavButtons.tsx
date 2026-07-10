@@ -1,18 +1,19 @@
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import { useNavigationContext } from "../EditModeContext/Hooks"
 
 export const useNavButtons = () => {
     const { backButton, nextButton } = useNavigationContext()
+    const [canProceed, setCanProceed] = useState(true)
 
     const NavButtons = ({ header }: { header: ReactNode }) => {
         return(
             <div className="flex gap-x-0.5 justify-between">
                 {backButton}
                 {header}
-                {nextButton}
+                {canProceed ? nextButton : <></>}
             </div>
         )
     }
 
-    return { NavButtons }
+    return { NavButtons, setCanProceed }
 }

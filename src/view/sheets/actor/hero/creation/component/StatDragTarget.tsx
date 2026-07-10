@@ -1,3 +1,4 @@
+import { Key } from "lucide-react"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
@@ -6,7 +7,12 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
     const isHovered = dragOverStat === stat
     return (
         <div>
-            <HeroCreationLabel text={stats[stat].name} />
+            <div className="flex gap-x-1 justify-center">
+                <HeroCreationLabel text={stats[stat].name} />
+                {
+                    isKeyStat ? <Key size={24} className="text-text-header-tertiary" strokeWidth={2} /> : <></>
+                }
+            </div>
             <div
                 onDragOver={(e) => {
                     e.preventDefault()
@@ -33,16 +39,18 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
                     bg-stat-block-fill rounded-md
                     border border-dashed architecture-transition
                     hover:border-table-border
-                    min-h-[56px] w-[72px] px-4 py-4
+                    min-h-[56px] w-[100px] px-4 py-4
                     ${isHovered ? 'border-table-border' : 'border-transparent'}
                 `}
             >
                 {
-                    currentAssignment?.value ? (
-                        <span className="font-bold">{currentAssignment.value}</span>
-                    ) : (
-                        <p className="text-sm text-text-header-primary font-paradigm">{strings.dropHere}</p>
-                    )
+                    currentAssignment?.value ?
+                        <div className="flex gap-x-1">
+                            <span className="font-bold">{currentAssignment.value}</span>
+                        </div> :
+                        <p className="text-sm text-text-tertiary font-paradigm">
+                            {strings.dropHere}
+                        </p>
                 }
             </div>
         </div>
