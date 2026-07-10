@@ -4,11 +4,9 @@ import { VgLiteActorSheet } from "../../VgLiteActorSheet"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
-import { PopoutWindow } from "../../../../component/PopoutWindow"
 import { HeroCreator } from "../creation/HeroCreator"
 import { useGlobalPopout } from "../../../../GlobalPopoutContainer"
-import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { NavigationContextProvider } from "../creation/component/NavigationContextProvider"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -47,7 +45,11 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     // you get multiple popups.
     useEffect(() => {
         if (isCreatorOpen) {
-            createrPopout.renderPopout(<HeroCreator hero={hero.parent} />, "Hero Creator", true)
+            createrPopout.renderPopout(
+                <NavigationContextProvider children={
+                    <HeroCreator hero={hero.parent} />
+                } />, "Hero Creator", true
+            )
         }
     }, [isCreatorOpen])
 

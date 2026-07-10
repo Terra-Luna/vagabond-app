@@ -5,6 +5,7 @@ import { DimensionsContext } from "../context/DimensionsContext";
 import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext";
 import { EmotionCacheContext } from "../context/EmotionCacheContext";
 import { FunctionComponent } from "react";
+import { EditModeOptions } from "../context/EditModeContext/EditModeOptions";
 
 export interface VGLiteApplication {
     _reactRoot: ReactDom.Root | null;
@@ -74,7 +75,7 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
 
     sheet._reactRoot!.render(
         <DimensionsContext.Provider value={{ width, height, top, left }}>
-            <EditModeContextProvider startInEditMode={startInEditMode}>
+            <EditModeContextProvider initialEditMode={startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE}>
                 <EmotionCacheContext scaduRoot={sheet._scaduRoot}>
                     <style>{vgLiteStyles} </style>
                     <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>

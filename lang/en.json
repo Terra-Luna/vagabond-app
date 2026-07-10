@@ -512,7 +512,8 @@
       "heroName": "Hero Name",
       "selectAncestry": "Select ancestry...",
       "beingType": "Type",
-      "beingSize": "Size"
+      "beingSize": "Size",
+      "class": "Class"
 
     },
     "HeroSheet": {
