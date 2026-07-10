@@ -681,6 +681,7 @@
       "capacity": "CAPACITY",
       "type": "Type",
       "size": "Size",
+      "canTakeMultiple": "Can take multiple times",
       "prerequisites": "Prerequisites",
       "prereqType": "Type",
       "stat": "Stat",
