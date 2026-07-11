@@ -21,6 +21,13 @@ export class ContainerDataModel extends EquipmentDataModel<ContainerSchema> {
         }
     }
 
+    override async _onCreate(data: any, options: any, userId: string) {
+        super._onCreate(data, options, userId)
+        this.parent.update({
+            'system.category': 'containers'
+        })
+    }
+
     override async prepareBaseData() {
         super.prepareBaseData()
         this.bulk.isStackable = false

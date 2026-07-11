@@ -23,7 +23,7 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
     override async _onCreate(data: any, options: any, userId: string) {
         super._onCreate(data, options, userId)
         this.parent.update({
-            'system.category': 'container'
+            'system.category': 'containers'
         })
     }
 }

@@ -100,12 +100,12 @@ const Bulk = ({ item }) => {
                             <Checkbox
                                 label={''}
                                 onCheckedChanged={onCheckStackable}
-                                checked={item.system.bulk.isStackable}
+                                checked={item.system.bulk?.isStackable}
                             />
                         } />
                         <ItemSheetProperty label={lang.ItemSheet.qty} value={
                             <EditableTextField
-                                boundValue={item.system.bulk.quantity}
+                                boundValue={item.system.bulk?.quantity}
                                 updateProps={{ object: item, path: ['bulk', 'quantity'] }}
                                 placeholder="1"
                             />
