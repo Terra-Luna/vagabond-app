@@ -9,7 +9,7 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     const { stepId, registerStepIds, registerOnFinish } = useNavigationContext()
     const { NameAndAncestry, ancestryItem } = useNameAndAncestry(hero)
     const { ClassSelection, classItem } = useClassSelection(hero)
-    const { CoreStats, assignedStats } = useCoreStats(ancestryItem?.system, classItem?.system)
+    const { CoreStats, assignedStats, bonusStats } = useCoreStats(ancestryItem?.system, classItem?.system)
 
     const steps = [
         { id: 'identity', view: <NameAndAncestry /> },

@@ -2,9 +2,11 @@ import { Key } from "lucide-react"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
-export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssignment, dragOverStat, setDragOverStat }) => {
+export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssignment, dragOverStat, setDragOverStat, bonusStats }) => {
     const strings = vgLiteLang.HeroCreation
     const isHovered = dragOverStat === stat
+    const statBonus = bonusStats?.find(b => b.stat === currentAssignment.stat)?.bonus
+
     return (
         <div>
             <div className="flex gap-x-1 justify-center">
@@ -46,7 +48,9 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
                 {
                     currentAssignment?.value ?
                         <div className="flex gap-x-1">
-                            <span className="font-bold">{currentAssignment.value}</span>
+                            <span className="font-bold">{`
+                                ${currentAssignment.value}${statBonus ? `+${statBonus}` : ''}
+                            `}</span>
                         </div> :
                         <p className="text-sm text-text-tertiary font-paradigm">
                             {strings.dropHere}

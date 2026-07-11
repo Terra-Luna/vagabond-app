@@ -21,13 +21,12 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
     const { NavButtons, setCanProceed } = useNavButtons()
     const [selectedArr, setSelectedArr] = useState<{ index: number, values: number[], usedIndices: number[] }>()
     const [assignedStats, setAssignedStats] = useState<{ stat: string, value: number | null, poolIndex: number | null }[]>([])
-    const [bonusStat, setBonusStat] = useState<string>('-')
-    const [statBonuses, setStatBonuses] = useState<{ stat: string, bonus: number }[]>([])
+    const [bonusStats, setBonusStats] = useState<{ stat: string, name: string, bonus: number }[]>([])
     const [dragOverKey, setDragOverStat] = useState<string | null>(null)
     
     const resetAssignedStats = () => {
         setCanProceed(false)
-        setBonusStat('-')
+        setBonusStats([])
         setAssignedStats(Object.keys(stats).map(s => ({ stat: s, value: null, poolIndex: null })))
         setSelectedArr(prev => {
             if (!prev) return prev
@@ -35,19 +34,34 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
         })
     }
 
+    /**
+     * Initialize some states.
+     */
     useEffect(() => {
         setCanProceed(false)
         setSelectedArr({ index: 0, values: statBlocks[0], usedIndices: [] })
         resetAssignedStats()
     }, [])
 
+    /**
+     * Check stat allocations to see if the user can proceed to next step.
+     */
     useEffect(() => {
         if (assignedStats.length > 0 && assignedStats.every(s => s.value !== null)) {
-            if (ancestryStatBonuses.length === 0 || (ancestryStatBonuses.length > 0 && bonusStat !== '-')) {
+            if (ancestryStatBonuses.length === 0 || (ancestryStatBonuses.length === bonusStats.length)) {
                 setCanProceed(true)
             }
         }
-    }, [assignedStats, bonusStat])
+    }, [assignedStats, bonusStats])
+
+    /**
+     * Clear out any bonuses assigned to a maxed-out stat.
+     */
+    useEffect(() => {
+        assignedStats.filter(stat => stat.value === 7).forEach(stat => {
+            setBonusStats([...bonusStats.filter(b => b.stat !== stat.stat)])
+        })
+    }, [assignedStats])
 
     const onSelectStatArray = useCallback((index: number) => {
         setSelectedArr({ index: index, values: statBlocks[index], usedIndices: []})
@@ -60,10 +74,20 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
         resetAssignedStats()
     }, [])
 
-    const onSelectBonusStat = useCallback((stat: string) => {
-        setBonusStat(stat)
-
-    }, [assignedStats])
+    const onSelectBonusStat = useCallback((bonus: string) => {
+        const split = bonus.split(",")
+        const bonusStat = { stat: split[0], name: split[2], bonus: Number(split[1]) }
+        console.log(bonus, bonusStat)
+        if (bonusStats.length === 0) {
+            setBonusStats([bonusStat])
+        }
+        else {
+            setBonusStats(bonusStats.map(b => {
+                if (b.name === bonusStat.name) return bonusStat
+                else return b
+            }))
+        }
+    }, [bonusStats])
 
     const onDragStart = (e: React.DragEvent, value: number, poolIndex: number) => {
         e.stopPropagation()
@@ -177,6 +201,7 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
                                             currentAssignment={currentAssignment}
                                             dragOverStat={dragOverKey}
                                             setDragOverStat={setDragOverStat}
+                                            bonusStats={bonusStats}
                                         />
                                     )
                                 })
@@ -187,16 +212,15 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
                     {/* CONDITIONAL STAT BONUS SELECTION */}
                     {
                         ancestryStatBonuses.length === 0 ? <></> :
-                            <div className="flex w-fit gap-x-2 py-2 px-8 mx-auto justify-center border border-solid border-table-border rounded-md">
+                            <div className="flex w-fit gap-x-2 gap-y-1 py-2 px-8 mx-auto justify-center border border-solid border-table-border rounded-md">
                                 {ancestryStatBonuses.map((mod, index) => (
                                     <div key={index}>
                                         <HeroCreationDropdown
                                             label={mod.name}
-                                            value={bonusStat}
-                                            options={[{ value: '-', label: '-' }, ...assignedStats.filter(s => !s.value || s.value < 7).map(s => (
-                                                { value: s.stat, label: `${vgLiteLang.Stat[s.stat].name} (+${mod.bonus})` }
-                                            ))]
-                                            }
+                                            value={`${bonusStats[index]?.stat},${bonusStats[index]?.bonus},${bonusStats[index]?.name}`}
+                                            options={[{ value: ',,,', label: '-' }, ...assignedStats.filter(s => !s.value || s.value < 7).map(s => (
+                                                { value: `${s.stat},${mod.bonus},${mod.name}`, label: `${vgLiteLang.Stat[s.stat].name} (+${mod.bonus})` }
+                                            ))]}
                                             onChange={onSelectBonusStat}
                                         />
                                     </div>
@@ -232,5 +256,5 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
         )
     }
 
-    return { CoreStats, assignedStats }
+    return { CoreStats, assignedStats, bonusStats }
 }
