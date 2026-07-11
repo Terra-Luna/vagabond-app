@@ -70,8 +70,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareBaseData()
         this.ancestry = this.parent.items.find((i: { type: string }) => i.type === 'ancestry')?.system
         this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
-        this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: any }) => it.system)
-        this.spells = this.parent.items.filter((i: { type: string }) => i.type === 'spell')?.map((it: { system: any }) => it.system)
+        this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: PerkDataModel }) => it.system)
+        this.spells = this.parent.items.filter((i: { type: string }) => i.type === 'spell')?.map((it: { system: SpellDataModel }) => it.system)
         setInventoryData(this)
         setXpToNextLevel(this)
         setMaxHP(this)

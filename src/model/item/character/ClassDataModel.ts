@@ -1,5 +1,5 @@
 import { lang } from "../../../utils/lang"
-import { fields, optionalString, requiredInteger, requiredString, standardInteger } from "../../common/sharedSchemas"
+import { fields, requiredInteger, requiredString, standardInteger } from "../../common/sharedSchemas"
 import { starterPackSchema } from "../equip/StarterPackDataModel"
 import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 import { classFeatureSchema } from "./traitsAndFeatures"
@@ -43,4 +43,16 @@ export class ClassDataModel extends ItemDataModel<ClassSchema> {
     override async prepareDerivedData() {
         super.prepareDerivedData()
     }
+}
+
+export function getClassGrantedTrainings(cls: ClassDataModel | undefined): string[] {
+    if (!cls) return []
+    const trainings = cls.training
+    return [...trainings.weaponTraining, ...trainings.requiredTraining]
+}
+
+export function getClassTrainingOptions(cls: ClassDataModel | undefined): { count: number, options: string[] } {
+    if (!cls) return { count: 0, options: [] }
+    const trainings = cls.training
+    return { count: trainings.electiveTrainingCount, options: trainings.electivePoolOptions.filter(o => o === 'any') }
 }

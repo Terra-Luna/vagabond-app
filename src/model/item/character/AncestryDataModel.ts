@@ -3,9 +3,7 @@ import { updateDocument } from "../../../utils/documentUtils"
 import { lang, vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
-import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
-import { PerkDataModel } from "./PerkDataModel"
-import { SpellDataModel } from "./SpellDataModel"
+import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 import { traitSchema } from "./traitsAndFeatures"
 
 const ancestrySchema = () => {
@@ -14,14 +12,9 @@ const ancestrySchema = () => {
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() }),
         traits: new fields.ArrayField(new fields.SchemaField({ ...traitSchema() }), { initial: [] }),
-        chosenPerks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
-        chosenSpells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
-        chosenTrainings: new fields.ArrayField(
-            new fields.StringField({
-                ...requiredString,
-                choices: Object.keys(lang.VGLITE.Skills)
-            })
-        )
+        chosenPerks: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
+        chosenSpells: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
+        chosenTrainings: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills) }), { initial: [] })
     }
 }
 
@@ -125,5 +118,14 @@ export function getAncestryStatBonuses(ancestry: AncestryDataModel | undefined):
         t.modifiers.some(m => m.type === 'BONUS' && m.targetStat === 'statBonusPoints' && Number(m.value) > 0)
     ).map(t => {
         return t.modifiers.map(m => ({ name: t.name, bonus: Number(m.value) }))
+    }).deepFlatten()
+}
+
+export function getAncestryGrantedTrainings(ancestry: AncestryDataModel | undefined): { name: string, count: number, choices: string[] }[] {
+    if (!ancestry) return []
+    return ancestry.traits.filter(t =>
+        t.grants.some(g => g.type === 'TRAINING')
+    ).map(t => {
+        return t.grants.map(g => ({ name: t.name, count: g.count, choices: g.trainingOptions }))
     }).deepFlatten()
 }

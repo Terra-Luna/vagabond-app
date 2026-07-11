@@ -11,6 +11,7 @@ import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreatio
 import { DraggableStatBlock } from "../component/DraggableStatBlock"
 import { StatDragTarget } from "../component/StatDragTarget"
 import { AncestryDataModel, getAncestryStatBonuses } from "../../../../../../model/item/character/AncestryDataModel"
+import { BorderedContent } from "../component/BorderedContent"
 
 export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: ClassDataModel | undefined) => {
     const strings = vgLiteLang.HeroCreation
@@ -74,20 +75,16 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
         resetAssignedStats()
     }, [])
 
-    const onSelectBonusStat = useCallback((bonus: string) => {
-        const split = bonus.split(",")
-        const bonusStat = { stat: split[0], name: split[2], bonus: Number(split[1]) }
-        console.log(bonus, bonusStat)
-        if (bonusStats.length === 0) {
-            setBonusStats([bonusStat])
-        }
-        else {
-            setBonusStats(bonusStats.map(b => {
-                if (b.name === bonusStat.name) return bonusStat
-                else return b
-            }))
-        }
-    }, [bonusStats])
+    const onSelectBonusStat = useCallback((newBonus) => {
+        setBonusStats(prevStats => {
+            const exists = prevStats.some(b => b.name === newBonus.name)
+            if (exists) {
+                return prevStats.map(b => b.name === newBonus.name ? newBonus : b)
+            } else {
+                return [...prevStats, newBonus]
+            }
+        })
+    }, [])
 
     const onDragStart = (e: React.DragEvent, value: number, poolIndex: number) => {
         e.stopPropagation()
@@ -170,22 +167,20 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
 
                     <div className="justify-center">
                         {/* SELECTED STAT POOL DRAGABLES */}
-                        <div className="flex w-fit gap-x-2 p-2 mx-auto justify-center border border-solid border-table-border rounded-md">
-                            {
-                                selectedArr?.values?.map((it, index) => {
-                                    const isUsed = selectedArr.usedIndices.includes(index)
-                                    return (
-                                        <DraggableStatBlock
-                                            key={index}
-                                            index={index}
-                                            value={it}
-                                            isUsed={isUsed}
-                                            onDragStart={onDragStart}
-                                        />
-                                    )
-                                })
-                            }
-                        </div>
+                        <BorderedContent children={
+                            selectedArr?.values?.map((it, index) => {
+                                const isUsed = selectedArr.usedIndices.includes(index)
+                                return (
+                                    <DraggableStatBlock
+                                        key={index}
+                                        index={index}
+                                        value={it}
+                                        isUsed={isUsed}
+                                        onDragStart={onDragStart}
+                                    />
+                                )
+                            })
+                        } />
                         {/* STAT DRAG TARGETS */}
                         <div className="grid grid-cols-[repeat(3,100px)] justify-center text-center gap-4 px-8 mt-2 mb-4">
                             {
@@ -213,18 +208,44 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
                     {
                         ancestryStatBonuses.length === 0 ? <></> :
                             <div className="flex w-fit gap-x-2 gap-y-1 py-2 px-8 mx-auto justify-center border border-solid border-table-border rounded-md">
-                                {ancestryStatBonuses.map((mod, index) => (
-                                    <div key={index}>
-                                        <HeroCreationDropdown
-                                            label={mod.name}
-                                            value={`${bonusStats[index]?.stat},${bonusStats[index]?.bonus},${bonusStats[index]?.name}`}
-                                            options={[{ value: ',,,', label: '-' }, ...assignedStats.filter(s => !s.value || s.value < 7).map(s => (
-                                                { value: `${s.stat},${mod.bonus},${mod.name}`, label: `${vgLiteLang.Stat[s.stat].name} (+${mod.bonus})` }
-                                            ))]}
-                                            onChange={onSelectBonusStat}
-                                        />
-                                    </div>
-                                ))}
+                                {
+                                    ancestryStatBonuses.map((mod, index) => {
+                                        const currentBonusSelection = bonusStats?.find(b => b.name === mod.name)
+                                        const activeStatValue = currentBonusSelection ? currentBonusSelection.stat : ""
+                                        return (
+                                            <div key={index}>
+                                                <HeroCreationDropdown
+                                                    label={mod.name}
+                                                    value={activeStatValue}
+                                                    options={[
+                                                        { value: '', label: '-' },
+                                                        ...assignedStats
+                                                            .filter(s => {
+                                                                const existingBonus = bonusStats?.find(b => b.stat === s.stat && b.name !== mod.name)?.bonus ?? 0
+                                                                return !s.value || s.value <= (7 - (mod.bonus + existingBonus))
+                                                            })
+                                                            .map(s => ({
+                                                                value: s.stat,
+                                                                label: `${vgLiteLang.Stat[s.stat].name} (+${mod.bonus})`
+                                                            }))
+                                                    ]}
+                                                    onChange={(selectedStat) => {
+                                                        if (!selectedStat) {
+                                                            setBonusStats(prev => prev.filter(b => b.name !== mod.name))
+                                                        }
+                                                        else {
+                                                            onSelectBonusStat({
+                                                                stat: selectedStat,
+                                                                bonus: mod.bonus,
+                                                                name: mod.name
+                                                            })
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                     }
 
@@ -251,6 +272,13 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
                             </div>
                         </div>
                     </div>
+
+                    <SecondaryButton onClick={() => {
+                        assignedStats.forEach((s, i) => {
+                            s.value = selectedArr?.values[i] ?? 2
+                        })
+                        setAssignedStats([...assignedStats])
+                    }} children={<p>AUTO (delete me later)</p>} />
                 </div>
             </div>
         )

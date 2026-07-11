@@ -544,7 +544,7 @@
       "trainingSubheader": "Choose the skills yoru hero has mastered.",
       "grantedTraining": "Granted Training",
       "electiveTraining": "Elective Class Skills (Choose %s)",
-      "trainingSlots": "Elective Traiing Slots Available (%s)",
+      "trainingSlots": "Elective Training Slots Available",
       "trainingSourceClass": "CLASS",
       "trainingSourceAncestry": "ANCESTRY",
       "bonusTraining": "Bonus Training (%s)",

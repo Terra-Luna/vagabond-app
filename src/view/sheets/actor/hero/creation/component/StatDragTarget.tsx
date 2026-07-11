@@ -5,7 +5,7 @@ import { HeroCreationLabel } from "./HeroCreationTypography"
 export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssignment, dragOverStat, setDragOverStat, bonusStats }) => {
     const strings = vgLiteLang.HeroCreation
     const isHovered = dragOverStat === stat
-    const statBonus = bonusStats?.find(b => b.stat === currentAssignment.stat)?.bonus
+    const statBonus = bonusStats?.filter(b => b.stat === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.bonus }, 0) ?? 0
 
     return (
         <div>

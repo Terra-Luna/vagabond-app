@@ -37,13 +37,15 @@ interface NavigationContextProps {
     registerOnFinish: (fn: () => void) => void
     backButton: ReactNode
     nextButton: ReactNode
+    onFinishState: { action: (fn: () => void) => void }
 }
 const DefaultNavigationContextValue: NavigationContextProps = {
     stepId: '',
     registerStepIds: () => { },
     registerOnFinish: (fn: () => void) => { },
     backButton: undefined,
-    nextButton: undefined
+    nextButton: undefined,
+    onFinishState: { action: (fn: () => void) => { } }
 }
 export const NavigationContext = createContext(DefaultNavigationContextValue)
 export const useNavigationContext = () => useContext(NavigationContext)

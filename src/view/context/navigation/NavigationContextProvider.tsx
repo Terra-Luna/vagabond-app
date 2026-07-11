@@ -56,8 +56,8 @@ export const NavigationContextProvider = ({ children }: { children: ReactNode })
         } onClick={index + 1 === stepIds.length ? () => { onFinishState.action } : onNext} />
 
     const contextValue = useMemo(() => ({
-        stepId, registerStepIds, registerOnFinish, backButton, nextButton
-    }), [stepId, registerStepIds, registerOnFinish, backButton, nextButton])
+        stepId, registerStepIds, registerOnFinish, backButton, nextButton, onFinishState
+    }), [stepId, registerStepIds, registerOnFinish, backButton, nextButton, onFinishState])
 
     return <NavigationContext.Provider value={contextValue} children={children} />
 }
