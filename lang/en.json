@@ -539,7 +539,32 @@
       "vitals": "Vitals Preview",
       "maxhp": "MAX HP",
       "maxmana": "MAX MANA",
-      "maxcast": "MAX CAST"
+      "maxcast": "MAX CAST",
+      "traingingsHeader": "SELECT TRAININGS",
+      "trainingSubheader": "Choose the skills yoru hero has mastered.",
+      "grantedTraining": "Granted Training",
+      "electiveTraining": "Elective Class Skills (Choose %s)",
+      "trainingSlots": "Elective Traiing Slots Available (%s)",
+      "trainingSourceClass": "CLASS",
+      "trainingSourceAncestry": "ANCESTRY",
+      "bonusTraining": "Bonus Training (%s)",
+      "bonusInfo": "Your ancestry grants you proficiency in one additional skill of your choice.",
+      "spellsHeader": "ACQUIRE SPELLS",
+      "spellsSubheader": "Select the spells your hero has memorized.",
+      "electiveSpells": "Elective Spells",
+      "selected": "Selected",
+      "slot": "Slot",
+      "mandatory": "Mandatory",
+      "grimoire": "Grimoire Summary",
+      "perksHeader": "SELECT PERKS",
+      "perkAquisition": "Perk Acquisition",
+      "allPerksSelected": "All perks selected.",
+      "acquiredPerks": "Acquired Perks",
+      "equipHeader": "EQUIPMENT & WEALTH",
+      "equipSubheader": "Choose a starting pack and/or purchase items individually.",
+      "startingWealth": "Starting Wealth (GOLD)",
+      "selectPack": "Select Pack",
+      "yourInventory": "Your Inventory"
     },
     "HeroSheet": {
       "hp": "HIT POINTS",
@@ -831,7 +856,7 @@
       "anyOpt": "Any",
       "back": "Back",
       "next": "Next",
-      "finish": "Finish"
+      "finish": "Finish & Save"
     }
   }
 }

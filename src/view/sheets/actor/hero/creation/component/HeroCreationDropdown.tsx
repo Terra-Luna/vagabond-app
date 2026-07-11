@@ -8,10 +8,10 @@ export const HeroCreationDropdown = ({ label, value, options, onChange }: {
         <div>
             <HeroCreationLabel text={label} />
             <div className="text-lg">
-            <DropDown
-                value={value}
-                options={options}
-                updateMechanism={{ onChange: onChange }}
+                <DropDown
+                    value={value}
+                    options={options}
+                    updateMechanism={{ onChange: onChange }}
                 />
             </div>
         </div>

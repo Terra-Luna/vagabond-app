@@ -48,7 +48,7 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
     }
 
     static DEFAULT_OPTIONS = {
-        position: { width: 600, height: 600 },
+        position: { width: 400, height: 1000 },
         window: {
             resizable: true
         }

@@ -118,3 +118,12 @@ export const ancestrySizeAndType = (ancestry: AncestryDataModel): CardSubHeaderV
         { label: vgLiteLang.HeroCreation.beingType, value: vgLiteLang.BeingTypes[ancestry.beingType] }
     ]
 }
+
+export function getAncestryStatBonuses(ancestry: AncestryDataModel | undefined): { name: string, bonus: number }[] {
+    if (!ancestry) return []
+    return ancestry.traits.filter(t =>
+        t.modifiers.some(m => m.type === 'BONUS' && m.targetStat === 'statBonusPoints' && Number(m.value) > 0)
+    ).map(t => {
+        return t.modifiers.map(m => ({ name: t.name, bonus: Number(m.value) }))
+    }).deepFlatten()
+}

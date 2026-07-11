@@ -207,7 +207,7 @@ export function setSaves(hero: HeroDataModel) {
 export function setManaValues(hero: HeroDataModel) {
     const manaValues = calculateManaValues(
         hero.level.current ?? 0,
-        Number(hero.stats[hero.class.maxManaStat.toLowerCase() || '']),
+        Number(hero.stats[hero.class?.maxManaStat]),
         hero.class
     )
     hero.mana.max = manaValues.max

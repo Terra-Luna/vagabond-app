@@ -1,6 +1,5 @@
-import { lang } from "../../../utils/lang"
+import { lang, vgLiteLang } from "../../../utils/lang"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import { PerkDataModel } from "./PerkDataModel"
 import { SpellDataModel } from "./SpellDataModel"
 
 export type ClassFeature = ReturnType<typeof classFeatureSchema>
@@ -9,8 +8,8 @@ export const classFeatureSchema = () => {
         level: new fields.NumberField({ ...requiredInteger }),
         name: new fields.StringField({ ...requiredString }),
         description: new fields.HTMLField({ ...requiredString }),
-        modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() })),
-        grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() }))
+        grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() })),
+        modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() }))
     }
 }
 
@@ -27,9 +26,9 @@ export const traitSchema = () => {
 export type Modifier = ReturnType<typeof modifierSchema>
 export const modifierSchema = () => {
     return {
-        targetStat: new fields.StringField({ ...requiredString }),
         type: new fields.StringField({ ...requiredString, choices: ['BONUS', 'SET', 'FORMULA'], initial: 'BONUS' }),
-        value: new fields.StringField({ ...requiredString })
+        value: new fields.StringField({ ...requiredString }),
+        targetStat: new fields.StringField({ ...requiredString })
     }
 }
 
