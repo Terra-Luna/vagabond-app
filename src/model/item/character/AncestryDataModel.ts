@@ -121,11 +121,15 @@ export function getAncestryStatBonuses(ancestry: AncestryDataModel | undefined):
     }).deepFlatten()
 }
 
-export function getAncestryGrantedTrainings(ancestry: AncestryDataModel | undefined): { name: string, count: number, choices: string[] }[] {
-    if (!ancestry) return []
-    return ancestry.traits.filter(t =>
+export function getAncestryTrainingOptions(ancestry: AncestryDataModel | undefined): { count: number, options: string[] } {
+    if (!ancestry) return { count: 0, options: [] }
+    const options = ancestry.traits.filter(t =>
         t.grants.some(g => g.type === 'TRAINING')
     ).map(t => {
-        return t.grants.map(g => ({ name: t.name, count: g.count, choices: g.trainingOptions }))
+        return t.grants.map(g => ({ name: t.name, count: g.count, options: g.trainingOptions }))
     }).deepFlatten()
+
+    const totalCount = options.reduce((sum, o) => { return sum + o.count }, 0)
+    const combinedOpts = [...new Set([...options.flatMap(o => o.options)])]
+    return { count: totalCount, options: combinedOpts }
 }

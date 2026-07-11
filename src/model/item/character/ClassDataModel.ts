@@ -24,7 +24,7 @@ const classSchema = () => {
         manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         spellsGained: new fields.NumberField({ ...standardInteger }),
         spellGainInterval: new fields.NumberField({ ...standardInteger }),
-        startingSpells: new fields.ArrayField(new fields.StringField({ ...requiredString })),
+        requiredSpells: new fields.ArrayField(new fields.StringField({ ...requiredString })),
 
         features: new fields.ArrayField(new fields.SchemaField({ ...classFeatureSchema() }))
     }
@@ -54,5 +54,5 @@ export function getClassGrantedTrainings(cls: ClassDataModel | undefined): strin
 export function getClassTrainingOptions(cls: ClassDataModel | undefined): { count: number, options: string[] } {
     if (!cls) return { count: 0, options: [] }
     const trainings = cls.training
-    return { count: trainings.electiveTrainingCount, options: trainings.electivePoolOptions.filter(o => o === 'any') }
+    return { count: trainings.electiveTrainingCount, options: trainings.electivePoolOptions.filter(o => o !== 'any') }
 }

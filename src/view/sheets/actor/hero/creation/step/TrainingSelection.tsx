@@ -1,30 +1,55 @@
-import { useEffect, useState } from "react";
-import { AncestryDataModel, getAncestryGrantedTrainings } from "../../../../../../model/item/character/AncestryDataModel";
-import { ClassDataModel, getClassGrantedTrainings, getClassTrainingOptions } from "../../../../../../model/item/character/ClassDataModel";
-import { vgLiteLang } from "../../../../../../utils/lang";
-import { Header } from "../../../../../component/Header";
-import { useNavButtons } from "../../../../../context/navigation/NavButtons";
-import { BorderedContent } from "../component/BorderedContent";
-import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography";
+import { useCallback, useEffect, useState } from "react"
+import { AncestryDataModel, getAncestryTrainingOptions } from "../../../../../../model/item/character/AncestryDataModel"
+import { ClassDataModel, getClassGrantedTrainings, getClassTrainingOptions } from "../../../../../../model/item/character/ClassDataModel"
+import { vgLiteLang } from "../../../../../../utils/lang"
+import { Header } from "../../../../../component/Header"
+import { useNavButtons } from "../../../../../context/navigation/NavButtons"
+import { BorderedContent } from "../component/BorderedContent"
+import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
+import { Checkbox } from "../../../../../component/Checkbox"
 
 export const useTrainingSelection = (ancestry: AncestryDataModel | undefined, clazz: ClassDataModel | undefined) => {
     const strings = vgLiteLang.HeroCreation
+    const { NavButtons, setCanProceed } = useNavButtons()
+
     const grantedTrainings = getClassGrantedTrainings(clazz)
     const classTraingOpts = getClassTrainingOptions(clazz)
-    const { NavButtons, setCanProceed } = useNavButtons()
-    const [trainingSlots, setTrainingSlots] = useState(0)
-    const [selectedTrainings, setSelectedTrainings] = useState<string[]>([])
+    const [classTrainingSlots, setClassTrainingSlots] = useState(classTraingOpts.count)
+    const [selectedClassTrainings, setSelectedClassTrainings] = useState<string[]>([])
+
+    const ancestryTrainingOpts = getAncestryTrainingOptions(ancestry)
+    const [ancestryTrainingSlots, setAncestryTrainingSlots] = useState(ancestryTrainingOpts.count)
+    const [selectedAncestryTrainings, setSelectedAncestryTrainings] = useState<string[]>([])
 
     useEffect(() => {
-        setCanProceed(false)
-        setTrainingSlots(classTraingOpts.count)
-    }, [])
+        setClassTrainingSlots(classTraingOpts.count)
+        setAncestryTrainingSlots(ancestryTrainingOpts.count)
+    }, [classTraingOpts, ancestryTrainingOpts])
 
     useEffect(() => {
-        if (selectedTrainings.length === trainingSlots) {
-            setCanProceed(true)
+        setCanProceed(
+            classTrainingSlots === selectedClassTrainings.length &&
+            ancestryTrainingSlots === selectedAncestryTrainings.length
+        )
+    }, [classTrainingSlots, selectedClassTrainings, ancestryTrainingSlots, selectedAncestryTrainings])
+
+    const onClassSkillTrainingSelected = useCallback((isChecked: boolean, skill: string) => {
+        if (isChecked && selectedClassTrainings.length < classTrainingSlots) {
+            setSelectedClassTrainings([...selectedClassTrainings, skill])
         }
-    }, [trainingSlots, selectedTrainings])
+        else {
+            setSelectedClassTrainings([...selectedClassTrainings.filter(t => t !== skill)])
+        }
+    }, [classTrainingSlots, selectedClassTrainings])
+
+    const onAncestrySkillTrainingSelected = useCallback((isChecked: boolean, skill: string) => {
+        if (isChecked && selectedAncestryTrainings.length < ancestryTrainingSlots) {
+            setSelectedAncestryTrainings([...selectedAncestryTrainings, skill])
+        }
+        else {
+            setSelectedAncestryTrainings([...selectedAncestryTrainings.filter(t => t !== skill)])
+        }
+    }, [ancestryTrainingSlots, selectedAncestryTrainings])
 
     const TrainingSelection = () => {
         return (
@@ -41,25 +66,69 @@ export const useTrainingSelection = (ancestry: AncestryDataModel | undefined, cl
                             <HeroCreationSubtext text={`${strings.trainingSlots}`} />
                             <div className="flex gap-x-1 w-full justify-center">
                                 <span className="text-3xl text-text-header-tertiary font-eskapade font-bold">
-                                    {selectedTrainings.length} / {trainingSlots} {strings.selected}
+                                    {selectedClassTrainings.length} / {classTrainingSlots} {strings.selected}
                                 </span>
                             </div>
                         </div>
                     </BorderedContent>
 
-                    {/* GRANTED TRAININGS */}
-                    <HeroCreationLabel text={strings.grantedTraining} />
-                    <div className="flex gap-x-2">
-                        {
-                            grantedTrainings.map((t, index) => (
-                                <BorderedContent key={index}>
-                                    {vgLiteLang.Skills[t].name}
-                                </BorderedContent>
-                            ))
-                        }
-                    </div>
-                </div>
+                    {/* GRANTED TRAININGS HUD */}
+                    <BorderedContent>
+                        <div className="space-y-2">
+                            <HeroCreationLabel text={strings.grantedTraining} />
+                            <div className="flex flex-wrap justify-center gap-2">
+                                {
+                                    grantedTrainings.map((t, index) => (
+                                        <div key={index} className="text-xl font-eskapade font-bold border border-solid border-table-border rounded-md p-2">
+                                            {vgLiteLang.Skills[t].name}
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </BorderedContent>
 
+                    {/* ADDT'L CLASS TRAINING SELECTIONS */}
+                    <BorderedContent>
+                        <div>
+                            <HeroCreationLabel text={strings.electiveTraining.replace("%s", classTrainingSlots.toString())} />
+                            <div className="flex flex-wrap gap-4">
+                                {
+                                    classTraingOpts.options.filter(o => !selectedAncestryTrainings.includes(o)).map((skill, index) => (
+                                        <Checkbox
+                                            key={index}
+                                            label={vgLiteLang.Skills[skill].name}
+                                            onCheckedChanged={(isChecked) => onClassSkillTrainingSelected(isChecked, skill)}
+                                            checked={selectedClassTrainings.includes(skill)}
+                                        />
+                                    ))
+                                }
+                            </div>
+                        </div>
+                    </BorderedContent>
+
+                    {/* ANCESTRY TRAINING SELECTIONS */}
+                    {
+                        ancestryTrainingSlots === 0 ? <></> :
+                            <BorderedContent>
+                                <div>
+                                    <HeroCreationLabel text={strings.ancestralTraining.replace("%s", ancestryTrainingSlots.toString())} />
+                                    <div className="flex flex-wrap gap-4">
+                                        {
+                                            ancestryTrainingOpts.options.filter(o => !selectedClassTrainings.includes(o)).map((skill, index) => (
+                                                <Checkbox
+                                                    key={index}
+                                                    label={vgLiteLang.Skills[skill].name}
+                                                    onCheckedChanged={(isChecked) => onAncestrySkillTrainingSelected(isChecked, skill)}
+                                                    checked={selectedAncestryTrainings.includes(skill)}
+                                                />
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            </BorderedContent>
+                    }
+                </div>
             </div>
         )
     }

@@ -11,7 +11,7 @@ export const useEquipmentSelection = (clazz: ClassDataModel | undefined) => {
         return (
             <div className="bg-sheet-main-fill space-y-4">
                 {/* HEADER AND NAVIGATION BUTTONS */}
-                <NavButtons header={<Header title={strings.perksHeader} />} />
+                <NavButtons header={<Header title={strings.equipHeader} />} />
 
             </div>
         )

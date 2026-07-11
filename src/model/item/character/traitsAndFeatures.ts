@@ -8,8 +8,8 @@ export const classFeatureSchema = () => {
         level: new fields.NumberField({ ...requiredInteger }),
         name: new fields.StringField({ ...requiredString }),
         description: new fields.HTMLField({ ...requiredString }),
-        grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() })),
-        modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() }))
+        grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() }), { initial: [] }),
+        modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() }), { initial: [] })
     }
 }
 
@@ -18,7 +18,7 @@ export const traitSchema = () => {
     return {
         name: new fields.StringField({ ...requiredString }),
         description: new fields.StringField({ ...requiredString }),
-        modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() })),
+        modifiers: new fields.ArrayField(new fields.SchemaField({ ...modifierSchema() }), { initial: [] }),
         grants: new fields.ArrayField(new fields.SchemaField({ ...grantSchema() }), { initial: [] }),
     }
 }
@@ -30,6 +30,9 @@ export const modifierSchema = () => {
         value: new fields.StringField({ ...requiredString }),
         targetStat: new fields.StringField({ ...requiredString })
     }
+}
+export interface ModifierModel {
+    type: string, value: string, targetStat: string
 }
 
 export type Grant = ReturnType<typeof grantSchema>
@@ -43,4 +46,13 @@ export const grantSchema = () => {
         trainingOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.Skills) })),
         ignorePrerequisites: new fields.BooleanField({ initial: false })
     }
+}
+export interface GrantModel {
+    type: string,
+    specific: boolean,
+    count: number,
+    selectedPerks: string[],
+    spellOptions: string[],
+    trainingOptions: string[],
+    ignorePrerequisites: boolean
 }

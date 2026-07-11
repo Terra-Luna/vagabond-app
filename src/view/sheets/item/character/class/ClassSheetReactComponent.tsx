@@ -1,4 +1,4 @@
-import { ManaStatSelector, MaxManaPerLevelSelector, SpellcastingSkillSelector } from "./component/SpellcastingConfig"
+import { ManaStatSelector, MaxManaPerLevelSelector, RequiredStartingSpells, SpellcastingSkillSelector, SpellGainLevelInterval, StartingSpellSlotsInput } from "./component/SpellcastingConfig"
 import { ClassDataModel } from "../../../../../model/item/character/ClassDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
@@ -24,6 +24,9 @@ export const ClassSheetReactComponent = ({ item }: { item: Item & { system: Clas
                 <SpellcastingSkillSelector item={item} />
                 <ManaStatSelector item={item} />
                 <MaxManaPerLevelSelector item={item} />
+                <StartingSpellSlotsInput item={item} />
+                <RequiredStartingSpells item={item} />
+                <SpellGainLevelInterval item={item} />
                 <ComplexityRating item={item} />
                 <TrainingsConfig item={item} />
                 <ClassFeaturesConfig item={item} />

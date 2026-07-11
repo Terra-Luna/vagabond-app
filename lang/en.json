@@ -544,6 +544,7 @@
       "trainingSubheader": "Choose the skills yoru hero has mastered.",
       "grantedTraining": "Granted Training",
       "electiveTraining": "Elective Class Skills (Choose %s)",
+      "ancestralTraining": "Ancestral Training Options (Choose %s)",
       "trainingSlots": "Elective Training Slots Available",
       "trainingSourceClass": "CLASS",
       "trainingSourceAncestry": "ANCESTRY",
@@ -823,12 +824,17 @@
       "labelLevel": "Level",
       "labelName": "Name",
       "labelDescr": "Description",
+      "grants": "Grants",
+      "modifiers": "Modifiers",
       "labelClassFeat": "Class Features",
       "labelKeyStats": "Key Stats",
       "labelComplexity": "Complexity",
       "labelSpellSkill": "Spellcasting Skill",
       "labelMaxMana": "Max Mana Stat",
       "labelManaLevel": "Mana/Level",
+      "startingSpellSlots": "Starting Spell Slots",
+      "spellGainLvlInterval": "Spell Gain Level Interval",
+      "requiredSpells": "Required Spells",
       "labelTraining": "Training",
       "labelWeapons": "Weapons",
       "labelSkills": "Skills",
@@ -856,7 +862,7 @@
       "anyOpt": "Any",
       "back": "Back",
       "next": "Next",
-      "finish": "Finish & Save"
+      "finish": "Finish"
     }
   }
 }

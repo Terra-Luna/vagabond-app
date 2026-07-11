@@ -1,7 +1,37 @@
-import Select from 'react-select'
+import Select, { MultiValue } from 'react-select'
+import { useEditMode } from '../context/EditModeContext/Hooks'
 
-const defaultoptions = [{ label: "sup", value: "dude" }, { label: "SAH", value: "DUDE" }]
+export interface SelectOption {
+    label: string
+    value: string
+}
 
-export const MultiSelect = ({ options = defaultoptions }: { options?: { label: string; value: string }[] }) => {
-    return <Select options={options} isMulti />
+interface MultiSelectProps {
+    options?: SelectOption[]
+    value: SelectOption[]
+    handleOnChange: (value: MultiValue<SelectOption>) => void
+}
+
+export const MultiSelect = ({ options = [], value = [], handleOnChange }: MultiSelectProps) => {
+    const { isEditMode } = useEditMode()
+    return (
+        <>
+            {isEditMode ? (
+                <Select
+                    options={options}
+                    value={value}
+                    isMulti
+                    onChange={handleOnChange}
+                />
+            ) : (
+                <p className="text-lg">
+                    {
+                        value.length > 0
+                            ? value.map(o => o.label).join(", ")
+                            : "None"
+                    }
+                </p>
+            )}
+        </>
+    )
 }

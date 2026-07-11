@@ -8,12 +8,13 @@ import { useEditMode } from "../context/EditModeContext/Hooks"
 const editModeBorder = "border border-solid border-text-secondary px-1"
 
 export const EditableTextField = (
-    { boundValue, onSave, updateProps, placeholder = "Enter text...", hideBorderOnEditMode = false }: {
+    { boundValue, onSave, updateProps, placeholder = "Enter text...", hideBorderOnEditMode = false, className = '' }: {
         boundValue: string | null,
         onSave?: (value: string | null) => Promise<boolean>,
         updateProps?: { object: any, path: string[] },
         placeholder?: string,
-        hideBorderOnEditMode?: boolean
+        hideBorderOnEditMode?: boolean,
+        className?: string
     }) => {
     const { isEditMode: enabled } = useEditMode()
 
@@ -79,7 +80,7 @@ export const EditableTextField = (
     }, [editModeValue, onSave, boundValue, reset])
 
     if (isInEditMode || boundValue === '' || boundValue == null) {
-        const inputStyle = (editModeValue === '' || editModeValue == null) ? "field-sizing-content border border-solid border-text-secondary rounded-xs px-1" : "w-auto field-sizing-content"
+        const inputStyle = (editModeValue === '' || editModeValue == null) ? `field-sizing-content border border-solid border-text-secondary rounded-xs px-1 ${className}` : `w-auto field-sizing-content ${className}`
         return <div className="overflow-hidden">
             <input ref={inputRef} className={inputStyle} type="text" value={editModeValue ?? ''} placeholder={placeholder}
                 onChange={e => setEditModeValue(e.target.value)}
@@ -88,7 +89,7 @@ export const EditableTextField = (
         </div>
     }
     else {
-        const divStyle = "overflow-hidden whitespace-normal text-wrap"
+        const divStyle = `overflow-hidden whitespace-normal text-wrap ${className}`
         return (<>
             {
                 enabled ?

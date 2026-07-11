@@ -9,6 +9,7 @@ import { RichTextField } from "../../../../../component/RichTextField"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
 import { vgLiteLang } from "../../../../../../utils/lang"
+import { Grant, GrantModel, Modifier, ModifierModel } from "../../../../../../model/item/character/traitsAndFeatures"
 
 export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -63,6 +64,8 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
     const [title, setTitle] = useState('')
     const [level, setLevel] = useState(1)
     const [description, setDescription] = useState('')
+    const [grants, setGrants] = useState<GrantModel[]>([])
+    const [modifiers, setModifiers] = useState<ModifierModel[]>([])
 
     const updateTitle = useCallback(async (title: string | null) => {
         setTitle(title ?? '')
@@ -79,8 +82,17 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
         return true
     }, [setDescription, description])
 
+    const onAddGrant = useCallback(() => {
+        setGrants([...grants, { type: '', count: 1, specific: false, trainingOptions: [], selectedPerks: [], spellOptions: [], ignorePrerequisites: false }])
+    }, [grants])
+
+    const onAddModifier = useCallback(() => {
+        setModifiers([...modifiers, { type: 'BONUS', targetStat: '', value: '0' }])
+    }, [modifiers])
+
     return (
         <div className="border border-solid border-table-border space-y-1 p-2">
+            {/* NAME & LEVEL */}
             <div className="flex gap-x-2">
                 <div>
                     <ClassSheetLabel text={vgLiteLang.ClassSheet.labelName} />
@@ -99,12 +111,51 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
                     />
                 </div>
             </div>
+
+            {/* FEATURE DESCRIPTION */}
             <ClassSheetLabel text={vgLiteLang.ClassSheet.labelDescr} />
             <RichTextField
                 defaultValue={description}
                 onChange={updateDescription}
                 height={48}
             />
+
+            {/* GRANTS */}
+            <div>
+                <div className="flex gap-x-1">
+                    <ClassSheetLabel text={vgLiteLang.ClassSheet.grants} />
+                    <Plus size={20} onClick={onAddGrant} />
+                </div>
+                <div>
+                    {
+                        grants.map(grant => (
+                            <div>
+
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+
+            {/* MODIFIERS */}
+            <div>
+                <div className="flex gap-x-1">
+                    <ClassSheetLabel text={vgLiteLang.ClassSheet.modifiers} />
+                    <Plus size={20} onClick={onAddModifier} />
+                </div>
+                <div>
+                    {
+                        modifiers.map(mod => (
+                            <div>
+
+                            </div>
+                        ))
+                    }
+                </div>
+
+            </div>
+
+            {/* SAVE & CANCEL BUTTONS */}
             <div className="flex justify-between mt-2">
                 <DestructiveButton children={<p>Cancel</p>} onClick={() => { setIsNewFeatureOpen(false) }} />
                 <PrimaryButton icon={<Save size={14} />} onClick={async () => {
