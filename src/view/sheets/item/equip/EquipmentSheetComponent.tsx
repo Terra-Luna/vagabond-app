@@ -82,18 +82,19 @@ const Bulk = ({ item }) => {
 
     const onCheckStackable = useCallback((isChecked) => {
         item.update({ 'system.bulk.isStackable': isChecked })
-    }, [item.system.bulk.isStackable])
+    }, [item.system.bulk?.isStackable])
+
     return (
         <div>
             <ItemSheetProperty label={lang.ItemSheet.slots} value={
                 <EditableTextField
-                    boundValue={item.system.bulk.slots}
+                    boundValue={item.system.bulk?.slots}
                     updateProps={{ object: item, path: ['bulk', 'slots'] }}
                     placeholder="0"
                 />
             } />
             {
-                isEditMode || item.system.bulk.isStackable ?
+                isEditMode || item.system.bulk?.isStackable ?
                     <div>
                         <ItemSheetProperty label={lang.ItemSheet.stackable} value={
                             <Checkbox
@@ -112,10 +113,10 @@ const Bulk = ({ item }) => {
                     </div> : <></>
             }
             {
-                item.system.bulk.isStackable && item.system.bulk.slots === 0 ?
+                item.system.bulk?.isStackable && item.system.bulk?.slots === 0 ?
                     <ItemSheetProperty label={lang.ItemSheet.stackSize} value={
                         <EditableTextField
-                            boundValue={item.system.bulk.stackSize}
+                            boundValue={item.system.bulk?.stackSize}
                             updateProps={{ object: item, path: ['bulk', 'stackSize'] }}
                             placeholder="100"
                         />

@@ -16,6 +16,7 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
         { id: 'class-selection', view: <ClassSelection /> },
         { id: 'core-stats', view: <CoreStats /> },
         { id: 'training-selection', view: <>TODO</> },
+        { id: 'spell-selection', view: <>TODO</> },
         { id: 'perk-selection', view: <>TODO</> },
         { id: 'equipment-selection', view: <>TODO</> }
     ]

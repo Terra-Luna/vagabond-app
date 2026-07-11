@@ -1,4 +1,4 @@
-import { lang, vgLiteLang } from "../../../utils/lang"
+import { vgLiteLang } from "../../../utils/lang"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { SpellDataModel } from "./SpellDataModel"
 
@@ -40,7 +40,7 @@ export const grantSchema = () => {
         count: new fields.NumberField({ ...requiredInteger, initial: 1 }),
         selectedPerks: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
         spellOptions: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
-        trainingOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills) })),
+        trainingOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.Skills) })),
         ignorePrerequisites: new fields.BooleanField({ initial: false })
     }
 }

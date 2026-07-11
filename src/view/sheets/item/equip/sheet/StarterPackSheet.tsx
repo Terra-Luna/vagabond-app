@@ -2,6 +2,7 @@ import { StarterPackDataModel } from "../../../../../model/item/equip/StarterPac
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 
 export const StarterPackSheet = ({ item }: { item: Item & { system: StarterPackDataModel } }) => {
+    console.log("Starter pack sheet")
     return (
         <EquipmentSheetSubtypeBody>
             <div>
