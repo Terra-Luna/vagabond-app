@@ -1,0 +1,208 @@
+import React, { useState } from "react"
+import { Plus, Trash } from "lucide-react"
+import { ChoiceOption } from "../shared/ChoiceOption"
+import { FormProps } from "../shared/FormProps"
+import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
+import { ItemRulesLabel } from "../shared/ItemRulesTypography"
+
+export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
+    // Read the options list array, defaulting to an empty array if uninitialized
+    const choices: ChoiceOption[] = rule.choices || []
+    const [activeDragIdx, setActiveDragIdx] = useState<number | null>(null)
+
+    // Update specific keys inside an individual option index row using oIdx
+    const handleUpdateOption = (indexToUpdate: number, fields: Partial<ChoiceOption>) => {
+        const updatedChoices = choices.map((choice, idx) => {
+            if (idx !== indexToUpdate) return choice
+            return { ...choice, ...fields }
+        })
+        onChange({
+            ...rule,
+            choices: updatedChoices
+        })
+    }
+
+    // Add a blank template selection choice row slot to the array
+    const handleAddOption = () => {
+        onChange({
+            ...rule,
+            choices: [...choices, { value: "", label: "New Option" }]
+        })
+    }
+
+    // Remove a specific target selection choice row from the array using oIdx
+    const handleRemoveOption = (indexToRemove: number) => {
+        onChange({
+            ...rule,
+            choices: choices.filter((_, idx) => idx !== indexToRemove)
+        })
+    }
+
+    const handleDragOver = (e: React.DragEvent, index: number) => {
+        e.preventDefault()
+        if (rule.type === "item") {
+            setActiveDragIdx(index)
+        }
+    }
+
+    const handleDrop = async (e: React.DragEvent, index: number) => {
+        e.preventDefault()
+        setActiveDragIdx(null)
+
+        if (rule.type !== "item") return
+
+        const rawData = e.dataTransfer.getData("text/plain")
+        if (!rawData) return
+        const dropData = JSON.parse(rawData)
+        if (dropData.type === "Item" && dropData.uuid) {
+            const droppedItem = await fromUuid(dropData.uuid)
+            handleUpdateOption(index, {
+                value: dropData.uuid,
+                label: (droppedItem ? droppedItem.name : choices[index].label) ?? ''
+            })
+        }
+    }
+
+    return (
+        <div className="flex flex-col gap-3 text-text-primary bg-sheet-main-fill border border-solid border-table-border p-2">
+
+            {/* CHOICE CONFIGURATION SETTINGS */}
+            <div className="grid grid-cols-2 gap-2 items-end">
+                <ItemRuleInput
+                    label="Name"
+                    value={rule.label || ""}
+                    placeholder="e.g., Training Choices"
+                    onChange={(e) => onChange({ label: e.target.value })}
+                    type="text"
+                />
+                <ItemRuleInput
+                    label="Data Flag"
+                    value={rule.flag || ""}
+                    placeholder="e.g., classAttributeBonus"
+                    onChange={(e) => onChange({ flag: e.target.value })}
+                    type="text"
+                />
+                <ItemRuleInput
+                    label="Bonus Value"
+                    value={rule.value ?? 1}
+                    onChange={(e) => onChange({ value: Number(e.target.value) })}
+                    type="number"
+                />
+                <ItemRuleInput
+                    label="# Choices"
+                    value={rule.maxChoices ?? 1}
+                    onChange={(e) => onChange({ maxChoices: Math.max(1, Number(e.target.value)) })}
+                    type="number"
+                />
+
+                {/* TYPE OF CHOICE SET SELECTOR */}
+                <ItemRuleSelector
+                    label={"Choice Set Type"}
+                    value={rule.type || "path"}
+                    options={<>
+                        <option value="path">Stat/Attribute Modifier</option>
+                        <option value="item">Grant (Spell, Perk, Item)</option>
+                    </>}
+                    onChange={(e) => {
+                        const val = e?.target ? e.target.value : e;
+                        onChange({ type: val, choices: [] })
+                    }}
+                />
+
+                <ItemRuleSelector
+                    label="Choices Source"
+                    value={rule.pack ? "dynamic" : "static"}
+                    options={<>
+                        <option value="static">Static Manual List</option>
+                        <option value="dynamic">Dynamic Compendium Pack</option>
+                    </>}
+                    onChange={(val: any) => {
+                        const sourceMode = val?.target ? val.target.value : val;
+                        if (sourceMode === "dynamic") {
+                            onChange({ pack: "vagabond-lite.", choices: [] });
+                        } else {
+                            // Explicitly nullify properties to force Foundry database clearance
+                            onChange({ pack: null, filter: null, choices: [] });
+                        }
+                    }}
+                />
+
+                {/* Conditionally show input field if rule.pack contains a valid string */}
+                {rule.pack && (
+                    <ItemRuleInput
+                        label="Compendium Pack ID"
+                        value={rule.pack}
+                        placeholder="e.g., vagabond-lite.spells"
+                        onChange={(e) => onChange({ pack: e.target.value })}
+                        type="text"
+                    />
+                )}
+
+            </div>
+
+            {/* Sub Options Mapping List (Only renders if source mode is manual/static) */}
+            {!rule.pack && (
+                <div className="border-t border-solid border-table-border/40 pt-2 mt-1">
+                    <div className="flex justify-between items-center mb-2">
+                        <ItemRulesLabel text={'CHOICES'} />
+                        <button
+                            type="button"
+                            onClick={handleAddOption}
+                            className="flex items-center gap-1 border border-solid border-table-border bg-sheet-main-fill text-text-primary px-2 py-0.5 hover:bg-table-border/10 transition-colors"
+                        >
+                            <Plus size={14} /> Add Option
+                        </button>
+                    </div>
+
+                    <div className="space-y-2 max-h-52 overflow-y-auto pr-1">
+                        {choices.length === 0 ? (
+                            <p className="text-text-primary/50 text-xs italic p-1">Click +Add Option to get started...</p>
+                        ) : (
+                            choices.map((choice, oIdx) => (
+                                <div key={oIdx} className="flex gap-2 items-end group/row">
+                                    <div className="w-1/2">
+                                        <ItemRuleInput
+                                            label="Name"
+                                            value={choice.label}
+                                            placeholder="e.g. Might or Apoplex"
+                                            onChange={(e) => handleUpdateOption(oIdx, { label: e.target.value })}
+                                            type="text"
+                                        />
+                                    </div>
+
+                                    <div
+                                        className={`w-1/2 p-1 transition-colors duration-100 ${activeDragIdx === oIdx && rule.type === "item"
+                                            ? "border border-solid border-table-border bg-context-menu-fill rounded-md"
+                                            : ""
+                                            }`}
+                                        onDragOver={(e) => handleDragOver(e, oIdx)}
+                                        onDragLeave={() => setActiveDragIdx(null)}
+                                        onDrop={(e) => handleDrop(e, oIdx)}
+                                    >
+                                        <ItemRuleInput
+                                            label={rule.type === "item" ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
+                                            value={choice.value}
+                                            placeholder={rule.type === "item" ? "Drop item here to capture UUID..." : "stats.might"}
+                                            onChange={(e) => handleUpdateOption(oIdx, { value: e.target.value })}
+                                            type="text"
+                                        />
+                                    </div>
+
+                                    {/* Delete Row Button Wrapper */}
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveOption(oIdx)}
+                                        className="p-1 mb-1 border border-solid border-transparent hover:border-table-border hover:bg-sheet-main-fill text-text-primary/60 hover:text-destructive-action transition-all shrink-0"
+                                        title="Delete Option"
+                                    >
+                                        <Trash size={16} />
+                                    </button>
+                                </div>
+                            ))
+                        )}
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}

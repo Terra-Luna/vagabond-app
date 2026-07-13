@@ -72,7 +72,7 @@ export const ItemSheetBanner = ({ item }: { item: Item & { system: any } }) => {
                     {editModeToggleBtn}
                 </div>
             </div>
-            <CardSubHeader values={subheaderContent} />
+            <CardSubHeader values={subheaderContent} showRightBorder={false} />
         </div>
     )
 }

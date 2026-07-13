@@ -2,7 +2,6 @@ import { lang } from "../../../utils/lang"
 import { fields, requiredInteger, requiredString, standardInteger } from "../../common/sharedSchemas"
 import { starterPackSchema } from "../equip/StarterPackDataModel"
 import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
-import { classFeatureSchema } from "./traitsAndFeatures"
 
 const classSchema = () => {
     return {
@@ -11,22 +10,16 @@ const classSchema = () => {
         complexity: new fields.NumberField({ ...requiredInteger, min: 1, max: 5, initial: 1}),
         keyStats: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Stat) }), { initial: [] }),
         startingPacks: new fields.ArrayField(new fields.SchemaField({ ...starterPackSchema() })),
-
-        training: new fields.SchemaField({
-            weaponTraining: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: ['melee', 'ranged', 'brawl', 'finesse'] }), { initial: [] }),
-            requiredTraining: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Skills).filter(it => !['melee', 'ranged', 'brawl', 'finesse'].includes(it)) })),
-            electivePoolOptions: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: [...Object.keys(lang.VGLITE.Skills), 'any'] })),
-            electiveTrainingCount: new fields.NumberField({ ...requiredInteger, initial: 0 })
-        }),
-
         castingSkill: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.VGLITE.Skills)], blank: true }),
         maxManaStat: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.VGLITE.Stat)], blank: true }),
         manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        spellsGained: new fields.NumberField({ ...standardInteger }),
-        spellGainInterval: new fields.NumberField({ ...standardInteger }),
-        requiredSpells: new fields.ArrayField(new fields.StringField({ ...requiredString })),
-
-        features: new fields.ArrayField(new fields.SchemaField({ ...classFeatureSchema() }))
+        initialSpellSlots: new fields.NumberField({ ...standardInteger, initial: 0 }),
+        spellGainInterval: new fields.NumberField({ ...standardInteger, initial: 0 }),
+        features: new fields.ArrayField(new fields.SchemaField({
+            level: new fields.NumberField({ ...requiredInteger }),
+            name: new fields.StringField({ ...requiredString }),
+            description: new fields.HTMLField({ ...requiredString })
+        }))
     }
 }
 
@@ -39,20 +32,4 @@ export class ClassDataModel extends ItemDataModel<ClassSchema> {
             ...classSchema()
         }
     }
-
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-    }
-}
-
-export function getClassGrantedTrainings(cls: ClassDataModel | undefined): string[] {
-    if (!cls) return []
-    const trainings = cls.training
-    return [...trainings.weaponTraining, ...trainings.requiredTraining]
-}
-
-export function getClassTrainingOptions(cls: ClassDataModel | undefined): { count: number, options: string[] } {
-    if (!cls) return { count: 0, options: [] }
-    const trainings = cls.training
-    return { count: trainings.electiveTrainingCount, options: trainings.electivePoolOptions.filter(o => o !== 'any') }
 }

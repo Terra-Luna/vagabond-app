@@ -1,0 +1,39 @@
+import { ItemRulesLabel } from "./ItemRulesTypography"
+
+export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type = 'text' }) => {
+    return (<>
+        {
+            <div className="flex flex-col gap-2">
+                <ItemRulesLabel text={label} />
+                <input
+                    type={type}
+                    value={value}
+                    onChange={onChange}
+                    className={`
+                        border border-solid border-table-border/50 rounded-sm 
+                        px-2 py-1 -mt-2
+                        text-sm text-white 
+                        focus:border-table-border 
+                        focus:outline-none 
+                    `}
+                    placeholder={placeholder}
+                />
+            </div>
+        }
+    </>)
+}
+
+export const ItemRuleSelector = ({ label, value, options, onChange }) => {
+    return (
+        <div className="flex flex-col">
+            <label className="text-base text-text-primary font-eskapade font-bold">{label}</label>
+            <select
+                value={value}
+                onChange={(e) => onChange(e)}
+                className="text-text-primary bg-sheet-main-fill border border-solid border-table-border p-1"
+            >
+                {options}
+            </select>
+        </div>
+    )
+}

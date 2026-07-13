@@ -64,7 +64,7 @@ const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSe
         text-text-primary
         bg-sheet-main-fill
         border border-solid border-text-primary/50
-        rounded py-0.5 text-sm shadow-sm
+        rounded-smpy-0.5 text-sm shadow-sm
         ${props.className}
     `} {...props} />
 }

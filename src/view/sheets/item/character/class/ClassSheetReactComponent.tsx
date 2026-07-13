@@ -1,4 +1,4 @@
-import { ManaStatSelector, MaxManaPerLevelSelector, RequiredStartingSpells, SpellcastingSkillSelector, SpellGainLevelInterval, StartingSpellSlotsInput } from "./component/SpellcastingConfig"
+import { ManaStatSelector, MaxManaPerLevelSelector, SpellcastingSkillSelector, SpellGainLevelInterval, StartingSpellSlotsInput } from "./component/SpellcastingConfig"
 import { ClassDataModel } from "../../../../../model/item/character/ClassDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
@@ -10,8 +10,8 @@ import { ClassFeaturesConfig } from "./component/ClassFeaturesConfig"
 import { ComplexityRating } from "./component/ComplexityRating"
 import { KeyStatsSelector } from "./component/ClassStatSelector"
 import { StartingPackSelector } from "./component/StartingPackSelector"
-import { TrainingsConfig } from "./component/TrainingsConfig"
 import { vgLiteLang } from "../../../../../utils/lang"
+import { ItemRulesManager } from "../../../../component/rules/ItemRulesManager"
 
 export const ClassSheetReactComponent = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     return (
@@ -19,17 +19,18 @@ export const ClassSheetReactComponent = ({ item }: { item: Item & { system: Clas
             banner={<ClassSheetBanner item={item} />}
             description={<Description item={item} showFullView={true} italic={false} />}
             body={<>
+                <ComplexityRating item={item} />
                 <StartingPackSelector item={item} />
                 <KeyStatsSelector item={item} />
                 <SpellcastingSkillSelector item={item} />
                 <ManaStatSelector item={item} />
                 <MaxManaPerLevelSelector item={item} />
                 <StartingSpellSlotsInput item={item} />
-                <RequiredStartingSpells item={item} />
                 <SpellGainLevelInterval item={item} />
-                <ComplexityRating item={item} />
-                <TrainingsConfig item={item} />
                 <ClassFeaturesConfig item={item} />
+                <div className="mt-2">
+                    <ItemRulesManager item={item} />
+                </div>
             </>}
             bodyClassName="flex flex-col m-2"
         />

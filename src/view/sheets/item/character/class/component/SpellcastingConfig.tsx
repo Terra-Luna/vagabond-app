@@ -90,52 +90,12 @@ export const StartingSpellSlotsInput = ({ item }: { item: Item & { system: Class
                     <div className="flex gap-x-1">
                         <ClassSheetLabel text={`${vgLiteLang.ClassSheet.startingSpellSlots}:`} />
                         <EditableTextField
-                            boundValue={item.system.spellsGained?.toString() ?? '0'}
-                            updateProps={{ object: item, path: ['spellsGained'] }}
+                            boundValue={item.system.initialSpellSlots?.toString() ?? '0'}
+                            updateProps={{ object: item, path: ['initialSpellSlots'] }}
                             placeholder={'4'}
                             className={"text-xl font-eskapade font-normal"}
                         />
                     </div> : <></>
-            }
-        </>
-    )
-}
-
-export const RequiredStartingSpells = ({ item }: { item: Item & { system: ClassDataModel } }) => {
-    const { isEditMode } = useEditMode()
-    const [allSpellOpts, setAllSpellOpts] = useState<SelectOption[]>([])
-
-    useEffect(() => {
-        CombinedItems('spell').then((spells) => {
-            setAllSpellOpts(spells.map(s => ({
-                value: s.id as string,
-                label: s.name
-            })))
-        })
-    }, [])
-
-    const savedSpellIds: string[] = item.system.requiredSpells || []
-    const selectedSpells = allSpellOpts.filter(opt => savedSpellIds.includes(opt.value))
-    const availableSpellOpts = allSpellOpts.filter(opt => !savedSpellIds.includes(opt.value))
-
-    const handleSpellSelect = useCallback((values: MultiValue<SelectOption>) => {
-        const updatedIds = values.map(v => v.value)
-        item.update({ 'system.requiredSpells': updatedIds } as Record<string, string[]>)
-    }, [item])
-
-    return (
-        <>
-            {
-                isEditMode || item.system.castingSkill ? (
-                    <div className="flex gap-x-1">
-                        <ClassSheetLabel text={`${vgLiteLang.ClassSheet.requiredSpells}:`} />
-                        <MultiSelect
-                            options={availableSpellOpts}
-                            value={selectedSpells}
-                            handleOnChange={handleSpellSelect}
-                        />
-                    </div>
-                ) : <></>
             }
         </>
     )

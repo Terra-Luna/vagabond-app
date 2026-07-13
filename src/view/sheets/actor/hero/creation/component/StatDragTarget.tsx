@@ -2,10 +2,11 @@ import { Key } from "lucide-react"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
-export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssignment, dragOverStat, setDragOverStat, bonusStats }) => {
+export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssignment, dragOverStat, setDragOverStat, bonusStats, flatStatBonuses }) => {
     const strings = vgLiteLang.HeroCreation
     const isHovered = dragOverStat === stat
-    const statBonus = bonusStats?.filter(b => b.stat === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.bonus }, 0) ?? 0
+    const selectedBonus = bonusStats?.filter(b => b.stat.replace("stats.", "") === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.bonus }, 0) ?? 0
+    const flatBonus = flatStatBonuses?.filter(b => b.stat === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.value }, 0) ?? 0
 
     return (
         <div>
@@ -49,7 +50,9 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
                     currentAssignment?.value ?
                         <div className="flex gap-x-1">
                             <span className="font-bold">{`
-                                ${currentAssignment.value}${statBonus ? `+${statBonus}` : ''}
+                                ${currentAssignment.value}
+                                ${flatBonus ? `+${flatBonus}` : ''}
+                                ${selectedBonus ? `+${selectedBonus}` : ''}
                             `}</span>
                         </div> :
                         <p className="text-sm text-text-tertiary font-paradigm">

@@ -17,7 +17,6 @@ import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestryShe
 import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
 import { VgLiteActiveEffect } from './document/VgLiteActiveEffect'
 import { isInventoryItem } from "./model/actor/type/Inventory"
-import { runAllMacros } from "./macro/all-macros"
 import { AdversarySheet } from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
@@ -27,6 +26,8 @@ import { getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
+import { BaseItemSchema, ItemDataModel } from "./model/item/ItemDataModel"
+import { RuleElement } from "./view/component/rules/shared/RuleElement"
 
 // Add our fonts
 const fontFaces = [
@@ -81,6 +82,89 @@ Hooks.once("init", () => {
     )
 })
 
+Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: string) => {
+    if (game.user?.id !== userId) return
+
+    const flagChanges = foundry.utils.getProperty(change, "flags.vagabond-lite")
+    const currentLevel = foundry.utils.getProperty(actor, "system.level.current") as unknown as number
+    const itemsToCreate: any[] = []
+
+    // Scan all existing items (like the Class/Ancestry/Equipment...) for rules
+    for (const item of actor.items) {
+        const rules: RuleElement[] = (item.system as any).rules || []
+
+        /**
+         * Level-locked Grants...
+         */
+        const grantRules = rules.filter(r => r.key === "GrantItem")
+        for (const rule of grantRules) {
+            const requiredLevel = rule.level || 0
+
+            if (currentLevel && currentLevel >= requiredLevel) {
+                const alreadyGranted = actor.items.contents.some(i =>
+                    foundry.utils.getProperty(i, "flags.vagabond-lite.grantedBy") === item.id &&
+                    foundry.utils.getProperty(i, "flags.vagabond-lite.ruleId") === rule.id
+                )
+
+                if (!alreadyGranted) {
+                    const doc = await fromUuid(rule.uuid)
+                    if (doc) {
+                        const plainObj = doc.toObject()
+                        foundry.utils.setProperty(plainObj, "flags.vagabond-lite.grantedBy", item.id)
+                        foundry.utils.setProperty(plainObj, "flags.vagabond-lite.ruleId", rule.id)
+                        itemsToCreate.push(plainObj)
+                    }
+                }
+            }
+        }
+
+        /**
+         * Process player choice sets...
+         */
+        if (flagChanges) {
+            const choiceRules = rules.filter(r => r.key === "ChoiceSet" && r.type === "item")
+
+            for (const rule of choiceRules) {
+                if (flagChanges[rule.flag] !== undefined) {
+                    const rawSelections = flagChanges[rule.flag]
+                    
+                    const currentSelectedUuids: string[] = Array.isArray(rawSelections)
+                        ? rawSelections
+                        : (rawSelections ? [rawSelections] : [])
+
+                    // Find and delete any old items previously granted by this specific rule choice block
+                    const oldGrants = actor.items.contents
+                        .filter(i => foundry.utils.getProperty(i, "flags.vagabond-lite.grantedByChoice") === rule.id)
+                        .map(i => i.id).filter((id): id is string => id !== null)
+
+                    if (oldGrants.length > 0) {
+                        await actor.deleteEmbeddedDocuments("Item", oldGrants)
+                    }
+
+                    // Push the newly selected item choices to queue...
+                    for (const uuid of currentSelectedUuids) {
+                        const originalDoc = await fromUuid(uuid)
+                        if (originalDoc) {
+                            const plainObject = originalDoc.toObject()
+
+                            // Stamp custom choice metadata tags into the item flags
+                            foundry.utils.setProperty(plainObject, "flags.vagabond-lite.grantedByChoice", rule.id)
+                            foundry.utils.setProperty(plainObject, "flags.vagabond-lite.grantedByItem", item.id)
+
+                            itemsToCreate.push(plainObject)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Commit!
+    if (itemsToCreate.length > 0) {
+        await actor.createEmbeddedDocuments("Item", itemsToCreate)
+    }
+})
+
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     if (!item.parent || item.parent.documentName !== "Actor") return
 
@@ -98,11 +182,11 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
      * Prevent adding duplicate perks and spells (unless the perk can be taken multiple times).
      */
     if (item.type === 'perk') {
-        return item.system.canTakeMultiple || !actor.item.some(i => i.type === 'perk' && i.name === item.name)
+        return item.system.canTakeMultiple || !actor.items.contents.some(i => i.type === 'perk' && i.name === item.name)
     }
 
     if (item.type === 'spell') {
-        return !actor.items.some(i => i.type === 'spell' && i.name === item.name)
+        return !actor.items.contents.some(i => i.type === 'spell' && i.name === item.name)
     }
 
     if (isInventoryItem(item) && item.system.bulk.isStackable) {
@@ -115,12 +199,41 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     }
 })
 
-Hooks.on("createItem", (item, _options, _userId) => {
-    if (!item.parent || item.parent.documentName !== "Actor") return
-    if (isInventoryItem(item)) {
-        const items = item.parent.items
-        const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
-        item.update({ 'sort': newSortVal })
+Hooks.on("createItem", async (item, _options, _userId) => {
+    /**
+     * Deal with some quirks for Foundry item sorting...
+     */
+    if (item.parent && item.parent.documentName === "Actor") {
+        if (isInventoryItem(item)) {
+            const items = item.parent.items
+            const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
+            item.update({ 'sort': newSortVal })
+        }
+    }
+
+    if (game.user?.id === _userId && item.parent) {
+        const currentLevel = (foundry.utils.getProperty(item.parent, "system.level.current") as number) ?? 0
+
+        // Find all GrantItem rules attached to the newly added item
+        const grantRules = (item as Item & { system: ItemDataModel<BaseItemSchema> }).system.rules?.filter((r: any) => r.key === "GrantItem") || []
+        if (grantRules.length === 0) return
+
+        const itemsToCreate: any[] = []
+        for (const rule of grantRules) {
+            const requiredLevel = (rule.level as number) ?? 0
+            if (currentLevel < requiredLevel) continue
+
+            const grantedDoc = await fromUuid((rule as unknown as any).uuid)
+            if (grantedDoc) {
+                const plainObject = grantedDoc.toObject()
+                foundry.utils.setProperty(plainObject, "flags.vagabond-lite.grantedBy", item.id)
+                itemsToCreate.push(plainObject)
+            }
+        }
+
+        if (itemsToCreate.length > 0) {
+            await item.parent.createEmbeddedDocuments("Item", itemsToCreate)
+        }
     }
 })
 
@@ -130,7 +243,7 @@ Hooks.on("updateItem", (item, changed, options, userId) => {
 
     /**
      * This will cause container sheets to refresh themselves when their
-     * underyling items (ref'd by item-ID) are updated.
+     * underlying items (ref'd by item-ID) are updated.
      */
     const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
     const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
@@ -152,6 +265,16 @@ Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
         }
     }
     return true
+})
+
+Hooks.on("deleteItem", async (item, options, userId) => {
+    if (game.user?.id !== userId || !item.parent) return;
+    const childrenToDelete = item.parent.items.filter(
+        (i: any) => i.getFlag("vagabond-lite", "grantedBy") === item.id
+    ).map((i: any) => i.id)
+    if (childrenToDelete.length > 0) {
+        await item.parent.deleteEmbeddedDocuments("Item", childrenToDelete)
+    }
 })
 
 Hooks.on("renderCombatTracker", (_app, html, _data) => {
@@ -209,16 +332,6 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
     }
 })
 
-/* Hooks.on("targetToken", (user, token, targeted) => {
-    if (!game.user || user.id !== game.user.id) return
-    if (targeted) {
-        console.log(`You targeted: ${token.name}`)
-    }
-    else {
-        console.log(`You untargeted: ${token.name}`)
-    }
-}) */
-
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, {
     types: ['hero'],
     makeDefault: true
@@ -253,5 +366,3 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentShee
     types: ['alchemical', 'armor', 'container', 'starterpack', 'sundry', 'tool', 'weapon'],
     makeDefault: true
 });
-
-(window as any).runVgLiteDebugMacros = runAllMacros

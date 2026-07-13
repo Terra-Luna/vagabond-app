@@ -1,5 +1,4 @@
 import { MessageSquareText, Trash } from "lucide-react"
-import { ancestryFullDescription } from "../../../../../model/item/character/AncestryDataModel"
 import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
@@ -26,7 +25,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         img={(hero.ancestry as any).parent.img}
                         title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
                         subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
-                        description={ancestryFullDescription(hero.ancestry as any)}
+                        description={hero.ancestry?.description}
                     />
                 </>
             }
@@ -84,6 +83,12 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         </div>
                     ))
                 }
+            </div>
+            <div className="flex gap-x-1 w-fit mb-16 ml-auto text-text-primary text-xl font-eskapade font-bold">
+                <p>Perk Slots: </p>
+                <p>{hero.perks.length}</p>
+                <p>/</p>
+                <p>{hero.perkSlots}</p>
             </div>
             <ContextMenu />
         </div>

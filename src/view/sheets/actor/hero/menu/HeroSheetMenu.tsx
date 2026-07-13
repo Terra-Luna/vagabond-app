@@ -7,6 +7,7 @@ import { importFromVgbndApp } from "./util/vgbnd-import"
 import { HeroCreator } from "../creation/HeroCreator"
 import { useGlobalPopout } from "../../../../GlobalPopoutContainer"
 import { NavigationContextProvider } from "../../../../context/navigation/NavigationContextProvider"
+import { HeroActiveRulesView } from "../../../../component/rules/HeroActiveRulesView"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -17,6 +18,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     )
 
     const [isCreatorOpen, setIsCreatorOpen] = useState(false)
+    const [isRulesOpen, setIsRulesOpen] = useState(false)
 
     const toggleMenu = useCallback(() => {
         setIsOpen(!isOpen)
@@ -42,7 +44,12 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         setIsCreatorOpen(false)
     }, [])
 
+    const setRulesClosed = useCallback(() => {
+        setIsRulesOpen(false)
+    }, [])
+
     const createrPopout = useGlobalPopout(setCreatorClosed)
+    const rulesPopout = useGlobalPopout(setRulesClosed)
 
     // Note - this could just be a useCallback that the button calls to render the 
     // popup, but that makes it so that if you click "create hero" multiple times, 
@@ -55,7 +62,12 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 } />, "Hero Creator", true
             )
         }
-    }, [isCreatorOpen])
+        if (isRulesOpen) {
+            rulesPopout.renderPopout(
+                <HeroActiveRulesView actor={hero.parent} />, "Abilites & Effects", false
+            )
+        }
+    }, [isCreatorOpen, isRulesOpen])
 
     return (<>
         <div className={`relative ${className}`}>
@@ -90,6 +102,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                             <MenuListItem text={"CREATE"} onClick={() => setIsCreatorOpen(true)} toggleMenu={toggleMenu} /> :
                             <></>
                     }
+                    <MenuListItem text={'EFFECTS'} onClick={() => setIsRulesOpen(true)} toggleMenu={toggleMenu} />
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

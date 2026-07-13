@@ -33,6 +33,8 @@ const heroSchema = () => {
         mana: new fields.SchemaField({ ...manaSchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
+        perkSlots: new fields.NumberField({ ...requiredInteger, initial: 1 }),
+        spellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
 
         /**
          * Derived from embedded documents...
@@ -41,6 +43,7 @@ const heroSchema = () => {
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
         perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
+
         bonus: new fields.SchemaField({ ...heroBonusSchema() })
     }
 }
@@ -72,6 +75,72 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
         this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: PerkDataModel }) => it.system)
         this.spells = this.parent.items.filter((i: { type: string }) => i.type === 'spell')?.map((it: { system: SpellDataModel }) => it.system)
+
+        /**
+         * Apply bonuses from Item Rules...
+         */
+        const actor = this.parent
+        if (!actor || !actor.items) return
+
+        const currentLevel = actor.system.level.current || 0
+
+        // Lookup rules on any Items...
+        const activeRules = actor.items.contents.flatMap((item: any) => {
+            const rules = item.system.rules || []
+            return rules.filter((r: any) => currentLevel >= (r.level || 0))
+        })
+
+        /**
+         * Apply flat modifiers...
+         */
+        const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
+
+        for (const rule of flatModifiers) {
+            const targetPath = rule.selector.replace("system.", "")
+            const currentValue = foundry.utils.getProperty(this, targetPath)
+            if (typeof currentValue === "number") {
+                foundry.utils.setProperty(this, targetPath, currentValue + rule.value)
+            }
+        }
+
+        /**
+         * Apply toggle modifiers...
+         */
+        const toggleRules = activeRules.filter(r => r.key === "ToggleRule")
+        for (const rule of toggleRules) {
+            const targetPath = rule.selector.replace("system.", "")
+            const booleanValue = rule.value === true || rule.value === "true" || rule.value === "enabled"
+            foundry.utils.setProperty(this, targetPath, booleanValue)
+        }
+
+        /**
+         * Apply player choice modifiers/bonuses...
+         */
+        const choiceRules = activeRules.filter(r => r.key === "ChoiceSet")
+        for (const rule of choiceRules) {
+            const rawChoice = actor.getFlag("vagabond-lite", rule.flag)
+            if (!rawChoice) continue
+
+            // Normalize everything into an array so the looping math is identical
+            const chosenPaths = Array.isArray(rawChoice) ? rawChoice : [rawChoice]
+            const bonusMagnitude = Number(rule.value) || 1
+
+            for (const chosenPath of chosenPaths) {
+                const targetPath = chosenPath.replace("system.", "")
+                const currentValue = foundry.utils.getProperty(this, targetPath)
+
+                if (typeof currentValue === "number") {
+                    foundry.utils.setProperty(this, targetPath, currentValue + bonusMagnitude)
+                }
+                else if (typeof currentValue === "boolean" || targetPath.endsWith("isTrained")) {
+                    foundry.utils.setProperty(this, targetPath, true)
+                }
+            }
+        }
+
+        /**
+         * Set remaining base data last, to preserve the bonuses...
+         */
         setInventoryData(this)
         setXpToNextLevel(this)
         setMaxHP(this)
@@ -135,7 +204,12 @@ export function validateCurrentHP(hero: HeroDataModel) {
 }
 
 export function setMaxHP(hero: HeroDataModel) {
-    hero.health.max = hero.fatigue == 5 ? 0 : hero.stats.might! * (hero.level.current || 1)
+    if (hero.fatigue === 5) {
+        hero.health.max = 0
+    }
+    else {
+        hero.health.max += hero.stats.might! * (hero.level.current || 1)
+    }
 }
 
 export function validateCurrentLuck(hero: HeroDataModel) {
@@ -146,7 +220,7 @@ export function validateCurrentLuck(hero: HeroDataModel) {
 
 export function setArmorRating(hero: HeroDataModel) {
     const equippedArmor = getArmor(hero)
-    hero.armor.rating = equippedArmor?.rating ?? 0
+    hero.armor.rating += equippedArmor?.rating ?? 0
 }
 
 export const getArmor = (hero: HeroDataModel): ArmorDataModel => {
@@ -156,21 +230,21 @@ export const getArmor = (hero: HeroDataModel): ArmorDataModel => {
 }
 
 export function setSpeeds(hero: HeroDataModel) {
-    const dex = hero.stats.dexterity!
+    const dex = hero.stats.dexterity ?? 0
     if (dex < 4) {
-        hero.speed.turn = 25
-        hero.speed.crawl = hero.speed.turn * 3
-        hero.speed.travel = 5
+        hero.speed.turn += 25
+        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.travel += 5
     }
     else if (dex < 6) {
-        hero.speed.turn = 30
-        hero.speed.crawl = hero.speed.turn * 3
-        hero.speed.travel = 6
+        hero.speed.turn += 30
+        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.travel += 6
     }
     else {
-        hero.speed.turn = 35
-        hero.speed.crawl = hero.speed.turn * 3
-        hero.speed.travel = 7
+        hero.speed.turn += 35
+        hero.speed.crawl += hero.speed.turn * 3
+        hero.speed.travel += 7
     }
 }
 
@@ -199,30 +273,27 @@ export function setSkill(stat: number, isTrained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
-    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
-    hero.saves.endure = base - (hero.stats.might! * 2)
-    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)
+    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness! + (hero.bonus.reflexSave ?? 0))
+    hero.saves.endure = base - (hero.stats.might! * 2 + (hero.bonus.endureSave ?? 0))
+    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence! + (hero.bonus.willSave ?? 0))
 }
 
 export function setManaValues(hero: HeroDataModel) {
     const manaValues = calculateManaValues(
         hero.level.current ?? 0,
         Number(hero.stats[hero.class?.maxManaStat]),
-        hero.class
+        hero.class.manaMultiplier
     )
-    hero.mana.max = manaValues.max
-    hero.mana.maxCast = manaValues.maxCast
+    hero.mana.max += manaValues.max
+    hero.mana.maxCast += manaValues.maxCast
+    hero.spellSlots += hero.class?.initialSpellSlots ?? 0
 }
 
-export function calculateManaValues(level: number, manaStatVal: number, cls: any): { max: number, maxCast: number } {
-    if (cls && cls.castingSkill) {
-        const max = level * cls.manaMultiplier
-        const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
-        return { max: max, maxCast: maxCast }
-    }
-    else {
-        return { max: 0, maxCast: 0 }
-    }
+export function calculateManaValues(level: number, manaStatVal: number, multiplier: number): { max: number, maxCast: number } {
+    if (level === 0 || manaStatVal === 0) return { max: 0, maxCast: 0 }
+    const max = level * multiplier
+    const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
+    return { max: max, maxCast: maxCast }
 }
 
 export function setXpToNextLevel(hero: HeroDataModel) {
@@ -232,5 +303,5 @@ export function setXpToNextLevel(hero: HeroDataModel) {
 
 function setInventoryData(hero: HeroDataModel) {
     hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
-    hero.inventory.capacity = Number(hero.stats.might) + 8 - hero.fatigue!
+    hero.inventory.capacity += Number(hero.stats.might) + 8 - hero.fatigue!
 }
