@@ -59,6 +59,13 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         return flatStatBonuses.filter(b => b.stat === stat).reduce((sum, b) => { return sum + b.value }, 0)
     }
 
+    const getMaxManaStatValue = (clazz: ClassDataModel | undefined): number => {
+        if (!clazz) return 0
+        const stat = clazz.maxManaStat
+        const bonus = getSelectedBonusByStat(stat) + getFlatBonusByStat(stat)
+        return (assignedStats.find(it => it.stat === stat)?.value ?? 0) + bonus
+    }
+
     /**
      * Initialize some states.
      */
@@ -333,18 +340,20 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                         <div className="flex gap-x-2 mt-1 justify-center">
                             <div className="bg-text-hp-max/20 rounded-md border border-solid border-text-hp-current p-4">
                                 <HeroCreationSubtext text={strings.maxhp} />
-                                <p className="text-4xl text-text-hp-current font-bold">{`${(assignedStats.find(s => s.stat === 'might')?.value ?? 0) * 2}`}</p>
+                                <p className="text-4xl text-text-hp-current font-bold">
+                                    {`${((assignedStats.find(s => s.stat === 'might')?.value ?? 0) + getFlatBonusByStat('might') + getSelectedBonusByStat('might')) * 2}`}
+                                </p>
                             </div>
                             <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
                                 <HeroCreationSubtext text={strings.maxmana} />
                                 <p className="text-4xl text-mana font-bold">{`
-                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.system?.maxManaStat)?.value ?? 0, clazz).max}
+                                ${calculateManaValues(1, getMaxManaStatValue(clazz?.system), clazz?.system.manaMultiplier ?? 1).max}
                             `}</p>
                             </div>
                             <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
                                 <HeroCreationSubtext text={strings.maxcast} />
                                 <p className="text-4xl text-mana font-bold">{`
-                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.system?.maxManaStat)?.value ?? 0, clazz).maxCast}
+                                ${calculateManaValues(1, getMaxManaStatValue(clazz?.system), clazz?.system.manaMultiplier ?? 1).maxCast}
                             `}</p>
                             </div>
                         </div>

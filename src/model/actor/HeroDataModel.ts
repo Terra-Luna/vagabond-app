@@ -282,22 +282,18 @@ export function setManaValues(hero: HeroDataModel) {
     const manaValues = calculateManaValues(
         hero.level.current ?? 0,
         Number(hero.stats[hero.class?.maxManaStat]),
-        hero.class
+        hero.class.manaMultiplier
     )
     hero.mana.max += manaValues.max
     hero.mana.maxCast += manaValues.maxCast
     hero.spellSlots += hero.class?.initialSpellSlots ?? 0
 }
 
-export function calculateManaValues(level: number, manaStatVal: number, cls: any): { max: number, maxCast: number } {
-    if (cls && cls.castingSkill) {
-        const max = level * cls.manaMultiplier
-        const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
-        return { max: max, maxCast: maxCast }
-    }
-    else {
-        return { max: 0, maxCast: 0 }
-    }
+export function calculateManaValues(level: number, manaStatVal: number, multiplier: number): { max: number, maxCast: number } {
+    if (level === 0 || manaStatVal === 0) return { max: 0, maxCast: 0 }
+    const max = level * multiplier
+    const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
+    return { max: max, maxCast: maxCast }
 }
 
 export function setXpToNextLevel(hero: HeroDataModel) {
