@@ -2,7 +2,8 @@ import { fields } from "../common/sharedSchemas"
 
 const baseItemSchema = () => {
     return {
-        description: new fields.HTMLField()
+        description: new fields.HTMLField(),
+        rules: new fields.ArrayField(new fields.ObjectField({ required: true }))
     }
 }
 

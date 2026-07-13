@@ -3,13 +3,12 @@ import { ClassDataModel } from "../../../../../../model/item/character/ClassData
 import { SkillCard } from "../../../../../component/SkillCard"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel, ClassSheetSectionHeader } from "./ClassSheetText"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { EditableTextField } from "../../../../../component/EditableTextField"
 import { RichTextField } from "../../../../../component/RichTextField"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
 import { vgLiteLang } from "../../../../../../utils/lang"
-import { Grant, GrantModel, Modifier, ModifierModel } from "../../../../../../model/item/character/traitsAndFeatures"
 
 export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -64,8 +63,6 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
     const [title, setTitle] = useState('')
     const [level, setLevel] = useState(1)
     const [description, setDescription] = useState('')
-    const [grants, setGrants] = useState<GrantModel[]>([])
-    const [modifiers, setModifiers] = useState<ModifierModel[]>([])
 
     const updateTitle = useCallback(async (title: string | null) => {
         setTitle(title ?? '')
@@ -81,14 +78,6 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
         setDescription(descr ?? '')
         return true
     }, [setDescription, description])
-
-    const onAddGrant = useCallback(() => {
-        setGrants([...grants, { type: '', count: 1, specific: false, trainingOptions: [], selectedPerks: [], spellOptions: [], ignorePrerequisites: false }])
-    }, [grants])
-
-    const onAddModifier = useCallback(() => {
-        setModifiers([...modifiers, { type: 'BONUS', targetStat: '', value: '0' }])
-    }, [modifiers])
 
     return (
         <div className="border border-solid border-table-border space-y-1 p-2">
@@ -119,41 +108,6 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
                 onChange={updateDescription}
                 height={48}
             />
-
-            {/* GRANTS */}
-            <div>
-                <div className="flex gap-x-1">
-                    <ClassSheetLabel text={vgLiteLang.ClassSheet.grants} />
-                    <Plus size={20} onClick={onAddGrant} />
-                </div>
-                <div>
-                    {
-                        grants.map(grant => (
-                            <div>
-
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
-
-            {/* MODIFIERS */}
-            <div>
-                <div className="flex gap-x-1">
-                    <ClassSheetLabel text={vgLiteLang.ClassSheet.modifiers} />
-                    <Plus size={20} onClick={onAddModifier} />
-                </div>
-                <div>
-                    {
-                        modifiers.map(mod => (
-                            <div>
-
-                            </div>
-                        ))
-                    }
-                </div>
-
-            </div>
 
             {/* SAVE & CANCEL BUTTONS */}
             <div className="flex justify-between mt-2">

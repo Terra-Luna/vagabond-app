@@ -536,12 +536,13 @@
       "statsReset": "Reset",
       "statsSelect": "or Select",
       "dropHere": "DROP HERE",
+      "flatBonus": "FLAT BONUSES",
       "vitals": "Vitals Preview",
       "maxhp": "MAX HP",
       "maxmana": "MAX MANA",
       "maxcast": "MAX CAST",
       "traingingsHeader": "SELECT TRAININGS",
-      "trainingSubheader": "Choose the skills yoru hero has mastered.",
+      "trainingSubheader": "Choose the skills your hero has mastered.",
       "grantedTraining": "Granted Training",
       "electiveTraining": "Elective Class Skills (Choose %s)",
       "ancestralTraining": "Ancestral Training Options (Choose %s)",
@@ -862,6 +863,7 @@
       "anyOpt": "Any",
       "back": "Back",
       "next": "Next",
+      "add": "Add",
       "finish": "Finish"
     }
   }

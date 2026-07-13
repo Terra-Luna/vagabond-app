@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { calculateManaValues } from "../../../../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { useNavButtons } from "../../../../../context/navigation/NavButtons"
@@ -7,27 +7,29 @@ import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { SecondaryButton } from "../../../../../component/Button"
 import { Dices, Undo } from "lucide-react"
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationLabeledField, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { DraggableStatBlock } from "../component/DraggableStatBlock"
 import { StatDragTarget } from "../component/StatDragTarget"
-import { AncestryDataModel, getAncestryStatBonuses } from "../../../../../../model/item/character/AncestryDataModel"
+import { AncestryDataModel } from "../../../../../../model/item/character/AncestryDataModel"
 import { BorderedContent } from "../component/BorderedContent"
+import { getFlatStatBonuses, getStatChoiceRules } from "../../../../../component/rules/util/item-rules-util"
 
-export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: ClassDataModel | undefined) => {
+export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined) => {
+    const STAT_MAX = 7
     const strings = vgLiteLang.HeroCreation
     const stats = vgLiteLang.Stat
     const statBlocks = vgLiteLang.BaseStatBlocks
-    const ancestryStatBonuses = getAncestryStatBonuses(ancestry)
 
     const { NavButtons, setCanProceed } = useNavButtons()
+    const lastCanProceedRef = useRef<boolean>(false)
     const [selectedArr, setSelectedArr] = useState<{ index: number, values: number[], usedIndices: number[] }>()
     const [assignedStats, setAssignedStats] = useState<{ stat: string, value: number | null, poolIndex: number | null }[]>([])
-    const [bonusStats, setBonusStats] = useState<{ stat: string, name: string, bonus: number }[]>([])
+    const [bonusStatSelections, setBonusStatSelections] = useState<{ stat: string, name: string, bonus: number }[]>([])
     const [dragOverKey, setDragOverStat] = useState<string | null>(null)
     
     const resetAssignedStats = () => {
         setCanProceed(false)
-        setBonusStats([])
+        setBonusStatSelections([])
         setAssignedStats(Object.keys(stats).map(s => ({ stat: s, value: null, poolIndex: null })))
         setSelectedArr(prev => {
             if (!prev) return prev
@@ -36,31 +38,64 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
     }
 
     /**
+     * Check Item rule sets for any bonuses to be applied...
+     */
+    const requiredChoiceRules = useMemo(() => {
+        return getStatChoiceRules([ancestry, clazz])
+    }, [ancestry, clazz])
+
+    const flatStatBonuses = useMemo(() => {
+        return getFlatStatBonuses([ancestry, clazz])
+    }, [ancestry, clazz])
+
+    const getSelectedBonusByStat = (stat: string): number => {
+        return bonusStatSelections.filter(b => b.stat
+            .toLowerCase()
+            .replace("stats.", "") === stat)
+            .reduce((sum, b) => { return sum + b.bonus }, 0)
+    }
+
+    const getFlatBonusByStat = (stat: string): number => {
+        return flatStatBonuses.filter(b => b.stat === stat).reduce((sum, b) => { return sum + b.value }, 0)
+    }
+
+    /**
      * Initialize some states.
      */
     useEffect(() => {
-        setCanProceed(false)
         setSelectedArr({ index: 0, values: statBlocks[0], usedIndices: [] })
         resetAssignedStats()
     }, [])
 
     /**
-     * Check stat allocations to see if the user can proceed to next step.
+     * Check stat allocations and choices to see if the user can proceed.
      */
     useEffect(() => {
+        let shouldProceed = false
         if (assignedStats.length > 0 && assignedStats.every(s => s.value !== null)) {
-            if (ancestryStatBonuses.length === 0 || (ancestryStatBonuses.length === bonusStats.length)) {
-                setCanProceed(true)
+            const totalRequiredSelections = requiredChoiceRules.reduce((sum, r) => sum + (r.maxChoices || 1), 0)
+            if (totalRequiredSelections === 0 || (totalRequiredSelections === bonusStatSelections.length)) {
+                shouldProceed = true
             }
         }
-    }, [assignedStats, bonusStats])
+        if (lastCanProceedRef.current !== shouldProceed) {
+            lastCanProceedRef.current = shouldProceed
+            setCanProceed(shouldProceed)
+        }
+    }, [assignedStats, bonusStatSelections, requiredChoiceRules])
 
     /**
-     * Clear out any bonuses assigned to a maxed-out stat.
+     * Automagically clear out any bonuses assigned to a maxed-out stat.
      */
     useEffect(() => {
-        assignedStats.filter(stat => stat.value === 7).forEach(stat => {
-            setBonusStats([...bonusStats.filter(b => b.stat !== stat.stat)])
+        // Collect all stat keys that are currently maxed out at 7
+        const maxedStatKeys = assignedStats.filter(stat => stat.value === STAT_MAX).map(stat => stat.stat)
+        if (maxedStatKeys.length === 0) return
+        setBonusStatSelections(prevBonusStats => {
+            // Only modify state if there are actual bonuses matching the maxed stats
+            const hasMatchingBonus = prevBonusStats.some(b => maxedStatKeys.includes(b.stat))
+            if (!hasMatchingBonus) return prevBonusStats
+            return prevBonusStats.filter(b => !maxedStatKeys.includes(b.stat))
         })
     }, [assignedStats])
 
@@ -76,7 +111,7 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
     }, [])
 
     const onSelectBonusStat = useCallback((newBonus) => {
-        setBonusStats(prevStats => {
+        setBonusStatSelections(prevStats => {
             const exists = prevStats.some(b => b.name === newBonus.name)
             if (exists) {
                 return prevStats.map(b => b.name === newBonus.name ? newBonus : b)
@@ -86,6 +121,12 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
         })
     }, [])
 
+    /**
+     * Drag & Drop handlers for assigning base stats.
+     * @param e 
+     * @param value 
+     * @param poolIndex 
+     */
     const onDragStart = (e: React.DragEvent, value: number, poolIndex: number) => {
         e.stopPropagation()
         e.dataTransfer.effectAllowed = "move"
@@ -106,6 +147,11 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
         if (payload.type !== "VgLiteStatBlock") return
 
         const { value, poolIndex } = payload
+
+        if (value + getFlatBonusByStat(targetStatKey) + getSelectedBonusByStat(targetStatKey) > STAT_MAX) {
+            return
+        }
+
 
         setAssignedStats(prev => {
             const existingAssignment = prev.find(item => item.stat === targetStatKey)
@@ -191,12 +237,13 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
                                             key={statKey}
                                             stat={statKey}
                                             stats={stats}
-                                            isKeyStat={clazz?.keyStats?.includes(statKey)}
+                                            isKeyStat={clazz?.system?.keyStats?.includes(statKey)}
                                             onDragDrop={onDragDrop}
                                             currentAssignment={currentAssignment}
                                             dragOverStat={dragOverKey}
                                             setDragOverStat={setDragOverStat}
-                                            bonusStats={bonusStats}
+                                            bonusStats={bonusStatSelections}
+                                            flatStatBonuses={flatStatBonuses}
                                         />
                                     )
                                 })
@@ -204,49 +251,79 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
                         </div>
                     </div>
 
-                    {/* CONDITIONAL STAT BONUS SELECTION */}
-                    {
-                        ancestryStatBonuses.length === 0 ? <></> :
-                            <div className="flex w-fit gap-x-2 gap-y-1 py-2 px-8 mx-auto justify-center border border-solid border-table-border rounded-md">
-                                {
-                                    ancestryStatBonuses.map((mod, index) => {
-                                        const currentBonusSelection = bonusStats?.find(b => b.name === mod.name)
-                                        const activeStatValue = currentBonusSelection ? currentBonusSelection.stat : ""
-                                        return (
-                                            <div key={index}>
-                                                <HeroCreationDropdown
-                                                    label={mod.name}
-                                                    value={activeStatValue}
-                                                    options={[
-                                                        { value: '', label: '-' },
-                                                        ...assignedStats
-                                                            .filter(s => {
-                                                                const existingBonus = bonusStats?.find(b => b.stat === s.stat && b.name !== mod.name)?.bonus ?? 0
-                                                                return !s.value || s.value <= (7 - (mod.bonus + existingBonus))
-                                                            })
-                                                            .map(s => ({
-                                                                value: s.stat,
-                                                                label: `${vgLiteLang.Stat[s.stat].name} (+${mod.bonus})`
-                                                            }))
-                                                    ]}
-                                                    onChange={(selectedStat) => {
-                                                        if (!selectedStat) {
-                                                            setBonusStats(prev => prev.filter(b => b.name !== mod.name))
-                                                        }
-                                                        else {
-                                                            onSelectBonusStat({
-                                                                stat: selectedStat,
-                                                                bonus: mod.bonus,
-                                                                name: mod.name
-                                                            })
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
+                    {/* BONUS STAT CHOICE SELECTION */}
+                    {requiredChoiceRules.length > 0 && (
+                        <div className="flex flex-col w-fit gap-y-2 py-2 px-8 mx-auto justify-center border border-solid border-table-border bg-sheet-main-fill rounded-md">
+                            {requiredChoiceRules.map((rule) => {
+                                const totalChoicesForRule = rule.maxChoices || 1
+
+                                return Array.from({ length: totalChoicesForRule }).map((_, choiceSlotIdx) => {
+                                    const slotName = `${rule.id}_slot_${choiceSlotIdx}`
+                                    const currentBonusSelection = bonusStatSelections?.find(b => b.name === slotName)
+                                    const activeStatValue = currentBonusSelection ? currentBonusSelection.stat : ""
+                                    const availableChoicesArray = rule.choices || []
+                                    return (
+                                        <div key={slotName}>
+                                            <HeroCreationDropdown
+                                                label={`${rule.label} (${choiceSlotIdx + 1}/${totalChoicesForRule})`}
+                                                value={activeStatValue}
+                                                options={[
+                                                    { value: '', label: '-' },
+                                                    ...availableChoicesArray
+                                                        .filter((choice: any) => {
+                                                            if (!choice?.value) return false
+
+                                                            // Normalize case path tracking strings to align object keys safely
+                                                            const cleanPath = choice.value.toLowerCase().replace("system.", "")
+                                                            const statKey = cleanPath.replace("stats.", "")
+
+                                                            if (cleanPath.startsWith("stats.")) {
+                                                                const targetStatObj = assignedStats.find(s => s.stat.toLowerCase() === statKey)
+                                                                const existingBonusValue = bonusStatSelections?.find(b => b.stat === choice.value && b.name !== slotName)?.bonus ?? 0
+
+                                                                // Keep the option if the pool row has been assigned and doesn't exceed stat max.
+                                                                return targetStatObj && (
+                                                                    !targetStatObj.value ||
+                                                                    (targetStatObj.value + getFlatBonusByStat(targetStatObj.stat)) <= (STAT_MAX - (rule.value + existingBonusValue))
+                                                                )
+                                                            }
+
+                                                            return true
+                                                        })
+                                                        .map((choice: any) => ({
+                                                            value: choice.value, // Full db key: "system.stats.might"
+                                                            label: `${choice.label} (+${rule.value})`
+                                                        }))
+                                                ]}
+                                                onChange={(selectedStat) => {
+                                                    if (!selectedStat) {
+                                                        setBonusStatSelections(prev => prev.filter(b => b.name !== slotName))
+                                                    } else {
+                                                        onSelectBonusStat({
+                                                            stat: selectedStat,
+                                                            bonus: rule.value,
+                                                            name: slotName
+                                                        })
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    )
+                                })
+                            })}
+                        </div>
+                    )}
+
+                    {/* FLAT BONUS STATS LIST */}
+                    {flatStatBonuses.length > 0 &&
+                        <BorderedContent className="flex-col">
+                            <HeroCreationLabel text={strings.flatBonus} />
+                            {
+                                flatStatBonuses.map(b => (
+                                    <HeroCreationLabeledField label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.value}`} />
+                                ))
+                            }
+                        </BorderedContent>
                     }
 
                     {/* VITAL STATS PREVIEW */}
@@ -261,28 +338,32 @@ export const useCoreStats = (ancestry: AncestryDataModel | undefined, clazz: Cla
                             <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
                                 <HeroCreationSubtext text={strings.maxmana} />
                                 <p className="text-4xl text-mana font-bold">{`
-                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.maxManaStat)?.value ?? 0, clazz).max}
+                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.system?.maxManaStat)?.value ?? 0, clazz).max}
                             `}</p>
                             </div>
                             <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
                                 <HeroCreationSubtext text={strings.maxcast} />
                                 <p className="text-4xl text-mana font-bold">{`
-                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.maxManaStat)?.value ?? 0, clazz).maxCast}
+                                ${calculateManaValues(1, assignedStats.find(s => s.stat === clazz?.system?.maxManaStat)?.value ?? 0, clazz).maxCast}
                             `}</p>
                             </div>
                         </div>
                     </div>
 
+
+                    {/* TODO: DELETE THIS HELPER BUTTON LATER */}
                     <SecondaryButton onClick={() => {
                         assignedStats.forEach((s, i) => {
                             s.value = selectedArr?.values[i] ?? 2
                         })
                         setAssignedStats([...assignedStats])
                     }} children={<p>AUTO (delete me later)</p>} />
+
+
                 </div>
             </div>
         )
     }
 
-    return { CoreStats, assignedStats, bonusStats }
+    return { CoreStats, assignedStats, bonusStatSelections }
 }

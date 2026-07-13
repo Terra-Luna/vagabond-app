@@ -99,13 +99,13 @@ const docLinkSytles = `
     /* Items / Equipment (Amber Theme) */
     [&_a[data-type='Item']]:bg-amber-950/40
     [&_a[data-type='Item']]:text-amber-400
-    [&_a[data-type='Item']]:border-amber-500/30
+    [&_a[data-type='Item']]:border-table-border/30
     hover:[&_a[data-type='Item']]:bg-amber-900/50
 
     /* Journal Entries (Slate Theme) */
     [&_a[data-type='JournalEntry']]:bg-slate-800
     [&_a[data-type='JournalEntry']]:text-slate-300
-    [&_a[data-type='JournalEntry']]:border-slate-700
+    [&_a[data-type='JournalEntry']]:border-table-border
     hover:[&_a[data-type='JournalEntry']]:bg-slate-700
 
     /* Roll Tables (Purple Theme) */

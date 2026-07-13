@@ -5,6 +5,8 @@ import { updateDocument } from "../../../../../utils/documentUtils"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { glowOnHover } from "../../../../common/text-styles"
 import { vgLiteLang as locale } from "../../../../../utils/lang"
+import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 
 export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
     const headerStyle = "text-sm text-text-header-tertiary font-eskapade font-bold content-center"
@@ -49,12 +51,14 @@ export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                 </p>
                 <div className="flex font-eskapade font-bold">
                     <div className={`text-text-hp-current text-4xl text-right ${glowOnHover}`}>
-                        <EditableTextField
-                            boundValue={adv.health.current?.toString() ?? ''}
-                            updateProps={{ object: adv.parent, path: ['health', 'current'] }}
-                            placeholder="0"
-                            hideBorderOnEditMode={true}
-                        />
+                        <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                            <EditableTextField
+                                boundValue={adv.health.current?.toString() ?? ''}
+                                updateProps={{ object: adv.parent, path: ['health', 'current'] }}
+                                placeholder="0"
+                                hideBorderOnEditMode={true}
+                            />
+                        </EditModeContextProvider>
                     </div>
                     <p className="text-text-primary text-5xl font-normal">/</p>
                     <p className={`text-text-hp-max text-3xl mt-3 ${glowOnHover}`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>

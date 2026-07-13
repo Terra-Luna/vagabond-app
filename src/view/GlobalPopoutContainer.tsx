@@ -51,7 +51,9 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
         position: { width: 400, height: 1000 },
         window: {
             resizable: true
-        }
+        },
+        // Block Foundry hotkeys...
+        forms: [{ handler: () => { }, submitOnChange: false }]
     }
 }
 

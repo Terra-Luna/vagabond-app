@@ -1,10 +1,9 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { inventoryItemTypes, isInventoryItem } from "../../model/actor/type/Inventory"
-import { VgLiteError}  from "../../model/common/VgLiteError"
-import { applyAncestralTraits } from "../../model/item/character/AncestryDataModel"
+import { inventoryItemTypes } from "../../model/actor/type/Inventory"
+import { VgLiteError } from "../../model/common/VgLiteError"
 import { updateDocument } from "../../utils/documentUtils"
 import { stackStackables } from "../../utils/heroInventoryUtil"
-import { addItemsToActor, addItemToActor, CombinedItems, CombinedItemsMultiType, TypedIndexEntry } from "../../utils/modelUtil"
+import { addItemToActor, CombinedItems, CombinedItemsMultiType, TypedIndexEntry } from "../../utils/modelUtil"
 import { fetchHero, TagalongItem } from "./TagalongApi"
 import { TagalongItemCreator } from "./TagalongItemCreator"
 
@@ -119,37 +118,6 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
             else {
                 spells.push(systemSpell)
             }
-        }
-
-        /**
-         * Add complex objects and arrays as Embedded Documents...
-         */
-        if (ancestry != undefined) {
-            await addItemToActor(hero.parent, ancestry)
-            const heroAncestry = hero.parent.items.find((i: { type: string }) => i.type === 'ancestry')
-            if (res.strongPotentialStat != null) {
-                await updateDocument(heroAncestry, {
-                    'traits': [
-                        {
-                            name: 'Strong Potential',
-                            description: 'Increase one of your Stats by 1, but no higher than 7.',
-                            modifiers: [{
-                                targetStat: res.strongPotentialStat, type: 'BONUS', value: '1'
-                            }]
-                        }
-                    ],
-                })
-            }
-            if (res.ancestry_bonus_skill != null) {
-                await updateDocument(heroAncestry, { 'chosenTrainings': [res.ancestry_bonus_skill] })
-            }
-            if (res.ancestry_bonus_spell != null) {
-                await updateDocument(heroAncestry, { 'chosenSpells': [res.ancestry_bonus_spell] })
-            }
-            /**
-             * Finalize ancestry by applying active effects.
-             */
-            applyAncestralTraits(heroAncestry.system)
         }
 
         if (clazz != undefined) {

@@ -7,7 +7,7 @@ import { EquipmentDataModel, EquipmentSchema } from "../../item/equip/EquipmentD
 export const inventorySchema = () => {
     return {
         coins: new fields.SchemaField({ ...coinSchema() }),
-        capacity: new fields.NumberField({ ...requiredInteger, initial: 2 }),
+        capacity: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         /**
          * Derived from Actor's Embedded Documents.
          */
