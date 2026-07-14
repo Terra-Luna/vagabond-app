@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useMemo } from "react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { useNavigationContext } from "../../../../context/EditModeContext/Hooks"
 import { useClassSelection } from "./step/ClassSelection"
@@ -15,11 +15,11 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     const { ClassSelection, classItem } = useClassSelection(hero)
     const { CoreStats, assignedStats, bonusStatSelections } = useCoreStats(ancestryItem, classItem)
     const { TrainingSelection, classTrainingRules, ancestryTrainingRules, chosenClassSKills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem)
-    const { SpellSelection } = useSpellSelection(ancestryItem?.system, classItem?.system)
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem)
     const { PerkSelection } = usePerkSelection(ancestryItem?.system, classItem?.system)
     const { EquipmentSelection } = useEquipmentSelection(classItem?.system)
 
-    const getStatsWithBonuses = (assignedStats, bonusStatSelections): { stat: string, value: number }[] => {
+    const getStatsWithBonuses = (assignedStats: any[], bonusStatSelections: any[]): { stat: string, value: number }[] => {
         const stats: { stat: string, value: number }[] = []
         assignedStats.forEach(assignedStat => {
             const bonus = bonusStatSelections
@@ -30,18 +30,36 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
         return stats
     }
 
-    const steps = [
-        { id: 'identity', view: <NameAndAncestry /> },
-        { id: 'class-selection', view: <ClassSelection /> },
-        { id: 'core-stats', view: <CoreStats /> },
-        { id: 'training-selection', view: <TrainingSelection stats={getStatsWithBonuses(assignedStats, bonusStatSelections)} /> },
-        { id: 'spell-selection', view: <SpellSelection /> },
-        { id: 'perk-selection', view: <PerkSelection /> },
-        { id: 'equipment-selection', view: <EquipmentSelection /> }
-    ]
+    const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
+
+    const activeSteps = useMemo(() => {
+        const baseSteps = [
+            { id: 'identity', view: <NameAndAncestry /> },
+            { id: 'class-selection', view: <ClassSelection /> },
+            { id: 'core-stats', view: <CoreStats /> },
+            { id: 'training-selection', view: <TrainingSelection stats={getStatsWithBonuses(assignedStats, bonusStatSelections)} /> },
+            { id: 'perk-selection', view: <PerkSelection /> },
+            { id: 'equipment-selection', view: <EquipmentSelection /> }
+        ]
+
+        if (!hasSpellSlots) return baseSteps
+
+        const targetIndex = baseSteps.findIndex(s => s.id === 'training-selection') + 1
+        return [
+            ...baseSteps.slice(0, targetIndex),
+            { id: 'spell-selection', view: <SpellSelection /> },
+            ...baseSteps.slice(targetIndex)
+        ]
+
+    }, [hasSpellSlots, assignedStats, bonusStatSelections, NameAndAncestry, ClassSelection, CoreStats, TrainingSelection, SpellSelection, PerkSelection, EquipmentSelection])
+
+    const stepIdsString = JSON.stringify(activeSteps.map(s => s.id))
 
     useEffect(() => {
-        registerStepIds(steps.map(s => s.id))
+        registerStepIds(JSON.parse(stepIdsString))
+    }, [stepIdsString, registerStepIds])
+
+    useEffect(() => {
         registerOnFinish(() => {
             console.log("TODO: apply selections to hero and close.")
         })
@@ -49,8 +67,7 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
 
     return (
         <div className="text-text-primary text-lg font-eskapade p-2 overflow-auto">
-            {steps.find(s => s.id === stepId)?.view}
+            {activeSteps.find(s => s.id === stepId)?.view}
         </div>
     )
-
 }

@@ -34,7 +34,6 @@ const heroSchema = () => {
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
         perkSlots: new fields.NumberField({ ...requiredInteger, initial: 1 }),
-        spellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
 
         /**
          * Derived from embedded documents...
@@ -43,6 +42,7 @@ const heroSchema = () => {
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
         perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
+        spellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
 
         bonus: new fields.SchemaField({ ...heroBonusSchema() })
     }
@@ -144,7 +144,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setInventoryData(this)
         setXpToNextLevel(this)
         setMaxHP(this)
-        setManaValues(this)
+        setSpellcastingStats(this)
         setSaves(this)
         setSpeeds(this)
         setSkillDifficulties(this)
@@ -278,15 +278,15 @@ export function setSaves(hero: HeroDataModel) {
     hero.saves.will = base - (hero.stats.reason! + hero.stats.presence! + (hero.bonus.willSave ?? 0))
 }
 
-export function setManaValues(hero: HeroDataModel) {
+export function setSpellcastingStats(hero: HeroDataModel) {
     const manaValues = calculateManaValues(
         hero.level.current ?? 0,
         Number(hero.stats[hero.class?.maxManaStat]),
-        hero.class.manaMultiplier
+        hero.class?.manaMultiplier ?? 1
     )
     hero.mana.max += manaValues.max
     hero.mana.maxCast += manaValues.maxCast
-    hero.spellSlots += hero.class?.initialSpellSlots ?? 0
+    hero.spellSlots += calculateSpellSlots(hero.level.current ?? 0, hero.ancestry?.initialSpellSlots ?? 0, hero.class?.initialSpellSlots ?? 0, hero.class?.spellGainInterval ?? 0)
 }
 
 export function calculateManaValues(level: number, manaStatVal: number, multiplier: number): { max: number, maxCast: number } {
@@ -294,6 +294,11 @@ export function calculateManaValues(level: number, manaStatVal: number, multipli
     const max = level * multiplier
     const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
     return { max: max, maxCast: maxCast }
+}
+
+export function calculateSpellSlots(level: number, initialAncestrySlots: number, initialClassSlots: number, interval: number): number {
+    if (level === 0 && initialAncestrySlots === 0) return 0
+    return initialAncestrySlots + initialClassSlots + (interval > 0 ? Math.ceil((level - 1) / interval) : 0)
 }
 
 export function setXpToNextLevel(hero: HeroDataModel) {

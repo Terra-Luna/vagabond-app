@@ -1,4 +1,5 @@
 import { vgLiteLang } from "../../../../utils/lang"
+import { CombinedItems } from "../../../../utils/modelUtil";
 
 export interface ItemRule {
     label: string,
@@ -121,7 +122,7 @@ export function getRequiredSkillTrainingRules(items: (Item & { system: { rules: 
 export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: any } } | undefined)[]): ItemRule[] {
     const gatheredRules: any[] = []
 
-    const extractSkillRules = (item: any) => {
+    const extractSkillRules = (item: Item & { system: { rules: any } } | undefined) => {
         if (!item?.system?.rules) return
         const rules: any[] = item.system.rules
 
@@ -137,10 +138,8 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
                 ? firstChoiceObj
                 : (firstChoiceObj?.value || "")
 
-            const valLower = firstChoiceVal.toLowerCase()
-
             // Check if it's a wildcard skills rule OR a manual list targeting skills paths
-            const isSkillRule = valLower.includes("skills.*") ||
+            const isSkillRule = firstChoiceVal.toLowerCase().includes("skills.*") ||
                 choicesArray.some((c: any) => (c?.value || "").toLowerCase().includes("skills."))
 
             return isSkillRule
@@ -187,4 +186,26 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
 
 export function getSKillNameFromPath(path: string): string {
     return path.split('.').reverse()[1]
+}
+
+export async function getSpellGrants(items: (Item & { system: { rules: any } } | undefined)[]): Promise<(ItemRule & { spell: string, uuid: string, source: string })[]> {
+    const spells = await CombinedItems('spell')
+    const spellsById = spells.map(spell => ({ id: spell.uuid, name: spell.name }))
+    const spellIds = new Set(spellsById.map(sp => sp.id))
+
+    const grantsPromises = items.map(async (item) => {
+        if (!item?.system?.rules) return []
+
+        const grants = item.system.rules.filter(r => r.key === "GrantItem" && spellIds.has(r.uuid))
+
+        return grants.map(grant => ({
+            ...grant,
+            spell: spellsById.find(sp => sp.id === grant.uuid)?.name ?? '',
+            uuid: grant.uuid,
+            source: item.name ?? ''
+        }))
+    })
+
+    const allGrantsNested = await Promise.all(grantsPromises)
+    return allGrantsNested.flat()
 }

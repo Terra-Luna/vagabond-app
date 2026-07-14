@@ -1,13 +1,14 @@
 import { lang, vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
+import { beingSizeOptions, beingTypeOptions, fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
 const ancestrySchema = () => {
     return {
         senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Senses) }), { initial: [] }),
         beingType: new fields.StringField({ ...beingTypeOptions() }),
-        beingSize: new fields.StringField({ ...beingSizeOptions() })
+        beingSize: new fields.StringField({ ...beingSizeOptions() }),
+        initialSpellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 })
     }
 }
 

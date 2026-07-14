@@ -338,19 +338,19 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                         <HeroCreationLabel text={strings.vitals} />
                         <Divider />
                         <div className="flex gap-x-2 mt-1 justify-center">
-                            <div className="bg-text-hp-max/20 rounded-md border border-solid border-text-hp-current p-4">
+                            <div className="bg-text-hp-max/20 rounded-md border border-solid border-text-hp-current p-2">
                                 <HeroCreationSubtext text={strings.maxhp} />
                                 <p className="text-4xl text-text-hp-current font-bold">
                                     {`${((assignedStats.find(s => s.stat === 'might')?.value ?? 0) + getFlatBonusByStat('might') + getSelectedBonusByStat('might')) * 2}`}
                                 </p>
                             </div>
-                            <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
+                            <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
                                 <HeroCreationSubtext text={strings.maxmana} />
                                 <p className="text-4xl text-mana font-bold">{`
                                 ${calculateManaValues(1, getMaxManaStatValue(clazz?.system), clazz?.system.manaMultiplier ?? 1).max}
                             `}</p>
                             </div>
-                            <div className="bg-mana/20 rounded-md border border-solid border-mana p-4">
+                            <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
                                 <HeroCreationSubtext text={strings.maxcast} />
                                 <p className="text-4xl text-mana font-bold">{`
                                 ${calculateManaValues(1, getMaxManaStatValue(clazz?.system), clazz?.system.manaMultiplier ?? 1).maxCast}

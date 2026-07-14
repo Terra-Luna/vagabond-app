@@ -9,6 +9,7 @@ import { getRequiredSkillTrainingRules, getSKillNameFromPath, getSkillTrainingCh
 import { BorderedContent } from "../component/BorderedContent"
 import { TrainingSelector } from "../component/TrainingSelector"
 import { Select } from "../../../../../component/Dropdown"
+import { ItemGrantCard } from "../component/ItemGrantCard"
 
 export const useTrainingSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
@@ -91,19 +92,9 @@ export const useTrainingSelection = (
                     <HeroCreationLabel text={strings.grantedTraining} />
                     {
                         requiredTrainingRules.map((rule, index) => (
-                            <div key={index} className="flex gap-x-2 justify-between items-center p-2 bg-context-menu-fill/25 border border-solid border-table-border rounded-sm">
-                                <div className="flex gap-x-2 items-center">
-                                    <HeroCreationValue text={vgLiteLang.Skills[rule.skill].name} />
-                                    <HeroCreationSubtext text={`(${vgLiteLang.Skills[rule.skill].stat})`} />
-                                </div>
-                                <div className="bg-context-menu-fill border border-solid border-table-border rounded-sm px-1 py-0.5">
-                                    <HeroCreationSubtext text={rule.source.name} />
-                                </div>
-                            </div>
+                            <ItemGrantCard key={index} name={vgLiteLang.Skills[rule.skill].name} subtext={`(${vgLiteLang.Skills[rule.skill].stat})`} source={rule.source.name} />
                         ))
                     }
-
-
                 </div>
 
                 {/* TRAINING CHOICE COUNTER */}
@@ -126,6 +117,7 @@ export const useTrainingSelection = (
                                 const isSelected = chosenClassSKills.includes(skill)
                                 return (
                                     <TrainingSelector
+                                        key={choice.value}
                                         skill={skill}
                                         label={choice.label}
                                         isSelected={isSelected}
@@ -142,7 +134,7 @@ export const useTrainingSelection = (
                     <div className="bg-wealth-fill border border-solid border-table-border rounded-md p-2">
                         {
                             ancestryTrainingRules.map(rule => (
-                                <div className="space-y-1">
+                                <div key={rule.value} className="space-y-1">
                                     <p className="text-xl text-wealth-denom-label font-bold">
                                         {`${strings.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`}
                                     </p>
@@ -158,6 +150,7 @@ export const useTrainingSelection = (
                                                 const isSelected = chosenBonusSkills.includes(skill)
                                                 return (
                                                     <TrainingSelector
+                                                        key={choice.value}
                                                         skill={skill}
                                                         label={choice.label}
                                                         isSelected={isSelected}
@@ -167,6 +160,7 @@ export const useTrainingSelection = (
                                             }) :
                                             chosenBonusSkills.map(skill => (
                                                 <TrainingSelector
+                                                    key={skill}
                                                     skill={skill}
                                                     label={vgLiteLang.Skills[skill].name}
                                                     isSelected={true}

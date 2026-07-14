@@ -69,7 +69,7 @@ export const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes
     `} {...props} />
 }
 
-const Option = (props: React.DetailedHTMLProps<React.OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>) => {
+export const Option = (props: React.DetailedHTMLProps<React.OptionHTMLAttributes<HTMLOptionElement>, HTMLOptionElement>) => {
     return <option
         className={`
             ${menuOptionContainer} ${menuOptionTextDefault} ${props.className}
