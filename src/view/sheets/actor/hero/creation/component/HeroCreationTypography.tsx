@@ -2,6 +2,10 @@ export const HeroCreationLabel = ({ text }: { text: string }) => {
     return <p className="text-lg text-text-primary font-eskapade font-bold">{text}</p>
 }
 
+export const HeroCreationValue = ({ text }: { text: string }) => {
+    return <p className="text-lg text-text-primary font-paradigm font-bold">{text}</p>
+}
+
 export const HeroCreationSubtext = ({ text }: { text: string }) => {
     return <p className="text-sm text-text-secondary font-paradigm font-normal">{text}</p>
 }
