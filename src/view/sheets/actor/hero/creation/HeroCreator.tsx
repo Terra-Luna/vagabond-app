@@ -14,16 +14,27 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     const { NameAndAncestry, ancestryItem } = useNameAndAncestry(hero)
     const { ClassSelection, classItem } = useClassSelection(hero)
     const { CoreStats, assignedStats, bonusStatSelections } = useCoreStats(ancestryItem, classItem)
-    const { TrainingSelection } = useTrainingSelection(ancestryItem, classItem)
+    const { TrainingSelection, classTrainingRules, ancestryTrainingRules, chosenClassSKills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem)
     const { SpellSelection } = useSpellSelection(ancestryItem?.system, classItem?.system)
     const { PerkSelection } = usePerkSelection(ancestryItem?.system, classItem?.system)
     const { EquipmentSelection } = useEquipmentSelection(classItem?.system)
+
+    const getStatsWithBonuses = (assignedStats, bonusStatSelections): { stat: string, value: number }[] => {
+        const stats: { stat: string, value: number }[] = []
+        assignedStats.forEach(assignedStat => {
+            const bonus = bonusStatSelections
+                .filter(b => b.stat.replace("stats.", "") === assignedStat.stat)
+                .reduce((sum, it) => { return sum + it.bonus }, 0)
+            stats.push({ stat: assignedStat.stat, value: (assignedStat.value + bonus) })
+        })
+        return stats
+    }
 
     const steps = [
         { id: 'identity', view: <NameAndAncestry /> },
         { id: 'class-selection', view: <ClassSelection /> },
         { id: 'core-stats', view: <CoreStats /> },
-        { id: 'training-selection', view: <TrainingSelection /> },
+        { id: 'training-selection', view: <TrainingSelection stats={getStatsWithBonuses(assignedStats, bonusStatSelections)} /> },
         { id: 'spell-selection', view: <SpellSelection /> },
         { id: 'perk-selection', view: <PerkSelection /> },
         { id: 'equipment-selection', view: <EquipmentSelection /> }

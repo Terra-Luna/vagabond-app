@@ -76,6 +76,13 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     type="text"
                 />
                 <ItemRuleInput
+                    label="Level Req."
+                    value={rule.level || 0}
+                    placeholder="0"
+                    onChange={(e) => onChange({ level: e.target.value })}
+                    type="number"
+                />
+                <ItemRuleInput
                     label="Data Flag"
                     value={rule.flag || ""}
                     placeholder="e.g., classAttributeBonus"

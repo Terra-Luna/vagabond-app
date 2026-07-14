@@ -6,7 +6,7 @@ export const useNavButtons = () => {
     const [canProceed, setCanProceed] = useState(true)
 
     const NavButtons = ({ header }: { header: ReactNode }) => {
-        return(
+        return (
             <div className="flex gap-x-0.5 justify-between">
                 {backButton}
                 {header}
