@@ -366,58 +366,72 @@
     "Skills": {
       "arcana": {
         "name": "Arcana",
+        "stat": "Reason",
         "description": ""
       },
       "brawl": {
         "name": "Brawl",
+        "stat": "Might",
         "description": ""
       },
       "craft": {
         "name": "Craft",
+        "stat": "Reason",
         "description": ""
       },
       "detect": {
         "name": "Detect",
+        "stat": "Awareness",
         "description": ""
       },
       "finesse": {
         "name": "Finesse",
+        "stat": "Dexterity",
         "description": ""
       },
       "influence": {
         "name": "Influence",
+        "stat": "Presence",
         "description": ""
       },
       "leadership": {
         "name": "Leadership",
+        "stat": "Presence",
         "description": ""
       },
       "medicine": {
         "name": "Medicine",
+        "stat": "Reason",
         "description": ""
       },
       "mysticism": {
         "name": "Mysticism",
+        "stat": "Awareness",
         "description": ""
       },
       "performance": {
         "name": "Performance",
+        "stat": "Presence",
         "description": ""
       },
       "sneak": {
         "name": "Sneak",
+        "stat": "Dexterity",
         "description": ""
       },
       "survival": {
         "name": "Survival",
+        "stat": "Awareness",
         "description": ""
       },
       "melee": {
         "name": "Melee",
+        "stat": "Might",
         "description": ""
       },
       "ranged": {
         "name": "Ranged",
+        "stat": "Awareness",
         "description": ""
       }
     },
@@ -549,7 +563,7 @@
       "trainingSlots": "Elective Training Slots Available",
       "trainingSourceClass": "CLASS",
       "trainingSourceAncestry": "ANCESTRY",
-      "bonusTraining": "Bonus Training (%s)",
+      "bonusTraining": "Bonus Training: %s1 (Choose %s2)",
       "bonusInfo": "Your ancestry grants you proficiency in one additional skill of your choice.",
       "spellsHeader": "ACQUIRE SPELLS",
       "spellsSubheader": "Select the spells your hero has memorized.",

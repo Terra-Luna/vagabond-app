@@ -1,5 +1,13 @@
 import { vgLiteLang } from "../../../../utils/lang"
 
+export interface ItemRule {
+    label: string,
+    level: number,
+    maxChoices: number,
+    value: number,
+    choices: { value: string; label: string }[]
+}
+
 export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | undefined)[]): { name: string, stat: string, value: number }[] {
     const rules: any[] = []
 
@@ -20,9 +28,9 @@ export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | u
     ))
 }
 
-export function getStatChoiceRules(items: (Item & { system: { rules: any}} | undefined)[]) {
+export function getStatChoiceRules(items: (Item & { system: { rules: any } } | undefined)[]) {
     const gatheredRules: any[] = []
-    
+
     const extractStatChoiceRules = (item: any) => {
         if (!item?.system?.rules) return
         const rules: any[] = item.system.rules
@@ -83,9 +91,36 @@ export function getStatChoiceRules(items: (Item & { system: { rules: any}} | und
     })
 }
 
-export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: any } } | undefined)[]) {
+export function getRequiredSkillTrainingRules(items: (Item & { system: { rules: any } } | undefined)[]): { source: Item, skill: string }[] {
+    const itemRules: any[] = []
+
+    const getRequiredTrainings = (item) => {
+        if (!item?.system?.rules) return
+        const requiredSkillRules = item.system.rules
+            .filter(r => r.key === 'ToggleRule' && r.value && r.selector.includes('skills.'))
+
+        if (!requiredSkillRules || requiredSkillRules.length === 0) return
+
+        itemRules.push({ item: item, rules: requiredSkillRules })
+    }
+
+    items.forEach(item => {
+        getRequiredTrainings(item)
+    })
+
+    const res: { source: Item, skill: string }[] = []
+    itemRules.forEach(itemRule => {
+        itemRule.rules.forEach(rule => {
+            res.push({ source: itemRule.item, skill: getSKillNameFromPath(rule.selector) })
+        })
+    })
+
+    return res.sort((a, b) => { return a.skill.localeCompare(b.skill) })
+}
+
+export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: any } } | undefined)[]): ItemRule[] {
     const gatheredRules: any[] = []
-    
+
     const extractSkillRules = (item: any) => {
         if (!item?.system?.rules) return
         const rules: any[] = item.system.rules
@@ -118,7 +153,7 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
         extractSkillRules(item)
     })
 
-    // Expand wildcard array tokens into fully populated option arrays
+    // Expand wildcard array tokens into fully option arrays
     return gatheredRules.map(rule => {
         const choicesArray = Array.isArray(rule.choices) ? rule.choices : []
         if (choicesArray.length === 0) return rule
@@ -144,26 +179,12 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
             ...rule,
             choices: choicesArray.map((c: any) => ({
                 value: c.value,
-                label: c.label || c.value.split('.').reverse()[1]
-            }))
+                label: c.label || getSKillNameFromPath(c.value)
+            })).sort((a, b) => { return a.label.localeCompare(b.label) })
         }
     })
 }
 
-export function getRequiredSkillTrainingRules(items: (Item & { system: { rules: any } } | undefined)[]): string[] {
-    const rules: any[] = []
-    
-    const getRequiredTrainings = (item) => {
-        if (!item?.system?.rules) return
-        rules.push(...item.system.rules.filter(r => r.key === 'ToggleRule' && r.value && r.selector.includes('skills.')))
-    }
-
-    items.forEach(item => {
-        getRequiredTrainings(item)
-    })
-
-    // Return a list of required trainings...
-    return rules.map(rule => (
-        rule.selector.split('.').reverse()[1]
-    ))
+export function getSKillNameFromPath(path: string): string {
+    return path.split('.').reverse()[1]
 }

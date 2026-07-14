@@ -35,7 +35,7 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
 
     return (
         <div>
-            <LabelledField label={label} variant={variant} className="text-base font-eskapade font-bold">
+            <LabelledField label={label ?? ''} variant={variant} className="text-base font-eskapade font-bold">
                 {
                     isEditMode ?
                         <div>
@@ -58,7 +58,7 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
     )
 }
 
-const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {
+export const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {
     return <select className={`
         font-eskapade
         text-text-primary
