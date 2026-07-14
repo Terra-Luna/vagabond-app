@@ -44,7 +44,11 @@ const heroSchema = () => {
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
         spellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
 
-        bonus: new fields.SchemaField({ ...heroBonusSchema() })
+        bonus: new fields.SchemaField({ ...heroBonusSchema() }),
+
+        // certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
+        // this just is a boolean value we flip back and forth to trigger the update lifecycle
+        forceUpdateTrack: new fields.BooleanField({initial: false})
     }
 }
 
@@ -56,6 +60,11 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             ...super.defineSchema(),
             ...heroSchema()
         }
+    }
+
+    /** Force the update lifecycle to happen on a nonsense field */
+    async forceUpdate() {
+        this.parent.update({system: {forceUpdateTrack: !this.forceUpdateTrack}})
     }
 
     override async _onCreate(data: any, options: any, userId: string) {
