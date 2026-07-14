@@ -127,7 +127,7 @@ Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: 
             for (const rule of choiceRules) {
                 if (flagChanges[rule.flag] !== undefined) {
                     const rawSelections = flagChanges[rule.flag]
-                    
+
                     const currentSelectedUuids: string[] = Array.isArray(rawSelections)
                         ? rawSelections
                         : (rawSelections ? [rawSelections] : [])
@@ -166,16 +166,24 @@ Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: 
 })
 
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {
-    if (!item.parent || item.parent.documentName !== "Actor") return
+    if (!item.parent || item.parent.documentName !== "Actor") return true
 
     const actor = item.parent
 
     /**
-     * Prevent adding additional ancestry and class.
+     * GMs can replace ancestries and classes, normal users can't add multiple ancestries / classes
      */
     const uniqueItemTypes = ['ancestry', 'class']
-    if (uniqueItemTypes.indexOf(item.type) > -1 && actor.items.find((i: { type: string }) => i.type === item.type)) {
-        return false
+    if (uniqueItemTypes.includes(item.type)) {
+        const preExistingUniqueItem = actor.items.find(i => i.type === item.type)
+        if (preExistingUniqueItem) {
+            if (game.user?.isActiveGM) {
+                preExistingUniqueItem.update({ system: item.system })
+                actor.system.forceUpdate?.()
+            }
+            return false
+        }
+        return true
     }
 
     /**
@@ -200,12 +208,15 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
 })
 
 Hooks.on("createItem", async (item, _options, _userId) => {
+    const parent = item.parent
+    const parentIsActor = parent && parent.documentName === "Actor"
+
     /**
      * Deal with some quirks for Foundry item sorting...
      */
-    if (item.parent && item.parent.documentName === "Actor") {
+    if (parentIsActor) {
         if (isInventoryItem(item)) {
-            const items = item.parent.items
+            const items = parent.items
             const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
             item.update({ 'sort': newSortVal })
         }
@@ -275,6 +286,9 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     if (childrenToDelete.length > 0) {
         await item.parent.deleteEmbeddedDocuments("Item", childrenToDelete)
     }
+
+    // If an item was deleted off a hero, trigger an update in case something (like their class/ancestry) just adds it back
+    (item.parent.system as HeroDataModel)?.forceUpdate?.()
 })
 
 Hooks.on("renderCombatTracker", (_app, html, _data) => {
