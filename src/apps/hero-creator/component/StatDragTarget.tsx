@@ -6,7 +6,7 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
     const strings = vgLiteLang.HeroCreation
     const isHovered = dragOverStat === stat
     const selectedBonus = bonusStats?.filter(b => b.stat.replace("stats.", "") === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.bonus }, 0) ?? 0
-    const flatBonus = flatStatBonuses?.filter(b => b.stat === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.value }, 0) ?? 0
+    const flatBonus = flatStatBonuses?.filter(b => b.stat === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.bonus }, 0) ?? 0
 
     return (
         <div>

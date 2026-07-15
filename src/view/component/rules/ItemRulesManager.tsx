@@ -56,7 +56,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
     return (
         <FoundryHotkeyBlocker>
             <CollapsibleSection title={"GRANTS & MODIFIERS"} content={
-                <div className="p-2 bg-context-menu-fill border border-solid border-table-border">
+                <div className="p-2 bg-context-menu-fill border border-solid border-table-border mb-24">
                     <div className="flex justify-between items-center mb-4 border-b border-solid border-table-border pb-2">
                         <HeroCreationLabel text={'Item Grants & Modifiers'} />
                         <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
@@ -138,7 +138,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                             ))
                         )}
                     </div>
-                    <div className="flex w-full mt-1">
+                    <div className="flex w-full mt-2">
                         <div className="ml-auto">
                             <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
                                 <p>{vgLiteLang.ButtonActions.add}</p>

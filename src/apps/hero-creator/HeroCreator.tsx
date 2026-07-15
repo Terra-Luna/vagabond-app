@@ -13,16 +13,16 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     const { stepId, registerStepIds, registerOnFinish } = useNavigationContext()
     const { NameAndAncestry, ancestryItem } = useNameAndAncestry(hero)
     const { ClassSelection, classItem } = useClassSelection(hero)
-    const { CoreStats, assignedStats, bonusStatSelections } = useCoreStats(ancestryItem, classItem)
+    const { CoreStats, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem)
     const { TrainingSelection, classTrainingRules, ancestryTrainingRules, chosenClassSKills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem)
     const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem)
     const { PerkSelection } = usePerkSelection(ancestryItem?.system, classItem?.system)
     const { EquipmentSelection } = useEquipmentSelection(classItem?.system)
 
-    const getStatsWithBonuses = (assignedStats: any[], bonusStatSelections: any[]): { stat: string, value: number }[] => {
+    const getStatsWithBonuses = (assignedStats: any[], bonusStatSelections: any[], flatStatBonuses: any[]): { stat: string, value: number }[] => {
         const stats: { stat: string, value: number }[] = []
         assignedStats.forEach(assignedStat => {
-            const bonus = bonusStatSelections
+            const bonus = [...bonusStatSelections, ...flatStatBonuses]
                 .filter(b => b.stat.replace("stats.", "") === assignedStat.stat)
                 .reduce((sum, it) => { return sum + it.bonus }, 0)
             stats.push({ stat: assignedStat.stat, value: (assignedStat.value + bonus) })
@@ -37,7 +37,7 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
             { id: 'identity', view: <NameAndAncestry /> },
             { id: 'class-selection', view: <ClassSelection /> },
             { id: 'core-stats', view: <CoreStats /> },
-            { id: 'training-selection', view: <TrainingSelection stats={getStatsWithBonuses(assignedStats, bonusStatSelections)} /> },
+            { id: 'training-selection', view: <TrainingSelection stats={getStatsWithBonuses(assignedStats, bonusStatSelections, flatStatBonuses)} /> },
             { id: 'perk-selection', view: <PerkSelection /> },
             { id: 'equipment-selection', view: <EquipmentSelection /> }
         ]
@@ -51,7 +51,7 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
             ...baseSteps.slice(targetIndex)
         ]
 
-    }, [hasSpellSlots, assignedStats, bonusStatSelections, NameAndAncestry, ClassSelection, CoreStats, TrainingSelection, SpellSelection, PerkSelection, EquipmentSelection])
+    }, [hasSpellSlots, assignedStats, bonusStatSelections, flatStatBonuses, NameAndAncestry, ClassSelection, CoreStats, TrainingSelection, SpellSelection, PerkSelection, EquipmentSelection])
 
     const stepIdsString = JSON.stringify(activeSteps.map(s => s.id))
 

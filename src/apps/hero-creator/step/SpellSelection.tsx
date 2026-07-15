@@ -46,6 +46,7 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
 
     useEffect(() => {
         getSpellGrants([ancestry]).then(grants => {
+
             setAncestrySpellGrants(grants)
             getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
                 const maxChoices = rules.filter(r => r.type === 'spell').reduce((sum, r) => { return sum + r.maxChoices }, 0)
@@ -95,22 +96,14 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
      * @returns 
      */
     const getOtherSelectedIds = (index: number, source: 'class' | 'ancestry') => {
-        const otherClassSlots = source === 'class'
-            ? classSpellSlots.filter((_, i) => i !== index)
-            : classSpellSlots
-
-        const otherAncestrySlots = source === 'ancestry'
-            ? ancestrySpellSlots.filter((_, i) => i !== index)
-            : ancestrySpellSlots
-
+        const otherClassSlots = source === 'class' ? classSpellSlots.filter((_, i) => i !== index) : classSpellSlots
+        const otherAncestrySlots = source === 'ancestry' ? ancestrySpellSlots.filter((_, i) => i !== index) : ancestrySpellSlots
         return [
             ...otherClassSlots,
             ...otherAncestrySlots,
             ...classSpellGrants.map(g => ({ value: g.uuid, label: g.spell })),
             ...ancestrySpellGrants.map(g => ({ value: g.uuid, label: g.spell }))
-        ]
-            .map(s => s.value)
-            .filter(Boolean)
+        ].map(s => s.value).filter(Boolean)
     }
 
     const SpellSelectorGroup = ({ slotGroup, source }: { slotGroup: { value: string, label: string }[], source: 'class' | 'ancestry' }) => {
@@ -152,8 +145,8 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
             <div className="mt-4 space-y-1">
                 <HeroCreationLabel text={strings.grantedSpells} />
                 {
-                    [...ancestrySpellGrants, ...classSpellGrants].map(grant => (
-                        <ItemGrantCard key={grant.value} name={grant.spell} source={grant.source} />
+                    [...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
+                        <ItemGrantCard key={index} name={grant.spell} source={grant.source} />
                     ))
                 }
             </div>

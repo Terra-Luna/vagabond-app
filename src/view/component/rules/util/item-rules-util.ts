@@ -12,7 +12,7 @@ export interface ItemRule {
     choices: { value: string, label: string }[]
 }
 
-export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | undefined)[]): { name: string, stat: string, value: number }[] {
+export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | undefined)[]): { name: string, stat: string, bonus: number }[] {
     const rules: any[] = []
 
     const getFlatStatBonusRules = (item) => {
@@ -28,7 +28,7 @@ export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | u
 
     // Return a list of flat bonuses by stat name and value...
     return rules.map(rule => (
-        { name: rule.label, stat: rule.selector.split('.').reverse()[0], value: rule.value }
+        { name: rule.label, stat: rule.selector.split('.').reverse()[0], bonus: rule.value }
     ))
 }
 

@@ -56,7 +56,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
     }
 
     const getFlatBonusByStat = (stat: string): number => {
-        return flatStatBonuses.filter(b => b.stat === stat).reduce((sum, b) => { return sum + b.value }, 0)
+        return flatStatBonuses.filter(b => b.stat === stat).reduce((sum, b) => { return sum + b.bonus }, 0)
     }
 
     const getMaxManaStatValue = (clazz: ClassDataModel | undefined): number => {
@@ -325,11 +325,13 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                     {flatStatBonuses.length > 0 &&
                         <BorderedContent className="flex-col">
                             <HeroCreationLabel text={strings.flatBonus} />
-                            {
-                                flatStatBonuses.map(b => (
-                                    <HeroCreationLabeledField label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.value}`} />
-                                ))
-                            }
+                            <div className="flex gap-x-2">
+                                {
+                                    flatStatBonuses.map(b => (
+                                        <HeroCreationLabeledField label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.bonus}`} />
+                                    ))
+                                }
+                            </div>
                         </BorderedContent>
                     }
 
@@ -374,5 +376,5 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         )
     }
 
-    return { CoreStats, assignedStats, bonusStatSelections }
+    return { CoreStats, assignedStats, bonusStatSelections, flatStatBonuses }
 }
