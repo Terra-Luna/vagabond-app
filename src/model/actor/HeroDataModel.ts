@@ -295,7 +295,7 @@ export function setSpellcastingStats(hero: HeroDataModel) {
     )
     hero.mana.max += manaValues.max
     hero.mana.maxCast += manaValues.maxCast
-    hero.spellSlots += calculateSpellSlots(hero.level.current ?? 0, hero.ancestry?.initialSpellSlots ?? 0, hero.class?.initialSpellSlots ?? 0, hero.class?.spellGainInterval ?? 0)
+    hero.spellSlots += calculateSpellSlots(hero.level.current ?? 0, hero.class?.initialSpellSlots ?? 0, hero.class?.spellGainInterval ?? 0)
 }
 
 export function calculateManaValues(level: number, manaStatVal: number, multiplier: number): { max: number, maxCast: number } {
@@ -305,9 +305,9 @@ export function calculateManaValues(level: number, manaStatVal: number, multipli
     return { max: max, maxCast: maxCast }
 }
 
-export function calculateSpellSlots(level: number, initialAncestrySlots: number, initialClassSlots: number, interval: number): number {
-    if (level === 0 && initialAncestrySlots === 0) return 0
-    return initialAncestrySlots + initialClassSlots + (interval > 0 ? Math.ceil((level - 1) / interval) : 0)
+export function calculateSpellSlots(level: number, initialClassSlots: number, interval: number): number {
+    if (level === 0) return 0
+    return initialClassSlots + (interval > 0 ? Math.ceil((level - 1) / interval) : 0)
 }
 
 export function setXpToNextLevel(hero: HeroDataModel) {

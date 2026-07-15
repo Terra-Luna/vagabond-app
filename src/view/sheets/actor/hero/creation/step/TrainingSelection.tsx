@@ -1,15 +1,15 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect, useCallback } from "react"
 import { AncestryDataModel } from "../../../../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { Divider, Header } from "../../../../../component/Header"
 import { useNavButtons } from "../../../../../context/navigation/NavButtons"
-import { HeroCreationLabel, HeroCreationSubtext, HeroCreationValue } from "../component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { getRequiredSkillTrainingRules, getSKillNameFromPath, getSkillTrainingChoiceRules, ItemRule } from "../../../../../component/rules/util/item-rules-util"
 import { BorderedContent } from "../component/BorderedContent"
 import { TrainingSelector } from "../component/TrainingSelector"
-import { Select } from "../../../../../component/Dropdown"
 import { ItemGrantCard } from "../component/ItemGrantCard"
+import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 
 export const useTrainingSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
@@ -48,10 +48,14 @@ export const useTrainingSelection = (
      * Monitors the selected trainings to allow the player to proceed to the next step.
      */
     useEffect(() => {
+        if (!classTrainingRules.length && !ancestryTrainingRules.length) {
+            setCanProceed(false)
+            return
+        }
         const isAllClassSKillsChosen = chosenClassSKills.length === classTrainingMaxChoices
         const isBonusSkillChosen = ancestryTrainingMaxChoices === chosenBonusSkills.length
-        setCanProceed(isAllClassSKillsChosen && isBonusSkillChosen)
-    }, [chosenClassSKills, chosenBonusSkills])
+        setCanProceed(isAllClassSKillsChosen && isBonusSkillChosen);
+    }, [chosenClassSKills, chosenBonusSkills, classTrainingMaxChoices, ancestryTrainingMaxChoices, classTrainingRules, ancestryTrainingRules])
 
     const onSelectClassSkill = useCallback((skill: string, isSelected: boolean) => {
         if (isSelected && chosenClassSKills.length < classTrainingMaxChoices) {
@@ -60,7 +64,7 @@ export const useTrainingSelection = (
         else {
             setChosenClassSkills(chosenClassSKills.filter(sk => sk !== skill))
         }
-    }, [chosenClassSKills])
+    }, [chosenClassSKills, classTrainingMaxChoices])
 
     const onSelectBonusSkill = useCallback((skill: string, isSelected: boolean) => {
         if (isSelected && chosenBonusSkills.length < ancestryTrainingMaxChoices) {
@@ -69,7 +73,7 @@ export const useTrainingSelection = (
         else {
             setChosenBonusSkills(chosenBonusSkills.filter(sk => sk !== skill))
         }
-    }, [chosenBonusSkills])
+    }, [chosenBonusSkills, ancestryTrainingMaxChoices])
 
     const TrainingSelection = ({ stats }: { stats: { stat: string, value: number }[] }) => {
         return (
@@ -131,13 +135,11 @@ export const useTrainingSelection = (
                 {/* BONUS TRAINING SELECTIONS */}
                 {
                     ancestryTrainingRules.length > 0 &&
-                    <div className="bg-wealth-fill border border-solid border-table-border rounded-md p-2">
+                    <BonusChoiceContainer>
                         {
                             ancestryTrainingRules.map(rule => (
                                 <div key={rule.value} className="space-y-1">
-                                    <p className="text-xl text-wealth-denom-label font-bold">
-                                        {`${strings.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`}
-                                    </p>
+                                    <BonusChoiceTitle text={`${strings.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`} />
                                     {
                                         rule.maxChoices > chosenBonusSkills.length ?
                                             rule.choices.map(c => (
@@ -171,7 +173,7 @@ export const useTrainingSelection = (
                                 </div>
                             ))
                         }
-                    </div>
+                        </BonusChoiceContainer>
                 }
             </div>
         )

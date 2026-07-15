@@ -7,8 +7,7 @@ const ancestrySchema = () => {
     return {
         senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Senses) }), { initial: [] }),
         beingType: new fields.StringField({ ...beingTypeOptions() }),
-        beingSize: new fields.StringField({ ...beingSizeOptions() }),
-        initialSpellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        beingSize: new fields.StringField({ ...beingSizeOptions() })
     }
 }
 

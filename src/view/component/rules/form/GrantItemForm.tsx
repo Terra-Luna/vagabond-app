@@ -1,16 +1,9 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput } from "../shared/ItemRuleInput"
 
 export const GrantItemForm = ({ rule, onChange }: FormProps) => {
     const [isDraggingOver, setIsDraggingOver] = useState(false)
-    const [itemName, setItemName] = useState("")
-
-    useEffect(() => {
-        fromUuid(rule.uuid).then((item) => {
-            setItemName(item?.name ?? "")
-        })
-    }, [rule])
 
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault()

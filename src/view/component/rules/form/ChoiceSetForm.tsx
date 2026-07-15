@@ -11,11 +11,13 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     const [activeDragIdx, setActiveDragIdx] = useState<number | null>(null)
 
     // Update specific keys inside an individual option index row using oIdx
-    const handleUpdateOption = (indexToUpdate: number, fields: Partial<ChoiceOption>) => {
+    const handleUpdateOption = async (indexToUpdate: number, fields: Partial<ChoiceOption>) => {
         const updatedChoices = choices.map((choice, idx) => {
             if (idx !== indexToUpdate) return choice
             return { ...choice, ...fields }
         })
+        const item = fromUuidSync(fields.value)
+        rule.type = (item instanceof foundry.abstract.Document && "type" in item) ? item.type : null
         onChange({
             ...rule,
             choices: updatedChoices
@@ -40,7 +42,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
     const handleDragOver = (e: React.DragEvent, index: number) => {
         e.preventDefault()
-        if (rule.type === "item") {
+        if (rule.type === "spell" || rule.type === "perk" || rule.type === "item") {
             setActiveDragIdx(index)
         }
     }
@@ -49,7 +51,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
         e.preventDefault()
         setActiveDragIdx(null)
 
-        if (rule.type !== "item") return
+        if (rule.type !== "spell" && rule.type !== "perk" && rule.type !== "item") return
 
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
@@ -127,9 +129,10 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                         const sourceMode = val?.target ? val.target.value : val;
                         if (sourceMode === "dynamic") {
                             onChange({ pack: "vagabond-lite.", choices: [] });
-                        } else {
+                        }
+                        else {
                             // Explicitly nullify properties to force Foundry database clearance
-                            onChange({ pack: null, filter: null, choices: [] });
+                            onChange({ pack: null, choices: [] });
                         }
                     }}
                 />
@@ -178,7 +181,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                     </div>
 
                                     <div
-                                        className={`w-1/2 p-1 transition-colors duration-100 ${activeDragIdx === oIdx && rule.type === "item"
+                                        className={`w-1/2 p-1 transition-colors duration-100 ${activeDragIdx === oIdx && (rule.type === "item" || rule.type === "spell" || rule.type === "perk")
                                             ? "border border-solid border-table-border bg-context-menu-fill rounded-md"
                                             : ""
                                             }`}
@@ -187,9 +190,9 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         onDrop={(e) => handleDrop(e, oIdx)}
                                     >
                                         <ItemRuleInput
-                                            label={rule.type === "item" ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
+                                            label={(rule.type === "item" || rule.type === "spell" || rule.type === "perk") ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
                                             value={choice.value}
-                                            placeholder={rule.type === "item" ? "Drop item here to capture UUID..." : "stats.might"}
+                                            placeholder={(rule.type === "item" || rule.type === "spell" || rule.type === "perk") ? "Drop item here to capture UUID..." : "stats.might"}
                                             onChange={(e) => handleUpdateOption(oIdx, { value: e.target.value })}
                                             type="text"
                                         />

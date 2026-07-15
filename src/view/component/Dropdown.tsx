@@ -58,6 +58,26 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
     )
 }
 
+export const CustomDropDown = ({ value, options, className, onChange }: {
+    value: string, options: { value: string, label: string }[], className: string, onChange: (val: any) => any
+}) => {
+    return (
+        <Select
+            value={value}
+            onChange={onChange}
+            className={`border border-solid border-table-border rounded-sm px-1 ${className}`}
+        >
+            {
+                options.map(opt => (
+                    <Option key={opt.value} value={opt.value}>
+                        {opt.label}
+                    </Option>
+                ))
+            }
+        </Select>
+    )
+}
+
 export const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {
     return <select className={`
         font-eskapade

@@ -206,7 +206,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                         </div>
 
                         {/* STAT ARRAY DROPDOWN SELECTOR */}
-                        <span className="font-bold text-left">
+                        <div className="text-left">
                             <HeroCreationDropdown
                                 label={strings.statsSelect}
                                 value={selectedArr?.index?.toString() ?? '0'}
@@ -215,7 +215,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                                     { value: index, label: block.join(", ") + `  [${block.reduce((sum, it) => { return sum + it }, 0)}]` }
                                 ))}
                             />
-                        </span>
+                        </div>
                     </div>
 
                     <div className="justify-center">

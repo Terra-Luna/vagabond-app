@@ -43,14 +43,14 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
                     <HeroCreationLabel text={strings.heroName} />
                     <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />
                 </div>
-                <div className="flex">
-                    <HeroCreationDropdown
-                        label={strings.selectAncestry}
-                        value={ancestryItem?.id ?? strings.selectAncestry}
-                        options={ancestryOptions ?? []}
-                        onChange={onSelectAncestry}
-                    />
-                </div>
+
+                <HeroCreationDropdown
+                    label={strings.selectAncestry}
+                    value={ancestryItem?.id ?? strings.selectAncestry}
+                    options={ancestryOptions ?? []}
+                    onChange={(val) => onSelectAncestry(val)}
+                />
+
                 {
                     ancestryItem ?
                         <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>

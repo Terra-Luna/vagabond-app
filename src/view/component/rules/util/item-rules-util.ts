@@ -1,12 +1,15 @@
+import { PerkDataModel } from "../../../../model/item/character/PerkDataModel"
+import { SpellDataModel } from "../../../../model/item/character/SpellDataModel"
 import { vgLiteLang } from "../../../../utils/lang"
-import { CombinedItems } from "../../../../utils/modelUtil";
+import { CombinedItems } from "../../../../utils/modelUtil"
 
 export interface ItemRule {
     label: string,
     level: number,
+    type: string,
     maxChoices: number,
     value: number,
-    choices: { value: string; label: string }[]
+    choices: { value: string, label: string }[]
 }
 
 export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | undefined)[]): { name: string, stat: string, value: number }[] {
@@ -208,4 +211,137 @@ export async function getSpellGrants(items: (Item & { system: { rules: any } } |
 
     const allGrantsNested = await Promise.all(grantsPromises)
     return allGrantsNested.flat()
+}
+
+export async function getSpellChoiceRules(items: (Item & { system: { rules: any } } | undefined)[]): Promise<ItemRule[]> {
+    const gatheredRules: any[] = []
+
+    const extractSkillRules = async (item: Item & { system: { rules: any } } | undefined) => {
+        if (!item?.system?.rules) return
+        const rules: any[] = item.system.rules
+
+        const spellChoicesPromises = rules.map(async (r) => {
+            if (r.key !== "ChoiceSet") return false
+
+            const choicesArray = Array.isArray(r.choices) ? r.choices : []
+            if ((choicesArray.length === 0 && r.pack.length === 0) || !r.pack.includes(".spells")) {
+                return false
+            }
+
+            if (r.pack.length > 0) {
+                return true
+            } else {
+                const checks = choicesArray.map(async (choice) => {
+                    const itemInstance = await fromUuid(choice.value)
+                    return itemInstance instanceof Item && 'system' in itemInstance
+                })
+                const results = await Promise.all(checks)
+                return results.every(result => result === true)
+            }
+        })
+
+        const results = await Promise.all(spellChoicesPromises)
+        const spellChoices = rules.filter((_, index) => results[index])
+
+        gatheredRules.push(...spellChoices)
+    }
+
+    for (const item of items) {
+        await extractSkillRules(item)
+    }
+
+    return gatheredRules.map(rule => {
+        const choicesArray = Array.isArray(rule.choices) ? rule.choices : []
+        if (choicesArray.length === 0) return rule
+
+        const firstChoiceObj = choicesArray[0]
+        const firstChoiceVal: string = typeof firstChoiceObj === "string"
+            ? firstChoiceObj
+            : (firstChoiceObj?.value || "")
+
+        // Handle the Wildcard string blueprint pattern "skills.*.isTrained"
+        if (firstChoiceVal.toLowerCase().includes("skills.*")) {
+            return {
+                ...rule,
+                choices: Object.keys(vgLiteLang.Skills || {}).map(skillKey => ({
+                    // Dynamically replaces the wildcard character slot with the individual key
+                    value: firstChoiceVal.replace("*", skillKey),
+                    label: vgLiteLang.Skills[skillKey]?.name || skillKey
+                }))
+            }
+        }
+
+        return {
+            ...rule,
+            choices: choicesArray.map((c: any) => ({
+                value: c.value,
+                label: c.label || getSKillNameFromPath(c.value)
+            })).sort((a, b) => { return a.label.localeCompare(b.label) })
+        }
+    })
+}
+
+
+
+
+
+
+
+/**
+ * Filters the combined world/compendium array specifically for Spells
+ */
+export async function getSpellChoices(): Promise<{ value: string, label: string }[]> {
+    const unifiedItems = await CombinedItems('spell')
+    return unifiedItems
+        .filter(item => item.system && isSpell(item.system))
+        .map(item => ({ value: item.uuid, label: item.name ?? "" }))
+}
+
+function isSpell(system: any): system is SpellDataModel {
+    return system && (system.type === "spell" in system)
+}
+
+/**
+ * Filters the combined world/compendium array specifically for Perks
+ */
+export async function getPerkChoices(): Promise<{ value: string, label: string }[]> {
+    const unifiedItems = await CombinedItems('perk')
+    return unifiedItems
+        .filter(item => item.system && isPerk(item.system))
+        .map(item => ({ value: item.uuid, label: item.name ?? "" }))
+}
+
+function isPerk(system: any): system is PerkDataModel {
+    return system && (system.type === "perk" in system)
+}
+
+export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> {
+    if (!Array.isArray(rulesData)) return []
+
+    const choiceSetRules = rulesData.filter(rule => rule.key === "ChoiceSet")
+
+    const parsedRulesPromises = choiceSetRules.map(async (rule) => {
+        let finalizedChoices = Array.isArray(rule.choices) ? [...rule.choices] : []
+
+        // If static choices are empty, dynamically fetch from the whole system (World + Packs)
+        if (finalizedChoices.length === 0) {
+            if (rule.type === "spell") {
+                finalizedChoices = await getSpellChoices()
+            }
+            else if (rule.type === "perk") {
+                finalizedChoices = await getPerkChoices()
+            }
+        }
+
+        return {
+            label: rule.label ?? "",
+            level: Number(rule.level ?? 0),
+            type: rule.type,
+            maxChoices: Number(rule.maxChoices ?? 1),
+            value: Number(rule.value ?? 1),
+            choices: finalizedChoices
+        }
+    })
+
+    return Promise.all(parsedRulesPromises)
 }

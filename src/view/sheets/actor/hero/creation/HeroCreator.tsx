@@ -10,7 +10,7 @@ import { usePerkSelection } from "./step/PerkSelection"
 import { useEquipmentSelection } from "./step/EquipmentSelection"
 
 export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } }) => {
-    const { stepId, registerStepIds, registerOnFinish, onFinishState } = useNavigationContext()
+    const { stepId, registerStepIds, registerOnFinish } = useNavigationContext()
     const { NameAndAncestry, ancestryItem } = useNameAndAncestry(hero)
     const { ClassSelection, classItem } = useClassSelection(hero)
     const { CoreStats, assignedStats, bonusStatSelections } = useCoreStats(ancestryItem, classItem)
