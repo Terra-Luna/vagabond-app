@@ -1,6 +1,19 @@
 import ReactDom from "react-dom/client"
 import { FunctionComponent, ReactNode, useCallback, useRef } from "react"
-import * as sheetUtils from "./sheets/sheetUtils"
+import * as sheetUtils from "../view/sheets/sheetUtils"
+
+export const useGlobalPopout = (onClose?: () => void) => {
+    const applicationRef = useRef(new PopoutApplication())
+    const renderPopout = useCallback((content: ReactNode, title: string, editMode = false) => {
+        const app = applicationRef.current
+        app.Component = () => content
+        app.startInEditMode = editMode
+        app.options.window.title = title
+        app.onClose = onClose;
+        app.render(true)
+    }, [])
+    return { renderPopout }
+}
 
 /** 
  * This pattern has many gotchas! 
@@ -55,20 +68,4 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
         // Block Foundry hotkeys...
         forms: [{ handler: () => { }, submitOnChange: false }]
     }
-}
-
-
-export const useGlobalPopout = (onClose?: () => void) => {
-    const applicationRef = useRef(new PopoutApplication())
-
-    const renderPopout = useCallback((content: ReactNode, title: string, editMode = false) => {
-        const app = applicationRef.current
-        app.Component = () => content
-        app.startInEditMode = editMode
-        app.options.window.title = title
-        app.onClose = onClose;
-        app.render(true)
-    }, [])
-
-    return { renderPopout }
 }

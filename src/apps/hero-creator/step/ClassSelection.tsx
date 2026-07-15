@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react"
-import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
-import { vgLiteLang } from "../../../../../../utils/lang"
-import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../../../../utils/modelUtil"
-import { Header } from "../../../../../component/Header"
-import { useNavButtons } from "../../../../../context/navigation/NavButtons"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { vgLiteLang } from "../../../utils/lang"
+import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
+import { Header } from "../../../view/component/Header"
+import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { EditModeContextProvider } from "../../../../../context/EditModeContext/EditModeContext"
-import { EditModeOptions } from "../../../../../context/EditModeContext/EditModeOptions"
-import { ClassSheetReactComponent } from "../../../../item/character/class/ClassSheetReactComponent"
+import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
+import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
+import { ClassSheetReactComponent } from "../../../view/sheets/item/character/class/ClassSheetReactComponent"
 
 export const useClassSelection = (hero: Actor & { system: HeroDataModel }) => {
     const strings = vgLiteLang.HeroCreation

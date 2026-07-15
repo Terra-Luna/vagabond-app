@@ -1,5 +1,5 @@
 import { HeroDataModel } from '../../../model/actor/HeroDataModel'
-import { HeroCreationLabel } from '../../sheets/actor/hero/creation/component/HeroCreationTypography'
+import { HeroCreationLabel } from '../../../apps/hero-creator/component/HeroCreationTypography'
 import { CollapsibleSection } from '../Collapsible'
 
 interface ActiveRuleDisplay {

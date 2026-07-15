@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react"
-import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { useNavigationContext } from "../../../../context/EditModeContext/Hooks"
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { useNavigationContext } from "../../view/context/EditModeContext/Hooks"
 import { useClassSelection } from "./step/ClassSelection"
 import { useNameAndAncestry } from "./step/NameAndAncestry"
 import { useCoreStats } from "./step/CoreStats"

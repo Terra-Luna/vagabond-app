@@ -1,5 +1,5 @@
 import { Key } from "lucide-react"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { vgLiteLang } from "../../../utils/lang"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
 export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssignment, dragOverStat, setDragOverStat, bonusStats, flatStatBonuses }) => {

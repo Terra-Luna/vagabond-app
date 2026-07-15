@@ -281,12 +281,6 @@ export async function getSpellChoiceRules(items: (Item & { system: { rules: any 
     })
 }
 
-
-
-
-
-
-
 /**
  * Filters the combined world/compendium array specifically for Spells
  */
@@ -323,7 +317,7 @@ export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> 
     const parsedRulesPromises = choiceSetRules.map(async (rule) => {
         let finalizedChoices = Array.isArray(rule.choices) ? [...rule.choices] : []
 
-        // If static choices are empty, dynamically fetch from the whole system (World + Packs)
+        // If static choices are empty, fetch from the whole system (World + Packs)
         if (finalizedChoices.length === 0) {
             if (rule.type === "spell") {
                 finalizedChoices = await getSpellChoices()

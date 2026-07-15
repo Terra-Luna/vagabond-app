@@ -1,4 +1,4 @@
-import { CustomDropDown } from "../../../../../component/Dropdown"
+import { CustomDropDown } from "../../../view/component/Dropdown"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
 export const HeroCreationDropdown = ({ label, value, options, onChange }: {

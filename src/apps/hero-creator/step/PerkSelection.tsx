@@ -1,8 +1,8 @@
-import { AncestryDataModel } from "../../../../../../model/item/character/AncestryDataModel"
-import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { vgLiteLang } from "../../../../../../utils/lang"
-import { Header } from "../../../../../component/Header"
-import { useNavButtons } from "../../../../../context/navigation/NavButtons"
+import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
+import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
+import { vgLiteLang } from "../../../utils/lang"
+import { Header } from "../../../view/component/Header"
+import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 
 export const usePerkSelection = (ancestry: AncestryDataModel | undefined, clazz: ClassDataModel | undefined) => {
     const strings = vgLiteLang.HeroCreation

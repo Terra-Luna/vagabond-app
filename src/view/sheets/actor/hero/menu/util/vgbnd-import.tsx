@@ -1,4 +1,4 @@
-import { importHero } from "../../../../../../api/tagalong/TagalongImporter"
+import { importHero } from "../../../../../../apps/importer/TagalongImporter"
 import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 
 export async function importFromVgbndApp(hero) {

@@ -12,7 +12,7 @@ import { ChoiceSetForm } from "./form/ChoiceSetForm"
 import { FlatModifierForm } from "./form/FlatModifierForm"
 import { GrantItemForm } from "./form/GrantItemForm"
 import { ToggleRuleForm } from "./form/ToggleRuleForm"
-import { HeroCreationLabel } from "../../sheets/actor/hero/creation/component/HeroCreationTypography"
+import { HeroCreationLabel } from "../../../apps/hero-creator/component/HeroCreationTypography"
 
 export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataModel<BaseItemSchema> } }) => {
     const { isEditMode } = useEditMode()

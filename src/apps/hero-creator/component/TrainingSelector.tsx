@@ -1,5 +1,5 @@
 import { SquareCheckBig, Square } from "lucide-react"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { vgLiteLang } from "../../../utils/lang"
 import { HeroCreationLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 
 export const TrainingSelector = ({ skill, label, isSelected, onSelect }) => {
