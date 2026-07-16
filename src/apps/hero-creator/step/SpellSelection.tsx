@@ -7,7 +7,7 @@ import { Divider, Header } from "../../../view/component/Header"
 import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { CombinedItems } from "../../../utils/modelUtil"
-import { getItemChoiceRules, getSpellGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
+import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
@@ -21,8 +21,8 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
     const [spellsList, setSpellsList] = useState<{ value: string, label: string, img: string, dmgType: string, description: string }[]>([])
 
     // Spells automatically granted by chosen Ancestry & Class.
-    const [ancestrySpellGrants, setAncestrySpellGrants] = useState<(ItemRule & { spell: string, uuid: string, source: string })[]>([])
-    const [classSpellGrants, setClassSpellGrants] = useState<(ItemRule & { spell: string, uuid: string, source: string })[]>([])
+    const [ancestrySpellGrants, setAncestrySpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
+    const [classSpellGrants, setClassSpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
 
     // Player's chose spells for each slot.
     const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string }[]>([])
@@ -45,8 +45,7 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
     }, [ancestrySpellGrants, classSpellGrants])
 
     useEffect(() => {
-        getSpellGrants([ancestry]).then(grants => {
-
+        getItemGrants('spell', [ancestry]).then(grants => {
             setAncestrySpellGrants(grants)
             getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
                 const maxChoices = rules.filter(r => r.type === 'spell').reduce((sum, r) => { return sum + r.maxChoices }, 0)
@@ -58,7 +57,7 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
             })
         })
 
-        getSpellGrants([clazz]).then(grants => {
+        getItemGrants('spell', [clazz]).then(grants => {
             setClassSpellGrants(grants)
             if (clazz?.system?.initialSpellSlots && clazz.system.initialSpellSlots > 0) {
                 const slotsCount = Math.max(0, clazz.system.initialSpellSlots - grants.length)
@@ -69,21 +68,12 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
                 )
             }
         })
-
     }, [ancestry, clazz])
 
-    const onSelectAncestrySpell = useCallback((slotIndex: number, spell: string, spellId: string) => {
-        setAncestrySpellSlots(prevSlots =>
+    const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
+        setter(prevSlots =>
             prevSlots.map((slot, index) =>
                 index === slotIndex ? { ...slot, label: spell, value: spellId } : slot
-            )
-        )
-    }, [])
-
-    const onSelectClassSpell = useCallback((slotIndex: number, spell: string, spellId: string) => {
-        setClassSpellSlots(prevSlots =>
-            prevSlots.map((slot, index) =>
-                index === slotIndex ? { label: spell, value: spellId } : slot
             )
         )
     }, [])
@@ -101,8 +91,8 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
         return [
             ...otherClassSlots,
             ...otherAncestrySlots,
-            ...classSpellGrants.map(g => ({ value: g.uuid, label: g.spell })),
-            ...ancestrySpellGrants.map(g => ({ value: g.uuid, label: g.spell }))
+            ...classSpellGrants.map(g => ({ value: g.uuid, label: g.item })),
+            ...ancestrySpellGrants.map(g => ({ value: g.uuid, label: g.item }))
         ].map(s => s.value).filter(Boolean)
     }
 
@@ -121,8 +111,8 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
                                 const selectedSpell = spellsList.find(sp => sp.value === selectedId)
                                 const label = selectedSpell ? selectedSpell.label : ''
                                 source === 'class' ?
-                                    onSelectClassSpell(index, label, selectedId) :
-                                    onSelectAncestrySpell(index, label, selectedId)
+                                    onSelectSpell(index, label, selectedId, setClassSpellSlots) :
+                                    onSelectSpell(index, label, selectedId, setAncestrySpellSlots)
                             }}
                         />
                     ))
@@ -146,7 +136,7 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
                 <HeroCreationLabel text={strings.grantedSpells} />
                 {
                     [...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
-                        <ItemGrantCard key={index} name={grant.spell} source={grant.source} />
+                        <ItemGrantCard key={index} name={grant.item} source={grant.source} />
                     ))
                 }
             </div>

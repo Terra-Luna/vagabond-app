@@ -1,5 +1,5 @@
 export const HeroCreationLabel = ({ text }: { text: string }) => {
-    return <p className="text-lg text-text-primary font-eskapade font-bold">{text}</p>
+    return <p className="text-xl text-text-primary font-eskapade font-bold">{text}</p>
 }
 
 export const HeroCreationValue = ({ text }: { text: string }) => {
@@ -7,7 +7,11 @@ export const HeroCreationValue = ({ text }: { text: string }) => {
 }
 
 export const HeroCreationSubtext = ({ text }: { text: string }) => {
-    return <p className="text-sm text-text-secondary font-paradigm font-normal">{text}</p>
+    return <p className="text-base text-text-secondary font-paradigm font-normal">{text}</p>
+}
+
+export const HeroCreationSuccessMessage = ({ text }: { text: string }) => {
+    return <p className="text-base text-text-luck-current font-paradigm font-bold">{text}</p>
 }
 
 export const HeroCreationLabeledField = ({ label, value }: { label: string, value: string }) => {

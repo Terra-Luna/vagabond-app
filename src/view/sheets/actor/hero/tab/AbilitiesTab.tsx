@@ -84,12 +84,6 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                     ))
                 }
             </div>
-            <div className="flex gap-x-1 w-fit mb-16 ml-auto text-text-primary text-xl font-eskapade font-bold">
-                <p>Perk Slots: </p>
-                <p>{hero.perks.length}</p>
-                <p>/</p>
-                <p>{hero.perkSlots}</p>
-            </div>
             <ContextMenu />
         </div>
     )

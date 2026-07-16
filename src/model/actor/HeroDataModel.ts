@@ -33,7 +33,6 @@ const heroSchema = () => {
         mana: new fields.SchemaField({ ...manaSchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
-        perkSlots: new fields.NumberField({ ...requiredInteger, initial: 1 }),
 
         /**
          * Derived from embedded documents...

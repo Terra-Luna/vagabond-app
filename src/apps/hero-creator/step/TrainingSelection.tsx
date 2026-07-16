@@ -121,7 +121,6 @@ export const useTrainingSelection = (
                             .flatMap(r => r.choices)
                             .filter(choice => !chosenBonusSkills.includes(getSKillNameFromPath(choice.value)) && !requiredTrainingRules.map(r => r.skill).includes(getSKillNameFromPath(choice.value)))
                             .map(choice => {
-                                console.log(requiredTrainingRules)
                                 const skill = getSKillNameFromPath(choice.value)
                                 const isSelected = chosenClassSKills.includes(skill)
                                 return (

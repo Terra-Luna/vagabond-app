@@ -191,19 +191,26 @@ export function getSKillNameFromPath(path: string): string {
     return path.split('.').reverse()[1]
 }
 
-export async function getSpellGrants(items: (Item & { system: { rules: any } } | undefined)[]): Promise<(ItemRule & { spell: string, uuid: string, source: string })[]> {
-    const spells = await CombinedItems('spell')
-    const spellsById = spells.map(spell => ({ id: spell.uuid, name: spell.name }))
-    const spellIds = new Set(spellsById.map(sp => sp.id))
+/**
+ * The type arg should correspond to the item's type value in the datamodel.
+ *      E.g.: 'spell', 'perk', 'weapon', etc...
+ * @param type 
+ * @param items 
+ * @returns 
+ */
+export async function getItemGrants(type: string, items: (Item & { system: { rules: any } } | undefined)[]): Promise<(ItemRule & { item: string, uuid: string, source: string })[]> {
+    const itemsOfType = await CombinedItems(type)
+    const itemsById = itemsOfType.map(it => ({ id: it.uuid, name: it.name }))
+    const itemIds = new Set(itemsById.map(it => it.id))
 
     const grantsPromises = items.map(async (item) => {
         if (!item?.system?.rules) return []
 
-        const grants = item.system.rules.filter(r => r.key === "GrantItem" && spellIds.has(r.uuid))
+        const grants = item.system.rules.filter(r => r.key === "GrantItem" && itemIds.has(r.uuid))
 
         return grants.map(grant => ({
             ...grant,
-            spell: spellsById.find(sp => sp.id === grant.uuid)?.name ?? '',
+            item: itemsById.find(sp => sp.id === grant.uuid)?.name ?? '',
             uuid: grant.uuid,
             source: item.name ?? ''
         }))
@@ -211,74 +218,6 @@ export async function getSpellGrants(items: (Item & { system: { rules: any } } |
 
     const allGrantsNested = await Promise.all(grantsPromises)
     return allGrantsNested.flat()
-}
-
-export async function getSpellChoiceRules(items: (Item & { system: { rules: any } } | undefined)[]): Promise<ItemRule[]> {
-    const gatheredRules: any[] = []
-
-    const extractSkillRules = async (item: Item & { system: { rules: any } } | undefined) => {
-        if (!item?.system?.rules) return
-        const rules: any[] = item.system.rules
-
-        const spellChoicesPromises = rules.map(async (r) => {
-            if (r.key !== "ChoiceSet") return false
-
-            const choicesArray = Array.isArray(r.choices) ? r.choices : []
-            if ((choicesArray.length === 0 && r.pack.length === 0) || !r.pack.includes(".spells")) {
-                return false
-            }
-
-            if (r.pack.length > 0) {
-                return true
-            } else {
-                const checks = choicesArray.map(async (choice) => {
-                    const itemInstance = await fromUuid(choice.value)
-                    return itemInstance instanceof Item && 'system' in itemInstance
-                })
-                const results = await Promise.all(checks)
-                return results.every(result => result === true)
-            }
-        })
-
-        const results = await Promise.all(spellChoicesPromises)
-        const spellChoices = rules.filter((_, index) => results[index])
-
-        gatheredRules.push(...spellChoices)
-    }
-
-    for (const item of items) {
-        await extractSkillRules(item)
-    }
-
-    return gatheredRules.map(rule => {
-        const choicesArray = Array.isArray(rule.choices) ? rule.choices : []
-        if (choicesArray.length === 0) return rule
-
-        const firstChoiceObj = choicesArray[0]
-        const firstChoiceVal: string = typeof firstChoiceObj === "string"
-            ? firstChoiceObj
-            : (firstChoiceObj?.value || "")
-
-        // Handle the Wildcard string blueprint pattern "skills.*.isTrained"
-        if (firstChoiceVal.toLowerCase().includes("skills.*")) {
-            return {
-                ...rule,
-                choices: Object.keys(vgLiteLang.Skills || {}).map(skillKey => ({
-                    // Dynamically replaces the wildcard character slot with the individual key
-                    value: firstChoiceVal.replace("*", skillKey),
-                    label: vgLiteLang.Skills[skillKey]?.name || skillKey
-                }))
-            }
-        }
-
-        return {
-            ...rule,
-            choices: choicesArray.map((c: any) => ({
-                value: c.value,
-                label: c.label || getSKillNameFromPath(c.value)
-            })).sort((a, b) => { return a.label.localeCompare(b.label) })
-        }
-    })
 }
 
 /**
