@@ -28,6 +28,7 @@ import { stackStackables } from "./utils/heroInventoryUtil"
 import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
 import { BaseItemSchema, ItemDataModel } from "./model/item/ItemDataModel"
 import { RuleElement } from "./view/component/rules/shared/RuleElement"
+import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
 
 // Add our fonts
 const fontFaces = [
@@ -80,6 +81,8 @@ Hooks.once("init", () => {
         CONFIG.Combatant.documentClass = VgLiteCombatant,
         CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect
     )
+
+    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
 })
 
 Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: string) => {
@@ -291,20 +294,8 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
 })
 
-Hooks.on("renderCombatTracker", (_app, html, _data) => {
-    $(html).find('.combatant').each((_: any, li: any) => {
-        // commented out for eslint
-        //const actorId = $(li).attr('data-combatant-id')
-        //const combatant = Array.from(game.combat?.combatants as any)?.find(it => getId(it) === actorId) as VgLiteCombatant
-        $(li).find('.token-initiative').replaceWith(`<div class="vglite-take-init-btn">GO</div>`)
-        /**
-         * TODO: 
-         * If combatant.activations > 0, vglite-take-init-btn onClick should call VgLiteCombat.activateCombatant().
-         * Then become an END button with a square shape. If actor is out of activations, their row in the tracker
-         * should be dimmed and no button should be available.
-         * Finally, GM should be able to reset their activation via r-click context menu??
-         */
-    })
+Hooks.on("renderCombatTracker", (_app, html, data) => {
+    renderCombatTracker(html, data)
 })
 
 Hooks.on("renderItemSheetV2", (_, html) => {
