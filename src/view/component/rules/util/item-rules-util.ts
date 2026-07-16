@@ -200,8 +200,8 @@ export function getSKillNameFromPath(path: string): string {
  */
 export async function getItemGrants(type: string, items: (Item & { system: { rules: any } } | undefined)[]): Promise<(ItemRule & { item: string, uuid: string, source: string })[]> {
     const itemsOfType = await CombinedItems(type)
-    const itemsById = itemsOfType.map(it => ({ id: it.uuid, name: it.name }))
-    const itemIds = new Set(itemsById.map(it => it.id))
+    const itemsById = itemsOfType.map(it => ({ uuid: it.uuid, name: it.name }))
+    const itemIds = new Set(itemsById.map(it => it.uuid))
 
     const grantsPromises = items.map(async (item) => {
         if (!item?.system?.rules) return []
@@ -210,7 +210,7 @@ export async function getItemGrants(type: string, items: (Item & { system: { rul
 
         return grants.map(grant => ({
             ...grant,
-            item: itemsById.find(sp => sp.id === grant.uuid)?.name ?? '',
+            item: itemsById.find(it => it.uuid === grant.uuid)?.name ?? '',
             uuid: grant.uuid,
             source: item.name ?? ''
         }))

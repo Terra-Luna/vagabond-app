@@ -3,7 +3,7 @@ import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 
-export const useEquipmentSelection = (clazz: ClassDataModel | undefined) => {
+export const useEquipmentSelection = (clazz: Item & { system: ClassDataModel } | undefined) => {
     const strings = vgLiteLang.HeroCreation
      const { NavButtons, setCanProceed } = useNavButtons()
 

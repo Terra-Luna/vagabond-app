@@ -580,6 +580,8 @@
       "perkAquisition": "Perk Acquisition",
       "selectionsRemaining": "Selections remaining...",
       "allPerksSelected": "All perks selected!",
+      "grantedPerks": "Granted Perks",
+      "perksList": "Starting Perks",
       "acquiredPerks": "Acquired Perks",
       "equipHeader": "EQUIPMENT & WEALTH",
       "equipSubheader": "Choose a starting pack and/or purchase items individually.",

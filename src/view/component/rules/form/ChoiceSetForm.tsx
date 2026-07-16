@@ -10,7 +10,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     const choices: ChoiceOption[] = rule.choices || []
     const [activeDragIdx, setActiveDragIdx] = useState<number | null>(null)
 
-    // Update specific keys inside an individual option index row using oIdx
+    // Update specific keys inside an individual option index row using idx
     const handleUpdateOption = async (indexToUpdate: number, fields: Partial<ChoiceOption>) => {
         const updatedChoices = choices.map((choice, idx) => {
             if (idx !== indexToUpdate) return choice
@@ -181,10 +181,12 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                     </div>
 
                                     <div
-                                        className={`w-1/2 p-1 transition-colors duration-100 ${activeDragIdx === oIdx && (rule.type === "item" || rule.type === "spell" || rule.type === "perk")
-                                            ? "border border-solid border-table-border bg-context-menu-fill rounded-md"
-                                            : ""
-                                            }`}
+                                        className={`w-1/2 p-1 transition-colors duration-100 
+                                            ${activeDragIdx === oIdx && (rule.type === "item" || rule.type === "spell" || rule.type === "perk") ?
+                                                "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]" :
+                                                "border-table-border/50"
+                                            }`
+                                        }
                                         onDragOver={(e) => handleDragOver(e, oIdx)}
                                         onDragLeave={() => setActiveDragIdx(null)}
                                         onDrop={(e) => handleDrop(e, oIdx)}

@@ -16,8 +16,8 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     const { CoreStats, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem)
     const { TrainingSelection, classTrainingRules, ancestryTrainingRules, chosenClassSKills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem)
     const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem)
-    const { PerkSelection } = usePerkSelection(ancestryItem?.system, classItem?.system)
-    const { EquipmentSelection } = useEquipmentSelection(classItem?.system)
+    const { PerkSelection } = usePerkSelection(ancestryItem, classItem)
+    const { EquipmentSelection } = useEquipmentSelection(classItem)
 
     const getStatsWithBonuses = (assignedStats: any[], bonusStatSelections: any[], flatStatBonuses: any[]): { stat: string, value: number }[] => {
         const stats: { stat: string, value: number }[] = []
@@ -62,6 +62,13 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     useEffect(() => {
         registerOnFinish(() => {
             console.log("TODO: apply selections to hero and close.")
+            /**
+             * 1. Create embedded documents for ancestry & class.
+             * 2. Iterate over their ChoiceSet rules and push a property, 'selections' onto them
+             *    as an array of they player's choice selections.
+             * 3. Add a handler for ChoiceSet.selections in HeroDataModel's updateActor().
+             * 4. Item grants and stat modifiers will be applied automatically.
+             */
         })
     }, [registerOnFinish])
 

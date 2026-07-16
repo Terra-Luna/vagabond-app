@@ -327,8 +327,8 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                             <HeroCreationLabel text={strings.flatBonus} />
                             <div className="flex gap-x-2">
                                 {
-                                    flatStatBonuses.map(b => (
-                                        <HeroCreationLabeledField label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.bonus}`} />
+                                    flatStatBonuses.map((b, index) => (
+                                        <HeroCreationLabeledField key={index} label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.bonus}`} />
                                     ))
                                 }
                             </div>
