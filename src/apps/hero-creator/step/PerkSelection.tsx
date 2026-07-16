@@ -9,6 +9,9 @@ import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/compo
 import { PerkDataModel, perkPrerequisites } from "../../../model/item/character/PerkDataModel"
 import { CombinedItems } from "../../../utils/modelUtil"
 import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
+import { ItemGrantCard } from "../component/ItemGrantCard"
+import { BonusChoiceContainer } from "../component/BonusChoiceContaner"
+import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 
 export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined) => {
     const strings = vgLiteLang.HeroCreation
@@ -40,7 +43,7 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
                     }))
             ])
         })
-    }, [ancestryPerkGrants, classPerkGrants])
+    }, [])
 
     useEffect(() => {
         getItemGrants('perk', [ancestry]).then(grants => {
@@ -48,7 +51,7 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
             getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
                 const maxChoices = rules.filter(r => r.type === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
                 setAncestryPerkSlots(
-                    Array.from({ length: maxChoices }).map(() => (
+                    Array.from({ length: maxChoices - grants.reduce((sum, g) => { return sum + g.maxChoices }, 0) }).map(() => (
                         { value: '', label: strings.emptySlot, ruleName: rules[0].label }
                     ))
                 )
@@ -56,11 +59,11 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
         })
 
         getItemGrants('perk', [clazz]).then(grants => {
-            setAncestryPerkGrants(grants)
+            setClassPerkGrants(grants)
             getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
                 const maxChoices = rules.filter(r => r.type === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
-                setAncestryPerkSlots(
-                    Array.from({ length: maxChoices }).map(() => (
+                setClassPerkSlots(
+                    Array.from({ length: maxChoices - grants.reduce((sum, g) => { return sum + g.maxChoices }, 0) }).map(() => (
                         { value: '', label: strings.emptySlot, ruleName: rules[0].label }
                     ))
                 )
@@ -76,7 +79,12 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
         )
     }, [])
 
-    console.log(perksList, ancestryPerkGrants, classPerkGrants)
+    const grantedPerks = () => {
+        return [...ancestryPerkGrants, ...classPerkGrants].map(g => {
+            const perk = perksList.find(p => p.value === g.uuid)
+            return { value: perk?.value, label: perk?.label }
+        })
+    }
 
     const PerkSelection = () => {
         return (<>
@@ -88,12 +96,48 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
                 <HeroCreationSubtext text={strings.selectionsRemaining} />
                 <HeroCreationSuccessMessage text={strings.allPerksSelected} />
 
+                {/* GRANTED PERKS */}
+                <div className="mt-4 space-y-1">
+                    <HeroCreationLabel text={strings.grantedPerks} />
+                    {
+                        [...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
+                            <ItemGrantCard key={index} name={grant.item} source={grant.source} />
+                        ))
+                    }
+                </div>
+
+                {/* CHOOSE CLASS PERKS */}
+                {classPerkSlots.length > 0 &&
+                    <div className="mt-4 space-y-2">
+                        <ItemSelectorGroup
+                            slotGroup={classPerkSlots}
+                            options={perksList}
+                            otherSlotGroup={ancestryPerkSlots}
+                            grants={[...ancestryPerkGrants, ...classPerkGrants]}
+                            onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setClassPerkSlots)}
+                        />
+                    </div>
+                }
+
+                {/* CHOOSE ANCESTRY PERKS */}
+                {ancestryPerkSlots.length > 0 &&
+                    <BonusChoiceContainer>
+                        <ItemSelectorGroup
+                            slotGroup={ancestryPerkSlots}
+                            options={perksList}
+                            otherSlotGroup={classPerkSlots}
+                            grants={[...ancestryPerkGrants, ...classPerkGrants]}
+                            onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setAncestryPerkSlots)}
+                        />
+                    </BonusChoiceContainer>
+                }
 
             </div>
 
-            <div>
+            <div className="mt-4 space-y-1">
                 {/* CHOSEN PERKS */}
-                {[...ancestryPerkSlots, ...classPerkSlots].filter(slot => slot.value.length > 0).map(slot => {
+                <HeroCreationLabel text={strings.perksList} />
+                {[...grantedPerks(), ...ancestryPerkSlots, ...classPerkSlots].filter(slot => (slot.value?.length ?? 0) > 0).map(slot => {
                     const perk = perksList.find(p => p.value === slot.value)
                     if (perk) {
                         return (

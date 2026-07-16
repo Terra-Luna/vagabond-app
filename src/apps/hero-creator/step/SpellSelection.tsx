@@ -12,6 +12,7 @@ import { ItemGrantCard } from "../component/ItemGrantCard"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
+import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 
 export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined) => {
     const strings = vgLiteLang.HeroCreation
@@ -42,7 +43,7 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
                     }))
             ])
         })
-    }, [ancestrySpellGrants, classSpellGrants])
+    }, [])
 
     useEffect(() => {
         getItemGrants('spell', [ancestry]).then(grants => {
@@ -78,49 +79,6 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
         )
     }, [])
 
-    /**
-     * Filter to make sure spells are removed from other spell slot selectors
-     * as the player makes selections for each slot...
-     * @param index 
-     * @param source 
-     * @returns 
-     */
-    const getOtherSelectedIds = (index: number, source: 'class' | 'ancestry') => {
-        const otherClassSlots = source === 'class' ? classSpellSlots.filter((_, i) => i !== index) : classSpellSlots
-        const otherAncestrySlots = source === 'ancestry' ? ancestrySpellSlots.filter((_, i) => i !== index) : ancestrySpellSlots
-        return [
-            ...otherClassSlots,
-            ...otherAncestrySlots,
-            ...classSpellGrants.map(g => ({ value: g.uuid, label: g.item })),
-            ...ancestrySpellGrants.map(g => ({ value: g.uuid, label: g.item }))
-        ].map(s => s.value).filter(Boolean)
-    }
-
-    const SpellSelectorGroup = ({ slotGroup, source }: { slotGroup: { value: string, label: string }[], source: 'class' | 'ancestry' }) => {
-        return (
-            <div className="flex flex-wrap gap-2 mt-2 w-full">
-                {
-                    slotGroup.map((slot, index) => (
-                        <CustomDropDown
-                            key={index}
-                            value={slot.value}
-                            options={spellsList.filter(sp => sp.value === slot.value || !getOtherSelectedIds(index, source).includes(sp.value))}
-                            className={"w-7/16"}
-                            onChange={(e) => {
-                                const selectedId = e.target.value
-                                const selectedSpell = spellsList.find(sp => sp.value === selectedId)
-                                const label = selectedSpell ? selectedSpell.label : ''
-                                source === 'class' ?
-                                    onSelectSpell(index, label, selectedId, setClassSpellSlots) :
-                                    onSelectSpell(index, label, selectedId, setAncestrySpellSlots)
-                            }}
-                        />
-                    ))
-                }
-            </div>
-        )
-    }
-
     const SpellSelection = () => {
         return (<>
 
@@ -145,14 +103,26 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
             <div className="mt-4 space-y-2">
                 <HeroCreationLabel text={strings.electiveSpells} />
                 <HeroCreationSubtext text={strings.classSpells} />
-                <SpellSelectorGroup slotGroup={classSpellSlots} source={'class'} />
+                <ItemSelectorGroup
+                    slotGroup={classSpellSlots}
+                    options={spellsList}
+                    otherSlotGroup={ancestrySpellSlots}
+                    grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                    onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
+                />
             </div>
 
             {/* CHOOSE ANCESTRY SPELLS */}
             {ancestrySpellSlots.length > 0 &&
                 <BonusChoiceContainer>
                     <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
-                    <SpellSelectorGroup slotGroup={ancestrySpellSlots} source={'ancestry'} />
+                    <ItemSelectorGroup
+                        slotGroup={ancestrySpellSlots}
+                        options={spellsList}
+                        otherSlotGroup={classSpellSlots}
+                        grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                        onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setAncestrySpellSlots)}
+                    />
                 </BonusChoiceContainer>
             }
 

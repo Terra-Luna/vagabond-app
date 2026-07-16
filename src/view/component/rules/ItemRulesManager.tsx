@@ -134,7 +134,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                         {rule.key === "ChoiceSet" && <ChoiceSetForm rule={rule} onChange={(data) => handleUpdateRuleData(index, data)} />}
 
                                     </div>
-                                } />    
+                                } />
                             ))
                         )}
                     </div>

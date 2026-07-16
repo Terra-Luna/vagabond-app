@@ -17,15 +17,16 @@ export const GrantItemForm = ({ rule, onChange }: FormProps) => {
     const handleDrop = async (e: React.DragEvent) => {
         e.preventDefault()
         setIsDraggingOver(false)
-        const dataString = e.dataTransfer.getData("text/plain")
-        if (!dataString) return
 
-        const dropData = JSON.parse(dataString)
+        const rawData = e.dataTransfer.getData("text/plain")
+        if (!rawData) return
+        const dropData = JSON.parse(rawData)
         if (dropData.type === "Item" && dropData.uuid) {
-            const droppedItem = await fromUuid(dropData.uuid)
+            const item = fromUuidSync(dropData.uuid)
             onChange({
                 uuid: dropData.uuid,
-                label: droppedItem ? `Grant: ${droppedItem.name}` : rule.label
+                type: (item instanceof foundry.abstract.Document && "type" in item) ? item.type : null,
+                label: item ? `Grant: ${item.name}` : rule.label
             })
         }
     }
@@ -50,17 +51,22 @@ export const GrantItemForm = ({ rule, onChange }: FormProps) => {
             <div
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                onDrop={handleDrop}
-                className={`flex flex-col rounded-sm border p-1 transition-all flex items-center ${isDraggingOver
-                    ? "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]"
-                    : "border-table-border/50"
-                    }`}
+                onDrop={(e) => handleDrop(e)}
+                className={`
+                    flex flex-col rounded-sm border p-1 flex items-center transition-all
+                    ${isDraggingOver ? "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]" : "border-table-border/50"}`
+                }
             >
                 <ItemRuleInput
                     label={"Item UUID (Drag & Drop Spells/Perks)"}
                     value={rule.uuid}
                     placeholder={"Item.AbC123XyZ"}
-                    onChange={(e) => onChange({ uuid: e.target.value })}
+                    onChange={(e) => {
+                        const item = fromUuidSync(e.target.value)
+                        onChange({
+                            uuid: item?.uuid, type: (item instanceof foundry.abstract.Document && "type" in item) ? item.type : null
+                        })
+                    }}
                 />
             </div>
         </div>
