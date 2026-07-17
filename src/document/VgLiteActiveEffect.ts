@@ -131,7 +131,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vgliteprone00000c",
+            _id: "vgliteprone00000",
             id: "prone",
             name: "VGLITE.StatusConditions.prone.name",
             img: "icons/svg/wall-direction.svg",
