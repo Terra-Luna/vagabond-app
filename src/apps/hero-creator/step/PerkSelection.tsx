@@ -4,13 +4,13 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { useNavButtons } from "../../../view/context/navigation/NavButtons"
-import { HeroCreationLabel, HeroCreationSubtext, HeroCreationSuccessMessage } from "../component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSuccessMessage } from "../component/HeroCreationTypography"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { PerkDataModel, perkPrerequisites } from "../../../model/item/character/PerkDataModel"
 import { CombinedItems } from "../../../utils/modelUtil"
 import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
 import { ItemGrantCard } from "../component/ItemGrantCard"
-import { BonusChoiceContainer } from "../component/BonusChoiceContaner"
+import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 
 export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined) => {
@@ -49,9 +49,9 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
         getItemGrants('perk', [ancestry]).then(grants => {
             setAncestryPerkGrants(grants)
             getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-                const maxChoices = rules.filter(r => r.type === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
+                const maxChoices = rules.filter(r => r.pack === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
                 setAncestryPerkSlots(
-                    Array.from({ length: maxChoices - grants.reduce((sum, g) => { return sum + g.maxChoices }, 0) }).map(() => (
+                    Array.from({ length: maxChoices }).map(() => (
                         { value: '', label: strings.emptySlot, ruleName: rules[0].label }
                     ))
                 )
@@ -61,9 +61,9 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
         getItemGrants('perk', [clazz]).then(grants => {
             setClassPerkGrants(grants)
             getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-                const maxChoices = rules.filter(r => r.type === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
+                const maxChoices = rules.filter(r => r.pack === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
                 setClassPerkSlots(
-                    Array.from({ length: maxChoices - grants.reduce((sum, g) => { return sum + g.maxChoices }, 0) }).map(() => (
+                    Array.from({ length: maxChoices }).map(() => (
                         { value: '', label: strings.emptySlot, ruleName: rules[0].label }
                     ))
                 )
@@ -92,8 +92,9 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
                 {/* HEADER AND NAVIGATION BUTTONS */}
                 <NavButtons header={<Header title={strings.perksHeader} />} />
 
+                {/* USER HELPER */}
                 <HeroCreationLabel text={strings.perkAquisition} />
-                <HeroCreationSubtext text={strings.selectionsRemaining} />
+
                 <HeroCreationSuccessMessage text={strings.allPerksSelected} />
 
                 {/* GRANTED PERKS */}
@@ -109,6 +110,7 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
                 {/* CHOOSE CLASS PERKS */}
                 {classPerkSlots.length > 0 &&
                     <div className="mt-4 space-y-2">
+                        <BonusChoiceTitle text={clazz?.name ?? ''} />
                         <ItemSelectorGroup
                             slotGroup={classPerkSlots}
                             options={perksList}
@@ -122,6 +124,7 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
                 {/* CHOOSE ANCESTRY PERKS */}
                 {ancestryPerkSlots.length > 0 &&
                     <BonusChoiceContainer>
+                        <BonusChoiceTitle text={`${ancestryPerkSlots[0].ruleName}`} />
                         <ItemSelectorGroup
                             slotGroup={ancestryPerkSlots}
                             options={perksList}

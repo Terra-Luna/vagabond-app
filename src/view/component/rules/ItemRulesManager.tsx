@@ -28,7 +28,6 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
         const defaultRule: RuleElement = {
             id: foundry.utils.randomID(),
             key: "FlatModifier", // FlatModifer, ItemGrant, ToggleRule, ChoiceSet
-            type: "",
             label: "",
             level: 0,
             value: 0,
@@ -44,12 +43,17 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
     }
 
     // Update a single rule element's inner properties
-    const handleUpdateRuleData = (indexToUpdate: number, updatedFields: Partial<RuleElement>) => {
-        const advancedRules = rules.map((rule, idx) => {
+    const handleUpdateRuleData = (indexToUpdate: number, updatedFields: Partial<RuleElement>, swapRuleType: boolean = false) => {
+        const advRules = rules.map((rule, idx) => {
             if (idx !== indexToUpdate) return rule
-            return { ...rule, ...updatedFields }
+            if (swapRuleType) {
+                return { ...updatedFields as RuleElement }
+            }
+            else {
+                return { ...rule, ...updatedFields }
+            }
         })
-        updateRules(advancedRules)
+        updateRules(advRules)
     }
 
     if (!isEditMode) return
@@ -70,7 +74,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                         ) : (
                             rules.map((rule, index) => (
                                 <CollapsibleSection key={index} title={rule.label} content={
-                                    <div className="bg-sheet-main-fill border border-solid border-table-border p-2 relative group">
+                                    <div className="bg-sheet-main-fill border border-solid border-table-border border-t-0 p-2 relative group">
                                         {/* HEADER ROW W/ +ADD BUTTON */}
                                         <div className="flex gap-4 items-center mb-2">
                                             <ItemRuleSelector
@@ -78,8 +82,8 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                 value={rule.key}
                                                 options={<>
                                                     <option value="FlatModifier">Flat Modifier (Stats/Attributes)</option>
-                                                    <option value="GrantItem">Grants (Spells, Perks, or Items)</option>
                                                     <option value="ToggleRule">Toggle Rule (Trainings, etc...)</option>
+                                                    <option value="GrantItem">Grants (Spells, Perks, or Items)</option>
                                                     <option value="ChoiceSet">Choice Set</option>
                                                 </>}
                                                 onChange={(e) => {
@@ -88,38 +92,45 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     if (newType === "FlatModifier") {
                                                         updatedBase = {
                                                             key: "FlatModifier",
-                                                            value: 0,
                                                             label: rule.label || "",
+                                                            level: 0,
+                                                            value: 0,
+                                                            selector: rule.selector || ""
+                                                        }
+                                                    }
+                                                    else if (newType === "ToggleRule") {
+                                                        updatedBase = {
+                                                            key: "ToggleRule",
+                                                            label: rule.label || "",
+                                                            level: 0,
+                                                            value: true,
                                                             selector: rule.selector || ""
                                                         }
                                                     }
                                                     else if (newType === "GrantItem") {
                                                         updatedBase = {
                                                             key: "GrantItem",
-                                                            uuid: "",
-                                                            label: rule.label || ""
-                                                        }
-                                                    }
-                                                    else if (newType === "ToggleRule") {
-                                                        updatedBase = {
-                                                            key: "ToggleRule",
-                                                            value: true,
                                                             label: rule.label || "",
-                                                            selector: rule.selector || ""
+                                                            level: 0,
+                                                            uuid: ""
                                                         }
                                                     }
                                                     else if (newType === "ChoiceSet") {
                                                         updatedBase = {
                                                             key: "ChoiceSet",
                                                             label: rule.label || "",
+                                                            level: 0,
                                                             value: 1,
                                                             maxChoices: 1,
-                                                            pack: "",
-                                                            flag: "",
-                                                            choices: []
+                                                            channel: "path", // "path" or "item"
+                                                            sourceMode: "static", // "static" or "dynamic"
+                                                            pack: "perk", // "perk" or "spell"
+                                                            choices: [],
+                                                            selections: []
                                                         }
                                                     }
-                                                    handleUpdateRuleData(index, updatedBase)
+                                                    // Overwrite the rule in the current index with fresh data structure.
+                                                    handleUpdateRuleData(index, updatedBase, true)
                                                 }}
                                             />
 
@@ -129,8 +140,8 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
 
                                         {/* LIST THE GRANTS & MODIFIER SUB-CARD SETTINGS */}
                                         {rule.key === "FlatModifier" && <FlatModifierForm rule={rule} onChange={(data) => handleUpdateRuleData(index, data)} />}
-                                        {rule.key === "GrantItem" && <GrantItemForm rule={rule} onChange={(data) => handleUpdateRuleData(index, data)} />}
                                         {rule.key === "ToggleRule" && <ToggleRuleForm rule={rule} onChange={(data) => handleUpdateRuleData(index, data)} />}
+                                        {rule.key === "GrantItem" && <GrantItemForm rule={rule} onChange={(data) => handleUpdateRuleData(index, data)} />}
                                         {rule.key === "ChoiceSet" && <ChoiceSetForm rule={rule} onChange={(data) => handleUpdateRuleData(index, data)} />}
 
                                     </div>

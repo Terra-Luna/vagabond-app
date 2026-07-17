@@ -17,7 +17,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
             return { ...choice, ...fields }
         })
         const item = fromUuidSync(fields.value)
-        rule.type = (item instanceof foundry.abstract.Document && "type" in item) ? item.type : null
+        rule.channel = (item instanceof foundry.abstract.Document && "type" in item) ? item.type : null
         onChange({
             ...rule,
             choices: updatedChoices
@@ -42,7 +42,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
     const handleDragOver = (e: React.DragEvent, index: number) => {
         e.preventDefault()
-        if (rule.type === "spell" || rule.type === "perk" || rule.type === "item") {
+        if (rule.channel === "spell" || rule.channel === "perk" || rule.channel === "item") {
             setActiveDragIdx(index)
         }
     }
@@ -51,7 +51,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
         e.preventDefault()
         setActiveDragIdx(null)
 
-        if (rule.type !== "spell" && rule.type !== "perk" && rule.type !== "item") return
+        if (rule.channel !== "item") return
 
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
@@ -85,13 +85,6 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     type="number"
                 />
                 <ItemRuleInput
-                    label="Data Flag"
-                    value={rule.flag || ""}
-                    placeholder="e.g., classAttributeBonus"
-                    onChange={(e) => onChange({ flag: e.target.value })}
-                    type="text"
-                />
-                <ItemRuleInput
                     label="Bonus Value"
                     value={rule.value ?? 1}
                     onChange={(e) => onChange({ value: Number(e.target.value) })}
@@ -104,54 +97,55 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     type="number"
                 />
 
-                {/* TYPE OF CHOICE SET SELECTOR */}
+                {/* CHANNEL SELECT */}
                 <ItemRuleSelector
-                    label={"Choice Set Type"}
-                    value={rule.type || "path"}
+                    label={"Channel"}
+                    value={rule.channel}
                     options={<>
                         <option value="path">Stat/Attribute Modifier</option>
-                        <option value="item">Grant (Spell, Perk, Item)</option>
+                        <option value="item">Spells/Perks</option>
                     </>}
                     onChange={(e) => {
-                        const val = e?.target ? e.target.value : e;
-                        onChange({ type: val, choices: [] })
-                    }}
-                />
-
-                <ItemRuleSelector
-                    label="Choices Source"
-                    value={rule.pack ? "dynamic" : "static"}
-                    options={<>
-                        <option value="static">Static Manual List</option>
-                        <option value="dynamic">Dynamic Compendium Pack</option>
-                    </>}
-                    onChange={(val: any) => {
-                        const sourceMode = val?.target ? val.target.value : val;
-                        if (sourceMode === "dynamic") {
-                            onChange({ pack: "vagabond-lite.", choices: [] });
+                        const val = e?.target ? e.target.value : e
+                        if (val === "path") {
+                            onChange({ channel: val, sourceMode: "static", choices: [] })
                         }
                         else {
-                            // Explicitly nullify properties to force Foundry database clearance
-                            onChange({ pack: null, choices: [] });
+                            onChange({ channel: val, choices: [] })
                         }
                     }}
                 />
 
+                {/* SELECT CHOICE SET TYPE: DYNAMIC / STATIC */}
+                {rule.channel === "item" &&
+                    <ItemRuleSelector
+                        label="Choices Source"
+                    value={rule.sourceMode}
+                        options={<>
+                            <option value="static">Static Manual List</option>
+                            <option value="dynamic">Dynamic Item Pack</option>
+                        </>}
+                    onChange={(e) => onChange({ sourceMode: e.target.value })}
+                    />
+                }
+
                 {/* Conditionally show input field if rule.pack contains a valid string */}
-                {rule.pack && (
-                    <ItemRuleInput
-                        label="Compendium Pack ID"
+                {rule.sourceMode === "dynamic" && (
+                    <ItemRuleSelector
+                        label="Item Pack Type"
                         value={rule.pack}
-                        placeholder="e.g., vagabond-lite.spells"
+                        options={<>
+                            <option value="perk">Perks</option>
+                            <option value="spell">Spells</option>
+                        </>}
                         onChange={(e) => onChange({ pack: e.target.value })}
-                        type="text"
                     />
                 )}
 
             </div>
 
             {/* Sub Options Mapping List (Only renders if source mode is manual/static) */}
-            {!rule.pack && (
+            {rule.sourceMode === "static" && (
                 <div className="border-t border-solid border-table-border/40 pt-2 mt-1">
                     <div className="flex justify-between items-center mb-2">
                         <ItemRulesLabel text={'CHOICES'} />
@@ -182,7 +176,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
                                     <div
                                         className={`w-1/2 p-1 transition-colors duration-100 
-                                            ${activeDragIdx === oIdx && (rule.type === "item" || rule.type === "spell" || rule.type === "perk") ?
+                                            ${activeDragIdx === oIdx && rule.channel === "item" ?
                                                 "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]" :
                                                 "border-table-border/50"
                                             }`
@@ -192,9 +186,9 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         onDrop={(e) => handleDrop(e, oIdx)}
                                     >
                                         <ItemRuleInput
-                                            label={(rule.type === "item" || rule.type === "spell" || rule.type === "perk") ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
+                                            label={rule.channel === "item" ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
                                             value={choice.value}
-                                            placeholder={(rule.type === "item" || rule.type === "spell" || rule.type === "perk") ? "Drop item here to capture UUID..." : "stats.might"}
+                                            placeholder={rule.channel === "item" ? "Drop item here to capture UUID..." : "stats.might"}
                                             onChange={(e) => handleUpdateOption(oIdx, { value: e.target.value })}
                                             type="text"
                                         />

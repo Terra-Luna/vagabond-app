@@ -6,9 +6,9 @@ import { CombinedItems } from "../../../../utils/modelUtil"
 export interface ItemRule {
     label: string,
     level: number,
-    type: string,
     maxChoices: number,
     value: number,
+    pack: string,
     choices: { value: string, label: string }[]
 }
 
@@ -251,17 +251,17 @@ function isPerk(system: any): system is PerkDataModel {
 export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> {
     if (!Array.isArray(rulesData)) return []
 
-    const choiceSetRules = rulesData.filter(rule => rule.key === "ChoiceSet")
+    const choiceSetRules = rulesData.filter(rule => rule.key === "ChoiceSet" && rule.channel === "item")
 
     const parsedRulesPromises = choiceSetRules.map(async (rule) => {
         let finalizedChoices = Array.isArray(rule.choices) ? [...rule.choices] : []
 
         // If static choices are empty, fetch from the whole system (World + Packs)
         if (finalizedChoices.length === 0) {
-            if (rule.type === "spell") {
+            if (rule.pack === "spell") {
                 finalizedChoices = await getSpellChoices()
             }
-            else if (rule.type === "perk") {
+            else if (rule.pack === "perk") {
                 finalizedChoices = await getPerkChoices()
             }
         }
@@ -269,9 +269,9 @@ export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> 
         return {
             label: rule.label ?? "",
             level: Number(rule.level ?? 0),
-            type: rule.type,
             maxChoices: Number(rule.maxChoices ?? 1),
             value: Number(rule.value ?? 1),
+            pack: rule.pack,
             choices: finalizedChoices
         }
     })

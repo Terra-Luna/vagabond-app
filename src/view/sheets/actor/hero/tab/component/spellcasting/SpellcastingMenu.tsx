@@ -26,7 +26,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
     const [spells, setSpells] = useState<Item & { system: SpellDataModel }[]>(hero.parent.items.filter(i => i.type === 'spell') as Item & { system: SpellDataModel }[])
     const [spell, setSpell] = useState<Item & { system: SpellDataModel }>()
-    const [skill, setSkill] = useState(hero.class.castingSkill)
+    const [skill, setSkill] = useState(hero.class?.castingSkill ?? '')
     const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
     const [delivery, setDelivery] = useState<SpellDelivery>()
 

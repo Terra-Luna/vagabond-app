@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
-import { CustomDropDown } from "../../../view/component/Dropdown"
 import { Divider, Header } from "../../../view/component/Header"
 import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
@@ -49,7 +48,7 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
         getItemGrants('spell', [ancestry]).then(grants => {
             setAncestrySpellGrants(grants)
             getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-                const maxChoices = rules.filter(r => r.type === 'spell').reduce((sum, r) => { return sum + r.maxChoices }, 0)
+                const maxChoices = rules.filter(r => r.pack === 'spell').reduce((sum, r) => { return sum + r.maxChoices }, 0)
                 setAncestrySpellSlots(
                     Array.from({ length: maxChoices }).map(() => (
                         { value: '', label: strings.emptySlot, ruleName: rules[0].label }
