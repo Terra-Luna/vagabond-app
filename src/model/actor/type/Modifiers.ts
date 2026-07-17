@@ -26,9 +26,16 @@ export const modifierSchema = () => {
         }),
 
         dice: new fields.SchemaField({
-            attack: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
-            spellDamage: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
-            spellHealing: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
+            size: new fields.SchemaField({
+                attackDamage: new fields.NumberField({ ...uncappedInteger }),
+                spellDamage: new fields.NumberField({ ...uncappedInteger }),
+                spellHealing: new fields.NumberField({ ...uncappedInteger })
+            }),
+            exploding: new fields.SchemaField({
+                attack: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
+                spellDamage: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
+                spellHealing: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
+            })
         }),
 
         saves: new fields.SchemaField({
