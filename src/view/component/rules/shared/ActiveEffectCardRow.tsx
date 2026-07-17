@@ -1,6 +1,16 @@
 import { vgLiteLang } from "../../../../utils/lang"
 
-export const ActiveEffectCardRow = ({ rule }) => {
+export const EffectCardContainer = ({ children }) => {
+    return (
+        <div className="p-2 border border-solid border-table-border border-t-0 rounded-b-md">
+            <div className="space-y-1 max-h-120 overflow-y-auto">
+                {children}
+            </div>
+        </div>
+    )
+}
+
+export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
 
     const cleanSelectionName = (path: string) => {
         if (path.includes("skills.")) {
@@ -12,7 +22,11 @@ export const ActiveEffectCardRow = ({ rule }) => {
     }
 
     return (
-        <div key={rule.id} className="flex items-center justify-between text-sm p-2 bg-sheet-main-fill border border-solid border-table-border/50 rounded-sm">
+        <div key={rule.id} className={`
+            flex items-center justify-between text-sm p-2 
+            bg-sheet-main-fill border border-solid border-table-border/50 rounded-sm
+            ${isActive ? '' : 'opacity-50 select-none'}
+        `}>
             <div className="flex items-center gap-2.5">
                 <img src={rule.sourceImg} className="w-6 h-6 object-cover rounded-sm border border-solid border-table-border/50 shrink-0" alt="" />
                 <div>
@@ -40,7 +54,7 @@ export const ActiveEffectCardRow = ({ rule }) => {
                         {(rule.value ?? 0) >= 0 ? `+${rule.value}` : rule.value}
                     </span>
                 }
-                {(rule.key === "ToggleRule" || rule.key === "ChoiceSet") &&
+                {isActive &&
                     <span className="text-sm text-text-primary font-eskapade font-bold">
                         {rule.value ? "✓" : "✗"}
                     </span>

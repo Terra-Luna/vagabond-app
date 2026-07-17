@@ -1,7 +1,7 @@
 import { HeroDataModel } from '../../../model/actor/HeroDataModel'
-import { HeroCreationLabel } from '../../../apps/hero-creator/component/HeroCreationTypography'
+import { HeroCreationLabel, HeroCreationSubtext } from '../../../apps/hero-creator/component/HeroCreationTypography'
 import { CollapsibleSection } from '../Collapsible'
-import { ActiveEffectCardRow } from './shared/ActiveEffectCardRow'
+import { ActiveEffectCardRow, EffectCardContainer } from './shared/ActiveEffectCardRow'
 
 interface ActiveRuleDisplay {
     id: string
@@ -54,75 +54,55 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
 
             {/* ACTIVE RULES LIST */}
             <CollapsibleSection title={`Active Features & Perks (${activeRules.length})`} settingsKey={'rules-active-features'} content={
-                <div className="p-2 border border-solid border-table-border border-t-0 rounded-b-md">
-                    <div className="space-y-1 max-h-120 overflow-y-auto">
-                        {activeRules.length === 0 ? (
-                            <p className="text-xs text-text-primary italic p-2 bg-sheet-main-fill border border-solid border-table-border/50 rounded-sm">
-                                No active rules are adjusting data values.
-                            </p>
-                        ) : (
-                                activeRules.map(rule => (<ActiveEffectCardRow rule={rule} />))
-                        )}
-                    </div>
-                </div>
+                <EffectCardContainer>
+                    {activeRules.length > 0 ?
+                        activeRules.map(rule => (<ActiveEffectCardRow rule={rule} />)) :
+                        <HeroCreationSubtext text={"No active rules are adjusting data values."} />
+                    }
+                </EffectCardContainer>
             } />
             
             {/* LOCKED ABILITIES & EFFECTS */}
             {lockedRules.length > 0 && (
                 <CollapsibleSection title={`Locked Abilities (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
-                    <div className="p-1 space-y-1 opacity-50 select-none border border-solid border-table-border rounded-b-md">
+                    <EffectCardContainer>
                         {lockedRules.map(rule => (
-                            <div key={rule.id} className="flex items-center justify-between p-2 bg-sheet-main-fill border border-dashed border-table-border/50 rounded-sm text-xs grayscale">
-                                <div className="flex items-center gap-2.5">
-                                    <img src={rule.sourceImg} className="w-6 h-6 object-cover rounded-sm border border-solid border-table-border/50 shrink-0" alt="" />
-                                    <div>
-                                        <div className="font-semibold text-text-primary">{rule.label || "Future Trait"}</div>
-                                        <div className="text-[10px] text-slate-600">Unlocks from {rule.sourceName}</div>
-                                    </div>
-                                </div>
-                                <div className="text-right">
-                                    <span className="px-1.5 py-0.5 bg-sheet-main-fill border border-solid border-table-border/50 text-text-primary rounded-sm text-sm uppercase tracking-wider">
-                                        Level {rule.level}
-                                    </span>
-                                </div>
-                            </div>
+                            <ActiveEffectCardRow rule={rule} isActive={false} />
                         ))}
-                    </div>
+                    </EffectCardContainer>
                 } />
             )}
 
             {/* STAT MODIFIER DATA */}
             {flatModifiers.length > 0 && (
                 <CollapsibleSection title={`Active Passive Modifiers Summary`} settingsKey={'rules-data-summary'} content={
-                    <div className="p-1 border border-solid border-table-border rounded-b-md">
-                        <div className="bg-sheet-main-fill border border-solid border-table-border/50 rounded-sm p-3">
-                            <div className="grid grid-cols-2 gap-2">
-                                {flatModifiers.map(mod => {
-                                    // Extract a clean readable path suffix (e.g., system.attributes.hp.max -> hp.max)
-                                    const cleanPath = mod.selector?.replace("system.", "") || "stat"
-                                    return (
-                                        <div
-                                            key={mod.id}
-                                            className="flex justify-between items-center text-xs bg-sheet-main-fill border border-solid border-table-border/50 px-2 py-1.5 rounded">
-                                            <span className="text-text-primary">
-                                                {mod.label || "Modifier"} <span className="text-text-primary">({cleanPath})</span>
-                                            </span>
-                                            {/* BONUS VALUE PILL */}
-                                            <span className={`
-                                            text-base font-eskapade font-bold px-1.5
-                                            border border-solid border-table-border/50 rounded-sm
-                                            ${(mod.value ?? 0) >= 0 ?
-                                                    'text-text-primary bg-sheet-main-fill' :
-                                                    'text-destructive-action bg-destructive-action/10'}`
-                                            }>
-                                                {(mod.value ?? 0) >= 0 ? `+${mod.value}` : mod.value}
-                                            </span>
-                                        </div>
-                                    )
-                                })}
-                            </div>
+                    <EffectCardContainer>
+                        <div className="grid grid-cols-2 gap-2">
+                            {flatModifiers.map(mod => {
+                                // Extract a clean readable path suffix (e.g., system.attributes.hp.max -> hp.max)
+                                const cleanPath = mod.selector?.replace("system.", "") || "stat"
+                                return (
+                                    <div
+                                        key={mod.id}
+                                        className="flex justify-between items-center text-xs bg-sheet-main-fill border border-solid border-table-border/50 px-2 py-1.5 rounded">
+                                        <span className="text-text-primary">
+                                            {mod.label || "Modifier"} <span className="text-text-primary">({cleanPath})</span>
+                                        </span>
+                                        {/* BONUS VALUE PILL */}
+                                        <span className={`
+                                        text-base font-eskapade font-bold px-1.5
+                                        border border-solid border-table-border/50 rounded-sm
+                                        ${(mod.value ?? 0) >= 0 ?
+                                                'text-text-primary bg-sheet-main-fill' :
+                                                'text-destructive-action bg-destructive-action/10'}`
+                                        }>
+                                            {(mod.value ?? 0) >= 0 ? `+${mod.value}` : mod.value}
+                                        </span>
+                                    </div>
+                                )
+                            })}
                         </div>
-                    </div>
+                    </EffectCardContainer>
                 } />
             )}
         </div>

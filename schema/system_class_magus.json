@@ -1,0 +1,143 @@
+{
+    "description": "<p><span style=\"white-space:pre-wrap\">Spellblades, gishes, arcane knights, and eldritch tricksters all. Magi are arcane specialists that blend magic and martial prowess.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Magi</strong></b></p><p><span style=\"white-space:pre-wrap\">• Alucard, </span><i><em style=\"white-space:pre-wrap\">Castlevania</em></i></p><p><span style=\"white-space:pre-wrap\">• Elric of Melniboné, </span><i><em style=\"white-space:pre-wrap\">Stormbringer</em></i></p><p><span style=\"white-space:pre-wrap\">• Geralt of Rivia, </span><i><em style=\"white-space:pre-wrap\">The Witcher</em></i></p><p><span style=\"white-space:pre-wrap\">• Twilight Suzuka, </span><i><em style=\"white-space:pre-wrap\">Outlaw Star</em></i></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Magus</strong></b></p><p><span style=\"white-space:pre-wrap\">The magus may be a bit more challenging for newer players. Their playstyle is more build-dependent than the other classes, allowing for backline blasters, midline harassers, and frontline strikers.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack/Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p>",
+    "action": "Attack/Cast",
+    "move": "Flexible",
+    "complexity": 4,
+    "keyStats": [
+        "reason"
+    ],
+    "startingPacks": [],
+    "castingSkill": "arcana",
+    "maxManaStat": "reason",
+    "manaMultiplier": 2,
+    "spellGainInterval": 3,
+    "features": [
+        {
+            "level": 1,
+            "name": "Spellstriker",
+            "description": "You gain the Gish Perk (p. 68) and you can Cast Spells using Arcana.<br><b>Spells:</b> You learn 2 Spells, one of which must always be Ward. You learn 1 other Spell every 3 Magus Levels hereafter.<br><b>Mana:</b> Your Maximum Mana is equal to (2 x your Magus Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Reason + half your Magus Level, rounded up). You regain spent Mana when you Rest."
+        },
+        {
+            "level": 1,
+            "name": "Esoteric Eye",
+            "description": "If you can see a Target, you can use your Action or skip your Move to learn if any magic is currently affecting it. You can this once per Shift, but can spend 1 Mana to do so again."
+        },
+        {
+            "level": 2,
+            "name": "Spell Parry",
+            "description": "You can Block Casts that include you as a Target if it either calls for a Reflex Save or has a Delivery of Touch or Remote. If you Crit to Block a Cast, you can dispel the effect."
+        },
+        {
+            "level": 3,
+            "name": "Perk",
+            "description": "You gain a Perk."
+        },
+        {
+            "level": 4,
+            "name": "Arcane Recall",
+            "description": "You can use your Action to open your esoteric eye of recall, allowing you to change one of your known Spells that isn't Ward. You can't do this again until you Rest or take 1 Fatigue to do so."
+        },
+        {
+            "level": 5,
+            "name": "Perk",
+            "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk.</span></p>"
+        },
+        {
+            "level": 6,
+            "name": "Spell Surge",
+            "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Check to Block a Cast by 10 or more, you can reflect the Cast back at the Caster. When you become a 10th Level Magus, it triggers if you pass by 8 or more.</span></p>"
+        },
+        {
+            "level": 8,
+            "name": "Aegis Obscura",
+            "description": "<p><span style=\"white-space: pre-wrap;\">You and the Target of your Ward Spell have Allsight and take half damage from magic-based sources.</span></p>"
+        },
+        {
+            "level": 9,
+            "name": "Perk",
+            "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk.</span></p>"
+        },
+        {
+            "level": 10,
+            "name": "Spell Surge (8+)",
+            "description": "<p><span style=\"white-space: pre-wrap;\">f you pass a Check to Block a Cast by 10 or more, you can reflect the Cast back at the Caster. When you become a 10th Level Magus, it triggers if you pass by 8 or more.</span></p>"
+        },
+        {
+            "level": 7,
+            "name": "Perk",
+            "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk.</span></p>"
+        }
+    ],
+    "rules": [
+        {
+            "id": "NWRPm0hZ0E8WgUN5",
+            "key": "ToggleRule",
+            "label": "Melee Training",
+            "level": "1",
+            "value": true,
+            "selector": "skills.melee.isTrained"
+        },
+        {
+            "id": "42EawLcI4sqdUTRu",
+            "key": "ToggleRule",
+            "label": "Arcana Training",
+            "level": "1",
+            "value": true,
+            "selector": "skills.arcana.isTrained"
+        },
+        {
+            "id": "VvXd5TwY9yOAsygA",
+            "key": "ChoiceSet",
+            "label": "Skills",
+            "level": "1",
+            "value": 1,
+            "maxChoices": 3,
+            "channel": "path",
+            "sourceMode": "static",
+            "choices": [
+                {
+                    "value": "skills.brawl.isTrained",
+                    "label": "Brawl"
+                },
+                {
+                    "value": "skills.detect.isTrained",
+                    "label": "Detect"
+                },
+                {
+                    "value": "skills.finesse.isTrained",
+                    "label": "Finesse"
+                },
+                {
+                    "value": "skills.influence.isTrained",
+                    "label": "Influence"
+                },
+                {
+                    "value": "skills.mysticism.isTrined",
+                    "label": "Mysticism"
+                },
+                {
+                    "value": "skills.sneak.isTrained",
+                    "label": "Sneak"
+                }
+            ],
+            "selections": []
+        },
+        {
+            "id": "DxImiQ7rR0uYRggq",
+            "key": "GrantItem",
+            "label": "Spellstriker: Gish",
+            "level": "1",
+            "uuid": "Item.MkkNCunmmVYvUOrG",
+            "type": "perk"
+        },
+        {
+            "id": "lbPXCWj1fShA48ZS",
+            "key": "GrantItem",
+            "label": "Spellstriker: Ward",
+            "level": "1",
+            "uuid": "Item.JvuMLZogKiutYto2",
+            "type": "spell"
+        }
+    ],
+    "initialSpellSlots": 2
+}
