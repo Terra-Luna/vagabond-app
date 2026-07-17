@@ -121,6 +121,9 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
          */
         const choiceRules = activeRules.filter(r => r.key === "ChoiceSet")
         for (const rule of choiceRules) {
+            console.log(rule)
+            
+
             const rawChoice = actor.getFlag("vagabond-lite", rule.flag)
             if (!rawChoice) continue
 
@@ -280,9 +283,9 @@ export function setSkill(stat: number, isTrained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
-    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness! + (hero.modifiers.reflexSave ?? 0))
-    hero.saves.endure = base - (hero.stats.might! * 2 + (hero.modifiers.endureSave ?? 0))
-    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence! + (hero.modifiers.willSave ?? 0))
+    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness! + (hero.modifiers.saves.reflex ?? 0))
+    hero.saves.endure = base - (hero.stats.might! * 2 + (hero.modifiers.saves.endure ?? 0))
+    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence! + (hero.modifiers.saves.will ?? 0))
 }
 
 export function setSpellcastingStats(hero: HeroDataModel) {

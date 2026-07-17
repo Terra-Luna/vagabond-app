@@ -31,8 +31,8 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     )
 }
 
-export const CollapsibleSection = ({ title, content, settingsKey }: { title: string, content: React.ReactElement, settingsKey?: string }) => {
-    let initialCollapsedValue
+export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed = false }: { title: string, content: React.ReactElement, settingsKey?: string, startCollapsed?: boolean }) => {
+    let initialCollapsedValue = startCollapsed
     const settings = (game.settings! as any)
     if (settingsKey) {
         settings.register("vagabond-lite", settingsKey, {

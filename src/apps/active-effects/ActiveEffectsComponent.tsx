@@ -28,7 +28,6 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
     onEdit,
     onDelete
 }) => {
-    console.log(effects)
     return (
         <div className="flex flex-col gap-4 p-4 h-full bg-sheet-main-fill text-text-primary font-eskapade font-bold rounded-b-lg">
             {/* Header / Add Button */}

@@ -73,7 +73,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                             <p className="text-text-primary text-sm italic">Click +Add to get started...</p>
                         ) : (
                             rules.map((rule, index) => (
-                                <CollapsibleSection key={index} title={rule.label} content={
+                                <CollapsibleSection key={index} title={rule.label} startCollapsed={true} content={
                                     <div className="bg-sheet-main-fill border border-solid border-table-border border-t-0 p-2 relative group">
                                         {/* HEADER ROW W/ +ADD BUTTON */}
                                         <div className="flex gap-4 items-center mb-2">
@@ -91,7 +91,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     let updatedBase: any
                                                     if (newType === "FlatModifier") {
                                                         updatedBase = {
-                                                            id: e.target.id,
+                                                            id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "FlatModifier",
                                                             label: rule.label || "",
                                                             level: 0,
@@ -101,7 +101,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     }
                                                     else if (newType === "ToggleRule") {
                                                         updatedBase = {
-                                                            id: e.target.id ?? foundry.utils.randomID(),
+                                                            id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "ToggleRule",
                                                             label: rule.label || "",
                                                             level: 0,
@@ -111,7 +111,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     }
                                                     else if (newType === "GrantItem") {
                                                         updatedBase = {
-                                                            id: e.target.id ?? foundry.utils.randomID(),
+                                                            id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "GrantItem",
                                                             label: rule.label || "",
                                                             level: 0,
@@ -120,7 +120,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     }
                                                     else if (newType === "ChoiceSet") {
                                                         updatedBase = {
-                                                            id: e.target.id ?? foundry.utils.randomID(),
+                                                            id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "ChoiceSet",
                                                             label: rule.label || "",
                                                             level: 0,
