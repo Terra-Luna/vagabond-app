@@ -29,7 +29,7 @@ import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
 import { BaseItemSchema, ItemDataModel } from "./model/item/ItemDataModel"
 import { RuleElement } from "./view/component/rules/shared/RuleElement"
 import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
-import { VgLiteActor } from "./model/actor/VgLiteActor"
+import { VgLiteActor } from "./document/VgLiteActor"
 
 // Add our fonts
 const fontFaces = [

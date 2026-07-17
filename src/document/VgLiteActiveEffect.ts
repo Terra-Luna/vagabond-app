@@ -42,7 +42,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             _id: "vgliteberserk001",
             id: "berserk",
             name: "VGLITE.StatusConditions.berserk.name",
-            img: "icons/svg/rage.svg",
+            img: "icons/svg/explosion.svg",
             changes: [{ key: "system.statuses.berserk", mode: "OVERRIDE", value: "true" }]
         },
         {
@@ -68,28 +68,28 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             _id: "vglitecharmed004",
             id: "charmed",
             name: "VGLITE.StatusConditions.charmed.name",
-            img: "icons/svg/heart.svg",
+            img: "icons/svg/heal.svg",
             changes: [{ key: "system.statuses.charmed", mode: "OVERRIDE", value: "true" }]
         },
         {
             _id: "vgliteconfused05",
             id: "confused",
             name: "VGLITE.StatusConditions.confused.name",
-            img: "icons/svg/daze.svg",
+            img: "icons/svg/stoned.svg",
             changes: [{ key: "system.statuses.confused", mode: "OVERRIDE", value: "true" }]
         },
         {
             _id: "vglitedazed00006",
             id: "dazed",
             name: "VGLITE.StatusConditions.dazed.name",
-            img: "icons/svg/unconscious.svg",
+            img: "icons/svg/daze.svg",
             changes: [{ key: "system.statuses.dazed", mode: "OVERRIDE", value: "true" }]
         },
         {
             _id: "vglitefatigued07",
             id: "fatigued",
             name: "VGLITE.StatusConditions.fatigued.name",
-            img: "icons/svg/weakness.svg",
+            img: "icons/svg/downgrade.svg",
             changes: [{ key: "system.counters.fatigue", mode: "ADD", value: "1" }]
         },
         {
@@ -134,7 +134,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             _id: "vgliteprone00000c",
             id: "prone",
             name: "VGLITE.StatusConditions.prone.name",
-            img: "icons/svg/floor.svg",
+            img: "icons/svg/wall-direction.svg",
             changes: [{ key: "system.statuses.prone", mode: "OVERRIDE", value: "true" }]
         },
         {
@@ -162,14 +162,14 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             _id: "vglitesuffocatin",
             id: "suffocating",
             name: "VGLITE.StatusConditions.suffocating.name",
-            img: "icons/svg/wind.svg",
+            img: "icons/svg/silenced.svg",
             changes: [{ key: "system.statuses.suffocating", mode: "OVERRIDE", value: "true" }]
         },
         {
             _id: "vgliteunconscio1",
             id: "unconscious",
             name: "VGLITE.StatusConditions.unconscious.name",
-            img: "icons/svg/sleep.svg",
+            img: "icons/svg/unconscious.svg",
             changes: [
                 { key: "system.statuses.unconscious", mode: "OVERRIDE", value: "true" },
                 { key: "system.statuses.blinded", mode: "OVERRIDE", value: "true" },
@@ -185,6 +185,39 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             changes: [{ key: "system.statuses.vulnerable", mode: "OVERRIDE", value: "true" }]
         }
     ]
+
+    /**
+     * Intercepts when an effect is created so the canvas scrolling text 
+     * for modifications and token status updates reads correctly.
+     */
+    protected override _onCreate(data: any, options: any, userId: string): void {
+        if (userId === game.userId && game.i18n?.has(this.name)) {
+            const rawName = this.name;
+            (this as any).name = game.i18n.localize(rawName)
+            super._onCreate(data, options, userId);
+            (this as any).name = rawName
+        }
+        else {
+            super._onCreate(data, options, userId)
+        }
+    }
+
+    /**
+     * Intercepts when an effect is modified (like toggling it back on) so the 
+     * canvas scrolling text for modifications and token status updates reads
+     * correctly.
+     */
+    protected override _onUpdate(changed: any, options: any, userId: string): void {
+        if (userId === game.userId && game.i18n?.has(this.name)) {
+            const rawName = this.name;
+            (this as any).name = game.i18n.localize(rawName);
+            super._onUpdate(changed, options, userId);
+            (this as any).name = rawName
+        }
+        else {
+            super._onUpdate(changed, options, userId);
+        }
+    }
 
     static override async fromStatusEffect(statusId: string, options: Record<string, any> = {}): Promise<any> {
         const statusBlueprint = this.statusEffects.find(e => e.id === statusId)
