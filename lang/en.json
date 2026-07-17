@@ -892,6 +892,11 @@
       "burn": "Burning",
       "by": "by",
       "env": "Environment"
+    },
+    "Combat": {
+      "heroes": "Heroes",
+      "adversaries": "Adversaries",
+      "npcs": "NPCs"
     }
   }
 }

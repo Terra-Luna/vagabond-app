@@ -1,6 +1,7 @@
 import ReactHtmlParser from 'react-html-parser'
 import { Collapsible } from "./Collapsible"
 import { CardHeader } from './CardHeader'
+import { ReactNode } from 'react'
 
 const cardSubheaderLayout = "flex -mt-0.5"
 const cardSubheaderStyle = "flex gap-x-2 py-1 pl-2 pr-8 items-center bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
@@ -29,35 +30,41 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
     )
 }
 
-/**
- * Content map example: [
- *      { key: "Type", value: "Humanlike" },
- *      { key: "Size", value: "Medium" }
- *    ]
- */
-export type CardSubHeaderValues = { label: string, value: string }
-export const CardSubHeader = ({ values, showRightBorder = true }: { values: CardSubHeaderValues[], showRightBorder?: boolean }) => {
+export const HeaderWithClipPath = ({ children, showRightBorder }: { children: ReactNode, showRightBorder?: boolean }) => {
     return (
         <div className={`${cardSubheaderLayout} ${showRightBorder ? 'border-r-1 border-solid border-table-border' : ''}`}>
-            <div className={cardSubheaderStyle}>
-                {
-                    values.map((content, index) => (
-                        <div key={content.label + index} className="flex gap-x-1">
-                            <p className={cardSubheaderLabel}>{content.label}:</p>
-                            <p className={cardSubheaderValue}>{content.value}</p>
-                        </div>
-                    ))
-                }
-            </div>
+            <div className={cardSubheaderStyle}>{children}</div>
         </div>
     )
 }
 
 /**
+ * Content map example: [
+ *      {key: "Type", value: "Humanlike" },
+        *      {key: "Size", value: "Medium" }
+        *    ]
+        */
+export type CardSubHeaderValues = { label: string, value: string }
+export const CardSubHeader = ({ values, showRightBorder = true }: { values: CardSubHeaderValues[], showRightBorder?: boolean }) => {
+    return (
+        <HeaderWithClipPath showRightBorder={showRightBorder}>
+            {
+                values.map((content, index) => (
+                    <div key={content.label + index} className="flex gap-x-1">
+                        <p className={cardSubheaderLabel}>{content.label}:</p>
+                        <p className={cardSubheaderValue}>{content.value}</p>
+                    </div>
+                ))
+            }
+        </HeaderWithClipPath>
+    )
+}
+
+/**
  * Special example: [
- *      { key: "Crit", value: "Some on-crit effect." }
- * ]
- */
+ *      {key: "Crit", value: "Some on-crit effect." }
+        * ]
+        */
 const CardBody = ({ description }: { description: string }) => {
     return (
         <div className={cardBodyLayout}>
