@@ -36,7 +36,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
 
     // Separate rules into Active and Upcoming (Locked) categories
     const activeRules = allRules.filter(r => currentLevel >= r.level && r.key !== "GrantItem" && ['class', 'spell'])
-    const lockedRules = allRules.filter(r => currentLevel < r.level)
+    const lockedRules = allRules.filter(r => currentLevel < r.level).sort((a, b) => { return a.level - b.level })
     const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
 
     console.log(activeRules)
@@ -56,7 +56,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
             <CollapsibleSection title={`Active Features & Perks (${activeRules.length})`} settingsKey={'rules-active-features'} content={
                 <EffectCardContainer>
                     {activeRules.length > 0 ?
-                        activeRules.map(rule => (<ActiveEffectCardRow rule={rule} />)) :
+                        activeRules.map(rule => (<ActiveEffectCardRow key={rule.id} rule={rule} />)) :
                         <HeroCreationSubtext text={"No active rules are adjusting data values."} />
                     }
                 </EffectCardContainer>
@@ -67,7 +67,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
                 <CollapsibleSection title={`Locked Abilities (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
                     <EffectCardContainer>
                         {lockedRules.map(rule => (
-                            <ActiveEffectCardRow rule={rule} isActive={false} />
+                            <ActiveEffectCardRow key={rule.id} rule={rule} isActive={false} />
                         ))}
                     </EffectCardContainer>
                 } />
