@@ -61,7 +61,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             name: "VGLITE.StatusConditions.burning.name",
             img: "icons/svg/fire.svg",
             changes: [
-                { key: "system.statuses.stacks.burning", mode: "ADD", value: JSON.stringify({ duration: "Cd4" }) }
+                { key: "system.statuses.stacks.burning", mode: "ADD", value: JSON.stringify({ duration: "Cd4", damageType: "fire" }) }
             ]
         },
         {
@@ -224,11 +224,12 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
         if (!statusBlueprint) return super.fromStatusEffect(statusId, options)
 
         // Handle special stackable burning effect!
-        // Duration is embedded into the options arg as: { duration: "CdX" }
+        // Duration & damageType are embedded into the options arg as: { duration: "CdX", damageType: "fire" }
         if (statusId === "burning") {
             const createData = foundry.utils.deepClone(statusBlueprint)
             createData._id = foundry.utils.randomID(16)
-            const finalDuration = options.duration || "Cd4"
+            const duration = options.duration || "Cd4"
+            const dmgType = options.damageType || "fire"
 
             const stackChange = createData.changes.find(
                 (c: any) => c.key === "system.statuses.stacks.burning"
@@ -236,7 +237,8 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
 
             if (stackChange) {
                 stackChange.value = JSON.stringify({
-                    duration: finalDuration,
+                    duration: duration,
+                    damageType: dmgType,
                     sourceUuid: options.origin || ""
                 })
             }
