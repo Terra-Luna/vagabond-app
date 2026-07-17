@@ -5,6 +5,10 @@ export const CombatTracker = ({ data }) => {
     const { combat } = data
     const combatants = combat?.combatants?.contents
 
+    if (!combatants?.length) {
+        return <></>
+    }
+
     const heroes = getHeroes(combatants)
     const adversaries = getAdversaries(combatants)
 
