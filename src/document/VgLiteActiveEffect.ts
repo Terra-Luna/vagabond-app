@@ -39,14 +39,14 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
 
     static statusEffects = [
         {
-            _id: "vgliteberserk001",
+            _id: "vgliteberserk000",
             id: "berserk",
             name: "VGLITE.StatusConditions.berserk.name",
             img: "icons/svg/explosion.svg",
             changes: [{ key: "system.statuses.berserk", mode: "OVERRIDE", value: "true" }]
         },
         {
-            _id: "vgliteblinded002",
+            _id: "vgliteblinded000",
             id: "blinded",
             name: "VGLITE.StatusConditions.blinded.name",
             img: "icons/svg/blind.svg",
@@ -56,7 +56,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vgliteburning003",
+            _id: "vgliteburning000",
             id: "burning",
             name: "VGLITE.StatusConditions.burning.name",
             img: "icons/svg/fire.svg",
@@ -65,35 +65,35 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vglitecharmed004",
+            _id: "vglitecharmed000",
             id: "charmed",
             name: "VGLITE.StatusConditions.charmed.name",
             img: "icons/svg/heal.svg",
             changes: [{ key: "system.statuses.charmed", mode: "OVERRIDE", value: "true" }]
         },
         {
-            _id: "vgliteconfused05",
+            _id: "vgliteconfused00",
             id: "confused",
             name: "VGLITE.StatusConditions.confused.name",
             img: "icons/svg/stoned.svg",
             changes: [{ key: "system.statuses.confused", mode: "OVERRIDE", value: "true" }]
         },
         {
-            _id: "vglitedazed00006",
+            _id: "vglitedazed00000",
             id: "dazed",
             name: "VGLITE.StatusConditions.dazed.name",
             img: "icons/svg/daze.svg",
             changes: [{ key: "system.statuses.dazed", mode: "OVERRIDE", value: "true" }]
         },
         {
-            _id: "vglitefatigued07",
+            _id: "vglitefatigued00",
             id: "fatigued",
             name: "VGLITE.StatusConditions.fatigued.name",
             img: "icons/svg/downgrade.svg",
             changes: [{ key: "system.counters.fatigue", mode: "ADD", value: "1" }]
         },
         {
-            _id: "vglitefrighten08",
+            _id: "vglitefrighten00",
             id: "frightened",
             name: "VGLITE.StatusConditions.frightened.name",
             img: "icons/svg/terror.svg",
@@ -103,7 +103,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vgliteincapacit9",
+            _id: "vgliteincapacit0",
             id: "incapacitated",
             name: "VGLITE.StatusConditions.incapacitated.name",
             img: "icons/svg/falling.svg",
@@ -113,14 +113,14 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vgliteinvisiblea",
+            _id: "vgliteinvisible0",
             id: "invisible",
             name: "VGLITE.StatusConditions.invisible.name",
             img: "icons/svg/invisible.svg",
             changes: [{ key: "system.statuses.invisible", mode: "OVERRIDE", value: "true" }]
         },
         {
-            _id: "vgliteparalyzedb",
+            _id: "vgliteparalyzed0",
             id: "paralyzed",
             name: "VGLITE.StatusConditions.paralyzed.name",
             img: "icons/svg/paralysis.svg",
@@ -131,7 +131,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vgliteprone00000c",
+            _id: "vgliteprone00000",
             id: "prone",
             name: "VGLITE.StatusConditions.prone.name",
             img: "icons/svg/wall-direction.svg",
@@ -149,13 +149,13 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vglitesickened0e",
+            _id: "vglitesickened00",
             id: "sickened",
             name: "VGLITE.StatusConditions.sickened.name",
             img: "icons/svg/poison.svg",
             changes: [
                 { key: "system.statuses.sickened", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.healingReceived", mode: "ADD", value: "-2" }
+                { key: "system.modifiers.healing.in", mode: "ADD", value: "-2" }
             ]
         },
         {
@@ -166,7 +166,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             changes: [{ key: "system.statuses.suffocating", mode: "OVERRIDE", value: "true" }]
         },
         {
-            _id: "vgliteunconscio1",
+            _id: "vgliteunconsciou",
             id: "unconscious",
             name: "VGLITE.StatusConditions.unconscious.name",
             img: "icons/svg/unconscious.svg",
@@ -178,7 +178,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             ]
         },
         {
-            _id: "vglitevulnerabl1",
+            _id: "vglitevulnerable",
             id: "vulnerable",
             name: "VGLITE.StatusConditions.vulnerable.name",
             img: "icons/svg/target.svg",

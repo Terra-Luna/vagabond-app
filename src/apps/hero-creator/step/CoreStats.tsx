@@ -24,7 +24,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
     const lastCanProceedRef = useRef<boolean>(false)
     const [selectedArr, setSelectedArr] = useState<{ index: number, values: number[], usedIndices: number[] }>()
     const [assignedStats, setAssignedStats] = useState<{ stat: string, value: number | null, poolIndex: number | null }[]>([])
-    const [bonusStatSelections, setBonusStatSelections] = useState<{ stat: string, name: string, bonus: number }[]>([])
+    const [bonusStatSelections, setBonusStatSelections] = useState<{ stat: string, id_index: string, bonus: number }[]>([])
     const [dragOverKey, setDragOverStat] = useState<string | null>(null)
     
     const resetAssignedStats = () => {
@@ -119,9 +119,9 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
 
     const onSelectBonusStat = useCallback((newBonus) => {
         setBonusStatSelections(prevStats => {
-            const exists = prevStats.some(b => b.name === newBonus.name)
+            const exists = prevStats.some(b => b.id_index === newBonus.id_index)
             if (exists) {
-                return prevStats.map(b => b.name === newBonus.name ? newBonus : b)
+                return prevStats.map(b => b.id_index === newBonus.id_index ? newBonus : b)
             } else {
                 return [...prevStats, newBonus]
             }
@@ -196,7 +196,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                         setAssignedStats([...assignedStats])
                     }} children={<p>AUTO (delete me later)</p>} />
 
-                    
 
                     <HeroCreationSubtext text={strings.statArrayDrag} />
 
@@ -278,7 +277,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
 
                                 return Array.from({ length: totalChoicesForRule }).map((_, choiceSlotIdx) => {
                                     const slotName = `${rule.id}_slot_${choiceSlotIdx}`
-                                    const currentBonusSelection = bonusStatSelections?.find(b => b.name === slotName)
+                                    const currentBonusSelection = bonusStatSelections?.find(b => b.id_index === slotName)
                                     const activeStatValue = currentBonusSelection ? currentBonusSelection.stat : ""
                                     const availableChoicesArray = rule.choices || []
                                     return (
@@ -292,13 +291,13 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                                                         .filter((choice: any) => {
                                                             if (!choice?.value) return false
 
-                                                            // Normalize case path tracking strings to align object keys safely
+                                                            // Normalize case path tracking strings to align object keys
                                                             const cleanPath = choice.value.toLowerCase().replace("system.", "")
                                                             const statKey = cleanPath.replace("stats.", "")
 
                                                             if (cleanPath.startsWith("stats.")) {
                                                                 const targetStatObj = assignedStats.find(s => s.stat.toLowerCase() === statKey)
-                                                                const existingBonusValue = bonusStatSelections?.find(b => b.stat === choice.value && b.name !== slotName)?.bonus ?? 0
+                                                                const existingBonusValue = bonusStatSelections?.find(b => b.stat === choice.value && b.id_index !== slotName)?.bonus ?? 0
 
                                                                 // Keep the option if the pool row has been assigned and doesn't exceed stat max.
                                                                 return targetStatObj && (
@@ -316,12 +315,12 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                                                 ]}
                                                 onChange={(selectedStat) => {
                                                     if (!selectedStat) {
-                                                        setBonusStatSelections(prev => prev.filter(b => b.name !== slotName))
+                                                        setBonusStatSelections(prev => prev.filter(b => b.id_index !== slotName))
                                                     } else {
                                                         onSelectBonusStat({
                                                             stat: selectedStat,
                                                             bonus: rule.value,
-                                                            name: slotName
+                                                            id_index: slotName
                                                         })
                                                     }
                                                 }}
@@ -378,5 +377,5 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         )
     }
 
-    return { CoreStats, assignedStats, bonusStatSelections, flatStatBonuses }
+    return { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses }
 }

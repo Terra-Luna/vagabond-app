@@ -9,7 +9,6 @@ import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
 import { SpellDataModel } from "../item/character/SpellDataModel"
 import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
-import { heroBonusSchema } from "./type/Bonus"
 import { inventorySchema, isInventoryItem } from "./type/Inventory"
 import { levelSchema } from "./type/Level"
 import { manaSchema } from "./type/Mana"
@@ -40,8 +39,6 @@ const heroSchema = () => {
         perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
         spellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-
-        bonus: new fields.SchemaField({ ...heroBonusSchema() }),
 
         // certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
         // this just is a boolean value we flip back and forth to trigger the update lifecycle
@@ -283,9 +280,9 @@ export function setSkill(stat: number, isTrained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
-    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness! + (hero.bonus.reflexSave ?? 0))
-    hero.saves.endure = base - (hero.stats.might! * 2 + (hero.bonus.endureSave ?? 0))
-    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence! + (hero.bonus.willSave ?? 0))
+    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness! + (hero.modifiers.reflexSave ?? 0))
+    hero.saves.endure = base - (hero.stats.might! * 2 + (hero.modifiers.endureSave ?? 0))
+    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence! + (hero.modifiers.willSave ?? 0))
 }
 
 export function setSpellcastingStats(hero: HeroDataModel) {

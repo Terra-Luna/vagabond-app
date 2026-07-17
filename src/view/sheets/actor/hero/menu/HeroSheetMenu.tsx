@@ -65,7 +65,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         if (isCreatorOpen) {
             createrPopout.renderPopout(
                 <NavigationContextProvider children={
-                    <HeroCreator hero={hero.parent} />
+                    <HeroCreator hero={hero.parent} setClosed={setCreatorClosed} />
                 } />, "Hero Creator", true
             )
         }

@@ -367,72 +367,72 @@
       "arcana": {
         "name": "Arcana",
         "stat": "Reason",
-        "description": ""
+        "description": "Application and knowledge of magic. Used by Maguses and Wizards to Cast."
       },
       "brawl": {
         "name": "Brawl",
         "stat": "Might",
-        "description": ""
+        "description": "Exerting physical force. Used for Grapples, Shoves, and attacks with Brawl Weapons."
       },
       "craft": {
         "name": "Craft",
         "stat": "Reason",
-        "description": ""
+        "description": "Your skill to appraise, make, and attack with Items that aren’t conventional Weapons."
       },
       "detect": {
         "name": "Detect",
         "stat": "Awareness",
-        "description": ""
+        "description": "Reflexively sensing danger and avoiding being surprised."
       },
       "finesse": {
         "name": "Finesse",
         "stat": "Dexterity",
-        "description": ""
+        "description": "Coordination and subtlety. Used pickpocket, lockpick, and attacks with Finesse Weapons."
       },
       "influence": {
         "name": "Influence",
         "stat": "Presence",
-        "description": ""
+        "description": "Social ability of coercion, deception, or negotiation. Used by Sorcerers to Cast."
       },
       "leadership": {
         "name": "Leadership",
         "stat": "Presence",
-        "description": ""
+        "description": "Social motivation and diplomacy. Used by Revelators to Cast."
       },
       "medicine": {
         "name": "Medicine",
         "stat": "Reason",
-        "description": ""
+        "description": "Education in non-magical healing."
       },
       "mysticism": {
         "name": "Mysticism",
         "stat": "Awareness",
-        "description": ""
+        "description": "Understanding of the supernatural. Used by Druids, Luminaries, and Witches to Cast."
       },
       "performance": {
         "name": "Performance",
         "stat": "Presence",
-        "description": ""
+        "description": "Cultural talent and ability to inspire awe."
       },
       "sneak": {
         "name": "Sneak",
         "stat": "Dexterity",
-        "description": ""
+        "description": "Concealing your location, attempting to sneak up on a Being you are aware of."
       },
       "survival": {
         "name": "Survival",
         "stat": "Awareness",
-        "description": ""
+        "description": "Tracking and a knowledge of beasts, plants, and other aspects of nature."
       },
       "melee": {
         "name": "Melee",
         "stat": "Might",
-        "description": ""
+        "description": "Attacking with Melee Weapons."
       },
       "ranged": {
         "name": "Ranged",
         "stat": "Awareness",
-        "description": ""
+        "description": "Attacking with Ranged Weapons."
       }
     },
     "WeaponProps": {

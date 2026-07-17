@@ -52,7 +52,7 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
                 const maxChoices = rules.filter(r => r.pack === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
                 setAncestryPerkSlots(
                     Array.from({ length: maxChoices }).map(() => (
-                        { value: '', label: strings.emptySlot, ruleName: rules[0].label }
+                        { value: '', label: strings.emptySlot, ruleName: rules.find(r => r.pack === 'perk')?.label ?? '' }
                     ))
                 )
             })
@@ -64,7 +64,7 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
                 const maxChoices = rules.filter(r => r.pack === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
                 setClassPerkSlots(
                     Array.from({ length: maxChoices }).map(() => (
-                        { value: '', label: strings.emptySlot, ruleName: rules[0].label }
+                        { value: '', label: strings.emptySlot, ruleName: rules.find(r => r.pack === 'perk')?.label ?? '' }
                     ))
                 )
             })
@@ -161,5 +161,5 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
         </>)
     }
 
-    return { PerkSelection }
+    return { PerkSelection, ancestryPerkSlots, classPerkSlots }
 }

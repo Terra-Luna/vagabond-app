@@ -8,15 +8,17 @@ import { useTrainingSelection } from "./step/TrainingSelection"
 import { useSpellSelection } from "./step/SpellSelection"
 import { usePerkSelection } from "./step/PerkSelection"
 import { useEquipmentSelection } from "./step/EquipmentSelection"
+import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
+import { CombinedItemsMultiType } from "../../utils/modelUtil"
 
-export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } }) => {
+export const HeroCreator = ({ hero, setClosed }: { hero: Actor & { system: HeroDataModel }, setClosed: () => void }) => {
     const { stepId, registerStepIds, registerOnFinish } = useNavigationContext()
     const { NameAndAncestry, ancestryItem } = useNameAndAncestry(hero)
     const { ClassSelection, classItem } = useClassSelection(hero)
-    const { CoreStats, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem)
-    const { TrainingSelection, classTrainingRules, ancestryTrainingRules, chosenClassSKills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem)
+    const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem)
+    const { TrainingSelection, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem)
     const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem)
-    const { PerkSelection } = usePerkSelection(ancestryItem, classItem)
+    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem)
     const { EquipmentSelection } = useEquipmentSelection(classItem)
 
     const getStatsWithBonuses = (assignedStats: any[], bonusStatSelections: any[], flatStatBonuses: any[]): { stat: string, value: number }[] => {
@@ -60,17 +62,114 @@ export const HeroCreator = ({ hero }: { hero: Actor & { system: HeroDataModel } 
     }, [stepIdsString, registerStepIds])
 
     useEffect(() => {
-        registerOnFinish(() => {
-            console.log("TODO: apply selections to hero and close.")
-            /**
-             * 1. Create embedded documents for ancestry & class.
-             * 2. Iterate over their ChoiceSet rules and push a property, 'selections' onto them
-             *    as an array of they player's choice selections.
-             * 3. Add a handler for ChoiceSet.selections in HeroDataModel's updateActor().
-             * 4. Item grants and stat modifiers will be applied automatically.
-             */
+        registerOnFinish(async () => {
+            if (ancestryItem && classItem) {
+                try {
+                    await hero.createEmbeddedDocuments("Item", [ancestryItem.toObject(), classItem.toObject()])
+                    const stats: Record<string, number | number[]> = {
+                        'system.level.current': 1,
+                        'system.stats.baseStatBlock': selectedArr?.values ?? [],
+                        'system.stats.might': assignedStats?.find(s => s.stat === 'might')?.value ?? 2,
+                        'system.stats.dexterity': assignedStats?.find(s => s.stat === 'dexterity')?.value ?? 2,
+                        'system.stats.awareness': assignedStats?.find(s => s.stat === 'awareness')?.value ?? 2,
+                        'system.stats.reason': assignedStats?.find(s => s.stat === 'reason')?.value ?? 2,
+                        'system.stats.presence': assignedStats?.find(s => s.stat === 'presence')?.value ?? 2,
+                        'system.stats.luck': assignedStats?.find(s => s.stat === 'luck')?.value ?? 2
+                    }
+                    hero.update(stats)
+
+                    const ancestry = hero.items.find(i => (i.type as string) === "ancestry") as Item & { system: AncestryDataModel }
+                    const clazz = hero.items.find(i => (i.type as string) === "class") as Item & { system: AncestryDataModel }
+                    const ancestryRules = ancestry ? foundry.utils.deepClone(ancestry.system.rules || []) : []
+                    const classRules = clazz ? foundry.utils.deepClone(clazz.system.rules || []) : []
+
+                    const getRuleSet = (id: string) => {
+                        return ancestryRules.find((r: any) => r.id === id && r.key === 'ChoiceSet') ??
+                            classRules.find((r: any) => r.id === id && r.key === 'ChoiceSet')
+                    }
+
+                    const addSelection = (targetRuleSet, selection) => {
+                        if (targetRuleSet) {
+                            if (!Array.isArray(targetRuleSet.selections)) {
+                                targetRuleSet.selections = []
+                            }
+                            (targetRuleSet.selections as string[]).push(selection)
+                        }
+                    }
+
+                    const addSelectedSpellsAndPerks = async (): Promise<any[]> => {
+                        const items = await CombinedItemsMultiType(['spell', 'perk'])
+                        const embeddedDocs: any[] = []
+
+                        for (const slot of [...ancestrySpellSlots, ...classSpellSlots, ...ancestryPerkSlots, ...classPerkSlots]) {
+                            const match = items.find(entry => entry.id === slot.value)
+                            if (!match) continue
+
+                            let fullItem: Item | null
+                            if (match.uuid && match.uuid.startsWith('Compendium.')) {
+                                fullItem = fromUuidSync(match.uuid) as Item | null
+                            }
+                            else {
+                                fullItem = match as Item
+                            }
+
+                            if (fullItem) {
+                                const itemCopy = fullItem.toObject()
+                                delete (itemCopy as any)._id // <-- let Foundry generate this
+                                embeddedDocs.push(itemCopy)
+                            }
+                        }
+
+                        return embeddedDocs
+                    }
+
+                    /**
+                     * Set bonus stat selections...
+                     */
+                    bonusStatSelections.forEach(selection => {
+                        const targetRuleId = selection.id_index.split('_slot_')[0]
+                        addSelection(getRuleSet(targetRuleId), selection.stat)
+                    });
+
+                    /**
+                     * Set chosen skill trainings...
+                     */
+                    [...chosenClassSkills, ...chosenBonusSkills].forEach(selection => {
+                        addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.isTrained`)
+                    });
+
+                    /**
+                     * Commit all updates to Ancestry and Class choices...
+                     */
+                    if (ancestryItem) {
+                        await ancestryItem.update({ "system.rules": ancestryRules } as Record<string, any>)
+                    }
+                    if (classItem) {
+                        await classItem.update({ "system.rules": classRules } as Record<string, any>)
+                    }
+
+                    /**
+                     * Add selected Spells and Perks...
+                     */
+                    const embeddedDocs = await addSelectedSpellsAndPerks()
+                    if (embeddedDocs.length > 0) {
+                        await hero.createEmbeddedDocuments("Item", embeddedDocs)
+                    }
+                }
+                catch (error) {
+                    console.error("VGLite | Hero Creator commit error:", error)
+                    ui.notifications?.error("An error occurred while saving yoru character, review your sheet for accuracy.")
+                }
+                finally {
+                    setClosed()
+                }
+            }
         })
-    }, [registerOnFinish])
+    }, [registerOnFinish, ancestryItem, classItem,
+        assignedStats, bonusStatSelections, chosenClassSkills,
+        chosenBonusSkills, ancestrySpellSlots, classSpellSlots,
+        ancestryPerkSlots, classPerkSlots
+    ])
 
     return (
         <div className="text-text-primary text-lg font-eskapade p-2 overflow-auto">

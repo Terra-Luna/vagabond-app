@@ -87,10 +87,11 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     <option value="ChoiceSet">Choice Set</option>
                                                 </>}
                                                 onChange={(e) => {
-                                                    const newType = e.target.value
+                                                    const newType = e.target.value ?? foundry.utils.randomID()
                                                     let updatedBase: any
                                                     if (newType === "FlatModifier") {
                                                         updatedBase = {
+                                                            id: e.target.id,
                                                             key: "FlatModifier",
                                                             label: rule.label || "",
                                                             level: 0,
@@ -100,6 +101,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     }
                                                     else if (newType === "ToggleRule") {
                                                         updatedBase = {
+                                                            id: e.target.id ?? foundry.utils.randomID(),
                                                             key: "ToggleRule",
                                                             label: rule.label || "",
                                                             level: 0,
@@ -109,6 +111,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     }
                                                     else if (newType === "GrantItem") {
                                                         updatedBase = {
+                                                            id: e.target.id ?? foundry.utils.randomID(),
                                                             key: "GrantItem",
                                                             label: rule.label || "",
                                                             level: 0,
@@ -117,6 +120,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                     }
                                                     else if (newType === "ChoiceSet") {
                                                         updatedBase = {
+                                                            id: e.target.id ?? foundry.utils.randomID(),
                                                             key: "ChoiceSet",
                                                             label: rule.label || "",
                                                             level: 0,

@@ -223,7 +223,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
                     spell.name,
                     spell.system.damageType,
                     `${delivery.damageDice}d${hero.mana.spellDamageDie}`,
-                    hero.bonus.perDieSpellDmg ?? 0,
+                    hero.modifiers.perDieSpellDmg ?? 0,
                     false, [], // canExplode, explodesOn
                     spell.system.appliesBurn,
                     spell.system.burnCountdown

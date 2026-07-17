@@ -4,6 +4,7 @@ import { vgLiteLang } from "../../../../utils/lang"
 import { CombinedItems } from "../../../../utils/modelUtil"
 
 export interface ItemRule {
+    id: string,
     label: string,
     level: number,
     maxChoices: number,
@@ -115,7 +116,7 @@ export function getRequiredSkillTrainingRules(items: (Item & { system: { rules: 
     const res: { source: Item, skill: string }[] = []
     itemRules.forEach(itemRule => {
         itemRule.rules.forEach(rule => {
-            res.push({ source: itemRule.item, skill: getSKillNameFromPath(rule.selector) })
+            res.push({ source: itemRule.item, skill: getSkillNameFromPath(rule.selector) })
         })
     })
 
@@ -165,12 +166,12 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
             ? firstChoiceObj
             : (firstChoiceObj?.value || "")
 
-        // Handle the Wildcard string blueprint pattern "skills.*.isTrained"
+        // Handle the Wildcard string blueprint pattern: "skills.*.isTrained"
         if (firstChoiceVal.toLowerCase().includes("skills.*")) {
             return {
                 ...rule,
                 choices: Object.keys(vgLiteLang.Skills || {}).map(skillKey => ({
-                    // Dynamically replaces the wildcard character slot with the individual key
+                    // Replaces the wildcard character slot with the individual key
                     value: firstChoiceVal.replace("*", skillKey),
                     label: vgLiteLang.Skills[skillKey]?.name || skillKey
                 }))
@@ -181,13 +182,13 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
             ...rule,
             choices: choicesArray.map((c: any) => ({
                 value: c.value,
-                label: c.label || getSKillNameFromPath(c.value)
+                label: c.label || getSkillNameFromPath(c.value)
             })).sort((a, b) => { return a.label.localeCompare(b.label) })
         }
     })
 }
 
-export function getSKillNameFromPath(path: string): string {
+export function getSkillNameFromPath(path: string): string {
     return path.split('.').reverse()[1]
 }
 
@@ -267,6 +268,7 @@ export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> 
         }
 
         return {
+            id: rule.id,
             label: rule.label ?? "",
             level: Number(rule.level ?? 0),
             maxChoices: Number(rule.maxChoices ?? 1),

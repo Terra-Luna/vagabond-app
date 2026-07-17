@@ -5,7 +5,7 @@ import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { getRequiredSkillTrainingRules, getSKillNameFromPath, getSkillTrainingChoiceRules, ItemRule } from "../../../view/component/rules/util/item-rules-util"
+import { getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { BorderedContent } from "../component/BorderedContent"
 import { TrainingSelector } from "../component/TrainingSelector"
 import { ItemGrantCard } from "../component/ItemGrantCard"
@@ -26,10 +26,10 @@ export const useTrainingSelection = (
     const [classTrainingMaxChoices, setClassTrainingMaxChoices] = useState<number>(0)
     // Ancestry skill choices.
     const [ancestryTrainingRules, setAncestryTrainingRules] = useState<ItemRule[]>([])
-    const [ancestryTrainingMaxChoices, setAncestryTrainingMaxChoices] = useState(0)
+    const [ancestryTrainingMaxChoices, setAncestryTrainingMaxChoices] = useState<number>(0)
 
-    const [chosenClassSKills, setChosenClassSkills] = useState<string[]>([])
-    const [chosenBonusSkills, setChosenBonusSkills] = useState<string[]>([])
+    const [chosenClassSkills, setChosenClassSkills] = useState<{ skill: string, ruleId: string }[]>([])
+    const [chosenBonusSkills, setChosenBonusSkills] = useState<{ skill: string, ruleId: string }[]>([])
 
     useEffect(() => {
         setRequiredTrainingRules(getRequiredSkillTrainingRules([ancestry, clazz]))
@@ -52,26 +52,26 @@ export const useTrainingSelection = (
             setCanProceed(false)
             return
         }
-        const isAllClassSKillsChosen = chosenClassSKills.length === classTrainingMaxChoices
+        const isAllClassSKillsChosen = chosenClassSkills.length === classTrainingMaxChoices
         const isBonusSkillChosen = ancestryTrainingMaxChoices === chosenBonusSkills.length
         setCanProceed(isAllClassSKillsChosen && isBonusSkillChosen)
-    }, [chosenClassSKills, chosenBonusSkills, classTrainingMaxChoices, ancestryTrainingMaxChoices, classTrainingRules, ancestryTrainingRules])
+    }, [chosenClassSkills, chosenBonusSkills, classTrainingMaxChoices, ancestryTrainingMaxChoices, classTrainingRules, ancestryTrainingRules])
 
-    const onSelectClassSkill = useCallback((skill: string, isSelected: boolean) => {
-        if (isSelected && chosenClassSKills.length < classTrainingMaxChoices) {
-            setChosenClassSkills([...chosenClassSKills, skill])
+    const onSelectClassSkill = useCallback((skill: string, ruleId: string, isSelected: boolean) => {
+        if (isSelected && chosenClassSkills.length < classTrainingMaxChoices) {
+            setChosenClassSkills([...chosenClassSkills, { skill: skill, ruleId: ruleId }])
         }
         else {
-            setChosenClassSkills(chosenClassSKills.filter(sk => sk !== skill))
+            setChosenClassSkills(chosenClassSkills.filter(sk => sk.skill !== skill))
         }
-    }, [chosenClassSKills, classTrainingMaxChoices])
+    }, [chosenClassSkills, classTrainingMaxChoices])
 
-    const onSelectBonusSkill = useCallback((skill: string, isSelected: boolean) => {
+    const onSelectBonusSkill = useCallback((skill: string, ruleId: string, isSelected: boolean) => {
         if (isSelected && chosenBonusSkills.length < ancestryTrainingMaxChoices) {
-            setChosenBonusSkills([...chosenBonusSkills, skill])
+            setChosenBonusSkills([...chosenBonusSkills, { skill: skill, ruleId: ruleId }])
         }
         else {
-            setChosenBonusSkills(chosenBonusSkills.filter(sk => sk !== skill))
+            setChosenBonusSkills(chosenBonusSkills.filter(sk => sk.skill !== skill))
         }
     }, [chosenBonusSkills, ancestryTrainingMaxChoices])
 
@@ -109,7 +109,7 @@ export const useTrainingSelection = (
                 <div className="justify-center text-center bg-context-menu-fill/25">
                     <BorderedContent className="flex-col gap-y-2 justify-center w-full">
                         <HeroCreationSubtext text={strings.trainingSlots} />
-                        <p className="text-4xl text-text-header-tertiary font-bold">{`${chosenClassSKills.length} / ${classTrainingMaxChoices} ${strings.selected}`}</p>
+                        <p className="text-4xl text-text-header-tertiary font-bold">{`${chosenClassSkills.length} / ${classTrainingMaxChoices} ${strings.selected}`}</p>
                     </BorderedContent>
                 </div>
 
@@ -118,20 +118,24 @@ export const useTrainingSelection = (
                     <HeroCreationLabel text={strings.electiveTraining.replace("%s", `${classTrainingMaxChoices}`)} />
                     {
                         classTrainingRules
-                            .flatMap(r => r.choices)
-                            .filter(choice => !chosenBonusSkills.includes(getSKillNameFromPath(choice.value)) && !requiredTrainingRules.map(r => r.skill).includes(getSKillNameFromPath(choice.value)))
-                            .map(choice => {
-                                const skill = getSKillNameFromPath(choice.value)
-                                const isSelected = chosenClassSKills.includes(skill)
-                                return (
-                                    <TrainingSelector
-                                        key={choice.value}
-                                        skill={skill}
-                                        label={choice.label}
-                                        isSelected={isSelected}
-                                        onSelect={() => onSelectClassSkill(skill, !isSelected)}
-                                    />
-                                )
+                            .flatMap(rule => ({ id: rule.id, choices: rule.choices }))
+                            .map(rule => {
+                                return rule.choices.filter(choice =>
+                                    !chosenBonusSkills.map(sk => sk.skill).includes(getSkillNameFromPath(choice.value)) &&
+                                    !requiredTrainingRules.map(r => r.skill).includes(getSkillNameFromPath(choice.value))
+                                ).map(choice => {
+                                    const skill = getSkillNameFromPath(choice.value)
+                                    const isSelected = chosenClassSkills.map(sk => sk.skill).includes(skill)
+                                    return (
+                                        <TrainingSelector
+                                            key={rule.id + choice.value}
+                                            skill={skill}
+                                            label={choice.label}
+                                            isSelected={isSelected}
+                                            onSelect={() => onSelectClassSkill(skill, rule.id, !isSelected)}
+                                        />
+                                    )
+                                })
                             })
                     }
                 </div>
@@ -146,31 +150,29 @@ export const useTrainingSelection = (
                                     <BonusChoiceTitle text={`${strings.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`} />
                                     {
                                         rule.maxChoices > chosenBonusSkills.length ?
-                                            rule.choices.map(c => (
-                                                { value: c.value, label: c.label }
-                                            )).filter(c =>
-                                                !chosenClassSKills.includes(getSKillNameFromPath(c.value)) &&
-                                                !requiredTrainingRules.map(r => r.skill).includes(getSKillNameFromPath(c.value))
+                                                rule.choices.map(c => ({ value: c.value, label: c.label })).filter(c =>
+                                                    !chosenClassSkills.map(sk => sk.skill).includes(getSkillNameFromPath(c.value)) &&
+                                                    !requiredTrainingRules.map(r => r.skill).includes(getSkillNameFromPath(c.value))
                                             ).map(choice => {
-                                                const skill = getSKillNameFromPath(choice.value)
-                                                const isSelected = chosenBonusSkills.includes(skill)
+                                                const skill = getSkillNameFromPath(choice.value)
+                                                const isSelected = chosenBonusSkills.map(sk => sk.skill).includes(skill)
                                                 return (
                                                     <TrainingSelector
-                                                        key={choice.value}
+                                                        key={skill}
                                                         skill={skill}
                                                         label={choice.label}
                                                         isSelected={isSelected}
-                                                        onSelect={() => onSelectBonusSkill(skill, !isSelected)}
+                                                        onSelect={() => onSelectBonusSkill(skill, rule.id, !isSelected)}
                                                     />
                                                 )
                                             }) :
-                                            chosenBonusSkills.map(skill => (
+                                                chosenBonusSkills.map(sk => (
                                                 <TrainingSelector
-                                                    key={skill}
-                                                    skill={skill}
-                                                    label={vgLiteLang.Skills[skill].name}
+                                                        key={sk.skill}
+                                                        skill={sk.skill}
+                                                        label={vgLiteLang.Skills[sk.skill].name}
                                                     isSelected={true}
-                                                    onSelect={() => onSelectBonusSkill(skill, false)}
+                                                        onSelect={() => onSelectBonusSkill(sk.skill, rule.id, false)}
                                                 />
                                             ))
                                     }
@@ -183,5 +185,5 @@ export const useTrainingSelection = (
         )
     }
 
-    return { TrainingSelection, classTrainingRules, ancestryTrainingRules, chosenClassSKills, chosenBonusSkills }
+    return { TrainingSelection, chosenClassSkills, chosenBonusSkills }
 }

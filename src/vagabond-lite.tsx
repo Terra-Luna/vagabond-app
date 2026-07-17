@@ -128,7 +128,7 @@ Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: 
          * Process player choice sets...
          */
         if (flagChanges) {
-            const choiceRules = rules.filter(r => r.key === "ChoiceSet" && r.type === "item")
+            const choiceRules = rules.filter(r => r.key === "ChoiceSet")
 
             for (const rule of choiceRules) {
                 if (flagChanges[rule.flag] !== undefined) {
