@@ -30,6 +30,7 @@ import { BaseItemSchema, ItemDataModel } from "./model/item/ItemDataModel"
 import { RuleElement } from "./view/component/rules/shared/RuleElement"
 import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
 import { VgLiteActor } from "./document/VgLiteActor"
+import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 
 // Add our fonts
 const fontFaces = [
@@ -81,10 +82,10 @@ Hooks.once("init", () => {
         // Combat
         CONFIG.Combat.documentClass = VgLiteCombat,
         CONFIG.Combatant.documentClass = VgLiteCombatant,
+        CONFIG.Combatant.dataModels.base = VGLiteCombatantModel,
         CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
         CONFIG.statusEffects = VgLiteActiveEffect.statusEffects as any
     )
-
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
 })
 

@@ -17,6 +17,7 @@ export const renderCombatTracker = (html, data) => {
 
     const scaduRoot = rootDiv.attachShadow({ mode: 'open' })
     const reactRoot = ReactDom.createRoot(scaduRoot)
+    
     const theme = getTheme()
 
     reactRoot.render(

@@ -1,8 +1,9 @@
-import { useCallback, useMemo } from "react"
+import { createContext, useCallback, useContext, useEffect, useMemo } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { lang } from "../../utils/lang"
 import { HeaderWithClipPath } from "../component/SkillCard"
+import { textGlow } from "../common/text-styles"
 
 export const CombatTracker = ({ data }) => {
     const { combat } = data
@@ -15,25 +16,37 @@ export const CombatTracker = ({ data }) => {
     const heroes = getHeroes(combatants)
     const adversaries = getAdversaries(combatants)
 
-    return (
-        <div className="flex flex-col gap-6 pb-2">
-            <div>
-                <GroupHeader label={lang.VGLITE.Combat.heroes} />
-                <Group>{heroes?.map(hero => <Hero hero={hero} />)}</Group>
+    const activeCombatantId = combat.current.combatantId
 
+    return (
+        <CombatContext.Provider value={{ activeCombatantId }}>
+            <div className="flex flex-col gap-6 pb-2">
+                <div>
+                    <GroupHeader label={lang.VGLITE.Combat.heroes} />
+                    <Group>{heroes?.map(hero => <Hero hero={hero} />)}</Group>
+                </div>
+                <div>
+                    <GroupHeader label={lang.VGLITE.Combat.adversaries} />
+                    <Group>{adversaries?.map(adv => <Adversary adversary={adv} />)}</Group>
+                </div>
             </div>
-            <div>
-                <GroupHeader label={lang.VGLITE.Combat.adversaries} />
-                <Group>{adversaries?.map(adv => <Adversary adversary={adv} />)}</Group>
-            </div>
-        </div>
+        </CombatContext.Provider>
     )
 }
 
+const CombatContext = createContext({ activeCombatantId: null, activeGroup: null })
+
+const useIsCurrentCombatant = (combatant) => {
+    const { activeCombatantId } = useContext(CombatContext)
+    return activeCombatantId === combatant.id
+}
+
 const GroupHeader = ({ label }) => {
-    return <div className="flex bg-section-header-fill px-1 font-eskapade font-bold">
-        <div className="flex text-3xl text-text-section-header">{label}</div>
-    </div>
+    return (
+        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold">
+            <div className="flex text-4xl text-text-section-header">{label}</div>
+        </div>
+    )
 }
 
 const Group = ({ children }) => {
@@ -42,11 +55,11 @@ const Group = ({ children }) => {
     )
 }
 
-const CombatantHeader = ({ children }) => {
+const CombatantHeader = ({ children, isCurrentCombatant }) => {
     return (
-        <div className="bg-section-header-fill px-1 font-eskapade text-text-header-secondary font-bold text-lg">
-            {children}
-        </div>
+        <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg border-solid border-l-2 border-stat-block-fill`}>
+            <p className={isCurrentCombatant ? textGlow : undefined}>{children}</p>
+        </div >
     )
 }
 
@@ -64,16 +77,19 @@ const Combatant = ({ token, children }) => {
     }, [token])
 
     return (
-        <div className="cursor-pointer" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>{children}</div>
+        <div className="cursor-pointer" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
+            {children}
+        </div>
     )
 }
 
 const Hero = ({ hero }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.token._id), [hero])
+    const isCurrentCombatant = useIsCurrentCombatant(hero)
 
     return (
         <Combatant token={token}>
-            <CombatantHeader>{hero.name}</CombatantHeader>
+            <CombatantHeader {...{ isCurrentCombatant }}>{hero.name}</CombatantHeader>
             <HeaderWithClipPath>
                 Status effects, etc
             </HeaderWithClipPath>
@@ -83,10 +99,11 @@ const Hero = ({ hero }) => {
 
 const Adversary = ({ adversary }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id), [adversary])
+    const isCurrentCombatant = useIsCurrentCombatant(adversary)
 
     return (
         <Combatant token={token}>
-            <CombatantHeader>{adversary.name}</CombatantHeader>
+            <CombatantHeader {...{ isCurrentCombatant }}>{adversary.name}</CombatantHeader>
             <HeaderWithClipPath>
                 Status, kill buttons
             </HeaderWithClipPath>

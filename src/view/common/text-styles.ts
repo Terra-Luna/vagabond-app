@@ -1,6 +1,7 @@
 
 
-export const glowOnHover = "hover:[text-shadow:0_0_10px_var(--color-text-glow)]"
+export const textGlow = "[text-shadow:0_0_10px_var(--color-text-glow)]"
+export const glowOnHover = `hover:${textGlow}`
 export const sheetPropLabel = `font-eskapade text-base text-text-header-tertiary`
 export const sheetPropLabelVariant = `font-eskapade text-lg text-text-header-secondary`
 export const sheetPropValue = `font-eskapade text-lg text-text-primary`
