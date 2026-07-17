@@ -1,6 +1,7 @@
 import { HeroDataModel } from '../../../model/actor/HeroDataModel'
 import { HeroCreationLabel } from '../../../apps/hero-creator/component/HeroCreationTypography'
 import { CollapsibleSection } from '../Collapsible'
+import { ActiveEffectCardRow } from './shared/ActiveEffectCardRow'
 
 interface ActiveRuleDisplay {
     id: string
@@ -10,6 +11,8 @@ interface ActiveRuleDisplay {
     value?: number
     uuid?: string
     level: number
+    pack: string
+    selections: string[] | null
     sourceName: string
     sourceImg: string
 }
@@ -24,15 +27,19 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
             ...rule,
             id: rule.id || foundry.utils.randomID(),
             level: rule.level || 1,
+            pack: rule.pack,
+            selections: rule.selections,
             sourceName: item.name,
-            sourceImg: item.img
+            sourceImg: item.img,
         }))
     })
 
     // Separate rules into Active and Upcoming (Locked) categories
-    const activeRules = allRules.filter(r => currentLevel >= r.level)
+    const activeRules = allRules.filter(r => currentLevel >= r.level && r.key !== "GrantItem" && ['class', 'spell'])
     const lockedRules = allRules.filter(r => currentLevel < r.level)
     const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
+
+    console.log(activeRules)
 
     return (
         <div className="flex flex-col gap-4 p-4 bg-sheet-main-fill text-text-primary max-w-2xl">
@@ -47,43 +54,14 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
 
             {/* ACTIVE RULES LIST */}
             <CollapsibleSection title={`Active Features & Perks (${activeRules.length})`} settingsKey={'rules-active-features'} content={
-                <div className="p-1">
-                    <div className="space-y-1 max-h-60 overflow-y-auto pr-1">
+                <div className="p-2 border border-solid border-table-border border-t-0 rounded-b-md">
+                    <div className="space-y-1 max-h-120 overflow-y-auto">
                         {activeRules.length === 0 ? (
                             <p className="text-xs text-text-primary italic p-2 bg-sheet-main-fill border border-solid border-table-border/50 rounded-sm">
                                 No active rules are adjusting data values.
                             </p>
                         ) : (
-                            activeRules.map(rule => (
-                                <div key={rule.id} className="flex items-center justify-between text-sm p-2 bg-sheet-main-fill border border-solid border-table-border/50 rounded-sm">
-                                    <div className="flex items-center gap-2.5">
-                                        <img src={rule.sourceImg} className="w-6 h-6 object-cover rounded-sm border border-solid border-table-border/50 shrink-0" alt="" />
-                                        <div>
-                                            <div className="text-text-primary font-bold">{rule.label || "Unnamed Feature"}</div>
-                                            <div className="text-xs text-text-primary">
-                                                Source Item: <span className="text-text-header-tertiary">{rule.sourceName}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="text-right text-text-primary">
-                                        {rule.key === "GrantItem" &&
-                                            <span className="px-1.5 py-0.5 bg-sheet-main-fill text-text-header-tertiary border border-solid border-table-border/50 rounded-sm text-xs uppercase tracking-wider">
-                                                Item Grant
-                                            </span>
-                                        }
-                                        {rule.key === "FlatModifier" && 
-                                            <span className="text-xl text-text-primary font-eskapade font-bold">
-                                                {(rule.value ?? 0) >= 0 ? `+${rule.value}` : rule.value}
-                                            </span>
-                                        }
-                                        {rule.key === "ToggleRule" &&
-                                            <span className="text-sm text-text-primary font-eskapade font-bold">
-                                                {rule.value ? "✓" : "✗"}
-                                            </span>
-                                        }
-                                    </div>
-                                </div>
-                            ))
+                                activeRules.map(rule => (<ActiveEffectCardRow rule={rule} />))
                         )}
                     </div>
                 </div>
@@ -92,7 +70,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
             {/* LOCKED ABILITIES & EFFECTS */}
             {lockedRules.length > 0 && (
                 <CollapsibleSection title={`Locked Abilities (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
-                    <div className="p-1 space-y-1 opacity-50 select-none">
+                    <div className="p-1 space-y-1 opacity-50 select-none border border-solid border-table-border rounded-b-md">
                         {lockedRules.map(rule => (
                             <div key={rule.id} className="flex items-center justify-between p-2 bg-sheet-main-fill border border-dashed border-table-border/50 rounded-sm text-xs grayscale">
                                 <div className="flex items-center gap-2.5">
@@ -116,7 +94,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
             {/* STAT MODIFIER DATA */}
             {flatModifiers.length > 0 && (
                 <CollapsibleSection title={`Active Passive Modifiers Summary`} settingsKey={'rules-data-summary'} content={
-                    <div className="p-1">
+                    <div className="p-1 border border-solid border-table-border rounded-b-md">
                         <div className="bg-sheet-main-fill border border-solid border-table-border/50 rounded-sm p-3">
                             <div className="grid grid-cols-2 gap-2">
                                 {flatModifiers.map(mod => {

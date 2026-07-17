@@ -128,7 +128,6 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             maxChoices: 1,
                                                             channel: "path", // "path" or "item"
                                                             sourceMode: "static", // "static" or "dynamic"
-                                                            pack: "perk", // "perk" or "spell"
                                                             choices: [],
                                                             selections: []
                                                         }

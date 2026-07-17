@@ -1,6 +1,6 @@
 import { createElement } from "react"
 import { vgLiteLang } from "../../utils/lang"
-import { getId } from "../../utils/modelUtil"
+import { getId, isPathOfType } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
@@ -119,29 +119,20 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         /**
          * Apply player choice modifiers/bonuses...
          */
-        const choiceRules = activeRules.filter(r => r.key === "ChoiceSet")
-        for (const rule of choiceRules) {
-            console.log(rule)
-            
-
-            const rawChoice = actor.getFlag("vagabond-lite", rule.flag)
-            if (!rawChoice) continue
-
-            // Normalize everything into an array so the looping math is identical
-            const chosenPaths = Array.isArray(rawChoice) ? rawChoice : [rawChoice]
-            const bonusMagnitude = Number(rule.value) || 1
-
-            for (const chosenPath of chosenPaths) {
-                const targetPath = chosenPath.replace("system.", "")
-                const currentValue = foundry.utils.getProperty(this, targetPath)
-
-                if (typeof currentValue === "number") {
-                    foundry.utils.setProperty(this, targetPath, currentValue + bonusMagnitude)
+        const choiceRules = activeRules.filter(r => r.key === "ChoiceSet" && r.channel === "path" && r.sourceMode === "static")
+        for (const rule of choiceRules) {            
+            rule.selections.map(s => s.replace("system.", "")).forEach(path => {
+                if (isPathOfType(this, path, "boolean")) {
+                    foundry.utils.setProperty(this, path, true)
                 }
-                else if (typeof currentValue === "boolean" || targetPath.endsWith("isTrained")) {
-                    foundry.utils.setProperty(this, targetPath, true)
+                else if (isPathOfType(this, path, "number")) {
+                    const currentValue = foundry.utils.getProperty(this, path)
+                    foundry.utils.setProperty(this, path, currentValue + rule.value)
                 }
-            }
+                else {
+                    foundry.utils.setProperty(this, path, rule.value)
+                }
+            })
         }
 
         /**

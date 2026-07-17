@@ -27,6 +27,10 @@ export const getCanvasToken = (id): Token | undefined => {
     return canvas?.tokens?.get(id)
 }
 
+export const isPathOfType = (obj: any, path: string, expectedType: "string" | "number" | "boolean" | "object"): boolean => {
+    const value = foundry.utils.getProperty(obj, path)
+    return typeof value === expectedType
+}
 
 /**
  * This is a helper interface/function for merging all game items
