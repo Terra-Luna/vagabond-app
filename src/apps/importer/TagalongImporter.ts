@@ -45,7 +45,6 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
                 reason: res.assignedStats.reason,
                 presence: res.assignedStats.presence,
                 luck: res.assignedStats.luck,
-                currentLuck: res.current_luck,
                 baseStatBlock: res.statArray
             },
 
@@ -72,8 +71,13 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
 
             health: { current: res.current_hp },
             mana: { current: res.current_mana },
-            fatigue: res.fatigue,
-            studied: res.studied_dice
+            statuses: {
+                counters: {
+                    luck: res.current_luck,
+                    studied: res.studied_dice,
+                    fatigue: res.fatigue
+                }
+            }
         })
 
         /**

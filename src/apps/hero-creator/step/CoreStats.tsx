@@ -186,6 +186,18 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                 <div className="w-full space-y-2 items-center justify-center text-center">
                     {/* STAT ARRAY HEADER */}
                     <HeroCreationLabel text={strings.statArrayPool} />
+
+
+                    {/* TODO: DELETE THIS HELPER BUTTON LATER */}
+                    <SecondaryButton onClick={() => {
+                        assignedStats.forEach((s, i) => {
+                            s.value = selectedArr?.values[i] ?? 2
+                        })
+                        setAssignedStats([...assignedStats])
+                    }} children={<p>AUTO (delete me later)</p>} />
+
+                    
+
                     <HeroCreationSubtext text={strings.statArrayDrag} />
 
                     {/* STAT POOL SELECTION */}
@@ -360,16 +372,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                             </div>
                         </div>
                     </div>
-
-
-                    {/* TODO: DELETE THIS HELPER BUTTON LATER */}
-                    <SecondaryButton onClick={() => {
-                        assignedStats.forEach((s, i) => {
-                            s.value = selectedArr?.values[i] ?? 2
-                        })
-                        setAssignedStats([...assignedStats])
-                    }} children={<p>AUTO (delete me later)</p>} />
-
 
                 </div>
             </div>

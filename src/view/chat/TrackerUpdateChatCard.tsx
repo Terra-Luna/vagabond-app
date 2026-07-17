@@ -8,14 +8,16 @@ import { CardSubHeaderValues } from "../component/SkillCard"
 
 export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: string, verb: string, resource: string }) => {
     const resources = lang.VGLITE.Resources
-    const hero = game.actors?.get(heroId) as Actor & { system: { stats: { currentLuck: string }, studied: string } }
+    const hero = game.actors?.get(heroId) as Actor & {
+        system: { statuses: { counters: { luck: string, studied: string, fatigue: string } } }
+    }
     if (!hero) return
 
     const res = resources[resource]
     const remaining = resource === 'luck' ?
-        hero.system.stats.currentLuck : (
+        hero.system.statuses.counters.luck : (
             resource === 'studied' ?
-                hero.system.studied : ''
+                hero.system.statuses.counters.studied : ''
         )
     const subtitle: CardSubHeaderValues[] = []
     subtitle.push({ label: `${res.name} Remaining`, value: remaining.toString() })

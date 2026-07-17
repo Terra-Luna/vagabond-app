@@ -28,8 +28,6 @@ const heroSchema = () => {
         skills: new fields.SchemaField({ ...skillsSchema() }),
         saves: new fields.SchemaField({ ...savesSchema() }),
         speed: new fields.SchemaField({ ...speedSchema() }),
-        studied: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        fatigue: new fields.NumberField({ ...requiredInteger, initial: 0, max: 5 }),
         mana: new fields.SchemaField({ ...manaSchema() }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
@@ -172,10 +170,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             (changes.system as any).inventory.coins = consolidateCoins({ g: newG, s: newS, c: newC })
         }
 
-        const luckUpdate = foundry.utils.getProperty(changes, "system.stats.currentLuck") as number | undefined
+        const luckUpdate = foundry.utils.getProperty(changes, "system.statuses.counters.luck") as number | undefined
         if (luckUpdate !== undefined) {
             if (luckUpdate <= this.stats.luck!) {
-                const previousLuck = this.stats.currentLuck
+                const previousLuck = this.statuses.counters.luck ?? 0
                 if (previousLuck !== luckUpdate) {
                     const verb = previousLuck < luckUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
                     (options as any).resourceTrackerUpdate = { verb: verb, resource: 'luck' }
@@ -183,14 +181,18 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             }
         }
 
-        const studiedUpdate = foundry.utils.getProperty(changes, "system.studied") as number | undefined
+        const studiedUpdate = foundry.utils.getProperty(changes, "system.statuses.counters.studied") as number | undefined
         if (studiedUpdate !== undefined) {
-            const previousStudied = this.studied
+            const previousStudied = this.statuses.counters.studied ?? 0
             if (previousStudied !== studiedUpdate) {
                 const verb = previousStudied < studiedUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
                 (options as any).resourceTrackerUpdate = { verb: verb, resource: 'studied' }
             }
         }
+
+        /**
+         * TODO: add a tracker for changes in Fatigue?
+         */
     }
 
     override async _onUpdate(changes, options, userId) {
@@ -212,7 +214,7 @@ export function validateCurrentHP(hero: HeroDataModel) {
 }
 
 export function setMaxHP(hero: HeroDataModel) {
-    if (hero.fatigue === 5) {
+    if (hero.statuses.counters.fatigue === 5) {
         hero.health.max = 0
     }
     else {
@@ -221,8 +223,8 @@ export function setMaxHP(hero: HeroDataModel) {
 }
 
 export function validateCurrentLuck(hero: HeroDataModel) {
-    if (hero.stats.currentLuck! > hero.stats.luck!) {
-        hero.stats.currentLuck = hero.stats.luck!
+    if (hero.statuses.counters.luck! > hero.stats.luck!) {
+        hero.statuses.counters.luck = hero.stats.luck!
     }
 }
 
@@ -316,5 +318,5 @@ export function setXpToNextLevel(hero: HeroDataModel) {
 
 function setInventoryData(hero: HeroDataModel) {
     hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
-    hero.inventory.capacity += Number(hero.stats.might) + 8 - hero.fatigue!
+    hero.inventory.capacity += Number(hero.stats.might) + 8 - hero.statuses.counters.fatigue!
 }

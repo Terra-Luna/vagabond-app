@@ -11,7 +11,6 @@ export const statsSchema = () => {
         reason: new fields.NumberField({ ...statProps }),
         presence: new fields.NumberField({ ...statProps }),
         luck: new fields.NumberField({ ...statProps }),
-        currentLuck: new fields.NumberField({ ...requiredInteger, initial: 2 }),
         //This is the stat-line the player chooses at character creation.
         baseStatBlock: new fields.ArrayField(new fields.NumberField({ ...requiredInteger, max: 7 }))
     }

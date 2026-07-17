@@ -10,7 +10,7 @@ export const useGlobalPopout = (onClose?: () => void) => {
         app.startInEditMode = editMode
         app.options.window.title = title
         app.onClose = onClose;
-        app.render(true)
+        app.render({ force: true } as any)
     }, [])
     return { renderPopout }
 }
@@ -35,7 +35,9 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
         sheetUtils.onRenderHTML(this as any)
     }
 
-    _replaceHTML() { } // no-op, implemented just to comply with application api
+    _replaceHTML(result: HTMLElement, content: HTMLElement, options: any) {
+        content.replaceChildren(result)
+    }
 
     async _onRender(context, options) {
         super._onRender(context, options)

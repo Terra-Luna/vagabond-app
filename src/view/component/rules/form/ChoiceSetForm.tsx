@@ -100,7 +100,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                 {/* CHANNEL SELECT */}
                 <ItemRuleSelector
                     label={"Channel"}
-                    value={rule.channel}
+                    value={rule.channel ?? ''}
                     options={<>
                         <option value="path">Stat/Attribute Modifier</option>
                         <option value="item">Spells/Perks</option>

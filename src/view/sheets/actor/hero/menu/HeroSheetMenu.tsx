@@ -8,6 +8,7 @@ import { HeroCreator } from "../../../../../apps/hero-creator/HeroCreator"
 import { useGlobalPopout } from "../../../../../apps/PopoutApplication"
 import { NavigationContextProvider } from "../../../../context/navigation/NavigationContextProvider"
 import { HeroActiveRulesView } from "../../../../component/rules/HeroActiveRulesView"
+import { ActiveEffectsManager } from "../../../../../apps/active-effects/ActiveEffectManager"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -18,7 +19,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     )
 
     const [isCreatorOpen, setIsCreatorOpen] = useState(false)
-    const [isRulesOpen, setIsRulesOpen] = useState(false)
+    const [isActiveEffectsOpen, setIsActiveEffectsOpen] = useState(false)
+    const [isGrantModifiersOpen, setIsGrantModifiersOpen] = useState(false)
 
     const toggleMenu = useCallback(() => {
         setIsOpen(!isOpen)
@@ -44,11 +46,16 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         setIsCreatorOpen(false)
     }, [])
 
+    const setEffectsClosed = useCallback(() => {
+        setIsActiveEffectsOpen(false)
+    }, [])
+
     const setRulesClosed = useCallback(() => {
-        setIsRulesOpen(false)
+        setIsGrantModifiersOpen(false)
     }, [])
 
     const createrPopout = useGlobalPopout(setCreatorClosed)
+    const effectsPopout = useGlobalPopout(setEffectsClosed)
     const rulesPopout = useGlobalPopout(setRulesClosed)
 
     // Note - this could just be a useCallback that the button calls to render the 
@@ -62,12 +69,17 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 } />, "Hero Creator", true
             )
         }
-        if (isRulesOpen) {
-            rulesPopout.renderPopout(
-                <HeroActiveRulesView actor={hero.parent} />, "Abilites & Effects", false
+        if (isActiveEffectsOpen) {
+            effectsPopout.renderPopout(
+                <ActiveEffectsManager initialDocument={hero.parent} />, "Active Effects", true
             )
         }
-    }, [isCreatorOpen, isRulesOpen])
+        if (isGrantModifiersOpen) {
+            rulesPopout.renderPopout(
+                <HeroActiveRulesView actor={hero.parent} />, "Grants & Modifiers", false
+            )
+        }
+    }, [isCreatorOpen, isActiveEffectsOpen, isGrantModifiersOpen])
 
     return (<>
         <div className={`relative ${className}`}>
@@ -102,7 +114,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                             <MenuListItem text={"CREATE"} onClick={() => setIsCreatorOpen(true)} toggleMenu={toggleMenu} /> :
                             <></>
                     }
-                    <MenuListItem text={'EFFECTS'} onClick={() => setIsRulesOpen(true)} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => setIsActiveEffectsOpen(true)} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => setIsGrantModifiersOpen(true)} toggleMenu={toggleMenu} />
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

@@ -68,9 +68,9 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
 }
 
 export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
-    const { fatigue } = hero
+    const fatigue = hero.statuses.counters.fatigue
     const updateFatigue = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) })
+        updateDocument(hero.parent, { statuses: { counters: { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) } } })
     }, [fatigue])
     return (
         <div className={`flex items-center flex-col pb-4 text-text-primary font-paradigm w-1/3 ${glowOnHover} cursor-pointer`}
@@ -89,9 +89,9 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 export const Luck = ({ hero }: { hero: HeroDataModel }) => {
-    const { currentLuck } = hero.stats
+    const currentLuck = hero.statuses.counters.luck
     const updateLuck = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { stats: { currentLuck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } })
+        updateDocument(hero.parent, { statuses: { counters: { luck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } } })
     }, [currentLuck])
     return (
         <Tracker
@@ -103,9 +103,9 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 export const Studied = ({ hero }: { hero: HeroDataModel }) => {
-    const { studied } = hero
+    const studied = hero.statuses.counters.studied
     const updateStudied = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { studied: (studied ?? 0) + (auxClick ? 1 : -1) })
+        updateDocument(hero.parent, { statuses: { counters: { studied: (studied ?? 0) + (auxClick ? 1 : -1) } } })
     }, [studied])
     return (
         <Tracker
