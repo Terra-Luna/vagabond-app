@@ -8,7 +8,6 @@ export const statusFxSchema = () => {
         statuses: new fields.SchemaField({
             berserk: new fields.BooleanField({ initial: false }),
             blinded: new fields.BooleanField({ initial: false }),
-            burning: new fields.BooleanField({ initial: false }),
             charmed: new fields.BooleanField({ initial: false }),
             confused: new fields.BooleanField({ initial: false }),
             dazed: new fields.BooleanField({ initial: false }),
@@ -22,6 +21,17 @@ export const statusFxSchema = () => {
             suffocating: new fields.BooleanField({ initial: false }),
             unconscious: new fields.BooleanField({ initial: false }),
             vulnerable: new fields.BooleanField({ initial: false }),
+        }),
+
+        stacks: new fields.SchemaField({
+            burning: new fields.ArrayField(
+                new fields.SchemaField({
+                    effectId: new fields.StringField({ required: true }),
+                    duration: new fields.StringField({ initial: "Cd4" }),
+                    sourceUuid: new fields.StringField()
+                }),
+                { initial: [] }
+            )
         }),
 
         counters: new fields.SchemaField({

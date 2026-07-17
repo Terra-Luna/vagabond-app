@@ -6,14 +6,14 @@ Systemic bonuses:
 Documentation: https://foundryvtt.com/article/active-effects/
 
 //List Actor paths:
-const types = Actor.implementation.TYPES;
-const shells = types.map( t => new Actor.implementation({name: t, type: t}));
-shells.forEach( s => console.log(`'${s.type}'`, 'type Actors have the following attribute keys available:\nsystem.\n', s.toObject().system));
+const types = Actor.implementation.TYPES
+const shells = types.map( t => new Actor.implementation({name: t, type: t}))
+shells.forEach( s => console.log(`'${s.type}'`, 'type Actors have the following attribute keys available:\nsystem.\n', s.toObject().system))
  
 //List Item paths:
-const types = Item.implementation.TYPES;
-const shells = types.map( t => new Item.implementation({name: t, type: t}));
-shells.forEach( s => console.log(`'${s.type}'`, 'type Items have the following attribute keys available:\nsystem.\n', s.toObject().system));
+const types = Item.implementation.TYPES
+const shells = types.map( t => new Item.implementation({name: t, type: t}))
+shells.forEach( s => console.log(`'${s.type}'`, 'type Items have the following attribute keys available:\nsystem.\n', s.toObject().system))
 
 //Create an ActiveEffect
 const doc = game.items.getName("Backpack")
@@ -37,154 +37,182 @@ await doc.createEmbeddedDocuments('ActiveEffect', [effectData])
  */
 export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEffect.SubType> extends ActiveEffect<SubType> {
 
-    static effects = [
+    static statusEffects = [
         {
+            _id: "vgliteberserk001",
             id: "berserk",
-            name: "VGLITE.StatusBerserk",
-            img: "systems/vglite/icons/conditions/berserk.svg",
-            changes: [
-                { key: "system.statuses.berserk", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.berserk.name",
+            img: "icons/svg/rage.svg",
+            changes: [{ key: "system.statuses.berserk", mode: "OVERRIDE", value: "true" }]
         },
         {
+            _id: "vgliteblinded002",
             id: "blinded",
-            name: "VGLITE.StatusBlinded",
-            img: "systems/vglite/icons/conditions/blinded.svg",
+            name: "VGLITE.StatusConditions.blinded.name",
+            img: "icons/svg/blind.svg",
             changes: [
-                { key: "system.statuses.blinded", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.statuses.vulnerable", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
+                { key: "system.statuses.blinded", mode: "OVERRIDE", value: "true" },
+                { key: "system.statuses.vulnerable", mode: "OVERRIDE", value: "true" }
             ]
         },
         {
+            _id: "vgliteburning003",
             id: "burning",
-            name: "VGLITE.StatusBurning",
-            img: "systems/vglite/icons/conditions/burning.svg",
+            name: "VGLITE.StatusConditions.burning.name",
+            img: "icons/svg/fire.svg",
             changes: [
-                { key: "system.statuses.burning", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
+                { key: "system.statuses.stacks.burning", mode: "ADD", value: JSON.stringify({ duration: "Cd4" }) }
             ]
         },
         {
+            _id: "vglitecharmed004",
             id: "charmed",
-            name: "VGLITE.StatusCharmed",
-            img: "systems/vglite/icons/conditions/charmed.svg",
-            changes: [
-                { key: "system.statuses.charmed", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.charmed.name",
+            img: "icons/svg/heart.svg",
+            changes: [{ key: "system.statuses.charmed", mode: "OVERRIDE", value: "true" }]
         },
         {
+            _id: "vgliteconfused05",
             id: "confused",
-            name: "VGLITE.StatusConfused",
-            img: "systems/vglite/icons/conditions/confused.svg",
-            changes: [
-                { key: "system.statuses.confused", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.confused.name",
+            img: "icons/svg/daze.svg",
+            changes: [{ key: "system.statuses.confused", mode: "OVERRIDE", value: "true" }]
         },
         {
+            _id: "vglitedazed00006",
             id: "dazed",
-            name: "VGLITE.StatusDazed",
-            img: "systems/vglite/icons/conditions/dazed.svg",
-            changes: [
-                { key: "system.statuses.dazed", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.dazed.name",
+            img: "icons/svg/unconscious.svg",
+            changes: [{ key: "system.statuses.dazed", mode: "OVERRIDE", value: "true" }]
         },
         {
+            _id: "vglitefatigued07",
             id: "fatigued",
-            name: "VGLITE.StatusFatigued",
-            img: "systems/vglite/icons/conditions/fatigued.svg",
-            changes: [
-                { key: "system.counters.fatigue", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: "1" }
-            ]
+            name: "VGLITE.StatusConditions.fatigued.name",
+            img: "icons/svg/weakness.svg",
+            changes: [{ key: "system.counters.fatigue", mode: "ADD", value: "1" }]
         },
         {
+            _id: "vglitefrighten08",
             id: "frightened",
-            name: "VGLITE.StatusFrightened",
-            img: "systems/vglite/icons/conditions/frightened.svg",
+            name: "VGLITE.StatusConditions.frightened.name",
+            img: "icons/svg/terror.svg",
             changes: [
-                { key: "system.statuses.frightened", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.modifiers.damage.all", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: "-2" }
+                { key: "system.statuses.frightened", mode: "OVERRIDE", value: "true" },
+                { key: "system.modifiers.damage.all", mode: "ADD", value: "-2" }
             ]
         },
         {
+            _id: "vgliteincapacit9",
             id: "incapacitated",
-            name: "VGLITE.StatusIncapacitated",
-            img: "systems/vglite/icons/conditions/incapacitated.svg",
+            name: "VGLITE.StatusConditions.incapacitated.name",
+            img: "icons/svg/falling.svg",
             changes: [
-                { key: "system.statuses.incapacitated", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.statuses.vulnerable", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
+                { key: "system.statuses.incapacitated", mode: "OVERRIDE", value: "true" },
+                { key: "system.statuses.vulnerable", mode: "OVERRIDE", value: "true" }
             ]
         },
         {
+            _id: "vgliteinvisiblea",
             id: "invisible",
-            name: "VGLITE.StatusInvisible",
-            img: "systems/vglite/icons/conditions/invisible.svg",
-            changes: [
-                { key: "system.statuses.invisible", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.invisible.name",
+            img: "icons/svg/invisible.svg",
+            changes: [{ key: "system.statuses.invisible", mode: "OVERRIDE", value: "true" }]
         },
         {
+            _id: "vgliteparalyzedb",
             id: "paralyzed",
-            name: "VGLITE.StatusParalyzed",
-            img: "systems/vglite/icons/conditions/paralyzed.svg",
+            name: "VGLITE.StatusConditions.paralyzed.name",
+            img: "icons/svg/paralysis.svg",
             changes: [
-                { key: "system.statuses.paralyzed", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.statuses.incapacitated", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.attributes.speed.value", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "0" }
+                { key: "system.statuses.paralyzed", mode: "OVERRIDE", value: "true" },
+                { key: "system.statuses.incapacitated", mode: "OVERRIDE", value: "true" },
+                { key: "system.attributes.speed.value", mode: "OVERRIDE", value: "0" }
             ]
         },
         {
+            _id: "vgliteprone00000c",
             id: "prone",
-            name: "VGLITE.StatusProne",
-            img: "systems/vglite/icons/conditions/prone.svg",
-            changes: [
-                { key: "system.statuses.prone", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.prone.name",
+            img: "icons/svg/floor.svg",
+            changes: [{ key: "system.statuses.prone", mode: "OVERRIDE", value: "true" }]
         },
         {
+            _id: "vgliterestrained",
             id: "restrained",
-            name: "VGLITE.StatusRestrained",
-            img: "systems/vglite/icons/conditions/restrained.svg",
+            name: "VGLITE.StatusConditions.restrained.name",
+            img: "icons/svg/net.svg",
             changes: [
-                { key: "system.statuses.restrained", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.statuses.vulnerable", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.attributes.speed.value", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "0" }
+                { key: "system.statuses.restrained", mode: "OVERRIDE", value: "true" },
+                { key: "system.statuses.vulnerable", mode: "OVERRIDE", value: "true" },
+                { key: "system.attributes.speed.value", mode: "OVERRIDE", value: "0" }
             ]
         },
         {
+            _id: "vglitesickened0e",
             id: "sickened",
-            name: "VGLITE.StatusSickened",
-            img: "systems/vglite/icons/conditions/sickened.svg",
+            name: "VGLITE.StatusConditions.sickened.name",
+            img: "icons/svg/poison.svg",
             changes: [
-                { key: "system.statuses.sickened", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.modifiers.healingReceived", mode: CONST.ACTIVE_EFFECT_MODES.ADD, value: "-2" }
+                { key: "system.statuses.sickened", mode: "OVERRIDE", value: "true" },
+                { key: "system.modifiers.healingReceived", mode: "ADD", value: "-2" }
             ]
         },
         {
+            _id: "vglitesuffocatin",
             id: "suffocating",
-            name: "VGLITE.StatusSuffocating",
-            img: "systems/vglite/icons/conditions/suffocating.svg",
-            changes: [
-                { key: "system.statuses.suffocating", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.suffocating.name",
+            img: "icons/svg/wind.svg",
+            changes: [{ key: "system.statuses.suffocating", mode: "OVERRIDE", value: "true" }]
         },
         {
+            _id: "vgliteunconscio1",
             id: "unconscious",
-            name: "VGLITE.StatusUnconscious",
-            img: "systems/vglite/icons/conditions/unconscious.svg",
+            name: "VGLITE.StatusConditions.unconscious.name",
+            img: "icons/svg/sleep.svg",
             changes: [
-                { key: "system.statuses.unconscious", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.statuses.blinded", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.statuses.incapacitated", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" },
-                { key: "system.statuses.prone", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
+                { key: "system.statuses.unconscious", mode: "OVERRIDE", value: "true" },
+                { key: "system.statuses.blinded", mode: "OVERRIDE", value: "true" },
+                { key: "system.statuses.incapacitated", mode: "OVERRIDE", value: "true" },
+                { key: "system.statuses.prone", mode: "OVERRIDE", value: "true" }
             ]
         },
         {
+            _id: "vglitevulnerabl1",
             id: "vulnerable",
-            name: "VGLITE.StatusVulnerable",
-            img: "systems/vglite/icons/conditions/vulnerable.svg",
-            changes: [
-                { key: "system.statuses.vulnerable", mode: CONST.ACTIVE_EFFECT_MODES.OVERRIDE, value: "true" }
-            ]
+            name: "VGLITE.StatusConditions.vulnerable.name",
+            img: "icons/svg/target.svg",
+            changes: [{ key: "system.statuses.vulnerable", mode: "OVERRIDE", value: "true" }]
         }
     ]
+
+    static override async fromStatusEffect(statusId: string, options: Record<string, any> = {}): Promise<any> {
+        const statusBlueprint = this.statusEffects.find(e => e.id === statusId)
+        if (!statusBlueprint) return super.fromStatusEffect(statusId, options)
+
+        // Handle special stackable burning effect!
+        // Duration is embedded into the options arg as: { duration: "CdX" }
+        if (statusId === "burning") {
+            const createData = foundry.utils.deepClone(statusBlueprint)
+            createData._id = foundry.utils.randomID(16)
+            const finalDuration = options.duration || "Cd4"
+
+            const stackChange = createData.changes.find(
+                (c: any) => c.key === "system.statuses.stacks.burning"
+            )
+
+            if (stackChange) {
+                stackChange.value = JSON.stringify({
+                    duration: finalDuration,
+                    sourceUuid: options.origin || ""
+                })
+            }
+
+            const effectInstance = new this(createData as any, options)
+            return effectInstance
+        }
+
+        return super.fromStatusEffect(statusId, options)
+    }
 
 }

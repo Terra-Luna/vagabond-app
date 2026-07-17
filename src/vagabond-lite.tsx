@@ -29,6 +29,7 @@ import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
 import { BaseItemSchema, ItemDataModel } from "./model/item/ItemDataModel"
 import { RuleElement } from "./view/component/rules/shared/RuleElement"
 import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
+import { VgLiteActor } from "./model/actor/VgLiteActor"
 
 // Add our fonts
 const fontFaces = [
@@ -61,6 +62,7 @@ const fontFaces = [
 Hooks.once("init", () => {
     Object.assign(
         // Actors
+        CONFIG.Actor.documentClass = VgLiteActor,
         CONFIG.Actor.dataModels.adversary = AdversaryDataModel,
         CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.npc = NpcDataModel,
@@ -79,7 +81,8 @@ Hooks.once("init", () => {
         // Combat
         CONFIG.Combat.documentClass = VgLiteCombat,
         CONFIG.Combatant.documentClass = VgLiteCombatant,
-        CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect
+        CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
+        CONFIG.statusEffects = VgLiteActiveEffect.statusEffects as any
     )
 
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
@@ -181,7 +184,7 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
         const preExistingUniqueItem = actor.items.find(i => i.type === item.type)
         if (preExistingUniqueItem) {
             if (game.user?.isActiveGM) {
-                preExistingUniqueItem.update({ system: item.system })
+                preExistingUniqueItem.update({ name: item.name, system: item.system })
                 actor.system.forceUpdate?.()
             }
             return false
@@ -282,7 +285,7 @@ Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
 })
 
 Hooks.on("deleteItem", async (item, options, userId) => {
-    if (game.user?.id !== userId || !item.parent) return;
+    if (game.user?.id !== userId || !item.parent) return
     const childrenToDelete = item.parent.items.filter(
         (i: any) => i.getFlag("vagabond-lite", "grantedBy") === item.id
     ).map((i: any) => i.id)
@@ -298,12 +301,28 @@ Hooks.on("renderCombatTracker", (_app, html, data) => {
     renderCombatTracker(html, data)
 })
 
-Hooks.on("renderItemSheetV2", (_, html) => {
-    $(html).find('[data-action="close"]').each((_: any, btn: HTMLElement) => {
-        /* btn.onclick = (e) => {
-            
-        } */
-    })
+Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any) => {
+    const rawName = app.document?.name || ""
+
+    /**
+     * The purpose of this is to swap in the actual locale name for some of our
+     * custom active effect implementations such as "Burning".
+     */
+    if (game.i18n?.has(rawName)) {
+        const localizedString = game.i18n.localize(rawName)
+        if (app.window?.title) {
+            app.window.title.textContent = `Active Effect: ${localizedString}`;
+        }
+
+        const rootElement = html instanceof HTMLElement ? html : (html as any)[0]
+
+        if (rootElement) {
+            const nameInput = rootElement.querySelector('input[name="name"]') as HTMLInputElement | null
+            if (nameInput && nameInput.value === rawName) {
+                nameInput.value = localizedString
+            }
+        }
+    }
 })
 
 Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {

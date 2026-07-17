@@ -1,5 +1,4 @@
 import { lang } from "../../utils/lang"
-import { RuleElement } from "../../view/component/rules/shared/RuleElement"
 import { fields, requiredString } from "../common/sharedSchemas"
 import { armorSchema } from "./type/Armor"
 import { healthSchema } from "./type/Health"

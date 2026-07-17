@@ -884,7 +884,14 @@
       "back": "Back",
       "next": "Next",
       "add": "Add",
-      "finish": "Finish"
+      "finish": "Finish",
+      "addEffect": "Add Effect"
+    },
+    "Effects": {
+      "title": "Active Effects",
+      "burn": "Burning",
+      "by": "by",
+      "env": "Environment"
     }
   }
 }
