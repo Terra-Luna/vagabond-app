@@ -96,6 +96,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             label: rule.label || "",
                                                             level: 0,
                                                             value: 0,
+                                                            valueMultiplier: '',
                                                             selector: rule.selector || ""
                                                         }
                                                     }

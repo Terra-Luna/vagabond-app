@@ -21,14 +21,20 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
             <ItemRuleInput
                 label={"Path"}
                 value={rule.selector || ""}
-                placeholder={"e.g., health.hp.max"}
+                placeholder={"e.g., health.max"}
                 onChange={(e) => onChange({ selector: e.target.value })}
             />
             <ItemRuleInput
-                label={"Value Modifier"}
+                label={"Value"}
                 value={rule.value ?? 0}
                 onChange={(e) => onChange({ value: Number(e.target.value) })}
                 type={"number"}
+            />
+            <ItemRuleInput
+                label={"Value Multiplier"}
+                value={rule.valueMultiplier ?? ''}
+                placeholder={"e.g., level.current"}
+                onChange={(e) => onChange({ valueMultiplier: e.target.value })}
             />
         </div>
     )
