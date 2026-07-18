@@ -17,17 +17,22 @@ import { StarterPackSheet } from "./sheet/StarterPackSheet"
 import { SundrySheet } from "./sheet/SundrySheet"
 import { ToolSheet } from "./sheet/ToolSheet"
 import { WeaponSheet } from "./sheet/WeaponSheet"
-import { lang as fullLang } from "../../../../utils/lang"
+import { lang as fullLang, vgLiteLang } from "../../../../utils/lang"
 import { CategorySelection } from "./component/ItemCategorySelectionComponent"
-import { ItemSheetProperty } from "./component/ItemSheetLabelComponent"
+import { ItemSheetProperty, ItemSheetPropLabel } from "./component/ItemSheetLabelComponent"
 import { ItemValue } from "./component/ItemValueComponent"
 import { AlchemicalSheet } from "./sheet/AlchemicalSheet"
 import { BaseItemSheetComponent } from "../shared/BaseItemSheetComponent"
 import { EquipmentSheetBanner } from "./component/EquipmentSheetBanner"
 import { Description } from "../../shared/Description"
+import { useActiveEffectsManager } from "../../../../apps/active-effects/active-effect-handlers"
+import { glowOnHover } from "../../../common/text-styles"
 const lang = fullLang.VGLITE
 
 export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
+
+    const { setIsActiveEffectsOpen } = useActiveEffectsManager(item)
+
     let sheet: React.ReactElement
 
     if (item.system instanceof AlchemicalItemDataModel) {
@@ -56,7 +61,12 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
     }
 
     const sharedContent = <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
-        <Bulk item={item} />
+        <div className="space-y-2">
+            <Bulk item={item} />
+            <button title={vgLiteLang.ButtonActions.effects} onClick={() => setIsActiveEffectsOpen(true)} className={glowOnHover}>
+                <ItemSheetPropLabel label={vgLiteLang.ButtonActions.effects} />
+            </button>
+        </div>
         <div className="space-y-2">
             <ItemValue item={item} />
             <CategorySelection item={item} />

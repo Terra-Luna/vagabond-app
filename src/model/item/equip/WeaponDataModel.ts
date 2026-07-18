@@ -15,6 +15,12 @@ const weaponSchema = () => {
             style: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Grips), initial: 'H' }),
             state: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Grips), initial: 'H' })
         }),
+        weaponTypes: new fields.ArrayField(
+            new fields.StringField({
+                ...requiredString, choices: Object.keys(lang.VGLITE.WeaponTypes)
+            }),
+            { initial: [] }
+        ),
         properties: new fields.ArrayField(
             new fields.StringField({
                 ...requiredString, choices: Object.keys(lang.VGLITE.WeaponProps)

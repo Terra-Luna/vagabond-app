@@ -28,6 +28,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 <Damage item={item} />
                 <ExplodingDiceItemConfig item={item} />
                 <div className="flex justify-between items-center">
+                    <WeaponTypes item={item} />
                     <Properties item={item} />
                     <Material item={item} />
                 </div>
@@ -159,6 +160,18 @@ export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: Weapo
     )
 }
 
+const WeaponTypes = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+    return (
+        <div>
+            <div className="flex items-center">
+                <ItemSheetPropLabel label={lang.ItemSheet.type} />
+                <OptionsSelectionMenu obj={item} label={''} path={['weaponTypes']} options={weaponTypes(item)} />
+            </div>
+            <StringOptionsDisplay options={item.system.weaponTypes.map(it => lang.WeaponTypes[it].name)} />
+        </div>
+    )
+}
+
 const Properties = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
@@ -169,6 +182,12 @@ const Properties = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
             <StringOptionsDisplay options={item.system.properties.map(it => lang.WeaponProps[it].name)} />
         </div>
     )
+}
+
+const weaponTypes = (item: Item & { system: WeaponDataModel }) => {
+    return Object.entries(lang.WeaponTypes).map(type => (
+        { key: type[0], value: type[1].name, isSelected: item.system.weaponTypes.indexOf(type[0]) > -1 }
+    ))
 }
 
 const weaponProps = (item: Item & { system: WeaponDataModel }) => {

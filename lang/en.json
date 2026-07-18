@@ -440,25 +440,17 @@
       }
     },
     "WeaponProps": {
-      "brawl": {
-        "name": "Brawl",
-        "description": "Attacks with Brawl can Grapple or Shove."
-      },
-      "brutal": {
-        "name": "Brutal",
-        "description": "Crits deal 1 extra damage die."
-      },
       "cleave": {
         "name": "Cleave",
-        "description": "Can deal half damage to two Targets."
+        "description": "Ignores Flanked for attacks. You can reduce its die one size to hit another Close Target per size reduction."
       },
-      "entangle": {
-        "name": "Entangle",
+      "defense": {
+        "name": "Defense",
+        "description": "Once per Round, you gain its damage die as Armor against an Action."
+      },
+      "grapple": {
+        "name": "Grapple",
         "description": "Can Grapple"
-      },
-      "finesse": {
-        "name": "Finesse",
-        "description": "Can attack with Finesse."
       },
       "keen": {
         "name": "Keen",
@@ -472,17 +464,39 @@
         "name": "Near",
         "description": "Can only target up to near."
       },
+      "parry": {
+        "name": "Parry",
+        "description": "Crits 1 lower on Melee attack Saves"
+      },
       "ranged": {
         "name": "Ranged",
         "description": "Attacks with Ranged. Attacking a Close Target Hinders the Check."
       },
-      "shield": {
-        "name": "Shield",
-        "description": "Ignores Hinder from Blocking Ranged Attacks. Can Shove."
+      "vicious": {
+        "name": "Vicious",
+        "description": "Crits deal 1 extra damage die."
+      }
+    },
+    "WeaponTypes": {
+      "brawl": {
+        "name": "Brawl",
+        "description": "Can use Brawl to attack. The hand is free while Equipped."
+      },
+      "finesse": {
+        "name": "Finesse",
+        "description": "Can use Finesse to attack."
+      },
+      "melee": {
+        "name": "Melee",
+        "description": "Can use Melee to attack."
+      },
+      "ranged": {
+        "name": "Ranged",
+        "description": "Can use Ranged to attack. Close attacks are Hindered."
       },
       "thrown": {
         "name": "Thrown",
-        "description": "Can be thrown to attack up to Near, or Far with Hinder."
+        "description": "Uses Melee by default. Can throw attack to Near, or Far with Hinder."
       }
     },
     "Metals": {
@@ -755,10 +769,10 @@
       "explodesOn": "Explodes On",
       "explodesOnTooltip": "Separate values with comma",
       "range": "Range",
+      "type": "Type",
       "props": "Properties",
       "material": "Material",
       "capacity": "CAPACITY",
-      "type": "Type",
       "size": "Size",
       "canTakeMultiple": "Can take multiple times",
       "prerequisites": "Prerequisites",
@@ -889,7 +903,8 @@
       "next": "Next",
       "add": "Add",
       "finish": "Finish",
-      "addEffect": "Add Effect"
+      "addEffect": "Add Effect",
+      "effects": "Active Effects"
     },
     "Effects": {
       "title": "Active Effects",

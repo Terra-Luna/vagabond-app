@@ -8,7 +8,7 @@ import { HeroCreator } from "../../../../../apps/hero-creator/HeroCreator"
 import { useGlobalPopout } from "../../../../../apps/PopoutApplication"
 import { NavigationContextProvider } from "../../../../context/navigation/NavigationContextProvider"
 import { HeroActiveRulesView } from "../../../../component/rules/HeroActiveRulesView"
-import { ActiveEffectsManager } from "../../../../../apps/active-effects/ActiveEffectManager"
+import { useActiveEffectsManager } from "../../../../../apps/active-effects/active-effect-handlers"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -19,8 +19,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     )
 
     const [isCreatorOpen, setIsCreatorOpen] = useState(false)
-    const [isActiveEffectsOpen, setIsActiveEffectsOpen] = useState(false)
     const [isGrantModifiersOpen, setIsGrantModifiersOpen] = useState(false)
+    const { setIsActiveEffectsOpen } = useActiveEffectsManager(hero.parent)
 
     const toggleMenu = useCallback(() => {
         setIsOpen(!isOpen)
@@ -46,16 +46,11 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         setIsCreatorOpen(false)
     }, [])
 
-    const setEffectsClosed = useCallback(() => {
-        setIsActiveEffectsOpen(false)
-    }, [])
-
     const setRulesClosed = useCallback(() => {
         setIsGrantModifiersOpen(false)
     }, [])
 
     const createrPopout = useGlobalPopout(setCreatorClosed)
-    const effectsPopout = useGlobalPopout(setEffectsClosed)
     const rulesPopout = useGlobalPopout(setRulesClosed)
 
     // Note - this could just be a useCallback that the button calls to render the 
@@ -69,17 +64,12 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 } />, "Hero Creator", true
             )
         }
-        if (isActiveEffectsOpen) {
-            effectsPopout.renderPopout(
-                <ActiveEffectsManager initialDocument={hero.parent} />, "Active Effects", true
-            )
-        }
         if (isGrantModifiersOpen) {
             rulesPopout.renderPopout(
                 <HeroActiveRulesView actor={hero.parent} />, "Grants & Modifiers", false
             )
         }
-    }, [isCreatorOpen, isActiveEffectsOpen, isGrantModifiersOpen])
+    }, [isCreatorOpen, isGrantModifiersOpen])
 
     return (<>
         <div className={`relative ${className}`}>

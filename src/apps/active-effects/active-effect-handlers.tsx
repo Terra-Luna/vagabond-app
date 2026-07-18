@@ -1,4 +1,26 @@
+import { useState, useCallback } from "react"
+import { useGlobalPopout } from "../PopoutApplication"
+import { ActiveEffectsManager } from "./ActiveEffectManager"
 import { Effect } from "./ActiveEffectsComponent"
+
+/**
+ * Reusable component for launching the active effects manager from anywhere.
+ * @param document
+ * @returns 
+ */
+export const useActiveEffectsManager = (document: Actor | Item) => {
+    const [isActiveEffectsOpen, setIsActiveEffectsOpen] = useState(false)
+    const setEffectsClosed = useCallback(() => {
+        setIsActiveEffectsOpen(false)
+    }, [])
+    const effectsPopout = useGlobalPopout(setEffectsClosed)
+    if (isActiveEffectsOpen) {
+        effectsPopout.renderPopout(
+            <ActiveEffectsManager initialDocument={document} />, "Active Effects", true
+        )
+    }
+    return { setIsActiveEffectsOpen, setEffectsClosed }
+}
 
 export const handleCreateEffect = async (document: Actor | Item) => {
     await ActiveEffect.create({

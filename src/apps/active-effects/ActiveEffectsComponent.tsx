@@ -1,6 +1,7 @@
 import { ToggleLeft, ToggleRight, Pencil, Trash } from "lucide-react"
 import { PrimaryButton } from "../../view/component/Button"
 import { vgLiteLang } from "../../utils/lang"
+import { ActiveEffectButtons } from "./ActiveEffectButtons"
 
 export interface Effect {
     id: string
@@ -49,9 +50,17 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                             {`(${vgLiteLang.Effects.by} ${eff.sourceName || vgLiteLang.Effects.env})`}
                         </span>
                     </span>
+                    <div className="flex gap-x-4">
+                        <ActiveEffectButtons
+                            effect={eff}
+                            onToggle={() => onToggle(eff.id)}
+                            onEdit={() => onEdit(eff.id)}
+                            onDelete={() => onDelete(eff.id)}
+                        />
                     <span className="bg-sheet-main-fill px-2 py-0.5 rounded-sm border border-solid border-destructive-action/50 text-text-secondary text-lg">
                         {eff.duration || "Cd4"}
-                    </span>
+                        </span>
+                    </div>
                 </div>
             ))}
 
@@ -78,45 +87,19 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                                 {eff.name}
                             </span>
                             {eff.isTransfer && (
-                                <span className="text-[10px] bg-text-header-tertiary text-text-header-tertiary px-1.5 py-0.5 rounded uppercase">
+                                <span className="text-[10px] bg-sheet-main-fill text-text-secondary px-1.5 py-0.5 rounded uppercase">
                                     Item
                                 </span>
                             )}
                         </div>
 
                         {/* CONTROLS */}
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => onToggle(eff.id)}
-                                className="p-1.5 rounded hover:bg-slate-700 transition-colors"
-                                title={eff.disabled ? "Enable" : "Disable"}
-                            >
-                                {eff.disabled ? (
-                                    <ToggleLeft size={24} className="w-5 h-5 text-text-header-secondary" />
-                                ) : (
-                                    <ToggleRight size={24} className="w-5 h-5 text-ic-luck" />
-                                )}
-                            </button>
-
-                            {!eff.isTransfer && (
-                                <>
-                                    <button
-                                        onClick={() => onEdit(eff.id)}
-                                        className="p-1.5 rounded text-sky-400 hover:bg-slate-700 transition-colors"
-                                        title="Edit Effect"
-                                    >
-                                        <Pencil size={24} className="w-4 h-4" />
-                                    </button>
-                                    <button
-                                        onClick={() => onDelete(eff.id)}
-                                        className="p-1.5 rounded text-destructive-action hover:bg-slate-700 transition-colors"
-                                        title="Delete Effect"
-                                    >
-                                        <Trash size={24} className="w-4 h-4" />
-                                    </button>
-                                </>
-                            )}
-                        </div>
+                        <ActiveEffectButtons
+                            effect={eff}
+                            onToggle={() => onToggle(eff.id)}
+                            onEdit={() => onEdit(eff.id)}
+                            onDelete={() => onDelete(eff.id)}
+                        />
                     </li>
                 ))}
             </ul>
