@@ -3,7 +3,7 @@ import { vgLiteLang } from "../../utils/lang"
 import { getId, isPathOfType } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
-import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
+import { fields, optionalString } from "../common/sharedSchemas"
 import { AncestryDataModel } from "../item/character/AncestryDataModel"
 import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
@@ -38,7 +38,6 @@ const heroSchema = () => {
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
         perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
         spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
-        spellSlots: new fields.NumberField({ ...requiredInteger, initial: 0 }),
 
         // certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
         // this just is a boolean value we flip back and forth to trigger the update lifecycle
@@ -291,7 +290,6 @@ export function setSpellcastingStats(hero: HeroDataModel) {
     )
     hero.mana.max += manaValues.max
     hero.mana.maxCast += manaValues.maxCast
-    hero.spellSlots += calculateSpellSlots(hero.level.current ?? 0, hero.class?.initialSpellSlots ?? 0, hero.class?.spellGainInterval ?? 0)
 }
 
 export function calculateManaValues(level: number, manaStatVal: number, multiplier: number): { max: number, maxCast: number } {
@@ -299,11 +297,6 @@ export function calculateManaValues(level: number, manaStatVal: number, multipli
     const max = level * multiplier
     const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
     return { max: max, maxCast: maxCast }
-}
-
-export function calculateSpellSlots(level: number, initialClassSlots: number, interval: number): number {
-    if (level === 0) return 0
-    return initialClassSlots + (interval > 0 ? Math.ceil((level - 1) / interval) : 0)
 }
 
 export function setXpToNextLevel(hero: HeroDataModel) {

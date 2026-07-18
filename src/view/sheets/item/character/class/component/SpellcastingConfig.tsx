@@ -1,14 +1,10 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect } from "react"
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../../utils/localeUtils"
 import { DropDown } from "../../../../../component/Dropdown"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
-import { EditableTextField } from "../../../../../component/EditableTextField"
-import { MultiSelect, SelectOption } from "../../../../../component/MultiSelect"
-import { CombinedItems } from "../../../../../../utils/modelUtil"
-import { MultiValue } from "react-select"
 
 export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -74,46 +70,6 @@ export const MaxManaPerLevelSelector = ({ item }: { item: Item & { system: Class
                             ]}
                             updateMechanism={{ updatePath: ['manaMultiplier'] }}
                             parent={item}
-                        />
-                    </div> : <></>
-            }
-        </>
-    )
-}
-
-export const StartingSpellSlotsInput = ({ item }: { item: Item & { system: ClassDataModel } }) => {
-    const { isEditMode } = useEditMode()
-    return (
-        <>
-            {
-                isEditMode || item.system.castingSkill ?
-                    <div className="flex gap-x-1">
-                        <ClassSheetLabel text={`${vgLiteLang.ClassSheet.startingSpellSlots}:`} />
-                        <EditableTextField
-                            boundValue={item.system.initialSpellSlots?.toString() ?? '0'}
-                            updateProps={{ object: item, path: ['initialSpellSlots'] }}
-                            placeholder={'4'}
-                            className={"text-xl font-eskapade font-normal"}
-                        />
-                    </div> : <></>
-            }
-        </>
-    )
-}
-
-export const SpellGainLevelInterval = ({ item }: { item: Item & { system: ClassDataModel } }) => {
-    const { isEditMode } = useEditMode()
-    return (
-        <>
-            {
-                isEditMode || item.system.castingSkill ?
-                    <div className="flex gap-x-1">
-                        <ClassSheetLabel text={`${vgLiteLang.ClassSheet.spellGainLvlInterval}:`} />
-                        <EditableTextField
-                            boundValue={item.system.spellGainInterval?.toString() ?? '0'}
-                            updateProps={{ object: item, path: ['spellGainInterval'] }}
-                            placeholder={'4'}
-                            className={"text-xl font-eskapade font-normal"}
                         />
                     </div> : <></>
             }

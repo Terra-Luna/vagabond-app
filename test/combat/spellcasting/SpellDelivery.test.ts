@@ -5,117 +5,133 @@ describe('spell delivery mana calc tests', () => {
     test('aura', () => {
         // Setup
         const aura = new Aura()
-        aura.setSize(35)
+        aura.size = 35
         // Execute & Verify
+        aura.calculateManaCost()
         expect(aura.manaCost).toEqual(7)
     })
+
     test('aura upcast w/ effect', () => {
         // Setup
         const aura = new Aura()
-        aura.setSize(35)
-        aura.setUpcast(2)
-        aura.setIsDmgOrEffOnly(false)
+        aura.size = 35
+        aura.applyEffect = true
+        aura.damageDice = 3
         // Execute & Verify
+        aura.calculateManaCost()
         expect(aura.manaCost).toEqual(10)
     })
 
     test('cone', () => {
         // Setup
         const cone = new Cone()
-        cone.setSize(35)
+        cone.size = 35
         // Execute & Verify
+        cone.calculateManaCost()
         expect(cone.manaCost).toEqual(6)
     })
     test('cone upcast w/ effect', () => {
         // Setup
         const cone = new Cone()
-        cone.setSize(35)
-        cone.setUpcast(2)
-        cone.setIsDmgOrEffOnly(false)
+        cone.size = 35
+        cone.applyEffect = true
+        cone.damageDice = 3
         // Execute & Verify
+        cone.calculateManaCost()
         expect(cone.manaCost).toEqual(9)
     })
 
     test('line', () => {
         // Setup
         const line = new Line()
-        line.setSize(35)
+        line.size = 35
         // Execute & Verify
+        line.calculateManaCost()
         expect(line.manaCost).toEqual(3)
     })
     test('line upcast w/ effect', () => {
         // Setup
         const line = new Line()
-        line.setSize(35)
-        line.setUpcast(2)
-        line.setIsDmgOrEffOnly(false)
+        line.size = 35
+        line.applyEffect = true
+        line.damageDice = 3
         // Execute & Verify
+        line.calculateManaCost()
         expect(line.manaCost).toEqual(6)
     })
 
     test('sphere', () => {
         // Setup
         const sphere = new Sphere()
-        sphere.setSize(35)
+        sphere.size = 35
         // Execute & Verify
+        sphere.calculateManaCost()
         expect(sphere.manaCost).toEqual(8)
     })
     test('sphere upcast w/ effect', () => {
         // Setup
         const sphere = new Sphere()
-        sphere.setSize(35)
-        sphere.setUpcast(2)
-        sphere.setIsDmgOrEffOnly(false)
+        sphere.size = 35
+        sphere.applyEffect = true
+        sphere.damageDice = 3
         // Execute & Verify
+        sphere.calculateManaCost()
         expect(sphere.manaCost).toEqual(11)
     })
 
     test('cube', () => {
         // Setup
         const cube = new Cube()
-        cube.setExtraTargets(2)
+        cube.targetCount = 2
+        cube.damageDice = 2
         // Execute & Verify
+        cube.calculateManaCost()
         expect(cube.manaCost).toEqual(3)
     })
     test('cube upcast w/ effect', () => {
         // Setup
         const cube = new Cube()
-        cube.setExtraTargets(2)
-        cube.setUpcast(2)
-        cube.setIsDmgOrEffOnly(false)
+        cube.applyEffect = true
+        cube.damageDice = 5
         // Execute & Verify
+        cube.calculateManaCost()
         expect(cube.manaCost).toEqual(6)
     })
 
     test('imbue', () => {
         // Setup
         const imbue = new Imbue()
-        imbue.setExtraTargets(2)
+        imbue.targetTokenIds = ['a', 'b', 'c']
         // Execute & Verify
+        imbue.calculateManaCost()
         expect(imbue.manaCost).toEqual(4)
     })
 
     test('remote single target', () => {
         // Setup
         const remote = new Remote()
+        remote.damageDice = 1
+        remote.targetCount = 1
         // Execute & Verify
+        remote.calculateManaCost()
         expect(remote.manaCost).toEqual(0)
-        expect(remote.damageDice).toEqual(1)
     })
     test('remote', () => {
         // Setup
         const remote = new Remote()
-        remote.setExtraTargets(2)
+        remote.targetTokenIds = ['a', 'b']
+        remote.damageDice = 3
         // Execute & Verify
-        expect(remote.manaCost).toEqual(2)
+        remote.calculateManaCost()
+        expect(remote.manaCost).toEqual(3)
     })
     test('remote upcast w/ effect', () => {
         // Setup
         const remote = new Remote()
-        remote.setExtraTargets(2)
-        remote.setUpcast(5)
-        remote.setIsDmgOrEffOnly(false)
+        remote.applyEffect = true
+        remote.damageDice = 8
         // Execute & Verify
+        remote.calculateManaCost()
         expect(remote.manaCost).toEqual(8)
     })
 
@@ -123,14 +139,16 @@ describe('spell delivery mana calc tests', () => {
         // Setup
         const touch = new Touch()
         // Execute & Verify
+        touch.calculateManaCost()
         expect(0).toEqual(touch.manaCost)
     })
     test('touch upcast w/ effect', () => {
         // Setup
         const touch = new Touch()
-        touch.setUpcast(5)
-        touch.setIsDmgOrEffOnly(false)
+        touch.applyEffect = true
+        touch.damageDice = 6
         // Execute & Verify
+        touch.calculateManaCost()
         expect(touch.manaCost).toEqual(6)
         expect(touch.damageDice).toEqual(6)
     })
@@ -138,8 +156,8 @@ describe('spell delivery mana calc tests', () => {
     test('glyph', () => {
         // Setup
         const glyph = new Glyph()
-        glyph._updateCastData()
         // Execute & Verify
+        glyph.calculateManaCost()
         expect(glyph.damageDice).toEqual(1)
         expect(glyph.manaCost).toEqual(2)
     })

@@ -7,7 +7,7 @@ import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSuccessMessage } from "../component/HeroCreationTypography"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { PerkDataModel, perkPrerequisites } from "../../../model/item/character/PerkDataModel"
-import { CombinedItems } from "../../../utils/modelUtil"
+import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
 import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
@@ -30,18 +30,22 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
 
     useEffect(() => {
         CombinedItems('perk').then(perks => {
-            setPerksList([
-                { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-                ...perks
-                    .map(perk => ({
-                        value: perk.uuid,
-                        label: perk.name,
-                        img: perk.img ?? '',
-                        prereqs: (perk.system as PerkDataModel)?.prerequisites,
-                        cardSubheader: perkPrerequisites(perk.system as PerkDataModel),
-                        description: (perk.system as PerkDataModel)?.description
-                    }))
-            ])
+            const populatePerksList = async () => {
+                const fullPerks = await Promise.all(perks.map(p => getFullItem<Item & { system: PerkDataModel }>(p)))
+                setPerksList([
+                    { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
+                    ...fullPerks.filter(p => p != null)
+                        .map(perk => ({
+                            value: perk.uuid,
+                            label: perk.name,
+                            img: perk.img ?? '',
+                            prereqs: (perk.system as any)?.prerequisites,
+                            cardSubheader: perkPrerequisites(perk.system as any),
+                            description: (perk.system as any)?.description
+                        }))
+                ])
+            }
+            populatePerksList()
         })
     }, [])
 

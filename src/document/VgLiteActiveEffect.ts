@@ -30,6 +30,9 @@ await doc.createEmbeddedDocuments('ActiveEffect', [effectData])
 
 */
 
+import { ActiveEffectDataModel } from "../model/effect/ActiveEffectDataModel";
+import { EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel";
+
 /**
  * The static effects' names and descriptions can be displayed to a GM user when configuring
  * active effects for Classes, Ancestries, Equipment, etc... On-save, the path property can 
@@ -254,6 +257,25 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
         }
 
         return super.fromStatusEffect(statusId, options)
+    }
+
+    override get isSuppressed(): boolean {
+        if (super.isSuppressed) return true
+
+        /**
+         * For active effects attached to Equipment, check their
+         * requiresEquip property and conditionally override this
+         * function.
+         */
+        if (this.parent instanceof Item &&
+            this.parent.system instanceof EquipmentDataModel &&
+            this.system instanceof ActiveEffectDataModel &&
+            this.system.requiresEquip
+        ) {
+            return !this.parent.system.isEquipped
+        }
+
+        return false
     }
 
 }

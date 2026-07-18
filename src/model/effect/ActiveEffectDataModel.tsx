@@ -10,12 +10,14 @@ export type VgLiteActiveEffectSchema = ReturnType<typeof activeEffectSchema>
 
 const BaseActiveEffectModel = (foundry.data as any).ActiveEffectTypeDataModel || foundry.abstract.TypeDataModel
 
-export class ActiveEffectDataModel extends BaseActiveEffectModel<any> {
+export class ActiveEffectDataModel extends BaseActiveEffectModel<ActiveEffect> {
+    declare requiresEquip: boolean
+
     static defineSchema() {
-        const coreSchema = super.defineSchema ? super.defineSchema() : {}
         return {
-            ...coreSchema,
+            ...super.defineSchema(),
             ...activeEffectSchema()
         }
     }
+
 }
