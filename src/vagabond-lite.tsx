@@ -180,6 +180,17 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
 
     const actor = item.parent
 
+    if (actor && isInventoryItem(item)) {
+        if (item.system.bulk.isStackable) {
+            const stack = actor.items.find((it: any) => it.name === item.name)
+            if (stack != undefined) {
+                stack.update({ 'system.bulk.quantity': stack.system.bulk.quantity + 1 })
+                stackStackables(item.parent.system)
+                return false
+            }
+        }
+    }
+
     /**
      * GMs can replace ancestries and classes, normal users can't add multiple ancestries / classes
      */
@@ -205,15 +216,6 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
 
     if (item.type === 'spell') {
         return !actor.items.contents.some(i => i.type === 'spell' && i.name === item.name)
-    }
-
-    if (isInventoryItem(item) && item.system.bulk.isStackable) {
-        const stack = actor.items.find((it: any) => it.name === item.name)
-        if (stack != undefined) {
-            stack.update({ 'system.bulk.quantity': stack.system.bulk.quantity + 1 })
-            stackStackables(item.parent.system)
-            return false
-        }
     }
 })
 
@@ -268,11 +270,12 @@ Hooks.on("updateItem", (item, changed, options, userId) => {
      */
     const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
     const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
-    if (!container) return
-    for (const app of foundry.applications.instances.values()) {
-        const docApp = app as any
-        if (docApp.document && getId(container) === docApp.document.id) {
-            docApp.render()
+    if (container) {
+        for (const app of foundry.applications.instances.values()) {
+            const docApp = app as any
+            if (docApp.document && getId(container) === docApp.document.id) {
+                docApp.render()
+            }
         }
     }
 })
