@@ -3,7 +3,6 @@
 coverage
 node_modules
 dist
-packs
 # Lint
 .lint/tmp/
 public/styles/*.css.map
