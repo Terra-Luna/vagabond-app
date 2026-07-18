@@ -35,7 +35,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
     })
 
     // Separate rules into Active and Upcoming (Locked) categories
-    const activeRules = allRules.filter(r => currentLevel >= r.level && r.key !== "GrantItem" && ['class', 'spell'])
+    const activeRules = allRules.filter(r => currentLevel >= r.level && r.key !== "GrantItem" && r.pack !== 'perk' && r.pack !== 'spell')
     const lockedRules = allRules.filter(r => currentLevel < r.level).sort((a, b) => { return a.level - b.level })
     const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
 
