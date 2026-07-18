@@ -84,9 +84,9 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
          * Check PC's containers and cleanup the deleted item's ID.
          */
         if (game.user?.id === userId) {
-            const containers = this.parent.actor.items.filter(i =>
+            const containers = this.parent.actor.items?.filter(i =>
                 i.type === 'container' && i.system.itemIds.includes(this.parent.id)
-            )
+            ) ?? []
             for (const container of containers) {
                 const itemIds = container.system.itemIds ?? []
                 await container.update({ 'system.itemIds': itemIds.filter(id => id !== this.parent.id) })
