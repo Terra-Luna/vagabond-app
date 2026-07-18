@@ -13,8 +13,6 @@ const classSchema = () => {
         castingSkill: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.VGLITE.Skills)], blank: true }),
         maxManaStat: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.VGLITE.Stat)], blank: true }),
         manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        initialSpellSlots: new fields.NumberField({ ...standardInteger, initial: 0 }),
-        spellGainInterval: new fields.NumberField({ ...standardInteger, initial: 0 }),
         features: new fields.ArrayField(new fields.SchemaField({
             level: new fields.NumberField({ ...requiredInteger }),
             name: new fields.StringField({ ...requiredString }),

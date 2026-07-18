@@ -280,3 +280,7 @@ export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> 
 
     return Promise.all(parsedRulesPromises)
 }
+
+export const getTotalMaxChoices = (rules): number => {
+    return rules.reduce((sum, r) => { return sum + r.maxChoices }, 0)
+}

@@ -5,8 +5,8 @@ import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { CombinedItems } from "../../../utils/modelUtil"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
+import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
+import { getItemChoiceRules, getItemGrants, getTotalMaxChoices, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
@@ -30,17 +30,21 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
 
     useEffect(() => {
         CombinedItems('spell').then(spells => {
-            setSpellsList([
-                { value: '', label: strings.emptySlot, img: '', dmgType: '', description: '' },
-                ...spells
-                    .map(spell => ({
-                        value: spell.uuid,
-                        label: spell.name,
-                        img: spell.img ?? '',
-                        dmgType: (spell.system as SpellDataModel)?.damageType ?? 'none',
-                        description: (spell.system as SpellDataModel)?.description
-                    }))
-            ])
+            const populateSpellsList = async () => {
+                const fullSpells = await Promise.all(spells.map(sp => getFullItem<Item & { system: SpellDataModel }>(sp)))
+                setSpellsList([
+                    { value: '', label: strings.emptySlot, img: '', dmgType: '', description: '' },
+                    ...fullSpells.filter(sp => sp != null)
+                        .map(spell => ({
+                            value: spell.uuid,
+                            label: spell.name,
+                            img: spell.img ?? '',
+                            dmgType: (spell.system as any).damageType ?? 'none',
+                            description: (spell.system as any).description
+                        }))
+                ])
+            }
+            populateSpellsList()
         })
     }, [])
 
@@ -48,7 +52,7 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
         getItemGrants('spell', [ancestry]).then(grants => {
             setAncestrySpellGrants(grants)
             getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-                const maxChoices = rules.filter(r => r.pack === 'spell').reduce((sum, r) => { return sum + r.maxChoices }, 0)
+                const maxChoices = getTotalMaxChoices(rules.filter(r => r.pack === 'spell'))
                 setAncestrySpellSlots(
                     Array.from({ length: maxChoices }).map(() => (
                         { value: '', label: strings.emptySlot, ruleName: rules[0].label }
@@ -59,14 +63,14 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
 
         getItemGrants('spell', [clazz]).then(grants => {
             setClassSpellGrants(grants)
-            if (clazz?.system?.initialSpellSlots && clazz.system.initialSpellSlots > 0) {
-                const slotsCount = Math.max(0, clazz.system.initialSpellSlots - grants.length)
+            getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
+                const maxChoices = getTotalMaxChoices(rules.filter(r => r.pack === 'spell'))
                 setClassSpellSlots(
-                    Array.from({ length: slotsCount }).map(() => (
-                        { value: '', label: strings.emptySlot }
+                    Array.from({ length: maxChoices }).map(() => (
+                        { value: '', label: strings.emptySlot, ruleName: rules[0].label }
                     ))
                 )
-            }
+            })
         })
     }, [ancestry, clazz])
 
