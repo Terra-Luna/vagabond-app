@@ -14,7 +14,7 @@ import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { StarterPackDataModel } from "./model/item/equip/StarterPackDataModel"
 import { ContainerDataModel } from "./model/item/equip/ContainerDataModel"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
-import { VgLiteCombat, VgLiteCombatant } from './combat/VgLiteCombat'
+import { VgLiteCombat, VgLiteCombatant } from './document/VgLiteCombat'
 import { VgLiteActiveEffect } from './document/VgLiteActiveEffect'
 import { isInventoryItem } from "./model/actor/type/Inventory"
 import { AdversarySheet } from "./view/sheets/actor/adversary/AdversarySheet"
@@ -304,8 +304,8 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
 })
 
-Hooks.on("renderCombatTracker", (_app, html, data) => {
-    renderCombatTracker(html, data)
+Hooks.on("renderCombatTracker", (app, html, data) => {
+    renderCombatTracker(app, html, data)
 })
 
 Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any) => {

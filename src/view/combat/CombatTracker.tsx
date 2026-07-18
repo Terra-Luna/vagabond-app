@@ -1,8 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useMemo } from "react"
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { lang } from "../../utils/lang"
 import { HeaderWithClipPath } from "../component/SkillCard"
+import { useCombatContext, useIsCurrentCombatant } from "./vglite-combat-tracker"
+import { glowOnHover } from "../common/text-styles"
 
 export const CombatTracker = ({ data }) => {
     const { combat } = data
@@ -15,29 +17,18 @@ export const CombatTracker = ({ data }) => {
     const heroes = getHeroes(combatants)
     const adversaries = getAdversaries(combatants)
 
-    const activeCombatantId = combat.current.combatantId
-
     return (
-        <CombatContext.Provider value={{ activeCombatantId }}>
-            <div className="flex flex-col gap-6 pb-2">
-                <div>
-                    <GroupHeader label={lang.VGLITE.Combat.heroes} />
-                    <Group>{heroes?.map(hero => <Hero hero={hero} />)}</Group>
-                </div>
-                <div>
-                    <GroupHeader label={lang.VGLITE.Combat.adversaries} />
-                    <Group>{adversaries?.map(adv => <Adversary adversary={adv} />)}</Group>
-                </div>
+        <div className="flex flex-col gap-6 pb-2">
+            <div>
+                <GroupHeader label={lang.VGLITE.Combat.heroes} />
+                <Group>{heroes?.map(hero => <Hero hero={hero} />)}</Group>
             </div>
-        </CombatContext.Provider>
+            <div>
+                <GroupHeader label={lang.VGLITE.Combat.adversaries} />
+                <Group>{adversaries?.map(adv => <Adversary adversary={adv} />)}</Group>
+            </div>
+        </div>
     )
-}
-
-const CombatContext = createContext({ activeCombatantId: null, activeGroup: null })
-
-const useIsCurrentCombatant = (combatant) => {
-    const { activeCombatantId } = useContext(CombatContext)
-    return activeCombatantId === combatant.id
 }
 
 const GroupHeader = ({ label }) => {
@@ -54,58 +45,89 @@ const Group = ({ children }) => {
     )
 }
 
-const CombatantHeader = ({ children, isCurrentCombatant }) => {
+const CombatantHeader = ({ token, name, children }) => {
+
+    const [hovered, setIsHovered] = useState(false)
+
+    Hooks.on("hoverToken", (hoveredToken, hover) => {
+        if (hoveredToken === token) {
+            setIsHovered(hover)
+        }
+    })
+
     return (
-        <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg border-solid border-l-2 border-stat-block-fill`}>
-            <p className={isCurrentCombatant ? "hover-glow" : undefined}>{children}</p>
-        </div >
+        <div className="flex">
+            <CombatTrackerPortrait src={token?.document.texture.src} />
+            <div>
+                <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg border-solid border-l-2 border-stat-block-fill`}>
+                    <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
+                </div>
+                {children}
+            </div>
+        </div>
+
     )
 }
 
-const Combatant = ({ token, children }) => {
+const Combatant = ({ token, children }: { token: Token, children: ReactNode }) => {
+    // we are cheating a bit here, but it works!
+    //  act like hovering our entries in the tracker is hovering the token
     const onMouseEnter = useCallback(() => {
-        token?.setTarget(true)
+        (token as any)._onHoverIn(new MouseEvent('mouseenter'), { hoverOutOthers: true })
     }, [token])
 
     const onMouseLeave = useCallback(() => {
-        token?.setTarget(false)
+        (token as any)._onHoverOut(new MouseEvent('mouseleave'))
     }, [token])
 
     const onClick = useCallback(() => {
-        token.document.object.control({ releaseOthers: true });
+        token.control({ releaseOthers: true });
     }, [token])
 
     return (
-        <div className="cursor-pointer" onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick}>
+        <div className={`cursor-pointer combatant data-combatant-id=${token.combatant.id}`}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onClick={onClick}>
             {children}
         </div>
     )
 }
 
+const CombatTrackerPortrait = ({ src }) => {
+    return (
+        <img
+            className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer" src={src} alt={''}
+        />
+    )
+}
+
 const Hero = ({ hero }) => {
-    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.token._id), [hero])
+    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.token._id) as Token, [hero])
     const isCurrentCombatant = useIsCurrentCombatant(hero)
 
     return (
         <Combatant token={token}>
-            <CombatantHeader {...{ isCurrentCombatant }}>{hero.name}</CombatantHeader>
-            <HeaderWithClipPath>
-                Status effects, etc
-            </HeaderWithClipPath>
+            <CombatantHeader name={hero.name} token={token}>
+                <HeaderWithClipPath>
+                    Status effects, etc
+                </HeaderWithClipPath>
+            </CombatantHeader>
         </Combatant>
     )
 }
 
 const Adversary = ({ adversary }) => {
-    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id), [adversary])
+    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id) as Token, [adversary])
     const isCurrentCombatant = useIsCurrentCombatant(adversary)
 
     return (
         <Combatant token={token}>
-            <CombatantHeader {...{ isCurrentCombatant }}>{adversary.name}</CombatantHeader>
-            <HeaderWithClipPath>
-                Status, kill buttons
-            </HeaderWithClipPath>
+            <CombatantHeader name={adversary.name} token={token}>
+                <HeaderWithClipPath>
+                    Status effects, etc
+                </HeaderWithClipPath>
+            </CombatantHeader>
         </Combatant>
 
     )

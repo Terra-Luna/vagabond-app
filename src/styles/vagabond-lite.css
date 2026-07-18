@@ -227,9 +227,12 @@
 }
 
 @layer utilities {
+  .vglite-hovered {
+    text-shadow: 0 0 10px var(--color-text-glow);
+  };
   .hover-glow:hover {
     text-shadow: 0 0 10px var(--color-text-glow);
-  }
+  };
 }
 
 .react-tabs {
