@@ -3,7 +3,6 @@ import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { lang } from "../../utils/lang"
 import { HeaderWithClipPath } from "../component/SkillCard"
-import { textGlow } from "../common/text-styles"
 
 export const CombatTracker = ({ data }) => {
     const { combat } = data
@@ -58,7 +57,7 @@ const Group = ({ children }) => {
 const CombatantHeader = ({ children, isCurrentCombatant }) => {
     return (
         <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg border-solid border-l-2 border-stat-block-fill`}>
-            <p className={isCurrentCombatant ? textGlow : undefined}>{children}</p>
+            <p className={isCurrentCombatant ? "hover-glow" : undefined}>{children}</p>
         </div >
     )
 }

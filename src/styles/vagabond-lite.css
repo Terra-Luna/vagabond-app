@@ -226,6 +226,12 @@
   --color-failure: #cf3131;
 }
 
+@layer utilities {
+  .hover-glow:hover {
+    text-shadow: 0 0 10px var(--color-text-glow);
+  }
+}
+
 .react-tabs {
   -webkit-tap-highlight-color: transparent;
 }

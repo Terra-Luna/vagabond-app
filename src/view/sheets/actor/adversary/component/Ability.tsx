@@ -29,7 +29,7 @@ export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                         ])}
                     >
                         <div className={`${tableBorderRounded} p-2`}>
-                            <p className={`font-paradigm font-bold ${glowOnHover} cursor-pointer`} onClick={() => onClickAction(adv, ability.name, ability.description, '', '', '')}>
+                            <p className={`font-paradigm font-bold ${glowOnHover}`} onClick={() => onClickAction(adv, ability.name, ability.description, '', '', '')}>
                                 {ability.name}
                             </p>
                             <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" />

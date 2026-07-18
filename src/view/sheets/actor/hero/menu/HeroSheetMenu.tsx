@@ -93,7 +93,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
 
             {/* MENU CONTAINER */}
             <div className={`
-                absolute top-9 right-0 z-1000 p-4 w-48
+                absolute top-9 right-0 z-1000 p-4 w-54
                 bg-context-menu-fill border-2 border-solid border-table-border rounded-sm shadow-lg
                 transition-all duration-200 transform origin-top-right
                 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}
@@ -118,7 +118,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                             <></>
                     }
                     <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => setIsActiveEffectsOpen(true)} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => setIsGrantModifiersOpen(true)} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'FEATURES & PERKS'} onClick={() => setIsGrantModifiersOpen(true)} toggleMenu={toggleMenu} />
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

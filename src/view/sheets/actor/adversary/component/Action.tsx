@@ -34,7 +34,7 @@ export const ActionMenuHeader = ({ label, onClick }) => {
 
 export const AddNewIconButton = ({ onClick }) => {
     return (
-        <Plus size={18} strokeWidth={4} className={`text-text-header-tertiary ${glowOnHover} cursor-pointer`} onClick={onClick} />
+        <Plus size={18} strokeWidth={4} className={`text-text-header-tertiary ${glowOnHover}`} onClick={onClick} />
     )
 }
 
@@ -47,7 +47,7 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
             <ActionMenuHeader label={locale.AdversarySheet.actions} onClick={() => setIsAddMenuOpen(true)} />
             {/* DISPLAY COMBO FIRST */}
             <div
-                className={`${glowOnHover} cursor-pointer`}
+                className={`${glowOnHover}`}
                 onClick={() => onClickActionCombo(adv)}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}
             >
@@ -73,7 +73,7 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                     { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
                                 ])}>
                                 {/* ACTION NAME */}
-                                <div className={`flex justify-between gap-x-2 ${glowOnHover} cursor-pointer`} onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}>
+                                <div className={`flex justify-between gap-x-2 ${glowOnHover}`} onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}>
                                     <p className="font-bold">{act.name}</p>
                                     <div className='w-[16px]'>
                                         <DamageTypeIcon dmgType={act.damage.type ?? ''} size={16} />

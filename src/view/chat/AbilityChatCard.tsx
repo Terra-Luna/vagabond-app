@@ -54,7 +54,7 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
                     </div>
                     {
                         appliesBurn ? <p
-                            className={`${glowOnHover} cursor-pointer`}
+                            className={`${glowOnHover}`}
                             onClick={async () => {
                                 const cdRes = await rollCountdownDie({ name: title, duration: burnDuration })
                                 sendCountdownRollMessage(cdRes, CountdownRollChatCard)

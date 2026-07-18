@@ -46,14 +46,14 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
 
             {/* HEADER AND LEVEL PILL */}
             <div className="flex justify-between items-center">
-                <HeroCreationLabel text={"ABILITIES & EFFECTS"} />
+                <HeroCreationLabel text={"FEATURES & PERKS"} />
                 <span className="text-sm text-text-header-tertiary bg-sheet-main-fill px-2 py-0.5 rounded-sm border border-solid border-table-border/50">
                     Level {currentLevel}
                 </span>
             </div>
 
             {/* ACTIVE RULES LIST */}
-            <CollapsibleSection title={`Active Features & Perks (${activeRules.length})`} settingsKey={'rules-active-features'} content={
+            <CollapsibleSection title={`Active (${activeRules.length})`} settingsKey={'rules-active-features'} content={
                 <EffectCardContainer>
                     {activeRules.length > 0 ?
                         activeRules.map(rule => (<ActiveEffectCardRow key={rule.id} rule={rule} />)) :
@@ -62,9 +62,9 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
                 </EffectCardContainer>
             } />
             
-            {/* LOCKED ABILITIES & EFFECTS */}
+            {/* LOCKED FEATURES & PERKS */}
             {lockedRules.length > 0 && (
-                <CollapsibleSection title={`Locked Abilities (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
+                <CollapsibleSection title={`Locked Features & Perks (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
                     <EffectCardContainer>
                         {lockedRules.map(rule => (
                             <ActiveEffectCardRow key={rule.id} rule={rule} isActive={false} />
@@ -75,7 +75,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
 
             {/* STAT MODIFIER DATA */}
             {flatModifiers.length > 0 && (
-                <CollapsibleSection title={`Active Passive Modifiers Summary`} settingsKey={'rules-data-summary'} content={
+                <CollapsibleSection title={`Passive Modifiers Summary`} settingsKey={'rules-data-summary'} content={
                     <EffectCardContainer>
                         <div className="grid grid-cols-2 gap-2">
                             {flatModifiers.map(mod => {

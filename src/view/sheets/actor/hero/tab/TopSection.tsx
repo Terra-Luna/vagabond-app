@@ -34,7 +34,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                 <span className="absolute -top-0.5 w-full text-center text-xs text-text-primary pb-1">{lang.VGLITE.HeroSheet.hp}</span>
                 <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
                 <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
-                    <span className={`text-4xl text-text-hp-current ${glowOnHover} cursor-pointer`}>
+                    <span className={`text-4xl text-text-hp-current ${glowOnHover}`}>
                         <EditableTextField
                             boundValue={health.current?.toString() ?? ""}
                             updateProps={{ object: hero.parent, path: ['health', 'current'] }}
@@ -44,7 +44,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                     </span>
                 </div>
                 <div className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
-                    <span className={`text-xl text-text-hp-max px-1 ${glowOnHover} cursor-pointer`}>{health.max}</span>
+                    <span className={`text-xl text-text-hp-max px-1 ${glowOnHover}`}>{health.max}</span>
                 </div>
             </div>
             <Divider />
@@ -73,7 +73,7 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
         updateDocument(hero.parent, { statuses: { counters: { fatigue: (fatigue ?? 0) + (auxClick ? 1 : -1) } } })
     }, [fatigue])
     return (
-        <div className={`flex items-center flex-col pb-4 text-text-primary font-paradigm w-1/3 ${glowOnHover} cursor-pointer`}
+        <div className={`flex items-center flex-col pb-4 text-text-primary font-paradigm w-1/3 ${glowOnHover}`}
             onClick={() => updateFatigue(false)}
             onAuxClick={() => updateFatigue(true)}
         >
@@ -117,7 +117,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
-    <div className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 ${glowOnHover} cursor-pointer`}
+    <div className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 ${glowOnHover}`}
         onClick={() => onClick(false)}
         onAuxClick={() => onClick(true)}
     >
@@ -165,7 +165,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formula: string, description: string, value: number } }) => {
     return (
         <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
-            <div className={`flex font-eskapade ${glowOnHover} cursor-pointer border border-solid border-table-border/50`} onClick={
+            <div className={`flex font-eskapade ${glowOnHover} border border-solid border-table-border/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await rollSkillCheck(save.name, save.value, e)
                     sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
@@ -208,7 +208,7 @@ export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDa
             <div className="w-full">
                 <div className="flex items-center ml-1">
                     <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
-                    <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover} cursor-pointer`} onClick={
+                    <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover}`} onClick={
                         async (e: React.MouseEvent<HTMLDivElement>) => {
                             const skillCheck = await rollSkillCheck(name, value, e)
                             sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)

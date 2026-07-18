@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 import { Trash } from "lucide-react"
 import { glowOnHover } from "../common/text-styles"
 
-const buttonShaping = `flex items-center px-2 py-1 rounded-sm cursor-pointer ${glowOnHover}`
+const buttonShaping = `flex items-center px-2 py-1 rounded-sm ${glowOnHover}`
 const primaryButtonClasses = `text-btn-primary-text bg-btn-primary-fill ${buttonShaping} border border-solid border-stat-block-fill`
 const secondaryButtonClasses = `text-btn-secondary-text ${buttonShaping} border border-solid btn-secondary-text/80`
 const destructiveButtonClasses = `text-destructive-action ${buttonShaping} border border-solid border-destructive-action`

@@ -26,7 +26,7 @@ export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
                     <div className="flex space-x-2 items-center">
                         <div className="h-full content-center text-text-secondary"><Plus size={18} /></div>
                         <p
-                            className={`h-full text-xl content-center ${glowOnHover} cursor-pointer`}
+                            className={`h-full text-xl content-center ${glowOnHover}`}
                             onClick={async () => {
                                 const cdRes = await rollCountdownDie({
                                     name: result.atkName,

@@ -34,7 +34,7 @@ const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className={"flex pl-2 content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"}>
             <div 
-                className={`${glowOnHover} cursor-pointer content-center`}
+                className={`${glowOnHover} content-center`}
                 onClick={() =>
                     ui.notifications?.info("TODO: make an interface for adding/subtracting coin amts...")
                 }>

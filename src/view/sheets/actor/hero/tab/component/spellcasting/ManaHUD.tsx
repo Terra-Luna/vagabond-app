@@ -22,7 +22,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
             <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
                 <div className="flex gap-x-1 ml-4 items-center">
                     <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelMana} />
-                    <Sparkle className={`text-mana mr-1 ${glowOnHover} cursor-pointer`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
+                    <Sparkle className={`text-mana mr-1 ${glowOnHover}`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
                     <span className="text-mana">
                         <EditableTextField
                             boundValue={hero.mana.current?.toString() ?? ""}
@@ -40,7 +40,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                     <p>{hero.mana.maxCast}</p>
                 </div>
 
-                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill ${glowOnHover} cursor-pointer [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
+                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill ${glowOnHover} [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
                     onClick={() => {
                         setSpells(hero.parent.items.filter(i => i.type === 'spell'))
                         setSpell(spell || hero.parent.items.filter(i => i.type === 'spell')[0])

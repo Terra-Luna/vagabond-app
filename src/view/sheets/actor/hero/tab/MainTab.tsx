@@ -71,7 +71,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">
                             <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
                             <div className="flex justify-end">
-                                <div className={`${gripStyle} mr-2 ${glowOnHover} cursor-pointer`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
+                                <div className={`${gripStyle} mr-2 ${glowOnHover}`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
                                 <div className="flex content-right">
                                     <div
                                         className={`${dmgStyle} ${glowOnHover}`}

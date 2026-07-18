@@ -57,7 +57,7 @@ export const TotalDmgFooter = ({ total, dmgType, targets }) => {
 
 const GMToolsMenu = ({ targets, damage }: { targets: any[], damage: number }) => {
     return (<>
-        <Menu direction={"top"} align={"end"} menuButton={<Wrench size={20} className={`text-text-header-tertiary ml-2 cursor-pointer overflow-visible ${glowOnHover}`} />}>
+        <Menu direction={"top"} align={"end"} menuButton={<Wrench size={20} className={`text-text-header-tertiary ml-2 overflow-visible ${glowOnHover}`} />}>
             <div className="bg-context-menu-fill text-base text-left border border-solid border-table-border rounded-sm p-2 space-y-2">
                 {/* APPLY HEALING */}
                 <MenuItem onClick={(e) => applyHealing(targets.map(t => t.id), damage)}>

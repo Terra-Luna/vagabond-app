@@ -88,7 +88,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => onToggle(eff.id)}
-                                className="p-1.5 rounded hover:hover:bg-slate-700 transition-colors"
+                                className="p-1.5 rounded hover:bg-slate-700 transition-colors"
                                 title={eff.disabled ? "Enable" : "Disable"}
                             >
                                 {eff.disabled ? (
