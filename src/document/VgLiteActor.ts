@@ -20,7 +20,7 @@ export class VgLiteActor<SubType extends Actor.SubType = Actor.SubType> extends 
 
             if (stackChange) {
                 try {
-                    const parsedData = JSON.parse(stackChange.value);
+                    const parsedData = JSON.parse(stackChange.value)
                     system.statuses.stacks.burning.push({
                         effectId: effect.id || "",
                         duration: parsedData.duration || "Cd4",
