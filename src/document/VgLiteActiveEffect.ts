@@ -183,6 +183,12 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             name: "VGLITE.StatusConditions.vulnerable.name",
             img: "icons/svg/target.svg",
             changes: [{ key: "system.statuses.vulnerable", mode: "OVERRIDE", value: "true" }]
+        },
+        {
+            _id: "vglitedead000000",
+            id: "dead",
+            name: "VGLITE.StatusConditions.dead.name",
+            img: "icons/svg/skull.svg"
         }
     ]
 
@@ -231,7 +237,7 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             const duration = options.duration || "Cd4"
             const dmgType = options.damageType || "fire"
 
-            const stackChange = createData.changes.find(
+            const stackChange = createData?.changes?.find(
                 (c: any) => c.key === "system.statuses.stacks.burning"
             )
 

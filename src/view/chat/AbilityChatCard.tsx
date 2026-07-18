@@ -1,5 +1,5 @@
 import { rollCountdownDie } from "../../combat/dice-rolls"
-import { getTokenImg } from "../../utils/modelUtil"
+import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
@@ -10,6 +10,7 @@ import { glowOnHover } from "../common/text-styles"
 import { CardSubHeaderValues } from "../component/SkillCard"
 import { sendCountdownRollMessage } from "./ChatCardSerializer"
 import { CountdownRollChatCard } from "./CountdownChatCard"
+import { useState, useCallback } from "react"
 
 export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], description, tokenIds = [], appliesBurn = false, burnDuration = '' }: {
     actorId: string | null,
@@ -22,6 +23,15 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
     burnDuration?: string
 }) => {
     const actor = actorId !== null ? game.actors?.get(actorId) : null
+
+    const [targets, setTargets] = useState(tokenIds.map(id => (
+        { id: id, src: getTokenImg(getCanvasToken(id)), token: getCanvasToken(id) }
+    )).filter(it => it.src != null && it.src.length > 0))
+
+    const onRemoveTarget = useCallback((targetIndex) => {
+        setTargets(targets.filter((_, i) => i !== targetIndex))
+    }, [targets])
+
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner
@@ -32,7 +42,7 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
             />}
             contents={
                 <div className="space-x-2 text-base text-text-secondary font-paradigm font-normal">
-                    <TargetsDisplay tokenIds={tokenIds} />
+                    <TargetsDisplay targets={targets} onRemoveTarget={onRemoveTarget} />
                     <div>
                         {
                             !img || img === '' ? <></> :

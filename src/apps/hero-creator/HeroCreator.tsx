@@ -160,6 +160,11 @@ export const HeroCreator = ({ hero, setClosed }: { hero: Actor & { system: HeroD
                 ui.notifications?.error("An error occurred while saving yoru character, review your sheet for accuracy.")
             }
             finally {
+                await hero.update({
+                    'system.health.current': 99,
+                    'system.mana.current': 99,
+                    'system.statuses.counters.luck': 99
+                } as Record<any, any>)
                 setClosed()
             }
         }

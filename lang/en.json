@@ -259,6 +259,10 @@
         "name": "Dazed",
         "description": "It can't Focus or Move unless it uses an Action to do so."
       },
+      "dead": {
+        "name": "Dead",
+        "description": ""
+      },
       "fatigued": {
         "name": "Fatigued",
         "description": "Fatigue is measured from 0 to 5 with the following rules: - Each Fatigue occupies an Item Slot. - At 3 or ore Fatigue, it can't Rush. - At 5 Fatigue, it dies."
