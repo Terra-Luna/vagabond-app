@@ -1,0 +1,4 @@
+2026/07/18-15:26:47.357 4e40 Level-0 table #4: started
+2026/07/18-15:26:47.357 4e40 Level-0 table #4: 32698 bytes OK
+2026/07/18-15:26:47.362 4e40 Delete type=0 #2
+2026/07/18-15:26:47.362 4e40 Manual compaction at level-0 from '!items!KXssdX2o5oLDkzkO' @ 72057594037927935 : 1 .. '!items!KXssdX2o5oLDkzkO' @ 0 : 0; will stop at (end)
