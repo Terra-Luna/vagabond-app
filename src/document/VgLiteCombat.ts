@@ -6,6 +6,8 @@ import { VgLiteCombatantInstance } from "../model/combat/VgLiteCombatant"
 export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
         await super._preCreate(data, options, user)
+        // this makes it so their is no "current combatant"
+        this.updateSource({turn: null})
         if (!this.getVgLiteFlag("groupActivations")) {
             (this as any).updateSource({
                 "flags.vglite.groupActivations": {}
