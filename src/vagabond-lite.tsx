@@ -32,6 +32,7 @@ import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
 import { VgLiteActor } from "./document/VgLiteActor"
 import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
+import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 
 // Add our fonts
 const fontFaces = [
@@ -85,7 +86,8 @@ Hooks.once("init", () => {
         CONFIG.Combatant.documentClass = VgLiteCombatant,
         CONFIG.Combatant.dataModels.base = VGLiteCombatantModel,
         CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
-        CONFIG.statusEffects = VgLiteActiveEffect.statusEffects as any
+        CONFIG.statusEffects = VgLiteActiveEffect.statusEffects as any,
+        CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any }
     )
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
 })
@@ -304,7 +306,8 @@ Hooks.on("renderCombatTracker", (_app, html, data) => {
 })
 
 Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any) => {
-    const rawName = app.document?.name || ""
+    const effect = app.document
+    const rawName = effect?.name || ""
 
     /**
      * The purpose of this is to swap in the actual locale name for some of our
@@ -317,12 +320,39 @@ Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any)
         }
 
         const rootElement = html instanceof HTMLElement ? html : (html as any)[0]
-
         if (rootElement) {
             const nameInput = rootElement.querySelector('input[name="name"]') as HTMLInputElement | null
             if (nameInput && nameInput.value === rawName) {
                 nameInput.value = localizedString
             }
+        }
+    }
+
+    /**
+     * Inject a checkbox for toggling whether the item should provide an on-equip
+     * effect versus an always-on effect.
+     */
+    if (effect && effect.parent instanceof Item) {
+        const rootElement = html instanceof HTMLElement ? html : (html as any)[0]
+        const detailsTab = rootElement.querySelector('.tab[data-tab="details"]')
+        if (!detailsTab) return
+
+        const requiresEquip = effect?.system?.requiresEquip ?? true
+
+        const formGroup = document.createElement("div")
+        formGroup.classList.add("form-group")
+        formGroup.innerHTML = `
+            <label>On Equip</label>
+            <div class="form-fields">
+                <input type="checkbox" name="system.requiresEquip" ${requiresEquip ? "checked" : ""}/>
+            </div>
+            <p class="notes">If checked, this effect will only apply when the item is equipped.</p>
+        `;
+
+        detailsTab.appendChild(formGroup)
+
+        if (typeof app.setPosition === "function") {
+            app.setPosition({ height: "auto" })
         }
     }
 })

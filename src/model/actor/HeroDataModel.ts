@@ -145,9 +145,13 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setSaves(this)
         setSpeeds(this)
         setSkillDifficulties(this)
-        validateCurrentLuck(this)
-        validateCurrentHP(this)
         setArmorRating(this)
+    }
+
+    override async prepareDerivedData() {
+        super.prepareDerivedData()
+        validateCurrentHP(this)
+        validateCurrentLuck(this)
     }
 
     override async _preUpdate(changes, options, user) {

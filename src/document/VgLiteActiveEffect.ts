@@ -216,12 +216,12 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
     protected override _onUpdate(changed: any, options: any, userId: string): void {
         if (userId === game.userId && game.i18n?.has(this.name)) {
             const rawName = this.name;
-            (this as any).name = game.i18n.localize(rawName);
+            (this as any).name = game.i18n.localize(rawName)
             super._onUpdate(changed, options, userId);
             (this as any).name = rawName
         }
         else {
-            super._onUpdate(changed, options, userId);
+            super._onUpdate(changed, options, userId)
         }
     }
 

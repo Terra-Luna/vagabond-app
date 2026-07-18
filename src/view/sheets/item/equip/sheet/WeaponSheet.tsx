@@ -21,6 +21,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
         <EquipmentSheetSubtypeBody>
             <div className="space-y-4">
                 <div className="flex gap-x-4 justify-between">
+                    <WeaponTypes item={item} />
                     <Grip item={item} />
                     <Range item={item} />
                     <DamageType item={item} />
@@ -28,7 +29,6 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 <Damage item={item} />
                 <ExplodingDiceItemConfig item={item} />
                 <div className="flex justify-between items-center">
-                    <WeaponTypes item={item} />
                     <Properties item={item} />
                     <Material item={item} />
                 </div>

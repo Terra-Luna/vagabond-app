@@ -37,5 +37,5 @@ export class VgLiteActor<SubType extends Actor.SubType = Actor.SubType> extends 
             }
         })
     }
-    
+
 }

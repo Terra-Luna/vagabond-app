@@ -69,6 +69,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                 {effects.filter(eff => !eff.name.includes("burning")).map((eff) => (
                     <li
                         key={eff.id}
+                        onClick={() => onEdit(eff.id)}
                         className={`
                             flex items-center justify-between p-2
                             text-xl text-text-header-primary transition-all 

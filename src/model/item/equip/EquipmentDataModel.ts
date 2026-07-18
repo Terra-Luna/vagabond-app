@@ -39,6 +39,9 @@ const baseEquipmentSchema = () => {
 export type EquipmentSchema = ReturnType<typeof baseEquipmentSchema> & BaseItemSchema
 
 export abstract class EquipmentDataModel<T extends EquipmentSchema> extends ItemDataModel<T> {
+    declare isEquippable: boolean
+    declare isEquipped: boolean
+
     static override defineSchema() {
         return {
             ...super.defineSchema(),
