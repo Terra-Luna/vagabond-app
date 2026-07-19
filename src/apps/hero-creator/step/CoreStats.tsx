@@ -187,7 +187,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                     {/* STAT ARRAY HEADER */}
                     <HeroCreationLabel text={strings.statArrayPool} />
 
-
                     {/* TODO: DELETE THIS HELPER BUTTON LATER */}
                     <SecondaryButton onClick={() => {
                         assignedStats.forEach((s, i) => {
@@ -195,7 +194,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
                         })
                         setAssignedStats([...assignedStats])
                     }} children={<p>AUTO (delete me later)</p>} />
-
 
                     <HeroCreationSubtext text={strings.statArrayDrag} />
 
