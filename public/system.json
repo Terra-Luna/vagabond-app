@@ -194,37 +194,27 @@
   "packFolders": [
     {
       "name": "Adversaries",
-      "packs": ["vagabond-lite.adversaries"]
+      "packs": ["adversaries"]
     },
     {
-      "name": "Ancestries",
-      "packs": ["vagabond-lite.ancestries"]
-    },
-    {
-      "name": "Classes",
-      "packs": ["vagabond-lite.classes"]
-    },
-    {
-      "name": "Perks",
-      "packs": ["vagabond-lite.perks"]
-    },
-    {
-      "name": "Spells",
-      "packs": ["vagabond-lite.spells"]
+      "name": "Hero",
+      "packs": [
+        "ancestries", 
+        "classes", 
+        "perks", 
+        "spells"
+      ]
     },
     {
       "name": "Gear",
       "packs": [
-        "vagabond-lite.weapons",
-        "vagabond-lite.armor",
-        "vagabond-lite.alchemical",
-        "vagabond-lite.tools",
-        "vagabond-lite.starterpacks"
+        "alchemical",
+        "armor",
+        "starterpacks",
+        "sundries",
+        "tools",
+        "weapons"
       ]
-    },
-    {
-      "name": "Sundries",
-      "packs": ["vagabond-lite.sundries"]
     }
   ],
   "esmodules": [
