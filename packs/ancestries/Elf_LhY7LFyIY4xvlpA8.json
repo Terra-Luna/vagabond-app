@@ -1,0 +1,33 @@
+{
+  "name": "Elf",
+  "type": "ancestry",
+  "_id": "LhY7LFyIY4xvlpA8",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "",
+    "rules": [],
+    "senses": [],
+    "beingType": "fae",
+    "beingSize": "medium"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TPKlPZltuaHboQ5f": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784494454047,
+    "modifiedTime": 1784494734162,
+    "lastModifiedBy": "TPKlPZltuaHboQ5f",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LhY7LFyIY4xvlpA8"
+}

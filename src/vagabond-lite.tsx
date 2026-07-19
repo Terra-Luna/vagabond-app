@@ -26,7 +26,6 @@ import { getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
-import { BaseItemSchema, ItemDataModel } from "./model/item/ItemDataModel"
 import { RuleElement } from "./view/component/rules/shared/RuleElement"
 import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
 import { VgLiteActor } from "./document/VgLiteActor"
@@ -77,7 +76,7 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.class = ClassDataModel,
         CONFIG.Item.dataModels.perk = PerkDataModel,
         CONFIG.Item.dataModels.spell = SpellDataModel,
-        CONFIG.Item.dataModels.starterPack = StarterPackDataModel,
+        CONFIG.Item.dataModels.starterpack = StarterPackDataModel,
         CONFIG.Item.dataModels.sundry = SundryDataModel,
         CONFIG.Item.dataModels.tool = ToolDataModel,
         CONFIG.Item.dataModels.weapon = WeaponDataModel,
@@ -96,7 +95,6 @@ Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: 
     if (game.user?.id !== userId) return
 
     const flagChanges = foundry.utils.getProperty(change, "flags.vagabond-lite")
-    const currentLevel = foundry.utils.getProperty(actor, "system.level.current") as unknown as number
     const itemsToCreate: any[] = []
 
     // Scan all existing items (like the Class/Ancestry/Equipment...) for rules
@@ -155,6 +153,10 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
 
     const actor = item.parent
 
+    /**
+     * If an item's stackable, don't add another one. Instead, find
+     * the existing matching item (by name) and increase its quantity.
+     */
     if (actor && isInventoryItem(item)) {
         if (item.system.bulk.isStackable) {
             const stack = actor.items.find((it: any) => it.name === item.name)
@@ -196,6 +198,10 @@ Hooks.on("createItem", async (item, _options, _userId) => {
             const items = parent.items
             const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
             item.update({ 'sort': newSortVal })
+        }
+
+        if (item.system instanceof StarterPackDataModel && parent.system instanceof HeroDataModel) {
+            await item.system.unpack(parent as Actor & { system: HeroDataModel })
         }
     }
 })

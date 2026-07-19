@@ -5,6 +5,9 @@
     "build": "pnpm vite build",
     "foundry": "node \"C:/Program Files/FoundryVTT-Node/main.js\" --dataPath=%userprofile%/AppData/Local/FoundryVTT",
     "foundry-linux": "node ~/Apps/FoundryVTT-Node/main.js",
+    "pack:build": "node foundry-pack-compendium.js && pnpm vite build",
+    "pack:packs": "node foundry-pack-compendium.js",
+    "unpack:packs": "node foundry-unpack-compendium.js",
     "vite-no": "pnpm vite --open 0",
     "circ-deps": "pnpm dlx madge --circular --extensions ts,tsx,js,jsx ./src",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
@@ -43,6 +46,7 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@eslint/json": "^2.0.1",
+    "@foundryvtt/foundryvtt-cli": "^3.0.4",
     "@jest/globals": "30.4.1",
     "@league-of-foundry-developers/foundry-vtt-types": "13.346.0-beta.20251209192131",
     "@types/react": "19.2.6",

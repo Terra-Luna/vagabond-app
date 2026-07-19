@@ -107,110 +107,124 @@
       "label": "Adversaries",
       "type": "Actor",
       "system": "vagabond-lite",
-      "path": "packs/adversaries.db",
-      "ownership": {
-        "PLAYER": "NONE",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/adversaries",
+      "ownership": { "PLAYER": "NONE", "ASSISTANT": "OWNER" }
     },
     {
       "name": "ancestries",
       "label": "Ancestries",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/ancestries.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/ancestries",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "classes",
       "label": "Classes",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/classes.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/classes",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "perks",
       "label": "Perks",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/perks.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/perks",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "spells",
       "label": "Spells",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/spells.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/spells",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "weapons",
       "label": "Weapons",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/weapons.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/weapons",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "armor",
       "label": "Armor",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/armor.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/armor",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "alchemical",
       "label": "Alchemical Items",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/alchemical.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/alchemical",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "tools",
       "label": "Tools",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/tools.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/tools",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "starterpacks",
+      "label": "Starter Packs",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/starterpacks",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
       "name": "sundries",
       "label": "Sundries",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/sundries.db",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "ASSISTANT": "OWNER"
-      }
+      "path": "packs/sundries",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Adversaries",
+      "packs": ["vagabond-lite.adversaries"]
+    },
+    {
+      "name": "Ancestries",
+      "packs": ["vagabond-lite.ancestries"]
+    },
+    {
+      "name": "Classes",
+      "packs": ["vagabond-lite.classes"]
+    },
+    {
+      "name": "Perks",
+      "packs": ["vagabond-lite.perks"]
+    },
+    {
+      "name": "Spells",
+      "packs": ["vagabond-lite.spells"]
+    },
+    {
+      "name": "Gear",
+      "packs": [
+        "vagabond-lite.weapons",
+        "vagabond-lite.armor",
+        "vagabond-lite.alchemical",
+        "vagabond-lite.tools",
+        "vagabond-lite.starterpacks"
+      ]
+    },
+    {
+      "name": "Sundries",
+      "packs": ["vagabond-lite.sundries"]
     }
   ],
   "esmodules": [

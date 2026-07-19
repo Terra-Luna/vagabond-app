@@ -16,7 +16,6 @@ export class HeroSheet extends VgLiteActorSheet {
 
     override async _onDrop(event: DragEvent): Promise<any> {
         const data = foundry.applications.ux.TextEditor.getDragEventData(event)
-        console.log(data)
 
         if ((data as any)?.type !== "Item") return super._onDrop(event)
 

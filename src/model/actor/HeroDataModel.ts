@@ -75,8 +75,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareBaseData()
         this.ancestry = this.parent.items.find((i: { type: string }) => i.type === 'ancestry')?.system
         this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
-        this.perks = this.parent.items.filter((i: { type: string }) => i.type === 'perk')?.map((it: { system: PerkDataModel }) => it.system)
-        this.spells = this.parent.items.filter((i: { type: string }) => i.type === 'spell')?.map((it: { system: SpellDataModel }) => it.system)
+        this.perks = []
+        this.spells = []
 
         /**
          * Apply bonuses from Item Rules...
@@ -159,9 +159,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && (r.type === "spell" || r.type === "perk"))
         const itemIds = [...itemRuleSelections, ...itemGrantRules.map(r => r.uuid)]
-
-        console.log(itemIds)
-
         const items = (await CombinedItemsMultiType(['spell', 'perk'])).filter(it => itemIds.includes(it.uuid))
 
         for (const item of items) {

@@ -3,7 +3,7 @@ import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
 import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
-import { WeaponDataModel, isEquippedWWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
+import { WeaponDataModel, isEquippedWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
@@ -43,7 +43,7 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWWeapon(it)) as WeaponDataModel[])
+    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"

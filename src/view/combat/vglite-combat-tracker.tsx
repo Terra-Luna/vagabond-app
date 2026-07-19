@@ -2,7 +2,7 @@
  * The combat tracker works a bit differently from our other react UI - it's not a "sheet" really,
  *   it's a "part" of a broader CombatTracker framework that foundry has running.
  * We've rendered our placeholder-template that just has a div for us to find, and we'll do normal
- *   react-root shadow-dom stuff from there
+ *   react-root shadow-dom stuff from there.
  */
 
 import ReactDom from "react-dom/client"
@@ -23,7 +23,7 @@ export const renderCombatTracker = (app, html, data) => {
 
     const { combat } = data
 
-    const activeCombatantId = combat.current?.combatantId
+    const activeCombatantId = combat?.current?.combatantId
 
     reactRoot.render(
         <EditModeContextProvider>

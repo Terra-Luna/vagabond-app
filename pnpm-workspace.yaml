@@ -1,5 +1,6 @@
 allowBuilds:
   '@parcel/watcher': true
+  classic-level: true
   unrs-resolver: true
 blockExoticSubdeps: false
 onlyBuiltDependencies:
@@ -15,9 +16,9 @@ trustPolicy: no-downgrade
 trustPolicyIgnoreAfter: 10080
 supportedArchitectures:
   os:
-  - win32
-  - darwin
-  - current
+    - win32
+    - darwin
+    - current
   cpu:
-  - x64
-  - arm64
+    - x64
+    - arm64
