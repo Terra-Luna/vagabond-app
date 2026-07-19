@@ -6,8 +6,7 @@ import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
 const perkSchema = () => {
     return {
-        prerequisites: new fields.ArrayField(new fields.SchemaField({ ...prerequisiteSchema() }), { initial: [] }),
-        canTakeMultiple: new fields.BooleanField({ initial: false })
+        prerequisites: new fields.ArrayField(new fields.SchemaField({ ...prerequisiteSchema() }), { initial: [] })
     }
 }
 
@@ -32,6 +31,9 @@ const prerequisiteSchema = () => {
 export type PerkSchema = ReturnType<typeof perkSchema> & BaseItemSchema
 
 export class PerkDataModel extends ItemDataModel<PerkSchema> {
+    public _sourceId?: string
+    public isRuleSelection?: boolean
+
     static override defineSchema() {
         return {
             ...super.defineSchema(),
@@ -74,23 +76,23 @@ export const perkPrerequisites = (perk: PerkDataModel): CardSubHeaderValues[] =>
 }
 
 export const perkSpellRerequisitesAsString = (perk: PerkDataModel): string => {
-    const spellPrereqs = perk.prerequisites.filter(it => it.type === 'spell').map(p => p.spell)
-    return removeLastComma(spellPrereqs.join(", "), ' &')
+    const spellPrereqs = perk.prerequisites?.filter(it => it.type === 'spell')?.map(p => p.spell)
+    return removeLastComma(spellPrereqs?.join(", "), ' &')
 }
 
 export const perkStatPrerequisitesAsString = (perk: PerkDataModel): string => {
-    const statPrereqs = perk.prerequisites.filter(it => it.type === 'stat')
+    const statPrereqs = perk.prerequisites?.filter(it => it.type === 'stat')
     const stats: string[] = []
-    statPrereqs.forEach(s => {
+    statPrereqs?.forEach(s => {
         stats.push(`${vgLiteLang.Stat[s.stat].abbr} ${s.value}+`)
     })
-    return stats.join(" | ")
+    return stats?.join(" | ") ?? ''
 }
 
 export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string => {
-    const trainedPrereqs = perk.prerequisites.filter(it => it.type === 'trained')
+    const trainedPrereqs = perk.prerequisites?.filter(it => it.type === 'trained')
     const trainings: string[] = []
-    trainedPrereqs.forEach(p => {
+    trainedPrereqs?.forEach(p => {
         p.skills.forEach(s => {
             const skillNames: string[] = []
             s.skillNames.forEach(n => {
@@ -99,5 +101,5 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
             trainings.push(removeLastComma(skillNames.join(', '), andOrToSymbol(s.andOr)))
         })
     })
-    return trainings.join(' | ')
+    return trainings.join(' | ') ?? ''
 }

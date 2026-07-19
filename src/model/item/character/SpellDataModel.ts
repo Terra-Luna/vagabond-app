@@ -14,6 +14,9 @@ const spellSchema = () => {
 export type SpellSchema = ReturnType<typeof spellSchema> & BaseItemSchema
 
 export class SpellDataModel extends ItemDataModel<SpellSchema> {
+    public _sourceId?: string
+    public isRuleSelection?: boolean
+
     static override defineSchema() {
         return {
             ...super.defineSchema(),

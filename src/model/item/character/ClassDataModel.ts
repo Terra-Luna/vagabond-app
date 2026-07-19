@@ -5,8 +5,6 @@ import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
 const classSchema = () => {
     return {
-        action: new fields.StringField({ ...requiredString }),
-        move: new fields.StringField({ ...requiredString }),
         complexity: new fields.NumberField({ ...requiredInteger, min: 1, max: 5, initial: 1}),
         keyStats: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Stat) }), { initial: [] }),
         startingPacks: new fields.ArrayField(new fields.SchemaField({ ...starterPackSchema() })),

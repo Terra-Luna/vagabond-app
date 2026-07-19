@@ -54,11 +54,6 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
                         {(rule.value ?? 0) >= 0 ? `+${rule.value}` : rule.value}
                     </span>
                 }
-                {isActive &&
-                    <span className="text-sm text-text-primary font-eskapade font-bold">
-                        {rule.value ? "✓" : "✗"}
-                    </span>
-                }
             </div>
         </div>
     )

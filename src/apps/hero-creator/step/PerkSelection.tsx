@@ -28,8 +28,8 @@ export const usePerkSelection = (
     const [classPerkGrants, setClassPerkGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
 
     // Player's chose perks for each slot.
-    const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string }[]>([])
-    const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string }[]>([])
+    const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
+    const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleId: string }[]>([])
 
     useEffect(() => {
         CombinedItems('perk').then(perks => {
@@ -54,29 +54,28 @@ export const usePerkSelection = (
 
     useEffect(() => {
         getItemGrants('perk', [ancestry]).then(grants => {
-            setAncestryPerkGrants(grants)
-            getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-                const maxChoices = rules.filter(r => r.pack === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
-                setAncestryPerkSlots(
-                    Array.from({ length: maxChoices }).map(() => (
-                        { value: '', label: strings.emptySlot, ruleName: rules.find(r => r.pack === 'perk')?.label ?? '' }
-                    ))
-                )
-            })
+            setAncestryPerkGrants(grants)  
         })
-
+        getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
+            setAncestryPerkSlots(loadInitialSlots(rules))
+        })
         getItemGrants('perk', [clazz]).then(grants => {
             setClassPerkGrants(grants)
-            getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-                const maxChoices = rules.filter(r => r.pack === 'perk').reduce((sum, r) => { return sum + r.maxChoices }, 0)
-                setClassPerkSlots(
-                    Array.from({ length: maxChoices }).map(() => (
-                        { value: '', label: strings.emptySlot, ruleName: rules.find(r => r.pack === 'perk')?.label ?? '' }
-                    ))
-                )
-            })
+        })
+        getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
+            setClassPerkSlots(loadInitialSlots(rules))
         })
     }, [ancestry, clazz])
+
+    const loadInitialSlots = (rules) => {
+        const slots: any[] = []
+        rules.filter(r => r.pack === 'perk').forEach(rule => {
+            Array.from({ length: rule.maxChoices }).forEach(_ => {
+                slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id })
+            })
+        })
+        return slots
+    }
 
     const onSelectPerk = useCallback((slotIndex: number, perk: string, perkId: string, setter: any) => {
         setter(prevSlots =>

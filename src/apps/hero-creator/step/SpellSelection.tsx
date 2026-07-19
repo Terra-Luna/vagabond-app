@@ -5,7 +5,7 @@ import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
-import { getItemChoiceRules, getItemGrants, getTotalMaxChoices, ItemRule } from "../../../view/component/rules/util/item-rules-util"
+import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
@@ -28,8 +28,8 @@ export const useSpellSelection = (
     const [classSpellGrants, setClassSpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
 
     // Player's chose spells for each slot.
-    const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string }[]>([])
-    const [classSpellSlots, setClassSpellSlots] = useState<{ value: string, label: string }[]>([])
+    const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
+    const [classSpellSlots, setClassSpellSlots] = useState<{ value: string, label: string, ruleId: string }[]>([])
 
     useEffect(() => {
         CombinedItems('spell').then(spells => {
@@ -54,28 +54,27 @@ export const useSpellSelection = (
     useEffect(() => {
         getItemGrants('spell', [ancestry]).then(grants => {
             setAncestrySpellGrants(grants)
-            getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-                const maxChoices = getTotalMaxChoices(rules.filter(r => r.pack === 'spell'))
-                setAncestrySpellSlots(
-                    Array.from({ length: maxChoices }).map(() => (
-                        { value: '', label: strings.emptySlot, ruleName: rules[0].label }
-                    ))
-                )
-            })
         })
-
+        getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
+            setAncestrySpellSlots(loadInitialSlots(rules))
+        })
         getItemGrants('spell', [clazz]).then(grants => {
             setClassSpellGrants(grants)
-            getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-                const maxChoices = getTotalMaxChoices(rules.filter(r => r.pack === 'spell'))
-                setClassSpellSlots(
-                    Array.from({ length: maxChoices }).map(() => (
-                        { value: '', label: strings.emptySlot, ruleName: rules[0].label }
-                    ))
-                )
-            })
+        })
+        getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
+            setClassSpellSlots(loadInitialSlots(rules))
         })
     }, [ancestry, clazz])
+
+    const loadInitialSlots = (rules) => {
+        const slots: any[] = []
+        rules.filter(r => r.pack === 'spell').forEach(rule => {
+            Array.from({ length: rule.maxChoices }).forEach(_ => {
+                slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id })
+            })
+        })
+        return slots
+    }
 
     const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
         setter(prevSlots =>

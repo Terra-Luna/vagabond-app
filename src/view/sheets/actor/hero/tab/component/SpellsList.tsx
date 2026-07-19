@@ -14,8 +14,8 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
         <div>
             <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5">
                 {
-                    hero.spells.map((sp: any) => (
-                        <div key={getId(sp)} onContextMenu={(e) => onCtxMenu(e, [
+                    hero.spells.map((sp: any, index: number) => (
+                        <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: vgLiteLang.ButtonActions.chat, action: () =>
                                     sendVgLiteChatMessage(
@@ -28,8 +28,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                                             description={sp.description}
                                         />
                                     )
-                            },
-                            { icon: Trash, label: vgLiteLang.ButtonActions.remove, action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(sp)]) }, isDestructive: true }
+                            }
                         ])}>
                             <SkillCard
                                 img={sp.parent.img}

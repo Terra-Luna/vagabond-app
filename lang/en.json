@@ -774,7 +774,6 @@
       "material": "Material",
       "capacity": "CAPACITY",
       "size": "Size",
-      "canTakeMultiple": "Can take multiple times",
       "prerequisites": "Prerequisites",
       "prereqType": "Type",
       "stat": "Stat",

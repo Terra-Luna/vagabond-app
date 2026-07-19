@@ -7,7 +7,6 @@ import { useTrainingSelection } from "./step/TrainingSelection"
 import { useSpellSelection } from "./step/SpellSelection"
 import { usePerkSelection } from "./step/PerkSelection"
 import { useEquipmentSelection } from "./step/EquipmentSelection"
-import { CombinedItemsMultiType } from "../../utils/modelUtil"
 import { useNavigation } from "../../view/context/navigation/NavigationContext"
 
 interface HeroCreatorProps {
@@ -108,31 +107,6 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
                 }
             }
 
-            const addSelectedSpellsAndPerks = async (): Promise<any[]> => {
-                const items = await CombinedItemsMultiType(['spell', 'perk'])
-                const embeddedDocs: any[] = []
-
-                for (const slot of [...ancestrySpellSlots, ...classSpellSlots, ...ancestryPerkSlots, ...classPerkSlots]) {
-                    const match = items.find(entry => entry.uuid === slot.value)
-                    if (!match) continue
-
-                    let fullItem: Item | null
-                    if (match.uuid && match.uuid.startsWith('Compendium.')) {
-                        fullItem = fromUuidSync(match.uuid) as Item | null
-                    }
-                    else {
-                        fullItem = match as Item
-                    }
-
-                    if (fullItem) {
-                        const itemCopy = fullItem.toObject()
-                        delete (itemCopy as any)._id // Let Foundry generate a new clean ID
-                        embeddedDocs.push(itemCopy)
-                    }
-                }
-                return embeddedDocs
-            }
-
             bonusStatSelections.forEach(selection => {
                 const targetRuleId = selection.id_index.split('_slot_')[0]
                 addSelection(getRuleSet(targetRuleId), selection.stat)
@@ -140,7 +114,15 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
 
             [...chosenClassSkills, ...chosenBonusSkills].forEach(selection => {
                 addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.isTrained`)
-            })
+            });
+
+            [...classSpellSlots, ...ancestrySpellSlots].forEach(selection => {
+                addSelection(getRuleSet(selection.ruleId), selection.value)
+            });
+
+            [...classPerkSlots, ...ancestryPerkSlots].forEach(selection => {
+                addSelection(getRuleSet(selection.ruleId), selection.value)
+            });
 
             // Push Rule alterations to Ancestry and Class
             if (ancestry) {
@@ -149,21 +131,17 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
             if (clazz) {
                 await clazz.update({ "system.rules": classRules } as Record<string, any>)
             }
-
-            const embeddedDocs = await addSelectedSpellsAndPerks()
-            if (embeddedDocs.length > 0) {
-                await hero.createEmbeddedDocuments("Item", embeddedDocs)
-            }
         }
         catch (error) {
             console.error("VGLite | Hero Creator commit error:", error)
             ui.notifications?.error("An error occurred while saving your character, review your sheet for accuracy.")
         }
         finally {
+            // Set the Hero up with max resources.
             await hero.update({
-                'system.health.current': 99,
-                'system.mana.current': 99,
-                'system.statuses.counters.luck': 99
+                'system.health.current': hero.system.health.max,
+                'system.mana.current': hero.system.mana.max,
+                'system.statuses.counters.luck': hero.system.stats.luck
             } as Record<any, any>)
             setClosed()
         }
@@ -174,7 +152,6 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
         setClosed
     ])
 
-    // Connect lifecycle execution trigger hook to Navigation Frame context
     useEffect(() => {
         registerOnFinish(handleSaveAndFinish)
     }, [registerOnFinish, handleSaveAndFinish])

@@ -104,31 +104,6 @@ Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: 
         const rules: RuleElement[] = (item.system as any).rules || []
 
         /**
-         * Level-locked Grants...
-         */
-        const grantRules = rules.filter(r => r.key === "GrantItem")
-        for (const rule of grantRules) {
-            const requiredLevel = rule.level || 0
-
-            if (currentLevel && currentLevel >= requiredLevel) {
-                const alreadyGranted = actor.items.contents.some(i =>
-                    foundry.utils.getProperty(i, "flags.vagabond-lite.grantedBy") === item.id &&
-                    foundry.utils.getProperty(i, "flags.vagabond-lite.ruleId") === rule.id
-                )
-
-                if (!alreadyGranted) {
-                    const doc = await fromUuid(rule.uuid)
-                    if (doc) {
-                        const plainObj = doc.toObject()
-                        foundry.utils.setProperty(plainObj, "flags.vagabond-lite.grantedBy", item.id)
-                        foundry.utils.setProperty(plainObj, "flags.vagabond-lite.ruleId", rule.id)
-                        itemsToCreate.push(plainObj)
-                    }
-                }
-            }
-        }
-
-        /**
          * Process player choice sets...
          */
         if (flagChanges) {
@@ -207,16 +182,6 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
         return true
     }
 
-    /**
-     * Prevent adding duplicate perks and spells (unless the perk can be taken multiple times).
-     */
-    if (item.type === 'perk') {
-        return item.system.canTakeMultiple || !actor.items.contents.some(i => i.type === 'perk' && i.name === item.name)
-    }
-
-    if (item.type === 'spell') {
-        return !actor.items.contents.some(i => i.type === 'spell' && i.name === item.name)
-    }
 })
 
 Hooks.on("createItem", async (item, _options, _userId) => {
@@ -231,31 +196,6 @@ Hooks.on("createItem", async (item, _options, _userId) => {
             const items = parent.items
             const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
             item.update({ 'sort': newSortVal })
-        }
-    }
-
-    if (game.user?.id === _userId && item.parent) {
-        const currentLevel = (foundry.utils.getProperty(item.parent, "system.level.current") as number) ?? 0
-
-        // Find all GrantItem rules attached to the newly added item
-        const grantRules = (item as Item & { system: ItemDataModel<BaseItemSchema> }).system.rules?.filter((r: any) => r.key === "GrantItem") || []
-        if (grantRules.length === 0) return
-
-        const itemsToCreate: any[] = []
-        for (const rule of grantRules) {
-            const requiredLevel = (rule.level as number) ?? 0
-            if (currentLevel < requiredLevel) continue
-
-            const grantedDoc = await fromUuid((rule as unknown as any).uuid)
-            if (grantedDoc) {
-                const plainObject = grantedDoc.toObject()
-                foundry.utils.setProperty(plainObject, "flags.vagabond-lite.grantedBy", item.id)
-                itemsToCreate.push(plainObject)
-            }
-        }
-
-        if (itemsToCreate.length > 0) {
-            await item.parent.createEmbeddedDocuments("Item", itemsToCreate)
         }
     }
 })

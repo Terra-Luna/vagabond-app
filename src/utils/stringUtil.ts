@@ -24,9 +24,14 @@ export function andOrToSymbol(andOr: string): string {
 }
 
 export function removeLastComma(text: string, andOr: string): string {
-    if (!text.includes(',')) return text
-    if ((text.match(/,/g) || []).length === 1) {
-        return text.replace(/,/, ` ${andOr}`)
+    if (text && andOr) {
+        if (!text.includes(',')) return text
+        if ((text.match(/,/g) || []).length === 1) {
+            return text.replace(/,/, ` ${andOr}`)
+        }
+        return text.replace(/,(?=[^,]*$)/, ` ${andOr}`)
     }
-    return text.replace(/,(?=[^,]*$)/, ` ${andOr}`)
+    else {
+        return ''
+    }
 }

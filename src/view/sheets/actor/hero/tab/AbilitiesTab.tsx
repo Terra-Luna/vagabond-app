@@ -59,8 +59,8 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             <div className="mt-0.5" />
             <div className={abilitiesGrid}>
                 {
-                    hero.perks.map((p: any) => (
-                        <div key={p.parent.id} onContextMenu={(e) => onCtxMenu(e, [
+                    hero.perks.map((p: any, index: number) => (
+                        <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
                                     <AbilityChatCard
@@ -71,8 +71,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                         description={p.description}
                                     />
                                 )
-                            },
-                            { icon: Trash, label: 'Remove', action: () => { hero.parent.deleteEmbeddedDocuments("Item", [getId(p)]) }, isDestructive: true }
+                            }
                         ])}>
                             <SkillCard
                                 img={p.parent.img}

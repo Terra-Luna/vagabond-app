@@ -1,6 +1,6 @@
 import { createElement } from "react"
 import { vgLiteLang } from "../../utils/lang"
-import { getId, isPathOfType } from "../../utils/modelUtil"
+import { CombinedItemsMultiType, getId, isPathOfType } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString } from "../common/sharedSchemas"
@@ -84,13 +84,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         const actor = this.parent
         if (!actor || !actor.items) return
 
-        const currentLevel = actor.system.level.current || 0
-
         // Lookup rules on any Items...
-        const activeRules = actor.items.contents.flatMap((item: any) => {
-            const rules = item.system.rules || []
-            return rules.filter((r: any) => currentLevel >= (r.level || 0))
-        })
+        const activeRules = this.getActiveRules(actor)
 
         /**
          * Apply flat modifiers...
@@ -132,7 +127,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                     foundry.utils.setProperty(this, path, rule.value)
                 }
             })
-        }
+        }      
 
         /**
          * Set remaining base data last, to preserve the bonuses...
@@ -151,6 +146,51 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareDerivedData()
         validateCurrentHP(this)
         validateCurrentLuck(this)
+
+        /**
+         * Add granted & selected Spells & Perks to the actor's spells/perks array in-memory only.
+         * These are not committed to the database and, therefore, will catch all udpates made to
+         * the parent items.
+         */
+        const activeRules = this.getActiveRules(this.parent)
+        const itemRuleSelections = activeRules
+            .filter(r => r.key === "ChoiceSet" && r.channel === "item")
+            .flatMap(r => r.selections)
+
+        const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && (r.type === "spell" || r.type === "perk"))
+        const itemIds = [...itemRuleSelections, ...itemGrantRules.map(r => r.uuid)]
+
+        console.log(itemIds)
+
+        const items = (await CombinedItemsMultiType(['spell', 'perk'])).filter(it => itemIds.includes(it.uuid))
+
+        for (const item of items) {
+            const castItem = item as any
+
+            if (castItem.type === 'spell' && this.spells?.some((spell: any) => spell?._sourceId === castItem.uuid)) continue
+            if (castItem.type === 'perk' && this.perks?.some((perk: any) => perk?._sourceId === castItem.uuid)) continue
+
+            const systemData = foundry.utils.deepClone(castItem)
+
+            const mockModel = {
+                ...systemData,
+                _sourceId: castItem.uuid,
+                isRuleSelection: true,
+                parent: {
+                    name: castItem.name || "Unknown Feature",
+                    img: castItem.img || "icons/svg/item-bag.svg",
+                    type: castItem.type,
+                    flags: { core: { sourceId: castItem.uuid }, isRuleSelection: true }
+                }
+            }
+
+            if (castItem.type === 'spell') {
+                this.spells.push(mockModel as unknown as SpellDataModel)
+            }
+            else if (castItem.type === 'perk') {
+                this.perks.push(mockModel as unknown as PerkDataModel)
+            }
+        }
     }
 
     override async _preUpdate(changes, options, user) {
@@ -197,6 +237,13 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (pendingResourceTrackerUpdate) {
             sendVgLiteChatMessage(this.parent, createElement(TrackerUpdateChatCard, { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource }))
         }
+    }
+
+    getActiveRules(actor) {
+        return actor.items.contents.flatMap((item: any) => {
+            const rules = item.system.rules || []
+            return rules.filter((r: any) => actor.system.level.current >= (r.level || 0))
+        })
     }
 
 }

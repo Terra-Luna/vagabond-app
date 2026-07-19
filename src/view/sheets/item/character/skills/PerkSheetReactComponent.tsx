@@ -9,29 +9,13 @@ import { SingleSelect } from "../../../../component/SingleSelect"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
-import { Checkbox } from "../../../../component/Checkbox"
 
 export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()
 
-    const onSelectMulti = useCallback((isChecked: boolean) => {
-        item.update({ 'system.canTakeMultiple': isChecked } as Record<string, boolean>)
-    }, [])
-
     return (
         <BaseSkillSheetComponent item={item} content={
             <div>
-                {
-                    isEditMode ?
-                        <div className="flex gap-x-1">
-                            <Checkbox
-                                label={''}
-                                onCheckedChanged={onSelectMulti}
-                                checked={item.system.canTakeMultiple}
-                            />
-                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.canTakeMultiple} className={"font-bold"} />
-                        </div> : <></>
-                }
                 <div className="flex gap-x-2 items-center">
                     {
                         isEditMode ? <>
