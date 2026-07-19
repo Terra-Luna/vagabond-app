@@ -1,0 +1,56 @@
+{
+  "name": "Medium Armor",
+  "type": "armor",
+  "_id": "V1Ou5SBmDGgoNPW9",
+  "img": "icons/equipment/chest/breastplate-layered-leather-brown.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "armor",
+    "value": {
+      "g": 1,
+      "s": 0,
+      "c": 0
+    },
+    "totalValue": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicEffects": [],
+    "armorType": "medium",
+    "rating": 2,
+    "mightReq": 4,
+    "material": "standard"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784498871412,
+    "modifiedTime": 1784498961243,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!V1Ou5SBmDGgoNPW9"
+}

@@ -35,6 +35,9 @@ export const modifierSchema = () => {
                 attack: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
                 spellDamage: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
                 spellHealing: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
+            }),
+            crit: new fields.SchemaField({
+                attack: new fields.NumberField({ ...uncappedInteger })
             })
         }),
 

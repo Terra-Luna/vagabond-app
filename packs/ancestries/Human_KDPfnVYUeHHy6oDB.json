@@ -4,15 +4,63 @@
   "_id": "KDPfnVYUeHHy6oDB",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "description": "",
-    "rules": [],
+    "description": "<p><span style=\"white-space:pre-wrap\">Humans are social beings that tend to be central in the development of major, diverse melting pot civilizations. Their tendency to develop wide, sprawling empires and a huge pool of cultures makes them extremely adaptable adventurers.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Knack:</strong></b><span style=\"white-space:pre-wrap\"> You gain a Perk and a Training.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Strong Potential:</strong></b><span style=\"white-space:pre-wrap\"> Increase one of your Stats by 1, but no higher than 7.</span></p>",
+    "rules": [
+      {
+        "id": "yVbjwZZIl266OGlx",
+        "key": "ChoiceSet",
+        "label": "Knack: Perk",
+        "level": 0,
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "VhzPNDNLzhR4DPBf",
+        "key": "ChoiceSet",
+        "label": "Knack: Training",
+        "level": 0,
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "skills.*.isTrained",
+            "label": "Training"
+          }
+        ],
+        "selections": []
+      },
+      {
+        "id": "mvCJSlSHmG6z3RsC",
+        "key": "ChoiceSet",
+        "label": "Strong Potential",
+        "level": 0,
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "stats.*",
+            "label": "Stat Bonus"
+          }
+        ],
+        "selections": []
+      }
+    ],
     "senses": [],
     "beingType": "humanlike",
     "beingSize": "medium"
   },
   "effects": [],
   "folder": null,
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TPKlPZltuaHboQ5f": 3
@@ -23,8 +71,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784494457445,
-    "modifiedTime": 1784494741414,
-    "lastModifiedBy": "TPKlPZltuaHboQ5f",
+    "modifiedTime": 1784496061548,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

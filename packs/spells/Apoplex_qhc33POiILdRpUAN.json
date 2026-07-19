@@ -1,0 +1,33 @@
+{
+  "name": "Apoplex",
+  "type": "spell",
+  "_id": "qhc33POiILdRpUAN",
+  "img": "icons/magic/fire/elemental-fire-humanoid.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Berserk for the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
+    "rules": [],
+    "damageType": "fire",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784497306345,
+    "modifiedTime": 1784497330827,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!qhc33POiILdRpUAN"
+}

@@ -17,7 +17,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
             return { ...choice, ...fields }
         })
         const item = fromUuidSync(fields.value)
-        rule.channel = (item instanceof foundry.abstract.Document && "type" in item) ? item.type : null
+        rule.channel = (item instanceof foundry.abstract.Document && "type" in item) ? item.type : "path"
         onChange({
             ...rule,
             choices: updatedChoices
@@ -111,7 +111,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                             onChange({ channel: val, sourceMode: "static", pack: '', choices: [] })
                         }
                         else {
-                            onChange({ channel: val, choices: [] })
+                            onChange({ channel: val, pack: 'perk', choices: [] })
                         }
                     }}
                 />

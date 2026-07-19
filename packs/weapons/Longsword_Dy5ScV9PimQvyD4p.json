@@ -1,0 +1,73 @@
+{
+  "name": "Longsword",
+  "type": "weapon",
+  "_id": "Dy5ScV9PimQvyD4p",
+  "img": "icons/weapons/swords/sword-guard.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 0,
+      "s": 40,
+      "c": 0
+    },
+    "totalValue": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicEffects": [],
+    "range": "close",
+    "damage": {
+      "oneHand": "1d8",
+      "twoHand": "1d10",
+      "type": "slash"
+    },
+    "grip": {
+      "style": "V",
+      "state": "H"
+    },
+    "weaponTypes": [
+      "melee"
+    ],
+    "properties": [
+      "keen"
+    ],
+    "explodeData": {
+      "canExplode": false,
+      "explodesOn": []
+    },
+    "material": "standard"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784499037344,
+    "modifiedTime": 1784499095090,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Dy5ScV9PimQvyD4p"
+}

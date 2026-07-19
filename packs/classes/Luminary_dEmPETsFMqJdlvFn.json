@@ -1,0 +1,160 @@
+{
+  "name": "Luminary",
+  "type": "class",
+  "_id": "dEmPETsFMqJdlvFn",
+  "img": "icons/magic/light/orb-hands-humanoid-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><span style=\"white-space:pre-wrap\">Iconic Luminaries</span></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Devout</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b></p><p><b><strong style=\"white-space:pre-wrap\">Weapons:</strong></b><span style=\"white-space:pre-wrap\"> –</span></p><p><b><strong style=\"white-space:pre-wrap\">Skills:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, and 3 from either Arcana, Detect, Influence, Leadership, or Medicine</span></p>",
+    "rules": [
+      {
+        "id": "TnFG3YID7OF3Hwpz",
+        "key": "GrantItem",
+        "label": "Theurgy: Light",
+        "level": "1",
+        "uuid": ""
+      },
+      {
+        "id": "SuDob7qulK9ECBI3",
+        "key": "GrantItem",
+        "label": "Theurgy: Life",
+        "level": "1",
+        "uuid": ""
+      },
+      {
+        "id": "WaF576Cn9yRMVs5y",
+        "key": "ChoiceSet",
+        "label": "Theurgy: Spells",
+        "level": "1",
+        "value": 1,
+        "maxChoices": 2,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      },
+      {
+        "id": "Bq0mW1cXIemMpruv",
+        "key": "ToggleRule",
+        "label": "Training: Mysticism",
+        "level": "1",
+        "value": true,
+        "selector": "skills.mysticism.isTrained"
+      },
+      {
+        "id": "BJkCUg3sMWEX4f54",
+        "key": "ChoiceSet",
+        "label": "Training: Skills",
+        "level": "1",
+        "value": 1,
+        "maxChoices": 3,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "skills.arcana.isTrained",
+            "label": "Arcana"
+          },
+          {
+            "value": "skills.detect.isTrained",
+            "label": "Detect"
+          },
+          {
+            "value": "skills.influence.isTrained",
+            "label": "Influence"
+          },
+          {
+            "value": "skills.leadership.isTrained",
+            "label": "Leadership"
+          },
+          {
+            "value": "skills.medicine.isTrained",
+            "label": "Medicine"
+          }
+        ],
+        "selections": []
+      },
+      {
+        "id": "HJtHXsv7lS2i08sx",
+        "key": "GrantItem",
+        "label": "Radiant Healer",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.KXp0umL4on7OoRFF",
+        "type": "perk"
+      },
+      {
+        "id": "LeZlPpq2P7elQoq5",
+        "key": "FlatModifier",
+        "label": "Radiant Healer",
+        "level": 1,
+        "value": 6,
+        "selector": "modifiers.dice.exploding.spellHealing"
+      }
+    ],
+    "complexity": 3,
+    "keyStats": [
+      "awareness"
+    ],
+    "startingPacks": [],
+    "castingSkill": "mysticism",
+    "maxManaStat": "awareness",
+    "manaMultiplier": 4,
+    "features": [
+      {
+        "level": 1,
+        "name": "Theurgy",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, two of which must always be Life and Light. You learn 1 other Spell every 2 Luminary Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Maximum Mana is equal to (4 × your Luminary Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Awareness + half your Luminary Level, round up). You regain spent Mana when you Rest.</span></p>"
+      },
+      {
+        "level": 1,
+        "name": "Radiant Healer",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Assured Healer Perk (p. 67), and the healing rolls of your Spells can also Explode on their highest value.</span></p>"
+      },
+      {
+        "level": 2,
+        "name": "Overheal",
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you restore HP that exceeds the Being’s Max HP, you can give the excess to yourself or a Being you can see.</span></p>"
+      },
+      {
+        "level": 4,
+        "name": "Evercure",
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you restore HP, you can end either a Charmed, Confused, Dazed, Frightened, or Sickened Status affecting the Target.</span></p>"
+      },
+      {
+        "level": 6,
+        "name": "Revivify",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can revive a Being with the Life Spell if it has been dead for as long as 1 hour. If you die, you are revived automatically. Afterward, you can’t be revived by this Feature for 1 day.</span></p>"
+      },
+      {
+        "level": 8,
+        "name": "Saving Grace",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your healing rolls can also Explode on a 2.</span></p>"
+      },
+      {
+        "level": 10,
+        "name": "Life-Giver",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Beings you revive are revived at 4 Fatigue if their Fatigue was previously higher, and don’t gain Fatigue from your Life Spell.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784496452535,
+    "modifiedTime": 1784498800691,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!dEmPETsFMqJdlvFn"
+}

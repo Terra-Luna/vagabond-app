@@ -1,0 +1,33 @@
+{
+  "name": "Adhere",
+  "type": "spell",
+  "_id": "rxJcGObE6iraw3NT",
+  "img": "icons/magic/acid/dissolve-pool-bubbles.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is covered in sticky slime for the duration, causing the Area out to Close around it to be Difficult Terrain. Targeted Beings are  considered Vulnerable for the purpose of ending the Restrained Status.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Targeted Objects are secured to whatever they are in contact with or the next thing it contacts in the duration. A Being with Might or HD equal to or lower than your Level can't move the Object. You can increase your effective Level for the casting by spending additional Mana, increasing it by 1 per Mana spent to do so.</span></p>",
+    "rules": [],
+    "damageType": "acid",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784497124303,
+    "modifiedTime": 1784497213907,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!rxJcGObE6iraw3NT"
+}

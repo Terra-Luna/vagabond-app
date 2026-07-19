@@ -1,0 +1,145 @@
+{
+  "name": "Fighter",
+  "type": "class",
+  "_id": "CY6YPiZM2IVjVurI",
+  "img": "icons/skills/melee/weapons-crossed-poleaxes-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Students of the art of violence, fighters are defined by their weapon skills, and variety of martial techniques.</span></p><p><span style=\"white-space:pre-wrap\">Iconic Fighters</span></p><p><span style=\"white-space:pre-wrap\">• Beowulf, English mythology</span></p><p><span style=\"white-space:pre-wrap\">• Gilgamesh, Mesopotamian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sir Lancelot, Arthurian legend</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Fighter</strong></b></p><p><span style=\"white-space:pre-wrap\">The fighter is a mid-defense striker. In combat, get within effective distance for offense and prioritize the Attack Action.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator, Knight, Warrior, or Watchman</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b></p><p><b><strong style=\"white-space:pre-wrap\">Weapons:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Ranged</span></p><p><b><strong style=\"white-space:pre-wrap\">Skills:</strong></b><span style=\"white-space:pre-wrap\"> Brawl or Finesse, and 3 from either Brawl, Detect, Finesse, Leadership, or Sneak</span></p>",
+    "rules": [
+      {
+        "id": "rIsD3plKpPWRUesD",
+        "key": "ToggleRule",
+        "label": "Training: Melee",
+        "level": "1",
+        "value": true,
+        "selector": "skills.melee.isTrained"
+      },
+      {
+        "id": "ejcaoUWp9wHWUYJL",
+        "key": "ToggleRule",
+        "label": "Training: Ranged",
+        "level": "1",
+        "value": true,
+        "selector": "skills.ranged.isTrained"
+      },
+      {
+        "id": "brTtJfCkct3NmDs0",
+        "key": "ChoiceSet",
+        "label": "Training: Skills",
+        "level": "1",
+        "value": 1,
+        "maxChoices": 4,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "skills.brawl.isTrained",
+            "label": "Brawl"
+          },
+          {
+            "value": "skills.finesse.isTrained",
+            "label": "Finesse"
+          },
+          {
+            "value": "skills.detect.isTrained",
+            "label": "Detect"
+          },
+          {
+            "value": "skills.leadership.isTrained",
+            "label": "Leadership"
+          },
+          {
+            "value": "skills.sneak.isTrained",
+            "label": "Sneak"
+          }
+        ],
+        "selections": []
+      },
+      {
+        "id": "VQWJJrXPuJra5YFp",
+        "key": "GrantItem",
+        "label": "Fighting Style: Situational Awareness",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.6aUzsiWQ0IpvS0y4",
+        "type": "perk"
+      },
+      {
+        "id": "fRWwkbsmQ8zKQcWz",
+        "key": "ChoiceSet",
+        "label": "Fighting Style: Perk",
+        "level": "1",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "XpvDpGdc4H2ByW6v",
+        "key": "FlatModifier",
+        "label": "Valor",
+        "level": 1,
+        "value": 1,
+        "selector": "modifiers.dice.crit.attack"
+      }
+    ],
+    "complexity": 1,
+    "keyStats": [
+      "might",
+      "awareness"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "maxManaStat": "",
+    "manaMultiplier": 0,
+    "features": [
+      {
+        "level": 1,
+        "name": "Fighting Style",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Situational Awareness Perk (p. 72) and another Perk with the Melee or Ranged Training Prerequisite (p. 64), ignoring prerequisites for this Perk.</span></p>"
+      },
+      {
+        "level": 1,
+        "name": "Valor",
+        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves to Dodge or Block Attacks is reduced by 1, and is reduced by 1 more when you reach 4th and 8th Levels in this Class.</span></p>"
+      },
+      {
+        "level": 2,
+        "name": "Momentum",
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an attack, the next attack you make before the end of your next Turn is Favored.</span></p>"
+      },
+      {
+        "level": 6,
+        "name": "Muster for Battle",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have two Actions on your first Turn.</span></p>"
+      },
+      {
+        "level": 10,
+        "name": "Harrying",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can attack twice with the Attack Action, rather than just once.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784497758223,
+    "modifiedTime": 1784498645200,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!CY6YPiZM2IVjVurI"
+}

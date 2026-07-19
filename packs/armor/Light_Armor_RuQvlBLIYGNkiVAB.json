@@ -1,0 +1,56 @@
+{
+  "name": "Light Armor",
+  "type": "armor",
+  "_id": "RuQvlBLIYGNkiVAB",
+  "img": "icons/equipment/chest/coat-leather-blue.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "armor",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "totalValue": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicEffects": [],
+    "armorType": "light",
+    "rating": 1,
+    "mightReq": 3,
+    "material": "standard"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784498849175,
+    "modifiedTime": 1784498946501,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!RuQvlBLIYGNkiVAB"
+}

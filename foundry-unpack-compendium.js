@@ -21,4 +21,4 @@ for (const name of packNames) {
     }
 }
 
-console.log("Foundry CLI | All packs extracted successfully into src/packs/!");
+console.log("Foundry CLI | All packs extracted successfully into ./packs");

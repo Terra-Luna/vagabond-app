@@ -1,0 +1,33 @@
+{
+  "name": "Life",
+  "type": "spell",
+  "_id": "pTpQKxsiYMR2yZ0G",
+  "img": "icons/magic/life/heart-cross-strong-flame-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You revive a Target that died from damage in the last Round, restoring it with 1 HP and giving it 1 Fatigue. This Spell does not regenerate missing body parts.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">In addition, you can spend Mana with this Spell to heal a Target for d6 HP per Mana spent to do so.</span></p>",
+    "rules": [],
+    "damageType": "healing",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784496877261,
+    "modifiedTime": 1784496921336,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!pTpQKxsiYMR2yZ0G"
+}

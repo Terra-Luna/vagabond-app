@@ -1,0 +1,73 @@
+{
+  "name": "Standard Shield",
+  "type": "weapon",
+  "_id": "qIT5YQ8osdsRQ92D",
+  "img": "icons/equipment/shield/buckler-wooden-boss-brown.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 0,
+      "s": 75,
+      "c": 0
+    },
+    "totalValue": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicEffects": [],
+    "range": "close",
+    "damage": {
+      "oneHand": "1d4",
+      "twoHand": "1d4",
+      "type": "physical"
+    },
+    "grip": {
+      "style": "H",
+      "state": "H"
+    },
+    "weaponTypes": [
+      "melee"
+    ],
+    "properties": [
+      "defense"
+    ],
+    "explodeData": {
+      "canExplode": false,
+      "explodesOn": []
+    },
+    "material": "standard"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784499122807,
+    "modifiedTime": 1784499194417,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!qIT5YQ8osdsRQ92D"
+}

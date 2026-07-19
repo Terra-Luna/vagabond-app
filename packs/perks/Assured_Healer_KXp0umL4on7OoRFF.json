@@ -1,0 +1,46 @@
+{
+  "name": "Assured Healer",
+  "type": "perk",
+  "_id": "KXp0umL4on7OoRFF",
+  "img": "icons/magic/life/cross-explosion-burst-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Healing rolls of your Spells Explode on a 1.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 0,
+        "spell": "Life",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784496991809,
+    "modifiedTime": 1784497028474,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!KXp0umL4on7OoRFF"
+}

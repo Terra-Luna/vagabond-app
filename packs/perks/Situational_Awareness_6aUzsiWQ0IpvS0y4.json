@@ -1,0 +1,60 @@
+{
+  "name": "Situational Awareness",
+  "type": "perk",
+  "_id": "6aUzsiWQ0IpvS0y4",
+  "img": "icons/magic/perception/eye-ringed-glow-angry-large-teal.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Checks against surprise, and being Flanked doesn’t Hinder your Saves.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "awareness",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 0,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "detect"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784498201336,
+    "modifiedTime": 1784498305253,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!6aUzsiWQ0IpvS0y4"
+}
