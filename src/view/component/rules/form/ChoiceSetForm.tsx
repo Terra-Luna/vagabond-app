@@ -106,7 +106,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                         <option value="item">Spells/Perks</option>
                     </>}
                     onChange={(e) => {
-                        const val = e?.target ? e.target.value : e
+                        const val = e.target.value
                         if (val === "path") {
                             onChange({ channel: val, sourceMode: "static", pack: '', choices: [] })
                         }

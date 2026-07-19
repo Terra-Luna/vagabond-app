@@ -1,0 +1,50 @@
+{
+    "beingType": "fae",
+    "beingSize": "medium",
+    "description": "<p><span style=\"white-space:pre-wrap\">Elves are known for their tall height, ethereal beauty, and inquisitive passion to witness awe. This passion embodies itself in their clothing,</span></p><p><span style=\"white-space:pre-wrap\">language, arts, and cuisine, as elves seek to make every moment one worth savoring. Of all the peoples that inhabit the world, it is likely</span></p><p><span style=\"white-space:pre-wrap\">no other lives as peacefully and permissively with the fae, fauna, and flora as elves.</span><br><br><b><strong style=\"white-space:pre-wrap\">Ascendancy:</strong></b><span style=\"white-space:pre-wrap\"> You are Trained in a Skill from either Arcana, Mysticism, Influence, or in Ranged Attacks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Elven Eyes:</strong></b><span style=\"white-space:pre-wrap\"> You have Favor on sight-based Detect Checks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Naturally Attuned:</strong></b><span style=\"white-space:pre-wrap\"> You know a Spell and can Cast it with a Skill of your choice.</span></p>",
+    "rules": [
+        {
+            "id": "NCzTFFVaILltdBxL",
+            "key": "ChoiceSet",
+            "label": "Ascendancy",
+            "level": 0,
+            "value": 1,
+            "maxChoices": 1,
+            "channel": "path",
+            "sourceMode": "static",
+            "choices": [
+                {
+                    "value": "skills.arcana.isTrained",
+                    "label": "Arcana"
+                },
+                {
+                    "value": "skills.mysticism.isTrained",
+                    "label": "Mysticism"
+                },
+                {
+                    "value": "skills.influence.isTrained",
+                    "label": "Influence"
+                },
+                {
+                    "value": "skills.ranged.isTrained",
+                    "label": "Ranged"
+                }
+            ],
+            "selections": []
+        },
+        {
+            "id": "9HxcLbWWwg5ph9QX",
+            "key": "ChoiceSet",
+            "label": "Naturally Attuned",
+            "level": 0,
+            "value": 1,
+            "maxChoices": 1,
+            "channel": "item",
+            "sourceMode": "dynamic",
+            "choices": [],
+            "selections": [],
+            "pack": "spell"
+        }
+    ],
+    "senses": []
+}

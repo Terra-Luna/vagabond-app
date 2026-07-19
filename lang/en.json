@@ -871,8 +871,6 @@
       "labelSpellSkill": "Spellcasting Skill",
       "labelMaxMana": "Max Mana Stat",
       "labelManaLevel": "Mana/Level",
-      "startingSpellSlots": "Starting Spell Slots",
-      "spellGainLvlInterval": "Spell Gain Level Interval",
       "requiredSpells": "Required Spells",
       "labelTraining": "Training",
       "labelWeapons": "Weapons",

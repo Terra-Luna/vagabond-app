@@ -6,7 +6,7 @@ import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
 import { HeroCreator } from "../../../../../apps/hero-creator/HeroCreator"
 import { useGlobalPopout } from "../../../../../apps/PopoutApplication"
-import { NavigationContextProvider } from "../../../../context/navigation/NavigationContextProvider"
+import { NavigationHost } from "../../../../context/navigation/NavigationHost"
 import { HeroActiveRulesView } from "../../../../component/rules/HeroActiveRulesView"
 import { useActiveEffectsManager } from "../../../../../apps/active-effects/active-effect-handlers"
 
@@ -59,7 +59,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     useEffect(() => {
         if (isCreatorOpen) {
             createrPopout.renderPopout(
-                <NavigationContextProvider children={
+                <NavigationHost children={
                     <HeroCreator hero={hero.parent} setClosed={setCreatorClosed} />
                 } />, "Hero Creator", true
             )

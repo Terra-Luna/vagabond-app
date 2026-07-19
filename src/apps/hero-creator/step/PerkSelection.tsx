@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
-import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSuccessMessage } from "../component/HeroCreationTypography"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { PerkDataModel, perkPrerequisites } from "../../../model/item/character/PerkDataModel"
@@ -12,10 +11,14 @@ import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCar
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
+import { TopNavButtons } from "../component/TopNavButtons"
 
-export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined) => {
+export const usePerkSelection = (
+    ancestry: Item & { system: AncestryDataModel } | undefined,
+    clazz: Item & { system: ClassDataModel } | undefined,
+    navButtons: ReactNode[]
+) => {
     const strings = vgLiteLang.HeroCreation
-    const { NavButtons, setCanProceed } = useNavButtons()
 
     // All perks for selection.
     const [perksList, setPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
@@ -94,7 +97,8 @@ export const usePerkSelection = (ancestry: Item & { system: AncestryDataModel } 
         return (<>
             <div className="bg-sheet-main-fill space-y-4">
                 {/* HEADER AND NAVIGATION BUTTONS */}
-                <NavButtons header={<Header title={strings.perksHeader} />} />
+                <Header title={strings.perksHeader} />
+                <TopNavButtons navButtons={navButtons} />
 
                 {/* USER HELPER */}
                 <HeroCreationLabel text={strings.perkAquisition} />

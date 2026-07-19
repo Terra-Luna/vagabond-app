@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { EditableTextField } from "../../../view/component/EditableTextField"
@@ -7,14 +7,13 @@ import { AncestryDataModel } from "../../../model/item/character/AncestryDataMod
 import { AncestryReactComponent } from "../../../view/sheets/item/character/ancestry/AncestrySheetComponent"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
-import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { HeroCreationLabel } from "../component/HeroCreationTypography"
+import { TopNavButtons } from "../component/TopNavButtons"
 
-export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
+export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navButtons: ReactNode[]) => {
     const strings = vgLiteLang.HeroCreation
-    const { NavButtons } = useNavButtons()
 
     useEffect(() => {
         CombinedItems('ancestry').then((res) => {
@@ -38,7 +37,8 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }) => {
     const NameAndAncestry = () => {
         return (
             <div className="bg-sheet-main-fill space-y-4">
-                <NavButtons header={<Header title={strings.identity} />} />
+                <Header title={strings.identity} />
+                <TopNavButtons navButtons={navButtons} />
                 <div>
                     <HeroCreationLabel text={strings.heroName} />
                     <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />

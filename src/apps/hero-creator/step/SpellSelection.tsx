@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useState } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
-import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
 import { getItemChoiceRules, getItemGrants, getTotalMaxChoices, ItemRule } from "../../../view/component/rules/util/item-rules-util"
@@ -12,10 +11,14 @@ import { SkillCard } from "../../../view/component/SkillCard"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
+import { TopNavButtons } from "../component/TopNavButtons"
 
-export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined) => {
+export const useSpellSelection = (
+    ancestry: Item & { system: AncestryDataModel } | undefined,
+    clazz: Item & { system: ClassDataModel } | undefined,
+    navButtons: ReactNode[]
+) => {
     const strings = vgLiteLang.HeroCreation
-    const { NavButtons, setCanProceed } = useNavButtons()
 
     // All spells for selection.
     const [spellsList, setSpellsList] = useState<{ value: string, label: string, img: string, dmgType: string, description: string }[]>([])
@@ -85,9 +88,10 @@ export const useSpellSelection = (ancestry: Item & { system: AncestryDataModel }
     const SpellSelection = () => {
         return (<>
 
-            {/* HEADER AND NAVIGATION BUTTONS */}
+            {/* HEADER */}
             <div className="bg-sheet-main-fill space-y-4 text-center items-center">
-                <NavButtons header={<Header title={strings.spellsHeader} />} />
+                <Header title={strings.spellsHeader} />
+                <TopNavButtons navButtons={navButtons} />
                 <HeroCreationSubtext text={strings.spellsSubheader} />
                 <Divider />
             </div>

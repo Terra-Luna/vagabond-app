@@ -26,26 +26,3 @@ export const EditModeContext = createContext(DefaultEditModeContextValue)
 
 /** Consuming children just use this and can destructure it to get any of {isEditMode, setEditMode, toggleEditMode} they want */
 export const useEditMode = () => useContext(EditModeContext)
-
-/**
- * Navigation Context Provider
- *  >>>  Use next and back functions to increment step counter.
- */
-interface NavigationContextProps {
-    stepId: string
-    registerStepIds: (ids: string[]) => void
-    registerOnFinish: (fn: () => void) => void
-    backButton: ReactNode
-    nextButton: ReactNode
-    onFinishState: { action: (fn: () => void) => void }
-}
-const DefaultNavigationContextValue: NavigationContextProps = {
-    stepId: '',
-    registerStepIds: () => { },
-    registerOnFinish: (fn: () => void) => { },
-    backButton: undefined,
-    nextButton: undefined,
-    onFinishState: { action: (fn: () => void) => { } }
-}
-export const NavigationContext = createContext(DefaultNavigationContextValue)
-export const useNavigationContext = () => useContext(NavigationContext)

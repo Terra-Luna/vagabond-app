@@ -42,12 +42,6 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                     ))
                 }
             </div>
-            <div className="flex gap-x-1 w-fit mb-16 ml-auto text-text-primary text-xl font-eskapade font-bold">
-                <p>Spell Slots: </p>
-                <p>{hero.spells.length}</p>
-                <p>/</p>
-                <p>{hero.spellSlots}</p>
-            </div>
             <ContextMenu />
         </div>
     )

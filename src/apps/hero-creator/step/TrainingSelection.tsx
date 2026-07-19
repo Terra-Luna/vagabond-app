@@ -1,22 +1,22 @@
-import { useState, useRef, useEffect, useCallback } from "react"
+import { useState, useRef, useEffect, useCallback, ReactNode } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
-import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule } from "../../../view/component/rules/util/item-rules-util"
 import { BorderedContent } from "../component/BorderedContent"
 import { TrainingSelector } from "../component/TrainingSelector"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
+import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useTrainingSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
-    clazz: Item & { system: ClassDataModel } | undefined
+    clazz: Item & { system: ClassDataModel } | undefined,
+    navButtons: ReactNode[]
 ) => {
     const strings = vgLiteLang.HeroCreation
-    const { NavButtons, setCanProceed } = useNavButtons()
     const canProceedRef = useRef<boolean>(false)
 
     // Skills which are automatically assigned.
@@ -49,12 +49,12 @@ export const useTrainingSelection = (
      */
     useEffect(() => {
         if (!classTrainingRules.length && !ancestryTrainingRules.length) {
-            setCanProceed(false)
+            //setCanProceed(false)
             return
         }
         const isAllClassSKillsChosen = chosenClassSkills.length === classTrainingMaxChoices
         const isBonusSkillChosen = ancestryTrainingMaxChoices === chosenBonusSkills.length
-        setCanProceed(isAllClassSKillsChosen && isBonusSkillChosen)
+        //setCanProceed(isAllClassSKillsChosen && isBonusSkillChosen)
     }, [chosenClassSkills, chosenBonusSkills, classTrainingMaxChoices, ancestryTrainingMaxChoices, classTrainingRules, ancestryTrainingRules])
 
     const onSelectClassSkill = useCallback((skill: string, ruleId: string, isSelected: boolean) => {
@@ -79,7 +79,9 @@ export const useTrainingSelection = (
         return (
             <div className="bg-sheet-main-fill space-y-4">
                 {/* HEADER AND NAVIGATION BUTTONS */}
-                <NavButtons header={<Header title={strings.traingingsHeader} />} />
+                <Header title={strings.traingingsHeader} />
+                <TopNavButtons navButtons={navButtons} />
+
                 <div className="items-center justify-center text-center w-full space-y-2">
                     <HeroCreationSubtext text={strings.trainingSubheader} />
 

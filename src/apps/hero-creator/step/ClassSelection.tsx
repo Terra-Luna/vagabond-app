@@ -1,18 +1,17 @@
-import { useCallback, useEffect, useState } from "react"
+import { ReactNode, useCallback, useEffect, useState } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { Header } from "../../../view/component/Header"
-import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { ClassSheetReactComponent } from "../../../view/sheets/item/character/class/ClassSheetReactComponent"
+import { TopNavButtons } from "../component/TopNavButtons"
 
-export const useClassSelection = (hero: Actor & { system: HeroDataModel }) => {
+export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navButtons: ReactNode[]) => {
     const strings = vgLiteLang.HeroCreation
-    const { NavButtons } = useNavButtons()
 
     useEffect(() => {
         CombinedItems('class').then((res) => {
@@ -36,7 +35,9 @@ export const useClassSelection = (hero: Actor & { system: HeroDataModel }) => {
     const ClassSelection = () => {
         return (
             <div className="bg-sheet-main-fill space-y-4">
-                <NavButtons header={<Header title={strings.class} />} />
+                <Header title={strings.class} />
+                <TopNavButtons navButtons={navButtons} />
+
                 <HeroCreationDropdown
                     label={strings.class}
                     value={classItem?.id ?? strings.selectClass}

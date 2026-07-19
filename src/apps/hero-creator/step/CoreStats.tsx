@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { calculateManaValues } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
-import { useNavButtons } from "../../../view/context/navigation/NavButtons"
 import { Divider, Header } from "../../../view/component/Header"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { SecondaryButton } from "../../../view/component/Button"
@@ -13,14 +12,14 @@ import { StatDragTarget } from "../component/StatDragTarget"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { BorderedContent } from "../component/BorderedContent"
 import { getFlatStatBonuses, getStatChoiceRules } from "../../../view/component/rules/util/item-rules-util"
+import { TopNavButtons } from "../component/TopNavButtons"
 
-export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined) => {
+export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined, navButtons: ReactNode[]) => {
     const STAT_MAX = 7
     const strings = vgLiteLang.HeroCreation
     const stats = vgLiteLang.Stat
     const statBlocks = vgLiteLang.BaseStatBlocks
 
-    const { NavButtons, setCanProceed } = useNavButtons()
     const lastCanProceedRef = useRef<boolean>(false)
     const [selectedArr, setSelectedArr] = useState<{ index: number, values: number[], usedIndices: number[] }>()
     const [assignedStats, setAssignedStats] = useState<{ stat: string, value: number | null, poolIndex: number | null }[]>([])
@@ -28,7 +27,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
     const [dragOverKey, setDragOverStat] = useState<string | null>(null)
     
     const resetAssignedStats = () => {
-        setCanProceed(false)
+        //setCanProceed(false)
         setBonusStatSelections([])
         setAssignedStats(Object.keys(stats).map(s => ({ stat: s, value: null, poolIndex: null })))
         setSelectedArr(prev => {
@@ -87,7 +86,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         }
         if (lastCanProceedRef.current !== shouldProceed) {
             lastCanProceedRef.current = shouldProceed
-            setCanProceed(shouldProceed)
+            //setCanProceed(shouldProceed)
         }
     }, [assignedStats, bonusStatSelections, requiredChoiceRules])
 
@@ -180,8 +179,9 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
     const CoreStats = () => {
         return (
             <div className="bg-sheet-main-fill space-y-4">
-                {/* HEADER AND NAVIGATION BUTTONS */}
-                <NavButtons header={<Header title={strings.coreStats} />} />
+                {/* HEADER */}
+                <Header title={strings.coreStats} />
+                <TopNavButtons navButtons={navButtons} />
 
                 <div className="w-full space-y-2 items-center justify-center text-center">
                     {/* STAT ARRAY HEADER */}

@@ -1,19 +1,28 @@
-import { ReactNode, useState } from "react"
-import { useNavigationContext } from "../EditModeContext/Hooks"
+import { useNavigation } from "./NavigationContext"
+import { MoveLeft, MoveRight } from "lucide-react"
+import { vgLiteLang } from "../../../utils/lang"
+import { SecondaryButton, PrimaryButton } from "../../component/Button"
 
-export const useNavButtons = () => {
-    const { backButton, nextButton } = useNavigationContext()
-    const [canProceed, setCanProceed] = useState(true)
+export const NavigationButtons = () => {
+    const { isFirstStep, isLastStep, onNext, onBack, onFinish } = useNavigation()
 
-    const NavButtons = ({ header }: { header: ReactNode }) => {
-        return (
-            <div className="flex gap-x-0.5 justify-between">
-                {backButton}
-                {header}
-                {canProceed ? nextButton : <></>}
-            </div>
-        )
-    }
+    return (
+        <div className="flex items-center gap-x-4">
+            {!isFirstStep && (
+                <SecondaryButton onClick={onBack}>
+                    <div className="flex items-center gap-x-2">
+                        <MoveLeft size={14} />
+                        {vgLiteLang.ButtonActions.back}
+                    </div>
+                </SecondaryButton>
+            )}
 
-    return { NavButtons, setCanProceed }
+            <PrimaryButton onClick={isLastStep ? onFinish : onNext}>
+                <div className="flex items-center gap-x-2">
+                    {isLastStep ? vgLiteLang.ButtonActions.finish : vgLiteLang.ButtonActions.next}
+                    <MoveRight size={14} />
+                </div>
+            </PrimaryButton>
+        </div>
+    )
 }
