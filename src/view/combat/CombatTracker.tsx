@@ -5,6 +5,13 @@ import { lang } from "../../utils/lang"
 import { HeaderWithClipPath } from "../component/SkillCard"
 import { useCombatContext, useIsCurrentCombatant } from "./vglite-combat-tracker"
 import { glowOnHover } from "../common/text-styles"
+import { CombatGroup } from "../../model/combat/VgLiteCombatant"
+import { VgLiteCombat, VgLiteCombatant } from "../../document/VgLiteCombat"
+import { IconOnlyButton } from "../component/IconOnlyButton"
+import { PlayIcon } from "lucide-react"
+
+const isGroupActive = (groupName: CombatGroup) => (game.combat as VgLiteCombat).isGroupActive(groupName)
+const combat = game.combat as VgLiteCombat
 
 export const CombatTracker = ({ data }) => {
     const { combat } = data
@@ -20,28 +27,28 @@ export const CombatTracker = ({ data }) => {
     return (
         <div className="flex flex-col gap-6 pb-2">
             <div>
-                <GroupHeader label={lang.VGLITE.Combat.heroes} />
+                <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
                 <Group>{heroes?.map(hero => <Hero hero={hero} />)}</Group>
             </div>
             <div>
-                <GroupHeader label={lang.VGLITE.Combat.adversaries} />
+                <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
                 <Group>{adversaries?.map(adv => <Adversary adversary={adv} />)}</Group>
             </div>
         </div>
     )
 }
 
-const GroupHeader = ({ label }) => {
+const GroupHeader = ({ label, groupName }: { groupName: CombatGroup, label: string }) => {
     return (
         <div className="flex bg-section-header-fill px-1 font-eskapade font-bold">
-            <div className="flex text-4xl text-text-section-header">{label}</div>
+            <p className={`flex text-4xl text-text-section-header ${isGroupActive(groupName) ? "vglite-hovered" : ""}`}>{`${label} ${isGroupActive(groupName) ? "(Active)" : ""}`}</p>
         </div>
     )
 }
 
 const Group = ({ children }) => {
     return (
-        <div className="mt-4 pl-2 flex flex-col gap-4">{children}</div>
+        <div className={`mt-4 pl-2 flex flex-col gap-4}`}>{children}</div>
     )
 }
 
@@ -69,7 +76,7 @@ const CombatantHeader = ({ token, name, children }) => {
     )
 }
 
-const Combatant = ({ token, children }: { token: Token, children: ReactNode }) => {
+const Combatant = ({ token, children, combatant }: { token: Token, children: ReactNode, combatant: VgLiteCombatant }) => {
     // we are cheating a bit here, but it works!
     //  act like hovering our entries in the tracker is hovering the token
     const onMouseEnter = useCallback(() => {
@@ -85,11 +92,12 @@ const Combatant = ({ token, children }: { token: Token, children: ReactNode }) =
     }, [token])
 
     return (
-        <div className={`cursor-pointer combatant data-combatant-id=${token.combatant.id}`}
+        <div className={`cursor-pointer combatant data-combatant-id=${combatant.id} flex`}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={onClick}>
             {children}
+            <ActivateCombatantButton combatant={combatant} />
         </div>
     )
 }
@@ -104,10 +112,9 @@ const CombatTrackerPortrait = ({ src }) => {
 
 const Hero = ({ hero }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.token._id) as Token, [hero])
-    const isCurrentCombatant = useIsCurrentCombatant(hero)
 
     return (
-        <Combatant token={token}>
+        <Combatant token={token} combatant={hero}>
             <CombatantHeader name={hero.name} token={token}>
                 <HeaderWithClipPath>
                     Status effects, etc
@@ -117,12 +124,21 @@ const Hero = ({ hero }) => {
     )
 }
 
+const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) => {
+    const isCurrentCombatant = useIsCurrentCombatant(combatant)
+    const isInActiveGroup = isGroupActive(combatant.groupName)
+
+    if (isCurrentCombatant || !isInActiveGroup) return undefined
+
+    return <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" />
+}
+
 const Adversary = ({ adversary }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id) as Token, [adversary])
     const isCurrentCombatant = useIsCurrentCombatant(adversary)
 
     return (
-        <Combatant token={token}>
+        <Combatant token={token} combatant={adversary}>
             <CombatantHeader name={adversary.name} token={token}>
                 <HeaderWithClipPath>
                     Status effects, etc
