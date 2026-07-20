@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Mace",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "Tj5Y1Drn6kgooUZs",
+  "img": "icons/weapons/maces/mace-flanged-steel-grey.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 40,
       "c": 0
     },
     "totalValue": {
@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 2,
+      "slots": 1,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -30,9 +30,9 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d4",
+      "oneHand": "1d6",
       "twoHand": "1d4",
-      "type": "physical"
+      "type": "blunt"
     },
     "grip": {
       "style": "H",
@@ -41,9 +41,7 @@
     "weaponTypes": [
       "melee"
     ],
-    "properties": [
-      "defense"
-    ],
+    "properties": [],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -62,12 +60,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784507782456,
+    "modifiedTime": 1784507826512,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!Tj5Y1Drn6kgooUZs"
 }

@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Whip, chain",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "agap6ueUeq6meR45",
+  "img": "/icons/skills/melee/strike-chain-whip-blue.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 40,
       "c": 0
     },
     "totalValue": {
@@ -30,7 +30,7 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d4",
+      "oneHand": "1d6",
       "twoHand": "1d4",
       "type": "physical"
     },
@@ -42,7 +42,9 @@
       "melee"
     ],
     "properties": [
-      "defense"
+      "grapple",
+      "long",
+      "vicious"
     ],
     "explodeData": {
       "canExplode": false,
@@ -62,12 +64,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784508932897,
+    "modifiedTime": 1784509047821,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!agap6ueUeq6meR45"
 }

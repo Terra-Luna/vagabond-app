@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Garotte wire",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "zkD3EYCy6lwU2utR",
+  "img": "/icons/commodities/tech/wire-blue.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 10,
       "c": 0
     },
     "totalValue": {
@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 2,
+      "slots": 1,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -31,18 +31,18 @@
     "range": "close",
     "damage": {
       "oneHand": "1d4",
-      "twoHand": "1d4",
-      "type": "physical"
+      "twoHand": "0",
+      "type": "none"
     },
     "grip": {
-      "style": "H",
+      "style": "HH",
       "state": "H"
     },
     "weaponTypes": [
-      "melee"
+      "finesse"
     ],
     "properties": [
-      "defense"
+      "grapple"
     ],
     "explodeData": {
       "canExplode": false,
@@ -62,12 +62,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784506484469,
+    "modifiedTime": 1784506800665,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!zkD3EYCy6lwU2utR"
 }

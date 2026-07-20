@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Greatshield",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "EzIg47JSFI4xy3yF",
+  "img": "/icons/equipment/shield/wardoor-wooden-boss-brown.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
-      "g": 0,
-      "s": 75,
+      "g": 1,
+      "s": 50,
       "c": 0
     },
     "totalValue": {
@@ -31,15 +31,15 @@
     "range": "close",
     "damage": {
       "oneHand": "1d4",
-      "twoHand": "1d4",
-      "type": "physical"
+      "twoHand": "1d6",
+      "type": "blunt"
     },
     "grip": {
-      "style": "H",
+      "style": "HH",
       "state": "H"
     },
     "weaponTypes": [
-      "melee"
+      "finesse"
     ],
     "properties": [
       "defense"
@@ -62,12 +62,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784507040251,
+    "modifiedTime": 1784507144415,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!EzIg47JSFI4xy3yF"
 }

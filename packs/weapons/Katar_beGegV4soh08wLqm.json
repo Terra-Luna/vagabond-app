@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Katar",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "beGegV4soh08wLqm",
+  "img": "/icons/weapons/fist/fist-katar-triple-gold-black.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 20,
       "c": 0
     },
     "totalValue": {
@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 2,
+      "slots": 1,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -39,11 +39,11 @@
       "state": "H"
     },
     "weaponTypes": [
+      "brawl",
+      "finesse",
       "melee"
     ],
-    "properties": [
-      "defense"
-    ],
+    "properties": [],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -62,12 +62,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784507350899,
+    "modifiedTime": 1784507378116,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!beGegV4soh08wLqm"
 }

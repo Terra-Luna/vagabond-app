@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Sling",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "Paeg9GHTWqxJNfQg",
+  "img": "icons/weapons/slings/sling-leather.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 5,
       "c": 0
     },
     "totalValue": {
@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 2,
+      "slots": 1,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -28,7 +28,7 @@
     "isEquipped": false,
     "isConsumable": false,
     "relicEffects": [],
-    "range": "close",
+    "range": "far",
     "damage": {
       "oneHand": "1d4",
       "twoHand": "1d4",
@@ -39,11 +39,9 @@
       "state": "H"
     },
     "weaponTypes": [
-      "melee"
+      "ranged"
     ],
-    "properties": [
-      "defense"
-    ],
+    "properties": [],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -62,12 +60,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784508545467,
+    "modifiedTime": 1784508579667,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!Paeg9GHTWqxJNfQg"
 }

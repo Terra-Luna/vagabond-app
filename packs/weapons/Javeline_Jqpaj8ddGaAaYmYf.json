@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Javeline",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "Jqpaj8ddGaAaYmYf",
+  "img": "/icons/weapons/polearms/javelin-flared.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 10,
       "c": 0
     },
     "totalValue": {
@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 2,
+      "slots": 1,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -32,18 +32,16 @@
     "damage": {
       "oneHand": "1d4",
       "twoHand": "1d4",
-      "type": "physical"
+      "type": "pierce"
     },
     "grip": {
       "style": "H",
       "state": "H"
     },
     "weaponTypes": [
-      "melee"
+      "thrown"
     ],
-    "properties": [
-      "defense"
-    ],
+    "properties": [],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -62,12 +60,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784507311297,
+    "modifiedTime": 1784507341433,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!Jqpaj8ddGaAaYmYf"
 }

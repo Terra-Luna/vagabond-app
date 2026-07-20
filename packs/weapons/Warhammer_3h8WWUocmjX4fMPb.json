@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Warhammer",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "3h8WWUocmjX4fMPb",
+  "img": "icons/weapons/hammers/hammer-war-rounding.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 80,
       "c": 0
     },
     "totalValue": {
@@ -30,19 +30,19 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d4",
-      "twoHand": "1d4",
-      "type": "physical"
+      "oneHand": "1d8",
+      "twoHand": "1d10",
+      "type": "blunt"
     },
     "grip": {
-      "style": "H",
+      "style": "V",
       "state": "H"
     },
     "weaponTypes": [
       "melee"
     ],
     "properties": [
-      "defense"
+      "vicious"
     ],
     "explodeData": {
       "canExplode": false,
@@ -62,12 +62,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784508831911,
+    "modifiedTime": 1784508882248,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!3h8WWUocmjX4fMPb"
 }

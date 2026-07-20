@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Greatclub",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "Ip95nLUssBITjBKK",
+  "img": "icons/weapons/clubs/club-heavy-barbed-black.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 30,
       "c": 0
     },
     "totalValue": {
@@ -31,19 +31,15 @@
     "range": "close",
     "damage": {
       "oneHand": "1d4",
-      "twoHand": "1d4",
-      "type": "physical"
+      "twoHand": "1d8",
+      "type": "blunt"
     },
     "grip": {
-      "style": "H",
+      "style": "HH",
       "state": "H"
     },
-    "weaponTypes": [
-      "melee"
-    ],
-    "properties": [
-      "defense"
-    ],
+    "weaponTypes": [],
+    "properties": [],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -62,12 +58,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784506978061,
+    "modifiedTime": 1784507029620,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!Ip95nLUssBITjBKK"
 }

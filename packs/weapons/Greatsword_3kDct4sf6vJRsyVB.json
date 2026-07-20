@@ -1,15 +1,15 @@
 {
-  "name": "Standard Shield",
+  "name": "Greatsword",
   "type": "weapon",
-  "_id": "qIT5YQ8osdsRQ92D",
-  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+  "_id": "3kDct4sf6vJRsyVB",
+  "img": "icons/weapons/swords/greatsword-crossguard-silver.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 75,
+      "s": 80,
       "c": 0
     },
     "totalValue": {
@@ -31,18 +31,19 @@
     "range": "close",
     "damage": {
       "oneHand": "1d4",
-      "twoHand": "1d4",
+      "twoHand": "1d10",
       "type": "physical"
     },
     "grip": {
-      "style": "H",
+      "style": "HH",
       "state": "H"
     },
     "weaponTypes": [
       "melee"
     ],
     "properties": [
-      "defense"
+      "cleave",
+      "keen"
     ],
     "explodeData": {
       "canExplode": false,
@@ -62,12 +63,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784499122807,
-    "modifiedTime": 1784506024119,
+    "createdTime": 1784507158177,
+    "modifiedTime": 1784507201867,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!qIT5YQ8osdsRQ92D"
+  "_key": "!items!3kDct4sf6vJRsyVB"
 }

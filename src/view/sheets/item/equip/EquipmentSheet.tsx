@@ -6,7 +6,7 @@ export class EquipmentSheet extends VgLiteItemSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 380,
-            height: 420
+            height: 540
         },
         window: {
             resizable: true
