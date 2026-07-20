@@ -9,13 +9,14 @@ import { SingleSelect } from "../../../../component/SingleSelect"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
+import { ItemRulesManager } from "../../../../component/rules/ItemRulesManager"
 
 export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()
 
-    return (
+    return (<>
         <BaseSkillSheetComponent item={item} content={
-            <div>
+            <div className="w-full">
                 <div className="flex gap-x-2 items-center">
                     {
                         isEditMode ? <>
@@ -35,9 +36,12 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
                             }
                         </div>
                 }
+                <div className="mt-4">
+                    <ItemRulesManager item={item} />
+                </div>
             </div>
         } />
-    )
+    </>)
 }
 
 const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataModel }, prereqIndex: number }) => {

@@ -29,7 +29,7 @@ export const usePerkSelection = (
 
     // Player's chose perks for each slot.
     const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
-    const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleId: string }[]>([])
+    const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
 
     useEffect(() => {
         CombinedItems('perk').then(perks => {
@@ -117,7 +117,7 @@ export const usePerkSelection = (
                 {/* CHOOSE CLASS PERKS */}
                 {classPerkSlots.length > 0 &&
                     <div className="mt-4 space-y-2">
-                        <BonusChoiceTitle text={clazz?.name ?? ''} />
+                        <BonusChoiceTitle text={`${classPerkSlots[0].ruleName}`} />
                         <ItemSelectorGroup
                             slotGroup={classPerkSlots}
                             options={perksList}
@@ -131,7 +131,7 @@ export const usePerkSelection = (
                 {/* CHOOSE ANCESTRY PERKS */}
                 {ancestryPerkSlots.length > 0 &&
                     <BonusChoiceContainer>
-                        <BonusChoiceTitle text={`${ancestryPerkSlots[0].ruleName}`} />
+                        <BonusChoiceTitle text={`${ancestry?.name} ${ancestryPerkSlots[0].ruleName}`} />
                         <ItemSelectorGroup
                             slotGroup={ancestryPerkSlots}
                             options={perksList}
