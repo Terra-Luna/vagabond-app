@@ -5,7 +5,16 @@
   "img": "icons/magic/life/cross-explosion-burst-green.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Healing rolls of your Spells Explode on a 1.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "Kh4eUakqPCI6fdZ0",
+        "key": "FlatModifier",
+        "label": "Assured Healer",
+        "level": 0,
+        "value": 1,
+        "selector": "modifiers.dice.exploding.spellHealing"
+      }
+    ],
     "prerequisites": [
       {
         "type": "spell",
@@ -36,7 +45,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496991809,
-    "modifiedTime": 1784497028474,
+    "modifiedTime": 1784509660875,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,

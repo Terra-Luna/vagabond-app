@@ -1,9 +1,9 @@
-import { inventoryItemTypes } from "../../model/actor/type/Inventory"
+import { useEffect, useState } from "react"
 import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { lang } from "../../utils/lang"
-import { CombinedItemsMultiType, getFullItem, getName, getPortrait } from "../../utils/modelUtil"
+import { CombinedItemsAll, getFullItem, getName, getPortrait } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { Tooltip } from "../component/Tooltip"
@@ -15,43 +15,76 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
     itemId: string, itemName: string, isConsumable?: boolean
 }) => {
     const actor = game.actors?.find(it => it.items.has(itemId))
-    let item = actor?.items.get(itemId) ?? null
+    const item = actor?.items.get(itemId) ?? null
+
+    const [equipment, setEquipment] = useState<EquipmentDataModel<EquipmentSchema> | null>(
+        item ? (item.system as EquipmentDataModel<EquipmentSchema>) : null
+    )
+
     /**
      * If the actor ditched the item since it was link, try to find a matching game item...
      * Don't convert this ItemChatCard component to async or else the chat card rehydrator
      * won't be able to render it.
      */
-    if (!item) {
-        CombinedItemsMultiType(inventoryItemTypes()).then((items) => {
-            getFullItem<EquipmentDataModel<EquipmentSchema>>(items.find(it => it._id === itemId) ?? null).then((itById) => {
-                if (itById) {
-                    item = itById
-                }
-                else {
-                    getFullItem<EquipmentDataModel<EquipmentSchema>>(items.find(it => it.name === itemName) ?? null).then((itByName) => {
-                        item = itByName
-                    })
-                }
-            })
-        })
-    }
+    useEffect(() => {
+        if (item) return
+        let isMounted = true
 
-    const equipment = item?.system as EquipmentDataModel<EquipmentSchema>
-    if (equipment === undefined) return <p className="font-xs font-paradigm font-normal italic">Item removed</p>
-    return (
-        <BaseChatCardHost
-            banner={<ChatCardBanner tokenId={actor?.getActiveTokens()[0]?.id} portrait={getPortrait(item)} title={isConsumable ? `Used: ${getName(item)}` : `${getName(item)}`} />}
-            contents={
-                <div className="font-paradigm font-normal text-lg">
-                    <EnrichedContent content={equipment.description} />
-                    <ItemCardContents item={equipment} />
-                </div>
+        async function fetchFallbackItem() {
+            try {
+                const items = await CombinedItemsAll()
+
+                // Look for ID match
+                let matchedItem = items.find(it => it._id === itemId) ?? null
+                let fullItem = await getFullItem<EquipmentDataModel<EquipmentSchema>>(matchedItem)
+
+                // Matching by Name if ID fails
+                if (!fullItem) {
+                    matchedItem = items.find(it => it.name === itemName) ?? null
+                    fullItem = await getFullItem<EquipmentDataModel<EquipmentSchema>>(matchedItem)
+                }
+
+                if (isMounted && fullItem) {
+                    console.log(fullItem)
+                    setEquipment(fullItem.system as EquipmentDataModel<EquipmentSchema>)
+                }
             }
-        />
+            catch (error) {
+                console.error("Failed to rehydrate chat card item:", error)
+            }
+        }
+
+        fetchFallbackItem()
+
+        return () => { isMounted = false }
+    }, [item, itemId, itemName])
+
+    return (
+        <>
+            {!equipment ? (
+                <p className="font-xs font-paradigm font-normal italic">Item removed</p>
+            ) : (
+                    <BaseChatCardHost
+                        banner={
+                            <ChatCardBanner
+                                tokenId={actor?.getActiveTokens()[0]?.id}
+                                portrait={getPortrait(equipment)}
+                                title={`${isConsumable ? 'Used:' : ''} ${getName(equipment)}`}
+                            />
+                        }
+                        contents={
+                            <div className="font-paradigm font-normal text-lg">
+                                <EnrichedContent content={equipment.description} />
+                                <ItemCardContents item={equipment} />
+                            </div>
+                        }
+                    />
+            )}
+        </>
     )
 }
 
-const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> }) => {
+const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> | null }) => {
     if (item instanceof ArmorDataModel) {
         return <ArmorCardContents item={item} />
     }
@@ -97,11 +130,20 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
                 <DamageTypeIcon dmgType={item.damage.type as string} size={18} />
             </div>
             <ItemCardProp label={lang.VGLITE.ItemSheet.props} children={
-                item.properties.map(prop => (
-                    <Tooltip key={prop} text={lang.VGLITE.WeaponProps[prop].description}>
-                        <p className="italic">{item.properties.map(it => lang.VGLITE.WeaponProps[it].name).join(", ")}</p>
-                    </Tooltip>
-                ))
+                <div className="flex gap-x-1">
+                    {
+                        item.weaponTypes.map(type => (
+                            <p className="italic">{lang.VGLITE.WeaponTypes[type].name}</p>
+                        ))
+                    }
+                    {
+                        item.properties.map(prop => (
+                            <Tooltip key={prop} text={lang.VGLITE.WeaponProps[prop].description}>
+                                <p className="italic">{lang.VGLITE.WeaponProps[prop].name}</p>
+                            </Tooltip>
+                        ))
+                    }
+                </div>
             } />
             <ItemCardProp label={lang.VGLITE.ItemSheet.range} children={lang.VGLITE.Ranges[item.range]} />
             <ItemCardProp label={lang.VGLITE.ItemSheet.material} children={lang.VGLITE.Metals[item.material].name} />

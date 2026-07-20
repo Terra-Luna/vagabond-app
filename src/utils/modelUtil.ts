@@ -1,3 +1,5 @@
+import { inventoryItemTypes } from "../model/actor/type/Inventory"
+
 export const getId = (obj: any): string => {
     return obj?.id ?? obj?.parent?.id ?? ''
 }
@@ -56,6 +58,16 @@ export interface TypedIndexEntry {
 export const CombinedItemsMultiType = async (itemTypes: string[]): Promise<Array<Item | TypedIndexEntry>> => {
     let allItems: Array<Item | TypedIndexEntry> = []
     for (const type of itemTypes) {
+        const items = await CombinedItems(type)
+        allItems = [...allItems, ...items]
+    }
+    return allItems
+}
+
+export const CombinedItemsAll = async (): Promise<Array<Item | TypedIndexEntry>> => {
+    let allItems: Array<Item | TypedIndexEntry> = []
+    const types = ['ancestry', 'class', 'perk', 'spell', ...inventoryItemTypes()]
+    for (const type of types) {
         const items = await CombinedItems(type)
         allItems = [...allItems, ...items]
     }

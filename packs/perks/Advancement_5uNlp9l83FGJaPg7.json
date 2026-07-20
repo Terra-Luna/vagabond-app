@@ -5,7 +5,25 @@
   "img": "icons/svg/regen.svg",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Increase one of your Stats by 1, but no higher than 7. You can take this Perk multiple times.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "stypGfzaB90y7kaz",
+        "key": "ChoiceSet",
+        "label": "Advancement",
+        "level": 0,
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "stats.*",
+            "label": "Stat"
+          }
+        ],
+        "selections": []
+      }
+    ],
     "prerequisites": []
   },
   "effects": [],
@@ -21,7 +39,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497479546,
-    "modifiedTime": 1784497561365,
+    "modifiedTime": 1784509893235,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,

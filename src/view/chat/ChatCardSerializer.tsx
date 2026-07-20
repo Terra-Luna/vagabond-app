@@ -1,4 +1,4 @@
-import React, { Component, FunctionComponent } from "react"
+import React, { FunctionComponent } from "react"
 import { createElement, ReactElement } from "react"
 import { CountdownResult } from "../../combat/dice-rolls"
 import { getId, getName } from "../../utils/modelUtil"
@@ -33,7 +33,7 @@ export function sendCountdownRollMessage(cdRes: CountdownResult | null, Componen
     sendVgLiteChatMessage(null, createElement(Component, { result: cdRes }))
 }
 
-// Recursively converts a live ReactElement tree into serializable JSON
+// Converts a live ReactElement tree into serializable JSON
 function serializeElement(element: ReactElement): ElementBlueprint {
     const { type, props } = element
 
