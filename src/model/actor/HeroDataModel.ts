@@ -171,7 +171,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
             if (fullItem && ((fullItem.type as string) === 'spell' || (fullItem.type as string) === 'perk')) {
                 const systemData = foundry.utils.deepClone(fullItem)?.system
-                const mockModel = {
+                const itemModel = {
                     _sourceId: fullItem.uuid,
                     isRuleSelection: true,
                     parent: {
@@ -184,10 +184,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 }
 
                 if ((fullItem.type as string) === 'spell') {
-                    this.spells.push(mockModel as unknown as SpellDataModel)
+                    this.spells.push(itemModel as unknown as SpellDataModel)
                 }
                 else if ((fullItem.type as string) === 'perk') {
-                    this.perks.push(mockModel as unknown as PerkDataModel)
+                    this.perks.push(itemModel as unknown as PerkDataModel)
                 }
             }
 

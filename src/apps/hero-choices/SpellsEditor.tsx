@@ -14,34 +14,31 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
     // Slots:  { value: string, label: string, ruleId: string }[]
     const { SpellSelection, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList } = useSpellSelection(ancestry, clazz, perks, [])
 
+    const loadSelections = (rules, setSlots) => {
+        const slots = loadInitialSlots(rules)
+        rules.forEach((rule, i1) => {
+            rule.selections.forEach((sel, i2) => {
+                slots[(i1 * rule.selections.length) + i2] = { value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id }
+            })
+        })
+        setSlots(slots)
+    }
+
     /**
      * Load current spell choices...
      */
     useEffect(() => {
         getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-            const slots: any[] = []
-            rules.forEach(rule => {
-                rule.selections.forEach(sel => {
-                    slots.push({ value: sel, label: getSpellName(sel), ruleId: rule.id })
-                })
-            })
-            setClassSpellSlots(slots)
+            loadSelections(rules, setClassSpellSlots)
         })
         getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            const slots: any[] = []
-            rules.forEach(rule => {
-                rule.selections.forEach(sel => {
-                    slots.push({ value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id })
-                })
-            })
-            setAncestrySpellSlots(slots)
+            loadSelections(rules, setAncestrySpellSlots)
         })
         getItemChoiceRules(perks.flatMap(p => p.rules)).then(rules => {
-            const slots: any[] = []
-            
-            setPerkSpellSlots(loadInitialSlots(rules))
+            loadSelections(rules, setPerkSpellSlots)
         })
     }, [spellsList])
+
 
     const getSpellName = (id): string => {
         return spellsList.find(it => it.value === id)?.label ?? 'unk'

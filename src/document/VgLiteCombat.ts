@@ -10,7 +10,7 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
 
         if (!this.getVgLiteFlag("groupActivations")) {
             (this as any).updateSource({
-                "flags.vglite.groupActivations": {}
+                "flags.vagabond-lite.groupActivations": {}
             })
         }
 
