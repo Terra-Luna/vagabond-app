@@ -57,6 +57,8 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     }
 
     activateGroup(groupName: CombatGroup) {
+        if (!this.started) return this
+
         // deactivate all other groups
         const groupNamesToDeactivate = COMBAT_GROUPS.filter(gn => gn !== groupName)
         return Promise.all([
@@ -78,6 +80,8 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     }
 
     async activateCombatant(id: string) {
+        if (!this.started) return this
+
         const combatant = this.getEmbeddedDocument("Combatant", id, {}) as VgLiteCombatant
         if (!combatant?.activations.value) return this
 

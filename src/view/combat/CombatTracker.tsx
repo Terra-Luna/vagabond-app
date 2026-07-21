@@ -63,7 +63,7 @@ const GroupHeader = ({ label, groupName }: { groupName: CombatGroup, label: stri
 
 const GroupBody = ({ children }) => {
     return (
-        <div className={`mt-4 pl-2 flex flex-col gap-4}`}>{children}</div>
+        <div className="mt-4 pl-2 flex flex-col gap-4">{children}</div>
     )
 }
 
