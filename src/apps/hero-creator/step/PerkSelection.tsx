@@ -168,5 +168,5 @@ export const usePerkSelection = (
         </>)
     }
 
-    return { PerkSelection, ancestryPerkSlots, classPerkSlots }
+    return { PerkSelection, ancestryPerkSlots, classPerkSlots, setAncestryPerkSlots, setClassPerkSlots }
 }

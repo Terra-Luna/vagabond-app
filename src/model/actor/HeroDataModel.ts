@@ -1,6 +1,6 @@
 import { createElement } from "react"
 import { vgLiteLang } from "../../utils/lang"
-import { CombinedItemsMultiType, getId, isPathOfType } from "../../utils/modelUtil"
+import { CombinedItemsMultiType, getFullItem, getId, isPathOfType } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString } from "../common/sharedSchemas"
@@ -167,10 +167,9 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             if (castItem.type === 'spell' && this.spells?.some((spell: any) => spell?._sourceId === castItem.uuid)) continue
             if (castItem.type === 'perk' && this.perks?.some((perk: any) => perk?._sourceId === castItem.uuid)) continue
 
-            const systemData = foundry.utils.deepClone(castItem)
+            const systemData = foundry.utils.deepClone((await getFullItem(castItem))?.system)
 
             const mockModel = {
-                ...systemData,
                 _sourceId: castItem.uuid,
                 isRuleSelection: true,
                 parent: {
@@ -178,7 +177,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                     img: castItem.img || "icons/svg/item-bag.svg",
                     type: castItem.type,
                     flags: { core: { sourceId: castItem.uuid }, isRuleSelection: true }
-                }
+                },
+                ...systemData
             }
 
             if (castItem.type === 'spell') {

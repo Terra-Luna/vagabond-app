@@ -65,7 +65,7 @@ export const CustomDropDown = ({ value, options, className, onChange }: {
         <Select
             value={value}
             onChange={onChange}
-            className={`border border-solid border-table-border rounded-sm px-1 ${className}`}
+            className={`border border-solid border-table-border rounded-sm p-1 ${className}`}
         >
             {
                 options.map(opt => (

@@ -35,8 +35,8 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
     })
 
     // Separate rules into Active and Upcoming (Locked) categories
-    const activeRules = allRules.filter(r => currentLevel >= r.level)
-    const lockedRules = allRules.filter(r => currentLevel < r.level).sort((a, b) => { return a.level - b.level })
+    const activeRules = allRules.filter(r => r.level <= currentLevel)
+    const lockedRules = allRules.filter(r => r.level > currentLevel).sort((a, b) => { return a.level - b.level })
     const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
 
     return (
@@ -59,7 +59,7 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
                     }
                 </EffectCardContainer>
             } />
-            
+
             {/* LOCKED FEATURES & PERKS */}
             {lockedRules.length > 0 && (
                 <CollapsibleSection title={`Locked Features & Perks (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
@@ -88,9 +88,9 @@ export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDa
                                         </span>
                                         {/* BONUS VALUE PILL */}
                                         <span className={`
-                                        text-base font-eskapade font-bold px-1.5
-                                        border border-solid border-table-border/50 rounded-sm
-                                        ${(mod.value ?? 0) >= 0 ?
+                                                text-base font-eskapade font-bold px-1.5
+                                                border border-solid border-table-border/50 rounded-sm
+                                                ${(mod.value ?? 0) >= 0 ?
                                                 'text-text-primary bg-sheet-main-fill' :
                                                 'text-destructive-action bg-destructive-action/10'}`
                                         }>

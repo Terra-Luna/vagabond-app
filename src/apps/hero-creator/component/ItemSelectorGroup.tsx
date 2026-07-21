@@ -37,10 +37,10 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
             {
                 slotGroup.map((slot, index) => (
                     <CustomDropDown
-                        key={index}
+                        key={`${slot.value}_${index}`}
                         value={slot.value}
                         options={options.filter(opt => opt.value === slot.value || !getOtherSelectedIds(index).includes(opt.value))}
-                        className={"w-7/16"}
+                        className={"w-7/16 text-lg font-eskapade font-normal"}
                         onChange={(e) => {
                             const selectedId = e.target.value
                             const selectedSpell = options.find(opt => opt.value === selectedId)

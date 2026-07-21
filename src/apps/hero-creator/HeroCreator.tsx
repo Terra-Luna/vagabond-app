@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { useClassSelection } from "./step/ClassSelection"
 import { useNameAndAncestry } from "./step/NameAndAncestry"
@@ -8,6 +8,8 @@ import { useSpellSelection } from "./step/SpellSelection"
 import { usePerkSelection } from "./step/PerkSelection"
 import { useEquipmentSelection } from "./step/EquipmentSelection"
 import { useNavigation } from "../../view/context/navigation/NavigationContext"
+import { CombinedItems, getFullItem } from "../../utils/modelUtil"
+import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 
 interface HeroCreatorProps {
     hero: Actor & { system: HeroDataModel }
@@ -21,7 +23,7 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
     const { ClassSelection, classItem } = useClassSelection(hero, [backButton, nextButton])
     const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
     const { TrainingSelection, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, [backButton, nextButton])
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
     const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, [backButton, nextButton])
     const { EquipmentSelection } = useEquipmentSelection(classItem, [backButton, nextButton])
 
@@ -35,6 +37,7 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
     }, [assignedStats, bonusStatSelections, flatStatBonuses])
 
     const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
+    const [hasPerkBonusSelections, setHasPerkBonusSelections] = useState<boolean>(false)
 
     const renderStepContent = useCallback((id: string | undefined) => {
         switch (id) {
@@ -44,23 +47,37 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
             case 'training-selection': return <TrainingSelection stats={statsWithBonuses} />
             case 'spell-selection': return hasSpellSlots ? <SpellSelection /> : null
             case 'perk-selection': return <PerkSelection />
+            case 'perk-bonus-selection': return hasPerkBonusSelections ? <></> : null
             case 'equipment-selection': return <EquipmentSelection />
             default: return null
         }
     }, [
-        hasSpellSlots, statsWithBonuses, NameAndAncestry, ClassSelection,
+        hasSpellSlots, hasPerkBonusSelections, statsWithBonuses, NameAndAncestry, ClassSelection,
         CoreStats, TrainingSelection, SpellSelection, PerkSelection, EquipmentSelection
     ])
 
     const activeStepIds = useMemo(() => {
         const baseIds = ['identity', 'class-selection', 'core-stats', 'training-selection']
-        if (hasSpellSlots) {
-            baseIds.push('spell-selection')
-        }
-        baseIds.push('perk-selection', 'equipment-selection')
+        if (hasSpellSlots) { baseIds.push('spell-selection') }
+        baseIds.push('perk-selection')
+        if (hasPerkBonusSelections) { baseIds.push('perk-bonus-selection') }
+        baseIds.push('equipment-selection')
         return baseIds
-    }, [hasSpellSlots])
+    }, [hasSpellSlots, hasPerkBonusSelections])
 
+    useEffect(() => {
+        CombinedItems('perk').then((perks) => {
+            let hasChoices = false
+            for (const perkId of [...ancestryPerkSlots, ...classPerkSlots].map(slot => slot.value)) {
+                getFullItem<PerkDataModel>(perks.find(p => p.uuid === perkId) ?? null).then((perk) => {
+                    if (!hasChoices) {
+                        hasChoices = (perk?.system as PerkDataModel)?.rules?.filter(r => r.key === "ChoiceSet").length > 0
+                    }
+                    setHasPerkBonusSelections(hasChoices)
+                })
+            }
+        })
+    }, [ancestryPerkSlots, classPerkSlots])
     
     useEffect(() => {
         registerStepIds(activeStepIds)

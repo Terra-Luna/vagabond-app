@@ -1,5 +1,4 @@
 import { vgLiteLang } from "../../../../../../../utils/lang"
-import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../../../component/Dropdown"
 
 export const SpellSelector = ({ spell, spells, setSpellSelection }) => {

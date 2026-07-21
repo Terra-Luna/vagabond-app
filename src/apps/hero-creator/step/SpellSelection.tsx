@@ -12,12 +12,15 @@ import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
+import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 
 export const useSpellSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
     clazz: Item & { system: ClassDataModel } | undefined,
+    perks: PerkDataModel[] | undefined,
     navButtons: ReactNode[]
 ) => {
+    const isCreationMode = navButtons.length > 0
     const strings = vgLiteLang.HeroCreation
 
     // All spells for selection.
@@ -27,9 +30,10 @@ export const useSpellSelection = (
     const [ancestrySpellGrants, setAncestrySpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
     const [classSpellGrants, setClassSpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
 
-    // Player's chose spells for each slot.
+    // Player's spell choices for each slot.
     const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
-    const [classSpellSlots, setClassSpellSlots] = useState<{ value: string, label: string, ruleId: string }[]>([])
+    const [classSpellSlots, setClassSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
+    const [perkSpellSlots, setPerkSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
 
     useEffect(() => {
         CombinedItems('spell').then(spells => {
@@ -37,7 +41,7 @@ export const useSpellSelection = (
                 const fullSpells = await Promise.all(spells.map(sp => getFullItem<Item & { system: SpellDataModel }>(sp)))
                 setSpellsList([
                     { value: '', label: strings.emptySlot, img: '', dmgType: '', description: '' },
-                    ...fullSpells.filter(sp => sp != null)
+                    ...fullSpells.filter(sp => sp != null).sort((a, b) => a.name.localeCompare(b.name))
                         .map(spell => ({
                             value: spell.uuid,
                             label: spell.name,
@@ -55,26 +59,30 @@ export const useSpellSelection = (
         getItemGrants('spell', [ancestry]).then(grants => {
             setAncestrySpellGrants(grants)
         })
-        getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            setAncestrySpellSlots(loadInitialSlots(rules))
-        })
         getItemGrants('spell', [clazz]).then(grants => {
             setClassSpellGrants(grants)
+        })
+        getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
+            setAncestrySpellSlots(loadInitialSlots(rules))
         })
         getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
             setClassSpellSlots(loadInitialSlots(rules))
         })
-    }, [ancestry, clazz])
+        getItemChoiceRules(perks?.flatMap(p => p.rules) ?? []).then(rules => {
+            setPerkSpellSlots(loadInitialSlots(rules))
+        })
+    }, [ancestry, clazz, perks])
 
-    const loadInitialSlots = (rules) => {
+    const loadInitialSlots = useCallback((rules) => {
         const slots: any[] = []
         rules.filter(r => r.pack === 'spell').forEach(rule => {
             Array.from({ length: rule.maxChoices }).forEach(_ => {
                 slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id })
             })
         })
+        console.log(slots)
         return slots
-    }
+    }, [])
 
     const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
         setter(prevSlots =>
@@ -97,11 +105,14 @@ export const useSpellSelection = (
 
             {/* GRANTED SPELLS */}
             <div className="mt-4 space-y-1">
-                <HeroCreationLabel text={strings.grantedSpells} />
+                <HeroCreationLabel text={strings.grantedSpells} /> 
                 {
                     [...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
                         <ItemGrantCard key={index} name={grant.item} source={grant.source} />
                     ))
+                }
+                {
+                    !isCreationMode && ancestrySpellSlots.map(slot => (<ItemGrantCard key={slot.ruleId} name={slot.label} source={slot.ruleName} />))
                 }
             </div>
 
@@ -112,22 +123,36 @@ export const useSpellSelection = (
                 <ItemSelectorGroup
                     slotGroup={classSpellSlots}
                     options={spellsList}
-                    otherSlotGroup={ancestrySpellSlots}
+                    otherSlotGroup={[...ancestrySpellSlots, ...perkSpellSlots]}
                     grants={[...ancestrySpellGrants, ...classSpellGrants]}
                     onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
                 />
             </div>
 
             {/* CHOOSE ANCESTRY SPELLS */}
-            {ancestrySpellSlots.length > 0 &&
+            {ancestrySpellSlots.length > 0 && isCreationMode &&
                 <BonusChoiceContainer>
                     <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
                     <ItemSelectorGroup
                         slotGroup={ancestrySpellSlots}
                         options={spellsList}
-                        otherSlotGroup={classSpellSlots}
+                        otherSlotGroup={[...classSpellSlots, ...perkSpellSlots]}
                         grants={[...ancestrySpellGrants, ...classSpellGrants]}
                         onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setAncestrySpellSlots)}
+                    />
+                </BonusChoiceContainer>
+            }
+
+            {/* CHOOSE MAGICAL SECRET SPELLS */}
+            {perkSpellSlots.length > 0 &&
+                <BonusChoiceContainer>
+                    <BonusChoiceTitle text={strings.magicalSecrets} />
+                    <ItemSelectorGroup
+                        slotGroup={perkSpellSlots}
+                        options={spellsList}
+                        otherSlotGroup={[...classSpellSlots, ...ancestrySpellSlots]}
+                        grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                        onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setPerkSpellSlots)}
                     />
                 </BonusChoiceContainer>
             }
@@ -152,7 +177,7 @@ export const useSpellSelection = (
                         )
                     }
                     else {
-                        return <></>
+                        return null
                     }
                 })}
 
@@ -172,12 +197,12 @@ export const useSpellSelection = (
                         )
                     }
                     else {
-                        return <></>
+                        return null
                     }
                 })}
             </div>
         </>)
     }
 
-    return { SpellSelection, ancestrySpellSlots, classSpellSlots }
+    return { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, spellsList }
 }

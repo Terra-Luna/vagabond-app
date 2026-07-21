@@ -19,7 +19,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     )
 
     const [isCreatorOpen, setIsCreatorOpen] = useState(false)
-    const [isGrantModifiersOpen, setIsGrantModifiersOpen] = useState(false)
+    const [isFeaturesPerksOpen, setIsFeaturesPerksOpen] = useState(false)
     const { setIsActiveEffectsOpen } = useActiveEffectsManager(hero.parent)
 
     const toggleMenu = useCallback(() => {
@@ -47,7 +47,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     }, [])
 
     const setRulesClosed = useCallback(() => {
-        setIsGrantModifiersOpen(false)
+        setIsFeaturesPerksOpen(false)
     }, [])
 
     const createrPopout = useGlobalPopout(setCreatorClosed)
@@ -64,12 +64,12 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 } />, "Hero Creator", true
             )
         }
-        if (isGrantModifiersOpen) {
+        if (isFeaturesPerksOpen) {
             rulesPopout.renderPopout(
                 <HeroActiveRulesView actor={hero.parent} />, "Grants & Modifiers", false
             )
         }
-    }, [isCreatorOpen, isGrantModifiersOpen])
+    }, [isCreatorOpen, isFeaturesPerksOpen])
 
     return (<>
         <div className={`relative ${className}`}>
@@ -108,7 +108,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                             <></>
                     }
                     <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => setIsActiveEffectsOpen(true)} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'FEATURES & PERKS'} onClick={() => setIsGrantModifiersOpen(true)} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'FEATURES & PERKS'} onClick={() => setIsFeaturesPerksOpen(true)} toggleMenu={toggleMenu} />
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

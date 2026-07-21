@@ -10,7 +10,8 @@ export interface ItemRule {
     maxChoices: number,
     value: number,
     pack: string,
-    choices: { value: string, label: string }[]
+    choices: { value: string, label: string }[],
+    selections: string[]
 }
 
 export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | undefined)[]): { name: string, stat: string, bonus: number }[] {
@@ -274,7 +275,8 @@ export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> 
             maxChoices: Number(rule.maxChoices ?? 1),
             value: Number(rule.value ?? 1),
             pack: rule.pack,
-            choices: finalizedChoices
+            choices: finalizedChoices,
+            selections: rule.selections
         }
     })
 

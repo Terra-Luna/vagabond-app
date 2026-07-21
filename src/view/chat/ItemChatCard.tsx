@@ -45,7 +45,6 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
                 }
 
                 if (isMounted && fullItem) {
-                    console.log(fullItem)
                     setEquipment(fullItem.system as EquipmentDataModel<EquipmentSchema>)
                 }
             }
@@ -133,7 +132,7 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
                 <div className="flex gap-x-1">
                     {
                         item.weaponTypes.map(type => (
-                            <p className="italic">{lang.VGLITE.WeaponTypes[type].name}</p>
+                            <p key={type} className="italic">{lang.VGLITE.WeaponTypes[type].name}</p>
                         ))
                     }
                     {
