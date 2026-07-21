@@ -11,14 +11,16 @@
         "key": "GrantItem",
         "label": "Theurgy: Light",
         "level": "1",
-        "uuid": ""
+        "uuid": "Compendium.vagabond-lite.spells.Item.uFqM8LSGCbpH0UTA",
+        "type": "spell"
       },
       {
         "id": "SuDob7qulK9ECBI3",
         "key": "GrantItem",
         "label": "Theurgy: Life",
         "level": "1",
-        "uuid": ""
+        "uuid": "Compendium.vagabond-lite.spells.Item.pTpQKxsiYMR2yZ0G",
+        "type": "spell"
       },
       {
         "id": "WaF576Cn9yRMVs5y",
@@ -150,7 +152,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1784498800691,
+    "modifiedTime": 1784585223433,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,

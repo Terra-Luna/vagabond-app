@@ -2,7 +2,7 @@
   "name": "Advancement",
   "type": "perk",
   "_id": "5uNlp9l83FGJaPg7",
-  "img": "icons/svg/regen.svg",
+  "img": "icons/skills/movement/arrows-up-trio-red.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Increase one of your Stats by 1, but no higher than 7. You can take this Perk multiple times.</span></p>",
     "rules": [
@@ -24,7 +24,8 @@
         "selections": []
       }
     ],
-    "prerequisites": []
+    "prerequisites": [],
+    "canTakeMultiple": true
   },
   "effects": [],
   "folder": null,
@@ -39,7 +40,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497479546,
-    "modifiedTime": 1784509893235,
+    "modifiedTime": 1784599964302,
     "lastModifiedBy": "KkUM0xdZFWx39xs4",
     "compendiumSource": null,
     "duplicateSource": null,
