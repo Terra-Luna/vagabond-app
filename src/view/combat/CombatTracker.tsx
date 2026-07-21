@@ -8,10 +8,11 @@ import { glowOnHover } from "../common/text-styles"
 import { CombatGroup } from "../../model/combat/VgLiteCombatant"
 import { VgLiteCombat, VgLiteCombatant } from "../../document/VgLiteCombat"
 import { IconOnlyButton } from "../component/IconOnlyButton"
-import { PlayIcon } from "lucide-react"
+import { PlayIcon, PlusIcon, StopCircle } from "lucide-react"
+import { useContextMenu } from "../component/ContextMenu"
 
 const isGroupActive = (groupName: CombatGroup) => (game.combat as VgLiteCombat).isGroupActive(groupName)
-const combat = game.combat as VgLiteCombat
+const getCombat = () => game.combat as VgLiteCombat
 
 export const CombatTracker = ({ data }) => {
     const { combat } = data
@@ -26,35 +27,49 @@ export const CombatTracker = ({ data }) => {
 
     return (
         <div className="flex flex-col gap-6 pb-2">
-            <div>
+            <Group groupName="heroes">
                 <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
-                <Group>{heroes?.map(hero => <Hero hero={hero} />)}</Group>
-            </div>
-            <div>
+                <GroupBody>{heroes?.map(hero => <Hero hero={hero} />)}</GroupBody>
+            </Group>
+            <Group groupName="adversaries">
                 <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
-                <Group>{adversaries?.map(adv => <Adversary adversary={adv} />)}</Group>
-            </div>
+                <GroupBody>{adversaries?.map(adv => <Adversary adversary={adv} />)}</GroupBody>
+            </Group>
+        </div>
+    )
+}
+
+const Group = ({ children }: { groupName: CombatGroup, children: ReactNode }) => {
+    return (
+        <div>
+            {children}
         </div>
     )
 }
 
 const GroupHeader = ({ label, groupName }: { groupName: CombatGroup, label: string }) => {
+    const { onCtxMenu, ContextMenu } = useContextMenu()
+    const setGroupActive = useCallback(() => {
+        getCombat().activateGroup(groupName)
+    }, [groupName])
+
     return (
-        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold">
+        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold" onContextMenu={e => onCtxMenu(e, [{ label: "Activate", icon: PlayIcon, action: setGroupActive }])}>
             <p className={`flex text-4xl text-text-section-header ${isGroupActive(groupName) ? "vglite-hovered" : ""}`}>{`${label} ${isGroupActive(groupName) ? "(Active)" : ""}`}</p>
+            <ContextMenu />
         </div>
     )
 }
 
-const Group = ({ children }) => {
+const GroupBody = ({ children }) => {
     return (
         <div className={`mt-4 pl-2 flex flex-col gap-4}`}>{children}</div>
     )
 }
 
 const CombatantHeader = ({ token, name, children }) => {
-
     const [hovered, setIsHovered] = useState(false)
+    const { onCtxMenu, ContextMenu } = useContextMenu()
 
     Hooks.on("hoverToken", (hoveredToken, hover) => {
         if (hoveredToken === token) {
@@ -63,7 +78,7 @@ const CombatantHeader = ({ token, name, children }) => {
     })
 
     return (
-        <div className="flex">
+        <div className="flex" onContextMenu={e => onCtxMenu(e, [{ label: "Activate Combatant (localify me)", action: () => getCombat().activateCombatant(token.combatant.id), icon: PlayIcon }])}>
             <CombatTrackerPortrait src={token?.document.texture.src} />
             <div>
                 <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg border-solid border-l-2 border-stat-block-fill`}>
@@ -71,6 +86,7 @@ const CombatantHeader = ({ token, name, children }) => {
                 </div>
                 {children}
             </div>
+            <ContextMenu />
         </div>
 
     )
@@ -127,15 +143,35 @@ const Hero = ({ hero }) => {
 const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) => {
     const isCurrentCombatant = useIsCurrentCombatant(combatant)
     const isInActiveGroup = isGroupActive(combatant.groupName)
+    const hasActivationsLeft = combatant.activations.value ?? 0 > 0
 
-    if (isCurrentCombatant || !isInActiveGroup) return undefined
+    if (!isInActiveGroup) return undefined
 
-    return <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" />
+    const id = combatant?._id
+
+    const activateCombatant = useCallback(() => {
+        if (id) {
+            getCombat().activateCombatant(id)
+        }
+    }, [combatant])
+
+    const deactivateCombatant = useCallback(() => {
+        if (id) {
+            getCombat().deactivateCombatant(id)
+        }
+    }, [combatant])
+
+    if (isCurrentCombatant) {
+        return <IconOnlyButton title="Finish Turn (localify me)" Icon={StopCircle} className="ml-auto mr-4" onClick={deactivateCombatant} />
+    } else if (hasActivationsLeft) {
+        return <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" onClick={activateCombatant} />
+    }
+
+    return undefined
 }
 
 const Adversary = ({ adversary }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id) as Token, [adversary])
-    const isCurrentCombatant = useIsCurrentCombatant(adversary)
 
     return (
         <Combatant token={token} combatant={adversary}>

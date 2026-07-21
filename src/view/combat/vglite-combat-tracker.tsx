@@ -47,7 +47,7 @@ const CombatContext = createContext({ activeCombatantId: null, activeGroup: null
 
 export const useIsCurrentCombatant = (combatant) => {
     const { activeCombatantId } = useContext(CombatContext)
-    return activeCombatantId === combatant.id
+    return activeCombatantId === combatant.id || activeCombatantId === combatant._id
 }
 
 export const useCombatContext = () => useContext(CombatContext)

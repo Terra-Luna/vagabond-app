@@ -5,7 +5,7 @@ import { AdversaryDataModel } from "../actor/AdversaryDataModel";
 type VgLiteCombatantModelSchema = ReturnType<typeof defineSchema>;
 
 export type VgLiteCombatantInstance = InstanceType<typeof VGLiteCombatantModel>
-const COMBAT_GROUPS = ['heroes', 'adversaries', 'npcs'] as const
+export const COMBAT_GROUPS = ['heroes', 'adversaries', 'npcs'] as const
 export type CombatGroup = typeof COMBAT_GROUPS[number]
 
 const defineSchema = () => {

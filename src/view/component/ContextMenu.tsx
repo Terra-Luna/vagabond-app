@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { FunctionComponent, ReactElement, useState } from 'react'
 import { Divider } from './Header'
 import { ControlledMenu, MenuItem } from '@szhsin/react-menu'
 
@@ -26,7 +26,7 @@ const Component = () => {
 
  */
 export interface CtxMenuItem {
-    icon: any
+    icon: FunctionComponent<{ size, className }>
     label: string
     action: (e: any) => void
     isDestructive?: boolean
@@ -58,7 +58,7 @@ export const useContextMenu = () => {
                 {
                     menuItems.map((item) => (
                         <div key={item.label}>
-                            { item.isDestructive ? <Divider /> : <></> }
+                            {item.isDestructive ? <Divider /> : <></>}
                             <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : ctxMenuTextStyle} onClick={item.action}>
                                 {item.icon ?
                                     <div className="flex items-center">
@@ -79,6 +79,6 @@ export const useContextMenu = () => {
     return { onCtxMenu, ContextMenu }
 }
 
-const formattedIcon = (IconComponent, isDestructive) => {
+const formattedIcon = (IconComponent: FunctionComponent<{ size, className }>, isDestructive) => {
     return <IconComponent size={14} className={isDestructive ? `text-destructive-action` : `text-context-menu-text`} />
 }
