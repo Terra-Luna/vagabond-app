@@ -12,38 +12,34 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
     const perks = actor.system.perks as PerkDataModel[]
 
     // Slots:  { value: string, label: string, ruleId: string }[]
-    const { SpellSelection, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, spellsList } = useSpellSelection(ancestry, clazz, perks, [])
+    const { SpellSelection, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList } = useSpellSelection(ancestry, clazz, perks, [])
 
     /**
      * Load current spell choices...
      */
     useEffect(() => {
         getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
+            const slots: any[] = []
             rules.forEach(rule => {
-                const slots: any[] = []
                 rule.selections.forEach(sel => {
                     slots.push({ value: sel, label: getSpellName(sel), ruleId: rule.id })
                 })
-                setClassSpellSlots(slots)
             })
+            setClassSpellSlots(slots)
         })
         getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
+            const slots: any[] = []
             rules.forEach(rule => {
-                const slots: any[] = []
                 rule.selections.forEach(sel => {
                     slots.push({ value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id })
                 })
-                setAncestrySpellSlots(slots)
             })
+            setAncestrySpellSlots(slots)
         })
         getItemChoiceRules(perks.flatMap(p => p.rules)).then(rules => {
-            rules.forEach(rule => {
-                const slots: any[] = []
-                rule.selections.forEach(sel => {
-                    slots.push({ value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id })
-                })
-                setPerkSpellSlots(slots)
-            })
+            const slots: any[] = []
+            
+            setPerkSpellSlots(loadInitialSlots(rules))
         })
     }, [spellsList])
 

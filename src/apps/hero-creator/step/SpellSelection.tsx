@@ -55,6 +55,16 @@ export const useSpellSelection = (
         })
     }, [])
 
+    const loadInitialSlots = (rules) => {
+        const slots: any[] = []
+        rules.filter(r => r.pack === 'spell').forEach(rule => {
+            Array.from({ length: rule.maxChoices }).forEach(_ => {
+                slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id })
+            })
+        })
+        return slots
+    }
+
     useEffect(() => {
         getItemGrants('spell', [ancestry]).then(grants => {
             setAncestrySpellGrants(grants)
@@ -72,17 +82,6 @@ export const useSpellSelection = (
             setPerkSpellSlots(loadInitialSlots(rules))
         })
     }, [ancestry, clazz, perks])
-
-    const loadInitialSlots = useCallback((rules) => {
-        const slots: any[] = []
-        rules.filter(r => r.pack === 'spell').forEach(rule => {
-            Array.from({ length: rule.maxChoices }).forEach(_ => {
-                slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id })
-            })
-        })
-        console.log(slots)
-        return slots
-    }, [])
 
     const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
         setter(prevSlots =>
@@ -182,7 +181,7 @@ export const useSpellSelection = (
                 })}
 
                 {/* CHOSEN SPELLS */}
-                {[...ancestrySpellSlots, ...classSpellSlots].filter(slot => slot.value.length > 0).map(slot => {
+                {[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots].filter(slot => slot.value.length > 0).map(slot => {
                     const sp = spellsList.find(sp => sp.value === slot.value)
                     if (sp) {
                         return (
@@ -204,5 +203,5 @@ export const useSpellSelection = (
         </>)
     }
 
-    return { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, spellsList }
+    return { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList }
 }

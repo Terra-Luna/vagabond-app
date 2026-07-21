@@ -150,7 +150,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         /**
          * Add granted & selected Spells & Perks to the actor's spells/perks array in-memory only.
          * These are not committed to the database and, therefore, will catch all udpates made to
-         * the parent items.
+         * the parent items. Note, some items (perks) may be applied more than once.
          */
         const activeRules = this.getActiveRules(this.parent)
         const itemRuleSelections = activeRules
@@ -159,34 +159,38 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && (r.type === "spell" || r.type === "perk"))
         const itemIds = [...itemRuleSelections, ...itemGrantRules.map(r => r.uuid)]
-        const items = (await CombinedItemsMultiType(['spell', 'perk'])).filter(it => itemIds.includes(it.uuid))
+        const allItems = await CombinedItemsMultiType(['spell', 'perk'])
+        const items: any[] = []
+        itemIds.forEach(id => {
+            const item = allItems.find(it => it.uuid === id)
+            if (item) items.push(item)
+        })
 
         for (const item of items) {
-            const castItem = item as any
+            const fullItem = await getFullItem(item)
 
-            if (castItem.type === 'spell' && this.spells?.some((spell: any) => spell?._sourceId === castItem.uuid)) continue
-            if (castItem.type === 'perk' && this.perks?.some((perk: any) => perk?._sourceId === castItem.uuid)) continue
+            if (fullItem && ((fullItem.type as string) === 'spell' || (fullItem.type as string) === 'perk')) {
+                const systemData = foundry.utils.deepClone(fullItem)?.system
+                const mockModel = {
+                    _sourceId: fullItem.uuid,
+                    isRuleSelection: true,
+                    parent: {
+                        name: fullItem.name || "Unknown Feature",
+                        img: fullItem.img || "icons/svg/item-bag.svg",
+                        type: fullItem.type,
+                        flags: { core: { sourceId: fullItem.uuid }, isRuleSelection: true }
+                    },
+                    ...systemData
+                }
 
-            const systemData = foundry.utils.deepClone((await getFullItem(castItem))?.system)
-
-            const mockModel = {
-                _sourceId: castItem.uuid,
-                isRuleSelection: true,
-                parent: {
-                    name: castItem.name || "Unknown Feature",
-                    img: castItem.img || "icons/svg/item-bag.svg",
-                    type: castItem.type,
-                    flags: { core: { sourceId: castItem.uuid }, isRuleSelection: true }
-                },
-                ...systemData
+                if ((fullItem.type as string) === 'spell') {
+                    this.spells.push(mockModel as unknown as SpellDataModel)
+                }
+                else if ((fullItem.type as string) === 'perk') {
+                    this.perks.push(mockModel as unknown as PerkDataModel)
+                }
             }
 
-            if (castItem.type === 'spell') {
-                this.spells.push(mockModel as unknown as SpellDataModel)
-            }
-            else if (castItem.type === 'perk') {
-                this.perks.push(mockModel as unknown as PerkDataModel)
-            }
         }
     }
 

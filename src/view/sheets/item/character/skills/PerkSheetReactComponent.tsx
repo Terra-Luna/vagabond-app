@@ -10,6 +10,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 import { ItemRulesManager } from "../../../../component/rules/ItemRulesManager"
+import { Checkbox } from "../../../../component/Checkbox"
 
 export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -29,6 +30,11 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
                 {
                     !isEditMode ? <></> :
                         <div className="space-y-0.5 mb-8">
+                            <Checkbox
+                                label={"Can take multiple times"}
+                                onCheckedChanged={() => { item.update({ 'system.canTakeMultiple': !item.system.canTakeMultiple } as Record<string, boolean>) }}
+                                checked={item.system.canTakeMultiple}
+                            />
                             {
                                 item.system.prerequisites.map((_, index) => (
                                     <Prerequisite key={index} perk={item} prereqIndex={index} />
