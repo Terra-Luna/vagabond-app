@@ -5,6 +5,7 @@ import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { useSpellSelection } from "../hero-creator/step/SpellSelection"
 import { getItemChoiceRules } from "../../view/component/rules/util/item-rules-util"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
+import { groupBy } from "../../utils/collectionUtil"
 
 export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
@@ -19,9 +20,11 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
 
     const loadSelections = (rules, setSlots) => {
         const slots = loadInitialSlots(rules)
-        rules.forEach((rule, i1) => {
-            rule.selections.forEach((sel, i2) => {
-                slots[(i1 * rule.selections.length) + i2] = { value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id }
+        let sharedIndex = 0
+        rules.forEach(rule => {
+            rule.selections.forEach(sel => {
+                slots[sharedIndex] = { value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id }
+                sharedIndex += 1
             })
         })
         setSlots(slots)
@@ -40,7 +43,19 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
         getItemChoiceRules(perks.flatMap(p => p.rules)).then(rules => {
             loadSelections(rules.filter(r => r.pack === 'spell'), setPerkSpellSlots)
         })
-    }, [spellsList])
+        console.log("useEffect getItemChoiceRules")
+    }, [clazz, ancestry, perks, spellsList])
+
+
+    useEffect(() => {
+        const classRules = [...clazz.system.rules] as any[]
+        const classSpellSlotGroups = groupBy("ruleId", classSpellSlots)
+        Object.keys(classSpellSlotGroups).forEach(ruleId => {
+            const ruleIndex = classRules.findIndex(r => r.id === ruleId)
+            classRules[ruleIndex].selections = classSpellSlotGroups[ruleId].map(it => it.value)
+        })
+        clazz.update({ 'system.rules': classRules } as Record<string, any[]>)
+    }, [clazz, classSpellSlots])
 
 
     const getSpellName = (id): string => {
