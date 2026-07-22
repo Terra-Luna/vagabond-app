@@ -151,6 +151,9 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
          * Add granted & selected Spells & Perks to the actor's spells/perks array in-memory only.
          * These are not committed to the database and, therefore, will catch all udpates made to
          * the parent items. Note, some items (perks) may be applied more than once.
+         * 
+         * TODO: This needs to get moved out of here into somewhere else because this function is
+         *       constantly running on every actor update and this is kinda huge.
          */
         const activeRules = this.getActiveRules(this.parent)
         const perkSelections = this.parent.flags["vagabond-lite"].perkSelections ?? []
