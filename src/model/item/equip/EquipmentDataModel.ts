@@ -49,7 +49,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         if ((this as any).material) {
             const baseValue = this.value
@@ -61,7 +61,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         this.totalValue = multiplyCoins(this.value, Math.max(1, this.bulk.quantity))
     }
 
-    override async prepareDerivedData() {
+    override prepareDerivedData() {
         super.prepareDerivedData()
         this.bulk.totalSlots = getTotalSlots(this)
     }

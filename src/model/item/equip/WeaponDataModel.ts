@@ -57,7 +57,7 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         })
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.isEquippable = true
         this.isConsumable = false

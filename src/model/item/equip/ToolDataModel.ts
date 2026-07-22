@@ -24,8 +24,9 @@ export class ToolDataModel extends EquipmentDataModel<ToolSchema> {
         })
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.isEquippable = true
     }
+
 }

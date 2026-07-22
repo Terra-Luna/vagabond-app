@@ -29,7 +29,7 @@ export class ArmorDataModel extends EquipmentDataModel<ArmorSchema> {
         })
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.isEquippable = true
         this.bulk.isStackable = false

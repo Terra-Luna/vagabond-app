@@ -72,7 +72,7 @@ export class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
         }
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.parent.prototypeToken.name = getName(this)
         this.health.max = calcAdversaryMaxHP(this.hitDice ?? 1, this.beingSize)

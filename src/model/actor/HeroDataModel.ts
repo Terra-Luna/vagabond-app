@@ -170,6 +170,14 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             const fullItem = await getFullItem(item)
 
             if (fullItem && ((fullItem.type as string) === 'spell' || (fullItem.type as string) === 'perk')) {
+                // Prevent duplicate grants unless it's a Perk which may be taken multiple times.
+                if (fullItem.system instanceof SpellDataModel) {
+                    if (this.spells.some(sp => (sp as any)._sourceId! === fullItem.uuid)) continue
+                }
+                else if (fullItem.system instanceof PerkDataModel) {
+                    if (!fullItem.system.canTakeMultiple && this.perks.some(p => (p as any)._sourceId! === fullItem.uuid)) continue
+                }
+
                 const systemData = foundry.utils.deepClone(fullItem)?.system
                 const itemModel = {
                     _sourceId: fullItem.uuid,

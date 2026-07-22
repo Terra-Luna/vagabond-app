@@ -11,8 +11,11 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     const perks = actor.system.perks as PerkDataModel[]
 
-    // Slots:  { value: string, label: string, ruleId: string }[]
-    const { SpellSelection, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList } = useSpellSelection(ancestry, clazz, perks, [])
+    // Slots:  { value: string, label: string, ruleName: string, ruleId: string }[]
+    const { SpellSelection, classSpellSlots, perkSpellSlots,
+        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots,
+        loadInitialSlots, spellsList
+    } = useSpellSelection(ancestry, clazz, perks, [])
 
     const loadSelections = (rules, setSlots) => {
         const slots = loadInitialSlots(rules)
@@ -29,13 +32,13 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
      */
     useEffect(() => {
         getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-            loadSelections(rules, setClassSpellSlots)
+            loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
         })
         getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            loadSelections(rules, setAncestrySpellSlots)
+            loadSelections(rules.filter(r => r.pack === 'spell'), setAncestrySpellSlots)
         })
         getItemChoiceRules(perks.flatMap(p => p.rules)).then(rules => {
-            loadSelections(rules, setPerkSpellSlots)
+            loadSelections(rules.filter(r => r.pack === 'spell'), setPerkSpellSlots)
         })
     }, [spellsList])
 

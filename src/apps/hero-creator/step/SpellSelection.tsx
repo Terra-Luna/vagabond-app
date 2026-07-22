@@ -73,13 +73,13 @@ export const useSpellSelection = (
             setClassSpellGrants(grants)
         })
         getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            setAncestrySpellSlots(loadInitialSlots(rules))
+            setAncestrySpellSlots(loadInitialSlots(rules.filter(r => r.pack === 'spell')))
         })
         getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-            setClassSpellSlots(loadInitialSlots(rules))
+            setClassSpellSlots(loadInitialSlots(rules.filter(r => r.pack === 'spell')))
         })
         getItemChoiceRules(perks?.flatMap(p => p.rules) ?? []).then(rules => {
-            setPerkSpellSlots(loadInitialSlots(rules))
+            setPerkSpellSlots(loadInitialSlots(rules.filter(r => r.pack === 'spell')))
         })
     }, [ancestry, clazz, perks])
 
@@ -111,7 +111,8 @@ export const useSpellSelection = (
                     ))
                 }
                 {
-                    !isCreationMode && ancestrySpellSlots.map(slot => (<ItemGrantCard key={slot.ruleId} name={slot.label} source={slot.ruleName} />))
+                    !isCreationMode && ancestrySpellSlots.length > 0 &&
+                    ancestrySpellSlots.map(slot => (<ItemGrantCard key={slot.ruleId} name={slot.label} source={slot.ruleName} />))
                 }
             </div>
 

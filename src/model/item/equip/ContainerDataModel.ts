@@ -28,12 +28,12 @@ export class ContainerDataModel extends EquipmentDataModel<ContainerSchema> {
         })
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.bulk.isStackable = false
     }
 
-    override async prepareDerivedData() {
+    override prepareDerivedData() {
         const items = itemsInContainer(this)
         const bulk = items.reduce((sum, i) => { return sum + getTotalSlots(i?.system) }, 0)
         this.emptySlots = this.capacity - bulk

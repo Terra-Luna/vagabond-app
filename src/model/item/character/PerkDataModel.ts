@@ -41,10 +41,6 @@ export class PerkDataModel extends ItemDataModel<PerkSchema> {
             ...perkSchema()
         }
     }
-
-    override async prepareDerivedData() {
-        super.prepareDerivedData()
-    }
 }
 
 export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {

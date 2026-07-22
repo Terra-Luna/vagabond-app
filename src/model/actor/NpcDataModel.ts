@@ -26,7 +26,7 @@ export class NpcDataModel extends ActorDataModel<NpcSchema> {
         this.parent.update({ 'system.health.current': 1 })
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.inventory.items = this.parent.items.filter((i: any) => isInventoryItem(i))
     }

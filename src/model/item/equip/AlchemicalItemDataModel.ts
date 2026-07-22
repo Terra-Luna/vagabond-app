@@ -42,7 +42,7 @@ export class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema
         })
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.bulk.isStackable = true
     }

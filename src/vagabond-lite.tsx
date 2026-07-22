@@ -91,63 +91,6 @@ Hooks.once("init", () => {
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
 })
 
-Hooks.on("updateActor", async (actor: Actor, change: any, options: any, userId: string) => {
-    if (game.user?.id !== userId) return
-
-    const flagChanges = foundry.utils.getProperty(change, "flags.vagabond-lite")
-    const itemsToCreate: any[] = []
-
-    // Scan all existing items (like the Class/Ancestry/Equipment...) for rules
-    for (const item of actor.items) {
-        const rules: RuleElement[] = (item.system as any).rules || []
-
-        /**
-         * Process player choice sets...
-         */
-        if (flagChanges) {
-            const choiceRules = rules.filter(r => r.key === "ChoiceSet")
-
-            for (const rule of choiceRules) {
-                if (flagChanges[rule.flag] !== undefined) {
-                    const rawSelections = flagChanges[rule.flag]
-
-                    const currentSelectedUuids: string[] = Array.isArray(rawSelections)
-                        ? rawSelections
-                        : (rawSelections ? [rawSelections] : [])
-
-                    // Find and delete any old items previously granted by this specific rule choice block
-                    const oldGrants = actor.items.contents
-                        .filter(i => foundry.utils.getProperty(i, "flags.vagabond-lite.grantedByChoice") === rule.id)
-                        .map(i => i.id).filter((id): id is string => id !== null)
-
-                    if (oldGrants.length > 0) {
-                        await actor.deleteEmbeddedDocuments("Item", oldGrants)
-                    }
-
-                    // Push the newly selected item choices to queue...
-                    for (const uuid of currentSelectedUuids) {
-                        const originalDoc = await fromUuid(uuid)
-                        if (originalDoc) {
-                            const plainObject = originalDoc.toObject()
-
-                            // Stamp custom choice metadata tags into the item flags
-                            foundry.utils.setProperty(plainObject, "flags.vagabond-lite.grantedByChoice", rule.id)
-                            foundry.utils.setProperty(plainObject, "flags.vagabond-lite.grantedByItem", item.id)
-
-                            itemsToCreate.push(plainObject)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    // Commit!
-    if (itemsToCreate.length > 0) {
-        await actor.createEmbeddedDocuments("Item", itemsToCreate)
-    }
-})
-
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     if (!item.parent || item.parent.documentName !== "Actor") return true
 
