@@ -32,6 +32,7 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
 
     /**
      * Load current spell choices...
+     * spellsList is a transitive dependency, do not remove.
      */
     useEffect(() => {
         getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
@@ -41,22 +42,41 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
             loadSelections(rules.filter(r => r.pack === 'spell'), setAncestrySpellSlots)
         })
         getItemChoiceRules(perks.flatMap(p => p.rules)).then(rules => {
+            const selectionFlags = actor.flags["vagabond-lite"].perkSelections ?? []
+            rules.filter(r => r.pack === 'spell').forEach(rule => {
+                rule.selections = selectionFlags[rule.id]
+            })
             loadSelections(rules.filter(r => r.pack === 'spell'), setPerkSpellSlots)
         })
-        console.log("useEffect getItemChoiceRules")
-    }, [clazz, ancestry, perks, spellsList])
+    }, [ancestry, clazz, perks, spellsList, actor.flags["vagabond-lite"].perkSelections])
 
-
+    /**
+     * Monitors the Class spell slots and updates selections live.
+     */
     useEffect(() => {
         const classRules = [...clazz.system.rules] as any[]
         const classSpellSlotGroups = groupBy("ruleId", classSpellSlots)
         Object.keys(classSpellSlotGroups).forEach(ruleId => {
             const ruleIndex = classRules.findIndex(r => r.id === ruleId)
-            classRules[ruleIndex].selections = classSpellSlotGroups[ruleId].map(it => it.value)
+            classRules[ruleIndex].selections = classSpellSlotGroups[ruleId]?.map(it => it.value)
         })
         clazz.update({ 'system.rules': classRules } as Record<string, any[]>)
     }, [clazz, classSpellSlots])
 
+    /**
+     * Monitors the Perk spell slots and saves to actor flags on selection.
+     */
+    useEffect(() => {
+        const perkFlags = actor.getFlag("vagabond-lite" as any, "perkSelections") ?? {}
+        const mutableFlags = foundry.utils.duplicate(perkFlags)
+        const uniqueRuleIds = [...new Set(perkSpellSlots.map(s => s.ruleId))]
+        uniqueRuleIds.forEach(ruleId => {
+            mutableFlags[ruleId] = perkSpellSlots
+                .filter(s => s.ruleId === ruleId)
+                .map(it => it.value)
+        })
+        actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
+    }, [perkSpellSlots])
 
     const getSpellName = (id): string => {
         return spellsList.find(it => it.value === id)?.label ?? 'unk'

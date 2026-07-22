@@ -20,21 +20,23 @@ export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkD
             <div className="w-full">
                 <div className="flex gap-x-2 items-center">
                     {
-                        isEditMode ? <>
-                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} className={"font-bold"} />
-                            <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer"
-                                onClick={() => addPerkPrerequisite(item)}
-                            /></> : <></>
-                    }
-                </div>
-                {
-                    !isEditMode ? <></> :
-                        <div className="space-y-0.5 mb-8">
+                        isEditMode &&
+                        <div className="flex-col gap-2">
                             <Checkbox
                                 label={"Can take multiple times"}
                                 onCheckedChanged={() => { item.update({ 'system.canTakeMultiple': !item.system.canTakeMultiple } as Record<string, boolean>) }}
                                 checked={item.system.canTakeMultiple}
                             />
+                            <div className="flex gap-2">
+                                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} className={"font-bold"} />
+                                <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer" onClick={() => addPerkPrerequisite(item)} />
+                            </div>
+                        </div>
+                    }
+                </div>
+                {
+                    !isEditMode ? <></> :
+                        <div className="space-y-0.5 mb-8">
                             {
                                 item.system.prerequisites.map((_, index) => (
                                     <Prerequisite key={index} perk={item} prereqIndex={index} />

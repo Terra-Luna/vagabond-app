@@ -153,9 +153,11 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
          * the parent items. Note, some items (perks) may be applied more than once.
          */
         const activeRules = this.getActiveRules(this.parent)
-        const itemRuleSelections = activeRules
-            .filter(r => r.key === "ChoiceSet" && r.channel === "item")
-            .flatMap(r => r.selections)
+        const perkSelections = this.parent.flags["vagabond-lite"].perkSelections ?? []
+        const itemRuleSelections = [
+            ...activeRules.filter(r => r.key === "ChoiceSet" && r.channel === "item").flatMap(r => r.selections),
+            ...Object.values(perkSelections).deepFlatten()
+        ]
 
         const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && (r.type === "spell" || r.type === "perk"))
         const itemIds = [...itemRuleSelections, ...itemGrantRules.map(r => r.uuid)]
@@ -170,23 +172,41 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             const fullItem = await getFullItem(item)
 
             if (fullItem && ((fullItem.type as string) === 'spell' || (fullItem.type as string) === 'perk')) {
-                // Prevent duplicate grants unless it's a Perk which may be taken multiple times.
+                // Prevent duplicate Spell grants, no exceptions.
                 if (fullItem.system instanceof SpellDataModel) {
-                    if (this.spells.some(sp => (sp as any)._sourceId! === fullItem.uuid)) continue
-                }
-                else if (fullItem.system instanceof PerkDataModel) {
-                    if (!fullItem.system.canTakeMultiple && this.perks.some(p => (p as any)._sourceId! === fullItem.uuid)) continue
+                    if (this.spells.some(sp => (sp as any)._sourceId === fullItem.uuid)) continue
                 }
 
                 const systemData = foundry.utils.deepClone(fullItem)?.system
+
+                if (systemData instanceof PerkDataModel) {
+                    const matchingPerk = this.perks.find(it => (it as any)._sourceId === fullItem.uuid)
+
+                    systemData.rules.forEach(rule => {
+                        rule.selections = (rule.id as any) in perkSelections ? perkSelections[rule.id as any] : []
+                    })
+
+                    if (matchingPerk) {
+                        if (!systemData.canTakeMultiple) continue
+                        // If a Perk allows for multiple selections, consolidate it into a single Perk...
+                        matchingPerk.rules.forEach(rule => {
+                            if ("maxChoices" in rule) {
+                                rule.maxChoices = 2
+                            }
+                        })
+                        continue // don't add the new Perk
+                    }
+                }
+
                 const itemModel = {
                     _sourceId: fullItem.uuid,
                     isRuleSelection: true,
                     parent: {
+                        id: foundry.utils.randomID(),
                         name: fullItem.name || "Unknown Feature",
                         img: fullItem.img || "icons/svg/item-bag.svg",
                         type: fullItem.type,
-                        flags: { core: { sourceId: fullItem.uuid }, isRuleSelection: true }
+                        flags: { "vagabond-lite": { sourceId: fullItem.uuid }, isRuleSelection: true }
                     },
                     ...systemData
                 }
