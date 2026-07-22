@@ -5,7 +5,7 @@ import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../view/component/rules/util/item-rules-util"
+import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
@@ -91,7 +91,7 @@ export const useSpellSelection = (
         )
     }, [])
 
-    
+
 
     const SpellSelection = () => {
         return (<>

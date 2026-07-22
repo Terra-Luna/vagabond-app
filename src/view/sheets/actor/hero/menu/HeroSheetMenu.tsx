@@ -7,7 +7,7 @@ import { importFromVgbndApp } from "./util/vgbnd-import"
 import { HeroCreator } from "../../../../../apps/hero-creator/HeroCreator"
 import { useGlobalPopout } from "../../../../../apps/PopoutApplication"
 import { NavigationHost } from "../../../../context/navigation/NavigationHost"
-import { HeroActiveRulesView } from "../../../../component/rules/HeroActiveRulesView"
+import { HeroActiveRulesView } from "../../../../../rules/HeroActiveRulesView"
 import { useActiveEffectsManager } from "../../../../../apps/active-effects/active-effect-handlers"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {

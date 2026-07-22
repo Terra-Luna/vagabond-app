@@ -3,7 +3,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { useSpellSelection } from "../hero-creator/step/SpellSelection"
-import { getItemChoiceRules } from "../../view/component/rules/util/item-rules-util"
+import { getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { groupBy } from "../../utils/collectionUtil"
 
@@ -48,7 +48,7 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
             })
             loadSelections(rules.filter(r => r.pack === 'spell'), setPerkSpellSlots)
         })
-    }, [ancestry, clazz, perks, spellsList, actor.flags["vagabond-lite"].perkSelections])
+    }, [ancestry, clazz, perks, spellsList])
 
     /**
      * Monitors the Class spell slots and updates selections live.

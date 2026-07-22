@@ -1,6 +1,6 @@
-import { HeroDataModel } from '../../../model/actor/HeroDataModel'
-import { HeroCreationLabel, HeroCreationSubtext } from '../../../apps/hero-creator/component/HeroCreationTypography'
-import { CollapsibleSection } from '../Collapsible'
+import { HeroDataModel } from '../model/actor/HeroDataModel'
+import { HeroCreationLabel, HeroCreationSubtext } from '../apps/hero-creator/component/HeroCreationTypography'
+import { CollapsibleSection } from '../view/component/Collapsible'
 import { ActiveEffectCardRow, EffectCardContainer } from './shared/ActiveEffectCardRow'
 
 interface ActiveRuleDisplay {

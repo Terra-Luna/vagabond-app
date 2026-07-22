@@ -11,7 +11,7 @@ import { ComplexityRating } from "./component/ComplexityRating"
 import { KeyStatsSelector } from "./component/ClassStatSelector"
 import { StartingPackSelector } from "./component/StartingPackSelector"
 import { vgLiteLang } from "../../../../../utils/lang"
-import { ItemRulesManager } from "../../../../component/rules/ItemRulesManager"
+import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 
 export const ClassSheetReactComponent = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     return (

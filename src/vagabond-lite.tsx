@@ -26,12 +26,13 @@ import { getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
-import { RuleElement } from "./view/component/rules/shared/RuleElement"
+import { RuleElement } from "./rules/shared/RuleElement"
 import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
 import { VgLiteActor } from "./document/VgLiteActor"
 import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
+import { RulesCache } from "./rules/util/ItemRulesCache"
 
 // Add our fonts
 const fontFaces = [
@@ -89,6 +90,13 @@ Hooks.once("init", () => {
         CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any }
     )
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
+})
+
+Hooks.once("ready", async () => {
+    await RulesCache.initialize()
+    game.actors?.filter(it => it.system instanceof HeroDataModel)?.forEach(actor => {
+        (actor.system as HeroDataModel).forceUpdate()
+    })
 })
 
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {

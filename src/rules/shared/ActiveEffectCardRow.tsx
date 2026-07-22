@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../../../utils/lang"
+import { vgLiteLang } from "../../utils/lang"
 
 export const EffectCardContainer = ({ children }) => {
     return (

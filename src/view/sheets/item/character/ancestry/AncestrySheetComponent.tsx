@@ -8,7 +8,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { lang } from "../../../../../utils/lang"
 import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
 import { ItemSheetBanner } from "../../shared/ItemSheetBanner"
-import { ItemRulesManager } from "../../../../component/rules/ItemRulesManager"
+import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { Description } from "../../../shared/Description"
 
 export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } | null }) => {

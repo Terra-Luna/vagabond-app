@@ -1,7 +1,7 @@
-import { PerkDataModel } from "../../../../model/item/character/PerkDataModel"
-import { SpellDataModel } from "../../../../model/item/character/SpellDataModel"
-import { vgLiteLang } from "../../../../utils/lang"
-import { CombinedItems } from "../../../../utils/modelUtil"
+import { PerkDataModel } from "../../model/item/character/PerkDataModel"
+import { SpellDataModel } from "../../model/item/character/SpellDataModel"
+import { vgLiteLang } from "../../utils/lang"
+import { CombinedItems } from "../../utils/modelUtil"
 
 export interface ItemRule {
     id: string,

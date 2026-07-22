@@ -1,6 +1,6 @@
 import { createElement } from "react"
 import { vgLiteLang } from "../../utils/lang"
-import { CombinedItemsMultiType, getFullItem, getId, isPathOfType } from "../../utils/modelUtil"
+import { getId, isPathOfType } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
 import { fields, optionalString } from "../common/sharedSchemas"
@@ -18,6 +18,7 @@ import { speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
 import { sendVgLiteChatMessage } from "../../view/chat/ChatCardSerializer"
+import { applyItemChoiceRuleSelections } from "../../rules/util/item-choice-rules"
 
 const heroSchema = () => {
     return {
@@ -36,8 +37,6 @@ const heroSchema = () => {
          */
         ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
-        perks: new fields.ArrayField(new fields.SchemaField({ ...PerkDataModel.defineSchema() })),
-        spells: new fields.ArrayField(new fields.SchemaField({ ...SpellDataModel.defineSchema() })),
 
         // certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
         // this just is a boolean value we flip back and forth to trigger the update lifecycle
@@ -55,6 +54,9 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
+    declare perks: PerkDataModel[]
+    declare spells: SpellDataModel[]
+
     /** Force the update lifecycle to happen on a nonsense field */
     async forceUpdate() {
         this.parent.update({system: {forceUpdateTrack: !this.forceUpdateTrack}})
@@ -71,12 +73,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         })
     }
 
-    override async prepareBaseData() {
+    override prepareBaseData() {
         super.prepareBaseData()
         this.ancestry = this.parent.items.find((i: { type: string }) => i.type === 'ancestry')?.system
         this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
-        this.perks = []
-        this.spells = []
 
         /**
          * Apply bonuses from Item Rules...
@@ -142,87 +142,11 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         setArmorRating(this)
     }
 
-    override async prepareDerivedData() {
+    override prepareDerivedData() {
         super.prepareDerivedData()
         validateCurrentHP(this)
         validateCurrentLuck(this)
-
-        /**
-         * Add granted & selected Spells & Perks to the actor's spells/perks array in-memory only.
-         * These are not committed to the database and, therefore, will catch all udpates made to
-         * the parent items. Note, some items (perks) may be applied more than once.
-         * 
-         * TODO: This needs to get moved out of here into somewhere else because this function is
-         *       constantly running on every actor update and this is kinda huge.
-         */
-        const activeRules = this.getActiveRules(this.parent)
-        const perkSelections = this.parent.flags["vagabond-lite"].perkSelections ?? []
-        const itemRuleSelections = [
-            ...activeRules.filter(r => r.key === "ChoiceSet" && r.channel === "item").flatMap(r => r.selections),
-            ...Object.values(perkSelections).deepFlatten()
-        ]
-
-        const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && (r.type === "spell" || r.type === "perk"))
-        const itemIds = [...itemRuleSelections, ...itemGrantRules.map(r => r.uuid)]
-        const allItems = await CombinedItemsMultiType(['spell', 'perk'])
-        const items: any[] = []
-        itemIds.forEach(id => {
-            const item = allItems.find(it => it.uuid === id)
-            if (item) items.push(item)
-        })
-
-        for (const item of items) {
-            const fullItem = await getFullItem(item)
-
-            if (fullItem && ((fullItem.type as string) === 'spell' || (fullItem.type as string) === 'perk')) {
-                // Prevent duplicate Spell grants, no exceptions.
-                if (fullItem.system instanceof SpellDataModel) {
-                    if (this.spells.some(sp => (sp as any)._sourceId === fullItem.uuid)) continue
-                }
-
-                const systemData = foundry.utils.deepClone(fullItem)?.system
-
-                if (systemData instanceof PerkDataModel) {
-                    const matchingPerk = this.perks.find(it => (it as any)._sourceId === fullItem.uuid)
-
-                    systemData.rules.forEach(rule => {
-                        rule.selections = (rule.id as any) in perkSelections ? perkSelections[rule.id as any] : []
-                    })
-
-                    if (matchingPerk) {
-                        if (!systemData.canTakeMultiple) continue
-                        // If a Perk allows for multiple selections, consolidate it into a single Perk...
-                        matchingPerk.rules.forEach(rule => {
-                            if ("maxChoices" in rule) {
-                                rule.maxChoices = 2
-                            }
-                        })
-                        continue // don't add the new Perk
-                    }
-                }
-
-                const itemModel = {
-                    _sourceId: fullItem.uuid,
-                    isRuleSelection: true,
-                    parent: {
-                        id: foundry.utils.randomID(),
-                        name: fullItem.name || "Unknown Feature",
-                        img: fullItem.img || "icons/svg/item-bag.svg",
-                        type: fullItem.type,
-                        flags: { "vagabond-lite": { sourceId: fullItem.uuid }, isRuleSelection: true }
-                    },
-                    ...systemData
-                }
-
-                if ((fullItem.type as string) === 'spell') {
-                    this.spells.push(itemModel as unknown as SpellDataModel)
-                }
-                else if ((fullItem.type as string) === 'perk') {
-                    this.perks.push(itemModel as unknown as PerkDataModel)
-                }
-            }
-
-        }
+        applyItemChoiceRuleSelections(this.parent)
     }
 
     override async _preUpdate(changes, options, user) {

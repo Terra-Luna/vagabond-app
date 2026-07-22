@@ -11,7 +11,7 @@ import { DraggableStatBlock } from "../component/DraggableStatBlock"
 import { StatDragTarget } from "../component/StatDragTarget"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { BorderedContent } from "../component/BorderedContent"
-import { getFlatStatBonuses, getStatChoiceRules } from "../../../view/component/rules/util/item-rules-util"
+import { getFlatStatBonuses, getStatChoiceRules } from "../../../rules/util/item-rules-util"
 import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined, navButtons: ReactNode[]) => {

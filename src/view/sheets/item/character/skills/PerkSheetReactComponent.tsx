@@ -9,7 +9,7 @@ import { SingleSelect } from "../../../../component/SingleSelect"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
-import { ItemRulesManager } from "../../../../component/rules/ItemRulesManager"
+import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { Checkbox } from "../../../../component/Checkbox"
 
 export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
