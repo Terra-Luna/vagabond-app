@@ -5,13 +5,13 @@ import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSuccessMessage } from "../component/HeroCreationTypography"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
-import { PerkDataModel, perkPrerequisites } from "../../../model/item/character/PerkDataModel"
-import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
+import { perkPrerequisites } from "../../../model/item/character/PerkDataModel"
 import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
+import { ItemsCache } from "../../../rules/util/ItemRulesCache"
 
 export const usePerkSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
@@ -32,39 +32,35 @@ export const usePerkSelection = (
     const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
 
     useEffect(() => {
-        CombinedItems('perk').then(perks => {
-            const populatePerksList = async () => {
-                const fullPerks = await Promise.all(perks.map(p => getFullItem<Item & { system: PerkDataModel }>(p)))
-                setPerksList([
-                    { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-                    ...fullPerks.filter(p => p != null)
-                        .map(perk => ({
-                            value: perk.uuid,
-                            label: perk.name,
-                            img: perk.img ?? '',
-                            prereqs: (perk.system as any)?.prerequisites,
-                            cardSubheader: perkPrerequisites(perk.system as any),
-                            description: (perk.system as any)?.description
-                        }))
-                ])
-            }
-            populatePerksList()
-        })
-    }, [])
+        setPerksList([
+            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
+            ...ItemsCache.perks().map(perk => ({
+                value: perk.uuid,
+                label: perk.name,
+                img: perk.img ?? '',
+                prereqs: (perk.system as any)?.prerequisites,
+                cardSubheader: perkPrerequisites(perk.system as any),
+                description: (perk.system as any)?.description
+            }))
+        ])
+    }, [ItemsCache.perks])
 
     useEffect(() => {
         getItemGrants('perk', [ancestry]).then(grants => {
             setAncestryPerkGrants(grants)  
         })
-        getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            setAncestryPerkSlots(loadInitialSlots(rules))
-        })
+
+        setAncestryPerkSlots(loadInitialSlots(
+            getItemChoiceRules(ancestry?.system?.rules ?? [])
+        ))
+
         getItemGrants('perk', [clazz]).then(grants => {
             setClassPerkGrants(grants)
         })
-        getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-            setClassPerkSlots(loadInitialSlots(rules))
-        })
+
+        setClassPerkSlots(loadInitialSlots(
+            getItemChoiceRules(clazz?.system?.rules ?? [])
+        ))
     }, [ancestry, clazz])
 
     const loadInitialSlots = (rules) => {

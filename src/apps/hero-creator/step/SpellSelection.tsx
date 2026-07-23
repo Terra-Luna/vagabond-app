@@ -4,14 +4,14 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
-import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
+import { ItemsCache } from "../../../rules/util/ItemRulesCache"
+import { SkillCard } from "../../../view/component/SkillCard"
 
 export const useSpellSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
@@ -35,23 +35,16 @@ export const useSpellSelection = (
     const [perkSpellSlots, setPerkSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
 
     useEffect(() => {
-        CombinedItems('spell').then(spells => {
-            const populateSpellsList = async () => {
-                const fullSpells = await Promise.all(spells.map(sp => getFullItem<Item & { system: SpellDataModel }>(sp)))
-                setSpellsList([
-                    { value: '', label: strings.emptySlot, img: '', dmgType: '', description: '' },
-                    ...fullSpells.filter(sp => sp != null).sort((a, b) => a.name.localeCompare(b.name))
-                        .map(spell => ({
-                            value: spell.uuid,
-                            label: spell.name,
-                            img: spell.img ?? '',
-                            dmgType: (spell.system as any).damageType ?? 'none',
-                            description: (spell.system as any).description
-                        }))
-                ])
-            }
-            populateSpellsList()
-        })
+        setSpellsList([
+            { value: '', label: strings.emptySlot, img: '', dmgType: '', description: '' },
+            ...ItemsCache.spells().map(spell => ({
+                value: spell.uuid,
+                label: spell.name,
+                img: spell.img ?? '',
+                dmgType: (spell.system as any).damageType ?? 'none',
+                description: (spell.system as any).description
+            }))
+        ])
     }, [])
 
     const loadInitialSlots = useCallback((rules: any[]) => {
@@ -64,8 +57,6 @@ export const useSpellSelection = (
         return slots
     }, [strings.emptySlot])
 
-    const ancestryId = ancestry?.id ?? ''
-    const classId = clazz?.id ?? ''
     const perksSignature = JSON.stringify(perks?.map(p => (p as any).id ?? p._sourceId) ?? [])
 
     /**
@@ -75,17 +66,15 @@ export const useSpellSelection = (
         getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
         getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
 
-        getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            setAncestrySpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(rules.filter(r => r.pack === 'spell')))
-        })
-        getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-            setClassSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(rules.filter(r => r.pack === 'spell')))
-        })
-        getItemChoiceRules(perks?.flatMap(p => p.rules) ?? []).then(rules => {
-            console.log(rules)
-            setPerkSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(rules.filter(r => r.pack === 'spell')))
-        })
-    }, [ancestryId, classId, perksSignature, loadInitialSlots])
+        const ancestryRules = getItemChoiceRules(ancestry?.system?.rules ?? [])
+        setAncestrySpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
+
+        const classRules = getItemChoiceRules(clazz?.system?.rules ?? [])
+        setClassSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
+
+        const perkRules = getItemChoiceRules(perks?.flatMap(p => p.rules) ?? [])
+        setPerkSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(perkRules.filter(r => r.pack === 'spell')))
+    }, [ancestry, clazz, perksSignature, loadInitialSlots])
 
     const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
         setter(prevSlots =>
@@ -151,6 +140,51 @@ export const useSpellSelection = (
                     />
                 </BonusChoiceContainer>
             }
+
+            {/* YOUR GRIMOIRE */}
+            <div className="space-y-1 mt-4">
+                <HeroCreationLabel text={strings.grimoire} />
+
+                {/* GRANTED SPELLS */}
+                {[...ancestrySpellGrants, ...classSpellGrants].map(g => {
+                    const sp = spellsList.find(sp => sp.value === g.uuid)
+                    if (sp) {
+                        return (
+                            <SkillCard
+                                key={g.uuid}
+                                img={sp.img}
+                                dmgType={sp.dmgType}
+                                title={sp.label}
+                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
+                                description={sp.description}
+                            />
+                        )
+                    }
+                    else {
+                        return null
+                    }
+                })}
+
+                {/* CHOSEN SPELLS */}
+                {[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots].filter(slot => slot.value.length > 0).map(slot => {
+                    const sp = spellsList.find(sp => sp.value === slot.value)
+                    if (sp) {
+                        return (
+                            <SkillCard
+                                key={sp.value}
+                                img={sp.img}
+                                dmgType={sp.dmgType}
+                                title={sp.label}
+                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
+                                description={sp.description}
+                            />
+                        )
+                    }
+                    else {
+                        return null
+                    }
+                })}
+            </div>
         </>)
     }
 

@@ -18,7 +18,7 @@ import { speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
 import { sendVgLiteChatMessage } from "../../view/chat/ChatCardSerializer"
-import { applyItemChoiceRuleSelections } from "../../rules/util/item-choice-rules"
+import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
 
 const heroSchema = () => {
     return {
@@ -85,7 +85,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (!actor || !actor.items) return
 
         // Lookup rules on any Items...
-        const activeRules = this.getActiveRules(actor)
+        const activeRules = this.getActiveRules()
 
         /**
          * Apply flat modifiers...
@@ -93,21 +93,31 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
 
         for (const rule of flatModifiers) {
-            const targetPath = rule.selector.replace("system.", "")
-            const currentValue = foundry.utils.getProperty(this, targetPath)
+            const path = rule.selector.replace("system.", "")
+            const currentValue = foundry.utils.getProperty(this, path)
             if (typeof currentValue === "number") {
-                foundry.utils.setProperty(this, targetPath, currentValue + rule.value)
+                foundry.utils.setProperty(this, path, currentValue + rule.value)
             }
         }
+
+        /**
+         * Apply stat bonus or trainings from virtual perks...
+         */
+        const perkModifiers = this.parent.getFlag("vagabond-lite", "perkSelections")
+        Object.keys(perkModifiers ?? {})?.forEach(key => {
+            const path = perkModifiers[key][0]
+            const currentValue = foundry.utils.getProperty(this, path)
+            foundry.utils.setProperty(this, path, (typeof currentValue === "number") ? currentValue + 1 : true)
+        })
 
         /**
          * Apply toggle modifiers...
          */
         const toggleRules = activeRules.filter(r => r.key === "ToggleRule")
         for (const rule of toggleRules) {
-            const targetPath = rule.selector.replace("system.", "")
+            const path = rule.selector.replace("system.", "")
             const booleanValue = rule.value === true || rule.value === "true" || rule.value === "enabled"
-            foundry.utils.setProperty(this, targetPath, booleanValue)
+            foundry.utils.setProperty(this, path, booleanValue)
         }
 
         /**
@@ -127,7 +137,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                     foundry.utils.setProperty(this, path, rule.value)
                 }
             })
-        }      
+        }
 
         /**
          * Set remaining base data last, to preserve the bonuses...
@@ -146,7 +156,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareDerivedData()
         validateCurrentHP(this)
         validateCurrentLuck(this)
-        applyItemChoiceRuleSelections(this.parent)
+        new PerkRulesSelectionsApplicator(this.parent).apply()
     }
 
     override async _preUpdate(changes, options, user) {
@@ -195,11 +205,12 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
-    getActiveRules(actor) {
-        return actor.items.contents.flatMap((item: any) => {
+    getActiveRules() {
+        const itemRules = this.parent.items.contents.flatMap((item: any) => {
             const rules = item.system.rules || []
-            return rules.filter((r: any) => actor.system.level.current >= (r.level || 0))
+            return rules.filter((r: any) => this.parent.system.level.current >= (r.level || 0))
         })
+        return itemRules
     }
 
 }

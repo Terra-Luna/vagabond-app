@@ -2,6 +2,7 @@ import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { CombinedItems } from "../../utils/modelUtil"
+import { ItemsCache } from "./ItemRulesCache"
 
 export interface ItemRule {
     id: string,
@@ -225,46 +226,32 @@ export async function getItemGrants(type: string, items: (Item & { system: { rul
 /**
  * Filters the combined world/compendium array specifically for Spells
  */
-export async function getSpellChoices(): Promise<{ value: string, label: string }[]> {
-    const unifiedItems = await CombinedItems('spell')
-    return unifiedItems
-        .filter(item => item.system && isSpell(item.system))
-        .map(item => ({ value: item.uuid, label: item.name ?? "" }))
-}
-
-function isSpell(system: any): system is SpellDataModel {
-    return system && (system.type === "spell" in system)
+export function getSpellChoices(): { value: string, label: string }[] {
+    return ItemsCache.spells().map(item => ({ value: item.uuid, label: item.name ?? "" }))
 }
 
 /**
  * Filters the combined world/compendium array specifically for Perks
  */
-export async function getPerkChoices(): Promise<{ value: string, label: string }[]> {
-    const unifiedItems = await CombinedItems('perk')
-    return unifiedItems
-        .filter(item => item.system && isPerk(item.system))
-        .map(item => ({ value: item.uuid, label: item.name ?? "" }))
+export function getPerkChoices(): { value: string, label: string }[] {
+    return ItemsCache.perks().map(item => ({ value: item.uuid, label: item.name ?? "" }))
 }
 
-function isPerk(system: any): system is PerkDataModel {
-    return system && (system.type === "perk" in system)
-}
-
-export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> {
+export function getItemChoiceRules(rulesData: any[]): ItemRule[] {
     if (!Array.isArray(rulesData)) return []
 
     const choiceSetRules = rulesData.filter(rule => rule.key === "ChoiceSet" && rule.channel === "item")
 
-    const parsedRulesPromises = choiceSetRules.map(async (rule) => {
+    const parsedRules = choiceSetRules.map((rule) => {
         let finalizedChoices = Array.isArray(rule.choices) ? [...rule.choices] : []
 
         // If static choices are empty, fetch from the whole system (World + Packs)
         if (finalizedChoices.length === 0) {
             if (rule.pack === "spell") {
-                finalizedChoices = await getSpellChoices()
+                finalizedChoices = getSpellChoices()
             }
             else if (rule.pack === "perk") {
-                finalizedChoices = await getPerkChoices()
+                finalizedChoices = getPerkChoices()
             }
         }
 
@@ -280,9 +267,59 @@ export async function getItemChoiceRules(rulesData: any[]): Promise<ItemRule[]> 
         }
     })
 
-    return Promise.all(parsedRulesPromises)
+    return parsedRules
 }
 
 export const getTotalMaxChoices = (rules): number => {
     return rules.reduce((sum, r) => { return sum + r.maxChoices }, 0)
+}
+
+/**
+ * Perks such as 'Magical Secret', 'Advancement', and 'New Training' allow for 
+ * a single selection, but may be taken multiple times. In this case, each one 
+ * is combined into the same Perk where it's choice rule's maxChoices is a sum 
+ * of how many times the player has chosen that perk.
+ * @param actor 
+ * @param slots 
+ */
+export function savePerkSelectionFlags(actor, slots) {
+    const mutableFlags = clonedFlags(actor)
+    const uniqueRuleIds = getUniqueRuleIds(slots)
+
+    let hasChanges = false
+    uniqueRuleIds.forEach(ruleId => {
+        // Clears out deselected slots.
+        const nextValues = slots.filter(s => s.ruleId === ruleId).map(s => s.value).filter(Boolean)
+
+        if (nextValues.length === 0) {
+            if (mutableFlags[ruleId as string] !== undefined) {
+                mutableFlags[`-=${ruleId}`] = null
+                delete mutableFlags[ruleId as string]
+                hasChanges = true
+            }
+        }
+        else {
+            if (JSON.stringify(mutableFlags[ruleId as string]) !== JSON.stringify(nextValues)) {
+                mutableFlags[ruleId as string] = nextValues
+                delete mutableFlags[`-=${ruleId}`]
+                hasChanges = true
+            }
+        }
+    })
+
+    if (hasChanges) {
+        actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
+    }
+}
+
+const clonedFlags = (actor) => {
+    return foundry.utils.duplicate(perkFlags(actor)) as Record<string, any>
+}
+
+const perkFlags = (actor) => {
+    return actor.getFlag("vagabond-lite" as any, "perkSelections") ?? {}
+}
+
+const getUniqueRuleIds = (slots) => {
+    return [...new Set(slots.map(s => s.ruleId))]
 }

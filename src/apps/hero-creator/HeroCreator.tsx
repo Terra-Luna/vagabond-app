@@ -8,8 +8,9 @@ import { useSpellSelection } from "./step/SpellSelection"
 import { usePerkSelection } from "./step/PerkSelection"
 import { useEquipmentSelection } from "./step/EquipmentSelection"
 import { useNavigation } from "../../view/context/navigation/NavigationContext"
-import { CombinedItems, getFullItem } from "../../utils/modelUtil"
+import { ItemsCache } from "../../rules/util/ItemRulesCache"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
+import { usePerkBonusSelection } from "./step/PerkBonusSelection"
 
 interface HeroCreatorProps {
     hero: Actor & { system: HeroDataModel }
@@ -18,15 +19,22 @@ interface HeroCreatorProps {
 
 export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
     const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } = useNavigation()
+    const [perksWithBonusChoices, setPerksWithBonusChoices] = useState<(Item & { system: PerkDataModel })[]>([])
 
     const { NameAndAncestry, ancestryItem } = useNameAndAncestry(hero, [backButton, nextButton])
     const { ClassSelection, classItem } = useClassSelection(hero, [backButton, nextButton])
     const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
-    const { TrainingSelection, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
+    const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
     const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
     const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, [backButton, nextButton])
     const { EquipmentSelection } = useEquipmentSelection(classItem, [backButton, nextButton])
 
+    const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
+
+    /**
+     * Sum up all the stats and their selected bonuses for display
+     * on the Skills selection screen.
+     */
     const statsWithBonuses = useMemo(() => {
         return (assignedStats || []).map(assignedStat => {
             const bonus = [...bonusStatSelections, ...flatStatBonuses]
@@ -36,9 +44,18 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
         })
     }, [assignedStats, bonusStatSelections, flatStatBonuses])
 
-    const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
-    const [hasPerkBonusSelections, setHasPerkBonusSelections] = useState<boolean>(false)
+    const { PerkBonusSelection } = usePerkBonusSelection(
+        hero, perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
+        [...chosenClassSkills, ...chosenBonusSkills],
+        [...ancestrySpellSlots, ...classSpellSlots],
+        [backButton, nextButton]
+    )
 
+    /**
+     * This is a view mapper for the Hero creation wizard. The 
+     * current index is controlled by the Navigation Context
+     * Provider.
+     */
     const renderStepContent = useCallback((id: string | undefined) => {
         switch (id) {
             case 'identity': return <NameAndAncestry />
@@ -47,43 +64,58 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
             case 'training-selection': return <TrainingSelection stats={statsWithBonuses} />
             case 'spell-selection': return hasSpellSlots ? <SpellSelection /> : null
             case 'perk-selection': return <PerkSelection />
-            case 'perk-bonus-selection': return hasPerkBonusSelections ? <></> : null
+            case 'perk-bonus-selection': return perksWithBonusChoices.length > 0 ? <PerkBonusSelection /> : null
             case 'equipment-selection': return <EquipmentSelection />
             default: return null
         }
     }, [
-        hasSpellSlots, hasPerkBonusSelections, statsWithBonuses, NameAndAncestry, ClassSelection,
+        hasSpellSlots, perksWithBonusChoices, statsWithBonuses, NameAndAncestry, ClassSelection,
         CoreStats, TrainingSelection, SpellSelection, PerkSelection, EquipmentSelection
     ])
 
+    /**
+     * This memo will "inject" optional views into the workflow.
+     */
     const activeStepIds = useMemo(() => {
         const baseIds = ['identity', 'class-selection', 'core-stats', 'training-selection']
         if (hasSpellSlots) { baseIds.push('spell-selection') }
         baseIds.push('perk-selection')
-        if (hasPerkBonusSelections) { baseIds.push('perk-bonus-selection') }
+        if (perksWithBonusChoices.length > 0) { baseIds.push('perk-bonus-selection') }
         baseIds.push('equipment-selection')
         return baseIds
-    }, [hasSpellSlots, hasPerkBonusSelections])
+    }, [hasSpellSlots, perksWithBonusChoices])
 
-    useEffect(() => {
-        CombinedItems('perk').then((perks) => {
-            let hasChoices = false
-            for (const perkId of [...ancestryPerkSlots, ...classPerkSlots].map(slot => slot.value)) {
-                getFullItem<PerkDataModel>(perks.find(p => p.uuid === perkId) ?? null).then((perk) => {
-                    if (!hasChoices) {
-                        hasChoices = (perk?.system as PerkDataModel)?.rules?.filter(r => r.key === "ChoiceSet").length > 0
-                    }
-                    setHasPerkBonusSelections(hasChoices)
-                })
-            }
-        })
-    }, [ancestryPerkSlots, classPerkSlots])
-    
     useEffect(() => {
         registerStepIds(activeStepIds)
     }, [activeStepIds, registerStepIds])
 
+    /**
+     * Monitors the player's perk selections and will save a list
+     * of any they select which will require a subsequent choice
+     * selection.
+     */
+    useEffect(() => {
+        const perks = ItemsCache.perks()
+        const perksWithChoices: (Item & { system: PerkDataModel })[] = []
+        for (const perkId of [...ancestryPerkSlots, ...classPerkSlots].map(slot => slot.value)) {
+            const perk = perks.find(p => p.uuid === perkId)
+            if (perk) {
+                const choiceRules = perk.system.rules.filter(r => r.key === "ChoiceSet")
+                if (choiceRules.length > 0) {
+                    perksWithChoices.push(perk)
+                }
+            }
+        }
+        setPerksWithBonusChoices(perksWithChoices)
+    }, [ancestryPerkSlots, classPerkSlots])
     
+    /**
+     * Copies the selected ancestry and class onto the Hero and maps
+     * all the player's choices onto their respective rules. Bonus
+     * selections (stats/training/spells) are not set statically, the 
+     * rules engine will pick them up during the Hero's prepareDerivedData
+     * lifecycle step.
+     */
     const handleSaveAndFinish = useCallback(async () => {
         if (!ancestryItem || !classItem) return
 

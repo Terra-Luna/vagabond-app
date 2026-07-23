@@ -3,7 +3,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { useSpellSelection } from "../hero-creator/step/SpellSelection"
-import { getItemChoiceRules } from "../../rules/util/item-rules-util"
+import { getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { groupBy } from "../../utils/collectionUtil"
 
@@ -11,8 +11,6 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     const perks = actor.system.perks as PerkDataModel[]
-
-    console.log(perks)
 
     // Used for tracking spell slot loading upon opening the editor.
     const dataLoaded = useRef(false)
@@ -108,36 +106,7 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
      */
     useEffect(() => {
         if (!actor || !perkSpellSlots.length || !dataLoaded.current) return
-
-        const perkFlags = actor.getFlag("vagabond-lite" as any, "perkSelections") ?? {}
-        const mutableFlags = foundry.utils.duplicate(perkFlags) as Record<string, any>
-        const uniqueRuleIds = [...new Set(perkSpellSlots.map(s => s.ruleId))]
-
-        let hasChanges = false
-        uniqueRuleIds.forEach(ruleId => {
-            const nextValues = perkSpellSlots
-                .filter(s => s.ruleId === ruleId)
-                .map(it => it.value)
-                .filter(Boolean) // Cleans out unselected slot artifacts
-
-            if (nextValues.length === 0) {
-                if (mutableFlags[ruleId] !== undefined) {
-                    mutableFlags[`-=${ruleId}`] = null
-                    delete mutableFlags[ruleId]
-                    hasChanges = true
-                }
-            } else {
-                if (JSON.stringify(mutableFlags[ruleId]) !== JSON.stringify(nextValues)) {
-                    mutableFlags[ruleId] = nextValues
-                    delete mutableFlags[`-=${ruleId}`]
-                    hasChanges = true
-                }
-            }
-        })
-
-        if (hasChanges) {
-            actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
-        }
+        savePerkSelectionFlags(actor, perkSpellSlots)
     }, [perkSpellSlots])
 
     return (

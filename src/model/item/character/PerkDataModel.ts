@@ -62,6 +62,7 @@ export function deletePerkPrerequisite(perk: Item & { system: PerkDataModel }, d
 }
 
 export const perkPrerequisites = (perk: PerkDataModel): CardSubHeaderValues[] => {
+    if (perk.prerequisites.length === 0) return [{ label: "Req", value: "None" }]
     const values: CardSubHeaderValues[] = []
     const spellReqs = perkSpellRerequisitesAsString(perk)
     const statReqs = perkStatPrerequisitesAsString(perk)

@@ -594,6 +594,7 @@
       "selected": "Selected",
       "slot": "Slot",
       "mandatory": "Mandatory",
+      "bonusChoicesHeader": "BONUS CHOICES",
       "grimoire": "Grimoire Summary",
       "perksHeader": "SELECT PERKS",
       "perkAquisition": "Perk Acquisition",

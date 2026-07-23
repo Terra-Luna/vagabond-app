@@ -32,7 +32,7 @@ import { VgLiteActor } from "./document/VgLiteActor"
 import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
-import { RulesCache } from "./rules/util/ItemRulesCache"
+import { ItemsCache } from "./rules/util/ItemRulesCache"
 
 // Add our fonts
 const fontFaces = [
@@ -93,7 +93,7 @@ Hooks.once("init", () => {
 })
 
 Hooks.once("ready", async () => {
-    await RulesCache.initialize()
+    await ItemsCache.initialize()
     game.actors?.filter(it => it.system instanceof HeroDataModel)?.forEach(actor => {
         (actor.system as HeroDataModel).forceUpdate()
     })
@@ -157,7 +157,7 @@ Hooks.on("createItem", async (item, _options, _userId) => {
     }
 
     if ((item as any).type === "spell" && (item as any).type === "perk") {
-        await RulesCache.updateItem(item)
+        await ItemsCache.updateItem(item)
     }
 })
 
@@ -181,7 +181,7 @@ Hooks.on("updateItem", async (item, changed, options, userId) => {
     }
 
     if ((item as any).type === "spell" && (item as any).type === "perk") {
-        await RulesCache.updateItem(item)
+        await ItemsCache.updateItem(item)
     }
 })
 
@@ -209,7 +209,7 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
 
     if ((item as any).type === "spell" && (item as any).type === "perk") {
-        await RulesCache.updateItem(item)
+        await ItemsCache.updateItem(item)
     }
 })
 
@@ -228,7 +228,7 @@ Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, u
                 if (item && ((item as any).type === "spell" || (item as any).type === "perk")) {
                     const fullItem = await getFullItem(item as any)
                     if (fullItem) {
-                        RulesCache.items.set(uuid, fullItem)
+                        ItemsCache.items.set(uuid, fullItem)
                         cacheChanged = true
                     }
                 }
@@ -237,8 +237,8 @@ Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, u
              * Item was deleted from compendium...
              */
             else if (action === "delete") {
-                if (RulesCache.items.has(uuid)) {
-                    RulesCache.items.delete(uuid)
+                if (ItemsCache.items.has(uuid)) {
+                    ItemsCache.items.delete(uuid)
                     cacheChanged = true
                 }
             }
@@ -247,7 +247,7 @@ Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, u
          * If the cache changed, this will update all Hero actors.
          */
         if (cacheChanged) {
-            RulesCache.refreshAllActors()
+            ItemsCache.refreshAllActors()
         }
     }
 })

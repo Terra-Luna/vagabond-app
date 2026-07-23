@@ -1,4 +1,5 @@
 import { vgLiteLang } from "../../utils/lang"
+import { ItemsCache } from "../util/ItemRulesCache"
 
 export const EffectCardContainer = ({ children }) => {
     return (
@@ -12,12 +13,17 @@ export const EffectCardContainer = ({ children }) => {
 
 export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
 
+    const items = ItemsCache.items
+
     const cleanSelectionName = (path: string) => {
         if (path.includes("skills.")) {
             return vgLiteLang.Skills[path.replace(".isTrained", "").split(".").reverse()[0]].name
         }
         else if (path.includes("stats.")) { 
             return vgLiteLang.Stat[path.split(".").reverse()[0]].name
+        }
+        else {
+            return items.get(path)?.name
         }
     }
 
@@ -44,7 +50,7 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
                 </div>
             </div>
             <div className="text-right text-text-primary">
-                {rule.key === "GrantItem" &&
+                {(rule.key === "GrantItem" || (rule.key === "ChoiceSet" && rule.channel === "spell" || rule.channel === "perk")) &&
                     <span className="px-1.5 py-0.5 bg-sheet-main-fill text-text-header-tertiary border border-solid border-table-border/50 rounded-sm text-xs uppercase tracking-wider">
                         Item Grant
                     </span>
