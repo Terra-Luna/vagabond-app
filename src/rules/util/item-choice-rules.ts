@@ -31,28 +31,26 @@ export function applyItemChoiceRuleSelections(actor: Actor & { system: HeroDataM
                 if (actor.system.spells.some(sp => (sp as any)._sourceId === fullItem.uuid)) continue
             }
 
-            const systemData = foundry.utils.deepClone(fullItem)?.system
+            const systemClone = foundry.utils.deepClone(fullItem.system.toObject())
 
-            if (systemData instanceof PerkDataModel) {
-                const matchingPerk = actor.system.perks.find(it => (it as any)._sourceId === fullItem.uuid)
-
-                systemData.rules.forEach(rule => {
-                    const id = rule.id as string
+            if (fullItem.system instanceof PerkDataModel) {
+                systemClone.rules.forEach(rule => {
+                    const id = rule.id as string;
                     rule.selections = id in perkSelections ? perkSelections[id] : []
                 })
 
-                if (matchingPerk) {
-                    if (!systemData.canTakeMultiple) continue
+                const duplicatePerk = actor.system.perks.find(it => (it as any)._sourceId === fullItem.uuid)
+                if (duplicatePerk) {
+                    if (!systemClone.canTakeMultiple) continue
 
-                    /**
-                     * Instead of addinga duplicate Perk, compound each of their rules' maxChoices
-                     * so the correct number of selection options show up on the character sheet.
-                     */
-                    matchingPerk.rules.forEach(rule => {
-                        const perkIds = itemIds.filter(it => it === (matchingPerk as any)._sourceId)
-                        if ("maxChoices" in rule) rule.maxChoices = rule.maxChoices as number * perkIds.length
+                    systemClone.rules.forEach(rule => {
+                        const matchingIds = itemIds.filter(it => it === fullItem.uuid)
+                        if ("maxChoices" in rule) {
+                            rule.maxChoices = (rule.maxChoices as number) * matchingIds.length
+                        }
                     })
-                    continue
+                    // Remove the original entry so it can be replaced with the compounded version.
+                    actor.system.perks = actor.system.perks.filter(p => p._sourceId !== fullItem.uuid)
                 }
             }
 
@@ -66,12 +64,13 @@ export function applyItemChoiceRuleSelections(actor: Actor & { system: HeroDataM
                     type: fullItem.type,
                     flags: { "vagabond-lite": { sourceId: fullItem.uuid }, isRuleSelection: true }
                 },
-                ...systemData
+                ...systemClone
             }
 
             if (fullItem.type === 'spell') {
                 actor.system.spells.push(itemModel as unknown as SpellDataModel)
-            } else if (fullItem.type === 'perk') {
+            }
+            else if (fullItem.type === 'perk') {
                 actor.system.perks.push(itemModel as unknown as PerkDataModel)
             }
         }

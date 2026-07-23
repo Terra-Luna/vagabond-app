@@ -14,7 +14,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
         <div>
             <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5">
                 {
-                    hero.spells.map((sp: any, index: number) => (
+                    hero.spells.sort((a, b) => a.parent.name.localeCompare(b.parent.name)).map((sp: any, index: number) => (
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: vgLiteLang.ButtonActions.chat, action: () =>

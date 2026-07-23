@@ -30,14 +30,14 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
             ...otherSlotGroup,
             ...grants.map(g => ({ value: g.uuid, label: g.item }))
         ].map(s => s.value).filter(Boolean)
-    }, [])
+    }, [slotGroup, otherSlotGroup, grants])
 
     return (
         <div className="flex flex-wrap gap-2 mt-2 w-full">
             {
                 slotGroup.map((slot, index) => (
                     <CustomDropDown
-                        key={`${slot.value}_${index}`}
+                        key={`spell-slot-selector-${index}`}
                         value={slot.value}
                         options={options.filter(opt => opt.value === slot.value || !getOtherSelectedIds(index).includes(opt.value))}
                         className={"w-7/16 text-lg font-eskapade font-normal"}

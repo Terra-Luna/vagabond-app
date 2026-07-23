@@ -7,7 +7,6 @@ import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreatio
 import { CombinedItems, getFullItem } from "../../../utils/modelUtil"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
-import { SkillCard } from "../../../view/component/SkillCard"
 import { SpellDataModel } from "../../../model/item/character/SpellDataModel"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
@@ -20,8 +19,8 @@ export const useSpellSelection = (
     perks: PerkDataModel[] | undefined,
     navButtons: ReactNode[]
 ) => {
-    const isCreationMode = navButtons.length > 0
     const strings = vgLiteLang.HeroCreation
+    const isCreationMode = navButtons.length > 0
 
     // All spells for selection.
     const [spellsList, setSpellsList] = useState<{ value: string, label: string, img: string, dmgType: string, description: string }[]>([])
@@ -55,7 +54,7 @@ export const useSpellSelection = (
         })
     }, [])
 
-    const loadInitialSlots = (rules) => {
+    const loadInitialSlots = useCallback((rules: any[]) => {
         const slots: any[] = []
         rules.filter(r => r.pack === 'spell').forEach(rule => {
             Array.from({ length: rule.maxChoices }).forEach(_ => {
@@ -63,25 +62,30 @@ export const useSpellSelection = (
             })
         })
         return slots
-    }
+    }, [strings.emptySlot])
 
+    const ancestryId = ancestry?.id ?? ''
+    const classId = clazz?.id ?? ''
+    const perksSignature = JSON.stringify(perks?.map(p => (p as any).id ?? p._sourceId) ?? [])
+
+    /**
+     * Initial spell slot allocation.
+     */
     useEffect(() => {
-        getItemGrants('spell', [ancestry]).then(grants => {
-            setAncestrySpellGrants(grants)
-        })
-        getItemGrants('spell', [clazz]).then(grants => {
-            setClassSpellGrants(grants)
-        })
+        getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
+        getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
+
         getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            setAncestrySpellSlots(loadInitialSlots(rules.filter(r => r.pack === 'spell')))
+            setAncestrySpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(rules.filter(r => r.pack === 'spell')))
         })
         getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-            setClassSpellSlots(loadInitialSlots(rules.filter(r => r.pack === 'spell')))
+            setClassSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(rules.filter(r => r.pack === 'spell')))
         })
         getItemChoiceRules(perks?.flatMap(p => p.rules) ?? []).then(rules => {
-            setPerkSpellSlots(loadInitialSlots(rules.filter(r => r.pack === 'spell')))
+            console.log(rules)
+            setPerkSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(rules.filter(r => r.pack === 'spell')))
         })
-    }, [ancestry, clazz, perks])
+    }, [ancestryId, classId, perksSignature, loadInitialSlots])
 
     const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
         setter(prevSlots =>
@@ -91,12 +95,8 @@ export const useSpellSelection = (
         )
     }, [])
 
-
-
     const SpellSelection = () => {
         return (<>
-
-            {/* HEADER */}
             <div className="bg-sheet-main-fill space-y-4 text-center items-center">
                 <Header title={strings.spellsHeader} />
                 <TopNavButtons navButtons={navButtons} />
@@ -104,21 +104,16 @@ export const useSpellSelection = (
                 <Divider />
             </div>
 
-            {/* GRANTED SPELLS */}
             <div className="mt-4 space-y-1">
-                <HeroCreationLabel text={strings.grantedSpells} /> 
-                {
-                    [...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
-                        <ItemGrantCard key={index} name={grant.item} source={grant.source} />
-                    ))
-                }
-                {
-                    !isCreationMode && ancestrySpellSlots.length > 0 &&
-                    ancestrySpellSlots.map(slot => (<ItemGrantCard key={slot.ruleId} name={slot.label} source={slot.ruleName} />))
+                <HeroCreationLabel text={strings.grantedSpells} />
+                {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
+                    <ItemGrantCard key={`grant-${index}`} name={grant.item} source={grant.source} />
+                ))}
+                {!isCreationMode && ancestrySpellSlots.length > 0 &&
+                    ancestrySpellSlots.map((slot, idx) => (<ItemGrantCard key={`ancestry-slot-view-${idx}`} name={slot.label} source={slot.ruleName} />))
                 }
             </div>
 
-            {/* CHOOSE CLASS SPELLS */}
             <div className="mt-4 space-y-2">
                 <HeroCreationLabel text={strings.electiveSpells} />
                 <HeroCreationSubtext text={strings.classSpells} />
@@ -131,7 +126,6 @@ export const useSpellSelection = (
                 />
             </div>
 
-            {/* CHOOSE ANCESTRY SPELLS */}
             {ancestrySpellSlots.length > 0 && isCreationMode &&
                 <BonusChoiceContainer>
                     <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
@@ -145,7 +139,6 @@ export const useSpellSelection = (
                 </BonusChoiceContainer>
             }
 
-            {/* CHOOSE MAGICAL SECRET SPELLS */}
             {perkSpellSlots.length > 0 &&
                 <BonusChoiceContainer>
                     <BonusChoiceTitle text={strings.magicalSecrets} />
@@ -158,53 +151,12 @@ export const useSpellSelection = (
                     />
                 </BonusChoiceContainer>
             }
-
-            {/* YOUR GRIMOIRE */}
-            <div className="space-y-1 mt-4">
-                <HeroCreationLabel text={strings.grimoire} />
-
-                {/* GRANTED SPELLS */}
-                {[...ancestrySpellGrants, ...classSpellGrants].map(g => {
-                    const sp = spellsList.find(sp => sp.value === g.uuid)
-                    if (sp) {
-                        return (
-                            <SkillCard
-                                key={g.uuid}
-                                img={sp.img}
-                                dmgType={sp.dmgType}
-                                title={sp.label}
-                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
-                                description={sp.description}
-                            />
-                        )
-                    }
-                    else {
-                        return null
-                    }
-                })}
-
-                {/* CHOSEN SPELLS */}
-                {[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots].filter(slot => slot.value.length > 0).map(slot => {
-                    const sp = spellsList.find(sp => sp.value === slot.value)
-                    if (sp) {
-                        return (
-                            <SkillCard
-                                key={sp.value}
-                                img={sp.img}
-                                dmgType={sp.dmgType}
-                                title={sp.label}
-                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
-                                description={sp.description}
-                            />
-                        )
-                    }
-                    else {
-                        return null
-                    }
-                })}
-            </div>
         </>)
     }
 
-    return { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList }
+    return {
+        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots,
+        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots,
+        loadInitialSlots, spellsList
+    }
 }

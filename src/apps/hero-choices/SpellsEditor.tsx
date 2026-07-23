@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
@@ -12,80 +12,137 @@ export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     const perks = actor.system.perks as PerkDataModel[]
 
-    // Slots:  { value: string, label: string, ruleName: string, ruleId: string }[]
-    const { SpellSelection, classSpellSlots, perkSpellSlots,
-        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots,
-        loadInitialSlots, spellsList
+    console.log(perks)
+
+    // Used for tracking spell slot loading upon opening the editor.
+    const dataLoaded = useRef(false)
+
+    const {
+        SpellSelection, classSpellSlots, perkSpellSlots, setAncestrySpellSlots,
+        setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
     } = useSpellSelection(ancestry, clazz, perks, [])
+
+    const getSpellName = (id: string): string => {
+        return spellsList.find(it => it.value === id)?.label ?? 'unk'
+    }
 
     const loadSelections = (rules, setSlots) => {
         const slots = loadInitialSlots(rules)
         let sharedIndex = 0
         rules.forEach(rule => {
-            rule.selections.forEach(sel => {
-                slots[sharedIndex] = { value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id }
+            const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
+            ruleSelections.forEach(sel => {
+                if (slots[sharedIndex]) {
+                    slots[sharedIndex] = { value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id }
+                }
                 sharedIndex += 1
             })
         })
         setSlots(slots)
     }
 
-    /**
-     * Load current spell choices...
-     * spellsList is a transitive dependency, do not remove.
-     */
-    useEffect(() => {
-        getItemChoiceRules(clazz?.system?.rules ?? []).then(rules => {
-            loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
-        })
-        getItemChoiceRules(ancestry?.system?.rules ?? []).then(rules => {
-            loadSelections(rules.filter(r => r.pack === 'spell'), setAncestrySpellSlots)
-        })
-        getItemChoiceRules(perks.flatMap(p => p.rules)).then(rules => {
-            const selectionFlags = actor.flags["vagabond-lite"].perkSelections ?? []
-            rules.filter(r => r.pack === 'spell').forEach(rule => {
-                rule.selections = selectionFlags[rule.id]
-            })
-            loadSelections(rules.filter(r => r.pack === 'spell'), setPerkSpellSlots)
-        })
-    }, [ancestry, clazz, perks, spellsList])
+    const ancestryId = ancestry?.id ?? ''
+    const classId = clazz?.id ?? ''
+    const perksSignature = JSON.stringify(perks.map(p => (p as any).id ?? p._sourceId))
+    const spellsLoaded = spellsList.length > 1
 
     /**
-     * Monitors the Class spell slots and updates selections live.
+     * Loads initial spell selections...
      */
     useEffect(() => {
+        if (!spellsLoaded) return
+
+        const loadInitialSpellSelections = async () => {
+            if (clazz) {
+                const rules = await getItemChoiceRules(clazz.system.rules ?? [])
+                loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
+            }
+            if (ancestry) {
+                const rules = await getItemChoiceRules(ancestry.system.rules ?? [])
+                loadSelections(rules.filter(r => r.pack === 'spell'), setAncestrySpellSlots)
+            }
+            if (perks.length > 0) {
+                const rules = await getItemChoiceRules(perks.flatMap(p => p.rules))
+                const selectionFlags = (actor.flags?.["vagabond-lite"] as any)?.perkSelections ?? {}
+                const targetRules = rules.filter(r => r.pack === 'spell')
+                targetRules.forEach(rule => {
+                    rule.selections = selectionFlags[rule.id] ?? []
+                })
+                loadSelections(targetRules, setPerkSpellSlots)
+            }
+
+            dataLoaded.current = true
+        }
+
+        loadInitialSpellSelections()
+    }, [ancestryId, classId, perksSignature, spellsLoaded])
+
+    /**
+     * Monitors Class spell choices and makes async background changes on the fly.
+     */
+    useEffect(() => {
+        if (!clazz || !classSpellSlots.length || !dataLoaded.current) return
+
         const classRules = [...clazz.system.rules] as any[]
         const classSpellSlotGroups = groupBy("ruleId", classSpellSlots)
+
+        let hasChanges = false
         Object.keys(classSpellSlotGroups).forEach(ruleId => {
             const ruleIndex = classRules.findIndex(r => r.id === ruleId)
-            classRules[ruleIndex].selections = classSpellSlotGroups[ruleId]?.map(it => it.value)
+            if (ruleIndex !== -1) {
+                const nextValues = classSpellSlotGroups[ruleId]?.map(it => it.value ?? "") ?? []
+                if (JSON.stringify(classRules[ruleIndex].selections) !== JSON.stringify(nextValues)) {
+                    classRules[ruleIndex].selections = nextValues
+                    hasChanges = true
+                }
+            }
         })
-        clazz.update({ 'system.rules': classRules } as Record<string, any[]>)
-    }, [clazz, classSpellSlots])
+
+        if (hasChanges) {
+            clazz.update({ 'system.rules': classRules } as Record<string, any>)
+        }
+    }, [classSpellSlots])
 
     /**
-     * Monitors the Perk spell slots and saves to actor flags on selection.
+     * Monitors Perk spell selections and async background changes on the fly.
      */
     useEffect(() => {
+        if (!actor || !perkSpellSlots.length || !dataLoaded.current) return
+
         const perkFlags = actor.getFlag("vagabond-lite" as any, "perkSelections") ?? {}
-        const mutableFlags = foundry.utils.duplicate(perkFlags)
+        const mutableFlags = foundry.utils.duplicate(perkFlags) as Record<string, any>
         const uniqueRuleIds = [...new Set(perkSpellSlots.map(s => s.ruleId))]
+
+        let hasChanges = false
         uniqueRuleIds.forEach(ruleId => {
-            mutableFlags[ruleId] = perkSpellSlots
+            const nextValues = perkSpellSlots
                 .filter(s => s.ruleId === ruleId)
                 .map(it => it.value)
-        })
-        actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
-    }, [perkSpellSlots])
+                .filter(Boolean) // Cleans out unselected slot artifacts
 
-    const getSpellName = (id): string => {
-        return spellsList.find(it => it.value === id)?.label ?? 'unk'
-    }
+            if (nextValues.length === 0) {
+                if (mutableFlags[ruleId] !== undefined) {
+                    mutableFlags[`-=${ruleId}`] = null
+                    delete mutableFlags[ruleId]
+                    hasChanges = true
+                }
+            } else {
+                if (JSON.stringify(mutableFlags[ruleId]) !== JSON.stringify(nextValues)) {
+                    mutableFlags[ruleId] = nextValues
+                    delete mutableFlags[`-=${ruleId}`]
+                    hasChanges = true
+                }
+            }
+        })
+
+        if (hasChanges) {
+            actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
+        }
+    }, [perkSpellSlots])
 
     return (
         <div className="space-y-4 overflow-auto p-2">
             <SpellSelection />
         </div>
     )
-
 }
