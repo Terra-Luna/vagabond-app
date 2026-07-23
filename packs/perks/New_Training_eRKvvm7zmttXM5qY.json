@@ -1,0 +1,50 @@
+{
+  "name": "New Training",
+  "type": "perk",
+  "_id": "eRKvvm7zmttXM5qY",
+  "img": "/icons/skills/movement/arrow-upward-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain a Training. You can take this Perk multiple times.</span></p>",
+    "rules": [
+      {
+        "id": "8tvDikzu9hv7VGg6",
+        "key": "ChoiceSet",
+        "label": "New Training",
+        "level": 0,
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "skills.*.isTrained",
+            "label": "Training"
+          }
+        ],
+        "selections": []
+      }
+    ],
+    "prerequisites": [],
+    "canTakeMultiple": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784820768779,
+    "modifiedTime": 1784835224013,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!eRKvvm7zmttXM5qY"
+}
