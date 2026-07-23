@@ -22,7 +22,7 @@ import { createRoot } from "react-dom/client"
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
 import { PerkSheet, SpellSheet } from './view/sheets/item/character/SkillSheets'
 import { vgLiteStyles } from "./utils/styleUtils"
-import { getId } from "./utils/modelUtil"
+import { getFullItem, getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
@@ -155,9 +155,13 @@ Hooks.on("createItem", async (item, _options, _userId) => {
             await item.system.unpack(parent as Actor & { system: HeroDataModel })
         }
     }
+
+    if ((item as any).type === "spell" && (item as any).type === "perk") {
+        await RulesCache.updateItem(item)
+    }
 })
 
-Hooks.on("updateItem", (item, changed, options, userId) => {
+Hooks.on("updateItem", async (item, changed, options, userId) => {
     const actor = item.actor
     if (!actor) return
 
@@ -174,6 +178,10 @@ Hooks.on("updateItem", (item, changed, options, userId) => {
                 docApp.render()
             }
         }
+    }
+
+    if ((item as any).type === "spell" && (item as any).type === "perk") {
+        await RulesCache.updateItem(item)
     }
 })
 
@@ -199,6 +207,49 @@ Hooks.on("deleteItem", async (item, options, userId) => {
 
     // If an item was deleted off a hero, trigger an update in case something (like their class/ancestry) just adds it back
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
+
+    if ((item as any).type === "spell" && (item as any).type === "perk") {
+        await RulesCache.updateItem(item)
+    }
+})
+
+Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, userId: string) => {
+    if (pack.metadata.type === "Item") {
+        let cacheChanged = false
+        const action = options.action || (options.parent ? "update" : "create")
+
+        for (const doc of documents) {
+            const uuid = `Compendium.${pack.collection}.Item.${doc._id}`
+            /**
+             * Item was newly added or modified...
+             */
+            if (action === "create" || action === "update") {
+                const item = await fromUuid(uuid)
+                if (item && ((item as any).type === "spell" || (item as any).type === "perk")) {
+                    const fullItem = await getFullItem(item as any)
+                    if (fullItem) {
+                        RulesCache.items.set(uuid, fullItem)
+                        cacheChanged = true
+                    }
+                }
+            }
+            /**
+             * Item was deleted from compendium...
+             */
+            else if (action === "delete") {
+                if (RulesCache.items.has(uuid)) {
+                    RulesCache.items.delete(uuid)
+                    cacheChanged = true
+                }
+            }
+        }
+        /**
+         * If the cache changed, this will update all Hero actors.
+         */
+        if (cacheChanged) {
+            RulesCache.refreshAllActors()
+        }
+    }
 })
 
 Hooks.on("renderCombatTracker", (app, html, data) => {
