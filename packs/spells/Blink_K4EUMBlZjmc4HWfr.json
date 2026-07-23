@@ -1,0 +1,33 @@
+{
+  "name": "Blink",
+  "type": "spell",
+  "_id": "K4EUMBlZjmc4HWfr",
+  "img": "icons/magic/movement/chevrons-down-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target can skip their Move to teleport to an empty space they can see within Near. They can teleport through space occupied by other Beings, but can't teleport through spaces they couldn't otherwise Move through.</span></p>",
+    "rules": [],
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784762661139,
+    "modifiedTime": 1784763016615,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!K4EUMBlZjmc4HWfr"
+}

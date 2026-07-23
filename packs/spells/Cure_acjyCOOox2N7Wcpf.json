@@ -1,0 +1,33 @@
+{
+  "name": "Cure",
+  "type": "spell",
+  "_id": "acjyCOOox2N7Wcpf",
+  "img": "icons/magic/nature/leaf-drip-light-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If the Target is Blinded or Sickened, the Status ends and they are immune to these Statuses for the duration.</span></p>",
+    "rules": [],
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784764620736,
+    "modifiedTime": 1784765052101,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!acjyCOOox2N7Wcpf"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Babble",
+  "type": "spell",
+  "_id": "oVcn5mMq0o2csCd5",
+  "img": "icons/magic/control/mouth-smile-deception-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When the Check passes, and each time you Focus on the Cast for the duration, you can cause the Target to loudly and coherently repeat everything you mentally command them to. They are otherwise mute.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
+    "rules": [],
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784761516002,
+    "modifiedTime": 1784761758452,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!oVcn5mMq0o2csCd5"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Confuse",
+  "type": "spell",
+  "_id": "GRfHejLEGu4BKc8h",
+  "img": "/icons/creatures/amphibians/frog-confused-green-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Confused for the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit</strong></b><span style=\"white-space:pre-wrap\">: Duration is continual.</span></p>",
+    "rules": [],
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784763799427,
+    "modifiedTime": 1784763863205,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!GRfHejLEGu4BKc8h"
+}

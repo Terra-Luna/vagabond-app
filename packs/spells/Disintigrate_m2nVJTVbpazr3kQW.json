@@ -1,0 +1,33 @@
+{
+  "name": "Disintigrate",
+  "type": "spell",
+  "_id": "m2nVJTVbpazr3kQW",
+  "img": "icons/magic/death/undead-skeleton-worn-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A nonmagical, non-metal Target of 1 or fewer Slots is destroyed. The Slots of the Target can increase by spending Mana, increasing by 1 per Mana spent to do so. Any Target reduced to 0 HP or destroyed by this Spell is reduced to ash.</span></p>",
+    "rules": [],
+    "damageType": "shock",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784764777615,
+    "modifiedTime": 1784769932139,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!m2nVJTVbpazr3kQW"
+}

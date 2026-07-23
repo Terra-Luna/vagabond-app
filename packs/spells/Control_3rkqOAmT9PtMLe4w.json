@@ -1,0 +1,33 @@
+{
+  "name": "Control",
+  "type": "spell",
+  "_id": "3rkqOAmT9PtMLe4w",
+  "img": "icons/magic/control/debuff-energy-hold-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Targeted Objects can be manipulated in small ways, such as flipping a lever or tipping a glass over. This magic can't lift an Object.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Targeted Beings become Charmed and obey your commands for the duration. This Spell automatically fails if the Target's Level or HD are equal to or higher than your Level, and it automatically ends if you command it to cause harm to itself.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">You can spend Mana to increase your effective level for the Casting by 1 per Mana spent to do.</span></p>",
+    "rules": [],
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784764296356,
+    "modifiedTime": 1784764380161,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!3rkqOAmT9PtMLe4w"
+}

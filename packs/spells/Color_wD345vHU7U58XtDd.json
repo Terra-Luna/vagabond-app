@@ -1,0 +1,33 @@
+{
+  "name": "Color",
+  "type": "spell",
+  "_id": "wD345vHU7U58XtDd",
+  "img": "icons/magic/light/explosion-star-glow-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">For the duration, Targeted Beings are Blinded and Objects are changed in color.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
+    "rules": [],
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784763643522,
+    "modifiedTime": 1784763692321,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!wD345vHU7U58XtDd"
+}

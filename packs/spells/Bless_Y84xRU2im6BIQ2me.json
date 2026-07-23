@@ -1,0 +1,33 @@
+{
+  "name": "Bless",
+  "type": "spell",
+  "_id": "Y84xRU2im6BIQ2me",
+  "img": "icons/magic/holy/prayer-hands-glowing-yellow-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">For the duration, Targeted Objects count as Silvered, and Targeted Beings of your choice have a d4 bonus to Saves.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, if the Target is freestanding water, it permanently becomes holy water.</span></p>",
+    "rules": [],
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784762523229,
+    "modifiedTime": 1784762551943,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Y84xRU2im6BIQ2me"
+}
