@@ -28,7 +28,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
     const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
     const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
     const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, [backButton, nextButton])
-    const { EquipmentSelection, selectedPack, wallet } = useEquipmentSelection(classItem, [backButton, nextButton])
+    const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
 
     const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
 
@@ -183,10 +183,9 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
             }
             if (selectedPack) {
                 console.log(selectedPack)
-                await actor.createEmbeddedDocuments("Item", [selectedPack.toObject()])
+                await actor.createEmbeddedDocuments("Item", [selectedPack.toObject(), ...cart.map(it => it.toObject())])
                 await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
             }
-
         }
         catch (error) {
             console.error("VGLite | Hero Creator commit error:", error)
@@ -205,7 +204,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
         actor, ancestryItem, classItem, selectedArr, assignedStats,
         bonusStatSelections, chosenClassSkills, chosenBonusSkills,
         ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
-        wallet, selectedPack, setClosed
+        wallet, cart, selectedPack, setClosed
     ])
 
     useEffect(() => {
