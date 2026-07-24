@@ -1,4 +1,3 @@
-import { CoinsIcon } from "lucide-react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { Coins } from "../../model/common/CoinValue"
 import { lang } from "../../utils/lang"
@@ -13,7 +12,7 @@ export const CoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                 onClick={() =>
                     ui.notifications?.info("TODO: make an interface for adding/subtracting coin amts...")
                 }>
-                <CoinsIcon className="text-wealth-denom-label" size={28} />
+                <p className="text-lg text-wealth-denom-label font-eskapade font-bold">COIN</p>
             </div>
             <div className="flex content-center justify-end w-full">
                 <CoinValue hero={hero} value={hero.inventory.coins.g ?? 0} label={lang.VGLITE.HeroSheet.gold} path='g' />
@@ -32,7 +31,7 @@ export const CoinPurseReadOnly = ({ coins }: { coins: Coins }) => {
                 onClick={() =>
                     ui.notifications?.info("TODO: make an interface for adding/subtracting coin amts...")
                 }>
-                <CoinsIcon className="text-wealth-denom-label" size={28} />
+                <p className="text-lg text-wealth-denom-label font-bold">COIN</p>
             </div>
             <div className="flex content-center justify-end w-full">
                 <CoinValue value={coins.g ?? 0} label={lang.VGLITE.HeroSheet.gold} path='g' />

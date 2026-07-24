@@ -77,29 +77,31 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
     const ItemShop = ({ includeStarterPacks = false }) => {
         return (
             <div className="space-y-2">
-                {/* WALLET */}
-                <div>
-                    <CoinPurseReadOnly coins={wallet} />
+                <div className="flex gap-x-4 items-end">
+                    {/* STARTER PACK SELECTION */}
+                    {includeStarterPacks &&
+                        <div className="space-y-2">
+                            <HeroCreationDropdown
+                                label={"SELECT PACK"}
+                                value={selectedPack?.id ?? ''}
+                                options={[
+                                    { value: '', label: "-" },
+                                    ...recommendedPacks?.map(p => ({ value: p?.id, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
+                                    ...otherPacks?.map(p => ({ value: p.id, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
+                                ]}
+                                onChange={(packId) => onSelectPack(packId)}
+                            />
+                        </div>
+                    }
+                    {/* WALLET */}
+                    <div className="w-full mr-1">
+                        <CoinPurseReadOnly coins={wallet} />
+                    </div>
                 </div>
 
-                {/* STARTER PACK SELECTION */}
-                {includeStarterPacks &&
-                    <div className="space-y-2">
-                        <HeroCreationDropdown
-                            label={"SELECT PACK"}
-                            value={selectedPack?.id ?? ''}
-                            options={[
-                                { value: '', label: "-" },
-                                ...recommendedPacks?.map(p => ({ value: p?.id, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
-                                ...otherPacks?.map(p => ({ value: p.id, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
-                            ]}
-                            onChange={(packId) => onSelectPack(packId)}
-                        />
-                        <div className="border border-solid border-table-border">
-                            {selectedPack && <EquipmentSheetComponent item={selectedPack as any} hideBottomSection={true} />}
-                        </div>
-                    </div>
-                }
+                <div className="border border-solid border-table-border">
+                    {selectedPack && <EquipmentSheetComponent item={selectedPack as any} hideBottomSection={true} />}
+                </div>
 
                 {/* SHOPPING CART */}
                 <div>
