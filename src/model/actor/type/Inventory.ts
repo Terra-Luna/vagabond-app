@@ -44,7 +44,12 @@ export const inventoryItemTypes = () => {
 
 export const openItemSheet = (item: any) => {
     if (item) {
-        item.parent.sheet.render(true)
+        if (item.parent) {
+            item.parent.sheet.render(true)
+        }
+        else {
+            item.sheet.render(true)
+        }
     }
     else {
         ui.notifications?.warn("Item not found!")

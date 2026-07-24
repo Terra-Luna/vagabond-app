@@ -184,6 +184,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
             if (selectedPack) {
                 console.log(selectedPack)
                 await actor.createEmbeddedDocuments("Item", [selectedPack.toObject()])
+                await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
             }
 
         }
@@ -219,7 +220,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
             </div>
 
             {/* Bottom Button Panel Section */}
-            <div className="flex items-center justify-between gap-x-4 pt-4 mt-auto border-t border-solid border-table-border">
+            <div className="flex items-center justify-between gap-x-4 pt-4 mt-auto mb-2 border-t border-solid border-table-border">
                 <div>{backButton}</div>
                 <div>{nextButton}</div>
             </div>

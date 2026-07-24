@@ -7,6 +7,7 @@ import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoice
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { getItemChoiceRules, getSkillTrainingChoiceRules, getStatChoiceRules, savePerkSelectionFlags } from "../../../rules/util/item-rules-util"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { HeroCreationSubtext } from "../component/HeroCreationTypography"
 
 export const usePerkBonusSelection = (
     actor: Actor & { system: HeroDataModel },
@@ -72,11 +73,16 @@ export const usePerkBonusSelection = (
                 <Divider />
                 <BonusChoiceContainer>
                     <div className="space-y-4">
+                        {/* SELECT STAT BONUS "ADVANCEMENT" */}
                         {
                             advancements.map((rule, index) => {
                                 return (
                                     <div key={index} className="space-y-2">
                                         <BonusChoiceTitle text={rule.label} />
+                                        {/* SELECTED STATS W/ BONUSES APPLIED */}
+                                        <HeroCreationSubtext text={
+                                            stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")
+                                        } />
                                         <HeroCreationDropdown
                                             value={advancement}
                                             options={rule.choices}
@@ -89,6 +95,7 @@ export const usePerkBonusSelection = (
                                 )
                             })
                         }
+                        {/* SELECT BONUS "NEW TRAINING" */}
                         {
                             trainings.map((rule, index) => {
                                 return (
@@ -106,6 +113,7 @@ export const usePerkBonusSelection = (
                                 )
                             })
                         }
+                        {/* SELECT BONUS "MAGICAL SECRET" */}
                         {
                             spells.map((rule, index) => {
                                 return (

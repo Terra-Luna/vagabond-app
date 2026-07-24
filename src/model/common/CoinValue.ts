@@ -80,7 +80,12 @@ export const multiplyCoins = (coins: Coins, multiplier) => {
 }
 
 export const isAffordable = (coinsA: Coins, coinsB: Coins) => {
-    try { return true } catch (err) { return false }
+    try {
+        subtractCoins(coinsA, coinsB)
+        return true
+    } catch (err) {
+        return false
+    }
 }
 
 const toCopper = (coins: Coins): number => {

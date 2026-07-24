@@ -783,6 +783,15 @@
       "skills": "Skills",
       "spell": "Spell"
     },
+    "ItemShop": {
+      "Categories": {
+        "all": "All",
+        "weapon": "Weapons",
+        "armor": "Armor",
+        "alchemical": "Alchemy",
+        "gear": "Gear"
+      }
+    },
     "PrerequisiteTypes": {
         "stat": "Stat",
         "trained": "Trained",

@@ -22,8 +22,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const { dragIndex, dragItem, targetItem, onDragStart, onDragEnter, onDragLeave, onDragEnd } = useDragDrop(
-        items,
-        () => inventoryItemDragDropHandler(actor, dragItem, targetItem ?? items[items.length - 1], items)
+        items, () => inventoryItemDragDropHandler(actor, dragItem, targetItem ?? items[items.length - 1], items)
     )
 
     return (

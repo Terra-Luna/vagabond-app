@@ -76,6 +76,7 @@ export const CombinedItemsAll = async (): Promise<Array<Item | TypedIndexEntry>>
 
 /**
  * A utility function which queries all world and compendium items of the given type and returns a combined list.
+ * Only use if you need a fresh Query, otherwise the ItemsCache is probably a better (syncronous) option.
  * @param itemType 
  * @returns 
  */

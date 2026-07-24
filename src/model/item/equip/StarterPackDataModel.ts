@@ -59,15 +59,10 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
             }
             itemsToCreate.push(itemData)
         }
-
-        console.log(itemsToCreate)
+        
         if (itemsToCreate.length > 0) {
             await hero.createEmbeddedDocuments("Item", itemsToCreate)
         }
-
-        const combinedCoins = addCoins([hero.system.inventory.coins, this.value])
-
-        await hero.update({ 'system.inventory.coins': combinedCoins } as Record<string, any>)
 
         // Remove the starter pack itself
         await this.parent.delete()
