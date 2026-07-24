@@ -184,7 +184,6 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
             if (selectedPack) {
                 console.log(selectedPack)
                 await actor.createEmbeddedDocuments("Item", [selectedPack.toObject()])
-                await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
             }
 
         }

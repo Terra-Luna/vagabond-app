@@ -110,8 +110,8 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     if (actor && isInventoryItem(item)) {
         if (item.system.bulk.isStackable) {
             const stack = actor.items.find((it: any) => it.name === item.name)
-            if (stack != undefined) {
-                stack.update({ 'system.bulk.quantity': stack.system.bulk.quantity + 1 })
+            if (stack) {
+                stack.update({ 'system.bulk.quantity': stack.system.bulk.quantity + item.system.bulk.quantity })
                 stackStackables(item.parent.system)
                 return false
             }
