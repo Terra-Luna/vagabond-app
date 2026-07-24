@@ -39,17 +39,15 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navB
             <div className="bg-sheet-main-fill space-y-4">
                 <Header title={strings.identity} />
                 <TopNavButtons navButtons={navButtons} subtitle="" />
-                <div>
+                <div className="flex gap-x-4">
                     <HeroCreationLabeledField label={strings.heroName} value={hero.name} />
+                    <HeroCreationDropdown
+                        label={strings.selectAncestry}
+                        value={ancestryItem?.id ?? strings.selectAncestry}
+                        options={ancestryOptions ?? []}
+                        onChange={(val) => onSelectAncestry(val)}
+                    />
                 </div>
-
-                <HeroCreationDropdown
-                    label={strings.selectAncestry}
-                    value={ancestryItem?.id ?? strings.selectAncestry}
-                    options={ancestryOptions ?? []}
-                    onChange={(val) => onSelectAncestry(val)}
-                />
-
                 {
                     ancestryItem ?
                         <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>

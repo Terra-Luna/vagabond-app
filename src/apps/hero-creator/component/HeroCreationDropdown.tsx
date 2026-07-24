@@ -10,7 +10,7 @@ export const HeroCreationDropdown = ({ label, value, options, onChange }: {
             <CustomDropDown
                 value={value}
                 options={options}
-                className={"text-xl -mt-1"}
+                className={"text-xl"}
                 onChange={(e) => { onChange(e.target.value) }}
             />
         </div>

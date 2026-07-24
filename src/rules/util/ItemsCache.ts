@@ -12,6 +12,12 @@ export class ItemsCache {
      */
     static items = new Map<string, any>()
 
+    static allItems = () => {
+        return [...new Map([...this.items.entries()]).values()]
+            .filter(it => it != null)
+            .sort((a, b) => a.name.localeCompare(b.name)) as Item[]
+    }
+
     static spells = () => {
         return [...new Map([...this.items.entries()]
             .filter(([_, item]) => item.type === 'spell')).values()]

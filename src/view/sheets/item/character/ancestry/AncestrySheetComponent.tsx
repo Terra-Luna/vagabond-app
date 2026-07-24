@@ -1,9 +1,6 @@
-import { useCallback } from "react"
 import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel"
-import { updateDocument } from "../../../../../utils/documentUtils"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
-import { RichTextField } from "../../../../component/RichTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { lang } from "../../../../../utils/lang"
 import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
@@ -15,10 +12,6 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
     if (!item) return
     const { isEditMode } = useEditMode()
     const ancestry = item.system
-
-    const onDescriptionChange = useCallback((val) => {
-        updateDocument(ancestry.parent, { 'description': val })
-    }, [ancestry])
 
     return (
         <BaseItemSheetComponent

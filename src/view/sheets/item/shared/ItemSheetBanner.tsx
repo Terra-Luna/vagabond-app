@@ -49,10 +49,10 @@ export const ItemSheetBanner = ({ item }: { item: Item & { system: any } }) => {
     return (
         <div>
             <div className="flex space-x-1 items-center bg-section-header-fill px-1 font-eskapade font-bold">
-                {!item.img ? <></> :
+                {item.img &&
                     <div className="mt-0.5 mb-1 mr-2">
                         <img
-                            className={`object-contain border border-solid border-text-header-primary rounded-sm`}
+                            className={`object-contain border border-solid border-text-header-primary rounded-sm bg-white`}
                             width={56}
                             height={56}
                             src={item.img}

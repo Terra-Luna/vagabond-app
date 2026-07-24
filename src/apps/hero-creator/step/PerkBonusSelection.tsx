@@ -101,6 +101,7 @@ export const usePerkBonusSelection = (
                                 )
                             })
                         }
+
                         {/* SELECT BONUS "NEW TRAINING" */}
                         {
                             trainings.map((rule, index) => {
@@ -119,6 +120,7 @@ export const usePerkBonusSelection = (
                                 )
                             })
                         }
+                        
                         {/* SELECT BONUS "MAGICAL SECRET" */}
                         {
                             spells.map((rule, index) => {
