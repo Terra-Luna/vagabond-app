@@ -1,0 +1,42 @@
+{
+  "name": "Orc",
+  "type": "ancestry",
+  "_id": "59zy6pThB7q2O2TN",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Orcs are mutant nightkin that take on a variety of appearances; some with snouts and tusks, or fur and horns, or those with calloused and verdigris skin. They typically settle in close-knit tribes where “might is right”, and</span></p><p><span style=\"white-space:pre-wrap\">have been known to establish themselves as commanders over goblin warbands.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Darksight:</strong></b><span style=\"white-space:pre-wrap\"> You are not Blinded by Dark.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Beefy:</strong></b><span style=\"white-space:pre-wrap\"> You make Saves against being Grappled or Shoved with Favor, and have Favor on Checks to Grapple or Shove.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Hulking:</strong></b><span style=\"white-space:pre-wrap\"> You have a +2 bonus to Item Slots.</span></p>",
+    "rules": [
+      {
+        "id": "UKB5zmBA3Oaso8tE",
+        "key": "FlatModifier",
+        "label": "Hulking",
+        "level": 0,
+        "value": 2,
+        "selector": "inventory.capacity"
+      }
+    ],
+    "senses": [],
+    "beingType": "cryptid",
+    "beingSize": "medium"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ywhHfYnWZQBq7W9u": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784923244582,
+    "modifiedTime": 1784923322358,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!59zy6pThB7q2O2TN"
+}

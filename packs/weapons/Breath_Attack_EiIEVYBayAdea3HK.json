@@ -1,0 +1,69 @@
+{
+  "name": "Breath Attack",
+  "type": "weapon",
+  "_id": "EiIEVYBayAdea3HK",
+  "img": "icons/magic/fire/blast-jet-stream-embers-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can attack with an Endure or Will Save to make a 15’ Cone of draconic breath that deals 2d6!. Afterward, you can’t use this Ability until you Rest or take 1 Fatigue to do so again.</span></p>",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "totalValue": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicEffects": [],
+    "range": "near",
+    "damage": {
+      "oneHand": "2d6",
+      "twoHand": "1d4",
+      "type": "none"
+    },
+    "grip": {
+      "style": "none",
+      "state": "H"
+    },
+    "weaponTypes": [],
+    "properties": [],
+    "explodeData": {
+      "canExplode": false,
+      "explodesOn": []
+    },
+    "material": "standard"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ywhHfYnWZQBq7W9u": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784922816392,
+    "modifiedTime": 1784923036605,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!EiIEVYBayAdea3HK"
+}

@@ -18,15 +18,15 @@
       "c": 0
     },
     "bulk": {
-      "slots": 1,
+      "slots": 0,
       "isStackable": true,
-      "stackSize": 100,
+      "stackSize": 20,
       "quantity": 20,
       "totalSlots": 0
     },
     "isEquippable": false,
     "isEquipped": false,
-    "isConsumable": false,
+    "isConsumable": true,
     "relicEffects": []
   },
   "effects": [],
@@ -42,8 +42,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784845721938,
-    "modifiedTime": 1784845857290,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1784854309965,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -1,0 +1,42 @@
+{
+  "name": "Halfling",
+  "type": "ancestry",
+  "_id": "NSaso9QezzjKgVZA",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Halflings are plucky, hill-dwelling folk of the shire. They are known to live life to the fullest, rise to any challenge, and bask even in their failures. They are fearless, quick to respond, and always capable of turning things in their favor.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Halflings settle on rolling hills, with food at the highest elevation, then homes, markets, and finally waste management at the lowest. It helps reduce the damage of floods, and keeps temperatures comfortable all year.</span><br><br><b><strong style=\"white-space:pre-wrap\">Nimble: </strong></b><span style=\"white-space:pre-wrap\">You have a 5’ bonus to Speed and ignore Hinder on Reflex Saves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Squat:</strong></b><span style=\"white-space:pre-wrap\"> You can move through areas occupied by other Beings.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Tricksy:</strong></b><span style=\"white-space:pre-wrap\"> When you regain Luck from a Rest, you gain 1 additional Luck.</span></p>",
+    "rules": [
+      {
+        "id": "7U3PoNMFWD9FlT1U",
+        "key": "FlatModifier",
+        "label": "Nimble",
+        "level": 0,
+        "value": 5,
+        "selector": "speed.turn"
+      }
+    ],
+    "senses": [],
+    "beingType": "humanlike",
+    "beingSize": "medium"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ywhHfYnWZQBq7W9u": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784922557608,
+    "modifiedTime": 1784922662586,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!NSaso9QezzjKgVZA"
+}
