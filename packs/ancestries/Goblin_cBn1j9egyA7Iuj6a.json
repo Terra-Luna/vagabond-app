@@ -2,7 +2,7 @@
   "name": "Goblin",
   "type": "ancestry",
   "_id": "cBn1j9egyA7Iuj6a",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/vagabond-lite/assets/ancestry/goblin.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Havoc-wagers known to delight in chaos, goblins are smaller humanoids of a typically green, yellow, grey, or bluish skin color. This instinctual delight for chaos often puts them at-odds with the codes and laws of other societies, but goblin ingenuity can be an indispensable asset.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Darksight:</strong></b><span style=\"white-space:pre-wrap\"> You are not Blinded by Dark.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Nimble:</strong></b><span style=\"white-space:pre-wrap\"> You have a 5’ bonus to Speed and ignore Hinder on Reflex Saves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Scavenger:</strong></b><span style=\"white-space:pre-wrap\"> You have Favor on Endure Saves against being Sickened.</span></p>",
     "rules": [
@@ -31,7 +31,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784923164620,
-    "modifiedTime": 1784923229619,
+    "modifiedTime": 1784930673058,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

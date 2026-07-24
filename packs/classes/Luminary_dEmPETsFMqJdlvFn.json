@@ -2,7 +2,7 @@
   "name": "Luminary",
   "type": "class",
   "_id": "dEmPETsFMqJdlvFn",
-  "img": "icons/magic/light/orb-hands-humanoid-yellow.webp",
+  "img": "systems/vagabond-lite/assets/class/luminary.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><span style=\"white-space:pre-wrap\">Iconic Luminaries</span></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Devout</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b></p><p><b><strong style=\"white-space:pre-wrap\">Weapons:</strong></b><span style=\"white-space:pre-wrap\"> –</span></p><p><b><strong style=\"white-space:pre-wrap\">Skills:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, and 3 from either Arcana, Detect, Influence, Leadership, or Medicine</span></p>",
     "rules": [
@@ -152,8 +152,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1784585223433,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1784934711877,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
