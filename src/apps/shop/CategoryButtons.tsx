@@ -10,8 +10,8 @@ export const CategoryButtons = ({ shopCategory, setShopCategory }: { shopCategor
                 shopCategories.map((cat, index) => (<>
                     {
                         cat.value === shopCategory ?
-                            <PrimaryButton key={index} onClick={() => { }}>{cat.label}</PrimaryButton> :
-                            <SecondaryButton key={index} onClick={() => setShopCategory(cat.value)}>{cat.label}</SecondaryButton>
+                            <PrimaryButton key={`${index}_${cat.value}_selected`} onClick={() => { }}>{cat.label}</PrimaryButton> :
+                            <SecondaryButton key={`${index} _${cat.value}_deselected`} onClick={() => setShopCategory(cat.value)}>{cat.label}</SecondaryButton>
                     }
                 </>))
             }

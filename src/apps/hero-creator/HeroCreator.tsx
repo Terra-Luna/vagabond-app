@@ -12,6 +12,7 @@ import { ItemsCache } from "../../rules/util/ItemsCache"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { usePerkBonusSelection } from "./step/PerkBonusSelection"
 import { Coins } from "../../model/common/CoinValue"
+import { savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 
 interface HeroCreatorProps {
     actor: Actor & { system: HeroDataModel }
@@ -45,7 +46,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
         })
     }, [assignedStats, bonusStatSelections, flatStatBonuses])
 
-    const { PerkBonusSelection } = usePerkBonusSelection(
+    const { PerkBonusSelection, advancement, training, spell } = usePerkBonusSelection(
         actor, perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
         [...chosenClassSkills, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
@@ -185,6 +186,15 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
                 await actor.createEmbeddedDocuments("Item", [selectedPack.toObject(), ...cart.map(it => it.toObject())])
                 await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
             }
+
+            /**
+             * Process selections made due to choosing perks:
+             * 'Advancement', 'New Training', and 'Magical Secret'.
+             */
+            if (advancement) savePerkSelectionFlags(actor, [advancement])
+            if (training) savePerkSelectionFlags(actor, [training])
+            if (spell) savePerkSelectionFlags(actor, [spell])
+
         }
         catch (error) {
             console.error("VGLite | Hero Creator commit error:", error)
@@ -203,6 +213,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
         actor, ancestryItem, classItem, selectedArr, assignedStats,
         bonusStatSelections, chosenClassSkills, chosenBonusSkills,
         ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
+        advancement, training, spell,
         wallet, cart, selectedPack, setClosed
     ])
 

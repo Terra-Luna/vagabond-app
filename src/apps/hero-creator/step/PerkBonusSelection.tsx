@@ -21,9 +21,9 @@ export const usePerkBonusSelection = (
     navButtons: ReactNode[]
 ) => {
     const strings = vgLiteLang.HeroCreation
-    const [advancement, setAdvancement] = useState<string>('')
-    const [training, setTraining] = useState<string>('')
-    const [spell, setSpell] = useState<string>('')
+    const [advancement, setAdvancement] = useState<{ value: string, ruleId: string }>()
+    const [training, setTraining] = useState<{ value: string, ruleId: string }>()
+    const [spell, setSpell] = useState<{ value: string, ruleId: string }>()
 
     const advancements = useMemo(() => {
         const maxStats = stats.filter(it => it.value >= 7).map(it => it.stat)
@@ -63,12 +63,8 @@ export const usePerkBonusSelection = (
         return rules
     }, [perks, spellSlots])
 
-    const onChoiceSelection = useCallback((selection, rule) => {
-        savePerkSelectionFlags(actor, [{ ruleId: rule.id, value: selection }])
-    }, [actor])
-
     const selectedSpell = useMemo(() => {
-        return ItemsCache.spells().find(it => it.uuid === spell)
+        return ItemsCache.spells().find(it => it.uuid === spell?.value)
     }, [spell])
 
     const PerkBonusSelection = () => {
@@ -90,11 +86,10 @@ export const usePerkBonusSelection = (
                                             stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")
                                         } />
                                         <HeroCreationDropdown
-                                            value={advancement}
+                                            value={advancement?.value ?? ''}
                                             options={rule.choices}
                                             onChange={(val) => {
-                                                setAdvancement(val)
-                                                onChoiceSelection(val, rule)
+                                                setAdvancement({ value: val, ruleId: rule.id })
                                             }}
                                         />
                                     </div>
@@ -109,11 +104,10 @@ export const usePerkBonusSelection = (
                                     <div key={index} className="space-y-2">
                                         <BonusChoiceTitle text={rule.label} />
                                         <HeroCreationDropdown
-                                            value={training}
+                                            value={training?.value ?? ''}
                                             options={rule.choices}
                                             onChange={(val) => {
-                                                setTraining(val)
-                                                onChoiceSelection(`${val}`, rule)
+                                                setTraining({ value: val, ruleId: rule.id })
                                             }}
                                         />
                                     </div>
@@ -128,11 +122,10 @@ export const usePerkBonusSelection = (
                                     <div key={index} className="space-y-2">
                                         <BonusChoiceTitle text={strings.magicalSecrets} />
                                         <HeroCreationDropdown
-                                            value={spell}
+                                            value={spell?.value ?? ''}
                                             options={rule.choices}
                                             onChange={(val) => {
-                                                setSpell(val)
-                                                onChoiceSelection(val, rule)
+                                                setSpell({ value: val, ruleId: rule.id })
                                             }}
                                         />
                                     </div>
@@ -158,5 +151,5 @@ export const usePerkBonusSelection = (
         )
     }
 
-    return { PerkBonusSelection }
+    return { PerkBonusSelection, advancement, training, spell }
 }
