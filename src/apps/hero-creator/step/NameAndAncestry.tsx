@@ -9,7 +9,7 @@ import { EditModeContextProvider } from "../../../view/context/EditModeContext/E
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { HeroCreationLabel } from "../component/HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationLabeledField } from "../component/HeroCreationTypography"
 import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navButtons: ReactNode[]) => {
@@ -40,8 +40,7 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navB
                 <Header title={strings.identity} />
                 <TopNavButtons navButtons={navButtons} subtitle="" />
                 <div>
-                    <HeroCreationLabel text={strings.heroName} />
-                    <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />
+                    <HeroCreationLabeledField label={strings.heroName} value={hero.name} />
                 </div>
 
                 <HeroCreationDropdown
