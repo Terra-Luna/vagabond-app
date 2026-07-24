@@ -182,9 +182,8 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
                 await clazz.update({ "system.rules": classRules } as Record<string, any>)
             }
             if (selectedPack) {
-                const pack = selectedPack.toObject()
-                console.log("Adding pack:", pack, wallet)
-                await actor.createEmbeddedDocuments("Item", [pack])
+                console.log(selectedPack)
+                await actor.createEmbeddedDocuments("Item", [selectedPack.toObject()])
                 await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
             }
 
@@ -206,7 +205,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
         actor, ancestryItem, classItem, selectedArr, assignedStats,
         bonusStatSelections, chosenClassSkills, chosenBonusSkills,
         ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
-        setClosed
+        wallet, selectedPack, setClosed
     ])
 
     useEffect(() => {
