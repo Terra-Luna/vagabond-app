@@ -5,7 +5,7 @@ import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
 import { HeroCreator } from "../../../../../apps/hero-creator/HeroCreator"
-import { useGlobalPopout } from "../../../../../apps/PopoutApplication"
+import { CLOSE_GLOBAL_POPOUT_HOOK, useGlobalPopout } from "../../../../../apps/PopoutApplication"
 import { NavigationHost } from "../../../../context/navigation/NavigationHost"
 import { HeroActiveRulesView } from "../../../../../rules/HeroActiveRulesView"
 import { useActiveEffectsManager } from "../../../../../apps/active-effects/active-effect-handlers"
@@ -42,6 +42,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         sheet._renderHTML()
     }, [sheet, isDarkMode])
 
+    // note - this callback essentially just TRACKS whether the creator is closed or not, now actually closes it
     const setCreatorClosed = useCallback(() => {
         setIsCreatorOpen(false)
     }, [])
@@ -53,6 +54,12 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     const createrPopout = useGlobalPopout(setCreatorClosed)
     const rulesPopout = useGlobalPopout(setRulesClosed)
 
+    const closeCreator = useCallback(() => {
+        setCreatorClosed()
+        setTimeout( // let the above state change finish happening, then...
+            () => Hooks.call(CLOSE_GLOBAL_POPOUT_HOOK, createrPopout.popoutId), 0)
+    }, [createrPopout])
+
     // Note - this could just be a useCallback that the button calls to render the 
     // popup, but that makes it so that if you click "create hero" multiple times, 
     // you get multiple popups.
@@ -60,7 +67,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         if (isCreatorOpen) {
             createrPopout.renderPopout(
                 <NavigationHost children={
-                    <HeroCreator actor={hero.parent} setClosed={setCreatorClosed} />
+                    <HeroCreator actor={hero.parent} setClosed={closeCreator} />
                 } />, "Hero Creator", true
             )
         }
@@ -69,7 +76,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 <HeroActiveRulesView actor={hero.parent} />, "Grants & Modifiers", false
             )
         }
-    }, [isCreatorOpen, isFeaturesPerksOpen])
+    }, [isCreatorOpen, isFeaturesPerksOpen, createrPopout])
 
     return (<>
         <div className={`relative ${className}`}>
