@@ -10,7 +10,7 @@ import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoice
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { ItemsCache } from "../../../rules/util/ItemRulesCache"
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { SkillCard } from "../../../view/component/SkillCard"
 
 export const useSpellSelection = (
@@ -88,8 +88,7 @@ export const useSpellSelection = (
         return (<>
             <div className="bg-sheet-main-fill space-y-4 text-center items-center">
                 <Header title={strings.spellsHeader} />
-                <TopNavButtons navButtons={navButtons} />
-                <HeroCreationSubtext text={strings.spellsSubheader} />
+                <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} />
                 <Divider />
             </div>
 

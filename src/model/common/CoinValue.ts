@@ -1,6 +1,12 @@
 import { fields, requiredInteger } from "./sharedSchemas"
 import { VgLiteError}  from "./VgLiteError"
 
+export interface Coins {
+    g: number
+    s: number
+    c: number
+}
+
 export const coinSchema = () => {
     return {
         g: new fields.NumberField({ ...requiredInteger, initial: 0 }),
@@ -36,7 +42,7 @@ export const coinsAsString = (coins: any) => {
     return coinString
 }
 
-export const consolidateCoins = (coinsIn: any): { g: number, s: number, c: number } => {
+export const consolidateCoins = (coinsIn: Coins): Coins => {
     const coins = coinsIn
     const copperToSilver = Math.floor(coins.c / 100)
     coins.s += copperToSilver
@@ -47,14 +53,14 @@ export const consolidateCoins = (coinsIn: any): { g: number, s: number, c: numbe
     return coins
 }
 
-export const addCoins = (coins: any[]) => {
+export const addCoins = (coins: Coins[]) => {
     const total = { g: 0, s: 0, c: 0 }
     coins.forEach(it => total.c += toCopper(it))
     consolidateCoins(total)
     return total
 }
 
-export const subtractCoins = (coinsA: any, coinsB: any) => {
+export const subtractCoins = (coinsA: Coins, coinsB: Coins) => {
     const aTotal = toCopper(coinsA)
     const bTotal = toCopper(coinsB)
     const result = { g: 0, s: 0, c: aTotal - bTotal }
@@ -65,7 +71,7 @@ export const subtractCoins = (coinsA: any, coinsB: any) => {
     return result
 }
 
-export const multiplyCoins = (coins: any, multiplier) => {
+export const multiplyCoins = (coins: Coins, multiplier) => {
     let c = toCopper(coins)
     Math.ceil(c *= multiplier)
     const total = { g: 0, s: 0, c: c }
@@ -73,7 +79,11 @@ export const multiplyCoins = (coins: any, multiplier) => {
     return total
 }
 
-const toCopper = (coins: any): number => {
+export const isAffordable = (coinsA: Coins, coinsB: Coins) => {
+    try { return true } catch (err) { return false }
+}
+
+const toCopper = (coins: Coins): number => {
     return (coins.g * 10000) + (coins.s * 100) + coins.c
 }
 

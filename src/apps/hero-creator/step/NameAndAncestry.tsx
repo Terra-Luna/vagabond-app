@@ -38,7 +38,7 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navB
         return (
             <div className="bg-sheet-main-fill space-y-4">
                 <Header title={strings.identity} />
-                <TopNavButtons navButtons={navButtons} />
+                <TopNavButtons navButtons={navButtons} subtitle="" />
                 <div>
                     <HeroCreationLabel text={strings.heroName} />
                     <EditableTextField boundValue={hero.name} updateProps={{ object: hero, path: ['name'] }} />

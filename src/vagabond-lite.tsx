@@ -26,13 +26,12 @@ import { getFullItem, getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
-import { RuleElement } from "./rules/shared/RuleElement"
 import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
 import { VgLiteActor } from "./document/VgLiteActor"
 import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
-import { ItemsCache } from "./rules/util/ItemRulesCache"
+import { ItemsCache } from "./rules/util/ItemsCache"
 
 // Add our fonts
 const fontFaces = [

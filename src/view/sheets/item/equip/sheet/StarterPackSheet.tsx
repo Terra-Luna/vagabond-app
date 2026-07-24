@@ -3,13 +3,12 @@ import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBod
 import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
 
 export const StarterPackSheet = ({ item }: { item: Item & { system: StarterPackDataModel } }) => {
-    const pack = item.system
     return (
         <EquipmentSheetSubtypeBody>
             <div>
                 {
-                    pack.items.map(it => (
-                        <div key={it.id}>
+                    item.system.consolidatedItems.map((it, index) => (
+                        <div key={index}>
                             <ItemSheetProperty label={it.name} value={`(x ${it.qty})`} />
                         </div>
                     ))

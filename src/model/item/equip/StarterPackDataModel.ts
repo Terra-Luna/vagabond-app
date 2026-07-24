@@ -1,5 +1,6 @@
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { HeroDataModel } from "../../actor/HeroDataModel"
-import { addCoins, coinSchema } from "../../common/CoinValue"
+import { addCoins, Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
@@ -10,6 +11,7 @@ export const starterPackSchema = () => {
             name: new fields.StringField({ ...requiredString }),
             qty: new fields.NumberField({ ...requiredInteger, initial: 1 })
         }), { initial: [] }),
+        category: new fields.StringField({ ...requiredString, initial: 'containers' }),
         value: new fields.SchemaField({ ...coinSchema() })
     }
 }
@@ -24,11 +26,18 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
         }
     }
 
-    override async _onCreate(data: any, options: any, userId: string) {
-        super._onCreate(data, options, userId)
-        this.parent.update({
-            'system.category': 'containers'
+    get cost(): Coins {
+        return subtractCoins({ g: 3, s: 0, c: 0 }, this.value)
+    }
+
+    get consolidatedItems(): { name: string, qty: number }[] {
+        const items: { id: string, name: string, qty: number }[] = []
+        this.items.forEach(item => {
+            const match = items.find(it => it.id === item.id)
+            if (match) { match.qty += item.qty }
+            else { items.push(item) }
         })
+        return items
     }
 
     /**
@@ -38,9 +47,10 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
      */
     async unpack(hero: Actor & { system: HeroDataModel }): Promise<void> {
         const itemsToCreate: any[] = []
+        const eqipment = ItemsCache.equipment()
 
         for (const entry of this.items) {
-            const sourceItem = game.items?.get(entry.id)
+            const sourceItem = eqipment.find(eq => eq.id === entry.id)
             if (!sourceItem) continue
 
             const itemData = sourceItem.toObject()
@@ -50,6 +60,7 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
             itemsToCreate.push(itemData)
         }
 
+        console.log(itemsToCreate)
         if (itemsToCreate.length > 0) {
             await hero.createEmbeddedDocuments("Item", itemsToCreate)
         }
@@ -58,7 +69,7 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
 
         await hero.update({ 'system.inventory.coins': combinedCoins } as Record<string, any>)
 
-        // Remove the starter pack itseslf
+        // Remove the starter pack itself
         await this.parent.delete()
     }
 

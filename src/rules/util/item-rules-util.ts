@@ -2,7 +2,7 @@ import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { CombinedItems } from "../../utils/modelUtil"
-import { ItemsCache } from "./ItemRulesCache"
+import { ItemsCache } from "./ItemsCache"
 
 export interface ItemRule {
     id: string,

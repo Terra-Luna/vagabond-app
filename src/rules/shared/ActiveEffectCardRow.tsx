@@ -1,5 +1,5 @@
 import { vgLiteLang } from "../../utils/lang"
-import { ItemsCache } from "../util/ItemRulesCache"
+import { ItemsCache } from "../util/ItemsCache"
 
 export const EffectCardContainer = ({ children }) => {
     return (

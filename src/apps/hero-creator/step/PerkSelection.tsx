@@ -11,7 +11,7 @@ import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
-import { ItemsCache } from "../../../rules/util/ItemRulesCache"
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 
 export const usePerkSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,

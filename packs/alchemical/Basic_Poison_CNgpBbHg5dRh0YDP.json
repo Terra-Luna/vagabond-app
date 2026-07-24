@@ -1,0 +1,63 @@
+{
+  "name": "Basic Poison",
+  "type": "alchemical",
+  "_id": "CNgpBbHg5dRh0YDP",
+  "img": "/icons/consumables/potions/vial-cork-green.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 20,
+      "c": 0
+    },
+    "totalValue": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicEffects": [],
+    "alchemyCategory": "unk",
+    "damage": {
+      "oneHand": "1d6",
+      "type": "none",
+      "appliesBurn": false,
+      "burnCountdown": ""
+    },
+    "explodeData": {
+      "canExplode": false,
+      "explodesOn": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784846228414,
+    "modifiedTime": 1784846309650,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!CNgpBbHg5dRh0YDP"
+}

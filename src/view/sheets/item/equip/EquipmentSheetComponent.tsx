@@ -29,7 +29,10 @@ import { useActiveEffectsManager } from "../../../../apps/active-effects/active-
 import { glowOnHover } from "../../../common/text-styles"
 const lang = fullLang.VGLITE
 
-export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
+export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
+    item: Item & { system: EquipmentDataModel<EquipmentSchema> },
+    hideBottomSection?: boolean
+}) => {
 
     const { setIsActiveEffectsOpen } = useActiveEffectsManager(item)
 
@@ -60,18 +63,19 @@ export const EquipmentSheetReactComponent = ({ item }: { item: Item & { system: 
         sheet = <></>
     }
 
-    const sharedContent = <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
-        <div className="space-y-2">
-            <Bulk item={item} />
-            <button title={vgLiteLang.ButtonActions.effects} onClick={() => setIsActiveEffectsOpen(true)} className={glowOnHover}>
-                <ItemSheetPropLabel label={vgLiteLang.ButtonActions.effects} />
-            </button>
+    const sharedContent = !hideBottomSection &&
+        <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
+            <div className="space-y-2">
+                <Bulk item={item} />
+                <button title={vgLiteLang.ButtonActions.effects} onClick={() => setIsActiveEffectsOpen(true)} className={glowOnHover}>
+                    <ItemSheetPropLabel label={vgLiteLang.ButtonActions.effects} />
+                </button>
+            </div>
+            <div className="space-y-2">
+                <ItemValue item={item} />
+                <CategorySelection item={item} />
+            </div>
         </div>
-        <div className="space-y-2">
-            <ItemValue item={item} />
-            <CategorySelection item={item} />
-        </div>
-    </div>
 
     return (
         <BaseItemSheetComponent

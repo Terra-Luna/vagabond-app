@@ -1,0 +1,68 @@
+{
+  "name": "Assassin",
+  "type": "starterpack",
+  "_id": "LD79jkhydTKw5mct",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "4flPjLCMlFWOZPml",
+        "name": "Alchemy Tools",
+        "qty": 1
+      },
+      {
+        "id": "sfhmK81aaZ462nGy",
+        "name": "Materials",
+        "qty": 20
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "CNgpBbHg5dRh0YDP",
+        "name": "Basic Poison",
+        "qty": 1
+      }
+    ],
+    "value": {
+      "g": 0,
+      "s": 60,
+      "c": 0
+    },
+    "category": "containers"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784846131321,
+    "modifiedTime": 1784846266453,
+    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LD79jkhydTKw5mct"
+}

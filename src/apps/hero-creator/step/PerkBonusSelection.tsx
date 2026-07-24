@@ -68,7 +68,7 @@ export const usePerkBonusSelection = (
         return (
             <div className="bg-sheet-main-fill space-y-4 text-center items-center">
                 <Header title={strings.bonusChoicesHeader} />
-                <TopNavButtons navButtons={navButtons} />
+                <TopNavButtons navButtons={navButtons} subtitle="" />
                 <Divider />
                 <BonusChoiceContainer>
                     <div className="space-y-4">

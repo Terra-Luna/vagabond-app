@@ -8,26 +8,27 @@ import { useSpellSelection } from "./step/SpellSelection"
 import { usePerkSelection } from "./step/PerkSelection"
 import { useEquipmentSelection } from "./step/EquipmentSelection"
 import { useNavigation } from "../../view/context/navigation/NavigationContext"
-import { ItemsCache } from "../../rules/util/ItemRulesCache"
+import { ItemsCache } from "../../rules/util/ItemsCache"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { usePerkBonusSelection } from "./step/PerkBonusSelection"
+import { Coins } from "../../model/common/CoinValue"
 
 interface HeroCreatorProps {
-    hero: Actor & { system: HeroDataModel }
+    actor: Actor & { system: HeroDataModel }
     setClosed: () => void
 }
 
-export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
+export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
     const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } = useNavigation()
     const [perksWithBonusChoices, setPerksWithBonusChoices] = useState<(Item & { system: PerkDataModel })[]>([])
 
-    const { NameAndAncestry, ancestryItem } = useNameAndAncestry(hero, [backButton, nextButton])
-    const { ClassSelection, classItem } = useClassSelection(hero, [backButton, nextButton])
+    const { NameAndAncestry, ancestryItem } = useNameAndAncestry(actor, [backButton, nextButton])
+    const { ClassSelection, classItem } = useClassSelection(actor, [backButton, nextButton])
     const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
     const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
     const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
     const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, [backButton, nextButton])
-    const { EquipmentSelection } = useEquipmentSelection(classItem, [backButton, nextButton])
+    const { EquipmentSelection, selectedPack, wallet } = useEquipmentSelection(classItem, [backButton, nextButton])
 
     const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
 
@@ -45,7 +46,7 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
     }, [assignedStats, bonusStatSelections, flatStatBonuses])
 
     const { PerkBonusSelection } = usePerkBonusSelection(
-        hero, perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
+        actor, perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
         [...chosenClassSkills, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
         [backButton, nextButton]
@@ -120,7 +121,7 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
         if (!ancestryItem || !classItem) return
 
         try {
-            const createdItems = await hero.createEmbeddedDocuments("Item", [
+            const createdItems = await actor.createEmbeddedDocuments("Item", [
                 ancestryItem.toObject(),
                 classItem.toObject()
             ]) as (Item & { system: { rules: any } })[]
@@ -135,7 +136,7 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
                 'system.stats.presence': assignedStats?.find(s => s.stat === 'presence')?.value ?? 2,
                 'system.stats.luck': assignedStats?.find(s => s.stat === 'luck')?.value ?? 2
             }
-            await hero.update(stats)
+            await actor.update(stats)
 
             const ancestry = createdItems.find(i => (i.type as string) === "ancestry")
             const clazz = createdItems.find(i => (i.type as string) === "class")
@@ -180,6 +181,13 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
             if (clazz) {
                 await clazz.update({ "system.rules": classRules } as Record<string, any>)
             }
+            if (selectedPack) {
+                const pack = selectedPack.toObject()
+                console.log("Adding pack:", pack, wallet)
+                await actor.createEmbeddedDocuments("Item", [pack])
+                await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
+            }
+
         }
         catch (error) {
             console.error("VGLite | Hero Creator commit error:", error)
@@ -187,15 +195,15 @@ export const HeroCreator = ({ hero, setClosed }: HeroCreatorProps) => {
         }
         finally {
             // Set the Hero up with max resources.
-            await hero.update({
-                'system.health.current': hero.system.health.max,
-                'system.mana.current': hero.system.mana.max,
-                'system.statuses.counters.luck': hero.system.stats.luck
+            await actor.update({
+                'system.health.current': actor.system.health.max,
+                'system.mana.current': actor.system.mana.max,
+                'system.statuses.counters.luck': actor.system.stats.luck
             } as Record<any, any>)
             setClosed()
         }
     }, [
-        hero, ancestryItem, classItem, selectedArr, assignedStats,
+        actor, ancestryItem, classItem, selectedArr, assignedStats,
         bonusStatSelections, chosenClassSkills, chosenBonusSkills,
         ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
         setClosed

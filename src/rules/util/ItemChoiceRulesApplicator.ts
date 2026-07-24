@@ -1,7 +1,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
-import { ItemsCache } from "./ItemRulesCache"
+import { ItemsCache } from "./ItemsCache"
 
 export class PerkRulesSelectionsApplicator {
 

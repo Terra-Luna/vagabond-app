@@ -181,7 +181,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
             <div className="bg-sheet-main-fill space-y-4">
                 {/* HEADER */}
                 <Header title={strings.coreStats} />
-                <TopNavButtons navButtons={navButtons} />
+                <TopNavButtons navButtons={navButtons} subtitle="" />
 
                 <div className="w-full space-y-2 items-center justify-center text-center">
                     {/* STAT ARRAY HEADER */}

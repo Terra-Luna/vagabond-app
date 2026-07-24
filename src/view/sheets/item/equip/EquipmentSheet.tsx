@@ -1,8 +1,8 @@
 import { VgLiteItemSheet } from "../VgLiteItemSheet"
-import { EquipmentSheetReactComponent } from "./EquipmentSheetComponent"
+import { EquipmentSheetComponent } from "./EquipmentSheetComponent"
 
 export class EquipmentSheet extends VgLiteItemSheet {
-    Component = EquipmentSheetReactComponent
+    Component = EquipmentSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
             width: 380,

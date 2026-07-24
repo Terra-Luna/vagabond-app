@@ -80,10 +80,9 @@ export const useTrainingSelection = (
             <div className="bg-sheet-main-fill space-y-4">
                 {/* HEADER AND NAVIGATION BUTTONS */}
                 <Header title={strings.traingingsHeader} />
-                <TopNavButtons navButtons={navButtons} />
+                <TopNavButtons navButtons={navButtons} subtitle={strings.trainingSubheader} />
 
                 <div className="items-center justify-center text-center w-full space-y-2">
-                    <HeroCreationSubtext text={strings.trainingSubheader} />
 
                     {/* SELECTED STATS W/ BONUSES APPLIED */}
                     <HeroCreationSubtext text={
