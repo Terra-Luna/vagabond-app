@@ -121,10 +121,10 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                 </div>
 
                 {/* ITEM SHOP */}
-                <div className="space-y-1 overflow-hidden">
+                <div className="space-y-1 h-full">
                     <Header title={"ITEM SHOP"} />
 
-                    <div className="space-y-1">
+                    <div className="space-y-1 h-full">
                         {/* SEARCH BY NAME */}
 
                         {/* CATEGORY BUTTONS */}

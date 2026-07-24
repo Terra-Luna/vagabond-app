@@ -1,6 +1,6 @@
 import { useCallback } from "react"
-import { BaseItemSchema, ItemDataModel } from "../model/item/ItemDataModel"
 import { Plus, Trash } from "lucide-react"
+import { BaseItemSchema, ItemDataModel } from "../model/item/ItemDataModel"
 import { PrimaryButton } from "../view/component/Button"
 import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
 import { vgLiteLang } from "../utils/lang"

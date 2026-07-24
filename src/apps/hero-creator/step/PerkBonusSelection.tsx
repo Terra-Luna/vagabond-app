@@ -5,9 +5,11 @@ import { TopNavButtons } from "../component/TopNavButtons"
 import { vgLiteLang } from "../../../utils/lang"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { getItemChoiceRules, getSkillTrainingChoiceRules, getStatChoiceRules, savePerkSelectionFlags } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getSkillTrainingChoiceRules, getStatChoiceRules, ItemRule, savePerkSelectionFlags } from "../../../rules/util/item-rules-util"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { HeroCreationSubtext } from "../component/HeroCreationTypography"
+import { SkillCard } from "../../../view/component/SkillCard"
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 
 export const usePerkBonusSelection = (
     actor: Actor & { system: HeroDataModel },
@@ -50,7 +52,7 @@ export const usePerkBonusSelection = (
         return rules
     }, [perks, selectedTrainings])
 
-    const spells = useMemo(() => {
+    const spells = useMemo((): ItemRule[] => {
         const rules = getItemChoiceRules(perks?.flatMap(p => p.system.rules) ?? [])
         rules.forEach(r => {
             r.choices = [
@@ -64,6 +66,10 @@ export const usePerkBonusSelection = (
     const onChoiceSelection = useCallback((selection, rule) => {
         savePerkSelectionFlags(actor, [{ ruleId: rule.id, value: selection }])
     }, [actor])
+
+    const selectedSpell = useMemo(() => {
+        return ItemsCache.spells().find(it => it.uuid === spell)
+    }, [spell])
 
     const PerkBonusSelection = () => {
         return (
@@ -134,8 +140,17 @@ export const usePerkBonusSelection = (
                     </div>
                 </BonusChoiceContainer>
 
-                {
-
+                {selectedSpell &&
+                    <div className="text-left">
+                        <SkillCard
+                            img={selectedSpell.img ?? ''}
+                            title={selectedSpell.name}
+                            subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[selectedSpell.system.damageType] }]}
+                            dmgType={selectedSpell.system.damageType}
+                            description={selectedSpell.system.description}
+                            startCollapsed={false}
+                        />
+                    </div>
                 }
             </div>
         )

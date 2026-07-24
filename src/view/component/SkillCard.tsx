@@ -10,12 +10,12 @@ const cardSubheaderValue = "text-base text-text-header-primary font-eskapade fon
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border"
 const cardBodyStyle = "text-text-primary text-sm antialiased"
 
-export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, description }: {
-    img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues[], description: string
+export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, description, startCollapsed = true }: {
+    img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues[], description: string, startCollapsed?: boolean
 }) => {
     return (
         <Collapsible
-            startCollapsed
+            startCollapsed={startCollapsed}
             img={img}
             dmgType={dmgType}
             title={title}

@@ -11,7 +11,7 @@ import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { SkillCard } from "../../../view/component/SkillCard"
+import { Grimoire } from "../component/Grimoire"
 
 export const useSpellSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
@@ -67,13 +67,13 @@ export const useSpellSelection = (
         getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
 
         const ancestryRules = getItemChoiceRules(ancestry?.system?.rules ?? [])
-        setAncestrySpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
+        setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
 
         const classRules = getItemChoiceRules(clazz?.system?.rules ?? [])
-        setClassSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
+        setClassSpellSlots(loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
 
         const perkRules = getItemChoiceRules(perks?.flatMap(p => p.rules) ?? [])
-        setPerkSpellSlots(prev => prev.length > 0 ? prev : loadInitialSlots(perkRules.filter(r => r.pack === 'spell')))
+        setPerkSpellSlots(loadInitialSlots(perkRules.filter(r => r.pack === 'spell')))
     }, [ancestry, clazz, perksSignature, loadInitialSlots])
 
     const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
@@ -114,7 +114,7 @@ export const useSpellSelection = (
                 />
             </div>
 
-            {ancestrySpellSlots.length > 0 && isCreationMode &&
+            {(ancestrySpellSlots.length > 0 && isCreationMode) &&
                 <BonusChoiceContainer>
                     <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
                     <ItemSelectorGroup
@@ -141,49 +141,11 @@ export const useSpellSelection = (
             }
 
             {/* YOUR GRIMOIRE */}
-            <div className="space-y-1 mt-4">
-                <HeroCreationLabel text={strings.grimoire} />
-
-                {/* GRANTED SPELLS */}
-                {[...ancestrySpellGrants, ...classSpellGrants].map(g => {
-                    const sp = spellsList.find(sp => sp.value === g.uuid)
-                    if (sp) {
-                        return (
-                            <SkillCard
-                                key={g.uuid}
-                                img={sp.img}
-                                dmgType={sp.dmgType}
-                                title={sp.label}
-                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
-                                description={sp.description}
-                            />
-                        )
-                    }
-                    else {
-                        return null
-                    }
-                })}
-
-                {/* CHOSEN SPELLS */}
-                {[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots].filter(slot => slot.value.length > 0).map(slot => {
-                    const sp = spellsList.find(sp => sp.value === slot.value)
-                    if (sp) {
-                        return (
-                            <SkillCard
-                                key={sp.value}
-                                img={sp.img}
-                                dmgType={sp.dmgType}
-                                title={sp.label}
-                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
-                                description={sp.description}
-                            />
-                        )
-                    }
-                    else {
-                        return null
-                    }
-                })}
-            </div>
+            <Grimoire
+                spellGrants={[...ancestrySpellGrants, ...classSpellGrants]}
+                spellSlots={[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots]}
+                spellsList={spellsList}
+            />
         </>)
     }
 

@@ -32,6 +32,8 @@ export const useTrainingSelection = (
     const [chosenBonusSkills, setChosenBonusSkills] = useState<{ skill: string, ruleId: string }[]>([])
 
     useEffect(() => {
+        setChosenBonusSkills([])
+        setChosenBonusSkills([])
         setRequiredTrainingRules(getRequiredSkillTrainingRules([ancestry, clazz]))
         setAncestryTrainingRules(getSkillTrainingChoiceRules([ancestry]))
         setClassTrainingRules(getSkillTrainingChoiceRules([clazz]))

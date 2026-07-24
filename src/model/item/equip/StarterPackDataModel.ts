@@ -35,7 +35,9 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
         this.items.forEach(item => {
             const match = items.find(it => it.id === item.id)
             if (match) { match.qty += item.qty }
-            else { items.push(item) }
+            else {
+                items.push(foundry.utils.deepClone(item))
+            }
         })
         return items
     }
