@@ -1,5 +1,5 @@
 import ReactDom from "react-dom/client"
-import { FunctionComponent, ReactNode, useCallback, useRef } from "react"
+import { FunctionComponent, ReactNode, useCallback, useMemo, useRef } from "react"
 import * as sheetUtils from "../view/sheets/sheetUtils"
 
 export const CLOSE_GLOBAL_POPOUT_HOOK = "closeGlobalPopout" as any
@@ -22,7 +22,7 @@ export const useGlobalPopout = (onClose?: () => void) => {
         })
     }, [])
 
-    return { renderPopout, popoutId: popoutId.current }
+    return useMemo(() => ({ renderPopout, popoutId: popoutId.current }), [renderPopout])
 }
 
 /** 
