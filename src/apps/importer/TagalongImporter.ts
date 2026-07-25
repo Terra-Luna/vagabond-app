@@ -1,6 +1,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { inventoryItemTypes } from "../../model/actor/type/Inventory"
 import { VgLiteError } from "../../model/common/VgLiteError"
+import { ItemsCache } from "../../rules/util/ItemsCache"
 import { updateDocument } from "../../utils/documentUtils"
 import { stackStackables } from "../../utils/heroInventoryUtil"
 import { addItemToActor, CombinedItems, CombinedItemsMultiType, TypedIndexEntry } from "../../utils/modelUtil"
@@ -23,6 +24,8 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         ui.notifications?.info("Importing character data from www.vgbnd.app, please wait...")
         const url = new URL(tagalongUrl)
         const res = (await fetchHero(url)).character
+
+        console.log(res)
 
         /**
          * Build a list of failed item lookups...
@@ -101,7 +104,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
          */
         const perks: (Item | TypedIndexEntry)[] = []
         for (const p of res.selected_perks) {
-            const perk = (await CombinedItems('perk')).find(it => it.name.toUpperCase() === p.name.toUpperCase())
+            const perk = ItemsCache.perks().find(it => it.name.toUpperCase() === p.name.toUpperCase())
             if (perk == undefined) {
                 failures.push(`Perk: ${p.name}`)
             }
@@ -114,27 +117,26 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
          * Lookup matching Spells...
          */
         const spells: (Item | TypedIndexEntry)[] = []
-        for (const s in res.known_spells) {
-            const systemSpell = (await CombinedItems('spell')).find(it => it.name.toUpperCase() === s.toUpperCase())
-            if (systemSpell == undefined) {
-                failures.push(`Spell: ${s}`)
+        for (const sp in res.known_spells) {
+            const spell = ItemsCache.spells().find(it => it.name.toUpperCase() === sp.toUpperCase())
+            if (spell == undefined) {
+                failures.push(`Spell: ${sp}`)
             }
             else {
-                spells.push(systemSpell)
+                spells.push(spell)
             }
         }
 
-        if (clazz != undefined) {
-            await hero.parent.createEmbeddedDocuments("Item", [clazz])
-        }
+        if (ancestry) await hero.parent.createEmbeddedDocuments("Item", [ancestry])
+        if (clazz) await hero.parent.createEmbeddedDocuments("Item", [clazz])
 
-        if (perks.length > 0) {
-            await hero.parent.createEmbeddedDocuments("Item", perks)
-        }
+        spells.forEach(spell => {
 
-        if (spells.length > 0) {
-            await hero.parent.createEmbeddedDocuments("Item", spells)
-        }
+        })
+
+        perks.forEach(perk => {
+
+        })
 
         /**
          * Import character inventory...

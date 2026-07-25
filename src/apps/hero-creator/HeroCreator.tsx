@@ -28,9 +28,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
     const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
     const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
     const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
-    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, [backButton, nextButton])
     const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
-
     const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
 
     /**
@@ -45,6 +43,20 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
             return { stat: assignedStat.stat, value: ((assignedStat?.value ?? 0) + bonus) }
         })
     }, [assignedStats, bonusStatSelections, flatStatBonuses])
+
+    const statsAsKeyValue = useMemo(() => {
+        return statsWithBonuses.reduce((schema, { stat, value }) => { schema[stat] = value; return schema; }, {} as any)
+    }, [statsWithBonuses])
+
+    const selectedTrainings = useMemo(() => {
+        return [...chosenClassSkills, ...chosenBonusSkills].map(sk => sk.skill)
+    }, [chosenClassSkills, chosenBonusSkills])
+
+    const selectedSpellNames = useMemo(() => {
+        return [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)
+    }, [ancestrySpellSlots, classSpellSlots])
+
+    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton])
 
     const { PerkBonusSelection, advancement, training, spell } = usePerkBonusSelection(
         actor, perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,

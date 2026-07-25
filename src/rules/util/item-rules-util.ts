@@ -252,6 +252,21 @@ export function getItemChoiceRules(rulesData: any[]): ItemRule[] {
             }
             else if (rule.pack === "perk") {
                 finalizedChoices = getPerkChoices()
+                /**
+                 * Apply Perk filter rules...
+                 */
+                if (rule.filters && rule.filters.length > 0) {
+                    const trainingFilters = rule.filters.filter(it => it.type === 'training').map(it => it.value) as string[]
+                    finalizedChoices = finalizedChoices.filter(choice => {
+                        const perk = ItemsCache.perks().find(it => it.uuid === choice.value)
+                        const perkTrainingPrereqs = perk?.system.prerequisites
+                            .filter(it => it.type === 'trained')
+                            .flatMap(it => it.skills)
+                            .flatMap(it => it.skillNames)
+                        return perkTrainingPrereqs?.some(it => trainingFilters.includes(it))
+                    })
+                    console.log(rule, finalizedChoices)
+                }
             }
         }
 

@@ -12,16 +12,24 @@ import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoice
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { statsSchema } from "../../../model/actor/type/Stats"
+import { Checkbox } from "../../../view/component/Checkbox"
 
 export const usePerkSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,
     clazz: Item & { system: ClassDataModel } | undefined,
+    stats: ReturnType<typeof statsSchema>,
+    trainings: string[],
+    spells: string[],
     navButtons: ReactNode[]
 ) => {
     const strings = vgLiteLang.HeroCreation
 
     // All perks for selection.
     const [perksList, setPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
+    const [eligiblePerksList, setEligiblePerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
+    const [classRestrictedPerksList, setClassRestrictedPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
+    const [useEligibilityFilter, setUseEligibilityFilter] = useState<boolean>(true)
 
     // Perks automatically granted by chosen Ancestry & Class.
     const [ancestryPerkGrants, setAncestryPerkGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
@@ -31,19 +39,50 @@ export const usePerkSelection = (
     const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
     const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
 
+    const toDisplayablePerk = (perk) => {
+        return {
+            value: perk.uuid,
+            label: perk.name,
+            img: perk.img ?? '',
+            prereqs: (perk.system as any)?.prerequisites,
+            cardSubheader: perkPrerequisites(perk.system as any),
+            description: (perk.system as any)?.description
+        }
+    }
+
+    /**
+     * A list of every perk in the game.
+     */
     useEffect(() => {
         setPerksList([
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-            ...ItemsCache.perks().map(perk => ({
-                value: perk.uuid,
-                label: perk.name,
-                img: perk.img ?? '',
-                prereqs: (perk.system as any)?.prerequisites,
-                cardSubheader: perkPrerequisites(perk.system as any),
-                description: (perk.system as any)?.description
-            }))
+            ...ItemsCache.perks().map(perk => toDisplayablePerk(perk))
         ])
     }, [ItemsCache.perks])
+
+    /**
+     * Constructs a seperate list of perks the hero is eligible so far
+     * base on stat, spell, and training selections.
+     */
+    useEffect(() => {
+        setEligiblePerksList([
+            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
+            ...ItemsCache.eligiblePerks(stats, trainings, spells).map(perk => toDisplayablePerk(perk))
+        ])
+    }, [stats, trainings, spells])
+
+    /**
+     * Monitor the selected class and construct a list of filtered perk choices based
+     * on their perk choice filter rules.
+     */
+    useEffect(() => {
+        const perkRules = getItemChoiceRules(clazz?.system?.rules ?? []).filter(it => it.pack === "perk")
+        const filteredChoices = perkRules.flatMap(it => it.choices).map(it => it.value)
+        setClassRestrictedPerksList([
+            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
+            ...ItemsCache.perks().filter(it => filteredChoices.includes(it.uuid)).map(perk => toDisplayablePerk(perk))
+        ])
+    }, [clazz])
 
     useEffect(() => {
         getItemGrants('perk', [ancestry]).then(grants => {
@@ -51,7 +90,7 @@ export const usePerkSelection = (
         })
 
         setAncestryPerkSlots(loadInitialSlots(
-            getItemChoiceRules(ancestry?.system?.rules ?? [])
+            getItemChoiceRules(ancestry?.system?.rules ?? []).filter(it => it.pack === "perk")
         ))
 
         getItemGrants('perk', [clazz]).then(grants => {
@@ -59,7 +98,7 @@ export const usePerkSelection = (
         })
 
         setClassPerkSlots(loadInitialSlots(
-            getItemChoiceRules(clazz?.system?.rules ?? [])
+            getItemChoiceRules(clazz?.system?.rules ?? []).filter(it => it.pack === "perk")
         ))
     }, [ancestry, clazz])
 
@@ -116,7 +155,7 @@ export const usePerkSelection = (
                         <BonusChoiceTitle text={`${classPerkSlots[0].ruleName}`} />
                         <ItemSelectorGroup
                             slotGroup={classPerkSlots}
-                            options={perksList}
+                            options={classRestrictedPerksList}
                             otherSlotGroup={ancestryPerkSlots}
                             grants={[...ancestryPerkGrants, ...classPerkGrants]}
                             onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setClassPerkSlots)}
@@ -127,10 +166,14 @@ export const usePerkSelection = (
                 {/* CHOOSE ANCESTRY PERKS */}
                 {ancestryPerkSlots.length > 0 &&
                     <BonusChoiceContainer>
-                        <BonusChoiceTitle text={`${ancestry?.name} ${ancestryPerkSlots[0].ruleName}`} />
+                        <div className="flex gap-x-6">
+                            <BonusChoiceTitle text={`${ancestry?.name} ${ancestryPerkSlots[0].ruleName}`} />
+                            {/* CHECKBOX TOGGLE FOR PERK ELIGIBILITY FILTER */}
+                            <Checkbox label={"Filter by eligibility"} onCheckedChanged={() => setUseEligibilityFilter(!useEligibilityFilter)} checked={useEligibilityFilter} />
+                        </div>
                         <ItemSelectorGroup
                             slotGroup={ancestryPerkSlots}
-                            options={perksList}
+                            options={useEligibilityFilter ? eligiblePerksList : perksList}
                             otherSlotGroup={classPerkSlots}
                             grants={[...ancestryPerkGrants, ...classPerkGrants]}
                             onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setAncestryPerkSlots)}

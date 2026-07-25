@@ -1,6 +1,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { inventoryItemTypes } from "../../model/actor/type/Inventory"
-import { PerkDataModel } from "../../model/item/character/PerkDataModel"
+import { statsSchema } from "../../model/actor/type/Stats"
+import { isEligibleForPerk, PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { StarterPackDataModel } from "../../model/item/equip/StarterPackDataModel"
@@ -30,6 +31,11 @@ export class ItemsCache {
             .filter(([_, item]) => item.type === 'perk')).values()]
             .filter(it => it != null)
             .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: PerkDataModel })[]
+    }
+
+    static eligiblePerks = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[]) => {
+        const perks = this.perks()
+        return perks.filter(perk => isEligibleForPerk(stats, trainings, spells, perk.system))
     }
 
     static equipment = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {

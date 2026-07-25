@@ -1,6 +1,7 @@
 import { lang, vgLiteLang } from "../../../utils/lang"
 import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
+import { statsSchema } from "../../actor/type/Stats"
 import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
 import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
@@ -15,7 +16,7 @@ const prerequisiteSchema = () => {
     return {
         type: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.PrerequisiteTypes) }),
         stat: new fields.StringField({ ...optionalString, choices: Object.keys(lang.VGLITE.Stat), initial: Object.keys(lang.VGLITE.Stat)[0] }),
-        value: new fields.NumberField({ ...standardInteger }),
+        value: new fields.NumberField({ ...standardInteger, initial: 3 }),
         spell: new fields.StringField({ ...optionalString, initial: 'Any' }),
         skills: new fields.ArrayField(
             new fields.SchemaField({
@@ -104,5 +105,64 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
             }
         })
     })
-    return trainings.join(' | ') ?? ''
+    return trainings.join(' & ') ?? ''
+}
+
+/**
+ * Assesses the given perk against the given criteria to check 
+ * whether the prerequisite requirements are met.
+ * @param stats 
+ * @param trainings 
+ * @param spells 
+ * @param perk 
+ * @returns 
+ */
+export const isEligibleForPerk = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[], perk: PerkDataModel): boolean => {
+    let isEligible = true
+
+    for (const pre of perk.prerequisites) {
+        if (!isEligible) continue
+
+        if (pre.type === 'stat') {
+            isEligible = stats[pre.stat] >= (pre.value ?? 2)
+        }
+        else if (pre.type === 'trained') {
+            for (const skill of pre.skills) {
+                if (!isEligible) continue
+
+                if (skill.skillNames.length === 1) {
+                    isEligible = trainings.includes(pre.skills[0].skillNames[0])
+                }
+                else if (skill.andOr === 'and') {
+                    isEligible = skill.skillNames.every(sk => trainings.includes(sk))
+                }
+                else if (skill.andOr === 'or') {
+                    isEligible = skill.skillNames.some(sk => trainings.includes(sk))
+                }
+            }
+        }
+        else if (pre.type === 'spell') {
+            isEligible = pre.spell.toUpperCase() === 'ANY' && spells.length > 0 || spells.includes(pre.spell)
+        }
+    }
+
+    return isEligible
+}
+
+/**
+ * Returns true if the given perk has a prerequisite matching any of the given trainings.
+ * @param trainings
+ * @param perk 
+ * @returns 
+ */
+export const isTrainingPrereqMatch = (trainings: string[], perk: PerkDataModel): boolean => {
+    let isMatch = false
+    const trainingPrereqs = perk.prerequisites.filter(pre => pre.type === 'training')
+
+    for (const training of trainings) {
+        if (isMatch) continue
+        isMatch = trainingPrereqs.some(pr => pr.skills.flatMap(sk => sk.skillNames).includes(training))
+    }
+
+    return isMatch
 }

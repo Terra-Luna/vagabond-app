@@ -1,14 +1,26 @@
+import { useEffect, useState } from "react"
 import { ItemRulesLabel } from "./ItemRulesTypography"
 
 export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type = 'text' }) => {
+    const [localValue, setLocalValue] = useState(value)
+
+    useEffect(() => {
+        setLocalValue(value)
+    }, [value])
+
+    const handleInputChange = (e) => {
+        setLocalValue(e.target.value)
+        onChange(e)
+    }
+
     return (<>
         {
             <div className="flex flex-col gap-2">
                 <ItemRulesLabel text={label} />
                 <input
                     type={type}
-                    value={value}
-                    onChange={onChange}
+                    value={localValue}
+                    onChange={handleInputChange}
                     className={`
                         border border-solid border-table-border/50 rounded-sm 
                         px-2 py-1 -mt-2

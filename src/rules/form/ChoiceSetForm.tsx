@@ -1,9 +1,12 @@
 import React, { useState } from "react"
-import { Plus, Trash } from "lucide-react"
+import { LucideProps, Plus, Trash } from "lucide-react"
 import { ChoiceOption } from "../shared/ChoiceOption"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
 import { ItemRulesLabel } from "../shared/ItemRulesTypography"
+import { IconOnlyButton } from "../../view/component/IconOnlyButton"
+import { createDropdownEntries, createDropdownEntriesFromObj } from "../../utils/localeUtils"
+import { vgLiteLang } from "../../utils/lang"
 
 export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     // Read the options list array, defaulting to an empty array if uninitialized
@@ -69,7 +72,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
         <div className="flex flex-col gap-3 text-text-primary bg-sheet-main-fill border border-solid border-table-border p-2">
 
             {/* CHOICE CONFIGURATION SETTINGS */}
-            <div className="grid grid-cols-2 gap-2 items-end">
+            <div className="grid grid-cols-2 gap-2 items-start">
                 <ItemRuleInput
                     label="Name"
                     value={rule.label || ""}
@@ -108,38 +111,101 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     onChange={(e) => {
                         const val = e.target.value
                         if (val === "path") {
-                            onChange({ channel: val, sourceMode: "static", pack: '', choices: [] })
+                            onChange({ channel: val, sourceMode: "static", pack: '', choices: [], filters: [] })
                         }
                         else {
-                            onChange({ channel: val, pack: 'perk', choices: [] })
+                            onChange({ channel: val, pack: 'perk', choices: [], filters: [] })
                         }
                     }}
                 />
 
                 {/* SELECT CHOICE SET TYPE: DYNAMIC / STATIC */}
-                {rule.channel === "item" &&
-                    <ItemRuleSelector
-                        label="Choices Source"
+                {rule.channel === "item" && <ItemRuleSelector
+                    label="Choices Source"
                     value={rule.sourceMode}
-                        options={<>
-                            <option value="static">Static Manual List</option>
-                            <option value="dynamic">Dynamic Item Pack</option>
-                        </>}
-                    onChange={(e) => onChange({ sourceMode: e.target.value })}
-                    />
-                }
+                    options={<>
+                        <option value="static">Static Manual List</option>
+                        <option value="dynamic">Dynamic Item Pack</option>
+                    </>}
+                    onChange={(e) => {
+                        onChange({ sourceMode: e.target.value, filters: [] })
+                    }}
+                />}
 
                 {/* Conditionally show input field if rule.pack contains a valid string */}
-                {rule.sourceMode === "dynamic" && (
-                    <ItemRuleSelector
+                {rule.sourceMode === "dynamic" && <ItemRuleSelector
                         label="Item Pack Type"
                         value={rule.pack}
                         options={<>
                             <option value="perk">Perks</option>
                             <option value="spell">Spells</option>
                         </>}
-                        onChange={(e) => onChange({ pack: e.target.value })}
-                    />
+                    onChange={(e) => {
+                        onChange({ pack: e.target.value, filters: [] })
+                    }}
+                />}
+
+                {/* Perk Prerequisites Filter Options */}
+                {rule.sourceMode === "dynamic" && rule.pack === "perk" && (
+                    <div>
+                        <div className="flex gap-x-1 items-center">
+                            <ItemRulesLabel text={"Prerequisite Filters"} />
+                            <IconOnlyButton
+                                Icon={Plus}
+                                colorClassName="text-text-header-tertiary"
+                                onClick={() => {
+                                    const currentFilters = rule.filters ? [...rule.filters] : []
+                                    const updatedFilters = [...currentFilters, { type: 'training', value: 'melee' }]
+                                    onChange({ ...rule, filters: updatedFilters })
+                                }}
+                            />
+                        </div>
+                        {
+                            rule.filters?.map((filter, index) => (
+                                <div key={`${index}-${filter.type}`} className="flex gap-x-1 items-center">
+                                    <Trash
+                                        size={16}
+                                        className="text-destructive-action cursor-pointer"
+                                        onClick={() => {
+                                            const updatedFilters = rule.filters.filter((_, i) => i !== index);
+                                            onChange({ ...rule, filters: updatedFilters })
+                                        }}
+                                    />
+                                    <ItemRuleSelector
+                                        label="Filter Type"
+                                        value={filter.type}
+                                        options={<>
+                                            <option value="training">Training</option>
+                                            {/* <option value="spell">Spell</option> */}
+                                        </>}
+                                        onChange={(e) => {
+                                            const updatedFilters = [...rule.filters]
+                                            updatedFilters[index] = {
+                                                ...updatedFilters[index],
+                                                type: e.target.value
+                                            }
+                                            onChange({ ...rule, filters: updatedFilters })
+                                        }}
+                                    />
+                                    <ItemRuleSelector
+                                        label="Skill"
+                                        value={filter.value}
+                                        options={createDropdownEntriesFromObj(vgLiteLang.Skills).map(it => (
+                                            <option value={it.value}>{it.label}</option>
+                                        ))}
+                                        onChange={(e) => {
+                                            const updatedFilters = [...rule.filters]
+                                            updatedFilters[index] = {
+                                                ...updatedFilters[index],
+                                                value: e.target.value
+                                            }
+                                            onChange({ ...rule, filters: updatedFilters })
+                                        }}
+                                    />
+                                </div>
+                            ))
+                        }
+                    </div>
                 )}
 
             </div>

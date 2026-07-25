@@ -1,3 +1,4 @@
+import { Fragment } from "react/jsx-runtime"
 import { vgLiteLang } from "../../utils/lang"
 import { createDropdownEntries } from "../../utils/localeUtils"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
@@ -7,13 +8,13 @@ export const CategoryButtons = ({ shopCategory, setShopCategory }: { shopCategor
     return (
         <div className="flex gap-x-1 justify-center">
             {
-                shopCategories.map((cat, index) => (<>
-                    {
-                        cat.value === shopCategory ?
-                            <PrimaryButton key={`${index}_${cat.value}_selected`} onClick={() => { }}>{cat.label}</PrimaryButton> :
-                            <SecondaryButton key={`${index} _${cat.value}_deselected`} onClick={() => setShopCategory(cat.value)}>{cat.label}</SecondaryButton>
-                    }
-                </>))
+                shopCategories.map((cat, index) => (
+                    <Fragment key={index}>
+                        {cat.value === shopCategory ?
+                            <PrimaryButton onClick={() => { }}>{cat.label}</PrimaryButton> :
+                            <SecondaryButton onClick={() => setShopCategory(cat.value)}>{cat.label}</SecondaryButton>
+                        }
+                    </Fragment>))
             }
         </div>
     )
