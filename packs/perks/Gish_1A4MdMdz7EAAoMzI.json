@@ -1,16 +1,16 @@
 {
-  "name": "Akimbo Trigger",
+  "name": "Gish",
   "type": "perk",
-  "_id": "2EcaU8g8KwRNUAct",
-  "img": "icons/weapons/guns/gun-pistol-flintlock-metal.webp",
+  "_id": "1A4MdMdz7EAAoMzI",
+  "img": "icons/magic/symbols/runes-etched-steel-blade.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Attacking a Close Target with a Ranged attack doesn’t Hinder the Check, and you can Move up to half your Speed when you skip your Move to make an attack.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use Weapons as Trinkets to Cast and, when you Cast with a Delivery of Imbue on a Weapon you have Equipped, you can make an attack with the Weapon with the same Action.</span></p>",
     "rules": [],
     "prerequisites": [
       {
-        "type": "stat",
-        "stat": "dexterity",
-        "value": 4,
+        "type": "spell",
+        "stat": "might",
+        "value": 0,
         "spell": "Any",
         "skills": [
           {
@@ -29,32 +29,34 @@
         "skills": [
           {
             "skillNames": [
+              "melee",
               "ranged"
             ],
-            "andOr": null
+            "andOr": "or"
           }
         ]
       }
-    ]
+    ],
+    "canTakeMultiple": false
   },
   "effects": [],
   "folder": null,
-  "sort": 200000,
+  "sort": 450000,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "ywhHfYnWZQBq7W9u": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784497586604,
-    "modifiedTime": 1785020904961,
+    "createdTime": 1784994455656,
+    "modifiedTime": 1785020907097,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!2EcaU8g8KwRNUAct"
+  "_key": "!items!1A4MdMdz7EAAoMzI"
 }

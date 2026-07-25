@@ -74,7 +74,17 @@
         "sourceMode": "dynamic",
         "choices": [],
         "selections": [],
-        "pack": "perk"
+        "pack": "perk",
+        "filters": [
+          {
+            "type": "training",
+            "value": "melee"
+          },
+          {
+            "type": "training",
+            "value": "ranged"
+          }
+        ]
       },
       {
         "id": "XpvDpGdc4H2ByW6v",
@@ -135,7 +145,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
-    "modifiedTime": 1784934692802,
+    "modifiedTime": 1785006981783,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

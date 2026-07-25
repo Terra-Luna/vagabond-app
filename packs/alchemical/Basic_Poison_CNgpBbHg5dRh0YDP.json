@@ -4,7 +4,7 @@
   "_id": "CNgpBbHg5dRh0YDP",
   "img": "/icons/consumables/potions/vial-cork-green.webp",
   "system": {
-    "description": "",
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Sickened (Cd4 damage).</span></p><p><b><strong style=\"white-space:pre-wrap\">Consumed:</strong></b><span style=\"white-space:pre-wrap\"> Affects Targets who consume it.</span></p><p><b><strong style=\"white-space:pre-wrap\">Injury:</strong></b><span style=\"white-space:pre-wrap\"> Affects Targets who are injured with Weapons coated with it.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -26,12 +26,12 @@
     },
     "isEquippable": false,
     "isEquipped": false,
-    "isConsumable": false,
+    "isConsumable": true,
     "relicEffects": [],
-    "alchemyCategory": "unk",
+    "alchemyCategory": "poison",
     "damage": {
-      "oneHand": "1d6",
-      "type": "none",
+      "oneHand": "0",
+      "type": "poison",
       "appliesBurn": false,
       "burnCountdown": ""
     },
@@ -53,8 +53,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784846228414,
-    "modifiedTime": 1784846309650,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785020674707,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

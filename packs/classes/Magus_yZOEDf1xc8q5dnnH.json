@@ -1,0 +1,236 @@
+{
+  "name": "Magus",
+  "type": "class",
+  "_id": "yZOEDf1xc8q5dnnH",
+  "img": "systems/vagabond-lite/assets/class/magus.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Spellblades, gishes, arcane knights, and eldritch tricksters all. Magi are arcane specialists that blend magic and martial prowess.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Magi</strong></b></p><p><span style=\"white-space:pre-wrap\">• Alucard, Castlevania</span></p><p><span style=\"white-space:pre-wrap\">• Elric of Melniboné, Stormbringer</span></p><p><span style=\"white-space:pre-wrap\">• Geralt of Rivia, The Witcher</span></p><p><span style=\"white-space:pre-wrap\">• Twilight Suzuka, Outlaw Star</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Magus</strong></b></p><p><span style=\"white-space:pre-wrap\">The magus may be a bit more challenging for newer players. Their playstyle is more build-dependent than the other classes, allowing for backline blasters, midline harassers, and frontline strikers.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack/Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Knight, Gladiator, or Warrior</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b></p><p><b><strong style=\"white-space:pre-wrap\">Weapons:</strong></b><span style=\"white-space:pre-wrap\"> Melee</span></p><p><b><strong style=\"white-space:pre-wrap\">Skills:</strong></b><span style=\"white-space:pre-wrap\"> Arcana, and 3 from either Brawl, Detect, Finesse, Influence, Mysticism, Sneak</span></p>",
+    "rules": [
+      {
+        "id": "yg9RnSUwHhrgB1Zu",
+        "key": "GrantItem",
+        "label": "Spellstriker: Ward",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.spells.Item.6iTqEpQQeK3MmAr3",
+        "type": null
+      },
+      {
+        "id": "HL3o3YzxYRMtzqHm",
+        "key": "ChoiceSet",
+        "label": "Spellstriker",
+        "level": "1",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      },
+      {
+        "id": "lqjMFCnsdfW4Kkz0",
+        "key": "ToggleRule",
+        "label": "Magus: Melee Training",
+        "level": "1",
+        "value": true,
+        "selector": "skills.melee.isTrained"
+      },
+      {
+        "id": "ws28DYPWa19S6TK6",
+        "key": "ToggleRule",
+        "label": "Magus: Arcana Training",
+        "level": "1",
+        "value": true,
+        "selector": "skills.arcana.isTrained"
+      },
+      {
+        "id": "wG39FiuStqgqIrWQ",
+        "key": "ChoiceSet",
+        "label": "Magus: Addt'l Training",
+        "level": "1",
+        "value": 1,
+        "maxChoices": 3,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "skills.brawl.isTrained",
+            "label": "Brawl"
+          },
+          {
+            "value": "skills.detect.isTrained",
+            "label": "Detect"
+          },
+          {
+            "value": "skills.finesse.isTrained",
+            "label": "Finesse"
+          },
+          {
+            "value": "skills.influence.isTrained",
+            "label": "Influence"
+          },
+          {
+            "value": "skills.mysticism.isTrained",
+            "label": "Mysticism"
+          },
+          {
+            "value": "skills.sneak.isTrained",
+            "label": "Sneak"
+          }
+        ],
+        "selections": []
+      },
+      {
+        "id": "h9MCXUEtzun0pN8h",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 3",
+        "level": "3",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "2TsT0vAw1IWIvWbF",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 5",
+        "level": "5",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "DtBEk4hJEZWJrp9R",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "jbeqkvLbKrhNi7SM",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 9",
+        "level": "9",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "wlqMwEJGrKKQQ6gr",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 4",
+        "level": "4",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      },
+      {
+        "id": "GopKTYxnknQAQGGv",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      },
+      {
+        "id": "HlFq1gGJsuD5AGuz",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 10",
+        "level": "10",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      }
+    ],
+    "complexity": 4,
+    "keyStats": [
+      "reason"
+    ],
+    "startingPacks": [],
+    "castingSkill": "arcana",
+    "maxManaStat": "reason",
+    "manaMultiplier": 2,
+    "features": [
+      {
+        "level": 1,
+        "name": "Spell Striker",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Gish Perk (p. 68) and you can Cast Spells using Arcana.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always be Ward. You learn 1 other Spell every 3 Magus Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Maximum Mana is equal to (2 × your Magus Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Reason + half your Magus Level, round up). You regain spent Mana when you Rest.</span></p>"
+      },
+      {
+        "level": 1,
+        "name": "Esoteric Eye",
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you can see a Target, you can use your Action or skip your Move to learn if any magic is currently affecting it. You can do so once per Shift, but you can spend 1 Mana to do so again.</span></p>"
+      },
+      {
+        "level": 2,
+        "name": "Spell Parry",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can Block Casts that include you as a Target if it either calls for a Reflex Save or has a delivery of Touch or Remote. If you Crit to Block a Cast, you can dispel the effect.</span></p>"
+      },
+      {
+        "level": 4,
+        "name": "Arcane Recall",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Action to open your esoteric eye of recall, allowing you to change one of your Spells Known that isn’t Ward. You can’t do so again until you Rest or take 1 Fatigue to do so.</span></p>"
+      },
+      {
+        "level": 6,
+        "name": "Spell Surge",
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Check to Block a Cast by 10 or more, you can reflect the Cast back at the Caster. When you become a 10th Level Magus, it triggers if you pass by 8 or more.</span></p>"
+      },
+      {
+        "level": 8,
+        "name": "Aegis Obscura",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You and the Target of your Ward Spell have Allsight and take half damage from magic-based sources.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ywhHfYnWZQBq7W9u": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1784995121741,
+    "modifiedTime": 1784995909538,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yZOEDf1xc8q5dnnH"
+}

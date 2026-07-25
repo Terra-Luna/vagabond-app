@@ -1,52 +1,52 @@
 {
-  "name": "Alchemy Tools",
-  "type": "tool",
-  "_id": "4flPjLCMlFWOZPml",
-  "img": "icons/tools/laboratory/vials-blue-pink.webp",
+  "name": "Torch",
+  "type": "sundry",
+  "folder": null,
   "system": {
     "description": "",
-    "rules": [],
     "category": "tools",
     "value": {
+      "c": 0,
       "g": 0,
-      "s": 0,
-      "c": 0
+      "s": 1
     },
+    "bulk": {
+      "slots": 1,
+      "quantity": 1,
+      "isStackable": true,
+      "stackSize": 10,
+      "totalSlots": 0
+    },
+    "rules": [],
     "totalValue": {
       "g": 0,
       "s": 0,
       "c": 0
-    },
-    "bulk": {
-      "slots": 2,
-      "isStackable": false,
-      "stackSize": 100,
-      "quantity": 1,
-      "totalSlots": 0
     },
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
     "relicEffects": []
   },
+  "_id": "zZgjqg9y2fut1U8B",
+  "img": "icons/sundries/lights/torch-brown-lit.webp",
   "effects": [],
-  "folder": null,
-  "sort": 100000,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "ywhHfYnWZQBq7W9u": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784845693974,
-    "modifiedTime": 1785020432465,
+    "createdTime": 1785020432453,
+    "modifiedTime": 1785021038009,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": null
+    "duplicateSource": null
   },
-  "_key": "!items!4flPjLCMlFWOZPml"
+  "sort": 200000,
+  "_key": "!items!zZgjqg9y2fut1U8B"
 }

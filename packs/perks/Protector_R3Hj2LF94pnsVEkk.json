@@ -1,15 +1,15 @@
 {
-  "name": "Akimbo Trigger",
+  "name": "Protector",
   "type": "perk",
-  "_id": "2EcaU8g8KwRNUAct",
-  "img": "icons/weapons/guns/gun-pistol-flintlock-metal.webp",
+  "_id": "R3Hj2LF94pnsVEkk",
+  "img": "icons/skills/melee/shield-block-gray-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Attacking a Close Target with a Ranged attack doesn’t Hinder the Check, and you can Move up to half your Speed when you skip your Move to make an attack.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can Block on behalf of an Ally that fails their Save against the attack of an Enemy that is Close to you.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "dexterity",
+        "stat": "might",
         "value": 4,
         "spell": "Any",
         "skills": [
@@ -29,32 +29,33 @@
         "skills": [
           {
             "skillNames": [
-              "ranged"
+              "melee"
             ],
             "andOr": null
           }
         ]
       }
-    ]
+    ],
+    "canTakeMultiple": false
   },
   "effects": [],
   "folder": null,
-  "sort": 200000,
+  "sort": 800000,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "ywhHfYnWZQBq7W9u": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784497586604,
-    "modifiedTime": 1785020904961,
+    "createdTime": 1784994603132,
+    "modifiedTime": 1785020904962,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!2EcaU8g8KwRNUAct"
+  "_key": "!items!R3Hj2LF94pnsVEkk"
 }

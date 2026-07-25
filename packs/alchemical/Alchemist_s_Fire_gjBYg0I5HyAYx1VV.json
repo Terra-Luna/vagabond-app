@@ -1,0 +1,63 @@
+{
+  "name": "Alchemist's Fire",
+  "type": "alchemical",
+  "folder": null,
+  "system": {
+    "description": "A flammable, tar-like fluid that ignites when exposed to oxygen, dealing 2d6 damage and Burning (Cd6) a hit Target.",
+    "category": "alchemy",
+    "damage": {
+      "oneHand": "2d6",
+      "type": "fire",
+      "appliesBurn": true,
+      "burnCountdown": "Cd6"
+    },
+    "bulk": {
+      "slots": 1,
+      "quantity": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "totalSlots": 0
+    },
+    "value": {
+      "g": 0,
+      "c": 0,
+      "s": 50
+    },
+    "rules": [],
+    "totalValue": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicEffects": [],
+    "alchemyCategory": "explosive",
+    "explodeData": {
+      "canExplode": false,
+      "explodesOn": []
+    }
+  },
+  "_id": "gjBYg0I5HyAYx1VV",
+  "img": "icons/consumables/potions/bottle-metal-yellow-gray.webp",
+  "effects": [],
+  "ownership": {
+    "default": 0,
+    "ywhHfYnWZQBq7W9u": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1785020461700,
+    "modifiedTime": 1785020600520,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 0,
+  "_key": "!items!gjBYg0I5HyAYx1VV"
+}

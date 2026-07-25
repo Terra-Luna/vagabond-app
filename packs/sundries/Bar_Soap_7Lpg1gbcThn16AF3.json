@@ -1,52 +1,52 @@
 {
-  "name": "Bedroll",
-  "type": "tool",
-  "_id": "Gr8RuaSTOrOH7K6r",
-  "img": "icons/sundries/survival/bedroll-grey.webp",
+  "name": "Bar Soap",
+  "type": "sundry",
+  "folder": null,
   "system": {
     "description": "",
-    "rules": [],
-    "category": "tools",
+    "category": "clothing",
     "value": {
-      "g": 0,
       "s": 0,
-      "c": 0
+      "g": 0,
+      "c": 2
     },
+    "bulk": {
+      "slots": 1,
+      "quantity": 1,
+      "isStackable": true,
+      "stackSize": 10,
+      "totalSlots": 0
+    },
+    "rules": [],
     "totalValue": {
       "g": 0,
       "s": 0,
       "c": 0
-    },
-    "bulk": {
-      "slots": 1,
-      "isStackable": false,
-      "stackSize": 100,
-      "quantity": 1,
-      "totalSlots": 0
     },
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
     "relicEffects": []
   },
+  "_id": "7Lpg1gbcThn16AF3",
+  "img": "icons/sundries/survival/soap.webp",
   "effects": [],
-  "folder": null,
-  "sort": 400000,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "ywhHfYnWZQBq7W9u": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784505599632,
-    "modifiedTime": 1785020432465,
+    "createdTime": 1785020439551,
+    "modifiedTime": 1785020867926,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": null
+    "duplicateSource": null
   },
-  "_key": "!items!Gr8RuaSTOrOH7K6r"
+  "sort": 200000,
+  "_key": "!items!7Lpg1gbcThn16AF3"
 }
