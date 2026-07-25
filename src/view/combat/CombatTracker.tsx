@@ -10,6 +10,7 @@ import { VgLiteCombat, VgLiteCombatant } from "../../document/VgLiteCombat"
 import { IconOnlyButton } from "../component/IconOnlyButton"
 import { PlayIcon, PlusIcon, StopCircle } from "lucide-react"
 import { useContextMenu } from "../component/ContextMenu"
+import { Gauge } from "../component/Gauge"
 
 const isGroupActive = (groupName: CombatGroup) => (game.combat as VgLiteCombat).isGroupActive(groupName)
 const getCombat = () => game.combat as VgLiteCombat
@@ -54,8 +55,8 @@ const GroupHeader = ({ label, groupName }: { groupName: CombatGroup, label: stri
     }, [groupName])
 
     return (
-        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold" onContextMenu={e => onCtxMenu(e, [{ label: "Activate", icon: PlayIcon, action: setGroupActive }])}>
-            <p className={`flex text-4xl text-text-section-header ${isGroupActive(groupName) ? "vglite-hovered" : ""}`}>{`${label} ${isGroupActive(groupName) ? "(Active)" : ""}`}</p>
+        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1" onContextMenu={e => onCtxMenu(e, [{ label: "Activate", icon: PlayIcon, action: setGroupActive }])}>
+            <p className={`flex text-xl text-text-section-header ${isGroupActive(groupName) ? "vglite-hovered" : ""}`}>{`${label} ${isGroupActive(groupName) ? "(Active)" : ""}`}</p>
             <ContextMenu />
         </div>
     )
@@ -107,11 +108,21 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
         token.control({ releaseOthers: true });
     }, [token])
 
+    const onDoubleClick = useCallback(() => {
+        token.actor?.sheet?.render(true)
+    }, [token])
+
+    const isActiveCombatant = game.combat?.combatant === combatant
+
+    const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? undefined : 'opacity-50';
+
     return (
-        <div className={`cursor-pointer combatant data-combatant-id=${combatant.id} flex`}
+        <div className={`cursor-pointer combatant data-combatant-id=${combatant.id} flex ${opacityClass}`}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            onClick={onClick}>
+            onClick={onClick}
+            onDoubleClick={onDoubleClick}
+        >
             {children}
             <ActivateCombatantButton combatant={combatant} />
         </div>
@@ -121,17 +132,24 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
 const CombatTrackerPortrait = ({ src }) => {
     return (
         <img
-            className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer" src={src} alt={''}
+            className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer self-center" src={src} alt={''}
         />
     )
 }
 
 const Hero = ({ hero }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.token._id) as Token, [hero])
+    const heroActorModel = hero.actor.system
 
     return (
         <Combatant token={token} combatant={hero}>
             <CombatantHeader name={hero.name} token={token}>
+                <div className="px-1">
+                    <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
+                    <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck" size="sm" />
+                    {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana" size="sm" />}
+                </div>
+                <div className="mt-1"></div>
                 <HeaderWithClipPath>
                     Status effects, etc
                 </HeaderWithClipPath>
