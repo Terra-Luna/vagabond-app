@@ -15,7 +15,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
         updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
 
-    const { isSpellcastingOpen, setIsSpellcastingOpen, spell, setSpell, setSpells, SpellcastingMenu } = useSpellCastingMenu(hero)
+    const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(hero)
 
     return (
         <div>
@@ -40,10 +40,9 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                     <p>{hero.mana.maxCast}</p>
                 </div>
 
+                {/* SPELLCASTING TAB */}
                 <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill ${glowOnHover} [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
                     onClick={() => {
-                        setSpells(hero.parent.items.filter(i => i.type === 'spell'))
-                        setSpell(spell || hero.parent.items.filter(i => i.type === 'spell')[0])
                         setIsSpellcastingOpen(!isSpellcastingOpen)
                     }}
                 >

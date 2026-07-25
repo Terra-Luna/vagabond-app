@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react"
 import { Menu, Moon, Sun, X } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
 import { VgLiteActorSheet } from "../../VgLiteActorSheet"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { MenuListItem } from "./item/MenuListItem"
@@ -9,6 +9,7 @@ import { CLOSE_GLOBAL_POPOUT_HOOK, useGlobalPopout } from "../../../../../apps/P
 import { NavigationHost } from "../../../../context/navigation/NavigationHost"
 import { HeroActiveRulesView } from "../../../../../rules/HeroActiveRulesView"
 import { useActiveEffectsManager } from "../../../../../apps/active-effects/active-effect-handlers"
+import { ItemDivider } from "../../../../component/Header"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -121,6 +122,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'STATUSES'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'LEVEL UP'} onClick={() => { }} toggleMenu={toggleMenu} />
+                    <ItemDivider />
                 </ul>
             </div>
         </div>

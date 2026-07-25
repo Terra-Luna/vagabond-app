@@ -17,18 +17,23 @@ import { LineExpansionInut } from "./LineExpansionInput"
 import { sendVgLiteChatMessage } from "../../../../../../chat/ChatCardSerializer"
 import { SpellCastChatCard } from "../../../../../../chat/SpellCastChatCard"
 import { getId } from "../../../../../../../utils/modelUtil"
-import { DamageRollResult, rollDamage, rollSkillCheck, SkillCheckResult } from "../../../../../../../combat/dice-rolls"
+import { rollDamage, rollSkillCheck, SkillCheckResult } from "../../../../../../../combat/dice-rolls"
 import { SkillSelector } from "./SkillSelector"
 import { SkillCheckChatCard } from "../../../../../../chat/SkillCheckChatCard"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
+import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 
 export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => {
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
-    const [spells, setSpells] = useState<Item & { system: SpellDataModel }[]>(hero.parent.items.filter(i => i.type === 'spell') as Item & { system: SpellDataModel }[])
+    const [spells, setSpells] = useState<(Item & { system: SpellDataModel })[]>([])
     const [spell, setSpell] = useState<Item & { system: SpellDataModel }>()
     const [skill, setSkill] = useState(hero.class?.castingSkill ?? '')
     const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
     const [delivery, setDelivery] = useState<SpellDelivery>()
+
+    useEffect(() => {
+        setSpells(ItemsCache.spells().filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid)))
+    }, [hero.spells])
 
     useEffect(() => {
         const deliveryOptions = getNewDeliveryOptions()
@@ -58,7 +63,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
     }, [onUpdateTargetTokens])
 
     const onSelectSpell = useCallback((spellId: string) => {
-        const sp = hero?.parent.items.get(spellId)
+        const sp = spells.find(it => it.id === spellId)
         setSpell(sp)
         if (delivery && sp?.system.damageType === 'none') {
             onUpdateDamageDice('0')
@@ -223,7 +228,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
                     spell.name,
                     spell.system.damageType,
                     `${delivery.damageDice}d${hero.mana.spellDamageDie}`,
-                    hero.modifiers.perDieSpellDmg ?? 0,
+                    hero.modifiers.damage.spellPerDie ?? 0,
                     false, [], // canExplode, explodesOn
                     spell.system.appliesBurn,
                     spell.system.burnCountdown
@@ -260,7 +265,7 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
                         <div className="flex items-center">
                             {renderConfigs()}
                             {
-                                spell?.system?.damageType === 'none' ? <></> :
+                                spell?.system?.damageType === 'none' || (delivery instanceof Imbue) ? <></> :
                                     <DamageDiceInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
                             }
                             <div className="ml-auto mt-1 space-y-1">
@@ -283,6 +288,6 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
         </>)
     }
 
-    return { isSpellcastingOpen, setIsSpellcastingOpen, spell, setSpell, setSpells, SpellcastingMenu }
+    return { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu }
 }
 

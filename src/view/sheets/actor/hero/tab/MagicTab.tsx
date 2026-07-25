@@ -28,7 +28,7 @@ export const MagicTab = ({ hero }: { hero: HeroDataModel }) => {
             <ManaHUD hero={hero} />
             <SpellsList hero={hero} />
             <div className="w-full mt-1">
-                <div className="ml-auto">
+                <div className="ml-auto mb-12">
                     <PrimaryButton onClick={() => setIsSpellsEditorOpen(true)}>
                         {'Select Spells'}
                     </PrimaryButton>

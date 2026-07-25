@@ -12,7 +12,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div>
-            <div className="grid @sm:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5">
+            <div className="flex flex-col gap-x-1 gap-y-0.5">
                 {
                     hero.spells.sort((a, b) => a.parent.name.localeCompare(b.parent.name)).map((sp: any, index: number) => (
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
