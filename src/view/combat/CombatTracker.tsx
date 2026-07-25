@@ -8,8 +8,8 @@ import { glowOnHover } from "../common/text-styles"
 import { CombatGroup } from "../../model/combat/VgLiteCombatant"
 import { VgLiteCombat, VgLiteCombatant } from "../../document/VgLiteCombat"
 import { IconOnlyButton } from "../component/IconOnlyButton"
-import { PlayIcon, PlusIcon, StopCircle } from "lucide-react"
-import { useContextMenu } from "../component/ContextMenu"
+import { PlayIcon, PlusIcon, StopCircle, Trash } from "lucide-react"
+import { CtxMenuItem, useContextMenu } from "../component/ContextMenu"
 import { Gauge } from "../component/Gauge"
 
 const isGroupActive = (groupName: CombatGroup) => (game.combat as VgLiteCombat).isGroupActive(groupName)
@@ -78,11 +78,18 @@ const CombatantHeader = ({ token, name, children }) => {
         }
     })
 
+    const ctxMenuActions = useMemo<CtxMenuItem[]>(() => {
+        return [
+            { label: "Activate Combatant (localify me)", action: () => getCombat().activateCombatant(token.combatant.id), icon: PlayIcon },
+            { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true }
+        ]
+    }, [])
+
     return (
-        <div className="flex" onContextMenu={e => onCtxMenu(e, [{ label: "Activate Combatant (localify me)", action: () => getCombat().activateCombatant(token.combatant.id), icon: PlayIcon }])}>
+        <div className="flex" onContextMenu={e => onCtxMenu(e, ctxMenuActions)}>
             <CombatTrackerPortrait src={token?.document.texture.src} />
             <div>
-                <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg border-solid border-l-2 border-stat-block-fill`}>
+                <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
                     <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
                 </div>
                 {children}
@@ -132,7 +139,7 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
 const CombatTrackerPortrait = ({ src }) => {
     return (
         <img
-            className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer self-center" src={src} alt={''}
+            className="bg-black/5 object-contain h-[54px] w-[54px] p-0.5 cursor-pointer self-center" src={src} alt={''}
         />
     )
 }
@@ -182,7 +189,7 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) 
     if (isCurrentCombatant) {
         return <IconOnlyButton title="Finish Turn (localify me)" Icon={StopCircle} className="ml-auto mr-4" onClick={deactivateCombatant} />
     } else if (hasActivationsLeft) {
-        return <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" onClick={activateCombatant} />
+        return <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
     }
 
     return undefined
