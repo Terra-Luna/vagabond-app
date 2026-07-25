@@ -92,11 +92,16 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
     const trainings: string[] = []
     trainedPrereqs?.forEach(p => {
         p.skills.forEach(s => {
-            const skillNames: string[] = []
-            s.skillNames.forEach(n => {
-                skillNames.push(vgLiteLang.Skills[n].name)
-            })
-            trainings.push(removeLastComma(skillNames.join(', '), andOrToSymbol(s.andOr)))
+            if (s.skillNames.length === 1) {
+                trainings.push(vgLiteLang.Skills[s.skillNames[0]].name)
+            }
+            else {
+                const skillNames: string[] = []
+                s.skillNames.forEach(n => {
+                    skillNames.push(vgLiteLang.Skills[n].name)
+                })
+                trainings.push(removeLastComma(skillNames.join(', '), andOrToSymbol(s.andOr)))
+            }
         })
     })
     return trainings.join(' | ') ?? ''

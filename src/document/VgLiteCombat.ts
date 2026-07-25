@@ -29,7 +29,6 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         await this.deactivateAllGroups()
         const skipDefeated = this.settings.skipDefeated;
         const updates = this.combatants.map(c => {
-            console.log(c)
             return {
                 _id: c.id,
                 "system.activations.value": skipDefeated && c.isDefeated ? 0 : ((c as VgLiteCombatant).activations.max ?? 0),
