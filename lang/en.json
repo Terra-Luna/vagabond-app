@@ -630,9 +630,6 @@
       "perks": "PERKS",
       "encumbrance": "ENCUMBRANCE",
       "wealth": "WEALTH",
-      "gold": "G",
-      "silver": "S",
-      "copper": "C",
       "tab-main": "Main",
       "tab-inv": "Inventory",
       "tab-magic": "Magic",
@@ -652,6 +649,11 @@
         "ctxUnequip": "Unequip",
         "ctxDelete": "Delete",
         "ctxDeleteAll": "Delete All"
+      },
+      "Currency": {
+        "g": "G",
+        "s": "S",
+        "c": "C"
       },
       "Magic": {
         "labelSelectSpell": "Spell",

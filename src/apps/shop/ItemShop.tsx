@@ -4,7 +4,7 @@ import { ItemsCache } from "../../rules/util/ItemsCache"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { Divider, Header } from "../../view/component/Header"
 import { openItemSheet } from "../../model/actor/type/Inventory"
-import { CoinPurseReadOnly } from "../../view/component/CoinPurse"
+import { ReadOnlyCoinPurse } from "../../view/component/CoinPurse"
 import { EquipmentSheetComponent } from "../../view/sheets/item/equip/EquipmentSheetComponent"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { ShoppingCart } from "./ShoppingCart"
@@ -95,7 +95,7 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                     }
                     {/* WALLET */}
                     <div className="w-full mr-1">
-                        <CoinPurseReadOnly coins={wallet} />
+                        <ReadOnlyCoinPurse coins={wallet} />
                     </div>
                 </div>
 

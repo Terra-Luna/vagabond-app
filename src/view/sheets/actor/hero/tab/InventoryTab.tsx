@@ -5,14 +5,14 @@ import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
 import { lang } from "../../../../../utils/lang"
 import { sortedItems, isInContainer } from "../../../../../model/actor/type/Inventory"
 import { getEncumbranceInfo, getContainers, equipmentContextMenuItems } from "../../../../../utils/heroInventoryUtil"
-import { CoinPurse } from "../../../../component/CoinPurse"
+import { HeroCoinPurse } from "../../../../component/CoinPurse"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full">
             <div className="flex justify-between gap-1">
                 <CapacityGauge label={lang.VGLITE.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
-                <CoinPurse hero={hero} />
+                <HeroCoinPurse hero={hero} />
             </div>
             <div className="border border-solid border-table-border mt-1 mb-8 w-full">
                 <InventoryItemsTable

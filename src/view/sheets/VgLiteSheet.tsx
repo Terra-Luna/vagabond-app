@@ -30,6 +30,23 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
 
     _replaceHTML() { } // no-op, implemented just to comply with sheets api
 
+    _onFirstRender(context, options) {
+
+        console.log("_onFirstRender")
+
+        super._onFirstRender(context, options)
+
+        const htmlElement = this.element
+        if (!htmlElement) return
+
+        // Prevent Foundry from capturing user keypresses on our sheets!!
+        htmlElement.addEventListener("keydown", (e) => {
+            if (e.key === "F5" || (e.ctrlKey && e.key === "r")) return
+            e.stopPropagation()
+            e.stopImmediatePropagation()
+        }, { capture: true })
+    }
+
     async _onRender(context, options) {
         super._onRender(context, options)
         onRender(this as any)

@@ -16,7 +16,7 @@ export const Gauge = ({ value, max, fillColorClassName, maxColorClassName, negat
     const innerHeight = size === "sm" ? "h-[4px]" : "h-[10px]"
 
     return (
-        <div className={`${outerHeight} -mx-1 border border-solid border-table-border rounded-md flex items-center`}>
+        <div className={`${outerHeight} w-full border border-solid border-table-border rounded-md flex items-center`}>
             <div
                 className={fillColor + ` ${innerHeight} rounded-md`}
                 style={{
