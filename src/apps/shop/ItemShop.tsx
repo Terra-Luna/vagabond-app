@@ -12,6 +12,8 @@ import { StarterPackDataModel } from "../../model/item/equip/StarterPackDataMode
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { CategoryButtons } from "./CategoryButtons"
 import { ShopItemsList } from "./ShopItemsList"
+import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
+import { vgLiteLang } from "../../utils/lang"
 
 export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: ClassDataModel }) => {
 
@@ -22,7 +24,11 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
 
     const packs = ItemsCache.packs()
     const equipmentCache = ItemsCache.equipment()
-    const stock = equipmentCache.filter(it => !(it.system instanceof StarterPackDataModel)) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
+    const shopItems = useMemo(() => {
+        return equipmentCache.filter(it =>
+            !(it.system instanceof StarterPackDataModel)
+        ) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
+    }, [])
 
     const recommendedPacks = useMemo(() => {
         return clazz?.system.startingPacks.map(p => packs.find(s => s.id === p))
@@ -69,14 +75,19 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
     }, [cart, wallet])
 
     const filteredItems = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
-        if (shopCategory === 'all') return stock
-        if (shopCategory === 'gear') return stock.filter(it => ['tool', 'sundry', 'container'].includes(it.type))
-        return stock.filter(it => (it.type as string) === shopCategory)
+        if (shopCategory === 'all') return shopItems
+        if (shopCategory === 'gear') return shopItems.filter(it => ['tool', 'sundry', 'container'].includes(it.type))
+        return shopItems.filter(it => (it.type as string) === shopCategory)
     }
 
-    const ItemShop = ({ includeStarterPacks = false }) => {
+    const reset = useCallback(() => {
+        setShopCategory('all')
+        setCart([])
+    }, [shopCategory, cart, wallet])
+
+    const ItemShop = ({ includeStarterPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
         return (
-            <div className="space-y-2">
+            <div className="flex flex-col gap-y-2 h-full overflow-hidden">
                 <div className="flex gap-x-4 items-end">
                     {/* STARTER PACK SELECTION */}
                     {includeStarterPacks &&
@@ -94,7 +105,7 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                         </div>
                     }
                     {/* WALLET */}
-                    <div className="w-full mr-1">
+                    <div className="w-full p-2">
                         <ReadOnlyCoinPurse coins={wallet} />
                     </div>
                 </div>
@@ -103,9 +114,42 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                     {selectedPack && <EquipmentSheetComponent item={selectedPack as any} hideBottomSection={true} />}
                 </div>
 
+                {/* ITEMS LIST */}
+                <div className="flex flex-col flex-1 min-h-0 h-9/16 gap-y-1">
+                    <Header title={"ITEM SHOP"} />
+
+                    <div className="flex flex-col flex-1 space-y-1 min-h-0">
+                        {/* SEARCH BY NAME */}
+
+                        {/* CATEGORY BUTTONS */}
+                        <CategoryButtons shopCategory={shopCategory} setShopCategory={setShopCategory} />
+                        <Divider />
+
+                        {/* ITEMS LIST W/ ADD BUTTON - CLICK NAME TO OPEN ITEM SHEET */}
+                        <ShopItemsList items={filteredItems()} onAddItemToCart={onAddItemToCart} />
+
+                    </div>
+                </div>
+
                 {/* SHOPPING CART */}
-                <div>
+                <div className="flex flex-col flex-1 min-h-0 px-2">
                     <Header title={"CART"} />
+                    <div className="flex w-full gap-x-4 justify-between my-1">
+                        <p className="text-xl text-text-primary font-eskapade font-bold">
+                            Total: {(() => {
+                                const total = cart.reduce((sum, it) => {
+                                    return addCoins([sum, it.system.totalValue])
+                                }, { g: 0, s: 0, c: 0 })
+                                return `${coinsAsString(total)}`
+                            })()}
+                        </p>
+                        {useCheckout &&
+                            <div className="flex gap-x-1">
+                                <PrimaryButton onClick={onCheckout}>{vgLiteLang.ButtonActions.checkout}</PrimaryButton>
+                                <DestructiveButton onClick={onCancel}>{vgLiteLang.ButtonActions.cancel}</DestructiveButton>
+                            </div>
+                        }
+                    </div>
                     <ShoppingCart>
                         {
                             cart.map((item, index) => (
@@ -118,27 +162,12 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                             ))
                         }
                     </ShoppingCart>
+
                 </div>
 
-                {/* ITEM SHOP */}
-                <div className="space-y-1 h-full">
-                    <Header title={"ITEM SHOP"} />
-
-                    <div className="space-y-1 h-full">
-                        {/* SEARCH BY NAME */}
-
-                        {/* CATEGORY BUTTONS */}
-                        <CategoryButtons shopCategory={shopCategory} setShopCategory={setShopCategory} />
-                        <Divider />
-
-                        {/* ITEMS LIST W/ ADD BUTTON - CLICK NAME TO OPEN ITEM SHEET */}
-                        <ShopItemsList items={filteredItems()} onAddItemToCart={onAddItemToCart} />
-
-                    </div>
-                </div>
             </div>
         )
     }
 
-    return { ItemShop, wallet, cart, selectedPack }
+    return { ItemShop, wallet, cart, reset, selectedPack }
 }

@@ -265,7 +265,6 @@ export function getItemChoiceRules(rulesData: any[]): ItemRule[] {
                             .flatMap(it => it.skillNames)
                         return perkTrainingPrereqs?.some(it => trainingFilters.includes(it))
                     })
-                    console.log(rule, finalizedChoices)
                 }
             }
         }

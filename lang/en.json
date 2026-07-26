@@ -916,7 +916,8 @@
       "add": "Add",
       "finish": "Finish",
       "addEffect": "Add Effect",
-      "effects": "Active Effects"
+      "effects": "Active Effects",
+      "checkout": "Checkout"
     },
     "Effects": {
       "title": "Active Effects",

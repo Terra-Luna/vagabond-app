@@ -65,7 +65,7 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
     return (
         <div className={"flex pl-2 content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"}>
             <div className="content-center">
-                <p className="text-lg text-wealth-denom-label font-bold">COIN</p>
+                <p className="text-2xl text-wealth-denom-label font-eskapade font-bold">FUNDS</p>
             </div>
             <div className="flex content-center justify-end w-full">
                 <CoinValue value={coins.g ?? 0} label={lang.VGLITE.HeroSheet.Currency.g} path='g' />

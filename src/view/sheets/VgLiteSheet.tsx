@@ -31,9 +31,6 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _replaceHTML() { } // no-op, implemented just to comply with sheets api
 
     _onFirstRender(context, options) {
-
-        console.log("_onFirstRender")
-
         super._onFirstRender(context, options)
 
         const htmlElement = this.element
