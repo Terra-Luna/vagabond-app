@@ -187,7 +187,7 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) 
     }, [combatant])
 
     if (isCurrentCombatant) {
-        return <IconOnlyButton title="Finish Turn (localify me)" Icon={StopCircle} className="ml-auto mr-4" onClick={deactivateCombatant} />
+        return <IconOnlyButton title="Finish Turn (localify me)" Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
     } else if (hasActivationsLeft) {
         return <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
     }
