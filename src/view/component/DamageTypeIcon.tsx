@@ -1,6 +1,5 @@
 import { ReactElement } from "react"
 import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Sparkle, Strikethrough, Sword, Wand, Zap } from "lucide-react"
-import { Tooltip } from "./Tooltip"
 import { lang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
@@ -76,7 +75,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         element = <p>{lang.VGLITE.DamageTypes[dmgType]}</p>
     }
     return (
-        <Tooltip text={lang.VGLITE.DamageTypes[dmgType]} children={element} />
+        <div title={lang.VGLITE.DamageTypes[dmgType]}>{element}</div>
     )
 }
 

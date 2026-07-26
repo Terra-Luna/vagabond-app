@@ -8,10 +8,9 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { getId } from "../../../../../utils/modelUtil"
-import { Tooltip } from "../../../../component/Tooltip"
 import { glowOnHover } from "../../../../common/text-styles"
 import { useStatsDrawerStatus } from "./statdrawer/hooks"
-import { lang } from "../../../../../utils/lang"
+import { lang, vgLiteLang } from "../../../../../utils/lang"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 
@@ -43,7 +42,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                         />
                     </span>
                 </div>
-                <div className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                <div title={vgLiteLang.HeroSheet.counter_tooltip} className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
                     <span className={`text-xl text-text-hp-max px-1 ${glowOnHover}`}>{health.max}</span>
                 </div>
             </div>
@@ -60,7 +59,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
             </div>
             <Divider />
             {/* FATIGUE TRACKER */}
-            <div className="ml-6">
+            <div title={vgLiteLang.HeroSheet.counter_tooltip} className="ml-6">
                 <Fatigue hero={hero} />
             </div>
         </div>
@@ -117,7 +116,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
-    <div className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 ${glowOnHover}`}
+    <div title={vgLiteLang.HeroSheet.counter_tooltip} className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 ${glowOnHover}`}
         onClick={() => onClick(false)}
         onAuxClick={() => onClick(true)}
     >
@@ -164,7 +163,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
 }
 const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formula: string, description: string, value: number } }) => {
     return (
-        <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
+        <div title={lang.VGLITE.HeroSheet.skills_tooltip}>
             <div className={`flex font-eskapade ${glowOnHover} border border-solid border-table-border/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await rollSkillCheck(save.name, save.value, e)
@@ -182,7 +181,7 @@ const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formu
                     {save.value}
                 </div>
             </div>
-        </Tooltip>
+        </div>
     )
 }
 
@@ -204,28 +203,26 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
 }
 export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel, isTrained: boolean, name: string, value: number, isAttack: boolean }) => {
     return (
-        <Tooltip text={lang.VGLITE.HeroSheet.skills_tooltip}>
-            <div className="w-full">
-                <div className="flex items-center ml-1">
-                    <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
-                    <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover}`} onClick={
-                        async (e: React.MouseEvent<HTMLDivElement>) => {
-                            const skillCheck = await rollSkillCheck(name, value, e)
-                            sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
-                        }
-                    }>
-                        <div>{name}</div>
-                        <div className={(isAttack ?
-                            'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center' :
-                            'text-xl mr-2'
-                        )}>
-                            {value}
-                        </div>
+        <div title={lang.VGLITE.HeroSheet.skills_tooltip} className="w-full">
+            <div className="flex items-center ml-1">
+                <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
+                <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover}`} onClick={
+                    async (e: React.MouseEvent<HTMLDivElement>) => {
+                        const skillCheck = await rollSkillCheck(name, value, e)
+                        sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                    }
+                }>
+                    <div>{name}</div>
+                    <div className={(isAttack ?
+                        'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center' :
+                        'text-xl mr-2'
+                    )}>
+                        {value}
                     </div>
                 </div>
-                <ItemDivider />
             </div>
-        </Tooltip>
+            <ItemDivider />
+        </div>
     )
 }
 

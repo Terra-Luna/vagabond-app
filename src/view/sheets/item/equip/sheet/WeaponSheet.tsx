@@ -179,7 +179,13 @@ const Properties = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
                 <ItemSheetPropLabel label={lang.ItemSheet.props} />
                 <OptionsSelectionMenu obj={item} label={''} path={['properties']} options={weaponProps(item)} />
             </div>
-            <StringOptionsDisplay options={item.system.properties.map(it => lang.WeaponProps[it].name)} />
+            <div className="flex flex-wrap gap-x-1 text-text-secondary font-paradigm font-normal italic">
+                {item.system.properties.map((it, index) => (
+                    <p key={index} title={lang.WeaponProps[it].description}>
+                        {`${lang.WeaponProps[it].name}${index > item.system.properties.length - 2 ? '' : ','}`}
+                    </p>
+                ))}
+            </div>
         </div>
     )
 }

@@ -1,7 +1,6 @@
 import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react"
 import { VgLiteError}  from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
-import { Tooltip } from "./Tooltip"
 import { glowOnHover } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 
@@ -93,14 +92,11 @@ export const EditableTextField = (
         return (<>
             {
                 enabled ?
-                    <Tooltip text={'Double-click to Edit'}>
-                        <div
-                            onDoubleClick={enterEditMode}
-                            className={`${glowOnHover} ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}
-                        >
+                    <button title={'Double-click to Edit'} onDoubleClick={enterEditMode}>
+                        <div className={`${glowOnHover} ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}>
                             {boundValue}
                         </div >
-                    </Tooltip > :
+                    </button> :
                     <div className={divStyle}>{boundValue}</div>
             }
         </>)
