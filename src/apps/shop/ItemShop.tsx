@@ -105,7 +105,7 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                         </div>
                     }
                     {/* WALLET */}
-                    <div className="w-full p-2">
+                    <div className="w-full mx-2 mt-2">
                         <ReadOnlyCoinPurse coins={wallet} />
                     </div>
                 </div>
@@ -134,6 +134,7 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                 {/* SHOPPING CART */}
                 <div className="flex flex-col flex-1 min-h-0 px-2">
                     <Header title={"CART"} />
+                    {/* TOTAL COST W/ SAVE & CANCEL BUTTONS */}
                     <div className="flex w-full gap-x-4 justify-between my-1">
                         <p className="text-xl text-text-primary font-eskapade font-bold">
                             Total: {(() => {
@@ -150,6 +151,7 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                             </div>
                         }
                     </div>
+                    {/* SHOPPING CART ITEMS LIST */}
                     <ShoppingCart>
                         {
                             cart.map((item, index) => (

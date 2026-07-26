@@ -17,7 +17,7 @@ export const getPortrait = (obj: any): string => {
 }
 
 export const getTokenImg = (obj: any): string => {
-    return (obj?.document?.texture?.src ?? obj?.prototypeToken?.texture?.src) ?? null
+    return (obj?.document?.texture?.src ?? obj?.prototypeToken?.texture?.src) ?? obj?.img
 }
 
 export const getTargets = (): string[] => {

@@ -105,7 +105,10 @@ export const EditableTextField = (
 
 export const EditableNameField = ({ actor }: { actor: Actor }) => {
     const updateName = useCallback(async (newName: string | null) => {
-        return !!await actor.update({ name: newName } as Record<string, string>)
+        return !!await actor.update({
+            'name': newName,
+            'prototypeToken.name': newName
+        } as Record<string, string>)
     }, [actor])
 
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />

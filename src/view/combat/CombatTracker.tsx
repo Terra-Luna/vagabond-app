@@ -1,14 +1,13 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react"
+import { ReactNode, useCallback, useMemo, useState } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { lang } from "../../utils/lang"
 import { HeaderWithClipPath } from "../component/SkillCard"
-import { useCombatContext, useIsCurrentCombatant } from "./vglite-combat-tracker"
-import { glowOnHover } from "../common/text-styles"
+import { useIsCurrentCombatant } from "./vglite-combat-tracker"
 import { CombatGroup } from "../../model/combat/VgLiteCombatant"
 import { VgLiteCombat, VgLiteCombatant } from "../../document/VgLiteCombat"
 import { IconOnlyButton } from "../component/IconOnlyButton"
-import { PlayIcon, PlusIcon, StopCircle, Trash } from "lucide-react"
+import { PlayIcon, StopCircle, Trash } from "lucide-react"
 import { CtxMenuItem, useContextMenu } from "../component/ContextMenu"
 import { Gauge } from "../component/Gauge"
 
@@ -28,14 +27,18 @@ export const CombatTracker = ({ data }) => {
 
     return (
         <div className="flex flex-col gap-6 pb-2">
-            <Group groupName="heroes">
-                <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
-                <GroupBody>{heroes?.map(hero => <Hero hero={hero} />)}</GroupBody>
-            </Group>
-            <Group groupName="adversaries">
-                <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
-                <GroupBody>{adversaries?.map(adv => <Adversary adversary={adv} />)}</GroupBody>
-            </Group>
+            {heroes?.length > 0 &&
+                <Group groupName="heroes">
+                    <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
+                    <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} />)}</GroupBody>
+                </Group>
+            }
+            {adversaries?.length > 0 &&
+                <Group groupName="adversaries">
+                    <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
+                    <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} />)}</GroupBody>
+                </Group>
+            }
         </div>
     )
 }
@@ -68,7 +71,7 @@ const GroupBody = ({ children }) => {
     )
 }
 
-const CombatantHeader = ({ token, name, children }) => {
+const CombatantHeader = ({ token, combatant, name, children }) => {
     const [hovered, setIsHovered] = useState(false)
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
@@ -85,14 +88,19 @@ const CombatantHeader = ({ token, name, children }) => {
         ]
     }, [])
 
+    const isActiveCombatant = game.combat?.combatant === combatant
+    const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
+
     return (
         <div className="flex" onContextMenu={e => onCtxMenu(e, ctxMenuActions)}>
-            <CombatTrackerPortrait src={token?.document.texture.src} />
-            <div>
-                <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
-                    <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
+            <div className={`flex ${opacityClass}`}>
+                <CombatTrackerPortrait src={token?.document.texture.src} />
+                <div>
+                    <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
+                        <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
+                    </div>
+                    {children}
                 </div>
-                {children}
             </div>
             <ContextMenu />
         </div>
@@ -104,11 +112,11 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
     // we are cheating a bit here, but it works!
     //  act like hovering our entries in the tracker is hovering the token
     const onMouseEnter = useCallback(() => {
-        (token as any)._onHoverIn(new MouseEvent('mouseenter'), { hoverOutOthers: true })
+        (token as any)?._onHoverIn(new MouseEvent('mouseenter'), { hoverOutOthers: true })
     }, [token])
 
     const onMouseLeave = useCallback(() => {
-        (token as any)._onHoverOut(new MouseEvent('mouseleave'))
+        (token as any)?._onHoverOut(new MouseEvent('mouseleave'))
     }, [token])
 
     const onClick = useCallback(() => {
@@ -119,12 +127,8 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
         token.actor?.sheet?.render(true)
     }, [token])
 
-    const isActiveCombatant = game.combat?.combatant === combatant
-
-    const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? undefined : 'opacity-50';
-
     return (
-        <div className={`cursor-pointer combatant data-combatant-id=${combatant.id} flex ${opacityClass}`}
+        <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id}`}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             onClick={onClick}
@@ -139,18 +143,18 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
 const CombatTrackerPortrait = ({ src }) => {
     return (
         <img
-            className="bg-black/5 object-contain h-[54px] w-[54px] p-0.5 cursor-pointer self-center" src={src} alt={''}
+            className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer self-center" src={src} alt={''}
         />
     )
 }
 
 const Hero = ({ hero }) => {
-    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.token._id) as Token, [hero])
+    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
     const heroActorModel = hero.actor.system
 
     return (
         <Combatant token={token} combatant={hero}>
-            <CombatantHeader name={hero.name} token={token}>
+            <CombatantHeader name={hero.name} token={token} combatant={hero}>
                 <div>
                     <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
                     <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck" size="sm" />
@@ -200,7 +204,7 @@ const Adversary = ({ adversary }) => {
 
     return (
         <Combatant token={token} combatant={adversary}>
-            <CombatantHeader name={adversary.name} token={token}>
+            <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token}>
                 <HeaderWithClipPath>
                     Status effects, etc
                 </HeaderWithClipPath>

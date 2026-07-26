@@ -252,7 +252,17 @@ Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, u
 })
 
 Hooks.on("renderCombatTracker", (app, html, data) => {
-    renderCombatTracker(app, html, data)
+    const hasActiveScene = !!game.scenes?.active
+    const canvasIsInitialized = !!(canvas && canvas.initialized)
+
+    if (!hasActiveScene || canvasIsInitialized) {
+        renderCombatTracker(app, html, data);
+    }
+    else {
+        Hooks.once("tokensReady" as any, () => {
+            renderCombatTracker(app, html, data)
+        })
+    }
 })
 
 Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any) => {
@@ -403,8 +413,14 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
         const blueprint = message.getFlag("vagabond-lite" as any, "blueprint")
         if (!blueprint) return
 
-        const scaduRoot = rootElement.attachShadow({ mode: 'open' })
-        const root = createRoot(scaduRoot)
+        let scaduRoot = rootElement.shadowRoot
+        let root = (rootElement as any)._reactRoot
+
+        if (!scaduRoot) {
+            scaduRoot = rootElement.attachShadow({ mode: 'open' })
+            root = createRoot(scaduRoot);
+            (rootElement as any)._reactRoot = root
+        }
 
         root.render(
             <div>
@@ -416,7 +432,10 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
         )
     }
 
-    if (canvas?.ready) {
+    if (!game.scenes?.active) {
+        renderVgLiteChatMessages()
+    }
+    else if (canvas?.ready) {
         renderVgLiteChatMessages()
     }
     else {

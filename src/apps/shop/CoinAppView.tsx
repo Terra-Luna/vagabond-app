@@ -4,6 +4,11 @@ import { PrimaryButton, DestructiveButton } from "../../view/component/Button"
 
 const denominations = ['g', 's', 'c']
 
+/**
+ * This is the decoupled view for CoinApp.tsx
+ * @param param0
+ * @returns 
+ */
 export const CoinAppView = ({ coin, mode, setMode, onUpdateCoins, onSave, onCancel }) => {
     return (
         <div className="border-2 border-solid border-table-border rounded-md bg-wealth-fill p-2 space-y-4">

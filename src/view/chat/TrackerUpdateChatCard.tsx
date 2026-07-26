@@ -25,7 +25,7 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: stri
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner
-                tokenId={hero?.getActiveTokens()[0]?.id}
+                tokenId={hero?.getActiveTokens()[0]?.id ?? hero.id}
                 portrait={getTokenImg(hero)}
                 title={`${verb} ${res.name}`}
                 subtitle={subtitle}
