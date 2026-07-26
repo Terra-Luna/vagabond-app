@@ -151,7 +151,7 @@ const Hero = ({ hero }) => {
     return (
         <Combatant token={token} combatant={hero}>
             <CombatantHeader name={hero.name} token={token}>
-                <div className="px-1">
+                <div>
                     <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
                     <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck" size="sm" />
                     {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana" size="sm" />}
