@@ -93,10 +93,10 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
 
     return (
-        <div className="flex" onContextMenu={e => onCtxMenu(e, ctxMenuActions)}>
-            <div className={`flex ${opacityClass}`}>
+        <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions)}>
+            <div className={`flex w-full ${opacityClass}`}>
                 <CombatTrackerPortrait src={token?.document.texture.src} />
-                <div>
+                <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
                         <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
                     </div>
@@ -122,6 +122,7 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
 
     const onClick = useCallback(() => {
         token.control({ releaseOthers: true });
+        canvas?.ping(token.center)
     }, [token])
 
     const onDoubleClick = useCallback(() => {
@@ -135,7 +136,9 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
             onClick={onClick}
             onDoubleClick={onDoubleClick}
         >
-            {children}
+            <div className="w-full">
+                {children}
+            </div>
             <ActivateCombatantButton combatant={combatant} />
         </div>
     )
@@ -152,19 +155,27 @@ const CombatTrackerPortrait = ({ src }) => {
 const Hero = ({ hero }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
     const heroActorModel = hero.actor.system
+    const statuses = getCombatantStatuses(hero)
+    const statusIcons = statuses.map((status) => {
+        const img = CONFIG.statusEffects.find(e => e.id === status)?.img
+        const title = lang.VGLITE.StatusConditions[status].name
+        return img ? <img key={status} src={img} height={12} width={12} title={title} /> : <></>
+    })
 
     return (
         <Combatant token={token} combatant={hero}>
             <CombatantHeader name={hero.name} token={token} combatant={hero}>
-                <div>
+                <div className="w-full">
                     <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
                     <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck" size="sm" />
                     {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana" size="sm" />}
                 </div>
                 <div className="mt-1"></div>
-                <HeaderWithClipPath>
-                    {getCombatantStatuses(hero)}
-                </HeaderWithClipPath>
+                <div className="w-full">
+                    <HeaderWithClipPath>
+                        <div>{statusIcons}</div>
+                    </HeaderWithClipPath>
+                </div>
             </CombatantHeader>
         </Combatant>
     )
