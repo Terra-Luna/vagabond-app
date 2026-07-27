@@ -10,6 +10,7 @@ import { IconOnlyButton } from "../component/IconOnlyButton"
 import { PlayIcon, StopCircle, Trash } from "lucide-react"
 import { CtxMenuItem, useContextMenu } from "../component/ContextMenu"
 import { Gauge } from "../component/Gauge"
+import { getCombatantStatuses } from "../../combat/status"
 
 const isGroupActive = (groupName: CombatGroup) => (game.combat as VgLiteCombat).isGroupActive(groupName)
 const getCombat = () => game.combat as VgLiteCombat
@@ -162,7 +163,7 @@ const Hero = ({ hero }) => {
                 </div>
                 <div className="mt-1"></div>
                 <HeaderWithClipPath>
-                    Status effects, etc
+                    {getCombatantStatuses(hero)}
                 </HeaderWithClipPath>
             </CombatantHeader>
         </Combatant>
