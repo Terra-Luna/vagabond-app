@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
+import { AdversaryDataModel, setThreatLevel } from "../../../src/model/actor/AdversaryDataModel"
 
 describe('set threat level', () => {
     test('set tl with combo', () => {
