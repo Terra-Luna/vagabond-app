@@ -1,5 +1,3 @@
-import { COMBAT_GROUPS, CombatGroup, VgLiteCombatantInstance } from "../model/combat/VgLiteCombatant"
-
 /**
  * 
  */
@@ -7,12 +5,6 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
         // this makes it so their is no "current combatant"
         this.updateSource({ turn: null })
-
-        if (!this.getVgLiteFlag("groupActivations")) {
-            (this as any).updateSource({
-                "flags.vagabond-lite.groupActivations": {}
-            })
-        }
 
         return super._preCreate(data, options, user)
     }
@@ -26,7 +18,6 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
      * Set all combatants to their max activations
      */
     async resetActivations(): Promise<any> {
-        await this.deactivateAllGroups()
         const skipDefeated = this.settings.skipDefeated;
         const updates = this.combatants.map(c => {
             return {
@@ -43,7 +34,6 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         this.callAllHooks("combatStart", updateData);
         await this.resetActivations();
         await this.update(updateData);
-        await this.activateGroup("heroes")
         return this;
     }
 
@@ -55,29 +45,6 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         return this.setFlag("vagabond-lite" as any, flagName, flagValue)
     }
 
-    activateGroup(groupName: CombatGroup) {
-        if (!this.started) return this
-
-        // deactivate all other groups
-        const groupNamesToDeactivate = COMBAT_GROUPS.filter(gn => gn !== groupName)
-        return Promise.all([
-            this.setVgLiteFlag(`groupActivations.${this.round}.${groupName}`, true),
-            ...groupNamesToDeactivate.map(gn => this.setVgLiteFlag(`groupActivations.${this.round}.${gn}`, false))
-        ])
-    }
-
-    deactivateGroup(groupName: CombatGroup) {
-        return this.setVgLiteFlag(`groupActivations.${this.round}.${groupName}`, false)
-    }
-
-    deactivateAllGroups() {
-        return Promise.all(COMBAT_GROUPS.map(gn => this.setVgLiteFlag(`groupActivations.${this.round}.${gn}`, false)))
-    }
-
-    isGroupActive(groupName: CombatGroup) {
-        return this.getVgLiteFlag(`groupActivations.${this.round}.${groupName}`)
-    }
-
     async activateCombatant(id: string) {
         if (!this.started) return this
 
@@ -85,10 +52,7 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         if (!combatant?.activations.value) return this
 
         await combatant.activate()
-        // if the user activated a combatant whose group wasn't active (like the right click menu), activate their group (subject to change)
-        if (!this.isGroupActive(combatant.groupName)) {
-            await this.activateGroup(combatant.groupName)
-        }
+
         const turn = this.turns.findIndex(t => t.id === id) // the index of the turn where the combatant ID matches the one given to us
         const updateData = { turn }
         const updateOptions = { direction: 1 as const } // not sure if we need this yet
@@ -153,13 +117,6 @@ export class VgLiteCombatant<SubType extends Combatant.SubType = Combatant.SubTy
      */
     get activations(): Activations {
         return (this.system as any).activations;
-    }
-
-    /**
-     * The current activation data for the combatant.
-     */
-    get groupName(): CombatGroup {
-        return (this.system as any).combatGroup;
     }
 
     activate() {

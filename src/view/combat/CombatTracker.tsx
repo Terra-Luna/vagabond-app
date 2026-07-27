@@ -12,7 +12,6 @@ import { CtxMenuItem, useContextMenu } from "../component/ContextMenu"
 import { Gauge } from "../component/Gauge"
 import { getCombatantStatuses } from "../../combat/status"
 
-const isGroupActive = (groupName: CombatGroup) => (game.combat as VgLiteCombat).isGroupActive(groupName)
 const getCombat = () => game.combat as VgLiteCombat
 
 export const CombatTracker = ({ data }) => {
@@ -52,16 +51,11 @@ const Group = ({ children }: { groupName: CombatGroup, children: ReactNode }) =>
     )
 }
 
-const GroupHeader = ({ label, groupName }: { groupName: CombatGroup, label: string }) => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-    const setGroupActive = useCallback(() => {
-        getCombat().activateGroup(groupName)
-    }, [groupName])
+const GroupHeader = ({ label }: { groupName: CombatGroup, label: string }) => {
 
     return (
-        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1" onContextMenu={e => onCtxMenu(e, [{ label: "Activate", icon: PlayIcon, action: setGroupActive }])}>
-            <p className={`flex text-xl text-text-section-header ${isGroupActive(groupName) ? "vglite-hovered" : ""}`}>{`${label} ${isGroupActive(groupName) ? "(Active)" : ""}`}</p>
-            <ContextMenu />
+        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1">
+            <p className={`flex text-xl text-text-section-header`}>{`${label}}`}</p>
         </div>
     )
 }
@@ -182,11 +176,10 @@ const Hero = ({ hero }) => {
 }
 
 const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) => {
-    const isCurrentCombatant = useIsCurrentCombatant(combatant)
-    const isInActiveGroup = isGroupActive(combatant.groupName)
-    const hasActivationsLeft = combatant.activations.value ?? 0 > 0
+    if (!combatant.isOwner && !game.user?.isActiveGM) { return }
 
-    if (!isInActiveGroup) return undefined
+    const isCurrentCombatant = useIsCurrentCombatant(combatant)
+    const hasActivationsLeft = combatant.activations.value ?? 0 > 0
 
     const id = combatant?._id
 
