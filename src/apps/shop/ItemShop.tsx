@@ -38,54 +38,65 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
         return packs.filter(p => !clazz?.system.startingPacks.includes(p.id!))
     }, [clazz])
 
-    const onSelectPack = useCallback((packId) => {
-        const pack = packs.find(it => it.id === packId)
-        const refund = addCoins([wallet, selectedPack?.system.cost ?? { g: 0, s: 0, c: 0 }])
-
-        if (!pack) {
-            if (selectedPack) {
-                setWallet(refund)
-            }
-            setSelectedPack(pack)
-        }
-        else if (isAffordable(refund, pack.system.cost)) {
-            setWallet(subtractCoins(refund, pack.system.cost))
-            setSelectedPack(pack)
-        }
-        else {
-            ui.notifications?.warn("Not enough funds!")
-        }
-    }, [selectedPack])
-
-    const onAddItemToCart = useCallback((item) => {
-        if (isAffordable(wallet, item.system.totalValue)) {
-            setCart([...cart, item])
-            const deduction = subtractCoins(wallet, item.system.totalValue)
-            setWallet(deduction)
-        }
-        else {
-            ui.notifications?.warn("Not enough funds!")
-        }
-    }, [cart, wallet])
-
-    const onRemoveFromCart = useCallback((item, index) => {
-        const refund = addCoins([wallet, item.system.totalValue])
-        setWallet(refund)
-        setCart(cart.filter((_, idx) => idx !== index))
-    }, [cart, wallet])
-
-    const filteredItems = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
-        if (shopCategory === 'all') return shopItems
-        if (shopCategory === 'gear') return shopItems.filter(it => ['tool', 'sundry', 'container'].includes(it.type))
-        return shopItems.filter(it => (it.type as string) === shopCategory)
-    }
-
     const reset = useCallback(() => {
         setShopCategory('all')
         setCart([])
     }, [shopCategory, cart, wallet])
 
     const ItemShop = ({ includeStarterPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
+        const [shopSearch, setShopSearch] = useState<string>('')
+
+        const onSelectPack = useCallback((packId) => {
+            const pack = packs.find(it => it.id === packId)
+            const refund = addCoins([wallet, selectedPack?.system.cost ?? { g: 0, s: 0, c: 0 }])
+
+            if (!pack) {
+                if (selectedPack) {
+                    setWallet(refund)
+                }
+                setSelectedPack(pack)
+            }
+            else if (isAffordable(refund, pack.system.cost)) {
+                setWallet(subtractCoins(refund, pack.system.cost))
+                setSelectedPack(pack)
+            }
+            else {
+                ui.notifications?.warn("Not enough funds!")
+            }
+        }, [selectedPack])
+
+        const onAddItemToCart = useCallback((item) => {
+            if (isAffordable(wallet, item.system.totalValue)) {
+                setCart([...cart, item])
+                const deduction = subtractCoins(wallet, item.system.totalValue)
+                setWallet(deduction)
+            }
+            else {
+                ui.notifications?.warn("Not enough funds!")
+            }
+        }, [cart, wallet])
+
+        const onRemoveFromCart = useCallback((item, index) => {
+            const refund = addCoins([wallet, item.system.totalValue])
+            setWallet(refund)
+            setCart(cart.filter((_, idx) => idx !== index))
+        }, [cart, wallet])
+
+        const filteredItems = useMemo((): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
+            if (shopCategory === 'all') return shopItems
+            if (shopCategory === 'gear') return shopItems.filter(it => ['tool', 'sundry', 'container'].includes(it.type))
+            return shopItems.filter(it => (it.type as string) === shopCategory)
+        }, [shopCategory, shopItems])
+
+        const searchMatchItems = useMemo(() => {
+            if (shopSearch.trim().length > 0) {
+                return filteredItems.filter(it => it.name.toUpperCase().includes(shopSearch.toUpperCase()))
+            }
+            else {
+                return filteredItems
+            }
+        }, [filteredItems, shopSearch])
+
         return (
             <div className="flex flex-col gap-y-2 h-full overflow-hidden">
                 <div className="flex gap-x-4 items-end">
@@ -120,13 +131,31 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
 
                     <div className="flex flex-col flex-1 space-y-1 min-h-0">
                         {/* SEARCH BY NAME */}
+                        <div className="relative flex items-center mx-2">
+                            <input
+                                type="text"
+                                value={shopSearch}
+                                placeholder="Search items..."
+                                className="w-full text-lg text-text-secondary font-paradigm font-normal italic p-1 pr-8"
+                                onChange={(e) => setShopSearch(e.target.value)}
+                                autoComplete="off"
+                            />
+                            {shopSearch.length > 0 && (
+                                <button
+                                    type="button"
+                                    onClick={() => setShopSearch("")}
+                                    className="absolute right-0 pr-2 text-text-secondary hover:text-destructive-action font-bold cursor-pointer"
+                                    aria-label="Clear search"
+                                >✕</button>
+                            )}
+                        </div>
 
                         {/* CATEGORY BUTTONS */}
                         <CategoryButtons shopCategory={shopCategory} setShopCategory={setShopCategory} />
                         <Divider />
 
                         {/* ITEMS LIST W/ ADD BUTTON - CLICK NAME TO OPEN ITEM SHEET */}
-                        <ShopItemsList items={filteredItems()} onAddItemToCart={onAddItemToCart} />
+                        <ShopItemsList items={shopSearch.trim().length > 0 ? searchMatchItems : filteredItems} onAddItemToCart={onAddItemToCart} />
 
                     </div>
                 </div>
@@ -171,5 +200,5 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
         )
     }
 
-    return { ItemShop, wallet, cart, reset, selectedPack }
+    return { ItemShop, wallet, cart, reset, shopCategory, selectedPack }
 }
