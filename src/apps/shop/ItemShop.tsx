@@ -126,7 +126,7 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                 </div>
 
                 {/* ITEMS LIST */}
-                <div className="flex flex-col flex-1 min-h-0 h-9/16 gap-y-1">
+                <div className="flex flex-col min-h-0 h-2/3 gap-y-1">
                     <Header title={"ITEM SHOP"} />
 
                     <div className="flex flex-col flex-1 space-y-1 min-h-0">
@@ -155,13 +155,16 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
                         <Divider />
 
                         {/* ITEMS LIST W/ ADD BUTTON - CLICK NAME TO OPEN ITEM SHEET */}
-                        <ShopItemsList items={shopSearch.trim().length > 0 ? searchMatchItems : filteredItems} onAddItemToCart={onAddItemToCart} />
+                        <ShopItemsList
+                            items={shopSearch.trim().length > 0 ? searchMatchItems : filteredItems}
+                            onAddItemToCart={onAddItemToCart}
+                        />
 
                     </div>
                 </div>
 
                 {/* SHOPPING CART */}
-                <div className="flex flex-col flex-1 min-h-0 px-2">
+                <div className="flex flex-col min-h-0 h-1/3 px-2 mb-8">
                     <Header title={"CART"} />
                     {/* TOTAL COST W/ SAVE & CANCEL BUTTONS */}
                     <div className="flex w-full gap-x-4 justify-between my-1">
