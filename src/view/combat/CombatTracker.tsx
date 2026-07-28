@@ -55,7 +55,7 @@ const GroupHeader = ({ label }: { groupName: CombatGroup, label: string }) => {
 
     return (
         <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1">
-            <p className={`flex text-xl text-text-section-header`}>{`${label}}`}</p>
+            <p className={`flex text-xl text-text-section-header`}>{`${label}`}</p>
         </div>
     )
 }
@@ -146,15 +146,26 @@ const CombatTrackerPortrait = ({ src }) => {
     )
 }
 
-const Hero = ({ hero }) => {
-    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
-    const heroActorModel = hero.actor.system
-    const statuses = getCombatantStatuses(hero)
-    const statusIcons = statuses.map((status) => {
+const getStatusIcons = (combatant) => {
+    const statuses = getCombatantStatuses(combatant)
+    return statuses.map((status) => {
         const img = CONFIG.statusEffects.find(e => e.id === status)?.img
         const title = lang.VGLITE.StatusConditions[status].name
         return img ? <img key={status} src={img} height={12} width={12} title={title} /> : <></>
     })
+}
+
+const StatusIcons = ({ combatant }) => {
+    return (
+        <HeaderWithClipPath fullWidth>
+            <div className="min-h-3">{getStatusIcons(combatant)}</div>
+        </HeaderWithClipPath>
+    )
+}
+
+const Hero = ({ hero }) => {
+    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
+    const heroActorModel = hero.actor.system
 
     return (
         <Combatant token={token} combatant={hero}>
@@ -165,11 +176,7 @@ const Hero = ({ hero }) => {
                     {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana" size="sm" />}
                 </div>
                 <div className="mt-1"></div>
-                <div className="w-full">
-                    <HeaderWithClipPath>
-                        <div>{statusIcons}</div>
-                    </HeaderWithClipPath>
-                </div>
+                <StatusIcons combatant={hero} />
             </CombatantHeader>
         </Combatant>
     )
@@ -210,9 +217,7 @@ const Adversary = ({ adversary }) => {
     return (
         <Combatant token={token} combatant={adversary}>
             <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token}>
-                <HeaderWithClipPath>
-                    Status effects, etc
-                </HeaderWithClipPath>
+                <StatusIcons combatant={adversary} />
             </CombatantHeader>
         </Combatant>
 

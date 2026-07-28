@@ -30,10 +30,12 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
     )
 }
 
-export const HeaderWithClipPath = ({ children, showRightBorder }: { children: ReactNode, showRightBorder?: boolean }) => {
+export const HeaderWithClipPath = ({ children, showRightBorder, fullWidth }: { children: ReactNode, showRightBorder?: boolean, fullWidth?: boolean }) => {
+    const fullWidthClass = fullWidth ? "w-full" : ""
+    const borderClass = showRightBorder ? "border-r-1 border-solid border-table-border" : ""
     return (
-        <div className={`${cardSubheaderLayout} ${showRightBorder ? 'border-r-1 border-solid border-table-border w-full' : 'w-full'}`}>
-            <div className={cardSubheaderStyle + " w-full"}>{children}</div>
+        <div className={`${cardSubheaderLayout} ${borderClass}`}>
+            <div className={`${cardSubheaderStyle} ${fullWidthClass}`}>{children}</div>
         </div>
     )
 }
