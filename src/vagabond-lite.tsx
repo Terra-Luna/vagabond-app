@@ -94,7 +94,12 @@ Hooks.once("init", () => {
 Hooks.once("ready", async () => {
     await ItemsCache.initialize()
     game.actors?.filter(it => it.system instanceof HeroDataModel)?.forEach(actor => {
-        (actor.system as HeroDataModel).forceUpdate()
+        if (actor.isOwner) {
+            (actor.system as HeroDataModel).forceUpdate()
+        }
+        else if (actor.visible) {
+            actor.sheet?.render(false)
+        }
     })
 })
 
