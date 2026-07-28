@@ -33,7 +33,7 @@ export const useGlobalPopout = (onClose?: () => void) => {
 class PopoutApplication extends foundry.applications.api.ApplicationV2 {
     Component?: FunctionComponent
     startInEditMode: boolean = false
-    onClose?: () => void;
+    onClose?: () => void
     onCloseHookId?: number
 
     _reactRoot: ReactDom.Root | null = null
@@ -52,20 +52,6 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
 
     async _onRender(context, options) {
         super._onRender(context, options)
-
-        const element = this.element
-        if (element) {
-            element.addEventListener("keydown", (event: KeyboardEvent) => {
-                if (["F5", "F12"].includes(event.key)) return
-                event.stopPropagation()
-            }, { capture: true })
-
-            element.addEventListener("keyup", (event: KeyboardEvent) => {
-                if (["F5", "F12"].includes(event.key)) return
-                event.stopPropagation()
-            }, { capture: true })
-        }
-
         sheetUtils.onRender(this as any)
     }
 
@@ -99,8 +85,6 @@ class PopoutApplication extends foundry.applications.api.ApplicationV2 {
         position: { width: 600, height: 1000 },
         window: {
             resizable: true
-        },
-        // Block Foundry hotkeys...
-        forms: [{ handler: () => { }, submitOnChange: false }]
+        }
     }
 }

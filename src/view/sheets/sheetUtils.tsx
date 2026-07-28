@@ -6,6 +6,7 @@ import { EditModeContextProvider } from "../context/EditModeContext/EditModeCont
 import { EmotionCacheContext } from "../context/EmotionCacheContext";
 import { FunctionComponent } from "react";
 import { EditModeOptions } from "../context/EditModeContext/EditModeOptions";
+import { FoundryHotkeyBlocker } from "../component/FoundryHotkeyBlocker";
 
 export interface VGLiteApplication {
     _reactRoot: ReactDom.Root | null;
@@ -40,7 +41,7 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
         header!.addEventListener('dblclick', () => {
             sheet._isCollapsed = !sheet._isCollapsed
             sheet.render()
-        });
+        })
     }
 
     sheet.renderWithWrappers({ theme: getTheme(), position: sheet.position })
@@ -74,15 +75,17 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
     sheet.element.style.setProperty("overflow", sheet._isCollapsed ? "hidden" : "visible")
 
     sheet._reactRoot!.render(
-        <DimensionsContext.Provider value={{ width, height, top, left }}>
-            <EditModeContextProvider initialEditMode={startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE}>
-                <EmotionCacheContext scaduRoot={sheet._scaduRoot}>
-                    <style>{vgLiteStyles} </style>
-                    <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
-                        <sheet.Component {...sheet.getReactProps()} />
-                    </div>
-                </EmotionCacheContext>
-            </EditModeContextProvider>
-        </DimensionsContext.Provider>
+        <FoundryHotkeyBlocker>
+            <DimensionsContext.Provider value={{ width, height, top, left }}>
+                <EditModeContextProvider initialEditMode={startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE}>
+                    <EmotionCacheContext scaduRoot={sheet._scaduRoot}>
+                        <style>{vgLiteStyles} </style>
+                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
+                            <sheet.Component {...sheet.getReactProps()} />
+                        </div>
+                    </EmotionCacheContext>
+                </EditModeContextProvider>
+            </DimensionsContext.Provider>
+        </FoundryHotkeyBlocker>
     );
 }

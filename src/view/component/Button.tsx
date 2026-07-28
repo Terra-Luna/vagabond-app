@@ -3,15 +3,15 @@ import { Trash } from "lucide-react"
 import { glowOnHover } from "../common/text-styles"
 
 const buttonShaping = `flex items-center px-2 py-1 rounded-sm ${glowOnHover}`
-const primaryButtonClasses = `text-btn-primary-text bg-btn-primary-fill ${buttonShaping} border border-solid border-stat-block-fill`
-const secondaryButtonClasses = `text-btn-secondary-text ${buttonShaping} border border-solid btn-secondary-text/80`
-const destructiveButtonClasses = `text-destructive-action ${buttonShaping} border border-solid border-destructive-action/50`
+const primaryButtonClasses = `text-lg text-btn-primary-text font-paradigm bg-btn-primary-fill ${buttonShaping} border border-solid border-stat-block-fill`
+const secondaryButtonClasses = `text-lg text-btn-secondary-text font-paradigm ${buttonShaping} border border-solid btn-secondary-text/80`
+const destructiveButtonClasses = `text-lg text-destructive-action font-paradigm ${buttonShaping} border border-solid border-destructive-action/50`
 
-export const PrimaryButton = ({ children, icon = null, onClick }: {
-    children: ReactNode, icon?: ReactNode, onClick: (e) => any
+export const PrimaryButton = ({ type = "button", children, icon = null, onClick }: {
+    type?: any, children: ReactNode, icon?: ReactNode, onClick: (e) => any
 }) => {
     return (
-        <button onClick={(e) => onClick(e)} className={primaryButtonClasses}>
+        <button type={type} onClick={(e) => onClick(e)} className={primaryButtonClasses}>
             {icon ? icon : undefined}
             <div className="mx-0.5" />
             {children}
@@ -19,9 +19,9 @@ export const PrimaryButton = ({ children, icon = null, onClick }: {
     )
 }
 
-export const SecondaryButton = ({ children, icon = null, onClick }: { children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const SecondaryButton = ({ type = "button", children, icon = null, onClick }: { type?: any, children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
     return (
-        <button onClick={onClick} className={secondaryButtonClasses}>
+        <button type={type} onClick={onClick} className={secondaryButtonClasses}>
             {icon ? icon : undefined}
             <div className="mx-0.5" />
             {children}
@@ -29,9 +29,9 @@ export const SecondaryButton = ({ children, icon = null, onClick }: { children: 
     )
 }
 
-export const DestructiveButton = ({ children, icon = <Trash size={14} />, onClick }: { children?: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const DestructiveButton = ({ type = "button", children, icon = <Trash size={14} />, onClick }: { type?: any, children?: ReactNode, icon?: ReactNode, onClick: () => any }) => {
     return (
-        <button onClick={onClick} className={destructiveButtonClasses}>
+        <button type={type} onClick={onClick} className={destructiveButtonClasses}>
             {icon}
             {children ? <>
                 <div className="mx-0.5" />

@@ -6,7 +6,7 @@ export class AdversarySheet extends VgLiteActorSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 400,
-            height: 700
+            height: "auto"
         },
         window: {
             resizable: true

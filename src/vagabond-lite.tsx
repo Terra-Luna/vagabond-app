@@ -32,6 +32,7 @@ import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
+import { XPQuestionnaireConfig } from "./apps/level-up/questionnaire/XPQuestionnaireConfig"
 
 // Add our fonts
 const fontFaces = [
@@ -88,7 +89,32 @@ Hooks.once("init", () => {
         CONFIG.statusEffects = VgLiteActiveEffect.statusEffects as any,
         CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any }
     )
+
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
+
+    game.settings?.register("vagabond-lite" as any, "xp-questionnaire" as any, {
+        name: "XP Questionnaire",
+        hint: "An array of questions and their XP values.",
+        scope: "world",
+        config: false,
+        type: Object,
+        default: [
+            { id: "q1", text: "Did you complete a Quest?", xp: 1 },
+            { id: "q2", text: "Did you Fail and allow the Fail to resolve?", xp: 1 },
+            { id: "q3", text: "Did you pass a Hindered Check?", xp: 1 },
+            { id: "q4", text: "Did you make a discovery?", xp: 1 },
+            { id: "q5", text: "Did you loot at least 50g of treasure?", xp: 1 }
+        ] as any
+    })
+
+    game.settings?.registerMenu("vagabond-lite", "configureMenu", {
+        name: "XP Questionnaire Editor",
+        label: "Modify Questions",
+        hint: "Add, remove, or edit the XP questionnaire.",
+        icon: "fas fa-tasks",
+        type: XPQuestionnaireConfig,
+        restricted: true
+    })
 })
 
 Hooks.once("ready", async () => {

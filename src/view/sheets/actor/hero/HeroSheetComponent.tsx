@@ -75,8 +75,8 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                             <p onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</p>
                             <p onClick={() => openItemSheet(hero.class)}>{getName(hero.class) ?? "Vagabond"}</p>
                         </div>
-                        <div className="ml-auto mr-2">
-                            <span>{localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}</span>
+                        <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => { }} >
+                            {localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}
                         </div>
                     </div>
                 </div>
