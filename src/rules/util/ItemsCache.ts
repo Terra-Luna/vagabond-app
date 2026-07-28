@@ -40,7 +40,7 @@ export class ItemsCache {
 
     static equipment = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
         return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => inventoryItemTypes().includes(item.type))).values()]
+            .filter(([_, item]) => item.visible && inventoryItemTypes().includes(item.type))).values()]
             .filter(it => it != null)
             .sort((a, b) => a.name.localeCompare(b.name))
             .sort((a, b) => a.system.category.localeCompare(b.system.category)) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
