@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react"
 import { createElement, ReactElement } from "react"
-import { CountdownResult } from "../../combat/dice-rolls"
+import { CountdownResult } from "../../combat/rules/dice-rolls"
 import { getId, getName } from "../../utils/modelUtil"
 
 interface ElementBlueprint {

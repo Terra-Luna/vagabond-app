@@ -1,5 +1,5 @@
 import { Plus } from "lucide-react"
-import { DamageRollResult, rollCountdownDie } from "../../../combat/dice-rolls"
+import { DamageRollResult, rollCountdownDie } from "../../../combat/rules/dice-rolls"
 import { glowOnHover } from "../../common/text-styles"
 import { sendCountdownRollMessage } from "../ChatCardSerializer"
 import { DiceRoll } from "./DiceRoll"

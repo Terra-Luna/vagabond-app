@@ -14,8 +14,8 @@ import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { StarterPackDataModel } from "./model/item/equip/StarterPackDataModel"
 import { ContainerDataModel } from "./model/item/equip/ContainerDataModel"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
-import { VgLiteCombat, VgLiteCombatant } from './document/VgLiteCombat'
-import { VgLiteActiveEffect } from './document/VgLiteActiveEffect'
+import { VgLiteCombat, VgLiteCombatant } from './combat/documents/VgLiteCombat'
+import { VgLiteActiveEffect } from './combat/documents/VgLiteActiveEffect'
 import { isInventoryItem } from "./model/actor/type/Inventory"
 import { AdversarySheet } from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
@@ -26,8 +26,8 @@ import { getFullItem, getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
-import { renderCombatTracker } from "./view/combat/vglite-combat-tracker"
-import { VgLiteActor } from "./document/VgLiteActor"
+import { renderCombatTracker } from "./combat/ui/vglite-combat-tracker"
+import { VgLiteActor } from "./model/actor/VgLiteActor"
 import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"

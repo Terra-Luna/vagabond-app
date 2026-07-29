@@ -1,5 +1,5 @@
 import { Shield } from "lucide-react"
-import { rollWeaponDamage } from "../../../../../combat/dice-rolls"
+import { rollWeaponDamage } from "../../../../../combat/rules/dice-rolls"
 import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"

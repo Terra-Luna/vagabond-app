@@ -1,6 +1,6 @@
 import { Sword, HandFist, Hand, Eye, MessageSquareText, Trash, Undo } from "lucide-react"
 import { createElement } from "react"
-import { rollDamage, rollWeaponDamage } from "../combat/dice-rolls"
+import { rollDamage, rollWeaponDamage } from "../combat/rules/dice-rolls"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { setEquipState, EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"

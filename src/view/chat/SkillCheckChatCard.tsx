@@ -1,4 +1,4 @@
-import { SkillCheckResult } from '../../combat/dice-rolls'
+import { SkillCheckResult } from '../../combat/rules/dice-rolls'
 import { Minus, Plus } from 'lucide-react'
 import { DiceRoll } from './component/DiceRoll'
 import { ChatCardBanner } from "./component/ChatCardBanner"

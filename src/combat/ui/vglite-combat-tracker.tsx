@@ -8,8 +8,8 @@
 import ReactDom from "react-dom/client"
 import { vgLiteStyles } from "../../utils/styleUtils"
 import { getTheme } from "../../utils/foundryUtils"
-import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
-import { EmotionCacheContext } from "../context/EmotionCacheContext"
+import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
+import { EmotionCacheContext } from "../../view/context/EmotionCacheContext"
 import { CombatTracker } from "./CombatTracker"
 import { createContext, useContext } from "react"
 

@@ -1,5 +1,5 @@
 import { Equal } from "lucide-react"
-import { DamageRollResult } from "../../combat/dice-rolls"
+import { DamageRollResult } from "../../combat/rules/dice-rolls"
 import { lang } from "../../utils/lang"
 import { getTokenImg } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"

@@ -29,9 +29,8 @@ const effectData = {
 await doc.createEmbeddedDocuments('ActiveEffect', [effectData])
 
 */
-
-import { ActiveEffectDataModel } from "../model/effect/ActiveEffectDataModel";
-import { EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel";
+import { ActiveEffectDataModel } from "../../model/effect/ActiveEffectDataModel"
+import { EquipmentDataModel } from "../../model/item/equip/EquipmentDataModel"
 
 /**
  * The static effects' names and descriptions can be displayed to a GM user when configuring

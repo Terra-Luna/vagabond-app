@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { CountdownResult, rollCountdownDie } from "../../combat/dice-rolls"
+import { CountdownResult, rollCountdownDie } from "../../combat/rules/dice-rolls"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRoll } from "./component/DiceRoll"

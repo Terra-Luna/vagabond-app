@@ -9,7 +9,10 @@ export const ActiveEffectButtons = ({ effect, onToggle, onEdit, onDelete }) => {
 
             {/* EFFECT TOGGLE SWITCH */}
             <button
-                onClick={() => onToggle(effect.id)}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    onToggle(effect.id)
+                }}
                 className="p-1.5 rounded hover:bg-slate-700 transition-colors"
                 title={effect.disabled ? "Enable" : "Disable"}
             >
@@ -31,7 +34,10 @@ export const ActiveEffectButtons = ({ effect, onToggle, onEdit, onDelete }) => {
 
             {/* DELETE BUTTON */}
             <button
-                onClick={() => onDelete(effect.id)}
+                onClick={(e) => {
+                    e.stopPropagation()
+                    onDelete(effect.id)
+                }}
                 className="p-1.5 rounded text-destructive-action hover:bg-slate-700 transition-colors"
                 title="Delete Effect"
             >

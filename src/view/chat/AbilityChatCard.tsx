@@ -1,4 +1,4 @@
-import { rollCountdownDie } from "../../combat/dice-rolls"
+import { rollCountdownDie } from "../../combat/rules/dice-rolls"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"

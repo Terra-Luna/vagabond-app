@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
-import { rollDamage } from "../../../../../combat/dice-rolls"
+import { rollDamage } from "../../../../../combat/rules/dice-rolls"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
