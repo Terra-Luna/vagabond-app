@@ -188,5 +188,8 @@ export const useTrainingSelection = (
         )
     }
 
-    return { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills, setChosenClassSkills, setChosenBonusSkills }
+    return {
+        TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills,
+        setRequiredTrainingRules, setChosenClassSkills, setChosenBonusSkills
+    }
 }

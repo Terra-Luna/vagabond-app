@@ -1,5 +1,5 @@
 import ReactDom from "react-dom/client"
-import { onClose, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "./sheetUtils"
+import { onClose, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "../../utils/sheetUtils"
 
 export const VgLiteSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null

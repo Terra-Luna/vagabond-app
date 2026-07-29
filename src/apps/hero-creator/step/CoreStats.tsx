@@ -375,5 +375,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         )
     }
 
-    return { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses }
+    return {
+        CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats
+    }
 }

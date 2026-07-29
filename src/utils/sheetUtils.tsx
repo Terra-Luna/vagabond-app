@@ -1,26 +1,26 @@
 import ReactDom from "react-dom/client"
-import { getTheme } from "../../utils/foundryUtils";
-import { vgLiteStyles } from "../../utils/styleUtils";
-import { DimensionsContext } from "../context/DimensionsContext";
-import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext";
-import { EmotionCacheContext } from "../context/EmotionCacheContext";
-import { FunctionComponent } from "react";
-import { EditModeOptions } from "../context/EditModeContext/EditModeOptions";
-import { FoundryHotkeyBlocker } from "../component/FoundryHotkeyBlocker";
+import { getTheme } from "./foundryUtils"
+import { vgLiteStyles } from "./styleUtils"
+import { DimensionsContext } from "../view/context/DimensionsContext"
+import { EditModeContextProvider } from "../view/context/EditModeContext/EditModeContext"
+import { EmotionCacheContext } from "../view/context/EmotionCacheContext"
+import { FunctionComponent } from "react"
+import { EditModeOptions } from "../view/context/EditModeContext/EditModeOptions"
+import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
 
 export interface VGLiteApplication {
-    _reactRoot: ReactDom.Root | null;
-    _scaduRoot: ShadowRoot;
-    _isCollapsed: boolean;
-    _toolbarHeight: number;
-
-    element: HTMLElement;
-    position: any;
-    render: () => void;
-    renderWithWrappers: ({ theme, position }) => any;
-
-    Component: FunctionComponent;
-    getReactProps: () => any;
+    _reactRoot: ReactDom.Root | null
+    _scaduRoot: ShadowRoot
+    _isCollapsed: boolean
+    _toolbarHeight: number
+    element: HTMLElement
+    position: any
+    
+    render: () => void
+    renderWithWrappers: ({ theme, position }) => any
+    
+    Component: FunctionComponent
+    getReactProps: () => any
 }
 
 export const onRenderHTML = (sheet: VGLiteApplication) => {
@@ -67,20 +67,37 @@ export const onClose = (sheet: VGLiteApplication) => {
     sheet._reactRoot = null
 }
 
-export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", position: any, startInEditMode = false) => {
+/**
+ * Renders the sheet or app 
+ * @param sheet 
+ * @param theme 
+ * @param position 
+ * @param startInEditMode 
+ */
+export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", position: any, startInEditMode: boolean | EditModeOptions = false) => {
     const { width, top, left } = position
-    let { height } = position
-    height -= sheet._toolbarHeight!
+    const rawHeight = position.height
+    const toolbarOffset = sheet._toolbarHeight || 0
+    let height: number
+
+    if (typeof rawHeight === "number" && !isNaN(rawHeight)) {
+        height = rawHeight - toolbarOffset;
+    }
+    else {
+        const totalDomHeight = sheet.element?.offsetHeight || 600
+        height = Math.max(totalDomHeight - toolbarOffset, 100)
+    }
 
     sheet.element.style.setProperty("overflow", sheet._isCollapsed ? "hidden" : "visible")
 
     sheet._reactRoot!.render(
         <FoundryHotkeyBlocker>
             <DimensionsContext.Provider value={{ width, height, top, left }}>
-                <EditModeContextProvider initialEditMode={startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE}>
+                <EditModeContextProvider initialEditMode={(typeof startInEditMode === "boolean") ? (startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE) : startInEditMode}>
                     <EmotionCacheContext scaduRoot={sheet._scaduRoot}>
                         <style>{vgLiteStyles} </style>
-                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`} style={{ height }}>
+                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`}
+                            style={{ height: typeof rawHeight === "number" ? height : "100%" }}>
                             <sheet.Component {...sheet.getReactProps()} />
                         </div>
                     </EmotionCacheContext>

@@ -1,33 +1,33 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { useClassSelection } from "./step/ClassSelection"
-import { useNameAndAncestry } from "./step/NameAndAncestry"
-import { useCoreStats } from "./step/CoreStats"
-import { useTrainingSelection } from "./step/TrainingSelection"
-import { useSpellSelection } from "./step/SpellSelection"
-import { usePerkSelection } from "./step/PerkSelection"
-import { useEquipmentSelection } from "./step/EquipmentSelection"
-import { useNavigation } from "../../view/context/navigation/NavigationContext"
-import { ItemsCache } from "../../rules/util/ItemsCache"
-import { PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { usePerkBonusSelection } from "./step/PerkBonusSelection"
-import { Coins } from "../../model/common/CoinValue"
-import { savePerkSelectionFlags } from "../../rules/util/item-rules-util"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { useClassSelection } from "./ClassSelection"
+import { useNameAndAncestry } from "./NameAndAncestry"
+import { useCoreStats } from "./CoreStats"
+import { useTrainingSelection } from "./TrainingSelection"
+import { useSpellSelection } from "./SpellSelection"
+import { usePerkSelection } from "./PerkSelection"
+import { useEquipmentSelection } from "./EquipmentSelection"
+import { useNavigation } from "../../../view/context/navigation/NavigationContext"
+import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
+import { usePerkBonusSelection } from "./PerkBonusSelection"
+import { Coins } from "../../../model/common/CoinValue"
+import { savePerkSelectionFlags } from "../../../rules/util/item-rules-util"
 
-interface HeroCreatorProps {
+export interface HeroCreatorArgs {
     actor: Actor & { system: HeroDataModel }
     setClosed: () => void
 }
 
-export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
+export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } = useNavigation()
     const [perksWithBonusChoices, setPerksWithBonusChoices] = useState<(Item & { system: PerkDataModel })[]>([])
 
     const { NameAndAncestry, ancestryItem } = useNameAndAncestry(actor, [backButton, nextButton])
     const { ClassSelection, classItem } = useClassSelection(actor, [backButton, nextButton])
-    const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
-    const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
+    const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
+    const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills, setChosenClassSkills, setChosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
     const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
     const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
 
@@ -58,7 +58,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
 
     const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton])
 
-    const { PerkBonusSelection, advancement, training, spell } = usePerkBonusSelection(
+    const { PerkBonusSelection, advancement, training, spell, resetPerkBonusSelections } = usePerkBonusSelection(
         actor, perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
         [...chosenClassSkills, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
@@ -122,6 +122,20 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
         }
         setPerksWithBonusChoices(perksWithChoices)
     }, [ancestryPerkSlots, classPerkSlots])
+
+    /**
+     * Clear out selections when key updates are made.
+     */
+    useEffect(() => {
+        resetAssignedStats()
+        setChosenClassSkills([])
+        setChosenBonusSkills([])
+        setAncestrySpellSlots([])
+        setClassSpellSlots([])
+        resetPerkBonusSelections()
+        setPerkSpellSlots([])
+        setPerksWithBonusChoices([])
+    }, [ancestryItem, classItem])
     
     /**
      * Copies the selected ancestry and class onto the Hero and maps
@@ -234,7 +248,7 @@ export const HeroCreator = ({ actor, setClosed }: HeroCreatorProps) => {
     }, [registerOnFinish, handleSaveAndFinish])
 
     return (
-        <div className="text-text-primary text-lg font-eskapade p-2 flex flex-col min-h-0 h-full overflow-hidden">
+        <div className="text-text-primary text-lg font-eskapade flex flex-col min-h-0 h-full p-2 overflow-hidden">
             {/* Current Step View */}
             <div className="flex-1 overflow-auto">
                 {renderStepContent(stepId)}

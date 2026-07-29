@@ -166,10 +166,10 @@
   --color-section-header-fill: #181818;
   --color-section-header-line: #212e41;
   --color-text-section-header: #eeeeed;
-  --color-text-primary: #e7e5e4;
+  --color-text-primary: #F5F5F4;
   --color-text-secondary: #d1c8c0;
   --color-text-tertiary: #918780;
-  --color-text-special: #e7e5e4;
+  --color-text-special: #F5F5F4;
   --color-text-aux: #c1bebd;
   --color-text-dmg: #ee5e61;
   --color-text-glow: #d2b450;
@@ -203,7 +203,7 @@
   --color-text-encumbrance: #d2b450;
   --color-btn-primary-fill: #d2b450;
   --color-btn-primary-text: #181818;
-  --color-btn-secondary-text: #e7e5e4;
+  --color-btn-secondary-text: #F5F5F4;
   --color-destructive-action: #f72b35;
   --color-context-menu-fill: #0c0c0c;
   --color-context-menu-hover: #2b2a2a;

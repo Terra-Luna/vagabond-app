@@ -1,7 +1,6 @@
 import { ReactNode, useCallback, useEffect, useState } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
-import { EditableTextField } from "../../../view/component/EditableTextField"
 import { Header } from "../../../view/component/Header"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { AncestryReactComponent } from "../../../view/sheets/item/character/ancestry/AncestrySheetComponent"
@@ -38,9 +37,8 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navB
         return (
             <div className="bg-sheet-main-fill space-y-4">
                 <Header title={strings.identity} />
-                <TopNavButtons navButtons={navButtons} subtitle="" />
-                <div className="flex gap-x-4">
-                    <HeroCreationLabeledField label={strings.heroName} value={hero.name} />
+                <TopNavButtons navButtons={navButtons} />
+                <div className="gap-x-4">
                     <HeroCreationDropdown
                         label={strings.selectAncestry}
                         value={ancestryItem?.id ?? strings.selectAncestry}

@@ -32,7 +32,7 @@ import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
-import { XPQuestionnaireConfig } from "./apps/level-up/questionnaire/XPQuestionnaireConfig"
+import { XpQuestionnaireConfigApp } from "./apps/level-up/questionnaire/XpQuestionnaireConfigApp"
 
 // Add our fonts
 const fontFaces = [
@@ -112,7 +112,7 @@ Hooks.once("init", () => {
         label: "Modify Questions",
         hint: "Add, remove, or edit the XP questionnaire.",
         icon: "fas fa-tasks",
-        type: XPQuestionnaireConfig,
+        type: XpQuestionnaireConfigApp,
         restricted: true
     })
 })

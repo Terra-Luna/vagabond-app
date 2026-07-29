@@ -7,8 +7,8 @@ const primaryButtonClasses = `text-lg text-btn-primary-text font-paradigm bg-btn
 const secondaryButtonClasses = `text-lg text-btn-secondary-text font-paradigm ${buttonShaping} border border-solid btn-secondary-text/80`
 const destructiveButtonClasses = `text-lg text-destructive-action font-paradigm ${buttonShaping} border border-solid border-destructive-action/50`
 
-export const PrimaryButton = ({ type = "button", children, icon = null, onClick }: {
-    type?: any, children: ReactNode, icon?: ReactNode, onClick: (e) => any
+export const PrimaryButton = ({ type = "button", children, icon = null, onClick = () => { } }: {
+    type?: any, children: ReactNode, icon?: ReactNode, onClick?: (e) => any
 }) => {
     return (
         <button type={type} onClick={(e) => onClick(e)} className={primaryButtonClasses}>

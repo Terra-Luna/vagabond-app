@@ -86,7 +86,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                 <SecondaryButton onClick={addQuestion} icon={<Plus size={16} />}>
                     Add Question
                 </SecondaryButton>
-                <PrimaryButton type="submit" icon={<Save size={16} />} onClick={() => { }}>
+                <PrimaryButton type="submit" icon={<Save size={16} />}>
                     Save & Close
                 </PrimaryButton>
             </div>

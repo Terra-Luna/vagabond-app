@@ -1,16 +1,26 @@
 import { XpQuestion, XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
-import { VagabondLiteApplication } from "../../VagabondLiteApplication"
+import { VagabondLiteAppArgs, VagabondLiteApplication } from "../../VagabondLiteApplication"
 
-export class XPQuestionnaireConfig extends VagabondLiteApplication {
+export class XpQuestionnaireConfigApp extends VagabondLiteApplication {
 
     constructor() {
+        const appArgs: VagabondLiteAppArgs = {
+            window: {
+                title: "Manage XP Questionnaire",
+                resizable: false
+            },
+            Component: XpQuestionnaireConfigView
+        }
+        super(appArgs)
+    }
+
+    override getReactProps() {
         const currentQuestions = (game as any).settings.get("vagabond-lite", "xp-questionnaire") as XpQuestion[] || []
-        const title = "Manage XP Questionnaire"
-        const xpQView = <XpQuestionnaireConfigView
-            initialQuestions={currentQuestions}
-            onSave={(updatedQuestions) => this.handleSave(updatedQuestions)}
-        />
-        super({ title: title, isResizeable: false, Component: xpQView })
+        return {
+            ...super.getReactProps(),
+            initialQuestions: currentQuestions,
+            onSave: (updatedQuestions: XpQuestion[]) => this.handleSave(updatedQuestions)
+        }
     }
 
     /**
@@ -27,5 +37,5 @@ export class XPQuestionnaireConfig extends VagabondLiteApplication {
             ui.notifications?.error("Failed to save changes to the database.")
         }
     }
-
+    
 }

@@ -25,6 +25,12 @@ export const usePerkBonusSelection = (
     const [training, setTraining] = useState<{ value: string, ruleId: string }>()
     const [spell, setSpell] = useState<{ value: string, ruleId: string }>()
 
+    const resetPerkBonusSelections = () => {
+        setAdvancement(undefined)
+        setTraining(undefined)
+        setSpell(undefined)
+    }
+
     const advancements = useMemo(() => {
         const maxStats = stats.filter(it => it.value >= 7).map(it => it.stat)
         const rules = getStatChoiceRules(perks ?? [])
@@ -151,5 +157,5 @@ export const usePerkBonusSelection = (
         )
     }
 
-    return { PerkBonusSelection, advancement, training, spell }
+    return { PerkBonusSelection, advancement, training, spell, resetPerkBonusSelections }
 }

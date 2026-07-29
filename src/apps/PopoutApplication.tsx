@@ -1,6 +1,6 @@
 import ReactDom from "react-dom/client"
 import { FunctionComponent, ReactNode, useCallback, useMemo, useRef } from "react"
-import * as sheetUtils from "../view/sheets/sheetUtils"
+import * as sheetUtils from "../utils/sheetUtils"
 
 export const CLOSE_GLOBAL_POPOUT_HOOK = "closeGlobalPopout" as any
 
