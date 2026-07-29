@@ -928,7 +928,8 @@
     "Combat": {
       "heroes": "Heroes",
       "adversaries": "Adversaries",
-      "npcs": "NPCs"
+      "npcs": "NPCs",
+      "keyExplainer": "Shift+click to multi-select, alt+click to ping. Right click for menu."
     }
   }
 }

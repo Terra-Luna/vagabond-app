@@ -1,16 +1,17 @@
-import { ReactNode, useCallback, useMemo, useState } from "react"
+import { PlayIcon, Trash, StopCircle } from "lucide-react"
+import { ReactNode, useState, useMemo, useCallback } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { lang } from "../../utils/lang"
-import { HeaderWithClipPath } from "../../view/component/SkillCard"
-import { useIsCurrentCombatant } from "./vglite-combat-tracker"
 import { CombatGroup } from "../../model/combat/VgLiteCombatant"
-import { VgLiteCombat, VgLiteCombatant } from "../documents/VgLiteCombat"
+import { lang } from "../../utils/lang"
+import { useContextMenu, CtxMenuItem } from "../../view/component/ContextMenu"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
-import { PlayIcon, StopCircle, Trash } from "lucide-react"
-import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
-import { Gauge } from "../../view/component/Gauge"
+import { HeaderWithClipPath } from "../../view/component/SkillCard"
+import { VgLiteCombat, VgLiteCombatant } from "../documents/VgLiteCombat"
 import { getCombatantStatuses } from "../rules/status"
+import { useIsCurrentCombatant } from "./vglite-combat-tracker"
+import { Gauge } from "../../view/component/Gauge"
+
 
 const getCombat = () => game.combat as VgLiteCombat
 
@@ -114,9 +115,16 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
         (token as any)?._onHoverOut(new MouseEvent('mouseleave'))
     }, [token])
 
-    const onClick = useCallback(() => {
-        token.control({ releaseOthers: true });
-        canvas?.ping(token.center)
+    const onClick = useCallback((e: MouseEvent) => {
+        if (token.controlled && e.shiftKey) {
+            token.release()
+        } else {
+            token.control({ releaseOthers: (!e.shiftKey && !e.ctrlKey) });
+        }
+
+        if (e.altKey) {
+            canvas?.ping(token.center)
+        }
     }, [token])
 
     const onDoubleClick = useCallback(() => {
@@ -127,8 +135,9 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
         <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id}`}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            onClick={onClick}
+            onClick={onClick as any}
             onDoubleClick={onDoubleClick}
+            title={lang.VGLITE.Combat.keyExplainer}
         >
             <div className="w-full">
                 {children}
@@ -158,7 +167,7 @@ const getStatusIcons = (combatant) => {
 const StatusIcons = ({ combatant }) => {
     return (
         <HeaderWithClipPath fullWidth>
-            <div className="min-h-3">{getStatusIcons(combatant)}</div>
+            <div className="flex gap-1 min-h-3">{getStatusIcons(combatant)}</div>
         </HeaderWithClipPath>
     )
 }
@@ -175,15 +184,17 @@ const Hero = ({ hero }) => {
                     <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck" size="sm" />
                     {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana" size="sm" />}
                 </div>
-                <div className="mt-1"></div>
-                <StatusIcons combatant={hero} />
+                <div className="mt-1">
+                    <StatusIcons combatant={hero} />
+                </div>
             </CombatantHeader>
         </Combatant>
     )
 }
 
 const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) => {
-    if (!combatant.isOwner && !game.user?.isActiveGM) { return }
+    let component = <div className="min-w-[24px] mr-4" />
+    if (!combatant.isOwner && !game.user?.isActiveGM) { return component }
 
     const isCurrentCombatant = useIsCurrentCombatant(combatant)
     const hasActivationsLeft = combatant.activations.value ?? 0 > 0
@@ -203,21 +214,27 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) 
     }, [combatant])
 
     if (isCurrentCombatant) {
-        return <IconOnlyButton title="Finish Turn (localify me)" Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
+        component = <IconOnlyButton title="Finish Turn (localify me)" Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
     } else if (hasActivationsLeft) {
-        return <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
+        component = <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
     }
 
-    return undefined
+    return component
 }
 
 const Adversary = ({ adversary }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id) as Token, [adversary])
+    const adversaryModel = adversary.actor.system
 
     return (
         <Combatant token={token} combatant={adversary}>
             <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token}>
-                <StatusIcons combatant={adversary} />
+                <div className="w-full">
+                    <Gauge max={adversaryModel.health.max} value={adversaryModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
+                </div>
+                <div className="mt-1">
+                    <StatusIcons combatant={adversary} />
+                </div>
             </CombatantHeader>
         </Combatant>
 
