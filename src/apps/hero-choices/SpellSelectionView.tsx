@@ -7,7 +7,7 @@ import { getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/ite
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { groupBy } from "../../utils/collectionUtil"
 
-export const SpellsEditor = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
+export const SpellSelectionView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     const perks = actor.system.perks as PerkDataModel[]

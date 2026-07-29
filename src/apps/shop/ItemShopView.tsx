@@ -15,7 +15,7 @@ import { ShopItemsList } from "./ShopItemsList"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { vgLiteLang } from "../../utils/lang"
 
-export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: ClassDataModel }) => {
+export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: ClassDataModel }) => {
 
     const [wallet, setWallet] = useState<Coins>(startingFunds)
     const [selectedPack, setSelectedPack] = useState<Item & { system: StarterPackDataModel } | undefined>(undefined)
@@ -43,7 +43,7 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
         setCart([])
     }, [shopCategory, cart, wallet])
 
-    const ItemShop = ({ includeStarterPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
+    const ItemShopView = ({ includeStarterPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
         const [shopSearch, setShopSearch] = useState<string>('')
 
         const onSelectPack = useCallback((packId) => {
@@ -203,5 +203,5 @@ export const useItemShop = (startingFunds: Coins, clazz?: Item & { system: Class
         )
     }
 
-    return { ItemShop, wallet, cart, reset, shopCategory, selectedPack }
+    return { ItemShop: ItemShopView, wallet, cart, reset, shopCategory, selectedPack }
 }

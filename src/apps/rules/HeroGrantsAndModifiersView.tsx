@@ -1,7 +1,7 @@
-import { HeroDataModel } from '../model/actor/HeroDataModel'
-import { HeroCreationLabel, HeroCreationSubtext } from '../apps/hero-creator/component/HeroCreationTypography'
-import { CollapsibleSection } from '../view/component/Collapsible'
-import { ActiveEffectCardRow, EffectCardContainer } from './shared/ActiveEffectCardRow'
+import { HeroDataModel } from '../../model/actor/HeroDataModel'
+import { HeroCreationLabel, HeroCreationSubtext } from '../hero-creator/component/HeroCreationTypography'
+import { CollapsibleSection } from '../../view/component/Collapsible'
+import { ActiveEffectCardRow, EffectCardContainer } from '../../rules/shared/ActiveEffectCardRow'
 
 interface ActiveRuleDisplay {
     id: string
@@ -17,7 +17,7 @@ interface ActiveRuleDisplay {
     sourceImg: string
 }
 
-export const HeroActiveRulesView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
+export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const currentLevel = actor.system.level.current ?? 0
 
     // Extract and format active rule elements along with their parent details

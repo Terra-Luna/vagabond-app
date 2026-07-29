@@ -33,7 +33,6 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
         const reactRootElem = sheet.element.appendChild(vgLiteDiv)
 
         sheet.element.style.setProperty("overflow", "visible")
-
         sheet._scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
         sheet._reactRoot = ReactDom.createRoot(sheet._scaduRoot)
 
@@ -54,12 +53,20 @@ export const onRender = (sheet: VGLiteApplication) => {
 export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {
     const minWidth = 400
     const minHeight = 248
-    const { width, height, top, left } = position
+    const maxHeight = 1000
+    const { width, top, left } = position
     const realWidth = width === "auto" ? width : Math.max(minWidth, width)
-    const realHeight = height === "auto" ? height : Math.max(minHeight, height)
 
-    sheet.renderWithWrappers({ theme: getTheme(), position: { width: realWidth, height: realHeight, top, left } })
-    return { ...position, width: realWidth, height: realHeight }
+    let height = position.height
+    const initHeight = height === "auto" ? sheet.element.getBoundingClientRect().height : height
+    const calculatedHeight = Math.min(Math.max(minHeight, initHeight), maxHeight)
+
+    if (!(height === "auto" && calculatedHeight < maxHeight && calculatedHeight >= minHeight)) {
+        height = calculatedHeight
+    }
+
+    sheet.renderWithWrappers({ theme: getTheme(), position: { width: realWidth, height, top, left } })
+    return { ...position, width: realWidth, height }
 }
 
 export const onClose = (sheet: VGLiteApplication) => {
@@ -80,8 +87,12 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
     const toolbarOffset = sheet._toolbarHeight || 0
     let height: number
 
+    /**
+     * Sheets may be height "auto", in which case their height needs to be
+     * calculated based off the DOM height. This is probably glitchy.
+     */
     if (typeof rawHeight === "number" && !isNaN(rawHeight)) {
-        height = rawHeight - toolbarOffset;
+        height = rawHeight - toolbarOffset
     }
     else {
         const totalDomHeight = sheet.element?.offsetHeight || 600
@@ -95,8 +106,11 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <EditModeContextProvider initialEditMode={(typeof startInEditMode === "boolean") ? (startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE) : startInEditMode}>
                     <EmotionCacheContext scaduRoot={sheet._scaduRoot}>
-                        <style>{vgLiteStyles} </style>
-                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`}
+                        <style>{vgLiteStyles}</style>
+                        <div className={`
+                            ${theme} vglite-themed-content flex flex-col bg-sheet-main-fill
+                            font-paradigm tracking-wider rounded-b-lg overflow-hidden
+                        `}
                             style={{ height: typeof rawHeight === "number" ? height : "100%" }}>
                             <sheet.Component {...sheet.getReactProps()} />
                         </div>

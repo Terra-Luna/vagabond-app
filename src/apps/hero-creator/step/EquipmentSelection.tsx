@@ -5,13 +5,13 @@ import { Header } from "../../../view/component/Header"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
-import { useItemShop } from "../../shop/ItemShop"
+import { useItemShopView } from "../../shop/ItemShopView"
 
 export const useEquipmentSelection = (
     clazz: Item & { system: ClassDataModel } | undefined,
     navButtons: ReactNode[]
 ) => {
-    const { ItemShop, wallet, cart, selectedPack } = useItemShop(
+    const { ItemShop, wallet, cart, selectedPack } = useItemShopView(
         { g: 3, s: 0, c: 0 }, clazz
     )
 

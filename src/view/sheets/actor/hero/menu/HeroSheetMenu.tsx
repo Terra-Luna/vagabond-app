@@ -1,14 +1,13 @@
 import { Menu, Moon, Sun, X } from "lucide-react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useState } from "react"
 import { VgLiteActorSheet } from "../../VgLiteActorSheet"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
-import { useGlobalPopout } from "../../../../../apps/PopoutApplication"
-import { HeroActiveRulesView } from "../../../../../rules/HeroActiveRulesView"
-import { useActiveEffectsManager } from "../../../../../apps/active-effects/active-effect-handlers"
 import { ItemDivider } from "../../../../component/Header"
 import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
+import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
+import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -17,9 +16,6 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
             !sheet.classList.contains('theme-light') && document.body.classList.contains('theme-dark')
         )
     )
-
-    const [isFeaturesPerksOpen, setIsFeaturesPerksOpen] = useState(false)
-    const { setIsActiveEffectsOpen } = useActiveEffectsManager(hero.parent)
 
     const toggleMenu = useCallback(() => {
         setIsOpen(!isOpen)
@@ -40,23 +36,6 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         })
         sheet._renderHTML()
     }, [sheet, isDarkMode])
-
-    const setRulesClosed = useCallback(() => {
-        setIsFeaturesPerksOpen(false)
-    }, [])
-
-    const rulesPopout = useGlobalPopout(setRulesClosed)
-
-    // Note - this could just be a useCallback that the button calls to render the 
-    // popup, but that makes it so that if you click "create hero" multiple times, 
-    // you get multiple popups.
-    useEffect(() => {
-        if (isFeaturesPerksOpen) {
-            rulesPopout.renderPopout(
-                <HeroActiveRulesView actor={hero.parent} />, "Grants & Modifiers", false
-            )
-        }
-    }, [isFeaturesPerksOpen])
 
     return (<>
         <div className={`relative ${className}`}>
@@ -88,10 +67,10 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                         <MenuListItem text={"IMPORT"} onClick={() => importFromVgbndApp(hero)} />
                     }
                     {(!hero.ancestry || !hero.class) &&
-                        <MenuListItem text={"CREATE"} onClick={() => new HeroCreationApp(hero.parent).render(true)} toggleMenu={toggleMenu} />
+                        <MenuListItem text={"CREATE"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
-                    <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => setIsActiveEffectsOpen(true)} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'FEATURES & PERKS'} onClick={() => setIsFeaturesPerksOpen(true)} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => new ActiveEffectsApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'FEATURES & PERKS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

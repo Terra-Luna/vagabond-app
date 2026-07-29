@@ -19,7 +19,10 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
 
     static override DEFAULT_OPTIONS: Partial<typeof foundry.applications.api.ApplicationV2["DEFAULT_OPTIONS"]> = {
         window: { title: "", minimizable: true, resizable: true },
-        position: { width: 550, height: "auto" }
+        position: {
+            width: 550,
+            height: "auto"
+        }
     }
 
     constructor(args: VagabondLiteAppArgs) {

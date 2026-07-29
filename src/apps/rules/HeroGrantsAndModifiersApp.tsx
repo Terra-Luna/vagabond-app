@@ -1,16 +1,16 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
-import { HeroCreationNavHostView } from "./HeroCreationNavHostView"
+import { HeroGrantsAndModifiersView } from "./HeroGrantsAndModifiersView"
 
-export class HeroCreationApp extends VagabondLiteApplication {
+export class HeroGrantsAndModifiersApp extends VagabondLiteApplication {
 
-    public actor: Actor & { system: HeroDataModel }
+    actor: Actor & { system: HeroDataModel }
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Create your Hero" },
-            position: { height: 990, width: 650 },
-            Component: HeroCreationNavHostView
+            window: { title: "Grants & Modifiers" },
+            position: { width: 500 },
+            Component: HeroGrantsAndModifiersView,
         } as VagabondLiteAppArgs)
         this.actor = actor
     }
@@ -18,8 +18,7 @@ export class HeroCreationApp extends VagabondLiteApplication {
     override getReactProps() {
         return {
             ...super.getReactProps(),
-            actor: this.actor,
-            setClosed: () => this.close()
+            actor: this.actor
         }
     }
 

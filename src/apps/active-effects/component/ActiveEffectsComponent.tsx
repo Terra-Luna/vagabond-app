@@ -1,6 +1,5 @@
-import { ToggleLeft, ToggleRight, Pencil, Trash } from "lucide-react"
-import { PrimaryButton } from "../../view/component/Button"
-import { vgLiteLang } from "../../utils/lang"
+import { PrimaryButton } from "../../../view/component/Button"
+import { vgLiteLang } from "../../../utils/lang"
 import { ActiveEffectButtons } from "./ActiveEffectButtons"
 
 export interface Effect {
