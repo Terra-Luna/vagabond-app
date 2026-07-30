@@ -84,7 +84,6 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         return this;
     }
 
-
     override async previousRound(): Promise<this> {
         await this.resetActivations();
         const round = Math.max(this.round - 1, 0);

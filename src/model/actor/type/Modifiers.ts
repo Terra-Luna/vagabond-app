@@ -41,10 +41,32 @@ export const modifierSchema = () => {
             })
         }),
 
-        saves: new fields.SchemaField({
-            reflex: new fields.NumberField({ ...uncappedInteger }),
-            endure: new fields.NumberField({ ...uncappedInteger }),
-            will: new fields.NumberField({ ...uncappedInteger })
+        skills: new fields.SchemaField({
+            reflex: new fields.SchemaField({ ...skillModifierSchema() }),
+            endure: new fields.SchemaField({ ...skillModifierSchema() }),
+            will: new fields.SchemaField({ ...skillModifierSchema() }),
+            aracana: new fields.SchemaField({ ...skillModifierSchema() }),
+            brawl: new fields.SchemaField({ ...skillModifierSchema() }),
+            craft: new fields.SchemaField({ ...skillModifierSchema() }),
+            detect: new fields.SchemaField({ ...skillModifierSchema() }),
+            finesse: new fields.SchemaField({ ...skillModifierSchema() }),
+            influence: new fields.SchemaField({ ...skillModifierSchema() }),
+            leadership: new fields.SchemaField({ ...skillModifierSchema() }),
+            medicine: new fields.SchemaField({ ...skillModifierSchema() }),
+            melee: new fields.SchemaField({ ...skillModifierSchema() }),
+            mysticism: new fields.SchemaField({ ...skillModifierSchema() }),
+            performance: new fields.SchemaField({ ...skillModifierSchema() }),
+            sneak: new fields.SchemaField({ ...skillModifierSchema() }),
+            survival: new fields.SchemaField({ ...skillModifierSchema() }),
+            ranged: new fields.SchemaField({ ...skillModifierSchema() })
         })
+    }
+}
+
+const skillModifierSchema = () => {
+    return {
+        rollMod: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        critMod: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        extraDice: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
     }
 }

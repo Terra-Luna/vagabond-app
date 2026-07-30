@@ -1,5 +1,4 @@
 import { Equal } from "lucide-react"
-import { DamageRollResult } from "../../combat/rules/dice-rolls"
 import { lang } from "../../utils/lang"
 import { getTokenImg } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
@@ -7,6 +6,7 @@ import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { TargetsDisplay } from "./component/TargetsDisplay"
 import { DamageRolls } from "./component/DamageRolls"
+import { DamageRollResult } from "../../combat/engine/DamageRoll"
 
 export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, rolls: DamageRollResult[], tokenIds: string[] }) => {
     const actor = game.actors?.get(actorId)
@@ -18,8 +18,8 @@ export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, r
                 title={lang.VGLITE.AdversarySheet.combo} />
             }
             contents={
-                <div className="">
-                    <TargetsDisplay tokenIds={tokenIds} />
+                <div>
+                    <TargetsDisplay targets={tokenIds} onRemoveTarget={() => { }} />
                     {
                         rolls.map((roll, i) => (
                             <div key={i}>

@@ -1,4 +1,3 @@
-import { rollCountdownDie } from "../../combat/rules/dice-rolls"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { EnrichedContent } from "../component/EnrichedContent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
@@ -11,6 +10,7 @@ import { CardSubHeaderValues } from "../component/SkillCard"
 import { sendCountdownRollMessage } from "./ChatCardSerializer"
 import { CountdownRollChatCard } from "./CountdownChatCard"
 import { useState, useCallback } from "react"
+import { CountdownRoll } from "../../combat/engine/CountdownRoll"
 
 export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], description, tokenIds = [], appliesBurn = false, burnDuration = '' }: {
     actorId: string | null,
@@ -56,7 +56,7 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
                         appliesBurn ? <p
                             className={`${glowOnHover}`}
                             onClick={async () => {
-                                const cdRes = await rollCountdownDie({ name: title, duration: burnDuration })
+                                const cdRes = await new CountdownRoll({ name: title, duration: burnDuration }).roll()
                                 sendCountdownRollMessage(cdRes, CountdownRollChatCard)
                             }}
                         >

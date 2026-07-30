@@ -1,7 +1,6 @@
 import { vgLiteLang as locale, vgLiteLang } from "../../../../../utils/lang"
 import { Trash, PenSquare, Plus, Save } from "lucide-react"
 import { useState, useCallback } from "react"
-import { rollDamage, DamageRollResult } from "../../../../../combat/rules/dice-rolls"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { getId, getTargets } from "../../../../../utils/modelUtil"
@@ -19,6 +18,8 @@ import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 import { ComboChatCard } from "../../../../chat/ComboChatCard"
+import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/DamageRoll"
+import { parseFormulaToDiceRoll } from "../../../../../combat/engine/util/dice-utils"
 
 export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()
@@ -89,7 +90,7 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                                 <p className={damageRoll}>{act.damage.roll}</p>
                                                 <p>|</p>
                                                 <p className={damageRoll} onClick={async () => {
-                                                    const result = await rollDamage(act.name, act.damage.type, act.damage.avg ?? '')
+                                                    const result = await new DamageRoll({ atkName: act.name, dmgType: act.damage.type, dice: [{ dice: 0, faces: act.damage.avg }] }).roll()
                                                     sendVgLiteChatMessage(adv,
                                                         <DamageRollChatCard
                                                             actorId={getId(adv)}
@@ -121,7 +122,7 @@ const onClickActionCombo = async (adv: AdversaryDataModel) => {
     for (let action = 0; action < adv.combo.actions.length; action++) {
         const act = adv.combo.actions[action]
         for (let count = 0; count < (act.comboCount ?? 0); count++) {
-            const result = await rollDamage(act.name, act.damage.type ?? '', act.damage.roll ?? '')
+            const result = await new DamageRoll({ atkName: act.name, dmgType: act.damage.type, dice: [parseFormulaToDiceRoll(act.damage.roll ?? '')] }).roll()
             rolls.push(result)
         }
     }

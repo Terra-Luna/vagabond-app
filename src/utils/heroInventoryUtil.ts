@@ -1,9 +1,8 @@
 import { Sword, HandFist, Hand, Eye, MessageSquareText, Trash, Undo } from "lucide-react"
 import { createElement } from "react"
-import { rollDamage, rollWeaponDamage } from "../combat/rules/dice-rolls"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { setEquipState, EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel"
-import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"
+import { gripStateDamage, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { DamageRollChatCard } from "../view/chat/DamageRollChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
 import { lang } from "./lang"
@@ -18,6 +17,8 @@ import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
 import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
 import { sendVgLiteChatMessage } from "../view/chat/ChatCardSerializer"
+import { DamageRoll } from "../combat/engine/DamageRoll"
+import { parseFormulaToDiceRoll } from "../combat/engine/util/dice-utils"
 
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
     const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
@@ -117,17 +118,15 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
             await deleteItems(hero, [getId(item)])
         }
         if (item instanceof AlchemicalItemDataModel && item.damage.type !== 'none') {
-            const damageRoll = await rollDamage(
-                getName(item),
-                item.damage.type ?? 'none',
-                item.damage.oneHand, 0,
-                item.explodeData.canExplode,
-                item.explodeData.explodesOn as number[],
-                item.damage.appliesBurn,
-                item.damage.burnCountdown
-            )
+            const dmgRoll = await new DamageRoll({
+                atkName: getName(item),
+                dice: [],
+                dmgType: item.damage.type ?? 'none',
+                flatDmgBonus: hero.modifiers.damage.attack ?? 0,
+                perDieDmgBonus: hero.modifiers.damage.attackPerDie ?? 0
+            }).roll()
             sendVgLiteChatMessage(hero, createElement(DamageRollChatCard, {
-                actorId: getId(hero), tokenIds: getTargets(), result: damageRoll
+                actorId: getId(hero), tokenIds: getTargets(), result: dmgRoll
             }))
         }
         else {
@@ -163,7 +162,14 @@ export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataMo
             icon: Sword,
             label: 'Attack',
             action: async () => {
-                const dmgRoll = await rollWeaponDamage(weapon)
+                const dmgRoll = await new DamageRoll({
+                    atkName: getName(weapon),
+                    dmgType: weapon.damage.type,
+                    dice: [parseFormulaToDiceRoll(gripStateDamage(weapon))],
+                    flatDmgBonus: hero.modifiers.damage.attack ?? 0,
+                    perDieDmgBonus: hero.modifiers.damage.attackPerDie ?? 0
+                }).roll()
+
                 sendVgLiteChatMessage(hero, createElement(
                     DamageRollChatCard,
                     { actorId: getId(hero), tokenIds: getTargets(), result: dmgRoll }

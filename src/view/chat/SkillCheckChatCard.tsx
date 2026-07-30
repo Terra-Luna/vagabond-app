@@ -1,25 +1,26 @@
-import { SkillCheckResult } from '../../combat/rules/dice-rolls'
 import { Minus, Plus } from 'lucide-react'
 import { DiceRoll } from './component/DiceRoll'
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { getTokenImg } from "../../utils/modelUtil"
 import { vgLiteLang } from '../../utils/lang'
+import { SkillCheckResult } from '../../combat/engine/SkillCheck'
 
 export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
     const actor = game.actors?.get(actorId)
-    const [resultTextColor] = result.result === vgLiteLang.RollResult.failure ? ['text-failure'] : ['text-success']
+    const [resultTextColor] = result.outcome === vgLiteLang.RollResult.failure ? ['text-failure'] : ['text-success']
+
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner
                 tokenId={actor?.getActiveTokens()[0]?.id}
                 portrait={getTokenImg(actor)}
-                title={`${result.skillName} Check`}
+                title={`${vgLiteLang.Skills[result.skill]?.name ?? vgLiteLang.Saves[result.skill]?.name} Check`}
                 subtitle={[{ label: "Difficulty", value: result.difficulty.toString() }]}
             />}
             contents={<>
                 <DiceGraphics d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
-                <TotalsFooter total={result.total} csf={result.result} resultTextColor={resultTextColor} />
+                <TotalsFooter total={result.total} csf={result.outcome} resultTextColor={resultTextColor} />
             </>}
         />
     )

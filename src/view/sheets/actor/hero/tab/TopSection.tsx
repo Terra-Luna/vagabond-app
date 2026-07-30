@@ -3,7 +3,6 @@ import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
 import { localizeString } from "../../../../../utils/localeUtils"
-import { rollSkillCheck } from "../../../../../combat/rules/dice-rolls"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
@@ -13,6 +12,7 @@ import { useStatsDrawerStatus } from "./statdrawer/hooks"
 import { lang, vgLiteLang } from "../../../../../utils/lang"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 import { CollapsibleSection } from "../../../../component/Collapsible"
+import { SkillCheck } from "../../../../../combat/engine/SkillCheck"
 
 interface Health {
     current: number | null
@@ -155,18 +155,18 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full flex flex-col gap-y-0.5">
             <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save hero={hero} save={{ ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex }} />
-            <Save hero={hero} save={{ ...lang.VGLITE.Saves.endure, value: hero.saves.endure }} />
-            <Save hero={hero} save={{ ...lang.VGLITE.Saves.will, value: hero.saves.will }} />
+            <Save hero={hero} save={{ key: 'reflex', ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex }} />
+            <Save hero={hero} save={{ key: 'endure', ...lang.VGLITE.Saves.endure, value: hero.saves.endure }} />
+            <Save hero={hero} save={{ key: 'will', ...lang.VGLITE.Saves.will, value: hero.saves.will }} />
         </div>
     )
 }
-const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formula: string, description: string, value: number } }) => {
+const Save = ({ hero, save }: { hero: HeroDataModel, save: { key: string, name: string, formula: string, description: string, value: number } }) => {
     return (
         <div title={lang.VGLITE.HeroSheet.skills_tooltip}>
             <div className={`flex font-eskapade ${glowOnHover} border border-solid border-table-border/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
-                    const skillCheck = await rollSkillCheck(save.name, save.value, e)
+                    const skillCheck = await new SkillCheck(hero, { skill: save.key, clickEvent: e }).roll()
                     sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                 }
             }>
@@ -186,14 +186,14 @@ const Save = ({ hero, save }: { hero: HeroDataModel, save: { name: string, formu
 }
 
 export const Skills = ({ hero }: { hero: HeroDataModel }) => {
-    const skills = ['arcana', 'brawl', 'craft', 'detect', 'finesse', 'influence', 'leadership', 'medicine', 'mysticism', 'performance', 'sneak', 'survival']
+    const skills = Object.keys(vgLiteLang.Skills)
     return (
         <div>
             <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={lang.VGLITE.HeroSheet.skills} content={
                 <div className="grid @sm:grid-cols-2 gap-x-2">
                     {
                         skills.map(sk => (
-                            <Skill key={sk} hero={hero} isTrained={hero.skills[sk].isTrained} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isAttack={false} />
+                            <Skill key={sk} hero={hero} isTrained={hero.skills[sk].isTrained} skillKey={sk} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isAttack={false} />
                         ))
                     }
                 </div>
@@ -201,14 +201,14 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
-export const Skill = ({ hero, isTrained, name, value, isAttack }: { hero: HeroDataModel, isTrained: boolean, name: string, value: number, isAttack: boolean }) => {
+export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack }: { hero: HeroDataModel, isTrained: boolean, skillKey: string, name: string, value: number, isAttack: boolean }) => {
     return (
         <div title={lang.VGLITE.HeroSheet.skills_tooltip} className="w-full">
             <div className="flex items-center ml-1">
                 <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle ${glowOnHover}`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
-                        const skillCheck = await rollSkillCheck(name, value, e)
+                        const skillCheck = await new SkillCheck(hero, { skill: skillKey, clickEvent: e }).roll()
                         sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                     }
                 }>

@@ -1,4 +1,4 @@
-import { DamageRollResult } from "../../combat/rules/dice-rolls"
+import { DamageRollResult } from "../../combat/engine/dice-rolls"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"

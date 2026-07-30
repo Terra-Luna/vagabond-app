@@ -1,5 +1,4 @@
 import { Shield } from "lucide-react"
-import { rollWeaponDamage } from "../../../../../combat/rules/dice-rolls"
 import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
@@ -14,6 +13,8 @@ import { Header, ItemDivider } from "../../../../component/Header"
 import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { DamageRoll } from "../../../../../combat/engine/DamageRoll"
+import { parseFormulaToDiceRoll } from "../../../../../combat/engine/util/dice-utils"
 
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
@@ -76,7 +77,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                     <div
                                         className={`${dmgStyle} ${glowOnHover}`}
                                         onClick={async () => {
-                                            const dmgRoll = await rollWeaponDamage(weapon)
+                                            const dmgRoll = await new DamageRoll({ atkName: weapon.parent.name, dice: [parseFormulaToDiceRoll(gripStateDamage(weapon))] }).roll()
                                             sendVgLiteChatMessage(hero, <DamageRollChatCard
                                                 actorId={getId(hero)}
                                                 tokenIds={getTargets()}

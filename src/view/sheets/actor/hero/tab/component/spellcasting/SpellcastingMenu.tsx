@@ -17,13 +17,16 @@ import { LineExpansionInut } from "./LineExpansionInput"
 import { sendVgLiteChatMessage } from "../../../../../../chat/ChatCardSerializer"
 import { SpellCastChatCard } from "../../../../../../chat/SpellCastChatCard"
 import { getId } from "../../../../../../../utils/modelUtil"
-import { rollDamage, rollSkillCheck, SkillCheckResult } from "../../../../../../../combat/rules/dice-rolls"
 import { SkillSelector } from "./SkillSelector"
 import { SkillCheckChatCard } from "../../../../../../chat/SkillCheckChatCard"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
+import { SkillCheck, SkillCheckResult } from "../../../../../../../combat/engine/SkillCheck"
+import { DamageRoll } from "../../../../../../../combat/engine/DamageRoll"
 
-export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => {
+export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
+    const hero = actor.system
+
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
     const [spells, setSpells] = useState<(Item & { system: SpellDataModel })[]>([])
     const [spell, setSpell] = useState<Item & { system: SpellDataModel }>()
@@ -32,7 +35,9 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
     const [delivery, setDelivery] = useState<SpellDelivery>()
 
     useEffect(() => {
-        setSpells(ItemsCache.spells().filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid)))
+        const spells = ItemsCache.spells().filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid))
+        setSpell(spells[0])
+        setSpells(spells)
     }, [hero.spells])
 
     useEffect(() => {
@@ -219,23 +224,22 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
 
             let skillCheck: SkillCheckResult | undefined = undefined
             if (delivery.targetTokenIds.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1)) {
-                skillCheck = await rollSkillCheck(vgLiteLang.Skills[skill].name, hero.skills[skill].value, e, vgLiteLang.FavorHinder.none, hero.mana.spellCrit)
+                skillCheck = await new SkillCheck(hero, { skill: skill, clickEvent: e }).roll()
                 sendVgLiteChatMessage(hero.parent, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)
             }
 
-            if (skillCheck?.result !== vgLiteLang.RollResult.failure && spell.system.damageType !== 'none' && delivery.damageDice > 0) {
-                const dmgRoll = await rollDamage(
-                    spell.name,
-                    spell.system.damageType,
-                    `${delivery.damageDice}d${hero.mana.spellDamageDie}`,
-                    hero.modifiers.damage.spellPerDie ?? 0,
-                    false, [], // canExplode, explodesOn
-                    spell.system.appliesBurn,
-                    spell.system.burnCountdown
-                )
+            if (skillCheck?.outcome !== vgLiteLang.RollResult.failure && spell.system.damageType !== 'none' && delivery.damageDice > 0) {
+                const damageRoll = new DamageRoll({
+                    atkName: spell.name,
+                    dmgType: spell.system.damageType,
+                    dice: [{ dice: delivery.damageDice, faces: hero.mana.spellDamageDie }],
+                    flatDmgBonus: hero.modifiers.damage.spell ?? 0,
+                    perDieDmgBonus: hero.modifiers.damage.spellPerDie ?? 0
+                })
+                const damageRollResult = await damageRoll.roll()
                 sendVgLiteChatMessage(
                     hero.parent,
-                    <SpellCastChatCard heroId={getId(hero)} spell={spell} delivery={{ ...delivery }} dmgRoll={dmgRoll} />
+                    <SpellCastChatCard heroId={getId(hero)} spell={spell} delivery={{ ...delivery }} dmgRoll={damageRollResult} />
                 )
             }
             else {
@@ -244,8 +248,6 @@ export const useSpellCastingMenu = (hero: HeroDataModel & { parent: Actor }) => 
                     <SpellCastChatCard heroId={getId(hero)} spell={spell} delivery={{ ...delivery }} />
                 )
             }
-
-            setIsSpellcastingOpen(false)
         }
     }
 

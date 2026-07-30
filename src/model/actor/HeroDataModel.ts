@@ -291,9 +291,9 @@ export function setSkill(stat: number, isTrained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
-    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness! + (hero.modifiers.saves.reflex ?? 0))
-    hero.saves.endure = base - (hero.stats.might! * 2 + (hero.modifiers.saves.endure ?? 0))
-    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence! + (hero.modifiers.saves.will ?? 0))
+    hero.saves.reflex = base - hero.stats.dexterity! + hero.stats.awareness!
+    hero.saves.endure = base - hero.stats.might! * 2
+    hero.saves.will = base - hero.stats.reason! + hero.stats.presence!
 }
 
 export function setSpellcastingStats(hero: HeroDataModel) {

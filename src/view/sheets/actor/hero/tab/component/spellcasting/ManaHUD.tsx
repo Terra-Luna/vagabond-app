@@ -15,7 +15,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
         updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
 
-    const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(hero)
+    const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(hero.parent)
 
     return (
         <div>

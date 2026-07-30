@@ -1,0 +1,132 @@
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { vgLiteLang } from "../../utils/lang"
+import { getDiceTerms } from "./util/dice-utils"
+
+export interface SkillCheckArgs {
+    skill: string
+    d20Count?: number
+    modifier?: number
+    critThreshold?: number
+    favorHinder?: string
+    clickEvent?: React.MouseEvent<HTMLDivElement>
+}
+
+export interface SkillCheckResult {
+    skill: string
+    difficulty: number
+    favorHinder: string
+    d20: number
+    d6: number
+    total: number
+    outcome: string
+    rolls: any[]
+}
+
+export class SkillCheck {
+    skill: string
+    difficulty: number
+    d20Count: number
+    modifier: number
+    critThreshold: number
+    favorHinder: string
+    clickEvent?: React.MouseEvent<HTMLDivElement> | undefined
+    result: SkillCheckResult | undefined
+
+    constructor(hero: HeroDataModel, args: SkillCheckArgs) {
+        const skillMods = hero.modifiers.skills[args.skill]
+        this.skill = args.skill
+        this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
+        this.d20Count = args.d20Count ?? 1 + skillMods.extraDice
+        this.modifier = args.modifier ?? skillMods.rollMod
+        this.critThreshold = args.critThreshold ?? 20 + skillMods.critMod
+        this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
+        this.clickEvent = args.clickEvent
+    }
+
+    public async roll(): Promise<SkillCheckResult> {
+        let favorHinder = this.favorHinder
+    
+        /**
+         * Override favorHinder with shift/ctrl key hold.
+         */
+        if (this.clickEvent?.shiftKey) {
+            favorHinder = vgLiteLang.FavorHinder.favor
+        }
+        else if (this.clickEvent?.ctrlKey) {
+            favorHinder = vgLiteLang.FavorHinder.hinder
+        }
+    
+        /**
+         * Build roll formula and evaluate.
+         * "kh" = "keep highest"
+         */
+        let formula = `${this.d20Count ?? 1}d20kh`
+        if (this.modifier) {
+            formula += `+${this.modifier}`
+        }
+        if (favorHinder === vgLiteLang.FavorHinder.favor) {
+            formula += '+1d6'
+        }
+        else if (favorHinder === vgLiteLang.FavorHinder.hinder) {
+            formula += '-1d6'
+        }
+    
+        const roll = await new Roll(formula).evaluate()
+    
+        /**
+         * Extract roll results...
+         */
+        const isSuccess = roll.total >= this.difficulty
+        const terms = getDiceTerms(roll)
+        const d20Term = terms.find(it => it.faces === 20)
+        const d6Term = terms.find(it => it.faces === 6)
+        const d20Res = d20Term?.results.find(r => r.active)?.result ?? 0
+        const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
+        const isCrit = d20Res >= this.critThreshold
+    
+        this.result =  {
+            skill: this.skill,
+            difficulty: this.difficulty,
+            favorHinder: this.favorHinder,
+            d20: d20Res,
+            d6: d6Res,
+            total: roll.total,
+            outcome: isCrit ? vgLiteLang.RollResult.crit : (isSuccess ? vgLiteLang.RollResult.success : vgLiteLang.RollResult.failure),
+            rolls: [roll]
+        }
+
+        return this.result
+    }
+
+    public async addLateD6() {
+        if (this.result && this.result.d6 === 0) {
+            const newResult = { ...this.result }
+            const d6 = await new Roll("1d6").evaluate()
+            newResult.d6 = d6.total
+            newResult.total += d6.total
+            newResult.rolls.push(d6)
+            if (newResult.total + newResult.d6 >= this.difficulty) {
+                newResult.outcome = vgLiteLang.RollResult.success
+            }
+            this.result = newResult
+            return this.result
+        }
+        else {
+            ui.notifications?.warn("A D6 has already been applied to this Skill Check!")
+            return undefined
+        }
+    }
+
+    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): string {
+        if (e?.shiftKey) {
+            return vgLiteLang.FavorHinder.favor
+        }
+        else if (e?.ctrlKey) {
+            return vgLiteLang.FavorHinder.hinder
+        }
+        else {
+            return vgLiteLang.FavorHinder.none
+        }
+    }
+
+}

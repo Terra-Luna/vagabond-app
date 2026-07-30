@@ -10,7 +10,7 @@ import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { PlayIcon, StopCircle, Trash } from "lucide-react"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
 import { Gauge } from "../../view/component/Gauge"
-import { getCombatantStatuses } from "../rules/status"
+import { getCombatantStatuses } from "../engine/status"
 
 const getCombat = () => game.combat as VgLiteCombat
 

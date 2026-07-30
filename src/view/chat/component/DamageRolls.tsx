@@ -1,8 +1,6 @@
 import { Plus } from "lucide-react"
-import { DamageRollResult, rollCountdownDie } from "../../../combat/rules/dice-rolls"
-import { glowOnHover } from "../../common/text-styles"
-import { sendCountdownRollMessage } from "../ChatCardSerializer"
 import { DiceRoll } from "./DiceRoll"
+import { DamageRollResult } from "../../../combat/engine/DamageRoll"
 
 export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
     return (
@@ -19,24 +17,6 @@ export const DamageRolls = ({ result }: { result: DamageRollResult }) => {
                     <div className="flex space-x-2">
                         <div className="h-full content-center text-text-secondary"><Plus size={24} /></div>
                         <p className="h-full text-4xl">{result.bonus}</p>
-                    </div>
-            }
-            {
-                !result.appliesBurn || result.burnDuration.length === 0 ? <></> :
-                    <div className="flex space-x-2 items-center">
-                        <div className="h-full content-center text-text-secondary"><Plus size={18} /></div>
-                        <p
-                            className={`h-full text-xl content-center ${glowOnHover}`}
-                            onClick={async () => {
-                                const cdRes = await rollCountdownDie({
-                                    name: result.atkName,
-                                    duration: result.burnDuration
-                                })
-                                sendCountdownRollMessage(cdRes)
-                            }}
-                        >
-                            {result.burnDuration}
-                        </p>
                     </div>
             }
         </div>
