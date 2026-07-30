@@ -95,8 +95,9 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         for (const rule of flatModifiers) {
             const path = rule.selector.replace("system.", "")
             const currentValue = foundry.utils.getProperty(this, path)
+            const multiplierValue = foundry.utils.getProperty(this, rule.valueMultiplier) as number
             if (typeof currentValue === "number") {
-                foundry.utils.setProperty(this, path, currentValue + rule.value)
+                foundry.utils.setProperty(this, path, currentValue + rule.value * (multiplierValue ?? 1))
             }
         }
 
@@ -291,9 +292,9 @@ export function setSkill(stat: number, isTrained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
-    hero.saves.reflex = base - hero.stats.dexterity! + hero.stats.awareness!
-    hero.saves.endure = base - hero.stats.might! * 2
-    hero.saves.will = base - hero.stats.reason! + hero.stats.presence!
+    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
+    hero.saves.endure = base - (hero.stats.might! * 2)
+    hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)
 }
 
 export function setSpellcastingStats(hero: HeroDataModel) {
