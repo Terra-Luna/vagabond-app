@@ -12,8 +12,6 @@ export const DamageRollChatCard = ({ actorId, tokenIds, result }: {
 }) => {
     const actor = game.actors?.get(actorId)
 
-    console.log(result)
-
     const [targets, setTargets] = useState(tokenIds.map(id => (
         { id: id, src: getTokenImg(getCanvasToken(id)), token: getCanvasToken(id) }
     )).filter(it => it.src != null && it.src.length > 0))
