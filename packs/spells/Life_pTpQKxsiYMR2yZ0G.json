@@ -8,7 +8,8 @@
     "rules": [],
     "damageType": "healing",
     "appliesBurn": false,
-    "burnCountdown": "Cd4"
+    "burnCountdown": "Cd4",
+    "baseManaCost": 1
   },
   "effects": [],
   "folder": null,
@@ -23,8 +24,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496877261,
-    "modifiedTime": 1784496921336,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785478081622,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

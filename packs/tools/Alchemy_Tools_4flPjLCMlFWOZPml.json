@@ -9,7 +9,7 @@
     "category": "tools",
     "value": {
       "g": 0,
-      "s": 0,
+      "s": 50,
       "c": 0
     },
     "totalValue": {
@@ -42,7 +42,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784845693974,
-    "modifiedTime": 1785020432465,
+    "modifiedTime": 1785094060384,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

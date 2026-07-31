@@ -32,7 +32,7 @@
     "damage": {
       "oneHand": "1d8",
       "twoHand": "1d10",
-      "type": "blunt"
+      "type": "physical"
     },
     "grip": {
       "style": "V",
@@ -63,8 +63,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784508831911,
-    "modifiedTime": 1784508882248,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785532208501,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

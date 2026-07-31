@@ -1,15 +1,15 @@
 {
-  "name": "Staff",
-  "type": "weapon",
-  "_id": "rLK8nU5PMhP7PUta",
-  "img": "icons/weapons/staves/staff-simple.webp",
+  "name": "Hooded Lantern",
+  "type": "tool",
+  "_id": "lyNzzKclRthfPzIj",
+  "img": "icons/sundries/lights/lantern-bullseye-signal-copper.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "weapons",
+    "category": "tools",
     "value": {
-      "g": 0,
-      "s": 10,
+      "g": 1,
+      "s": 0,
       "c": 0
     },
     "totalValue": {
@@ -27,46 +27,26 @@
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
-    "relicEffects": [],
-    "range": "close",
-    "damage": {
-      "oneHand": "1d4",
-      "twoHand": "1d6",
-      "type": "physical"
-    },
-    "grip": {
-      "style": "V",
-      "state": "H"
-    },
-    "weaponTypes": [
-      "finesse",
-      "melee"
-    ],
-    "properties": [],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+    "relicEffects": []
   },
   "effects": [],
   "folder": null,
   "sort": 0,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "ywhHfYnWZQBq7W9u": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784508670372,
-    "modifiedTime": 1785532199331,
+    "createdTime": 1785091585554,
+    "modifiedTime": 1785091621756,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!rLK8nU5PMhP7PUta"
+  "_key": "!items!lyNzzKclRthfPzIj"
 }
