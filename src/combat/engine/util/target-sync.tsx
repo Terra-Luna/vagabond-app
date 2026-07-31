@@ -11,6 +11,7 @@ export interface TargetDisplayItem { id: string, src: string, token: Token | und
  * the live updates rendered in their chat log.
  */
 export function useLiveTargetSync(attack: Attack | undefined): string[] {
+    
     const [targetIds, setTargetIds] = useState<string[]>(() =>
         attack?.targetIds ? [...attack.targetIds] : []
     )

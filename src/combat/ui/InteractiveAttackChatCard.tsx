@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { deserializeAttack, serializeAttack } from "../engine/util/attack-serializer"
 import { BaseChatCardHost } from "../../view/chat/component/BaseChatCardHost"
@@ -24,17 +24,33 @@ import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortraitComponent"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
-    const actor = useMemo(() => getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId), [actorId])
+
+    // Added this because React is having a difficult time
+    // with using Foundry data as its dependencies.
+    const [revision, setRevision] = useState(0)
+
+    useEffect(() => {
+        const hookId = Hooks.on("updateActor", (updatedActor: any, changes: any) => {
+            if (updatedActor.id === actorId) {
+                setRevision(prev => prev + 1)
+            }
+        })
+        return () => Hooks.off("updateActor", hookId)
+    }, [actorId])
+
+    const actor = useMemo(() => {
+        return getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId)
+    }, [actorId, revision])
 
     const snapshot = useMemo(() => {
         const attacks = actor?.getFlag("vagabond-lite" as any, "attacks") as any[] ?? []
         const match = attacks.find(atk => atk.id === attackId)
         return match ? foundry.utils.deepClone(match) : null
-    }, [actor])
+    }, [actor, attackId, revision])
 
     const attack = useMemo(() => {
         return snapshot ? deserializeAttack(snapshot) : null
-    }, [actor, snapshot])
+    }, [snapshot])
 
     const source = useMemo<Item | undefined>(() => {
         if (attack instanceof HeroAttack && attack.sourceId) {
@@ -68,38 +84,54 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                             <div className="mt-0.5">
                                 <Header title={"GM Tools"} />
                                 <div className="flex gap-x-1 justify-center items-center mt-0.5">
-                                    <PrimaryButton onClick={async () => await attack.resolve(serializeAttack)}>
-                                        Resolve
-                                    </PrimaryButton>
+                                    <InteractiveChatCardButton
+                                        label="Resolve" tooltip="Lock attack from edits"
+                                        fn={async () => await attack.resolve(serializeAttack)}
+                                    />
                                 </div>
                             </div>
                         }
                     </div>}
-                />
+            />
             }
         </div>
     )
 }
 
 const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined }) => {
-    const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck])
-    const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck])
-    const studied = useMemo<number>(() => actor.system.statuses.counters.studied, [actor.system.statuses.counters.studied])
+
+    const [subRevision, setSubRevision] = useState(0)
+
+    useEffect(() => {
+        const handleUpdate = () => setSubRevision(prev => prev + 1)
+
+        const hookActorId = Hooks.on("updateActor", (updatedActor: any) => {
+            if (updatedActor.id === actor.id) handleUpdate()
+        })
+
+        const hookChatId = Hooks.on("updateChatMessage", (message: any) => {
+            handleUpdate()
+        })
+
+        return () => {
+            Hooks.off("updateActor", hookActorId)
+            Hooks.off("updateChatMessage", hookChatId)
+        }
+    }, [actor.id, attack])
+
+    const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck, subRevision])
+    const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck, subRevision])
+    const studied = useMemo<number>(() => actor.system.statuses.counters.studied, [actor.system.statuses.counters.studied, subRevision])
 
     const isFriendlySpell = useMemo<boolean>(() => {
         return attack.spellDelivery != null && !attack.hasHostileTargets()
-    }, [attack])
-
-    const showDamage = useMemo<boolean>(() => {
-        const hasDamageRoll = attack.damageRollResult != null
-        return hasDamageRoll || isFriendlySpell
-    }, [attack.skillCheckResult?.outcome])
+    }, [attack, subRevision])
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
         const isFailure = attack.skillCheckResult?.outcome === vgLiteLang.RollResult.failure && attack.skillCheckResult?.d6 === 0
         const hasResources = luck > 0 || studied > 0
-        return !attack.isRerolled && isFailure && hasResources
-    }, [luck, studied, attack])
+        return !attack.isResolved && !attack.isRerolled && isFailure && hasResources
+    }, [luck, studied, attack, subRevision])
 
     const liveTargetIds = useLiveTargetSync(attack)
 
@@ -114,34 +146,33 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                 }
             })
             .filter(it => it.src != null && it.src.length > 0)
-    }, [liveTargetIds])
+    }, [liveTargetIds, subRevision])
 
     const handleLuckyD6 = useCallback(async () => {
         await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
         await attack.addLateFavor()
-    }, [luck, attack])
+    }, [luck, attack, subRevision])
 
     const handleLuckReroll = useCallback(async () => {
-        await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
         await attack.rollSkillCheck(true)
-    }, [luck, attack])
+    }, [luck, attack, subRevision])
 
     const handleStudiedD6 = useCallback(async () => {
         await actor.update({ 'system.statuses.counters.studied': studied - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
         await attack.addLateFavor()
-    }, [studied, attack])
+    }, [studied, attack, subRevision])
 
     const addCritLuck = useCallback(async () => {
         await attack.addCritLuck()
-    }, [luck])
+    }, [attack, subRevision])
 
     const addCritDamage = useCallback(async () => {
         await attack.addCritDamage()
-    }, [])
+    }, [attack, subRevision])
 
     const addSpellFx = useCallback(async () => {
         await attack.addCritSpellFx()
-    }, [])
+    }, [attack, subRevision])
 
     return (
         <div>
@@ -152,7 +183,7 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                     <CardSubHeader showRightBorder={false} values={[
                         { label: "Difficulty", value: attack.skillCheckResult!.difficulty.toString() },
                         { label: "Result", value: attack.skillCheckResult!.outcome }
-                    ]} /> 
+                    ]} />
                     <div className="flex flex-col justify-center items-center">
                         <SkillCheckDiceComponent
                             d20={attack.skillCheckResult!.d20}
@@ -174,23 +205,29 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                             </div>
                         }
 
-                        {/* LUCK & STUDIED REROLL BUTTONS */}
+                        {/* SKILL CHECK AUGMENTATION BUTTONS */}
                         {canUpdateSkillCheck &&
                             <div className="flex flex-col w-full gap-2">
                                 <Divider />
-                                <div className="flex gap-x-1 justify-between px-8">
+                                <div className="flex gap-x-1 items-center justify-between px-4 mb-2">
                                     {luck > 0 && <>
-                                        <button title={"Spend a Luck to add Favor"} onClick={() => handleLuckyD6()}>
-                                            <DiceRoll faces={6} result={<Clover size={24} className="text-ic-luck cursor-pointer" />} />
-                                        </button>
-                                        <button title={"Spend a Luck to re-roll"} onClick={() => handleLuckReroll()}>
-                                            <DiceRoll faces={20} result={<Clover size={24} className="text-ic-luck cursor-pointer" />} />
-                                        </button>
+                                        <InteractiveChatCardButton
+                                            icon={<Clover size={18} className="text-ic-luck h-full" />}
+                                            label={"Reroll"} tooltip="Spend a Luck to reroll"
+                                            fn={() => handleLuckReroll()}
+                                        />
+                                        <InteractiveChatCardButton
+                                            icon={<Clover size={18} className="text-ic-luck h-full" />}
+                                            label={"+Favor"} tooltip="Spend a Luck to add Favor"
+                                            fn={() => handleLuckyD6()}
+                                        />
                                     </>}
                                     {studied > 0 &&
-                                        <button title={"Spend a Studied die to add Favor"} onClick={() => handleStudiedD6()}>
-                                            <DiceRoll faces={6} result={<BookMarked size={24} className="text-ic-studied cursor-pointer" />} />
-                                        </button>
+                                        <InteractiveChatCardButton
+                                            icon={<BookMarked size={18} className="text-ic-studied h-full" />}
+                                            label={"+Favor"} tooltip="Spend a Studied die to add Favor"
+                                            fn={() => handleStudiedD6()}
+                                        />
                                     }
                                 </div>
                             </div>
@@ -202,9 +239,9 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             {/* TARGET TOKENS ARRAY */}
             {
                 attack.showTargets && (<>
-                <Header title={'Targets'} />
-                <TargetsDisplay targets={targets} />
-            </>)}
+                    <Header title={'Targets'} />
+                    <TargetsDisplay targets={targets} />
+                </>)}
 
             {/* DAMAGE DISPLAY */}
             {
@@ -244,5 +281,17 @@ const AdversaryAttackComponent = ({ actor, attack }: { actor: Actor, attack: Adv
         <div>
             Under construction...
         </div>
+    )
+}
+
+const InteractiveChatCardButton = ({ icon, label, tooltip, fn }: { icon?: ReactNode, label: string, tooltip: string, fn: () => void }) => {
+    return (
+        <button title={tooltip}
+            className="flex text-base items-center border border-solid border-table-border px-1 hover-glow cursor-pointer"
+            onClick={fn}
+        >
+            {icon}
+            {label}
+        </button>
     )
 }

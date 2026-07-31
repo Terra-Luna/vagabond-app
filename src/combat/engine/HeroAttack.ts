@@ -34,6 +34,10 @@ export class HeroAttack extends Attack {
         this.refreshSkillCheck()
     }
 
+    private get isEligibleForDmgRoll(): boolean {
+        return this.hasHostileTargets() || this.damageRoll?.dmgType === 'healing'
+    }
+
     async initiate() {
         this.refreshSkillCheck()
 
@@ -42,7 +46,7 @@ export class HeroAttack extends Attack {
         }
 
         if (this.skillCheckResult && this.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure) {
-            if (this.hasHostileTargets() || this.damageRoll?.dmgType === 'healing') {
+            if (this.isEligibleForDmgRoll) {
                 await this.rollDamage()
             }
         }
@@ -104,11 +108,26 @@ export class HeroAttack extends Attack {
         this.isRerolled = isReroll
         this.skillCheckResult = await this.skillCheck?.roll()
 
-        await this.save(serializeAttack)
-
         if (isReroll) {
+            const luck = this.actor.system.statuses.counters.luck
+            await this.actor.update(
+                { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
+                { ['skipTrackerChatCard' as string]: true }
+            )
+
             roll3dDice([this.skillCheckResult?.rolls[0]])
+
+            if (this.skillCheckResult && this.skillCheckResult.outcome !== vgLiteLang.RollResult.failure) {
+                if (this.isEligibleForDmgRoll) {
+                    await this.rollDamage()
+                }
+            }
+            else {
+                this.isResolved = true
+            }
         }
+
+        await this.save(serializeAttack)
     }
 
     /**

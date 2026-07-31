@@ -45,7 +45,7 @@ export const modifierSchema = () => {
             reflex: new fields.SchemaField({ ...skillModifierSchema() }),
             endure: new fields.SchemaField({ ...skillModifierSchema() }),
             will: new fields.SchemaField({ ...skillModifierSchema() }),
-            aracana: new fields.SchemaField({ ...skillModifierSchema() }),
+            arcana: new fields.SchemaField({ ...skillModifierSchema() }),
             brawl: new fields.SchemaField({ ...skillModifierSchema() }),
             craft: new fields.SchemaField({ ...skillModifierSchema() }),
             detect: new fields.SchemaField({ ...skillModifierSchema() }),
