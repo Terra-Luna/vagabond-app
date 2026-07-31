@@ -111,7 +111,7 @@ export class HeroAttack extends Attack {
         if (!this.skillCheck) {
             this.refreshSkillCheck()
         }
-        
+
         this.isRerolled = isReroll
         this.skillCheckResult = await this.skillCheck?.roll()
         this.saveToActor(serializeAttack)
@@ -162,5 +162,58 @@ export class HeroAttack extends Attack {
             return undefined
         }
     }
+
+    async addLateHinder() {
+        const result = this.skillCheckResult
+        if (result && result.d6 === 0) {
+            const newResult = { ...result }
+            const d6 = await new Roll("1d6").evaluate()
+            newResult.d6 = d6.total
+            newResult.total -= d6.total
+            newResult.rolls.push(d6)
+            newResult.favorHinder = vgLiteLang.FavorHinder.hinder
+            if (newResult.total + newResult.d6 >= result.difficulty) {
+                newResult.outcome = vgLiteLang.RollResult.success
+            }
+            else {
+                newResult.outcome = vgLiteLang.RollResult.failure
+            }
+
+            this.skillCheckResult = newResult
+            this.setHindered()
+            this.saveToActor(serializeAttack)
+
+            // Trigger a 3D dice roll without a chat message.
+            if ((game as any).dice3d) {
+                await (game as any).dice3d.showForRoll(d6, game.user, true)
+            }
+
+            return result
+        }
+        else {
+            ui.notifications?.warn("A D6 has already been applied to this Skill Check!")
+            return undefined
+        }
+    }
+
+    async removeHinderFromSkillCheck() {
+        const result = this.skillCheckResult
+        if (result && result.d6 > 0) {
+            const newResult = { ...result }
+            newResult.total += newResult.d6
+            newResult.d6 = 0
+            newResult.favorHinder = vgLiteLang.FavorHinder.none
+            if (newResult.total + newResult.d6 >= result.difficulty) {
+                newResult.outcome = vgLiteLang.RollResult.success
+            }
+
+            this.skillCheckResult = newResult
+            this.clearFavorHinder()
+            this.saveToActor(serializeAttack)
+
+            return result
+        }
+    }
+
 
 }

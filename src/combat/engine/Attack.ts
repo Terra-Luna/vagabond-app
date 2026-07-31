@@ -39,6 +39,7 @@ export abstract class Attack {
             updatedAttacks = [...currentAttacks, snapshot]
         }
 
+        console.log("Saving attack:", this.id, this)
         await this.actor.setFlag("vagabond-lite" as any, "attacks", updatedAttacks)
     }
 
@@ -53,6 +54,11 @@ export abstract class Attack {
         this.damageRollResult?.rolls.forEach(roll => {
             (game as any).dice3d.showForRoll(roll, game.user, true)
         })
+    }
+
+    async resolve(serialize: (attack: Attack) => AttackSnapshot | undefined) {
+        this.isResolved = true
+        await this.saveToActor(serialize)
     }
 
     protected processDamageRoll() {

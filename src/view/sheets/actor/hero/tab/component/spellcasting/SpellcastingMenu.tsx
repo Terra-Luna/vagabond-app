@@ -233,11 +233,11 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
             hero.parent.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) })
 
             const attack = new HeroAttack(spell.name, hero.parent, getTargetIds())
-            attack.sourceId = spell.uuid
-            attack.spellDelivery = delivery.toJson()
             attack.skill = skill
             attack.isFavored = e.shiftKey
             attack.isHindered = !e.shiftKey && e.ctrlKey
+            attack.sourceId = spell.uuid
+            attack.spellDelivery = delivery.toJson()
             attack.damageRoll = new DamageRoll({
                 atkName: spell.name,
                 dmgType: spell.system.damageType,

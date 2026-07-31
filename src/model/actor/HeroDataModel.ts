@@ -163,7 +163,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     override async _preUpdate(changes, options, user) {
         await super._preUpdate(changes, options, user)
         const coinChanges = (changes.system as any)?.inventory?.coins
-        if (coinChanges !== undefined) {
+        if (coinChanges) {
             const { g, s, c } = this.inventory.coins
             const newG = coinChanges.g ?? g
             const newS = coinChanges.s ?? s
@@ -172,7 +172,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         const luckUpdate = foundry.utils.getProperty(changes, "system.statuses.counters.luck") as number | undefined
-        if (luckUpdate !== undefined) {
+        if (luckUpdate) {
             if (luckUpdate <= this.stats.luck!) {
                 const previousLuck = this.statuses.counters.luck ?? 0
                 if (previousLuck !== luckUpdate) {
@@ -183,7 +183,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
 
         const studiedUpdate = foundry.utils.getProperty(changes, "system.statuses.counters.studied") as number | undefined
-        if (studiedUpdate !== undefined) {
+        if (studiedUpdate) {
             const previousStudied = this.statuses.counters.studied ?? 0
             if (previousStudied !== studiedUpdate) {
                 const verb = previousStudied < studiedUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
@@ -201,7 +201,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (userId !== game.user!.id) return
 
         const pendingResourceTrackerUpdate = (options as any).resourceTrackerUpdate
-        if (pendingResourceTrackerUpdate) {
+        if (pendingResourceTrackerUpdate && !(options as any).skipTrackerChatCard) {
             sendVgLiteChatMessage(this.parent, createElement(TrackerUpdateChatCard, { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource }))
         }
     }

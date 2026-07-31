@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { deserializeAttack, serializeAttack } from "../engine/util/attack-serializer"
 import { BaseChatCardHost } from "../../view/chat/component/BaseChatCardHost"
@@ -20,41 +20,49 @@ import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
+import { PrimaryButton } from "../../view/component/Button"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
     const actor = useMemo(() => getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId), [actorId])
 
     const snapshot = useMemo(() => {
-        const rawArray = actor?.getFlag("vagabond-lite" as any, "attacks") as any[] ?? []
-        const found = rawArray.find(atk => atk.id === attackId)
-        return found ? foundry.utils.deepClone(found) : null
-    }, [actor, attackId])
+        const attacks = actor?.getFlag("vagabond-lite" as any, "attacks") as any[] ?? []
+        const match = attacks.find(atk => atk.id === attackId)
+        console.log(match)
+        return match ? foundry.utils.deepClone(match) : null
+    }, [actor])
 
     const attack = useMemo(() => {
         return snapshot ? deserializeAttack(snapshot) : null
-    }, [snapshot])
+    }, [actor, snapshot])
 
     return (
         <div>
-            {actor && attack &&
-                <BaseChatCardHost
-                    banner={<ChatCardBanner
+            {actor && attack && <BaseChatCardHost
+                banner={
+                    <ChatCardBanner
                         tokenId={actor?.getActiveTokens()[0]?.id}
                         portrait={getTokenImg(actor)}
                         title={attack.title}
                     />}
-                    contents={<>
+                contents={
+                    <div className={`${attack.isResolved ? 'bg-ic-luck' : ''}`}>
+                        {/* ATTACK CONTENT BY CHARACTER TYPE */}
                         {attack instanceof HeroAttack && <HeroAttackComponent actor={actor as Actor & { system: HeroDataModel }} attack={attack} />}
                         {attack instanceof AdversaryAttack && <AdversaryAttackComponent actor={actor} attack={attack} />}
-                        {/* {game.user?.isGM &&
-                            <div>
+
+                        {/* GM TOOLS */}
+                        {game.user?.isGM && !attack.isResolved &&
+                            <div className="mt-0.5">
                                 <Header title={"GM Tools"} />
-                                <button onClick={() => { }}>
-                                    Resolve
-                                </button>
+                                <div className="flex gap-x-1 justify-center items-center mt-0.5">
+                                    <PrimaryButton onClick={async () => await attack.resolve(serializeAttack)}>
+                                        Resolve
+                                    </PrimaryButton>
+                                </div>
                             </div>
-                        } */}
-                    </>}
+                        }
+                    </div>}
                 />
             }
         </div>
@@ -70,7 +78,8 @@ const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroD
     }, [attack])
 
     const showDamage = useMemo<boolean>(() => {
-        return (attack.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure && attack.damageRollResult != null) || isFriendlySpell
+        const isSuccessfulDamagingAtk = attack.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure && attack.damageRollResult != null
+        return isSuccessfulDamagingAtk || isFriendlySpell || attack.isResolved
     }, [attack.skillCheckResult?.outcome])
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
@@ -100,17 +109,17 @@ const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroD
     }, [attack])
 
     const handleLuckyD6 = useCallback(async () => {
-        await actor.update({ 'system.statuses.counters.luck': luck - 1} as Record<string, number>)
+        await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
         await attack.addLateD6()
     }, [luck])
 
     const handleLuckReroll = useCallback(async () => {
-        await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>)
+        await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
         await attack.rollSkillCheck(true)
     }, [attack])
 
     const handleStudiedD6 = useCallback(async () => {
-        await actor.update({ 'system.statuses.counters.studied': studied - 1 } as Record<string, number>)
+        await actor.update({ 'system.statuses.counters.studied': studied - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
         await attack.addLateD6()
     }, [studied])
 
@@ -165,7 +174,9 @@ const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroD
             {/* DAMAGE DISPLAY */}
             {showDamage &&
                 <div>
+                    {/* HIDE THE DAMAGE HEADER IF IT WAS HEALING OR FRIENDLY FX ONLY */}
                     {!isFriendlySpell && <Header title={'Damage'} />}
+
                     {/* SPELL ATTACK INFO */}
                     {source?.system instanceof SpellDataModel ?
                         <SpellAttackInfoComponent
@@ -173,8 +184,8 @@ const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroD
                             delivery={attack.spellDelivery}
                             dmgRoll={attack.damageRollResult}
                         /> :
-                        /* WEAPON ATTACK DAMAGE */
                         <div className="w-full">
+                            {/* WEAPON ATTACK DAMAGE */}
                             <DamageRollsComponent result={attack.damageRollResult!} />
                             <div className="flex items-center justify-center">
                                 <TotalDmgFooter total={

@@ -1,9 +1,10 @@
+import { ReactNode } from "react"
 import { getCanvasToken } from "../../../utils/modelUtil"
 import { Divider } from "../../component/Header"
 import { CardSubHeader, CardSubHeaderValues } from "../../component/SkillCard"
 
 export const ChatCardBanner = ({ tokenId = '', portrait, title, subtitle = [] }: {
-    tokenId?: string, portrait: string, title: string, subtitle?: CardSubHeaderValues[]
+    tokenId?: string, portrait: string, title: string | ReactNode, subtitle?: CardSubHeaderValues[]
 }) => {
     return (
         <div>
