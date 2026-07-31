@@ -60,7 +60,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     }, [attack])
 
     return (
-        <div>
+        <div className={`${attack.isResolved ? 'opacity-90 grayscale-[85%]' : ''}`}>
             {actor && attack && <BaseChatCardHost
                 banner={
                     <ChatCardBanner
