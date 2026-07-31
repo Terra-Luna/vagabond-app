@@ -12,7 +12,6 @@ import { useLiveTargetSync, TargetDisplayItem } from "../engine/util/target-sync
 import { CardSubHeader } from "../../view/component/SkillCard"
 import { vgLiteLang } from "../../utils/lang"
 import { BookMarked, Clover } from "lucide-react"
-import { DiceRoll } from "../../view/chat/component/DiceRoll"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
 import { DamageRollsComponent } from "../../view/chat/component/DamageRollsComponent"
@@ -20,7 +19,6 @@ import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
-import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortraitComponent"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
@@ -60,7 +58,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     }, [attack])
 
     return (
-        <div className={`${attack.isResolved ? 'opacity-90 grayscale-[85%]' : ''}`}>
+        <div className={`${attack?.isResolved ? 'opacity-90 grayscale-[85%]' : ''}`}>
             {actor && attack && <BaseChatCardHost
                 banner={
                     <ChatCardBanner
@@ -195,12 +193,12 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                         {attack.showCritChoices &&
                             <div className="flex wrap gap-1 mb-1 justify-center text-center content-center">
                                 {/* GAIN A LUCK */}
-                                {!isMaxLuck && <SecondaryButton onClick={addCritLuck}>+1 Luck</SecondaryButton>}
+                                {!isMaxLuck && <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />}
                                 {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
-                                <SecondaryButton onClick={addCritDamage}>+Damage</SecondaryButton>
+                                <InteractiveChatCardButton label="+Damage" tooltip="Add damage equal to stat used" fn={addCritDamage} />
                                 {/* ADD SPELL'S CRIT FX */}
                                 {source?.system instanceof SpellDataModel &&
-                                    <SecondaryButton onClick={addSpellFx}>Spell Crit Eff.</SecondaryButton>
+                                    <InteractiveChatCardButton label="Spell Effect" tooltip="Apply Spell on-crit effect" fn={addSpellFx} />
                                 }
                             </div>
                         }
@@ -239,7 +237,7 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             {/* TARGET TOKENS ARRAY */}
             {
                 attack.showTargets && (<>
-                    <Header title={'Targets'} />
+                    <Header title={`Targets (x ${targets.length})`} />
                     <TargetsDisplay targets={targets} />
                 </>)}
 
