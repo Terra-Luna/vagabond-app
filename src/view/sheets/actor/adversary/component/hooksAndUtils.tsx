@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
-import { getId, getTargets } from "../../../../../utils/modelUtil"
+import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
@@ -32,7 +32,7 @@ export const onClickAction = async (adv: AdversaryDataModel, name: string, descr
             adv,
             <DamageRollChatCard
                 actorId={getId(adv)}
-                tokenIds={getTargets()}
+                tokenIds={getTargetIds()}
                 result={result}
             />, result.rolls
         )
@@ -42,7 +42,7 @@ export const onClickAction = async (adv: AdversaryDataModel, name: string, descr
             actorId={getId(adv)}
             title={name}
             description={description}
-            tokenIds={getTargets()}
+            tokenIds={getTargetIds()}
         />)
     }
 }

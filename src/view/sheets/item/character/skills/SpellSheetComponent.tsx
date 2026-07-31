@@ -8,13 +8,26 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel, ItemSheetPropValue } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 
-export const SpellSheetReactComponent = ({ item }: { item: Item & { system: SpellDataModel } }) => {
+export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellDataModel } }) => {
     const { isEditMode } = useEditMode()
     return (
         <BaseSkillSheetComponent item={item} content={<>
-            <div className="space-y-4">
-                {isEditMode ? <DamageTypeSelection spell={item} /> : <></>}
-                {isEditMode || item.system.appliesBurn ? <BurnSettings spell={item} /> : <></>}
+            <div className="space-y-4 pb-4">
+                {isEditMode &&
+                    <div className="flex gap-x-8 items-end">
+                        <DamageTypeSelection spell={item} />
+                        <div>
+                        <ItemSheetPropLabel label={"Base Mana Cost"} />
+                            <input
+                                type="number"
+                                value={item.system.baseManaCost}
+                                onChange={(e) => item.update({ 'system.baseManaCost': Number(e.target.value) } as Record<string, number>)}
+                                className="border border-solid border-table-border font-eskapade font-bold px-2 max-w-[8ch]"
+                            />
+                        </div>
+                    </div>
+                }
+                {(isEditMode || item.system.appliesBurn) && <BurnSettings spell={item} />}
             </div>
         </>} />
     )

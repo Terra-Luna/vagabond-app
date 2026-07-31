@@ -31,7 +31,7 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: stri
                 subtitle={subtitle}
             />}
             contents={
-                <div className="text-sm text-justify font-paradigm font-normal">
+                <div className="text-sm text-justify font-paradigm font-normal max-h-16 overflow-y-auto">
                     <TrackerIcon resource={resource} />
                     {ReactHtmlParser(res.description)}
                 </div>

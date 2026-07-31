@@ -1,24 +1,33 @@
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
-import { Attack } from "./Attack"
+import { DamageRoll } from "./DamageRoll"
 import { DiceRoll } from "./util/dice-utils"
+import { Attack } from "./Attack"
 
-export interface AdversaryAttackArgs { attackName: string, dice: DiceRoll[] }
+export interface AdversaryAttackArgs { attackName: string, dmgType: string, dice: DiceRoll[] }
 
 export class AdversaryAttack extends Attack {
 
+    steps: string[] = []
+    next() {
+        throw new Error("Method not implemented.")
+    }
+
     override actor: Actor & { system: AdversaryDataModel }
-    override targets: Token[] | undefined
+    override targetIds: string[]
 
     constructor(
         actor: Actor & { system: AdversaryDataModel },
         args: AdversaryAttackArgs,
-        targets?: Token[]
+        targetIds?: string[]
     ) {
-        super()
+        super(args.attackName)
         this.actor = actor
-        this.targets = targets
-        this.attackName = args.attackName
-        this.damageDice = args.dice
+        this.targetIds = targetIds ?? []
+        this.damageRoll = new DamageRoll({
+            atkName: args.attackName,
+            dmgType: args.dmgType,
+            dice: args.dice
+        })
     }
     
 }

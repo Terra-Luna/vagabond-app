@@ -1,7 +1,7 @@
-export const Header = ({ title, collapseButton }: { title: string, collapseButton?: React.ReactElement }) => {
+export const Header = ({ title, collapseButton, textLeft = false }: { title: string, collapseButton?: React.ReactElement, textLeft?: boolean }) => {
     return (
         <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-lg">
-            <Divider />
+            {textLeft ? <div className="pl-2" /> : <Divider />}
             <div>{title}</div>
             <Divider />
             {

@@ -3,7 +3,7 @@ import { ChatCardBanner } from './component/ChatCardBanner'
 import { TargetsDisplay } from './component/TargetsDisplay'
 import { getCanvasToken, getTokenImg } from '../../utils/modelUtil'
 import { vgLiteLang } from '../../utils/lang'
-import { DamageRolls } from './component/DamageRolls'
+import { DamageRollsComponent } from './component/DamageRollsComponent'
 import { useCallback, useState } from 'react'
 import { DamageRollResult } from '../../combat/engine/DamageRoll'
 
@@ -30,7 +30,7 @@ export const DamageRollChatCard = ({ actorId, tokenIds, result }: {
             />}
             contents={<>
                 <TargetsDisplay targets={targets} onRemoveTarget={onRemoveTarget} />
-                <DamageRolls result={result} />
+                <DamageRollsComponent result={result} />
                 <TotalDmgFooter total={result.total} />
             </>}
         />
@@ -41,7 +41,7 @@ export const TotalDmgFooter = ({ total }) => {
     return (
         <div className="flex h-full w-full items-center justify-center space-x-2">
             <p className="text-xl text-text-secondary font-paradigm font-normal mr-2">Total:</p>
-            <p className="text-3xl text-text-primary">{total}</p>
+            <div className="text-3xl text-text-primary">{total}</div>
         </div>
     )
 }

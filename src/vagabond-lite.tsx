@@ -25,7 +25,7 @@ import { vgLiteStyles } from "./utils/styleUtils"
 import { getFullItem, getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
-import { rehydrateElement } from "./view/chat/ChatCardRehydrator"
+import { RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
 import { renderCombatTracker } from "./combat/ui/vglite-combat-tracker"
 import { VgLiteActor } from "./model/actor/VgLiteActor"
 import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
@@ -449,29 +449,36 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 
         if (!scaduRoot) {
             scaduRoot = rootElement.attachShadow({ mode: 'open' })
-            root = createRoot(scaduRoot);
+
+            const styleTag = document.createElement('style')
+            styleTag.textContent = vgLiteStyles
+            scaduRoot.appendChild(styleTag)
+
+            const reactContainer = document.createElement('div')
+            scaduRoot.appendChild(reactContainer)
+
+            root = createRoot(reactContainer);
             (rootElement as any)._reactRoot = root
         }
 
         root.render(
-            <div>
-                <style>{vgLiteStyles}</style>
-                <div className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
-                    {rehydrateElement(blueprint)}
-                </div>
+            <div key={message.id} className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
+                <RehydratedChatCard blueprint={blueprint} />
             </div>
         )
     }
 
-    if (!game.scenes?.active) {
+    if (!game.scenes?.active && ItemsCache.items.size > 0) {
         renderVgLiteChatMessages()
     }
-    else if (canvas?.ready) {
+    else if (canvas?.ready && ItemsCache.items.size > 0) {
         renderVgLiteChatMessages()
     }
     else {
         Hooks.once("canvasReady", () => {
-            renderVgLiteChatMessages()
+            Hooks.once("onItemsCacheInitialized" as any, () => {
+                renderVgLiteChatMessages()
+            })
         })
     }
 })

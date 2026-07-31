@@ -1,9 +1,9 @@
 import { VgLiteItemSheet } from "../VgLiteItemSheet"
-import { PerkSheetReactComponent } from "./skills/PerkSheetReactComponent"
-import { SpellSheetReactComponent } from "./skills/SpellSheetReactComponent"
+import { PerkSheetComponent } from "./skills/PerkSheetComponent"
+import { SpellSheetComponent } from "./skills/SpellSheetComponent"
 
 export class PerkSheet extends VgLiteItemSheet {
-    Component = PerkSheetReactComponent
+    Component = PerkSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
             width: 380,
@@ -17,7 +17,7 @@ export class PerkSheet extends VgLiteItemSheet {
 }
 
 export class SpellSheet extends VgLiteItemSheet {
-    Component = SpellSheetReactComponent
+    Component = SpellSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
             width: 420,

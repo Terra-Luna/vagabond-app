@@ -3,7 +3,7 @@ import { Trash, PenSquare, Plus, Save } from "lucide-react"
 import { useState, useCallback } from "react"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
-import { getId, getTargets } from "../../../../../utils/modelUtil"
+import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
 import { damageRoll, glowOnHover } from "../../../../common/text-styles"
@@ -94,7 +94,7 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                                     sendVgLiteChatMessage(adv,
                                                         <DamageRollChatCard
                                                             actorId={getId(adv)}
-                                                            tokenIds={getTargets()}
+                                                            tokenIds={getTargetIds()}
                                                             result={result} />, result.rolls)
                                                 }}>
                                                     {act.damage.avg}
@@ -131,7 +131,7 @@ const onClickActionCombo = async (adv: AdversaryDataModel) => {
         <ComboChatCard
             actorId={getId(adv)}
             rolls={rolls}
-            tokenIds={getTargets()}
+            tokenIds={getTargetIds()}
         />, rolls.flatMap(r => r.rolls)
     )
 }

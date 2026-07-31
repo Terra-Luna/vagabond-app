@@ -20,10 +20,12 @@ export const getTokenImg = (obj: any): string => {
     return (obj?.document?.texture?.src ?? obj?.prototypeToken?.texture?.src) ?? obj?.img
 }
 
-export const getTargets = (): string[] => {
-    const tokenIds = Array.from(game.user?.targets ?? []).map(t => t.id)
-    return tokenIds
+export const getTargets = (): Token[] => {
+    const tokens = Array.from(game.user?.targets ?? [])
+    return tokens
 }
+
+export const getTargetIds = (): string[] => getTargets().map(t => t.id)
 
 export const getCanvasToken = (id): Token | undefined => {
     return canvas?.tokens?.get(id)

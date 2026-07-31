@@ -1,10 +1,11 @@
 import { vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { fields, damageTypeOptions, optionalString } from "../../common/sharedSchemas"
+import { fields, damageTypeOptions, optionalString, requiredInteger } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const spellSchema = () => {
     return {
+        baseManaCost: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         damageType: new fields.StringField({ ...damageTypeOptions() }),
         appliesBurn: new fields.BooleanField({ initial: false }),
         burnCountdown: new fields.StringField({ ...optionalString, initial: 'Cd4' }),

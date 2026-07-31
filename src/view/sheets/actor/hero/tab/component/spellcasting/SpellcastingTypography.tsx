@@ -9,7 +9,7 @@ export const SpellcastingValue = ({ text }: { text: any }) => {
 }
 
 export const SpellcastingSubtext = ({ text }: { text: any }) => {
-    return <div className="max-h-[56px] overflow-y-auto">
+    return <div className="max-h-[72px] overflow-y-auto">
         <div className="text-sm text-text-secondary font-eskapade font-normal">{text}</div>
     </div>
 }

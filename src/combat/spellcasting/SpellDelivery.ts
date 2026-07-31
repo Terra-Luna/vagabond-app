@@ -1,5 +1,9 @@
 import { vgLiteLang } from "../../utils/lang"
 
+export interface SpellDeliverySnapshot {
+    name: string, applyEffect: boolean, isFocused: boolean, manaCost: number
+}
+
 /**
  * Use the available update functions for each delivery type
  * to have manaCost automatically updated.
@@ -17,6 +21,7 @@ export abstract class SpellDelivery {
         return clone
     }
 
+    spellBaseManaCost = 0
     applyEffect = false
     isFocused = false
     damageDice = 1
@@ -31,6 +36,15 @@ export abstract class SpellDelivery {
             this.manaCost += 1
         }
     }
+
+    toJson(): SpellDeliverySnapshot {
+        return {
+            name: this.name,
+            applyEffect: this.applyEffect,
+            isFocused: this.isFocused,
+            manaCost: this.manaCost
+        }
+    }
 }
 
 export abstract class AreaOfEffectDelivery extends SpellDelivery {
@@ -39,7 +53,10 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     size = 0
 
     protected calculateBaseManaCost() {
-        this.manaCost = this.baseManaCost + ((this.size - this.baseSize) / 5) + (Math.max(0, this.damageDice - 1))
+        this.manaCost = this.baseManaCost
+            + (this.damageDice > 0 ? this.spellBaseManaCost : 0)
+            + ((this.size - this.baseSize) / 5)
+            + (Math.max(0, (this.damageDice - 1)))
     }
 
     override calculateManaCost() {
@@ -101,7 +118,10 @@ export abstract class PerTargetDelivery extends SpellDelivery {
         else {
             targets = Math.max(1, this.targetCount)
         }
-        this.manaCost = ((targets - 1) * this.extraTargetMultiplier) + this.baseManaCost + (Math.max(0, this.damageDice - 1))
+        this.manaCost = ((targets - 1) * this.extraTargetMultiplier)
+            + this.baseManaCost
+            + (this.damageDice > 0 ? this.spellBaseManaCost : 0)
+            + (Math.max(0, this.damageDice - 1))
         super.applyEffectManaCost()
     }
 }

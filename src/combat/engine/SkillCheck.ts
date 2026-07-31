@@ -13,7 +13,11 @@ export interface SkillCheckArgs {
 
 export interface SkillCheckResult {
     skill: string
+    skillName: string
     difficulty: number
+    critThreshold: number
+    d20Count: number
+    modifier: number
     favorHinder: string
     d20: number
     d6: number
@@ -36,9 +40,9 @@ export class SkillCheck {
         const skillMods = hero.modifiers.skills[args.skill]
         this.skill = args.skill
         this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
-        this.d20Count = args.d20Count ?? 1 + skillMods.extraDice
+        this.d20Count = args.d20Count ?? (1 + skillMods.extraDice)
         this.modifier = args.modifier ?? skillMods.rollMod
-        this.critThreshold = args.critThreshold ?? 20 + skillMods.critMod
+        this.critThreshold = args.critThreshold ?? (20 + skillMods.critMod)
         this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
         this.clickEvent = args.clickEvent
     }
@@ -70,7 +74,7 @@ export class SkillCheck {
         else if (favorHinder === vgLiteLang.FavorHinder.hinder) {
             formula += '-1d6'
         }
-    
+
         const roll = await new Roll(formula).evaluate()
     
         /**
@@ -83,10 +87,14 @@ export class SkillCheck {
         const d20Res = d20Term?.results.find(r => r.active)?.result ?? 0
         const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
         const isCrit = d20Res >= this.critThreshold
-    
+
         this.result =  {
             skill: this.skill,
+            skillName: vgLiteLang.Skills[this.skill]?.name ?? vgLiteLang.Saves[this.skill]?.name ?? '',
             difficulty: this.difficulty,
+            modifier: this.modifier,
+            critThreshold: this.critThreshold,
+            d20Count: this.d20Count,
             favorHinder: this.favorHinder,
             d20: d20Res,
             d6: d6Res,
@@ -96,25 +104,6 @@ export class SkillCheck {
         }
 
         return this.result
-    }
-
-    public async addLateD6() {
-        if (this.result && this.result.d6 === 0) {
-            const newResult = { ...this.result }
-            const d6 = await new Roll("1d6").evaluate()
-            newResult.d6 = d6.total
-            newResult.total += d6.total
-            newResult.rolls.push(d6)
-            if (newResult.total + newResult.d6 >= this.difficulty) {
-                newResult.outcome = vgLiteLang.RollResult.success
-            }
-            this.result = newResult
-            return this.result
-        }
-        else {
-            ui.notifications?.warn("A D6 has already been applied to this Skill Check!")
-            return undefined
-        }
     }
 
     private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): string {

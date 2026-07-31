@@ -4,7 +4,7 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { WeaponDataModel, isEquippedWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
-import { getId, getTargets } from "../../../../../utils/modelUtil"
+import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { glowOnHover } from "../../../../common/text-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
@@ -34,10 +34,10 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full">
             <Header title={vgLiteLang.HeroSheet.attacks} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.melee} value={melee.value!} isTrained={melee.isTrained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.brawl} value={brawl.value!} isTrained={brawl.isTrained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.finesse} value={finesse.value!} isTrained={finesse.isTrained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.ranged} value={ranged.value!} isTrained={ranged.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.melee} skillKey="melee" value={melee.value!} isTrained={melee.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} isTrained={brawl.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} isTrained={finesse.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} isTrained={ranged.isTrained} isAttack={true} />
         </div>
     )
 }
@@ -80,7 +80,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                             const dmgRoll = await new DamageRoll({ atkName: weapon.parent.name, dice: [parseFormulaToDiceRoll(gripStateDamage(weapon))] }).roll()
                                             sendVgLiteChatMessage(hero, <DamageRollChatCard
                                                 actorId={getId(hero)}
-                                                tokenIds={getTargets()}
+                                                tokenIds={getTargetIds()}
                                                 result={dmgRoll} />, dmgRoll.rolls
                                             )
                                         }}

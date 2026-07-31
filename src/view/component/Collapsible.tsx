@@ -7,7 +7,7 @@ export interface CollapsibleHeaderProps {
     img?: string
     dmgType?: string
     title: string
-    toggleCollapsedButton: ReactNode
+    toggleCollapsedButton?: ReactNode
     toggleCollapsed?: () => void
 }
 interface CollapsibleHeader {

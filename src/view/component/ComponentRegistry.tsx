@@ -1,13 +1,14 @@
 import { AbilityChatCard } from "../chat/AbilityChatCard"
 import { ComboChatCard } from "../chat/ComboChatCard"
-import { DamageRolls } from "../chat/component/DamageRolls"
+import { DamageRollsComponent } from "../chat/component/DamageRollsComponent"
 import { DiceRoll } from "../chat/component/DiceRoll"
 import { DieIcon } from "../chat/component/DieIcon"
 import { CountdownRollChatCard } from "../chat/CountdownChatCard"
 import { DamageRollChatCard } from "../chat/DamageRollChatCard"
+import { InteractiveAttackChatCard } from "../../combat/ui/InteractiveAttackChatCard"
 import { ItemChatCard } from "../chat/ItemChatCard"
 import { SkillCheckChatCard } from "../chat/SkillCheckChatCard"
-import { SpellCastChatCard } from "../chat/SpellCastChatCard"
+import { SpellAttackInfoComponent } from "../../combat/ui/SpellAttackInfoComponent"
 import { TrackerUpdateChatCard } from "../chat/TrackerUpdateChatCard"
 
 export const ComponentRegistry = {
@@ -15,11 +16,12 @@ export const ComponentRegistry = {
     "ComboChatCard": ComboChatCard,
     "CountdownRollChatCard": CountdownRollChatCard,
     "DamageRollChatCard": DamageRollChatCard,
-    "DamageRolls": DamageRolls,
+    "DamageRolls": DamageRollsComponent,
     "DiceRoll": DiceRoll,
     "DieIcon": DieIcon,
+    "InteractiveAttackChatCard": InteractiveAttackChatCard,
     "ItemChatCard": ItemChatCard,
     "SkillCheckChatCard": SkillCheckChatCard,
-    "SpellCastChatCard": SpellCastChatCard,
+    "SpellCastChatCard": SpellAttackInfoComponent,
     "TrackerUpdateChatCard": TrackerUpdateChatCard
 }

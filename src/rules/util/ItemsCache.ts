@@ -70,6 +70,8 @@ export class ItemsCache {
                 this.items.set(fullItem.uuid, fullItem)
             }
         }
+
+        Hooks.callAll("onItemsCacheInitialized" as any, ItemsCache)
         console.log("Vagabond Lite | Items Cache Initialized:", this.items.size)
     }
 

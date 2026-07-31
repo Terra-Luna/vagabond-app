@@ -6,13 +6,13 @@ import D6 from "../../../icons/dice/d6.svg?react"
 import D4 from "../../../icons/dice/d4.svg?react"
 
 export const DieIcon = ({ faces }: { faces: number, exploded: boolean }) => {
-    const steez = `w-[1em] h-[1em]`
+    const wh = `w-[1em] h-[1em]`
     const color = `var(--color-dice)`
-    if (faces === 20) return <D20 className={steez} fill={color} />
-    else if (faces === 12) return <D12 className={steez} fill={color} />
-    else if (faces === 10) return <D10 className={steez} fill={color} />
-    else if (faces === 8) return <D8 className={steez} fill={color} />
-    else if (faces === 6) return <D6 className={steez} fill={color} />
-    else if (faces === 4) return <D4 className={steez} fill={color} />
+    if (faces === 20) return <D20 className={wh} fill={color} />
+    else if (faces === 12) return <D12 className={wh} fill={color} />
+    else if (faces === 10) return <D10 className={wh} fill={color} />
+    else if (faces === 8) return <D8 className={wh} fill={color} />
+    else if (faces === 6) return <D6 className={wh} fill={color} />
+    else if (faces === 4) return <D4 className={wh} fill={color} />
     else return <></>
 }

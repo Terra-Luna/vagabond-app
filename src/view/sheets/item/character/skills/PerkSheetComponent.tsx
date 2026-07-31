@@ -12,7 +12,7 @@ import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { Checkbox } from "../../../../component/Checkbox"
 
-export const PerkSheetReactComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
+export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()
 
     return (<>

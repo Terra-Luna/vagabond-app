@@ -5,7 +5,7 @@ import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { TargetsDisplay } from "./component/TargetsDisplay"
-import { DamageRolls } from "./component/DamageRolls"
+import { DamageRollsComponent } from "./component/DamageRollsComponent"
 import { DamageRollResult } from "../../combat/engine/DamageRoll"
 
 export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, rolls: DamageRollResult[], tokenIds: string[] }) => {
@@ -25,7 +25,7 @@ export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, r
                             <div key={i}>
                                 <p>{roll.atkName}</p>
                                 <div className="flex gap-x-4 justify-between items-center">
-                                    <DamageRolls result={roll} />
+                                    <DamageRollsComponent result={roll} />
                                     <Equal size={18} className="text-text-secondary" />
                                     <p className="text-4xl">{roll.total}</p>
                                     <DamageTypeIcon dmgType={roll.dmgType} />

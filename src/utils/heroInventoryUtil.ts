@@ -6,7 +6,7 @@ import { gripStateDamage, WeaponDataModel } from "../model/item/equip/WeaponData
 import { DamageRollChatCard } from "../view/chat/DamageRollChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
 import { lang } from "./lang"
-import { getId, getName, getTargets } from "./modelUtil"
+import { getId, getName, getTargetIds } from "./modelUtil"
 import { isInContainer, isInventoryItem, openItemSheet } from "../model/actor/type/Inventory"
 import { AlchemicalItemDataModel } from "../model/item/equip/AlchemicalItemDataModel"
 import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
@@ -126,7 +126,7 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
                 perDieDmgBonus: hero.modifiers.damage.attackPerDie ?? 0
             }).roll()
             sendVgLiteChatMessage(hero, createElement(DamageRollChatCard, {
-                actorId: getId(hero), tokenIds: getTargets(), result: dmgRoll
+                actorId: getId(hero), tokenIds: getTargetIds(), result: dmgRoll
             }))
         }
         else {
@@ -172,7 +172,7 @@ export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataMo
 
                 sendVgLiteChatMessage(hero, createElement(
                     DamageRollChatCard,
-                    { actorId: getId(hero), tokenIds: getTargets(), result: dmgRoll }
+                    { actorId: getId(hero), tokenIds: getTargetIds(), result: dmgRoll }
                 ), dmgRoll.rolls)
             }
         }

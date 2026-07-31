@@ -1,37 +1,63 @@
 import { DamageRollResult, DamageRoll } from "./DamageRoll"
-import { DiceRoll } from "./util/dice-utils"
+import { AttackSnapshot } from "./util/attack-serializer"
 
 export abstract class Attack {
-    /**
-     * Override these and set in child constructors.
-     */
-    protected abstract actor: Actor
-    protected abstract targets: Token[] | undefined
 
-    // Damage roll props
-    protected attackName: string = ""
-    damageDice: DiceRoll[] = []
-    flatDamageBonus: number = 0
-    perDieDamageBonus: number = 0
-    damageType: string | undefined
-    effect: string | undefined
-    damageRoll: DamageRoll | undefined
-    damageRollResult: DamageRollResult | undefined
+    // Unique ID for interacting with the attack in chat card
+    id: string = foundry.utils.randomID()
+    userId: string = game.userId ?? ''
+    abstract actor: Actor
+    abstract targetIds?: string[]
+    title: string = "Attack"
+    damageRoll?: DamageRoll
+    damageRollResult?: DamageRollResult
+    isResolved: boolean = false
 
-    public async rollDamage(): Promise<DamageRollResult | undefined> {
-        if (this.damageDice.length > 0) {
-            this.damageRoll = new DamageRoll({ atkName: this.attackName, dice: this.damageDice, flatDmgBonus: this.flatDamageBonus, perDieDmgBonus: this.perDieDamageBonus })
-            this.damageRollResult = await this.damageRoll.roll()
-            return this.damageRollResult
+    constructor(title) {
+        this.title = title
+    }
+
+    abstract steps: string[]
+    stepIndex: number = 0
+    get step(): string { return this.steps[this.stepIndex] }
+
+    abstract next(): void
+
+    async saveToActor(serialize: (attack: Attack) => AttackSnapshot | undefined) {
+        const snapshot = serialize(this)
+        if (!snapshot) return
+
+        const currentAttacks = (this.actor.getFlag("vagabond-lite" as any, "attacks") as AttackSnapshot[]) ?? []
+        const exists = currentAttacks.some(it => it.id === this.id)
+
+        let updatedAttacks: AttackSnapshot[]
+
+        if (exists) {
+            updatedAttacks = currentAttacks.map(it => it.id === this.id ? snapshot : it)
         }
         else {
-            return undefined
+            updatedAttacks = [...currentAttacks, snapshot]
+        }
+
+        await this.actor.setFlag("vagabond-lite" as any, "attacks", updatedAttacks)
+    }
+
+    async rollDamage(serialize: (attack: Attack) => AttackSnapshot | undefined) {
+        if (this.damageRoll && this.damageRoll.dice.length > 0) {
+            this.damageRollResult = await this.damageRoll.roll()
+            this.saveToActor(serialize)
         }
     }
 
-    public apply() {
-        if (this.damageRollResult !== undefined) {
-            if (this.damageType === 'healing') {
+    trigger3dDamageRoll() {
+        this.damageRollResult?.rolls.forEach(roll => {
+            (game as any).dice3d.showForRoll(roll, game.user, true)
+        })
+    }
+
+    protected processDamageRoll() {
+        if (this.damageRoll?.result) {
+            if (this.damageRoll.dmgType === 'healing') {
                 this.applyHealing()
             }
             else {
@@ -40,19 +66,20 @@ export abstract class Attack {
         }
     }
 
+    private applyHealing() {
+        this.getActors(this.targetIds ?? []).forEach(target => {
+            this.updateHP(target?.system, this.getHP(target?.system) + (this.damageRoll?.result?.total ?? 0))
+        })
+    }
+
     private applyDamage() {
-        this.getActors(this.targets?.map(t => t.id) ?? []).forEach(actor => {
-            const damage = this.damageRollResult?.total ?? 0
+        this.isResolved = true
+        this.getActors(this.targetIds ?? []).forEach(actor => {
+            const damage = this.damageRoll?.result?.total ?? 0
             const target = actor?.system
             const armor = (target as any)?.armor?.rating ?? 0
             const adjDamage = this.calculateDamage(damage, armor)
             this.updateHP(target, this.getHP(target) - adjDamage)
-        })
-    }
-
-    private applyHealing() {
-        this.getActors(this.targets?.map(t => t.id) ?? []).forEach(target => {
-            this.updateHP(target?.system, this.getHP(target?.system) + (this.damageRollResult?.total ?? 0))
         })
     }
 

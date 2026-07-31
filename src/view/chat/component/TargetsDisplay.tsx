@@ -2,14 +2,18 @@ import { Trash } from "lucide-react"
 import { useContextMenu } from "../../component/ContextMenu"
 import { vgLiteLang } from "../../../utils/lang"
 
-export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], onRemoveTarget: any }) => {
+/**
+ * Displays an array of Token icons. Utilize target-sync.tsx to get live token target tracking updates.
+ * @param param0 
+ * @returns 
+ */
+export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], onRemoveTarget?: any }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div>
             {
                 targets && targets.length > 0 ?
                     <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
-                        <p className="mr-1 text-text-secondary font-paradigm font-normal">Targets: </p>
                         {targets.map((target, index) => (
                             <button
                                 key={target.id}
@@ -21,9 +25,18 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
                                         y: target.token?.center.y
                                     })
                                 }}
-                                onContextMenu={(e) => onCtxMenu(e, [
-                                    { icon: Trash, label: vgLiteLang.ButtonActions.remove, action: () => onRemoveTarget(index), isDestructive: true }
-                                ])}
+                                onContextMenu={(e) => {
+                                    if (onRemoveTarget) {
+                                        onCtxMenu(e, [
+                                            {
+                                                icon: Trash,
+                                                label: vgLiteLang.ButtonActions.remove,
+                                                action: () => onRemoveTarget(index),
+                                                isDestructive: true
+                                            }
+                                        ])
+                                    }
+                                }}
                                 children={
                                     <img
                                         src={target.src}

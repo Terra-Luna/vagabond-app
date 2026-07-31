@@ -16,23 +16,25 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
                 tokenId={actor?.getActiveTokens()[0]?.id}
                 portrait={getTokenImg(actor)}
                 title={`${vgLiteLang.Skills[result.skill]?.name ?? vgLiteLang.Saves[result.skill]?.name} Check`}
-                subtitle={[{ label: "Difficulty", value: result.difficulty.toString() }]}
+                subtitle={[
+                    { label: "Difficulty", value: result.difficulty.toString() },
+                    { label: "Result", value: result.outcome }
+                ]}
             />}
             contents={<>
-                <DiceGraphics d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
-                <TotalsFooter total={result.total} csf={result.outcome} resultTextColor={resultTextColor} />
+                <SkillCheckDiceComponent d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
             </>}
         />
     )
 }
 
-const DiceGraphics = ({ d20, d6, favHinder }) => {
+export const SkillCheckDiceComponent = ({ d20, d6, favHinder }) => {
     return (
-        <div className="flex gap-x-2 mt-2 justify-center">
+        <div className="flex mt-2 justify-center">
             <DiceRoll faces={20} result={d20} textSize="text-5xl" />
             {
                 favHinder !== vgLiteLang.FavorHinder.none ?
-                    <div className="flex gap-x-2">
+                    <div className="flex">
                         <div className="h-full content-center">{
                             favHinder === vgLiteLang.FavorHinder.favor ?
                                 <Plus size={24} strokeWidth={4} /> :
@@ -43,16 +45,6 @@ const DiceGraphics = ({ d20, d6, favHinder }) => {
                         </div>
                     </div> : <></>
             }
-        </div>
-    )
-}
-
-const TotalsFooter = ({ total, csf, resultTextColor }) => {
-    return (
-        <div className="flex mt-2 space-x-2 h-fit items-end">
-            <p className="font-paradigm font-normal text-text-secondary">Total:</p>
-            <p className="text-5xl mr-4">{total}</p>
-            <p className={`${resultTextColor} text-xl ml-auto mr-2 [text-shadow:0_0_10px_var(--color-text-glow)]`}>{csf}</p>
         </div>
     )
 }

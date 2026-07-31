@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
         // this makes it so their is no "current combatant"

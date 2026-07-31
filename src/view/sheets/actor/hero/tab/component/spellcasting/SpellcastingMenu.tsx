@@ -14,15 +14,12 @@ import { vgLiteLang } from "../../../../../../../utils/lang"
 import { SpellEffectToggle } from "./SpellEffectToggle"
 import { SpellFocusToggle } from "./SpellFocusToggle"
 import { LineExpansionInut } from "./LineExpansionInput"
-import { sendVgLiteChatMessage } from "../../../../../../chat/ChatCardSerializer"
-import { SpellCastChatCard } from "../../../../../../chat/SpellCastChatCard"
-import { getId } from "../../../../../../../utils/modelUtil"
+import { getTargetIds } from "../../../../../../../utils/modelUtil"
 import { SkillSelector } from "./SkillSelector"
-import { SkillCheckChatCard } from "../../../../../../chat/SkillCheckChatCard"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
-import { SkillCheck, SkillCheckResult } from "../../../../../../../combat/engine/SkillCheck"
 import { DamageRoll } from "../../../../../../../combat/engine/DamageRoll"
+import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system
@@ -38,7 +35,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         const spells = ItemsCache.spells().filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid))
         setSpell(spells[0])
         setSpells(spells)
-    }, [hero.spells])
+    }, [])
 
     useEffect(() => {
         const deliveryOptions = getNewDeliveryOptions()
@@ -70,15 +67,30 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     const onSelectSpell = useCallback((spellId: string) => {
         const sp = spells.find(it => it.id === spellId)
         setSpell(sp)
-        if (delivery && sp?.system.damageType === 'none') {
-            onUpdateDamageDice('0')
-            onToggleSpellEffect(true)
+
+        const deliveryClone = delivery?.clone()
+        const delivs = deliveries.map(d => { return d.clone() })
+
+        if (deliveryClone) {
+            deliveryClone.spellBaseManaCost = sp?.system?.baseManaCost ?? 0
+            if (sp?.system.damageType === 'none') {
+                onUpdateDamageDice('0')
+            }
+            deliveryClone.calculateManaCost()
+            delivs.forEach(it => {
+                it.spellBaseManaCost = sp?.system.baseManaCost ?? 0
+                it.calculateManaCost()
+            })
+            setDelivery(deliveryClone)
+            setDeliveries(delivs)
         }
-    }, [spell, delivery])
+    }, [spell, delivery, deliveries, setDelivery, setDeliveries])
 
     const onSelectDelivery = useCallback((index: number) => {
         const clone = deliveries[index].clone()
         const delivs = deliveries.map(d => { return d.clone() })
+        clone.spellBaseManaCost = spell?.system?.baseManaCost ?? 0
+        clone.calculateManaCost()
         setDeliveries(delivs)
         setDelivery(clone)
     }, [delivery, deliveries])
@@ -162,23 +174,21 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         const delivs = deliveries.map(d => {
             const clone = d.clone()
             clone.damageDice = dmgDice
-            if (clone.damageDice === 0) { clone.applyEffect = true }
-            if (spell?.system.damageType === 'none') { clone.damageDice = 0 }
+            if (spell?.system.damageType === 'none') {
+                clone.damageDice = 0
+            }
             clone.calculateManaCost()
             return clone
         })
         setDeliveries(delivs)
         setDelivery(delivs[delivs.findIndex(d => d.name === delivery.name)])
-    }, [delivery, deliveries])
+    }, [delivery, deliveries, spell])
 
     const onToggleSpellEffect = useCallback((isChecked: boolean) => {
         if (!delivery || !isChecked && spell?.system.damageType === 'none') return
         const delivs = deliveries.map(d => {
             const clone = d.clone()
             clone.applyEffect = isChecked
-            if (!clone.applyEffect && clone.damageDice === 0) {
-                clone.damageDice = 1
-            }
             clone.calculateManaCost()
             return clone
         })
@@ -222,32 +232,21 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         if (spell && delivery) {
             hero.parent.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) })
 
-            let skillCheck: SkillCheckResult | undefined = undefined
-            if (delivery.targetTokenIds.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1)) {
-                skillCheck = await new SkillCheck(hero, { skill: skill, clickEvent: e }).roll()
-                sendVgLiteChatMessage(hero.parent, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />)
-            }
+            const attack = new HeroAttack(spell.name, hero.parent, getTargetIds())
+            attack.sourceId = spell.uuid
+            attack.spellDelivery = delivery.toJson()
+            attack.skill = skill
+            attack.isFavored = e.shiftKey
+            attack.isHindered = !e.shiftKey && e.ctrlKey
+            attack.damageRoll = new DamageRoll({
+                atkName: spell.name,
+                dmgType: spell.system.damageType,
+                dice: [{ dice: delivery.damageDice, faces: hero.mana.spellDamageDie }],
+                flatDmgBonus: (hero.modifiers.damage.spell ?? 0) + (hero.modifiers.damage.all ?? 0),
+                perDieDmgBonus: (hero.modifiers.damage.spellPerDie ?? 0) + (hero.modifiers.damage.allPerDie ?? 0)
+            })
 
-            if (skillCheck?.outcome !== vgLiteLang.RollResult.failure && spell.system.damageType !== 'none' && delivery.damageDice > 0) {
-                const damageRoll = new DamageRoll({
-                    atkName: spell.name,
-                    dmgType: spell.system.damageType,
-                    dice: [{ dice: delivery.damageDice, faces: hero.mana.spellDamageDie }],
-                    flatDmgBonus: hero.modifiers.damage.spell ?? 0,
-                    perDieDmgBonus: hero.modifiers.damage.spellPerDie ?? 0
-                })
-                const damageRollResult = await damageRoll.roll()
-                sendVgLiteChatMessage(
-                    hero.parent,
-                    <SpellCastChatCard heroId={getId(hero)} spell={spell} delivery={{ ...delivery }} dmgRoll={damageRollResult} />
-                )
-            }
-            else {
-                sendVgLiteChatMessage(
-                    hero.parent,
-                    <SpellCastChatCard heroId={getId(hero)} spell={spell} delivery={{ ...delivery }} />
-                )
-            }
+            attack.next()
         }
     }
 
@@ -260,7 +259,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             <SpellSelector spell={spell} spells={spells} setSpellSelection={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelectDelivery={onSelectDelivery} />
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
-                            <div className="ml-auto">
+                            <div title={vgLiteLang.HeroSheet.skills_tooltip} className="ml-auto">
                                 <PrimaryButton icon={<DamageTypeIcon dmgType={spell?.system?.damageType ?? ''} size={18} />} children={vgLiteLang.HeroSheet.Magic.btnCast} onClick={(e) => castSpell(e)} />
                             </div>
                         </div>

@@ -19,7 +19,6 @@ export interface DamageRollResult {
 }
 
 export class DamageRoll {
-
     atkName: string
     dmgType: string
     dice: DiceRoll[]
