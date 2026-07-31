@@ -2,10 +2,10 @@ import { ReactNode } from "react"
 import { Trash } from "lucide-react"
 import { glowOnHover } from "../common/text-styles"
 
-const buttonShaping = `flex items-center px-2 py-1 rounded-sm ${glowOnHover}`
-const primaryButtonClasses = `text-lg text-btn-primary-text font-paradigm bg-btn-primary-fill ${buttonShaping} border border-solid border-stat-block-fill`
-const secondaryButtonClasses = `text-lg text-btn-secondary-text font-paradigm ${buttonShaping} border border-solid btn-secondary-text/80`
-const destructiveButtonClasses = `text-lg text-destructive-action font-paradigm ${buttonShaping} border border-solid border-destructive-action/50`
+const buttonShaping = `flex items-center text-base text-center justify-center px-2 py-1 rounded-sm ${glowOnHover}`
+const primaryButtonClasses = `text-btn-primary-text font-paradigm bg-btn-primary-fill ${buttonShaping} border border-solid border-stat-block-fill`
+const secondaryButtonClasses = `text-btn-secondary-text font-paradigm ${buttonShaping} border border-solid btn-secondary-text/80`
+const destructiveButtonClasses = `text-destructive-action font-paradigm ${buttonShaping} border border-solid border-destructive-action/50`
 
 export const PrimaryButton = ({ type = "button", children, icon = null, onClick = () => { } }: {
     type?: any, children: ReactNode, icon?: ReactNode, onClick?: (e) => any

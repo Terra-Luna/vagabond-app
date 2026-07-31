@@ -1,3 +1,4 @@
+import { roll3dDice } from "../../utils/foundryUtils"
 import { DamageRollResult, DamageRoll } from "./DamageRoll"
 import { AttackSnapshot } from "./util/attack-serializer"
 
@@ -17,13 +18,7 @@ export abstract class Attack {
         this.title = title
     }
 
-    abstract steps: string[]
-    stepIndex: number = 0
-    get step(): string { return this.steps[this.stepIndex] }
-
-    abstract next(): void
-
-    async saveToActor(serialize: (attack: Attack) => AttackSnapshot | undefined) {
+    async save(serialize: (attack: Attack) => AttackSnapshot | undefined) {
         const snapshot = serialize(this)
         if (!snapshot) return
 
@@ -39,26 +34,28 @@ export abstract class Attack {
             updatedAttacks = [...currentAttacks, snapshot]
         }
 
-        console.log("Saving attack:", this.id, this)
         await this.actor.setFlag("vagabond-lite" as any, "attacks", updatedAttacks)
     }
 
-    async rollDamage(serialize: (attack: Attack) => AttackSnapshot | undefined) {
-        if (this.damageRoll && this.damageRoll.dice.length > 0) {
-            this.damageRollResult = await this.damageRoll.roll()
-            this.saveToActor(serialize)
-        }
+    get showTargets(): boolean {
+        return !!this.targetIds?.length
     }
 
-    trigger3dDamageRoll() {
-        this.damageRollResult?.rolls.forEach(roll => {
-            (game as any).dice3d.showForRoll(roll, game.user, true)
-        })
+    get showDamage(): boolean {
+        return !!this.damageRollResult?.total
+    }
+
+    async rollDamage() {
+        if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRollResult) {
+            this.damageRollResult = await this.damageRoll.roll()
+            console.log("Rolling damage...", this.damageRollResult)
+            roll3dDice(this.damageRollResult?.rolls ?? [])
+        }
     }
 
     async resolve(serialize: (attack: Attack) => AttackSnapshot | undefined) {
         this.isResolved = true
-        await this.saveToActor(serialize)
+        await this.save(serialize)
     }
 
     protected processDamageRoll() {

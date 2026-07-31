@@ -20,7 +20,8 @@ import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
-import { PrimaryButton } from "../../view/component/Button"
+import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
+import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortraitComponent"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
     const actor = useMemo(() => getCanvasToken(actorId)?.actor ?? game.actors?.get(actorId), [actorId])
@@ -28,13 +29,19 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     const snapshot = useMemo(() => {
         const attacks = actor?.getFlag("vagabond-lite" as any, "attacks") as any[] ?? []
         const match = attacks.find(atk => atk.id === attackId)
-        console.log(match)
         return match ? foundry.utils.deepClone(match) : null
     }, [actor])
 
     const attack = useMemo(() => {
         return snapshot ? deserializeAttack(snapshot) : null
     }, [actor, snapshot])
+
+    const source = useMemo<Item | undefined>(() => {
+        if (attack instanceof HeroAttack && attack.sourceId) {
+            const item = ItemsCache.allItems().find(it => it.uuid === attack.sourceId)
+            return item
+        }
+    }, [attack])
 
     return (
         <div>
@@ -43,16 +50,21 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                     <ChatCardBanner
                         tokenId={actor?.getActiveTokens()[0]?.id}
                         portrait={getTokenImg(actor)}
-                        title={attack.title}
+                        title={
+                            <div className="flex gap-x-1 items-center">
+                                {source && <ItemPortraitComponent item={source} size={32} />}
+                                {attack.title}
+                            </div>
+                        }
                     />}
                 contents={
-                    <div className={`${attack.isResolved ? 'bg-ic-luck' : ''}`}>
+                    <div>
                         {/* ATTACK CONTENT BY CHARACTER TYPE */}
-                        {attack instanceof HeroAttack && <HeroAttackComponent actor={actor as Actor & { system: HeroDataModel }} attack={attack} />}
+                        {attack instanceof HeroAttack && <HeroAttackComponent actor={actor as Actor & { system: HeroDataModel }} attack={attack} source={source} />}
                         {attack instanceof AdversaryAttack && <AdversaryAttackComponent actor={actor} attack={attack} />}
 
                         {/* GM TOOLS */}
-                        {game.user?.isGM && !attack.isResolved &&
+                        {(game.user?.isGM && !attack.isResolved) &&
                             <div className="mt-0.5">
                                 <Header title={"GM Tools"} />
                                 <div className="flex gap-x-1 justify-center items-center mt-0.5">
@@ -69,8 +81,9 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     )
 }
 
-const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroDataModel }, attack: HeroAttack }) => {
+const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined }) => {
     const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck])
+    const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck])
     const studied = useMemo<number>(() => actor.system.statuses.counters.studied, [actor.system.statuses.counters.studied])
 
     const isFriendlySpell = useMemo<boolean>(() => {
@@ -78,8 +91,8 @@ const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroD
     }, [attack])
 
     const showDamage = useMemo<boolean>(() => {
-        const isSuccessfulDamagingAtk = attack.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure && attack.damageRollResult != null
-        return isSuccessfulDamagingAtk || isFriendlySpell || attack.isResolved
+        const hasDamageRoll = attack.damageRollResult != null
+        return hasDamageRoll || isFriendlySpell
     }, [attack.skillCheckResult?.outcome])
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
@@ -103,42 +116,63 @@ const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroD
             .filter(it => it.src != null && it.src.length > 0)
     }, [liveTargetIds])
 
-    const source = useMemo<Item | undefined>(() => {
-        const item = ItemsCache.allItems().find(it => it.uuid === attack.sourceId)
-        return item
-    }, [attack])
-
     const handleLuckyD6 = useCallback(async () => {
         await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
-        await attack.addLateD6()
-    }, [luck])
+        await attack.addLateFavor()
+    }, [luck, attack])
 
     const handleLuckReroll = useCallback(async () => {
         await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
         await attack.rollSkillCheck(true)
-    }, [attack])
+    }, [luck, attack])
 
     const handleStudiedD6 = useCallback(async () => {
         await actor.update({ 'system.statuses.counters.studied': studied - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
-        await attack.addLateD6()
-    }, [studied])
+        await attack.addLateFavor()
+    }, [studied, attack])
+
+    const addCritLuck = useCallback(async () => {
+        await attack.addCritLuck()
+    }, [luck])
+
+    const addCritDamage = useCallback(async () => {
+        await attack.addCritDamage()
+    }, [])
+
+    const addSpellFx = useCallback(async () => {
+        await attack.addCritSpellFx()
+    }, [])
 
     return (
         <div>
             {/* SKILL CHECK */}
-            {attack.skillCheckResult &&
+            {attack.showSkillCheck &&
                 <div>
-                    <Header title={`${attack.skillCheckResult.skillName} Check`} textLeft={true} />
+                    <Header title={`${attack.skillCheckResult!.skillName} Check`} textLeft={true} />
                     <CardSubHeader showRightBorder={false} values={[
-                        { label: "Difficulty", value: attack.skillCheckResult.difficulty.toString() },
-                        { label: "Result", value: attack.skillCheckResult.outcome }
+                        { label: "Difficulty", value: attack.skillCheckResult!.difficulty.toString() },
+                        { label: "Result", value: attack.skillCheckResult!.outcome }
                     ]} /> 
                     <div className="flex flex-col justify-center items-center">
                         <SkillCheckDiceComponent
-                            d20={attack.skillCheckResult.d20}
-                            d6={attack.skillCheckResult.d6}
-                            favHinder={attack.skillCheckResult.favorHinder}
+                            d20={attack.skillCheckResult!.d20}
+                            d6={attack.skillCheckResult!.d6}
+                            favHinder={attack.skillCheckResult!.favorHinder}
                         />
+
+                        {/* CRIT CHOICE BUTTONS */}
+                        {attack.showCritChoices &&
+                            <div className="flex wrap gap-1 mb-1 justify-center text-center content-center">
+                                {/* GAIN A LUCK */}
+                                {!isMaxLuck && <SecondaryButton onClick={addCritLuck}>+1 Luck</SecondaryButton>}
+                                {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
+                                <SecondaryButton onClick={addCritDamage}>+Damage</SecondaryButton>
+                                {/* ADD SPELL'S CRIT FX */}
+                                {source?.system instanceof SpellDataModel &&
+                                    <SecondaryButton onClick={addSpellFx}>Spell Crit Eff.</SecondaryButton>
+                                }
+                            </div>
+                        }
 
                         {/* LUCK & STUDIED REROLL BUTTONS */}
                         {canUpdateSkillCheck &&
@@ -166,13 +200,15 @@ const HeroAttackComponent = ({ actor, attack }: { actor: Actor & { system: HeroD
             }
 
             {/* TARGET TOKENS ARRAY */}
-            {liveTargetIds.length > 0 && (<>
+            {
+                attack.showTargets && (<>
                 <Header title={'Targets'} />
                 <TargetsDisplay targets={targets} />
             </>)}
 
             {/* DAMAGE DISPLAY */}
-            {showDamage &&
+            {
+                attack.showDamage &&
                 <div>
                     {/* HIDE THE DAMAGE HEADER IF IT WAS HEALING OR FRIENDLY FX ONLY */}
                     {!isFriendlySpell && <Header title={'Damage'} />}

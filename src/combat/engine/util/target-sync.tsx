@@ -38,7 +38,7 @@ export function useLiveTargetSync(attack: Attack | undefined): string[] {
             attack.targetIds = [...filteredIds]
             setTargetIds([...filteredIds])
 
-            await attack.saveToActor(serializeAttack)
+            await attack.save(serializeAttack)
         })
 
         /**

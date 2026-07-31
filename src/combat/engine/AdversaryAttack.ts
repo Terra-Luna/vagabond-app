@@ -7,11 +7,6 @@ export interface AdversaryAttackArgs { attackName: string, dmgType: string, dice
 
 export class AdversaryAttack extends Attack {
 
-    steps: string[] = []
-    next() {
-        throw new Error("Method not implemented.")
-    }
-
     override actor: Actor & { system: AdversaryDataModel }
     override targetIds: string[]
 

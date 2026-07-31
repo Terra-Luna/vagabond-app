@@ -4,7 +4,7 @@ import { HeroAttack } from "../HeroAttack"
 import { AdversaryAttack } from "../AdversaryAttack"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { SkillCheckResult } from "../SkillCheck"
-import { DamageRollResult } from "../DamageRoll"
+import { DamageRoll, DamageRollResult } from "../DamageRoll"
 import { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
 
 export interface AttackSnapshot {
@@ -15,9 +15,11 @@ export interface AttackSnapshot {
     actor: string
     targetIds: string[]
     title: string
+    damageRoll: any | undefined
     damageRollResult: DamageRollResult | undefined
     skillCheckResult: SkillCheckResult | undefined
     spellDelivery: SpellDeliverySnapshot | undefined
+    critChoice: "luck" | "damage" | "spellFx" | undefined
     isRerolled: boolean
     isResolved: boolean
 }
@@ -43,6 +45,7 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
         sourceId: atk.sourceId,
         spellDelivery: atk.spellDelivery,
         skillCheckResult: atk.skillCheckResult,
+        critChoice: atk.critChoice,
         isRerolled: atk.isRerolled
     } as AttackSnapshot
 }
@@ -51,22 +54,25 @@ export function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | un
     const actor = game.actors?.get(snapshot.actor) as Actor & { system: HeroDataModel } | undefined
     if (!actor) throw new Error("Actor not found")
 
-    const skillCheckClone = foundry.utils.deepClone(snapshot.skillCheckResult)
-    const damageRollClone = snapshot.damageRollResult
+    const skillCheckClone = snapshot.skillCheckResult
+        ? foundry.utils.deepClone(snapshot.skillCheckResult)
+        : undefined
+    const damageRollClone = snapshot.damageRoll
+        ? foundry.utils.deepClone(snapshot.damageRoll)
+        : undefined
+    const damageRollResultClone = snapshot.damageRollResult
         ? foundry.utils.deepClone(snapshot.damageRollResult)
         : undefined
 
-    const atk = new HeroAttack(
-        snapshot.title,
-        actor,
-        [...snapshot.targetIds]
-    )
+    const atk = new HeroAttack(snapshot.title, actor, [...snapshot.targetIds])
 
     atk.id = snapshot.id
     atk.userId = snapshot.userId
     atk.sourceId = snapshot.sourceId
     atk.spellDelivery = snapshot.spellDelivery
+    atk.critChoice = snapshot.critChoice
     atk.isRerolled = snapshot.isRerolled
+    atk.isResolved = snapshot.isResolved
     atk.skill = skillCheckClone?.skill
     atk.critThreshold = skillCheckClone?.critThreshold ?? 20
     atk.skillCheckModifier = skillCheckClone?.modifier ?? 0
@@ -74,7 +80,8 @@ export function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | un
     atk.isFavored = skillCheckClone?.favorHinder === vgLiteLang.FavorHinder.favor
     atk.isHindered = skillCheckClone?.favorHinder === vgLiteLang.FavorHinder.hinder
     atk.skillCheckResult = skillCheckClone
-    atk.damageRollResult = damageRollClone
+    atk.damageRoll = DamageRoll.fromJson(damageRollClone)
+    atk.damageRollResult = damageRollResultClone
 
     return atk
 }
@@ -87,13 +94,16 @@ export function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryA
     return undefined
 }
 
-function serializeCommonFields(atk: Attack): Omit<AttackSnapshot, 'type' | 'skillCheckResult' | 'sourceId' | 'isRerolled' | 'spellDelivery'> {
+function serializeCommonFields(
+    atk: Attack
+): Omit<AttackSnapshot, 'type' | 'skillCheckResult' | 'sourceId' | 'isRerolled' | 'spellDelivery' | 'critChoice'> {
     return {
         id: atk.id,
         userId: atk.userId,
         title: atk.title,
         actor: atk.actor.id ?? '',
         targetIds: atk.targetIds ?? [],
+        damageRoll: atk.damageRoll?.toJson(),
         damageRollResult: atk.damageRollResult,
         isResolved: atk.isResolved
     }

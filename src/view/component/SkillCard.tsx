@@ -46,15 +46,15 @@ export const HeaderWithClipPath = ({ children, showRightBorder, fullWidth }: { c
  *    {label: "Size", value: "Medium" }
  *  ]
  */
-export type CardSubHeaderValues = { label: string, value: string }
+export type CardSubHeaderValues = { label: string, value: string | ReactNode }
 export const CardSubHeader = ({ values, showRightBorder = true }: { values: CardSubHeaderValues[], showRightBorder?: boolean }) => {
     return (
         <HeaderWithClipPath showRightBorder={showRightBorder}>
             {
                 values.map((content, index) => (
                     <div key={content.label + index} className="flex gap-x-1">
-                        <p className={cardSubheaderLabel}>{content.label}:</p>
-                        <p className={cardSubheaderValue}>{content.value}</p>
+                        <div className={cardSubheaderLabel}>{content.label}:</div>
+                        <div className={cardSubheaderValue}>{content.value}</div>
                     </div>
                 ))
             }

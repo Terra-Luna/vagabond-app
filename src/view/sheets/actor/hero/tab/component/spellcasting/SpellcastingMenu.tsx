@@ -246,7 +246,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                 perDieDmgBonus: (hero.modifiers.damage.spellPerDie ?? 0) + (hero.modifiers.damage.allPerDie ?? 0)
             })
 
-            attack.next()
+            attack.initiate()
         }
     }
 

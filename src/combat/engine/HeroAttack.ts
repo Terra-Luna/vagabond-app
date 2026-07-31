@@ -7,6 +7,7 @@ import { SkillCheckResult, SkillCheck } from "./SkillCheck"
 import { InteractiveAttackChatCard } from "../ui/InteractiveAttackChatCard"
 import { serializeAttack } from "./util/attack-serializer"
 import { SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
+import { roll3dDice } from "../../utils/foundryUtils"
 
 export class HeroAttack extends Attack {
     override actor: Actor & { system: HeroDataModel }
@@ -23,9 +24,8 @@ export class HeroAttack extends Attack {
     skillCheckModifier: number = 0
     skillCheck?: SkillCheck
     skillCheckResult?: SkillCheckResult
+    critChoice?: 'luck' | 'damage' | 'spellFx'
     isRerolled: boolean = false
-
-    steps = ['config', 'skill_check', 'damage_roll', 'resolve', 'complete']
 
     constructor(title: string, actor: Actor & { system: HeroDataModel }, targetIds?: string[]) {
         super(title)
@@ -34,40 +34,29 @@ export class HeroAttack extends Attack {
         this.refreshSkillCheck()
     }
 
-    override async next() {
-        this.stepIndex += 1
-        const step = this.steps[this.stepIndex]
+    async initiate() {
+        this.refreshSkillCheck()
 
-        if (step === 'skill_check') {
-            this.refreshSkillCheck()
-
-            if (this.hasHostileTargets()) {
-                await this.rollSkillCheck()
-            }
-
-            await this.saveToActor(serializeAttack)
-
-            sendVgLiteChatMessage(
-                this.actor,
-                createElement(InteractiveAttackChatCard, { actorId: this.actor.id!, attackId: this.id }),
-                [...this.skillCheckResult?.rolls ?? []]
-            )
-
-            this.next()
+        if (this.hasHostileTargets()) {
+            await this.rollSkillCheck()
         }
-        else if (step === 'damage_roll') {
+
+        if (this.skillCheckResult && this.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure) {
             if (this.hasHostileTargets() || this.damageRoll?.dmgType === 'healing') {
-                await this.rollDamage(serializeAttack)
-            }
-            else {
-                this.next()
+                await this.rollDamage()
             }
         }
-        else if (step === 'resolve') {
-            this.isResolved = true
-            this.processDamageRoll()
-            await this.saveToActor(serializeAttack)
-        }
+
+        await this.save(serializeAttack)
+        this.sendChatMessage()
+    }
+
+    sendChatMessage() {
+        sendVgLiteChatMessage(
+            this.actor,
+            createElement(InteractiveAttackChatCard, { actorId: this.actor.id!, attackId: this.id }),
+            [...this.skillCheckResult?.rolls ?? []]
+        )
     }
 
     hasHostileTargets(): boolean {
@@ -114,26 +103,19 @@ export class HeroAttack extends Attack {
 
         this.isRerolled = isReroll
         this.skillCheckResult = await this.skillCheck?.roll()
-        this.saveToActor(serializeAttack)
+
+        await this.save(serializeAttack)
 
         if (isReroll) {
-            // Trigger a 3D dice roll without a chat message.
-            if ((game as any).dice3d) {
-                await (game as any).dice3d.showForRoll(this.skillCheckResult?.rolls[0], game.user, true)
-            }
-        }
-
-        if (this.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure && this.damageRollResult) {
-            this.trigger3dDamageRoll()
+            roll3dDice([this.skillCheckResult?.rolls[0]])
         }
     }
 
     /**
-     * Inserts a D6 roll into the results and updates the total.
-     * It adds 
+     * Inserts a D6 roll into the results and adds it to the total.
      * @returns 
      */
-    async addLateD6() {
+    async addLateFavor() {
         const result = this.skillCheckResult
         if (result && result.d6 === 0) {
             const newResult = { ...result }
@@ -142,27 +124,37 @@ export class HeroAttack extends Attack {
             newResult.total += d6.total
             newResult.rolls.push(d6)
             newResult.favorHinder = vgLiteLang.FavorHinder.favor
-            if (newResult.total + newResult.d6 >= result.difficulty) {
+
+            if (newResult.total >= result.difficulty) {
                 newResult.outcome = vgLiteLang.RollResult.success
             }
 
             this.skillCheckResult = newResult
             this.setFavored()
-            this.saveToActor(serializeAttack)
 
-            // Trigger a 3D dice roll without a chat message.
-            if ((game as any).dice3d) {
-                await (game as any).dice3d.showForRoll(d6, game.user, true)
+            roll3dDice([d6])
+
+            if (newResult.outcome !== vgLiteLang.RollResult.failure) {
+                console.log("addLateFavor(): Rolling damage...")
+                await this.rollDamage()
+            }
+            else {
+                this.isResolved = true
             }
 
+            await this.save(serializeAttack)
             return result
         }
         else {
-            ui.notifications?.warn("A D6 has already been applied to this Skill Check!")
+            ui.notifications?.warn("D6 already been applied to Skill Check")
             return undefined
         }
     }
 
+    /**
+     * Inserts a D6 roll into the results and subtracts it to the total.
+     * @returns 
+     */
     async addLateHinder() {
         const result = this.skillCheckResult
         if (result && result.d6 === 0) {
@@ -172,7 +164,8 @@ export class HeroAttack extends Attack {
             newResult.total -= d6.total
             newResult.rolls.push(d6)
             newResult.favorHinder = vgLiteLang.FavorHinder.hinder
-            if (newResult.total + newResult.d6 >= result.difficulty) {
+
+            if (newResult.total >= result.difficulty) {
                 newResult.outcome = vgLiteLang.RollResult.success
             }
             else {
@@ -181,17 +174,14 @@ export class HeroAttack extends Attack {
 
             this.skillCheckResult = newResult
             this.setHindered()
-            this.saveToActor(serializeAttack)
+            await this.save(serializeAttack)
 
-            // Trigger a 3D dice roll without a chat message.
-            if ((game as any).dice3d) {
-                await (game as any).dice3d.showForRoll(d6, game.user, true)
-            }
+            roll3dDice([d6])
 
             return result
         }
         else {
-            ui.notifications?.warn("A D6 has already been applied to this Skill Check!")
+            ui.notifications?.warn("Attack not hindered")
             return undefined
         }
     }
@@ -203,17 +193,61 @@ export class HeroAttack extends Attack {
             newResult.total += newResult.d6
             newResult.d6 = 0
             newResult.favorHinder = vgLiteLang.FavorHinder.none
-            if (newResult.total + newResult.d6 >= result.difficulty) {
+
+            if (newResult.total >= result.difficulty) {
                 newResult.outcome = vgLiteLang.RollResult.success
             }
 
             this.skillCheckResult = newResult
             this.clearFavorHinder()
-            this.saveToActor(serializeAttack)
+            await this.save(serializeAttack)
 
             return result
         }
     }
 
+    async addCritLuck() {
+        this.critChoice = 'luck'
+        const luck = this.actor.system.statuses.counters.luck
+        await this.actor.update({ 'system.statuses.counters.luck': luck + 1 } as Record<string, number>)
+        await this.save(serializeAttack)
+    }
+
+    async addCritDamage() {
+        if (this.skill && this.damageRollResult) {
+            this.critChoice = 'damage'
+            const skill = this.actor.system.skills[this.skill]
+            const critDmg = skill.isTrained
+                ? (20 - skill.value) / 2
+                : 20 - skill.value
+            this.damageRollResult.bonus += critDmg
+            this.damageRollResult.total += critDmg
+            await this.save(serializeAttack)
+        }
+    }
+
+    async addCritSpellFx() {
+        this.critChoice = 'spellFx'
+        await this.save(serializeAttack)
+    }
+
+    get showSkillCheck(): boolean {
+        return !!this.skillCheckResult?.outcome
+    }
+
+    get showCritChoices(): boolean {
+        return this.skillCheckResult?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
+    }
+
+    /**
+     * Show damage rolls section when there was either a successful
+     * damaging or effect-only attack OR if the PC has only targeted
+     * friendly players with healing and/or an effect.
+     */
+    override get showDamage(): boolean {
+        const isSuccess = !!this.skillCheckResult && this.skillCheckResult.outcome !== vgLiteLang.RollResult.failure
+        const isDmgOrEffect = super.showDamage || !!this.spellDelivery?.applyEffect
+        return (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets() && isDmgOrEffect)
+    }
 
 }

@@ -34,7 +34,30 @@ export class DamageRoll {
         this.perDieDmgBonus = args.perDieDmgBonus ?? 0
     }
 
-    public async roll(): Promise<DamageRollResult> {
+    toJson() {
+        return {
+            atkName: this.atkName,
+            dice: this.dice,
+            dmgType: this.dmgType,
+            flatDmgBonus: this.flatDmgBonus,
+            perDieDmgBonus: this.perDieDmgBonus,
+            result: this.result
+        }
+    }
+
+    static fromJson(json): DamageRoll {
+        const roll = new DamageRoll({
+            atkName: json.atkName,
+            dice: json.dice,
+            dmgType: json.dmgType,
+            flatDmgBonus: json.flatDmgBonus,
+            perDieDmgBonus: json.perDieDmgBonus
+        })
+        roll.result = json.result
+        return roll
+    }
+
+    async roll(): Promise<DamageRollResult> {
         const dice = this.dice.map(d => toRollFormula(d)).join("+")
         const damageRoll = await new Roll(`${dice}+${this.flatDmgBonus ?? 0}`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
