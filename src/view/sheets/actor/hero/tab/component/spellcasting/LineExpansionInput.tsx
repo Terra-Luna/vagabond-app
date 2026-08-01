@@ -4,7 +4,7 @@ import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const LineExpansionInut = ({ delivery, onUpdateHeight, onUpdateWidth }) => {
     return (
-        <div className="flex gap-x-2 ml-2">
+        <div className="flex gap-x-1">
             <div className="flex-col">
                 <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelHeight} />
                 <span className="text-2xl">

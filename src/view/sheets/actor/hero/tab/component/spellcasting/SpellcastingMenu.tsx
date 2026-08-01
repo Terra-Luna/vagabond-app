@@ -222,16 +222,18 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             </div>
                         </div>
 
-                        <div className="flex items-center">
+                        <div className="flex gap-x-1 items-end mt-4">
                             {renderConfigs()}
-                            {spell.damageType !== 'none' &&
-                                <DamageDiceInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
-                            }
-                            <div className="ml-auto mt-1 space-y-1">
-                                <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
-                                <SpellFocusToggle isFocused={delivery?.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
+                            <div className="flex items-end ml-auto">
+                                {spell.damageType !== 'none' &&
+                                    <DamageDiceInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
+                                }
+                                <div className="flex-col ml-2">
+                                    <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
+                                    <SpellFocusToggle isFocused={delivery?.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
+                                </div>
+                                <TotalMana cost={delivery?.manaCost ?? 0} />
                             </div>
-                            <TotalMana cost={delivery?.manaCost ?? 0} />
                         </div>
 
                         {/* Insufficient mana error message */}

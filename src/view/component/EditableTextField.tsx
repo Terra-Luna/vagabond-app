@@ -62,7 +62,9 @@ export const EditableTextField = (
     }, [editModeValue, onSave, updateProps])
 
     if (isInEditMode || boundValue === '' || boundValue == null) {
-        const inputStyle = (editModeValue === '' || editModeValue == null) ? `field-sizing-content border border-solid border-table-border rounded-sm px-1 ${className}` : `w-auto field-sizing-content ${className}`
+        const inputStyle = (editModeValue === '' || editModeValue == null)
+            ? `field-sizing-content border border-solid border-table-border rounded-sm px-1 ${className}`
+            : `w-auto field-sizing-content ${className}`
         return <div className="overflow-hidden">
             <form onSubmit={(e) => {
                 e.stopPropagation()
@@ -79,7 +81,7 @@ export const EditableTextField = (
         </div>
     }
     else {
-        const divStyle = `overflow-hidden whitespace-normal text-wrap ${className}`
+        const divStyle = `overflow-hidden whitespace-normal line-clamp-1 ${className}`
         return (<>
             {
                 enabled ?
@@ -108,14 +110,43 @@ export const EditableNameField = ({ actor }: { actor: Actor }) => {
 export const NumericCounterInput = ({ value, valueAppend = '', onUpdateValue, incrementBy = 1 }: {
     value: number, valueAppend?: string, onUpdateValue: (input) => void, incrementBy?: number
 }) => {
+    const inputRef = useRef<HTMLInputElement>(null)
+
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.value = value.toString();
+        }
+    }, [value])
+
+    const handleSave = () => {
+        if (inputRef.current) {
+            onUpdateValue(Number(inputRef.current.value) || 0)
+        }
+    }
+
     return (
-        <div className="flex">
-            <EditableTextField
-                boundValue={`${value.toString()}${valueAppend}`}
-                onSave={onUpdateValue as any}
-                className="min-w-[3ch]"
-            />
-            <div className="flex flex-col mt-1 ml-1">
+        <div className="flex items-center justify-center border border-solid border-table-border/50 rounded-sm">
+            <form onSubmit={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                handleSave()
+            }}>
+                <input
+                    ref={inputRef}
+                    type="number"
+                    defaultValue={`${value.toString()}`}
+                    onBlur={handleSave}
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
+                    className={`
+                        min-w-4 max-w-[3ch] text-center
+                        [appearance:textfield]
+                        [&::-webkit-outer-spin-button]:appearance-none
+                        [&::-webkit-inner-spin-button]:appearance-none
+                    `}
+                />
+            </form>
+            <p>{valueAppend}</p>
+            <div className="flex flex-col mt-1">
                 <Plus size={14} className="cursor-pointer" onClick={() => onUpdateValue(value + incrementBy)} />
                 <Minus size={14} className="cursor-pointer" onClick={() => onUpdateValue(value - incrementBy)} />
             </div>

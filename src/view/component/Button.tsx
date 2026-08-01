@@ -7,11 +7,11 @@ const primaryButtonClasses = `text-btn-primary-text font-paradigm bg-btn-primary
 const secondaryButtonClasses = `text-btn-secondary-text font-paradigm ${buttonShaping} border border-solid btn-secondary-text/80`
 const destructiveButtonClasses = `text-destructive-action font-paradigm ${buttonShaping} border border-solid border-destructive-action/50`
 
-export const PrimaryButton = ({ type = "button", children, icon = null, onClick = () => { } }: {
-    type?: any, children: ReactNode, icon?: ReactNode, onClick?: (e) => any
+export const PrimaryButton = ({ type = "button", title = '', children, icon = null, onClick = () => { } }: {
+    type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick?: (e) => any
 }) => {
     return (
-        <button type={type} onClick={(e) => onClick(e)} className={primaryButtonClasses}>
+        <button type={type} title={title} onClick={(e) => onClick(e)} className={primaryButtonClasses}>
             {icon ? icon : undefined}
             <div className="mx-0.5" />
             {children}
@@ -19,9 +19,11 @@ export const PrimaryButton = ({ type = "button", children, icon = null, onClick 
     )
 }
 
-export const SecondaryButton = ({ type = "button", children, icon = null, onClick }: { type?: any, children: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const SecondaryButton = ({ type = "button", title = '', children, icon = null, onClick }: {
+    type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick: () => any
+}) => {
     return (
-        <button type={type} onClick={onClick} className={secondaryButtonClasses}>
+        <button type={type} title={title} onClick={onClick} className={secondaryButtonClasses}>
             {icon ? icon : undefined}
             <div className="mx-0.5" />
             {children}
@@ -29,9 +31,11 @@ export const SecondaryButton = ({ type = "button", children, icon = null, onClic
     )
 }
 
-export const DestructiveButton = ({ type = "button", children, icon = <Trash size={14} />, onClick }: { type?: any, children?: ReactNode, icon?: ReactNode, onClick: () => any }) => {
+export const DestructiveButton = ({ type = "button", title = '', children, icon = <Trash size={14} />, onClick }: {
+    type?: any, title?: string, children?: ReactNode, icon?: ReactNode, onClick: () => any
+}) => {
     return (
-        <button type={type} onClick={onClick} className={destructiveButtonClasses}>
+        <button type={type} title={title} onClick={onClick} className={destructiveButtonClasses}>
             {icon}
             {children ? <>
                 <div className="mx-0.5" />

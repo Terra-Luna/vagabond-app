@@ -146,13 +146,13 @@ export class Line extends AreaOfEffectDelivery {
     width: number = 5
 
     setHeight(h: number) {
-        this.height = h
-        this.calculateBaseManaCost()
+        this.height = Math.max(this.baseHeight, h)
+        this.calculateManaCost()
     }
 
     setWidth(w: number) {
-        this.width = w
-        this.calculateBaseManaCost()
+        this.width = Math.max(this.baseWidth, w)
+        this.calculateManaCost()
     }
 
     override calculateManaCost() {
