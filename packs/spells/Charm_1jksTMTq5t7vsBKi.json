@@ -6,7 +6,14 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Enthrallment keeps the Target Charmed for the duration, ending early if it takes damage or if you Cast this Spell again.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
     "rules": [],
-    "damageType": "none"
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4",
+    "appliedEffects": [
+      {
+        "effect": "charmed"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -21,8 +28,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784763382757,
-    "modifiedTime": 1784763517899,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785610999294,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

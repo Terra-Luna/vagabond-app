@@ -7,7 +7,10 @@
     "description": "<p><span style=\"white-space:pre-wrap\">You revive a Target that died from damage in the last Round, restoring it with 1 HP and giving it 1 Fatigue. This Spell does not regenerate missing body parts.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">In addition, you can spend Mana with this Spell to heal a Target for d6 HP per Mana spent to do so.</span></p>",
     "rules": [],
     "damageType": "healing",
-    "baseManaCost": 1
+    "appliesBurn": false,
+    "burnCountdown": "Cd4",
+    "baseManaCost": 1,
+    "ignoreEffectCost": true
   },
   "effects": [],
   "folder": null,
@@ -22,7 +25,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496877261,
-    "modifiedTime": 1785478081622,
+    "modifiedTime": 1785595900120,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

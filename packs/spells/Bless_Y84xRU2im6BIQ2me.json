@@ -6,7 +6,9 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">For the duration, Targeted Objects count as Silvered, and Targeted Beings of your choice have a d4 bonus to Saves.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, if the Target is freestanding water, it permanently becomes holy water.</span></p>",
     "rules": [],
-    "damageType": "none"
+    "damageType": "none",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4"
   },
   "effects": [],
   "folder": null,

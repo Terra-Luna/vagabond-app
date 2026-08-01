@@ -6,7 +6,16 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">If the Target isn't immune to Fire, they are Burning (Cd4, or until it is doused). This Burning Status does not require Focus.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The Cd4 instead starts at a Cd6.</span></p>",
     "rules": [],
-    "damageType": "fire"
+    "damageType": "fire",
+    "appliesBurn": true,
+    "burnCountdown": "Cd4",
+    "appliedEffects": [
+      {
+        "effect": "burning",
+        "duration": "Cd4",
+        "critDuration": "Cd6"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -21,8 +30,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784763177817,
-    "modifiedTime": 1784763222530,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785607044138,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

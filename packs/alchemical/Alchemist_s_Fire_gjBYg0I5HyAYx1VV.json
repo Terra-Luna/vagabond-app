@@ -7,7 +7,9 @@
     "category": "alchemy",
     "damage": {
       "oneHand": "2d6",
-      "type": "fire"
+      "type": "fire",
+      "appliesBurn": true,
+      "burnCountdown": "Cd6"
     },
     "bulk": {
       "slots": 1,

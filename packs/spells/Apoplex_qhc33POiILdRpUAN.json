@@ -6,7 +6,15 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">The Target is Berserk for the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
     "rules": [],
-    "damageType": "fire"
+    "damageType": "fire",
+    "appliesBurn": false,
+    "burnCountdown": "Cd4",
+    "appliedEffects": [
+      {
+        "effect": "berserk",
+        "duration": ""
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -21,8 +29,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497306345,
-    "modifiedTime": 1784497330827,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785610835087,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
