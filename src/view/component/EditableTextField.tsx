@@ -107,20 +107,20 @@ export const EditableNameField = ({ actor }: { actor: Actor }) => {
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
 }
 
-export const NumericCounterInput = ({ value, valueAppend = '', onUpdateValue, incrementBy = 1 }: {
-    value: number, valueAppend?: string, onUpdateValue: (input) => void, incrementBy?: number
+export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1 }: {
+    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number
 }) => {
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
         if (inputRef.current) {
-            inputRef.current.value = value.toString();
+            inputRef.current.value = value.toString()
         }
     }, [value])
 
     const handleSave = () => {
         if (inputRef.current) {
-            onUpdateValue(Number(inputRef.current.value) || 0)
+            onChange(Number(inputRef.current.value) || 0)
         }
     }
 
@@ -147,8 +147,8 @@ export const NumericCounterInput = ({ value, valueAppend = '', onUpdateValue, in
             </form>
             <p>{valueAppend}</p>
             <div className="flex flex-col mt-1">
-                <Plus size={14} className="cursor-pointer" onClick={() => onUpdateValue(value + incrementBy)} />
-                <Minus size={14} className="cursor-pointer" onClick={() => onUpdateValue(value - incrementBy)} />
+                <Plus size={14} className="cursor-pointer" onClick={() => onChange(value + incrementBy)} />
+                <Minus size={14} className="cursor-pointer" onClick={() => onChange(value - incrementBy)} />
             </div>
         </div>
     )

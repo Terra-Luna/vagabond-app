@@ -8,13 +8,13 @@ export const LineExpansionInut = ({ delivery, onUpdateHeight, onUpdateWidth }) =
             <div className="flex-col">
                 <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelHeight} />
                 <span className="text-2xl">
-                    <NumericCounterInput value={delivery.height} onUpdateValue={onUpdateHeight} valueAppend={"'"} incrementBy={10} />
+                    <NumericCounterInput value={delivery.height} onChange={onUpdateHeight} valueAppend={"'"} incrementBy={10} />
                 </span>
             </div>
             <div className="flex-col">
                 <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelWidth} />
                 <span className="text-2xl">
-                    <NumericCounterInput value={delivery.width} onUpdateValue={onUpdateWidth} valueAppend={"'"} incrementBy={5} />
+                    <NumericCounterInput value={delivery.width} onChange={onUpdateWidth} valueAppend={"'"} incrementBy={5} />
                 </span>
             </div>
         </div>

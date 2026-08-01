@@ -13,7 +13,7 @@ export const SpellTargetInput = ({ delivery, onUpdateTargetCount, readOnly }: {
                     {
                         readOnly ?
                             <p>{delivery.targetTokenIds.length}</p> :
-                            <NumericCounterInput value={delivery.targetCount} onUpdateValue={onUpdateTargetCount} />
+                            <NumericCounterInput value={delivery.targetCount} onChange={onUpdateTargetCount} />
                     }
                 </span>
             </div>
