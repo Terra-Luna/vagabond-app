@@ -1,4 +1,4 @@
-import { Menu } from "lucide-react"
+import { Menu, Sword } from "lucide-react"
 import { useEffect } from "react"
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs"
 import { importHero } from "../../../../apps/importer/TagalongImporter"
@@ -18,6 +18,7 @@ import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextP
 import { lang } from "../../../../utils/lang"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
+import { AttacksTab } from "./tab/AttacksTab"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -119,18 +120,11 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
         <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />
         <Tabs className="flex flex-col min-h-0 grow text-lg">
             <TabList>
-                <Tab>
-                    {locale["tab-main"]}
-                </Tab>
-                <Tab>
-                    {locale["tab-inv"]}
-                </Tab>
-
+                <Tab>{locale["tab-main"]}</Tab>
+                <Tab>{locale["tab-inv"]}</Tab>
                 {hero.spells?.length > 0 && <Tab>{locale["tab-magic"]}</Tab>}
-
-                <Tab>
-                    {locale["tab-abilities"]}
-                </Tab>
+                <Tab> {locale["tab-abilities"]}</Tab>
+                <Tab title="Attack Builder"><Sword size={32} className="hover-glow" /></Tab>
             </TabList>
             <TabPanel className={tabPanelClasses}>
                 <MainTab hero={hero} />
@@ -145,6 +139,9 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
             }
             <TabPanel className={tabPanelClasses}>
                 <AbilitiesTab hero={hero} />
+            </TabPanel>
+            <TabPanel className={tabPanelClasses}>
+                <AttacksTab actor={hero.parent} />
             </TabPanel>
         </Tabs>
     </div >

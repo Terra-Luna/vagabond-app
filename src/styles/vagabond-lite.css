@@ -228,11 +228,17 @@
 
 @layer utilities {
   .vglite-hovered {
-    text-shadow: 0 0 10px var(--color-text-glow);
-  };
+    filter: drop-shadow(0 0 5px var(--color-text-glow));
+  }
+
+  .hover-glow {
+    /* Transition filter instead of text-shadow */
+    transition: filter 0.2s ease; 
+  }
+
   .hover-glow:hover {
-    text-shadow: 0 0 10px var(--color-text-glow);
-  };
+    filter: drop-shadow(0 0 5px var(--color-text-glow));
+  }
 }
 
 .react-tabs {
@@ -261,7 +267,12 @@
 }
 
 .react-tabs__tab {
-  color: var(--color-text-tab-active)
+  color: var(--color-text-tab-active);
+  transition: text-shadow 0.2s ease-in-out;
+}
+
+.react-tabs__tab:hover {
+  text-shadow: 0 0 10px var(--color-text-glow);
 }
 
 .react-tabs__tab--selected {

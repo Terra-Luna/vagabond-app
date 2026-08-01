@@ -1,5 +1,5 @@
 import { Sparkle, Sparkles, X } from "lucide-react"
-import { useCallback } from "react"
+import { useCallback, useEffect } from "react"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../../../utils/lang"
@@ -9,13 +9,17 @@ import { EditableTextField } from "../../../../../../component/EditableTextField
 import { useSpellCastingMenu } from "./SpellcastingMenu"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
-export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
+export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean }) => {
     const mana = hero.mana.current
     const updateMana = useCallback((auxClick: boolean) => {
         updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
 
     const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(hero.parent)
+
+    useEffect(() => {
+        setIsSpellcastingOpen(isCastMenuOpen)
+    }, [])
 
     return (
         <div>
@@ -41,7 +45,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                 </div>
 
                 {/* SPELLCASTING TAB */}
-                <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill ${glowOnHover} [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
+                {!isCastMenuOpen && <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill ${glowOnHover} [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
                     onClick={() => {
                         setIsSpellcastingOpen(!isSpellcastingOpen)
                     }}
@@ -57,7 +61,7 @@ export const ManaHUD = ({ hero }: { hero: HeroDataModel }) => {
                             </>
                     }
 
-                </div>
+                </div>}
             </div>
             <SpellcastingMenu />
         </div>
