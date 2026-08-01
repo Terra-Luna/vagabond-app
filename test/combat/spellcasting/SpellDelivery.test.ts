@@ -104,11 +104,12 @@ describe('spell delivery mana calc tests', () => {
 
     test('imbue', () => {
         // Setup
-        const imbue = new Imbue({ ...spell })
+        const imbue = new Imbue(spell)
         imbue.targetTokenIds = ['a', 'b', 'c']
+        imbue.damageDice = 3
         // Execute & Verify
         imbue.calculateManaCost()
-        expect(imbue.manaCost).toEqual(3)
+        expect(imbue.manaCost).toEqual(5)
     })
 
     test('remote single target', () => {

@@ -15,7 +15,7 @@ export interface SpellSnapshot {
     damageType: string,
     baseManaCost: number,
     ignoreEffectCost: boolean,
-    appliedEffects: { effect: string, duration: string }[]
+    appliedEffects: { effect: string, duration: string | unknown, critDuration: string | unknown }[]
 }
 
 /**

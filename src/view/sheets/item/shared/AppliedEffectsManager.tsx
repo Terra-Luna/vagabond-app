@@ -12,10 +12,7 @@ export const AppliedEffectsManager = ({ item }) => {
     }
 
     const handleAddEffect = async () => {
-        const newEffect = {
-            effect: statusEffectChoices[0] || "",
-            duration: "Cd4"
-        }
+        const newEffect = { effect: statusEffectChoices[0] || "" }
         await updateDocument([...appliedEffects, newEffect])
     }
 
