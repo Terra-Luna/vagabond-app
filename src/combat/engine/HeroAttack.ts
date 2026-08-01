@@ -52,7 +52,8 @@ export class HeroAttack extends Attack {
     }
 
     get showCritChoices(): boolean {
-        return this.skillCheckResult?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
+        const hasPermission = game.user?.isGM || game.user?.id === this.userId
+        return hasPermission && this.skillCheckResult?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
     }
 
     get isEffectOnlySpellAttack(): boolean {

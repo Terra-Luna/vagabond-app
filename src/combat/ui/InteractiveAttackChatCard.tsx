@@ -121,9 +121,10 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
     }, [attack, subRevision])
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
+        const hasPermission = game.user?.isGM || game.user?.id === attack.userId
         const isFailure = attack.skillCheckResult?.outcome === vgLiteLang.RollResult.failure && attack.skillCheckResult?.d6 === 0
         const hasResources = luck > 0 || studied > 0
-        return !attack.isResolved && !attack.isRerolled && isFailure && hasResources
+        return hasPermission && !attack.isResolved && !attack.isRerolled && isFailure && hasResources
     }, [luck, studied, attack, subRevision])
 
     const liveTargetIds = useLiveTargetSync(attack)
