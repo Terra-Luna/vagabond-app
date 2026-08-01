@@ -1,5 +1,5 @@
 import { PlayIcon, Trash, StopCircle } from "lucide-react"
-import { ReactNode, useState, useMemo, useCallback } from "react"
+import { ReactNode, useState, useMemo, useCallback, useEffect } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { CombatGroup } from "../../model/combat/VgLiteCombatant"
@@ -13,6 +13,30 @@ import { Gauge } from "../../view/component/Gauge"
 import { getCombatantStatuses } from "../engine/status"
 
 const getCombat = () => game.combat as VgLiteCombat
+
+const getIndexOfCombatant = (combatant) => {
+    const combatants = getCombat()?.combatants?.contents
+
+    if (!combatants?.length) {
+        return -1
+    }
+
+    const sortedCombatants = [...getHeroes(combatants), ...getAdversaries(combatants)]
+
+    return sortedCombatants.indexOf(combatant)
+}
+
+const getCombatantsBetweenIndices = (idx1, idx2) => {
+    const combatants = getCombat()?.combatants?.contents
+
+    if (!combatants?.length) {
+        return []
+    }
+
+    const sortedCombatants = [...getHeroes(combatants), ...getAdversaries(combatants)]
+
+    return sortedCombatants.slice(Math.min(idx1, idx2), Math.max(idx1, idx2) + 1)
+}
 
 export const CombatTracker = ({ data }) => {
     const { combat } = data
@@ -68,13 +92,35 @@ const GroupBody = ({ children }) => {
 
 const CombatantHeader = ({ token, combatant, name, children }) => {
     const [hovered, setIsHovered] = useState(false)
+    const [controlled, setIsControlled] = useState(false)
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
-    Hooks.on("hoverToken", (hoveredToken, hover) => {
-        if (hoveredToken === token) {
-            setIsHovered(hover)
+    useEffect(() => {
+        const hookId = Hooks.on("hoverToken", (hoveredToken, hover) => {
+            if (hoveredToken === token) {
+                setIsHovered(hover)
+            }
+        })
+        return () => {
+            Hooks.off("hoverToken", hookId)
         }
-    })
+    }, [])
+
+    useEffect(() => {
+        const hookId = Hooks.on("refreshToken", () => {
+            setIsControlled(!!game.canvas?.tokens?.controlled.includes(token))
+        })
+
+        const hookId2 = Hooks.on("controlToken", () => {
+            setIsControlled(!!game.canvas?.tokens?.controlled.includes(token))
+        })
+
+        return () => {
+            Hooks.off("refreshToken", hookId)
+            Hooks.off("controlToken", hookId2)
+        }
+    }, [token])
+
 
     const ctxMenuActions = useMemo<CtxMenuItem[]>(() => {
         return [
@@ -85,11 +131,10 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
 
     const isActiveCombatant = game.combat?.combatant === combatant
     const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
-
     return (
         <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions)}>
             <div className={`flex w-full ${opacityClass}`}>
-                <CombatTrackerPortrait src={token?.document.texture.src} />
+                <CombatTrackerPortrait src={token?.document.texture.src} disposition={token.disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} />
                 <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
                         <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
@@ -117,12 +162,20 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
     const onClick = useCallback((e: MouseEvent) => {
         if (token.controlled && e.shiftKey) {
             token.release()
-        } else {
+        } else if (e.shiftKey) {
+            // control all tokens between the first token clicked and this one
+            const otherCombatant = game.canvas?.tokens?.controlled[0]?.combatant
+            if (otherCombatant) {
+                getCombatantsBetweenIndices(getIndexOfCombatant(otherCombatant), getIndexOfCombatant(combatant)).forEach(comb => canvas?.tokens?.placeables.find(t => t.id === comb.token._id)?.control({ releaseOthers: false }))
+            }
+        } else if (e.ctrlKey) {
             token.control({ releaseOthers: (!e.shiftKey && !e.ctrlKey) });
         }
-
-        if (e.altKey) {
+        else if (e.altKey) {
             canvas?.ping(token.center)
+        } else {
+            token.control({ releaseOthers: true })
+            game.canvas?.animatePan({x: token.x, y: token.y});
         }
     }, [token])
 
@@ -146,10 +199,14 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
     )
 }
 
-const CombatTrackerPortrait = ({ src }) => {
+const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition }) => {
+    const dispositionColor = isControlled ? CONFIG.Canvas.dispositionColors.CONTROLLED : isHovered ? CONFIG.Canvas.dispositionColors[disposition] : ""
+    const borderColor = `#${dispositionColor.toString(16)}`
+    const borderStyle = (isHovered || isControlled) ? "border-solid border-2" : "";
     return (
         <img
-            className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer self-center" src={src} alt={''}
+            style={{ borderColor }}
+            className={`object-contain h-[54px] w-[54px] p-0.5 cursor-pointer mr-2 self-center ${borderStyle}`} src={src} alt={''}
         />
     )
 }
