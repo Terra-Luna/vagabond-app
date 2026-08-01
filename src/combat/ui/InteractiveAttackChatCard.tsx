@@ -232,7 +232,7 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             {/* TARGET TOKENS ARRAY */}
             {attack.showTargets &&
                 <div className="flex">
-                    {source && <ItemPortraitComponent item={source} size={54} className={'m-0'} />}
+                    {source && <ItemPortraitComponent item={source} size={54} className={'m-0 -mt-0.25'} />}
                     <div className="flex flex-col w-full">
                         <Header title={`Targets (x ${targets.length})`} />
                         <TargetsDisplay targets={targets} />

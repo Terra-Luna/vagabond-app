@@ -1,5 +1,4 @@
-import { VgLiteActiveEffect } from "../../../combat/documents/VgLiteActiveEffect"
-import { lang } from "../../../utils/lang"
+import { lang, vgLiteLang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
@@ -15,7 +14,7 @@ const alchemicalSchema = () => {
             type: new fields.StringField({ ...damageTypeOptions() }),
             appliedEffects: new fields.ArrayField(
                 new fields.SchemaField({
-                    effect: new fields.StringField({ ...requiredString, choices: VgLiteActiveEffect.statusEffects.map(it => it.id) }),
+                    effect: new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.StatusConditions) }),
                     duration: new fields.StringField({ ...requiredString, initial: "Cd4" })
                 }),
                 { initial: [] }

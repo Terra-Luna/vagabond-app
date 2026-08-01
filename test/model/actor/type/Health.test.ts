@@ -1,12 +1,12 @@
 import { describe, expect, test } from "@jest/globals"
-import { HeroDataModel, setMaxHP, validateCurrentHP } from "../../../../src/model/actor/HeroDataModel"
+import { setMaxHP, validateCurrentHP } from "../../../../src/model/actor/HeroDataModel"
 
 describe('health component tests', () => {
     test('hp cant exceed max', () => {
         //Setup
         const hero = { health: { current: 3, max: 2 } }
         //Execute
-        validateCurrentHP(hero as unknown as HeroDataModel)
+        validateCurrentHP(hero as any)
         //Verify
         expect(hero.health.current).toEqual(2)
     })
@@ -20,7 +20,7 @@ describe('health component tests', () => {
             statuses: { counters: { fatigue: 0 } }
         }
         //Execute
-        setMaxHP(hero as unknown as HeroDataModel)
+        setMaxHP(hero as any)
         //Verify
         expect(hero.health.max).toEqual(70)
     })
@@ -34,7 +34,7 @@ describe('health component tests', () => {
             statuses: { counters: { fatigue: 5 } }
         }
         //Execute
-        setMaxHP(hero as unknown as HeroDataModel)
+        setMaxHP(hero as any)
         //Verify
         expect(hero.health.max).toEqual(0)
     })

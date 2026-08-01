@@ -1,4 +1,3 @@
-import { VgLiteActiveEffect } from "../../../combat/documents/VgLiteActiveEffect"
 import { vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { fields, damageTypeOptions, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
@@ -11,7 +10,7 @@ const spellSchema = () => {
         damageType: new fields.StringField({ ...damageTypeOptions() }),
         appliedEffects: new fields.ArrayField(
             new fields.SchemaField({
-                effect: new fields.StringField({ ...requiredString, choices: VgLiteActiveEffect.statusEffects.map(it => it.id) }),
+                effect: new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.StatusConditions) }),
                 duration: new fields.StringField({ ...requiredString, initial: "Cd4" }),
                 critDuration: new fields.StringField({ ...optionalString })
             }),
