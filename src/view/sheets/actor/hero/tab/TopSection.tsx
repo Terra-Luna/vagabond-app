@@ -232,16 +232,15 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <>{
-            isStatsDrawerOpen ? <div className="absolute pt-1 pb-1 mt-1 -ml-11.5 space-y-4 bg-sheet-main-fill/75 rounded-bl-lg rounded-tl-lg border-2 border-solid border-section-header-fill border-r-transparent">
-                {
-                    stats.map(stat => (
-                        <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
-                    ))
-                }
-                {<div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
+            isStatsDrawerOpen &&
+            <div className="absolute pt-1 pb-1 mt-1 -ml-11.5 space-y-4 bg-sheet-main-fill/75 rounded-bl-lg rounded-tl-lg border-2 border-solid border-section-header-fill border-r-transparent">
+                {stats.map(stat => (
+                    <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
+                ))}
+                <div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
                     <ChevronRight size={28} />
-                </div>}
-            </div> : <></>
+                </div>
+            </div>
         }</>
     )
 }

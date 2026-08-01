@@ -21,11 +21,9 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
         <div className="mt-4 space-y-1">
             <div className="flex gap-x-1 items-center">
                 <ClassSheetSectionHeader text={vgLiteLang.ClassSheet.labelClassFeat} />
-                {isEditMode ? <Plus size={24} strokeWidth={3} className="text-text-header-tertiary cursor-pointer" onClick={onAddNewFeature} /> : <></>}
+                {isEditMode && <Plus size={24} strokeWidth={3} className="text-text-header-tertiary cursor-pointer" onClick={onAddNewFeature} />}
             </div>
-            {
-                isNewFeatureOpen ? <NewFeatureMenu item={item} setIsNewFeatureOpen={setIsNewFeatureOpen} /> : <></>
-            }
+            {isNewFeatureOpen && <NewFeatureMenu item={item} setIsNewFeatureOpen={setIsNewFeatureOpen} />}
             {
                 sortedFeats.map((feat, index) => (
                     <div key={index} onContextMenu={(e) => {

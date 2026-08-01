@@ -21,18 +21,17 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
         <EquipmentSheetSubtypeBody>
             <div className="mb-4">
                 <div className="flex gap-x-2 mb-2">
-                    {
-                        isEditMode ?
-                            <ItemSheetProperty
-                                label={lang.ItemSheet.capacity}
-                                value={
-                                    <EditableTextField
-                                        boundValue={item.system.capacity.toString()}
-                                        updateProps={{ object: item, path: ['capacity'] }}
-                                        placeholder={"2"}
-                                    />
-                                }
-                            /> : <></>
+                    {isEditMode &&
+                        <ItemSheetProperty
+                            label={lang.ItemSheet.capacity}
+                            value={
+                                <EditableTextField
+                                    boundValue={item.system.capacity.toString()}
+                                    updateProps={{ object: item, path: ['capacity'] }}
+                                    placeholder={"2"}
+                                />
+                            }
+                    />
                     }
                     <CapacityGauge label={lang.ItemSheet.capacity} capacityInfo={{
                         bulk: item.system.capacity - item.system.emptySlots,
@@ -40,24 +39,23 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
                         isOverEncumbered: false
                     }} />
                 </div>
-                {
-                    contents.length === 0 ?
-                        <p className="italic">{vgLiteLang.ItemSheet.drag}</p> :
-                        <div className="space-y-2">
-                            <InventoryItemsTable
-                                actor={owner}
-                                items={contents}
-                                contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
-                                showEquipColumn={false}
-                            />
-                            <div className="w-full mb-12">
-                                <div className="float-right">
-                                    <SecondaryButton onClick={() => item.update({ 'system.itemIds': [] } as Record<string, string[]>)}>
-                                        <div className="flex gap-x-2 items-center">{<Undo />}{"Extract all"}</div>
-                                    </SecondaryButton>
-                                </div>
+                {contents.length === 0
+                    ? <p className="italic">{vgLiteLang.ItemSheet.drag}</p>
+                    : <div className="space-y-2">
+                        <InventoryItemsTable
+                            actor={owner}
+                            items={contents}
+                            contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
+                            showEquipColumn={false}
+                        />
+                        <div className="w-full mb-12">
+                            <div className="float-right">
+                                <SecondaryButton onClick={() => item.update({ 'system.itemIds': [] } as Record<string, string[]>)}>
+                                    <div className="flex gap-x-2 items-center">{<Undo />}{"Extract all"}</div>
+                                </SecondaryButton>
                             </div>
                         </div>
+                    </div>
                 }
             </div>
         </EquipmentSheetSubtypeBody>

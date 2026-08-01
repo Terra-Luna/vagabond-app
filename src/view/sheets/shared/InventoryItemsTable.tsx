@@ -33,9 +33,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                         <th className="text-left pl-2 w-5/9">{vgLiteLang.HeroSheet.Inventory.item}</th>
                         <th className="text-center">{vgLiteLang.HeroSheet.Inventory.slots}</th>
                         <th className="text-center">{vgLiteLang.HeroSheet.Inventory.value}</th>
-                        {
-                            showEquipColumn ? <th className="text-center">{vgLiteLang.HeroSheet.Inventory.equip}</th> : <></>
-                        }
+                        {showEquipColumn && <th className="text-center">{vgLiteLang.HeroSheet.Inventory.equip}</th>}
                     </tr>
                 </thead>
                 <tbody className="font-eskapade">{
@@ -100,30 +98,32 @@ const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { typ
     return (
         <div onClick={toggleEquipState} onDoubleClick={(e) => { e.stopPropagation() }}>
             {
-                type === 'armor' ?
-                    <div>{
-                        isEquipped ?
-                            <Shield size={18} className={equippedIconStyle} /> :
-                            <Shield size={18} className={unEquipedIconStyle} />
-                    }</div> : <></>
+                type === 'armor' &&
+                <div>
+                    {isEquipped
+                        ? <Shield size={18} className={equippedIconStyle} />
+                        : <Shield size={18} className={unEquipedIconStyle} />
+                    }
+                </div>
             }
             {
-                type === 'weapon' ?
-                    <div>{
-                        isEquipped ?
-                            <div className="flex items-center -space-x-4 font-eskapade text-text-secondary">
+                type === 'weapon'
+                    ? <div>
+                        {isEquipped
+                            ? <div className="flex items-center -space-x-4 font-eskapade text-text-secondary">
                                 <p>{vgLiteLang.GripsAbbr[gripState]}</p>
                                 <HandFist size={18} className={equippedIconStyle} />
-                            </div> :
-                            <Hand size={18} className={unEquipedIconStyle} />
-                    }</div> :
-                    <div>{
-                        type !== 'armor' && type !== 'weapon' ? <>{
-                            isEquipped ?
-                                <HandFist size={18} className={equippedIconStyle} /> :
-                                <Hand size={18} className={unEquipedIconStyle} />
-                        }</> : <></>
-                    }</div>
+                            </div>
+                            : <Hand size={18} className={unEquipedIconStyle} />
+                        }
+                    </div>
+                    : <div>
+                        {type !== 'armor' && type !== 'weapon' && <>{
+                            isEquipped
+                                ? <HandFist size={18} className={equippedIconStyle} />
+                                : <Hand size={18} className={unEquipedIconStyle} />
+                        }</>}
+                    </div>
             }
         </div>
     )

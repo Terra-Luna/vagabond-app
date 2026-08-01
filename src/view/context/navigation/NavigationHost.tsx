@@ -49,14 +49,14 @@ export const NavigationHost = ({ children }: { children: ReactNode }) => {
     /**
      * Navigation buttons...
      */
-    const backButton = !isFirstStep ? (
+    const backButton = !isFirstStep && (
         <SecondaryButton onClick={onBack}>
             <div className="flex items-center gap-x-2">
                 <MoveLeft size={14} />
                 {vgLiteLang.ButtonActions.back}
             </div>
         </SecondaryButton>
-    ) : <></>
+    )
 
     const nextButton = (
         <PrimaryButton onClick={isLastStep ? onFinish : onNext}>

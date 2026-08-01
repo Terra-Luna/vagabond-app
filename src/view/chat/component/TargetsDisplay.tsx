@@ -11,45 +11,42 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div>
-            {
-                targets && targets.length > 0 ?
-                    <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
-                        {targets.map((target, index) => (
-                            <button
-                                key={target.id}
-                                title={target.token?.name}
-                                onClick={() => {
-                                    target.token?.control({ releaseOthers: true })
-                                    canvas?.animatePan({
-                                        x: target.token?.center.x,
-                                        y: target.token?.center.y
-                                    })
-                                }}
-                                onContextMenu={(e) => {
-                                    if (onRemoveTarget) {
-                                        onCtxMenu(e, [
-                                            {
-                                                icon: Trash,
-                                                label: vgLiteLang.ButtonActions.remove,
-                                                action: () => onRemoveTarget(index),
-                                                isDestructive: true
-                                            }
-                                        ])
-                                    }
-                                }}
-                                children={
-                                    <img
-                                        src={target.src}
-                                        alt={target.token?.name}
-                                        className={`object-contain h-[38px] w-[38px] cursor-pointer`}
+            {targets && targets.length > 0 &&
+                <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
+                    {targets.map((target, index) => (
+                        <button
+                            key={target.id}
+                            title={target.token?.name}
+                            onClick={() => {
+                                target.token?.control({ releaseOthers: true })
+                                canvas?.animatePan({
+                                    x: target.token?.center.x,
+                                    y: target.token?.center.y
+                                })
+                            }}
+                            onContextMenu={(e) => {
+                                if (onRemoveTarget) {
+                                    onCtxMenu(e, [
+                                        {
+                                            icon: Trash,
+                                            label: vgLiteLang.ButtonActions.remove,
+                                            action: () => onRemoveTarget(index),
+                                            isDestructive: true
+                                        }
+                                    ])
+                                }
+                            }}
+                            children={
+                                <img
+                                    src={target.src}
+                                    alt={target.token?.name}
+                                    className={`object-contain h-[38px] w-[38px] cursor-pointer`}
                                 />
                             } />
-                        ))}
-                    </div> : <></>
+                    ))}
+                </div>
             }
-            {
-                game.user?.isGM ? <ContextMenu /> : <></>
-            }
+            {game.user?.isGM && <ContextMenu />}
         </div>
     )
 }

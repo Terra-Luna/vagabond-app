@@ -12,7 +12,8 @@ const spellSchema = () => {
         appliedEffects: new fields.ArrayField(
             new fields.SchemaField({
                 effect: new fields.StringField({ ...requiredString, choices: VgLiteActiveEffect.statusEffects.map(it => it.id) }),
-                duration: new fields.StringField({ ...requiredString, initial: "Cd4" })
+                duration: new fields.StringField({ ...requiredString, initial: "Cd4" }),
+                critDuration: new fields.StringField({ ...optionalString })
             }),
             { initial: [] }
         )

@@ -37,7 +37,7 @@ export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                     </div>
                 ))
             }
-            {isEditMode ? <ContextMenu /> : <></>}
+            {isEditMode && <ContextMenu />}
         </div>
     )
 }

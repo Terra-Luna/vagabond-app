@@ -5,14 +5,14 @@ import { ItemSheetProperty } from "./ItemSheetLabelComponent"
 export const ItemValue = ({ item }) => {
     return (<>
         {
-            item.system.value ?
+            item.system.value &&
                 <ItemSheetProperty label={vgLiteLang.ItemSheet.value} value={
                     <div className="flex gap-x-1">
                         <CoinDisplay item={item} label={vgLiteLang.ItemSheet.g} path={'g'} />
                         <CoinDisplay item={item} label={vgLiteLang.ItemSheet.s} path={'s'} />
                         <CoinDisplay item={item} label={vgLiteLang.ItemSheet.c} path={'c'} />
                     </div>
-                } /> : <></>
+                } />
         }
     </>)
 }

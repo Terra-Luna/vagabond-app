@@ -9,10 +9,10 @@ import { removeWhitespace } from "../../../../../utils/stringUtil"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
 import { lang as fullLang } from "../../../../../utils/lang"
-import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { Material } from "../component/MaterialSelectionComponent"
 import { ItemSheetPropLabel, ItemSheetPropValue } from "../component/ItemSheetLabelComponent"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 
 const lang = fullLang.VGLITE
 
@@ -24,7 +24,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                     <WeaponTypes item={item} />
                     <Grip item={item} />
                     <Range item={item} />
-                    <DamageType item={item} />
+                    <DamageTypeSelector item={item} path={'system.damage.type'} />
                 </div>
                 <Damage item={item} />
                 <ExplodingDiceItemConfig item={item} />
@@ -67,18 +67,14 @@ const Damage = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
         <div>
             <ItemSheetPropLabel label={lang.ItemSheet.damage} />
             <div className="flex gap-x-2 items-center">
-                {
-                    gripStyle === 'H' || gripStyle === 'V' || gripStyle === 'F' ?
-                        <ItemDamageTextField item={item} label={lang.Grips.H} path={'oneHand'} />
-                        : <></>
+                {(gripStyle === 'H' || gripStyle === 'V' || gripStyle === 'F') &&
+                    <ItemDamageTextField item={item} label={lang.Grips.H} path={'oneHand'} />
                 }
-                {
-                    gripStyle === 'V' ? <p className="text-2xl text-text-tertiary">|</p> : <></>
+                {gripStyle === 'V' &&
+                    <p className="text-2xl text-text-tertiary">|</p>
                 }
-                {
-                    gripStyle === 'V' || gripStyle === 'HH' ?
-                        <ItemDamageTextField item={item} label={lang.Grips.HH} path={'twoHand'} />
-                        : <></>
+                {(gripStyle === 'V' || gripStyle === 'HH') &&
+                    <ItemDamageTextField item={item} label={lang.Grips.HH} path={'twoHand'} />
                 }
             </div>
         </div>
@@ -100,23 +96,6 @@ export const ItemDamageTextField = ({ item, label, path }) => {
     )
 }
 
-export const DamageType = ({ item }: { item: Item & { system: WeaponDataModel | AlchemicalItemDataModel } }) => {
-    return (
-        <div className="relative items-center gap-x-1">
-            <DropDown
-                label={lang.ItemSheet.damageType}
-                value={item.system.damage.type}
-                options={createDropdownEntries(lang.DamageTypes)}
-                updateMechanism={{ updatePath: ['damage', 'type'] }}
-                parent={item}
-            />
-            <div className="absolute bottom-1 right-0">
-                <DamageTypeIcon dmgType={item.system.damage.type} />
-            </div>
-        </div>
-    )
-}
-
 export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: WeaponDataModel | AlchemicalItemDataModel } }) => {
     const { isEditMode } = useEditMode()
     const onCheckExplodable = useCallback((canExplode) => {
@@ -131,18 +110,18 @@ export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: Weapo
     return (
         <>
             {
-                isEditMode || item.system.explodeData.canExplode ?
+                isEditMode || item.system.explodeData.canExplode &&
                     <div className="flex gap-x-4 my-2">
                         {
-                            isEditMode ?
+                            isEditMode &&
                                 <Checkbox
                                     label={lang.ItemSheet.canExplode}
                                     onCheckedChanged={onCheckExplodable}
                                     checked={item.system.explodeData.canExplode}
-                                /> : <></>
+                            />
                         }
                         {
-                            item.system.explodeData.canExplode ?
+                            item.system.explodeData.canExplode &&
                                 <div className="flex gap-x-2 items-center">
                                     <ItemSheetPropLabel label={`${lang.ItemSheet.explodesOn}:`} />
                                     <ItemSheetPropValue value={
@@ -152,9 +131,9 @@ export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: Weapo
                                             placeholder="7, 8"
                                         />
                                     } />
-                                </div> : <></>
+                                </div>
                         }
-                    </div> : <></>
+                    </div>
             }
         </>
     )

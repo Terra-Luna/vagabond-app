@@ -139,99 +139,92 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
 
     return (
         <div className="flex gap-x-1 items-end">
-            {
-                isEditMode ? <Trash size={20} className="text-destructive-action mr-2 mb-1 cursor-pointer" onClick={() => deletePerkPrerequisite(perk, prereqIndex)} /> : <></>
+            {isEditMode &&
+                <Trash size={20} className="text-destructive-action mr-2 mb-1 cursor-pointer" onClick={() => deletePerkPrerequisite(perk, prereqIndex)} />
             }
-            {
-                isEditMode || prereq.type !== 'stat' ?
-                    <div className="flex items-end">
-                        <DropDown
-                            value={prereq.type}
-                            options={createDropdownEntries(vgLiteLang.PrerequisiteTypes)}
-                            updateMechanism={{ onChange: onUpdateType }}
-                            parent={perk}
-                        />
-                        <p className="text-lg text-text-secondary font-eskapade font-bold mb-0.5">:</p>
-                    </div> : <></>
-            }
-            {
-                prereq.type === 'stat' ?
-                    <div className="flex items-end gap-x-1">
-                        <DropDown
-                            value={prereq.stat}
-                            options={createDropdownEntriesFromObj(vgLiteLang.Stat)}
-                            updateMechanism={{ onChange: onUpdateStat }}
-                            parent={perk}
-                        />
-                        <DropDown
-                            value={prereq.value?.toString() ?? ''}
-                            options={[
-                                { label: "3+", value: "3" },
-                                { label: "4+", value: "4" },
-                                { label: "5+", value: "5" },
-                                { label: "6+", value: "6" },
-                                { label: "7", value: "7" }
-                            ]}
-                            updateMechanism={{ onChange: onUpdateValue }}
-                            parent={perk}
-                        />
-                    </div> : <></>
-            }
-            {
-                prereq.type === 'spell' ?
+            {(isEditMode || prereq.type !== 'stat') &&
+                <div className="flex items-end">
                     <DropDown
-                        value={prereq.spell}
-                        options={spellDropdownItems}
-                        updateMechanism={{ onChange: onUpdateSpell }}
+                        value={prereq.type}
+                        options={createDropdownEntries(vgLiteLang.PrerequisiteTypes)}
+                        updateMechanism={{ onChange: onUpdateType }}
                         parent={perk}
-                    /> : <></>
+                    />
+                    <p className="text-lg text-text-secondary font-eskapade font-bold mb-0.5">:</p>
+                </div>
             }
-            {
-                prereq.type === 'trained' ?
-                    <>
-                        {
-                            prereq.skills.map((skillsGroup, skillGroupIndex) => (
-                                <div key={skillGroupIndex} className="flex gap-x-1 items-end">
-                                    {
-                                        skillsGroup.skillNames.map((skill, skillIndex) => (
-                                            <div key={skillGroupIndex + skillIndex + skill} className="flex gap-x-1 items-end">
-                                                <DropDown
-                                                    value={skill}
-                                                    options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
-                                                    updateMechanism={{ onChange: (skill) => onUpdateTrainedSkill(skillGroupIndex, skillIndex, skill) }}
-                                                    parent={perk}
+            {prereq.type === 'stat' &&
+                <div className="flex items-end gap-x-1">
+                    <DropDown
+                        value={prereq.stat}
+                        options={createDropdownEntriesFromObj(vgLiteLang.Stat)}
+                        updateMechanism={{ onChange: onUpdateStat }}
+                        parent={perk}
+                    />
+                    <DropDown
+                        value={prereq.value?.toString() ?? ''}
+                        options={[
+                            { label: "3+", value: "3" },
+                            { label: "4+", value: "4" },
+                            { label: "5+", value: "5" },
+                            { label: "6+", value: "6" },
+                            { label: "7", value: "7" }
+                        ]}
+                        updateMechanism={{ onChange: onUpdateValue }}
+                        parent={perk}
+                    />
+                </div>
+            }
+            {prereq.type === 'spell' &&
+                <DropDown
+                    value={prereq.spell}
+                    options={spellDropdownItems}
+                    updateMechanism={{ onChange: onUpdateSpell }}
+                    parent={perk}
+            />
+            }
+            {prereq.type === 'trained' &&
+                <>
+                    {
+                        prereq.skills.map((skillsGroup, skillGroupIndex) => (
+                            <div key={skillGroupIndex} className="flex gap-x-1 items-end">
+                                {
+                                    skillsGroup.skillNames.map((skill, skillIndex) => (
+                                        <div key={skillGroupIndex + skillIndex + skill} className="flex gap-x-1 items-end">
+                                            <DropDown
+                                                value={skill}
+                                                options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
+                                                updateMechanism={{ onChange: (skill) => onUpdateTrainedSkill(skillGroupIndex, skillIndex, skill) }}
+                                                parent={perk}
+                                            />
+                                            {isEditMode && skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 ?
+                                                <SingleSelect
+                                                    options={[
+                                                        { value: 'and', label: vgLiteLang.PerkSheet.prereqAnd },
+                                                        { value: 'or', label: vgLiteLang.PerkSheet.prereqOr }
+                                                    ]}
+                                                    value={skillsGroup.andOr}
+                                                    setValue={(selection) => onUpdateAndOr(skillGroupIndex, selection)}
+                                                    canUnselect={true}
+                                                /> :
+                                                <div>
+                                                    {skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 &&
+                                                        <p className="text-text-secondary mb-1">{andOrToSymbol(skillsGroup.andOr)}</p>
+                                                    }
+                                                </div>
+                                            }
+                                            {isEditMode && skillIndex === skillsGroup.skillNames.length - 1 &&
+                                                <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer mb-1"
+                                                    onClick={() => onAddTrainedSkill(skillGroupIndex)}
                                                 />
-                                                {
-                                                    isEditMode && skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 ?
-                                                        <SingleSelect
-                                                            options={[
-                                                                { value: 'and', label: vgLiteLang.PerkSheet.prereqAnd },
-                                                                { value: 'or', label: vgLiteLang.PerkSheet.prereqOr }
-                                                            ]}
-                                                            value={skillsGroup.andOr}
-                                                            setValue={(selection) => onUpdateAndOr(skillGroupIndex, selection)}
-                                                            canUnselect={true}
-                                                        /> :
-                                                        <div>
-                                                            {
-                                                                skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 ?
-                                                                    <p className="text-text-secondary mb-1">{andOrToSymbol(skillsGroup.andOr)}</p> : <></>
-                                                            }
-                                                        </div>
-                                                }
-                                                {
-                                                    isEditMode && skillIndex === skillsGroup.skillNames.length - 1 ?
-                                                        <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer mb-1"
-                                                            onClick={() => onAddTrainedSkill(skillGroupIndex)}
-                                                        /> : <></>
-                                                }
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            ))
-                        }
-                    </> : <></>
+                                            }
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        ))
+                }
+            </>
             }
         </div>
     )

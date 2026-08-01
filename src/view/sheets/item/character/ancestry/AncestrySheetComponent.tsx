@@ -18,21 +18,23 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
             bodyClassName="mt-2 mx-2"
             banner={<ItemSheetBanner item={item} />}
             body={<>
-                {
-                    isEditMode ? <div className="text-header-text-secondary flex gap-2 mb-2">
+                {isEditMode &&
+                    <div className="text-header-text-secondary flex gap-2 mb-2">
                         <DropDown label={lang.VGLITE.ItemSheet.size}
                             variant="alternate"
                             options={createDropdownEntries(lang.VGLITE.Sizes)}
                             parent={ancestry.parent}
                             updateMechanism={{ updatePath: ['beingSize'] }}
-                            value={ancestry.beingSize ?? ''} />
+                            value={ancestry.beingSize ?? ''}
+                        />
                         <DropDown label={lang.VGLITE.ItemSheet.type}
                             variant="alternate"
                             options={createDropdownEntries(lang.VGLITE.BeingTypes)}
                             parent={ancestry.parent}
                             updateMechanism={{ updatePath: ['beingType'] }}
-                            value={ancestry.beingType} />
-                    </div> : <></>
+                            value={ancestry.beingType}
+                        />
+                    </div>
                 }
 
                 <ItemRulesManager item={item} />

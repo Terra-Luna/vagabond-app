@@ -26,9 +26,7 @@ export const ActionMenuHeader = ({ label, onClick }) => {
     return (
         <div className="flex items-center gap-x-2">
             <p className="font-eskapade font-bold text-text-header-tertiary text-xl">{label}</p>
-            {
-                isEditMode ? <AddNewIconButton onClick={onClick} /> : <></>
-            }
+            {isEditMode && <AddNewIconButton onClick={onClick} />}
         </div>
     )
 }
@@ -52,12 +50,11 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                 onClick={() => onClickActionCombo(adv)}
                 onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}
             >
-                {
-                    adv.combo.name !== '' ?
-                        <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
-                            <p className="font-paradigm font-bold">{locale.AdversarySheet.combo}:</p>
-                            <p className="text-text-secondary">{adv.combo.name}</p>
-                        </div> : <></>
+                {adv.combo.name !== '' &&
+                    <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
+                        <p className="font-paradigm font-bold">{locale.AdversarySheet.combo}:</p>
+                        <p className="text-text-secondary">{adv.combo.name}</p>
+                    </div>
                 }
             </div>
             {/* DISPLAY ALL ACTIONS */}
@@ -84,7 +81,7 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                 <div className="ml-2">
                                     <EnrichedContent content={act.effect} styleClasses="text-text-secondary" />
                                     {
-                                        act.damage.roll ?
+                                        act.damage.roll &&
                                             <div className={`flex gap-2 ${glowOnHover}`} onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}>
                                                 <p className="text-text-secondary">Dmg:</p>
                                                 <p className={damageRoll}>{act.damage.roll}</p>
@@ -99,12 +96,12 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                                                 }}>
                                                     {act.damage.avg}
                                                 </p>
-                                            </div> : <></>
+                                            </div>
                                     }
-                                    {
-                                        act.recharge != null && act.recharge != '' ?
-                                            <div className="flex gap-x-2 text-text-secondary"> {'Recharge'}<EnrichedContent content={act.recharge} /></div>
-                                            : <></>
+                                    {act.recharge != null && act.recharge != '' &&
+                                        <div className="flex gap-x-2 text-text-secondary">
+                                            {'Recharge'}<EnrichedContent content={act.recharge} />
+                                        </div>
                                     }
                                 </div>
                             </div>
@@ -112,7 +109,7 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                     })
                 }
             </div>
-            {isEditMode ? <ContextMenu /> : <></>}
+            {isEditMode && <ContextMenu />}
         </div>
     )
 }

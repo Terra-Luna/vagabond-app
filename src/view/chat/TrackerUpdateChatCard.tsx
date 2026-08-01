@@ -51,11 +51,9 @@ const TrackerIcon = ({ resource }: { resource: string }) => {
     const layout = "float-left mr-1"
     return (<>
         {
-            resource === 'luck' ?
-                <Clover size={size} strokeWidth={1} className={`text-ic-luck ${layout}`} /> : (
-                    resource === 'studied' ?
-                        <BookMarked size={size} strokeWidth={1} className={`text-ic-studied ${layout}`} /> : <></>
-                )
+            resource === 'luck'
+                ? <Clover size={size} strokeWidth={1} className={`text-ic-luck ${layout}`} />
+                : (resource === 'studied' && <BookMarked size={size} strokeWidth={1} className={`text-ic-studied ${layout}`} />)
         }
     </>)
 }

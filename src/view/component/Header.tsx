@@ -4,9 +4,7 @@ export const Header = ({ title, collapseButton, textLeft = false }: { title: str
             {textLeft ? <div className="pl-2" /> : <Divider />}
             <div>{title}</div>
             <Divider />
-            {
-                collapseButton ? <div className="mr-2">{collapseButton}</div> : <></>
-            }
+            {collapseButton && <div className="mr-2">{collapseButton}</div>}
         </div>
     )
 }

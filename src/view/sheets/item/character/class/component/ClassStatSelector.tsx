@@ -9,7 +9,7 @@ export const KeyStatsSelector = ({ item }: { item: Item & { system: ClassDataMod
     return (
         <div className="flex gap-x-1">
             <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelKeyStats}:`} />
-            {isEditMode ? <StatsSelector item={item} /> : <></>}
+            {isEditMode && <StatsSelector item={item} />}
             <ClassSheetText text={item.system.keyStats.map(it => vgLiteLang.Stat[it].name).join(", ")} />
         </div>
     )

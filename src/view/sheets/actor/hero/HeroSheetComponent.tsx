@@ -125,9 +125,9 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <Tab>
                     {locale["tab-inv"]}
                 </Tab>
-                {
-                    hero.spells?.length > 0 ? <Tab>{locale["tab-magic"]}</Tab> : <></>
-                }
+
+                {hero.spells?.length > 0 && <Tab>{locale["tab-magic"]}</Tab>}
+
                 <Tab>
                     {locale["tab-abilities"]}
                 </Tab>
@@ -138,10 +138,10 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
             <TabPanel className={tabPanelClasses}>
                 <InventoryTab hero={hero} />
             </TabPanel>
-            {
-                hero.spells?.length > 0 ? <TabPanel className={tabPanelClasses}>
+            {hero.spells?.length > 0 &&
+                <TabPanel className={tabPanelClasses}>
                     <MagicTab hero={hero} />
-                </TabPanel> : <></>
+                </TabPanel>
             }
             <TabPanel className={tabPanelClasses}>
                 <AbilitiesTab hero={hero} />

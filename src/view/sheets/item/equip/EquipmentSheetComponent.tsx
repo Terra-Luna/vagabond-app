@@ -105,8 +105,7 @@ const Bulk = ({ item }) => {
                     placeholder="0"
                 />
             } />
-            {
-                isEditMode || item.system.bulk?.isStackable ?
+            {isEditMode || item.system.bulk?.isStackable &&
                     <div>
                         <ItemSheetProperty label={lang.ItemSheet.stackable} value={
                             <Checkbox
@@ -122,17 +121,16 @@ const Bulk = ({ item }) => {
                                 placeholder="1"
                             />
                         } />
-                    </div> : <></>
+                </div>
             }
-            {
-                item.system.bulk?.isStackable && item.system.bulk?.slots === 0 ?
+            {item.system.bulk?.isStackable && item.system.bulk?.slots === 0 &&
                     <ItemSheetProperty label={lang.ItemSheet.stackSize} value={
                         <EditableTextField
                             boundValue={item.system.bulk?.stackSize}
                             updateProps={{ object: item, path: ['bulk', 'stackSize'] }}
                             placeholder="100"
                         />
-                    } /> : <></>
+                    } />
             }
         </div>
     )

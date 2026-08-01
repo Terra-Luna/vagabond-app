@@ -58,15 +58,15 @@ export const useContextMenu = () => {
                 {
                     menuItems.map((item) => (
                         <div key={item.label}>
-                            {item.isDestructive ? <Divider /> : <></>}
+                            {item.isDestructive && <Divider />}
                             <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : ctxMenuTextStyle} onClick={item.action}>
-                                {item.icon ?
+                                {item.icon &&
                                     <div className="flex items-center">
                                         {formattedIcon(item.icon, item.isDestructive)}
                                         <div className="mx-1" />
                                         <p className="my-1">{item.label}</p>
                                         <div className="mr-1" />
-                                    </div> : <></>
+                                    </div>
                                 }
                             </MenuItem>
                         </div>

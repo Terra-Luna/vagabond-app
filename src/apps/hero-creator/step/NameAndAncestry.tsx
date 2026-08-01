@@ -46,11 +46,10 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navB
                         onChange={(val) => onSelectAncestry(val)}
                     />
                 </div>
-                {
-                    ancestryItem ?
-                        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                            <AncestryReactComponent item={ancestryItem} />
-                        </EditModeContextProvider> : <></>
+                {ancestryItem &&
+                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                        <AncestryReactComponent item={ancestryItem} />
+                    </EditModeContextProvider>
                 }
             </div>
         )

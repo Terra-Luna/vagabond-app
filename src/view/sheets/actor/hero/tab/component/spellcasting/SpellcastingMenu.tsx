@@ -221,6 +221,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                                 </PrimaryButton>
                             </div>
                         </div>
+
                         <div className="flex items-center">
                             {renderConfigs()}
                             {spell.damageType !== 'none' &&
@@ -232,9 +233,11 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             </div>
                             <TotalMana cost={delivery?.manaCost ?? 0} />
                         </div>
-                        {
-                            (delivery?.manaCost ?? 0) > hero.mana.current ? <SpellcastingErrMsg /> : <></>
-                        }
+
+                        {/* Insufficient mana error message */}
+                        {(delivery?.manaCost ?? 0) > hero.mana.current && <SpellcastingErrMsg />}
+
+                        {/* User-help description of the chosen delivery */}
                         <SpellcastingSubtext text={delivery?.description ?? ''} />
                     </div>
             }

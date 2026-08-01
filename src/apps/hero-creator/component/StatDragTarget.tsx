@@ -12,9 +12,7 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
         <div>
             <div className="flex gap-x-1 justify-center">
                 <HeroCreationLabel text={stats[stat].name} />
-                {
-                    isKeyStat ? <Key size={24} className="text-text-header-tertiary" strokeWidth={2} /> : <></>
-                }
+                {isKeyStat && <Key size={24} className="text-text-header-tertiary" strokeWidth={2} />}
             </div>
             <div
                 onDragOver={(e) => {

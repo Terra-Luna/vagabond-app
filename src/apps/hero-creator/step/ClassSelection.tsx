@@ -44,11 +44,10 @@ export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navBu
                     options={classOpts ?? []}
                     onChange={onSelectClass}
                 />
-                {
-                    classItem ?
-                        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                            <ClassSheetReactComponent item={classItem} />
-                        </EditModeContextProvider> : <></>
+                {classItem &&
+                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                        <ClassSheetReactComponent item={classItem} />
+                    </EditModeContextProvider>
                 }
             </div>
         )

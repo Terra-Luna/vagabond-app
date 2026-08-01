@@ -18,31 +18,30 @@ export const OptionsSelectionMenu = ({ obj, label, path, options }: {
     return (
         <div>
             <div className="flex items-center">
-                {label ? label : <></>}
-                {
-                    isEditMode ?
-                        <Menu menuButton={<SquarePen size={16} className={menuOptionText} />}>
-                            <div className={menuOptionContainer}>
-                                {
-                                    options.map(opt => (
-                                        <MenuItem
-                                            key={opt.key}
-                                            onClick={(e) => {
-                                                e.keepOpen = true
-                                                options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
-                                                updateDocumentAtPath(obj, path, options.filter(it => it.isSelected).map(it => it.key))
-                                            }}
-                                        >
-                                            {
-                                                opt.isSelected ?
-                                                    <p className={menuOptionTextSelected}>{opt.value}</p> :
-                                                    <p className={menuOptionTextDefault}>{opt.value}</p>
-                                            }
-                                        </MenuItem>
-                                    ))
-                                }
-                            </div>
-                        </Menu> : <></>
+                {label && label}
+                {isEditMode &&
+                    <Menu menuButton={<SquarePen size={16} className={menuOptionText} />}>
+                        <div className={menuOptionContainer}>
+                            {
+                                options.map(opt => (
+                                    <MenuItem
+                                        key={opt.key}
+                                        onClick={(e) => {
+                                            e.keepOpen = true
+                                            options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
+                                            updateDocumentAtPath(obj, path, options.filter(it => it.isSelected).map(it => it.key))
+                                        }}
+                                    >
+                                        {
+                                            opt.isSelected ?
+                                                <p className={menuOptionTextSelected}>{opt.value}</p> :
+                                                <p className={menuOptionTextDefault}>{opt.value}</p>
+                                        }
+                                    </MenuItem>
+                                ))
+                            }
+                        </div>
+                    </Menu>
                 }
             </div>
         </div>
