@@ -14,6 +14,7 @@ export class HeroAttack extends Attack {
     override targetIds?: string[]
 
     sourceId: string = ''
+    skipSkillCheck: boolean = false
     skill: string | undefined
     difficulty: number = 20
     critThreshold: number = 20
@@ -34,21 +35,51 @@ export class HeroAttack extends Attack {
         this.refreshSkillCheck()
     }
 
+    private get isSuccessOrCrit(): boolean {
+        return this.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure;
+    }
+
     private get isEligibleForDmgRoll(): boolean {
-        return this.hasHostileTargets() || this.damageRoll?.dmgType === 'healing'
+        return this.hasHostileTargets || this.damageRoll?.dmgType === 'healing'
+    }
+
+    get hasHostileTargets(): boolean {
+        return this.targetIds?.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1) ?? false
+    }
+
+    get showSkillCheck(): boolean {
+        return !!this.skillCheckResult?.outcome && !this.skipSkillCheck
+    }
+
+    get showCritChoices(): boolean {
+        return this.skillCheckResult?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
+    }
+
+    get isEffectOnlySpellAttack(): boolean {
+        return this.spellDelivery?.applyEffect ?? false
+    }
+
+    /**
+     * Show damage rolls section when there was either a successful
+     * damaging or effect-only attack OR if the PC has only targeted
+     * friendly players with healing and/or an effect. Additionally,
+     * some cases (Imbue delivery) may skip the skill check altogether.
+     */
+    override get showDamage(): boolean {
+        const isSuccess = this.skipSkillCheck || this.isSuccessOrCrit
+        const isDmgOrEffect = super.showDamage || this.isEffectOnlySpellAttack
+        return (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets && isDmgOrEffect)
     }
 
     async initiate() {
         this.refreshSkillCheck()
 
-        if (this.hasHostileTargets()) {
+        if (this.hasHostileTargets && !this.skipSkillCheck) {
             await this.rollSkillCheck()
         }
 
-        if (this.skillCheckResult && this.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure) {
-            if (this.isEligibleForDmgRoll) {
-                await this.rollDamage()
-            }
+        if (this.skipSkillCheck || this.isSuccessOrCrit && this.isEligibleForDmgRoll) {
+            await this.rollDamage()
         }
 
         await this.save(serializeAttack)
@@ -61,10 +92,6 @@ export class HeroAttack extends Attack {
             createElement(InteractiveAttackChatCard, { actorId: this.actor.id!, attackId: this.id }),
             [...this.skillCheckResult?.rolls ?? []]
         )
-    }
-
-    hasHostileTargets(): boolean {
-        return this.targetIds?.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1) ?? false
     }
 
     setFavored() {
@@ -248,25 +275,6 @@ export class HeroAttack extends Attack {
     async addCritSpellFx() {
         this.critChoice = 'spellFx'
         await this.save(serializeAttack)
-    }
-
-    get showSkillCheck(): boolean {
-        return !!this.skillCheckResult?.outcome
-    }
-
-    get showCritChoices(): boolean {
-        return this.skillCheckResult?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
-    }
-
-    /**
-     * Show damage rolls section when there was either a successful
-     * damaging or effect-only attack OR if the PC has only targeted
-     * friendly players with healing and/or an effect.
-     */
-    override get showDamage(): boolean {
-        const isSuccess = !!this.skillCheckResult && this.skillCheckResult.outcome !== vgLiteLang.RollResult.failure
-        const isDmgOrEffect = super.showDamage || !!this.spellDelivery?.applyEffect
-        return (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets() && isDmgOrEffect)
     }
 
 }

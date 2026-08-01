@@ -4,12 +4,12 @@ import { useEditMode } from "../context/EditModeContext/Hooks"
 
 interface CheckboxProps {
     label: string
-    onCheckedChanged: (checked: boolean) => void
     checked: boolean,
+    onCheckedChanged: (checked: boolean) => void
     inverted?: boolean,
 }
 
-export const Checkbox = ({ label, onCheckedChanged, checked, inverted = false }: CheckboxProps) => {
+export const Checkbox = ({ label, checked, onCheckedChanged, inverted = false }: CheckboxProps) => {
     const { isEditMode } = useEditMode()
     return (
         <label

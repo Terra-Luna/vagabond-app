@@ -1,3 +1,4 @@
+import { VgLiteActiveEffect } from "../../../combat/documents/VgLiteActiveEffect"
 import { lang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
@@ -12,8 +13,13 @@ const alchemicalSchema = () => {
         damage: new fields.SchemaField({
             oneHand: new fields.StringField({ ...optionalString, initial: '1d6' }),
             type: new fields.StringField({ ...damageTypeOptions() }),
-            appliesBurn: new fields.BooleanField({ initial: false }),
-            burnCountdown: new fields.StringField({ ...optionalString, blank: true, initial: '' })
+            appliedEffects: new fields.ArrayField(
+                new fields.SchemaField({
+                    effect: new fields.StringField({ ...requiredString, choices: VgLiteActiveEffect.statusEffects.map(it => it.id) }),
+                    duration: new fields.StringField({ ...requiredString, initial: "Cd4" })
+                }),
+                { initial: [] }
+            )
         }),
         explodeData: new fields.SchemaField({
             canExplode: new fields.BooleanField({ initial: false }),

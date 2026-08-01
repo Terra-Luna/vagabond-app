@@ -692,12 +692,7 @@
       "imbue": {
         "name": "Imbue",
         "targetLabel": "Targets",
-        "description": "Targets a Weapon equipped by a willing Being within Far, which can then deliver the Spell as if by Touch if you spend 1 Mana to do so when the attack hits. The Attack Check is used for the Cast Check."
-      },
-      "imbuedeliv": {
-        "name": "Imbue Delivery",
-        "targetLabel": "",
-        "description": "Deliver a spell from a previously Imbued weapon as if by touch. The Attack Check is used for the Cast Check."
+        "description": "Choose a Weapon within Far. You can Cast the Spell against its attack Targets by spending 1 Mana per Target, using the Attack Check for the Cast Check. This is one damage instance, meaning Armor only applies to the total damage."
       },
       "glyph": {
         "name": "Glyph",
@@ -766,9 +761,10 @@
       "damage": "Damage",
       "dmg": "Dmg",
       "damageType": "Damage Type",
-      "burn": "Applies Burn",
+      "effects": "Applied Effects",
       "duration": "Duration",
-      "burnDuration": "Burn Duration",
+      "ignoreEffCost": "Ignore Effect Cost",
+      "baseManaCost": "Base Mana Cost",
       "explodingDice": "Exploding Dice",
       "canExplode": "Exploding Dice",
       "explodesOn": "Explodes On",

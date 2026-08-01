@@ -4,7 +4,9 @@ import { sendVgLiteChatMessage } from "../../../chat/ChatCardSerializer"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
 import { useContextMenu, CtxMenuItem } from "../../../component/ContextMenu"
 
-export const ItemPortraitComponent = ({ item, size=56 }: { item: Item, size?: number }) => {
+export const ItemPortraitComponent = ({ item, size = 56, className }: {
+    item: Item, size?: number, className?: string
+}) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const editImage = () => {
@@ -30,7 +32,7 @@ export const ItemPortraitComponent = ({ item, size=56 }: { item: Item, size?: nu
     return (
         <div>
             {item.img == null ? <></> :
-                <div className="mt-0.5 mb-1 mr-2">
+                <div className={`${className ? className : 'mt-0.5 mb-1 mr-2'}`}>
                     <img
                         className={`object-contain border border-solid border-text-header-primary rounded-sm`}
                         width={size}

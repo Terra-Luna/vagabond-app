@@ -6,9 +6,7 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You animate an Item that occupies no more than 1 Slot in the Area or carried by the Target.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">For the duration, the Item gains a Speed of 30' (Fly), and uses the Object Armor &amp; HP rules (p. 12) for its Stats. It obeys your commands, which you can issue when you Focus on this Spell. If it is a Weapon, it can make attacks using your Cast Skill.</span></p>",
     "rules": [],
-    "damageType": "none",
-    "appliesBurn": false,
-    "burnCountdown": "Cd4"
+    "damageType": "none"
   },
   "effects": [],
   "folder": null,

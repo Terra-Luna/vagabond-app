@@ -6,9 +6,7 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">The Target can skip their Move to teleport to an empty space they can see within Near. They can teleport through space occupied by other Beings, but can't teleport through spaces they couldn't otherwise Move through.</span></p>",
     "rules": [],
-    "damageType": "none",
-    "appliesBurn": false,
-    "burnCountdown": "Cd4"
+    "damageType": "none"
   },
   "effects": [],
   "folder": null,

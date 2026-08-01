@@ -38,17 +38,16 @@ export abstract class Attack {
     }
 
     get showTargets(): boolean {
-        return !!this.targetIds?.length
+        return (this.targetIds?.length ?? 0) > 0
     }
 
     get showDamage(): boolean {
-        return !!this.damageRollResult?.total
+        return (this.damageRollResult?.total ?? 0) > 0
     }
 
     async rollDamage() {
         if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRollResult) {
             this.damageRollResult = await this.damageRoll.roll()
-            console.log("Rolling damage...", this.damageRollResult)
             roll3dDice(this.damageRollResult?.rolls ?? [])
         }
     }

@@ -4,23 +4,16 @@ import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { TargetsDisplay } from "./component/TargetsDisplay"
 import { ImageWithDamageTypeBadge } from "../component/DamageTypeIcon"
-import { vgLiteLang } from "../../utils/lang"
-import { glowOnHover } from "../common/text-styles"
 import { CardSubHeaderValues } from "../component/SkillCard"
-import { sendCountdownRollMessage } from "./ChatCardSerializer"
-import { CountdownRollChatCard } from "./CountdownChatCard"
 import { useState, useCallback } from "react"
-import { CountdownRoll } from "../../combat/engine/CountdownRoll"
 
-export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], description, tokenIds = [], appliesBurn = false, burnDuration = '' }: {
+export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], description, tokenIds = [] }: {
     actorId: string | null,
     img?: string,
     title: string,
     subtitle?: CardSubHeaderValues[],
     description: string,
-    tokenIds?: string[],
-    appliesBurn?: boolean,
-    burnDuration?: string
+    tokenIds?: string[]
 }) => {
     const actor = actorId !== null ? game.actors?.get(actorId) : null
 
@@ -52,17 +45,6 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
                             <EnrichedContent content={description} />
                         </div>
                     </div>
-                    {
-                        appliesBurn ? <p
-                            className={`${glowOnHover}`}
-                            onClick={async () => {
-                                const cdRes = await new CountdownRoll({ name: title, duration: burnDuration }).roll()
-                                sendCountdownRollMessage(cdRes, CountdownRollChatCard)
-                            }}
-                        >
-                            {vgLiteLang.ItemSheet.burnDuration}: {burnDuration}
-                        </p> : <></>
-                    }
                 </div>
             }
         />

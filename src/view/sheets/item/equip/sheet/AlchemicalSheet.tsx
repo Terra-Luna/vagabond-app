@@ -3,12 +3,10 @@ import { DropDown } from "../../../../component/Dropdown"
 import { DamageType, ExplodingDiceItemConfig, ItemDamageTextField } from "../sheet/WeaponSheet"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { lang as fullLang } from "../../../../../utils/lang"
-import { EditableTextField } from "../../../../component/EditableTextField"
-import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ConsumableToggle } from "../component/ConsumableItemToggleComponent"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
-import { ItemSheetPropLabel, ItemSheetPropValue } from "../component/ItemSheetLabelComponent"
+import { ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
 const lang = fullLang.VGLITE
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
@@ -21,43 +19,23 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
                         !isEditMode && item.system.damage.type === 'none' ? <></> :
                             <DamageType item={item} />
                     }
-                    {
-                        item.system.damage.type === 'none' ? <></> :
-                            <div className="flex gap-x-8 items-top">
-                                <div>
-                                    <ItemSheetPropLabel
-                                        label={`
-                                            ${item.system.damage.type === 'healing' ?
-                                                lang.DamageTypes.healing :
-                                                (item.system.damage.type === 'mana' ? lang.DamageTypes.mana :
-                                                    lang.ItemSheet.damage
-                                                )
-                                            }
-                                        `}
-                                    />
-                                    <ItemDamageTextField item={item} label={''} path={'oneHand'} />
-                                </div>
-                                {
-                                    isEditMode || item.system.damage.appliesBurn ?
-                                        <div>
-                                            <Checkbox
-                                                label={lang.ItemSheet.burn}
-                                                onCheckedChanged={() =>
-                                                    item.update({ 'system.damage.appliesBurn': !item.system.damage.appliesBurn } as Record<string, boolean>)
-                                                }
-                                                checked={item.system.damage.appliesBurn}
-                                            />
-                                            <ItemSheetPropLabel label={lang.ItemSheet.duration} />
-                                            <ItemSheetPropValue value={
-                                                <EditableTextField
-                                                    boundValue={item.system.damage.burnCountdown}
-                                                    updateProps={{ object: item, path: ['damage', 'burnCountdown'] }}
-                                                    placeholder="Cd4"
-                                                />
-                                            } />
-                                        </div> : <></>
-                                }
+                    {item.system.damage.type !== 'none' &&
+                        <div className="flex gap-x-8 items-top">
+                            <div>
+                                <ItemSheetPropLabel
+                                    label={`
+                                        ${item.system.damage.type === 'healing'
+                                            ? lang.DamageTypes.healing
+                                            : (item.system.damage.type === 'mana'
+                                                ? lang.DamageTypes.mana
+                                                : lang.ItemSheet.damage
+                                            )
+                                        }
+                                    `}
+                                />
+                                <ItemDamageTextField item={item} label={''} path={'oneHand'} />
                             </div>
+                        </div>
                     }
                 </div>
                 <ConsumableToggle item={item} />

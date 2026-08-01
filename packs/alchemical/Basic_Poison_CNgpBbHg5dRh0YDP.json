@@ -31,9 +31,7 @@
     "alchemyCategory": "poison",
     "damage": {
       "oneHand": "0",
-      "type": "poison",
-      "appliesBurn": false,
-      "burnCountdown": ""
+      "type": "poison"
     },
     "explodeData": {
       "canExplode": false,

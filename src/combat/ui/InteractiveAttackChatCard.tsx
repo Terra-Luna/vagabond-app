@@ -64,12 +64,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                     <ChatCardBanner
                         tokenId={actor?.getActiveTokens()[0]?.id}
                         portrait={getTokenImg(actor)}
-                        title={
-                            <div className="flex gap-x-1 items-center">
-                                {source && <ItemPortraitComponent item={source} size={32} />}
-                                {attack.title}
-                            </div>
-                        }
+                        title={attack.title}
                     />}
                 contents={
                     <div>
@@ -122,7 +117,7 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
     const studied = useMemo<number>(() => actor.system.statuses.counters.studied, [actor.system.statuses.counters.studied, subRevision])
 
     const isFriendlySpell = useMemo<boolean>(() => {
-        return attack.spellDelivery != null && !attack.hasHostileTargets()
+        return attack.spellDelivery != null && !attack.hasHostileTargets
     }, [attack, subRevision])
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
@@ -235,11 +230,15 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             }
 
             {/* TARGET TOKENS ARRAY */}
-            {
-                attack.showTargets && (<>
-                    <Header title={`Targets (x ${targets.length})`} />
-                    <TargetsDisplay targets={targets} />
-                </>)}
+            {attack.showTargets &&
+                <div className="flex">
+                    {source && <ItemPortraitComponent item={source} size={54} className={'m-0'} />}
+                    <div className="flex flex-col w-full">
+                        <Header title={`Targets (x ${targets.length})`} />
+                        <TargetsDisplay targets={targets} />
+                    </div>
+                </div>
+            }
 
             {/* DAMAGE DISPLAY */}
             {

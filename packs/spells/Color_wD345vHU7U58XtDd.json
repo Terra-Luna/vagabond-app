@@ -6,9 +6,7 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">For the duration, Targeted Beings are Blinded and Objects are changed in color.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
     "rules": [],
-    "damageType": "none",
-    "appliesBurn": false,
-    "burnCountdown": "Cd4"
+    "damageType": "none"
   },
   "effects": [],
   "folder": null,

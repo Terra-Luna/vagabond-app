@@ -3,8 +3,8 @@ import { vgLiteLang } from "../../../../../../../utils/lang"
 import { DropDown } from "../../../../../../component/Dropdown"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
-export const DeliverySelector = ({ deliveries, currentDelivery, onSelectDelivery }: {
-    deliveries: SpellDelivery[], currentDelivery: SpellDelivery | undefined, onSelectDelivery: (index: number) => void
+export const DeliverySelector = ({ deliveries, currentDelivery, onSelect }: {
+    deliveries: SpellDelivery[], currentDelivery: SpellDelivery | undefined, onSelect: (index: number) => void
 }) => {
     return (
         <div className="flex gap-x-2">
@@ -13,7 +13,7 @@ export const DeliverySelector = ({ deliveries, currentDelivery, onSelectDelivery
                 <DropDown
                     value={deliveries.findIndex(d => d.name === currentDelivery?.name).toString()}
                     options={getDeliveryDropdownOptions(deliveries)}
-                    updateMechanism={{ onChange: onSelectDelivery }}
+                    updateMechanism={{ onChange: onSelect }}
                 />
             </div>
         </div>

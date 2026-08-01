@@ -3,9 +3,8 @@ import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { Checkbox } from "../../../../component/Checkbox"
 import { DropDown } from "../../../../component/Dropdown"
-import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { ItemSheetPropLabel, ItemSheetPropValue } from "../../equip/component/ItemSheetLabelComponent"
+import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 
 export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellDataModel } }) => {
@@ -14,10 +13,11 @@ export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellData
         <BaseSkillSheetComponent item={item} content={<>
             <div className="space-y-4 pb-4">
                 {isEditMode &&
+                    <div className="space-y-2">
                     <div className="flex gap-x-8 items-end">
                         <DamageTypeSelection spell={item} />
                         <div>
-                        <ItemSheetPropLabel label={"Base Mana Cost"} />
+                                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.baseManaCost} />
                             <input
                                 type="number"
                                 value={item.system.baseManaCost}
@@ -26,8 +26,13 @@ export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellData
                             />
                         </div>
                     </div>
+                        <Checkbox
+                            label={vgLiteLang.ItemSheet.ignoreEffCost}
+                            checked={item.system.ignoreEffectCost}
+                            onCheckedChanged={(isChecked) => item.update({ 'system.ignoreEffectCost': isChecked } as Record<string, boolean>)}
+                        />
+                    </div>
                 }
-                {(isEditMode || item.system.appliesBurn) && <BurnSettings spell={item} />}
             </div>
         </>} />
     )
@@ -43,28 +48,6 @@ const DamageTypeSelection = ({ spell }: { spell: Item & { system: SpellDataModel
                 updateMechanism={{ updatePath: ['damageType'] }}
                 parent={spell}
             />
-        </div>
-    )
-}
-
-const BurnSettings = ({ spell }: { spell: Item & { system: SpellDataModel } }) => {
-    return (
-        <div className="flex gap-x-2">
-            <Checkbox
-                label={vgLiteLang.ItemSheet.burn}
-                onCheckedChanged={() => spell.update({ 'system.appliesBurn': !spell.system.appliesBurn } as Record<string, boolean>)}
-                checked={spell.system.appliesBurn}
-            />
-            <div className="flex gap-x-2">
-                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.duration} />
-                <ItemSheetPropValue value={
-                    <EditableTextField
-                        boundValue={spell.system.burnCountdown}
-                        updateProps={{ object: spell, path: ['burnCountdown'] }}
-                        placeholder="Cd4"
-                    />
-                } />
-            </div>
         </div>
     )
 }

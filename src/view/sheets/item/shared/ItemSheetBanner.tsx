@@ -34,8 +34,6 @@ export const ItemSheetBanner = ({ item }: { item: Item & { system: any } }) => {
                     title={item.name}
                     description={item.system.description}
                     tokenIds={[]}
-                    appliesBurn={item.system?.appliesBurn ?? false}
-                    burnDuration={item.system?.burnCountdown ?? ''}
                 />
             )
         }
