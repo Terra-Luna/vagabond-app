@@ -1,5 +1,4 @@
 import { Sparkle } from "lucide-react"
-import { SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { vgLiteLang } from "../../../../../../../utils/lang"
 import { SpellcastingLabel, SpellcastingValue } from "./SpellcastingTypography"
 

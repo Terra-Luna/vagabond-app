@@ -23,7 +23,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                 if (q.id !== id) return q
                 return {
                     ...q,
-                    [field]: field === "xp" ? parseInt(value, 10) || 0 : value,
+                    [field]: field === "xp" ? parseInt(value, 10) || 0 : value
                 }
             })
         )
@@ -33,7 +33,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
         const newQuestion: XpQuestion = {
             id: Math.random().toString(36).substring(2, 16),
             text: "",
-            xp: 1,
+            xp: 1
         }
         setQuestions((prev) => [...prev, newQuestion])
     }

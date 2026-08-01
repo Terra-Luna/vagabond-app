@@ -1,4 +1,4 @@
-import { NumericCounterInput } from "../../../../../../component/CounterImput"
+import { NumericCounterInput } from "../../../../../../component/EditableTextField"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const SpellRangeInput = ({ size, label, onUpdateAreaSize }) => {

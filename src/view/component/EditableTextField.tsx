@@ -3,6 +3,7 @@ import { VgLiteError}  from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { glowOnHover } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
+import { Plus, Minus } from "lucide-react"
 
 const editModeBorder = "border border-solid border-table-border px-1"
 
@@ -60,31 +61,21 @@ export const EditableTextField = (
         return ret
     }, [editModeValue, onSave, updateProps])
 
-    const handleSpecialKeypresses = useCallback(async (e: KeyboardEvent) => {
-        switch (e.code) {
-            case "Enter":
-            case "NumpadEnter":
-                e.preventDefault()
-                if (await save()) {
-                    setIsInEditMode(false)
-                }
-                break;
-            case "Escape":
-                e.preventDefault()
-                reset()
-                break;
-        }
-
-        e.stopPropagation() // otherwise wasd results in movement
-    }, [editModeValue, onSave, boundValue, reset])
-
     if (isInEditMode || boundValue === '' || boundValue == null) {
         const inputStyle = (editModeValue === '' || editModeValue == null) ? `field-sizing-content border border-solid border-table-border rounded-sm px-1 ${className}` : `w-auto field-sizing-content ${className}`
         return <div className="overflow-hidden">
-            <input ref={inputRef} className={inputStyle} type="text" value={editModeValue ?? ''} placeholder={placeholder}
-                onChange={e => setEditModeValue(e.target.value)}
-                onBlur={save}
-                onKeyDown={handleSpecialKeypresses} />
+            <form onSubmit={(e) => {
+                e.stopPropagation()
+                e.preventDefault()
+                save()
+            }}>
+                <input ref={inputRef} className={inputStyle} type="text"
+                    value={editModeValue ?? ''}
+                    placeholder={placeholder}
+                    onChange={e => setEditModeValue(e.target.value)}
+                    onBlur={save}
+                />
+            </form>
         </div>
     }
     else {
@@ -112,4 +103,18 @@ export const EditableNameField = ({ actor }: { actor: Actor }) => {
     }, [actor])
 
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
+}
+
+export const NumericCounterInput = ({ value, valueAppend = '', onUpdateValue, incrementBy = 1 }: {
+    value: number, valueAppend?: string, onUpdateValue: (input) => void, incrementBy?: number
+}) => {
+    return (
+        <div className="flex">
+            <EditableTextField boundValue={`${value.toString()}${valueAppend}`} onSave={onUpdateValue as any} className="min-w-[3ch]" />
+            <div className="flex flex-col mt-1 ml-1">
+                <Plus size={14} className="cursor-pointer" onClick={() => onUpdateValue(value + incrementBy)} />
+                <Minus size={14} className="cursor-pointer" onClick={() => onUpdateValue(value - incrementBy)} />
+            </div>
+        </div>
+    )
 }

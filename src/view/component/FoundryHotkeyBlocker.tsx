@@ -1,10 +1,6 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-interface StopPropagationProps {
-    children: React.ReactNode
-}
-
-export const FoundryHotkeyBlocker = ({ children }: StopPropagationProps) => {    
+export const FoundryHotkeyBlocker = ({ children }: { children: ReactNode }) => {
     const stopKeys = (e: React.KeyboardEvent) => {
         e.stopPropagation()
     }

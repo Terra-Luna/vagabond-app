@@ -132,12 +132,6 @@ export class Cube extends PerTargetDelivery {
     override baseManaCost: number = 1
 }
 export class Imbue extends PerTargetDelivery {
-    override name = vgLiteLang.SpellDeliveries.imbue.name
-    override description = vgLiteLang.SpellDeliveries.imbue.description
-    override targetLabel = vgLiteLang.SpellDeliveries.imbue.targetLabel
-    override extraTargetMultiplier: number = 2
-}
-export class ImbueDelivery extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.imbuedeliv.name
     override description = vgLiteLang.SpellDeliveries.imbuedeliv.description
     override targetLabel = vgLiteLang.SpellDeliveries.imbuedeliv.targetLabel
@@ -167,7 +161,7 @@ export class Touch extends PerTargetDelivery {
 export const getNewDeliveryOptions = (): SpellDelivery[] => {
     const deliveries = [
         new Aura(), new Cone(), new Cube(), new Glyph(),
-        new Imbue(), new ImbueDelivery(), new Line(),
+        new Imbue(), new Line(),
         new Remote(), new Sphere(), new Touch()
     ].sort((a, b) => a.name.localeCompare(b.name))
 

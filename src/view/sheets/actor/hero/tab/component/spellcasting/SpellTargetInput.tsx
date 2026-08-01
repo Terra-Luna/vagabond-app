@@ -1,6 +1,6 @@
 import { PerTargetDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { NumericCounterInput } from "../../../../../../component/EditableTextField"
 import { SpellcastingLabel } from "./SpellcastingTypography"
-import { NumericCounterInput } from "../../../../../../component/CounterImput"
 
 export const SpellTargetInput = ({ delivery, onUpdateTargetCount, readOnly }: {
     delivery: PerTargetDelivery, onUpdateTargetCount: (input: string | null) => void, readOnly: boolean

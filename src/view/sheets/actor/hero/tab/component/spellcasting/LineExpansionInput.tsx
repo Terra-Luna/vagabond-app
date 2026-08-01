@@ -1,7 +1,5 @@
-import { Line } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { vgLiteLang } from "../../../../../../../utils/lang"
-import { Checkbox } from "../../../../../../component/Checkbox"
-import { NumericCounterInput } from "../../../../../../component/CounterImput"
+import { NumericCounterInput } from "../../../../../../component/EditableTextField"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const LineExpansionInut = ({ delivery, onUpdateHeight, onUpdateWidth }) => {
