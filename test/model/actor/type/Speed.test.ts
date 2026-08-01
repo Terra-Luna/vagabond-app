@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import { setSpeeds, HeroDataModel } from "../../../../src/model/actor/HeroDataModel"
+import { setSpeeds } from "../../../../src/model/actor/HeroDataModel"
 
 describe('test hero speed data', () => {
     test('slow hero', () => {
@@ -9,7 +9,7 @@ describe('test hero speed data', () => {
             speed: { turn: 0, crawl: 0, travel: 0 }
         }
         // Execute
-        setSpeeds(hero as unknown as HeroDataModel)
+        setSpeeds(hero as any)
         //Verify
         expect(hero.speed.turn).toEqual(25)
         expect(hero.speed.crawl).toEqual(75)
@@ -23,7 +23,7 @@ describe('test hero speed data', () => {
             speed: { turn: 0, crawl: 0, travel: 0 }
         }
         // Execute
-        setSpeeds(hero as unknown as HeroDataModel)
+        setSpeeds(hero as any)
         //Verify
         expect(hero.speed.turn).toEqual(30)
         expect(hero.speed.crawl).toEqual(90)
@@ -37,7 +37,7 @@ describe('test hero speed data', () => {
             speed: { turn: 0, crawl: 0, travel: 0 }
         }
         // Execute
-        setSpeeds(hero as unknown as HeroDataModel)
+        setSpeeds(hero as any)
         //Verify
         expect(hero.speed.turn).toEqual(35)
         expect(hero.speed.crawl).toEqual(105)

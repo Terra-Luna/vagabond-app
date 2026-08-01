@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import { setSaves, HeroDataModel } from "../../../../src/model/actor/HeroDataModel"
+import { setSaves } from "../../../../src/model/actor/HeroDataModel"
 
 describe('hero derived data tests', () => {
     test('test save calculations', () => {
@@ -9,7 +9,7 @@ describe('hero derived data tests', () => {
             saves: { reflex: 20, endure: 20, will: 20 }
         } 
         // Execute
-        setSaves(hero as unknown as HeroDataModel)
+        setSaves(hero as any)
         // Verify
         expect(hero.saves.endure).toEqual(10)
         expect(hero.saves.reflex).toEqual(11)
@@ -23,7 +23,7 @@ describe('hero derived data tests', () => {
             saves: { reflex: 20, endure: 20, will: 20 }
         }
         // Execute
-        setSaves(hero as unknown as HeroDataModel)
+        setSaves(hero as any)
         // Verify
         expect(hero.saves.endure).toEqual(10)
         expect(hero.saves.reflex).toEqual(11)
