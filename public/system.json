@@ -228,7 +228,7 @@
       "path": "lang/en.json"
     }
   ],
-  "socket": false,
+  "socket": true,
   "grid": {
     "type": 1,
     "distance": 5,

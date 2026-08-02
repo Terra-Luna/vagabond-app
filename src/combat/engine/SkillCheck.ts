@@ -72,9 +72,10 @@ export class SkillCheck {
         return skillCheck
     }
 
-    public async roll(): Promise<SkillCheckResult> {
+    public async roll(isReroll: boolean = false): Promise<SkillCheckResult> {
         let favorHinder = this.favorHinder
-    
+        const existingD6 = this.result?.d6
+
         /**
          * Override favorHinder with shift/ctrl key hold.
          */
@@ -93,11 +94,14 @@ export class SkillCheck {
         if (this.modifier) {
             formula += `+${this.modifier}`
         }
-        if (favorHinder === vgLiteLang.FavorHinder.favor) {
-            formula += '+1d6'
-        }
-        else if (favorHinder === vgLiteLang.FavorHinder.hinder) {
-            formula += '-1d6'
+
+        if (!isReroll) {
+            if (favorHinder === vgLiteLang.FavorHinder.favor) {
+                formula += '+1d6'
+            }
+            else if (favorHinder === vgLiteLang.FavorHinder.hinder) {
+                formula += '-1d6'
+            }
         }
 
         const roll = await new Roll(formula).evaluate()
@@ -122,7 +126,7 @@ export class SkillCheck {
             d20Count: this.d20Count,
             favorHinder: this.favorHinder,
             d20: d20Res,
-            d6: d6Res,
+            d6: isReroll ? existingD6 ?? 0 : d6Res,
             total: roll.total,
             outcome: isCrit ? vgLiteLang.RollResult.crit : (isSuccess ? vgLiteLang.RollResult.success : vgLiteLang.RollResult.failure),
             rolls: [roll]

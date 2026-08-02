@@ -129,6 +129,21 @@ Hooks.once("init", () => {
 })
 
 Hooks.once("ready", async () => {
+
+    game.socket?.on("system.vagabond-lite", async (packet: any) => {
+        if (!game.user?.isGM) return
+
+        const activeGM = game.users?.activeGM
+        if (activeGM && activeGM.id !== game.user.id) return
+
+        // Process snapshot and update database
+        if (packet?.action === "saveAttackSnapshot") {
+            const attackData = packet.data
+            if (!attackData || !attackData.actorId) return
+            Attack.handleIncomingAttackSnapshot(attackData)
+        }
+    })
+
     await ItemsCache.initialize()
     game.actors?.filter(it => it.system instanceof HeroDataModel)?.forEach(actor => {
         if (actor.isOwner) {
@@ -528,26 +543,3 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentShee
     types: ['alchemical', 'armor', 'container', 'starterpack', 'sundry', 'tool', 'weapon'],
     makeDefault: true
 });
-
-if (typeof game !== "undefined") {
-    Hooks.once("setup", () => {
-        console.log("Vagabond Lite | Root network layer initialized.")
-        game.socket?.on("system.vagabond-lite", async (packet: any) => {
-            if (!game.user?.isGM) return
-
-            console.log("Player attack request received:", packet)
-
-            const activeGM = game.users?.activeGM
-            if (activeGM && activeGM.id !== game.user.id) return
-
-            const payload = packet?.request
-            if (!payload) return;
-
-            // Verify the system handler identifier matches
-            if (payload.handler === "system.vagabond-lite" && payload.action === "saveAttackSnapshot") {
-                console.log("Vagabond Lite | SUCCESS! GM NETWORK CAPTURED PACKET:", payload.data);
-                await Attack.handleIncomingSnapshotRequest(payload.data);
-            }
-        })
-    })
-}

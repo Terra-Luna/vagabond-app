@@ -99,16 +99,25 @@ export class HeroAttack extends Attack {
     }
 
     setFavored() {
+        if (this.skillCheck) {
+            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.favor
+        }
         this.isFavored = true
         this.isHindered = false
     }
 
     setHindered() {
+        if (this.skillCheck) {
+            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.hinder
+        }
         this.isHindered = true
         this.isFavored = false
     }
 
     clearFavorHinder() {
+        if (this.skillCheck) {
+            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.none
+        }
         this.isHindered = false
         this.isFavored = false
     }
@@ -137,7 +146,7 @@ export class HeroAttack extends Attack {
         }
 
         this.isRerolled = isReroll
-        await this.skillCheck?.roll()
+        await this.skillCheck?.roll(isReroll)
 
         if (isReroll) {
             const luck = this.actor.system.statuses.counters.luck
@@ -202,6 +211,7 @@ export class HeroAttack extends Attack {
                 this.removeHinderFromSkillCheck()
             }
 
+            console.log(this.skillCheck.result)
             await this.save(serializeAttack)
             return result
         }

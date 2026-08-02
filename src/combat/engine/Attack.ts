@@ -89,27 +89,29 @@ export abstract class Attack {
 
         // IF USER IS GM: Write to the database directly
         if (game.user?.isGM) {
-            await Attack.handleIncomingSnapshotRequest({ actorId: this.actor.id, snapshot })
+            await Attack.handleIncomingAttackSnapshot({ actorId: this.actor.id, snapshot })
             return
         }
         /**
          * If a player is making the attack, route it thru the socket
          * to the GM's client so it can be saved to world settings.
          */
-        console.log("Sending system payload to GM client...", snapshot)
-        game.socket?.emit("system.vagabond-lite", {
-            request: {
-                handler: "system.vagabond-lite",
-                action: "saveAttackSnapshot",
-                data: { actorId: this.actor.id, snapshot: snapshot }
-            },
-            broadcast: true
-        })
+        const payload = {
+            action: "saveAttackSnapshot",
+            data: {
+                actorId: this.actor.id,
+                snapshot: snapshot
+            }
+        }
+
+        console.log("Vagabond Lite | Sending attack snapshot:", payload)
+
+        // Emit directly over the global core system channel
+        game.socket?.emit("system.vagabond-lite", payload)
     }
 
-    static async handleIncomingSnapshotRequest(payload: { actorId: string, snapshot: AttackSnapshot }) {
+    static async handleIncomingAttackSnapshot(payload: { actorId: string, snapshot: AttackSnapshot }) {
         const { actorId, snapshot } = payload
-
         const registryRaw = (game.settings as any)?.get("vagabond-lite", "attackRegistry")
         const attacksRegistry = typeof registryRaw === "string" ? JSON.parse(registryRaw) : (registryRaw || {})
 
@@ -125,7 +127,8 @@ export abstract class Attack {
             updatedAttacks = currentAttacks.map(it => it.id === snapshot.id ? snapshot : it)
         }
         else {
-            updatedAttacks = [...currentAttacks, snapshot]
+            // Keeps only 50 attacks per player in the database. Adjust as needed.
+            updatedAttacks = [...currentAttacks, snapshot].slice(-50)
         }
 
         attacksRegistry[actorId] = updatedAttacks
