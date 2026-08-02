@@ -1,4 +1,4 @@
-import { PlayIcon, Trash, StopCircle } from "lucide-react"
+import { PlayIcon, Trash, StopCircle, Edit } from "lucide-react"
 import { ReactNode, useState, useMemo, useCallback, useEffect } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
@@ -11,6 +11,7 @@ import { VgLiteCombat, VgLiteCombatant } from "../documents/VgLiteCombat"
 import { useIsCurrentCombatant } from "./vglite-combat-tracker"
 import { Gauge } from "../../view/component/Gauge"
 import { getCombatantStatuses } from "../engine/status"
+import { BulkCombatantEditApp } from "../../apps/bulk-combatant-edit/BulkCombatantEditApp"
 
 const getCombat = () => game.combat as VgLiteCombat
 
@@ -122,17 +123,32 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     }, [token])
 
 
-    const ctxMenuActions = useMemo<CtxMenuItem[]>(() => {
-        return [
+    const ctxMenuActions = () => {
+        const actions = [
             { label: "Activate Combatant (localify me)", action: () => getCombat().activateCombatant(token.combatant.id), icon: PlayIcon },
             { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true }
-        ]
-    }, [])
+        ] as any
+
+        const controlledTokens = game.canvas?.tokens?.controlled
+        if (controlledTokens?.length ?? 0 > 0) {
+            const controlledCombatants = controlledTokens?.filter(t => t.combatant).map(t => t.combatant!) ?? []
+            actions.push({
+                label: "Bulk Edit Combatants", action: () => {
+                    new BulkCombatantEditApp(controlledCombatants as VgLiteCombatant[]).render({ force: true }).then(() => {
+                        // for whatever reason we lose the "controlled" state of the combatants, we gotta re-select them
+                        controlledCombatants.forEach(comb => canvas?.tokens?.placeables.find(t => t.id === comb.token?._id)?.control({ releaseOthers: false }))
+                    })
+                }, icon: Edit
+            })
+        }
+
+        return actions
+    }
 
     const isActiveCombatant = game.combat?.combatant === combatant
     const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
     return (
-        <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions)}>
+        <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions())}>
             <div className={`flex w-full ${opacityClass}`}>
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={token.disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} />
                 <div className="w-full pr-4">
@@ -175,7 +191,7 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
             canvas?.ping(token.center)
         } else {
             token.control({ releaseOthers: true })
-            game.canvas?.animatePan({x: token.x, y: token.y});
+            game.canvas?.animatePan({ x: token.x, y: token.y });
         }
     }, [token])
 
