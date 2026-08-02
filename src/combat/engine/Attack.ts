@@ -96,14 +96,15 @@ export abstract class Attack {
          * If a player is making the attack, route it thru the socket
          * to the GM's client so it can be saved to world settings.
          */
-        const payload = {
-            handler: "system.vagabond-lite",
-            action: "saveAttackSnapshot",
-            data: { actorId: this.actor.id, snapshot: snapshot }
-        }
-
-        console.log("Sending system payload to GM client", payload)
-        game.socket?.emit("system.vagabond-lite", { data: payload })
+        console.log("Sending system payload to GM client...", snapshot)
+        game.socket?.emit("system.vagabond-lite", {
+            request: {
+                handler: "system.vagabond-lite",
+                action: "saveAttackSnapshot",
+                data: { actorId: this.actor.id, snapshot: snapshot }
+            },
+            broadcast: true
+        })
     }
 
     static async handleIncomingSnapshotRequest(payload: { actorId: string, snapshot: AttackSnapshot }) {

@@ -531,18 +531,16 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentShee
 
 if (typeof game !== "undefined") {
     Hooks.once("setup", () => {
-        console.log("Vagabond Lite | Root network layer initialized.");
-
-        // Listen for the system authorized layout pattern
+        console.log("Vagabond Lite | Root network layer initialized.")
         game.socket?.on("system.vagabond-lite", async (packet: any) => {
-            // Guard rails to protect permissions
-            if (!game.user?.isGM) return;
+            if (!game.user?.isGM) return
 
-            const activeGM = game.users?.activeGM;
-            if (activeGM && activeGM.id !== game.user.id) return;
+            console.log("Player attack request received:", packet)
 
-            // Unpack the official data wrapper
-            const payload = packet?.data;
+            const activeGM = game.users?.activeGM
+            if (activeGM && activeGM.id !== game.user.id) return
+
+            const payload = packet?.request
             if (!payload) return;
 
             // Verify the system handler identifier matches
@@ -550,6 +548,6 @@ if (typeof game !== "undefined") {
                 console.log("Vagabond Lite | SUCCESS! GM NETWORK CAPTURED PACKET:", payload.data);
                 await Attack.handleIncomingSnapshotRequest(payload.data);
             }
-        });
-    });
+        })
+    })
 }

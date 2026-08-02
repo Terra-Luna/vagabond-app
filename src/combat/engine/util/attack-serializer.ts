@@ -88,7 +88,7 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
         }
     }
 
-    const obj = {
+    return {
         ...serializeCommonFields(atk),
         type: 'hero',
         sourceId: atk.sourceId,
@@ -97,9 +97,6 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
         critChoice: atk.critChoice,
         isRerolled: atk.isRerolled
     } as AttackSnapshot
-
-    console.log("serialized hero attack", obj)
-    return obj
 }
 
 export function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | undefined {

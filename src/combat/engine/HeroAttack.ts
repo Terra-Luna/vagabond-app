@@ -40,7 +40,9 @@ export class HeroAttack extends Attack {
     }
 
     private get isEligibleForDmgRoll(): boolean {
-        return this.hasHostileTargets || this.damageRoll?.dmgType === 'healing'
+        const dice = this.damageRoll?.dice?.flatMap(d => d.dice)
+        const damageDiceCount = (dice?.reduce((sum, d) => { return sum + d }, 0) ?? 0)
+        return damageDiceCount > 0
     }
 
     get hasHostileTargets(): boolean {
@@ -79,11 +81,12 @@ export class HeroAttack extends Attack {
             await this.rollSkillCheck()
         }
 
-        if (this.skipSkillCheck || this.isSuccessOrCrit && this.isEligibleForDmgRoll) {
+        if (this.isEligibleForDmgRoll) {
             await this.rollDamage()
         }
 
         await this.save(serializeAttack)
+
         this.sendChatMessage()
     }
 
@@ -145,17 +148,17 @@ export class HeroAttack extends Attack {
 
             roll3dDice([this.skillCheck?.result?.rolls[0]])
 
-            if (this.skillCheck?.result && this.skillCheck?.result.outcome !== vgLiteLang.RollResult.failure) {
-                if (this.isEligibleForDmgRoll) {
-                    await this.rollDamage()
-                }
+            if (this.skillCheck?.result &&
+                this.skillCheck?.result.outcome !== vgLiteLang.RollResult.failure &&
+                this.isEligibleForDmgRoll) {
+                await this.rollDamage()
+                await this.save(serializeAttack)
             }
             else {
                 this.isResolved = true
+                await this.save(serializeAttack)
             }
         }
-
-        await this.save(serializeAttack)
     }
 
     /**
