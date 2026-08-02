@@ -4,8 +4,6 @@ export const manaSchema = () => {
     return {
         max: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         current: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        maxCast: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        spellDamageDie: new fields.NumberField({ ...requiredInteger, initial: 6 }),
-        spellCrit: new fields.NumberField({ ...requiredInteger, initial: 20 })
+        maxCast: new fields.NumberField({ ...requiredInteger, initial: 0 })
     }
 }

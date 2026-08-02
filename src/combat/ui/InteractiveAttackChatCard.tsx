@@ -67,8 +67,8 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     }, [snapshot])
 
     const source = useMemo<Item | undefined>(() => {
-        if (attack instanceof HeroAttack && attack.sourceId) {
-            const item = ItemsCache.allItems().find(it => it.uuid === attack.sourceId)
+        if (attack instanceof HeroAttack && attack.itemId) {
+            const item = ItemsCache.allItems().find(it => it.uuid === attack.itemId)
             return item
         }
     }, [attack])

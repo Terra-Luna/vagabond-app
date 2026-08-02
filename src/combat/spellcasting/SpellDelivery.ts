@@ -182,8 +182,10 @@ export abstract class PerTargetDelivery extends SpellDelivery {
     targetTokenIds: string[] = []
 
     setTargetCount(count: number) {
-        this.targetCount = count
-        this.calculateManaCost()
+        if (this instanceof Cube || this instanceof Glyph) {
+            this.targetCount = count
+            this.calculateManaCost()
+        }
     }
 
     setTargetTokenIds(targetTokenIds: string[]) {
@@ -194,7 +196,7 @@ export abstract class PerTargetDelivery extends SpellDelivery {
 
     override calculateManaCost() {
         let targets: number
-        if (this instanceof Remote || this instanceof Imbue) {
+        if (this instanceof Remote || this instanceof Imbue || this instanceof Touch) {
             targets = Math.max(1, this.targetTokenIds.length)
         }
         else {

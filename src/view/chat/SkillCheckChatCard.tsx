@@ -8,7 +8,6 @@ import { SkillCheckResult } from '../../combat/engine/SkillCheck'
 
 export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
     const actor = game.actors?.get(actorId)
-    const [resultTextColor] = result.outcome === vgLiteLang.RollResult.failure ? ['text-failure'] : ['text-success']
 
     return (
         <BaseChatCardHost

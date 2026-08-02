@@ -1,4 +1,3 @@
-import { vgLiteLang } from "../../../utils/lang"
 import { Attack } from "../Attack"
 import { HeroAttack } from "../HeroAttack"
 import { AdversaryAttack } from "../AdversaryAttack"
@@ -10,7 +9,7 @@ import { SkillCheck } from "../SkillCheck"
 export interface AttackSnapshot {
     type: 'adversary' | 'hero'
     id: string
-    sourceId: string
+    itemId: string
     userId: string
     actor: string
     targetIds: string[]
@@ -39,9 +38,9 @@ export function deserializeAttack(snapshot: AttackSnapshot): AdversaryAttack | H
 
 function serializeCommonFields(
     atk: Attack
-): Omit<AttackSnapshot, 'skillCheck' | 'sourceId' | 'isRerolled' | 'spellDelivery' | 'critChoice'> {
+): Omit<AttackSnapshot, 'skillCheck' | 'itemId' | 'isRerolled' | 'spellDelivery' | 'critChoice'> {
     /**
-     * Need to serialize the damage rolls too so they can be sent over Foundry's socket.
+     * Need to serialize the damage rolls so they can be sent over Foundry's socket.
      */
     let cleanDamageRoll: any = undefined
     if (atk.damageRoll) {
@@ -72,7 +71,7 @@ function serializeCommonFields(
 
 function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
     /**
-     * Need to serialize the damage rolls too so they can be sent over Foundry's socket.
+     * Need to serialize the skill check rolls so they can be sent over Foundry's socket.
      */
     let cleanSkillCheck: any = undefined
     if (atk.skillCheck) {
@@ -91,7 +90,7 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
     return {
         ...serializeCommonFields(atk),
         type: 'hero',
-        sourceId: atk.sourceId,
+        itemId: atk.itemId,
         spellDelivery: atk.spellDelivery,
         skillCheck: cleanSkillCheck,
         critChoice: atk.critChoice,
@@ -107,24 +106,18 @@ export function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | un
 
     atk.id = snapshot.id
     atk.userId = snapshot.userId
-    atk.sourceId = snapshot.sourceId
+    atk.itemId = snapshot.itemId
     atk.spellDelivery = snapshot.spellDelivery
     atk.critChoice = snapshot.critChoice
     atk.isRerolled = snapshot.isRerolled
     atk.isResolved = snapshot.isResolved
 
-    const skillCheckClone = snapshot.skillCheck
-        ? foundry.utils.deepClone(snapshot.skillCheck)
-        : undefined
-
-    atk.skill = skillCheckClone?.skill
-    atk.critThreshold = skillCheckClone?.critThreshold ?? 20
-    atk.skillCheckModifier = skillCheckClone?.modifier ?? 0
-    atk.d20Count = skillCheckClone?.d20Count ?? 1
-    atk.isFavored = skillCheckClone?.favorHinder === vgLiteLang.FavorHinder.favor
-    atk.isHindered = skillCheckClone?.favorHinder === vgLiteLang.FavorHinder.hinder
-
-    atk.skillCheck = SkillCheck.fromJson(actor, skillCheckClone)
+    atk.skillCheck = SkillCheck.fromJson(
+        actor,
+        snapshot.skillCheck
+            ? foundry.utils.deepClone(snapshot.skillCheck)
+            : undefined
+    )
 
     atk.damageRoll = DamageRoll.fromJson(
         snapshot.damageRoll

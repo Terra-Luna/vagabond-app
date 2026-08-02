@@ -17,7 +17,7 @@ export function buildRollSummary(
     explosionTerms: foundry.dice.terms.DiceTerm[] | null,
     dice: DiceRoll[]
 ) {
-    const summary: { result: number, dieSize: number, exploded: boolean }[] = []
+    const summary: RollSummary[] = []
     damageRollTerms.concat(explosionTerms ?? []).forEach(term => {
         term.results.forEach(res => {
             summary.push({
@@ -27,6 +27,8 @@ export function buildRollSummary(
             })
         })
     })
+
+    console.log(summary)
     return summary
 }
 

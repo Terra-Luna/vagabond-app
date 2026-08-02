@@ -289,8 +289,8 @@ export const getTotalMaxChoices = (rules): number => {
 }
 
 /**
- * Perks such as 'Magical Secret', 'Advancement', and 'New Training' allow for 
- * a single selection, but may be taken multiple times. In this case, each one 
+ * Perks such as 'Magical Secret', 'Advancement', 'New Training', & 'Tough' allow 
+ * for a single selection, but may be taken multiple times. In this case, each one 
  * is combined into the same Perk where it's choice rule's maxChoices is a sum 
  * of how many times the player has chosen that perk.
  * @param actor 

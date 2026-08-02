@@ -1,8 +1,6 @@
 import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
-import { SpellDataModel } from "../../../../../../../model/item/character/SpellDataModel"
-import { SpellSelector } from "./SpellSelector"
 import { SpellTargetInput } from "./SpellTargetInput"
 import { DeliverySelector } from "./DeliverySelectior"
 import { TotalMana } from "./TotalMana"
@@ -14,12 +12,11 @@ import { vgLiteLang } from "../../../../../../../utils/lang"
 import { SpellEffectToggle } from "./SpellEffectToggle"
 import { SpellFocusToggle } from "./SpellFocusToggle"
 import { LineExpansionInut } from "./LineExpansionInput"
-import { getTargetIds } from "../../../../../../../utils/modelUtil"
 import { SkillSelector } from "./SkillSelector"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
-import { DamageRoll } from "../../../../../../../combat/engine/DamageRoll"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
+import { SpellSelector } from "./SpellSelector"
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system
@@ -143,7 +140,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         const count = Math.max(1, Number(input) || 1)
         const delivs = deliveries.map(d => {
             const clone = d.clone()
-            if (!(clone instanceof Remote) && !(clone instanceof Imbue) && clone instanceof PerTargetDelivery) {
+            if (clone instanceof PerTargetDelivery) {
                 clone.setTargetCount(count)
             }
             return clone
@@ -183,24 +180,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
         const delivery = deliveries[deliveryIndex]
         if (delivery && delivery.spell) {
-            await hero.parent.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) })
-
-            const attack = new HeroAttack(delivery.spell.name, hero.parent, getTargetIds())
-            attack.skill = skill
-            attack.isFavored = e.shiftKey
-            attack.isHindered = !e.shiftKey && e.ctrlKey
-            attack.sourceId = delivery.spell.uuid
-            attack.skipSkillCheck = delivery instanceof Imbue
-            attack.spellDelivery = delivery.toJson()
-            attack.damageRoll = new DamageRoll({
-                atkName: delivery.spell.name,
-                dmgType: delivery.spell.damageType,
-                dice: [{ dice: delivery.damageDice, faces: hero.mana.spellDamageDie }],
-                flatDmgBonus: (hero.modifiers.damage.spell ?? 0) + (hero.modifiers.damage.all ?? 0),
-                perDieDmgBonus: (hero.modifiers.damage.spellPerDie ?? 0) + (hero.modifiers.damage.allPerDie ?? 0)
-            })
-
-            attack.initiate()
+            HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e).initiate()
         }
     }
 
@@ -211,6 +191,8 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
             {
                 isSpellcastingOpen && delivery && spell &&
                     <div className="font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-2 space-y-2">
+
+                        {/* SPELLCASTING MENU TOP ROW */}
                         <div className="flex gap-x-2 items-end bottom text-lg">
                             <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
@@ -222,6 +204,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             </div>
                         </div>
 
+                        {/* SECOND ROW, DELIVERY CUSTOMIZATION INPUTS */}
                         <div className="flex gap-x-1 items-end mt-4">
                             {renderConfigs()}
                             <div className="flex items-end ml-auto">

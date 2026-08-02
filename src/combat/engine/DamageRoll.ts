@@ -45,16 +45,23 @@ export class DamageRoll {
         }
     }
 
-    static fromJson(json): DamageRoll {
-        const roll = new DamageRoll({
-            atkName: json.atkName,
-            dice: json.dice,
-            dmgType: json.dmgType,
-            flatDmgBonus: json.flatDmgBonus,
-            perDieDmgBonus: json.perDieDmgBonus
-        })
-        roll.result = json.result
-        return roll
+    static fromJson(json): DamageRoll | undefined {
+        if (!json) return undefined
+        try {
+            const roll = new DamageRoll({
+                atkName: json.atkName,
+                dice: json.dice,
+                dmgType: json.dmgType,
+                flatDmgBonus: json.flatDmgBonus,
+                perDieDmgBonus: json.perDieDmgBonus
+            })
+            roll.result = json.result
+            return roll
+        }
+        catch (error) {
+            console.log(error)
+            return undefined
+        }
     }
 
     async roll(): Promise<DamageRollResult> {
@@ -64,16 +71,16 @@ export class DamageRoll {
         const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
 
         let canExplode = false
-        this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0).forEach(async d => {
+        for (const d of this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0)) {
             if (this.isSafeToExplode(d.faces, d.explodesOn!)) {
                 canExplode = true
                 await this.processExplosions(
                     damageRollTerms.filter(t => t.faces === d.faces),
                     explosions,
-                    d.explodesOn!
+                    d.explodesOn ?? []
                 )
             }
-        })
+        }
 
         const combinedExplosions = canExplode ? this.mergeExplosions(explosions) : null
         const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
@@ -111,9 +118,10 @@ export class DamageRoll {
         explodesOn: number[]
     ) {
         let count = 0
+
         damageRollTerms.forEach(term => {
             term.results.forEach(r => {
-                if (explodesOn.indexOf(r.result) > -1) {
+                if (explodesOn.includes(r.result)) {
                     count += 1
                 }
             })
@@ -133,6 +141,7 @@ export class DamageRoll {
             }
             return sum.concat(current?.terms)
         }, [])
+
         if (combinedExplosionTerms?.length === 0) return null
         const combinedExplosions = Roll.fromTerms(combinedExplosionTerms)
         combinedExplosions["_evaluated"] = true

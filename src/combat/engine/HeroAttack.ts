@@ -6,47 +6,57 @@ import { Attack } from "./Attack"
 import { SkillCheck } from "./SkillCheck"
 import { InteractiveAttackChatCard } from "../ui/InteractiveAttackChatCard"
 import { serializeAttack } from "./util/attack-serializer"
-import { SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
+import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { getDiceTerms } from "./util/dice-utils"
+import { DamageRoll } from "./DamageRoll"
+import { getTargetIds } from "../../utils/modelUtil"
 
 export class HeroAttack extends Attack {
+
+    static SPELL_DIE_SIZE = 6
+
     override actor: Actor & { system: HeroDataModel }
     override targetIds?: string[]
-
-    sourceId: string = ''
+    itemId: string = ''
     skipSkillCheck: boolean = false
-    skill: string | undefined
-    difficulty: number = 20
-    critThreshold: number = 20
-    isFavored: boolean = false
-    isHindered: boolean = false
-    d20Count: number = 1
     spellDelivery: SpellDeliverySnapshot | undefined
-    skillCheckModifier: number = 0
     skillCheck?: SkillCheck
     critChoice?: 'luck' | 'damage' | 'spellFx'
     isRerolled: boolean = false
 
-    constructor(title: string, actor: Actor & { system: HeroDataModel }, targetIds?: string[]) {
+    constructor(
+        title: string,
+        actor: Actor & { system: HeroDataModel },
+        targetIds?: string[],
+        skillCheck?: SkillCheck,
+        damageRoll?: DamageRoll
+    ) {
         super(title)
         this.actor = actor
         this.targetIds = targetIds ? [...targetIds] : []
-        this.refreshSkillCheck()
+        this.skillCheck = skillCheck
+        this.damageRoll = damageRoll
     }
 
     private get isSuccessOrCrit(): boolean {
         return this.skillCheck?.result?.outcome !== vgLiteLang.RollResult.failure
     }
 
+    private get isCrit(): boolean {
+        return this.skillCheck?.result?.outcome === vgLiteLang.RollResult.crit
+    }
+
     private get isEligibleForDmgRoll(): boolean {
-        const dice = this.damageRoll?.dice?.flatMap(d => d.dice)
-        const damageDiceCount = (dice?.reduce((sum, d) => { return sum + d }, 0) ?? 0)
+        if (!this.damageRoll || !this.damageRoll.dice) return false
+        const dice = this.damageRoll.dice.flatMap(d => d.dice)
+        const damageDiceCount = dice.reduce((sum, d) => { return sum + d }, 0)
         return damageDiceCount > 0
     }
 
     get hasHostileTargets(): boolean {
-        return this.targetIds?.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1) ?? false
+        if (!this.targetIds || this.targetIds.length === 0) return false
+        return this.targetIds.some(id => canvas?.scene?.tokens.get(id)?.disposition === -1) ?? false
     }
 
     get showSkillCheck(): boolean {
@@ -54,8 +64,9 @@ export class HeroAttack extends Attack {
     }
 
     get showCritChoices(): boolean {
+        if (!this.isCrit) return false
         const hasPermission = game.user?.isGM || game.user?.id === this.userId
-        return hasPermission && this.skillCheck?.result?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
+        return hasPermission && !this.critChoice
     }
 
     get isEffectOnlySpellAttack(): boolean {
@@ -75,8 +86,6 @@ export class HeroAttack extends Attack {
     }
 
     async initiate() {
-        this.refreshSkillCheck()
-
         if (this.hasHostileTargets && !this.skipSkillCheck) {
             await this.rollSkillCheck()
         }
@@ -102,48 +111,22 @@ export class HeroAttack extends Attack {
         if (this.skillCheck) {
             this.skillCheck.favorHinder = vgLiteLang.FavorHinder.favor
         }
-        this.isFavored = true
-        this.isHindered = false
     }
 
     setHindered() {
         if (this.skillCheck) {
             this.skillCheck.favorHinder = vgLiteLang.FavorHinder.hinder
         }
-        this.isHindered = true
-        this.isFavored = false
     }
 
     clearFavorHinder() {
         if (this.skillCheck) {
             this.skillCheck.favorHinder = vgLiteLang.FavorHinder.none
         }
-        this.isHindered = false
-        this.isFavored = false
-    }
-
-    refreshSkillCheck() {
-        if (this.skill) {
-            const skillMods = this.actor.system.modifiers.skills[this.skill]
-            this.skillCheck = new SkillCheck(
-                this.actor.system,
-                {
-                    skill: this.skill,
-                    d20Count: this.d20Count ?? (1 + skillMods.extraDice),
-                    modifier: this.skillCheckModifier ?? skillMods.rollMod,
-                    critThreshold: this.critThreshold ?? (20 + skillMods.critMod), //Negative value is good
-                    favorHinder: this.isFavored ? vgLiteLang.FavorHinder.favor : (
-                        this.isHindered ? vgLiteLang.FavorHinder.hinder : vgLiteLang.FavorHinder.none
-                    )
-                }
-            )
-        }
     }
 
     async rollSkillCheck(isReroll: boolean = false) {
-        if (!this.skillCheck) {
-            this.refreshSkillCheck()
-        }
+        if (!this.skillCheck) return
 
         this.isRerolled = isReroll
         await this.skillCheck?.roll(isReroll)
@@ -258,7 +241,7 @@ export class HeroAttack extends Attack {
     }
 
     async removeHinderFromSkillCheck() {
-        if (this.isHindered && this.skillCheck && this.skillCheck.result && this.skillCheck.result.d6 > 0) {
+        if (this.skillCheck && this.skillCheck.isHindered && this.skillCheck.result && this.skillCheck.result.d6 > 0) {
             const result = this.skillCheck.result
             const newResult = { ...result }
             newResult.total += newResult.d6
@@ -290,9 +273,11 @@ export class HeroAttack extends Attack {
     }
 
     async addCritDamage() {
-        if (this.skill && this.damageRoll?.result) {
+        if (!this.skillCheck) return
+
+        if (this.skillCheck.skill && this.damageRoll?.result) {
             this.critChoice = 'damage'
-            const skill = this.actor.system.skills[this.skill]
+            const skill = this.actor.system.skills[this.skillCheck.skill]
             const critDmg = skill.isTrained
                 ? (20 - skill.value) / 2
                 : 20 - skill.value
@@ -305,6 +290,58 @@ export class HeroAttack extends Attack {
     async addCritSpellFx() {
         this.critChoice = 'spellFx'
         await this.save(serializeAttack)
+    }
+
+    static buildSpellAttack(
+        actor: Actor & { system: HeroDataModel },
+        skill: string,
+        delivery: SpellDelivery,
+        clickEvent?: any
+    ): HeroAttack {
+        const hero = actor.system
+
+        if (delivery.manaCost > 0) {
+            actor.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) } as Record<string, number>)
+        }
+
+        const skillCheck = new SkillCheck(hero, { skill: skill, clickEvent: clickEvent })
+
+        let damageRoll: DamageRoll | undefined = undefined
+
+        if (delivery.damageDice > 0 && delivery.spell.damageType !== 'none') {
+            const isHealing = delivery.spell.damageType === 'healing'
+
+            const dieSizeMod = isHealing
+                ? hero.modifiers.dice.size.spellHealing ?? 0
+                : hero.modifiers.dice.size.spellDamage ?? 0
+
+            const explosionsMod = isHealing
+                ? hero.modifiers.dice.exploding.spellHealing
+                : hero.modifiers.dice.exploding.spellDamage
+
+            damageRoll = new DamageRoll({
+                atkName: delivery.spell.name,
+                dmgType: delivery.spell.damageType,
+                dice: [{ dice: delivery.damageDice, faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod, explodesOn: explosionsMod as number[] }],
+                flatDmgBonus: (hero.modifiers.damage.spell ?? 0) + (hero.modifiers.damage.all ?? 0),
+                perDieDmgBonus: (hero.modifiers.damage.spellPerDie ?? 0) + (hero.modifiers.damage.allPerDie ?? 0)
+            })
+        }
+        else {
+            /**
+             * Set this here for damageless spells in case user somehow
+             * didn't check it in the UI to ensure the spell effect is
+             * printed out in the chat card.
+             */
+            delivery.applyEffect = true
+        }
+
+        const attack = new HeroAttack(delivery.spell.name, actor, getTargetIds(), skillCheck, damageRoll)
+        attack.itemId = delivery.spell.uuid
+        attack.spellDelivery = delivery.toJson()
+        attack.skipSkillCheck = delivery instanceof Imbue
+
+        return attack
     }
 
 }

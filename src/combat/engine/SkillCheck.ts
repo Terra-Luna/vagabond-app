@@ -60,16 +60,23 @@ export class SkillCheck {
         }
     }
 
-    static fromJson(actor, snapshot): SkillCheck {
-        const skillCheck = new SkillCheck(actor.system, {
-            skill: snapshot.skill,
-            d20Count: snapshot.d20Count,
-            modifier: snapshot.modifier,
-            critThreshold: snapshot.critThreshold,
-            favorHinder: snapshot.favorHinder
-        })
-        skillCheck.result = snapshot.result
-        return skillCheck
+    static fromJson(actor, snapshot): SkillCheck | undefined {
+        if (!snapshot) return undefined
+        try {
+            const skillCheck = new SkillCheck(actor.system, {
+                skill: snapshot.skill,
+                d20Count: snapshot.d20Count,
+                modifier: snapshot.modifier,
+                critThreshold: snapshot.critThreshold,
+                favorHinder: snapshot.favorHinder
+            })
+            skillCheck.result = snapshot.result
+            return skillCheck
+        }
+        catch (error) {
+            console.log(error)
+            return undefined
+        }
     }
 
     public async roll(isReroll: boolean = false): Promise<SkillCheckResult> {
@@ -134,6 +141,9 @@ export class SkillCheck {
 
         return this.result
     }
+
+    get isFavored() { return this.favorHinder === vgLiteLang.FavorHinder.favor }
+    get isHindered() { return this.favorHinder === vgLiteLang.FavorHinder.hinder }
 
     private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): string {
         if (e?.shiftKey) {

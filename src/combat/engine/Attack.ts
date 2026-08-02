@@ -87,26 +87,23 @@ export abstract class Attack {
         const snapshot = serialize(this)
         if (!snapshot || !this.actor.id) return
 
-        // IF USER IS GM: Write to the database directly
+        /**
+         * IF USER IS GM: Write to the database directly
+         */ 
         if (game.user?.isGM) {
             await Attack.handleIncomingAttackSnapshot({ actorId: this.actor.id, snapshot })
             return
         }
         /**
-         * If a player is making the attack, route it thru the socket
+         * IF USER IS PLAYER: route the atk snapshot thru the socket
          * to the GM's client so it can be saved to world settings.
          */
         const payload = {
-            action: "saveAttackSnapshot",
-            data: {
+            action: "saveAttackSnapshot", data: {
                 actorId: this.actor.id,
                 snapshot: snapshot
             }
         }
-
-        console.log("Vagabond Lite | Sending attack snapshot:", payload)
-
-        // Emit directly over the global core system channel
         game.socket?.emit("system.vagabond-lite", payload)
     }
 
