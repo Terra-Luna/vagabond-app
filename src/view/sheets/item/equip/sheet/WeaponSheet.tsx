@@ -1,8 +1,8 @@
 import { WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
-import { DropDown } from "../../../../component/Dropdown"
+import { CustomDropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
-import { EditableTextField } from "../../../../component/EditableTextField"
+import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useCallback } from "react"
 import { removeWhitespace } from "../../../../../utils/stringUtil"
@@ -22,82 +22,86 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
             <div className="space-y-4">
                 <div className="flex gap-x-4 justify-between">
                     <WeaponTypes item={item} />
-                    <Grip item={item} />
+                    <Properties item={item} />
                     <Range item={item} />
+                </div>
+
+                <div className="flex gap-x-4 justify-between">
+                    <Grip item={item} />
+                    <Damage item={item} />
+                    <DamageMod item={item} />
                     <DamageTypeSelector item={item} path={'system.damage.type'} />
                 </div>
-                <Damage item={item} />
+
                 <ExplodingDiceItemConfig item={item} />
-                <div className="flex justify-between items-center">
-                    <Properties item={item} />
-                    <Material item={item} />
-                </div>
+                <Material item={item} />
             </div>
         </EquipmentSheetSubtypeBody>
     )
 }
 
-const Range = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
-    return (
-        <DropDown
-            label={lang.ItemSheet.range}
-            value={item.system.range}
-            options={createDropdownEntries(lang.Ranges)}
-            updateMechanism={{ updatePath: ['range'] }}
-            parent={item}
-        />
-    )
-}
-
 const Grip = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
-        <DropDown
-            label={lang.ItemSheet.grip}
-            value={item.system.grip.style}
-            options={createDropdownEntries(lang.Grips)}
-            updateMechanism={{ updatePath: ['grip', 'style'] }}
-            parent={item}
-        />
-    )
-}
-
-const Damage = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
-    const gripStyle = item.system.grip.style
-    return (
-        <div>
-            <ItemSheetPropLabel label={lang.ItemSheet.damage} />
-            <div className="flex gap-x-2 items-center">
-                {(gripStyle === 'H' || gripStyle === 'V' || gripStyle === 'F') &&
-                    <ItemDamageTextField item={item} label={lang.Grips.H} path={'oneHand'} />
-                }
-                {gripStyle === 'V' &&
-                    <p className="text-2xl text-text-tertiary">|</p>
-                }
-                {(gripStyle === 'V' || gripStyle === 'HH') &&
-                    <ItemDamageTextField item={item} label={lang.Grips.HH} path={'twoHand'} />
-                }
-            </div>
+        <div className="items-start">
+            <ItemSheetPropLabel label={lang.ItemSheet.grip} />
+            <CustomDropDown
+                value={item.system.grip.style}
+                options={createDropdownEntries(lang.Grips)}
+                onChange={(e) => item.update({ 'system.grip.style': e.target.value } as Record<string, string>)}
+            />
         </div>
     )
 }
 
-export const ItemDamageTextField = ({ item, label, path }) => {
+const Damage = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
-        <div className="flex gap-x-2">
-            <ItemSheetPropLabel label={label} />
-            <div className="text-text-primary text-xl font-eskapade">
-                <EditableTextField
-                    boundValue={item.system.damage[path]}
-                    updateProps={{ object: item, path: ['damage', path] }}
-                    placeholder="1d6"
-                />
-            </div>
+        <div className="items-start">
+            <ItemSheetPropLabel label={lang.ItemSheet.damage} />
+            <CustomDropDown
+                value={item.system.damage.dieSize.toString()}
+                options={[
+                    { value: "1", label: "1" },
+                    { value: "4", label: "d4" },
+                    { value: "6", label: "d6" },
+                    { value: "8", label: "d8" },
+                    { value: "10", label: "d10" },
+                    { value: "12", label: "d12" },
+                    { value: "20", label: "d20" },
+                ]}
+                onChange={(e) => item.update({ 'system.damage.dieSize': Number(e.target.value) || 1 } as Record<string, number>)}
+            />
+        </div>
+    )
+}
+
+const DamageMod = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+    return (
+        <div className="items-start">
+            <ItemSheetPropLabel label={lang.ItemSheet.damageMod} />
+            <NumericCounterInput
+                value={item.system.damage.modifier ?? 0}
+                onChange={(val) => item.update({ 'system.damage.modifier': val } as Record<string, number>)}
+            />
+        </div>
+    )
+}
+
+const Range = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+    return (
+        <div className="items-start">
+            <ItemSheetPropLabel label={lang.ItemSheet.range} />
+            <CustomDropDown
+                value={item.system.range}
+                options={createDropdownEntries(lang.Ranges)}
+                onChange={(e) => item.update({ 'system.range': e.target.value } as Record<string, string>)}
+            />
         </div>
     )
 }
 
 export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: WeaponDataModel | AlchemicalItemDataModel } }) => {
     const { isEditMode } = useEditMode()
+
     const onCheckExplodable = useCallback((canExplode) => {
         item.update({ 'system.explodeData.canExplode': canExplode } as Record<string, boolean>)
     }, [item.system.explodeData.canExplode])

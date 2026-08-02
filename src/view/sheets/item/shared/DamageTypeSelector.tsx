@@ -1,17 +1,16 @@
 import { vgLiteLang } from "../../../../utils/lang"
 import { createDropdownEntries } from "../../../../utils/localeUtils"
-import { DropDown } from "../../../component/Dropdown"
+import { CustomDropDown } from "../../../component/Dropdown"
 import { ItemSheetPropLabel } from "../equip/component/ItemSheetLabelComponent"
 
 export const DamageTypeSelector = ({ item, path }: { item: Item, path: string }) => {
     return (
-        <div className="gap-y-4">
+        <div className="gap-y-2 items-start">
             <ItemSheetPropLabel label={vgLiteLang.ItemSheet.damageType} />
-            <DropDown
+            <CustomDropDown
                 value={foundry.utils.getProperty(item, path) as string}
                 options={createDropdownEntries(vgLiteLang.DamageTypes)}
-                updateMechanism={{ updatePath: path.split('.') }}
-                parent={item}
+                onChange={(e) => item.update({ [path]: e.target.value } as Record<string, string>)}
             />
         </div>
     )

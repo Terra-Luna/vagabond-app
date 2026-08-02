@@ -1,5 +1,5 @@
 import { ReactElement } from "react"
-import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Sparkle, Strikethrough, Sword, Wand, Zap } from "lucide-react"
+import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Sparkle, Strikethrough, Sword, Swords, Wand, Zap } from "lucide-react"
 import { lang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
@@ -55,7 +55,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case lang.VGLITE.DamageTypes.physical: {
-            element = <HandFist size={size - 2} className='text-black fill-ic-armor-fill' />
+            element = <Swords size={size - 2} className='text-black fill-ic-armor-fill' />
             break
         }
         case lang.VGLITE.DamageTypes.blunt: {

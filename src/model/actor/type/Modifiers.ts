@@ -32,7 +32,7 @@ export const modifierSchema = () => {
                 spellHealing: new fields.NumberField({ ...uncappedInteger })
             }),
             exploding: new fields.SchemaField({
-                attack: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
+                attackMaxOverride: new fields.BooleanField({ initial: false }),
                 spellDamage: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
                 spellHealing: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
             }),

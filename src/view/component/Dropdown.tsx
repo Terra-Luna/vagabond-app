@@ -3,6 +3,8 @@ import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { LabelledField } from "./LabelledField"
 import { menuOptionContainer, menuOptionTextDefault } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
+import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../context/EditModeContext/EditModeOptions"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 
@@ -58,24 +60,24 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
     )
 }
 
-export const CustomDropDown = ({ value, options, className, onChange }: {
-    value: string, options: { value: string, label: string }[], className: string, onChange: (val: any) => any
+export const CustomDropDown = ({ value, options, className, onChange, editModeOverride = false }: {
+    value: string, options: { value: string, label: string }[], className?: string, onChange: (val: any) => any, editModeOverride?: boolean
 }) => {
-    return (
-        <Select
-            value={value}
-            onChange={onChange}
-            className={`border border-solid border-table-border rounded-sm p-1 ${className}`}
-        >
-            {
-                options.map(opt => (
-                    <Option key={opt.value} value={opt.value}>
-                        {opt.label}
-                    </Option>
-                ))
-            }
-        </Select>
-    )
+    const { isEditMode } = useEditMode()
+
+    return (<>
+        {editModeOverride || isEditMode
+            ? <Select
+                value={value}
+                onChange={onChange}
+                className={`border border-solid border-table-border rounded-sm p-1 ${className}`}>
+                {options.map(opt => (<Option key={opt.value} value={opt.value}>{opt.label}</Option>))}
+            </Select >
+            : <div className={`${className ? className : 'text-xl text-text-primary font-eskapade'}`}>
+                {options.find(it => it.value === value)?.label}
+            </div>
+        }
+    </>)
 }
 
 export const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement>) => {

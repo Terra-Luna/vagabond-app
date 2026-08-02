@@ -41,9 +41,7 @@
     "weaponTypes": [
       "ranged"
     ],
-    "properties": [
-      "ranged"
-    ],
+    "properties": [],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []

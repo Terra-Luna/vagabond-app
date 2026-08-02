@@ -1,5 +1,5 @@
 import { lang } from "../../../utils/lang"
-import { damageTypeOptions, fields, rangeOptions, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalInteger, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
@@ -7,8 +7,8 @@ const weaponSchema = () => {
     return {
         range: new fields.StringField({ ...rangeOptions(), required: false }),
         damage: new fields.SchemaField({
-            oneHand: new fields.StringField({ required: false, initial: '1d4' }),
-            twoHand: new fields.StringField({ required: false, initial: '1d4' }),
+            dieSize: new fields.NumberField({ ...requiredInteger, initial: 4, min: 1, max: 20 }),
+            modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
         grip: new fields.SchemaField({
@@ -66,7 +66,9 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
 }
 
 export const gripStateDamage = (w: WeaponDataModel): string => {
-    return w.grip.state === 'HH' ? w.damage.twoHand : w.damage.oneHand
+    const die = w.grip.style === 'V' && w.grip.state === 'HH' ? w.damage.dieSize + 2 : w.damage.dieSize
+    const mod = w.damage.modifier
+    return `1d${die}${mod > 0 ? `+${mod}` : ''}`
 }
 
 export const isEquippedWeapon = (item: any): boolean => {

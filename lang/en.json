@@ -442,7 +442,7 @@
     "WeaponProps": {
       "cleave": {
         "name": "Cleave",
-        "description": "Ignores Flanked for attacks. You can reduce its die one size to hit another Close Target per size reduction."
+        "description": "Ignores Flanked for attacks. You can reduce its die one size to hit another Target within reach per size reduction."
       },
       "defense": {
         "name": "Defense",
@@ -450,27 +450,19 @@
       },
       "grapple": {
         "name": "Grapple",
-        "description": "Can Grapple"
+        "description": "Can Grapple with the Attack Check."
       },
       "keen": {
         "name": "Keen",
-        "description": "Attack Checks crit on 1 lower value."
+        "description": "Crits 1 lower on the Attack Check."
       },
       "long": {
         "name": "Long",
-        "description": "Its Range is 5' further."
-      },
-      "near": {
-        "name": "Near",
-        "description": "Can only target up to near."
+        "description": "Its Range is doubled."
       },
       "parry": {
         "name": "Parry",
-        "description": "Crits 1 lower on Melee attack Saves"
-      },
-      "ranged": {
-        "name": "Ranged",
-        "description": "Attacks with Ranged. Attacking a Close Target Hinders the Check."
+        "description": "Crits 1 lower on Melee attack Saves."
       },
       "vicious": {
         "name": "Vicious",
@@ -759,6 +751,7 @@
       "mitReq": "Might Req.",
       "grip": "Grip",
       "damage": "Damage",
+      "damageMod": "Bonus",
       "dmg": "Dmg",
       "damageType": "Damage Type",
       "effects": "Applied Effects",
@@ -801,8 +794,7 @@
       "H": "1H",
       "HH": "2H",
       "V": "V",
-      "F": "F",
-      "none": "-"
+      "-": "-"
     },
     "GripsAbbr": {
       "H": "1H",

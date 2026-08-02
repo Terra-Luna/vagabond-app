@@ -1,4 +1,4 @@
-import { useCallback, useState, KeyboardEvent, useRef, useEffect } from "react"
+import { useCallback, useState, useRef, useEffect } from "react"
 import { VgLiteError}  from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { glowOnHover } from "../common/text-styles"
@@ -42,11 +42,6 @@ export const EditableTextField = (
         shouldSelectInputRef.current = true
         setEditModeValue(boundValue)
     }, [boundValue])
-
-    const reset = useCallback(() => {
-        setEditModeValue(boundValue)
-        setIsInEditMode(false)
-    }, [boundValue, editModeValue])
 
     const save = useCallback(async () => {
         let ret
@@ -107,9 +102,10 @@ export const EditableNameField = ({ actor }: { actor: Actor }) => {
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
 }
 
-export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1 }: {
-    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number
+export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, editModeOverride = false }: {
+    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, editModeOverride?: boolean
 }) => {
+    const { isEditMode } = useEditMode()
     const inputRef = useRef<HTMLInputElement>(null)
 
     useEffect(() => {
@@ -124,32 +120,35 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
         }
     }
 
-    return (
-        <div className="flex items-center justify-center border border-solid border-table-border/50 rounded-sm">
-            <form onSubmit={(e) => {
-                e.stopPropagation()
-                e.preventDefault()
-                handleSave()
-            }}>
-                <input
-                    ref={inputRef}
-                    type="number"
-                    defaultValue={`${value.toString()}`}
-                    onBlur={handleSave}
-                    onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
-                    className={`
+    return (<>
+        {isEditMode || editModeOverride ?
+            <div className="flex items-center justify-center border border-solid border-table-border/50 rounded-sm">
+                <form onSubmit={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    handleSave()
+                }}>
+                    <input
+                        ref={inputRef}
+                        type="number"
+                        defaultValue={`${value.toString()}`}
+                        onBlur={handleSave}
+                        onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
+                        className={`
                         min-w-4 max-w-[3ch] text-center
                         [appearance:textfield]
                         [&::-webkit-outer-spin-button]:appearance-none
                         [&::-webkit-inner-spin-button]:appearance-none
                     `}
-                />
-            </form>
-            <p>{valueAppend}</p>
-            <div className="flex flex-col mt-1">
-                <Plus size={14} className="cursor-pointer" onClick={() => onChange(value + incrementBy)} />
-                <Minus size={14} className="cursor-pointer" onClick={() => onChange(value - incrementBy)} />
-            </div>
-        </div>
-    )
+                    />
+                </form>
+                <p>{valueAppend}</p>
+                <div className="flex flex-col mt-1">
+                    <Plus size={14} className="cursor-pointer" onClick={() => onChange(value + incrementBy)} />
+                    <Minus size={14} className="cursor-pointer" onClick={() => onChange(value - incrementBy)} />
+                </div>
+            </div> : <div className="text-lg text-text-primary font-eskapade">{value}</div>
+
+        }
+    </>)
 }

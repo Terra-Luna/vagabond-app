@@ -19,6 +19,7 @@ import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
 import { sendVgLiteChatMessage } from "../view/chat/ChatCardSerializer"
 import { DamageRoll } from "../combat/engine/DamageRoll"
 import { parseFormulaToDiceRoll } from "../combat/engine/util/dice-utils"
+import { HeroAttack } from "../combat/engine/HeroAttack"
 
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
     const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
@@ -161,19 +162,8 @@ export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataMo
         {
             icon: Sword,
             label: 'Attack',
-            action: async () => {
-                const dmgRoll = await new DamageRoll({
-                    atkName: getName(weapon),
-                    dmgType: weapon.damage.type,
-                    dice: [parseFormulaToDiceRoll(gripStateDamage(weapon))],
-                    flatDmgBonus: hero.modifiers.damage.attack ?? 0,
-                    perDieDmgBonus: hero.modifiers.damage.attackPerDie ?? 0
-                }).roll()
-
-                sendVgLiteChatMessage(hero, createElement(
-                    DamageRollChatCard,
-                    { actorId: getId(hero), tokenIds: getTargetIds(), result: dmgRoll }
-                ), dmgRoll.rolls)
+            action: () => {
+                HeroAttack.buildWeaponAttack(hero.parent, weapon.parent).initiate()
             }
         }
     ]

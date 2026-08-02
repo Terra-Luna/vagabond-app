@@ -8,9 +8,10 @@ import { InteractiveAttackChatCard } from "../ui/InteractiveAttackChatCard"
 import { serializeAttack } from "./util/attack-serializer"
 import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { roll3dDice } from "../../utils/foundryUtils"
-import { getDiceTerms } from "./util/dice-utils"
+import { DiceRoll, getDiceTerms, parseFormulaToDiceRoll } from "./util/dice-utils"
 import { DamageRoll } from "./DamageRoll"
 import { getTargetIds } from "../../utils/modelUtil"
+import { gripStateDamage, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 
 export class HeroAttack extends Attack {
 
@@ -292,6 +293,49 @@ export class HeroAttack extends Attack {
         await this.save(serializeAttack)
     }
 
+    static buildWeaponAttack(
+        actor: Actor & { system: HeroDataModel },
+        item: Item & { system: WeaponDataModel },
+        skill?: string,
+        extraDice?: DiceRoll[],
+        clickEvent?: any,
+    ) {
+        const hero = actor.system
+        const weapon = item.system
+        const mods = hero.modifiers
+        const dice = [parseFormulaToDiceRoll(gripStateDamage(weapon)), ...extraDice ?? []]
+        let weaponSkill = skill
+
+        // If a skill wasn't provided for the skill check, use the highest applicable skill.
+        if (!weaponSkill) {
+            const weaponTypes = [...weapon.weaponTypes]
+            if (weaponTypes.includes('thrown') && !weaponTypes.includes('melee')) {
+                weaponTypes.push('melee')
+            }
+
+            const defaultSkill = Object.keys(hero.skills)
+                .filter(k => weaponTypes.includes(k))
+                .map(k => ({ skill: k, value: hero.skills[k].value }))
+                .sort((a, b) => b.value - a.value)[0]
+
+            weaponSkill = defaultSkill.skill ?? 'melee'
+        }
+
+        const skillCheck = new SkillCheck(hero, { skill: weaponSkill!, clickEvent: clickEvent })
+        const damageRoll = new DamageRoll({
+            atkName: item.name,
+            dmgType: weapon.damage.type,
+            dice: dice,
+            flatDmgBonus: (mods.damage.all ?? 0) + (mods.damage.attack ?? 0),
+            perDieDmgBonus: (mods.damage.allPerDie ?? 0) + (mods.damage.attackPerDie ?? 0)
+        })
+
+        const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, damageRoll)
+        attack.itemId = item.uuid
+
+        return attack
+    }
+
     static buildSpellAttack(
         actor: Actor & { system: HeroDataModel },
         skill: string,
@@ -323,8 +367,8 @@ export class HeroAttack extends Attack {
                 atkName: delivery.spell.name,
                 dmgType: delivery.spell.damageType,
                 dice: [{ dice: delivery.damageDice, faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod, explodesOn: explosionsMod as number[] }],
-                flatDmgBonus: (hero.modifiers.damage.spell ?? 0) + (hero.modifiers.damage.all ?? 0),
-                perDieDmgBonus: (hero.modifiers.damage.spellPerDie ?? 0) + (hero.modifiers.damage.allPerDie ?? 0)
+                flatDmgBonus: (hero.modifiers.damage.all ?? 0) + (hero.modifiers.damage.spell ?? 0),
+                perDieDmgBonus: (hero.modifiers.damage.allPerDie ?? 0) + (hero.modifiers.damage.spellPerDie ?? 0)
             })
         }
         else {

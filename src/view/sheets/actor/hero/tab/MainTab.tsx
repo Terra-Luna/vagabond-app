@@ -4,18 +4,14 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { WeaponDataModel, isEquippedWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
-import { getId, getTargetIds } from "../../../../../utils/modelUtil"
-import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
+import { getId } from "../../../../../utils/modelUtil"
 import { glowOnHover } from "../../../../common/text-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
-import { DamageRoll } from "../../../../../combat/engine/DamageRoll"
-import { parseFormulaToDiceRoll } from "../../../../../combat/engine/util/dice-utils"
-
+import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -72,17 +68,13 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">
                             <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
                             <div className="flex justify-end">
-                                <div className={`${gripStyle} mr-2 ${glowOnHover}`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
+                                <div title={"Toggle grip (if applicable)"} className={`${gripStyle} mr-2 ${glowOnHover}`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
                                 <div className="flex content-right">
                                     <div
+                                        title={"Quick damage roll"}
                                         className={`${dmgStyle} ${glowOnHover}`}
                                         onClick={async () => {
-                                            const dmgRoll = await new DamageRoll({ atkName: weapon.parent.name, dice: [parseFormulaToDiceRoll(gripStateDamage(weapon))] }).roll()
-                                            sendVgLiteChatMessage(hero, <DamageRollChatCard
-                                                actorId={getId(hero)}
-                                                tokenIds={getTargetIds()}
-                                                result={dmgRoll} />, dmgRoll.rolls
-                                            )
+                                            HeroAttack.buildWeaponAttack(hero.parent, weapon.parent).initiate()
                                         }}
                                     >
                                         {gripStateDamage(weapon)}

@@ -1,8 +1,10 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
+import { VgLiteError } from "../../../model/common/VgLiteError"
 
 export interface DiceRoll {
     dice: number
     faces: number
+    modifier?: number
     explodesOn?: number[]
 }
 
@@ -27,8 +29,6 @@ export function buildRollSummary(
             })
         })
     })
-
-    console.log(summary)
     return summary
 }
 
@@ -56,14 +56,17 @@ export function getDiceTerms(roll: Roll.Evaluated<Roll<EmptyObject>>): foundry.d
 export function parseFormulaToDiceRoll(formula: string): DiceRoll {
     const cleanFormula = formula.trim().toLowerCase()
 
-    const diceRegex = /^(\d+)?d(\d+)(!)?$/;
+    const diceRegex = /^(\d+)?d(\d+)(!)?((?:[+-]\d+)*)$/;
     const match = cleanFormula.match(diceRegex)
 
     if (!match) {
-        throw new Error(`Invalid formula format: "${formula}". Expected format like "3d6", "d8", or "d10!".`)
+        throw new VgLiteError({
+            name: "Invalid formula format",
+            message: `Invalid formula format: "${formula}". Expected format like "d6", "3d8", "d10!", or "2d6+3-1".`
+        })
     }
 
-    const [, diceStr, facesStr, explodeModifier] = match
+    const [, diceStr, facesStr, explodeModifier, modifierStr] = match
 
     const dice = diceStr ? parseInt(diceStr, 10) : 1
     const faces = parseInt(facesStr, 10)
@@ -73,18 +76,33 @@ export function parseFormulaToDiceRoll(formula: string): DiceRoll {
         explodesOn.push(faces)
     }
 
-    return { dice, faces, explodesOn }
+    // Parse and sum up all modifiers
+    let modifier = 0
+    if (modifierStr) {
+        const modifierMatches = modifierStr.match(/[+-]\d+/g)
+        if (modifierMatches) {
+            for (const mod of modifierMatches) {
+                modifier += parseInt(mod, 10)
+            }
+        }
+    }
+
+    return modifier !== 0
+        ? { dice, faces, modifier, explodesOn }
+        : { dice, faces, explodesOn }
 }
 
 /**
  * Explosions are processed using the DiceRoll obj
- * itselfso there's no need to mark this with a '!'.
+ * itself so there's no need to mark this with a '!'.
  * @param diceRoll 
  * @returns 
  */
 export function toRollFormula(diceRoll: DiceRoll): string {
+    const mod = `${diceRoll.modifier ? `+${diceRoll.modifier}` : ''}`
+
     if (diceRoll.dice > 0)
-        return `${diceRoll.dice}d${diceRoll.faces}`
+        return `${diceRoll.dice}d${diceRoll.faces}${mod}`
     else
-        return `${diceRoll.faces}`
+        return `${diceRoll.faces}${mod}`
 }
