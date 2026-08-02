@@ -15,7 +15,7 @@ export interface DamageRollResult {
     bonus: number
     total: number
     rollsSummary: RollSummary[]
-    rolls: any[]
+    rolls: Roll.Evaluated<Roll<EmptyObject>>[]
 }
 
 export class DamageRoll {

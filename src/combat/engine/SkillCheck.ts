@@ -1,3 +1,4 @@
+import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { getDiceTerms } from "./util/dice-utils"
@@ -23,7 +24,7 @@ export interface SkillCheckResult {
     d6: number
     total: number
     outcome: string
-    rolls: any[]
+    rolls: Roll.Evaluated<Roll<EmptyObject>>[]
 }
 
 export class SkillCheck {
@@ -45,6 +46,30 @@ export class SkillCheck {
         this.critThreshold = args.critThreshold ?? (20 + skillMods.critMod)
         this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
         this.clickEvent = args.clickEvent
+    }
+
+    toJson() {
+        return {
+            skill: this.skill,
+            difficulty: this.difficulty,
+            d20Count: this.d20Count,
+            modifier: this.modifier,
+            critThreshold: this.critThreshold,
+            favorHinder: this.favorHinder,
+            result: this.result
+        }
+    }
+
+    static fromJson(actor, snapshot): SkillCheck {
+        const skillCheck = new SkillCheck(actor.system, {
+            skill: snapshot.skill,
+            d20Count: snapshot.d20Count,
+            modifier: snapshot.modifier,
+            critThreshold: snapshot.critThreshold,
+            favorHinder: snapshot.favorHinder
+        })
+        skillCheck.result = snapshot.result
+        return skillCheck
     }
 
     public async roll(): Promise<SkillCheckResult> {

@@ -22,18 +22,34 @@ import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
 import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortraitComponent"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
-
-    // Added this because React is having a difficult time
-    // with using Foundry data as its dependencies.
     const [revision, setRevision] = useState(0)
 
+    /**
+     * This side-effect is responsible for responsive UI elements
+     * in the interactive chat card. It subs to the updateSetting
+     * hook to check for changes that include additions/edits to 
+     * our Attack Registry.
+     */
     useEffect(() => {
-        const hookId = Hooks.on("updateActor", (updatedActor: any, changes: any) => {
-            if (updatedActor.id === actorId) {
-                setRevision(prev => prev + 1)
+        const hookId = Hooks.on("updateSetting", (settingDoc: any, changes: any) => {
+            if (settingDoc.key !== "vagabond-lite.attackRegistry") return
+
+            let updatedData: Record<string, any>
+            try {
+                updatedData = typeof changes.value === "string"
+                    ? JSON.parse(changes.value)
+                    : (changes.value || {});
+            }
+            catch (err) {
+                updatedData = (game.settings as any).get("vagabond-lite", "attackRegistry") || {}
+            }
+
+            if (actorId in updatedData) {
+                setRevision(prev => prev + 1);
             }
         })
-        return () => Hooks.off("updateActor", hookId)
+
+        return () => Hooks.off("updateSetting", hookId);
     }, [actorId])
 
     const actor = useMemo(() => {
@@ -41,7 +57,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     }, [actorId, revision])
 
     const snapshot = useMemo(() => {
-        const attacks = actor?.getFlag("vagabond-lite" as any, "attacks") as any[] ?? []
+        const attacks = (game.settings as any)?.get("vagabond-lite", "attackRegistry")[actorId] ?? []
         const match = attacks.find(atk => atk.id === attackId)
         return match ? foundry.utils.deepClone(match) : null
     }, [actor, attackId, revision])
@@ -85,8 +101,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                             </div>
                         }
                     </div>}
-            />
-            }
+            />}
         </div>
     )
 }
@@ -122,7 +137,7 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
         const hasPermission = game.user?.isGM || game.user?.id === attack.userId
-        const isFailure = attack.skillCheckResult?.outcome === vgLiteLang.RollResult.failure && attack.skillCheckResult?.d6 === 0
+        const isFailure = attack.skillCheck?.result?.outcome === vgLiteLang.RollResult.failure
         const hasResources = luck > 0 || studied > 0
         return hasPermission && !attack.isResolved && !attack.isRerolled && isFailure && hasResources
     }, [luck, studied, attack, subRevision])
@@ -142,19 +157,13 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             .filter(it => it.src != null && it.src.length > 0)
     }, [liveTargetIds, subRevision])
 
-    const handleLuckyD6 = useCallback(async () => {
-        await actor.update({ 'system.statuses.counters.luck': luck - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
-        await attack.addLateFavor()
-    }, [luck, attack, subRevision])
-
     const handleLuckReroll = useCallback(async () => {
         await attack.rollSkillCheck(true)
     }, [luck, attack, subRevision])
 
-    const handleStudiedD6 = useCallback(async () => {
-        await actor.update({ 'system.statuses.counters.studied': studied - 1 } as Record<string, number>, { ['skipTrackerChatCard' as string]: true })
-        await attack.addLateFavor()
-    }, [studied, attack, subRevision])
+    const handleLateD6 = useCallback(async (resource: 'luck' | 'studied', currentValue: number) => {
+        await attack.addLateFavor(resource, currentValue)
+    }, [luck, studied, subRevision])
 
     const addCritLuck = useCallback(async () => {
         await attack.addCritLuck()
@@ -173,16 +182,16 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             {/* SKILL CHECK */}
             {attack.showSkillCheck &&
                 <div>
-                    <Header title={`${attack.skillCheckResult!.skillName} Check`} textLeft={true} />
+                    <Header title={`${attack.skillCheck!.result!.skillName} Check`} textLeft={true} />
                     <CardSubHeader showRightBorder={false} values={[
-                        { label: "Difficulty", value: attack.skillCheckResult!.difficulty.toString() },
-                        { label: "Result", value: attack.skillCheckResult!.outcome }
+                        { label: "Difficulty", value: attack.skillCheck?.difficulty?.toString() },
+                        { label: "Result", value: attack.skillCheck?.result?.outcome }
                     ]} />
                     <div className="flex flex-col justify-center items-center">
                         <SkillCheckDiceComponent
-                            d20={attack.skillCheckResult!.d20}
-                            d6={attack.skillCheckResult!.d6}
-                            favHinder={attack.skillCheckResult!.favorHinder}
+                            d20={attack.skillCheck?.result?.d20}
+                            d6={attack.skillCheck?.result?.d6}
+                            favHinder={attack.skillCheck?.favorHinder}
                         />
 
                         {/* CRIT CHOICE BUTTONS */}
@@ -212,15 +221,15 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                                         />
                                         <InteractiveChatCardButton
                                             icon={<Clover size={18} className="text-ic-luck h-full" />}
-                                            label={"+Favor"} tooltip="Spend a Luck to add Favor"
-                                            fn={() => handleLuckyD6()}
+                                            label={"+Favor"} tooltip="Spend a Luck to add Favor or remove Hinder"
+                                            fn={() => handleLateD6('luck', luck)}
                                         />
                                     </>}
                                     {studied > 0 &&
                                         <InteractiveChatCardButton
                                             icon={<BookMarked size={18} className="text-ic-studied h-full" />}
-                                            label={"+Favor"} tooltip="Spend a Studied die to add Favor"
-                                            fn={() => handleStudiedD6()}
+                                            label={"+Favor"} tooltip="Spend a Studied die to add Favor or remove Hinder"
+                                            fn={() => handleLateD6('studied', studied)}
                                         />
                                     }
                                 </div>
@@ -253,16 +262,16 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                         <SpellAttackInfoComponent
                             spell={source as Item & { system: SpellDataModel }}
                             delivery={attack.spellDelivery}
-                            dmgRoll={attack.damageRollResult}
+                                dmgRoll={attack.damageRoll?.result}
                         /> :
                         <div className="w-full">
                             {/* WEAPON ATTACK DAMAGE */}
-                            <DamageRollsComponent result={attack.damageRollResult!} />
+                                <DamageRollsComponent result={attack.damageRoll!.result!} />
                             <div className="flex items-center justify-center">
                                 <TotalDmgFooter total={
                                     <div className="flex gap-x-1 items-center">
-                                        <p>{attack.damageRollResult?.total}</p>
-                                        <DamageTypeIcon dmgType={attack.damageRollResult?.dmgType ?? ''} />
+                                        <p>{attack.damageRoll?.result?.total}</p>
+                                        <DamageTypeIcon dmgType={attack.damageRoll?.result?.dmgType ?? ''} />
                                     </div>
                                 } />
                             </div>

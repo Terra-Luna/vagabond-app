@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Attack } from "../Attack"
-import { serializeAttack } from "./attack-serializer"
+import { AttackSnapshot, serializeAttack } from "./attack-serializer"
 
 export interface TargetDisplayItem { id: string, src: string, token: Token | undefined }
 
@@ -27,11 +27,12 @@ export function useLiveTargetSync(attack: Attack | undefined): string[] {
          * not affect the attack's target array.
          */
         const targetHookId = Hooks.on('targetToken', async (user: User, token: Token, isTargeted: boolean) => {
-            if (game.userId !== attack.userId || user.id !== game.userId) return
+            if (!attack.actor.id || game.userId !== attack.userId || user.id !== game.userId) return
 
-            const allAttacks = (attack.actor.getFlag("vagabond-lite" as any, "attacks") as any[]) ?? []
+            const attackRegistry = (game.settings as any)?.get("vagabond-lite" as any, "attackRegistry" as any) || {}
+            const actorAttacks = attackRegistry[attack.actor.id] || []
 
-            const latestAttack = allAttacks[allAttacks.length - 1]
+            const latestAttack = actorAttacks[actorAttacks.length - 1]
             if (latestAttack && latestAttack.id !== attack.id) return
 
             const filteredIds = Array.from(user.targets).map(t => t.id).filter((id): id is string => !!id)
@@ -46,20 +47,19 @@ export function useLiveTargetSync(attack: Attack | undefined): string[] {
          * This hook will check if the incoming actor change was to its attacks
          * and trigger an update for all users so their chat card can be re-rendered.
          */
-        const actorHookId = Hooks.on('updateActor', (actorDoc: Actor, changed: any, options: any, userId: string) => {
-            if (actorDoc.id !== attack.actor?.id) return
+        const settingHookId = Hooks.on('updateSetting', (settingDoc: any, changed: any, options: any, userId: string) => {
+            if (settingDoc.key !== "vagabond-lite.attackRegistry") return
 
-            const hasArrayUpdate = foundry.utils.hasProperty(changed, "flags.vagabond-lite.attacks") ||
-                "flags.vagabond-lite.attacks" in changed
-            if (!hasArrayUpdate) return
+            const currentRegistry = (game.settings as any).get("vagabond-lite", "attackRegistry") || {}
 
-            const currentAttacks = (actorDoc.getFlag("vagabond-lite" as any, "attacks") as any[]) ?? []
+            const targetActorId = attack.actor?.id
+            if (!targetActorId || !currentRegistry[targetActorId]) return
+
+            const currentAttacks: AttackSnapshot[] = currentRegistry[targetActorId]
             const snapshot = currentAttacks.find(it => it.id === attack.id)
 
             if (snapshot && snapshot.targetIds) {
-                if (snapshot.id !== attack.id) return
                 if (snapshot.userId !== attack.userId) return
-
                 attack.targetIds = [...snapshot.targetIds]
                 setTargetIds([...snapshot.targetIds])
             }
@@ -67,7 +67,7 @@ export function useLiveTargetSync(attack: Attack | undefined): string[] {
 
         return () => {
             Hooks.off('targetToken', targetHookId)
-            Hooks.off('updateActor', actorHookId)
+            Hooks.off('updateSetting', settingHookId)
         }
     }, [attack, attack?.isResolved])
 

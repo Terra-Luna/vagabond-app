@@ -6,35 +6,17 @@ export abstract class Attack {
 
     // Unique ID for interacting with the attack in chat card
     id: string = foundry.utils.randomID()
+    // User ID for keeping track of who has permission to interact in chat card
     userId: string = game.userId ?? ''
+
     abstract actor: Actor
     abstract targetIds?: string[]
     title: string = "Attack"
     damageRoll?: DamageRoll
-    damageRollResult?: DamageRollResult
     isResolved: boolean = false
 
     constructor(title) {
         this.title = title
-    }
-
-    async save(serialize: (attack: Attack) => AttackSnapshot | undefined) {
-        const snapshot = serialize(this)
-        if (!snapshot) return
-
-        const currentAttacks = (this.actor.getFlag("vagabond-lite" as any, "attacks") as AttackSnapshot[]) ?? []
-        const exists = currentAttacks.some(it => it.id === this.id)
-
-        let updatedAttacks: AttackSnapshot[]
-
-        if (exists) {
-            updatedAttacks = currentAttacks.map(it => it.id === this.id ? snapshot : it)
-        }
-        else {
-            updatedAttacks = [...currentAttacks, snapshot]
-        }
-
-        await this.actor.setFlag("vagabond-lite" as any, "attacks", updatedAttacks)
     }
 
     get showTargets(): boolean {
@@ -42,13 +24,13 @@ export abstract class Attack {
     }
 
     get showDamage(): boolean {
-        return (this.damageRollResult?.total ?? 0) > 0
+        return (this.damageRoll?.result?.total ?? 0) > 0
     }
 
     async rollDamage() {
-        if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRollResult) {
-            this.damageRollResult = await this.damageRoll.roll()
-            roll3dDice(this.damageRollResult?.rolls ?? [])
+        if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
+            await this.damageRoll.roll()
+            roll3dDice(this.damageRoll?.result?.rolls ?? [])
         }
     }
 
@@ -99,6 +81,54 @@ export abstract class Attack {
 
     private updateHP(target, hp) {
         target?.parent.update({ "system.health.current": hp })
+    }
+
+    async save(serialize: (attack: Attack) => AttackSnapshot | undefined) {
+        const snapshot = serialize(this)
+        if (!snapshot || !this.actor.id) return
+
+        // IF USER IS GM: Write to the database directly
+        if (game.user?.isGM) {
+            await Attack.handleIncomingSnapshotRequest({ actorId: this.actor.id, snapshot })
+            return
+        }
+        /**
+         * If a player is making the attack, route it thru the socket
+         * to the GM's client so it can be saved to world settings.
+         */
+        const payload = {
+            handler: "system.vagabond-lite",
+            action: "saveAttackSnapshot",
+            data: { actorId: this.actor.id, snapshot: snapshot }
+        }
+
+        console.log("Sending system payload to GM client", payload)
+        game.socket?.emit("system.vagabond-lite", { data: payload })
+    }
+
+    static async handleIncomingSnapshotRequest(payload: { actorId: string, snapshot: AttackSnapshot }) {
+        const { actorId, snapshot } = payload
+
+        const registryRaw = (game.settings as any)?.get("vagabond-lite", "attackRegistry")
+        const attacksRegistry = typeof registryRaw === "string" ? JSON.parse(registryRaw) : (registryRaw || {})
+
+        if (!attacksRegistry[actorId]) {
+            attacksRegistry[actorId] = []
+        }
+
+        const currentAttacks: AttackSnapshot[] = attacksRegistry[actorId]
+        const exists = currentAttacks.some(it => it.id === snapshot.id)
+        let updatedAttacks: AttackSnapshot[]
+
+        if (exists) {
+            updatedAttacks = currentAttacks.map(it => it.id === snapshot.id ? snapshot : it)
+        }
+        else {
+            updatedAttacks = [...currentAttacks, snapshot]
+        }
+
+        attacksRegistry[actorId] = updatedAttacks
+        await (game.settings as any)?.set("vagabond-lite", "attackRegistry", attacksRegistry)
     }
 
 }

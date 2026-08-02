@@ -3,11 +3,12 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { sendVgLiteChatMessage } from "../../view/chat/ChatCardSerializer"
 import { Attack } from "./Attack"
-import { SkillCheckResult, SkillCheck } from "./SkillCheck"
+import { SkillCheck } from "./SkillCheck"
 import { InteractiveAttackChatCard } from "../ui/InteractiveAttackChatCard"
 import { serializeAttack } from "./util/attack-serializer"
 import { SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { roll3dDice } from "../../utils/foundryUtils"
+import { getDiceTerms } from "./util/dice-utils"
 
 export class HeroAttack extends Attack {
     override actor: Actor & { system: HeroDataModel }
@@ -24,7 +25,6 @@ export class HeroAttack extends Attack {
     spellDelivery: SpellDeliverySnapshot | undefined
     skillCheckModifier: number = 0
     skillCheck?: SkillCheck
-    skillCheckResult?: SkillCheckResult
     critChoice?: 'luck' | 'damage' | 'spellFx'
     isRerolled: boolean = false
 
@@ -36,7 +36,7 @@ export class HeroAttack extends Attack {
     }
 
     private get isSuccessOrCrit(): boolean {
-        return this.skillCheckResult?.outcome !== vgLiteLang.RollResult.failure;
+        return this.skillCheck?.result?.outcome !== vgLiteLang.RollResult.failure
     }
 
     private get isEligibleForDmgRoll(): boolean {
@@ -48,12 +48,12 @@ export class HeroAttack extends Attack {
     }
 
     get showSkillCheck(): boolean {
-        return !!this.skillCheckResult?.outcome && !this.skipSkillCheck
+        return !!this.skillCheck?.result?.outcome && !this.skipSkillCheck
     }
 
     get showCritChoices(): boolean {
         const hasPermission = game.user?.isGM || game.user?.id === this.userId
-        return hasPermission && this.skillCheckResult?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
+        return hasPermission && this.skillCheck?.result?.outcome === vgLiteLang.RollResult.crit && !this.critChoice
     }
 
     get isEffectOnlySpellAttack(): boolean {
@@ -87,11 +87,11 @@ export class HeroAttack extends Attack {
         this.sendChatMessage()
     }
 
-    sendChatMessage() {
+    private sendChatMessage() {
         sendVgLiteChatMessage(
             this.actor,
             createElement(InteractiveAttackChatCard, { actorId: this.actor.id!, attackId: this.id }),
-            [...this.skillCheckResult?.rolls ?? []]
+            [...this.skillCheck?.result?.rolls ?? []]
         )
     }
 
@@ -134,7 +134,7 @@ export class HeroAttack extends Attack {
         }
 
         this.isRerolled = isReroll
-        this.skillCheckResult = await this.skillCheck?.roll()
+        await this.skillCheck?.roll()
 
         if (isReroll) {
             const luck = this.actor.system.statuses.counters.luck
@@ -143,9 +143,9 @@ export class HeroAttack extends Attack {
                 { ['skipTrackerChatCard' as string]: true }
             )
 
-            roll3dDice([this.skillCheckResult?.rolls[0]])
+            roll3dDice([this.skillCheck?.result?.rolls[0]])
 
-            if (this.skillCheckResult && this.skillCheckResult.outcome !== vgLiteLang.RollResult.failure) {
+            if (this.skillCheck?.result && this.skillCheck?.result.outcome !== vgLiteLang.RollResult.failure) {
                 if (this.isEligibleForDmgRoll) {
                     await this.rollDamage()
                 }
@@ -162,38 +162,48 @@ export class HeroAttack extends Attack {
      * Inserts a D6 roll into the results and adds it to the total.
      * @returns 
      */
-    async addLateFavor() {
-        const result = this.skillCheckResult
-        if (result && result.d6 === 0) {
+    async addLateFavor(resource: 'luck' | 'studied', currentValue: number) {
+        if (this.skillCheck && this.skillCheck.result) {
+            await this.actor.update(
+                { [`system.statuses.counters.${resource}`]: currentValue - 1 },
+                { ['skipTrackerChatCard' as string]: true }
+            )
+
+            const result = this.skillCheck.result
             const newResult = { ...result }
-            const d6 = await new Roll("1d6").evaluate()
-            newResult.d6 = d6.total
-            newResult.total += d6.total
-            newResult.rolls.push(d6)
-            newResult.favorHinder = vgLiteLang.FavorHinder.favor
 
-            if (newResult.total >= result.difficulty) {
-                newResult.outcome = vgLiteLang.RollResult.success
-            }
+            if (this.skillCheck.result.d6 === 0) {
+                const d6 = await new Roll("1d6").evaluate()
+                newResult.d6 = d6.total
+                newResult.total += d6.total
+                newResult.rolls.push(d6)
+                newResult.favorHinder = vgLiteLang.FavorHinder.favor
 
-            this.skillCheckResult = newResult
-            this.setFavored()
+                if (newResult.total >= result.difficulty) {
+                    newResult.outcome = vgLiteLang.RollResult.success
+                }
 
-            roll3dDice([d6])
+                this.skillCheck.result = newResult
+                this.setFavored()
 
-            if (newResult.outcome !== vgLiteLang.RollResult.failure) {
-                console.log("addLateFavor(): Rolling damage...")
-                await this.rollDamage()
+                roll3dDice([d6])
+
+                if (newResult.outcome !== vgLiteLang.RollResult.failure) {
+                    await this.rollDamage()
+                }
+                else {
+                    this.isResolved = true
+                }
             }
             else {
-                this.isResolved = true
+                this.removeHinderFromSkillCheck()
             }
 
             await this.save(serializeAttack)
             return result
         }
         else {
-            ui.notifications?.warn("D6 already been applied to Skill Check")
+            ui.notifications?.warn("D6 already applied to Skill Check")
             return undefined
         }
     }
@@ -203,8 +213,8 @@ export class HeroAttack extends Attack {
      * @returns 
      */
     async addLateHinder() {
-        const result = this.skillCheckResult
-        if (result && result.d6 === 0) {
+        if (this.skillCheck && this.skillCheck.result && this.skillCheck.result.d6 === 0) {
+            const result = this.skillCheck.result
             const newResult = { ...result }
             const d6 = await new Roll("1d6").evaluate()
             newResult.d6 = d6.total
@@ -217,9 +227,10 @@ export class HeroAttack extends Attack {
             }
             else {
                 newResult.outcome = vgLiteLang.RollResult.failure
+                this.isResolved = true
             }
 
-            this.skillCheckResult = newResult
+            this.skillCheck.result = newResult
             this.setHindered()
             await this.save(serializeAttack)
 
@@ -228,25 +239,30 @@ export class HeroAttack extends Attack {
             return result
         }
         else {
-            ui.notifications?.warn("Attack not hindered")
+            ui.notifications?.warn("D6 already applied to Skill Check")
             return undefined
         }
     }
 
     async removeHinderFromSkillCheck() {
-        const result = this.skillCheckResult
-        if (result && result.d6 > 0) {
+        if (this.isHindered && this.skillCheck && this.skillCheck.result && this.skillCheck.result.d6 > 0) {
+            const result = this.skillCheck.result
             const newResult = { ...result }
             newResult.total += newResult.d6
             newResult.d6 = 0
             newResult.favorHinder = vgLiteLang.FavorHinder.none
+            newResult.rolls = newResult.rolls.filter(r => getDiceTerms(r).flatMap(t => t.faces).includes(20))
 
             if (newResult.total >= result.difficulty) {
                 newResult.outcome = vgLiteLang.RollResult.success
             }
+            else {
+                this.isResolved = true
+            }
 
-            this.skillCheckResult = newResult
             this.clearFavorHinder()
+            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.none
+            this.skillCheck.result = newResult
             await this.save(serializeAttack)
 
             return result
@@ -261,14 +277,14 @@ export class HeroAttack extends Attack {
     }
 
     async addCritDamage() {
-        if (this.skill && this.damageRollResult) {
+        if (this.skill && this.damageRoll?.result) {
             this.critChoice = 'damage'
             const skill = this.actor.system.skills[this.skill]
             const critDmg = skill.isTrained
                 ? (20 - skill.value) / 2
                 : 20 - skill.value
-            this.damageRollResult.bonus += critDmg
-            this.damageRollResult.total += critDmg
+            this.damageRoll.result.bonus += critDmg
+            this.damageRoll.result.total += critDmg
             await this.save(serializeAttack)
         }
     }

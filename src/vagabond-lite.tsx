@@ -33,6 +33,7 @@ import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
 import { XpQuestionnaireConfigApp } from "./apps/level-up/questionnaire/XpQuestionnaireConfigApp"
+import { Attack } from "./combat/engine/Attack"
 
 // Add our fonts
 const fontFaces = [
@@ -105,7 +106,7 @@ Hooks.once("init", () => {
             { id: "q4", text: "Did you make a discovery?", xp: 1 },
             { id: "q5", text: "Did you loot at least 50g of treasure?", xp: 1 }
         ] as any
-    })
+    });
 
     game.settings?.registerMenu("vagabond-lite", "configureMenu", {
         name: "XP Questionnaire Editor",
@@ -114,7 +115,17 @@ Hooks.once("init", () => {
         icon: "fas fa-tasks",
         type: XpQuestionnaireConfigApp,
         restricted: true
-    })
+    });
+
+    (game.settings as any).register("vagabond-lite", "attackRegistry", {
+        name: "Attack Registry",
+        hint: "Stores attack data from Heros and Adversaries",
+        scope: "world",
+        config: false,
+        type: Object,
+        default: {}
+    });
+
 })
 
 Hooks.once("ready", async () => {
@@ -517,3 +528,28 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentShee
     types: ['alchemical', 'armor', 'container', 'starterpack', 'sundry', 'tool', 'weapon'],
     makeDefault: true
 });
+
+if (typeof game !== "undefined") {
+    Hooks.once("setup", () => {
+        console.log("Vagabond Lite | Root network layer initialized.");
+
+        // Listen for the system authorized layout pattern
+        game.socket?.on("system.vagabond-lite", async (packet: any) => {
+            // Guard rails to protect permissions
+            if (!game.user?.isGM) return;
+
+            const activeGM = game.users?.activeGM;
+            if (activeGM && activeGM.id !== game.user.id) return;
+
+            // Unpack the official data wrapper
+            const payload = packet?.data;
+            if (!payload) return;
+
+            // Verify the system handler identifier matches
+            if (payload.handler === "system.vagabond-lite" && payload.action === "saveAttackSnapshot") {
+                console.log("Vagabond Lite | SUCCESS! GM NETWORK CAPTURED PACKET:", payload.data);
+                await Attack.handleIncomingSnapshotRequest(payload.data);
+            }
+        });
+    });
+}
