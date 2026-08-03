@@ -26,4 +26,3 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
         />
     )
 }
-
