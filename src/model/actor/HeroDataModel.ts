@@ -255,7 +255,7 @@ export function setSpellcastingStats(hero: HeroDataModel) {
 }
 
 export function calculateManaValues(level: number, manaStatVal: number, multiplier: number): { max: number, maxCast: number } {
-    if (level === 0 || manaStatVal === 0) return { max: 0, maxCast: 0 }
+    if (level === 0 || Number.isNaN(manaStatVal) || manaStatVal === 0) return { max: 0, maxCast: 0 }
     const max = level * multiplier
     const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
     return { max: max, maxCast: maxCast }

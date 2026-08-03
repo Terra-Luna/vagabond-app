@@ -55,7 +55,7 @@ export const useSpellSelection = (
             })
         })
         return slots
-    }, [strings.emptySlot])
+    }, [])
 
     const perksSignature = JSON.stringify(perks?.map(p => (p as any).id ?? p._sourceId) ?? [])
 
@@ -63,6 +63,8 @@ export const useSpellSelection = (
      * Initial spell slot allocation.
      */
     useEffect(() => {
+        console.log("SpellSelection useEffect updating slots...")
+
         getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
         getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
 
@@ -150,8 +152,8 @@ export const useSpellSelection = (
     }
 
     return {
-        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots,
-        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots,
-        loadInitialSlots, spellsList
+        SpellSelection, loadInitialSlots, spellsList,
+        classSpellSlots, perkSpellSlots, ancestrySpellSlots,
+        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots
     }
 }

@@ -1,5 +1,4 @@
 import { ReactNode, useCallback, useEffect, useState } from "react"
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
@@ -8,10 +7,9 @@ import { EditModeContextProvider } from "../../../view/context/EditModeContext/E
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { HeroCreationLabel, HeroCreationLabeledField } from "../component/HeroCreationTypography"
 import { TopNavButtons } from "../component/TopNavButtons"
 
-export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navButtons: ReactNode[]) => {
+export const useAncestrySelection = (navButtons: ReactNode[]) => {
     const strings = vgLiteLang.HeroCreation
 
     useEffect(() => {
@@ -33,7 +31,7 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navB
         if (item) setAncestryItem(item)
     }, [ancestries])
 
-    const NameAndAncestry = () => {
+    const AncestrySelection = () => {
         return (
             <div className="bg-sheet-main-fill space-y-4">
                 <Header title={strings.identity} />
@@ -55,5 +53,5 @@ export const useNameAndAncestry = (hero: Actor & { system: HeroDataModel }, navB
         )
     }
 
-    return { NameAndAncestry, ancestryItem }
+    return { AncestrySelection, ancestryItem }
 }

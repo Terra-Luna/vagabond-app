@@ -19,7 +19,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
                     if (!cdRes) return
                     sendCountdownRollMessage(cdRes, CountdownRollChatCard)
                 }}>
-                    <DiceRollComponent faces={result!.rollSummary!.dieSize} result={result!.rollSummary!.result} />
+                    <DiceRollComponent faces={result!.rollSummary!.faces} result={result!.rollSummary!.result} />
                 </div>
                 <p className="font-normal text-lg">{result.message}</p>
             </>}

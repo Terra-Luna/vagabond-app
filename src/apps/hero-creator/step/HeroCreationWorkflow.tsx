@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { useClassSelection } from "./ClassSelection"
-import { useNameAndAncestry } from "./NameAndAncestry"
+import { useAncestrySelection } from "./AncestrySelection"
 import { useCoreStats } from "./CoreStats"
 import { useTrainingSelection } from "./TrainingSelection"
 import { useSpellSelection } from "./SpellSelection"
@@ -23,13 +23,16 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } = useNavigation()
     const [perksWithBonusChoices, setPerksWithBonusChoices] = useState<(Item & { system: PerkDataModel })[]>([])
 
-    const { NameAndAncestry, ancestryItem } = useNameAndAncestry(actor, [backButton, nextButton])
+    const { AncestrySelection, ancestryItem } = useAncestrySelection([backButton, nextButton])
     const { ClassSelection, classItem } = useClassSelection(actor, [backButton, nextButton])
     const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
     const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills, setChosenClassSkills, setChosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots, setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
     const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
-    const hasSpellSlots = [...ancestrySpellSlots, ...classSpellSlots].length > 0
+
+    const hasSpellSlots = useMemo(() => {
+        return [...ancestrySpellSlots, ...classSpellSlots].length > 0
+    }, [ancestryItem, classItem])
 
     /**
      * Sum up all the stats and their selected bonuses for display
@@ -72,7 +75,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      */
     const renderStepContent = useCallback((id: string | undefined) => {
         switch (id) {
-            case 'identity': return <NameAndAncestry />
+            case 'identity': return <AncestrySelection />
             case 'class-selection': return <ClassSelection />
             case 'core-stats': return <CoreStats />
             case 'training-selection': return <TrainingSelection stats={statsWithBonuses} />
@@ -83,7 +86,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             default: return null
         }
     }, [
-        hasSpellSlots, perksWithBonusChoices, statsWithBonuses, NameAndAncestry, ClassSelection,
+        hasSpellSlots, perksWithBonusChoices, statsWithBonuses, AncestrySelection, ClassSelection,
         CoreStats, TrainingSelection, SpellSelection, PerkSelection, EquipmentSelection
     ])
 
@@ -130,10 +133,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         resetAssignedStats()
         setChosenClassSkills([])
         setChosenBonusSkills([])
-        setAncestrySpellSlots([])
-        setClassSpellSlots([])
         resetPerkBonusSelections()
-        setPerkSpellSlots([])
         setPerksWithBonusChoices([])
     }, [ancestryItem, classItem])
     
