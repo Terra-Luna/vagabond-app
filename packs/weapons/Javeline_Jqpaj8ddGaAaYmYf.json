@@ -39,6 +39,7 @@
       "state": "H"
     },
     "weaponTypes": [
+      "melee",
       "thrown"
     ],
     "properties": [],
@@ -61,7 +62,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784507311297,
-    "modifiedTime": 1785532130158,
+    "modifiedTime": 1785707881244,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -40,6 +40,7 @@
     },
     "weaponTypes": [
       "finesse",
+      "melee",
       "thrown"
     ],
     "properties": [],
@@ -62,8 +63,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784506324545,
-    "modifiedTime": 1784506389295,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785707080705,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

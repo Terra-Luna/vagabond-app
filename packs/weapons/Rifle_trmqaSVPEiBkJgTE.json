@@ -32,14 +32,14 @@
     "damage": {
       "oneHand": "1d4",
       "twoHand": "1d8",
-      "type": "pierce"
+      "type": "pierce",
+      "dieSize": 8
     },
     "grip": {
       "style": "HH",
       "state": "H"
     },
     "weaponTypes": [
-      "finesse",
       "ranged"
     ],
     "properties": [
@@ -64,8 +64,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784508191941,
-    "modifiedTime": 1784508259906,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785708629275,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

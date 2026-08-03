@@ -1,0 +1,57 @@
+{
+  "name": "Tough",
+  "type": "perk",
+  "_id": "Nuy6wi2erouwbRtQ",
+  "img": "/icons/magic/control/buff-strength-muscle-damage-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You have a bonus to Max HP equal to your Level. You can take this Perk multiple times.</span></p>",
+    "rules": [
+      {
+        "id": "VXvwDfaFV3vEAH5J",
+        "key": "FlatModifier",
+        "label": "HP/Level",
+        "level": 0,
+        "value": 1,
+        "selector": "health.max",
+        "valueMultiplier": "level.current"
+      }
+    ],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "might",
+        "value": 7,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ywhHfYnWZQBq7W9u": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1785686250605,
+    "modifiedTime": 1785686581683,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Nuy6wi2erouwbRtQ"
+}

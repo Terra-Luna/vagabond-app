@@ -32,16 +32,18 @@
     "damage": {
       "oneHand": "1d4",
       "twoHand": "1d6",
-      "type": "physical"
+      "type": "physical",
+      "dieSize": 6
     },
     "grip": {
-      "style": "HH",
+      "style": "V",
       "state": "H"
     },
     "weaponTypes": [
-      "finesse"
+      "melee"
     ],
     "properties": [
+      "cleave",
       "defense"
     ],
     "explodeData": {
@@ -63,7 +65,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784507040251,
-    "modifiedTime": 1785532114919,
+    "modifiedTime": 1785707773092,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

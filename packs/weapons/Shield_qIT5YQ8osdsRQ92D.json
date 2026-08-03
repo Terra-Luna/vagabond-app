@@ -1,15 +1,15 @@
 {
-  "name": "Breath Attack",
+  "name": "Shield",
   "type": "weapon",
-  "_id": "EiIEVYBayAdea3HK",
-  "img": "icons/magic/fire/blast-jet-stream-embers-orange.webp",
+  "_id": "qIT5YQ8osdsRQ92D",
+  "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can attack with an Endure or Will Save to make a 15’ Cone of draconic breath that deals 2d6!. Afterward, you can’t use this Ability until you Rest or take 1 Fatigue to do so again.</span></p>",
+    "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 0,
+      "s": 75,
       "c": 0
     },
     "totalValue": {
@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 0,
+      "slots": 1,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -28,18 +28,23 @@
     "isEquipped": false,
     "isConsumable": false,
     "relicEffects": [],
-    "range": "near",
+    "range": "close",
     "damage": {
-      "oneHand": "2d6",
+      "oneHand": "1d4",
       "twoHand": "1d4",
-      "type": "none"
+      "type": "physical"
     },
     "grip": {
-      "style": "none",
+      "style": "H",
       "state": "H"
     },
-    "weaponTypes": [],
-    "properties": [],
+    "weaponTypes": [
+      "melee"
+    ],
+    "properties": [
+      "defense",
+      "parry"
+    ],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -51,19 +56,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "ywhHfYnWZQBq7W9u": 3
+    "KkUM0xdZFWx39xs4": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784922816392,
-    "modifiedTime": 1784923036605,
+    "createdTime": 1784499122807,
+    "modifiedTime": 1785708671544,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!EiIEVYBayAdea3HK"
+  "_key": "!items!qIT5YQ8osdsRQ92D"
 }

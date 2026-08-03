@@ -4,16 +4,15 @@
   "_id": "q3oYHMie75Ww79vs",
   "img": "systems/vagabond-lite/assets/ancestry/dwarf.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Dwarves are built from sterner stuff, with some myths saying dwarves aren’t born, they’re forged. These myths speak of gods</span></p><p><span style=\"white-space:pre-wrap\">sculpting the dwarves shortly after the formation of mountains, granting them iron wills, silver tongues, and golden hearts.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">They are an industrious people who hail from some of the most extreme environments. If dwarves discover rare ore, they don’t look for a nearby river and suitable land for  arming; they’ll found the town right on the biggest vein they can find and figure the rest  out later.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Darksight:</strong></b><span style=\"white-space:pre-wrap\"> You are not Blinded by Dark.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Sturdy:</strong></b><span style=\"white-space:pre-wrap\"> You have Favor on Saves against being Frightened, Sickened, or Shoved.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Tough:</strong></b><span style=\"white-space:pre-wrap\"> You have a bonus to your max HP equal to your Level.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Dwarves are built from sterner stuff, with some myths saying dwarves aren’t born, they’re forged. These myths speak of gods</span></p><p><span style=\"white-space:pre-wrap\">sculpting the dwarves shortly after the formation of mountains, granting them iron wills, silver tongues, and golden hearts.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">They are an industrious people who hail from some of the most extreme environments. If dwarves discover rare ore, they don’t look for a nearby river and suitable land for  arming; they’ll found the town right on the biggest vein they can find and figure the rest  out later.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Darksight:</strong></b><span style=\"white-space:pre-wrap\"> You are not Blinded by Dark.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Sturdy:</strong></b><span style=\"white-space:pre-wrap\"> You have Favor on Saves against being Frightened, Sickened, or Shoved.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Tough:</strong></b><span style=\"white-space:pre-wrap\"> You gain the Tough Perk.</span></p>",
     "rules": [
       {
-        "id": "jLkeFbXEqBlLUBxt",
-        "key": "FlatModifier",
-        "label": "Tough",
+        "id": "fGQKWutfI7AzIz6J",
+        "key": "GrantItem",
+        "label": "Grant: Tough",
         "level": 0,
-        "value": 1,
-        "selector": "health.max",
-        "valueMultiplier": "level.current"
+        "uuid": "Compendium.vagabond-lite.perks.Item.Nuy6wi2erouwbRtQ",
+        "type": "perk"
       }
     ],
     "senses": [],
@@ -33,7 +32,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784494717405,
-    "modifiedTime": 1784930560855,
+    "modifiedTime": 1785686458914,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -32,14 +32,16 @@
     "damage": {
       "oneHand": "1",
       "twoHand": "1d4",
-      "type": "physical"
+      "type": "physical",
+      "dieSize": 1
     },
     "grip": {
       "style": "H",
       "state": "H"
     },
     "weaponTypes": [
-      "finesse"
+      "finesse",
+      "melee"
     ],
     "properties": [
       "grapple",
@@ -64,8 +66,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784509002586,
-    "modifiedTime": 1784509035522,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785709057567,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

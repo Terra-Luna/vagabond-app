@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 3,
+      "slots": 2,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -32,7 +32,8 @@
     "damage": {
       "oneHand": "1d4",
       "twoHand": "1d10",
-      "type": "physical"
+      "type": "physical",
+      "dieSize": 10
     },
     "grip": {
       "style": "HH",
@@ -64,7 +65,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784508008803,
-    "modifiedTime": 1785532175029,
+    "modifiedTime": 1785708165910,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -41,7 +41,9 @@
     "weaponTypes": [
       "ranged"
     ],
-    "properties": [],
+    "properties": [
+      "keen"
+    ],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -61,8 +63,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784507265442,
-    "modifiedTime": 1784507298384,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785707838099,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

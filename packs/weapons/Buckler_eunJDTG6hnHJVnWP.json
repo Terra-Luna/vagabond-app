@@ -30,8 +30,6 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d4",
-      "twoHand": "1d4",
       "type": "physical"
     },
     "grip": {
@@ -43,7 +41,7 @@
       "melee"
     ],
     "properties": [
-      "defense"
+      "parry"
     ],
     "explodeData": {
       "canExplode": false,
@@ -64,8 +62,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784505910612,
-    "modifiedTime": 1784506018738,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785707393466,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

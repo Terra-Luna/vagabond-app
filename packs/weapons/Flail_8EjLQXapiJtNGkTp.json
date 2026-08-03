@@ -9,7 +9,7 @@
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 20,
+      "s": 40,
       "c": 0
     },
     "totalValue": {
@@ -32,7 +32,8 @@
     "damage": {
       "oneHand": "1d8",
       "twoHand": "1d4",
-      "type": "physical"
+      "type": "physical",
+      "dieSize": 6
     },
     "grip": {
       "style": "H",
@@ -63,8 +64,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784506408580,
-    "modifiedTime": 1784506463738,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785707650979,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 1,
+      "slots": 2,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -32,7 +32,8 @@
     "damage": {
       "oneHand": "1d6",
       "twoHand": "1d8",
-      "type": "physical"
+      "type": "physical",
+      "dieSize": 8
     },
     "grip": {
       "style": "V",
@@ -41,7 +42,9 @@
     "weaponTypes": [
       "melee"
     ],
-    "properties": [],
+    "properties": [
+      "vicious"
+    ],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -61,7 +64,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784507849945,
-    "modifiedTime": 1785532168179,
+    "modifiedTime": 1785708145231,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

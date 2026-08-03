@@ -41,7 +41,9 @@
     "weaponTypes": [
       "brawl"
     ],
-    "properties": [],
+    "properties": [
+      "grapple"
+    ],
     "explodeData": {
       "canExplode": false,
       "explodesOn": []
@@ -61,8 +63,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784506044647,
-    "modifiedTime": 1784506097324,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1785707533870,
+    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

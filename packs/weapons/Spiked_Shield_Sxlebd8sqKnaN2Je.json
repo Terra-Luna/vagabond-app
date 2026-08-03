@@ -1,15 +1,15 @@
 {
-  "name": "Lance",
+  "name": "Spiked Shield",
   "type": "weapon",
-  "_id": "1HQlVn40XKvq7k1X",
-  "img": "/icons/skills/melee/strike-polearm-light-orange.webp",
+  "_id": "Sxlebd8sqKnaN2Je",
+  "img": "/icons/equipment/shield/buckler-wooden-boss-steel.webp",
   "system": {
     "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 1,
-      "s": 80,
+      "s": 0,
       "c": 0
     },
     "totalValue": {
@@ -30,21 +30,20 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d4",
-      "twoHand": "1d10",
-      "type": "physical",
-      "dieSize": 10
+      "dieSize": 4,
+      "modifier": 0,
+      "type": "physical"
     },
     "grip": {
-      "style": "HH",
+      "style": "H",
       "state": "H"
     },
     "weaponTypes": [
       "melee"
     ],
     "properties": [
-      "keen",
-      "long"
+      "defense",
+      "vicious"
     ],
     "explodeData": {
       "canExplode": false,
@@ -57,19 +56,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "ywhHfYnWZQBq7W9u": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784507388654,
-    "modifiedTime": 1785707938191,
+    "createdTime": 1785708699017,
+    "modifiedTime": 1785708814617,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!1HQlVn40XKvq7k1X"
+  "_key": "!items!Sxlebd8sqKnaN2Je"
 }

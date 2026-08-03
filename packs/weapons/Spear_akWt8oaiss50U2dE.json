@@ -32,7 +32,8 @@
     "damage": {
       "oneHand": "1d6",
       "twoHand": "1d4",
-      "type": "physical"
+      "type": "physical",
+      "dieSize": 6
     },
     "grip": {
       "style": "H",
@@ -62,7 +63,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784508589309,
-    "modifiedTime": 1785532193915,
+    "modifiedTime": 1785708910139,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
