@@ -30,14 +30,7 @@
     "relicEffects": [],
     "alchemyCategory": "poison",
     "damage": {
-      "oneHand": "0",
-      "type": "poison",
-      "appliesBurn": false,
-      "burnCountdown": ""
-    },
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
+      "type": "poison"
     }
   },
   "effects": [],

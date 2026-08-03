@@ -8,10 +8,11 @@ import { InteractiveAttackChatCard } from "../ui/InteractiveAttackChatCard"
 import { serializeAttack } from "./util/attack-serializer"
 import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { roll3dDice } from "../../utils/foundryUtils"
-import { DiceRoll, getDiceTerms, parseFormulaToDiceRoll } from "./util/dice-utils"
+import { getDiceTerms } from "./util/dice-utils"
 import { DamageRoll } from "./DamageRoll"
 import { getTargetIds } from "../../utils/modelUtil"
-import { gripStateDamage, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { DiceRoll } from "./DiceRoll"
 
 export class HeroAttack extends Attack {
 
@@ -50,7 +51,7 @@ export class HeroAttack extends Attack {
 
     private get isEligibleForDmgRoll(): boolean {
         if (!this.damageRoll || !this.damageRoll.dice) return false
-        const dice = this.damageRoll.dice.flatMap(d => d.dice)
+        const dice = this.damageRoll.dice.flatMap(d => d.count)
         const damageDiceCount = dice.reduce((sum, d) => { return sum + d }, 0)
         return damageDiceCount > 0
     }
@@ -303,12 +304,12 @@ export class HeroAttack extends Attack {
         const hero = actor.system
         const weapon = item.system
         const mods = hero.modifiers
-        const dice = [parseFormulaToDiceRoll(gripStateDamage(weapon)), ...extraDice ?? []]
+        const dice = [weapon.damage.dice] as DiceRoll[]
         let weaponSkill = skill
 
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
         if (!weaponSkill) {
-            const weaponTypes = [...weapon.weaponTypes]
+            const weaponTypes = [...weapon.skills]
             if (weaponTypes.includes('thrown') && !weaponTypes.includes('melee')) {
                 weaponTypes.push('melee')
             }
@@ -366,7 +367,7 @@ export class HeroAttack extends Attack {
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,
                 dmgType: delivery.spell.damageType,
-                dice: [{ dice: delivery.damageDice, faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod, explodesOn: explosionsMod as number[] }],
+                dice: [new DiceRoll(delivery.damageDice, HeroAttack.SPELL_DIE_SIZE + dieSizeMod, 0, explosionsMod as number[])],
                 flatDmgBonus: (hero.modifiers.damage.all ?? 0) + (hero.modifiers.damage.spell ?? 0),
                 perDieDmgBonus: (hero.modifiers.damage.allPerDie ?? 0) + (hero.modifiers.damage.spellPerDie ?? 0)
             })

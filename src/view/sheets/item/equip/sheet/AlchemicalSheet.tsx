@@ -1,25 +1,30 @@
 import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
 import { DropDown } from "../../../../component/Dropdown"
-import { ExplodingDiceItemConfig } from "../sheet/WeaponSheet"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
-import { lang as fullLang } from "../../../../../utils/lang"
+import { vgLiteLang } from "../../../../../utils/lang"
 import { ConsumableToggle } from "../component/ConsumableItemToggleComponent"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
-const lang = fullLang.VGLITE
+import { DiceInputComponent } from "../../../../../combat/ui/DiceInputComponent"
+import { useCallback } from "react"
+import { DiceRoll } from "../../../../../combat/engine/DiceRoll"
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
+
+    const damageDice = item.system.damage.dice as DiceRoll
+
+    const handleDiceChange = useCallback((updatedDice: Partial<DiceRoll>) => {
+        const newDice = { ...damageDice, ...updatedDice }
+        item.update({ 'system.damage.dice': newDice } as Record<string, any>)
+    }, [item, damageDice])
+
     return (
         <EquipmentSheetSubtypeBody>
-            <div className="space-y-4">
-                <div className="flex gap-x-8 justify-start items-start">
-                    <DamageTypeSelector item={item} path={'system.damage.type'} />
-                </div>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4 items-start">
+                <DiceInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
+                <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <ConsumableToggle item={item} />
-                <ExplodingDiceItemConfig item={item} />
-                <div className="flex items-center">
-                    <AlechemyCategory item={item} />
-                </div>
+                <AlechemyCategory item={item} />
             </div>
         </EquipmentSheetSubtypeBody>
     )
@@ -28,9 +33,9 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
 const AlechemyCategory = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
     return (
         <DropDown
-            label={lang.ItemSheet.alchCategory}
+            label={vgLiteLang.ItemSheet.alchCategory}
             value={item.system.alchemyCategory}
-            options={createDropdownEntriesFromObj(lang.AlchemyCategories)}
+            options={createDropdownEntriesFromObj(vgLiteLang.AlchemyCategories)}
             updateMechanism={{ updatePath: ['alchemyCategory'] }}
             parent={item}
         />

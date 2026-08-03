@@ -15,10 +15,10 @@ interface DropDownProps {
     includeNullOption?: boolean,
     updateMechanism: UpdateMechanism,
     parent?: any,
-    variant?: "standard" | "alternate"
+    variant?: "steel" | "alternate"
 }
 
-export const DropDown = ({ label = '', value, options, includeNullOption = false, updateMechanism, parent, variant = "standard" }: DropDownProps) => {
+export const DropDown = ({ label = '', value, options, includeNullOption = false, updateMechanism, parent, variant = "steel" }: DropDownProps) => {
     const { isEditMode } = useEditMode()
 
     const onChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {

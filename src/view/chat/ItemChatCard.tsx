@@ -130,7 +130,7 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
             <ItemCardProp label={lang.VGLITE.ItemSheet.props} children={
                 <div className="flex gap-x-1">
                     {
-                        item.weaponTypes.map(type => (
+                        item.skills.map(type => (
                             <p key={type} className="italic">{lang.VGLITE.WeaponTypes[type].name}</p>
                         ))
                     }

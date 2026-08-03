@@ -1,7 +1,7 @@
 import { AbilityChatCard } from "../chat/AbilityChatCard"
 import { ComboChatCard } from "../chat/ComboChatCard"
 import { DamageRollsComponent } from "../chat/component/DamageRollsComponent"
-import { DiceRoll } from "../chat/component/DiceRoll"
+import { DiceRollComponent } from "../chat/component/DiceRollComponent"
 import { DieIcon } from "../chat/component/DieIcon"
 import { CountdownRollChatCard } from "../chat/CountdownChatCard"
 import { DamageRollChatCard } from "../chat/DamageRollChatCard"
@@ -17,7 +17,7 @@ export const ComponentRegistry = {
     "CountdownRollChatCard": CountdownRollChatCard,
     "DamageRollChatCard": DamageRollChatCard,
     "DamageRolls": DamageRollsComponent,
-    "DiceRoll": DiceRoll,
+    "DiceRoll": DiceRollComponent,
     "DieIcon": DieIcon,
     "InteractiveAttackChatCard": InteractiveAttackChatCard,
     "ItemChatCard": ItemChatCard,

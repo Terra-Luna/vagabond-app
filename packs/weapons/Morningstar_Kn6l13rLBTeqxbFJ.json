@@ -30,10 +30,11 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d6",
-      "twoHand": "1d8",
       "type": "physical",
-      "dieSize": 8
+      "dice": {
+        "count": 1,
+        "faces": 8
+      }
     },
     "grip": {
       "style": "V",
@@ -45,11 +46,8 @@
     "properties": [
       "vicious"
     ],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

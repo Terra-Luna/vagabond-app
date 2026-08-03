@@ -208,10 +208,12 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             if (clazz) {
                 await clazz.update({ "system.rules": classRules } as Record<string, any>)
             }
-            if (selectedPack) {
-                await actor.createEmbeddedDocuments("Item", [selectedPack.toObject(), ...cart.map(it => it.toObject())])
-                await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
-            }
+
+            // Process their shop selections and add their wallet balance to their starting coin.
+            const cartItems = [...cart.map(it => it.toObject())]
+            if (selectedPack) cartItems.push(selectedPack.toObject())
+            await actor.createEmbeddedDocuments("Item", cartItems)
+            await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
 
             /**
              * Process selections made due to choosing perks:

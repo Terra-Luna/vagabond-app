@@ -1,5 +1,5 @@
 import { Minus, Plus } from 'lucide-react'
-import { DiceRoll } from './component/DiceRoll'
+import { DiceRollComponent } from './component/DiceRollComponent'
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { getTokenImg } from "../../utils/modelUtil"
@@ -30,7 +30,7 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
 export const SkillCheckDiceComponent = ({ d20, d6, favHinder }) => {
     return (
         <div className="flex mt-2 justify-center">
-            <DiceRoll faces={20} result={d20} textSize="text-5xl" />
+            <DiceRollComponent faces={20} result={d20} textSize="text-5xl" />
             {favHinder !== vgLiteLang.FavorHinder.none &&
                 <div className="flex">
                     <div className="h-full content-center">{
@@ -39,7 +39,7 @@ export const SkillCheckDiceComponent = ({ d20, d6, favHinder }) => {
                             <Minus size={24} strokeWidth={4} />
                     }</div>
                     <div className="h-full content-center">
-                        <DiceRoll faces={6} result={d6} textSize="text-4xl" />
+                        <DiceRollComponent faces={6} result={d6} textSize="text-4xl" />
                     </div>
                 </div>
             }

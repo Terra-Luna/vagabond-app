@@ -30,8 +30,7 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d4",
-      "twoHand": "1d6",
+      
       "type": "physical"
     },
     "grip": {
@@ -45,11 +44,8 @@
     "properties": [
       "parry"
     ],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

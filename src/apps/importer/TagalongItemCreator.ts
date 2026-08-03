@@ -91,7 +91,7 @@ export class TagalongItemCreator {
                 armorType: item.might_req <= 3 ? 'light' : (item.might_req <= 4 ? 'medium' : 'heavy'),
                 rating: item.armor_rating,
                 mightReq: item.might_req,
-                material: Object.keys(lang.VGLITE.Metals)[item.material?.toLowerCase()] ?? 'standard',
+                material: Object.keys(lang.VGLITE.Metals)[item.material?.toLowerCase()] ?? 'steel',
                 bulk: {
                     slots: item.slots,
                     quantity: 1
@@ -122,7 +122,7 @@ export class TagalongItemCreator {
                     state: ''
                 },
                 properties: item.properties?.map(p => p.toLowerCase()),
-                material: Object.keys(lang.VGLITE.Metals)[item.material?.toLowerCase()] ?? 'standard',
+                material: Object.keys(lang.VGLITE.Metals)[item.material?.toLowerCase()] ?? 'steel',
                 bulk: {
                     slots: item.slots,
                     quantity: 1

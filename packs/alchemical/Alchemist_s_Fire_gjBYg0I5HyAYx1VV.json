@@ -6,10 +6,11 @@
     "description": "A flammable, tar-like fluid that ignites when exposed to oxygen, dealing 2d6 damage and Burning (Cd6) a hit Target.",
     "category": "alchemy",
     "damage": {
-      "oneHand": "2d6",
       "type": "fire",
-      "appliesBurn": true,
-      "burnCountdown": "Cd6"
+      "dice": {
+        "count": 2,
+        "faces": 6
+      }
     },
     "bulk": {
       "slots": 1,
@@ -33,11 +34,7 @@
     "isEquipped": false,
     "isConsumable": true,
     "relicEffects": [],
-    "alchemyCategory": "explosive",
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    }
+    "alchemyCategory": "explosive"
   },
   "_id": "gjBYg0I5HyAYx1VV",
   "img": "icons/consumables/potions/bottle-metal-yellow-gray.webp",

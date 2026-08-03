@@ -30,10 +30,11 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1",
-      "twoHand": "1d4",
       "type": "physical",
-      "dieSize": 1
+      "dice": {
+        "count": 1,
+        "faces": 1
+      }
     },
     "grip": {
       "style": "H",
@@ -46,11 +47,8 @@
     "properties": [
       "grapple"
     ],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

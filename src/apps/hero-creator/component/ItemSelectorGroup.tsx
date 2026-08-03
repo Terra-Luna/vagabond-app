@@ -47,6 +47,7 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                             const label = selectedSpell ? selectedSpell.label : ''
                             onSelect(index, label, selectedId)
                         }}
+                        editModeOverride={true}
                     />
                 ))
             }

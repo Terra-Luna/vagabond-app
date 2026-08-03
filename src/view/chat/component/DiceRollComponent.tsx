@@ -1,6 +1,6 @@
 import { DieIcon } from "./DieIcon"
 
-export const DiceRoll = ({ faces, result, textSize = "text-4xl", exploded = false }: {
+export const DiceRollComponent = ({ faces, result, textSize = "text-4xl", exploded = false }: {
     faces: number,
     result: any,
     textSize?: string,

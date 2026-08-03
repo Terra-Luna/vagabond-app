@@ -1,15 +1,19 @@
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
-import { DropDown } from "../../../../component/Dropdown"
+import { CustomDropDown } from "../../../../component/Dropdown"
+import { ItemSheetPropLabel } from "./ItemSheetLabelComponent"
 
-export const Material = ({ item }: { item: Item & { system: { material: string } } }) => {
+export const MaterialSelection = ({ item }: { item: Item & { system: { material: string } } }) => {
     return (
-        <DropDown
-            label={vgLiteLang.ItemSheet.material}
-            value={item.system.material}
-            options={createDropdownEntriesFromObj(vgLiteLang.Metals)}
-            updateMechanism={{ updatePath: ['material'] }}
-            parent={item}
-        />
+        <div>
+            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.material} />
+            <div className="flex gap-x-1 items-start">
+                <CustomDropDown
+                    value={item.system.material}
+                    options={createDropdownEntriesFromObj(vgLiteLang.Metals)}
+                    onChange={(e) => item.update({ 'system.material': e.target.value } as Record<string, string>)}
+                />
+            </div>
+        </div>
     )
 }

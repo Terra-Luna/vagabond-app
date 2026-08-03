@@ -2,7 +2,7 @@ import { Sword, HandFist, Hand, Eye, MessageSquareText, Trash, Undo } from "luci
 import { createElement } from "react"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { setEquipState, EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel"
-import { gripStateDamage, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
+import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { DamageRollChatCard } from "../view/chat/DamageRollChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
 import { lang } from "./lang"
@@ -18,7 +18,6 @@ import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
 import { sendVgLiteChatMessage } from "../view/chat/ChatCardSerializer"
 import { DamageRoll } from "../combat/engine/DamageRoll"
-import { parseFormulaToDiceRoll } from "../combat/engine/util/dice-utils"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {

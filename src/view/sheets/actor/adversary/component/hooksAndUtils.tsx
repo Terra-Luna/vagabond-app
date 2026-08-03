@@ -5,7 +5,6 @@ import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 import { DamageRoll } from "../../../../../combat/engine/DamageRoll"
-import { parseFormulaToDiceRoll } from "../../../../../combat/engine/util/dice-utils"
 
 export const useAddAbilityMenu = () => {
     const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)
@@ -24,8 +23,9 @@ export const onClickAction = async (adv: AdversaryDataModel, name: string, descr
      * TODO: create a config item to toggle between using damage rolls vs. flat damage.
      */
     if (roll) {
+        ui.notifications?.error("Terra, come fix this")
         const result = await new DamageRoll({
-            atkName: name, dmgType: dmgType, dice: [parseFormulaToDiceRoll(roll)]
+            atkName: name, dmgType: dmgType, dice: []
         }).roll()
 
         sendVgLiteChatMessage(

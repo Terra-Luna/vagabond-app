@@ -1,5 +1,5 @@
 import { lang, vgLiteLang } from "../../../utils/lang"
-import { damageTypeOptions, fields, optionalString, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 const alchemicalSchema = () => {
@@ -10,20 +10,21 @@ const alchemicalSchema = () => {
             choices: Object.keys(lang.VGLITE.AlchemyCategories)
         }),
         damage: new fields.SchemaField({
-            oneHand: new fields.StringField({ ...optionalString, initial: '1d6' }),
+            dice: new fields.SchemaField({
+                count: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                faces: new fields.NumberField({ ...requiredInteger, initial: 4, min: 1, max: 20 }),
+                modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                explodesOn: new fields.ArrayField(
+                    new fields.NumberField({ integer: true, initial: 0, required: false }),
+                    { initial: [] }
+                )
+            }, { initial: {} }),
             type: new fields.StringField({ ...damageTypeOptions() }),
             appliedEffects: new fields.ArrayField(
                 new fields.SchemaField({
                     effect: new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.StatusConditions) }),
                     duration: new fields.StringField({ ...optionalString })
                 }),
-                { initial: [] }
-            )
-        }),
-        explodeData: new fields.SchemaField({
-            canExplode: new fields.BooleanField({ initial: false }),
-            explodesOn: new fields.ArrayField(
-                new fields.NumberField({ integer: true, initial: 0, required: false }),
                 { initial: [] }
             )
         })

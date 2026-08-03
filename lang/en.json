@@ -469,7 +469,7 @@
         "description": "Crits deal 1 extra damage die."
       }
     },
-    "WeaponTypes": {
+    "WeaponSkills": {
       "brawl": {
         "name": "Brawl",
         "description": "Can use Brawl to attack. The hand is free while Equipped."
@@ -492,10 +492,20 @@
       }
     },
     "Metals": {
-      "standard": {
-        "name": "Standard",
-        "description": "Standard metal - made well enough, but nothing special.",
+      "steel": {
+        "name": "Steel",
+        "description": "Steel",
         "valueMultiplier": 1
+      },
+      "bronze": {
+        "name": "Bronze",
+        "description": "Bronze",
+        "valueMultiplier": "1"
+      },
+      "iron": {
+        "name": "Iron",
+        "description": "Iron",
+        "valueMultiplier": "1"
       },
       "adamant": {
         "name": "Adamant",
@@ -514,12 +524,12 @@
       },
       "mythral": {
         "name": "Mythral",
-        "description": "Occupiese 1 fewer Slot (min 1).",
+        "description": "Counts as 1 less Slot to Equip, and Weapons decrease the damage die one size.",
         "valueMultiplier": 50
       },
       "orichalcum": {
         "name": "Orichalcum",
-        "description": "Armor reduces Cast damage.",
+        "description": "Counts as 1 more Slot to Equip, and Weapons increase the damage die one size.",
         "valueMultiplier": 50
       }
     },

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
-import { DiceRoll } from "./component/DiceRoll"
+import { DiceRollComponent } from "./component/DiceRollComponent"
 import { sendCountdownRollMessage } from "./ChatCardSerializer"
 import { CountdownResult, CountdownRoll } from "../../combat/engine/CountdownRoll"
 
@@ -19,7 +19,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
                     if (!cdRes) return
                     sendCountdownRollMessage(cdRes, CountdownRollChatCard)
                 }}>
-                    <DiceRoll faces={result!.rollSummary!.dieSize} result={result!.rollSummary!.result} />
+                    <DiceRollComponent faces={result!.rollSummary!.dieSize} result={result!.rollSummary!.result} />
                 </div>
                 <p className="font-normal text-lg">{result.message}</p>
             </>}

@@ -1,5 +1,7 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
-import { DiceRoll, RollSummary, buildRollSummary, getDiceTerms, getResults, toRollFormula } from "./util/dice-utils"
+import { DiceRoll } from "./DiceRoll"
+import { RollSummary } from "./RollSummary"
+import { getDiceTerms, getResults } from "./util/dice-utils"
 
 export interface DamageRollArgs {
     atkName: string
@@ -14,7 +16,7 @@ export interface DamageRollResult {
     dmgType: string
     bonus: number
     total: number
-    rollsSummary: RollSummary[]
+    rollSummaries: RollSummary[]
     rolls: Roll.Evaluated<Roll<EmptyObject>>[]
 }
 
@@ -65,7 +67,7 @@ export class DamageRoll {
     }
 
     async roll(): Promise<DamageRollResult> {
-        const dice = this.dice.map(d => toRollFormula(d)).join("+")
+        const dice = this.dice.map(d => d.toRollFormula()).join("+")
         const damageRoll = await new Roll(`${dice}+${this.flatDmgBonus ?? 0}`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
         const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
@@ -93,7 +95,7 @@ export class DamageRoll {
             dmgType: this.dmgType,
             total: damageRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
             bonus: totalBonus,
-            rollsSummary: buildRollSummary(damageRollTerms, explosionTerms, this.dice),
+            rollSummaries: RollSummary.buildRollSummaries(damageRollTerms, explosionTerms, this.dice),
             rolls: [damageRoll]
         } as DamageRollResult
 

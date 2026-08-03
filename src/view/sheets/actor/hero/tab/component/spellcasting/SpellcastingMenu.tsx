@@ -5,7 +5,7 @@ import { SpellTargetInput } from "./SpellTargetInput"
 import { DeliverySelector } from "./DeliverySelectior"
 import { TotalMana } from "./TotalMana"
 import { SpellRangeInput } from "./SpellRangeInput"
-import { DamageDiceInput } from "./DamageDiceInput"
+import { DiceCountInput } from "./DiceCountInput"
 import { PrimaryButton } from "../../../../../../component/Button"
 import { SpellcastingErrMsg, SpellcastingSubtext } from "./SpellcastingTypography"
 import { vgLiteLang } from "../../../../../../../utils/lang"
@@ -17,6 +17,7 @@ import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { SpellSelector } from "./SpellSelector"
+import { Dices } from "lucide-react"
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system
@@ -209,7 +210,10 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             {renderConfigs()}
                             <div className="flex items-end ml-auto">
                                 {spell.damageType !== 'none' &&
-                                    <DamageDiceInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
+                                    <div>
+                                        <Dices size={18} className="text-text-secondary" />
+                                        <DiceCountInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
+                                    </div>
                                 }
                                 <div className="flex-col ml-2">
                                     <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />

@@ -30,7 +30,10 @@
     "relicEffects": [],
     "range": "near",
     "damage": {
-      "dieSize": 6,
+      "dice": {
+        "count": 1,
+        "faces": 6
+      },
       "modifier": 0,
       "type": "physical"
     },
@@ -44,11 +47,8 @@
     "properties": [
       "vicious"
     ],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

@@ -43,11 +43,7 @@
     "properties": [
       "parry"
     ],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

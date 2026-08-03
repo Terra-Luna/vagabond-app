@@ -30,10 +30,11 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "oneHand": "1d6",
-      "twoHand": "1d4",
       "type": "physical",
-      "dieSize": 6
+      "dice": {
+        "count": 1,
+        "faces": 6
+      }
     },
     "grip": {
       "style": "H",
@@ -44,11 +45,8 @@
       "thrown"
     ],
     "properties": [],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

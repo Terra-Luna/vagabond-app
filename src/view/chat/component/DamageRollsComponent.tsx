@@ -1,13 +1,13 @@
 import { Plus } from "lucide-react"
-import { DiceRoll } from "./DiceRoll"
+import { DiceRollComponent } from "./DiceRollComponent"
 import { DamageRollResult } from "../../../combat/engine/DamageRoll"
 
 export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) => {
     return (
         <div className="flex flex-wrap grow gap-x-1 mt-2 justify-center max-h-48 overflow-y-auto">
-            {result?.rollsSummary?.map((r, index) => (
+            {result?.rollSummaries?.map((r, index) => (
                     <div key={index}>
-                        <DiceRoll faces={r.dieSize} result={r.result} textSize={"text-4xl"} exploded={r.exploded} />
+                    <DiceRollComponent faces={r.dieSize} result={r.result} textSize={"text-4xl"} exploded={r.exploded} />
                     </div>
                 ))
             }

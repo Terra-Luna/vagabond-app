@@ -2,39 +2,34 @@ import { WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel
 import { CustomDropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
-import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
-import { Checkbox } from "../../../../component/Checkbox"
-import { useCallback } from "react"
-import { removeWhitespace } from "../../../../../utils/stringUtil"
-import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
-import { lang as fullLang } from "../../../../../utils/lang"
-import { Material } from "../component/MaterialSelectionComponent"
-import { ItemSheetPropLabel, ItemSheetPropValue } from "../component/ItemSheetLabelComponent"
-import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { MaterialSelection } from "../component/MaterialSelectionComponent"
+import { ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
-
-const lang = fullLang.VGLITE
+import { DiceInputComponent } from "../../../../../combat/ui/DiceInputComponent"
+import { DiceRoll } from "../../../../../combat/engine/DiceRoll"
+import { vgLiteLang } from "../../../../../utils/lang"
+import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { useCallback } from "react"
 
 export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+
+    const damageDice = item.system.damage.dice as DiceRoll
+
+    const handleDiceChange = useCallback((updatedDice: Partial<DiceRoll>) => {
+        const newDice = { ...damageDice, ...updatedDice }
+        item.update({ 'system.damage.dice': newDice } as Record<string, any>)
+    }, [item, damageDice])
+
     return (
         <EquipmentSheetSubtypeBody>
-            <div className="space-y-4">
-                <div className="flex gap-x-4 justify-between">
-                    <WeaponTypes item={item} />
-                    <Properties item={item} />
-                    <Range item={item} />
-                </div>
-
-                <div className="flex gap-x-4 justify-between">
-                    <Grip item={item} />
-                    <Damage item={item} />
-                    <DamageMod item={item} />
-                    <DamageTypeSelector item={item} path={'system.damage.type'} />
-                </div>
-
-                <ExplodingDiceItemConfig item={item} />
-                <Material item={item} />
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4 items-start">
+                <WeaponSkills item={item} />
+                <Properties item={item} />
+                <Range item={item} />
+                <Grip item={item} />
+                <DiceInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
+                <DamageTypeSelector item={item} path={'system.damage.type'} />
+                <MaterialSelection item={item} />
             </div>
         </EquipmentSheetSubtypeBody>
     )
@@ -42,115 +37,42 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
 
 const Grip = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
-        <div className="items-start">
-            <ItemSheetPropLabel label={lang.ItemSheet.grip} />
+        <div>
+            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.grip} />
+            <div className="flex gap-x-1 items-start">
             <CustomDropDown
                 value={item.system.grip.style}
-                options={createDropdownEntries(lang.Grips)}
+                    options={createDropdownEntries(vgLiteLang.Grips)}
                 onChange={(e) => item.update({ 'system.grip.style': e.target.value } as Record<string, string>)}
             />
-        </div>
-    )
-}
-
-const Damage = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
-    return (
-        <div className="items-start">
-            <ItemSheetPropLabel label={lang.ItemSheet.damage} />
-            <CustomDropDown
-                value={item.system.damage.dieSize.toString()}
-                options={[
-                    { value: "1", label: "1" },
-                    { value: "4", label: "d4" },
-                    { value: "6", label: "d6" },
-                    { value: "8", label: "d8" },
-                    { value: "10", label: "d10" },
-                    { value: "12", label: "d12" },
-                    { value: "20", label: "d20" },
-                ]}
-                onChange={(e) => item.update({ 'system.damage.dieSize': Number(e.target.value) || 1 } as Record<string, number>)}
-            />
-        </div>
-    )
-}
-
-const DamageMod = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
-    return (
-        <div className="items-start">
-            <ItemSheetPropLabel label={lang.ItemSheet.damageMod} />
-            <NumericCounterInput
-                value={item.system.damage.modifier ?? 0}
-                onChange={(val) => item.update({ 'system.damage.modifier': val } as Record<string, number>)}
-            />
+            </div>
         </div>
     )
 }
 
 const Range = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
-        <div className="items-start">
-            <ItemSheetPropLabel label={lang.ItemSheet.range} />
-            <CustomDropDown
-                value={item.system.range}
-                options={createDropdownEntries(lang.Ranges)}
-                onChange={(e) => item.update({ 'system.range': e.target.value } as Record<string, string>)}
-            />
+        <div>
+            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.range} />
+            <div className="flex gap-x-1 items-start">
+                <CustomDropDown
+                    value={item.system.range}
+                    options={createDropdownEntries(vgLiteLang.Ranges)}
+                    onChange={(e) => item.update({ 'system.range': e.target.value } as Record<string, string>)}
+                />
+            </div>
         </div>
     )
 }
 
-export const ExplodingDiceItemConfig = ({ item }: { item: Item & { system: WeaponDataModel | AlchemicalItemDataModel } }) => {
-    const { isEditMode } = useEditMode()
-
-    const onCheckExplodable = useCallback((canExplode) => {
-        item.update({ 'system.explodeData.canExplode': canExplode } as Record<string, boolean>)
-    }, [item.system.explodeData.canExplode])
-
-    const onUpdateExplodesOn = useCallback(async (explodesOn) => {
-        await item.update({ 'system.explodeData.explodesOn': removeWhitespace(explodesOn).split(",") } as Record<string, string[]>)
-        return explodesOn
-    }, [item.system.explodeData.explodesOn])
-
-    return (
-        <>
-            {
-                isEditMode || item.system.explodeData.canExplode &&
-                    <div className="flex gap-x-4 my-2">
-                        {
-                            isEditMode &&
-                                <Checkbox
-                                    label={lang.ItemSheet.canExplode}
-                                    onCheckedChanged={onCheckExplodable}
-                                    checked={item.system.explodeData.canExplode}
-                            />
-                        }
-                        {
-                            item.system.explodeData.canExplode &&
-                                <div className="flex gap-x-2 items-center">
-                                    <ItemSheetPropLabel label={`${lang.ItemSheet.explodesOn}:`} />
-                                    <ItemSheetPropValue value={
-                                        <EditableTextField
-                                            boundValue={item.system.explodeData.explodesOn.join(", ")}
-                                            onSave={onUpdateExplodesOn}
-                                            placeholder="7, 8"
-                                        />
-                                    } />
-                                </div>
-                        }
-                    </div>
-            }
-        </>
-    )
-}
-
-const WeaponTypes = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
+const WeaponSkills = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
-            <div className="flex items-center">
-                <ItemSheetPropLabel label={lang.ItemSheet.type} />
-                <OptionsSelectionMenu obj={item} label={''} path={['weaponTypes']} options={weaponTypes(item)} />
+            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.type} />
+            <div className="flex gap-x-1 items-start">
+                <OptionsSelectionMenu obj={item} label={''} path={['skills']} options={weaponSkillOptions(item)} />
+                <StringOptionsDisplay options={item.system.skills.map(it => vgLiteLang.WeaponSkills[it].name)} />
             </div>
-            <StringOptionsDisplay options={item.system.weaponTypes.map(it => lang.WeaponTypes[it].name)} />
         </div>
     )
 }
@@ -158,29 +80,29 @@ const WeaponTypes = ({ item }: { item: Item & { system: WeaponDataModel } }) => 
 const Properties = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
-            <div className="flex items-center">
-                <ItemSheetPropLabel label={lang.ItemSheet.props} />
+            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.props} />
+            <div className="flex gap-x-1 items-start">
                 <OptionsSelectionMenu obj={item} label={''} path={['properties']} options={weaponProps(item)} />
-            </div>
-            <div className="flex flex-wrap gap-x-1 text-text-secondary font-paradigm font-normal italic">
-                {item.system.properties.map((it, index) => (
-                    <p key={index} title={lang.WeaponProps[it].description}>
-                        {`${lang.WeaponProps[it].name}${index > item.system.properties.length - 2 ? '' : ','}`}
-                    </p>
-                ))}
+                <div className="flex flex-wrap gap-x-1 text-text-secondary font-paradigm font-normal italic">
+                    {item.system.properties.map((it, index) => (
+                        <p key={index} title={vgLiteLang.WeaponProps[it].description}>
+                            {`${vgLiteLang.WeaponProps[it].name}${index > item.system.properties.length - 2 ? '' : ','}`}
+                        </p>
+                    ))}
+                </div>
             </div>
         </div>
     )
 }
 
-const weaponTypes = (item: Item & { system: WeaponDataModel }) => {
-    return Object.entries(lang.WeaponTypes).map(type => (
-        { key: type[0], value: type[1].name, isSelected: item.system.weaponTypes.indexOf(type[0]) > -1 }
+const weaponSkillOptions = (item: Item & { system: WeaponDataModel }) => {
+    return Object.entries(vgLiteLang.WeaponSkills).map(type => (
+        { key: type[0], value: type[1].name, isSelected: item.system.skills.indexOf(type[0]) > -1 }
     ))
 }
 
 const weaponProps = (item: Item & { system: WeaponDataModel }) => {
-    return Object.entries(lang.WeaponProps).map(prop => (
+    return Object.entries(vgLiteLang.WeaponProps).map(prop => (
         { key: prop[0], value: prop[1].name, isSelected: item.system.properties.indexOf(prop[0]) > -1 }
     ))
 }

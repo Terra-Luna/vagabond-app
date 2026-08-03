@@ -1,4 +1,5 @@
-import { buildRollSummary, getDiceTerms, RollSummary } from "./util/dice-utils"
+import { RollSummary } from "./RollSummary"
+import { getDiceTerms } from "./util/dice-utils"
 
 export interface CountdownResult {
     name: string
@@ -26,7 +27,7 @@ export class CountdownRoll {
         this.countdown = {
             name: this.countdown.name,
             duration: nextDuration,
-            rollSummary: buildRollSummary(getDiceTerms(countdown), null, [])[0],
+            rollSummary: RollSummary.buildRollSummaries(getDiceTerms(countdown), null, [])[0],
             rolls: [countdown],
             message: nextDuration === '' ?
                 'Countdown has expired' : (

@@ -11,7 +11,7 @@ export interface AttackSnapshot {
     id: string
     itemId: string
     userId: string
-    actor: string
+    actorId: string
     targetIds: string[]
     title: string
     skillCheck: SkillCheck | undefined
@@ -62,7 +62,7 @@ function serializeCommonFields(
         type: atk instanceof HeroAttack ? "hero" : "adversary",
         userId: atk.userId,
         title: atk.title,
-        actor: atk.actor.id ?? '',
+        actorId: atk.actor.id ?? '',
         targetIds: atk.targetIds ?? [],
         damageRoll: cleanDamageRoll,
         isResolved: atk.isResolved
@@ -99,8 +99,11 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
 }
 
 export function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | undefined {
-    const actor = game.actors?.get(snapshot.actor) as Actor & { system: HeroDataModel } | undefined
-    if (!actor) throw new Error("Actor not found")
+    const actor = game.actors?.get(snapshot.actorId) as Actor & { system: HeroDataModel } | undefined
+    if (!actor) {
+        console.error("Vagabond | Failed to load some chat cards for missing Actors.")
+        return
+    }
 
     const atk = new HeroAttack(snapshot.title, actor, [...snapshot.targetIds])
 

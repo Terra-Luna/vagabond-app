@@ -7,7 +7,7 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { lang as fullLang } from "../../../../../utils/lang"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
-import { Material } from "../component/MaterialSelectionComponent"
+import { MaterialSelection } from "../component/MaterialSelectionComponent"
 const lang = fullLang.VGLITE
 
 export const ArmorSheet = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
@@ -20,7 +20,7 @@ export const ArmorSheet = ({ item }: { item: Item & { system: ArmorDataModel } }
                 </div>
                 <div className="flex justify-between items-center">
                     <ItemSheetProperty label={lang.ItemSheet.mitReq} value={item.system.mightReq} />
-                    <Material item={item} />
+                    <MaterialSelection item={item} />
                 </div>
             </div>
         </EquipmentSheetSubtypeBody>

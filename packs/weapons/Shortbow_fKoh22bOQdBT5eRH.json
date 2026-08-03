@@ -30,10 +30,12 @@
     "relicEffects": [],
     "range": "far",
     "damage": {
-      "oneHand": "1d4",
-      "twoHand": "1d6",
+      
       "type": "pierce",
-      "dieSize": 6
+      "dice": {
+        "count": 1,
+        "faces": 6
+      }
     },
     "grip": {
       "style": "HH",
@@ -46,11 +48,8 @@
     "properties": [
       "keen"
     ],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

@@ -31,7 +31,10 @@
     "range": "close",
     "damage": {
       "type": "physical",
-      "dieSize": 8
+      "dice": {
+        "count": 1,
+        "faces": 8
+      }
     },
     "grip": {
       "style": "V",
@@ -43,11 +46,7 @@
     "properties": [
       "cleave"
     ],
-    "explodeData": {
-      "canExplode": false,
-      "explodesOn": []
-    },
-    "material": "standard"
+    "material": "steel"
   },
   "effects": [],
   "folder": null,

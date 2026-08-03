@@ -1,7 +1,7 @@
 import { sheetPropLabel, sheetPropValue } from "../../../../common/text-styles"
 
 export const ItemSheetPropLabel = ({ label, className = "font-bold" }) => {
-    return <p className={`${sheetPropLabel} ${className}`}>{label}</p>
+    return <p className={`${sheetPropLabel} ${className} line-clamp-1`}>{label}</p>
 }
 
 export const ItemSheetPropValue = ({ value }) => {
