@@ -51,7 +51,7 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
                                 }
                             </Select>
                         </div> :
-                        <p className="text-lg font-eskapade text-text-primary bg-sheet-main-fill p-0.5 rounded">
+                        <p className="text-lg font-eskapade text-text-primary bg-sheet-main-fill p-0.5">
                             {options.find(o => o.value === value)?.label ?? ''}
                         </p>
                 }
@@ -70,7 +70,7 @@ export const CustomDropDown = ({ value, options, className, onChange, editModeOv
             ? <Select
                 value={value}
                 onChange={onChange}
-                className={`flex border border-solid border-table-border rounded-sm px-1 py-0.5 ${className}`}>
+                className={`flex border border-solid border-table-border/50 px-1 pb-0.5 pt-1.5 ${className}`}>
                 {options.map(opt => (<Option key={opt.value} value={opt.value}>{opt.label}</Option>))}
             </Select >
             : <div className={`${className ? className : 'text-xl text-text-primary font-eskapade'}`}>
@@ -86,7 +86,7 @@ export const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes
         text-text-primary
         bg-sheet-main-fill
         border border-solid border-text-primary/50
-        rounded-smpy-0.5 text-sm shadow-sm
+        py-0.5 text-sm shadow-sm
         ${props.className}
     `} {...props} />
 }

@@ -58,7 +58,7 @@ export const EditableTextField = (
 
     if (isInEditMode || boundValue === '' || boundValue == null) {
         const inputStyle = (editModeValue === '' || editModeValue == null)
-            ? `field-sizing-content border border-solid border-table-border rounded-sm px-1 ${className}`
+            ? `field-sizing-content border border-solid border-table-border px-1 ${className}`
             : `w-auto field-sizing-content ${className}`
         return <div className="overflow-hidden">
             <form onSubmit={(e) => {
@@ -122,7 +122,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
 
     return (<>
         {isEditMode || editModeOverride ?
-            <div className="flex items-center justify-center border border-solid border-table-border/50 rounded-sm">
+            <div className="flex items-center justify-center border border-solid border-table-border/50">
                 <form onSubmit={(e) => {
                     e.stopPropagation()
                     e.preventDefault()

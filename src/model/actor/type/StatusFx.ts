@@ -11,6 +11,7 @@ export const statusFxSchema = () => {
             charmed: new fields.BooleanField({ initial: false }),
             confused: new fields.BooleanField({ initial: false }),
             dazed: new fields.BooleanField({ initial: false }),
+            dead: new fields.BooleanField({ initial: false }),
             frightened: new fields.BooleanField({ initial: false }),
             incapacitated: new fields.BooleanField({ initial: false }),
             invisible: new fields.BooleanField({ initial: false }),
@@ -20,7 +21,7 @@ export const statusFxSchema = () => {
             sickened: new fields.BooleanField({ initial: false }),
             suffocating: new fields.BooleanField({ initial: false }),
             unconscious: new fields.BooleanField({ initial: false }),
-            vulnerable: new fields.BooleanField({ initial: false }),
+            vulnerable: new fields.BooleanField({ initial: false })
         }),
 
         stacks: new fields.SchemaField({

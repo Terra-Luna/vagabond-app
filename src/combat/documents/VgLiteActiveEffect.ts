@@ -190,7 +190,8 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
             _id: "vglitedead000000",
             id: "dead",
             name: "VGLITE.StatusConditions.dead.name",
-            img: "icons/svg/skull.svg"
+            img: "icons/svg/skull.svg",
+            changes: [{ key: "system.statuses.statuses.dead", mode: "OVERRIDE", value: "true" }]
         }
     ]
 

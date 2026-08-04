@@ -45,7 +45,7 @@ export const CSVTextInput = ({
                 onChange={(e) => setLocalString(e.target.value)}
                 onBlur={handleBlur}
                 placeholder={placeholder}
-                className={`border border-solid border-table-border rounded px-2 py-1 text-sm ${className}`}
+                className={`border border-solid border-table-border/50 px-2 py-1 text-sm ${className}`}
             />
         </div>
     )

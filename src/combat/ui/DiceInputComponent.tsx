@@ -7,6 +7,7 @@ import { useEditMode } from "../../view/context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../view/sheets/item/equip/component/ItemSheetLabelComponent"
 import { vgLiteLang } from "../../utils/lang"
 import { CSVTextInput } from "../../view/component/CSVTextInput"
+import { Plus } from "lucide-react"
 
 export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride = false }: {
     label: string, diceRoll: DiceRoll, onChange: (updatedFields: Partial<DiceRoll>) => void, editModeOverride?: boolean
@@ -32,7 +33,7 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride
     const explosionValues = (diceRoll.explodesOn || []).map(Number).filter(n => !isNaN(n))
 
     return (
-        <div className="flex text-xl font-eskapade font-bold">
+        <div className="flex text-base font-eskapade font-bold">
             {(isEditMode || editModeOverride) &&
                 <div>
                     <ItemSheetPropLabel label={label} />
@@ -55,13 +56,13 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride
                                     { value: "20", label: "d20" },
                                 ]}
                                 onChange={(e) => updateFaces(e.target.value)}
-                                className="text-xl font-eskapade font-bold pt-1"
+                                className="pt-1"
                             />
                         </div>
 
                         {/* MODIFIER (FLAT BONUS) */}
-                        <div className="flex text-2xl items-center">
-                            <p>+</p>
+                        <div className="flex items-center">
+                            <Plus size={16} className="text-text-secondary" />
                             <NumericCounterInput
                                 value={diceRoll.modifier || 0}
                                 onChange={(input) => updateModifier(input)}
