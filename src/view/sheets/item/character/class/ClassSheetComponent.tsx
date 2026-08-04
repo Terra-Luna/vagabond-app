@@ -1,4 +1,4 @@
-import { ManaStatSelector, MaxManaPerLevelSelector, SpellcastingSkillSelector } from "./component/SpellcastingConfig"
+import { MaxCastFormulaSelector, MaxManaPerLevelSelector, SpellcastingSkillSelector } from "./component/SpellcastingConfig"
 import { ClassDataModel } from "../../../../../model/item/character/ClassDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
@@ -13,7 +13,7 @@ import { StartingPackSelector } from "./component/StartingPackSelector"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 
-export const ClassSheetReactComponent = ({ item }: { item: Item & { system: ClassDataModel } }) => {
+export const ClassSheetComponent = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     return (
         <BaseItemSheetComponent
             banner={<ClassSheetBanner item={item} />}
@@ -23,7 +23,7 @@ export const ClassSheetReactComponent = ({ item }: { item: Item & { system: Clas
                 <StartingPackSelector item={item} />
                 <KeyStatsSelector item={item} />
                 <SpellcastingSkillSelector item={item} />
-                <ManaStatSelector item={item} />
+                <MaxCastFormulaSelector item={item} />
                 <MaxManaPerLevelSelector item={item} />
                 <ClassFeaturesConfig item={item} />
                 <div className="mt-2">

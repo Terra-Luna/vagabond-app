@@ -27,12 +27,12 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const { ClassSelection, classItem } = useClassSelection(actor, [backButton, nextButton])
     const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
     const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills, setChosenClassSkills, setChosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
     const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
 
     const hasSpellSlots = useMemo(() => {
         return [...ancestrySpellSlots, ...classSpellSlots].length > 0
-    }, [ancestryItem, classItem])
+    }, [ancestrySpellSlots, classSpellSlots, perkSpellSlots])
 
     /**
      * Sum up all the stats and their selected bonuses for display

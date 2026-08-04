@@ -247,17 +247,17 @@ export function setSaves(hero: HeroDataModel) {
 export function setSpellcastingStats(hero: HeroDataModel) {
     const manaValues = calculateManaValues(
         hero.level.current ?? 0,
-        Number(hero.stats[hero.class?.maxManaStat]),
-        hero.class?.manaMultiplier ?? 1
+        hero.class?.manaMultiplier ?? 1,
+        hero.class?.maxCastFormula
     )
     hero.mana.max += manaValues.max
     hero.mana.maxCast += manaValues.maxCast
 }
 
-export function calculateManaValues(level: number, manaStatVal: number, multiplier: number): { max: number, maxCast: number } {
-    if (level === 0 || Number.isNaN(manaStatVal) || manaStatVal === 0) return { max: 0, maxCast: 0 }
+export function calculateManaValues(level: number, multiplier: number, maxCastFormula: string): { max: number, maxCast: number } {
+    if (level === 0 || maxCastFormula.length === 0) return { max: 0, maxCast: 0 }
     const max = level * multiplier
-    const maxCast = level < 1 ? 0 : Math.ceil(level / 2) + manaStatVal
+    const maxCast = maxCastFormula === 'partial' ? (1 + Math.ceil(level / 2)) : (2 + level)
     return { max: max, maxCast: maxCast }
 }
 

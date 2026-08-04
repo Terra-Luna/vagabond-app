@@ -178,7 +178,7 @@
     ],
     "startingPacks": [],
     "castingSkill": "arcana",
-    "maxManaStat": "reason",
+    "maxCastFormula": "partial",
     "manaMultiplier": 2,
     "features": [
       {

@@ -1,11 +1,11 @@
 import React, { useState } from "react"
-import { LucideProps, Plus, Trash } from "lucide-react"
+import { Plus, Trash } from "lucide-react"
 import { ChoiceOption } from "../shared/ChoiceOption"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
 import { ItemRulesLabel } from "../shared/ItemRulesTypography"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
-import { createDropdownEntries, createDropdownEntriesFromObj } from "../../utils/localeUtils"
+import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { vgLiteLang } from "../../utils/lang"
 
 export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
@@ -19,8 +19,6 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
             if (idx !== indexToUpdate) return choice
             return { ...choice, ...fields }
         })
-        const item = fromUuidSync(fields.value)
-        rule.channel = (item instanceof foundry.abstract.Document && "type" in item) ? item.type : "path"
         onChange({
             ...rule,
             choices: updatedChoices
@@ -54,7 +52,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
         e.preventDefault()
         setActiveDragIdx(null)
 
-        if (rule.channel !== "item") return
+        if (rule.channel !== "item" && rule.channel !== "perk" && rule.channel !== "spell") return
 
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
@@ -88,12 +86,6 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     type="number"
                 />
                 <ItemRuleInput
-                    label="Bonus Value"
-                    value={rule.value ?? 1}
-                    onChange={(e) => onChange({ value: Number(e.target.value) })}
-                    type="number"
-                />
-                <ItemRuleInput
                     label="# Choices"
                     value={rule.maxChoices ?? 1}
                     onChange={(e) => onChange({ maxChoices: Math.max(1, Number(e.target.value)) })}
@@ -120,7 +112,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                 />
 
                 {/* SELECT CHOICE SET TYPE: DYNAMIC / STATIC */}
-                {rule.channel === "item" && <ItemRuleSelector
+                {(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") && <ItemRuleSelector
                     label="Choices Source"
                     value={rule.sourceMode}
                     options={<>
@@ -242,9 +234,9 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
                                     <div
                                         className={`w-1/2 p-1 transition-colors duration-100 
-                                            ${activeDragIdx === oIdx && rule.channel === "item" ?
-                                                "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]" :
-                                                "border-table-border/50"
+                                            ${activeDragIdx === oIdx && (rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell")
+                                                ? "bg-context-menu-fill shadow-[0_0_8px_rgba(245,158,11,0.3)]"
+                                                : "border-table-border/50"
                                             }`
                                         }
                                         onDragOver={(e) => handleDragOver(e, oIdx)}
@@ -252,9 +244,9 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         onDrop={(e) => handleDrop(e, oIdx)}
                                     >
                                         <ItemRuleInput
-                                            label={rule.channel === "item" ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
+                                            label={(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") ? "Item UUID (Drag & Drop Spells/Perks)" : "Path"}
                                             value={choice.value}
-                                            placeholder={rule.channel === "item" ? "Drop item here to capture UUID..." : "stats.might"}
+                                            placeholder={(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") ? "Drop item here to capture UUID..." : "stats.might"}
                                             onChange={(e) => handleUpdateOption(oIdx, { value: e.target.value })}
                                             type="text"
                                         />

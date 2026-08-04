@@ -76,7 +76,7 @@ export const usePerkSelection = (
      * on their perk choice filter rules.
      */
     useEffect(() => {
-        const perkRules = getItemChoiceRules(clazz?.system?.rules ?? []).filter(it => it.pack === "perk")
+        const perkRules = getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? []).filter(it => it.pack === "perk")
         const filteredChoices = perkRules.flatMap(it => it.choices).map(it => it.value)
         setClassRestrictedPerksList([
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
@@ -90,7 +90,7 @@ export const usePerkSelection = (
         })
 
         setAncestryPerkSlots(loadInitialSlots(
-            getItemChoiceRules(ancestry?.system?.rules ?? []).filter(it => it.pack === "perk")
+            getItemChoiceRules(ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? []).filter(it => it.pack === "perk")
         ))
 
         getItemGrants('perk', [clazz]).then(grants => {
@@ -98,7 +98,7 @@ export const usePerkSelection = (
         })
 
         setClassPerkSlots(loadInitialSlots(
-            getItemChoiceRules(clazz?.system?.rules ?? []).filter(it => it.pack === "perk")
+            getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? []).filter(it => it.pack === "perk")
         ))
     }, [ancestry, clazz])
 

@@ -99,7 +99,7 @@
     ],
     "startingPacks": [],
     "castingSkill": "mysticism",
-    "maxManaStat": "awareness",
+    "maxCastFormula": "full",
     "manaMultiplier": 4,
     "features": [
       {

@@ -881,7 +881,7 @@
       "labelKeyStats": "Key Stats",
       "labelComplexity": "Complexity",
       "labelSpellSkill": "Spellcasting Skill",
-      "labelMaxMana": "Max Mana Stat",
+      "labelMaxMana": "Max Mana Formula",
       "labelManaLevel": "Mana/Level",
       "requiredSpells": "Required Spells",
       "labelTraining": "Training",

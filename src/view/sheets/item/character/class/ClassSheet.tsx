@@ -1,8 +1,8 @@
 import { VgLiteItemSheet } from "../../VgLiteItemSheet"
-import { ClassSheetReactComponent } from "./ClassSheetReactComponent"
+import { ClassSheetComponent } from "./ClassSheetComponent"
 
 export class ClassSheet extends VgLiteItemSheet {
-    Component = ClassSheetReactComponent
+    Component = ClassSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
             width: 420,

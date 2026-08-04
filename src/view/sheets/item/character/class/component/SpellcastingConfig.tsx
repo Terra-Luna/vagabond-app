@@ -28,24 +28,21 @@ export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: Cla
     )
 }
 
-export const ManaStatSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => { 
-    const { isEditMode } = useEditMode()
-    return (
-        <>
-            {(isEditMode || item.system.castingSkill) &&
-                <div className="flex gap-x-1">
-                    <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelMaxMana}:`} />
-                    <DropDown
-                        value={item.system.maxManaStat}
-                        options={createDropdownEntriesFromObj(vgLiteLang.Stat)}
-                        includeNullOption={true}
-                        updateMechanism={{ updatePath: ['maxManaStat'] }}
-                        parent={item}
-                    />
-                </div>
-            }
-        </>
-    )
+export const MaxCastFormulaSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => {
+    return (<>
+        {item.system.castingSkill &&
+            <div className="flex gap-x-1">
+                <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelMaxMana}:`} />
+                <DropDown
+                    value={item.system.maxCastFormula}
+                    options={[{ value: 'partial', label: '1 + (Level / 2)↑' }, { value: 'full', label: '2 + Level' }]}
+                    includeNullOption={true}
+                    updateMechanism={{ updatePath: ['maxCastFormula'] }}
+                    parent={item}
+                />
+            </div>
+        }
+    </>)
 }
 
 export const MaxManaPerLevelSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => {

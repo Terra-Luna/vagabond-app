@@ -125,7 +125,6 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             key: "ChoiceSet",
                                                             label: rule.label || "",
                                                             level: 0,
-                                                            value: 1,
                                                             maxChoices: 1,
                                                             channel: "path", // "path" or "item"
                                                             sourceMode: "static", // "static" or "dynamic"

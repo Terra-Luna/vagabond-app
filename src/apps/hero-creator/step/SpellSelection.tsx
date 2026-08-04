@@ -63,18 +63,18 @@ export const useSpellSelection = (
      * Initial spell slot allocation.
      */
     useEffect(() => {
-        console.log("SpellSelection useEffect updating slots...")
-
         getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
         getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
 
-        const ancestryRules = getItemChoiceRules(ancestry?.system?.rules ?? [])
+        console.log(clazz?.system?.rules)
+
+        const ancestryRules = getItemChoiceRules(ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
 
-        const classRules = getItemChoiceRules(clazz?.system?.rules ?? [])
+        const classRules = getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setClassSpellSlots(loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
 
-        const perkRules = getItemChoiceRules(perks?.flatMap(p => p.rules) ?? [])
+        const perkRules = getItemChoiceRules(perks?.flatMap(p => p.rules?.filter(r => (r as any).level <= 1)) ?? [])
         setPerkSpellSlots(loadInitialSlots(perkRules.filter(r => r.pack === 'spell')))
     }, [ancestry, clazz, perksSignature, loadInitialSlots])
 

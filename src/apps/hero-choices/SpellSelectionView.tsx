@@ -25,7 +25,7 @@ export const SpellSelectionView = ({ actor }: { actor: Actor & { system: HeroDat
     }
 
     const loadSelections = (rules, setSlots) => {
-        const slots = loadInitialSlots(rules)
+        const slots = loadInitialSlots(rules.filter(r => r.level <= (actor.system.level.current ?? 0)))
         let sharedIndex = 0
         rules.forEach(rule => {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []

@@ -7,7 +7,7 @@ import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
-import { ClassSheetReactComponent } from "../../../view/sheets/item/character/class/ClassSheetReactComponent"
+import { ClassSheetComponent } from "../../../view/sheets/item/character/class/ClassSheetComponent"
 import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navButtons: ReactNode[]) => {
@@ -46,7 +46,7 @@ export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navBu
                 />
                 {classItem &&
                     <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                        <ClassSheetReactComponent item={classItem} />
+                        <ClassSheetComponent item={classItem} />
                     </EditModeContextProvider>
                 }
             </div>

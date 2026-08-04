@@ -20,7 +20,7 @@ export const useEquipmentSelection = (
     const EquipmentSelection = () => {
         return (
             <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                <div className="bg-sheet-main-fill space-y-4">
+                <div className="flex flex-col gap-y-4 h-full overflow-hidden">
                     <Header title={strings.equipHeader} />
                     <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} />
                     <ItemShop includeStarterPacks={true} />

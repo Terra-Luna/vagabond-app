@@ -1,10 +1,10 @@
-import { Plus, Save, Trash } from "lucide-react"
+import { Plus, Save, SquarePen, Trash } from "lucide-react"
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { SkillCard } from "../../../../../component/SkillCard"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel, ClassSheetSectionHeader } from "./ClassSheetText"
-import { useCallback, useState } from "react"
-import { EditableTextField } from "../../../../../component/EditableTextField"
+import { useCallback, useEffect, useState } from "react"
+import { EditableTextField, NumericCounterInput } from "../../../../../component/EditableTextField"
 import { RichTextField } from "../../../../../component/RichTextField"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
@@ -14,6 +14,7 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const [isNewFeatureOpen, setIsNewFeatureOpen] = useState(false)
+    const [editFeatureIndex, setEditFeatureIndex] = useState<number | null>(null)
     const onAddNewFeature = useCallback(() => { setIsNewFeatureOpen(true) }, [])
     const sortedFeats = item.system.features.sort((a, b) => (a.level ?? 0) - (b.level ?? 0))
 
@@ -21,24 +22,34 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
         <div className="mt-4 space-y-1">
             <div className="flex gap-x-1 items-center">
                 <ClassSheetSectionHeader text={vgLiteLang.ClassSheet.labelClassFeat} />
-                {isEditMode && <Plus size={24} strokeWidth={3} className="text-text-header-tertiary cursor-pointer" onClick={onAddNewFeature} />}
+                {isEditMode && <Plus size={24} strokeWidth={3} className="text-text-header-tertiary cursor-pointer hover-glow" onClick={onAddNewFeature} />}
             </div>
             {isNewFeatureOpen && <NewFeatureMenu item={item} setIsNewFeatureOpen={setIsNewFeatureOpen} />}
             {
                 sortedFeats.map((feat, index) => (
                     <div key={index} onContextMenu={(e) => {
                         if (!isEditMode) return
-                        onCtxMenu(e, [{
-                            icon: Trash,
-                            label: vgLiteLang.ButtonActions.delete,
-                            isDestructive: true,
-                            action: async () => {
-                                await item.update({ 'system.features': sortedFeats.filter(f => f !== feat) } as Record<string, any>)
-                                item.render(false)
+                        onCtxMenu(e, [
+                            {
+                                icon: SquarePen,
+                                label: vgLiteLang.ButtonActions.edit,
+                                action: () => {
+                                    setEditFeatureIndex(index)
+                                }
+                            },
+                            {
+                                icon: Trash,
+                                label: vgLiteLang.ButtonActions.delete,
+                                isDestructive: true,
+                                action: async () => {
+                                    await item.update({ 'system.features': sortedFeats.filter(f => f !== feat) } as Record<string, any>)
+                                    item.render(false)
+                                }
                             }
-                        }])
+                        ])
                     }}>
                         <ClassFeatureCard item={item} feat={feat} />
+                        {editFeatureIndex === index && <NewFeatureMenu item={item} editIndex={editFeatureIndex} setIsNewFeatureOpen={setEditFeatureIndex} />}
                     </div>
                 ))
             }
@@ -57,7 +68,7 @@ const ClassFeatureCard = ({ item, feat }) => {
     )
 }
 
-const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: ClassDataModel }, setIsNewFeatureOpen: any }) => {
+const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item & { system: ClassDataModel }, editIndex?: number, setIsNewFeatureOpen: any }) => {
     const [title, setTitle] = useState('')
     const [level, setLevel] = useState(1)
     const [description, setDescription] = useState('')
@@ -77,11 +88,19 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
         return true
     }, [setDescription, description])
 
+    useEffect(() => {
+        if (!editIndex) return
+        const editTarget = item.system.features[editIndex]
+        setTitle(editTarget.name)
+        setLevel(editTarget.level as number)
+        setDescription(editTarget.description)
+    }, [editIndex])
+
     return (
         <div className="border border-solid border-table-border space-y-1 p-2">
             {/* NAME & LEVEL */}
-            <div className="flex gap-x-2">
-                <div>
+            <div className="space-y-2">
+                <div className="flex gap-x-1 items-end">
                     <ClassSheetLabel text={vgLiteLang.ClassSheet.labelName} />
                     <EditableTextField
                         boundValue={title ?? null}
@@ -89,12 +108,11 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
                         placeholder={vgLiteLang.ClassSheet.placeholder_featurename}
                     />
                 </div>
-                <div>
+                <div className="flex gap-x-1 items-end">
                     <ClassSheetLabel text={vgLiteLang.ClassSheet.labelLevel} />
-                    <EditableTextField
-                        boundValue={level.toString()}
-                        onSave={updateLevel}
-                        placeholder={"1"}
+                    <NumericCounterInput
+                        value={level}
+                        onChange={updateLevel}
                     />
                 </div>
             </div>
@@ -104,20 +122,32 @@ const NewFeatureMenu = ({ item, setIsNewFeatureOpen }: { item: Item & { system: 
             <RichTextField
                 defaultValue={description}
                 onChange={updateDescription}
-                height={48}
+                height={200}
             />
 
             {/* SAVE & CANCEL BUTTONS */}
             <div className="flex justify-between mt-2">
                 <DestructiveButton children={<p>Cancel</p>} onClick={() => { setIsNewFeatureOpen(false) }} />
                 <PrimaryButton icon={<Save size={14} />} onClick={async () => {
-                    const features = [
-                        ...item.system.features,
-                        { level: level, name: title, description: description, modifiers: [], grants: [] }
-                    ]
+                    let features = [...item.system.features]
+                    if (editIndex) {
+                        features = features.map((feature, index) => {
+                            if (index === editIndex) return { level: level, name: title, description: description }
+                            else return feature
+                        })
+                    }
+                    else {
+                        features.push({ level: level, name: title, description: description })
+                    }
+
                     await item.update({ 'system.features': features } as Record<string, any>)
-                    setIsNewFeatureOpen(false)
-                }}>Save</PrimaryButton>
+
+                    if (editIndex) setIsNewFeatureOpen(null)
+                    else setIsNewFeatureOpen(false)
+
+                }}>
+                    {vgLiteLang.ButtonActions.save}
+                </PrimaryButton>
             </div>
         </div>
     )
