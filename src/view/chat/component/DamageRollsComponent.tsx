@@ -4,7 +4,7 @@ import { DamageRollResult } from "../../../combat/engine/DamageRoll"
 
 export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) => {
     return (
-        <div className="flex flex-wrap grow gap-x-1 mt-2 justify-center max-h-48 overflow-y-auto">
+        <div className="flex flex-wrap grow gap-x-1 mt-2 justify-center max-h-28 overflow-y-auto">
             {result?.rollSummaries?.map((r, index) => (
                     <div key={index}>
                     <DiceRollComponent faces={r.faces} result={r.result} textSize={"text-4xl"} exploded={r.exploded} />

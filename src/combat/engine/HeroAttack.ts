@@ -315,8 +315,6 @@ export class HeroAttack extends Attack {
         const dice = [new DiceRoll({ ...weapon.damage.dice as DiceRoll })]
         let weaponSkill = skill
 
-        console.log(dice)
-
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
         if (!weaponSkill) {
             const weaponTypes = [...weapon.skills]

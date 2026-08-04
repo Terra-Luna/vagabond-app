@@ -129,7 +129,6 @@ Hooks.once("init", () => {
 })
 
 Hooks.once("ready", async () => {
-
     game.socket?.on("system.vagabond-lite", async (packet: any) => {
         if (!game.user?.isGM) return
 

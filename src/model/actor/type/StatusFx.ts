@@ -5,7 +5,7 @@ export const statusFxSchema = () => {
 
     return {
         // Flat boolean tracking flags for simple conditions
-        statuses: new fields.SchemaField({
+        toggles: new fields.SchemaField({
             berserk: new fields.BooleanField({ initial: false }),
             blinded: new fields.BooleanField({ initial: false }),
             charmed: new fields.BooleanField({ initial: false }),
@@ -39,13 +39,6 @@ export const statusFxSchema = () => {
             luck: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             studied: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             fatigue: new fields.NumberField({ ...requiredInteger, initial: 0, max: 5 })
-        }),
-
-        modifiers: new fields.SchemaField({
-            damage: new fields.SchemaField({
-                all: new fields.NumberField({ integer: true, initial: 0 })
-            }),
-            healingReceived: new fields.NumberField({ integer: true, initial: 0 })
         })
 
     }

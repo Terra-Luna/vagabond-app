@@ -1,7 +1,7 @@
 export const getCombatantStatuses = (combatant) => {
-    const allStatuses = Object.keys(combatant.actor.system.statuses.statuses)
+    const allStatuses = Object.keys(combatant.actor.system.statuses.toggles)
     return allStatuses.reduce((acc, statusKey) => {
-        if (combatant.actor.system.statuses.statuses[statusKey]) {
+        if (combatant.actor.system.statuses.toggles[statusKey]) {
             return [...acc, statusKey]
         }
         return acc
