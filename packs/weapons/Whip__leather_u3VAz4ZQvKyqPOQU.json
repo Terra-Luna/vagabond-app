@@ -9,7 +9,7 @@
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 0,
+      "s": 10,
       "c": 0
     },
     "totalValue": {
@@ -40,15 +40,15 @@
       "style": "H",
       "state": "H"
     },
-    "weaponTypes": [
-      "finesse",
-      "melee"
-    ],
     "properties": [
       "grapple",
       "long"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "finesse",
+      "melee"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -63,7 +63,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784509002586,
-    "modifiedTime": 1785709057567,
+    "modifiedTime": 1785872010063,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

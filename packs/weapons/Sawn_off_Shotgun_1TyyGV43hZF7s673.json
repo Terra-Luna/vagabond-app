@@ -41,13 +41,13 @@
       "style": "H",
       "state": "H"
     },
-    "weaponTypes": [
-      "ranged"
-    ],
     "properties": [
       "vicious"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "ranged"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -62,7 +62,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785709093948,
-    "modifiedTime": 1785709190524,
+    "modifiedTime": 1785871847637,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

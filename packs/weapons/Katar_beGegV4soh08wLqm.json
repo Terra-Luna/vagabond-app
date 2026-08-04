@@ -40,14 +40,14 @@
       "style": "H",
       "state": "H"
     },
-    "weaponTypes": [
-      "brawl",
-      "finesse"
-    ],
     "properties": [
       "keen"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "brawl",
+      "finesse"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -62,7 +62,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784507350899,
-    "modifiedTime": 1785707908130,
+    "modifiedTime": 1785871569561,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

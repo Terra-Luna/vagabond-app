@@ -40,13 +40,13 @@
       "style": "H",
       "state": "H"
     },
-    "weaponTypes": [
-      "melee"
-    ],
     "properties": [
       "vicious"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "melee"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -61,7 +61,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784506408580,
-    "modifiedTime": 1785707650979,
+    "modifiedTime": 1785871389562,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

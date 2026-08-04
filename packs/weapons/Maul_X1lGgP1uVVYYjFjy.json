@@ -32,7 +32,7 @@
     "damage": {
       "dice": {
         "count": 1,
-        "faces": 1
+        "faces": 10
       },
       "modifier": 0,
       "type": "physical"
@@ -41,13 +41,13 @@
       "style": "HH",
       "state": "H"
     },
-    "weaponTypes": [
-      "melee"
-    ],
     "properties": [
       "vicious"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "melee"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -62,7 +62,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785708060637,
-    "modifiedTime": 1785708121326,
+    "modifiedTime": 1785871705358,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

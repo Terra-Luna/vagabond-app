@@ -41,9 +41,6 @@
       "style": "V",
       "state": "H"
     },
-    "weaponTypes": [
-      "melee"
-    ],
     "properties": [
       "cleave"
     ],

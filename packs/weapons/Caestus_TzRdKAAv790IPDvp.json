@@ -40,13 +40,13 @@
       "style": "F",
       "state": "H"
     },
-    "weaponTypes": [
-      "brawl"
-    ],
     "properties": [
       "grapple"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "brawl"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -61,7 +61,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784506044647,
-    "modifiedTime": 1785707533870,
+    "modifiedTime": 1785871281430,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

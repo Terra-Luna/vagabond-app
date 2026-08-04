@@ -36,14 +36,14 @@
       "style": "V",
       "state": "H"
     },
-    "weaponTypes": [
-      "finesse",
-      "melee"
-    ],
     "properties": [
       "parry"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "finesse",
+      "melee"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -58,7 +58,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784508670372,
-    "modifiedTime": 1785708923985,
+    "modifiedTime": 1785871924947,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

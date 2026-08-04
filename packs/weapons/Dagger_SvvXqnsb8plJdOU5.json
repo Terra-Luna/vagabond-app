@@ -40,13 +40,15 @@
       "style": "H",
       "state": "H"
     },
-    "weaponTypes": [
+    "properties": [
+      "keen"
+    ],
+    "material": "steel",
+    "skills": [
       "finesse",
       "melee",
       "thrown"
-    ],
-    "properties": [],
-    "material": "steel"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -61,7 +63,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784506324545,
-    "modifiedTime": 1785707080705,
+    "modifiedTime": 1785871375015,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -40,10 +40,6 @@
       "style": "HH",
       "state": "H"
     },
-    "weaponTypes": [
-      "finesse",
-      "ranged"
-    ],
     "properties": [
       "keen"
     ],
