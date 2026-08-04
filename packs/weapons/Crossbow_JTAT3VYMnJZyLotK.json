@@ -30,7 +30,6 @@
     "relicEffects": [],
     "range": "far",
     "damage": {
-      
       "type": "pierce",
       "dice": {
         "count": 1,

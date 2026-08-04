@@ -30,7 +30,6 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      
       "type": "physical",
       "dice": {
         "count": 1,

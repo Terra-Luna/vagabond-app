@@ -30,7 +30,6 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      
       "type": "physical"
     },
     "grip": {
@@ -44,7 +43,6 @@
     "properties": [
       "parry"
     ],
-
     "material": "steel"
   },
   "effects": [],

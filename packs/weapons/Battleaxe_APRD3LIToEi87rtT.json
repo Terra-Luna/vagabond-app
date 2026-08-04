@@ -33,7 +33,8 @@
       "type": "physical",
       "dice": {
         "count": 1,
-        "faces": 8
+        "faces": 8,
+        "modifier": 0
       }
     },
     "grip": {
@@ -46,7 +47,10 @@
     "properties": [
       "cleave"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "melee"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -61,7 +65,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784505806032,
-    "modifiedTime": 1785706425356,
+    "modifiedTime": 1785870994970,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

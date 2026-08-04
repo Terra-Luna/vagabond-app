@@ -46,7 +46,10 @@
     "properties": [
       "vicious"
     ],
-    "material": "steel"
+    "material": "steel",
+    "skills": [
+      "ranged"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -61,7 +64,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784505711433,
-    "modifiedTime": 1785702476583,
+    "modifiedTime": 1785870478820,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -34,7 +34,6 @@
         "count": 1,
         "faces": 4
       },
-
       "type": "physical"
     },
     "grip": {
@@ -46,7 +45,6 @@
       "thrown"
     ],
     "properties": [],
-
     "material": "steel"
   },
   "effects": [],
