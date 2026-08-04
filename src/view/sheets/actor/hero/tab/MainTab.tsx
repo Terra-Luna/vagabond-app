@@ -65,16 +65,16 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         onDragEnd={(e) => onDragEnd(e, index)}
                         onContextMenu={async (e) => onCtxMenu(e, weaponContextMenuItems(hero, weapon))}
                     >
-                        <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1 cursor-grab">
+                        <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
                             <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
                             <div className="flex justify-end">
                                 <div title={"Toggle grip (if applicable)"} className={`${gripStyle} mr-2 ${glowOnHover}`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
                                 <div className="flex content-right">
                                     <div
-                                        title={"Quick damage roll"}
+                                        title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
                                         className={`${dmgStyle} ${glowOnHover}`}
-                                        onClick={async () => {
-                                            HeroAttack.buildWeaponAttack(hero.parent, weapon.parent).initiate()
+                                        onClick={async (e) => {
+                                            HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [], e).initiate()
                                         }}
                                     >
                                         {gripStateDamage(weapon)}

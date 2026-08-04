@@ -20,9 +20,16 @@ import { ItemsCache } from "../../rules/util/ItemsCache"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
 import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortraitComponent"
+import { Checkbox } from "../../view/component/Checkbox"
+import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
+import { SingleSelect } from "../../view/component/SingleSelect"
+import { ChatCardPortrait } from "../../view/chat/component/ChatCardPortrait"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
     const [revision, setRevision] = useState(0)
+    const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
+    const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
 
     /**
      * This side-effect is responsible for responsive UI elements
@@ -38,18 +45,18 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
             try {
                 updatedData = typeof changes.value === "string"
                     ? JSON.parse(changes.value)
-                    : (changes.value || {});
+                    : (changes.value || {})
             }
             catch (err) {
                 updatedData = (game.settings as any).get("vagabond-lite", "attackRegistry") || {}
             }
 
             if (actorId in updatedData) {
-                setRevision(prev => prev + 1);
+                setRevision(prev => prev + 1)
             }
         })
 
-        return () => Hooks.off("updateSetting", hookId);
+        return () => Hooks.off("updateSetting", hookId)
     }, [actorId])
 
     const actor = useMemo(() => {
@@ -90,17 +97,39 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
                         {/* GM TOOLS */}
                         {(game.user?.isGM && !attack.isResolved) &&
-                            <div className="mt-0.5">
-                                <Header title={"GM Tools"} />
-                                <div className="flex gap-x-1 justify-center items-center mt-0.5">
-                                    <InteractiveChatCardButton
-                                        label="Resolve" tooltip="Lock attack from edits"
-                                        fn={async () => await attack.resolve(serializeAttack)}
-                                    />
+                            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                                <div className="mt-0.5">
+                                    <Header title={"GM Tools"} />
+                                    <div className="flex items-end justify-between">
+                                        <div>
+                                            <Checkbox
+                                                label={"GM Target Override"}
+                                                checked={targetsToggle}
+                                                onCheckedChanged={(e) => {
+                                                    setTargetsToggle(e)
+                                                }}
+                                            />
+                                            <Checkbox
+                                                label={"Ignore Armor"}
+                                                checked={armorBypassToggle}
+                                                onCheckedChanged={(e) => {
+                                                    setArmorBypassToggle(e)
+                                                }}
+                                            />
+                                        </div>
+                                        <InteractiveChatCardButton
+                                            label="Apply" tooltip="Apply damage & lock attack from edits"
+                                            fn={async () => await attack.applyDamageAndResolve(
+                                                { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
+                                                serializeAttack
+                                            )}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
+                            </EditModeContextProvider>
                         }
-                    </div>}
+                    </div>
+                }
             />}
         </div>
     )
@@ -258,25 +287,25 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                     {!isFriendlySpell && <Header title={'Damage'} />}
 
                     {/* SPELL ATTACK INFO */}
-                    {source?.system instanceof SpellDataModel ?
-                        <SpellAttackInfoComponent
-                            spell={source as Item & { system: SpellDataModel }}
-                            delivery={attack.spellDelivery}
+                        {attack.isSpellAttack
+                            ? <SpellAttackInfoComponent
+                                spell={source as Item & { system: SpellDataModel }}
+                                delivery={attack.spellDelivery}
                                 dmgRoll={attack.damageRoll?.result}
-                        /> :
-                        <div className="w-full">
-                            {/* WEAPON ATTACK DAMAGE */}
+                            />
+                            : <div className="w-full">
+                                {/* WEAPON ATTACK DAMAGE */}
                                 <DamageRollsComponent result={attack.damageRoll!.result!} />
-                            <div className="flex items-center justify-center">
-                                <TotalDmgFooter total={
-                                    <div className="flex gap-x-1 items-center">
-                                        <p>{attack.damageRoll?.result?.total}</p>
-                                        <DamageTypeIcon dmgType={attack.damageRoll?.result?.dmgType ?? ''} />
-                                    </div>
-                                } />
+                                <div className="flex items-center justify-center">
+                                    <TotalDmgFooter total={
+                                        <div className="flex gap-x-1 items-center">
+                                            <p>{attack.damageRoll?.result?.total}</p>
+                                            <DamageTypeIcon dmgType={attack.damageRoll?.result?.dmgType ?? ''} />
+                                        </div>
+                                    } />
+                                </div>
                             </div>
-                        </div>
-                    }
+                        }
                 </div>
             }
         </div>

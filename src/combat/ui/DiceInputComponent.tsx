@@ -18,7 +18,6 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride
     }, [onChange])
 
     const updateFaces = useCallback((input: string) => {
-        console.log(input)
         onChange({ faces: Number(input) || 0 })
     }, [onChange])
 
@@ -56,13 +55,13 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride
                                     { value: "20", label: "d20" },
                                 ]}
                                 onChange={(e) => updateFaces(e.target.value)}
-                                className="text-lg font-eskapade font-bold"
+                                className="text-xl font-eskapade font-bold pt-1"
                             />
                         </div>
 
                         {/* MODIFIER (FLAT BONUS) */}
-                        <div className="flex items-center">
-                            <p className="text-xl">+</p>
+                        <div className="flex text-2xl items-center">
+                            <p>+</p>
                             <NumericCounterInput
                                 value={diceRoll.modifier || 0}
                                 onChange={(input) => updateModifier(input)}

@@ -68,9 +68,11 @@ const Range = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
 const WeaponSkills = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
-            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.type} />
-            <div className="flex gap-x-1 items-start">
+            <div className="flex items-center">
+                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.type} />
                 <OptionsSelectionMenu obj={item} label={''} path={['skills']} options={weaponSkillOptions(item)} />
+            </div>
+            <div className="flex gap-x-1 items-start">
                 <StringOptionsDisplay options={item.system.skills.map(it => vgLiteLang.WeaponSkills[it].name)} />
             </div>
         </div>
@@ -80,9 +82,11 @@ const WeaponSkills = ({ item }: { item: Item & { system: WeaponDataModel } }) =>
 const Properties = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
-            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.props} />
-            <div className="flex gap-x-1 items-start">
+            <div className="flex items-center">
+                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.props} />
                 <OptionsSelectionMenu obj={item} label={''} path={['properties']} options={weaponProps(item)} />
+            </div>
+            <div className="flex gap-x-1 items-start">
                 <div className="flex flex-wrap gap-x-1 text-text-secondary font-paradigm font-normal italic">
                     {item.system.properties.map((it, index) => (
                         <p key={index} title={vgLiteLang.WeaponProps[it].description}>

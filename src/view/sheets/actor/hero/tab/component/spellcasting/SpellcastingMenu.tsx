@@ -198,8 +198,12 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
-                            <div title={vgLiteLang.HeroSheet.skills_tooltip} className="ml-auto">
-                                <PrimaryButton icon={<DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />} onClick={(e) => castSpell(e)}>
+                            <div className="ml-auto">
+                                <PrimaryButton
+                                    title={vgLiteLang.HeroSheet.skills_tooltip}
+                                    icon={<DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />}
+                                    onClick={(e) => castSpell(e)}
+                                >
                                     {vgLiteLang.HeroSheet.Magic.btnCast}
                                 </PrimaryButton>
                             </div>

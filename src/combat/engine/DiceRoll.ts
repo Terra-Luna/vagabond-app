@@ -4,11 +4,11 @@ export class DiceRoll {
     modifier?: number
     explodesOn?: number[]
 
-    constructor(count: number, faces: number, modifier?: number, explodesOn?: number[]) {
-        this.count = count
-        this.faces = faces
-        this.modifier = modifier
-        this.explodesOn = explodesOn
+    constructor(args: { count: number, faces: number, modifier?: number, explodesOn?: number[] }) {
+        this.count = args.count
+        this.faces = args.faces
+        this.modifier = args.modifier
+        this.explodesOn = args.explodesOn
     }
 
     toRollFormula(): string {

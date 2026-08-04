@@ -70,7 +70,7 @@ export const CustomDropDown = ({ value, options, className, onChange, editModeOv
             ? <Select
                 value={value}
                 onChange={onChange}
-                className={`border border-solid border-table-border rounded-sm p-1 ${className}`}>
+                className={`flex border border-solid border-table-border rounded-sm px-1 py-0.5 ${className}`}>
                 {options.map(opt => (<Option key={opt.value} value={opt.value}>{opt.label}</Option>))}
             </Select >
             : <div className={`${className ? className : 'text-xl text-text-primary font-eskapade'}`}>

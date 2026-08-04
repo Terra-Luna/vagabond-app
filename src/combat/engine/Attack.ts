@@ -1,6 +1,12 @@
 import { roll3dDice } from "../../utils/foundryUtils"
+import { getTargetIds } from "../../utils/modelUtil"
 import { DamageRollResult, DamageRoll } from "./DamageRoll"
 import { AttackSnapshot } from "./util/attack-serializer"
+
+export interface AttackResolutionArgs {
+    bypassArmor: boolean
+    gmTargetsOnly: boolean
+}
 
 export abstract class Attack {
 
@@ -34,35 +40,41 @@ export abstract class Attack {
         }
     }
 
+    async applyDamageAndResolve(args: AttackResolutionArgs, serialize: (attack: Attack) => AttackSnapshot | undefined) {
+        this.processDamageRoll(args)
+        this.isResolved = true
+        this.save(serialize)
+    }
+
     async resolve(serialize: (attack: Attack) => AttackSnapshot | undefined) {
         this.isResolved = true
         await this.save(serialize)
     }
 
-    protected processDamageRoll() {
+    protected processDamageRoll(args: AttackResolutionArgs) {
         if (this.damageRoll?.result) {
             if (this.damageRoll.dmgType === 'healing') {
-                this.applyHealing()
+                this.applyHealing(args)
             }
             else {
-                this.applyDamage()
+                this.applyDamage(args)
             }
         }
     }
 
-    private applyHealing() {
+    private applyHealing(args: AttackResolutionArgs) {
         this.getActors(this.targetIds ?? []).forEach(target => {
             this.updateHP(target?.system, this.getHP(target?.system) + (this.damageRoll?.result?.total ?? 0))
         })
     }
 
-    private applyDamage() {
-        this.isResolved = true
-        this.getActors(this.targetIds ?? []).forEach(actor => {
+    private applyDamage(args: AttackResolutionArgs) {
+        const targetIds = args.gmTargetsOnly ? getTargetIds() : this.targetIds
+        this.getActors(targetIds ?? []).forEach(actor => {
             const damage = this.damageRoll?.result?.total ?? 0
             const target = actor?.system
-            const armor = (target as any)?.armor?.rating ?? 0
-            const adjDamage = this.calculateDamage(damage, armor)
+            const armor = args.bypassArmor ? 0 : (target as any)?.armor?.rating ?? 0
+            const adjDamage = Math.max(0, damage - armor)
             this.updateHP(target, this.getHP(target) - adjDamage)
         })
     }
@@ -73,10 +85,6 @@ export abstract class Attack {
 
     private getHP(target) {
         return target.health.current
-    }
-
-    private calculateDamage(damage, armor) {
-        return Math.max(0, damage - armor)
     }
 
     private updateHP(target, hp) {

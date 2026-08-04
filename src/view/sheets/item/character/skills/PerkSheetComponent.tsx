@@ -61,7 +61,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
         createDropdownEntriesForItems('spell', true).then((spells) => {
             setSpellDropdownItems(spells)
         })
-    })
+    }, [])
 
     const onUpdateType = useCallback((type) => {
         perk.update({

@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
-import { getCanvasToken } from "../../../utils/modelUtil"
 import { Divider } from "../../component/Header"
 import { CardSubHeader, CardSubHeaderValues } from "../../component/SkillCard"
+import { ChatCardPortrait } from "./ChatCardPortrait"
 
 export const ChatCardBanner = ({ tokenId = '', portrait, title, subtitle = [] }: {
     tokenId?: string, portrait: string, title: string | ReactNode, subtitle?: CardSubHeaderValues[]
@@ -10,15 +10,7 @@ export const ChatCardBanner = ({ tokenId = '', portrait, title, subtitle = [] }:
         <div>
             <div className={`flex space-x-1 items-center bg-section-header-fill rounded-t-md px-1 font-eskapade font-bold min-h-[54px]`}>
                 {portrait != null && portrait.length > 0 &&
-                    <img
-                        className="object-contain h-[54px] w-[54px] p-0.5 cursor-pointer" src={portrait} alt={''}
-                        onClick={() => {
-                            if (!tokenId || tokenId === '') return
-                            const token = getCanvasToken(tokenId)
-                            token?.control({ releaseOthers: true })
-                            canvas?.animatePan({ x: token?.center.x, y: token?.center.y })
-                        }}
-                    />
+                    <ChatCardPortrait portrait={portrait} tokenId={tokenId} />
                 }
                 <div className="flex w-full items-center text-text-section-header">
                     <div className="text-xl mr-1">{title}</div>

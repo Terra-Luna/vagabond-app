@@ -1,8 +1,8 @@
-import { useCallback } from "react";
-import { useEditMode } from "../context/EditModeContext/Hooks";
+import { ReactNode, useCallback } from "react"
+import { useEditMode } from "../context/EditModeContext/Hooks"
 
 interface SingleSelectProps {
-    options: { label: string; value: any }[]
+    options: { label: string | ReactNode, value: any }[]
     value: any
     setValue: (val: any) => void
     canUnselect?: boolean
@@ -32,7 +32,6 @@ export const SingleSelect = ({ options, value, setValue, canUnselect }: SingleSe
                     <button
                         key={opt.value}
                         className={isSelected ? selectedClass : unselectedClass}
-                        title={opt.label}
                         onClick={isEditMode ? () => handleOptClick(opt.value) : undefined}
                     >
                         {opt.label}

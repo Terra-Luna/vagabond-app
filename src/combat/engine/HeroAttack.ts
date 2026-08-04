@@ -71,6 +71,10 @@ export class HeroAttack extends Attack {
         return hasPermission && !this.critChoice
     }
 
+    get isSpellAttack(): boolean {
+        return !!this.spellDelivery
+    }
+
     get isEffectOnlySpellAttack(): boolean {
         return this.spellDelivery?.applyEffect ?? false
     }
@@ -160,6 +164,11 @@ export class HeroAttack extends Attack {
      * @returns 
      */
     async addLateFavor(resource: 'luck' | 'studied', currentValue: number) {
+        if (this.skillCheck?.isFavored ?? false) {
+            ui.notifications?.info("Cannot add Favor to Favored attack")
+            return
+        }
+
         if (this.skillCheck && this.skillCheck.result) {
             await this.actor.update(
                 { [`system.statuses.counters.${resource}`]: currentValue - 1 },
@@ -196,7 +205,6 @@ export class HeroAttack extends Attack {
                 this.removeHinderFromSkillCheck()
             }
 
-            console.log(this.skillCheck.result)
             await this.save(serializeAttack)
             return result
         }
@@ -304,8 +312,10 @@ export class HeroAttack extends Attack {
         const hero = actor.system
         const weapon = item.system
         const mods = hero.modifiers
-        const dice = [weapon.damage.dice] as DiceRoll[]
+        const dice = [new DiceRoll({ ...weapon.damage.dice as DiceRoll })]
         let weaponSkill = skill
+
+        console.log(dice)
 
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
         if (!weaponSkill) {
@@ -367,7 +377,12 @@ export class HeroAttack extends Attack {
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,
                 dmgType: delivery.spell.damageType,
-                dice: [new DiceRoll(delivery.damageDice, HeroAttack.SPELL_DIE_SIZE + dieSizeMod, 0, explosionsMod as number[])],
+                dice: [new DiceRoll({
+                    count: delivery.damageDice,
+                    faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod,
+                    modifier: 0,
+                    explodesOn: explosionsMod as number[]
+                })],
                 flatDmgBonus: (hero.modifiers.damage.all ?? 0) + (hero.modifiers.damage.spell ?? 0),
                 perDieDmgBonus: (hero.modifiers.damage.allPerDie ?? 0) + (hero.modifiers.damage.spellPerDie ?? 0)
             })
