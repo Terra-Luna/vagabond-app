@@ -41,7 +41,7 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
                 {
                     isEditMode ?
                         <div>
-                            <Select value={value} onChange={onChange} className="outline-none focus:outline-none focus:ring-0">
+                            <Select value={value} onChange={onChange}>
                                 {
                                     options.map(it =>
                                         <Option key={`${it.label} ${it.value}`} value={it.value}>
