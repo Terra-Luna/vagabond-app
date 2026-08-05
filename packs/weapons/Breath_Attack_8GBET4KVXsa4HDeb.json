@@ -26,8 +26,8 @@
     "range": "near",
     "damage": {
       "dice": {
-        "count": 1,
-        "faces": 4,
+        "count": 2,
+        "faces": 6,
         "modifier": 0,
         "explodesOn": [
           6
@@ -58,7 +58,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785939927301,
-    "modifiedTime": 1785940483782,
+    "modifiedTime": 1785945755742,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,

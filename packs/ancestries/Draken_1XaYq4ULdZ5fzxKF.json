@@ -4,7 +4,7 @@
   "_id": "1XaYq4ULdZ5fzxKF",
   "img": "systems/vagabond-lite/assets/ancestry/draken.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Resembling humanoid dragons, Draken are relatives of the terrifying dragons of legend. Their scales come in a variety of brilliant colors, their maws house fanged teeth that often serve as a serrated clamp, and their fingers resemble the talonlike claws of  dragons.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Breath Attack: </strong></b><span style=\"white-space:pre-wrap\">You can attack with an Endure or Will Save to make a 15’ Cone of draconic breath that deals 2d6!. Afterward, you can’t use this Ability until you Rest or take 1 Fatigue to do so again.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Scale:</strong></b><span style=\"white-space:pre-wrap\"> You have a +1 bonus to Armor Rating.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Draconic Resilience:</strong></b><span style=\"white-space:pre-wrap\"> You take half damage from a source of your choice from either Acid, Cold, Fire, or Shock.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Resembling humanoid dragons, Draken are relatives of the terrifying dragons of legend. Their scales come in a variety of brilliant colors, their maws house fanged teeth that often serve as a serrated clamp, and their fingers resemble the talonlike claws of  dragons.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Breath Attack: </strong></b><span style=\"white-space:pre-wrap\">You have a Breath Attack that requires an Action to begin. On a subsequent Turn within the same Scene, you can then use an Action or skip your Move to exhale a 15’ Cone of energy that deals 2d6!, using an Endure or Will Save for the Check.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Scale:</strong></b><span style=\"white-space:pre-wrap\"> You have a +1 bonus to Armor.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Draconic Resilience:</strong></b><span style=\"white-space:pre-wrap\"> You take half damage from a source of your choice from either Acid, Cold, Fire, or Shock.</span></p>",
     "rules": [
       {
         "id": "uMZNaWMh63i5pePj",
@@ -15,7 +15,7 @@
         "selector": "armor.rating"
       },
       {
-        "id": "obCotsNgZiwJPrIv",
+        "id": "tHTC2Y6S5t4SH9Nw",
         "key": "GrantItem",
         "label": "Breath Attack",
         "level": 0,
@@ -40,7 +40,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784922704373,
-    "modifiedTime": 1785940502184,
+    "modifiedTime": 1785949222198,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
