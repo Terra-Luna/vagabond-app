@@ -19,6 +19,44 @@ import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
 import { sendVgLiteChatMessage } from "../view/chat/ChatCardSerializer"
 import { DamageRoll } from "../combat/engine/DamageRoll"
 import { HeroAttack } from "../combat/engine/HeroAttack"
+import { ItemsCache } from "../rules/util/ItemsCache"
+
+/**
+ * Use this funtion for programatically adding items to Actors. It mimics
+ * the same kind of behaviour as dragging/dropping an item by setting some
+ * important flags.
+ * @param actor 
+ * @param uuid 
+ * @returns 
+ */
+export async function addItems(actor: Actor & { system: HeroDataModel }, uuids: string[]) {
+    const items: any[] = []
+
+    for (const uuid of uuids) {
+        if (!uuid) return
+
+        const item = ItemsCache.allItems().find(it => it.uuid === uuid)
+        if (!item) continue
+
+        const itemData = item.toObject() as any
+        itemData._stats = {
+            ...itemData._stats,
+            compendiumSource: uuid
+        }
+
+        itemData.flags = {
+            ...itemData.flags,
+            core: {
+                ...itemData.flags?.core,
+                sourceId: uuid
+            }
+        }
+
+        items.push(itemData)
+    }
+
+    await actor.createEmbeddedDocuments("Item", items)
+}
 
 export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
     const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
@@ -42,29 +80,16 @@ export function getEquippedWeapons(actor: Actor & { system: HeroDataModel }) {
  */
 export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
     const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
-    const fistWeapons = equippedWeapons.filter((it: any) => it.system.grip.style === 'F')
-    const heldWeapons = equippedWeapons.filter((it: any) => it.system.grip.style !== 'F')
-    const openFists = 2 - fistWeapons.length
-    const openHands = 2 - (heldWeapons.length === 0 ? 0 : (
-        heldWeapons.length === 2 ? 2 : (
-            heldWeapons[0].system.grip.state === 'HH' ? 2 : 1
-        )
-    ))
+    const equippedSlots = equippedWeapons.reduce((sum, w) => { return sum + w.system.bulk.totalSlots }, 0)
 
-    if (weapon.grip.style === 'F' && openFists > 0) {
-        weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': 'F' })
-    }
-    else if ((weapon.grip.style === 'H' || weapon.grip.style === 'V') && openHands > 0) {
-        weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': 'H' })
-    }
-    else if (weapon.grip.style === 'HH' && openHands > 1) {
-        weapon.parent.update({ 'system.isEquipped': true })
-        weapon.parent.update({ 'system.grip.state': 'HH' })
+    if (weapon.bulk.totalSlots > 0 && equippedSlots + weapon.bulk.totalSlots > hero.inventory.weaponSlots) {
+        ui.notifications?.warn("Cannot equip any more weapons!")
     }
     else {
-        ui.notifications?.warn("Cannot equip any more weapons!")
+        weapon.parent.update({
+            'system.isEquipped': true,
+            'system.grip.state': ['V', 'H'].includes(weapon.grip.style) ? 'H' : (weapon.grip.style === 'HH' ? 'HH' : '-')
+        })
     }
 }
 

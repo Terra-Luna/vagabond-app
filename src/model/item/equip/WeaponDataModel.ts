@@ -68,7 +68,7 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
 export const gripStateDamage = (w: WeaponDataModel): string => {
     const die = w.grip.style === 'V' && w.grip.state === 'HH' ? w.damage.dice.faces + 2 : w.damage.dice.faces
     const mod = w.damage.dice.modifier
-    return `1d${die}${mod > 0 ? `+${mod}` : ''}`
+    return `${w.damage.dice.count}d${die}${mod > 0 ? `+${mod}` : ''}`
 }
 
 export const isEquippedWeapon = (item: any): boolean => {

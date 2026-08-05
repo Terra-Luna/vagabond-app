@@ -29,7 +29,6 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
         e.dataTransfer.setData("text/plain", JSON.stringify(dragData))
         e.dataTransfer.effectAllowed = "move"
         e.dataTransfer.dropEffect = "move"
-        //console.log("Dragging:", getName(items[index]), index, dragData)
     }
 
     const onDragEnter = (e: any, index: number) => {
@@ -39,7 +38,6 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
         e.dataTransfer.dropEffect = "move"
         setDragIndex(index)
         setTargetItem(items[index])
-        //console.log("Dragging:", getName(dragItem), "above:", getName(targetItem), index)
     }
 
     const onDragLeave = (e: any) => {
@@ -58,7 +56,6 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
         e.preventDefault()
         e.stopPropagation()
         setTargetItem(items[index])
-        //console.log("Dropping:", getName(dragItem), "onto:", getName(targetItem ?? items[items.length - 1]), index)
 
         try {
             onDrop()

@@ -8,7 +8,7 @@ export interface SkillCheckArgs {
     d20Count?: number
     modifier?: number
     critThreshold?: number
-    favorHinder?: string
+    favorHinder?: 'favor' | 'hinder' | 'none'
     clickEvent?: React.MouseEvent<HTMLDivElement>
 }
 
@@ -33,7 +33,7 @@ export class SkillCheck {
     d20Count: number
     modifier: number
     critThreshold: number
-    favorHinder: string
+    favorHinder: 'favor' | 'hinder' | 'none'
     clickEvent?: React.MouseEvent<HTMLDivElement> | undefined
     result: SkillCheckResult | undefined
 
@@ -87,10 +87,10 @@ export class SkillCheck {
          * Override favorHinder with shift/ctrl key hold.
          */
         if (this.clickEvent?.shiftKey) {
-            favorHinder = vgLiteLang.FavorHinder.favor
+            favorHinder = 'favor'
         }
         else if (this.clickEvent?.ctrlKey) {
-            favorHinder = vgLiteLang.FavorHinder.hinder
+            favorHinder = 'hinder'
         }
     
         /**
@@ -103,10 +103,10 @@ export class SkillCheck {
         }
 
         if (!isReroll) {
-            if (favorHinder === vgLiteLang.FavorHinder.favor) {
+            if (favorHinder === 'favor') {
                 formula += '+1d6'
             }
-            else if (favorHinder === vgLiteLang.FavorHinder.hinder) {
+            else if (favorHinder === 'hinder') {
                 formula += '-1d6'
             }
         }
@@ -145,15 +145,15 @@ export class SkillCheck {
     get isFavored() { return this.favorHinder === vgLiteLang.FavorHinder.favor }
     get isHindered() { return this.favorHinder === vgLiteLang.FavorHinder.hinder }
 
-    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): string {
+    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): 'favor' | 'hinder' | 'none' {
         if (e?.shiftKey) {
-            return vgLiteLang.FavorHinder.favor
+            return 'favor'
         }
         else if (e?.ctrlKey) {
-            return vgLiteLang.FavorHinder.hinder
+            return 'hinder'
         }
         else {
-            return vgLiteLang.FavorHinder.none
+            return 'none'
         }
     }
 

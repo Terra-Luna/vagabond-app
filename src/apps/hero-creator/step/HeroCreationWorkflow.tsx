@@ -209,7 +209,6 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
 
             const chosenSkills = [...chosenLevel1Skills, ...chosenBonusSkills]
             if (reasonTraining) {
-                console.log(reasonTraining, chosenLevel1Skills)
                 chosenSkills.push({ skill: reasonTraining.value, ruleId: chosenLevel1Skills[0].ruleId })
             }
             chosenSkills.forEach(selection => {

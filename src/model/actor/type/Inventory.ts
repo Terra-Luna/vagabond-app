@@ -8,6 +8,7 @@ export const inventorySchema = () => {
     return {
         coins: new fields.SchemaField({ ...coinSchema() }),
         capacity: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        weaponSlots: new fields.NumberField({ ...requiredInteger, initial: 3 }),
         /**
          * Derived from Actor's Embedded Documents.
          */

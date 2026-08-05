@@ -41,7 +41,7 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
                 {
                     isEditMode ?
                         <div>
-                            <Select value={value} onChange={onChange}>
+                            <Select value={value} onChange={onChange} className="outline-none focus:outline-none focus:ring-0">
                                 {
                                     options.map(it =>
                                         <Option key={`${it.label} ${it.value}`} value={it.value}>
@@ -70,7 +70,12 @@ export const CustomDropDown = ({ value, options, className, onChange, editModeOv
             ? <Select
                 value={value}
                 onChange={onChange}
-                className={`flex border border-solid border-table-border/50 px-1 pb-0.5 pt-0.5 ${className}`}>
+                className={`
+                    flex px-1 pb-0.5 pt-0.5
+                    outline-none focus:outline-none focus:ring-0
+                    border border-solid border-table-border/50
+                    ${className}
+                `}>
                 {options.map(opt => (<Option key={opt.value} value={opt.value}>{opt.label}</Option>))}
             </Select >
             : <div className={`${className ? className : 'text-xl text-text-primary font-eskapade'}`}>

@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 import { DiceCountInput } from "../../view/sheets/actor/hero/tab/component/spellcasting/DiceCountInput"
-import { DiceRoll } from "../engine/DiceRoll"
+import { DiceRoll, DiceRollSchema } from "../engine/DiceRoll"
 import { CustomDropDown } from "../../view/component/Dropdown"
 import { NumericCounterInput } from "../../view/component/EditableTextField"
 import { useEditMode } from "../../view/context/EditModeContext/Hooks"
@@ -11,7 +11,7 @@ import { Plus } from "lucide-react"
 
 export const DiceInputComponent = ({ label, diceRoll, onChange, wrap = false, editModeOverride = false }: {
     label?: string,
-    diceRoll: DiceRoll,
+    diceRoll: DiceRoll | DiceRollSchema,
     onChange: (updatedFields: Partial<DiceRoll>) => void,
     wrap?: boolean,
     editModeOverride?: boolean
@@ -114,7 +114,7 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, wrap = false, ed
 const ExplosionsInput = ({ explosionValues, handleExplosionChange }) => {
     return (
         <div className="items-end">
-            <p className="text-sm">{vgLiteLang.ItemSheet.explodesOn}</p>
+            <p className="text-sm font-normal">{vgLiteLang.ItemSheet.explodesOn}</p>
             <CSVTextInput
                 value={explosionValues}
                 onChange={handleExplosionChange}

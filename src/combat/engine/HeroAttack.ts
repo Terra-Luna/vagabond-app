@@ -400,14 +400,10 @@ export class HeroAttack extends Attack {
 
     static getHighestDefaultWeaponSkill(hero: HeroDataModel, weapon: WeaponDataModel): { skill: string, value: number } {
         const weaponSkills = [...weapon.skills]
-        const defaultSkill = Object.keys(hero.skills)
+        const defaultSkill = [...Object.keys(hero.skills), ...Object.keys(hero.saves)]
             .filter(k => weaponSkills.includes(k))
-            .map(k => ({ skill: k, value: hero.skills[k].value }))
+            .map(k => ({ skill: k, value: hero.skills[k]?.value ?? hero.saves[k] ?? 0 }))
             .sort((a, b) => a.value - b.value)[0]
-
-        console.log(Object.keys(hero.skills)
-            .filter(k => weaponSkills.includes(k)))
-
         return defaultSkill
     }
 

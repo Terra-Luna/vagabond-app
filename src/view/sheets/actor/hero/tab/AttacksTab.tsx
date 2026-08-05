@@ -43,8 +43,6 @@ const WeaponAttackMenu = ({ actor, weapons }: {
     const { CustomDamageRollBuilder, damageRolls } = useCustomDamageRollBuilder(weapon)
     const { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing } = useCustomDamageModifiersBuilder()
 
-    console.log(favorHinder)
-
     const attack = useCallback(() => {
         if (weapon && skill && damageRolls) {
             const skillCheck = new SkillCheck(actor.system, {
@@ -57,7 +55,7 @@ const WeaponAttackMenu = ({ actor, weapons }: {
 
             const damageRoll = new DamageRoll({
                 atkName: weapon.name,
-                dice: damageRolls.map(d => d.roll),
+                dice: damageRolls.map(rollSchema => new DiceRoll(rollSchema)),
                 dmgType: weapon.system.damage.type,
                 flatDmgBonus: flatModifier,
                 perDieDmgBonus: perDieBonus,
@@ -68,8 +66,8 @@ const WeaponAttackMenu = ({ actor, weapons }: {
     }, [weapon, skill, d20Count, favorHinder, skillCheckMod, critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing])
 
     return (
-        <CollapsibleSection title={"WEAPON ATTACK"} content={
-            <div className="flex flex-col gap-y-2 p-1 border border-solid border-t-0 border-table-border bg-context-menu-fill/33 rounded-b-sm">
+        <CollapsibleSection title={"ATTACK"} content={
+            <div className="flex flex-col gap-y-2 p-1 border border-solid border-t-0 border-table-border bg-context-menu-fill rounded-b-sm">
                 {WeaponSelector}
                 {CustomSkillCheckBuilder}
                 {CustomDamageRollBuilder}
@@ -95,7 +93,7 @@ const useCustomSkillCheckBuilder = (
     const { SkillCheckCritThresholdInput, critThreshold } = useSkillCheckCritThreholdInput()
 
     const CustomSkillCheckBuilder =
-        <div className="flex flex-wrap gap-x-2 items-start justify-between border border-solid border-table-border rounded-sm p-1">
+        <div className="flex flex-wrap gap-x-1 items-start justify-between border border-solid border-table-border rounded-sm p-1">
             {SkillSelector}
             {D20CountSelector}
             {FavorHinderSelector}
@@ -112,7 +110,7 @@ const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[]) => {
     useEffect(() => { if (weapons.length > 0) { setWeapon(weapons[0]) } }, [])
 
     const WeaponSelector = <div>
-        <Label text={"Weapon"} />
+        <SectionLabel text={"Weapon"} />
         <div className="flex gap-x-0.5 items-end">
             <CustomDropDown
                 value={weapon?.uuid ?? ''}
@@ -120,7 +118,7 @@ const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[]) => {
                 onChange={(e) => setWeapon(weapons.find(w => w.uuid === e.target.value))}
                 className="text-sm"
             />
-            <p className="text-sm italic">{`[${weapon?.system.skills.map(sk => vgLiteLang.Skills[sk].name ?? vgLiteLang.Saves[sk]).join(", ")}]`}</p>
+            <p className="text-sm italic">{`[${weapon?.system.skills.map(sk => vgLiteLang.Skills[sk]?.name ?? vgLiteLang.Saves[sk]?.name ?? '').join(", ")}]`}</p>
         </div>
     </div>
     return { WeaponSelector, weapon }
@@ -135,7 +133,7 @@ const useSkillSelector = (actor, weapon) => {
     }, [weapon])
 
     const SkillSelector = <div>
-        <Label text={"Skill Check"} />
+        <SectionLabel text={"Skill Check"} />
         <div className="flex gap-x-0.5 items-end">
             <CustomDropDown
                 value={skill}
@@ -178,9 +176,9 @@ const useFavorHinderSelector = () => {
         <CustomDropDown
             value={favorHinder}
             options={[
-                { value: Object.keys(vgLiteLang.FavorHinder)[2], label: vgLiteLang.FavorHinder.none },
-                { value: Object.keys(vgLiteLang.FavorHinder)[0], label: vgLiteLang.FavorHinder.favor },
-                { value: Object.keys(vgLiteLang.FavorHinder)[1], label: vgLiteLang.FavorHinder.hinder }
+                { value: 'none', label: vgLiteLang.FavorHinder.none },
+                { value: 'favor', label: vgLiteLang.FavorHinder.favor },
+                { value: 'hinder', label: vgLiteLang.FavorHinder.hinder }
             ]}
             onChange={(e) => setFavorHinder(e.target.value)}
             className="text-sm"
@@ -218,56 +216,54 @@ const useSkillCheckCritThreholdInput = () => {
 }
 
 const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel }) | undefined) => {
-    const [damageRolls, setDamageRolls] = useState<{ schema: DiceRollSchema, roll: DiceRoll }[]>([])
+    const [damageRolls, setDamageRolls] = useState<DiceRollSchema[]>([])
 
     useEffect(() => {
         if (!weapon) return
         const schema = {
             count: weapon.system.damage.dice.count,
-            faces: weapon.system.damage.dice.faces
+            faces: weapon.system.damage.dice.faces,
+            modifier: weapon.system.damage.dice.modifier,
+            explodesOn: weapon.system.damage.dice.explodesOn as number[]
         }
 
         if (damageRolls.length === 0) {
-            setDamageRolls([{ schema: schema, roll: new DiceRoll(schema) }])
+            setDamageRolls([schema])
         }
         else {
             const rolls = [...damageRolls]
-            rolls[0] = { schema: schema, roll: new DiceRoll(schema) }
+            rolls[0] = schema
             setDamageRolls(rolls)
         }
     }, [weapon])
 
     const addNewRoll = useCallback(() => {
         const schema = { count: 1, faces: 4 }
-        setDamageRolls(rolls => [...rolls, { schema: schema, roll: new DiceRoll(schema) }])
+        setDamageRolls(rolls => [...rolls, schema])
     }, [])
 
     const removeRoll = useCallback((index: number) => {
         setDamageRolls([...damageRolls].filter((_, rIdx) => rIdx !== index))
     }, [damageRolls])
 
-    const handleDiceChange = useCallback((updatedDice: Partial<DiceRoll>, index: number) => {
-        console.log(updatedDice, index)
+    const handleDiceChange = useCallback((updatedDice: Partial<DiceRollSchema>, index: number) => {
         setDamageRolls(prevRolls =>
-            prevRolls.map((r, rIdx) => {
-                if (rIdx === index) {
-                    const mergedData = { ...r.roll, ...updatedDice }
-                    return { ...r, roll: new DiceRoll(mergedData) }
-                }
-                return r
+            prevRolls.map((roll, rIdx) => {
+                if (rIdx === index) { return { ...roll, ...updatedDice } }
+                return roll
             })
         )
     }, [])
 
     const CustomDamageRollBuilder =
         <div className="flex flex-col gap-2 items-start justify-between border border-solid border-table-border rounded-sm p-1">
-            <Label text={"Damage Rolls"} />
+            <SectionLabel text={"Damage Rolls"} />
             <div className="flex items-end w-full">
                 <div className="flex flex-col gap-y-2">
                     {damageRolls.length > 0 && damageRolls.map((roll, index) => (
-                        <div className="flex gap-x-1 items-end">
+                        <div key={index} className="flex gap-x-1 items-end">
                             <DiceInputComponent
-                                diceRoll={roll.roll}
+                                diceRoll={roll}
                                 onChange={(updated) => handleDiceChange(updated, index)}
                             />
                             <div className="pb-0.5">
@@ -294,18 +290,18 @@ const useCustomDamageModifiersBuilder = () => {
 
     const CustomDamageModifiersBuilder =
         <div className="flex flex-col gap-y-2 border border-solid border-table-border rounded-sm p-1">
-            <Label text={"Bonuses"} />
-            <div className="flex gap-x-4 items-start">
+            <SectionLabel text={"Bonuses"} />
+            <div className="flex gap-x-4 items-end">
                 <div className="flex flex-col items-start">
-                    <Subtitle text={"Flat Modifier"} />
+                    <Label text={"Flat Modifier"} />
                     <NumericCounterInput value={flatModifier} onChange={(val) => setFlatModifier(val)} />
                 </div>
                 <div className="flex flex-col items-start">
-                    <Subtitle text={"Per-die Bonus"} />
+                    <Label text={"Per-die Bonus"} />
                     <NumericCounterInput value={perDieBonus} onChange={(val) => setPerDieBonus(Math.max(0, val))} />
                 </div>
                 <div className="flex flex-col items-center" title={"Armor piercing"}>
-                    <ShieldBan size={18} className="text-text-primary" />
+                    <ShieldBan size={18} className="text-text-primary mb-0.5" />
                     <NumericCounterInput value={armorPiercing} onChange={(val) => setArmorPiercing(Math.max(0, val))} />
                 </div>
             </div>
@@ -314,12 +310,14 @@ const useCustomDamageModifiersBuilder = () => {
     return { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing }
 }
 
-const Label = ({ text }) => {
+const SectionLabel = ({ text }) => {
     return (
-        <div className="text-base text-text-primary font-eskapade font-bold">{text}</div>
+        <div className="text-base text-text-header-tertiary font-eskapade font-bold">{text}</div>
     )
 }
 
-const Subtitle = ({ text }) => {
-    return <div className="text-sm text-text-primary font-eskapade font-bold">{text}</div>
+const Label = ({ text }) => {
+    return (
+        <div className="text-base text-text-primary font-eskapade font-normal">{text}</div>
+    )
 }

@@ -31,10 +31,10 @@ export const SkillCheckDiceComponent = ({ d20, d6, favHinder }) => {
     return (
         <div className="flex mt-2 justify-center">
             <DiceRollComponent faces={20} result={d20} textSize="text-5xl" />
-            {favHinder !== vgLiteLang.FavorHinder.none &&
+            {favHinder !== 'none' &&
                 <div className="flex">
                     <div className="h-full content-center">{
-                        favHinder === vgLiteLang.FavorHinder.favor ?
+                        favHinder === 'favor' ?
                             <Plus size={24} strokeWidth={4} /> :
                             <Minus size={24} strokeWidth={4} />
                     }</div>

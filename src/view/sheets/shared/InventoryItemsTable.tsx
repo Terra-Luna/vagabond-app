@@ -68,7 +68,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             <td className="text-center font-normal">{item.bulk.totalSlots}</td>
                             <td className="text-center font-normal">{coinsAsString(item.totalValue)}</td>
                             {
-                                !showEquipColumn ? <></> : (
+                                showEquipColumn && (
                                     item.isEquippable ?
                                         <td className="items-center">
                                             <EquipStateIcon
@@ -110,7 +110,7 @@ const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { typ
                 type === 'weapon'
                     ? <div>
                         {isEquipped
-                            ? <div className="flex items-center -space-x-4 font-eskapade text-text-secondary">
+                            ? <div className="flex items-center justify-end -space-x-4 font-eskapade text-text-secondary">
                                 <p>{vgLiteLang.GripsAbbr[gripState]}</p>
                                 <HandFist size={18} className={equippedIconStyle} />
                             </div>

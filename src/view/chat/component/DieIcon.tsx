@@ -23,7 +23,11 @@ export const DieIcon = ({ faces, exploded }: { faces: number, exploded: boolean 
         <div className="relative">
             {/* Explosion Background Layer */}
             {exploded && (
-                <div className={`absolute inset-0 -z-10 bg-destructive-action ${explosionClipPath}`} />
+                <div className={`
+                    absolute inset-0
+                    bg-destructive-action
+                    [clip-path:polygon(49%_43%,65%_0%,61%_51%,100%_24%,63%_70%,42%_70%,0%_40%,34%_45%,17%_0%)]
+                `} />
             )}
 
             {/* Foreground Icon */}
@@ -31,5 +35,3 @@ export const DieIcon = ({ faces, exploded }: { faces: number, exploded: boolean 
         </div>
     )
 }
-
-const explosionClipPath = "[clip-path:polygon(49%_43%,65%_0%,61%_51%,100%_24%,63%_70%,42%_70%,0%_40%,34%_45%,17%_0%)]"

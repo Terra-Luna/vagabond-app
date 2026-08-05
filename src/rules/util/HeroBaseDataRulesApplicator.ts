@@ -1,5 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
 import { inventoryItemTypes } from "../../model/actor/type/Inventory";
+import { addItems } from "../../utils/heroInventoryUtil";
 import { isPathOfType } from "../../utils/modelUtil";
 import { ItemsCache } from "./ItemsCache";
 
@@ -74,15 +75,10 @@ export class HeroBaseDataRulesApplicator {
             })
         }
 
-        const applyInventoryItems = (rule) => {
-            /* const actorItemUuids = actor.items.map(it => it.getFlag("core", "sourceId" as any))
-            console.log(actorItemUuids)
+        const applyInventoryItems = async (rule) => {
+            const actorItemUuids = actor.items.map(it => it.getFlag("core", "sourceId" as any))
             if (actorItemUuids.includes(rule.uuid)) return
-
-            const item = ItemsCache.allItems().find(it => it.uuid === rule.uuid)
-            if (item) {
-                actor.createEmbeddedDocuments("Item", [item.toObject()])
-            } */
+            await addItems(actor, [rule.uuid])
         }
 
         applyPerkSelections(perkSelections)
