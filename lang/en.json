@@ -490,12 +490,25 @@
         "name": "Thrown",
         "description": "Uses Melee by default. Can throw attack to Near, or Far with Hinder."
       },
+      "reflex": {
+        "name": "Reflex",
+        "description": ""
+      },
+      "endure": {
+        "name": "Endure",
+        "description": ""
+      },
       "will": {
         "name": "Will",
         "description": ""
       }
     },
     "Metals": {
+      "none": {
+        "name": "-",
+        "description": "",
+        "valueMultiplier": 1
+      },
       "steel": {
         "name": "Steel",
         "description": "Steel",

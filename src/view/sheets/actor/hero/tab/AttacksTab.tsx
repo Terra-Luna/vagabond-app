@@ -61,7 +61,9 @@ const WeaponAttackMenu = ({ actor, weapons }: {
                 perDieDmgBonus: perDieBonus,
                 armorPiercing: armorPiercing
             })
-            new HeroAttack(weapon.name, actor, getTargetIds(), skillCheck, damageRoll).initiate()
+            const attack = new HeroAttack(weapon.name, actor, getTargetIds(), skillCheck, damageRoll)
+            attack.skipSkillCheck = skill === '-'
+            attack.initiate()
         }
     }, [weapon, skill, d20Count, favorHinder, skillCheckMod, critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing])
 
@@ -118,8 +120,7 @@ const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[]) => {
                 options={weapons?.map(w => ({ value: w.uuid, label: w.name }))}
                 onChange={(e) => setWeapon(weapons.find(w => w.uuid === e.target.value))}
                 className="text-sm"
-            />
-            <p className="text-sm italic">{`[${weapon?.system.skills.map(sk => vgLiteLang.Skills[sk]?.name ?? vgLiteLang.Saves[sk]?.name ?? '').join(", ")}]`}</p>
+                />
         </div>
     </div>
     return { WeaponSelector, weapon }
@@ -146,7 +147,9 @@ const useSkillSelector = (actor, weapon) => {
                 onChange={(e) => setSkill(e.target.value)}
                 className="text-sm"
             />
-            {actor.system.skills[skill] && <p className="text-sm italic">{`[${actor.system.skills[skill]?.value}]`}</p>}
+            {(actor.system.skills[skill] || actor.system.saves[skill]) && <p className="text-sm italic">{`
+                [${actor.system.skills[skill]?.value ?? actor.system.saves[skill] ?? 20}]
+            `}</p>}
         </div>
     </div>
     return { SkillSelector, skill }

@@ -24,7 +24,7 @@ const weaponSchema = () => {
         }),
         skills: new fields.ArrayField(
             new fields.StringField({
-                ...requiredString, choices: [...Object.keys(lang.VGLITE.WeaponSkills), 'will']
+                ...requiredString, choices: [...Object.keys(lang.VGLITE.WeaponSkills)]
             }),
             { initial: [] }
         ),
