@@ -257,7 +257,7 @@ export function setSpellcastingStats(hero: HeroDataModel) {
 export function calculateManaValues(level: number, multiplier: number, maxCastFormula: string): { max: number, maxCast: number } {
     if (level === 0 || maxCastFormula.length === 0) return { max: 0, maxCast: 0 }
     const max = level * multiplier
-    const maxCast = maxCastFormula === 'partial' ? (1 + Math.ceil(level / 2)) : (2 + level)
+    const maxCast = maxCastFormula === "half" ? (1 + Math.ceil(level / 2)) : (2 + level)
     return { max: max, maxCast: maxCast }
 }
 

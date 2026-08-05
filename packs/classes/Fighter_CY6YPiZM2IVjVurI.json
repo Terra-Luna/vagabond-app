@@ -23,39 +23,6 @@
         "selector": "skills.ranged.isTrained"
       },
       {
-        "id": "brTtJfCkct3NmDs0",
-        "key": "ChoiceSet",
-        "label": "Training: Skills",
-        "level": "1",
-        "value": 1,
-        "maxChoices": 4,
-        "channel": "path",
-        "sourceMode": "static",
-        "choices": [
-          {
-            "value": "skills.brawl.isTrained",
-            "label": "Brawl"
-          },
-          {
-            "value": "skills.finesse.isTrained",
-            "label": "Finesse"
-          },
-          {
-            "value": "skills.detect.isTrained",
-            "label": "Detect"
-          },
-          {
-            "value": "skills.leadership.isTrained",
-            "label": "Leadership"
-          },
-          {
-            "value": "skills.sneak.isTrained",
-            "label": "Sneak"
-          }
-        ],
-        "selections": []
-      },
-      {
         "id": "VQWJJrXPuJra5YFp",
         "key": "GrantItem",
         "label": "Fighting Style: Situational Awareness",
@@ -144,8 +111,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
-    "modifiedTime": 1785006981783,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1785892323947,
+    "lastModifiedBy": "879LsWBe1wZlFdaa",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -4,7 +4,7 @@
   "_id": "1A4MdMdz7EAAoMzI",
   "img": "icons/magic/symbols/runes-etched-steel-blade.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can use Weapons as Trinkets to Cast and, when you Cast with a Delivery of Imbue on a Weapon you have Equipped, you can make an attack with the Weapon with the same Action.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use Weapons as Trinkets.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -52,8 +52,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784994455656,
-    "modifiedTime": 1785020907097,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1785898000170,
+    "lastModifiedBy": "879LsWBe1wZlFdaa",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
