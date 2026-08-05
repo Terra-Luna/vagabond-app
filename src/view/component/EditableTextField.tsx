@@ -146,7 +146,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
                 <p>{valueAppend}</p>
                 <div className="flex flex-col -mb-0.5">
                     <Plus size={14} className="cursor-pointer" onClick={() => onChange(value + incrementBy)} />
-                    <Minus size={14} className="cursor-pointer" onClick={() => onChange(value - incrementBy)} />
+                    <Minus size={14} className="cursor-pointer -mt-1" onClick={() => onChange(value - incrementBy)} />
                 </div>
             </div> : <div className="text-lg text-text-primary font-eskapade">{value}</div>
         }

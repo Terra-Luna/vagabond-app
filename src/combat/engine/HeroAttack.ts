@@ -115,19 +115,19 @@ export class HeroAttack extends Attack {
 
     setFavored() {
         if (this.skillCheck) {
-            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.favor
+            this.skillCheck.favorHinder = 'favor'
         }
     }
 
     setHindered() {
         if (this.skillCheck) {
-            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.hinder
+            this.skillCheck.favorHinder = 'hinder'
         }
     }
 
     clearFavorHinder() {
         if (this.skillCheck) {
-            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.none
+            this.skillCheck.favorHinder = 'none'
         }
     }
 
@@ -267,7 +267,7 @@ export class HeroAttack extends Attack {
             }
 
             this.clearFavorHinder()
-            this.skillCheck.favorHinder = vgLiteLang.FavorHinder.none
+            this.skillCheck.favorHinder = 'none'
             this.skillCheck.result = newResult
             await this.save(serializeAttack)
 
