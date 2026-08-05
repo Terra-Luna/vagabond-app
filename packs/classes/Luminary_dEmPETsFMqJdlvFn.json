@@ -4,7 +4,7 @@
   "_id": "dEmPETsFMqJdlvFn",
   "img": "systems/vagabond-lite/assets/class/luminary.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><span style=\"white-space:pre-wrap\">Iconic Luminaries</span></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Devout</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b></p><p><b><strong style=\"white-space:pre-wrap\">Weapons:</strong></b><span style=\"white-space:pre-wrap\"> –</span></p><p><b><strong style=\"white-space:pre-wrap\">Skills:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, and 3 from either Arcana, Detect, Influence, Leadership, or Medicine</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><span style=\"white-space:pre-wrap\">Iconic Luminaries</span></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Devout</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Influence, Mysticism</span></p>",
     "rules": [
       {
         "id": "SuDob7qulK9ECBI3",
@@ -28,14 +28,6 @@
         "pack": "spell"
       },
       {
-        "id": "Bq0mW1cXIemMpruv",
-        "key": "ToggleRule",
-        "label": "Training: Mysticism",
-        "level": "1",
-        "value": true,
-        "selector": "skills.mysticism.isTrained"
-      },
-      {
         "id": "HJtHXsv7lS2i08sx",
         "key": "GrantItem",
         "label": "Radiant Healer",
@@ -50,6 +42,14 @@
         "level": 1,
         "value": 6,
         "selector": "modifiers.dice.exploding.spellHealing"
+      },
+      {
+        "id": "Bq0mW1cXIemMpruv",
+        "key": "ToggleRule",
+        "label": "Training: Mysticism",
+        "level": "1",
+        "value": true,
+        "selector": "skills.mysticism.isTrained"
       },
       {
         "id": "q9dlRNd8mlAV2uyE",

@@ -4,7 +4,7 @@
   "_id": "CY6YPiZM2IVjVurI",
   "img": "systems/vagabond-lite/assets/class/fighter.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Students of the art of violence, fighters are defined by their weapon skills, and variety of martial techniques.</span></p><p><span style=\"white-space:pre-wrap\">Iconic Fighters</span></p><p><span style=\"white-space:pre-wrap\">• Beowulf, English mythology</span></p><p><span style=\"white-space:pre-wrap\">• Gilgamesh, Mesopotamian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sir Lancelot, Arthurian legend</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Fighter</strong></b></p><p><span style=\"white-space:pre-wrap\">The fighter is a mid-defense striker. In combat, get within effective distance for offense and prioritize the Attack Action.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator, Knight, Warrior, or Watchman</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b></p><p><b><strong style=\"white-space:pre-wrap\">Weapons:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Ranged</span></p><p><b><strong style=\"white-space:pre-wrap\">Skills:</strong></b><span style=\"white-space:pre-wrap\"> Brawl or Finesse, and 3 from either Brawl, Detect, Finesse, Leadership, or Sneak</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Students of the art of violence, fighters are defined by their weapon skills, and variety of martial techniques.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Fighters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beowulf, English mythology</span></p><p><span style=\"white-space:pre-wrap\">• Gilgamesh, Mesopotamian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sir Lancelot, Arthurian legend</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Fighter</strong></b></p><p><span style=\"white-space:pre-wrap\">The fighter is a mid-defense striker. In combat, get within effective distance for offense and prioritize the Attack Action.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator, Knight, Warrior, or Watchman</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Melee, Ranged</span></p>",
     "rules": [
       {
         "id": "rIsD3plKpPWRUesD",
@@ -25,7 +25,7 @@
       {
         "id": "VQWJJrXPuJra5YFp",
         "key": "GrantItem",
-        "label": "Fighting Style: Situational Awareness",
+        "label": "Fighting Style",
         "level": "1",
         "uuid": "Compendium.vagabond-lite.perks.Item.6aUzsiWQ0IpvS0y4",
         "type": "perk"
@@ -33,7 +33,7 @@
       {
         "id": "fRWwkbsmQ8zKQcWz",
         "key": "ChoiceSet",
-        "label": "Fighting Style: Perk",
+        "label": "Fighting Style",
         "level": "1",
         "value": 1,
         "maxChoices": 1,
@@ -56,10 +56,78 @@
       {
         "id": "XpvDpGdc4H2ByW6v",
         "key": "FlatModifier",
-        "label": "Valor",
+        "label": "Valor: Level 1",
         "level": 1,
         "value": 1,
         "selector": "modifiers.dice.crit.attack"
+      },
+      {
+        "id": "UgeuDdqYCRqm4w22",
+        "key": "FlatModifier",
+        "label": "Valor: Level 4",
+        "level": 4,
+        "value": 1,
+        "selector": "modifiers.dice.crit.attack"
+      },
+      {
+        "id": "RfxgJpCA7nMJfKeu",
+        "key": "FlatModifier",
+        "label": "Valor: Level 8",
+        "level": 8,
+        "value": 1,
+        "selector": "modifiers.dice.crit.attack"
+      },
+      {
+        "id": "h9MCXUEtzun0pN8h",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 3",
+        "level": "3",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "2TsT0vAw1IWIvWbF",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 5",
+        "level": "5",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "DtBEk4hJEZWJrp9R",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "jbeqkvLbKrhNi7SM",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 9",
+        "level": "9",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
       }
     ],
     "complexity": 1,
@@ -79,12 +147,12 @@
       {
         "level": 1,
         "name": "Valor",
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves to Dodge or Block Attacks is reduced by 1, and is reduced by 1 more when you reach 4th and 8th Levels in this Class.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more when you reach 4th and 8th Levels.</span></p>"
       },
       {
         "level": 2,
         "name": "Momentum",
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an attack, the next attack you make before the end of your next Turn is Favored.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an attack, your next attack before the end of your Turn is Favored.</span></p>"
       },
       {
         "level": 6,
@@ -94,7 +162,7 @@
       {
         "level": 10,
         "name": "Harrying",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can attack twice with the Attack Action, rather than just once.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you take the Attack Action, you can make one extra attack.</span></p>"
       }
     ]
   },
@@ -111,8 +179,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
-    "modifiedTime": 1785892323947,
-    "lastModifiedBy": "879LsWBe1wZlFdaa",
+    "modifiedTime": 1785900466102,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

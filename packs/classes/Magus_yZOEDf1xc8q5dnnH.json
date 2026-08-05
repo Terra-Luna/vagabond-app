@@ -30,7 +30,7 @@
       {
         "id": "lqjMFCnsdfW4Kkz0",
         "key": "ToggleRule",
-        "label": "Magus: Melee Training",
+        "label": "Training: Melee",
         "level": "1",
         "value": true,
         "selector": "skills.melee.isTrained"
@@ -38,7 +38,7 @@
       {
         "id": "ws28DYPWa19S6TK6",
         "key": "ToggleRule",
-        "label": "Magus: Arcana Training",
+        "label": "Training: Arcana",
         "level": "1",
         "value": true,
         "selector": "skills.arcana.isTrained"
@@ -189,8 +189,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784995121741,
-    "modifiedTime": 1785898447718,
-    "lastModifiedBy": "879LsWBe1wZlFdaa",
+    "modifiedTime": 1785900512670,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
