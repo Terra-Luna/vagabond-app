@@ -9,7 +9,7 @@
       {
         "id": "SuDob7qulK9ECBI3",
         "key": "GrantItem",
-        "label": "Theurgy: Life",
+        "label": "Theurgy",
         "level": "1",
         "uuid": "Compendium.vagabond-lite.spells.Item.pTpQKxsiYMR2yZ0G",
         "type": "spell"
@@ -17,7 +17,7 @@
       {
         "id": "WaF576Cn9yRMVs5y",
         "key": "ChoiceSet",
-        "label": "Theurgy: Spells",
+        "label": "Theurgy",
         "level": "1",
         "value": 1,
         "maxChoices": 3,
@@ -126,6 +126,58 @@
         "selections": [],
         "pack": "spell",
         "filters": []
+      },
+      {
+        "id": "h9MCXUEtzun0pN8h",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 3",
+        "level": "3",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "2TsT0vAw1IWIvWbF",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 5",
+        "level": "5",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "DtBEk4hJEZWJrp9R",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "jbeqkvLbKrhNi7SM",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 9",
+        "level": "9",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
       }
     ],
     "complexity": 3,
@@ -139,13 +191,13 @@
     "features": [
       {
         "level": 1,
-        "name": "Radiant Healer",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Assured Healer Perk (p. 67), and the healing rolls of your Spells can also Explode on their highest value.</span></p>"
+        "name": "Theurgy",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, one of which must always be Life. You learn 1 other Spell every 2 Luminary Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Maximum Mana is equal to (4 × your Luminary Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Awareness + half your Luminary Level, round up). You regain spent Mana when you Rest.</span></p>"
       },
       {
         "level": 1,
-        "name": "Theurgy",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, one of which must always be Life. You learn 1 other Spell every 2 Luminary Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Maximum Mana is equal to (4 × your Luminary Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Awareness + half your Luminary Level, round up). You regain spent Mana when you Rest.</span></p>"
+        "name": "Radiant Healer",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Assured Healer Perk (p. 67), and the healing rolls of your Spells can also Explode on their highest value.</span></p>"
       },
       {
         "level": 2,
@@ -187,8 +239,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1785888196734,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1785899852038,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

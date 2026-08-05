@@ -44,6 +44,45 @@
         "selector": "skills.arcana.isTrained"
       },
       {
+        "id": "wlqMwEJGrKKQQ6gr",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 4",
+        "level": "4",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      },
+      {
+        "id": "GopKTYxnknQAQGGv",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      },
+      {
+        "id": "HlFq1gGJsuD5AGuz",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 10",
+        "level": "10",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell"
+      },
+      {
         "id": "h9MCXUEtzun0pN8h",
         "key": "ChoiceSet",
         "label": "Perk: Level 3",
@@ -94,45 +133,6 @@
         "choices": [],
         "selections": [],
         "pack": "perk"
-      },
-      {
-        "id": "wlqMwEJGrKKQQ6gr",
-        "key": "ChoiceSet",
-        "label": "Spell: Level 4",
-        "level": "4",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell"
-      },
-      {
-        "id": "GopKTYxnknQAQGGv",
-        "key": "ChoiceSet",
-        "label": "Spell: Level 7",
-        "level": "7",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell"
-      },
-      {
-        "id": "HlFq1gGJsuD5AGuz",
-        "key": "ChoiceSet",
-        "label": "Spell: Level 10",
-        "level": "10",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell"
       }
     ],
     "complexity": 4,
