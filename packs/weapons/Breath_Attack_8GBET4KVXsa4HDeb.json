@@ -4,7 +4,7 @@
   "_id": "8GBET4KVXsa4HDeb",
   "img": "/icons/magic/fire/beam-jet-stream-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have a Breath Attack that requires an Action to begin. On a subsequent Turn within the same Scene, you can then use an Action or skip your Move to exhale a 15’ Cone of energy that deals 2d6!, sing an Endure or Will Save for the Check.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You have a Breath Attack that requires an Action to begin. On a subsequent Turn within the same Scene, you can then use an Action or skip your Move to exhale a 15’ Cone of energy that deals 2d6!, using an Endure or Will Save for the Check.</span></p>",
     "rules": [],
     "category": "weapons",
     "value": {
@@ -40,10 +40,11 @@
       "state": "H"
     },
     "skills": [
+      "endure",
       "will"
     ],
     "properties": [],
-    "material": "steel"
+    "material": "none"
   },
   "effects": [],
   "folder": null,
@@ -58,7 +59,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785939927301,
-    "modifiedTime": 1785945755742,
+    "modifiedTime": 1785950802500,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
