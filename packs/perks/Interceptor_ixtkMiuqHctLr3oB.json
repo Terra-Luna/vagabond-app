@@ -1,0 +1,61 @@
+{
+  "name": "Interceptor",
+  "type": "perk",
+  "_id": "ixtkMiuqHctLr3oB",
+  "img": "icons/skills/melee/swords-parry-block-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Round, when an Enemy within your reach begins to Move, you can immediately make one Melee attack Targeting it.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "awareness",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "melee"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "OEIcVuCsythiHjRt": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1785902324122,
+    "modifiedTime": 1785902481247,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ixtkMiuqHctLr3oB"
+}

@@ -1,0 +1,61 @@
+{
+  "name": "Deft Hands",
+  "type": "perk",
+  "_id": "TcPtYma4aDbo9npG",
+  "img": "/icons/magic/air/air-smoke-casting.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can skip your Move to take the Use Action.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "dexterity",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "finesse"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "OEIcVuCsythiHjRt": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1785902549370,
+    "modifiedTime": 1785902830998,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!TcPtYma4aDbo9npG"
+}

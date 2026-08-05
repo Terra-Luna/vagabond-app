@@ -1,0 +1,136 @@
+{
+  "name": "Barbarian",
+  "type": "class",
+  "_id": "DfGZ3FOXXjRRaxe2",
+  "img": "systems/vagabond-lite/assets/class/barbarian.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Barbarians are primal warriors that fight with the power of unbridled anger. The legends speak of their kills almost as their own unique deeds, using the barbarian’s name as a past-tense verb.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Barbarians</strong></b></p><p><span style=\"white-space:pre-wrap\">• Brock Samson, The Venture Bros.</span></p><p><span style=\"white-space:pre-wrap\">• Conan, Conan the Barbarian</span></p><p><span style=\"white-space:pre-wrap\">• Guts, Berserk</span></p><p><span style=\"white-space:pre-wrap\">• Logen Ninefingers, First Law Trilogy</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Barbarian</strong></b></p><p><span style=\"white-space:pre-wrap\">The barbarian is a mid-high-defense bruiser. Stick to an Enemy, and hit them very hard.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack (Melee)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator or Warrior</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Survival</span></p>",
+    "rules": [
+      {
+        "id": "KiBRwag7JSlWA7ur",
+        "key": "GrantItem",
+        "label": "Wrath",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.ixtkMiuqHctLr3oB",
+        "type": "perk"
+      },
+      {
+        "id": "h9MCXUEtzun0pN8h",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 3",
+        "level": "3",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "2TsT0vAw1IWIvWbF",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 5",
+        "level": "5",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "DtBEk4hJEZWJrp9R",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "jbeqkvLbKrhNi7SM",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 9",
+        "level": "9",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      }
+    ],
+    "complexity": 2,
+    "keyStats": [
+      "might"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "level": 1,
+        "name": "Rage",
+        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice are one size larger and can Explode, and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>"
+      },
+      {
+        "level": 1,
+        "name": "Wrath",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Interceptor Perk (p. 69), and can make its attack against an Enemy that takes an Action.</span></p>"
+      },
+      {
+        "level": 2,
+        "name": "Aggressor",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have a 10’ bonus to Speed during the first Round of Combat, and having 3 or more Fatigue doesn’t prevent you from taking the Rush Action.</span></p>"
+      },
+      {
+        "level": 4,
+        "name": "Fearmonger",
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, every Near Enemy with HD lower than your Level becomes Frightened until the end of your next Turn.</span></p>"
+      },
+      {
+        "level": 6,
+        "name": "Mindless Rancor",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Charmed, Confused, Frightened, or compelled to act against your will.</span></p>"
+      },
+      {
+        "level": 8,
+        "name": "Bloodthirsty",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your attacks against Beings that are missing any HP are Favored, and you can sense them within Far as if by Blindsight.</span></p>"
+      },
+      {
+        "level": 1,
+        "name": "Rip and Tear",
+        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, you gain a +1 bonus to each die of damage you deal, and you reduce damage you take by 1 per damage die. This stacks with the benefits of Rage.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "OEIcVuCsythiHjRt": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1785901965127,
+    "modifiedTime": 1785902515120,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!DfGZ3FOXXjRRaxe2"
+}

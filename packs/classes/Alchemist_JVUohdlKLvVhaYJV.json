@@ -1,0 +1,131 @@
+{
+  "name": "Alchemist",
+  "type": "class",
+  "_id": "JVUohdlKLvVhaYJV",
+  "img": "systems/vagabond-lite/assets/class/alchemist.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Often sequestered in a lab, alchemists study the essence of creation. They are as curious as they are resourceful, and always have “just the thing for this.”</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Alchemists</strong></b></p><p><span style=\"white-space:pre-wrap\">• The Colorman, Sacré Bleu</span></p><p><span style=\"white-space:pre-wrap\">• Diablo, Marvel Comics</span></p><p><span style=\"white-space:pre-wrap\">• Dr. Jekyll, Dr. Jekyll and Mr. Hyde</span></p><p><span style=\"white-space:pre-wrap\">• Tessa Cade, Defy the Night</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Alchemist</strong></b></p><p><span style=\"white-space:pre-wrap\">The alchemist is a low-defense, high-damage-and-utility blaster. It’s recommended you stay Far from Enemies to use Alchemical Items.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use (Craft &amp; Attack)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack: </strong></b><span style=\"white-space:pre-wrap\">Alchemist or Assassin</span></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Arcana, Craft, Medicine</span></p>",
+    "rules": [
+      {
+        "id": "VDpIO6I74XwrR6mP",
+        "key": "GrantItem",
+        "label": "Catalyze",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.TcPtYma4aDbo9npG",
+        "type": "perk"
+      },
+      {
+        "id": "h9MCXUEtzun0pN8h",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 3",
+        "level": "3",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "2TsT0vAw1IWIvWbF",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 5",
+        "level": "5",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "DtBEk4hJEZWJrp9R",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "jbeqkvLbKrhNi7SM",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 9",
+        "level": "9",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      }
+    ],
+    "complexity": 4,
+    "keyStats": [
+      "reason"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "level": 1,
+        "name": "Alchemy",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Choose 4 Alchemical Items (p. 84) with a value no higher than (your Level × 50s). You only need 5s of Materials and Alchemy Tools equipped to Craft them.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">You learn to Craft 1 other Alchemical Item this way every 2 Levels hereafter.</span></p>"
+      },
+      {
+        "level": 1,
+        "name": "Catalyze",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Deft Hands Perk (p. 68), and can Craft Alchemical Items with the Use Action.</span></p>"
+      },
+      {
+        "level": 2,
+        "name": "Eureka",
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Craft Check by 10 or more, you gain a Studied die (p. 18). The roll required to do so is decreased by 1 every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "level": 4,
+        "name": "Potency",
+        "description": "<p><span style=\"white-space: pre-wrap;\">The damage and healing dice of your Alchemical Items can Explode.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">At 8th Level, they can Explode on a roll of their two highest values.</span></p>"
+      },
+      {
+        "level": 6,
+        "name": "Mix",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can combine two Alchemical Items together with the Use Action by spending a Studied die, causing both Items to occur simultaneously when used. The combined Item goes inert at the start of your next Turn.</span></p>"
+      },
+      {
+        "level": 10,
+        "name": "Prima Materia",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Day, you can Craft an Alchemical Item with a value as high as 10g without Materials.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "OEIcVuCsythiHjRt": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1785901125159,
+    "modifiedTime": 1785902737750,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!JVUohdlKLvVhaYJV"
+}
