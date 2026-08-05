@@ -23,21 +23,17 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } = useNavigation()
     const [perksWithBonusChoices, setPerksWithBonusChoices] = useState<(Item & { system: PerkDataModel })[]>([])
 
+    /**
+     * Ancestry & Class
+     */
     const { AncestrySelection, ancestryItem } = useAncestrySelection([backButton, nextButton])
     const { ClassSelection, classItem } = useClassSelection(actor, [backButton, nextButton])
-    const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
-    const { TrainingSelection, requiredTrainingRules, chosenClassSkills, chosenBonusSkills, setChosenClassSkills, setChosenBonusSkills } = useTrainingSelection(ancestryItem, classItem, [backButton, nextButton])
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
-    const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
-
-    const hasSpellSlots = useMemo(() => {
-        return [...ancestrySpellSlots, ...classSpellSlots].length > 0
-    }, [ancestrySpellSlots, classSpellSlots, perkSpellSlots])
 
     /**
-     * Sum up all the stats and their selected bonuses for display
-     * on the Skills selection screen.
+     * Core stats
      */
+    const { CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats } = useCoreStats(ancestryItem, classItem, [backButton, nextButton])
+
     const statsWithBonuses = useMemo(() => {
         return (assignedStats || []).map(assignedStat => {
             const bonus = [...bonusStatSelections, ...flatStatBonuses]
@@ -51,22 +47,44 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         return statsWithBonuses.reduce((schema, { stat, value }) => { schema[stat] = value; return schema; }, {} as any)
     }, [statsWithBonuses])
 
+    /**
+     * Trainings
+     */
+    const { TrainingSelection, requiredTrainingRules, chosenLevel1Skills, chosenBonusSkills, setChosenLevel1Skills, setChosenBonusSkills, level1TrainingRules } = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
+
     const selectedTrainings = useMemo(() => {
-        return [...chosenClassSkills, ...chosenBonusSkills].map(sk => sk.skill)
-    }, [chosenClassSkills, chosenBonusSkills])
+        return [...chosenLevel1Skills, ...chosenBonusSkills].map(sk => sk.skill)
+    }, [chosenLevel1Skills, chosenBonusSkills])
+
+    /**
+     * Spellcasting
+     */
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots } = useSpellSelection(ancestryItem, classItem, undefined, [backButton, nextButton])
 
     const selectedSpellNames = useMemo(() => {
         return [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)
     }, [ancestrySpellSlots, classSpellSlots])
 
+    const hasSpellSlots = useMemo(() => {
+        return [...ancestrySpellSlots, ...classSpellSlots].length > 0
+    }, [ancestrySpellSlots, classSpellSlots, perkSpellSlots])
+
+    /**
+     * Perks
+     */
     const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton])
 
-    const { PerkBonusSelection, advancement, training, spell, resetPerkBonusSelections } = usePerkBonusSelection(
-        actor, perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
-        [...chosenClassSkills, ...chosenBonusSkills],
+    const { PerkBonusSelection, advancement, perkTraining, reasonTraining, spell, resetPerkBonusSelections } = usePerkBonusSelection(
+        perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
+        [...chosenLevel1Skills, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
         [backButton, nextButton]
     )
+
+    /**
+     * Starting packs & Item shop
+     */
+    const { EquipmentSelection, wallet, cart, selectedPack } = useEquipmentSelection(classItem, [backButton, nextButton])
 
     /**
      * This is a view mapper for the Hero creation wizard. The 
@@ -78,7 +96,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             case 'identity': return <AncestrySelection />
             case 'class-selection': return <ClassSelection />
             case 'core-stats': return <CoreStats />
-            case 'training-selection': return <TrainingSelection stats={statsWithBonuses} />
+            case 'training-selection': return <TrainingSelection />
             case 'spell-selection': return hasSpellSlots ? <SpellSelection /> : null
             case 'perk-selection': return <PerkSelection />
             case 'perk-bonus-selection': return perksWithBonusChoices.length > 0 ? <PerkBonusSelection /> : null
@@ -96,7 +114,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const activeStepIds = useMemo(() => {
         const baseIds = ['identity', 'class-selection', 'core-stats', 'training-selection']
         if (hasSpellSlots) { baseIds.push('spell-selection') }
-        baseIds.push('perk-selection')
+        if ([...ancestryPerkSlots, ...classPerkSlots].length > 0) baseIds.push('perk-selection')
         if (perksWithBonusChoices.length > 0) { baseIds.push('perk-bonus-selection') }
         baseIds.push('equipment-selection')
         return baseIds
@@ -131,7 +149,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      */
     useEffect(() => {
         resetAssignedStats()
-        setChosenClassSkills([])
+        setChosenLevel1Skills([])
         setChosenBonusSkills([])
         resetPerkBonusSelections()
         setPerksWithBonusChoices([])
@@ -168,7 +186,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             const ancestry = createdItems.find(i => (i.type as string) === "ancestry")
             const clazz = createdItems.find(i => (i.type as string) === "class")
             const ancestryRules = ancestry ? foundry.utils.deepClone(ancestry.system.rules || []) : []
-            const classRules = clazz ? foundry.utils.deepClone(clazz.system.rules || []) : []
+            const classRules = clazz ? foundry.utils.deepClone([...clazz.system.rules, ...level1TrainingRules]) : []
 
             const getRuleSet = (id: string) => {
                 return ancestryRules.find((r: any) => r.id === id && r.key === 'ChoiceSet') ??
@@ -189,7 +207,12 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                 addSelection(getRuleSet(targetRuleId), selection.stat)
             });
 
-            [...chosenClassSkills, ...chosenBonusSkills].forEach(selection => {
+            const chosenSkills = [...chosenLevel1Skills, ...chosenBonusSkills]
+            if (reasonTraining) {
+                console.log(reasonTraining, chosenLevel1Skills)
+                chosenSkills.push({ skill: reasonTraining.value, ruleId: chosenLevel1Skills[0].ruleId })
+            }
+            chosenSkills.forEach(selection => {
                 addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.isTrained`)
             });
 
@@ -220,7 +243,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
              * 'Advancement', 'New Training', and 'Magical Secret'.
              */
             if (advancement) savePerkSelectionFlags(actor, [advancement])
-            if (training) savePerkSelectionFlags(actor, [training])
+            if (perkTraining) savePerkSelectionFlags(actor, [perkTraining])
             if (spell) savePerkSelectionFlags(actor, [spell])
 
         }
@@ -239,9 +262,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         }
     }, [
         actor, ancestryItem, classItem, selectedArr, assignedStats,
-        bonusStatSelections, chosenClassSkills, chosenBonusSkills,
+        bonusStatSelections, chosenLevel1Skills, chosenBonusSkills,
         ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
-        advancement, training, spell,
+        advancement, perkTraining, reasonTraining, spell,
         wallet, cart, selectedPack, setClosed
     ])
 

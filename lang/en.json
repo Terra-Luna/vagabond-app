@@ -578,7 +578,7 @@
       "traingingsHeader": "SELECT TRAININGS",
       "trainingSubheader": "Choose the skills your hero has mastered.",
       "grantedTraining": "Granted Training",
-      "electiveTraining": "Elective Class Skills (Choose %s)",
+      "electiveTraining": "Elective Trainings - Choose %s (RSN / 2, round up)",
       "ancestralTraining": "Ancestral Training Options (Choose %s)",
       "trainingSlots": "Elective Training Slots Available",
       "trainingSourceClass": "CLASS",

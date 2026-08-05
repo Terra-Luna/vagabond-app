@@ -1,18 +1,17 @@
-import { ReactNode, useCallback, useMemo, useState } from "react"
+import { ReactNode, useEffect, useMemo, useState } from "react"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { Header, Divider } from "../../../view/component/Header"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { vgLiteLang } from "../../../utils/lang"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { getItemChoiceRules, getSkillTrainingChoiceRules, getStatChoiceRules, ItemRule, savePerkSelectionFlags } from "../../../rules/util/item-rules-util"
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { HeroCreationSubtext } from "../component/HeroCreationTypography"
+import { getItemChoiceRules, getSkillTrainingChoiceRules, getStatChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
+import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
 
 export const usePerkBonusSelection = (
-    actor: Actor & { system: HeroDataModel },
     perks: (Item & { system: PerkDataModel })[] | undefined,
     stats: { stat: string, value: number }[],
     requiredTrainings: { skill: string, source: any }[],
@@ -22,12 +21,14 @@ export const usePerkBonusSelection = (
 ) => {
     const strings = vgLiteLang.HeroCreation
     const [advancement, setAdvancement] = useState<{ value: string, ruleId: string }>()
-    const [training, setTraining] = useState<{ value: string, ruleId: string }>()
+    const [perkTraining, setPerkTraining] = useState<{ value: string, ruleId: string }>()
+    const [reasonTraining, setReasonTraining] = useState<{ value: string, ruleId: string }>()
     const [spell, setSpell] = useState<{ value: string, ruleId: string }>()
 
     const resetPerkBonusSelections = () => {
         setAdvancement(undefined)
-        setTraining(undefined)
+        setPerkTraining(undefined)
+        setReasonTraining(undefined)
         setSpell(undefined)
     }
 
@@ -73,6 +74,17 @@ export const usePerkBonusSelection = (
         return ItemsCache.spells().find(it => it.uuid === spell?.value)
     }, [spell])
 
+    const showAdditionalTrainingOnStatAdvancement = useMemo(() => {
+        return advancement?.value === 'stats.reason' && (((stats?.find(s => s.stat === 'reason')?.value ?? 1) % 2) === 0)
+    }, [advancement, stats])
+
+    /**
+     * Clear the addt'l training if they select a different stat advancement.
+     */
+    useEffect(() => {
+        setReasonTraining(undefined)
+    }, [advancement])
+
     const PerkBonusSelection = () => {
         return (
             <div className="bg-sheet-main-fill space-y-4 text-center items-center">
@@ -85,19 +97,35 @@ export const usePerkBonusSelection = (
                         {
                             advancements.map((rule, index) => {
                                 return (
-                                    <div key={index} className="space-y-2">
+                                    <div key={index} className="flex flex-col justify-center gap-y-2">
                                         <BonusChoiceTitle text={rule.label} />
                                         {/* SELECTED STATS W/ BONUSES APPLIED */}
                                         <HeroCreationSubtext text={
                                             stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")
                                         } />
-                                        <HeroCreationDropdown
-                                            value={advancement?.value ?? ''}
-                                            options={rule.choices}
-                                            onChange={(val) => {
-                                                setAdvancement({ value: val, ruleId: rule.id })
-                                            }}
-                                        />
+                                        <div className="flex items-end">
+                                            <HeroCreationDropdown
+                                                value={advancement?.value ?? ''}
+                                                options={rule.choices}
+                                                onChange={(val) => {
+                                                    setAdvancement({ value: val, ruleId: rule.id })
+                                                }}
+                                            />
+                                            {showAdditionalTrainingOnStatAdvancement &&
+                                                <div className="flex gap-x-1 items-end ml-8">
+                                                    <HeroCreationLabel text={"Addt'l Training:"} />
+                                                    <HeroCreationDropdown
+                                                        value={reasonTraining?.value ?? ''}
+                                                        options={createDropdownEntriesFromObj(vgLiteLang.Skills).filter(sk =>
+                                                            !requiredTrainings.map(t => t.skill).includes(sk.value) &&
+                                                            !selectedTrainings.map(t => t.skill).includes(sk.value)
+                                                        )}
+                                                        onChange={(val) => {
+                                                            setReasonTraining({ value: val, ruleId: rule.id })
+                                                        }}
+                                                    />
+                                                </div>}
+                                        </div>
                                     </div>
                                 )
                             })
@@ -107,13 +135,13 @@ export const usePerkBonusSelection = (
                         {
                             trainings.map((rule, index) => {
                                 return (
-                                    <div key={index} className="space-y-2">
+                                    <div key={index} className="flex flex-col justify-center gap-y-2">
                                         <BonusChoiceTitle text={rule.label} />
                                         <HeroCreationDropdown
-                                            value={training?.value ?? ''}
+                                            value={perkTraining?.value ?? ''}
                                             options={rule.choices}
                                             onChange={(val) => {
-                                                setTraining({ value: val, ruleId: rule.id })
+                                                setPerkTraining({ value: val, ruleId: rule.id })
                                             }}
                                         />
                                     </div>
@@ -125,7 +153,7 @@ export const usePerkBonusSelection = (
                         {
                             spells.map((rule, index) => {
                                 return (
-                                    <div key={index} className="space-y-2">
+                                    <div key={index} className="flex flex-col justify-center gap-y-2">
                                         <BonusChoiceTitle text={strings.magicalSecrets} />
                                         <HeroCreationDropdown
                                             value={spell?.value ?? ''}
@@ -157,5 +185,5 @@ export const usePerkBonusSelection = (
         )
     }
 
-    return { PerkBonusSelection, advancement, training, spell, resetPerkBonusSelections }
+    return { PerkBonusSelection, advancement, perkTraining, reasonTraining, spell, resetPerkBonusSelections }
 }

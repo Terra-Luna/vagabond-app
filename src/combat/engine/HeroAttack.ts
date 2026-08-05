@@ -330,7 +330,14 @@ export class HeroAttack extends Attack {
             weaponSkill = defaultSkill.skill ?? 'melee'
         }
 
-        const skillCheck = new SkillCheck(hero, { skill: weaponSkill!, clickEvent: clickEvent })
+        console.log(mods.dice.crit.attack)
+
+        const skillCheck = new SkillCheck(hero, {
+            skill: weaponSkill!,
+            critThreshold: 20 - (mods.dice.crit.attack ?? 0),
+            clickEvent: clickEvent
+        })
+
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,

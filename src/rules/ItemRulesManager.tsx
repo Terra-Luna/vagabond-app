@@ -14,6 +14,18 @@ import { GrantItemForm } from "./form/GrantItemForm"
 import { ToggleRuleForm } from "./form/ToggleRuleForm"
 import { HeroCreationLabel } from "../apps/hero-creator/component/HeroCreationTypography"
 
+export interface ChoiceRule {
+    id: string
+    key: "ChoiceSet",
+    label: string,
+    level: number,
+    maxChoices: number,
+    channel: "path" | "item",
+    sourceMode: "static" | "dynamic",
+    choices: { value: string, label: string }[],
+    selections: string[]
+}
+
 export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataModel<BaseItemSchema> } }) => {
     const { isEditMode } = useEditMode()
 

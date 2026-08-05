@@ -66,8 +66,6 @@ export const useSpellSelection = (
         getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
         getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
 
-        console.log(clazz?.system?.rules)
-
         const ancestryRules = getItemChoiceRules(ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
 
