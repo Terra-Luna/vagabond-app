@@ -20,8 +20,9 @@ export class DiceRoll {
 
     toRollFormula(): string {
         const mod = `${this.modifier ? `+${this.modifier}` : ''}`
-        if (this.count > 0) return `${this.count}d${this.faces}${mod}`
-        else return `${this.faces}${mod}`
+        const explode = `${(this.explodesOn?.length ?? 0) > 0 ? '!' : ''}`
+        if (this.count > 0) return `${this.count}d${this.faces}${explode}${mod}`
+        else return `${this.faces}${explode}${mod}`
     }
 
 }

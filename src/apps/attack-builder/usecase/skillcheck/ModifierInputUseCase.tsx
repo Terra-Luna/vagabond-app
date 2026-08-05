@@ -13,5 +13,5 @@ export const useSkillCheckModifierInput = () => {
             />
         </span>
     </div>
-    return { SkillCheckModifierInput, skillCheckMod }
+    return { SkillCheckModifierInput, skillCheckMod, setSkillCheckMod }
 }

@@ -28,5 +28,5 @@ export const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[
             </div>
         </div>
     
-    return { WeaponSelector, weapon, description }
+    return { WeaponSelector, weapon, description, setWeapon, setDescription }
 }

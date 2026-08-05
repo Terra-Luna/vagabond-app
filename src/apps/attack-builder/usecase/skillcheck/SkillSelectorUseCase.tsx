@@ -31,5 +31,5 @@ export const useSkillSelector = (actor, weapon) => {
             `}</p>}
         </div>
     </div>
-    return { SkillSelector, skill }
+    return { SkillSelector, skill, setSkill }
 }

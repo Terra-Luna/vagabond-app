@@ -12,5 +12,5 @@ export const useFlatModifierInput = () => {
             <NumericCounterInput value={flatModifier} onChange={(val) => setFlatModifier(val)} />
         </CounterInput>
                 
-    return { FlatModifierInput, flatModifier }
+    return { FlatModifierInput, flatModifier, setFlatModifier }
 }

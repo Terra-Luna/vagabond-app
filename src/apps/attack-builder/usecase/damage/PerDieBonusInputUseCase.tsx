@@ -12,5 +12,5 @@ export const usePerDieBonusInput = () => {
             <NumericCounterInput value={perDieBonus} onChange={(val) => setPerDieBonus(Math.max(0, val))} />
         </CounterInput>
 
-    return { PerDieBonusInput, perDieBonus }
+    return { PerDieBonusInput, perDieBonus, setPerDieBonus }
 }

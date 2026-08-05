@@ -6,12 +6,14 @@ import { vgLiteLang } from "../../../utils/lang"
 import { SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
+import { AttackPreset } from "../AttackBuilderApp"
 
-export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel }) | undefined) => {
+export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel }) | undefined, preset?: AttackPreset) => {
     const [damageRolls, setDamageRolls] = useState<DiceRollSchema[]>([])
 
     useEffect(() => {
-        if (!weapon) return
+        if (!weapon || preset) return
+
         const schema = {
             count: weapon.system.damage.dice.count,
             faces: weapon.system.damage.dice.faces,
@@ -72,5 +74,5 @@ export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataM
             </div>
         </div>
 
-    return { CustomDamageRollBuilder, damageRolls }
+    return { CustomDamageRollBuilder, damageRolls, setDamageRolls }
 }

@@ -10,11 +10,11 @@ export const useCustomSkillCheckBuilder = (
     actor?: Actor & { system: HeroDataModel },
     weapon?: Item & { system: WeaponDataModel }
 ) => {
-    const { SkillSelector, skill } = useSkillSelector(actor, weapon)
-    const { D20CountSelector, d20Count } = useD20CountSelector()
-    const { FavorHinderSelector, favorHinder } = useFavorHinderSelector()
-    const { SkillCheckModifierInput, skillCheckMod } = useSkillCheckModifierInput()
-    const { SkillCheckCritThresholdInput, critThreshold } = useSkillCheckCritThresholdInput()
+    const { SkillSelector, skill, setSkill } = useSkillSelector(actor, weapon)
+    const { D20CountSelector, d20Count, setD20Count } = useD20CountSelector()
+    const { FavorHinderSelector, favorHinder, setFavorHinder } = useFavorHinderSelector()
+    const { SkillCheckModifierInput, skillCheckMod, setSkillCheckMod } = useSkillCheckModifierInput()
+    const { SkillCheckCritThresholdInput, critThreshold, setCritThreshold } = useSkillCheckCritThresholdInput()
 
     const CustomSkillCheckBuilder =
         <div className="flex flex-wrap gap-x-1 items-end justify-between border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
@@ -25,5 +25,9 @@ export const useCustomSkillCheckBuilder = (
             {SkillCheckCritThresholdInput}
         </div>
 
-    return { CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold }
+    return {
+        CustomSkillCheckBuilder,
+        skill, d20Count, favorHinder, skillCheckMod, critThreshold,
+        setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold
+    }
 }

@@ -13,5 +13,5 @@ export const useSkillCheckCritThresholdInput = () => {
             />
         </span>
     </div>
-    return { SkillCheckCritThresholdInput, critThreshold }
+    return { SkillCheckCritThresholdInput, critThreshold, setCritThreshold }
 }

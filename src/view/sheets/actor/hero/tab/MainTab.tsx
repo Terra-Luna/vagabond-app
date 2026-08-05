@@ -82,7 +82,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                 </div>
                             </div>
                             <div className={propsStyle}>{weapon.properties.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
-                            <div className={propsStyle + " text-right mr-1"}>{vgLiteLang.Ranges[weapon.range]}</div>
+                            <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[weapon.range]}</div>
                         </div>
                         <ItemDivider />
                     </div>

@@ -4,9 +4,9 @@ import { usePerDieBonusInput } from "./damage/PerDieBonusInputUseCase"
 import { useArmorPiercingInput } from "./damage/ArmorPiercingInputUseCase"
 
 export const useCustomDamageModifiersBuilder = () => {
-    const { FlatModifierInput, flatModifier } = useFlatModifierInput()
-    const { PerDieBonusInput, perDieBonus } = usePerDieBonusInput()
-    const { ArmorPiercingInput, armorPiercing } = useArmorPiercingInput()
+    const { FlatModifierInput, flatModifier, setFlatModifier } = useFlatModifierInput()
+    const { PerDieBonusInput, perDieBonus, setPerDieBonus } = usePerDieBonusInput()
+    const { ArmorPiercingInput, armorPiercing, setArmorPiercing } = useArmorPiercingInput()
 
     const CustomDamageModifiersBuilder =
         <div className="flex flex-col gap-y-2 border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
@@ -18,5 +18,8 @@ export const useCustomDamageModifiersBuilder = () => {
             </div>
         </div>
 
-    return { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing }
+    return {
+        CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing,
+        setFlatModifier, setPerDieBonus, setArmorPiercing
+    }
 }

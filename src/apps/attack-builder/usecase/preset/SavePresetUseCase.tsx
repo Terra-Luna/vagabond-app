@@ -5,7 +5,6 @@ export const useSavePreset = (actor: Actor, preset: AttackPreset) => {
 
     const savePreset = useCallback(async (closeApp: () => void) => {
         if (!preset || !preset.title) return
-        console.log("Saving new preset...", preset)
 
         const presets = [...actor.getFlag("vagabond-lite" as any, "attackPresets" as any) as AttackPreset[] ?? []]
 

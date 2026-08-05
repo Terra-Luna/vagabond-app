@@ -17,5 +17,5 @@ export const useD20CountSelector = () => {
             className="text-sm"
         />
     </div>
-    return { D20CountSelector, d20Count }
+    return { D20CountSelector, d20Count, setD20Count }
 }

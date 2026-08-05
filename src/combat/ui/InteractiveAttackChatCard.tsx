@@ -23,8 +23,6 @@ import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortrai
 import { Checkbox } from "../../view/component/Checkbox"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { SingleSelect } from "../../view/component/SingleSelect"
-import { ChatCardPortrait } from "../../view/chat/component/ChatCardPortrait"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
     const [revision, setRevision] = useState(0)
@@ -75,7 +73,11 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
     const source = useMemo<Item | undefined>(() => {
         if (attack instanceof HeroAttack && attack.itemId) {
-            const item = ItemsCache.allItems().find(it => it.uuid === attack.itemId)
+            console.log(attack.itemId)
+            const item =
+                actor?.items?.contents?.find(it => it.id === attack.itemId) ??
+                ItemsCache.allItems().find(it => it.uuid === attack.itemId)
+
             return item
         }
     }, [attack])
@@ -280,8 +282,7 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             }
 
             {/* DAMAGE DISPLAY */}
-            {
-                attack.showDamage &&
+            {attack.showDamage &&
                 <div>
                     {/* HIDE THE DAMAGE HEADER IF IT WAS HEALING OR FRIENDLY FX ONLY */}
                     {!isFriendlySpell && <Header title={'Damage'} />}

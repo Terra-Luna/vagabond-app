@@ -1,4 +1,4 @@
-import { Menu, Sword } from "lucide-react"
+import { Menu, Sword, Swords } from "lucide-react"
 import { useEffect } from "react"
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs"
 import { importHero } from "../../../../apps/importer/TagalongImporter"
@@ -124,7 +124,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <Tab>{locale["tab-inv"]}</Tab>
                 {hero.spells?.length > 0 && <Tab>{locale["tab-magic"]}</Tab>}
                 <Tab> {locale["tab-abilities"]}</Tab>
-                <Tab title="Attack Builder"><Sword size={32} className="hover-glow" /></Tab>
+                <Tab title="Attack Presets"><Swords size={32} className="hover-glow" /></Tab>
             </TabList>
             <TabPanel className={tabPanelClasses}>
                 <MainTab hero={hero} />

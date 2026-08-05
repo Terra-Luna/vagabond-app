@@ -12,5 +12,5 @@ export const useArmorPiercingInput = () => {
             <NumericCounterInput value={armorPiercing} onChange={(val) => setArmorPiercing(Math.max(0, val))} />
         </CounterInput>
 
-    return { ArmorPiercingInput, armorPiercing }
+    return { ArmorPiercingInput, armorPiercing, setArmorPiercing }
 }

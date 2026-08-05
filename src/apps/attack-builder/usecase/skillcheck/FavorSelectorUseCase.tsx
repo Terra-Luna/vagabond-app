@@ -18,5 +18,5 @@ export const useFavorHinderSelector = () => {
             className="text-sm"
         />
     </div>
-    return { FavorHinderSelector, favorHinder }
+    return { FavorHinderSelector, favorHinder, setFavorHinder }
 }
