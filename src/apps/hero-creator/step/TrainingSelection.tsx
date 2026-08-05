@@ -23,9 +23,10 @@ export const useTrainingSelection = (
     // Skills which are automatically assigned.
     const [requiredTrainingRules, setRequiredTrainingRules] = useState<{ source: Item, skill: string }[]>([])
     // Generate a rule to save their Level 1 Training selections. This gets injected into their class document while saving.
+    const level1RuleId = useMemo(() => foundry.utils.randomID(), [])
     const level1TrainingRule = useMemo<ChoiceRule>(() => {
         return {
-            id: foundry.utils.randomID(),
+            id: level1RuleId,
             key: "ChoiceSet",
             label: "Level 1 Trainings",
             level: 1,
@@ -35,7 +36,7 @@ export const useTrainingSelection = (
             choices: [{ value: "skills.*.isTrained", label: "Skills" }],
             selections: []
         }
-    }, [ancestry, clazz, stats])
+    }, [ancestry, clazz, stats, level1RuleId])
     const [level1TrainingRules, setLevel1TrainingRules] = useState<ItemRule[]>([])
     const [chosenLevel1Skills, setChosenLevel1Skills] = useState<{ skill: string, ruleId: string }[]>([])
 
@@ -81,7 +82,7 @@ export const useTrainingSelection = (
         else {
             setChosenLevel1Skills(chosenLevel1Skills.filter(sk => sk.skill !== skill))
         }
-    }, [chosenLevel1Skills, chosenLevel1Skills])
+    }, [chosenLevel1Skills, level1TrainingRule?.maxChoices])
 
     const onSelectBonusSkill = useCallback((skill: string, ruleId: string, isSelected: boolean) => {
         if (isSelected && chosenBonusSkills.length < ancestryTrainingMaxChoices) {
