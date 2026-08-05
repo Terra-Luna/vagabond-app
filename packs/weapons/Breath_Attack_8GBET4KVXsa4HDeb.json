@@ -1,24 +1,19 @@
 {
-  "name": "Shortsword",
+  "name": "Breath Attack",
   "type": "weapon",
-  "_id": "LIMNsTfn9uaUbu7a",
-  "img": "icons/weapons/swords/shortsword-broad.webp",
+  "_id": "8GBET4KVXsa4HDeb",
+  "img": "/icons/magic/fire/beam-jet-stream-blue.webp",
   "system": {
-    "description": "",
+    "description": "<p><span style=\"white-space:pre-wrap\">You have a Breath Attack that requires an Action to begin. On a subsequent Turn within the same Scene, you can then use an Action or skip your Move to exhale a 15’ Cone of energy that deals 2d6!, sing an Endure or Will Save for the Check.</span></p>",
     "rules": [],
     "category": "weapons",
     "value": {
-      "g": 0,
-      "s": 20,
-      "c": 0
-    },
-    "totalValue": {
       "g": 0,
       "s": 0,
       "c": 0
     },
     "bulk": {
-      "slots": 1,
+      "slots": 0,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -28,45 +23,46 @@
     "isEquipped": false,
     "isConsumable": false,
     "relicEffects": [],
-    "range": "close",
+    "range": "near",
     "damage": {
-      "type": "physical",
       "dice": {
         "count": 1,
-        "faces": 6
-      }
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": [
+          6
+        ]
+      },
+      "type": "none"
     },
     "grip": {
-      "style": "H",
+      "style": "-",
       "state": "H"
     },
-    "properties": [
-      "keen"
-    ],
-    "material": "steel",
     "skills": [
-      "finesse",
-      "melee"
-    ]
+      "will"
+    ],
+    "properties": [],
+    "material": "steel"
   },
   "effects": [],
   "folder": null,
   "sort": 0,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "OEIcVuCsythiHjRt": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784508389849,
-    "modifiedTime": 1785910386779,
+    "createdTime": 1785939927301,
+    "modifiedTime": 1785940483782,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!LIMNsTfn9uaUbu7a"
+  "_key": "!items!8GBET4KVXsa4HDeb"
 }

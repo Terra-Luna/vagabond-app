@@ -489,6 +489,10 @@
       "thrown": {
         "name": "Thrown",
         "description": "Uses Melee by default. Can throw attack to Near, or Far with Hinder."
+      },
+      "will": {
+        "name": "Will",
+        "description": ""
       }
     },
     "Metals": {

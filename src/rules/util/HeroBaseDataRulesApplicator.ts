@@ -6,6 +6,7 @@ import { ItemsCache } from "./ItemsCache";
 export class HeroBaseDataRulesApplicator {
 
     static apply(actor: Actor & { system: HeroDataModel }) {
+        if (!actor) return
         // Get rules from Ancestry, Class, and granted Perks and process them.
         const perkSelections = actor.getFlag("vagabond-lite" as any, "perkSelections") ?? []
         const activeRules = actor.system.getActiveRules()
@@ -74,11 +75,14 @@ export class HeroBaseDataRulesApplicator {
         }
 
         const applyInventoryItems = (rule) => {
+            /* const actorItemUuids = actor.items.map(it => it.getFlag("core", "sourceId" as any))
+            console.log(actorItemUuids)
+            if (actorItemUuids.includes(rule.uuid)) return
+
             const item = ItemsCache.allItems().find(it => it.uuid === rule.uuid)
-            console.log(ItemsCache.allItems())
             if (item) {
                 actor.createEmbeddedDocuments("Item", [item.toObject()])
-            }
+            } */
         }
 
         applyPerkSelections(perkSelections)

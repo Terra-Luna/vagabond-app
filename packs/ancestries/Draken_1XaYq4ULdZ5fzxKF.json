@@ -17,9 +17,9 @@
       {
         "id": "obCotsNgZiwJPrIv",
         "key": "GrantItem",
-        "label": "Grant: Breath Attack",
+        "label": "Breath Attack",
         "level": 0,
-        "uuid": "Compendium.vagabond-lite.weapons.Item.EiIEVYBayAdea3HK",
+        "uuid": "Compendium.vagabond-lite.weapons.Item.8GBET4KVXsa4HDeb",
         "type": "weapon"
       }
     ],
@@ -40,8 +40,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784922704373,
-    "modifiedTime": 1785288198504,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1785940502184,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
