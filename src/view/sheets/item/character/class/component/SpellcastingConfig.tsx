@@ -35,7 +35,7 @@ export const MaxCastFormulaSelector = ({ item }: { item: Item & { system: ClassD
                 <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelMaxMana}:`} />
                 <DropDown
                     value={item.system.maxCastFormula}
-                    options={[{ value: 'partial', label: '1 + (Level / 2)↑' }, { value: 'full', label: '2 + Level' }]}
+                    options={[{ value: 'partial', label: '1 + ⌈Level / 2⌉' }, { value: 'full', label: '2 + Level' }]}
                     includeNullOption={true}
                     updateMechanism={{ updatePath: ['maxCastFormula'] }}
                     parent={item}
