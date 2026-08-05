@@ -15,6 +15,22 @@
         "type": "perk"
       },
       {
+        "id": "64ZPYy34rHC94JCc",
+        "key": "ToggleRule",
+        "label": "Training: Melee",
+        "level": "1",
+        "value": true,
+        "selector": "skills.melee.isTrained"
+      },
+      {
+        "id": "xAoJt7g9Qv9tNhWL",
+        "key": "ToggleRule",
+        "label": "Training: Survival",
+        "level": "1",
+        "value": true,
+        "selector": "skills.survival.isTrained"
+      },
+      {
         "id": "h9MCXUEtzun0pN8h",
         "key": "ChoiceSet",
         "label": "Perk: Level 3",
@@ -126,7 +142,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1785902515120,
+    "modifiedTime": 1785904287842,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,

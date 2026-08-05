@@ -11,6 +11,7 @@ export const ToggleRuleForm = ({ rule, onChange }) => {
                     placeholder={"e.g., Training: Arcane"}
                 />
                 <ItemRuleInput
+                    type={"number"}
                     label={"Level Req."}
                     value={rule.level || ""}
                     onChange={(e) => onChange({ level: e.target.value })}
@@ -21,7 +22,7 @@ export const ToggleRuleForm = ({ rule, onChange }) => {
                 label={"Path"}
                 value={rule.selector || ""}
                 onChange={(e) => onChange({ selector: e.target.value })}
-                placeholder={"e.g., system.skills.arcana.isTrained"}
+                placeholder={"e.g., skills.arcana.isTrained"}
             />
             <ItemRuleSelector
                 label={"Select State"}

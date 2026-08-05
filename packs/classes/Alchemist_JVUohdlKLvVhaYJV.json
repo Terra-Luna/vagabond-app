@@ -15,6 +15,30 @@
         "type": "perk"
       },
       {
+        "id": "Va5S3We9pq1dh8er",
+        "key": "ToggleRule",
+        "label": "Training: Arcana",
+        "level": "1",
+        "value": true,
+        "selector": "skills.arcana.isTrained"
+      },
+      {
+        "id": "JqD4lWC6UGflFfbu",
+        "key": "ToggleRule",
+        "label": "Training: Craft",
+        "level": "1",
+        "value": true,
+        "selector": "skills.craft.isTrained"
+      },
+      {
+        "id": "ka6KzF0PIZze37lX",
+        "key": "ToggleRule",
+        "label": "Training: Medicine",
+        "level": "1",
+        "value": true,
+        "selector": "skills.medicine.isTrained"
+      },
+      {
         "id": "h9MCXUEtzun0pN8h",
         "key": "ChoiceSet",
         "label": "Perk: Level 3",
@@ -121,7 +145,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901125159,
-    "modifiedTime": 1785902737750,
+    "modifiedTime": 1785904200431,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
