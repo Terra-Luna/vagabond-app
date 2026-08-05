@@ -27,7 +27,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 <Properties item={item} />
                 <Range item={item} />
                 <Grip item={item} />
-                <DiceInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
+                <DiceInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} wrap={true} />
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <MaterialSelection item={item} />
             </div>

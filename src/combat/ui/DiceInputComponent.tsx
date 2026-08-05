@@ -9,8 +9,12 @@ import { vgLiteLang } from "../../utils/lang"
 import { CSVTextInput } from "../../view/component/CSVTextInput"
 import { Plus } from "lucide-react"
 
-export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride = false }: {
-    label: string, diceRoll: DiceRoll, onChange: (updatedFields: Partial<DiceRoll>) => void, editModeOverride?: boolean
+export const DiceInputComponent = ({ label, diceRoll, onChange, wrap = false, editModeOverride = false }: {
+    label?: string,
+    diceRoll: DiceRoll,
+    onChange: (updatedFields: Partial<DiceRoll>) => void,
+    wrap?: boolean,
+    editModeOverride?: boolean
 }) => {
     const { isEditMode } = useEditMode()
 
@@ -36,11 +40,15 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride
         <div className="flex text-base font-eskapade font-bold">
             {(isEditMode || editModeOverride) &&
                 <div>
-                    <ItemSheetPropLabel label={label} />
+                    {label && <ItemSheetPropLabel label={label} />}
+
                     <div className="flex gap-x-1 items-end">
 
                         {/* DICE COUNT */}
-                        <DiceCountInput dmgDice={diceRoll.count} onUpdateDmgDice={updateDmgDice} />
+                        <div>
+                            {!label && <p className="text-sm">Roll</p>}
+                            <DiceCountInput dmgDice={diceRoll.count} onUpdateDmgDice={updateDmgDice} />
+                        </div>
 
                         {/* DIE SIZE */}
                         <div>
@@ -61,25 +69,21 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride
                         </div>
 
                         {/* MODIFIER (FLAT BONUS) */}
-                        <div className="flex items-center">
+                        <div className="flex items-center text-xl">
                             <Plus size={16} className="text-text-secondary" />
                             <NumericCounterInput
                                 value={diceRoll.modifier || 0}
                                 onChange={(input) => updateModifier(input)}
                             />
                         </div>
+
+                        {/* EXPLOSIONS CONFIG */}
+                        {!wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
+
                     </div>
 
                     {/* EXPLOSIONS CONFIG */}
-                    <div className="items-end">
-                        <ItemSheetPropLabel label={vgLiteLang.ItemSheet.explodesOn + ":"} />
-                        <CSVTextInput
-                            value={explosionValues}
-                            onChange={handleExplosionChange}
-                            placeholder={"E.g., 6, 10"}
-                            className="w-24"
-                        />
-                    </div>
+                    {wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
                 </div>
             }
 
@@ -104,5 +108,19 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, editModeOverride
             }
         </div>
             
+    )
+}
+
+const ExplosionsInput = ({ explosionValues, handleExplosionChange }) => {
+    return (
+        <div className="items-end">
+            <p className="text-sm">{vgLiteLang.ItemSheet.explodesOn}</p>
+            <CSVTextInput
+                value={explosionValues}
+                onChange={handleExplosionChange}
+                placeholder={"E.g., 6, 10"}
+                className="w-20"
+            />
+        </div>
     )
 }

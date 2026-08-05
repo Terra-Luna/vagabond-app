@@ -2,7 +2,7 @@ import { Sword, HandFist, Hand, Eye, MessageSquareText, Trash, Undo } from "luci
 import { createElement } from "react"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { setEquipState, EquipmentDataModel, EquipmentSchema } from "../model/item/equip/EquipmentDataModel"
-import { WeaponDataModel } from "../model/item/equip/WeaponDataModel"
+import { isEquippedWeapon, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { DamageRollChatCard } from "../view/chat/DamageRollChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
 import { lang } from "./lang"
@@ -26,6 +26,12 @@ export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
         await setEquipState(it, false)
     })
     await setEquipState(armor, true)
+}
+
+export function getEquippedWeapons(actor: Actor & { system: HeroDataModel }) {
+    return actor.items.filter(i => isEquippedWeapon(i.system)).map(w => (
+        { value: w.uuid, label: w.name }
+    ))
 }
 
 /**

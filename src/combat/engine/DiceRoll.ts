@@ -1,10 +1,17 @@
+export interface DiceRollSchema {
+    count: number
+    faces: number
+    modifier?: number
+    explodesOn?: number[]
+}
+
 export class DiceRoll {
     count: number
     faces: number
     modifier?: number
     explodesOn?: number[]
 
-    constructor(args: { count: number, faces: number, modifier?: number, explodesOn?: number[] }) {
+    constructor(args: DiceRollSchema) {
         this.count = args.count
         this.faces = args.faces
         this.modifier = args.modifier

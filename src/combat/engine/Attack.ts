@@ -73,7 +73,9 @@ export abstract class Attack {
         this.getActors(targetIds ?? []).forEach(actor => {
             const damage = this.damageRoll?.result?.total ?? 0
             const target = actor?.system
-            const armor = args.bypassArmor ? 0 : (target as any)?.armor?.rating ?? 0
+            const armorRating = (target as any)?.armor?.rating ?? 0
+            const armorPiercing = this.damageRoll?.armorPiercing ?? 0
+            const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
             const adjDamage = Math.max(0, damage - armor)
             this.updateHP(target, this.getHP(target) - adjDamage)
         })

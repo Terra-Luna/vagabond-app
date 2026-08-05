@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { isInventoryItem } from "../../model/actor/type/Inventory"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { ItemsCache } from "./ItemsCache"
@@ -20,16 +21,17 @@ export class PerkRulesSelectionsApplicator {
             ...Object.values(perkSelections).deepFlatten()
         ]
 
-        const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && (r.type === "spell" || r.type === "perk"))
-        const itemIds = [...itemRuleSelections, ...itemGrantRules.map(r => r.uuid)]
+        const grantRules = activeRules.filter(r => r.key === "GrantItem")
+        const spellPerkGrantRules = grantRules.filter(r => r.type === "spell" || r.type === "perk")
+        const spellPerkItemIds = [...itemRuleSelections, ...spellPerkGrantRules.map(r => r.uuid)]
 
-        const items: any[] = []
-        itemIds.forEach(id => {
+        const spellPerkItems: any[] = []
+        spellPerkItemIds.forEach(id => {
             const cachedItem = ItemsCache.items.get(id)
-            if (cachedItem) items.push(cachedItem)
+            if (cachedItem) spellPerkItems.push(cachedItem)
         })
 
-        for (const fullItem of items) {
+        for (const fullItem of spellPerkItems) {
             if (fullItem.type === 'spell' || fullItem.type === 'perk') {
 
                 if (fullItem.system instanceof SpellDataModel) {
@@ -49,7 +51,7 @@ export class PerkRulesSelectionsApplicator {
                         if (!systemClone.canTakeMultiple) continue
 
                         systemClone.rules.forEach(rule => {
-                            const matchingIds = itemIds.filter(it => it === fullItem.uuid)
+                            const matchingIds = spellPerkItemIds.filter(it => it === fullItem.uuid)
                             if ("maxChoices" in rule) {
                                 rule.maxChoices = (rule.maxChoices as number) * matchingIds.length
                             }

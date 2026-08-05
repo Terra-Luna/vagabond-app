@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
+import { inventoryItemTypes } from "../../model/actor/type/Inventory";
 import { isPathOfType } from "../../utils/modelUtil";
 import { ItemsCache } from "./ItemsCache";
 
@@ -12,6 +13,7 @@ export class HeroBaseDataRulesApplicator {
         const toggleRules = activeRules.filter(r => r.key === "ToggleRule")
         const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
         const choiceRules = activeRules.filter(r => r.key === "ChoiceSet" && r.channel === "path" && r.sourceMode === "static")
+        const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && inventoryItemTypes().includes(r.type))
 
         const applyPerkSelections = (perkSelections) => {
             Object.keys(perkSelections ?? {})?.forEach(key => {
@@ -71,11 +73,20 @@ export class HeroBaseDataRulesApplicator {
             })
         }
 
+        const applyInventoryItems = (rule) => {
+            const item = ItemsCache.allItems().find(it => it.uuid === rule.uuid)
+            console.log(ItemsCache.allItems())
+            if (item) {
+                actor.createEmbeddedDocuments("Item", [item.toObject()])
+            }
+        }
+
         applyPerkSelections(perkSelections)
         injectGrantedPerkRules(perkGrants)
         for (const rule of toggleRules) { applyToggleRule(rule) }
         for (const rule of flatModifiers) { applyFlatModifier(rule) }
         for (const rule of choiceRules) { applyChoiceRule(rule) }
+        for (const rule of itemGrantRules) { applyInventoryItems(rule) }
     }
     
 }

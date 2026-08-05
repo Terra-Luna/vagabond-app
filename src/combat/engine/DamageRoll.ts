@@ -9,6 +9,7 @@ export interface DamageRollArgs {
     dmgType?: string
     flatDmgBonus?: number
     perDieDmgBonus?: number
+    armorPiercing?: number
 }
 
 export interface DamageRollResult {
@@ -26,6 +27,7 @@ export class DamageRoll {
     dice: DiceRoll[]
     flatDmgBonus: number
     perDieDmgBonus: number
+    armorPiercing: number
     result: DamageRollResult | undefined
 
     constructor(args: DamageRollArgs) {
@@ -34,6 +36,7 @@ export class DamageRoll {
         this.dmgType = args.dmgType ?? 'physical'
         this.flatDmgBonus = args.flatDmgBonus ?? 0
         this.perDieDmgBonus = args.perDieDmgBonus ?? 0
+        this.armorPiercing = args.armorPiercing ?? 0
     }
 
     toJson() {
@@ -43,6 +46,7 @@ export class DamageRoll {
             dmgType: this.dmgType,
             flatDmgBonus: this.flatDmgBonus,
             perDieDmgBonus: this.perDieDmgBonus,
+            armorPiercing: this.armorPiercing,
             result: this.result
         }
     }
@@ -55,7 +59,8 @@ export class DamageRoll {
                 dice: json.dice,
                 dmgType: json.dmgType,
                 flatDmgBonus: json.flatDmgBonus,
-                perDieDmgBonus: json.perDieDmgBonus
+                perDieDmgBonus: json.perDieDmgBonus,
+                armorPiercing: json.armorPiercing
             })
             roll.result = json.result
             return roll
@@ -67,7 +72,7 @@ export class DamageRoll {
     }
 
     async roll(): Promise<DamageRollResult> {
-        const damageRoll = await new Roll(`${this.dice.map(d => d.toRollFormula())}+${this.flatDmgBonus ?? 0}`).evaluate()
+        const damageRoll = await new Roll(`${this.dice.map(d => d.toRollFormula()).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
         const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
 

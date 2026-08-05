@@ -317,20 +317,9 @@ export class HeroAttack extends Attack {
 
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
         if (!weaponSkill) {
-            const weaponTypes = [...weapon.skills]
-            if (weaponTypes.includes('thrown') && !weaponTypes.includes('melee')) {
-                weaponTypes.push('melee')
-            }
-
-            const defaultSkill = Object.keys(hero.skills)
-                .filter(k => weaponTypes.includes(k))
-                .map(k => ({ skill: k, value: hero.skills[k].value }))
-                .sort((a, b) => b.value - a.value)[0]
-
+            const defaultSkill = HeroAttack.getHighestDefaultWeaponSkill(hero, weapon)
             weaponSkill = defaultSkill.skill ?? 'melee'
         }
-
-        console.log(mods.dice.crit.attack)
 
         const skillCheck = new SkillCheck(hero, {
             skill: weaponSkill!,
@@ -407,6 +396,19 @@ export class HeroAttack extends Attack {
         attack.skipSkillCheck = delivery instanceof Imbue
 
         return attack
+    }
+
+    static getHighestDefaultWeaponSkill(hero: HeroDataModel, weapon: WeaponDataModel): { skill: string, value: number } {
+        const weaponSkills = [...weapon.skills]
+        const defaultSkill = Object.keys(hero.skills)
+            .filter(k => weaponSkills.includes(k))
+            .map(k => ({ skill: k, value: hero.skills[k].value }))
+            .sort((a, b) => a.value - b.value)[0]
+
+        console.log(Object.keys(hero.skills)
+            .filter(k => weaponSkills.includes(k)))
+
+        return defaultSkill
     }
 
 }

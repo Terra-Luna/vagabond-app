@@ -28,7 +28,7 @@
     "FavorHinder": {
       "favor": "Favored",
       "hinder": "Hindered",
-      "none": ""
+      "none": "None"
     },
     "AlchemyCategories": {
       "acid": {

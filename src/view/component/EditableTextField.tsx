@@ -135,20 +135,20 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
                         onBlur={handleSave}
                         onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
                         className={`
-                        min-w-4 max-w-[3ch] text-center
-                        [appearance:textfield]
-                        [&::-webkit-outer-spin-button]:appearance-none
-                        [&::-webkit-inner-spin-button]:appearance-none
-                    `}
+                            min-w-4 max-w-[3ch] text-center
+                            outline-none focus:outline-none focus:ring-0
+                            [appearance:textfield]
+                            [&::-webkit-outer-spin-button]:appearance-none
+                            [&::-webkit-inner-spin-button]:appearance-none
+                        `}
                     />
                 </form>
                 <p>{valueAppend}</p>
-                <div className="flex flex-col mt-1">
+                <div className="flex flex-col -mb-0.5">
                     <Plus size={14} className="cursor-pointer" onClick={() => onChange(value + incrementBy)} />
                     <Minus size={14} className="cursor-pointer" onClick={() => onChange(value - incrementBy)} />
                 </div>
             </div> : <div className="text-lg text-text-primary font-eskapade">{value}</div>
-
         }
     </>)
 }
