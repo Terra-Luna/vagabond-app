@@ -89,7 +89,7 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
     }, [setDescription, description])
 
     useEffect(() => {
-        if (!editIndex) return
+        if (editIndex === undefined) return
         const editTarget = item.system.features[editIndex]
         setTitle(editTarget.name)
         setLevel(editTarget.level as number)
@@ -130,7 +130,7 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                 <DestructiveButton children={<p>Cancel</p>} onClick={() => { setIsNewFeatureOpen(false) }} />
                 <PrimaryButton icon={<Save size={14} />} onClick={async () => {
                     let features = [...item.system.features]
-                    if (editIndex) {
+                    if (editIndex !== undefined) {
                         features = features.map((feature, index) => {
                             if (index === editIndex) return { level: level, name: title, description: description }
                             else return feature

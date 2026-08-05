@@ -7,14 +7,6 @@
     "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><span style=\"white-space:pre-wrap\">Iconic Luminaries</span></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Devout</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b></p><p><b><strong style=\"white-space:pre-wrap\">Weapons:</strong></b><span style=\"white-space:pre-wrap\"> –</span></p><p><b><strong style=\"white-space:pre-wrap\">Skills:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, and 3 from either Arcana, Detect, Influence, Leadership, or Medicine</span></p>",
     "rules": [
       {
-        "id": "TnFG3YID7OF3Hwpz",
-        "key": "GrantItem",
-        "label": "Theurgy: Light",
-        "level": "1",
-        "uuid": "Compendium.vagabond-lite.spells.Item.uFqM8LSGCbpH0UTA",
-        "type": "spell"
-      },
-      {
         "id": "SuDob7qulK9ECBI3",
         "key": "GrantItem",
         "label": "Theurgy: Life",
@@ -28,7 +20,7 @@
         "label": "Theurgy: Spells",
         "level": "1",
         "value": 1,
-        "maxChoices": 2,
+        "maxChoices": 3,
         "channel": "item",
         "sourceMode": "dynamic",
         "choices": [],
@@ -42,39 +34,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.mysticism.isTrained"
-      },
-      {
-        "id": "BJkCUg3sMWEX4f54",
-        "key": "ChoiceSet",
-        "label": "Training: Skills",
-        "level": "1",
-        "value": 1,
-        "maxChoices": 3,
-        "channel": "path",
-        "sourceMode": "static",
-        "choices": [
-          {
-            "value": "skills.arcana.isTrained",
-            "label": "Arcana"
-          },
-          {
-            "value": "skills.detect.isTrained",
-            "label": "Detect"
-          },
-          {
-            "value": "skills.influence.isTrained",
-            "label": "Influence"
-          },
-          {
-            "value": "skills.leadership.isTrained",
-            "label": "Leadership"
-          },
-          {
-            "value": "skills.medicine.isTrained",
-            "label": "Medicine"
-          }
-        ],
-        "selections": []
       },
       {
         "id": "HJtHXsv7lS2i08sx",
@@ -91,6 +50,82 @@
         "level": 1,
         "value": 6,
         "selector": "modifiers.dice.exploding.spellHealing"
+      },
+      {
+        "id": "q9dlRNd8mlAV2uyE",
+        "key": "ToggleRule",
+        "label": "Training: Influence",
+        "level": "1",
+        "value": true,
+        "selector": "skills.influence.isTrained"
+      },
+      {
+        "id": "rbBXWSaAORpfyPql",
+        "key": "ChoiceSet",
+        "label": "Training: Level 1",
+        "level": "1",
+        "maxChoices": 1,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "skills.*.isTrained",
+            "label": "Skills"
+          }
+        ],
+        "selections": []
+      },
+      {
+        "id": "UrAms3gxI0HbVJDH",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 3",
+        "level": "3",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "rUFahmFjs9Tq1IV5",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 5",
+        "level": "5",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "E4t1chSBXdATMdJq",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 7",
+        "level": "7",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "rHXwash43QEgKtvi",
+        "key": "ChoiceSet",
+        "label": "Spell: Level 9",
+        "level": "9",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
       }
     ],
     "complexity": 3,
@@ -104,13 +139,13 @@
     "features": [
       {
         "level": 1,
-        "name": "Theurgy",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, two of which must always be Life and Light. You learn 1 other Spell every 2 Luminary Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Maximum Mana is equal to (4 × your Luminary Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Awareness + half your Luminary Level, round up). You regain spent Mana when you Rest.</span></p>"
+        "name": "Radiant Healer",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Assured Healer Perk (p. 67), and the healing rolls of your Spells can also Explode on their highest value.</span></p>"
       },
       {
         "level": 1,
-        "name": "Radiant Healer",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Assured Healer Perk (p. 67), and the healing rolls of your Spells can also Explode on their highest value.</span></p>"
+        "name": "Theurgy",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, one of which must always be Life. You learn 1 other Spell every 2 Luminary Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Maximum Mana is equal to (4 × your Luminary Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Awareness + half your Luminary Level, round up). You regain spent Mana when you Rest.</span></p>"
       },
       {
         "level": 2,
@@ -125,7 +160,7 @@
       {
         "level": 6,
         "name": "Revivify",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can revive a Being with the Life Spell if it has been dead for as long as 1 hour. If you die, you are revived automatically. Afterward, you can’t be revived by this Feature for 1 day.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can revive a Being with the Life Spell if it has been dead for as long as 1 Hour. If you die, you are instantly revived. Afterward, you can’t be revived by this Ability for 1 Day.</span></p>"
       },
       {
         "level": 8,
@@ -152,7 +187,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1784934711877,
+    "modifiedTime": 1785888196734,
     "lastModifiedBy": "ywhHfYnWZQBq7W9u",
     "compendiumSource": null,
     "duplicateSource": null,
