@@ -93,7 +93,7 @@ const useCustomSkillCheckBuilder = (
     const { SkillCheckCritThresholdInput, critThreshold } = useSkillCheckCritThreholdInput()
 
     const CustomSkillCheckBuilder =
-        <div className="flex flex-wrap gap-x-1 items-start justify-between border border-solid border-table-border rounded-sm p-1">
+        <div className="flex flex-wrap gap-x-1 items-end justify-between border border-solid border-table-border rounded-sm p-1">
             {SkillSelector}
             {D20CountSelector}
             {FavorHinderSelector}
@@ -259,7 +259,7 @@ const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel })
         <div className="flex flex-col gap-2 items-start justify-between border border-solid border-table-border rounded-sm p-1">
             <SectionLabel text={"Damage Rolls"} />
             <div className="flex items-end w-full">
-                <div className="flex flex-col gap-y-2">
+                <div className="flex flex-col gap-y-2 items-end">
                     {damageRolls.length > 0 && damageRolls.map((roll, index) => (
                         <div key={index} className="flex gap-x-1 items-end">
                             <DiceInputComponent
