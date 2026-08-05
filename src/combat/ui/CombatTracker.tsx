@@ -15,6 +15,16 @@ import { BulkCombatantEditApp } from "../../apps/bulk-combatant-edit/BulkCombata
 
 const getCombat = () => game.combat as VgLiteCombat
 
+const getCombatantById = (id: string) => {
+    const combatants = getCombat()?.combatants?.contents
+
+    if (!combatants?.length) {
+        return null
+    }
+
+    return combatants.find(c => c.id === id || c._id === id)
+}
+
 const getIndexOfCombatant = (combatant) => {
     const combatants = getCombat()?.combatants?.contents
 
@@ -43,6 +53,8 @@ export const CombatTracker = ({ data }) => {
     const { combat } = data
     const combatants = combat?.combatants?.contents
 
+    const [lastClickedCombatants, setlastClickedCombatants] = useState([])
+
     if (!combatants?.length) {
         return <></>
     }
@@ -55,13 +67,13 @@ export const CombatTracker = ({ data }) => {
             {heroes?.length > 0 &&
                 <Group groupName="heroes">
                     <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
-                    <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} />)}</GroupBody>
+                    <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                 </Group>
             }
             {adversaries?.length > 0 &&
                 <Group groupName="adversaries">
                     <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
-                    <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} />)}</GroupBody>
+                    <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                 </Group>
             }
         </div>
@@ -105,11 +117,16 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
         return () => {
             Hooks.off("hoverToken", hookId)
         }
-    }, [])
+    }, [token])
 
     useEffect(() => {
         const hookId = Hooks.on("refreshToken", () => {
-            setIsControlled(!!game.canvas?.tokens?.controlled.includes(token))
+            const isControlled = !!game.canvas?.tokens?.controlled.includes(token)
+            if (isControlled) {
+                // this fixes tokens in the tracker keeping their "hovered" state when they get de-selected with ctrl / shift
+                setIsHovered(false)
+            }
+            setIsControlled(isControlled)
         })
 
         const hookId2 = Hooks.on("controlToken", () => {
@@ -164,7 +181,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     )
 }
 
-const Combatant = ({ token, children, combatant }: { token: Token, children: ReactNode, combatant: VgLiteCombatant }) => {
+const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastClickedCombatants }: { token: Token, children: ReactNode, combatant: VgLiteCombatant, lastClickedCombatants: string[], setlastClickedCombatants: (ids: string[]) => void }) => {
     // we are cheating a bit here, but it works!
     //  act like hovering our entries in the tracker is hovering the token
     const onMouseEnter = useCallback(() => {
@@ -176,13 +193,15 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
     }, [token])
 
     const onClick = useCallback((e: MouseEvent) => {
-        if (token.controlled && e.shiftKey) {
+        if (token.controlled && (e.shiftKey || e.ctrlKey)) {
             token.release()
+            setlastClickedCombatants(lastClickedCombatants.filter(c => c !== combatant.id))
+            return
         } else if (e.shiftKey) {
             // control all tokens between the first token clicked and this one
-            const otherCombatant = game.canvas?.tokens?.controlled[0]?.combatant
-            if (otherCombatant) {
-                getCombatantsBetweenIndices(getIndexOfCombatant(otherCombatant), getIndexOfCombatant(combatant)).forEach(comb => canvas?.tokens?.placeables.find(t => t.id === comb.token._id)?.control({ releaseOthers: false }))
+            const previousCombatant = getCombatantById(lastClickedCombatants[lastClickedCombatants.length - 1])
+            if (previousCombatant) {
+                getCombatantsBetweenIndices(getIndexOfCombatant(previousCombatant), getIndexOfCombatant(combatant)).forEach(comb => canvas?.tokens?.placeables.find(t => t.id === comb.token._id)?.control({ releaseOthers: false }))
             }
         } else if (e.ctrlKey) {
             token.control({ releaseOthers: (!e.shiftKey && !e.ctrlKey) });
@@ -193,7 +212,11 @@ const Combatant = ({ token, children, combatant }: { token: Token, children: Rea
             token.control({ releaseOthers: true })
             game.canvas?.animatePan({ x: token.x, y: token.y });
         }
-    }, [token])
+
+        if (combatant.id) {
+            setlastClickedCombatants([...lastClickedCombatants, combatant.id])
+        }
+    }, [token, combatant, lastClickedCombatants])
 
     const onDoubleClick = useCallback(() => {
         token.actor?.sheet?.render(true)
@@ -244,12 +267,12 @@ const StatusIcons = ({ combatant }) => {
     )
 }
 
-const Hero = ({ hero }) => {
+const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
     const heroActorModel = hero.actor.system
 
     return (
-        <Combatant token={token} combatant={hero}>
+        <Combatant token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={hero.name} token={token} combatant={hero}>
                 <div className="w-full">
                     <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
@@ -294,12 +317,12 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) 
     return component
 }
 
-const Adversary = ({ adversary }) => {
+const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id) as Token, [adversary])
     const adversaryModel = adversary.actor.system
 
     return (
-        <Combatant token={token} combatant={adversary}>
+        <Combatant token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token}>
                 <div className="w-full">
                     <Gauge max={adversaryModel.health.max} value={adversaryModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
