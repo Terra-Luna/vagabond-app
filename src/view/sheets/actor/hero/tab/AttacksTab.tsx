@@ -67,7 +67,7 @@ const WeaponAttackMenu = ({ actor, weapons }: {
 
     return (
         <CollapsibleSection title={"ATTACK"} content={
-            <div className="flex flex-col gap-y-2 p-1 border border-solid border-t-0 border-table-border bg-context-menu-fill rounded-b-sm">
+            <div className="flex flex-col gap-y-2 p-1 border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
                 {WeaponSelector}
                 {CustomSkillCheckBuilder}
                 {CustomDamageRollBuilder}
@@ -93,7 +93,7 @@ const useCustomSkillCheckBuilder = (
     const { SkillCheckCritThresholdInput, critThreshold } = useSkillCheckCritThreholdInput()
 
     const CustomSkillCheckBuilder =
-        <div className="flex flex-wrap gap-x-1 items-end justify-between border border-solid border-table-border rounded-sm p-1">
+        <div className="flex flex-wrap gap-x-1 items-end justify-between border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
             {SkillSelector}
             {D20CountSelector}
             {FavorHinderSelector}
@@ -109,7 +109,8 @@ const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[]) => {
 
     useEffect(() => { if (weapons.length > 0) { setWeapon(weapons[0]) } }, [])
 
-    const WeaponSelector = <div>
+    const WeaponSelector =
+        <div className="border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
         <SectionLabel text={"Weapon"} />
         <div className="flex gap-x-0.5 items-end">
             <CustomDropDown
@@ -256,7 +257,7 @@ const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel })
     }, [])
 
     const CustomDamageRollBuilder =
-        <div className="flex flex-col gap-2 items-start justify-between border border-solid border-table-border rounded-sm p-1">
+        <div className="flex flex-col gap-2 items-start justify-between border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
             <SectionLabel text={"Damage Rolls"} />
             <div className="flex items-end w-full">
                 <div className="flex flex-col gap-y-2 items-end">
@@ -289,7 +290,7 @@ const useCustomDamageModifiersBuilder = () => {
     const [armorPiercing, setArmorPiercing] = useState<number>(0)
 
     const CustomDamageModifiersBuilder =
-        <div className="flex flex-col gap-y-2 border border-solid border-table-border rounded-sm p-1">
+        <div className="flex flex-col gap-y-2 border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
             <SectionLabel text={"Bonuses"} />
             <div className="flex gap-x-4 items-end">
                 <div className="flex flex-col items-start">
