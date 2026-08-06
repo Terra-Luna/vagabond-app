@@ -72,7 +72,6 @@ export class ItemsCache {
         }
 
         Hooks.callAll("onItemsCacheInitialized" as any, ItemsCache)
-        console.log("Vagabond Lite | Items Cache Initialized:", this.items.size)
     }
 
     static async updateItem(item: any) {

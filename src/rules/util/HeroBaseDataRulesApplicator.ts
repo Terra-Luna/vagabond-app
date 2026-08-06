@@ -49,9 +49,6 @@ export class HeroBaseDataRulesApplicator {
 
         const applyFlatModifier = (rule) => {
             const path = rule.selector.replace("system.", "")
-
-            console.log(path)
-
             const currentValue = foundry.utils.getProperty(actor.system, path)
             const multiplierValue = foundry.utils.getProperty(actor.system, rule.valueMultiplier) as number
             if (typeof currentValue === "number") {

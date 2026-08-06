@@ -78,7 +78,6 @@ export class DamageRoll {
 
         let canExplode = false
         for (const d of this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0 && (isCrit && d.explodeOnCritOnly || !d.explodeOnCritOnly))) {
-            console.log(d.explodesOn, d.explodeOnCritOnly, isCrit)
             if (this.isSafeToExplode(d.faces, d.explodesOn!)) {
                 canExplode = true
                 await this.processExplosions(
