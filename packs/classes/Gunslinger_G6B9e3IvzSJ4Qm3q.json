@@ -1,0 +1,100 @@
+{
+  "name": "Gunslinger",
+  "type": "class",
+  "_id": "G6B9e3IvzSJ4Qm3q",
+  "img": "systems/vagabond-lite/assets/class/gunslinger.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Attitude and tenacity are as core to the gunslinger as ammo. They stare down challenges through iron sights, fortified by their inner grit. </span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Gunslingers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Arthur Morgan, Red Dead Redemption 2</span></p><p><span style=\"white-space:pre-wrap\">• Django, Django Unchained</span></p><p><span style=\"white-space:pre-wrap\">• Roland Deschain, Dark Tower</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Gunslinger</strong></b></p><p><span style=\"white-space:pre-wrap\">The gunslinger is a low-defense, high-crit striker. In combat, stay as far back as possible and keep the enemy under constant fire.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Bounty Hunter or Tinker</span></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Ranged, Detect</span></p>",
+    "rules": [
+      {
+        "id": "qJRZL1JaHxK75whJ",
+        "key": "GrantItem",
+        "label": "Quick Draw: Marksmanship ",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.Pr9DWZMktkYQHpGx",
+        "type": "perk"
+      },
+      {
+        "id": "VUDabU8SRKHX5TuX",
+        "key": "ToggleRule",
+        "label": "Training: Ranged",
+        "level": "1",
+        "value": true,
+        "selector": "skills.ranged.isTrained"
+      },
+      {
+        "id": "86sTIWJSY0IRqMge",
+        "key": "ToggleRule",
+        "label": "Training: Detect",
+        "level": "1",
+        "value": true,
+        "selector": "skills.detect.isTrained"
+      }
+    ],
+    "complexity": 3,
+    "keyStats": [
+      "awareness"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "level": 1,
+        "name": "Deadeye",
+        "description": "<p><span style=\"white-space: pre-wrap;\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, but no lower than 17. This resets to 0 at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>"
+      },
+      {
+        "level": 1,
+        "name": "Quickdraw",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Marksmanship Perk (p. 69) and, when Combat occurs, you can make one Ranged attack before the first Turn, which is Hindered if it is made with a 2H Weapon.</span></p>"
+      },
+      {
+        "level": 2,
+        "name": "Skeet Shooter",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round, you can make a Ranged attack against an attack that would hit. If you pass, reduce the damage dealt by the Target’s attack by your attack’s damage.</span></p>"
+      },
+      {
+        "level": 4,
+        "name": "Grit",
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you Crit on a Ranged attack, the damage dice can Explode.</span></p>"
+      },
+      {
+        "level": 6,
+        "name": "Devastator",
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, your Deadeye Feature is immediately set to 17.</span></p>"
+      },
+      {
+        "level": 8,
+        "name": "Bad Medicine",
+        "description": "<p><span style=\"white-space: pre-wrap;\">You deal an extra die of damage when you Crit with a Ranged Check.</span></p>"
+      },
+      {
+        "level": 10,
+        "name": "High Noon",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Turn, if you Crit on a Ranged Check, you can make one additional attack.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "OEIcVuCsythiHjRt": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786041519359,
+    "modifiedTime": 1786052030198,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!G6B9e3IvzSJ4Qm3q"
+}

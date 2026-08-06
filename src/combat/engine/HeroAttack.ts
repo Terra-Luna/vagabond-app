@@ -11,7 +11,7 @@ import { roll3dDice } from "../../utils/foundryUtils"
 import { getDiceTerms } from "./util/dice-utils"
 import { DamageRoll } from "./DamageRoll"
 import { getTargetIds } from "../../utils/modelUtil"
-import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { getWeaponDamageWithHeroMods, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { DiceRoll } from "./DiceRoll"
 import { AttackPreset } from "../../apps/attack-builder/AttackBuilderApp"
 
@@ -308,12 +308,12 @@ export class HeroAttack extends Attack {
         item: Item & { system: WeaponDataModel },
         skill?: string,
         extraDice?: DiceRoll[],
-        clickEvent?: any,
+        clickEvent?: any
     ) {
         const hero = actor.system
         const weapon = item.system
         const mods = hero.modifiers
-        const dice = [new DiceRoll({ ...weapon.damage.dice as DiceRoll })]
+        const damageDice = new DiceRoll(getWeaponDamageWithHeroMods(actor.system, item.system))
         let weaponSkill = skill
 
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
@@ -322,18 +322,21 @@ export class HeroAttack extends Attack {
             weaponSkill = defaultSkill.skill ?? 'melee'
         }
 
+        const isKeen = weapon.properties.includes('keen')
+        damageDice.extraDieOnCrit = weapon.properties.includes('vicious')
+
         const skillCheck = new SkillCheck(hero, {
             skill: weaponSkill!,
-            critThreshold: 20 - (mods.dice.crit.attack ?? 0),
+            critThreshold: 20 - (mods.dice.crit.attack ?? 0) - (isKeen ? 1 : 0),
             clickEvent: clickEvent
         })
 
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
-            dice: dice,
+            dice: [damageDice, ...extraDice ?? []],
             flatDmgBonus: (mods.damage.all ?? 0) + (mods.damage.attack ?? 0),
-            perDieDmgBonus: (mods.damage.allPerDie ?? 0) + (mods.damage.attackPerDie ?? 0)
+            perDieDmgBonus: (mods.damage.allPerDie ?? 0) + (mods.damage.attackPerDie ?? 0),
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, damageRoll)

@@ -77,7 +77,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                             HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [], e).initiate()
                                         }}
                                     >
-                                        {gripStateDamage(weapon)}
+                                        {gripStateDamage(hero, weapon)}
                                     </div>
                                 </div>
                             </div>

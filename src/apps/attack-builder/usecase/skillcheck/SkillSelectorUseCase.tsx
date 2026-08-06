@@ -10,7 +10,7 @@ export const useSkillSelector = (actor, weapon) => {
 
     useEffect(() => {
         if (!actor || !weapon) return
-        setSkill(HeroAttack.getHighestDefaultWeaponSkill(actor.system, weapon.system).skill)
+        setSkill(HeroAttack.getHighestDefaultWeaponSkill(actor.system, weapon.system)?.skill ?? 'melee')
     }, [weapon])
 
     const SkillSelector = <div>

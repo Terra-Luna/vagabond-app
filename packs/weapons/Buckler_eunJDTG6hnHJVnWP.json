@@ -30,7 +30,10 @@
     "relicEffects": [],
     "range": "close",
     "damage": {
-      "type": "physical"
+      "type": "physical",
+      "dice": {
+        "modifier": 0
+      }
     },
     "grip": {
       "style": "H",
@@ -58,8 +61,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784505910612,
-    "modifiedTime": 1785871233911,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1785955921436,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

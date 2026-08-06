@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { DiceRollSchema } from "../../../combat/engine/DiceRoll"
 import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
-import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
+import { getWeaponDamageWithHeroMods, WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
@@ -22,33 +22,7 @@ export const useCustomDamageRollBuilder = (
     useEffect(() => {
         if (!weapon) return
 
-        const isRangedWeapon = weapon.system.skills.includes('ranged')
-        const mods = actor.system.modifiers
-        const dieSizeMod = isRangedWeapon
-            ? mods.dice.size.ranged
-            : mods.dice.size.melee
-
-        const dieSize = weapon.system.damage.dice.faces + (dieSizeMod ?? 0)
-
-        const explMod = isRangedWeapon
-            ? mods.dice.exploding.ranged || mods.dice.exploding.rangedCrit
-            : mods.dice.exploding.melee || mods.dice.exploding.meleeCrit
-
-        const explodesOn = explMod
-            ? [...new Set([...(weapon.system.damage.dice.explodesOn as number[] || []), dieSize])].sort((a, b) => a - b)
-            : weapon.system.damage.dice.explodesOn as number[]
-
-        const critOnly = isRangedWeapon
-            ? mods.dice.exploding.rangedCrit && !mods.dice.exploding.ranged
-            : mods.dice.exploding.meleeCrit && !mods.dice.exploding.melee
-
-        const schema = {
-            count: weapon.system.damage.dice.count,
-            faces: dieSize,
-            modifier: weapon.system.damage.dice.modifier,
-            explodesOn: explodesOn,
-            explodeOnCritOnly: critOnly
-        }
+        const schema = getWeaponDamageWithHeroMods(actor.system, weapon.system)
 
         if (damageRolls.length === 0) {
             setDamageRolls([schema])

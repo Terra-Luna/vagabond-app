@@ -60,22 +60,6 @@
         "selector": "skills.influence.isTrained"
       },
       {
-        "id": "rbBXWSaAORpfyPql",
-        "key": "ChoiceSet",
-        "label": "Training: Level 1",
-        "level": "1",
-        "maxChoices": 1,
-        "channel": "path",
-        "sourceMode": "static",
-        "choices": [
-          {
-            "value": "skills.*.isTrained",
-            "label": "Skills"
-          }
-        ],
-        "selections": []
-      },
-      {
         "id": "UrAms3gxI0HbVJDH",
         "key": "ChoiceSet",
         "label": "Spell: Level 3",
@@ -239,7 +223,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1785901088259,
+    "modifiedTime": 1786051950415,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,

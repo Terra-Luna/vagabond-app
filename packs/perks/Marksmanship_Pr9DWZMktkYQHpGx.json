@@ -1,0 +1,70 @@
+{
+  "name": "Marksmanship",
+  "type": "perk",
+  "_id": "Pr9DWZMktkYQHpGx",
+  "img": "icons/skills/ranged/target-bullseye-arrow-glowing.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The damage dice for your Ranged Weapon attacks are one size larger.</span></p>",
+    "rules": [
+      {
+        "id": "Bfe2ov8XFAnQc9cg",
+        "key": "FlatModifier",
+        "label": "Marksmanship",
+        "level": 0,
+        "value": 2,
+        "selector": "modifiers.dice.size.ranged"
+      }
+    ],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "awareness",
+        "value": 7,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "ranged"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "OEIcVuCsythiHjRt": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786041197208,
+    "modifiedTime": 1786053572624,
+    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Pr9DWZMktkYQHpGx"
+}

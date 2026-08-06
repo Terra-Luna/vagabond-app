@@ -1,4 +1,6 @@
+import { DiceRoll, DiceRollSchema } from "../../../combat/engine/DiceRoll"
 import { lang } from "../../../utils/lang"
+import { HeroDataModel } from "../../actor/HeroDataModel"
 import { damageTypeOptions, fields, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
@@ -65,12 +67,44 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
     }
 }
 
-export const gripStateDamage = (w: WeaponDataModel): string => {
-    const die = w.grip.style === 'V' && w.grip.state === 'HH' ? w.damage.dice.faces + 2 : w.damage.dice.faces
-    const mod = w.damage.dice.modifier
-    return `${w.damage.dice.count}d${die}${mod > 0 ? `+${mod}` : ''}`
-}
-
 export const isEquippedWeapon = (item: any): boolean => {
     return item.parent.type === 'weapon' && item.isEquipped
+}
+
+export const gripStateDamage = (hero: HeroDataModel, weapon: WeaponDataModel): string => {
+    const roll = getWeaponDamageWithHeroMods(hero, weapon)
+    if (weapon.grip.style === 'V' && weapon.grip.state === 'HH') {
+        roll.faces += 2
+    }
+    return new DiceRoll(roll).toRollFormula()
+}
+
+export const getWeaponDamageWithHeroMods = (hero: HeroDataModel, weapon: WeaponDataModel): DiceRollSchema => {
+    const isRangedWeapon = weapon.skills.includes('ranged')
+    const mods = hero.modifiers
+    const dieSizeMod = isRangedWeapon
+        ? mods.dice.size.ranged
+        : mods.dice.size.melee
+
+    const dieSize = weapon.damage.dice.faces + (dieSizeMod ?? 0)
+
+    const explMod = isRangedWeapon
+        ? mods.dice.exploding.ranged || mods.dice.exploding.rangedCrit
+        : mods.dice.exploding.melee || mods.dice.exploding.meleeCrit
+
+    const explodesOn = explMod
+        ? [...new Set([...(weapon.damage.dice.explodesOn as number[] || []), dieSize])].sort((a, b) => a - b)
+        : weapon.damage.dice.explodesOn as number[]
+
+    const critOnly = isRangedWeapon
+        ? mods.dice.exploding.rangedCrit && !mods.dice.exploding.ranged
+        : mods.dice.exploding.meleeCrit && !mods.dice.exploding.melee
+
+    return {
+        count: weapon.damage.dice.count,
+        faces: dieSize,
+        modifier: weapon.damage.dice.modifier,
+        explodesOn: explodesOn,
+        explodeOnCritOnly: critOnly
+    }
 }
