@@ -22,7 +22,7 @@ export class VgLiteCombatTracker extends foundry.applications.sidebar.tabs.Comba
     /**
      * This is the only function we need to override. The CombatTracker renders 3 different parts - the header, tracker (main content, what we care about), and footer
      * What usually happens is that every time this is called, result.tracker will be the result of calling our handlebars template on the combat data
-     * Since that's always the same, we can intercept all renders after the first, and just return our existing react root, so that it updates appropriately (and doesn't flash)
+     * Since that's always the same, we can intercept all renders after the first and just return the same div with a refreshed react tree
      */
     protected _replaceHTML(result: { tracker: HTMLElement }, content, options): void {
         if (options.isFirstRender && result.tracker) {
