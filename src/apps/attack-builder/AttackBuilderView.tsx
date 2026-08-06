@@ -15,9 +15,10 @@ import { AttackPreset } from "./AttackBuilderApp"
 import { vgLiteLang } from "../../utils/lang"
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 
-export const AttackBuilderView = ({ actor, preset, setClosed }: {
+export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed }: {
     actor: Actor & { system: HeroDataModel },
     preset?: AttackPreset,
+    showHeader?: boolean,
     setClosed?: () => void
 }) => {
 
@@ -26,18 +27,9 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: {
     }, [actor])
 
     const { WeaponSelector, weapon, description, setWeapon, setDescription } = useWeaponSelector(weapons)
-
-    const {
-        CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold,
-        setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold
-    } = useCustomSkillCheckBuilder(actor, weapon)
-
+    const { CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold, setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold } = useCustomSkillCheckBuilder(actor, weapon)
     const { CustomDamageRollBuilder, damageRolls, setDamageRolls } = useCustomDamageRollBuilder(weapon, preset)
-
-    const {
-        CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing,
-        setFlatModifier, setPerDieBonus, setArmorPiercing
-    } = useCustomDamageModifiersBuilder()
+    const { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing, setFlatModifier, setPerDieBonus, setArmorPiercing } = useCustomDamageModifiersBuilder()
 
     useEffect(() => {
         if (preset) {
@@ -71,15 +63,16 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: {
             skillCheckMod: skillCheckMod,
         }
     }, [
-        weapon, description, skill, d20Count, favorHinder, skillCheckMod, critThreshold,
-        damageRolls, flatModifier, perDieBonus, armorPiercing
+        weapon, description, skill, d20Count, favorHinder, skillCheckMod,
+        critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
     const { savePreset } = useSavePreset(actor, formPreset)
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-            <Header title={"ATTACK"} />
+            {showHeader && <Header title={"ATTACK"} />}
+
             <div className="flex flex-col gap-y-2 p-1 border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
 
                 {/* EACH ATTACK CATEGORY BY USE-CASE */}
@@ -87,7 +80,6 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: {
                 {CustomSkillCheckBuilder}
                 {CustomDamageRollBuilder}
                 {CustomDamageModifiersBuilder}
-
 
                 <div className="flex w-full justify-between">
                     {/* SAVE & CANCEL */}
@@ -104,14 +96,14 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: {
                     </>}
 
                     {/* ATTACK BUTTON */}
-                    {!setClosed && <>
+                    {!setClosed && <div className="ml-auto">
                         <PrimaryButton
                             onClick={() => HeroAttack.buildCustomAttack(actor, formPreset)}
                             icon={<Sword size={16} className="text-btn-primary-text" />}
                         >
                             {vgLiteLang.ButtonActions.attack}
                         </PrimaryButton>
-                    </>}
+                    </div>}
                 </div>
             </div>
         </EditModeContextProvider>

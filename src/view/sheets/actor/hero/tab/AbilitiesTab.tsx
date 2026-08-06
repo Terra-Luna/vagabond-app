@@ -22,7 +22,6 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                     <Header title={vgLiteLang.HeroSheet.ancestry} />
                     <div className="mt-0.5" />
                     <SkillCard
-                        img={(hero.ancestry as any).parent.img}
                         title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
                         subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
                         description={hero.ancestry?.description}

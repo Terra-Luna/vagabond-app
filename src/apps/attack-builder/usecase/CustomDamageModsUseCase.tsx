@@ -9,7 +9,7 @@ export const useCustomDamageModifiersBuilder = () => {
     const { ArmorPiercingInput, armorPiercing, setArmorPiercing } = useArmorPiercingInput()
 
     const CustomDamageModifiersBuilder =
-        <div className="flex flex-col gap-y-2 border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
+        <div className="flex flex-col border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
             <SectionLabel text={"Bonuses"} />
             <div className="flex gap-x-4 items-end">
                 {FlatModifierInput}

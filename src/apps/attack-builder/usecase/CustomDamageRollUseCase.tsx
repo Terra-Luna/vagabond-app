@@ -7,6 +7,7 @@ import { SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
 import { AttackPreset } from "../AttackBuilderApp"
+import { Plus } from "lucide-react"
 
 export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel }) | undefined, preset?: AttackPreset) => {
     const [damageRolls, setDamageRolls] = useState<DiceRollSchema[]>([])
@@ -50,7 +51,7 @@ export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataM
     }, [])
 
     const CustomDamageRollBuilder =
-        <div className="flex flex-col gap-2 items-start justify-between border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
+        <div className="flex flex-col items-start justify-between border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
             <SectionLabel text={"Damage Rolls"} />
             <div className="flex items-end w-full">
                 <div className="flex flex-col gap-y-2 items-end">
@@ -67,7 +68,7 @@ export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataM
                     ))}
                 </div>
                 <div className="flex w-full justify-end">
-                    <SecondaryButton onClick={addNewRoll}>
+                    <SecondaryButton onClick={addNewRoll} icon={<Plus size={16} />}>
                         {vgLiteLang.ButtonActions.add}
                     </SecondaryButton>
                 </div>

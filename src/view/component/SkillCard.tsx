@@ -4,7 +4,7 @@ import { CardHeader } from './CardHeader'
 import { ReactNode } from 'react'
 
 const cardSubheaderLayout = "flex -mt-0.5"
-const cardSubheaderStyle = "flex gap-x-2 py-1 pl-2 pr-8 items-center bg-section-header-fill [clip-path:polygon(0_0,100%_0,90%_100%,0_100%)]"
+const cardSubheaderStyle = "flex gap-x-2 py-1 pl-2 pr-1 items-center bg-section-header-fill"
 const cardSubheaderLabel = "text-sm text-text-header-secondary font-eskapade font-bold"
 const cardSubheaderValue = "text-base text-text-header-primary font-eskapade font-normal"
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border"
@@ -30,12 +30,17 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
     )
 }
 
-export const HeaderWithClipPath = ({ children, showRightBorder, fullWidth }: { children: ReactNode, showRightBorder?: boolean, fullWidth?: boolean }) => {
+export const HeaderWithClipPath = ({ children, showRightBorder, fullWidth }: {
+    children: ReactNode, showRightBorder?: boolean, fullWidth?: boolean
+}) => {
     const fullWidthClass = fullWidth ? "w-full" : ""
     const borderClass = showRightBorder ? "border-r-1 border-solid border-table-border" : ""
     return (
         <div className={`${cardSubheaderLayout} ${borderClass}`}>
-            <div className={`${cardSubheaderStyle} ${fullWidthClass}`}>{children}</div>
+            <div className="flex">
+                <div className={`${cardSubheaderStyle} ${fullWidthClass}`}>{children}</div>
+                <div className={`bg-sheet-header-fill w-6 -ml-[1px] [clip-path:polygon(0_0,0%_100%,10%_100%,100%_0)]`} />
+            </div>
         </div>
     )
 }
