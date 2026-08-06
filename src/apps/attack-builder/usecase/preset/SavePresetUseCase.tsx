@@ -20,5 +20,10 @@ export const useSavePreset = (actor: Actor, preset: AttackPreset) => {
 
     }, [actor, preset])
 
-    return { savePreset }
+    const saveCustomAttack = useCallback(async () => {
+        if (!preset || !preset.title) return
+        await actor.setFlag("vagabond-lite" as any, "customAttack" as any, preset)
+    }, [actor, preset])
+
+    return { savePreset, saveCustomAttack }
 }

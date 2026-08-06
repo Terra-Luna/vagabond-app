@@ -67,14 +67,13 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
-    const { savePreset } = useSavePreset(actor, formPreset)
+    const { savePreset, saveCustomAttack } = useSavePreset(actor, formPreset)
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
             {showHeader && <Header title={"ATTACK"} />}
 
-            <div className="flex flex-col gap-y-2 p-1 border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
-
+            <div className="flex flex-col gap-y-1 p-1 border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
                 {/* EACH ATTACK CATEGORY BY USE-CASE */}
                 {WeaponSelector}
                 {CustomSkillCheckBuilder}
@@ -98,7 +97,10 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
                     {/* ATTACK BUTTON */}
                     {!setClosed && <div className="ml-auto">
                         <PrimaryButton
-                            onClick={() => HeroAttack.buildCustomAttack(actor, formPreset)}
+                            onClick={async () => {
+                                await saveCustomAttack()
+                                HeroAttack.buildCustomAttack(actor, formPreset)
+                            }}
                             icon={<Sword size={16} className="text-btn-primary-text" />}
                         >
                             {vgLiteLang.ButtonActions.attack}
