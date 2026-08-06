@@ -932,7 +932,8 @@
       "finish": "Finish",
       "addEffect": "Add Effect",
       "effects": "Active Effects",
-      "checkout": "Checkout"
+      "checkout": "Checkout",
+      "attack": "Attack"
     },
     "Effects": {
       "title": "Active Effects",

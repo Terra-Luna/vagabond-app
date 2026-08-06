@@ -1,4 +1,4 @@
-import { Save } from "lucide-react"
+import { Save, Sword } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
@@ -13,6 +13,7 @@ import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOpti
 import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
 import { AttackPreset } from "./AttackBuilderApp"
 import { vgLiteLang } from "../../utils/lang"
+import { HeroAttack } from "../../combat/engine/HeroAttack"
 
 export const AttackBuilderView = ({ actor, preset, setClosed }: {
     actor: Actor & { system: HeroDataModel },
@@ -54,7 +55,7 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: {
         }
     }, [])
 
-    const newPreset = useMemo((): AttackPreset => {
+    const formPreset = useMemo((): AttackPreset => {
         return {
             title: weapon?.name ?? '',
             description: description,
@@ -74,7 +75,7 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: {
         damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
-    const { savePreset } = useSavePreset(actor, newPreset)
+    const { savePreset } = useSavePreset(actor, formPreset)
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
@@ -87,17 +88,31 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: {
                 {CustomDamageRollBuilder}
                 {CustomDamageModifiersBuilder}
 
-                {/* SAVE & CANCEL */}
-                {setClosed && <div className="flex w-full justify-between">
-                    <DestructiveButton onClick={setClosed}>
-                        {vgLiteLang.ButtonActions.cancel}
-                    </DestructiveButton>
-                    <PrimaryButton onClick={() => savePreset(setClosed)} icon={<Save size={16} className="text-btn-primary-text" />}>
-                        {vgLiteLang.ButtonActions.save}
-                    </PrimaryButton>
-                </div>}
 
-                {}
+                <div className="flex w-full justify-between">
+                    {/* SAVE & CANCEL */}
+                    {setClosed && <>
+                        <DestructiveButton onClick={setClosed}>
+                            {vgLiteLang.ButtonActions.cancel}
+                        </DestructiveButton>
+                        <PrimaryButton
+                            onClick={() => savePreset(setClosed)}
+                            icon={<Save size={16} className="text-btn-primary-text" />}
+                        >
+                            {vgLiteLang.ButtonActions.save}
+                        </PrimaryButton>
+                    </>}
+
+                    {/* ATTACK BUTTON */}
+                    {!setClosed && <>
+                        <PrimaryButton
+                            onClick={() => HeroAttack.buildCustomAttack(actor, formPreset)}
+                            icon={<Sword size={16} className="text-btn-primary-text" />}
+                        >
+                            {vgLiteLang.ButtonActions.attack}
+                        </PrimaryButton>
+                    </>}
+                </div>
             </div>
         </EditModeContextProvider>
     )

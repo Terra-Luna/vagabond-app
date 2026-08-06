@@ -21,13 +21,13 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
                 ]}
             />}
             contents={<>
-                <SkillCheckDiceComponent d20={result.d20} d6={result.d6} favHinder={result.favorHinder} />
+                <SkillCheckDiceComponent d20={result.d20} d6={result.d6} modifier={result.modifier} favHinder={result.favorHinder} />
             </>}
         />
     )
 }
 
-export const SkillCheckDiceComponent = ({ d20, d6, favHinder }) => {
+export const SkillCheckDiceComponent = ({ d20, d6, modifier, favHinder }) => {
     return (
         <div className="flex mt-2 justify-center">
             <DiceRollComponent faces={20} result={d20} textSize="text-5xl" />
@@ -41,6 +41,16 @@ export const SkillCheckDiceComponent = ({ d20, d6, favHinder }) => {
                     <div className="h-full content-center">
                         <DiceRollComponent faces={6} result={d6} textSize="text-4xl" />
                     </div>
+                </div>
+            }
+            {modifier !== 0 &&
+                <div className="flex items-center">
+                    <div className="h-full content-center">{
+                        modifier > 0 ?
+                            <Plus size={24} strokeWidth={4} /> :
+                            <Minus size={24} strokeWidth={4} />
+                    }</div>
+                    <p className="text-4xl">{modifier}</p>
                 </div>
             }
         </div>

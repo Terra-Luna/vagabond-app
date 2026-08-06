@@ -221,6 +221,7 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                         <SkillCheckDiceComponent
                             d20={attack.skillCheck?.result?.d20}
                             d6={attack.skillCheck?.result?.d6}
+                            modifier={attack.skillCheck?.modifier}
                             favHinder={attack.skillCheck?.favorHinder}
                         />
 
