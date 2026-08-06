@@ -98,7 +98,7 @@ export class HeroAttack extends Attack {
         }
 
         if (this.isEligibleForDmgRoll) {
-            await this.rollDamage()
+            await this.rollDamage(this.skillCheck?.result?.outcome === vgLiteLang.RollResult.crit)
         }
 
         await this.save(serializeAttack)
@@ -363,11 +363,11 @@ export class HeroAttack extends Attack {
 
             const dieSizeMod = isHealing
                 ? hero.modifiers.dice.size.spellHealing ?? 0
-                : hero.modifiers.dice.size.spellDamage ?? 0
+                : hero.modifiers.dice.size.spell ?? 0
 
             const explosionsMod = isHealing
                 ? hero.modifiers.dice.exploding.spellHealing
-                : hero.modifiers.dice.exploding.spellDamage
+                : hero.modifiers.dice.exploding.spell
 
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,

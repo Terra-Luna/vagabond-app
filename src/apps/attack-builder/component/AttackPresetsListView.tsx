@@ -22,9 +22,7 @@ export const AttackPresetsListView = ({ actor }: { actor: Actor & { system: Hero
                     {presets.map((preset, index) => (
                         <div key={index} className="w-full even:bg-table-row-even/50 odd:bg-table-row-odd/50">
                             <AttackPresetRow
-                                actor={actor}
-                                key={index}
-                                preset={preset}
+                                actor={actor} preset={preset}
                                 EditButton={<EditButton onEdit={() => editPreset(preset)} />}
                                 TrashButton={<TrashButton onDelete={() => deletePreset(index)} />}
                             />

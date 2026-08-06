@@ -28,7 +28,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
 
     const { WeaponSelector, weapon, description, setWeapon, setDescription } = useWeaponSelector(weapons)
     const { CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold, setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold } = useCustomSkillCheckBuilder(actor, weapon)
-    const { CustomDamageRollBuilder, damageRolls, setDamageRolls } = useCustomDamageRollBuilder(weapon, preset)
+    const { CustomDamageRollBuilder, damageRolls, setDamageRolls } = useCustomDamageRollBuilder(actor, weapon, preset)
     const { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing, setFlatModifier, setPerDieBonus, setArmorPiercing } = useCustomDamageModifiersBuilder()
 
     useEffect(() => {
@@ -112,7 +112,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
 
                     {/* ATTACK BUTTON */}
                     {!setClosed && <div className="flex gap-x-1 ml-auto">
-                        <SecondaryButton onClick={reset}> {vgLiteLang.ButtonActions.reset}</SecondaryButton>
+                        <SecondaryButton onClick={reset}>{vgLiteLang.ButtonActions.reset}</SecondaryButton>
 
                         <PrimaryButton onClick={async () => {
                             await saveCustomAttack()

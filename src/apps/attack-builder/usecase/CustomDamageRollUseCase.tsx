@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react"
 import { DiceRollSchema } from "../../../combat/engine/DiceRoll"
-import { DiceInputComponent } from "../../../combat/ui/DiceInputComponent"
+import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { SecondaryButton } from "../../../view/component/Button"
@@ -8,19 +8,46 @@ import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
 import { AttackPreset } from "../AttackBuilderApp"
 import { Plus } from "lucide-react"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 
-export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel }) | undefined, preset?: AttackPreset) => {
+export const useCustomDamageRollBuilder = (
+    actor: Actor & { system: HeroDataModel },
+    weapon: (Item & { system: WeaponDataModel }) | undefined,
+    preset?: AttackPreset
+) => {
+
     const [damageRolls, setDamageRolls] = useState<DiceRollSchema[]>([])
     const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
 
     useEffect(() => {
         if (!weapon) return
 
+        const isRangedWeapon = weapon.system.skills.includes('ranged')
+        const mods = actor.system.modifiers
+        const dieSizeMod = isRangedWeapon
+            ? mods.dice.size.ranged
+            : mods.dice.size.melee
+
+        const dieSize = weapon.system.damage.dice.faces + (dieSizeMod ?? 0)
+
+        const explMod = isRangedWeapon
+            ? mods.dice.exploding.ranged || mods.dice.exploding.rangedCrit
+            : mods.dice.exploding.melee || mods.dice.exploding.meleeCrit
+
+        const explodesOn = explMod
+            ? [...new Set([...(weapon.system.damage.dice.explodesOn as number[] || []), dieSize])].sort((a, b) => a - b)
+            : weapon.system.damage.dice.explodesOn as number[]
+
+        const critOnly = isRangedWeapon
+            ? mods.dice.exploding.rangedCrit && !mods.dice.exploding.ranged
+            : mods.dice.exploding.meleeCrit && !mods.dice.exploding.melee
+
         const schema = {
             count: weapon.system.damage.dice.count,
-            faces: weapon.system.damage.dice.faces,
+            faces: dieSize,
             modifier: weapon.system.damage.dice.modifier,
-            explodesOn: weapon.system.damage.dice.explodesOn as number[]
+            explodesOn: explodesOn,
+            explodeOnCritOnly: critOnly
         }
 
         if (damageRolls.length === 0) {
@@ -61,14 +88,13 @@ export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataM
             <div className="flex items-end w-full">
                 <div className="flex flex-col gap-y-2 items-end">
                     {damageRolls.length > 0 && damageRolls.map((roll, index) => (
-                        <div key={index} className="flex gap-x-1 items-end">
-                            <DiceInputComponent
+                        < div key={index} className="flex gap-x-1 items-center" >
+                            <DiceRollInputComponent
                                 diceRoll={roll}
                                 onChange={(updated) => handleDiceChange(updated, index)}
+                                extendedSettings={true}
+                                TrashButton={<TrashButton onDelete={() => removeRoll(index)} />}
                             />
-                            <div className="pb-0.5">
-                                <TrashButton onDelete={() => removeRoll(index)} />
-                            </div>
                         </div>
                     ))}
                 </div>

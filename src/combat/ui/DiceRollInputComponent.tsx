@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import { ReactNode, useCallback } from "react"
 import { DiceCountInput } from "../../view/sheets/actor/hero/tab/component/spellcasting/DiceCountInput"
 import { DiceRoll, DiceRollSchema } from "../engine/DiceRoll"
 import { CustomDropDown } from "../../view/component/Dropdown"
@@ -8,13 +8,16 @@ import { ItemSheetPropLabel } from "../../view/sheets/item/equip/component/ItemS
 import { vgLiteLang } from "../../utils/lang"
 import { CSVTextInput } from "../../view/component/CSVTextInput"
 import { Plus } from "lucide-react"
+import { Checkbox } from "../../view/component/Checkbox"
 
-export const DiceInputComponent = ({ label, diceRoll, onChange, wrap = false, editModeOverride = false }: {
+export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false, editModeOverride = false, extendedSettings, TrashButton }: {
     label?: string,
     diceRoll: DiceRoll | DiceRollSchema,
     onChange: (updatedFields: Partial<DiceRoll>) => void,
     wrap?: boolean,
-    editModeOverride?: boolean
+    editModeOverride?: boolean,
+    extendedSettings?: boolean,
+    TrashButton?: ReactNode
 }) => {
     const { isEditMode } = useEditMode()
 
@@ -32,6 +35,14 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, wrap = false, ed
 
     const handleExplosionChange = useCallback((numbers: number[]) => {
         onChange({ explodesOn: numbers })
+    }, [])
+
+    const handleExtraDieOnCritChange = useCallback((isChecked: boolean) => {
+        onChange({ extraDieOnCrit: isChecked })
+    }, [])
+
+    const handleExplodeOnCritOnlyChange = useCallback((isChecked: boolean) => {
+        onChange({ explodeOnCritOnly: isChecked })
     }, [])
 
     const explosionValues = (diceRoll.explodesOn || []).map(Number).filter(n => !isNaN(n))
@@ -79,11 +90,28 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, wrap = false, ed
 
                         {/* EXPLOSIONS CONFIG */}
                         {!wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
+                        <div>{TrashButton}</div>
 
                     </div>
 
                     {/* EXPLOSIONS CONFIG */}
                     {wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
+
+                    {/* ON-CRIT SETTINGS */}
+                    {extendedSettings &&
+                        <div className="flex gap-x-8 justify-between items-center text-sm font-normal mt-0.5 pr-6">
+                            <div className="flex gap-x-1">
+                                <Checkbox label="" checked={diceRoll.extraDieOnCrit ?? false} onCheckedChanged={handleExtraDieOnCritChange} />
+                                <p>{vgLiteLang.ItemSheet.extraDieOnCrit}</p>
+                            </div>
+
+                            {explosionValues.length > 0 && <div className="flex gap-x-1">
+                                <Checkbox label="" checked={diceRoll.explodeOnCritOnly ?? false} onCheckedChanged={handleExplodeOnCritOnlyChange} />
+                                <p>{vgLiteLang.ItemSheet.explodeOnCritOnly}</p>
+                            </div>}
+                        </div>
+                    }
+
                 </div>
             }
 
@@ -113,8 +141,8 @@ export const DiceInputComponent = ({ label, diceRoll, onChange, wrap = false, ed
 
 const ExplosionsInput = ({ explosionValues, handleExplosionChange }) => {
     return (
-        <div className="items-end">
-            <p className="text-sm font-normal">{vgLiteLang.ItemSheet.explodesOn}</p>
+        <div className="flex items-center">
+            <p className="text-sm font-normal">💥</p>
             <CSVTextInput
                 value={explosionValues}
                 onChange={handleExplosionChange}

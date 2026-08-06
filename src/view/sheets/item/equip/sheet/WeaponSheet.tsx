@@ -5,7 +5,7 @@ import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../componen
 import { MaterialSelection } from "../component/MaterialSelectionComponent"
 import { ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
-import { DiceInputComponent } from "../../../../../combat/ui/DiceInputComponent"
+import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { DiceRoll } from "../../../../../combat/engine/DiceRoll"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
@@ -27,7 +27,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 <Properties item={item} />
                 <Range item={item} />
                 <Grip item={item} />
-                <DiceInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} wrap={true} />
+                <DiceRollInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} wrap={true} />
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <MaterialSelection item={item} />
             </div>

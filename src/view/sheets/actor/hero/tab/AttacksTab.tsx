@@ -14,7 +14,7 @@ export const AttacksTab = ({ actor }: { actor: Actor & { system: HeroDataModel }
         <div>
             <AttackPresetsListView actor={actor} />
             <div className="mt-1" />
-            <CollapsibleSection title={"CUSTOM ATTACK"} startCollapsed={false} content={
+            <CollapsibleSection title={"QUICK ROLL"} startCollapsed={false} content={
                 <AttackBuilderView actor={actor} preset={customAttack} showHeader={false} />
             } />
             <div className="mt-8" />

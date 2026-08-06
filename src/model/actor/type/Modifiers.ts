@@ -27,13 +27,18 @@ export const modifierSchema = () => {
 
         dice: new fields.SchemaField({
             size: new fields.SchemaField({
-                attackDamage: new fields.NumberField({ ...uncappedInteger }),
-                spellDamage: new fields.NumberField({ ...uncappedInteger }),
+                melee: new fields.NumberField({ ...uncappedInteger }),
+                ranged: new fields.NumberField({ ...uncappedInteger }),
+                spell: new fields.NumberField({ ...uncappedInteger }),
                 spellHealing: new fields.NumberField({ ...uncappedInteger })
             }),
             exploding: new fields.SchemaField({
-                attackMaxOverride: new fields.BooleanField({ initial: false }),
-                spellDamage: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
+                melee: new fields.BooleanField({ initial: false }),
+                meleeCrit: new fields.BooleanField({ initial: false }),
+                ranged: new fields.BooleanField({ initial: false }),
+                rangedCrit: new fields.BooleanField({ initial: false }),
+                spellCrit: new fields.BooleanField({ initial: false }),
+                spell: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] }),
                 spellHealing: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
             }),
             crit: new fields.SchemaField({

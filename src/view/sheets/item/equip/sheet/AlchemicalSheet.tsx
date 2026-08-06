@@ -5,7 +5,7 @@ import { vgLiteLang } from "../../../../../utils/lang"
 import { ConsumableToggle } from "../component/ConsumableItemToggleComponent"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
-import { DiceInputComponent } from "../../../../../combat/ui/DiceInputComponent"
+import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { useCallback } from "react"
 import { DiceRoll } from "../../../../../combat/engine/DiceRoll"
 
@@ -21,7 +21,7 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
     return (
         <EquipmentSheetSubtypeBody>
             <div className="grid grid-cols-2 gap-x-8 gap-y-4 items-start">
-                <DiceInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
+                <DiceRollInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <ConsumableToggle item={item} />
                 <AlechemyCategory item={item} />

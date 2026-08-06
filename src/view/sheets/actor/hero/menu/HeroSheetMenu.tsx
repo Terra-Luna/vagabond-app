@@ -70,7 +70,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                         <MenuListItem text={"CREATE"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
                     <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => new ActiveEffectsApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'FEATURES & PERKS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

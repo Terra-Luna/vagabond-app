@@ -71,13 +71,16 @@ export class DamageRoll {
         }
     }
 
-    async roll(): Promise<DamageRollResult> {
-        const damageRoll = await new Roll(`${this.dice.map(d => d.toRollFormula()).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
+    async roll(isCrit?: boolean): Promise<DamageRollResult> {
+        const damageRoll = await new Roll(`${this.dice.map(d => d.toRollFormula(isCrit)).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
         const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
 
+        console.log(isCrit, this.dice)
+
         let canExplode = false
-        for (const d of this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0)) {
+        for (const d of this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0 && (isCrit && d.explodeOnCritOnly || !d.explodeOnCritOnly))) {
+            console.log(d.explodesOn, d.explodeOnCritOnly, isCrit)
             if (this.isSafeToExplode(d.faces, d.explodesOn!)) {
                 canExplode = true
                 await this.processExplosions(
@@ -99,7 +102,7 @@ export class DamageRoll {
             dmgType: this.dmgType,
             total: damageRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
             bonus: totalBonus,
-            rollSummaries: RollSummary.buildRollSummaries(damageRollTerms, explosionTerms, this.dice),
+            rollSummaries: RollSummary.buildRollSummaries(damageRollTerms, explosionTerms, this.dice, isCrit),
             rolls: [damageRoll]
         } as DamageRollResult
 

@@ -44,7 +44,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
 
             {/* HEADER AND LEVEL PILL */}
             <div className="flex justify-between items-center">
-                <HeroCreationLabel text={"FEATURES & PERKS"} />
+                <HeroCreationLabel text={"GRANTS & MODIFIERS"} />
                 <span className="text-sm text-text-header-tertiary bg-sheet-main-fill px-2 py-0.5 rounded-sm border border-solid border-table-border/50">
                     Level {currentLevel}
                 </span>
@@ -60,9 +60,9 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                 </EffectCardContainer>
             } />
 
-            {/* LOCKED FEATURES & PERKS */}
+            {/* LOCKED GRANGS & MODIFIERS */}
             {lockedRules.length > 0 && (
-                <CollapsibleSection title={`Locked Features & Perks (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
+                <CollapsibleSection title={`Locked Grangs & Modifiers (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
                     <EffectCardContainer>
                         {lockedRules.map(rule => (
                             <ActiveEffectCardRow key={rule.id} rule={rule} isActive={false} />

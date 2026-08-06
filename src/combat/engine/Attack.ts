@@ -33,9 +33,9 @@ export abstract class Attack {
         return (this.damageRoll?.result?.total ?? 0) > 0
     }
 
-    async rollDamage() {
+    async rollDamage(isCrit?: boolean) {
         if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
-            await this.damageRoll.roll()
+            await this.damageRoll.roll(isCrit)
             roll3dDice(this.damageRoll?.result?.rolls ?? [])
         }
     }
