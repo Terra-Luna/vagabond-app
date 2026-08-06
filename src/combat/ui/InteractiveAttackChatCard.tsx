@@ -73,7 +73,6 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
     const source = useMemo<Item | undefined>(() => {
         if (attack instanceof HeroAttack && attack.itemId) {
-            console.log(attack.itemId)
             const item =
                 actor?.items?.contents?.find(it => it.id === attack.itemId) ??
                 ItemsCache.allItems().find(it => it.uuid === attack.itemId)

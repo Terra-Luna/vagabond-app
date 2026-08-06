@@ -14,7 +14,11 @@ import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
 import { AttackPreset } from "./AttackBuilderApp"
 import { vgLiteLang } from "../../utils/lang"
 
-export const AttackBuilderView = ({ actor, preset, setClosed }: { actor: Actor & { system: HeroDataModel }, preset?: AttackPreset, setClosed: () => void }) => {
+export const AttackBuilderView = ({ actor, preset, setClosed }: {
+    actor: Actor & { system: HeroDataModel },
+    preset?: AttackPreset,
+    setClosed?: () => void
+}) => {
 
     const weapons = useMemo((): (Item & { system: WeaponDataModel })[] => {
         return actor.items.filter(i => (i.type as string) === 'weapon' && isEquippedWeapon(i.system)) as any
@@ -84,14 +88,16 @@ export const AttackBuilderView = ({ actor, preset, setClosed }: { actor: Actor &
                 {CustomDamageModifiersBuilder}
 
                 {/* SAVE & CANCEL */}
-                <div className="flex w-full justify-between">
+                {setClosed && <div className="flex w-full justify-between">
                     <DestructiveButton onClick={setClosed}>
                         {vgLiteLang.ButtonActions.cancel}
                     </DestructiveButton>
                     <PrimaryButton onClick={() => savePreset(setClosed)} icon={<Save size={16} className="text-btn-primary-text" />}>
                         {vgLiteLang.ButtonActions.save}
                     </PrimaryButton>
-                </div>
+                </div>}
+
+                {}
             </div>
         </EditModeContextProvider>
     )

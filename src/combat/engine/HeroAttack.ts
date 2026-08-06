@@ -13,6 +13,7 @@ import { DamageRoll } from "./DamageRoll"
 import { getTargetIds } from "../../utils/modelUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { DiceRoll } from "./DiceRoll"
+import { AttackPreset } from "../../apps/attack-builder/AttackBuilderApp"
 
 export class HeroAttack extends Attack {
 
@@ -396,6 +397,35 @@ export class HeroAttack extends Attack {
         attack.skipSkillCheck = delivery instanceof Imbue
 
         return attack
+    }
+
+    static buildCustomAttack(actor: Actor & { system: HeroDataModel }, preset: AttackPreset) {
+        if (!preset.weaponId || !preset.skill || !preset.damageRolls) return
+        const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
+
+        if (!weapon) return
+
+        const skillCheck = new SkillCheck(actor.system, {
+            skill: preset.skill,
+            d20Count: preset.d20Count,
+            modifier: preset.skillCheckMod,
+            critThreshold: preset.critThreshold,
+            favorHinder: preset.favorHinder
+        })
+
+        const damageRoll = new DamageRoll({
+            atkName: (weapon.name ?? '') + ": " + preset.description,
+            dice: preset.damageRolls.map(rollSchema => new DiceRoll(rollSchema)),
+            dmgType: weapon.system.damage.type,
+            flatDmgBonus: preset.flatModifier,
+            perDieDmgBonus: preset.perDieBonus,
+            armorPiercing: preset.armorPiercing
+        })
+
+        const attack = new HeroAttack(weapon.name, actor, getTargetIds(), skillCheck, damageRoll)
+        attack.itemId = weapon.id ?? ''
+        attack.skipSkillCheck = preset.skill === '-'
+        attack.initiate()
     }
 
     static getHighestDefaultWeaponSkill(hero: HeroDataModel, weapon: WeaponDataModel): { skill: string, value: number } {
