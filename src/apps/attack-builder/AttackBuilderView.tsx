@@ -1,7 +1,7 @@
 import { Save, Sword } from "lucide-react"
-import { useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
+import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Header } from "../../view/component/Header"
 import { useWeaponSelector } from "./usecase/WeaponSelectorUseCase"
 import { useCustomSkillCheckBuilder } from "./usecase/CustomSkillCheckUseCase"
@@ -33,7 +33,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
 
     useEffect(() => {
         if (preset) {
-            setWeapon(weapons.find(w => w.id === preset.weaponId))
+            setWeapon(weapons.find(w => w.id === preset?.weaponId))
             setDescription(preset.description)
             setSkill(preset.skill)
             setD20Count(preset.d20Count)
@@ -45,7 +45,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
             setPerDieBonus(preset.perDieBonus)
             setArmorPiercing(preset.armorPiercing)
         }
-    }, [])
+    }, [preset])
 
     const formPreset = useMemo((): AttackPreset => {
         return {
@@ -67,6 +67,21 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
+    const reset = useCallback(() => {
+        preset = undefined
+        setDamageRolls([])
+        setDescription('')
+        setSkill("")
+        setD20Count(1)
+        setFavorHinder('none')
+        setSkillCheckMod(0)
+        setCritThreshold(20)
+        setFlatModifier(0)
+        setPerDieBonus(0)
+        setArmorPiercing(0)
+        setWeapon(undefined)
+    }, [preset])
+
     const { savePreset, saveCustomAttack } = useSavePreset(actor, formPreset)
 
     return (
@@ -86,23 +101,24 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
                         <DestructiveButton onClick={setClosed}>
                             {vgLiteLang.ButtonActions.cancel}
                         </DestructiveButton>
-                        <PrimaryButton
-                            onClick={() => savePreset(setClosed)}
-                            icon={<Save size={16} className="text-btn-primary-text" />}
-                        >
-                            {vgLiteLang.ButtonActions.save}
-                        </PrimaryButton>
+
+                        <div className="flex gap-x-1">
+                            <SecondaryButton onClick={reset}>{vgLiteLang.ButtonActions.reset}</SecondaryButton>
+                            <PrimaryButton onClick={() => savePreset(setClosed)} icon={<Save size={16} className="text-btn-primary-text" />}>
+                                {vgLiteLang.ButtonActions.save}
+                            </PrimaryButton>
+                        </div>
                     </>}
 
                     {/* ATTACK BUTTON */}
-                    {!setClosed && <div className="ml-auto">
-                        <PrimaryButton
-                            onClick={async () => {
-                                await saveCustomAttack()
-                                HeroAttack.buildCustomAttack(actor, formPreset)
-                            }}
-                            icon={<Sword size={16} className="text-btn-primary-text" />}
-                        >
+                    {!setClosed && <div className="flex gap-x-1 ml-auto">
+                        <SecondaryButton onClick={reset}> {vgLiteLang.ButtonActions.reset}</SecondaryButton>
+
+                        <PrimaryButton onClick={async () => {
+                            await saveCustomAttack()
+                            HeroAttack.buildCustomAttack(actor, formPreset)
+                        }}
+                            icon={<Sword size={16} className="text-btn-primary-text" />}>
                             {vgLiteLang.ButtonActions.attack}
                         </PrimaryButton>
                     </div>}

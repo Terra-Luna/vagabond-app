@@ -18,7 +18,10 @@ export const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[
             <div className="flex gap-x-0.5 items-end">
                 <CustomDropDown
                     value={weapon?.uuid ?? ''}
-                    options={weapons?.map(w => ({ value: w.uuid, label: w.name }))}
+                    options={[
+                        { value: '', label: "-" },
+                        ...weapons?.map(w => ({ value: w.uuid, label: w.name })) ?? []
+                    ]}
                     onChange={(e) => setWeapon(weapons.find(w => w.uuid === e.target.value))}
                     className="text-sm"
                 />

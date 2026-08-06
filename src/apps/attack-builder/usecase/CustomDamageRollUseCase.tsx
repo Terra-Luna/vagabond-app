@@ -11,9 +11,10 @@ import { Plus } from "lucide-react"
 
 export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataModel }) | undefined, preset?: AttackPreset) => {
     const [damageRolls, setDamageRolls] = useState<DiceRollSchema[]>([])
+    const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
 
     useEffect(() => {
-        if (!weapon || preset) return
+        if (!weapon) return
 
         const schema = {
             count: weapon.system.damage.dice.count,
@@ -26,6 +27,10 @@ export const useCustomDamageRollBuilder = (weapon: (Item & { system: WeaponDataM
             setDamageRolls([schema])
         }
         else {
+            if (preset && isInitialLoad) {
+                setIsInitialLoad(false)
+                return
+            }
             const rolls = [...damageRolls]
             rolls[0] = schema
             setDamageRolls(rolls)

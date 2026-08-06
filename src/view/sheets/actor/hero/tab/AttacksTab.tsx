@@ -6,7 +6,7 @@ import { useMemo } from "react"
 import { AttackPreset } from "../../../../../apps/attack-builder/AttackBuilderApp"
 
 export const AttacksTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
-    const quickAttack = useMemo(() => {
+    const customAttack = useMemo(() => {
         return actor.getFlag("vagabond-lite" as any, "customAttack") as AttackPreset | undefined
     }, [actor])
 
@@ -15,7 +15,7 @@ export const AttacksTab = ({ actor }: { actor: Actor & { system: HeroDataModel }
             <AttackPresetsListView actor={actor} />
             <div className="mt-1" />
             <CollapsibleSection title={"CUSTOM ATTACK"} startCollapsed={false} content={
-                <AttackBuilderView actor={actor} preset={quickAttack} showHeader={false} />
+                <AttackBuilderView actor={actor} preset={customAttack} showHeader={false} />
             } />
             <div className="mt-8" />
         </div>

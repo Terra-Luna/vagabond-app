@@ -914,6 +914,7 @@
     "ButtonActions": {
       "save": "Save",
       "edit": "Edit",
+      "reset": "Reset",
       "remove": "Remove",
       "delete": "Delete",
       "cancel": "Cancel",

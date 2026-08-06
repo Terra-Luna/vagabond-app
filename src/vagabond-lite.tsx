@@ -34,6 +34,8 @@ import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
 import { XpQuestionnaireConfigApp } from "./apps/level-up/questionnaire/XpQuestionnaireConfigApp"
 import { Attack } from "./combat/engine/Attack"
+import { PrimaryButton } from "./view/component/Button"
+import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
 
 // Add our fonts
 const fontFaces = [
@@ -153,6 +155,8 @@ Hooks.once("ready", async () => {
             actor.sheet?.render(false)
         }
     })
+
+    VagabondToolsApp.renderCanvasButton()
 })
 
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {
