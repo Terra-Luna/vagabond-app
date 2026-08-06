@@ -12,38 +12,60 @@ import { EditModeContextProvider } from "../../view/context/EditModeContext/Edit
 import { EmotionCacheContext } from "../../view/context/EmotionCacheContext"
 import { CombatTracker } from "./CombatTracker"
 import { createContext, useContext } from "react"
+import { CombatGroup } from "../../model/combat/VgLiteCombatant"
 
-export const renderCombatTracker = (app, html, data) => {
-    const rootDiv = $(html).find("#vglite-root")[0]
+export class VgLiteCombatTracker extends foundry.applications.sidebar.tabs.CombatTracker {
+    htmlRoot?: HTMLElement
+    scaduRoot?: ShadowRoot
+    reactRoot?: ReactDom.Root
 
-    const scaduRoot = rootDiv.attachShadow({ mode: 'open' })
-    const reactRoot = ReactDom.createRoot(scaduRoot)
+    /**
+     * This is the only function we need to override. The CombatTracker renders 3 different parts - the header, tracker (main content, what we care about), and footer
+     * What usually happens is that every time this is called, result.tracker will be the result of calling our handlebars template on the combat data
+     * Since that's always the same, we can intercept all renders after the first, and just return our existing react root, so that it updates appropriately (and doesn't flash)
+     */
+    protected _replaceHTML(result: { tracker: HTMLElement }, content, options): void {
+        if (options.isFirstRender && result.tracker) {
+            this.htmlRoot = result.tracker
+            this.scaduRoot = this.htmlRoot.attachShadow({ mode: 'open' })
+            this.reactRoot = ReactDom.createRoot(this.scaduRoot!)
+        } else {
+            result.tracker = this.htmlRoot!
+        }
 
-    const theme = getTheme()
+        const combat = game.combat
 
-    const { combat } = data
+        const activeCombatantId = combat?.current?.combatantId
 
-    const activeCombatantId = combat?.current?.combatantId
+        const theme = getTheme()
 
-    reactRoot.render(
-        <EditModeContextProvider>
-            <CombatContext.Provider value={{ activeCombatantId, activeGroup: null, combatTracker: app }}>
-                <EmotionCacheContext scaduRoot={scaduRoot}>
-                    <style>{vgLiteStyles} </style>
-                    <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col rounded-b-lg`}>
-                        <CombatTracker data={data} />
-                    </div>
-                </EmotionCacheContext>
-            </CombatContext.Provider>
-        </EditModeContextProvider>
-    );
+        this.reactRoot?.render(
+            <EditModeContextProvider>
+                <CombatContext.Provider value={{ activeCombatantId: activeCombatantId, activeGroup: null, combatTracker: this }}>
+                    <EmotionCacheContext scaduRoot={this.scaduRoot}>
+                        <style>{vgLiteStyles}</style>
+                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col h-full`}>
+                            <CombatTracker combat={combat} />
+                        </div>
+                    </EmotionCacheContext>
+                </CombatContext.Provider>
+            </EditModeContextProvider>
+        );
+
+        super._replaceHTML(result, content, options)
+    }
 }
 
 interface CombatTracker {
     hoverCombatant: (combatant: any, hovered: boolean) => void;
 }
 
-const CombatContext = createContext({ activeCombatantId: null, activeGroup: null, combatTracker: {} as CombatTracker })
+interface CombatContextProps {
+    activeCombatantId?: string | null;
+    activeGroup?: CombatGroup | null;
+    combatTracker?: CombatTracker;
+}
+const CombatContext = createContext<CombatContextProps>({ activeCombatantId: null, activeGroup: null, combatTracker: {} as CombatTracker })
 
 export const useIsCurrentCombatant = (combatant) => {
     const { activeCombatantId } = useContext(CombatContext)

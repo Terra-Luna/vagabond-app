@@ -26,7 +26,7 @@ import { getFullItem, getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
-import { renderCombatTracker } from "./combat/ui/vglite-combat-tracker"
+import { VgLiteCombatTracker } from "./combat/ui/vglite-combat-tracker"
 import { VgLiteActor } from "./model/actor/VgLiteActor"
 import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
 import { vgLiteLang } from "./utils/lang"
@@ -88,7 +88,8 @@ Hooks.once("init", () => {
         CONFIG.Combatant.dataModels.base = VGLiteCombatantModel,
         CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
         CONFIG.statusEffects = VgLiteActiveEffect.statusEffects as any,
-        CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any }
+        CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any },
+        CONFIG.ui.combat = VgLiteCombatTracker
     )
 
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
@@ -304,20 +305,6 @@ Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, u
         if (cacheChanged) {
             ItemsCache.refreshAllActors()
         }
-    }
-})
-
-Hooks.on("renderCombatTracker", (app, html, data) => {
-    const hasActiveScene = !!game.scenes?.active
-    const canvasIsInitialized = !!(canvas && canvas.initialized)
-
-    if (!hasActiveScene || canvasIsInitialized) {
-        renderCombatTracker(app, html, data);
-    }
-    else {
-        Hooks.once("tokensReady" as any, () => {
-            renderCombatTracker(app, html, data)
-        })
     }
 })
 

@@ -49,8 +49,7 @@ const getCombatantsBetweenIndices = (idx1, idx2) => {
     return sortedCombatants.slice(Math.min(idx1, idx2), Math.max(idx1, idx2) + 1)
 }
 
-export const CombatTracker = ({ data }) => {
-    const { combat } = data
+export const CombatTracker = ({ combat }) => {
     const combatants = combat?.combatants?.contents
 
     const [lastClickedCombatants, setlastClickedCombatants] = useState([])
