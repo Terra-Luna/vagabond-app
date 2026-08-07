@@ -5,8 +5,9 @@ import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { PerkSelectionView } from "../hero-choices/PerkSelectionView"
 import { SpellSelectionView } from "../hero-choices/SpellSelectionView"
-import { Divider } from "../../view/component/Header"
+import { Divider, Header } from "../../view/component/Header"
 import { useMemo } from "react"
+import { SkillCard } from "../../view/component/SkillCard"
 
 export const LevelUpView = ({ actor, onSave }: {
     actor: Actor & { system: HeroDataModel },
@@ -14,6 +15,7 @@ export const LevelUpView = ({ actor, onSave }: {
 }) => {
 
     const nextLevel = actor.system.level.current! + 1
+    const classFeature = actor.system.class.features.find(it => it.level === nextLevel)
     const levelUpChoices = getItemChoiceRules(actor.system.class.rules).filter(r => r.level === nextLevel)
     
     const handleSubmit = async (e: React.FormEvent) => {
@@ -21,14 +23,23 @@ export const LevelUpView = ({ actor, onSave }: {
         onSave(true)
     }
 
-    const perkSelections = useMemo(() => {
-        return actor.system.class.rules.filter(it => it.key === "ChoiceSet" && it.pack === 'perk').flatMap(it => it.selections)
-    }, [actor.system.class.rules])
-
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col grow h-full overflow-y-auto bg-sheet-main-fill">
+        <form onSubmit={handleSubmit} className="flex flex-col grow h-full overflow-y-auto bg-sheet-main-fill p-2">
+
+            {classFeature &&
+                <div className="space-y-1">
+                    <Header title={"CLASS FEATURE"} />
+                    <SkillCard
+                        title={classFeature.name}
+                        subtitles={[{ label: "Level", value: classFeature.level }]}
+                        description={classFeature.description}
+                        startCollapsed={false}
+                    />
+                </div>
+            }
+
             {levelUpChoices.length === 0 &&
-                <p className="flex justify-center text-xl text-text-primary text-justify font-eskapade font-normal">
+                <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
                     No selections required.
                 </p>
             }
@@ -37,15 +48,16 @@ export const LevelUpView = ({ actor, onSave }: {
                 <PerkSelectionView actor={actor} isLevelUp={true} />
             }
 
-            <Divider />
 
-            {levelUpChoices.some(ch => ch.pack === 'spell') &&
+
+            {levelUpChoices.some(ch => ch.pack === 'spell') && <>
+                <Divider />
                 <SpellSelectionView actor={actor} isLevelUp={true} />
-            }
+            </>}
 
             <Divider />
 
-            <div className="flex justify-between mt-4 pb-4 px-2">
+            <div className="flex justify-between mt-4">
                 <DestructiveButton onClick={() => onSave()}>
                     {vgLiteLang.ButtonActions.cancel}
                 </DestructiveButton>
