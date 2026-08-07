@@ -72,7 +72,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                         <EditableNameField actor={hero.parent} />
 
                         <div className="flex gap-x-2 ml-auto">
-                            {(hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < 10 &&
+                            {((hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < 10 || !hero.ancestry) &&
                                 <button
                                     title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
                                     onClick={async () => {

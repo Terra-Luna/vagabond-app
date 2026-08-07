@@ -61,7 +61,9 @@ export const LevelUpView = ({ actor, onSave }: {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const isDone = latestPerk && (!showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining)))
+        const isDone =
+            (!showPerkSelection && !showSpellSelection) ||
+            latestPerk && (!showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining)))
         if (isDone) {
             onSave({ advancement: advancement, spell: spell, perkTraining: perkTraining, isComplete: true })
         }
