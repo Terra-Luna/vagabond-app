@@ -30,7 +30,7 @@ export const CoinAppView = ({ coin, mode, setMode, onUpdateCoins, onSave, onCanc
                                     placeholder="0"
                                     type="number"
                                     onChange={(e) => {
-                                        onUpdateCoins({ ...coin, [denomination]: Number(e.target.value) })
+                                        onUpdateCoins({ ...coin, [denomination]: Math.max(0, Number(e.target.value)) })
                                     }}
                                 />
                                 <p className="text-sm text-wealth-denom-label font-bold">{vgLiteLang.HeroSheet.Currency[denomination]}</p>
