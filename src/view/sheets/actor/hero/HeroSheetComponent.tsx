@@ -19,6 +19,7 @@ import { lang } from "../../../../utils/lang"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 import { AttacksTab } from "./tab/AttacksTab"
+import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -76,7 +77,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                             <p onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</p>
                             <p onClick={() => openItemSheet(hero.class)}>{getName(hero.class) ?? "Vagabond"}</p>
                         </div>
-                        <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => { }} >
+                        <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })} >
                             {localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}
                         </div>
                     </div>

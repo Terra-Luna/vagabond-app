@@ -13,7 +13,7 @@ interface XpQuestionnaireProps {
     onSave?: (questions: XpQuestion[]) => void | Promise<void>
 }
 
-export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ initialQuestions = [], onSave, }) => {
+export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ initialQuestions = [], onSave }) => {
 
     const [questions, setQuestions] = useState<XpQuestion[]>(initialQuestions)
 

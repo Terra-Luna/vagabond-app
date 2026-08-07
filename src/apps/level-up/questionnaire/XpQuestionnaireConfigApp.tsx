@@ -15,7 +15,7 @@ export class XpQuestionnaireConfigApp extends VagabondLiteApplication {
     }
 
     override getReactProps() {
-        const currentQuestions = (game as any).settings.get("vagabond-lite", "xp-questionnaire") as XpQuestion[] || []
+        const currentQuestions = XpQuestionnaireConfigApp.getXpQuestions()
         return {
             ...super.getReactProps(),
             initialQuestions: currentQuestions,
@@ -37,5 +37,9 @@ export class XpQuestionnaireConfigApp extends VagabondLiteApplication {
             ui.notifications?.error("Failed to save changes to the database.")
         }
     }
-    
+
+    static getXpQuestions() {
+        return (game as any).settings.get("vagabond-lite", "xp-questionnaire") as XpQuestion[] || []
+    }
+
 }
