@@ -123,7 +123,7 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">Your attacks against Beings that are missing any HP are Favored, and you can sense them within Far as if by Blindsight.</span></p>"
       },
       {
-        "level": 1,
+        "level": 10,
         "name": "Rip and Tear",
         "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, you gain a +1 bonus to each die of damage you deal, and you reduce damage you take by 1 per damage die. This stacks with the benefits of Rage.</span></p>"
       }
@@ -142,7 +142,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1785904287842,
+    "modifiedTime": 1786075796314,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,

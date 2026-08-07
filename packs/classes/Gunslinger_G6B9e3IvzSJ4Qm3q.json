@@ -29,6 +29,58 @@
         "level": "1",
         "value": true,
         "selector": "skills.detect.isTrained"
+      },
+      {
+        "id": "h9MCXUEtzun0pN8h",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 3",
+        "level": "3",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "2TsT0vAw1IWIvWbF",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 5",
+        "level": "5",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "DtBEk4hJEZWJrp9R",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 7",
+        "level": "7",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
+      },
+      {
+        "id": "jbeqkvLbKrhNi7SM",
+        "key": "ChoiceSet",
+        "label": "Perk: Level 9",
+        "level": "9",
+        "value": 1,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk"
       }
     ],
     "complexity": 3,

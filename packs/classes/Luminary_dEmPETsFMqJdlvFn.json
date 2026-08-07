@@ -60,6 +60,14 @@
         "selector": "skills.influence.isTrained"
       },
       {
+        "id": "gjioL27qy0dNK5VW",
+        "key": "FlatModifier",
+        "label": "Saving Grace",
+        "level": 8,
+        "value": 2,
+        "selector": "modifiers.dice.exploding.spellHealing"
+      },
+      {
         "id": "UrAms3gxI0HbVJDH",
         "key": "ChoiceSet",
         "label": "Spell: Level 3",
@@ -223,7 +231,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1786051950415,
+    "modifiedTime": 1786134312749,
     "lastModifiedBy": "OEIcVuCsythiHjRt",
     "compendiumSource": null,
     "duplicateSource": null,
