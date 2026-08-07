@@ -62,16 +62,21 @@ export class LevelUpApp extends VagabondLiteApplication {
                 )
 
                 if (args.advancement) {
-                    console.log([...slots.filter(s => s.ruleId === args.advancement?.ruleId), args.advancement])
-                    savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.advancement?.ruleId), args.advancement])
+                    await savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.advancement?.ruleId), args.advancement])
                 }
                 if (args.perkTraining) {
-                    savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.perkTraining?.ruleId), args.perkTraining])
+                    await savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.perkTraining?.ruleId), args.perkTraining])
                 }
                 if (args.spell) {
-                    savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.spell?.ruleId), args.spell])
+                    await savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.spell?.ruleId), args.spell])
                 }
             }
+
+            await this.actor.update({
+                'system.health.current': this.actor.system.health.max,
+                'system.mana.current': this.actor.system.mana.max,
+                'system.statuses.counters.luck': this.actor.system.stats.luck
+            } as Record<any, any>)
         }
         this.close()
     }

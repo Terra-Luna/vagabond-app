@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useEffect, useState } from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
@@ -84,10 +84,14 @@ export const useSpellSelection = (
         )
     }, [])
 
+    const isAllSelected = useMemo(() => {
+        return ![...classSpellSlots, ...ancestrySpellSlots].some(slot => slot.value.length === 0)
+    }, [classSpellSlots, ancestrySpellSlots])
+
     const SpellSelection = <div className="p2">
         <div className="bg-sheet-main-fill space-y-4 text-center items-center">
             <Header title={strings.spellsHeader} />
-            <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} />
+            <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} canProceed={isAllSelected} />
         </div>
 
         <div className="mt-4 space-y-1">

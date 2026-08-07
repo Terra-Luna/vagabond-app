@@ -296,7 +296,7 @@ export const getTotalMaxChoices = (rules): number => {
  * @param actor 
  * @param slots 
  */
-export function savePerkSelectionFlags(actor, slots: { ruleId: string, value: string }[]) {
+export async function savePerkSelectionFlags(actor, slots: { ruleId: string, value: string }[]) {
     const mutableFlags = getClonedFlags(actor)
     const uniqueRuleIds = getUniqueRuleIds(slots)
 
@@ -320,7 +320,7 @@ export function savePerkSelectionFlags(actor, slots: { ruleId: string, value: st
     })
 
     if (hasChanges) {
-        actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
+        await actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
     }
 }
 

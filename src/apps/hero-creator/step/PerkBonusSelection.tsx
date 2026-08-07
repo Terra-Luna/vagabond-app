@@ -89,7 +89,6 @@ export const usePerkBonusSelection = (
         <div className="bg-sheet-main-fill space-y-4 text-center items-center">
             <Header title={strings.bonusChoicesHeader} />
             <TopNavButtons navButtons={navButtons} subtitle="A Perk selection has granted another choice..." canProceed={!!advancement || !!spell || !!perkTraining} />
-            <Divider />
             <BonusChoiceContainer>
                 <div className="space-y-4">
                     {/* SELECT STAT BONUS "ADVANCEMENT" */}

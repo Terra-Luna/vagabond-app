@@ -68,57 +68,64 @@ export const LevelUpView = ({ actor, onSave }: {
             onSave({ advancement: advancement, spell: spell, perkTraining: perkTraining, isComplete: true })
         }
         else {
-            ui.notifications?.warn("Complete Perk selections to Save.")
+            ui.notifications?.warn("Complete selections to Save.")
         }
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col grow h-full overflow-y-auto bg-sheet-main-fill p-2">
-            {/* CLASS FEATURE CARD */}
-            {classFeature &&
-                <div className="space-y-1">
-                    <Header title={"CLASS FEATURE"} />
-                    <SkillCard
-                        title={classFeature.name}
-                        subtitles={[{ label: "Level", value: classFeature.level }]}
-                        description={classFeature.description}
-                        startCollapsed={false}
-                    />
-                </div>
-            }
-
-            {/* NEW PERK SELECTION */}
-            {showPerkSelection && <div className="mb-4">
-                {PerkSelection}
-            </div>}
-
-            {/* PERK BONUS SELECTIONS */}
-            {showBonusSelections && <div className="mb-4">
-                {PerkBonusSelection}
-            </div>}
-
-            {/* SPELL SLOT SELECTIONS */}
-            {showSpellSelection && <div className="mb-4">
-                {SpellSelection}
-            </div>}
-
-            {/* NO SELECTIONS REQUIRED */}
-            {levelUpChoices.length === 0 &&
-                <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
-                    No selections required.
-                </p>
-            }
-
-            <div className="mt-4" />
-            <Divider />
-
-            <div className="flex justify-between mt-4">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full bg-sheet-main-fill p-2">
+            {/* HEADER WITH SAVE & CANCEL BUTTONS */}
+            <div className="flex justify-between my-1">
                 <DestructiveButton onClick={() => onSave({ isComplete: false })}>
                     {vgLiteLang.ButtonActions.cancel}
                 </DestructiveButton>
+
+                <p className="text-2xl text-text-primary font-eskapade font-bold">LEVEL UP</p>
+
                 <PrimaryButton type="submit" icon={<ArrowsUpFromLine size={16} />}>
-                    Level Up
+                    Save & Finish
                 </PrimaryButton>
+            </div>
+
+            <div className="my-1"><Divider /></div>
+
+            {/* SCROLLABLE BODY SECTION */}
+            <div className="flex flex-col grow h-full overflow-y-auto">
+                {/* CLASS FEATURE CARD */}
+                {classFeature &&
+                    <div className="space-y-1">
+                        <Header title={"CLASS FEATURE"} />
+                        <SkillCard
+                            title={classFeature.name}
+                            subtitles={[{ label: "Level", value: classFeature.level }]}
+                            description={classFeature.description}
+                            startCollapsed={false}
+                        />
+                    </div>
+                }
+
+                {/* NEW PERK SELECTION */}
+                {showPerkSelection && <div className="mb-4">
+                    {PerkSelection}
+                </div>}
+
+                {/* PERK BONUS SELECTIONS */}
+                {showBonusSelections && <div className="mb-4">
+                    {PerkBonusSelection}
+                </div>}
+
+                {/* SPELL SLOT SELECTIONS */}
+                {showSpellSelection && <div className="mb-4">
+                    {SpellSelection}
+                </div>}
+
+                {/* NO SELECTIONS REQUIRED */}
+                {levelUpChoices.length === 0 &&
+                    <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
+                        No selections required.
+                    </p>
+                }
+
             </div>
         </form>
     )
