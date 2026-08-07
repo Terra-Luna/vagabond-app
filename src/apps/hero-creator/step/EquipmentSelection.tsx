@@ -17,17 +17,15 @@ export const useEquipmentSelection = (
 
     const strings = vgLiteLang.HeroCreation
 
-    const EquipmentSelection = () => {
-        return (
-            <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                <div className="flex flex-col gap-y-4 h-full overflow-hidden">
-                    <Header title={strings.equipHeader} />
-                    <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} />
-                    <ItemShop includeStarterPacks={true} />
-                </div>
-            </EditModeContextProvider >
-        )
-    }
+    const EquipmentSelection = (
+        <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+            <div className="flex flex-col gap-y-4 h-full overflow-hidden">
+                <Header title={strings.equipHeader} />
+                <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} />
+                <ItemShop includeStarterPacks={true} />
+            </div>
+        </EditModeContextProvider >
+    )
 
     return { EquipmentSelection, wallet, cart, selectedPack }
 }

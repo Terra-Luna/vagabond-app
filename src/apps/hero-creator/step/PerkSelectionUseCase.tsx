@@ -27,12 +27,41 @@ export const usePerkSelection = (
     level: number,
     isLevelUp?: boolean
 ) => {
-    const strings = vgLiteLang.HeroCreation
+    /**
+     * A list of every perk in the game.
+     */
+    const perksList = useMemo(() => {
+        return [
+            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '', multi: false },
+            ...ItemsCache.perks().map(perk => toDisplayablePerk(perk))
+        ]
+    }, [])
+
+    /**
+     * Constructs a seperate list of perks the hero is eligible so far
+     * base on stat, spell, and training selections.
+     */
+    const eligiblePerksList = useMemo(() => {
+        return [
+            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
+            ...ItemsCache.eligiblePerks(stats, trainings, spells).map(perk => toDisplayablePerk(perk))
+        ]
+    }, [stats, trainings, spells])
+
+    /**
+     * Monitor the selected class and construct a list of filtered perk choices based
+     * on their perk choice filter rules.
+     */
+    const classRestrictedPerksList = useMemo(() => {
+        const perkRules = getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+        const filteredChoices = perkRules.flatMap(it => it.choices).map(it => it.value)
+        return [
+            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
+            ...ItemsCache.perks().filter(it => filteredChoices.includes(it.uuid)).map(perk => toDisplayablePerk(perk))
+        ]
+    }, [clazz])
 
     // All perks for selection.
-    const [perksList, setPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], multi: boolean, cardSubheader: CardSubHeaderValues[], description: string }[]>([])
-    const [eligiblePerksList, setEligiblePerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
-    const [classRestrictedPerksList, setClassRestrictedPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
     const [useEligibilityFilter, setUseEligibilityFilter] = useState<boolean>(true)
 
     // Perks automatically granted by chosen Ancestry & Class.
@@ -42,52 +71,6 @@ export const usePerkSelection = (
     // Player's chose perks for each slot.
     const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
     const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, isLocked: boolean }[]>([])
-
-    const toDisplayablePerk = (perk) => {
-        return {
-            value: perk.uuid,
-            label: perk.name,
-            img: perk.img ?? '',
-            prereqs: (perk.system as any)?.prerequisites,
-            multi: perk.system.canTakeMultiple,
-            cardSubheader: perkPrerequisites(perk.system as any),
-            description: perk.system.description
-        }
-    }
-
-    /**
-     * A list of every perk in the game.
-     */
-    useEffect(() => {
-        setPerksList([
-            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '', multi: false },
-            ...ItemsCache.perks().map(perk => toDisplayablePerk(perk))
-        ])
-    }, [])
-
-    /**
-     * Constructs a seperate list of perks the hero is eligible so far
-     * base on stat, spell, and training selections.
-     */
-    useEffect(() => {
-        setEligiblePerksList([
-            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-            ...ItemsCache.eligiblePerks(stats, trainings, spells).map(perk => toDisplayablePerk(perk))
-        ])
-    }, [stats, trainings, spells])
-
-    /**
-     * Monitor the selected class and construct a list of filtered perk choices based
-     * on their perk choice filter rules.
-     */
-    useEffect(() => {
-        const perkRules = getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
-        const filteredChoices = perkRules.flatMap(it => it.choices).map(it => it.value)
-        setClassRestrictedPerksList([
-            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-            ...ItemsCache.perks().filter(it => filteredChoices.includes(it.uuid)).map(perk => toDisplayablePerk(perk))
-        ])
-    }, [clazz])
 
     useEffect(() => {
         getItemGrants('perk', [ancestry]).then(grants => {
@@ -136,95 +119,107 @@ export const usePerkSelection = (
         return ![...ancestryPerkSlots, ...classPerkSlots].some(slot => slot.value.length === 0)
     }, [ancestryPerkSlots, classPerkSlots])
 
-    const PerkSelection = () => {
-        return (<>
-            <div className="bg-sheet-main-fill space-y-4">
-                {/* HEADER AND NAVIGATION BUTTONS */}
-                <Header title={strings.perksHeader} />
-                <TopNavButtons navButtons={navButtons} />
+    const PerkSelection = <>
+        <div className="bg-sheet-main-fill space-y-4">
+            {/* HEADER AND NAVIGATION BUTTONS */}
+            <Header title={strings.perksHeader} />
+            <TopNavButtons navButtons={navButtons} />
 
-                {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
+            {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
 
-                {/* GRANTED PERKS */}
-                <div className="mt-4 space-y-1">
-                    {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
-                        <HeroCreationLabel text={strings.grantedPerks} />
-                    }
-                    {
-                        [...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
-                            <ItemGrantCard key={index} name={grant.item} source={grant.source} />
-                        ))
-                    }
-                </div>
-
-                {/* CHOOSE CLASS PERKS */}
-                {classPerkSlots.length > 0 &&
-                    <div className="mt-4 space-y-2">
-                        <div className="flex gap-x-4">
-                            <BonusChoiceTitle text={`${[...classPerkSlots].reverse()[0].ruleName}`} />
-                        </div>
-
-                        <ItemSelectorGroup
-                            slotGroup={classPerkSlots}
-                            options={isLevelUp ? (useEligibilityFilter ? eligiblePerksList : perksList) : classRestrictedPerksList}
-                            otherSlotGroup={ancestryPerkSlots}
-                            grants={[...ancestryPerkGrants, ...classPerkGrants].filter(g => !perksList.find(p => p.value === g.uuid)?.multi)}
-                            onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setClassPerkSlots)}
-                        />
-                    </div>
-                }
-
-                {/* CHOOSE ANCESTRY PERKS */}
-                {ancestryPerkSlots.length > 0 && !isLevelUp &&
-                    <BonusChoiceContainer>
-                        <div className="flex gap-x-6">
-                            <BonusChoiceTitle text={`${ancestry?.name} ${ancestryPerkSlots[0].ruleName}`} />
-                        </div>
-                        <ItemSelectorGroup
-                            slotGroup={ancestryPerkSlots}
-                            options={useEligibilityFilter ? eligiblePerksList : perksList}
-                            otherSlotGroup={classPerkSlots}
-                            grants={[...ancestryPerkGrants, ...classPerkGrants]}
-                            onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setAncestryPerkSlots)}
-                        />
-                    </BonusChoiceContainer>
-                }
-
-                {/* CHECKBOX TOGGLE FOR PERK ELIGIBILITY FILTER */}
-                <div className="w-1/3">
-                    <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                        <Checkbox label={"Filter eligibility"} onCheckedChanged={(checked) => setUseEligibilityFilter(checked)} checked={useEligibilityFilter} />
-                    </EditModeContextProvider>
-                </div>
-
-            </div>
-
+            {/* GRANTED PERKS */}
             <div className="mt-4 space-y-1">
-                {/* CHOSEN PERKS */}
-                <HeroCreationLabel text={strings.perksList} />
-                {[...grantedPerks(), ...ancestryPerkSlots, ...classPerkSlots].filter(slot => (slot.value?.length ?? 0) > 0).map((slot, index) => {
-                    const perk = perksList.find(p => p.value === slot.value)
-                    if (perk) {
-                        return (
-                            <SkillCard
-                                key={perk.value + `_${index}`}
-                                img={perk.img}
-                                title={perk.label}
-                                subtitles={perk.cardSubheader}
-                                description={perk.description}
-                            />
-                        )
-                    }
-                    else {
-                        return <></>
-                    }
-                })}
+                {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
+                    <HeroCreationLabel text={strings.grantedPerks} />
+                }
+                {
+                    [...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
+                        <ItemGrantCard key={index} name={grant.item} source={grant.source} />
+                    ))
+                }
             </div>
-        </>)
-    }
+
+            {/* CHOOSE CLASS PERKS */}
+            {classPerkSlots.length > 0 &&
+                <div className="mt-4 space-y-2">
+                    <div className="flex gap-x-4">
+                        <BonusChoiceTitle text={`${[...classPerkSlots].reverse()[0].ruleName}`} />
+                    </div>
+
+                    <ItemSelectorGroup
+                        slotGroup={classPerkSlots}
+                        options={isLevelUp ? (useEligibilityFilter ? eligiblePerksList : perksList) : classRestrictedPerksList}
+                        otherSlotGroup={ancestryPerkSlots}
+                        grants={[...ancestryPerkGrants, ...classPerkGrants].filter(g => !perksList.find(p => p.value === g.uuid)?.multi)}
+                        onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setClassPerkSlots)}
+                    />
+                </div>
+            }
+
+            {/* CHOOSE ANCESTRY PERKS */}
+            {ancestryPerkSlots.length > 0 && !isLevelUp &&
+                <BonusChoiceContainer>
+                    <div className="flex gap-x-6">
+                        <BonusChoiceTitle text={`${ancestry?.name} ${ancestryPerkSlots[0].ruleName}`} />
+                    </div>
+                    <ItemSelectorGroup
+                        slotGroup={ancestryPerkSlots}
+                        options={useEligibilityFilter ? eligiblePerksList : perksList}
+                        otherSlotGroup={classPerkSlots}
+                        grants={[...ancestryPerkGrants, ...classPerkGrants]}
+                        onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setAncestryPerkSlots)}
+                    />
+                </BonusChoiceContainer>
+            }
+
+            {/* CHECKBOX TOGGLE FOR PERK ELIGIBILITY FILTER */}
+            <div className="w-1/3">
+                <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                    <Checkbox label={"Filter eligibility"} onCheckedChanged={(checked) => setUseEligibilityFilter(checked)} checked={useEligibilityFilter} />
+                </EditModeContextProvider>
+            </div>
+
+        </div>
+
+        <div className="mt-4 space-y-1">
+            {/* CHOSEN PERKS */}
+            <HeroCreationLabel text={strings.perksList} />
+            {[...grantedPerks(), ...ancestryPerkSlots, ...classPerkSlots].filter(slot => (slot.value?.length ?? 0) > 0).map((slot, index) => {
+                const perk = perksList.find(p => p.value === slot.value)
+                if (perk) {
+                    return (
+                        <SkillCard
+                            key={perk.value + `_${index}`}
+                            img={perk.img}
+                            title={perk.label}
+                            subtitles={perk.cardSubheader}
+                            description={perk.description}
+                        />
+                    )
+                }
+                else {
+                    return <></>
+                }
+            })}
+        </div>
+    </>
 
     return {
         PerkSelection, ancestryPerkSlots, classPerkSlots, perksList,
         setAncestryPerkSlots, setClassPerkSlots, loadInitialSlots
+    }
+}
+
+const strings = vgLiteLang.HeroCreation
+
+const toDisplayablePerk = (perk) => {
+    return {
+        value: perk.uuid,
+        label: perk.name,
+        img: perk.img ?? '',
+        prereqs: (perk.system as any)?.prerequisites,
+        multi: perk.system.canTakeMultiple,
+        cardSubheader: perkPrerequisites(perk.system as any),
+        description: perk.system.description
     }
 }

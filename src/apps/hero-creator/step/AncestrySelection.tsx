@@ -31,27 +31,25 @@ export const useAncestrySelection = (navButtons: ReactNode[]) => {
         if (item) setAncestryItem(item)
     }, [ancestries])
 
-    const AncestrySelection = () => {
-        return (
-            <div className="bg-sheet-main-fill space-y-4">
-                <Header title={strings.identity} />
-                <TopNavButtons navButtons={navButtons} />
-                <div className="gap-x-4">
-                    <HeroCreationDropdown
-                        label={strings.selectAncestry}
-                        value={ancestryItem?.id ?? strings.selectAncestry}
-                        options={ancestryOptions ?? []}
-                        onChange={(val) => onSelectAncestry(val)}
-                    />
-                </div>
-                {ancestryItem &&
-                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                        <AncestryReactComponent item={ancestryItem} />
-                    </EditModeContextProvider>
-                }
+    const AncestrySelection = (
+        <div className="bg-sheet-main-fill space-y-4">
+            <Header title={strings.identity} />
+            <TopNavButtons navButtons={navButtons} />
+            <div className="gap-x-4">
+                <HeroCreationDropdown
+                    label={strings.selectAncestry}
+                    value={ancestryItem?.id ?? strings.selectAncestry}
+                    options={ancestryOptions ?? []}
+                    onChange={(val) => onSelectAncestry(val)}
+                />
             </div>
-        )
-    }
+            {ancestryItem &&
+                <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                    <AncestryReactComponent item={ancestryItem} />
+                </EditModeContextProvider>
+            }
+        </div>
+    )
 
     return { AncestrySelection, ancestryItem }
 }

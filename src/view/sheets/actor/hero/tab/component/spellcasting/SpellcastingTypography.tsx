@@ -1,7 +1,7 @@
 import { vgLiteLang } from "../../../../../../../utils/lang"
 
 export const SpellcastingLabel = ({ text }: { text: any }) => {
-    return <div className="text-base text-text-header-tertiary font-eskapade font-bold">{text}</div>
+    return <div className="text-sm text-text-header-tertiary font-eskapade font-bold">{text}</div>
 }
 
 export const SpellcastingValue = ({ text }: { text: any }) => {

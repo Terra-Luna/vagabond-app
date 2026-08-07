@@ -24,7 +24,7 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
     return (
         <div>
             <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
-                <div className="flex gap-x-1 ml-4 items-center">
+                <div className="flex gap-x-1 ml-2 items-center">
                     <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelMana} />
                     <Sparkle className={`text-mana mr-1 ${glowOnHover}`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
                     <span className="text-mana">
@@ -63,7 +63,9 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
 
                 </div>}
             </div>
+
             <SpellcastingMenu />
+
         </div>
     )
 }

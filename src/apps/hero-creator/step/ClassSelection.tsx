@@ -32,26 +32,24 @@ export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navBu
         if (item) setClassItem(item)
     }, [classes])
 
-    const ClassSelection = () => {
-        return (
-            <div className="bg-sheet-main-fill space-y-4">
-                <Header title={strings.class} />
-                <TopNavButtons navButtons={navButtons} subtitle="" />
+    const ClassSelection = (
+        <div className="bg-sheet-main-fill space-y-4">
+            <Header title={strings.class} />
+            <TopNavButtons navButtons={navButtons} subtitle="" />
 
-                <HeroCreationDropdown
-                    label={strings.class}
-                    value={classItem?.id ?? strings.selectClass}
-                    options={classOpts ?? []}
-                    onChange={onSelectClass}
-                />
-                {classItem &&
-                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                        <ClassSheetComponent item={classItem} />
-                    </EditModeContextProvider>
-                }
-            </div>
-        )
-    }
+            <HeroCreationDropdown
+                label={strings.class}
+                value={classItem?.id ?? strings.selectClass}
+                options={classOpts ?? []}
+                onChange={onSelectClass}
+            />
+            {classItem &&
+                <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                    <ClassSheetComponent item={classItem} />
+                </EditModeContextProvider>
+            }
+        </div>
+    )
 
     return { ClassSelection, classItem }
 }

@@ -119,7 +119,7 @@ export const SpellSelectionView = ({ actor, isLevelUp }: {
 
     return (
         <div className="space-y-4 overflow-auto p-2">
-            <SpellSelection />
+            {SpellSelection}
         </div>
     )
 }

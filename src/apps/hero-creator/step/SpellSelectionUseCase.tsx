@@ -84,71 +84,69 @@ export const useSpellSelection = (
         )
     }, [])
 
-    const SpellSelection = () => {
-        return (<>
-            <div className="bg-sheet-main-fill space-y-4 text-center items-center">
-                <Header title={strings.spellsHeader} />
-                <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} />
-            </div>
+    const SpellSelection = <>
+        <div className="bg-sheet-main-fill space-y-4 text-center items-center">
+            <Header title={strings.spellsHeader} />
+            <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} />
+        </div>
 
-            <div className="mt-4 space-y-1">
-                {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
-                    <HeroCreationLabel text={strings.grantedSpells} />
-                }
-                {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
-                    <ItemGrantCard key={`grant-${index}`} name={grant.item} source={grant.source} />
-                ))}
-                {!isCreationMode && ancestrySpellSlots.length > 0 &&
-                    ancestrySpellSlots.map((slot, idx) => (<ItemGrantCard key={`ancestry-slot-view-${idx}`} name={slot.label} source={slot.ruleName} />))
-                }
-            </div>
-
-            <div className="mt-4 space-y-2">
-                <HeroCreationSubtext text={strings.classSpells} />
-                <ItemSelectorGroup
-                    slotGroup={classSpellSlots}
-                    options={spellsList}
-                    otherSlotGroup={[...ancestrySpellSlots, ...perkSpellSlots]}
-                    grants={[...ancestrySpellGrants, ...classSpellGrants]}
-                    onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
-                />
-            </div>
-
-            {(ancestrySpellSlots.length > 0 && isCreationMode) &&
-                <BonusChoiceContainer>
-                    <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
-                    <ItemSelectorGroup
-                        slotGroup={ancestrySpellSlots}
-                        options={spellsList}
-                        otherSlotGroup={[...classSpellSlots, ...perkSpellSlots]}
-                        grants={[...ancestrySpellGrants, ...classSpellGrants]}
-                        onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setAncestrySpellSlots)}
-                    />
-                </BonusChoiceContainer>
+        <div className="mt-4 space-y-1">
+            {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
+                <HeroCreationLabel text={strings.grantedSpells} />
             }
-
-            {/* PERK SPELL SLOTS (MAGICAL SECRETS) */}
-            {perkSpellSlots.length > 0 &&
-                <BonusChoiceContainer>
-                    <BonusChoiceTitle text={strings.magicalSecrets} />
-                    <ItemSelectorGroup
-                        slotGroup={perkSpellSlots}
-                        options={spellsList}
-                        otherSlotGroup={[...classSpellSlots, ...ancestrySpellSlots]}
-                        grants={[...ancestrySpellGrants, ...classSpellGrants]}
-                        onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setPerkSpellSlots)}
-                    />
-                </BonusChoiceContainer>
+            {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
+                <ItemGrantCard key={`grant-${index}`} name={grant.item} source={grant.source} />
+            ))}
+            {!isCreationMode && ancestrySpellSlots.length > 0 &&
+                ancestrySpellSlots.map((slot, idx) => (<ItemGrantCard key={`ancestry-slot-view-${idx}`} name={slot.label} source={slot.ruleName} />))
             }
+        </div>
 
-            {/* YOUR GRIMOIRE */}
-            <Grimoire
-                spellGrants={[...ancestrySpellGrants, ...classSpellGrants]}
-                spellSlots={[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots]}
-                spellsList={spellsList}
+        <div className="mt-4 space-y-2">
+            <HeroCreationSubtext text={strings.classSpells} />
+            <ItemSelectorGroup
+                slotGroup={classSpellSlots}
+                options={spellsList}
+                otherSlotGroup={[...ancestrySpellSlots, ...perkSpellSlots]}
+                grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
             />
-        </>)
-    }
+        </div>
+
+        {(ancestrySpellSlots.length > 0 && isCreationMode) &&
+            <BonusChoiceContainer>
+                <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
+                <ItemSelectorGroup
+                    slotGroup={ancestrySpellSlots}
+                    options={spellsList}
+                    otherSlotGroup={[...classSpellSlots, ...perkSpellSlots]}
+                    grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                    onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setAncestrySpellSlots)}
+                />
+            </BonusChoiceContainer>
+        }
+
+        {/* PERK SPELL SLOTS (MAGICAL SECRETS) */}
+        {perkSpellSlots.length > 0 &&
+            <BonusChoiceContainer>
+                <BonusChoiceTitle text={strings.magicalSecrets} />
+                <ItemSelectorGroup
+                    slotGroup={perkSpellSlots}
+                    options={spellsList}
+                    otherSlotGroup={[...classSpellSlots, ...ancestrySpellSlots]}
+                    grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                    onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setPerkSpellSlots)}
+                />
+            </BonusChoiceContainer>
+        }
+
+        {/* YOUR GRIMOIRE */}
+        <Grimoire
+            spellGrants={[...ancestrySpellGrants, ...classSpellGrants]}
+            spellSlots={[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots]}
+            spellsList={spellsList}
+        />
+    </>
 
     return {
         SpellSelection, loadInitialSlots, spellsList,

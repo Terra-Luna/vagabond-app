@@ -93,14 +93,14 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      */
     const renderStepContent = useCallback((id: string | undefined) => {
         switch (id) {
-            case 'identity': return <AncestrySelection />
-            case 'class-selection': return <ClassSelection />
-            case 'core-stats': return <CoreStats />
-            case 'training-selection': return <TrainingSelection />
-            case 'spell-selection': return hasSpellSlots ? <SpellSelection /> : null
-            case 'perk-selection': return <PerkSelection />
-            case 'perk-bonus-selection': return perksWithBonusChoices.length > 0 ? <PerkBonusSelection /> : null
-            case 'equipment-selection': return <EquipmentSelection />
+            case 'identity': return AncestrySelection
+            case 'class-selection': return ClassSelection
+            case 'core-stats': return CoreStats
+            case 'training-selection': return TrainingSelection
+            case 'spell-selection': return hasSpellSlots ? SpellSelection : null
+            case 'perk-selection': return PerkSelection
+            case 'perk-bonus-selection': return perksWithBonusChoices.length > 0 ? PerkBonusSelection : null
+            case 'equipment-selection': return EquipmentSelection
             default: return null
         }
     }, [

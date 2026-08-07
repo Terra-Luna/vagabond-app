@@ -6,12 +6,8 @@ import { usePerkSelection } from "../hero-creator/step/PerkSelectionUseCase"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { groupBy } from "../../utils/collectionUtil"
-import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
 
-export const PerkSelectionView = ({ actor, isLevelUp }: {
-    actor: Actor & { system: HeroDataModel },
-    isLevelUp?: boolean
-}) => {
+export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
     const dataLoaded = useRef(false)
 
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
@@ -32,8 +28,6 @@ export const PerkSelectionView = ({ actor, isLevelUp }: {
     const {
         PerkSelection, perksList, classPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots
     } = usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, true)
-
-    //const { PerkBonus} = usePerkBonusSelection(classPerkSlots.reverse()[0])
 
     const getPerkName = (id: string): string => {
         return perksList.find(it => it.value === id)?.label ?? 'unk'
@@ -113,9 +107,10 @@ export const PerkSelectionView = ({ actor, isLevelUp }: {
         }
     }, [classPerkSlots])
 
-    return (
+    const PerkSelectionView = 
         <div className="space-y-4 overflow-auto p-2">
-            <PerkSelection />
+            {PerkSelection}
         </div>
-    )
+
+    return { PerkSelectionView }
 }

@@ -58,13 +58,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         return flatStatBonuses.filter(b => b.stat === stat).reduce((sum, b) => { return sum + b.bonus }, 0)
     }
 
-    const getMaxManaStatValue = (clazz: ClassDataModel | undefined): number => {
-        if (!clazz) return 0
-        const stat = clazz.maxManaStat
-        const bonus = getSelectedBonusByStat(stat) + getFlatBonusByStat(stat)
-        return (assignedStats.find(it => it.stat === stat)?.value ?? 0) + bonus
-    }
-
     /**
      * Initialize some states.
      */
@@ -176,204 +169,202 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         })
     }
 
-    const CoreStats = () => {
-        return (
-            <div className="bg-sheet-main-fill space-y-4">
-                {/* HEADER */}
-                <Header title={strings.coreStats} />
-                <TopNavButtons navButtons={navButtons} subtitle="" />
+    const CoreStats = (
+        <div className="bg-sheet-main-fill space-y-4">
+            {/* HEADER */}
+            <Header title={strings.coreStats} />
+            <TopNavButtons navButtons={navButtons} subtitle="" />
 
-                <div className="w-full space-y-2 items-center justify-center text-center">
-                    {/* STAT ARRAY HEADER */}
-                    <HeroCreationLabel text={strings.statArrayPool} />
+            <div className="w-full space-y-2 items-center justify-center text-center">
+                {/* STAT ARRAY HEADER */}
+                <HeroCreationLabel text={strings.statArrayPool} />
 
-                    {/* TODO: DELETE THIS HELPER BUTTON LATER */}
-                    <SecondaryButton onClick={() => {
-                        assignedStats.forEach((s, i) => {
-                            s.value = selectedArr?.values[i] ?? 2
-                        })
-                        setAssignedStats([...assignedStats])
-                    }} children={<p>AUTO (delete me later)</p>} />
+                {/* TODO: DELETE THIS HELPER BUTTON LATER */}
+                <SecondaryButton onClick={() => {
+                    assignedStats.forEach((s, i) => {
+                        s.value = selectedArr?.values[i] ?? 2
+                    })
+                    setAssignedStats([...assignedStats])
+                }} children={<p>AUTO (delete me later)</p>} />
 
-                    <HeroCreationSubtext text={strings.statArrayDrag} />
+                <HeroCreationSubtext text={strings.statArrayDrag} />
 
-                    {/* STAT POOL SELECTION */}
-                    <div className="flex gap-x-4 justify-center items-end">
-                        <div>
-                            <SecondaryButton
-                                icon={assignedStats.some(stats => stats.value != null) ? <Undo size={14} /> : <Dices size={14} />}
-                                children={
-                                    assignedStats.some(stats => stats.value != null) ?
-                                        <p className="font-paradigm font-bold">{strings.statsReset}</p> :
-                                        <p className="font-paradigm font-bold">{strings.statsRoll}</p>
-                                }
-                                onClick={assignedStats.some(stats => stats.value != null) ?
-                                    resetAssignedStats :
-                                    randomizeStatBlockSelection
-                                }
-                            />
-                        </div>
-
-                        {/* STAT ARRAY DROPDOWN SELECTOR */}
-                        <div className="text-left">
-                            <HeroCreationDropdown
-                                label={strings.statsSelect}
-                                value={selectedArr?.index?.toString() ?? '0'}
-                                onChange={onSelectStatArray}
-                                options={statBlocks.map((block, index) => (
-                                    { value: index, label: block.join(", ") + `  [${block.reduce((sum, it) => { return sum + it }, 0)}]` }
-                                ))}
-                            />
-                        </div>
+                {/* STAT POOL SELECTION */}
+                <div className="flex gap-x-4 justify-center items-end">
+                    <div>
+                        <SecondaryButton
+                            icon={assignedStats.some(stats => stats.value != null) ? <Undo size={14} /> : <Dices size={14} />}
+                            children={
+                                assignedStats.some(stats => stats.value != null) ?
+                                    <p className="font-paradigm font-bold">{strings.statsReset}</p> :
+                                    <p className="font-paradigm font-bold">{strings.statsRoll}</p>
+                            }
+                            onClick={assignedStats.some(stats => stats.value != null) ?
+                                resetAssignedStats :
+                                randomizeStatBlockSelection
+                            }
+                        />
                     </div>
 
-                    <div className="justify-center">
-                        {/* SELECTED STAT POOL DRAGABLES */}
-                        <BorderedContent children={
-                            selectedArr?.values?.map((it, index) => {
-                                const isUsed = selectedArr.usedIndices.includes(index)
+                    {/* STAT ARRAY DROPDOWN SELECTOR */}
+                    <div className="text-left">
+                        <HeroCreationDropdown
+                            label={strings.statsSelect}
+                            value={selectedArr?.index?.toString() ?? '0'}
+                            onChange={onSelectStatArray}
+                            options={statBlocks.map((block, index) => (
+                                { value: index, label: block.join(", ") + `  [${block.reduce((sum, it) => { return sum + it }, 0)}]` }
+                            ))}
+                        />
+                    </div>
+                </div>
+
+                <div className="justify-center">
+                    {/* SELECTED STAT POOL DRAGABLES */}
+                    <BorderedContent children={
+                        selectedArr?.values?.map((it, index) => {
+                            const isUsed = selectedArr.usedIndices.includes(index)
+                            return (
+                                <DraggableStatBlock
+                                    key={index}
+                                    index={index}
+                                    value={it}
+                                    isUsed={isUsed}
+                                    onDragStart={onDragStart}
+                                />
+                            )
+                        })
+                    } />
+                    {/* STAT DRAG TARGETS */}
+                    <div className="grid grid-cols-[repeat(3,100px)] justify-center text-center gap-4 px-8 mt-2 mb-4">
+                        {
+                            Object.keys(stats).map((statKey) => {
+                                const currentAssignment = assignedStats.find(item => item.stat === statKey)
                                 return (
-                                    <DraggableStatBlock
-                                        key={index}
-                                        index={index}
-                                        value={it}
-                                        isUsed={isUsed}
-                                        onDragStart={onDragStart}
+                                    <StatDragTarget
+                                        key={statKey}
+                                        stat={statKey}
+                                        stats={stats}
+                                        isKeyStat={clazz?.system?.keyStats?.includes(statKey)}
+                                        onDragDrop={onDragDrop}
+                                        currentAssignment={currentAssignment}
+                                        dragOverStat={dragOverKey}
+                                        setDragOverStat={setDragOverStat}
+                                        bonusStats={bonusStatSelections}
+                                        flatStatBonuses={flatStatBonuses}
                                     />
                                 )
                             })
-                        } />
-                        {/* STAT DRAG TARGETS */}
-                        <div className="grid grid-cols-[repeat(3,100px)] justify-center text-center gap-4 px-8 mt-2 mb-4">
-                            {
-                                Object.keys(stats).map((statKey) => {
-                                    const currentAssignment = assignedStats.find(item => item.stat === statKey)
-                                    return (
-                                        <StatDragTarget
-                                            key={statKey}
-                                            stat={statKey}
-                                            stats={stats}
-                                            isKeyStat={clazz?.system?.keyStats?.includes(statKey)}
-                                            onDragDrop={onDragDrop}
-                                            currentAssignment={currentAssignment}
-                                            dragOverStat={dragOverKey}
-                                            setDragOverStat={setDragOverStat}
-                                            bonusStats={bonusStatSelections}
-                                            flatStatBonuses={flatStatBonuses}
+                        }
+                    </div>
+                </div>
+
+                {/* BONUS STAT CHOICE SELECTION */}
+                {requiredChoiceRules.length > 0 && (
+                    <div className="flex flex-col w-fit gap-y-2 py-2 px-8 mx-auto justify-center border border-solid border-table-border bg-sheet-main-fill rounded-md">
+                        {requiredChoiceRules.map((rule) => {
+                            const totalChoicesForRule = rule.maxChoices || 1
+
+                            return Array.from({ length: totalChoicesForRule }).map((_, choiceSlotIdx) => {
+                                const slotName = `${rule.id}_slot_${choiceSlotIdx}`
+                                const currentBonusSelection = bonusStatSelections?.find(b => b.id_index === slotName)
+                                const activeStatValue = currentBonusSelection ? currentBonusSelection.stat : ""
+                                const availableChoicesArray = rule.choices || []
+                                return (
+                                    <div key={slotName}>
+                                        <HeroCreationDropdown
+                                            label={`${rule.label} (${choiceSlotIdx + 1}/${totalChoicesForRule})`}
+                                            value={activeStatValue}
+                                            options={[
+                                                { value: '', label: '-' },
+                                                ...availableChoicesArray
+                                                    .filter((choice: any) => {
+                                                        if (!choice?.value) return false
+
+                                                        // Normalize case path tracking strings to align object keys
+                                                        const cleanPath = choice.value.toLowerCase().replace("system.", "")
+                                                        const statKey = cleanPath.replace("stats.", "")
+
+                                                        if (cleanPath.startsWith("stats.")) {
+                                                            const targetStatObj = assignedStats.find(s => s.stat.toLowerCase() === statKey)
+                                                            const existingBonusValue = bonusStatSelections?.find(b => b.stat === choice.value && b.id_index !== slotName)?.bonus ?? 0
+
+                                                            // Keep the option if the pool row has been assigned and doesn't exceed stat max.
+                                                            return targetStatObj && (
+                                                                !targetStatObj.value ||
+                                                                (targetStatObj.value + getFlatBonusByStat(targetStatObj.stat)) <= (STAT_MAX - (rule.value + existingBonusValue))
+                                                            )
+                                                        }
+
+                                                        return true
+                                                    })
+                                                    .map((choice: any) => ({
+                                                        value: choice.value, // Full db key: "system.stats.might"
+                                                        label: `${choice.label} (+${rule.value})`
+                                                    }))
+                                            ]}
+                                            onChange={(selectedStat) => {
+                                                if (!selectedStat) {
+                                                    setBonusStatSelections(prev => prev.filter(b => b.id_index !== slotName))
+                                                } else {
+                                                    onSelectBonusStat({
+                                                        stat: selectedStat,
+                                                        bonus: rule.value,
+                                                        id_index: slotName
+                                                    })
+                                                }
+                                            }}
                                         />
-                                    )
-                                })
+                                    </div>
+                                )
+                            })
+                        })}
+                    </div>
+                )}
+
+                {/* FLAT BONUS STATS LIST */}
+                {flatStatBonuses.length > 0 &&
+                    <BorderedContent className="flex-col">
+                        <HeroCreationLabel text={strings.flatBonus} />
+                        <div className="flex gap-x-2">
+                            {
+                                flatStatBonuses.map((b, index) => (
+                                    <HeroCreationLabeledField key={index} label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.bonus}`} />
+                                ))
                             }
                         </div>
-                    </div>
+                    </BorderedContent>
+                }
 
-                    {/* BONUS STAT CHOICE SELECTION */}
-                    {requiredChoiceRules.length > 0 && (
-                        <div className="flex flex-col w-fit gap-y-2 py-2 px-8 mx-auto justify-center border border-solid border-table-border bg-sheet-main-fill rounded-md">
-                            {requiredChoiceRules.map((rule) => {
-                                const totalChoicesForRule = rule.maxChoices || 1
-
-                                return Array.from({ length: totalChoicesForRule }).map((_, choiceSlotIdx) => {
-                                    const slotName = `${rule.id}_slot_${choiceSlotIdx}`
-                                    const currentBonusSelection = bonusStatSelections?.find(b => b.id_index === slotName)
-                                    const activeStatValue = currentBonusSelection ? currentBonusSelection.stat : ""
-                                    const availableChoicesArray = rule.choices || []
-                                    return (
-                                        <div key={slotName}>
-                                            <HeroCreationDropdown
-                                                label={`${rule.label} (${choiceSlotIdx + 1}/${totalChoicesForRule})`}
-                                                value={activeStatValue}
-                                                options={[
-                                                    { value: '', label: '-' },
-                                                    ...availableChoicesArray
-                                                        .filter((choice: any) => {
-                                                            if (!choice?.value) return false
-
-                                                            // Normalize case path tracking strings to align object keys
-                                                            const cleanPath = choice.value.toLowerCase().replace("system.", "")
-                                                            const statKey = cleanPath.replace("stats.", "")
-
-                                                            if (cleanPath.startsWith("stats.")) {
-                                                                const targetStatObj = assignedStats.find(s => s.stat.toLowerCase() === statKey)
-                                                                const existingBonusValue = bonusStatSelections?.find(b => b.stat === choice.value && b.id_index !== slotName)?.bonus ?? 0
-
-                                                                // Keep the option if the pool row has been assigned and doesn't exceed stat max.
-                                                                return targetStatObj && (
-                                                                    !targetStatObj.value ||
-                                                                    (targetStatObj.value + getFlatBonusByStat(targetStatObj.stat)) <= (STAT_MAX - (rule.value + existingBonusValue))
-                                                                )
-                                                            }
-
-                                                            return true
-                                                        })
-                                                        .map((choice: any) => ({
-                                                            value: choice.value, // Full db key: "system.stats.might"
-                                                            label: `${choice.label} (+${rule.value})`
-                                                        }))
-                                                ]}
-                                                onChange={(selectedStat) => {
-                                                    if (!selectedStat) {
-                                                        setBonusStatSelections(prev => prev.filter(b => b.id_index !== slotName))
-                                                    } else {
-                                                        onSelectBonusStat({
-                                                            stat: selectedStat,
-                                                            bonus: rule.value,
-                                                            id_index: slotName
-                                                        })
-                                                    }
-                                                }}
-                                            />
-                                        </div>
-                                    )
-                                })
-                            })}
+                {/* VITAL STATS PREVIEW */}
+                <div className="justify-center">
+                    <HeroCreationLabel text={strings.vitals} />
+                    <Divider />
+                    <div className="flex gap-x-2 mt-1 justify-center">
+                        <div className="bg-text-hp-max/20 rounded-md border border-solid border-text-hp-current p-2">
+                            <HeroCreationSubtext text={strings.maxhp} />
+                            <p className="text-4xl text-text-hp-current font-bold">
+                                {`${((assignedStats.find(s => s.stat === 'might')?.value ?? 0) + getFlatBonusByStat('might') + getSelectedBonusByStat('might')) * 2}`}
+                            </p>
                         </div>
-                    )}
-
-                    {/* FLAT BONUS STATS LIST */}
-                    {flatStatBonuses.length > 0 &&
-                        <BorderedContent className="flex-col">
-                            <HeroCreationLabel text={strings.flatBonus} />
-                            <div className="flex gap-x-2">
-                                {
-                                    flatStatBonuses.map((b, index) => (
-                                        <HeroCreationLabeledField key={index} label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.bonus}`} />
-                                    ))
-                                }
-                            </div>
-                        </BorderedContent>
-                    }
-
-                    {/* VITAL STATS PREVIEW */}
-                    <div className="justify-center">
-                        <HeroCreationLabel text={strings.vitals} />
-                        <Divider />
-                        <div className="flex gap-x-2 mt-1 justify-center">
-                            <div className="bg-text-hp-max/20 rounded-md border border-solid border-text-hp-current p-2">
-                                <HeroCreationSubtext text={strings.maxhp} />
-                                <p className="text-4xl text-text-hp-current font-bold">
-                                    {`${((assignedStats.find(s => s.stat === 'might')?.value ?? 0) + getFlatBonusByStat('might') + getSelectedBonusByStat('might')) * 2}`}
-                                </p>
-                            </div>
-                            <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
-                                <HeroCreationSubtext text={strings.maxmana} />
-                                <p className="text-4xl text-mana font-bold">{`
-                                ${calculateManaValues(1, getMaxManaStatValue(clazz?.system), clazz?.system.manaMultiplier ?? 1).max}
-                            `}</p>
-                            </div>
-                            <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
-                                <HeroCreationSubtext text={strings.maxcast} />
-                                <p className="text-4xl text-mana font-bold">{`
-                                ${calculateManaValues(1, getMaxManaStatValue(clazz?.system), clazz?.system.manaMultiplier ?? 1).maxCast}
-                            `}</p>
-                            </div>
+                        <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
+                            <HeroCreationSubtext text={strings.maxmana} />
+                            <p className="text-4xl text-mana font-bold">{`
+                            ${calculateManaValues(1, (clazz?.system?.manaMultiplier ?? 0), clazz?.system?.maxCastFormula ?? '').max}
+                        `}</p>
+                        </div>
+                        <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
+                            <HeroCreationSubtext text={strings.maxcast} />
+                            <p className="text-4xl text-mana font-bold">{`
+                            ${calculateManaValues(1, (clazz?.system?.manaMultiplier ?? 0), clazz?.system?.maxCastFormula ?? '').maxCast}
+                        `}</p>
                         </div>
                     </div>
-
                 </div>
+
             </div>
-        )
-    }
+        </div>
+    )
 
     return {
         CoreStats, selectedArr, assignedStats, bonusStatSelections, flatStatBonuses, resetAssignedStats

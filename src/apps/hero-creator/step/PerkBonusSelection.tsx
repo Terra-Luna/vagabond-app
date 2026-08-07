@@ -85,109 +85,107 @@ export const usePerkBonusSelection = (
         setReasonTraining(undefined)
     }, [advancement])
 
-    const PerkBonusSelection = () => {
-        return (
-            <div className="bg-sheet-main-fill space-y-4 text-center items-center">
-                <Header title={strings.bonusChoicesHeader} />
-                <TopNavButtons navButtons={navButtons} subtitle="" />
-                <Divider />
-                <BonusChoiceContainer>
-                    <div className="space-y-4">
-                        {/* SELECT STAT BONUS "ADVANCEMENT" */}
-                        {
-                            advancements.map((rule, index) => {
-                                return (
-                                    <div key={index} className="flex flex-col justify-center gap-y-2">
-                                        <BonusChoiceTitle text={rule.label} />
-                                        {/* SELECTED STATS W/ BONUSES APPLIED */}
-                                        <HeroCreationSubtext text={
-                                            stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")
-                                        } />
-                                        <div className="flex items-end justify-center">
-                                            <HeroCreationDropdown
-                                                value={advancement?.value ?? ''}
-                                                options={rule.choices}
-                                                onChange={(val) => {
-                                                    setAdvancement({ value: val, ruleId: rule.id })
-                                                }}
-                                            />
-                                            {showAdditionalTrainingOnStatAdvancement &&
-                                                <div className="flex gap-x-1 items-end ml-8">
-                                                    <HeroCreationLabel text={"Addt'l Training:"} />
-                                                    <HeroCreationDropdown
-                                                        value={reasonTraining?.value ?? ''}
-                                                        options={createDropdownEntriesFromObj(vgLiteLang.Skills).filter(sk =>
-                                                            !requiredTrainings.map(t => t.skill).includes(sk.value) &&
-                                                            !selectedTrainings.map(t => t.skill).includes(sk.value)
-                                                        )}
-                                                        onChange={(val) => {
-                                                            setReasonTraining({ value: val, ruleId: rule.id })
-                                                        }}
-                                                    />
-                                                </div>}
-                                        </div>
+    const PerkBonusSelection = (
+        <div className="bg-sheet-main-fill space-y-4 text-center items-center">
+            <Header title={strings.bonusChoicesHeader} />
+            <TopNavButtons navButtons={navButtons} subtitle="" />
+            <Divider />
+            <BonusChoiceContainer>
+                <div className="space-y-4">
+                    {/* SELECT STAT BONUS "ADVANCEMENT" */}
+                    {
+                        advancements.map((rule, index) => {
+                            return (
+                                <div key={index} className="flex flex-col justify-center gap-y-2">
+                                    <BonusChoiceTitle text={rule.label} />
+                                    {/* SELECTED STATS W/ BONUSES APPLIED */}
+                                    <HeroCreationSubtext text={
+                                        stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")
+                                    } />
+                                    <div className="flex items-end justify-center">
+                                        <HeroCreationDropdown
+                                            value={advancement?.value ?? ''}
+                                            options={rule.choices}
+                                            onChange={(val) => {
+                                                setAdvancement({ value: val, ruleId: rule.id })
+                                            }}
+                                        />
+                                        {showAdditionalTrainingOnStatAdvancement &&
+                                            <div className="flex gap-x-1 items-end ml-8">
+                                                <HeroCreationLabel text={"Addt'l Training:"} />
+                                                <HeroCreationDropdown
+                                                    value={reasonTraining?.value ?? ''}
+                                                    options={createDropdownEntriesFromObj(vgLiteLang.Skills).filter(sk =>
+                                                        !requiredTrainings.map(t => t.skill).includes(sk.value) &&
+                                                        !selectedTrainings.map(t => t.skill).includes(sk.value)
+                                                    )}
+                                                    onChange={(val) => {
+                                                        setReasonTraining({ value: val, ruleId: rule.id })
+                                                    }}
+                                                />
+                                            </div>}
                                     </div>
-                                )
-                            })
-                        }
+                                </div>
+                            )
+                        })
+                    }
 
-                        {/* SELECT BONUS "NEW TRAINING" */}
-                        {
-                            trainings.map((rule, index) => {
-                                return (
-                                    <div key={index} className="flex flex-col gap-y-2">
-                                        <BonusChoiceTitle text={rule.label} />
-                                        <div className="flex justify-center">
-                                            <HeroCreationDropdown
-                                                value={perkTraining?.value ?? ''}
-                                                options={rule.choices}
-                                                onChange={(val) => {
-                                                    setPerkTraining({ value: val, ruleId: rule.id })
-                                                }}
-                                            />
-                                        </div>
+                    {/* SELECT BONUS "NEW TRAINING" */}
+                    {
+                        trainings.map((rule, index) => {
+                            return (
+                                <div key={index} className="flex flex-col gap-y-2">
+                                    <BonusChoiceTitle text={rule.label} />
+                                    <div className="flex justify-center">
+                                        <HeroCreationDropdown
+                                            value={perkTraining?.value ?? ''}
+                                            options={rule.choices}
+                                            onChange={(val) => {
+                                                setPerkTraining({ value: val, ruleId: rule.id })
+                                            }}
+                                        />
                                     </div>
-                                )
-                            })
-                        }
-                        
-                        {/* SELECT BONUS "MAGICAL SECRET" */}
-                        {
-                            spells.map((rule, index) => {
-                                return (
-                                    <div key={index} className="flex flex-col gap-y-2">
-                                        <BonusChoiceTitle text={strings.magicalSecrets} />
-                                        <div className="flex justify-center">
-                                            <HeroCreationDropdown
-                                                value={spell?.value ?? ''}
-                                                options={rule.choices}
-                                                onChange={(val) => {
-                                                    setSpell({ value: val, ruleId: rule.id })
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </BonusChoiceContainer>
+                                </div>
+                            )
+                        })
+                    }
 
-                {selectedSpell &&
-                    <div className="text-left">
-                        <SkillCard
-                            img={selectedSpell.img ?? ''}
-                            title={selectedSpell.name}
-                            subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[selectedSpell.system.damageType] }]}
-                            dmgType={selectedSpell.system.damageType}
-                            description={selectedSpell.system.description}
-                            startCollapsed={false}
-                        />
-                    </div>
-                }
-            </div>
-        )
-    }
+                    {/* SELECT BONUS "MAGICAL SECRET" */}
+                    {
+                        spells.map((rule, index) => {
+                            return (
+                                <div key={index} className="flex flex-col gap-y-2">
+                                    <BonusChoiceTitle text={strings.magicalSecrets} />
+                                    <div className="flex justify-center">
+                                        <HeroCreationDropdown
+                                            value={spell?.value ?? ''}
+                                            options={rule.choices}
+                                            onChange={(val) => {
+                                                setSpell({ value: val, ruleId: rule.id })
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                </div>
+            </BonusChoiceContainer>
+
+            {selectedSpell &&
+                <div className="text-left">
+                    <SkillCard
+                        img={selectedSpell.img ?? ''}
+                        title={selectedSpell.name}
+                        subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[selectedSpell.system.damageType] }]}
+                        dmgType={selectedSpell.system.damageType}
+                        description={selectedSpell.system.description}
+                        startCollapsed={false}
+                    />
+                </div>
+            }
+        </div>
+    )
 
     return { PerkBonusSelection, advancement, perkTraining, reasonTraining, spell, resetPerkBonusSelections }
 }
