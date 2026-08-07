@@ -8,6 +8,8 @@ import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { PrimaryButton } from "../../../../component/Button"
+import { PerkSelectionApp } from "../../../../../apps/hero-choices/PerkSelectionApp"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
@@ -82,6 +84,13 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                     ))
                 }
             </div>
+
+            <div className="flex mt-1 w-full justify-end mb-12">
+                <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
+                    Select Perks
+                </PrimaryButton>
+            </div>
+
             <ContextMenu />
         </div>
     )

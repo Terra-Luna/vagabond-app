@@ -21,6 +21,7 @@ import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 import { AttacksTab } from "./tab/AttacksTab"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
+import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -73,8 +74,15 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                         <div className="flex gap-x-2 ml-auto">
                             {(hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < 10 &&
                                 <button
-                                    title={"LEVEL UP!"}
-                                    onClick={async () => new LevelUpApp(hero.parent).render({ force: true })}
+                                    title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
+                                    onClick={async () => {
+                                        if (hero.ancestry && hero.class) {
+                                            new LevelUpApp(hero.parent).render({ force: true })
+                                        }
+                                        else {
+                                            new HeroCreationApp(hero.parent).render({ force: true })
+                                        }
+                                    }}
                                     className="hover-glow cursor-pointer ml-auto"
                                 >
                                     <ArrowsUpFromLine size={24} className="text-text-header-secondary" />

@@ -296,8 +296,8 @@ export const getTotalMaxChoices = (rules): number => {
  * @param actor 
  * @param slots 
  */
-export function savePerkSelectionFlags(actor, slots) {
-    const mutableFlags = clonedFlags(actor)
+export function savePerkSelectionFlags(actor, slots: { ruleId: string, value: string }[]) {
+    const mutableFlags = getClonedFlags(actor)
     const uniqueRuleIds = getUniqueRuleIds(slots)
 
     let hasChanges = false
@@ -305,7 +305,6 @@ export function savePerkSelectionFlags(actor, slots) {
         // Clears out deselected slots.
         const nextValues = slots.filter(s => s.ruleId === ruleId).map(s => s.value).filter(Boolean)
 
-        console.log(nextValues)
         if (nextValues.length === 0) {
             if (mutableFlags[ruleId as string] !== undefined) {
                 mutableFlags[ruleId as string] = []
@@ -325,11 +324,11 @@ export function savePerkSelectionFlags(actor, slots) {
     }
 }
 
-const clonedFlags = (actor) => {
-    return foundry.utils.duplicate(perkFlags(actor)) as Record<string, any>
+export const getClonedFlags = (actor) => {
+    return foundry.utils.duplicate(getPerkFlags(actor)) as Record<string, any>
 }
 
-const perkFlags = (actor) => {
+const getPerkFlags = (actor) => {
     return actor.getFlag("vagabond-lite" as any, "perkSelections") ?? {}
 }
 

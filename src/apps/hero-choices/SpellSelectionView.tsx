@@ -7,10 +7,8 @@ import { getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/ite
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { groupBy } from "../../utils/collectionUtil"
 
-export const SpellSelectionView = ({ actor, isLevelUp }: {
-    actor: Actor & { system: HeroDataModel },
-    isLevelUp?: boolean
-}) => {
+export const useSpellSelectionView = (actor: (Actor & { system: HeroDataModel }), isLevelUp?: boolean) => {
+
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     const perks = actor.system.perks as PerkDataModel[]
@@ -20,7 +18,7 @@ export const SpellSelectionView = ({ actor, isLevelUp }: {
     const dataLoaded = useRef(false)
 
     const {
-        SpellSelection, classSpellSlots, perkSpellSlots, setAncestrySpellSlots,
+        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, setAncestrySpellSlots,
         setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
     } = useSpellSelection(ancestry, clazz, perks, [])
 
@@ -117,9 +115,5 @@ export const SpellSelectionView = ({ actor, isLevelUp }: {
         savePerkSelectionFlags(actor, perkSpellSlots)
     }, [perkSpellSlots])
 
-    return (
-        <div className="space-y-4 overflow-auto p-2">
-            {SpellSelection}
-        </div>
-    )
+    return { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots }
 }

@@ -107,10 +107,5 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         }
     }, [classPerkSlots])
 
-    const PerkSelectionView = 
-        <div className="space-y-4 overflow-auto p-2">
-            {PerkSelection}
-        </div>
-
-    return { PerkSelectionView }
+    return { PerkSelection, classPerkSlots }
 }

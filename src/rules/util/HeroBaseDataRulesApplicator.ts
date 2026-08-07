@@ -22,9 +22,10 @@ export class HeroBaseDataRulesApplicator {
 
         const applyPerkSelections = (perkSelections) => {
             Object.keys(perkSelections ?? {})?.forEach(key => {
-                const path = perkSelections[key][0]
-                const currentValue = foundry.utils.getProperty(actor.system, path)
-                foundry.utils.setProperty(actor.system, path, (typeof currentValue === "number") ? currentValue + 1 : true)
+                perkSelections[key].forEach(path => {
+                    const currentValue = foundry.utils.getProperty(actor.system, path)
+                    foundry.utils.setProperty(actor.system, path, (typeof currentValue === "number") ? currentValue + 1 : true)
+                })
             })
         }
 

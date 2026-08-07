@@ -100,7 +100,7 @@ export const usePerkBonusSelection = (
                                     <BonusChoiceTitle text={rule.label} />
                                     {/* SELECTED STATS W/ BONUSES APPLIED */}
                                     <HeroCreationSubtext text={
-                                        stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")
+                                        stats.map(s => `${vgLiteLang.Stat[s.stat]?.abbr}: ${s.value}`).join(" | ")
                                     } />
                                     <div className="flex items-end justify-center">
                                         <HeroCreationDropdown

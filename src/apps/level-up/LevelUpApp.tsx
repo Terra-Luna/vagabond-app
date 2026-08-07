@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { getClonedFlags, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 import { VagabondLiteApplication, VagabondLiteAppArgs } from "../VagabondLiteApplication"
 import { LevelUpView } from "./LevelUpView"
 
@@ -26,22 +27,52 @@ export class LevelUpApp extends VagabondLiteApplication {
         return {
             ...super.getReactProps(),
             actor: this.actor,
-            onSave: (isComplete: boolean) => this.handleSave(isComplete)
+            onSave: (args: {
+                advancement?: PerkBonusSelection,
+                spell?: PerkBonusSelection,
+                perkTraining?: PerkBonusSelection,
+                isComplete?: boolean
+            }) => this.handleSave(args)
         }
     }
 
     /**
      * Persists changes directly to the World Scope configuration DB.
      */
-    private async handleSave(isComplete?: boolean): Promise<void> {
-        if (isComplete) {
+    private async handleSave(args: {
+        advancement?: PerkBonusSelection,
+        spell?: PerkBonusSelection,
+        perkTraining?: PerkBonusSelection,
+        isComplete?: boolean
+    }): Promise<void> {
+        if (args.isComplete) {
             const level = this.actor.system.level
             await this.actor.update({
                 'system.level.current': (level.current ?? 0) + 1,
                 'system.level.xp': (level.xp ?? 0) - (level.xpToLevel ?? 0)
             } as Record<string, number>)
+
+            if (args.advancement || args.perkTraining || args.spell) {
+                const flags = getClonedFlags(this.actor)
+                const slots = Object.entries(flags).flatMap(([ruleId, values]) =>
+                    values.map(value => ({ ruleId, value }))
+                )
+
+                if (args.advancement) {
+                    console.log([...slots.filter(s => s.ruleId === args.advancement?.ruleId), args.advancement])
+                    savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.advancement?.ruleId), args.advancement])
+                }
+                if (args.perkTraining) {
+                    savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.perkTraining?.ruleId), args.perkTraining])
+                }
+                if (args.spell) {
+                    savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.spell?.ruleId), args.spell])
+                }
+            }
         }
         this.close()
     }
     
 }
+
+export interface PerkBonusSelection { value: string, ruleId: string }

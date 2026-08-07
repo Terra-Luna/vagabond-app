@@ -15,7 +15,8 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
     options: { value: string, label: string }[],
     otherSlotGroup: any[],
     grants: any[],
-    onSelect: any
+    onSelect: any,
+    
 }) => {
 
     /**

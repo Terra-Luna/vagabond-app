@@ -84,7 +84,7 @@ export const useSpellSelection = (
         )
     }, [])
 
-    const SpellSelection = <>
+    const SpellSelection = <div className="p2">
         <div className="bg-sheet-main-fill space-y-4 text-center items-center">
             <Header title={strings.spellsHeader} />
             <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} />
@@ -146,7 +146,7 @@ export const useSpellSelection = (
             spellSlots={[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots]}
             spellsList={spellsList}
         />
-    </>
+    </div>
 
     return {
         SpellSelection, loadInitialSlots, spellsList,

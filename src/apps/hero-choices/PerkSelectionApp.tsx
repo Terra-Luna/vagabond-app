@@ -1,6 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
-import { PerkSelectionView } from "./PerkSelectionView"
+import { usePerkSelectionView } from "./PerkSelectionView"
 
 export class PerkSelectionApp extends VagabondLiteApplication {
 
@@ -11,18 +11,15 @@ export class PerkSelectionApp extends VagabondLiteApplication {
         super({
             window: { title: "Grants & Modifiers" },
             position: { width: 400 },
-            Component: PerkSelectionView,
+            Component: () => {
+                const { PerkSelection } = usePerkSelectionView(actor, isLevelUp)
+                return <div className="flex flex-col min-h-0 w-full p-1 mb-4 overflow-y-auto">
+                    {PerkSelection}
+                </div>
+            }
         } as VagabondLiteAppArgs)
         this.actor = actor
         this.isLevelUp = isLevelUp
-    }
-
-    override getReactProps() {
-        return {
-            ...super.getReactProps(),
-            actor: this.actor,
-            isLevelUp: this.isLevelUp
-        }
     }
 
 }
