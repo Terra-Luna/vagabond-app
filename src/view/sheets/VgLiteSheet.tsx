@@ -11,8 +11,8 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         position: {
             width: 440,
             height: "auto",
-            top: 0,
-            left: 0
+            top: 100,
+            left: 100
         },
         window: {
             resizable: false

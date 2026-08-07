@@ -1,5 +1,4 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { isInventoryItem } from "../../model/actor/type/Inventory"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { ItemsCache } from "./ItemsCache"
@@ -14,6 +13,7 @@ export class PerkRulesSelectionsApplicator {
         actor.system.perks = []
 
         const activeRules = actor.system.getActiveRules()
+
         const perkSelections = actor.flags["vagabond-lite"]?.perkSelections ?? {}
 
         const itemRuleSelections = [

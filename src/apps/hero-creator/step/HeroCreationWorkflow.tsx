@@ -4,8 +4,8 @@ import { useClassSelection } from "./ClassSelection"
 import { useAncestrySelection } from "./AncestrySelection"
 import { useCoreStats } from "./CoreStats"
 import { useTrainingSelection } from "./TrainingSelection"
-import { useSpellSelection } from "./SpellSelection"
-import { usePerkSelection } from "./PerkSelection"
+import { useSpellSelection } from "./SpellSelectionUseCase"
+import { usePerkSelection } from "./PerkSelectionUseCase"
 import { useEquipmentSelection } from "./EquipmentSelection"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
@@ -72,7 +72,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Perks
      */
-    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton])
+    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton], 1, false)
 
     const { PerkBonusSelection, advancement, perkTraining, reasonTraining, spell, resetPerkBonusSelections } = usePerkBonusSelection(
         perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,

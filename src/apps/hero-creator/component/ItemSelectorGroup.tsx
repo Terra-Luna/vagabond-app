@@ -1,5 +1,6 @@
-import { useCallback } from "react"
+import { useCallback, useMemo } from "react"
 import { CustomDropDown } from "../../../view/component/Dropdown"
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 
 /**
  * This component is good for tracking multiple user selections across an array
@@ -18,7 +19,7 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
 }) => {
 
     /**
-     * Filter to make sure spells are removed from other spell slot selectors
+     * Filter to make sure spells/perks are removed from other slot selectors
      * as the player makes selections for each slot...
      * @param index 
      * @returns 
@@ -32,14 +33,18 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
         ].map(s => s.value).filter(Boolean)
     }, [slotGroup, otherSlotGroup, grants])
 
+    const stackablePerkIds = useMemo(() => {
+        return ItemsCache.perks().filter(it => it.system.canTakeMultiple).map(it => it.uuid)
+    }, [])
+
     return (
         <div className="flex flex-wrap gap-2 mt-2 w-full">
             {
                 slotGroup.map((slot, index) => (
                     <CustomDropDown
-                        key={`spell-slot-selector-${index}`}
+                        key={`spell-slot-selector-${index}-${slot.value}`}
                         value={slot.value}
-                        options={options.filter(opt => opt.value === slot.value || !getOtherSelectedIds(index).includes(opt.value))}
+                        options={options.filter(opt => opt.value === slot.value || stackablePerkIds.includes(opt.value) || !getOtherSelectedIds(index).includes(opt.value))}
                         className={"w-7/16 text-lg font-eskapade font-normal"}
                         onChange={(e) => {
                             const selectedId = e.target.value

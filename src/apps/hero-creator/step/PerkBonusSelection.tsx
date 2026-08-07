@@ -103,7 +103,7 @@ export const usePerkBonusSelection = (
                                         <HeroCreationSubtext text={
                                             stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")
                                         } />
-                                        <div className="flex items-end">
+                                        <div className="flex items-end justify-center">
                                             <HeroCreationDropdown
                                                 value={advancement?.value ?? ''}
                                                 options={rule.choices}
@@ -135,15 +135,17 @@ export const usePerkBonusSelection = (
                         {
                             trainings.map((rule, index) => {
                                 return (
-                                    <div key={index} className="flex flex-col justify-center gap-y-2">
+                                    <div key={index} className="flex flex-col gap-y-2">
                                         <BonusChoiceTitle text={rule.label} />
-                                        <HeroCreationDropdown
-                                            value={perkTraining?.value ?? ''}
-                                            options={rule.choices}
-                                            onChange={(val) => {
-                                                setPerkTraining({ value: val, ruleId: rule.id })
-                                            }}
-                                        />
+                                        <div className="flex justify-center">
+                                            <HeroCreationDropdown
+                                                value={perkTraining?.value ?? ''}
+                                                options={rule.choices}
+                                                onChange={(val) => {
+                                                    setPerkTraining({ value: val, ruleId: rule.id })
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 )
                             })
@@ -153,15 +155,17 @@ export const usePerkBonusSelection = (
                         {
                             spells.map((rule, index) => {
                                 return (
-                                    <div key={index} className="flex flex-col justify-center gap-y-2">
+                                    <div key={index} className="flex flex-col gap-y-2">
                                         <BonusChoiceTitle text={strings.magicalSecrets} />
-                                        <HeroCreationDropdown
-                                            value={spell?.value ?? ''}
-                                            options={rule.choices}
-                                            onChange={(val) => {
-                                                setSpell({ value: val, ruleId: rule.id })
-                                            }}
-                                        />
+                                        <div className="flex justify-center">
+                                            <HeroCreationDropdown
+                                                value={spell?.value ?? ''}
+                                                options={rule.choices}
+                                                onChange={(val) => {
+                                                    setSpell({ value: val, ruleId: rule.id })
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 )
                             })

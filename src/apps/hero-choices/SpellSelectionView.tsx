@@ -2,15 +2,19 @@ import { useEffect, useRef } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { useSpellSelection } from "../hero-creator/step/SpellSelection"
+import { useSpellSelection } from "../hero-creator/step/SpellSelectionUseCase"
 import { getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { groupBy } from "../../utils/collectionUtil"
 
-export const SpellSelectionView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
+export const SpellSelectionView = ({ actor, isLevelUp }: {
+    actor: Actor & { system: HeroDataModel },
+    isLevelUp?: boolean
+}) => {
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     const perks = actor.system.perks as PerkDataModel[]
+    const level = (actor.system.level.current ?? 0) + (isLevelUp ? 1 : 0)
 
     // Used for tracking spell slot loading upon opening the editor.
     const dataLoaded = useRef(false)
@@ -25,7 +29,7 @@ export const SpellSelectionView = ({ actor }: { actor: Actor & { system: HeroDat
     }
 
     const loadSelections = (rules, setSlots) => {
-        const slots = loadInitialSlots(rules.filter(r => r.level <= (actor.system.level.current ?? 0)))
+        const slots = loadInitialSlots(rules.filter(r => r.level <= level))
         let sharedIndex = 0
         rules.forEach(rule => {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
@@ -50,6 +54,10 @@ export const SpellSelectionView = ({ actor }: { actor: Actor & { system: HeroDat
     useEffect(() => {
         if (!spellsLoaded) return
 
+        /**
+         * This needs to remain async to prevent their Magical Secret
+         * spells slots from getting blanked-out on render frame 0.
+         */
         const loadInitialSpellSelections = async () => {
             if (clazz) {
                 const rules = await getItemChoiceRules(clazz.system.rules ?? [])

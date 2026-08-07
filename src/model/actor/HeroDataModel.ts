@@ -156,7 +156,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     getActiveRules() {
         const itemRules = this.parent.items.contents.flatMap((item: any) => {
             const rules = item.system.rules || []
-            return rules.filter((r: any) => this.parent.system.level.current >= (r.level || 0))
+            return rules.filter((r: any) => (r.level || 0) <= this.parent.system.level.current)
         })
         return itemRules
     }

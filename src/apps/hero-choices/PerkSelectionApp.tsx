@@ -1,8 +1,8 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel";
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication";
-import { SpellSelectionView } from "./SpellSelectionView";
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { PerkSelectionView } from "./PerkSelectionView"
 
-export class SpellSelectionApp extends VagabondLiteApplication {
+export class PerkSelectionApp extends VagabondLiteApplication {
 
     actor: Actor & { system: HeroDataModel }
     isLevelUp?: boolean
@@ -11,7 +11,7 @@ export class SpellSelectionApp extends VagabondLiteApplication {
         super({
             window: { title: "Grants & Modifiers" },
             position: { width: 400 },
-            Component: SpellSelectionView,
+            Component: PerkSelectionView,
         } as VagabondLiteAppArgs)
         this.actor = actor
         this.isLevelUp = isLevelUp

@@ -1,8 +1,8 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel";
-import { inventoryItemTypes } from "../../model/actor/type/Inventory";
-import { addItems } from "../../utils/heroInventoryUtil";
-import { isPathOfType } from "../../utils/modelUtil";
-import { ItemsCache } from "./ItemsCache";
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { inventoryItemTypes } from "../../model/actor/type/Inventory"
+import { addItems } from "../../utils/heroInventoryUtil"
+import { isPathOfType } from "../../utils/modelUtil"
+import { ItemsCache } from "./ItemsCache"
 
 export class HeroBaseDataRulesApplicator {
 
@@ -12,10 +12,13 @@ export class HeroBaseDataRulesApplicator {
         const perkSelections = actor.getFlag("vagabond-lite" as any, "perkSelections") ?? []
         const activeRules = actor.system.getActiveRules()
         const perkGrants = activeRules.filter(r => r.key === "GrantItem" && r.type === "perk")
+        const chosenPerkRules = activeRules.filter(r => r.key === "ChoiceSet" && r.pack === "perk")
         const toggleRules = activeRules.filter(r => r.key === "ToggleRule")
         const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
         const choiceRules = activeRules.filter(r => r.key === "ChoiceSet" && r.channel === "path" && r.sourceMode === "static")
         const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && inventoryItemTypes().includes(r.type))
+
+        const perks = ItemsCache.perks()
 
         const applyPerkSelections = (perkSelections) => {
             Object.keys(perkSelections ?? {})?.forEach(key => {
@@ -26,19 +29,29 @@ export class HeroBaseDataRulesApplicator {
         }
 
         const injectGrantedPerkRules = (perkGrants) => {
-            if (perkGrants && perkGrants.length > 0) {
-                const items = ItemsCache.perks()
-                for (const grant of perkGrants) {
-                    const perk = items.find(it => it.uuid === grant.uuid)
-                    const perkRules = perk?.system.rules
-                    if (perkRules && perkRules.length > 0) {
-                        perkRules.forEach(rule => {
-                            if (rule.key === "ToggleRule") toggleRules.push(rule)
-                            if (rule.key === "FlatModifier") flatModifiers.push(rule)
-                        })
-                    }
+            perkGrants?.forEach(grant => {
+                const perk = perks.find(it => it.uuid === grant.uuid)
+                const perkRules = perk?.system.rules
+                if (perkRules && perkRules.length > 0) {
+                    perkRules.forEach(rule => {
+                        if (rule.key === "ToggleRule") toggleRules.push(rule)
+                        if (rule.key === "FlatModifier") flatModifiers.push(rule)
+                    })
                 }
-            }
+            })
+        }
+
+        const injectChosenPerkRules = (chosenPerkRules) => {
+            chosenPerkRules?.forEach(rule => {
+                rule.selections?.forEach(selection => {
+                    const perk = perks.find(it => it.uuid === selection)
+                    const perkRules = perk?.system.rules
+                    perkRules?.forEach(rule => {
+                        if (rule.key === "ToggleRule") toggleRules.push(rule)
+                        if (rule.key === "FlatModifier") flatModifiers.push(rule)
+                    })
+                })
+            })
         }
 
         const applyToggleRule = (rule) => {
@@ -83,6 +96,7 @@ export class HeroBaseDataRulesApplicator {
 
         applyPerkSelections(perkSelections)
         injectGrantedPerkRules(perkGrants)
+        injectChosenPerkRules(chosenPerkRules)
         for (const rule of toggleRules) { applyToggleRule(rule) }
         for (const rule of flatModifiers) { applyFlatModifier(rule) }
         for (const rule of choiceRules) { applyChoiceRule(rule) }

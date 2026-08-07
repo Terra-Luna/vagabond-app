@@ -2,7 +2,7 @@ import { ReactNode, useCallback, useEffect, useState } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
-import { Divider, Header } from "../../../view/component/Header"
+import { Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
@@ -41,8 +41,8 @@ export const useSpellSelection = (
                 value: spell.uuid,
                 label: spell.name,
                 img: spell.img ?? '',
-                dmgType: (spell.system as any).damageType ?? 'none',
-                description: (spell.system as any).description
+                dmgType: spell.system.damageType ?? 'none',
+                description: spell.system.description
             }))
         ])
     }, [])
@@ -89,11 +89,12 @@ export const useSpellSelection = (
             <div className="bg-sheet-main-fill space-y-4 text-center items-center">
                 <Header title={strings.spellsHeader} />
                 <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} />
-                <Divider />
             </div>
 
             <div className="mt-4 space-y-1">
-                <HeroCreationLabel text={strings.grantedSpells} />
+                {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
+                    <HeroCreationLabel text={strings.grantedSpells} />
+                }
                 {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
                     <ItemGrantCard key={`grant-${index}`} name={grant.item} source={grant.source} />
                 ))}
@@ -103,7 +104,6 @@ export const useSpellSelection = (
             </div>
 
             <div className="mt-4 space-y-2">
-                <HeroCreationLabel text={strings.electiveSpells} />
                 <HeroCreationSubtext text={strings.classSpells} />
                 <ItemSelectorGroup
                     slotGroup={classSpellSlots}
@@ -127,6 +127,7 @@ export const useSpellSelection = (
                 </BonusChoiceContainer>
             }
 
+            {/* PERK SPELL SLOTS (MAGICAL SECRETS) */}
             {perkSpellSlots.length > 0 &&
                 <BonusChoiceContainer>
                     <BonusChoiceTitle text={strings.magicalSecrets} />

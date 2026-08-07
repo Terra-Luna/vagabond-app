@@ -33,7 +33,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 <div className="mt-0.5" />
                 <div className={abilitiesGrid}>
                     {
-                        hero.class?.features?.filter(f =>
+                        hero.class?.features?.sort((a, b) => a.level! - b.level!).filter(f =>
                             f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK'
                         ).map(f => (
                             <div key={f.name} onContextMenu={(e) => onCtxMenu(e, [

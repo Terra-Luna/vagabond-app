@@ -40,7 +40,7 @@ export const XpQuestionnairePlayerView = ({ questions, onSave }: {
                         <div className="flex justify-between">
                             {selections.includes(q.id) && <Check size={24} />}
                             <div>{q.text}</div>
-                            <div>{q.xp}XP</div>
+                            <div>{q.xp} XP</div>
                         </div>
                     </div>
                 ))}
@@ -49,11 +49,9 @@ export const XpQuestionnairePlayerView = ({ questions, onSave }: {
                 <DestructiveButton onClick={() => onSave(0)}>
                     {vgLiteLang.ButtonActions.cancel}
                 </DestructiveButton>
-                
                 <PrimaryButton type="submit" icon={<Save size={16} />}>
                     {vgLiteLang.ButtonActions.save}
                 </PrimaryButton>
-
             </div>
         </form>
     )

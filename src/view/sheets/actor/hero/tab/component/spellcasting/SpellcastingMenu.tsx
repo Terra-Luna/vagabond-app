@@ -49,6 +49,10 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         setDeliveries(delivs)
     }, [deliveryIndex, deliveries])
 
+    /**
+     * A hook that listens to their token targeting events and
+     * updates the target count for Remote & Imbue.
+     */
     useEffect(() => {
         const handleTargetChange = (user, token, isTargeted) => {
             if (user.id !== game.user?.id) return

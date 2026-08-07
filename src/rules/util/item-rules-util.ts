@@ -305,17 +305,16 @@ export function savePerkSelectionFlags(actor, slots) {
         // Clears out deselected slots.
         const nextValues = slots.filter(s => s.ruleId === ruleId).map(s => s.value).filter(Boolean)
 
+        console.log(nextValues)
         if (nextValues.length === 0) {
             if (mutableFlags[ruleId as string] !== undefined) {
-                mutableFlags[`-=${ruleId}`] = null
-                delete mutableFlags[ruleId as string]
+                mutableFlags[ruleId as string] = []
                 hasChanges = true
             }
         }
         else {
             if (JSON.stringify(mutableFlags[ruleId as string]) !== JSON.stringify(nextValues)) {
                 mutableFlags[ruleId as string] = nextValues
-                delete mutableFlags[`-=${ruleId}`]
                 hasChanges = true
             }
         }

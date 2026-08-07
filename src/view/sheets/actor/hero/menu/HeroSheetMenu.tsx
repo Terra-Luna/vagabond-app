@@ -74,8 +74,6 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'STATUSES'} onClick={() => { }} toggleMenu={toggleMenu} />
-                    <MenuListItem text={'LEVEL UP'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <ItemDivider />
                 </ul>
             </div>

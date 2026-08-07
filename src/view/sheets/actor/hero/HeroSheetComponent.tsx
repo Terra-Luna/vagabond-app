@@ -1,4 +1,4 @@
-import { Menu, Sword, Swords } from "lucide-react"
+import { ArrowsUpFromLine, Menu, Sword, Swords } from "lucide-react"
 import { useEffect } from "react"
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs"
 import { importHero } from "../../../../apps/importer/TagalongImporter"
@@ -20,6 +20,7 @@ import { openItemSheet } from "../../../../model/actor/type/Inventory"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 import { AttacksTab } from "./tab/AttacksTab"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
+import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -68,7 +69,20 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                 <div className="bg-sheet-header-fill font-eskapade grow">
                     <div className="flex text-text-header-primary text-4xl font-bold mt-1 ml-2">
                         <EditableNameField actor={hero.parent} />
-                        <HeroSheetMenu hero={hero} sheet={sheet} className="ml-auto" />
+
+                        <div className="flex gap-x-2 ml-auto">
+                            {(hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < 10 &&
+                                <button
+                                    title={"LEVEL UP!"}
+                                    onClick={async () => new LevelUpApp(hero.parent).render({ force: true })}
+                                    className="hover-glow cursor-pointer ml-auto"
+                                >
+                                    <ArrowsUpFromLine size={24} className="text-text-header-secondary" />
+                                </button>
+                            }
+
+                            <HeroSheetMenu hero={hero} sheet={sheet} className="ml-auto" />
+                        </div>
                     </div>
                     <div className="flex text-text-header-secondary ml-2 pb-1">
                         <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
@@ -77,6 +91,8 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                             <p onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</p>
                             <p onClick={() => openItemSheet(hero.class)}>{getName(hero.class) ?? "Vagabond"}</p>
                         </div>
+
+                        {/* EXPERIENCE POINTS */}
                         <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })} >
                             {localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}
                         </div>
