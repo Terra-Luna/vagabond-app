@@ -31,7 +31,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         return ItemsCache.spells()
             .filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid))
             .map(sp => SpellDelivery.getSpellSnapshot(sp))
-    }, [actor])
+    }, [actor, JSON.stringify(actor.system.class?.rules ?? [])])
 
     useEffect(() => {
         const deliveryOptions = getNewDeliveryOptions(spells[0])
