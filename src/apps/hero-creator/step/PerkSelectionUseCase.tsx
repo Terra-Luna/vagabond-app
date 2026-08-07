@@ -123,7 +123,7 @@ export const usePerkSelection = (
         <div className="bg-sheet-main-fill space-y-4">
             {/* HEADER AND NAVIGATION BUTTONS */}
             <Header title={strings.perksHeader} />
-            <TopNavButtons navButtons={navButtons} />
+            <TopNavButtons navButtons={navButtons} canProceed={isAllSelected} />
 
             {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
 

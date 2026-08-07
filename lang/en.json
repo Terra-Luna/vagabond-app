@@ -575,7 +575,7 @@
       "windowTitle": "Hero Creator",
       "identity": "IDENTITY",
       "heroName": "Hero Name",
-      "selectAncestry": "Select ancestry...",
+      "selectAncestry": "ANCESTRY",
       "beingType": "Type",
       "beingSize": "Size",
       "class": "CLASS",

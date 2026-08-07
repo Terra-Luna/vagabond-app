@@ -35,7 +35,7 @@ export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navBu
     const ClassSelection = (
         <div className="bg-sheet-main-fill space-y-4">
             <Header title={strings.class} />
-            <TopNavButtons navButtons={navButtons} subtitle="" />
+            <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!!classItem} />
 
             <HeroCreationDropdown
                 label={strings.class}

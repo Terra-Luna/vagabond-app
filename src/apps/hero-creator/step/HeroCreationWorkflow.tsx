@@ -277,12 +277,6 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             <div className="flex-1 overflow-auto">
                 {renderStepContent(stepId)}
             </div>
-
-            {/* Bottom Button Panel Section */}
-            <div className="flex items-center justify-between gap-x-4 pt-4 mt-auto mb-2 border-t border-solid border-table-border">
-                <div>{backButton}</div>
-                <div>{nextButton}</div>
-            </div>
         </div>
     )
 }

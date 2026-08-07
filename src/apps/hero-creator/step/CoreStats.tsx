@@ -27,7 +27,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
     const [dragOverKey, setDragOverStat] = useState<string | null>(null)
     
     const resetAssignedStats = () => {
-        //setCanProceed(false)
         setBonusStatSelections([])
         setAssignedStats(Object.keys(stats).map(s => ({ stat: s, value: null, poolIndex: null })))
         setSelectedArr(prev => {
@@ -76,10 +75,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
             if (totalRequiredSelections === 0 || (totalRequiredSelections === bonusStatSelections.length)) {
                 shouldProceed = true
             }
-        }
-        if (lastCanProceedRef.current !== shouldProceed) {
-            lastCanProceedRef.current = shouldProceed
-            //setCanProceed(shouldProceed)
         }
     }, [assignedStats, bonusStatSelections, requiredChoiceRules])
 
@@ -151,7 +146,6 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
             return
         }
 
-
         setAssignedStats(prev => {
             const existingAssignment = prev.find(item => item.stat === targetStatKey)
             const returnedIndex = existingAssignment?.poolIndex
@@ -173,19 +167,21 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         <div className="bg-sheet-main-fill space-y-4">
             {/* HEADER */}
             <Header title={strings.coreStats} />
-            <TopNavButtons navButtons={navButtons} subtitle="" />
+            <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!assignedStats.some(s => s.value === null) && (requiredChoiceRules.length === bonusStatSelections.length)} />
 
             <div className="w-full space-y-2 items-center justify-center text-center">
                 {/* STAT ARRAY HEADER */}
                 <HeroCreationLabel text={strings.statArrayPool} />
 
                 {/* TODO: DELETE THIS HELPER BUTTON LATER */}
-                <SecondaryButton onClick={() => {
-                    assignedStats.forEach((s, i) => {
-                        s.value = selectedArr?.values[i] ?? 2
-                    })
-                    setAssignedStats([...assignedStats])
-                }} children={<p>AUTO (delete me later)</p>} />
+                <div className="flex w-full justify-center">
+                    <SecondaryButton onClick={() => {
+                        assignedStats.forEach((s, i) => {
+                            s.value = selectedArr?.values[i] ?? 2
+                        })
+                        setAssignedStats([...assignedStats])
+                    }} children={<p>AUTO ASSIGN (TEST ONLY)</p>} />
+                </div>
 
                 <HeroCreationSubtext text={strings.statArrayDrag} />
 

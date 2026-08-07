@@ -34,7 +34,7 @@ export const useAncestrySelection = (navButtons: ReactNode[]) => {
     const AncestrySelection = (
         <div className="bg-sheet-main-fill space-y-4">
             <Header title={strings.identity} />
-            <TopNavButtons navButtons={navButtons} />
+            <TopNavButtons navButtons={navButtons} canProceed={!!ancestryItem} />
             <div className="gap-x-4">
                 <HeroCreationDropdown
                     label={strings.selectAncestry}

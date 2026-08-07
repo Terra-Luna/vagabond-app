@@ -21,7 +21,7 @@ export const useEquipmentSelection = (
         <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
             <div className="flex flex-col gap-y-4 h-full overflow-hidden">
                 <Header title={strings.equipHeader} />
-                <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} />
+                <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} canProceed={true} />
                 <ItemShop includeStarterPacks={true} />
             </div>
         </EditModeContextProvider >

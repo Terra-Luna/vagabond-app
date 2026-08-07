@@ -93,11 +93,17 @@ export const useTrainingSelection = (
         }
     }, [chosenBonusSkills, ancestryTrainingMaxChoices])
 
+    const canProceed = useMemo(() => {
+        const isL1SkillsSelected = chosenLevel1Skills.length === level1TrainingRule.maxChoices
+        const isBonusSkillsSelected = chosenBonusSkills.length === ancestryTrainingMaxChoices
+        return isL1SkillsSelected && isBonusSkillsSelected
+    }, [chosenLevel1Skills, level1TrainingRule, chosenBonusSkills, ancestryTrainingMaxChoices])
+
     const TrainingSelection = (
         <div className="bg-sheet-main-fill space-y-4">
             {/* HEADER AND NAVIGATION BUTTONS */}
             <Header title={strings.traingingsHeader} />
-            <TopNavButtons navButtons={navButtons} subtitle={strings.trainingSubheader} />
+            <TopNavButtons navButtons={navButtons} subtitle={strings.trainingSubheader} canProceed={canProceed} />
 
             <div className="items-center justify-center text-center w-full space-y-2">
 
