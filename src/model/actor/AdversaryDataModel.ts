@@ -2,7 +2,7 @@ import { lang } from "../../utils/lang"
 import { getName } from "../../utils/modelUtil"
 import { damageTypeOptions, fields, movementTypes, optionalString, requiredString, statusEffOptions, zonePreferences } from "../common/sharedSchemas"
 import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
-import { adversaryActionComboSchema, adversaryActionSchema } from "./type/AdversaryAction"
+import { adversaryActionComboSchema, adversaryActionSchema, getDamageAverage } from "./type/AdversaryAction"
 
 const adversarySchema = () => {
     return {
@@ -98,13 +98,16 @@ export const setThreatLevel = (adv: AdversaryDataModel): number => {
     let c = 0
 
     if (adv.combo != null && adv.combo.actions != null && adv.combo.actions.length > 0) {
-        adv.combo?.actions?.forEach(act => c += (Number(act.damage.avg) * Number(act.comboCount)))
+        adv.combo?.actions?.forEach(act => c += (getDamageAverage(act.damage.dice as any) * Number(act.comboCount)))
         adv.actions
             ?.filter(act => adv.combo.actions.findIndex(it => it.name === act.name) < 0)
-            .forEach(act => c += Number(act.damage.avg ?? 0))
+            .forEach(act => c += getDamageAverage(act.damage.dice as any))
     }
     else {
-        adv.actions?.forEach(act => { const avg = Number(act.damage.avg); c += isNaN(avg) ? 0 : avg; })
+        adv.actions?.forEach(act => {
+            const avg = getDamageAverage(act.damage.dice as any)
+            c += isNaN(avg) ? 0 : avg
+        })
         c = c / (adv.actions?.length || 1)
     }
 

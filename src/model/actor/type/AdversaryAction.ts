@@ -1,4 +1,5 @@
-import { damageTypeOptions, fields, optionalInteger, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { DiceRollSchema } from "../../../combat/engine/DiceRoll"
+import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 
 /**
  * A detailed adversary offensive action.
@@ -8,12 +9,23 @@ export const adversaryActionSchema = () => {
         name: new fields.StringField({ required: true }),
         effect: new fields.StringField({ ...optionalString }),
         damage: new fields.SchemaField({
-            roll: new fields.StringField({ ...optionalString }),
-            avg: new fields.NumberField({ ...optionalInteger }),
+            dice: new fields.SchemaField({
+                count: new fields.NumberField({ ...requiredInteger, initial: 1, min: 1 }),
+                faces: new fields.NumberField({ ...requiredInteger, initial: 4, min: 1, max: 20 }),
+                modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                explodesOn: new fields.ArrayField(
+                    new fields.NumberField({ integer: true, initial: 0, required: false }),
+                    { initial: [] }
+                )
+            }),
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
         recharge: new fields.StringField({ ...optionalString })
     }
+}
+
+export const getDamageAverage = (dice: DiceRollSchema): number => {
+    return Math.ceil((dice.faces + 1) * dice.count / 2) + (dice.modifier ?? 0)
 }
 
 /**

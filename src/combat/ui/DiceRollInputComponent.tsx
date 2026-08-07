@@ -64,7 +64,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                         {/* DIE SIZE */}
                         <div>
                             <CustomDropDown
-                                value={diceRoll.faces.toString()}
+                                value={diceRoll.faces?.toString() ?? ''}
                                 options={[
                                     { value: "1", label: "d1" },
                                     { value: "4", label: "d4" },

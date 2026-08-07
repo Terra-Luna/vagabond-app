@@ -5,6 +5,7 @@ import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 import { DamageRoll } from "../../../../../combat/engine/DamageRoll"
+import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/DiceRoll"
 
 export const useAddAbilityMenu = () => {
     const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)
@@ -18,30 +19,29 @@ export const useAddActionMenu = () => {
     return { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget }
 }
 
-export const onClickAction = async (adv: AdversaryDataModel, name: string, description: string, dmgType: string, roll?: string, avgDmg?: string) => {
+export const onClickAction = async (adversary: AdversaryDataModel, name: string, description?: string, dmgType?: string, dice?: DiceRollSchema) => {
     /**
      * TODO: create a config item to toggle between using damage rolls vs. flat damage.
      */
-    if (roll) {
-        ui.notifications?.error("Terra, come fix this")
+    if (dice) {
         const result = await new DamageRoll({
-            atkName: name, dmgType: dmgType, dice: []
+            atkName: name, dmgType: dmgType, dice: [new DiceRoll(dice)]
         }).roll()
 
         sendVgLiteChatMessage(
-            adv,
+            adversary,
             <DamageRollChatCard
-                actorId={getId(adv)}
+                actorId={getId(adversary)}
                 tokenIds={getTargetIds()}
                 result={result}
             />, result.rolls
         )
     }
     else {
-        sendVgLiteChatMessage(adv, <AbilityChatCard
-            actorId={getId(adv)}
+        sendVgLiteChatMessage(adversary, <AbilityChatCard
+            actorId={getId(adversary)}
             title={name}
-            description={description}
+            description={description ?? ''}
             tokenIds={getTargetIds()}
         />)
     }

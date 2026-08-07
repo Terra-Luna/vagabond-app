@@ -20,29 +20,29 @@ const statLabelStyle = `text-sm text-text-header-tertiary font-eskapade font-bol
 const statValueStyle = `text-lg text-text-primary font-eskapade font-normal`
 
 export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel } }) => {
-    const adv = actor.system
+    const adversary = actor.system
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
     return (
         <div className="@container flex grow overflow-y-hidden">
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
-                <Portrait actor={adv} />
+                <Portrait actor={adversary} />
                 <div className="flex flex-col grow p-2">
-                    <HPArmorHUD adv={adv} />
+                    <HPArmorHUD adv={adversary} />
                 </div>
             </div>
             <div className="flex flex-col grow">
-                <AdversarySheetHeader adv={adv} />
+                <AdversarySheetHeader adv={adversary} />
                 <div className="overflow-y-auto">
-                    <Description item={adv.parent} />
-                    <StatBlock adv={adv} />
-                    <Actions adv={adv} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
+                    <Description item={adversary.parent} />
+                    <StatBlock adv={adversary} />
+                    <Actions adversary={adversary} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
                     {isAddActionOpen ?
-                        <NewActionWindow adv={adv} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
+                        <NewActionWindow adv={adversary} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
                     }
-                    <Abilities adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
+                    <Abilities adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
                     {isAddAbilityOpen ?
-                        <NewAbilityWindow adv={adv} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
+                        <NewAbilityWindow adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
                     }
                 </div>
             </div>

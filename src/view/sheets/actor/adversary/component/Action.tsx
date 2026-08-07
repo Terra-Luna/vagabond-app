@@ -1,12 +1,12 @@
 import { vgLiteLang as locale, vgLiteLang } from "../../../../../utils/lang"
 import { Trash, PenSquare, Plus, Save } from "lucide-react"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useMemo } from "react"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
-import { damageRoll, glowOnHover } from "../../../../common/text-styles"
+import { damageRoll } from "../../../../common/text-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../component/EditableTextField"
@@ -19,6 +19,9 @@ import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
 import { ComboChatCard } from "../../../../chat/ComboChatCard"
 import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/DamageRoll"
+import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
+import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/DiceRoll"
+import { getDamageAverage } from "../../../../../model/actor/type/AdversaryAction"
 
 export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()
@@ -32,77 +35,86 @@ export const ActionMenuHeader = ({ label, onClick }) => {
 
 export const AddNewIconButton = ({ onClick }) => {
     return (
-        <Plus size={18} strokeWidth={4} className={`text-text-header-tertiary ${glowOnHover}`} onClick={onClick} />
+        <Plus size={18} strokeWidth={4} className={`text-text-header-tertiary hover-glow`} onClick={onClick} />
     )
 }
 
-export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
+export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { adversary: AdversaryDataModel, setIsAddMenuOpen: any, setEditTarget: any }) => {
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
+
     return (
         <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
             <ActionMenuHeader label={locale.AdversarySheet.actions} onClick={() => setIsAddMenuOpen(true)} />
+
             {/* DISPLAY COMBO FIRST */}
             <div
-                className={`${glowOnHover}`}
-                onClick={() => onClickActionCombo(adv)}
-                onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adv), isDestructive: true }])}
+                className={`hover-glow`}
+                onClick={() => onClickActionCombo(adversary)}
+                onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adversary), isDestructive: true }])}
             >
-                {adv.combo.name !== '' &&
+                {adversary.combo.name !== '' &&
                     <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
                         <p className="font-paradigm font-bold">{locale.AdversarySheet.combo}:</p>
-                        <p className="text-text-secondary">{adv.combo.name}</p>
+                        <p className="text-text-secondary">{adversary.combo.name}</p>
                     </div>
                 }
             </div>
+
             {/* DISPLAY ALL ACTIONS */}
-            <div className="grid grid-cols-2 gap-1">
+            <div className="flex flex-col gap-1">
                 {
-                    adv.actions.map((act, i) => {
-                        const spanCls = (i === adv.actions.length - 1) && (adv.actions.length % 2) ? 'col-span-2' : ''
+                    adversary.actions.map((act, i) => {
                         return (
-                            <div
-                                key={act.name}
-                                className={`p-2 ${spanCls} ${tableBorderRounded}`}
-                                onContextMenu={(e) => onCtxMenu(e, [
-                                    { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
-                                    { icon: Trash, label: 'Delete', action: () => deleteAction(adv, act), isDestructive: true }
-                                ])}>
-                                {/* ACTION NAME */}
-                                <div className={`flex justify-between gap-x-2 ${glowOnHover}`} onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}>
+                            <div className="flex gap-2 p-2 justify-between border border-solid border-table-border rounded" onContextMenu={(e) => onCtxMenu(e, [
+                                { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
+                                { icon: Trash, label: 'Delete', action: () => deleteAction(adversary, act), isDestructive: true }
+                            ])}>
+                                <div className="flex flex-col">
+
+                                    {/* ACTION NAME */}
                                     <p className="font-bold">{act.name}</p>
-                                    <div className='w-[16px]'>
-                                        <DamageTypeIcon dmgType={act.damage.type ?? ''} size={16} />
+
+                                    {/* ACTION TRAITS... */}
+                                    <div>
+                                        {/* ATTACK DESCRIPTION */}
+                                        <EnrichedContent content={act.effect} styleClasses="text-text-secondary italic" />
+                                        {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
+                                        {act.damage.dice &&
+                                            <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(adversary, act.name, act.effect, act.damage.type, act.damage.dice as DiceRollSchema)}>
+                                                <p className="text-text-secondary leading-none">Dmg:</p>
+                                                <p className={`${damageRoll} leading-none`}>{new DiceRoll(act.damage.dice as any).toRollFormula()}</p>
+                                                <p className="leading-none text-text-secondary">|</p>
+                                                <span className={`${damageRoll} leading-none cursor-pointer`} onClick={async (e) => {
+                                                    e.stopPropagation()
+                                                    const avgDamage = getDamageAverage(act.damage.dice as DiceRollSchema)
+                                                    const result = await new DamageRoll({
+                                                        atkName: act.name,
+                                                        dice: [new DiceRoll({ count: avgDamage, faces: 1 })],
+                                                        dmgType: act.damage.type
+                                                    }).roll()
+                                                    sendVgLiteChatMessage(
+                                                        adversary,
+                                                        <DamageRollChatCard
+                                                            actorId={getId(adversary)}
+                                                            tokenIds={getTargetIds()}
+                                                            result={result} />, result.rolls
+                                                    )
+                                                }}>
+                                                    {getDamageAverage(act.damage.dice as DiceRollSchema)}
+                                                </span>
+                                            </div>
+                                        }
+                                        {/* RECHARGE ROLL */}
+                                        {act.recharge != null && act.recharge != '' &&
+                                            <div className="flex gap-x-2 text-text-secondary">
+                                                {'Recharge:'}<EnrichedContent content={act.recharge} />
+                                            </div>
+                                        }
                                     </div>
                                 </div>
-                                {/* ACTION TRAITS... */}
-                                <div className="ml-2">
-                                    <EnrichedContent content={act.effect} styleClasses="text-text-secondary" />
-                                    {
-                                        act.damage.roll &&
-                                            <div className={`flex gap-2 ${glowOnHover}`} onClick={() => onClickAction(adv, act.name, act.effect, act.damage.type, act.damage.roll, act.damage.avg)}>
-                                                <p className="text-text-secondary">Dmg:</p>
-                                                <p className={damageRoll}>{act.damage.roll}</p>
-                                                <p>|</p>
-                                                <p className={damageRoll} onClick={async () => {
-                                                    const result = await new DamageRoll({ atkName: act.name, dmgType: act.damage.type, dice: [{ count: 0, faces: act.damage.avg }] }).roll()
-                                                    sendVgLiteChatMessage(adv,
-                                                        <DamageRollChatCard
-                                                            actorId={getId(adv)}
-                                                            tokenIds={getTargetIds()}
-                                                            result={result} />, result.rolls)
-                                                }}>
-                                                    {act.damage.avg}
-                                                </p>
-                                            </div>
-                                    }
-                                    {act.recharge != null && act.recharge != '' &&
-                                        <div className="flex gap-x-2 text-text-secondary">
-                                            {'Recharge'}<EnrichedContent content={act.recharge} />
-                                        </div>
-                                    }
-                                </div>
+                                <DamageTypeIcon dmgType={act.damage.type} size={24} />
                             </div>
                         )
                     })
@@ -113,20 +125,23 @@ export const Actions = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     )
 }
 
-const onClickActionCombo = async (adv: AdversaryDataModel) => {
+const onClickActionCombo = async (adversary: AdversaryDataModel) => {
     const rolls: DamageRollResult[] = []
-    for (let action = 0; action < adv.combo.actions.length; action++) {
-        const act = adv.combo.actions[action]
+    for (let action = 0; action < adversary.combo.actions.length; action++) {
+        const act = adversary.combo.actions[action]
         for (let count = 0; count < (act.comboCount ?? 0); count++) {
-            ui.notifications?.error("Terra, come fix this!")
-            const result = await new DamageRoll({ atkName: act.name, dmgType: act.damage.type, dice: [] }).roll()
+            const result = await new DamageRoll({
+                atkName: act.name,
+                dmgType: act.damage.type,
+                dice: [new DiceRoll(act.damage.dice as any)]
+            }).roll()
             rolls.push(result)
         }
     }
     sendVgLiteChatMessage(
-        adv,
+        adversary,
         <ComboChatCard
-            actorId={getId(adv)}
+            actorId={getId(adversary)}
             rolls={rolls}
             tokenIds={getTargetIds()}
         />, rolls.flatMap(r => r.rolls)
@@ -142,7 +157,7 @@ const deleteAction = (adv: AdversaryDataModel, action: any) => {
 }
 
 export interface AdversaryAction {
-    name: string, effect: string, damage: { roll: string, avg: number, type: string }, recharge: string, comboCount: number
+    name: string, effect: string, damage: { dice: DiceRollSchema, type: string }, recharge: string, comboCount: number
 }
 
 export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
@@ -162,12 +177,14 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
         return setNewAction({ ...newAction, effect: eff })
     }, [setNewAction, newAction])
 
-    const updateDamageRoll = useCallback(async (roll: string | null) => {
-        return setNewAction({ ...newAction, damage: { ...newAction?.damage, roll: roll } })
-    }, [setNewAction, newAction])
-
-    const updateDamageAvg = useCallback(async (avg: string | null) => {
-        return setNewAction({ ...newAction, damage: { ...newAction?.damage, avg: avg } })
+    const updateDamageRoll = useCallback(async (dice: Partial<DiceRollSchema>) => {
+        return setNewAction({
+            ...newAction, damage: {
+                ...newAction?.damage, dice: {
+                    ...newAction?.damage?.dice, ...dice
+                }
+            }
+        })
     }, [setNewAction, newAction])
 
     const updateDamageType = useCallback(async (type: string | null) => {
@@ -251,41 +268,36 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                 </div> :
                     <div className="space-y-2">
                         {/* ACTION NAME */}
-                        <div className="flex">
+                        <div className="flex items-end">
                             <p>Name:&nbsp;</p>
-                            <div className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <div className={`font-eskapade font-bold hover-glow`}>
                                 <EditableTextField boundValue={newAction?.name ?? null} onSave={updateName} placeholder='Claws [Melee, Near]' />
                             </div>
                         </div>
 
                         {/* EFFECT DESCRIPTION */}
-                        <div className="flex">
+                        <div className="flex items-end">
                             <p>Effect:&nbsp;</p>
-                            <div className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <div className={`font-eskapade font-bold hover-glow`}>
                                 <EditableTextField boundValue={newAction?.effect ?? null} onSave={updateEffect} placeholder='Effect description...' />
                             </div>
                         </div>
 
                         {/* DAMAGE ROLL */}
-                        <div className="flex">
-                            <p>Damage:&nbsp;</p>
-                            <div className={`font-eskapade font-bold ${glowOnHover}`}>
-                                <EditableTextField boundValue={newAction?.damage?.roll ?? null} onSave={updateDamageRoll} placeholder='XdY+Z' />
-                            </div>
-                        </div>
-
-                        {/* DAMAGE AVG */}
-                        <div className="flex">
-                            <p>Damage Avg:&nbsp;</p>
-                            <div className={`font-eskapade font-bold ${glowOnHover}`}>
-                                <EditableTextField boundValue={newAction?.damage?.avg?.toString() ?? null} onSave={updateDamageAvg} placeholder='0' />
-                            </div>
+                        <div className="flex items-end">
+                            <DiceRollInputComponent
+                                diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 6 }}
+                                onChange={(updated) => {
+                                    console.log(updated)
+                                    updateDamageRoll(updated)
+                                }}
+                            />
                         </div>
 
                         {/* DAMAGE TYPE */}
-                        <div className="flex">
+                        <div className="flex items-end">
                             <p>Damage Type:&nbsp;</p>
-                            <div className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <div className={`font-eskapade font-bold hover-glow`}>
                                 <DropDown
                                     value={newAction?.damage?.type ?? ''}
                                     options={createDropdownEntries(vgLiteLang.DamageTypes)}
@@ -298,9 +310,9 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         </div>
 
                         {/* RECHARGE */}
-                        <div className="flex">
+                        <div className="flex items-end">
                             <p>Recharge:&nbsp;</p>
-                            <div className={`font-eskapade font-bold ${glowOnHover}`}>
+                            <div className={`font-eskapade font-bold hover-glow`}>
                                 <EditableTextField boundValue={newAction?.recharge ?? null} onSave={updateRecharge} placeholder="CdX" />
                             </div>
                         </div>
