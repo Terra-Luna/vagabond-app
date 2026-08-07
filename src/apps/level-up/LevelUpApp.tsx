@@ -52,6 +52,9 @@ export class LevelUpApp extends VagabondLiteApplication {
                 'system.level.xp': (level.xp ?? 0) - (level.xpToLevel ?? 0)
             } as Record<string, number>)
 
+            /**
+             * Merges any new perk bonus choices into their existing flags...
+             */
             if (args.advancement || args.perkTraining || args.spell) {
                 const flags = getClonedFlags(this.actor)
                 const slots = Object.entries(flags).flatMap(([ruleId, values]) =>

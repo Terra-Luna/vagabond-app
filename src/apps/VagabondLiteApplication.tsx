@@ -21,7 +21,9 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
         window: { title: "", minimizable: true, resizable: true },
         position: {
             width: 550,
-            height: "auto"
+            height: "auto",
+            top: 120,
+            left: 120
         }
     }
 

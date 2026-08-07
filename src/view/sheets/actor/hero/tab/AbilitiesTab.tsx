@@ -85,11 +85,12 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 }
             </div>
 
-            <div className="flex mt-1 w-full justify-end mb-12">
+            {/* PERK SELECTIONS - Currently hidden because it's kinda buggy due to how it uses flags to save choices. */}
+            {/* <div className="flex mt-1 w-full justify-end mb-12">
                 <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
                     Select Perks
                 </PrimaryButton>
-            </div>
+            </div> */}
 
             <ContextMenu />
         </div>
