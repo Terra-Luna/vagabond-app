@@ -6,6 +6,7 @@ import { usePerkSelection } from "../hero-creator/step/PerkSelectionUseCase"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { groupBy } from "../../utils/collectionUtil"
+import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
 
 export const PerkSelectionView = ({ actor, isLevelUp }: {
     actor: Actor & { system: HeroDataModel },
@@ -32,6 +33,8 @@ export const PerkSelectionView = ({ actor, isLevelUp }: {
         PerkSelection, perksList, classPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots
     } = usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, true)
 
+    //const { PerkBonus} = usePerkBonusSelection(classPerkSlots.reverse()[0])
+
     const getPerkName = (id: string): string => {
         return perksList.find(it => it.value === id)?.label ?? 'unk'
     }
@@ -43,7 +46,7 @@ export const PerkSelectionView = ({ actor, isLevelUp }: {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
             ruleSelections.forEach(sel => {
                 if (slots[sharedIndex]) {
-                    slots[sharedIndex] = { value: sel, label: getPerkName(sel), ruleName: rule.label, ruleId: rule.id }
+                    slots[sharedIndex] = { value: sel, label: getPerkName(sel), ruleName: rule.label, ruleId: rule.id, isLocked: rule.level < level }
                 }
                 sharedIndex += 1
             })

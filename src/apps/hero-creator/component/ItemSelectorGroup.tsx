@@ -11,7 +11,7 @@ import { ItemsCache } from "../../../rules/util/ItemsCache"
  * @returns 
  */
 export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, onSelect }: {
-    slotGroup: { value: string, label: string }[],
+    slotGroup: { value: string, label: string, isLocked?: boolean }[],
     options: { value: string, label: string }[],
     otherSlotGroup: any[],
     grants: any[],
@@ -52,7 +52,7 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                             const label = selectedSpell ? selectedSpell.label : ''
                             onSelect(index, label, selectedId)
                         }}
-                        editModeOverride={true}
+                        editModeOverride={!slot.isLocked}
                     />
                 ))
             }

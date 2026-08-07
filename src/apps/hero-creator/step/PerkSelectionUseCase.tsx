@@ -30,7 +30,7 @@ export const usePerkSelection = (
     const strings = vgLiteLang.HeroCreation
 
     // All perks for selection.
-    const [perksList, setPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
+    const [perksList, setPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], multi: boolean, cardSubheader: CardSubHeaderValues[], description: string }[]>([])
     const [eligiblePerksList, setEligiblePerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
     const [classRestrictedPerksList, setClassRestrictedPerksList] = useState<{ value: string, label: string, img: string, prereqs: any[], cardSubheader: CardSubHeaderValues[], description: string }[]>([])
     const [useEligibilityFilter, setUseEligibilityFilter] = useState<boolean>(true)
@@ -41,7 +41,7 @@ export const usePerkSelection = (
 
     // Player's chose perks for each slot.
     const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
-    const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
+    const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, isLocked: boolean }[]>([])
 
     const toDisplayablePerk = (perk) => {
         return {
@@ -49,8 +49,9 @@ export const usePerkSelection = (
             label: perk.name,
             img: perk.img ?? '',
             prereqs: (perk.system as any)?.prerequisites,
+            multi: perk.system.canTakeMultiple,
             cardSubheader: perkPrerequisites(perk.system as any),
-            description: (perk.system as any)?.description
+            description: perk.system.description
         }
     }
 
@@ -59,7 +60,7 @@ export const usePerkSelection = (
      */
     useEffect(() => {
         setPerksList([
-            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
+            { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '', multi: false },
             ...ItemsCache.perks().map(perk => toDisplayablePerk(perk))
         ])
     }, [])
@@ -165,9 +166,9 @@ export const usePerkSelection = (
 
                         <ItemSelectorGroup
                             slotGroup={classPerkSlots}
-                            options={classRestrictedPerksList}
+                            options={isLevelUp ? (useEligibilityFilter ? eligiblePerksList : perksList) : classRestrictedPerksList}
                             otherSlotGroup={ancestryPerkSlots}
-                            grants={[...ancestryPerkGrants, ...classPerkGrants]}
+                            grants={[...ancestryPerkGrants, ...classPerkGrants].filter(g => !perksList.find(p => p.value === g.uuid)?.multi)}
                             onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setClassPerkSlots)}
                         />
                     </div>
