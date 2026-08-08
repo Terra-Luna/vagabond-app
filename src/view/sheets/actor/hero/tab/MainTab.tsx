@@ -5,7 +5,6 @@ import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { WeaponDataModel, isEquippedWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { getId } from "../../../../../utils/modelUtil"
-import { glowOnHover } from "../../../../common/text-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
@@ -68,11 +67,11 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                         <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
                             <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
                             <div className="flex justify-end">
-                                <div title={"Toggle grip (if applicable)"} className={`${gripStyle} mr-2 ${glowOnHover}`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
+                                <div title={"Toggle grip (if applicable)"} className={`${gripStyle} mr-2 hover-glow`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
                                 <div className="flex content-right">
                                     <div
                                         title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
-                                        className={`${dmgStyle} ${glowOnHover}`}
+                                        className={`${dmgStyle} hover-glow`}
                                         onClick={async (e) => {
                                             HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [], e).initiate()
                                         }}

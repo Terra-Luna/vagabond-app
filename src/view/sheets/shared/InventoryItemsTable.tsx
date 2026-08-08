@@ -7,7 +7,6 @@ import { ArmorDataModel } from "../../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { getId, getName } from "../../../utils/modelUtil"
-import { glowOnHover } from "../../common/text-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 import { vgLiteLang } from "../../../utils/lang"
@@ -43,7 +42,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             className={
                                 index === dragIndex ?
                                     "bg-text-fatigue-current draggable" :
-                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 ${glowOnHover} draggable`
+                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 hover-glow draggable`
                             }
                             onContextMenu={(e) => { onCtxMenu(e, contextMenuItems(item)) }}
                             onDoubleClick={() => openItemSheet(item)}
@@ -54,13 +53,13 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             onDragEnd={(e) => onDragEnd(e, index)}
                             data-item-id={getId(item)}
                         >
-                            <td className="px-2 py-1 cursor-grab">
+                            <td className="px-2 py-1">
                                 <span className="flex">
                                     <img
                                         src={item.parent.img}
                                         alt={getName(item)}
                                         width="28" height="28"
-                                        className="mr-2 rounded-sm border border-solid border-section-header-fill/60"
+                                        className="mr-2 rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
                                     />
                                     <p className="items-center line-clamp-1">{itemNameQty(item)}</p>
                                 </span>
@@ -93,10 +92,10 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
 }
 
 const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { type: string, isEquipped: boolean, gripState: string, toggleEquipState: () => void }) => {
-    const equippedIconStyle = "w-full justify-center text-ic-equipped fill-ic-equipped/80 cursor-pointer"
-    const unEquipedIconStyle = "w-full justify-center text-ic-equipped cursor-pointer"
+    const equippedIconStyle = "w-full justify-center text-ic-equipped fill-ic-equipped/80"
+    const unEquipedIconStyle = "w-full justify-center text-ic-equipped"
     return (
-        <div onClick={toggleEquipState} onDoubleClick={(e) => { e.stopPropagation() }}>
+        <div onClick={toggleEquipState} title="Toggle equip" onDoubleClick={(e) => { e.stopPropagation() }}>
             {
                 type === 'armor' &&
                 <div>

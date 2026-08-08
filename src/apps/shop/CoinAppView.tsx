@@ -1,5 +1,4 @@
 import { vgLiteLang } from "../../utils/lang"
-import { glowOnHover } from "../../view/common/text-styles"
 import { PrimaryButton, DestructiveButton } from "../../view/component/Button"
 
 const denominations = ['g', 's', 'c']
@@ -21,7 +20,7 @@ export const CoinAppView = ({ coin, mode, setMode, onUpdateCoins, onSave, onCanc
                     {
                         denominations.map(denomination => (
                             <div key={denomination} className={`
-                                flex items-end text-3xl text-text-primary font-eskapade ${glowOnHover}
+                                flex items-end text-3xl text-text-primary font-eskapade hover-glow
                                 border border-solid border-table-border rounded-sm p-1
                             `}>
                                 <input

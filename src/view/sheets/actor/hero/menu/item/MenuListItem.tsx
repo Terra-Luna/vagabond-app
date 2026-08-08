@@ -1,11 +1,10 @@
-import { glowOnHover } from "../../../../../common/text-styles"
 import { ItemDivider } from "../../../../../component/Header"
 
 export const MenuListItem = ({ text, onClick, toggleMenu }: { text: string, onClick: any, toggleMenu?: any }) => {
     return (
         <div>
             <ItemDivider />
-            <li className={`${glowOnHover} mt-2 p2`} onClick={() => {
+            <li className={`hover-glow mt-2 p2`} onClick={() => {
                 onClick()
                 if (toggleMenu) toggleMenu()
             }}>

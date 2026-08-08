@@ -222,26 +222,32 @@ Hooks.on("createItem", async (item, _options, _userId) => {
 })
 
 Hooks.on("updateItem", async (item, changed, options, userId) => {
-    const actor = item.actor
-    if (!actor) return
+    if ("name" in changed) {
+        console.log("Reinitializing ItemsCache")
+        await ItemsCache.initialize()
+    }
 
     /**
      * This will cause container sheets to refresh themselves when their
      * underlying items (ref'd by item-ID) are updated.
      */
-    const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
-    const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
-    if (container) {
-        for (const app of foundry.applications.instances.values()) {
-            const docApp = app as any
-            if (docApp.document && getId(container) === docApp.document.id) {
-                docApp.render()
+    const actor = item.actor
+    if (!actor) return
+    if (actor) {
+        const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
+        const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
+        if (container) {
+            for (const app of foundry.applications.instances.values()) {
+                const docApp = app as any
+                if (docApp.document && getId(container) === docApp.document.id) {
+                    docApp.render()
+                }
             }
         }
-    }
 
-    if ((item as any).type === "spell" && (item as any).type === "perk") {
-        await ItemsCache.updateItem(item)
+        if ((item as any).type === "spell" || (item as any).type === "perk") {
+            await ItemsCache.updateItem(item)
+        }
     }
 })
 
@@ -258,9 +264,11 @@ Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
 
 Hooks.on("deleteItem", async (item, options, userId) => {
     if (game.user?.id !== userId || !item.parent) return
+    
     const childrenToDelete = item.parent.items.filter(
         (i: any) => i.getFlag("vagabond-lite", "grantedBy") === item.id
     ).map((i: any) => i.id)
+
     if (childrenToDelete.length > 0) {
         await item.parent.deleteEmbeddedDocuments("Item", childrenToDelete)
     }
@@ -268,7 +276,7 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     // If an item was deleted off a hero, trigger an update in case something (like their class/ancestry) just adds it back
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
 
-    if ((item as any).type === "spell" && (item as any).type === "perk") {
+    if ((item as any).type === "spell" || (item as any).type === "perk") {
         await ItemsCache.updateItem(item)
     }
 })

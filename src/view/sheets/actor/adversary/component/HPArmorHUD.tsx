@@ -3,7 +3,6 @@ import { useCallback } from "react"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { EditableTextField } from "../../../../component/EditableTextField"
-import { glowOnHover } from "../../../../common/text-styles"
 import { vgLiteLang as locale } from "../../../../../utils/lang"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
@@ -46,11 +45,11 @@ export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
 
             {/* HP CURRENT / MAX */}
             <div>
-                <p className={`${headerStyle} ${glowOnHover} line-clamp-1 min-w-[12ch]`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
+                <p className={`${headerStyle} hover-glow line-clamp-1 min-w-[12ch]`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                     {locale.AdversarySheet.hp}
                 </p>
                 <div className="flex font-eskapade font-bold">
-                    <div className={`text-text-hp-current text-4xl text-right ${glowOnHover}`}>
+                    <div className={`text-text-hp-current text-4xl text-right hover-glow`}>
                         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                             <EditableTextField
                                 boundValue={adv.health.current?.toString() ?? ''}
@@ -61,7 +60,7 @@ export const HPArmorHUD = ({ adv }: { adv: AdversaryDataModel }) => {
                         </EditModeContextProvider>
                     </div>
                     <p className="text-text-primary text-5xl font-normal">/</p>
-                    <p className={`text-text-hp-max text-3xl mt-3 ${glowOnHover}`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
+                    <p className={`text-text-hp-max text-3xl mt-3 hover-glow`} onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}>
                         {adv.health.max}
                     </p>
                 </div>

@@ -25,7 +25,6 @@ import { AlchemicalSheet } from "./sheet/AlchemicalSheet"
 import { BaseItemSheetComponent } from "../shared/BaseItemSheetComponent"
 import { EquipmentSheetBanner } from "./component/EquipmentSheetBanner"
 import { Description } from "../../shared/Description"
-import { glowOnHover } from "../../../common/text-styles"
 import { ActiveEffectsApp } from "../../../../apps/active-effects/ActiveEffectsApp"
 const lang = fullLang.VGLITE
 
@@ -65,7 +64,7 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
         <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1">
             <div className="space-y-2">
                 <Bulk item={item} />
-                <button title={vgLiteLang.ButtonActions.effects} onClick={() => new ActiveEffectsApp(item).render({ force: true })} className={glowOnHover}>
+                <button title={vgLiteLang.ButtonActions.effects} onClick={() => new ActiveEffectsApp(item).render({ force: true })} className={"hover-glow"}>
                     <ItemSheetPropLabel label={vgLiteLang.ButtonActions.effects} />
                 </button>
             </div>

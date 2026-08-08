@@ -3,7 +3,6 @@ import { useCoinApp } from "../../apps/shop/CoinApp"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { addCoins, Coins, isAffordable, subtractCoins } from "../../model/common/CoinValue"
 import { lang } from "../../utils/lang"
-import { glowOnHover } from "../common/text-styles"
 import { EditableTextField } from "./EditableTextField"
 
 export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
@@ -36,7 +35,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                 reset()
                 setIsCoinAppOpen(true)
             }}>
-                <div className={`${glowOnHover} content-center`}>
+                <div className={`hover-glow content-center`}>
                     <p className="text-lg text-wealth-denom-label font-eskapade font-bold">COIN</p>
                 </div>
             </button>
@@ -79,7 +78,7 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
 const CoinValue = ({ hero, value, label, path }: { hero?: HeroDataModel, value: number, label: string, path: string }) => {
     return (
         <div className="flex pr-2">
-            <div className={`text-text-primary text-3xl font-eskapade cursor-pointer min-w-[2ch] text-right ${glowOnHover}`}>
+            <div className={`text-text-primary text-3xl font-eskapade cursor-pointer min-w-[2ch] text-right hover-glow`}>
                 {hero ?
                     <EditableTextField
                         boundValue={value.toString() ?? ""}

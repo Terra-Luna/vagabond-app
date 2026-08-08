@@ -3,7 +3,6 @@ import { useCallback, useEffect } from "react"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../../../utils/lang"
-import { glowOnHover } from "../../../../../../common/text-styles"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
 import { useSpellCastingMenu } from "./SpellcastingMenu"
@@ -26,7 +25,9 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
             <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
                 <div className="flex gap-x-1 ml-2 items-center">
                     <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelMana} />
-                    <Sparkle className={`text-mana mr-1 ${glowOnHover}`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
+                    <span title={vgLiteLang.HeroSheet.counter_tooltip}>
+                        <Sparkle className={`text-mana mr-1 hover-glow`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
+                    </span>
                     <span className="text-mana">
                         <EditableTextField
                             boundValue={hero.mana.current?.toString() ?? ""}
@@ -45,7 +46,7 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                 </div>
 
                 {/* SPELLCASTING TAB */}
-                {!isCastMenuOpen && <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill ${glowOnHover} [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
+                {!isCastMenuOpen && <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill hover-glow [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
                     onClick={() => {
                         setIsSpellcastingOpen(!isSpellcastingOpen)
                     }}

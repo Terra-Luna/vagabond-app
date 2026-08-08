@@ -1,7 +1,6 @@
 import { useCallback, useState, useRef, useEffect } from "react"
 import { VgLiteError}  from "../../model/common/VgLiteError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
-import { glowOnHover } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { Plus, Minus } from "lucide-react"
 
@@ -81,7 +80,7 @@ export const EditableTextField = (
             {
                 enabled ?
                     <button title={'Double-click to Edit'} onDoubleClick={enterEditMode}>
-                        <div className={`${glowOnHover} ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}>
+                        <div className={`hover-glow ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}>
                             {boundValue}
                         </div >
                     </button> :

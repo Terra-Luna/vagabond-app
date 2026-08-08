@@ -78,19 +78,30 @@ export const CombinedItemsAll = async (): Promise<Array<Item | TypedIndexEntry>>
 
 /**
  * A utility function which queries all world and compendium items of the given type and returns a combined list.
- * Only use if you need a fresh Query, otherwise the ItemsCache is probably a better (syncronous) option.
+ * Only use if you need a fresh Query, otherwise the ItemsCache is probably a better (syncronous) option. If an
+ * item was copied into the game world, the filter will favor the copy by name match.
  * @param itemType 
  * @returns 
  */
 export const CombinedItems = async (itemType: string): Promise<Array<Item | TypedIndexEntry>> => {
     const worldItems = Array.from(game.items?.values() ?? []).filter(item => item?.type === itemType) as Item[]
+
+    // Track world item names as the unique filter key
+    const worldNames = new Set(worldItems.map(item => item.name?.trim().toLowerCase()));
+
     const packs = game.packs?.filter((pack) => pack.metadata.type === "Item") ?? []
     const compendiumItems: TypedIndexEntry[] = []
 
     for (const pack of packs) {
         await pack.getIndex({ fields: ["type"] } as unknown as Parameters<typeof pack.getIndex>[0])
         const entries = pack.index.contents as unknown as TypedIndexEntry[]
-        const matches = entries.filter((entry) => entry?.type === itemType)
+
+        const matches = entries.filter((entry) => {
+            if (entry?.type !== itemType) return false;
+            const entryName = entry.name?.trim().toLowerCase();
+            return !worldNames.has(entryName);
+        })
+
         compendiumItems.push(...matches)
     }
 
