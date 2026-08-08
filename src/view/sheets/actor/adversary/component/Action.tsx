@@ -288,7 +288,6 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                             <DiceRollInputComponent
                                 diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 6 }}
                                 onChange={(updated) => {
-                                    console.log(updated)
                                     updateDamageRoll(updated)
                                 }}
                             />
