@@ -11,7 +11,7 @@ import { roll3dDice } from "../../utils/foundryUtils"
 import { getDiceTerms } from "./util/dice-utils"
 import { DamageRoll } from "./DamageRoll"
 import { getTargetIds } from "../../utils/modelUtil"
-import { getWeaponDamageWithHeroMods, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { DiceRoll } from "./DiceRoll"
 import { AttackPreset } from "../../apps/attack-builder/AttackBuilderApp"
 
@@ -313,7 +313,7 @@ export class HeroAttack extends Attack {
         const hero = actor.system
         const weapon = item.system
         const mods = hero.modifiers
-        const damageDice = new DiceRoll(getWeaponDamageWithHeroMods(actor.system, item.system))
+        const damageDice = new DiceRoll(DiceRoll.getWeaponDamageWithHeroMods(actor.system, item.system))
         let weaponSkill = skill
 
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
@@ -327,7 +327,7 @@ export class HeroAttack extends Attack {
 
         const skillCheck = new SkillCheck(hero, {
             skill: weaponSkill!,
-            critThreshold: 20 - (mods.dice.crit.attack ?? 0) - (isKeen ? 1 : 0),
+            critThreshold: 20 - (mods.dice.crit.melee ?? 0) - (isKeen ? 1 : 0),
             clickEvent: clickEvent
         })
 

@@ -23,6 +23,7 @@ import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortrai
 import { Checkbox } from "../../view/component/Checkbox"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
+import { getAttackRegistry } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
     const [revision, setRevision] = useState(0)
@@ -46,7 +47,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                     : (changes.value || {})
             }
             catch (err) {
-                updatedData = (game.settings as any).get("vagabond-lite", "attackRegistry") || {}
+                updatedData = getAttackRegistry()
             }
 
             if (actorId in updatedData) {
@@ -62,7 +63,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     }, [actorId, revision])
 
     const snapshot = useMemo(() => {
-        const attacks = (game.settings as any)?.get("vagabond-lite", "attackRegistry")[actorId] ?? []
+        const attacks = getAttackRegistry()[actorId] ?? []
         const match = attacks.find(atk => atk.id === attackId)
         return match ? foundry.utils.deepClone(match) : null
     }, [actor, attackId, revision])

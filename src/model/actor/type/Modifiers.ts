@@ -42,7 +42,10 @@ export const modifierSchema = () => {
                 spellHealing: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
             }),
             crit: new fields.SchemaField({
-                attack: new fields.NumberField({ ...uncappedInteger })
+                melee: new fields.NumberField({ ...uncappedInteger }),
+                meleeExtraDie: new fields.BooleanField({ initial: false }),
+                ranged: new fields.NumberField({ ...uncappedInteger }),
+                rangedExtraDie: new fields.BooleanField({ initial: false })
             })
         }),
 

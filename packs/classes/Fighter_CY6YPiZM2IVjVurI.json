@@ -59,7 +59,7 @@
         "label": "Valor: Level 1",
         "level": 1,
         "value": 1,
-        "selector": "modifiers.dice.crit.attack"
+        "selector": "modifiers.dice.crit.melee"
       },
       {
         "id": "UgeuDdqYCRqm4w22",
@@ -67,7 +67,7 @@
         "label": "Valor: Level 4",
         "level": 4,
         "value": 1,
-        "selector": "modifiers.dice.crit.attack"
+        "selector": "modifiers.dice.crit.melee"
       },
       {
         "id": "RfxgJpCA7nMJfKeu",
@@ -75,7 +75,7 @@
         "label": "Valor: Level 8",
         "level": 8,
         "value": 1,
-        "selector": "modifiers.dice.crit.attack"
+        "selector": "modifiers.dice.crit.melee"
       },
       {
         "id": "h9MCXUEtzun0pN8h",

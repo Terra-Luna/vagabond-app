@@ -41,21 +41,35 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
     return (
         <div className="flex flex-wrap gap-2 mt-2 w-full">
             {
-                slotGroup.map((slot, index) => (
-                    <CustomDropDown
-                        key={`spell-slot-selector-${index}-${slot.value}`}
-                        value={slot.value}
-                        options={options.filter(opt => opt.value === slot.value || stackablePerkIds.includes(opt.value) || !getOtherSelectedIds(index).includes(opt.value))}
-                        className={`flex flex-wrap gap-x-1 text-lg font-eskapade font-normal ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}`}
-                        onChange={(e) => {
-                            const selectedId = e.target.value
-                            const selectedSpell = options.find(opt => opt.value === selectedId)
-                            const label = selectedSpell ? selectedSpell.label : ''
-                            onSelect(index, label, selectedId)
-                        }}
-                        editModeOverride={!slot.isLocked || slot.value.length === 0}
-                    />
-                ))
+                slotGroup.map((slot, index) => {
+                    const isUnlocked = !slot.isLocked || slot.value.length === 0
+
+                    return (<div key={`spell-slot-selector-${index}-${slot.value}`}>
+                        {/* SELECTABLE SLOTS */}
+                        {isUnlocked && <CustomDropDown
+                            value={slot.value}
+                            options={options.filter(opt => opt.value === slot.value || stackablePerkIds.includes(opt.value) || !getOtherSelectedIds(index).includes(opt.value))}
+                            className={`
+                                flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
+                                ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}
+                            `}
+                            onChange={(e) => {
+                                const selectedId = e.target.value
+                                const selectedSpell = options.find(opt => opt.value === selectedId)
+                                const label = selectedSpell ? selectedSpell.label : ''
+                                onSelect(index, label, selectedId)
+                            }}
+                            editModeOverride={isUnlocked}
+                        />}
+
+                        {/* LOCKED / READ-ONLY MODE */}
+                        {!isUnlocked && <div className="flex gap-x-2 items-center text-xl font-eskapade font-bold border border-solid border-table-border px-2">
+                            {slot.label}
+                            <p className="text-xs">🔒</p>
+                        </div>}
+
+                    </div>)
+                })
             }
         </div>
     )

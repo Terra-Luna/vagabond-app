@@ -1,4 +1,4 @@
-import { ArrowsUpFromLine, Menu, Sword, Swords } from "lucide-react"
+import { ArrowsUpFromLine, Swords } from "lucide-react"
 import { useEffect } from "react"
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs"
 import { importHero } from "../../../../apps/importer/TagalongImporter"
@@ -22,6 +22,7 @@ import { AttacksTab } from "./tab/AttacksTab"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
+import { getMaxLevel } from "../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 const locale = lang.VGLITE.HeroSheet
 
@@ -72,7 +73,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteAc
                         <EditableNameField actor={hero.parent} />
 
                         <div className="flex gap-x-2 ml-auto">
-                            {((hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < 10 || !hero.ancestry) &&
+                            {((hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < getMaxLevel() || !hero.ancestry) &&
                                 <button
                                     title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
                                     onClick={async () => {

@@ -1,6 +1,7 @@
+import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { getTargetIds } from "../../utils/modelUtil"
-import { DamageRollResult, DamageRoll } from "./DamageRoll"
+import { DamageRoll } from "./DamageRoll"
 import { AttackSnapshot } from "./util/attack-serializer"
 
 export interface AttackResolutionArgs {
@@ -119,7 +120,7 @@ export abstract class Attack {
 
     static async handleIncomingAttackSnapshot(payload: { actorId: string, snapshot: AttackSnapshot }) {
         const { actorId, snapshot } = payload
-        const registryRaw = (game.settings as any)?.get("vagabond-lite", "attackRegistry")
+        const registryRaw = getAttackRegistry()
         const attacksRegistry = typeof registryRaw === "string" ? JSON.parse(registryRaw) : (registryRaw || {})
 
         if (!attacksRegistry[actorId]) {
@@ -139,7 +140,7 @@ export abstract class Attack {
         }
 
         attacksRegistry[actorId] = updatedAttacks
-        await (game.settings as any)?.set("vagabond-lite", "attackRegistry", attacksRegistry)
+        await setAttackRegistry(attacksRegistry)
     }
 
 }

@@ -1,8 +1,7 @@
-import { XpQuestion } from "./XpQuestionnaireConfigView"
 import { VagabondLiteAppArgs, VagabondLiteApplication } from "../../VagabondLiteApplication"
 import { XpQuestionnairePlayerView } from "./XpQuestionnairePlayerView"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { XpQuestionnaireConfigApp } from "./XpQuestionnaireConfigApp"
+import { getXpQuestionnaiare } from "../../vagabond-tools/VagabondSettingsRegistry"
 
 export class XpQuestionnairePlayerApp extends VagabondLiteApplication {
 
@@ -23,7 +22,7 @@ export class XpQuestionnairePlayerApp extends VagabondLiteApplication {
     override getReactProps() {
         return {
             ...super.getReactProps(),
-            questions: XpQuestionnaireConfigApp.getXpQuestions(),
+            questions: getXpQuestionnaiare(),
             onSave: (xp: number) => this.handleSave(xp)
         }
     }

@@ -86,7 +86,8 @@ export class PerkRulesSelectionsApplicator {
             }
         }
 
-        //actor.prepareBaseData()
+        // Needed to set player-made perk selections.
+        actor.prepareBaseData()
     }
 
 }

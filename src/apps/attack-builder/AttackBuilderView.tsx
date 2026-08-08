@@ -47,7 +47,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         }
     }, [preset])
 
-    const formPreset = useMemo((): AttackPreset => {
+    const form = useMemo((): AttackPreset => {
         return {
             title: weapon?.name ?? '',
             description: description,
@@ -67,6 +67,13 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
+    useEffect(() => {
+        if (!weapon) return
+        const baseThreshold = 20
+        const isKeen = weapon.system.properties.includes('keen')
+        setCritThreshold(baseThreshold - (isKeen ? 1 : 0))
+    }, [weapon])
+
     const reset = useCallback(() => {
         preset = undefined
         setDamageRolls([])
@@ -82,7 +89,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         setWeapon(undefined)
     }, [preset])
 
-    const { savePreset, saveCustomAttack } = useSavePreset(actor, formPreset)
+    const { savePreset, saveCustomAttack } = useSavePreset(actor, form)
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
@@ -116,7 +123,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
 
                         <PrimaryButton onClick={async () => {
                             await saveCustomAttack()
-                            HeroAttack.buildCustomAttack(actor, formPreset)
+                            HeroAttack.buildCustomAttack(actor, form)
                         }}
                             icon={<Sword size={16} className="text-btn-primary-text" />}>
                             {vgLiteLang.ButtonActions.attack}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
-import { DiceRollSchema } from "../../../combat/engine/DiceRoll"
+import { DiceRoll, DiceRollSchema } from "../../../combat/engine/DiceRoll"
 import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
-import { getWeaponDamageWithHeroMods, WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
+import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
@@ -22,7 +22,7 @@ export const useCustomDamageRollBuilder = (
     useEffect(() => {
         if (!weapon) return
 
-        const schema = getWeaponDamageWithHeroMods(actor.system, weapon.system)
+        const schema = DiceRoll.getWeaponDamageWithHeroMods(actor.system, weapon.system)
 
         if (damageRolls.length === 0) {
             setDamageRolls([schema])

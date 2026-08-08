@@ -1,12 +1,8 @@
 import { Plus, Save, Trash } from "lucide-react"
 import React, { useState } from "react"
 import { PrimaryButton, SecondaryButton } from "../../../view/component/Button"
-
-export interface XpQuestion {
-    id: string
-    text: string
-    xp: number
-}
+import { XpQuestion } from "../../vagabond-tools/VagabondSettingsRegistry"
+import { TrashButton } from "../../../view/component/TrashButton"
 
 interface XpQuestionnaireProps {
     initialQuestions?: XpQuestion[]
@@ -31,7 +27,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
 
     const addQuestion = () => {
         const newQuestion: XpQuestion = {
-            id: Math.random().toString(36).substring(2, 16),
+            id: foundry.utils.randomID(),
             text: "",
             xp: 1
         }
@@ -74,9 +70,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                         <p className="text-sm text-text-secondary mr-2">XP</p>
 
                         {/* DELETE BUTTON */}
-                        <button type="button" title="Delete" onClick={() => deleteQuestion(q.id)}>
-                            <Trash size={18} className="hover:text-destructive-action/80 transition-colors cursor-pointer" />
-                        </button>
+                        <TrashButton onDelete={() => deleteQuestion(q.id)} />
                     </div>
                 ))}
             </div>

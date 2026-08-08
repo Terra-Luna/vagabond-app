@@ -1,5 +1,6 @@
-import { XpQuestion, XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
+import { XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
 import { VagabondLiteAppArgs, VagabondLiteApplication } from "../../VagabondLiteApplication"
+import { getXpQuestionnaiare, XpQuestion } from "../../vagabond-tools/VagabondSettingsRegistry"
 
 export class XpQuestionnaireConfigApp extends VagabondLiteApplication {
 
@@ -15,7 +16,7 @@ export class XpQuestionnaireConfigApp extends VagabondLiteApplication {
     }
 
     override getReactProps() {
-        const currentQuestions = XpQuestionnaireConfigApp.getXpQuestions()
+        const currentQuestions = getXpQuestionnaiare()
         return {
             ...super.getReactProps(),
             initialQuestions: currentQuestions,
@@ -28,18 +29,14 @@ export class XpQuestionnaireConfigApp extends VagabondLiteApplication {
      */
     private async handleSave(updatedQuestions: XpQuestion[]): Promise<void> {
         try {
-            await (game as any).settings.set("vagabond-lite", "xp-questionnaire", updatedQuestions)
+            await (game as any).settings.set("vagabond-lite", "xpQuestionnaire", updatedQuestions)
             ui.notifications?.info("XP Questionnaire settings saved successfully!")
             this.close()
         }
         catch (error) {
-            console.error("Vagabond Lite | Failed to save questionnaire configuration:", error)
+            console.error("Vagabond | Failed to save questionnaire configuration:", error)
             ui.notifications?.error("Failed to save changes to the database.")
         }
-    }
-
-    static getXpQuestions() {
-        return (game as any).settings.get("vagabond-lite", "xp-questionnaire") as XpQuestion[] || []
     }
 
 }

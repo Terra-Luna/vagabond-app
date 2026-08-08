@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Attack } from "../Attack"
 import { AttackSnapshot, serializeAttack } from "./attack-serializer"
+import { getAttackRegistry } from "../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export interface TargetDisplayItem { id: string, src: string, token: Token | undefined }
 
@@ -29,7 +30,7 @@ export function useLiveTargetSync(attack: Attack | undefined): string[] {
         const targetHookId = Hooks.on('targetToken', async (user: User, token: Token, isTargeted: boolean) => {
             if (!attack.actor.id || game.userId !== attack.userId || user.id !== game.userId) return
 
-            const attackRegistry = (game.settings as any)?.get("vagabond-lite" as any, "attackRegistry" as any) || {}
+            const attackRegistry = getAttackRegistry()
             const actorAttacks = attackRegistry[attack.actor.id] || []
 
             const latestAttack = actorAttacks[actorAttacks.length - 1]
@@ -50,7 +51,7 @@ export function useLiveTargetSync(attack: Attack | undefined): string[] {
         const settingHookId = Hooks.on('updateSetting', (settingDoc: any, changed: any, options: any, userId: string) => {
             if (settingDoc.key !== "vagabond-lite.attackRegistry") return
 
-            const currentRegistry = (game.settings as any).get("vagabond-lite", "attackRegistry") || {}
+            const currentRegistry = getAttackRegistry()
 
             const targetActorId = attack.actor?.id
             if (!targetActorId || !currentRegistry[targetActorId]) return

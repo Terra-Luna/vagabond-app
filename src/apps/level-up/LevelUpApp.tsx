@@ -10,8 +10,8 @@ export class LevelUpApp extends VagabondLiteApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         const appArgs: VagabondLiteAppArgs = {
             position: {
-                width: 750,
-                height: "auto"
+                width: 500,
+                height: 1000
             },
             window: {
                 title: "Level Up!",

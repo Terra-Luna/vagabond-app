@@ -125,12 +125,10 @@ export const LevelUpView = ({ actor, onSave }: {
                         </div>}
                     </div>
 
-                    <div className="w-full @4xl:w-1/2 h-full overflow-y-auto">
-                        {/* SPELL SLOT SELECTIONS */}
-                        {showSpellSelection && <div className="mb-4">
-                            {SpellSelection}
-                        </div>}
-                    </div>
+                    {/* SPELL SLOT SELECTIONS */}
+                    {showSpellSelection && <div className="w-full @4xl:w-1/2 h-full overflow-y-auto mb-4">
+                        {SpellSelection}
+                    </div>}
 
                 </div>
 
