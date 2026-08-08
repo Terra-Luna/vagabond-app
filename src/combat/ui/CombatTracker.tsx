@@ -163,10 +163,12 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
 
     const isActiveCombatant = game.combat?.combatant === combatant
     const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
+    const disposition = combatant.token.disposition
+    
     return (
         <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions())}>
             <div className={`flex w-full ${opacityClass}`}>
-                <CombatTrackerPortrait src={token?.document.texture.src} disposition={token?.disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} />
+                <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} />
                 <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
                         <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
