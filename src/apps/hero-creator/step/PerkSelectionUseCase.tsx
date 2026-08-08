@@ -119,90 +119,92 @@ export const usePerkSelection = (
         return ![...ancestryPerkSlots, ...classPerkSlots].some(slot => slot.value.length === 0)
     }, [ancestryPerkSlots, classPerkSlots])
 
-    const PerkSelection = <>
-        <div className="bg-sheet-main-fill space-y-4">
+    const PerkSelection =
+        <div className="@container bg-sheet-main-fill space-y-4">
             {/* HEADER AND NAVIGATION BUTTONS */}
             <Header title={strings.perksHeader} />
             <TopNavButtons navButtons={navButtons} canProceed={isAllSelected} />
 
-            {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
+            <div className="flex flex-col w-full justify-center">
+                <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto">
+                    {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
 
-            {/* GRANTED PERKS */}
-            <div className="mt-4 space-y-1">
-                {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
-                    <HeroCreationLabel text={strings.grantedPerks} />
-                }
-                {
-                    [...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
-                        <ItemGrantCard key={index} name={grant.item} source={grant.source} />
-                    ))
-                }
-            </div>
-
-            {/* CHOOSE CLASS PERKS */}
-            {classPerkSlots.length > 0 &&
-                <div className="mt-4 space-y-2">
-                    <div className="flex gap-x-4">
-                        <BonusChoiceTitle text={`${[...classPerkSlots].reverse()[0].ruleName}`} />
+                    {/* GRANTED PERKS */}
+                    <div className="mt-4 space-y-1">
+                        {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
+                            <HeroCreationLabel text={strings.grantedPerks} />
+                        }
+                        {
+                            [...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
+                                <ItemGrantCard key={index} name={grant.item} source={grant.source} />
+                            ))
+                        }
                     </div>
 
-                    <ItemSelectorGroup
-                        slotGroup={classPerkSlots}
-                        options={isLevelUp ? (useEligibilityFilter ? eligiblePerksList : perksList) : classRestrictedPerksList}
-                        otherSlotGroup={ancestryPerkSlots}
-                        grants={[...ancestryPerkGrants, ...classPerkGrants].filter(g => !perksList.find(p => p.value === g.uuid)?.multi)}
-                        onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setClassPerkSlots)}
-                    />
+                    {/* CHOOSE CLASS PERKS */}
+                    {classPerkSlots.length > 0 &&
+                        <div className="mt-4 space-y-2">
+                            <div className="flex gap-x-4">
+                                <BonusChoiceTitle text={`${[...classPerkSlots].reverse()[0].ruleName}`} />
+                            </div>
+
+                            <ItemSelectorGroup
+                                slotGroup={classPerkSlots}
+                                options={isLevelUp ? (useEligibilityFilter ? eligiblePerksList : perksList) : classRestrictedPerksList}
+                                otherSlotGroup={ancestryPerkSlots}
+                                grants={[...ancestryPerkGrants, ...classPerkGrants].filter(g => !perksList.find(p => p.value === g.uuid)?.multi)}
+                                onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setClassPerkSlots)}
+                            />
+                        </div>
+                    }
+
+                    {/* CHOOSE ANCESTRY PERKS */}
+                    {ancestryPerkSlots.length > 0 && !isLevelUp &&
+                        <BonusChoiceContainer>
+                            <div className="flex gap-x-6">
+                                <BonusChoiceTitle text={`${ancestry?.name} ${ancestryPerkSlots[0].ruleName}`} />
+                            </div>
+                            <ItemSelectorGroup
+                                slotGroup={ancestryPerkSlots}
+                                options={useEligibilityFilter ? eligiblePerksList : perksList}
+                                otherSlotGroup={classPerkSlots}
+                                grants={[...ancestryPerkGrants, ...classPerkGrants]}
+                                onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setAncestryPerkSlots)}
+                            />
+                        </BonusChoiceContainer>
+                    }
+
+                    {/* CHECKBOX TOGGLE FOR PERK ELIGIBILITY FILTER */}
+                    <div className="w-1/3">
+                        <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                            <Checkbox label={"Filter eligibility"} onCheckedChanged={(checked) => setUseEligibilityFilter(checked)} checked={useEligibilityFilter} />
+                        </EditModeContextProvider>
+                    </div>
+
+                    <div className="mt-4 space-y-1">
+                        {/* CHOSEN PERKS */}
+                        <HeroCreationLabel text={strings.perksList} />
+                        {[...grantedPerks(), ...ancestryPerkSlots, ...classPerkSlots].filter(slot => (slot.value?.length ?? 0) > 0).map((slot, index) => {
+                            const perk = perksList.find(p => p.value === slot.value)
+                            if (perk) {
+                                return (
+                                    <SkillCard
+                                        key={perk.value + `_${index}`}
+                                        img={perk.img}
+                                        title={perk.label}
+                                        subtitles={perk.cardSubheader}
+                                        description={perk.description}
+                                    />
+                                )
+                            }
+                            else {
+                                return <></>
+                            }
+                        })}
+                    </div>
                 </div>
-            }
-
-            {/* CHOOSE ANCESTRY PERKS */}
-            {ancestryPerkSlots.length > 0 && !isLevelUp &&
-                <BonusChoiceContainer>
-                    <div className="flex gap-x-6">
-                        <BonusChoiceTitle text={`${ancestry?.name} ${ancestryPerkSlots[0].ruleName}`} />
-                    </div>
-                    <ItemSelectorGroup
-                        slotGroup={ancestryPerkSlots}
-                        options={useEligibilityFilter ? eligiblePerksList : perksList}
-                        otherSlotGroup={classPerkSlots}
-                        grants={[...ancestryPerkGrants, ...classPerkGrants]}
-                        onSelect={(index, label, selectedId) => onSelectPerk(index, label, selectedId, setAncestryPerkSlots)}
-                    />
-                </BonusChoiceContainer>
-            }
-
-            {/* CHECKBOX TOGGLE FOR PERK ELIGIBILITY FILTER */}
-            <div className="w-1/3">
-                <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                    <Checkbox label={"Filter eligibility"} onCheckedChanged={(checked) => setUseEligibilityFilter(checked)} checked={useEligibilityFilter} />
-                </EditModeContextProvider>
             </div>
-
         </div>
-
-        <div className="mt-4 space-y-1">
-            {/* CHOSEN PERKS */}
-            <HeroCreationLabel text={strings.perksList} />
-            {[...grantedPerks(), ...ancestryPerkSlots, ...classPerkSlots].filter(slot => (slot.value?.length ?? 0) > 0).map((slot, index) => {
-                const perk = perksList.find(p => p.value === slot.value)
-                if (perk) {
-                    return (
-                        <SkillCard
-                            key={perk.value + `_${index}`}
-                            img={perk.img}
-                            title={perk.label}
-                            subtitles={perk.cardSubheader}
-                            description={perk.description}
-                        />
-                    )
-                }
-                else {
-                    return <></>
-                }
-            })}
-        </div>
-    </>
 
     return {
         PerkSelection, ancestryPerkSlots, classPerkSlots, perksList,

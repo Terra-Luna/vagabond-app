@@ -58,7 +58,10 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             <div className="mt-0.5" />
             <div className={abilitiesGrid}>
                 {
-                    hero.perks.map((p: any, index: number) => (
+                    hero.perks
+                        .sort((a, b) => a.parent.name.localeCompare(b.parent.name))
+                        .sort((a, b) => Number(a.canTakeMultiple) - Number(b.canTakeMultiple))
+                        .map((p: any, index: number) => (
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,

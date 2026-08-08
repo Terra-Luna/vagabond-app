@@ -86,7 +86,7 @@ export class PerkRulesSelectionsApplicator {
             }
         }
 
-        actor.prepareBaseData()
+        //actor.prepareBaseData()
     }
 
 }

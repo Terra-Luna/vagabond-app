@@ -21,7 +21,7 @@ export const LevelUpView = ({ actor, onSave }: {
     const classFeature = actor.system.class.features.find(it => it.level === nextLevel)
     const levelUpChoices = getItemChoiceRules(actor.system.class.rules).filter(r => r.level === nextLevel)
     const { PerkSelection, classPerkSlots } = usePerkSelectionView(actor, true)
-    const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots } = useSpellSelectionView(actor, true)
+    const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(actor, true)
 
     const perks = useMemo(() => {
         return ItemsCache.perks()
@@ -48,7 +48,8 @@ export const LevelUpView = ({ actor, onSave }: {
 
     const { PerkBonusSelection, advancement, spell, perkTraining } = usePerkBonusSelection(
         latestPerk ? [latestPerk] : [], stats, [], trainings,
-        [...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots], []
+        [...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots],
+        classSpellGrants, ancestrySpellGrants, []
     )
 
     const showPerkSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'perk') }, [])
@@ -90,7 +91,7 @@ export const LevelUpView = ({ actor, onSave }: {
             <div className="my-1"><Divider /></div>
 
             {/* SCROLLABLE BODY SECTION */}
-            <div className="flex flex-col grow h-full overflow-y-auto">
+            <div className="@container flex flex-col grow h-full overflow-y-auto">
                 {/* CLASS FEATURE CARD */}
                 {classFeature &&
                     <div className="space-y-1">
@@ -104,27 +105,34 @@ export const LevelUpView = ({ actor, onSave }: {
                     </div>
                 }
 
-                {/* NEW PERK SELECTION */}
-                {showPerkSelection && <div className="mb-4">
-                    {PerkSelection}
-                </div>}
-
-                {/* PERK BONUS SELECTIONS */}
-                {showBonusSelections && <div className="mb-4">
-                    {PerkBonusSelection}
-                </div>}
-
-                {/* SPELL SLOT SELECTIONS */}
-                {showSpellSelection && <div className="mb-4">
-                    {SpellSelection}
-                </div>}
-
                 {/* NO SELECTIONS REQUIRED */}
                 {levelUpChoices.length === 0 &&
                     <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
                         No selections required.
                     </p>
                 }
+
+                <div className="flex flex-col @2xl:flex-row h-full w-full gap-x-2 overflow-hidden">
+                    <div className="w-full @4xl:w-1/2 h-full overflow-y-auto">
+                        {/* NEW PERK SELECTION */}
+                        {showPerkSelection && <div className="mb-4">
+                            {PerkSelection}
+                        </div>}
+
+                        {/* PERK BONUS SELECTIONS */}
+                        {showBonusSelections && <div className="mb-4">
+                            {PerkBonusSelection}
+                        </div>}
+                    </div>
+
+                    <div className="w-full @4xl:w-1/2 h-full overflow-y-auto">
+                        {/* SPELL SLOT SELECTIONS */}
+                        {showSpellSelection && <div className="mb-4">
+                            {SpellSelection}
+                        </div>}
+                    </div>
+
+                </div>
 
             </div>
         </form>

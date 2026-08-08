@@ -100,10 +100,7 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
 
 export function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | undefined {
     const actor = game.actors?.get(snapshot.actorId) as Actor & { system: HeroDataModel } | undefined
-    if (!actor) {
-        console.error("Vagabond | Failed to load some chat cards for missing Actors.")
-        return
-    }
+    if (!actor) return
 
     const atk = new HeroAttack(snapshot.title, actor, [...snapshot.targetIds])
 

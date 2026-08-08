@@ -46,7 +46,7 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                         key={`spell-slot-selector-${index}-${slot.value}`}
                         value={slot.value}
                         options={options.filter(opt => opt.value === slot.value || stackablePerkIds.includes(opt.value) || !getOtherSelectedIds(index).includes(opt.value))}
-                        className={"w-7/16 text-lg font-eskapade font-normal"}
+                        className={`flex flex-wrap gap-x-1 text-lg font-eskapade font-normal ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}`}
                         onChange={(e) => {
                             const selectedId = e.target.value
                             const selectedSpell = options.find(opt => opt.value === selectedId)

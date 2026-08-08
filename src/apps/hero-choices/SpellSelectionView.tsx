@@ -7,19 +7,20 @@ import { getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/ite
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { groupBy } from "../../utils/collectionUtil"
 
-export const useSpellSelectionView = (actor: (Actor & { system: HeroDataModel }), isLevelUp?: boolean) => {
+export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
 
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     const perks = actor.system.perks as PerkDataModel[]
-    const level = (actor.system.level.current ?? 0) + (isLevelUp ? 1 : 0)
+    const level = ((actor as any).system.level.current ?? 0) + (isLevelUp ? 1 : 0)
 
     // Used for tracking spell slot loading upon opening the editor.
     const dataLoaded = useRef(false)
 
     const {
-        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, setAncestrySpellSlots,
-        setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
+        SpellSelection,
+        classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
+        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
     } = useSpellSelection(ancestry, clazz, perks, [])
 
     const getSpellName = (id: string): string => {
@@ -115,5 +116,5 @@ export const useSpellSelectionView = (actor: (Actor & { system: HeroDataModel })
         savePerkSelectionFlags(actor, perkSpellSlots)
     }, [perkSpellSlots])
 
-    return { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots }
+    return { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants }
 }
