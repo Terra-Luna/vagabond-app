@@ -101,7 +101,7 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
 
     sheet?.element?.style?.setProperty("overflow", sheet._isCollapsed ? "hidden" : "visible")
 
-    sheet._reactRoot!.render(
+    sheet._reactRoot?.render(
         <FoundryHotkeyBlocker>
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <EditModeContextProvider initialEditMode={(typeof startInEditMode === "boolean") ? (startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE) : startInEditMode}>
@@ -118,5 +118,5 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
                 </EditModeContextProvider>
             </DimensionsContext.Provider>
         </FoundryHotkeyBlocker>
-    );
+    )
 }
