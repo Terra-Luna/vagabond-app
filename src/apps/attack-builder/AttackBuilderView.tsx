@@ -67,12 +67,21 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
+    /**
+     * When a new weapon is selected, preload some defaults.
+     */
     useEffect(() => {
-        if (!weapon) return
-        const baseThreshold = 20
-        const isKeen = weapon.system.properties.includes('keen')
-        setCritThreshold(baseThreshold - (isKeen ? 1 : 0))
-    }, [weapon])
+        if (!weapon || !skill) return
+        const weaponAtk = HeroAttack.buildWeaponAttack(actor, weapon, skill)
+        const skChk = weaponAtk.skillCheck
+        const dmgRoll = weaponAtk.damageRoll
+        if (!skChk || !dmgRoll) return
+        setD20Count(skChk.d20Count)
+        setFavorHinder(skChk.favorHinder)
+        setSkillCheckMod(skChk.modifier)
+        setCritThreshold(skChk.critThreshold)
+        setDamageRolls(dmgRoll.dice)
+    }, [weapon, skill])
 
     const reset = useCallback(() => {
         preset = undefined

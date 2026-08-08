@@ -1,9 +1,7 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
-import { DiceRoll, DiceRollSchema } from "./DiceRoll"
+import { DiceRoll } from "./DiceRoll"
 import { RollSummary } from "./RollSummary"
 import { getDiceTerms, getResults } from "./util/dice-utils"
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 
 export interface DamageRollArgs {
     atkName: string
