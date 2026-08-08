@@ -98,107 +98,110 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         }, [filteredItems, shopSearch])
 
         return (
-            <div className="flex flex-col gap-y-2 h-full overflow-hidden">
-                <div className="flex gap-x-4 items-end">
-                    {/* STARTER PACK SELECTION */}
-                    {includeStarterPacks &&
-                        <div className="space-y-2">
-                            <HeroCreationDropdown
-                                label={"SELECT PACK"}
-                                value={selectedPack?.id ?? ''}
-                                options={[
-                                    { value: '', label: "-" },
-                                    ...recommendedPacks?.map(p => ({ value: p?.id, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
-                                    ...otherPacks?.map(p => ({ value: p.id, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
-                                ]}
-                                onChange={(packId) => onSelectPack(packId)}
-                            />
-                        </div>
-                    }
-                    {/* WALLET */}
-                    <div className="w-full mx-2 mt-2">
-                        <ReadOnlyCoinPurse coins={wallet} />
-                    </div>
-                </div>
-
-                <div className="border border-solid border-table-border">
-                    {selectedPack && <EquipmentSheetComponent item={selectedPack as any} hideBottomSection={true} />}
-                </div>
-
-                {/* ITEMS LIST */}
-                <div className="flex flex-col min-h-0 h-2/3 gap-y-1">
-                    <Header title={"ITEM SHOP"} />
-
-                    <div className="flex flex-col flex-1 space-y-1 min-h-0">
-                        {/* SEARCH BY NAME */}
-                        <div className="relative flex items-center mx-2">
-                            <input
-                                type="text"
-                                value={shopSearch}
-                                placeholder="Search items..."
-                                className="w-full text-lg text-text-secondary font-paradigm font-normal italic p-1 pr-8"
-                                onChange={(e) => setShopSearch(e.target.value)}
-                                autoComplete="off"
-                            />
-                            {shopSearch.length > 0 && (
-                                <button
-                                    type="button"
-                                    onClick={() => setShopSearch("")}
-                                    className="absolute right-0 pr-2 text-text-secondary hover:text-destructive-action font-bold cursor-pointer"
-                                    aria-label="Clear search"
-                                >✕</button>
-                            )}
-                        </div>
-
-                        {/* CATEGORY BUTTONS */}
-                        <CategoryButtons shopCategory={shopCategory} setShopCategory={setShopCategory} />
-                        <Divider />
-
-                        {/* ITEMS LIST W/ ADD BUTTON - CLICK NAME TO OPEN ITEM SHEET */}
-                        <ShopItemsList
-                            items={shopSearch.trim().length > 0 ? searchMatchItems : filteredItems}
-                            onAddItemToCart={onAddItemToCart}
-                        />
-
-                    </div>
-                </div>
-
-                {/* SHOPPING CART */}
-                <div className="flex flex-col min-h-0 h-1/3 px-2 mb-8">
-                    <Header title={"CART"} />
-                    {/* TOTAL COST W/ SAVE & CANCEL BUTTONS */}
-                    <div className="flex w-full gap-x-4 justify-between my-1">
-                        <p className="text-xl text-text-primary font-eskapade font-bold">
-                            Total: {(() => {
-                                const total = cart.reduce((sum, it) => {
-                                    return addCoins([sum, it.system.totalValue])
-                                }, { g: 0, s: 0, c: 0 })
-                                return `${coinsAsString(total)}`
-                            })()}
-                        </p>
-                        {useCheckout &&
-                            <div className="flex gap-x-1">
-                                <PrimaryButton onClick={onCheckout}>{vgLiteLang.ButtonActions.checkout}</PrimaryButton>
-                                <DestructiveButton onClick={onCancel}>{vgLiteLang.ButtonActions.cancel}</DestructiveButton>
+            <div className="@container flex flex-col gap-y-2 h-full overflow-hidden">
+                <div className="flex flex-col w-full justify-center h-full overflow-hidden">
+                    <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto h-full overflow-hidden">
+                        <div className="flex gap-x-4 items-end">
+                            {/* STARTER PACK SELECTION */}
+                            {includeStarterPacks &&
+                                <div className="space-y-2">
+                                    <HeroCreationDropdown
+                                        label={"SELECT PACK"}
+                                        value={selectedPack?.id ?? ''}
+                                        options={[
+                                            { value: '', label: "-" },
+                                            ...recommendedPacks?.map(p => ({ value: p?.id, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
+                                            ...otherPacks?.map(p => ({ value: p.id, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
+                                        ]}
+                                        onChange={(packId) => onSelectPack(packId)}
+                                    />
+                                </div>
+                            }
+                            {/* WALLET */}
+                            <div className="w-full mx-2 mt-2">
+                                <ReadOnlyCoinPurse coins={wallet} />
                             </div>
-                        }
+                        </div>
+
+                        <div className="border border-solid border-table-border">
+                            {selectedPack && <EquipmentSheetComponent item={selectedPack as any} hideBottomSection={true} />}
+                        </div>
+
+                        {/* ITEMS LIST */}
+                        <div className="flex flex-col min-h-0 h-2/3 gap-y-1">
+                            <Header title={"ITEM SHOP"} />
+
+                            <div className="flex flex-col flex-1 space-y-1 min-h-0">
+                                {/* SEARCH BY NAME */}
+                                <div className="relative flex items-center mx-2">
+                                    <input
+                                        type="text"
+                                        value={shopSearch}
+                                        placeholder="Search items..."
+                                        className="w-full text-lg text-text-secondary font-paradigm font-normal italic p-1 pr-8"
+                                        onChange={(e) => setShopSearch(e.target.value)}
+                                        autoComplete="off"
+                                    />
+                                    {shopSearch.length > 0 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setShopSearch("")}
+                                            className="absolute right-0 pr-2 text-text-secondary hover:text-destructive-action font-bold cursor-pointer"
+                                            aria-label="Clear search"
+                                        >✕</button>
+                                    )}
+                                </div>
+
+                                {/* CATEGORY BUTTONS */}
+                                <CategoryButtons shopCategory={shopCategory} setShopCategory={setShopCategory} />
+                                <Divider />
+
+                                {/* ITEMS LIST W/ ADD BUTTON - CLICK NAME TO OPEN ITEM SHEET */}
+                                <ShopItemsList
+                                    items={shopSearch.trim().length > 0 ? searchMatchItems : filteredItems}
+                                    onAddItemToCart={onAddItemToCart}
+                                />
+
+                            </div>
+                        </div>
+
+                        {/* SHOPPING CART */}
+                        <div className="flex flex-col min-h-0 h-1/3 px-2 mb-8">
+                            <Header title={"CART"} />
+                            {/* TOTAL COST W/ SAVE & CANCEL BUTTONS */}
+                            <div className="flex w-full gap-x-4 justify-between my-1">
+                                <p className="text-xl text-text-primary font-eskapade font-bold">
+                                    Total: {(() => {
+                                        const total = cart.reduce((sum, it) => {
+                                            return addCoins([sum, it.system.totalValue])
+                                        }, { g: 0, s: 0, c: 0 })
+                                        return `${coinsAsString(total)}`
+                                    })()}
+                                </p>
+                                {useCheckout &&
+                                    <div className="flex gap-x-1">
+                                        <PrimaryButton onClick={onCheckout}>{vgLiteLang.ButtonActions.checkout}</PrimaryButton>
+                                        <DestructiveButton onClick={onCancel}>{vgLiteLang.ButtonActions.cancel}</DestructiveButton>
+                                    </div>
+                                }
+                            </div>
+                            {/* SHOPPING CART ITEMS LIST */}
+                            <ShoppingCart>
+                                {
+                                    cart.map((item, index) => (
+                                        <tr key={index} className="text-center even:bg-table-row-even/50 odd:bg-table-row-odd/50">
+                                            <td className="text-left pl-2 hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</td>
+                                            <td>{item.system.bulk.totalSlots}</td>
+                                            <td>{coinsAsString(item.system.totalValue)}</td>
+                                            <td className="text-sm cursor-pointer ml-auto" onClick={() => onRemoveFromCart(item, index)}>{"❌"}</td>
+                                        </tr>
+                                    ))
+                                }
+                            </ShoppingCart>
+
+                        </div>
                     </div>
-                    {/* SHOPPING CART ITEMS LIST */}
-                    <ShoppingCart>
-                        {
-                            cart.map((item, index) => (
-                                <tr key={index} className="text-center even:bg-table-row-even/50 odd:bg-table-row-odd/50">
-                                    <td className="text-left pl-2 hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</td>
-                                    <td>{item.system.bulk.totalSlots}</td>
-                                    <td>{coinsAsString(item.system.totalValue)}</td>
-                                    <td className="text-sm cursor-pointer ml-auto" onClick={() => onRemoveFromCart(item, index)}>{"❌"}</td>
-                                </tr>
-                            ))
-                        }
-                    </ShoppingCart>
-
                 </div>
-
             </div>
         )
     }

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useCallback, useEffect } from "react"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
@@ -28,9 +28,10 @@ export const ArmorSheet = ({ item }: { item: Item & { system: ArmorDataModel } }
 }
 
 const ArmorType = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
-    useEffect(() => {
-        const armorInfo = lang.ArmorTypes[item.system.armorType]
+    const onUpdateArmorType = useCallback((type: string) => {
+        const armorInfo = lang.ArmorTypes[type]
         item.update({
+            'system.armorType': type,
             'system.bulk.slots': armorInfo.slots,
             'system.rating': armorInfo.rating,
             'system.mightReq': armorInfo.mitReq,
@@ -42,7 +43,7 @@ const ArmorType = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
             label={lang.ItemSheet.armorType}
             value={item.system.armorType}
             options={createDropdownEntriesFromObj(lang.ArmorTypes)}
-            updateMechanism={{ updatePath: ['armorType'] }}
+            updateMechanism={{ onChange: onUpdateArmorType }}
             parent={item}
         />
     )

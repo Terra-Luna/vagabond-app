@@ -5,12 +5,12 @@ export class AncestrySheet extends VgLiteItemSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 800,
-            height: 512 as any,
+            height: "auto",
             top: 100,
             left: 100
         },
         window: {
-            resizable: false
+            resizable: true
         },
         dragDrop: []
     }

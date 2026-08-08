@@ -100,7 +100,7 @@ export const useTrainingSelection = (
     }, [chosenLevel1Skills, level1TrainingRule, chosenBonusSkills, ancestryTrainingMaxChoices])
 
     const TrainingSelection = (
-        <div className="bg-sheet-main-fill space-y-4">
+        <div className="@container bg-sheet-main-fill space-y-4">
             {/* HEADER AND NAVIGATION BUTTONS */}
             <Header title={strings.traingingsHeader} />
             <TopNavButtons navButtons={navButtons} subtitle={strings.trainingSubheader} canProceed={canProceed} />
@@ -115,93 +115,97 @@ export const useTrainingSelection = (
                 <Divider />
             </div>
 
-            {/* GRANTED TRAININGS LIST */}
-            <div className="space-y-1">
-                <HeroCreationLabel text={strings.grantedTraining} />
-                {
-                    requiredTrainingRules.map((rule, index) => (
-                        <ItemGrantCard key={index}
-                            name={vgLiteLang.Skills[rule.skill].name}
-                            subtext={`(${vgLiteLang.Skills[rule.skill].stat})`}
-                            source={rule.source.name}
-                        />
-                    ))
-                }
-            </div>
-
-            {/* TRAINING CHOICE COUNTER */}
-            <div className="justify-center text-center bg-context-menu-fill/25">
-                <BorderedContent className="flex-col gap-y-2 justify-center w-full">
-                    <HeroCreationSubtext text={strings.trainingSlots} />
-                    <p className="text-4xl text-text-header-tertiary font-bold">{`${chosenLevel1Skills.length} / ${level1TrainingRule!.maxChoices} ${strings.selected}`}</p>
-                </BorderedContent>
-            </div>
-
-            {/* LEVEL 1 TRAINING SELECTIONS */}
-            <div className="space-y-1 mt-2">
-                <HeroCreationLabel text={strings.electiveTraining.replace("%s", `${level1TrainingRule!.maxChoices}`)} />
-                {level1TrainingRules.flatMap(rule => ({ id: rule.id, choices: rule.choices })).map(rule => {
-                    return rule.choices.filter(choice => {
-                        if (chosenLevel1Skills.length === level1TrainingRule.maxChoices) {
-                            return chosenLevel1Skills.map(sk => sk.skill).includes(getSkillNameFromPath(choice.value))
+            <div className="flex flex-col w-full justify-center">
+                <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto">
+                    {/* GRANTED TRAININGS LIST */}
+                    <div className="space-y-1">
+                        <HeroCreationLabel text={strings.grantedTraining} />
+                        {
+                            requiredTrainingRules.map((rule, index) => (
+                                <ItemGrantCard key={index}
+                                    name={vgLiteLang.Skills[rule.skill].name}
+                                    subtext={`(${vgLiteLang.Skills[rule.skill].stat})`}
+                                    source={rule.source.name}
+                                />
+                            ))
                         }
-                        else {
-                            return !chosenBonusSkills.map(sk => sk.skill).includes(getSkillNameFromPath(choice.value)) &&
-                                !requiredTrainingRules.map(r => r.skill).includes(getSkillNameFromPath(choice.value))
-                        }
-                    }).map(choice => {
-                        const skill = getSkillNameFromPath(choice.value)
-                        const isSelected = chosenLevel1Skills.map(sk => sk.skill).includes(skill)
-                        return (
-                            <TrainingSelector
-                                key={rule.id + choice.value}
-                                skill={skill}
-                                label={choice.label}
-                                isSelected={isSelected}
-                                onSelect={() => onSelectLevel1Training(skill, rule.id, !isSelected)}
-                            />
-                        )
-                    })
-                })}
-            </div>
+                    </div>
 
-            {/* BONUS TRAINING SELECTIONS */}
-            {ancestryTrainingRules.length > 0 &&
-                <BonusChoiceContainer>
-                    {ancestryTrainingRules.map((rule, index) => (
-                        <div key={index} className="space-y-1">
-                            <BonusChoiceTitle text={`${strings.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`} />
-                            {
-                                rule.maxChoices > chosenBonusSkills.length ?
-                                    rule.choices.map(c => ({ value: c.value, label: c.label })).filter(c =>
-                                        !chosenLevel1Skills.map(sk => sk.skill).includes(getSkillNameFromPath(c.value)) &&
-                                        !requiredTrainingRules.map(r => r.skill).includes(getSkillNameFromPath(c.value))
-                                    ).map(choice => {
-                                        const skill = getSkillNameFromPath(choice.value)
-                                        const isSelected = chosenBonusSkills.map(sk => sk.skill).includes(skill)
-                                        return (
-                                            <TrainingSelector
-                                                key={skill}
-                                                skill={skill}
-                                                label={choice.label}
-                                                isSelected={isSelected}
-                                                onSelect={() => onSelectBonusSkill(skill, rule.id, !isSelected)}
-                                            />
-                                        )
-                                    }) : chosenBonusSkills.map(sk => (
-                                        <TrainingSelector
-                                            key={sk.skill}
-                                            skill={sk.skill}
-                                            label={vgLiteLang.Skills[sk.skill].name}
-                                            isSelected={true}
-                                            onSelect={() => onSelectBonusSkill(sk.skill, rule.id, false)}
-                                        />
-                                    ))
-                            }
-                        </div>
-                    ))}
-                </BonusChoiceContainer>
-            }
+                    {/* TRAINING CHOICE COUNTER */}
+                    <div className="justify-center text-center bg-context-menu-fill/25">
+                        <BorderedContent className="flex-col gap-y-2 justify-center w-full">
+                            <HeroCreationSubtext text={strings.trainingSlots} />
+                            <p className="text-4xl text-text-header-tertiary font-bold">{`${chosenLevel1Skills.length} / ${level1TrainingRule!.maxChoices} ${strings.selected}`}</p>
+                        </BorderedContent>
+                    </div>
+
+                    {/* LEVEL 1 TRAINING SELECTIONS */}
+                    <div className="space-y-1 mt-2">
+                        <HeroCreationLabel text={strings.electiveTraining.replace("%s", `${level1TrainingRule!.maxChoices}`)} />
+                        {level1TrainingRules.flatMap(rule => ({ id: rule.id, choices: rule.choices })).map(rule => {
+                            return rule.choices.filter(choice => {
+                                if (chosenLevel1Skills.length === level1TrainingRule.maxChoices) {
+                                    return chosenLevel1Skills.map(sk => sk.skill).includes(getSkillNameFromPath(choice.value))
+                                }
+                                else {
+                                    return !chosenBonusSkills.map(sk => sk.skill).includes(getSkillNameFromPath(choice.value)) &&
+                                        !requiredTrainingRules.map(r => r.skill).includes(getSkillNameFromPath(choice.value))
+                                }
+                            }).map(choice => {
+                                const skill = getSkillNameFromPath(choice.value)
+                                const isSelected = chosenLevel1Skills.map(sk => sk.skill).includes(skill)
+                                return (
+                                    <TrainingSelector
+                                        key={rule.id + choice.value}
+                                        skill={skill}
+                                        label={choice.label}
+                                        isSelected={isSelected}
+                                        onSelect={() => onSelectLevel1Training(skill, rule.id, !isSelected)}
+                                    />
+                                )
+                            })
+                        })}
+                    </div>
+
+                    {/* BONUS TRAINING SELECTIONS */}
+                    {ancestryTrainingRules.length > 0 &&
+                        <BonusChoiceContainer>
+                            {ancestryTrainingRules.map((rule, index) => (
+                                <div key={index} className="space-y-1">
+                                    <BonusChoiceTitle text={`${strings.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`} />
+                                    {
+                                        rule.maxChoices > chosenBonusSkills.length ?
+                                            rule.choices.map(c => ({ value: c.value, label: c.label })).filter(c =>
+                                                !chosenLevel1Skills.map(sk => sk.skill).includes(getSkillNameFromPath(c.value)) &&
+                                                !requiredTrainingRules.map(r => r.skill).includes(getSkillNameFromPath(c.value))
+                                            ).map(choice => {
+                                                const skill = getSkillNameFromPath(choice.value)
+                                                const isSelected = chosenBonusSkills.map(sk => sk.skill).includes(skill)
+                                                return (
+                                                    <TrainingSelector
+                                                        key={skill}
+                                                        skill={skill}
+                                                        label={choice.label}
+                                                        isSelected={isSelected}
+                                                        onSelect={() => onSelectBonusSkill(skill, rule.id, !isSelected)}
+                                                    />
+                                                )
+                                            }) : chosenBonusSkills.map(sk => (
+                                                <TrainingSelector
+                                                    key={sk.skill}
+                                                    skill={sk.skill}
+                                                    label={vgLiteLang.Skills[sk.skill].name}
+                                                    isSelected={true}
+                                                    onSelect={() => onSelectBonusSkill(sk.skill, rule.id, false)}
+                                                />
+                                            ))
+                                    }
+                                </div>
+                            ))}
+                        </BonusChoiceContainer>
+                    }
+                </div>
+            </div>
         </div>
     )
 

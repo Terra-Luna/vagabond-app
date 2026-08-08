@@ -21,13 +21,13 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
     return (
         <div className="flex h-full w-full overflow-hidden">
             {/* STORYBOOK IMAGE */}
-            <div className="w-2/5 sticky top-0 flex justify-start items-start" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
+            <div className="w-1/3 sticky top-0 flex justify-start items-start" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
                 <img src={item.img ?? ''} className="w-full object-contain" />
                 <ContextMenu />
             </div>
 
             {/* ITEM SHEET - SCROLLABLE */}
-            <div className="w-3/5 h-full overflow-y-auto">
+            <div className="w-2/3 h-full overflow-y-auto">
                 <BaseItemSheetComponent
                     bodyClassName="mt-2 mx-2 pb-10"
                     banner={<ItemSheetBanner item={item} hideImage={true} />}

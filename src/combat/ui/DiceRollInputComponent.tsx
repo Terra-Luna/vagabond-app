@@ -56,13 +56,13 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                     <div className="flex gap-x-1 items-end">
 
                         {/* DICE COUNT */}
-                        <div>
+                        <div title={"Dice count"}>
                             {!label && <p className="text-sm">Roll</p>}
                             <DiceCountInput dmgDice={diceRoll.count} onUpdateDmgDice={updateDmgDice} />
                         </div>
 
                         {/* DIE SIZE */}
-                        <div>
+                        <div title={"Die size"}>
                             <CustomDropDown
                                 value={diceRoll.faces?.toString() ?? ''}
                                 options={[
@@ -80,7 +80,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                         </div>
 
                         {/* MODIFIER (FLAT BONUS) */}
-                        <div className="flex items-center text-xl">
+                        <div title={"Flat modifier (can be negative)"} className="flex items-center text-xl">
                             <Plus size={16} className="text-text-secondary" />
                             <NumericCounterInput
                                 value={diceRoll.modifier || 0}
@@ -141,8 +141,8 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
 
 const ExplosionsInput = ({ explosionValues, handleExplosionChange }) => {
     return (
-        <div className="flex items-center">
-            <p className="text-sm font-normal">💥</p>
+        <div title={"Explodes on..."} className="flex items-center mt-0.5">
+            <p className="text-sm font-normal">❗</p>
             <CSVTextInput
                 value={explosionValues}
                 onChange={handleExplosionChange}

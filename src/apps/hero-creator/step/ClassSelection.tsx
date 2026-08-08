@@ -33,7 +33,7 @@ export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navBu
     }, [classes])
 
     const ClassSelection = (
-        <div className="bg-sheet-main-fill space-y-4">
+        <div className="relative bg-sheet-main-fill space-y-4">
             <Header title={strings.class} />
             <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!!classItem} />
 
