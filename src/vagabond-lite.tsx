@@ -457,6 +457,15 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
         const rootElement = html.querySelector('.vglite-react-chat-root') as HTMLElement
         if (!rootElement) return
 
+        // Stips out Foundry's default chat container. We don't need it
+        // since we can still r-click and delete the card if needed.
+        html.style.background = 'transparent'
+        html.style.border = 'none'
+        html.style.boxShadow = 'none'
+        html.style.padding = '0'
+        const coreHeader = html.querySelector('.message-header') as HTMLElement
+        if (coreHeader) coreHeader.style.display = 'none'
+
         const blueprint = message.getFlag("vagabond-lite" as any, "blueprint")
         if (!blueprint) return
 

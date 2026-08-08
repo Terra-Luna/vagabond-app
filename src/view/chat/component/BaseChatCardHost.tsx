@@ -7,7 +7,7 @@ const chatCardBodyStyle = `
     font-eskapade 
     font-bold
     bg-sheet-main-fill
-    rounded-md
+    rounded-sm
 `
 
 export const BaseChatCardHost = ({ banner, contents }) => {
