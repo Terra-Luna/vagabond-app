@@ -37,7 +37,7 @@ export const HeaderWithClipPath = ({ children, showRightBorder, fullWidth }: {
     const borderClass = showRightBorder ? "border-r-1 border-solid border-table-border" : ""
     return (
         <div className={`${cardSubheaderLayout} ${borderClass}`}>
-            <div className="flex">
+            <div className={`flex ${fullWidthClass}`}>
                 <div className={`${cardSubheaderStyle} ${fullWidthClass}`}>{children}</div>
                 <div className={`bg-sheet-header-fill w-6 -ml-[1px] [clip-path:polygon(0_0,0%_100%,10%_100%,100%_0)]`} />
             </div>

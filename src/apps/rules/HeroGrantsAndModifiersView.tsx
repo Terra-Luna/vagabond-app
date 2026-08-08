@@ -60,9 +60,9 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                 </EffectCardContainer>
             } />
 
-            {/* LOCKED GRANGS & MODIFIERS */}
+            {/* LOCKED GRANTS & MODIFIERS */}
             {lockedRules.length > 0 && (
-                <CollapsibleSection title={`Locked Grangs & Modifiers (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
+                <CollapsibleSection title={`Locked Grants & Modifiers (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
                     <EffectCardContainer>
                         {lockedRules.map(rule => (
                             <ActiveEffectCardRow key={rule.id} rule={rule} isActive={false} />
