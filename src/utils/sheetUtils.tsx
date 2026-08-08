@@ -99,7 +99,7 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
         height = Math.max(totalDomHeight - toolbarOffset, 100)
     }
 
-    sheet.element.style.setProperty("overflow", sheet._isCollapsed ? "hidden" : "visible")
+    sheet?.element?.style?.setProperty("overflow", sheet._isCollapsed ? "hidden" : "visible")
 
     sheet._reactRoot!.render(
         <FoundryHotkeyBlocker>

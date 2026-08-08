@@ -3,30 +3,22 @@ import { getId } from "../../../../utils/modelUtil"
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardSerializer"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
 import { useContextMenu, CtxMenuItem } from "../../../component/ContextMenu"
+import { useImageEdit } from "../../shared/ImageEditUseCase"
 
 export const ItemPortraitComponent = ({ item, size = 56, className }: {
     item: Item, size?: number, className?: string
 }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-
-    const editImage = () => {
-        new foundry.applications.apps.FilePicker({
-            type: "image",
-            current: item.img as any,
-            callback: async (path) => {
-                await item.update({ 'img': path })
-            }
-        }).render()
-    }
+    const { imageEditCtxMenuItems } = useImageEdit(item)
 
     const contextMenuItems: CtxMenuItem[] = []
     contextMenuItems.push(
-        { icon: Pencil, label: 'Edit', action: () => editImage() },
         {
-            icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(
-                null, <ItemChatCard itemId={getId(item)} itemName={item.name} />
-            )
-        }
+            icon: MessageSquareText,
+            label: 'Send to chat',
+            action: () => sendVgLiteChatMessage(null, <ItemChatCard itemId={getId(item)} itemName={item.name} />)
+        },
+        ...imageEditCtxMenuItems
     )
 
     return (

@@ -9,6 +9,7 @@ import { RichTextField } from "../../../../../component/RichTextField"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
 import { vgLiteLang } from "../../../../../../utils/lang"
+import { ClassSheetBannerWrapper } from "./ClassSheetBannerWrapper"
 
 export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -19,15 +20,29 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
     const sortedFeats = item.system.features.sort((a, b) => (a.level ?? 0) - (b.level ?? 0))
 
     return (
-        <div className="mt-4 space-y-1">
-            <div className="flex gap-x-1 items-center">
-                <ClassSheetSectionHeader text={vgLiteLang.ClassSheet.labelClassFeat} />
-                {isEditMode && <Plus size={24} strokeWidth={3} className="text-text-header-tertiary cursor-pointer hover-glow" onClick={onAddNewFeature} />}
-            </div>
+        <div className="space-y-1">
+            <ClassSheetBannerWrapper>
+                <div className="flex gap-x-1 items-center">
+                    {vgLiteLang.ClassSheet.labelClassFeat}
+                    {isEditMode &&
+                        <button
+                            title={"Add new feature"}
+                            onClick={onAddNewFeature}
+                            className="text-sm font-paradigm font-normal border border-solid border-sheet-header-tertiary cursor-pointer hover-glow px-2"
+                        >
+                            +{vgLiteLang.ButtonActions.add}
+                        </button>
+                    }
+                </div>
+            </ClassSheetBannerWrapper>
+
+            {/* NEW FEATURE CONFIGURATION MENU */}
             {isNewFeatureOpen && <NewFeatureMenu item={item} setIsNewFeatureOpen={setIsNewFeatureOpen} />}
+
+            {/* FEATURES LISTED BY LEVEL */}
             {
                 sortedFeats.map((feat, index) => (
-                    <div key={index} onContextMenu={(e) => {
+                    <div key={index} className="px-1" onContextMenu={(e) => {
                         if (!isEditMode) return
                         onCtxMenu(e, [
                             {
@@ -49,7 +64,9 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
                         ])
                     }}>
                         <ClassFeatureCard item={item} feat={feat} />
-                        {editFeatureIndex === index && <NewFeatureMenu item={item} editIndex={editFeatureIndex} setIsNewFeatureOpen={setEditFeatureIndex} />}
+                        {editFeatureIndex === index &&
+                            <NewFeatureMenu item={item} editIndex={editFeatureIndex} setIsNewFeatureOpen={setEditFeatureIndex} />
+                        }
                     </div>
                 ))
             }
@@ -64,6 +81,7 @@ const ClassFeatureCard = ({ item, feat }) => {
             title={feat.name}
             subtitles={[{ label: item.name, value: `${vgLiteLang.ClassSheet.labelLevel} ${feat.level}` }]}
             description={feat.description}
+            startCollapsed={feat.level > 1}
         />
     )
 }

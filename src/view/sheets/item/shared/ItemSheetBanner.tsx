@@ -1,4 +1,4 @@
-import { Pencil, MessageSquareText } from "lucide-react"
+import { MessageSquareText } from "lucide-react"
 import { useContextMenu, CtxMenuItem } from "../../../component/ContextMenu"
 import { EditableTextField } from "../../../component/EditableTextField"
 import { Divider } from "../../../component/Header"
@@ -10,33 +10,30 @@ import { PerkDataModel, perkPrerequisites } from "../../../../model/item/charact
 import { sendVgLiteChatMessage } from "../../../chat/ChatCardSerializer"
 import { vgLiteLang } from "../../../../utils/lang"
 import { AncestryDataModel, ancestrySizeAndType } from "../../../../model/item/character/AncestryDataModel"
+import { useImageEdit } from "../../shared/ImageEditUseCase"
 
 export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: any }, hideImage?: boolean }) => {
     const { editModeToggleBtn } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
-
-    const editImage = () => {
-        new foundry.applications.apps.FilePicker({
-            type: "image",
-            current: item.img as any,
-            callback: async (path) => { await item.update({ 'img': path }) }
-        }).render()
-    }
+    const { imageEditCtxMenuItems } = useImageEdit(item)
 
     const contextMenuItems: CtxMenuItem[] = []
     contextMenuItems.push(
-        { icon: Pencil, label: vgLiteLang.ButtonActions.edit, action: () => editImage() },
         {
-            icon: MessageSquareText, label: vgLiteLang.ButtonActions.chat, action: () => sendVgLiteChatMessage(
-                null, <AbilityChatCard
-                    actorId={item.actor?.id ?? null}
-                    img={item.img ?? ''}
-                    title={item.name}
-                    description={item.system.description}
-                    tokenIds={[]}
-                />
-            )
-        }
+            icon: MessageSquareText,
+            label: vgLiteLang.ButtonActions.chat,
+            action: () => {
+                sendVgLiteChatMessage(
+                    null,
+                    <AbilityChatCard
+                        actorId={item.actor?.id ?? null}
+                        title={item.name}
+                        description={item.system.description}
+                    />
+                )
+            }
+        },
+        ...imageEditCtxMenuItems
     )
 
     let subheaderContent: CardSubHeaderValues[] = []

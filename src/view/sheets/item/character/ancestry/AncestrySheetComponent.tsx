@@ -7,17 +7,23 @@ import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
 import { ItemSheetBanner } from "../../shared/ItemSheetBanner"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { Description } from "../../../shared/Description"
+import { useImageEdit } from "../../../shared/ImageEditUseCase"
+import { useContextMenu } from "../../../../component/ContextMenu"
 
 export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } | null }) => {
     if (!item) return
     const { isEditMode } = useEditMode()
+    const { ContextMenu, onCtxMenu } = useContextMenu()
+    const { imageEditCtxMenuItems } = useImageEdit(item)
+
     const ancestry = item.system
 
     return (
         <div className="flex h-full w-full overflow-hidden">
             {/* STORYBOOK IMAGE */}
-            <div className="w-2/5 sticky top-0 flex justify-start items-start">
+            <div className="w-2/5 sticky top-0 flex justify-start items-start" onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
                 <img src={item.img ?? ''} className="w-full object-contain" />
+                <ContextMenu />
             </div>
 
             {/* ITEM SHEET - SCROLLABLE */}
