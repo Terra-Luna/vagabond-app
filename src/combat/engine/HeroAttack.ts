@@ -324,13 +324,17 @@ export class HeroAttack extends Attack {
 
         const isRanged = weaponSkill === 'ranged'
         const isKeen = weapon.properties.includes('keen')
-        damageDice.extraDieOnCrit = weapon.properties.includes('vicious')
-
-        console.log(weaponSkill, isKeen, weapon.properties.includes('vicious'))
+        damageDice.extraDieOnCrit =
+            weapon.properties.includes('vicious') ||
+            (isRanged && mods.dice.crit.rangedExtraDie) ||
+            (!isRanged && mods.dice.crit.meleeExtraDie)
 
         const skillCheck = new SkillCheck(hero, {
             skill: weaponSkill!,
-            critThreshold: 20 - (isRanged ? (mods.dice.crit.ranged ?? 0) : (mods.dice.crit.melee ?? 0)) - (isKeen ? 1 : 0),
+            critThreshold: 20 - (isRanged
+                ? (mods.dice.crit.ranged ?? 0)
+                : (mods.dice.crit.melee ?? 0)
+            ) - (isKeen ? 1 : 0),
             clickEvent: clickEvent
         })
 
