@@ -12,6 +12,7 @@ import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 import { Gauge } from "../../view/component/Gauge"
 import { getCombatantStatuses } from "../engine/status"
 import { BulkCombatantEditApp } from "../../apps/bulk-combatant-edit/BulkCombatantEditApp"
+import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 
 const getCombat = () => game.combat as VgLiteCombat
 
@@ -62,20 +63,22 @@ export const CombatTracker = ({ combat }) => {
     const adversaries = getAdversaries(combatants)
 
     return (
-        <div className="flex flex-col gap-6 pb-2">
-            {heroes?.length > 0 &&
-                <Group groupName="heroes">
-                    <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
-                    <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
-                </Group>
-            }
-            {adversaries?.length > 0 &&
-                <Group groupName="adversaries">
-                    <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
-                    <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
-                </Group>
-            }
-        </div>
+        <CanvasReadyWrapper>
+            <div className="flex flex-col gap-6 pb-2">
+                {heroes?.length > 0 &&
+                    <Group groupName="heroes">
+                        <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
+                        <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                    </Group>
+                }
+                {adversaries?.length > 0 &&
+                    <Group groupName="adversaries">
+                        <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
+                        <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                    </Group>
+                }
+            </div>
+        </CanvasReadyWrapper>
     )
 }
 
@@ -164,7 +167,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     const isActiveCombatant = game.combat?.combatant === combatant
     const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
     const disposition = combatant.token.disposition
-    
+
     return (
         <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions())}>
             <div className={`flex w-full ${opacityClass}`}>

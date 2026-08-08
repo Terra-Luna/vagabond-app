@@ -45,7 +45,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                 <CoinValue hero={hero} value={hero.inventory.coins.c ?? 0} label={lang.VGLITE.HeroSheet.Currency.c} path='c' />
             </div>
 
-            {isCoinAppOpen && <div className="absolute top-full right-0">
+            {isCoinAppOpen &&
                 <CoinApp
                     coin={coinAppCoin}
                     mode={mode}
@@ -54,8 +54,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                     onSave={() => onCoinAppSave()}
                     onCancel={() => setIsCoinAppOpen(false)}
                 />
-            </div>}
-
+            }
         </div>
     )
 }
