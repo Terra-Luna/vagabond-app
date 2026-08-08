@@ -60,6 +60,10 @@ export const VgLiteSheetMixin = (superclass) => class extends superclass {
         onClose(this as any)
     }
 
+    async _animateClose() {
+        return
+    }
+
     renderWithWrappers({ theme = "light", position }: { theme: string, position: { width: number, height: number, top: number, left: number } }) {
         onRenderWithWrappers(this as any, theme, position)
     }

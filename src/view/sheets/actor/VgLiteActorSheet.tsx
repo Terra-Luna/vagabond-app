@@ -2,7 +2,7 @@ const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { extractItemFromContainer } from "../../../model/item/equip/ContainerDataModel"
-import { VgLiteSheetMixin } from "../VgLiteSheet"
+import { VgLiteSheetMixin } from "../VgLiteSheetMixin"
 import { deleteItemStack } from "../../../utils/heroInventoryUtil"
 
 export abstract class VgLiteActorSheet extends VgLiteSheetMixin(sheets.ActorSheetV2) {

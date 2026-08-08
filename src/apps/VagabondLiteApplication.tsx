@@ -111,7 +111,16 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
             this._reactRoot = null
         }
 
+        if (this.element) {
+            this.element.style.transition = "none"
+            this.element.style.animation = "none"
+        }
+
         super._onClose(options)
     }
-    
+
+    protected async _animateClose(): Promise<void> {
+        return
+    }
+
 }
