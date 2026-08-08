@@ -14,32 +14,46 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
     const ancestry = item.system
 
     return (
-        <BaseItemSheetComponent
-            bodyClassName="mt-2 mx-2"
-            banner={<ItemSheetBanner item={item} />}
-            body={<>
-                {isEditMode &&
-                    <div className="text-header-text-secondary flex gap-2 mb-2">
-                        <DropDown label={lang.VGLITE.ItemSheet.size}
-                            variant="alternate"
-                            options={createDropdownEntries(lang.VGLITE.Sizes)}
-                            parent={ancestry.parent}
-                            updateMechanism={{ updatePath: ['beingSize'] }}
-                            value={ancestry.beingSize ?? ''}
-                        />
-                        <DropDown label={lang.VGLITE.ItemSheet.type}
-                            variant="alternate"
-                            options={createDropdownEntries(lang.VGLITE.BeingTypes)}
-                            parent={ancestry.parent}
-                            updateMechanism={{ updatePath: ['beingType'] }}
-                            value={ancestry.beingType}
-                        />
-                    </div>
-                }
+        <div className="flex h-full w-full overflow-hidden">
+            {/* STORYBOOK IMAGE */}
+            <div className="w-2/5 sticky top-0 flex justify-start items-start">
+                <img src={item.img ?? ''} className="w-full object-contain" />
+            </div>
 
-                <ItemRulesManager item={item} />
+            {/* ITEM SHEET - SCROLLABLE */}
+            <div className="w-3/5 h-full overflow-y-auto">
+                <BaseItemSheetComponent
+                    bodyClassName="mt-2 mx-2 pb-10"
+                    banner={<ItemSheetBanner item={item} hideImage={true} />}
+                    description={<Description item={item} showFullView={true} italic={false} />}
+                    body={
+                        <>
+                            {isEditMode && (
+                                <div className="text-header-text-secondary flex gap-2 mb-2">
+                                    <DropDown
+                                        label={lang.VGLITE.ItemSheet.size}
+                                        variant="alternate"
+                                        options={createDropdownEntries(lang.VGLITE.Sizes)}
+                                        parent={ancestry.parent}
+                                        updateMechanism={{ updatePath: ['beingSize'] }}
+                                        value={ancestry.beingSize ?? ''}
+                                    />
+                                    <DropDown
+                                        label={lang.VGLITE.ItemSheet.type}
+                                        variant="alternate"
+                                        options={createDropdownEntries(lang.VGLITE.BeingTypes)}
+                                        parent={ancestry.parent}
+                                        updateMechanism={{ updatePath: ['beingType'] }}
+                                        value={ancestry.beingType}
+                                    />
+                                </div>
+                            )}
 
-            </>}
-            description={<Description item={item} showFullView={true} italic={false} />} />
+                            <ItemRulesManager item={item} />
+                        </>
+                    }
+                />
+            </div>
+        </div>
     )
 }

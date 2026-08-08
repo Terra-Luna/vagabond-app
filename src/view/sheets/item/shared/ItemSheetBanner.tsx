@@ -11,7 +11,7 @@ import { sendVgLiteChatMessage } from "../../../chat/ChatCardSerializer"
 import { vgLiteLang } from "../../../../utils/lang"
 import { AncestryDataModel, ancestrySizeAndType } from "../../../../model/item/character/AncestryDataModel"
 
-export const ItemSheetBanner = ({ item }: { item: Item & { system: any } }) => {
+export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: any }, hideImage?: boolean }) => {
     const { editModeToggleBtn } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
@@ -46,9 +46,9 @@ export const ItemSheetBanner = ({ item }: { item: Item & { system: any } }) => {
 
     return (
         <div>
-            <div className="flex space-x-1 items-center bg-section-header-fill px-1 font-eskapade font-bold">
-                {item.img &&
-                    <div className="mt-0.5 mb-1 mr-2">
+            <div className="flex gap-x-2 items-center bg-section-header-fill px-1 font-eskapade font-bold">
+                {item.img && !hideImage &&
+                    <div className="mt-0.5 mb-1">
                         <img
                             className={`object-contain border border-solid border-text-header-primary rounded-sm bg-white`}
                             width={56}

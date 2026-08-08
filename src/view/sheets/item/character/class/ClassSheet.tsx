@@ -6,7 +6,9 @@ export class ClassSheet extends VgLiteItemSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 420,
-            height: "auto"
+            height: "auto",
+            top: 100,
+            left: 100
         },
         window: {
             resizable: true
