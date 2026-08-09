@@ -6,6 +6,7 @@ import * as sheetUtils from "../utils/sheetUtils"
 export interface VagabondLiteAppArgs {
     window?: Partial<{ title: string, minimizable: boolean, resizable: boolean }>,
     position?: Partial<{ width: number | "auto", height: number | "auto" }>, 
+    enforceSingleInstance?: boolean,
     editModeOptions?: EditModeOptions,
     Component: React.FC<any>
 }
@@ -16,7 +17,7 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
 
     private _reactRoot: Root | null = null
     private static _openAppsRegistry = new Map<any, VagabondLiteApplication>()
-    protected enforceSingleInstance = true
+    private enforceSingleInstance: boolean
 
     static override DEFAULT_OPTIONS: Partial<typeof foundry.applications.api.ApplicationV2["DEFAULT_OPTIONS"]> = {
         window: { title: "", minimizable: true, resizable: true },
@@ -39,8 +40,10 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
                 }
             }),
         )
+
         this.Component = args.Component
         this.editModeOptions = args.editModeOptions ?? EditModeOptions.NEVER
+        this.enforceSingleInstance = args.enforceSingleInstance ?? true
 
         /**
          * Check that the user doesn't already have the app open by comparing it

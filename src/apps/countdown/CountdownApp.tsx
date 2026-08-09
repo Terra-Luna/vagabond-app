@@ -7,11 +7,10 @@ export class CountdownApp extends VagabondLiteApplication {
 
     initialDuration: number
     countdown: CountdownRoll
-    protected override enforceSingleInstance: boolean = false
 
     constructor(label: string, duration: number) {
         super({
-            id: `countdown-${foundry.utils.randomID()}`,
+            enforceSingleInstance: false,
             window: {
                 frame: true,
                 resizable: false,
