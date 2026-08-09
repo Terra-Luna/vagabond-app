@@ -11,6 +11,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerXpCurve()
         VagabondSettingsRegistry.registerXpQuestionnaire()
         VagabondSettingsRegistry.registerAttacksRegistry()
+        VagabondSettingsRegistry.registerItemShopToggle()
     }
 
     private static registerMaxLevel() {
@@ -92,6 +93,17 @@ export class VagabondSettingsRegistry {
         })
     }
 
+    private static registerItemShopToggle() {
+        (game.settings as any).register("vagabond-lite", "itemShopToggle", {
+            name: "Toggle Item Shop",
+            hint: "Control visibility of Item Shop to players",
+            scope: "world",
+            config: false,
+            type: Boolean,
+            default: true
+        })
+    }
+
 }
 
 /**
@@ -144,4 +156,14 @@ export const getAttackRegistry = () => {
 }
 export const setAttackRegistry = async (attacksRegistry) => {
     (game.settings as any)?.set("vagabond-lite", "attackRegistry", attacksRegistry)
+}
+
+/**
+ * Item Shop Toggle
+ */
+export const getItemShopToggle = (): boolean => {
+    return (game.settings as any)?.get("vagabond-lite", "itemShopToggle") || false
+}
+export const setItemShopToggle = async (toggle: boolean) => {
+    (game.settings as any)?.set("vagabond-lite", "itemShopToggle", toggle)
 }

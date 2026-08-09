@@ -8,9 +8,9 @@ import { sortedItems, isInContainer } from "../../../../../model/actor/type/Inve
 import { HeroCoinPurse } from "../../../../component/CoinPurse"
 import { PrimaryButton } from "../../../../component/Button"
 import { ItemShopApp } from "../../../../../apps/shop/ItemShopApp"
+import { getItemShopToggle } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
-
     return (
         <div className="w-full">
             <div className="flex justify-between gap-1">
@@ -27,11 +27,13 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                     }
                     contextMenuItems={(item) => equipmentContextMenuItems(hero, item)} />
             </div>
-            <div className="flex w-fll justify-end mt-1 mb-8">
-                <PrimaryButton onClick={() => new ItemShopApp(hero.parent).render({ force: true })}>
-                    Item Shop
-                </PrimaryButton>
-            </div>
+            {getItemShopToggle() &&
+                <div className="flex w-fll justify-end mt-1 mb-8">
+                    <PrimaryButton onClick={() => new ItemShopApp(hero.parent).render({ force: true })}>
+                        Item Shop
+                    </PrimaryButton>
+                </div>
+            }
         </div>
     )
 }

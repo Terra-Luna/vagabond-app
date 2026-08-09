@@ -48,11 +48,11 @@ export const XpProgressionCurveView: React.FC<XpCurveArgs> = ({ initialCurve = [
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col grow h-full gap-2 p-2 bg-sheet-main-fill text-sm text-text-primary font-paradigm rounded-lg">
+        <form onSubmit={handleSubmit} className="flex flex-col grow h-full gap-1 p-2 bg-sheet-main-fill text-sm text-text-primary font-paradigm rounded-lg">
             {/* XP CURVE LIST CONTAINER */}
             <div className="flex flex-col gap-1">
                 {curve.sort((a, b) => a.level - b.level).map((q, index) => (
-                    <div key={q.id} className="flex items-center gap-1 p-1">
+                    <div key={q.id} className="flex items-center justify-center gap-1 p-1">
                         
                         {/* LEVEL INPUT */}
                         <div>
