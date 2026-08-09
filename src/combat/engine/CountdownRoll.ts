@@ -1,9 +1,10 @@
+import { roll3dDice } from "../../utils/foundryUtils"
 import { RollSummary } from "./RollSummary"
 import { getDiceTerms } from "./util/dice-utils"
 
 export interface CountdownResult {
     name: string
-    duration: string
+    duration: number
     rollSummary?: RollSummary
     rolls?: any[]
     message?: string | null
@@ -11,32 +12,34 @@ export interface CountdownResult {
 
 export class CountdownRoll {
 
-    countdown: CountdownResult
+    result: CountdownResult
 
     constructor(countdown: CountdownResult) {
-        this.countdown = countdown
+        this.result = countdown
     }
 
     public async roll() {
-        const formula = this.countdown.duration
-        if (formula.length === 0) return null
         // Transform 'cd6' or 'd6' into a Foundry-friendly countdown roll.
-        const foundryRoll = formula.replace(/^c?d(\d+)/i, "1d$1cd")
-        const countdown = await new Roll(foundryRoll).evaluate()
-        const nextDuration = this.adjustCountdownDuration(countdown.total, foundryRoll.toUpperCase())
-        this.countdown = {
-            name: this.countdown.name,
+        const foundryRoll = `d${this.result.duration}`
+
+        const roll = await new Roll(foundryRoll).evaluate()
+        roll3dDice([roll])
+
+        const nextDuration = this.adjustCountdownDuration(roll.total)
+        this.result = {
+            name: this.result.name,
             duration: nextDuration,
-            rollSummary: RollSummary.buildRollSummaries(getDiceTerms(countdown), null, [])[0],
-            rolls: [countdown],
-            message: nextDuration === '' ?
-                'Countdown has expired' : (
-                    foundryRoll != nextDuration ?
-                        `Countdown has reduced to: ${nextDuration.replace(/^1[dD](\d+)[cC][dD]$/, "Cd$1")}...` :
-                        `Countdown continues...`
+            rollSummary: RollSummary.buildRollSummaries(getDiceTerms(roll), null, [])[0],
+            rolls: [roll],
+            message: nextDuration === 0
+                ? 'Countdown has expired'
+                : (
+                    roll.total === nextDuration
+                        ? `Countdown continues...`
+                        : `Countdown has reduced to: Cd${nextDuration}...`
                 )
         }
-        return this.countdown
+        return this.result
     }
 
     /**
@@ -45,20 +48,14 @@ export class CountdownRoll {
      * @param formula 
      * @returns 
      */
-    private adjustCountdownDuration(result: number, formula: string): string {
+    private adjustCountdownDuration(result: number) {
         if (result > 1) {
-            return formula
-        }
-        else if (formula === '1D4CD') {
-            // Countdown has expired by rolling a 1 on a d4.
-            return ''
+            return this.result.duration
         }
         else {
-            // Countdown has reduced die size. E.g.: Converts CD6 to CD4.
-            const reducedRoll = formula.replace(/([dD])(\d+)/, (match: string, letter: string, faces: string): string => {
-                return letter + (parseInt(faces) - 2)
-            })
-            return reducedRoll
+            return this.result.duration === 4
+                ? 0
+                : (this.result.duration - 2)
         }
     }
 

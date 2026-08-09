@@ -178,12 +178,14 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                                         return `${coinsAsString(total)}`
                                     })()}
                                 </p>
+
                                 {useCheckout &&
                                     <div className="flex gap-x-1">
                                         <PrimaryButton onClick={onCheckout}>{vgLiteLang.ButtonActions.checkout}</PrimaryButton>
                                         <DestructiveButton onClick={onCancel}>{vgLiteLang.ButtonActions.cancel}</DestructiveButton>
                                     </div>
                                 }
+
                             </div>
                             {/* SHOPPING CART ITEMS LIST */}
                             <ShoppingCart>

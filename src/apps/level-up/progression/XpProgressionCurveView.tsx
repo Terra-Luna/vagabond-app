@@ -62,7 +62,7 @@ export const XpProgressionCurveView: React.FC<XpCurveArgs> = ({ initialCurve = [
                                 value={q.level}
                                 placeholder="Level"
                                 onChange={(e) => handleInputChange(q.id, "level", e.target.value)}
-                                className="flex-1 bg-context-menu-fill border border-solid border-table-border w-[8ch] px-3 py-0.5"
+                                className="flex-1 bg-context-menu-fill border border-solid border-table-border w-[8ch] px-3 py-0.5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                             />
                         </div>
 

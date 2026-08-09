@@ -329,7 +329,7 @@ const AdversaryAttackComponent = ({ actor, attack }: { actor: Actor, attack: Adv
 const InteractiveChatCardButton = ({ icon, label, tooltip, fn }: { icon?: ReactNode, label: string, tooltip: string, fn: () => void }) => {
     return (
         <button title={tooltip}
-            className="flex text-base items-center border border-solid border-table-border px-1 hover-glow cursor-pointer"
+            className="flex text-base items-center border border-solid border-table-border px-1 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer"
             onClick={fn}
         >
             {icon}

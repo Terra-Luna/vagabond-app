@@ -16,6 +16,7 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
 
     private _reactRoot: Root | null = null
     private static _openAppsRegistry = new Map<any, VagabondLiteApplication>()
+    protected enforceSingleInstance = true
 
     static override DEFAULT_OPTIONS: Partial<typeof foundry.applications.api.ApplicationV2["DEFAULT_OPTIONS"]> = {
         window: { title: "", minimizable: true, resizable: true },
@@ -45,16 +46,18 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
          * Check that the user doesn't already have the app open by comparing it
          * to the custom _openAppsRegistry.
          */
-        const Constructor = this.constructor
-        const existing = VagabondLiteApplication._openAppsRegistry.get(Constructor)
-        const isExistingClosing = (existing?.state as any) === "CLOSING" || (existing as any)?._state === 4
+        if (this.enforceSingleInstance) {
+            const Constructor = this.constructor
+            const existing = VagabondLiteApplication._openAppsRegistry.get(Constructor)
+            const isExistingClosing = (existing?.state as any) === "CLOSING" || (existing as any)?._state === 4
 
-        if (existing && !isExistingClosing) {
-            existing.bringToFront();
-            (this as any)._state = 5
-        }
-        else {
-            VagabondLiteApplication._openAppsRegistry.set(Constructor, this)
+            if (existing && !isExistingClosing) {
+                existing.bringToFront();
+                (this as any)._state = 5
+            }
+            else {
+                VagabondLiteApplication._openAppsRegistry.set(Constructor, this)
+            }
         }
     }
 
@@ -65,12 +68,13 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
      */
     protected override _canRender(options: any): false | void {
         if (super._canRender(options) === false) return false
-
-        const Constructor = this.constructor
-        const currentActive = VagabondLiteApplication._openAppsRegistry.get(Constructor)
-        if (currentActive && currentActive.id !== this.id) {
-            currentActive.bringToFront()
-            return false
+        if (this.enforceSingleInstance) {
+            const Constructor = this.constructor
+            const currentActive = VagabondLiteApplication._openAppsRegistry.get(Constructor)
+            if (currentActive && currentActive.id !== this.id) {
+                currentActive.bringToFront()
+                return false
+            }
         }
         return
     }
@@ -101,9 +105,11 @@ export abstract class VagabondLiteApplication extends foundry.applications.api.A
     }
 
     protected override _onClose(options): void {
-        const Constructor = this.constructor
-        if (VagabondLiteApplication._openAppsRegistry.get(Constructor) === this) {
-            VagabondLiteApplication._openAppsRegistry.delete(Constructor)
+        if (this.enforceSingleInstance) {
+            const Constructor = this.constructor
+            if (VagabondLiteApplication._openAppsRegistry.get(Constructor) === this) {
+                VagabondLiteApplication._openAppsRegistry.delete(Constructor)
+            }
         }
 
         if (this._reactRoot) {

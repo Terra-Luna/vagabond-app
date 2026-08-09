@@ -37,7 +37,7 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
         sheet._reactRoot = ReactDom.createRoot(sheet._scaduRoot)
 
         const header = sheet.element.querySelector('.window-header');
-        header!.addEventListener('dblclick', () => {
+        header?.addEventListener('dblclick', () => {
             sheet._isCollapsed = !sheet._isCollapsed
             sheet.render()
         })
@@ -47,7 +47,7 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
 }
 
 export const onRender = (sheet: VGLiteApplication) => {
-    sheet._toolbarHeight = sheet.element.children[0].getBoundingClientRect().height
+    sheet._toolbarHeight = sheet.element.children[0]?.getBoundingClientRect()?.height ?? 0
 }
 
 export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {

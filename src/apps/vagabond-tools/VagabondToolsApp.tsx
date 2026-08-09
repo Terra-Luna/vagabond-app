@@ -14,10 +14,6 @@ export class VagabondToolsApp extends VagabondLiteApplication {
         } as VagabondLiteAppArgs)
     }
 
-    override getReactProps() {
-        return { ...super.getReactProps() }
-    }
-
     static renderCanvasButton() {
         if (!game.user?.isGM) return
 

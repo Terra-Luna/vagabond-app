@@ -44,5 +44,5 @@ const ItemShopComponent = ({ actor, onClose }) => {
         onClose()
     }
 
-    return <ItemShop onCheckout={onCheckout} useCheckout />
+    return <ItemShop onCheckout={onCheckout} onCancel={onClose} useCheckout />
 }

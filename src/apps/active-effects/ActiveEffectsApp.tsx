@@ -7,6 +7,7 @@ export class ActiveEffectsApp extends VagabondLiteApplication {
 
     constructor(document: Actor | Item) {
         super({
+            id: `active-effects-${document.id}`,
             window: { title: "Create your Hero" },
             position: { width: 400 },
             Component: ActiveEffectsView,
