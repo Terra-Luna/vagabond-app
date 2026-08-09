@@ -1,6 +1,5 @@
 import { vgLiteLang } from "../../utils/lang"
-import { PrimaryButton, DestructiveButton } from "../../view/component/Button"
-import { PopOutWidget } from "../../view/component/PopoutWidget"
+import { PopOutWidget } from "../../view/component/Widget"
 
 const denominations = ['g', 's', 'c']
 

@@ -1,4 +1,4 @@
-import { PlayIcon, Trash, StopCircle, Edit } from "lucide-react"
+import { PlayIcon, Trash, StopCircle, Edit, Eye } from "lucide-react"
 import { ReactNode, useState, useMemo, useCallback, useEffect } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
@@ -13,6 +13,9 @@ import { Gauge } from "../../view/component/Gauge"
 import { getCombatantStatuses } from "../engine/status"
 import { BulkCombatantEditApp } from "../../apps/bulk-combatant-edit/BulkCombatantEditApp"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
+import { BulkCombatantEditView } from "../../apps/bulk-combatant-edit/BulkCombatantEditView"
+import { getCanvasToken } from "../../utils/modelUtil"
+import { useFoundryHook } from "../../view/wrappers/hooks"
 
 const getCombat = () => game.combat as VgLiteCombat
 
@@ -62,21 +65,30 @@ export const CombatTracker = ({ combat }) => {
     const heroes = getHeroes(combatants)
     const adversaries = getAdversaries(combatants)
 
+    const controlledTokens = game.canvas?.tokens?.controlled
+    const controlledCombatants = controlledTokens?.filter(t => t.combatant).map(t => t.combatant!) ?? []
+
     return (
         <CanvasReadyWrapper>
-            <div className="flex flex-col gap-6 pb-2">
-                {heroes?.length > 0 &&
-                    <Group groupName="heroes">
-                        <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
-                        <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
-                    </Group>
-                }
-                {adversaries?.length > 0 &&
-                    <Group groupName="adversaries">
-                        <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
-                        <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
-                    </Group>
-                }
+            <div className="flex flex-col h-full">
+                <div className="flex flex-col gap-1 overflow-auto">
+                    {heroes?.length > 0 &&
+                        <Group groupName="heroes">
+                            <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
+                            <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                        </Group>
+                    }
+                    {adversaries?.length > 0 &&
+                        <Group groupName="adversaries">
+                            <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
+                            <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                        </Group>
+                    }
+                </div>
+                {game.user?.isGM && (
+                    <footer className="shrink-0 pt-4 mt-auto">
+                        <BulkCombatantEditView combatants={controlledCombatants} />
+                    </footer>)}
             </div>
         </CanvasReadyWrapper>
     )
@@ -93,7 +105,7 @@ const Group = ({ children }: { groupName: CombatGroup, children: ReactNode }) =>
 const GroupHeader = ({ label }: { groupName: CombatGroup, label: string }) => {
 
     return (
-        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1">
+        <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1 mb-1">
             <p className={`flex text-xl text-text-section-header`}>{`${label}`}</p>
         </div>
     )
@@ -101,25 +113,23 @@ const GroupHeader = ({ label }: { groupName: CombatGroup, label: string }) => {
 
 const GroupBody = ({ children }) => {
     return (
-        <div className="mt-4 pl-2 flex flex-col gap-4">{children}</div>
+        <div className="pl-2 flex flex-col">{children}</div>
     )
 }
 
 const CombatantHeader = ({ token, combatant, name, children }) => {
     const [hovered, setIsHovered] = useState(false)
     const [controlled, setIsControlled] = useState(false)
+    const [isHidden, setIsHidden] = useState(!token.visible)
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
-    useEffect(() => {
-        const hookId = Hooks.on("hoverToken", (hoveredToken, hover) => {
-            if (hoveredToken === token) {
-                setIsHovered(hover)
-            }
-        })
-        return () => {
-            Hooks.off("hoverToken", hookId)
+    const realToken = getCanvasToken(token.id)
+
+    useFoundryHook("hoverToken" as any, (hoveredToken, hover) => {
+        if (hoveredToken === token) {
+            setIsHovered(hover)
         }
-    }, [token])
+    })
 
     useEffect(() => {
         const hookId = Hooks.on("refreshToken", () => {
@@ -129,6 +139,8 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
                 setIsHovered(false)
             }
             setIsControlled(isControlled)
+            console.log({ugh: token.visible})
+            setIsHidden(!token.visible)
         })
 
         const hookId2 = Hooks.on("controlToken", () => {
@@ -144,22 +156,9 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
 
     const ctxMenuActions = () => {
         const actions = [
-            { label: "Activate Combatant (localify me)", action: () => getCombat().activateCombatant(token.combatant.id), icon: PlayIcon },
+            { label: isHidden ? "Show" : "Hide", action: () => realToken?.document.update({ hidden: !isHidden }), icon: Eye },
             { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true }
         ] as any
-
-        const controlledTokens = game.canvas?.tokens?.controlled
-        if (controlledTokens?.length ?? 0 > 0) {
-            const controlledCombatants = controlledTokens?.filter(t => t.combatant).map(t => t.combatant!) ?? []
-            actions.push({
-                label: "Bulk Edit Combatants", action: () => {
-                    new BulkCombatantEditApp(controlledCombatants as VgLiteCombatant[]).render({ force: true }).then(() => {
-                        // for whatever reason we lose the "controlled" state of the combatants, we gotta re-select them
-                        controlledCombatants.forEach(comb => canvas?.tokens?.placeables.find(t => t.id === comb.token?._id)?.control({ releaseOthers: false }))
-                    })
-                }, icon: Edit
-            })
-        }
 
         return actions
     }
@@ -174,7 +173,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} />
                 <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
-                        <p className={`hover-glow ${hovered ? "vglite-hovered" : ""}`}>{name}</p>
+                        <p className={`hover-glow ${hovered ? "vglite-hovered" : ""} leading-none -mb-0.5`}>{name}</p>
                     </div>
                     {children}
                 </div>
