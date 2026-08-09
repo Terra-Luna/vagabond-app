@@ -87,7 +87,7 @@ export const CombatTracker = ({ combat }) => {
                 </div>
                 {game.user?.isGM && (
                     <footer className="shrink-0 pt-4 mt-auto">
-                        <BulkCombatantEditView combatants={controlledCombatants} />
+                        <BulkCombatantEditView combatants={controlledCombatants as unknown as VgLiteCombatant[]} />
                     </footer>)}
             </div>
         </CanvasReadyWrapper>
@@ -139,7 +139,6 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
                 setIsHovered(false)
             }
             setIsControlled(isControlled)
-            console.log({ugh: token.visible})
             setIsHidden(!token.visible)
         })
 

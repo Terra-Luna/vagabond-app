@@ -1,3 +1,4 @@
+import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { XpProgressionCurveApp } from "../level-up/progression/XpProgressionCurveApp"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 
@@ -21,7 +22,8 @@ export class VagabondSettingsRegistry {
             scope: "world",
             config: true,
             type: Number,
-            default: 10
+            default: 10,
+            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
     }
 
@@ -43,7 +45,8 @@ export class VagabondSettingsRegistry {
                 { id: "l7", level: 7, xp: 40 },
                 { id: "l8", level: 8, xp: 45 },
                 { id: "l9", level: 9, xp: 50 }
-            ] as any
+            ] as any,
+            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
 
         game.settings?.registerMenu("vagabond-lite", "xpCurveConfig", {
@@ -69,7 +72,8 @@ export class VagabondSettingsRegistry {
                 { id: "q3", text: "Did you pass a Hindered Check?", xp: 1 },
                 { id: "q4", text: "Did you make a discovery?", xp: 1 },
                 { id: "q5", text: "Did you loot at least 50g of treasure?", xp: 1 }
-            ] as any
+            ] as any,
+            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
 
         game.settings?.registerMenu("vagabond-lite", "xpQuestionnaireConfig", {
@@ -100,8 +104,17 @@ export class VagabondSettingsRegistry {
             scope: "world",
             config: false,
             type: Boolean,
-            default: true
+            default: true,
+            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
+    }
+
+    private static async refreshHeroSheets() {
+        const heroes = game.actors?.contents.filter(it => (it.type as string) === 'hero')
+        if (!heroes) return
+        for (const hero of heroes) {
+            (hero?.system as HeroDataModel)?.forceUpdate()
+        }
     }
 
 }
@@ -154,8 +167,8 @@ export const setXpQuestionnaire = async (updatedQuestions) => {
 export const getAttackRegistry = () => {
     return (game.settings as any)?.get("vagabond-lite", "attackRegistry") || {}
 }
-export const setAttackRegistry = async (attacksRegistry) => {
-    (game.settings as any)?.set("vagabond-lite", "attackRegistry", attacksRegistry)
+export const setAttackRegistry = async (attackRegistry) => {
+    (game.settings as any)?.set("vagabond-lite", "attackRegistry", attackRegistry)
 }
 
 /**

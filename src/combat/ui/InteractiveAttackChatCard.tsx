@@ -120,6 +120,10 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                             />
                                         </div>
                                         <InteractiveChatCardButton
+                                            label="Resolve" tooltip="Resolve with no updates"
+                                            fn={async () => await attack.resolve(serializeAttack)}
+                                        />
+                                        <InteractiveChatCardButton
                                             label="Apply" tooltip="Apply damage & lock attack from edits"
                                             fn={async () => await attack.applyDamageAndResolve(
                                                 { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },

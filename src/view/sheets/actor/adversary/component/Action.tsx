@@ -67,7 +67,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                 {
                     adversary.actions.map((act, i) => {
                         return (
-                            <div className="flex gap-2 p-2 justify-between border border-solid border-table-border rounded" onContextMenu={(e) => onCtxMenu(e, [
+                            <div key={i} className="flex gap-2 p-2 justify-between border border-solid border-table-border rounded" onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
                                 { icon: Trash, label: 'Delete', action: () => deleteAction(adversary, act), isDestructive: true }
                             ])}>

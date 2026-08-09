@@ -11,13 +11,15 @@ import { ItemShopApp } from "../../../../../apps/shop/ItemShopApp"
 import { getItemShopToggle } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
+    const itemShopToggle = getItemShopToggle()
+
     return (
-        <div className="w-full">
+        <div className="w-full min-h-16">
             <div className="flex justify-between gap-1">
                 <CapacityGauge label={lang.VGLITE.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
                 <HeroCoinPurse hero={hero} />
             </div>
-            <div className="border border-solid border-table-border mt-1 w-full">
+            <div className={`border border-solid border-table-border mt-1 w-full ${itemShopToggle ? '' : 'mb-28'}`}>
                 <InventoryItemsTable
                     actor={hero}
                     items={
@@ -27,8 +29,8 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                     }
                     contextMenuItems={(item) => equipmentContextMenuItems(hero, item)} />
             </div>
-            {getItemShopToggle() &&
-                <div className="flex w-fll justify-end mt-1 mb-8">
+            {itemShopToggle &&
+                <div className="flex w-fll justify-end mt-1 mb-28">
                     <PrimaryButton onClick={() => new ItemShopApp(hero.parent).render({ force: true })}>
                         Item Shop
                     </PrimaryButton>

@@ -1,3 +1,4 @@
+import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel";
 
 export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
@@ -104,7 +105,7 @@ interface Activations {
 /**
  * Vagabond combatant
  */
-export class VgLiteCombatant<SubType extends Combatant.SubType = Combatant.SubType> extends Combatant<SubType> {
+export class VgLiteCombatant<ActorDataModel extends Combatant.SubType = Combatant.SubType> extends Combatant<ActorDataModel> {
     override prepareBaseData(): void {
         super.prepareBaseData()
     }
