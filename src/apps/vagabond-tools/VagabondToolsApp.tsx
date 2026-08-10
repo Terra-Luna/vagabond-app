@@ -1,17 +1,18 @@
 import { createRoot } from "react-dom/client"
 import { vgLiteStyles } from "../../utils/styleUtils"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { VagabondToolsAppView } from "./VagabondToolsAppView"
 import { PrimaryButton } from "../../view/component/Button"
+import { getTheme } from "../../utils/foundryUtils"
 
-export class VagabondToolsApp extends VagabondLiteApplication {
+export class VagabondToolsApp extends VagabondApplication {
 
     constructor() {
         super({
             window: { title: "Vagabond Tools" },
             position: { width: 400 },
             Component: VagabondToolsAppView,
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
     }
 
     static renderCanvasButton() {
@@ -46,15 +47,18 @@ export class VagabondToolsApp extends VagabondLiteApplication {
             (hostElement as any)._reactRoot = root
         }
 
-        root.render(<>
-            <PrimaryButton onClick={(e) => {
+        root.render(
+            <div className={`${getTheme()} vglite-themed-content flex flex-col`}>
+                <style>{vgLiteStyles}</style>
+                <PrimaryButton onClick={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
                     new VagabondToolsApp().render({ force: true })
                 }}>
-                Vagabond Tools
-            </PrimaryButton>
-        </>)
+                    Vagabond Tools
+                </PrimaryButton>
+            </div>
+        )
     }
 
 }

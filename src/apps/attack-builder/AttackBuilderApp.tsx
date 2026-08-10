@@ -1,8 +1,8 @@
 import { DiceRollSchema } from "../../combat/engine/DiceRoll"
-import { VagabondLiteApplication, VagabondLiteAppArgs } from "../VagabondLiteApplication"
+import { VagabondApplication, VagabondAppArgs } from "../VagabondApplication"
 import { AttackBuilderView } from "./AttackBuilderView"
 
-export class AttackBuilderApp extends VagabondLiteApplication {
+export class AttackBuilderApp extends VagabondApplication {
 
     actor: Actor
     preset?: AttackPreset
@@ -12,7 +12,7 @@ export class AttackBuilderApp extends VagabondLiteApplication {
             window: { title: "Attack Builder", resizable: false },
             position: { width: 420 },
             Component: AttackBuilderView,
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
 
         this.actor = actor
         this.preset = preset

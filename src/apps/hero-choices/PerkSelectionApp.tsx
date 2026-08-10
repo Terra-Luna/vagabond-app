@@ -1,8 +1,8 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { usePerkSelectionView } from "./PerkSelectionView"
 
-export class PerkSelectionApp extends VagabondLiteApplication {
+export class PerkSelectionApp extends VagabondApplication {
 
     actor: Actor & { system: HeroDataModel }
     isLevelUp?: boolean
@@ -17,7 +17,7 @@ export class PerkSelectionApp extends VagabondLiteApplication {
                     {PerkSelection}
                 </div>
             }
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
         this.actor = actor
         this.isLevelUp = isLevelUp
     }

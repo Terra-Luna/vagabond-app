@@ -1,8 +1,8 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useSpellSelectionView } from "./SpellSelectionView"
 
-export class SpellSelectionApp extends VagabondLiteApplication {
+export class SpellSelectionApp extends VagabondApplication {
 
     actor: Actor & { system: HeroDataModel }
     isLevelUp?: boolean
@@ -17,7 +17,7 @@ export class SpellSelectionApp extends VagabondLiteApplication {
                     {SpellSelection}
                 </div>
             }
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
         this.actor = actor
         this.isLevelUp = isLevelUp
     }

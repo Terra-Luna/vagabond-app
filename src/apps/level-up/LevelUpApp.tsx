@@ -1,14 +1,14 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { getClonedFlags, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
-import { VagabondLiteApplication, VagabondLiteAppArgs } from "../VagabondLiteApplication"
+import { VagabondApplication, VagabondAppArgs } from "../VagabondApplication"
 import { LevelUpView } from "./LevelUpView"
 
-export class LevelUpApp extends VagabondLiteApplication {
+export class LevelUpApp extends VagabondApplication {
 
     private actor: Actor & { system: HeroDataModel }
 
     constructor(actor: Actor & { system: HeroDataModel }) {
-        const appArgs: VagabondLiteAppArgs = {
+        const appArgs: VagabondAppArgs = {
             position: {
                 width: 500,
                 height: 1000

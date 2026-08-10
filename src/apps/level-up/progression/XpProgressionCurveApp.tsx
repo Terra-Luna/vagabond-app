@@ -1,11 +1,11 @@
 import { getXpCurve, setXpCurve, XpCurve } from "../../vagabond-tools/VagabondSettingsRegistry"
-import { VagabondLiteApplication, VagabondLiteAppArgs } from "../../VagabondLiteApplication"
+import { VagabondApplication, VagabondAppArgs } from "../../VagabondApplication"
 import { XpProgressionCurveView } from "./XpProgressionCurveView"
 
-export class XpProgressionCurveApp extends VagabondLiteApplication {
+export class XpProgressionCurveApp extends VagabondApplication {
 
     constructor() {
-        const appArgs: VagabondLiteAppArgs = {
+        const appArgs: VagabondAppArgs = {
             position: {
                 height: "auto",
                 width: 250

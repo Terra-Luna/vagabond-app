@@ -1,7 +1,7 @@
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { ActiveEffectsView } from "./ActiveEffectsView"
 
-export class ActiveEffectsApp extends VagabondLiteApplication {
+export class ActiveEffectsApp extends VagabondApplication {
 
     document: Actor | Item
 
@@ -11,7 +11,7 @@ export class ActiveEffectsApp extends VagabondLiteApplication {
             window: { title: "Create your Hero" },
             position: { width: 400 },
             Component: ActiveEffectsView,
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
         this.document = document
     }
 

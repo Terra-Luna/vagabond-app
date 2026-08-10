@@ -1,11 +1,11 @@
 import { XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { getXpQuestionnaiare, XpQuestion } from "../../vagabond-tools/VagabondSettingsRegistry"
 
-export class XpQuestionnaireConfigApp extends VagabondLiteApplication {
+export class XpQuestionnaireConfigApp extends VagabondApplication {
 
     constructor() {
-        const appArgs: VagabondLiteAppArgs = {
+        const appArgs: VagabondAppArgs = {
             window: {
                 title: "Manage XP Questionnaire",
                 resizable: false

@@ -1,8 +1,8 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { HeroCreationNavHostView } from "./HeroCreationNavHostView"
 
-export class HeroCreationApp extends VagabondLiteApplication {
+export class HeroCreationApp extends VagabondApplication {
 
     public actor: Actor & { system: HeroDataModel }
 
@@ -11,7 +11,7 @@ export class HeroCreationApp extends VagabondLiteApplication {
             window: { title: "Create your Hero" },
             position: { height: 900, width: 1380 },
             Component: HeroCreationNavHostView
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
         this.actor = actor
     }
 

@@ -1,14 +1,14 @@
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnairePlayerView } from "./XpQuestionnairePlayerView"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { getXpQuestionnaiare } from "../../vagabond-tools/VagabondSettingsRegistry"
 
-export class XpQuestionnairePlayerApp extends VagabondLiteApplication {
+export class XpQuestionnairePlayerApp extends VagabondApplication {
 
     private actor: Actor & { system: HeroDataModel }
 
     constructor(actor: Actor & { system: HeroDataModel }) {
-        const appArgs: VagabondLiteAppArgs = {
+        const appArgs: VagabondAppArgs = {
             window: {
                 title: "Earn XP",
                 resizable: false

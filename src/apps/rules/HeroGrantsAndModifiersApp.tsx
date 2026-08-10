@@ -1,8 +1,8 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { HeroGrantsAndModifiersView } from "./HeroGrantsAndModifiersView"
 
-export class HeroGrantsAndModifiersApp extends VagabondLiteApplication {
+export class HeroGrantsAndModifiersApp extends VagabondApplication {
 
     actor: Actor & { system: HeroDataModel }
 
@@ -11,7 +11,7 @@ export class HeroGrantsAndModifiersApp extends VagabondLiteApplication {
             window: { title: "Grants & Modifiers" },
             position: { width: 500 },
             Component: HeroGrantsAndModifiersView,
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
         this.actor = actor
     }
 

@@ -1,9 +1,9 @@
 /* eslint-disable react-refresh/only-export-components */
 import { CountdownRoll } from "../../combat/engine/CountdownRoll"
 import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 
-export class CountdownApp extends VagabondLiteApplication {
+export class CountdownApp extends VagabondApplication {
 
     initialDuration: number
     countdown: CountdownRoll
@@ -23,7 +23,7 @@ export class CountdownApp extends VagabondLiteApplication {
                 top: 200
             },
             Component: CountdownAppView,
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
 
         this.initialDuration = duration
         this.countdown = new CountdownRoll({ name: label, duration: duration })

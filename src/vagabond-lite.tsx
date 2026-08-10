@@ -35,6 +35,8 @@ import { ItemsCache } from "./rules/util/ItemsCache"
 import { Attack } from "./combat/engine/Attack"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
+import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
+import { VagabondCanvasOverlayApp } from "./apps/CanvasOverlayApp"
 
 // Add our fonts
 const fontFaces = [
@@ -63,6 +65,8 @@ const fontFaces = [
 (await Promise.all(fontFaces.map(face => face.load()))).forEach(
     font => document.fonts.add(font)
 )
+
+let clocksOverlay: ProgressClockApp | null = null
 
 Hooks.once("init", () => {
     Object.assign(
@@ -123,7 +127,15 @@ Hooks.once("ready", async () => {
         }
     })
 
+    if (!clocksOverlay) {
+        clocksOverlay = new ProgressClockApp()
+    }
+    clocksOverlay.render({ force: true })
+
     VagabondToolsApp.renderCanvasButton()
+    if (clocksOverlay && clocksOverlay.rendered) {
+        clocksOverlay.render({ force: true })
+    }
 })
 
 Hooks.on("preCreateItem", (item: any, _options, _userId) => {

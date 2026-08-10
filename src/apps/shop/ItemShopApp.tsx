@@ -2,10 +2,10 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { Coins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useItemShopView } from "./ItemShopView"
 
-export class ItemShopApp extends VagabondLiteApplication {
+export class ItemShopApp extends VagabondApplication {
 
     actor: Actor & { system: HeroDataModel }
     
@@ -14,7 +14,7 @@ export class ItemShopApp extends VagabondLiteApplication {
             window: { title: "Item Shop" },
             position: { height: 800, width: 600 },
             Component: ItemShopComponent
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
         
         this.actor = actor
     }

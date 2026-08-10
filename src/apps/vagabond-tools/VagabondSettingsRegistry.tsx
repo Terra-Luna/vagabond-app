@@ -13,6 +13,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerXpQuestionnaire()
         VagabondSettingsRegistry.registerAttacksRegistry()
         VagabondSettingsRegistry.registerItemShopToggle()
+        VagabondSettingsRegistry.registerProgressClocks()
     }
 
     private static registerMaxLevel() {
@@ -109,6 +110,30 @@ export class VagabondSettingsRegistry {
         })
     }
 
+    private static async registerProgressClocks() {
+        (game.settings as any).register("vagabond-lite", "progressClocks" as any, {
+            name: "Progress Clocks",
+            hint: "World Progress Clocks",
+            scope: "world",
+            config: false,
+            type: Array,
+            default: []
+        });
+
+        (game.settings as any).register("vagabond-lite", "clockPermissionLevel" as any, {
+            name: "Clock Interaction Permissions",
+            hint: "Determines whether players can advance progress clocks or if it is restricted to GM.",
+            scope: "world",
+            config: true,
+            type: String,
+            default: "gmOnly",
+            choices: {
+                "gmOnly": "GM Only",
+                "everyone": "All Players"
+            }
+        });
+    }
+
     private static async refreshHeroSheets() {
         const heroes = game.actors?.contents.filter(it => (it.type as string) === 'hero')
         if (!heroes) return
@@ -179,4 +204,18 @@ export const getItemShopToggle = (): boolean => {
 }
 export const setItemShopToggle = async (toggle: boolean) => {
     (game.settings as any)?.set("vagabond-lite", "itemShopToggle", toggle)
+}
+
+/**
+ * Progress Clocks
+ */
+export const getProgressClocks = (): any[] => {
+    return (game.settings as any)?.get("vagabond-lite", "progressClocks") || []
+}
+export const setProgressClocks = async (clocks) => {
+    (game.settings as any)?.set("vagabond-lite", "progressClocks", clocks)
+}
+export const checkClockPermission = (): boolean => {
+    const setting = (game.settings as any)?.get("vagabond-lite", "clockPermissionLevel") || 'gmOnly'
+    return setting === 'gmOnly' && ((game.user?.isGM ?? false) || (game.user?.isActiveGM ?? false))
 }

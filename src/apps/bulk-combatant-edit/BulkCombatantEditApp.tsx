@@ -1,9 +1,9 @@
 import { VgLiteCombatant } from "../../combat/documents/VgLiteCombat";
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
-import { VagabondLiteAppArgs, VagabondLiteApplication } from "../VagabondLiteApplication";
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { BulkCombatantEditView } from "./BulkCombatantEditView";
 
-export class BulkCombatantEditApp extends VagabondLiteApplication {
+export class BulkCombatantEditApp extends VagabondApplication {
 
     combatants: VgLiteCombatant[] = []
 
@@ -12,7 +12,7 @@ export class BulkCombatantEditApp extends VagabondLiteApplication {
             window: { title: "Bulk Combatant Edit" },
             position: { width: 400 },
             Component: BulkCombatantEditView,
-        } as VagabondLiteAppArgs)
+        } as VagabondAppArgs)
         this.combatants = combatants
     }
 
