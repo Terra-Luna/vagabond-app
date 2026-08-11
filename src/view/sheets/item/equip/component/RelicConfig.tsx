@@ -6,6 +6,7 @@ import { Diamond } from "lucide-react"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { ItemSheetPropLabel } from "./ItemSheetLabelComponent"
+import { buttonAnimation } from "../../../../component/Button"
 
 export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     
@@ -61,12 +62,13 @@ const RelicCard = ({ item, relic }) => {
         <button
             key={relic.id}
             title={`Add Relic\n${relic.description}`}
+            className={buttonAnimation}
             onClick={async () => await RelicPowers.toggleRelicEffect(item, relic)}
         >
             <div className={`
                 flex flex-col justify-center text-center p-2 
                 border border-solid border-table-border rounded-sm hover-glow
-                ${item.system.relicPowers.some(p => p.id === relic.id) ? 'bg-sheet-header-fill' : ''}
+                ${item.system.relicPowers.some(p => p.id === relic.id) ? 'bg-context-menu-fill' : ''}
             `}>
                 <div className="flex gap-x-1">
                     <p>{RelicPowers.getFormattedRelicName(relic)}</p>

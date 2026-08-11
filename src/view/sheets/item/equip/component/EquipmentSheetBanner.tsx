@@ -10,23 +10,23 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
     return (<>
         <div className="flex space-x-1 items-center bg-section-header-fill py-1 px-2 font-eskapade font-bold">
             <ItemPortraitComponent item={item} />
-            <div className="flex gap-x-1 w-full items-center text-2xl text-text-section-header">
-                <div className="flex flex-col">
+            <div className="flex flex-col w-full">
+                <div className="flex gap-x-1 w-full items-center text-2xl text-text-section-header">
                 <EditableTextField
                     boundValue={item.name}
                     updateProps={{ object: item, path: ['name'] }}
                     placeholder={"Item name..."}
                 />
-                    <p className="text-xs text-text-header-secondary font-paradigm font-normal italic">
-                        {item.system.relicPowers
-                            .filter(relic => relic.category.value !== 'cursed')
-                            .map(relic => RelicPowers.getFormattedRelicName(relic as any))
-                            .join(", ")
-                        }
-                    </p>
+                    <Divider />
+                    {editModeToggleBtn}
                 </div>
-                <Divider />
-                {editModeToggleBtn}
+                <p className="text-xs text-text-header-secondary font-paradigm font-normalitalic">
+                    {item.system.relicPowers
+                        .filter(relic => relic.category.value !== 'cursed')
+                        .map(relic => RelicPowers.getFormattedRelicName(relic as any))
+                        .join(", ")
+                    }
+                </p>
             </div>
         </div>
     </>)
