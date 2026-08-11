@@ -1,13 +1,17 @@
 import { useRef } from "react"
 
-export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (objects) => void, permissionCheck: () => boolean) => {
+export const useDragOverlayComponent = (
+    setState: (prev: any) => void,
+    saveSetting: (objects: any) => void,
+    permissionCheck: () => boolean
+) => {
 
     const dragInfo = useRef<{
         id: string
         startX: number
         startY: number
-        initialX: number
-        initialY: number
+        initialPixelX: number
+        initialPixelY: number
         hasMoved: boolean
         width: number
         height: number
@@ -20,12 +24,16 @@ export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (
         const targetElement = e.currentTarget as HTMLElement
         const rect = targetElement.getBoundingClientRect()
 
+        // Translate positional percentages to pixel coords.
+        const initialPixelX = (object.x || 0) * window.innerWidth
+        const initialPixelY = (object.y || 0) * window.innerHeight
+
         dragInfo.current = {
             id: object.id,
             startX: e.clientX,
             startY: e.clientY,
-            initialX: object.x || 0,
-            initialY: object.y || 0,
+            initialPixelX,
+            initialPixelY,
             hasMoved: false,
             width: rect.width,
             height: rect.height
@@ -47,18 +55,23 @@ export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (
         }
 
         if (info.hasMoved) {
-            // Prevent off-screen drags.
-            const rawX = info.initialX + deltaX
-            const rawY = info.initialY + deltaY
-            const clampedX = Math.max(0, Math.min(rawX, window.innerWidth - info.width))
-            const clampedY = Math.max(0, Math.min(rawY, window.innerHeight - info.height))
+            const rawX = info.initialPixelX + deltaX
+            const rawY = info.initialPixelY + deltaY
+
+            // Clamp pixels to screen edges
+            const clampedPixelX = Math.max(0, Math.min(rawX, window.innerWidth - info.width))
+            const clampedPixelY = Math.max(0, Math.min(rawY, window.innerHeight - info.height))
+
+            // Convert clamped pixels to a relative percentage (0.0 to 1.0)
+            const relativeX = clampedPixelX / window.innerWidth
+            const relativeY = clampedPixelY / window.innerHeight
 
             setState(prev => prev.map(c => {
                 if (c.id === info.id) {
                     return {
                         ...c,
-                        x: clampedX,
-                        y: clampedY
+                        x: relativeX,
+                        y: relativeY
                     }
                 }
                 return c

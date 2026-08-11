@@ -15,8 +15,8 @@ export const VagabondToolsAppView = () => {
     }, [])
 
     const spawnPoint = useCallback(() => {
-        const x = window.innerWidth / 4
-        const y = window.innerHeight / 4
+        const x = 0.1
+        const y = 0.2
         return { x: x, y: y }
     }, [])
 

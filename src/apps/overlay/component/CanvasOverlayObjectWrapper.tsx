@@ -8,15 +8,12 @@ export const CanvasOverlayObjectWrapper = ({ objects, onMouseDown, children }: {
     return (
         <div className="canvas-overlay-viewport font-eskapade font-bold text-text-primary">
             {objects.map((obj: any) => {
-                const screenX = obj.x || 100
-                const screenY = obj.y || 100
                 return (
                     <div
                         key={obj.id}
                         style={{
-                            left: `${screenX}px`,
-                            top: `${screenY}px`,
-                            transform: `translate(-50%, -50%)`,
+                            left: `${obj.x * 100}%`,
+                            top: `${obj.y * 100}%`,
                             position: 'absolute'
                         }}
                         className="flex flex-col items-center justify-center select-none pointer-events-auto"

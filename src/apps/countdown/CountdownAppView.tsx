@@ -41,7 +41,10 @@ export const CountdownAppView = () => {
 
         const duration = target.result.duration === 12
             ? 20
-            : target.result.duration + 2
+            : (target.result.duration === 20
+                ? 20
+                : target.result.duration + 2
+            )
 
         await setCountdowns(cds.map((countdown: any) => {
             if (countdown.id === cdId) return updateCountdownDuration(countdown, duration)
