@@ -14,6 +14,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerAttacksRegistry()
         VagabondSettingsRegistry.registerItemShopToggle()
         VagabondSettingsRegistry.registerProgressClocks()
+        VagabondSettingsRegistry.registerCountdowns()
     }
 
     private static registerMaxLevel() {
@@ -49,7 +50,6 @@ export class VagabondSettingsRegistry {
             ] as any,
             onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
-
         game.settings?.registerMenu("vagabond-lite", "xpCurveConfig", {
             name: "XP Progression Curve Editor",
             label: "Modify Curve",
@@ -76,7 +76,6 @@ export class VagabondSettingsRegistry {
             ] as any,
             onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
-
         game.settings?.registerMenu("vagabond-lite", "xpQuestionnaireConfig", {
             name: "XP Questionnaire Editor",
             label: "Modify Questions",
@@ -119,10 +118,33 @@ export class VagabondSettingsRegistry {
             type: Array,
             default: []
         });
-
         (game.settings as any).register("vagabond-lite", "clockPermissionLevel" as any, {
             name: "Clock Interaction Permissions",
             hint: "Determines whether players can advance progress clocks or if it is restricted to GM.",
+            scope: "world",
+            config: true,
+            type: String,
+            default: "gmOnly",
+            choices: {
+                "gmOnly": "GM Only",
+                "everyone": "All Players"
+            }
+        });
+    }
+
+    private static async registerCountdowns() {
+        (game.settings as any).register("vagabond-lite", "countdowns" as any, {
+            name: "Countdown Timers",
+            hint: "Countdown Timers",
+            scope: "world",
+            config: false,
+            type: Array,
+            default: []
+        });
+
+        (game.settings as any).register("vagabond-lite", "countdownPermissionLevel" as any, {
+            name: "Countdown Interaction Permissions",
+            hint: "Determines whether players can interact with countdown dice or if it is restricted to GM.",
             scope: "world",
             config: true,
             type: String,
@@ -216,6 +238,23 @@ export const setProgressClocks = async (clocks) => {
     (game.settings as any)?.set("vagabond-lite", "progressClocks", clocks)
 }
 export const checkClockPermission = (): boolean => {
-    const setting = (game.settings as any)?.get("vagabond-lite", "clockPermissionLevel") || 'gmOnly'
+    return checkPermissionLevel("clockPermissionLevel")
+}
+
+/**
+ * Countdown Timers
+ */
+export const getCountdowns = (): any[] => {
+    return (game.settings as any)?.get("vagabond-lite", "countdowns") || []
+}
+export const setCountdowns = async (countdowns) => {
+    (game.settings as any)?.set("vagabond-lite", "countdowns", countdowns)
+}
+export const checkCountdownPermission = (): boolean => {
+    return checkPermissionLevel("countdownPermissionLevel")
+}
+
+const checkPermissionLevel = (settingName: string): boolean => {
+    const setting = (game.settings as any)?.get("vagabond-lite", settingName) || 'gmOnly'
     return setting === 'gmOnly' && ((game.user?.isGM ?? false) || (game.user?.isActiveGM ?? false))
 }

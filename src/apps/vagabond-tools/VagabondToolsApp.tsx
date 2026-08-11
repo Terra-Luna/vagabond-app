@@ -4,6 +4,7 @@ import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { VagabondToolsAppView } from "./VagabondToolsAppView"
 import { PrimaryButton } from "../../view/component/Button"
 import { getTheme } from "../../utils/foundryUtils"
+import { Cog } from "lucide-react"
 
 export class VagabondToolsApp extends VagabondApplication {
 
@@ -48,13 +49,13 @@ export class VagabondToolsApp extends VagabondApplication {
         }
 
         root.render(
-            <div className={`${getTheme()} vglite-themed-content flex flex-col`}>
+            <div className={`${getTheme()} vglite-themed-content flex w-50`}>
                 <style>{vgLiteStyles}</style>
                 <PrimaryButton onClick={(e) => {
                     e.preventDefault()
                     e.stopPropagation()
                     new VagabondToolsApp().render({ force: true })
-                }}>
+                }} icon={<Cog size={16} />}>
                     Vagabond Tools
                 </PrimaryButton>
             </div>

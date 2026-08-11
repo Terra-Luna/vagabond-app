@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Root, createRoot } from "react-dom/client"
-import { VagabondAppArgs, VagabondApplication } from "./VagabondApplication"
-import { getTheme } from "../utils/foundryUtils"
-import { vgLiteStyles } from "../utils/styleUtils"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
+import { getTheme } from "../../utils/foundryUtils"
+import { vgLiteStyles } from "../../utils/styleUtils"
 import { createPortal } from "react-dom"
 
 export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
@@ -33,23 +33,23 @@ export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
         this.anchor = anchor
         this.Component = () => {
             const hostRef = useRef<HTMLDivElement>(null)
-            const [shadowRoot, setShadowRoot] = useState<ShadowRoot | null>(null)
+            const [scaduRoot, setScaduRoot] = useState<ShadowRoot | null>(null)
 
             useEffect(() => {
-                if (hostRef.current && !shadowRoot) {
+                if (hostRef.current && !scaduRoot) {
                     const root = hostRef.current.attachShadow({ mode: 'open' })
-                    setShadowRoot(root)
+                    setScaduRoot(root)
                 }
-            }, [shadowRoot])
+            }, [scaduRoot])
 
             return (
                 <div id={this.anchor} ref={hostRef}>
-                    {shadowRoot && createPortal(
+                    {scaduRoot && createPortal(
                         <div className={`${getTheme()} vglite-themed-content`}>
                             <style>{vgLiteStyles}</style>
                             <args.Component />
                         </div>,
-                        shadowRoot
+                        scaduRoot
                     )}
                 </div>
             )
