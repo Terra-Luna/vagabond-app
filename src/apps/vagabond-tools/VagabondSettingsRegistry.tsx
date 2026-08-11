@@ -1,3 +1,4 @@
+import { CountdownResult } from "../../combat/engine/CountdownRoll"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { XpProgressionCurveApp } from "../level-up/progression/XpProgressionCurveApp"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
@@ -209,7 +210,6 @@ export const setXpQuestionnaire = async (updatedQuestions) => {
 
 /**
  * Attack registry (keeps last 50)
- * @returns 
  */
 export const getAttackRegistry = () => {
     return (game.settings as any)?.get("vagabond-lite", "attackRegistry") || {}
@@ -244,10 +244,16 @@ export const checkClockPermission = (): boolean => {
 /**
  * Countdown Timers
  */
-export const getCountdowns = (): any[] => {
+export interface CountdownSetting {
+    id: string
+    x: number
+    y: number
+    result: CountdownResult
+}
+export const getCountdowns = (): CountdownSetting[] => {
     return (game.settings as any)?.get("vagabond-lite", "countdowns") || []
 }
-export const setCountdowns = async (countdowns) => {
+export const setCountdowns = async (countdowns: CountdownSetting[]) => {
     (game.settings as any)?.set("vagabond-lite", "countdowns", countdowns)
 }
 export const checkCountdownPermission = (): boolean => {

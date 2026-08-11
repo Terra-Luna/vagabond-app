@@ -1,14 +1,12 @@
 import { useCallback, useState } from "react"
 import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
 import { useDragOverlayComponent } from "../overlay/usecase/DragOverlayUseCase"
-import { checkCountdownPermission, getCountdowns, setCountdowns } from "../vagabond-tools/VagabondSettingsRegistry"
+import { checkCountdownPermission, CountdownSetting, getCountdowns, setCountdowns } from "../vagabond-tools/VagabondSettingsRegistry"
 import { useOverlayItemSync } from "../overlay/usecase/OverlayItemSyncUseCase"
-import { CountdownResult, CountdownRoll } from "../../combat/engine/CountdownRoll"
+import { CountdownRoll } from "../../combat/engine/CountdownRoll"
 import { CanvasOverlayObjectWrapper } from "../overlay/component/CanvasOverlayObjectWrapper"
 import { Minus, Plus, Trash, X } from "lucide-react"
 import { useContextMenu } from "../../view/component/ContextMenu"
-
-interface CountdownSetting { id: string, x: number, y: number, result: CountdownResult }
 
 export const CountdownAppView = () => {
 
@@ -71,15 +69,19 @@ export const CountdownAppView = () => {
         await setCountdowns(cds.filter(cd => cd.id !== cdId))
     }, [cds])
 
-    return (
+    return (<>
         <CanvasOverlayObjectWrapper objects={cds} onMouseDown={handleMouseDown}>
             {(countdown: CountdownSetting) => (
                 <div className="flex flex-col bg-sheet-main-fill/50 p-0.5 rounded pointer-events-auto"
-                    onContextMenu={(e) => onCtxMenu(e, [
-                        { label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) },
-                        { label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) },
-                        { label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true }
-                    ])}
+                    onContextMenu={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        onCtxMenu(e, [
+                            { label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) },
+                            { label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) },
+                            { label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true }
+                        ])
+                    }}
                 >
                     {/* DIE ICON AND BUTTON */}
                     <button
@@ -96,12 +98,11 @@ export const CountdownAppView = () => {
 
                     {/* LABEL */}
                     {countdown.result.name && (
-                        <div className="w-full text-center">{countdown.result.name}</div>
+                        <div className="w-full text-center -mt-1">{countdown.result.name}</div>
                     )}
-
-                    <ContextMenu />
                 </div>
             )}
-        </CanvasOverlayObjectWrapper >
-    )
+        </CanvasOverlayObjectWrapper>
+        <ContextMenu />
+    </>)
 }

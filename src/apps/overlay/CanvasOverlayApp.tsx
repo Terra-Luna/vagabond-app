@@ -28,7 +28,12 @@ export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
         { inplace: false }
     )
 
-    constructor(args: VagabondAppArgs, anchor) {
+    /**
+     * Provide an anchor so it can create the canvas overlay to render the objects on.
+     * @param args 
+     * @param anchor 
+     */
+    constructor(args: VagabondAppArgs, anchor: string) {
         super(args)
         this.anchor = anchor
         this.Component = () => {

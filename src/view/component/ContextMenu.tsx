@@ -2,29 +2,10 @@ import { FunctionComponent, useState } from 'react'
 import { Divider } from './Header'
 import { ControlledMenu, MenuItem } from '@szhsin/react-menu'
 
-export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99"
+export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99 pointer-events-auto"
 export const ctxMenuTextStyle = "text-base font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"
 export const ctxMenuDestructiveTextStyle = "text-destructive-action text-lg font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"
 
-/**
- * A reusable context menu!
- * Sample implementation...
- *
-
-const Component = () => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-    return(
-        <div onContenxtMenu={(e) => onCtxMenu(e, [
-                { icon: Sword, label: 'Attack', action: () => someFunction(arg1, arg2) },
-                ...
-            ])}>
-            <div>Right click on me!</div>
-            <ContextMenu />
-        </div>
-    )
-}
-
- */
 export interface CtxMenuItem {
     icon: FunctionComponent<{ size, className }>
     label: string
