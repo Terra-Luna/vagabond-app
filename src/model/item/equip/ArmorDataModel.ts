@@ -5,7 +5,7 @@ import { EquipmentSchema } from "./EquipmentDataModel"
 
 const armorSchema = () => {
     return {
-        armorType: new fields.StringField({ reuired: false, initial: 'medium', choices: Object.keys(lang.VGLITE.ArmorTypes) }),
+        armorType: new fields.StringField({ reuired: false, initial: 'light', choices: Object.keys(lang.VGLITE.ArmorTypes) }),
         rating: new fields.NumberField({ integer: true, min: 0, initial: 1 }),
         mightReq: new fields.NumberField({ ...requiredInteger, initial: 3 }),
         material: new fields.StringField({ ...requiredString, initial: 'steel', choices: Object.keys(lang.VGLITE.Metals) })

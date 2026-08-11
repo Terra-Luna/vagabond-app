@@ -75,6 +75,6 @@ const skillModifierSchema = () => {
     return {
         rollMod: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
         critMod: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
-        extraDice: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        extraDice: new fields.NumberField({ ...uncappedInteger, initial: 0 })
     }
 }

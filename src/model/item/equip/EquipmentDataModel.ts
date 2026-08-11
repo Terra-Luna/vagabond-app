@@ -1,6 +1,6 @@
 import { lang } from "../../../utils/lang"
 import { addCoins as addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins } from "../../common/CoinValue"
-import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
 /**
@@ -21,16 +21,29 @@ const baseEquipmentSchema = () => {
         isEquippable: new fields.BooleanField({ initial: false }),
         isEquipped: new fields.BooleanField({ initial: false }),
         isConsumable: new fields.BooleanField({ initial: false }),
-        relicEffects: new fields.ArrayField(
+        relicPowers: new fields.ArrayField(
             new fields.SchemaField({
-                type: new fields.StringField({
-                    ...requiredString, choices: [
-                        'BONUS', 'CURSED', 'PROTECTION', 'MOVEMENT', 'SENSES', 'UTILITY', 'UNIQUE', 'FABLED'
-                    ]
+                id: new fields.StringField({ ...requiredString }),
+                category: new fields.SchemaField({
+                    value: new fields.StringField({ ...requiredString }),
+                    label: new fields.StringField({ ...requiredString })
                 }),
-                power: new fields.SchemaField({}),
-                addedCoinValue: new fields.SchemaField({ ...coinSchema() })
-            })
+                power: new fields.SchemaField({
+                    value: new fields.StringField({ ...requiredString }),
+                    label: new fields.StringField({ ...requiredString }),
+                    modifiers: new fields.ArrayField(
+                        new fields.SchemaField({
+                            path: new fields.StringField({ ...requiredString }),
+                            value: new fields.NumberField({ ...requiredInteger })
+                        }),
+                        { initial: [] }
+                    )
+                }),
+                goldValue: new fields.NumberField({ ...requiredInteger }),
+                bound: new fields.BooleanField({ initial: false }),
+                description: new fields.StringField({ ...optionalString })
+            }),
+            { initial: [] }
         )
     }
 }
@@ -49,15 +62,16 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
-
     override prepareBaseData() {
         super.prepareBaseData()
         if ((this as any).material) {
             const baseValue = this.value
             this.value = multiplyCoins(baseValue, lang.VGLITE.Metals[(this as any).material].valueMultiplier)
         }
-        if (this.relicEffects.length > 0) {
-            this.value = addCoins(this.relicEffects.flatMap(it => it.addedCoinValue))
+        if (this.relicPowers.length > 0) {
+            this.value = addCoins(this.relicPowers.flatMap(power => (
+                { g: power.goldValue ?? 0, s: 0, c: 0 }
+            )))
         }
         this.totalValue = multiplyCoins(this.value, Math.max(1, this.bulk.quantity))
     }

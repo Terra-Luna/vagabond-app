@@ -58,11 +58,13 @@ export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: an
                     </div>
                 }
                 <div className="flex gap-x-1 w-full items-center text-2xl text-text-section-header">
-                    <EditableTextField
-                        boundValue={item.name}
-                        updateProps={{ object: item, path: ['name'] }}
-                        placeholder={vgLiteLang.ItemSheet.placeholder_name}
-                    />
+                    <div className="flex flex-col">
+                        <EditableTextField
+                            boundValue={item.name}
+                            updateProps={{ object: item, path: ['name'] }}
+                            placeholder={vgLiteLang.ItemSheet.placeholder_name}
+                        />
+                    </div>
                     <Divider />
                     {editModeToggleBtn}
                 </div>

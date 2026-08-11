@@ -2,6 +2,7 @@ import { CountdownResult } from "../../combat/engine/CountdownRoll"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { XpProgressionCurveApp } from "../level-up/progression/XpProgressionCurveApp"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
+import { RelicPowers } from "./relic/RelicPowers"
 
 /**
  * These settings show up in Foundry's system settings main menu.
@@ -16,6 +17,8 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerItemShopToggle()
         VagabondSettingsRegistry.registerProgressClocks()
         VagabondSettingsRegistry.registerCountdowns()
+
+        RelicPowers.register()
     }
 
     /**

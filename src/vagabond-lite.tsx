@@ -36,7 +36,6 @@ import { Attack } from "./combat/engine/Attack"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
-import { VagabondCanvasOverlayApp } from "./apps/overlay/CanvasOverlayApp"
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 
 // Add our fonts

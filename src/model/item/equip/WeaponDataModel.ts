@@ -1,5 +1,5 @@
 import { DamageRoll } from "../../../combat/engine/DamageRoll"
-import { DiceRoll, DiceRollSchema } from "../../../combat/engine/DiceRoll"
+import { DiceRoll } from "../../../combat/engine/DiceRoll"
 import { lang } from "../../../utils/lang"
 import { HeroDataModel } from "../../actor/HeroDataModel"
 import { damageTypeOptions, fields, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
