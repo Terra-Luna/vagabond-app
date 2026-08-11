@@ -109,7 +109,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
 
     useEffect(() => {
         if (inputRef.current) {
-            inputRef.current.value = value.toString()
+            inputRef.current.value = value?.toString() ?? ''
         }
     }, [value])
 
@@ -130,7 +130,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
                     <input
                         ref={inputRef}
                         type="number"
-                        defaultValue={`${value.toString()}`}
+                        defaultValue={`${value?.toString() ?? ''}`}
                         onBlur={handleSave}
                         onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
                         className={`

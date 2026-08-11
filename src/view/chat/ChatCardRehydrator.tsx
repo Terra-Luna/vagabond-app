@@ -1,23 +1,26 @@
-import React, { createElement } from "react"
+/* eslint-disable react-refresh/only-export-components */
+import React, { createElement, ReactNode, useEffect, useRef } from "react"
 import { ComponentRegistry } from "../component/ComponentRegistry"
 
 export const RehydratedChatCard = React.memo(({ blueprint }: any) => {
-    return <>{rehydrateElement(blueprint)}</>
+    return <>{rehydrateElement(blueprint, true)}</>
 }, (prevProps, nextProps) => {
     return prevProps.blueprint?.id === nextProps.blueprint?.id
 })
 
-function rehydrateElement(blueprint: any): React.ReactNode {
+export function rehydrateElement(blueprint: any, isRoot = true): React.ReactNode {
     if (!blueprint || typeof blueprint !== 'object') return blueprint
     if (!blueprint.type) return null
 
     let children: any = null
     if (blueprint.props?.children) {
         if (Array.isArray(blueprint.props.children)) {
-            children = blueprint.props.children.map((child: any) => rehydrateElement(child))
-        } else if (typeof blueprint.props.children === 'object') {
-            children = rehydrateElement(blueprint.props.children)
-        } else {
+            children = blueprint.props.children.map((child: any) => rehydrateElement(child, false))
+        }
+        else if (typeof blueprint.props.children === 'object') {
+            children = rehydrateElement(blueprint.props.children, false)
+        }
+        else {
             children = blueprint.props.children
         }
     }
@@ -29,5 +32,50 @@ function rehydrateElement(blueprint: any): React.ReactNode {
 
     const { children: _, ...cleanProps } = blueprint.props || {}
 
-    return createElement(FinalType as any, cleanProps, children)
+    const renderedElement = createElement(FinalType as any, cleanProps, children)
+
+    if (isRoot) {
+        return <SmartScrollWrapper children={renderedElement} />
+    }
+    else {
+        return renderedElement
+    }
+}
+
+/**
+ * Foundry can't recognize our chat card heights as they're rehydrated. This side-effect
+ * will trigger an auto-scroll-to-bottom function provided by Foundry's API after hydration
+ * takes place.
+ * @param param0 
+ * @returns 
+ */
+const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
+    const localRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (!document.querySelector('div.chat-scroll[data-application-part="log"]')) return
+
+        const observer = new MutationObserver(() => {
+            requestAnimationFrame(() => {
+                if (typeof ui === 'undefined' || !ui.chat) return
+                (ui.chat as any).scrollBottom({ popout: true })
+            })
+        })
+
+        if (localRef.current) {
+            observer.observe(localRef.current, {
+                childList: true,
+                subtree: true,
+                attributes: true
+            })
+        }
+
+        return () => observer.disconnect()
+    }, [])
+
+    return (
+        <div ref={localRef} className="w-full h-auto min-h-fit block clear-both overflow-visible">
+            {children}
+        </div>
+    )
 }
