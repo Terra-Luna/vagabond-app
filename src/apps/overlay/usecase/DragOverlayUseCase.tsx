@@ -9,11 +9,16 @@ export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (
         initialX: number
         initialY: number
         hasMoved: boolean
+        width: number
+        height: number
     } | null>(null)
 
     const handleMouseDown = (e: React.MouseEvent, object: any) => {
         if (!permissionCheck()) return
         e.preventDefault()
+
+        const targetElement = e.currentTarget as HTMLElement
+        const rect = targetElement.getBoundingClientRect()
 
         dragInfo.current = {
             id: object.id,
@@ -21,7 +26,9 @@ export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (
             startY: e.clientY,
             initialX: object.x || 0,
             initialY: object.y || 0,
-            hasMoved: false
+            hasMoved: false,
+            width: rect.width,
+            height: rect.height
         }
 
         document.addEventListener('mousemove', handleMouseMove)
@@ -40,12 +47,18 @@ export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (
         }
 
         if (info.hasMoved) {
+            // Prevent off-screen drags.
+            const rawX = info.initialX + deltaX
+            const rawY = info.initialY + deltaY
+            const clampedX = Math.max(0, Math.min(rawX, window.innerWidth - info.width))
+            const clampedY = Math.max(0, Math.min(rawY, window.innerHeight - info.height))
+
             setState(prev => prev.map(c => {
                 if (c.id === info.id) {
                     return {
                         ...c,
-                        x: info.initialX + deltaX,
-                        y: info.initialY + deltaY
+                        x: clampedX,
+                        y: clampedY
                     }
                 }
                 return c
