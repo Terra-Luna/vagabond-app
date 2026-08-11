@@ -5,6 +5,7 @@ import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOpti
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 import { UtilityButton } from "../../view/component/Button"
 import { deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setCountdowns, setItemShopToggle, setProgressClocks } from "./VagabondSettingsRegistry"
+import { TrashButton } from "../../view/component/TrashButton"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())
@@ -54,29 +55,31 @@ export const VagabondToolsAppView = () => {
                 <div className="flex flex-col gap-y-2 grow bg-sheet-main-fill p-2 font-eskapade font-bold">
                     <div>
                         <p>Countdowns</p>
-                        <div className="flex gap-x-1">
+                        <div className="flex gap-x-1 items-center">
                             <UtilityButton onClick={() => createNewCountdown("Cd4", 4)}>Cd4</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd6", 6)}>Cd6</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd8", 8)}>Cd8</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd10", 10)}>Cd10</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd12", 12)}>Cd12</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd20", 20)}>Cd20</UtilityButton>
+                            <div className="ml-2">
+                                <TrashButton title={"Delete all countdowns"} onDelete={async () => await deleteAllCountdowns()} />
+                            </div>
                         </div>
-                        <div className="mt-1" />
-                        <UtilityButton onClick={async () => await deleteAllCountdowns()}>Clear All Countdowns</UtilityButton>
                     </div>
 
                     <div>
                         <p>Progress Clocks</p>
-                        <div className="flex gap-x-1">
+                        <div className="flex gap-x-1 items-center">
                             <UtilityButton onClick={() => createNewProgressClock("Prog-2", 2)}>Prog-2</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-4", 4)}>Prog-4</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-6", 6)}>Prog-6</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-8", 8)}>Prog-8</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-12", 12)}>Prog-12</UtilityButton>
+                            <div className="ml-2">
+                                <TrashButton title={"Delete all clocks"} onDelete={async () => await deleteAllProgressClocks()} />
+                            </div>
                         </div>
-                        <div className="mt-1" />
-                        <UtilityButton onClick={async () => await deleteAllProgressClocks()}>Clear All Clocks</UtilityButton>
                     </div>
 
                     <div className="mt-4">
