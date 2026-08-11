@@ -27,7 +27,7 @@ export abstract class VagabondApplication extends foundry.applications.api.Appli
             width: 550,
             height: "auto",
             top: 120,
-            left: 120
+            left: 200
         },
         classes: []
     }

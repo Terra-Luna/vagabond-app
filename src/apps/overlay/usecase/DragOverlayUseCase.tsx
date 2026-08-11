@@ -1,6 +1,6 @@
 import { useRef } from "react"
 
-export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (objects) => void, permissionCheck: () => void) => {
+export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (objects) => void, permissionCheck: () => boolean) => {
 
     const dragInfo = useRef<{
         id: string
@@ -12,7 +12,7 @@ export const useDragOverlayComponent = (setState: (prev) => void, saveSetting: (
     } | null>(null)
 
     const handleMouseDown = (e: React.MouseEvent, object: any) => {
-        if (!permissionCheck) return
+        if (!permissionCheck()) return
         e.preventDefault()
 
         dragInfo.current = {

@@ -18,6 +18,15 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerCountdowns()
     }
 
+    /**
+     * This is called from vagabond-lite.tsx and is triggered when a user
+     * with permission tries to udpated a setting.
+     * @param data
+     */
+    static handleIncomingSettingsChange(data: { setting: string, update: any, pw: string }) {
+        (game.settings as any)?.set("vagabond-lite", data.setting, data.update)
+    }
+
     private static registerMaxLevel() {
         game.settings?.register("vagabond-lite" as any, "maxLevel" as any, {
             name: "Max Level (default: 10)",
@@ -231,36 +240,81 @@ export const setItemShopToggle = async (toggle: boolean) => {
 /**
  * Progress Clocks
  */
-export const getProgressClocks = (): any[] => {
+export interface ProgressClockSchema {
+    id: string
+    x: number
+    y: number
+    label?: string
+    segments: number
+    filled: number
+}
+export const getProgressClocks = (): ProgressClockSchema[] => {
     return (game.settings as any)?.get("vagabond-lite", "progressClocks") || []
 }
-export const setProgressClocks = async (clocks) => {
-    (game.settings as any)?.set("vagabond-lite", "progressClocks", clocks)
+export const setProgressClocks = async (clocks: ProgressClockSchema[]) => {
+    await updateSetting("progressClocks", clocks)
 }
 export const checkClockPermission = (): boolean => {
     return checkPermissionLevel("clockPermissionLevel")
+}
+export const deleteAllProgressClocks = async () => {
+    await updateSetting("progressClocks", [])
 }
 
 /**
  * Countdown Timers
  */
-export interface CountdownSetting {
+export interface CountdownSchema {
     id: string
     x: number
     y: number
+    label?: string
     result: CountdownResult
 }
-export const getCountdowns = (): CountdownSetting[] => {
+export const getCountdowns = (): CountdownSchema[] => {
     return (game.settings as any)?.get("vagabond-lite", "countdowns") || []
 }
-export const setCountdowns = async (countdowns: CountdownSetting[]) => {
-    (game.settings as any)?.set("vagabond-lite", "countdowns", countdowns)
+export const setCountdowns = async (countdowns: CountdownSchema[]) => {
+    await updateSetting("countdowns", countdowns)
 }
 export const checkCountdownPermission = (): boolean => {
     return checkPermissionLevel("countdownPermissionLevel")
 }
+export const deleteAllCountdowns = async () => {
+    await updateSetting("countdowns", [])
+}
 
+/**
+ * Use this function to provide access for players with ganted permissions.
+ * @param setting 
+ * @param update 
+ * @returns 
+ */
+const updateSetting = async (setting: string, update: any) => {
+    if (!game.user) return
+
+    if (game.user.isGM || game.user.isActiveGM) {
+        await (game.settings as any)?.set("vagabond-lite", setting, update)
+    }
+    else {
+        const payload = {
+            user: game.user.id, action: "updateGameSetting",
+            data: { setting: setting, update: update },
+            pw: game.users?.activeGM?.password
+        }
+        game.socket?.emit("system.vagabond-lite", payload)
+    }
+}
+
+/**
+ * Universal settings permission checker. Options are 'gmOnly' or 'everyone'.
+ * Enhance as needed to additionally control visibility as well as editability.
+ */
 const checkPermissionLevel = (settingName: string): boolean => {
     const setting = (game.settings as any)?.get("vagabond-lite", settingName) || 'gmOnly'
-    return setting === 'gmOnly' && ((game.user?.isGM ?? false) || (game.user?.isActiveGM ?? false))
+    return setting === 'everyone' || (
+        setting === 'gmOnly' && (
+            (game.user?.isGM ?? false) || (game.user?.isActiveGM ?? false)
+        )
+    )
 }

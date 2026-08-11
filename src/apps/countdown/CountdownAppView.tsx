@@ -1,16 +1,17 @@
 import { useCallback, useState } from "react"
 import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
 import { useDragOverlayComponent } from "../overlay/usecase/DragOverlayUseCase"
-import { checkCountdownPermission, CountdownSetting, getCountdowns, setCountdowns } from "../vagabond-tools/VagabondSettingsRegistry"
+import { checkCountdownPermission, CountdownSchema, getCountdowns, setCountdowns } from "../vagabond-tools/VagabondSettingsRegistry"
 import { useOverlayItemSync } from "../overlay/usecase/OverlayItemSyncUseCase"
 import { CountdownRoll } from "../../combat/engine/CountdownRoll"
 import { CanvasOverlayObjectWrapper } from "../overlay/component/CanvasOverlayObjectWrapper"
 import { Minus, Plus, Trash, X } from "lucide-react"
 import { useContextMenu } from "../../view/component/ContextMenu"
+import { WidgetLabel } from "../overlay/component/WidgetLabel"
 
 export const CountdownAppView = () => {
 
-    const [cds, setCds] = useState<CountdownSetting[]>([])
+    const [cds, setCds] = useState<CountdownSchema[]>([])
     const { dragInfo, handleMouseDown } = useDragOverlayComponent(setCds, setCountdowns, checkCountdownPermission)
     const { ContextMenu, onCtxMenu } = useContextMenu()
 
@@ -38,7 +39,10 @@ export const CountdownAppView = () => {
         const target = cds.find(cd => cd.id === cdId)
         if (!target) return
 
-        const duration = target.result.duration === 12 ? 12 : target.result.duration + 2
+        const duration = target.result.duration === 12
+            ? 20
+            : target.result.duration + 2
+
         await setCountdowns(cds.map((countdown: any) => {
             if (countdown.id === cdId) return updateCountdownDuration(countdown, duration)
             return countdown
@@ -48,14 +52,20 @@ export const CountdownAppView = () => {
     const decreaseSize = useCallback(async (cdId: string) => {
         const target = cds.find(cd => cd.id === cdId)
         if (!target) return
-        const duration = target.result.duration === 4 ? 4 : target.result.duration - 2
+        const duration = target.result.duration === 4
+            ? 4
+            : (target.result.duration === 20
+                ? 12
+                : target.result.duration - 2
+            )
+
         await setCountdowns(cds.map((countdown: any) => {
             if (countdown.id === cdId) return updateCountdownDuration(countdown, duration)
             return countdown
         }))
     }, [cds])
 
-    const updateCountdownDuration = (countdown: CountdownSetting, duration: number) => {
+    const updateCountdownDuration = (countdown: CountdownSchema, duration: number) => {
         return {
             ...countdown, result: {
                 ...countdown.result, duration: duration, rollSummary: {
@@ -65,14 +75,27 @@ export const CountdownAppView = () => {
         }
     }
 
+    const updateLabel = useCallback(async (countdown: CountdownSchema, label: string) => {
+        const updatedCountdown = {
+            ...countdown, result: {
+                ...countdown.result, name: label
+            }
+        }
+
+        await setCountdowns(cds.map((cd: CountdownSchema) => {
+            if (cd.id === countdown.id) return updatedCountdown
+            else return cd
+        }))
+    }, [cds])
+
     const deleteCountdown = useCallback(async (cdId: string) => {
         await setCountdowns(cds.filter(cd => cd.id !== cdId))
     }, [cds])
 
     return (<>
         <CanvasOverlayObjectWrapper objects={cds} onMouseDown={handleMouseDown}>
-            {(countdown: CountdownSetting) => (
-                <div className="flex flex-col bg-sheet-main-fill/50 p-0.5 rounded pointer-events-auto"
+            {(countdown: CountdownSchema) => (
+                <div className={`flex flex-col p-0.5 rounded pointer-events-auto items-center`}
                     onContextMenu={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -84,25 +107,30 @@ export const CountdownAppView = () => {
                     }}
                 >
                     {/* DIE ICON AND BUTTON */}
-                    <button
-                        title={`Click to advance\nR-click for options`}
-                        className="hover-glow transition-transform active:scale-95"
-                        onClick={(e) => handleCountdownClick(countdown.id)}
-                    >
-                        <DiceRollComponent
-                            faces={countdown.result.rollSummary?.faces ?? countdown.result.duration}
-                            result={countdown.result.rollSummary?.result ?? ''}
-                            textSize="text-6xl"
-                        />
-                    </button>
+                    <div className={`
+                        relative flex items-center justify-center rounded-full aspect-square border border-solid border-dice
+                        ${countdown.result.duration === 0 ? 'bg-destructive-action/33' : 'bg-sheet-main-fill/15'}
+                    `}>
+                        <button
+                            title={`Click to roll\nR-click for options`}
+                            className="hover-glow transition-transform active:scale-95 focus:outline-none mt-2.5"
+                            onClick={() => handleCountdownClick(countdown.id)}
+                        >
+                            <DiceRollComponent
+                                faces={countdown.result.rollSummary?.faces ?? countdown.result.duration}
+                                result={countdown.result.rollSummary?.result ?? ''}
+                                textSize="text-6xl"
+                            />
+                        </button>
+                    </div>
 
                     {/* LABEL */}
-                    {countdown.result.name && (
-                        <div className="w-full text-center -mt-1">{countdown.result.name}</div>
-                    )}
+                    <WidgetLabel label={countdown.result.name} onLabelChange={(newlabel) => updateLabel(countdown, newlabel)} permissionCheck={checkCountdownPermission} />
                 </div>
             )}
         </CanvasOverlayObjectWrapper>
-        <ContextMenu />
+
+        {checkCountdownPermission() && <ContextMenu />}
+
     </>)
 }

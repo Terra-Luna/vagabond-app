@@ -50,7 +50,7 @@ export const UtilityButton = ({ type = "button", title = "", children, icon = nu
 }) => {
     return (
         <button type={type} title={title} onClick={onClick}
-            className={`hover-glow text-sm font-eskapade border border-solid border-table-border px-2 ${buttonAnimation}`}
+            className={`hover-glow text-sm font-eskapade font-normal border border-solid border-table-border px-2 ${buttonAnimation}`}
         >
             {icon}
             {children ? <>

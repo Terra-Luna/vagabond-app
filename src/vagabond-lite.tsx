@@ -117,6 +117,11 @@ Hooks.once("ready", async () => {
             if (!attackData || !attackData.actorId) return
             Attack.handleIncomingAttackSnapshot(attackData)
         }
+        else if (packet?.action === "updateGameSetting") {
+            const data = packet.data
+            if (!data || !packet.user) return
+            VagabondSettingsRegistry.handleIncomingSettingsChange(data)
+        }
     })
 
     await ItemsCache.initialize()

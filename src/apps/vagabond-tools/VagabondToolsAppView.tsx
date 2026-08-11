@@ -2,10 +2,9 @@ import { useCallback, useState } from "react"
 import { Checkbox } from "../../view/component/Checkbox"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { getCountdowns, getItemShopToggle, getProgressClocks, setCountdowns, setItemShopToggle, setProgressClocks } from "./VagabondSettingsRegistry"
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
-import { CountdownApp } from "../countdown/CountdownApp"
 import { UtilityButton } from "../../view/component/Button"
+import { deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setCountdowns, setItemShopToggle, setProgressClocks } from "./VagabondSettingsRegistry"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())
@@ -16,65 +15,76 @@ export const VagabondToolsAppView = () => {
     }, [])
 
     const spawnPoint = useCallback(() => {
-        const centerX = window.innerWidth / 4
-        const centerY = window.innerHeight / 4
-        return { x: centerX, y: centerY }
+        const x = window.innerWidth / 4
+        const y = window.innerHeight / 4
+        return { x: x, y: y }
     }, [])
 
-    const createNewProgressClock = useCallback(async (clockName = "Progress Clock") => {
-        const defaultSegments = 4
-        const { x, y } = spawnPoint()
-        const existingClocks = getProgressClocks()
-
-        const newClock = {
-            id: foundry.utils.randomID(),
-            x: x, y: y,
-            name: clockName,
-            value: 0,
-            max: defaultSegments
-        }
-
-        setProgressClocks([...existingClocks, newClock])
-    }, [])
-
-    const createNewCountdown = useCallback(async (duration: number) => {
+    const createNewCountdown = useCallback(async (label: string, duration: number) => {
         const { x, y } = spawnPoint()
         const existingCds = getCountdowns()
 
         const newCountdown = {
             id: foundry.utils.randomID(),
             x: x, y: y,
-            result: { name: "Cd4", duration: duration }
+            result: { name: label, duration: duration }
         }
 
         setCountdowns([...existingCds, newCountdown])
     }, [])
 
+    const createNewProgressClock = useCallback(async (clockName = "Clock", duration = 4) => {
+        const { x, y } = spawnPoint()
+        const existingClocks = getProgressClocks()
+
+        const newClock = {
+            id: foundry.utils.randomID(),
+            x: x, y: y,
+            label: clockName,
+            segments: duration,
+            filled: 0
+        } as ProgressClockSchema
+
+        setProgressClocks([...existingClocks, newClock])
+    }, [])
+
     return (
         <FoundryHotkeyBlocker>
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <div className="flex flex-col gap-y-2 grow bg-sheet-main-fill p-2">
-                    <Checkbox
-                        label="Toggle Item Shop"
-                        checked={shopToggle}
-                        onCheckedChanged={(checked) => handleShopToggle(checked)}
-                    />
-
+                <div className="flex flex-col gap-y-2 grow bg-sheet-main-fill p-2 font-eskapade font-bold">
                     <div>
-                        <p>Create Countdown</p>
+                        <p>Countdowns</p>
                         <div className="flex gap-x-1">
-                            <UtilityButton onClick={() => createNewCountdown(4)}>Cd4</UtilityButton>
-                            <UtilityButton onClick={() => createNewCountdown(6)}>Cd6</UtilityButton>
-                            <UtilityButton onClick={() => createNewCountdown(8)}>Cd8</UtilityButton>
-                            <UtilityButton onClick={() => createNewCountdown(10)}>Cd10</UtilityButton>
-                            <UtilityButton onClick={() => createNewCountdown(12)}>Cd12</UtilityButton>
-                            <UtilityButton onClick={() => createNewCountdown(20)}>Cd20</UtilityButton>
+                            <UtilityButton onClick={() => createNewCountdown("Cd4", 4)}>Cd4</UtilityButton>
+                            <UtilityButton onClick={() => createNewCountdown("Cd6", 6)}>Cd6</UtilityButton>
+                            <UtilityButton onClick={() => createNewCountdown("Cd8", 8)}>Cd8</UtilityButton>
+                            <UtilityButton onClick={() => createNewCountdown("Cd10", 10)}>Cd10</UtilityButton>
+                            <UtilityButton onClick={() => createNewCountdown("Cd12", 12)}>Cd12</UtilityButton>
+                            <UtilityButton onClick={() => createNewCountdown("Cd20", 20)}>Cd20</UtilityButton>
                         </div>
+                        <div className="mt-1" />
+                        <UtilityButton onClick={async () => await deleteAllCountdowns()}>Clear All Countdowns</UtilityButton>
                     </div>
 
                     <div>
                         <p>Progress Clocks</p>
-                        <UtilityButton onClick={() => createNewProgressClock()}>Progress Clock</UtilityButton>
+                        <div className="flex gap-x-1">
+                            <UtilityButton onClick={() => createNewProgressClock("Prog-2", 2)}>Prog-2</UtilityButton>
+                            <UtilityButton onClick={() => createNewProgressClock("Prog-4", 4)}>Prog-4</UtilityButton>
+                            <UtilityButton onClick={() => createNewProgressClock("Prog-6", 6)}>Prog-6</UtilityButton>
+                            <UtilityButton onClick={() => createNewProgressClock("Prog-8", 8)}>Prog-8</UtilityButton>
+                            <UtilityButton onClick={() => createNewProgressClock("Prog-12", 12)}>Prog-12</UtilityButton>
+                        </div>
+                        <div className="mt-1" />
+                        <UtilityButton onClick={async () => await deleteAllProgressClocks()}>Clear All Clocks</UtilityButton>
+                    </div>
+
+                    <div className="mt-4">
+                        <Checkbox
+                            label="Toggle Item Shop"
+                            checked={shopToggle}
+                            onCheckedChanged={(checked) => handleShopToggle(checked)}
+                        />
                     </div>
 
                 </div>
