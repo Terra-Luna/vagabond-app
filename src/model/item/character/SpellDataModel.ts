@@ -1,6 +1,6 @@
 import { vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { fields, damageTypeOptions, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { fields, damageTypeOptions, optionalString, requiredInteger, requiredString, optionalInteger } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const spellSchema = () => {
@@ -11,8 +11,8 @@ const spellSchema = () => {
         appliedEffects: new fields.ArrayField(
             new fields.SchemaField({
                 effect: new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.StatusConditions) }),
-                duration: new fields.StringField({ ...optionalString }),
-                critDuration: new fields.StringField({ ...optionalString })
+                duration: new fields.NumberField({ ...optionalInteger }),
+                critDuration: new fields.NumberField({ ...optionalInteger })
             }),
             { initial: [] }
         )

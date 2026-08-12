@@ -202,11 +202,11 @@ export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEff
         if (!statusBlueprint) return super.fromStatusEffect(statusId, options)
 
         // Handle special stackable burning effect!
-        // Duration & damageType are embedded into the options arg as: { duration: "CdX", damageType: "fire" }
+        // Duration & damageType are embedded into the options arg as: { duration: 4, damageType: "fire" }
         if (statusId === "burning") {
             const createData = foundry.utils.deepClone(statusBlueprint)
             createData._id = foundry.utils.randomID(16)
-            const duration = options.duration || "Cd4"
+            const duration = options.duration || 4
             const dmgType = options.damageType || "fire"
 
             const stackChange = createData?.changes?.find(

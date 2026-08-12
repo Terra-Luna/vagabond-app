@@ -1,8 +1,6 @@
 import { SpellDataModel } from "../../../../../model/item/character/SpellDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
-import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { Checkbox } from "../../../../component/Checkbox"
-import { DropDown } from "../../../../component/Dropdown"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"

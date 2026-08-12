@@ -61,7 +61,7 @@ const RelicCard = ({ item, relic }) => {
     return (
         <button
             key={relic.id}
-            title={`Add Relic\n${relic.description}`}
+            title={relic.description}
             className={buttonAnimation}
             onClick={async () => await RelicPowers.toggleRelicEffect(item, relic)}
         >

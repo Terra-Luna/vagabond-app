@@ -698,13 +698,6 @@ export class RelicPowers {
             description: ''
         },
         {
-            id: 'utility-after-im-1',
-            category: { value: 'utility', label: 'Utility' },
-            power: { value: 'after-im-1', label: 'After-Image I' },
-            goldValue: 500,
-            description: ''
-        },
-        {
             id: 'utility-ambassador',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'ambassador', label: 'Ambassador' },

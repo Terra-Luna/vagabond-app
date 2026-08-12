@@ -1,7 +1,10 @@
-import { Plus, Trash } from "lucide-react"
+import { Trash } from "lucide-react"
 import { VgLiteActiveEffect } from "../../../../combat/documents/VgLiteActiveEffect"
 import { vgLiteLang } from "../../../../utils/lang"
 import { ItemSheetPropLabel } from "../equip/component/ItemSheetLabelComponent"
+import { DieSizeSelector } from "../../../../combat/ui/DieSizeSelector"
+import { UtilityButton } from "../../../component/Button"
+import { TrashButton } from "../../../component/TrashButton"
 
 export const AppliedEffectsManager = ({ item }) => {
     const appliedEffects = item.system.appliedEffects || []
@@ -34,9 +37,9 @@ export const AppliedEffectsManager = ({ item }) => {
             {/* Header / Add Button Row */}
             <div className="flex items-center gap-2">
                 <ItemSheetPropLabel label={vgLiteLang.ItemSheet.effects} />
-                <button title="Add applied effect" onClick={handleAddEffect}>
-                    <Plus size={24} strokeWidth={3} className="text-text-header-tertiary cursor-pointer" />
-                </button>
+                <UtilityButton title="Add applied effect" onClick={handleAddEffect}>
+                    {vgLiteLang.ButtonActions.add}
+                </UtilityButton>
             </div>
 
             {/* Render rows if effects exist */}
@@ -57,32 +60,24 @@ export const AppliedEffectsManager = ({ item }) => {
                             </select>
 
                             {/* Duration */}
-                            <input
-                                type="text"
-                                value={applied.duration}
-                                placeholder="Duration"
-                                onChange={(e) => handleFieldChange(index, 'duration', e.target.value)}
-                                className="text-sm border border-solid border-table-border rounded px-2 py-1 w-12 focus:outline-none"
-                            />
+                            <div title="Countdown Die">
+                                <DieSizeSelector
+                                    value={applied.duration}
+                                    onChange={(value) => handleFieldChange(index, 'duration', Number(value))}
+                                />
+                            </div>
 
                             {/* Crit duration */}
-                            <input
-                                type="text"
-                                value={applied.critDuration}
-                                placeholder="Crit duration"
-                                onChange={(e) => handleFieldChange(index, 'critDuration', e.target.value)}
-                                className="text-sm border border-solid border-table-border rounded px-2 py-1 w-12 focus:outline-none"
-                            />
+                            <div title="Countdown Die (on Crit)">
+                                <DieSizeSelector
+                                    value={applied.critDuration}
+                                    onChange={(value) => handleFieldChange(index, 'critDuration', Number(value))}
+                                />
+                            </div>
 
                             {/* Delete button */}
-                            <button
-                                type="button"
-                                title="Remove effect"
-                                onClick={() => handleRemoveEffect(index)}
-                                className="text-text-tertiary hover:text-destructive-action transition-colors cursor-pointer"
-                            >
-                                <Trash size={16} />
-                            </button>
+                            <TrashButton title="Remove effect" onDelete={() => handleRemoveEffect(index)} />
+
                         </div>
                     ))}
                 </div>

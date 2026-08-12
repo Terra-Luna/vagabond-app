@@ -286,7 +286,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         {/* DAMAGE ROLL */}
                         <div className="flex items-end">
                             <DiceRollInputComponent
-                                diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 6 }}
+                                diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 0 }}
                                 onChange={(updated) => {
                                     updateDamageRoll(updated)
                                 }}

@@ -9,6 +9,7 @@ import { vgLiteLang } from "../../utils/lang"
 import { CSVTextInput } from "../../view/component/CSVTextInput"
 import { Plus } from "lucide-react"
 import { Checkbox } from "../../view/component/Checkbox"
+import { DieSizeSelector } from "./DieSizeSelector"
 
 export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false, editModeOverride = false, extendedSettings, TrashButton }: {
     label?: string,
@@ -62,22 +63,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                         </div>
 
                         {/* DIE SIZE */}
-                        <div title={"Die size"}>
-                            <CustomDropDown
-                                value={diceRoll.faces?.toString() ?? ''}
-                                options={[
-                                    { value: "1", label: "d1" },
-                                    { value: "4", label: "d4" },
-                                    { value: "6", label: "d6" },
-                                    { value: "8", label: "d8" },
-                                    { value: "10", label: "d10" },
-                                    { value: "12", label: "d12" },
-                                    { value: "20", label: "d20" },
-                                ]}
-                                onChange={(e) => updateFaces(e.target.value)}
-                                className="pt-1"
-                            />
-                        </div>
+                        <DieSizeSelector value={diceRoll?.faces?.toString() ?? ''} onChange={updateFaces} />
 
                         {/* MODIFIER (FLAT BONUS) */}
                         <div title={"Flat modifier (can be negative)"} className="flex items-center text-xl">
