@@ -56,10 +56,12 @@ const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
         if (!document.querySelector('div.chat-scroll[data-application-part="log"]')) return
 
         const observer = new MutationObserver(() => {
-            requestAnimationFrame(() => {
-                if (typeof ui === 'undefined' || !ui.chat) return
-                (ui.chat as any).scrollBottom({ popout: true })
-            })
+            setTimeout(() => {
+                requestAnimationFrame(() => {
+                    if (!ui || !ui.chat) return
+                    (ui.chat as any).scrollBottom({ popout: true })
+                })
+            }, 50)
         })
 
         if (localRef.current) {

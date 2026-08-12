@@ -5,7 +5,7 @@ import * as sheetUtils from "../utils/sheetUtils"
 
 export interface VagabondAppArgs {
     window?: Partial<{ title: string, minimizable: boolean, resizable: boolean }>,
-    position?: Partial<{ width: number | "auto", height: number | "auto" }>,
+    position?: Partial<{ width: number | "auto", height: number | "auto", top: number, left: number }>,
     classes?: string[],
     enforceSingleInstance?: boolean,
     editModeOptions?: EditModeOptions,

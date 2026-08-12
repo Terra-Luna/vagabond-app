@@ -8,8 +8,12 @@ export class HeroCreationApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Create your Hero" },
-            position: { height: 900, width: 1380 },
+            window: {
+                title: "Create your Hero"
+            },
+            position: {
+                height: 900, width: 1380, top: 0, left: 60
+            },
             Component: HeroCreationNavHostView
         } as VagabondAppArgs)
         this.actor = actor
