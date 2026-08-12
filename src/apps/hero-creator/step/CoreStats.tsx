@@ -125,7 +125,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         e.stopPropagation()
         e.dataTransfer.effectAllowed = "move"
         const payload = {
-            type: "VgLiteStatBlock",
+            type: "VagabondStatBlock",
             value: value,
             poolIndex: poolIndex
         }
@@ -138,7 +138,7 @@ export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | un
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
         const payload = JSON.parse(rawData)
-        if (payload.type !== "VgLiteStatBlock") return
+        if (payload.type !== "VagabondStatBlock") return
 
         const { value, poolIndex } = payload
 

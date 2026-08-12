@@ -1,6 +1,6 @@
 import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel";
 
-export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
+export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
         // this makes it so their is no "current combatant"
         this.updateSource({ turn: null })
@@ -21,7 +21,7 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         const updates = this.combatants.map(c => {
             return {
                 _id: c.id,
-                "system.activations.value": skipDefeated && c.isDefeated ? 0 : ((c as VgLiteCombatant).activations.max ?? 0),
+                "system.activations.value": skipDefeated && c.isDefeated ? 0 : ((c as VagabondCombatant).activations.max ?? 0),
             };
         });
         return this.updateEmbeddedDocuments("Combatant", updates);
@@ -36,18 +36,18 @@ export class VgLiteCombat<SubType extends Combat.SubType = Combat.SubType> exten
         return this;
     }
 
-    getVgLiteFlag(flagName) {
+    getVagabondFlag(flagName) {
         return this.getFlag("vagabond-lite" as any, flagName)
     }
 
-    setVgLiteFlag(flagName, flagValue) {
+    setVagabondFlag(flagName, flagValue) {
         return this.setFlag("vagabond-lite" as any, flagName, flagValue)
     }
 
     async activateCombatant(id: string) {
         if (!this.started) return this
 
-        const combatant = this.getEmbeddedDocument("Combatant", id, {}) as VgLiteCombatant
+        const combatant = this.getEmbeddedDocument("Combatant", id, {}) as VagabondCombatant
         if (!combatant?.activations.value) return this
 
         await combatant.activate()
@@ -105,7 +105,7 @@ interface Activations {
 /**
  * Vagabond combatant
  */
-export class VgLiteCombatant<ActorDataModel extends Combatant.SubType = Combatant.SubType> extends Combatant<ActorDataModel> {
+export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combatant.SubType> extends Combatant<ActorDataModel> {
     override prepareBaseData(): void {
         super.prepareBaseData()
     }

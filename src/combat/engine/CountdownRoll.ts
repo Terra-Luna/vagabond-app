@@ -1,6 +1,6 @@
 import { createElement } from "react"
 import { roll3dDice } from "../../utils/foundryUtils"
-import { sendVgLiteChatMessage } from "../../view/chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { RollSummary } from "./RollSummary"
 import { getDiceTerms } from "./util/dice-utils"
 import { CountdownRollChatCard } from "../../view/chat/CountdownChatCard"
@@ -44,7 +44,7 @@ export class CountdownRoll {
                 )
         }
 
-        sendVgLiteChatMessage(
+        sendVagabondChatMessage(
             null,
             createElement(CountdownRollChatCard, { result: this.result }),
             [roll]

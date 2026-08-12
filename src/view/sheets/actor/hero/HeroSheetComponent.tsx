@@ -8,7 +8,7 @@ import { getName } from "../../../../utils/modelUtil"
 import { EditableNameField } from "../../../component/EditableTextField"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { Portrait } from "../component/ActorPortrait"
-import { VgLiteActorSheet } from "../VgLiteActorSheet"
+import { VagabondActorSheet } from "../VagabondActorSheet"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
@@ -26,7 +26,7 @@ import { getMaxLevel } from "../../../../apps/vagabond-tools/VagabondSettingsReg
 
 const locale = lang.VGLITE.HeroSheet
 
-export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { system: HeroDataModel }, sheet: VgLiteActorSheet }) => {
+export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { system: HeroDataModel }, sheet: VagabondActorSheet }) => {
     const hero = actor.system
     useEffect(() => {
         const listener = (e: KeyboardEvent) => {
@@ -57,7 +57,7 @@ export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { sys
     )
 }
 
-const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VgLiteActorSheet }) => {
+const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondActorSheet }) => {
     return (
         <div className="flex">
             {/* MAIN STATS ARRAY */}

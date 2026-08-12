@@ -45,7 +45,7 @@ export const RichTextField = ({
     }, [isEditMode])
 
     const initialConfig = {
-        namespace: 'VgLiteEditor',
+        namespace: 'VagabondEditor',
         onError: (error) => console.error(error),
         editorState: (editor) => {
             $insertNodes($generateNodesFromDOM(editor, new DOMParser().parseFromString(defaultValue, 'text/html')))
@@ -55,7 +55,7 @@ export const RichTextField = ({
 
     const Placeholder = () => {
         return (
-            <div className="absolute p-1 text-sm  italic" style={{ pointerEvents: 'none' }}>Enter text...</div>
+            <div className="absolute p-1 text-sm italic" style={{ pointerEvents: 'none' }}>Enter text...</div>
         )
     }
 

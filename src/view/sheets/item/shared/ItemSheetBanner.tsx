@@ -7,7 +7,7 @@ import { AbilityChatCard } from "../../../chat/AbilityChatCard"
 import { CardSubHeader, CardSubHeaderValues } from "../../../component/SkillCard"
 import { SpellDataModel, spellDamageBase } from "../../../../model/item/character/SpellDataModel"
 import { PerkDataModel, perkPrerequisites } from "../../../../model/item/character/PerkDataModel"
-import { sendVgLiteChatMessage } from "../../../chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../../chat/ChatCardSerializer"
 import { vgLiteLang } from "../../../../utils/lang"
 import { AncestryDataModel, ancestrySizeAndType } from "../../../../model/item/character/AncestryDataModel"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
@@ -23,7 +23,7 @@ export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: an
             icon: MessageSquareText,
             label: vgLiteLang.ButtonActions.chat,
             action: () => {
-                sendVgLiteChatMessage(
+                sendVagabondChatMessage(
                     null,
                     <AbilityChatCard
                         actorId={item.actor?.id ?? null}

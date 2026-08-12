@@ -1,6 +1,6 @@
 import { Pencil, MessageSquareText } from "lucide-react"
 import { getId } from "../../../../utils/modelUtil"
-import { sendVgLiteChatMessage } from "../../../chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../../chat/ChatCardSerializer"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
 import { useContextMenu, CtxMenuItem } from "../../../component/ContextMenu"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
@@ -16,7 +16,7 @@ export const ItemPortraitComponent = ({ item, size = 56, className }: {
         {
             icon: MessageSquareText,
             label: 'Send to chat',
-            action: () => sendVgLiteChatMessage(null, <ItemChatCard itemId={getId(item)} itemName={item.name} />)
+            action: () => sendVagabondChatMessage(null, <ItemChatCard itemId={getId(item)} itemName={item.name} />)
         },
         ...imageEditCtxMenuItems
     )

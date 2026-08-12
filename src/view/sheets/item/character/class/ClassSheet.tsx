@@ -1,7 +1,7 @@
-import { VgLiteItemSheet } from "../../VgLiteItemSheet"
+import { VagabondItemSheet } from "../../VagabondItemSheet"
 import { ClassSheetComponent } from "./ClassSheetComponent"
 
-export class ClassSheet extends VgLiteItemSheet {
+export class ClassSheet extends VagabondItemSheet {
     Component = ClassSheetComponent
     static DEFAULT_OPTIONS = {
         position: {

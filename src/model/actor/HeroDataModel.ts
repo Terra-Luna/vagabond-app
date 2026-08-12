@@ -17,7 +17,7 @@ import { skillsSchema } from "./type/Skills"
 import { speedSchema } from "./type/Speed"
 import { statsSchema } from "./type/Stats"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
-import { sendVgLiteChatMessage } from "../../view/chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
 import { getXpToNext } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
@@ -150,7 +150,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         const pendingResourceTrackerUpdate = (options as any).resourceTrackerUpdate
         if (pendingResourceTrackerUpdate && !(options as any).skipTrackerChatCard) {
-            sendVgLiteChatMessage(this.parent, createElement(TrackerUpdateChatCard, { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource }))
+            sendVagabondChatMessage(this.parent, createElement(TrackerUpdateChatCard, { heroId: getId(this), verb: pendingResourceTrackerUpdate.verb, resource: pendingResourceTrackerUpdate.resource }))
         }
     }
 

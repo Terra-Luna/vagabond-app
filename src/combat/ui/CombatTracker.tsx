@@ -2,12 +2,12 @@ import { PlayIcon, Trash, StopCircle, Edit, Eye } from "lucide-react"
 import { ReactNode, useState, useMemo, useCallback, useEffect } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { CombatGroup } from "../../model/combat/VgLiteCombatant"
+import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { lang } from "../../utils/lang"
 import { useContextMenu, CtxMenuItem } from "../../view/component/ContextMenu"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { HeaderWithClipPath } from "../../view/component/SkillCard"
-import { VgLiteCombat, VgLiteCombatant } from "../documents/VgLiteCombat"
+import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 import { Gauge } from "../../view/component/Gauge"
 import { getCombatantStatuses } from "../engine/status"
@@ -17,7 +17,7 @@ import { BulkCombatantEditView } from "../../apps/bulk-combatant-edit/BulkCombat
 import { getCanvasToken } from "../../utils/modelUtil"
 import { useFoundryHook } from "../../view/wrappers/hooks"
 
-const getCombat = () => game.combat as VgLiteCombat
+const getCombat = () => game.combat as VagabondCombat
 
 const getCombatantById = (id: string) => {
     const combatants = getCombat()?.combatants?.contents
@@ -87,7 +87,7 @@ export const CombatTracker = ({ combat }) => {
                 </div>
                 {game.user?.isGM && (
                     <footer className="shrink-0 pt-4 mt-auto">
-                        <BulkCombatantEditView combatants={controlledCombatants as unknown as VgLiteCombatant[]} />
+                        <BulkCombatantEditView combatants={controlledCombatants as unknown as VagabondCombatant[]} />
                     </footer>)}
             </div>
         </CanvasReadyWrapper>
@@ -183,7 +183,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     )
 }
 
-const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastClickedCombatants }: { token: Token, children: ReactNode, combatant: VgLiteCombatant, lastClickedCombatants: string[], setlastClickedCombatants: (ids: string[]) => void }) => {
+const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastClickedCombatants }: { token: Token, children: ReactNode, combatant: VagabondCombatant, lastClickedCombatants: string[], setlastClickedCombatants: (ids: string[]) => void }) => {
     // we are cheating a bit here, but it works!
     //  act like hovering our entries in the tracker is hovering the token
     const onMouseEnter = useCallback(() => {
@@ -289,7 +289,7 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     )
 }
 
-const ActivateCombatantButton = ({ combatant }: { combatant: VgLiteCombatant }) => {
+const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }) => {
     let component = <div className="min-w-[24px] mr-4" />
     if (!combatant.isOwner && !game.user?.isActiveGM) { return component }
 

@@ -1,5 +1,5 @@
 import { Trash } from "lucide-react"
-import { VgLiteActiveEffect } from "../../../../combat/documents/VgLiteActiveEffect"
+import { VagabondActiveEffect } from "../../../../combat/documents/VagabondActiveEffect"
 import { vgLiteLang } from "../../../../utils/lang"
 import { ItemSheetPropLabel } from "../equip/component/ItemSheetLabelComponent"
 import { DieSizeSelector } from "../../../../combat/ui/DieSizeSelector"
@@ -8,7 +8,7 @@ import { TrashButton } from "../../../component/TrashButton"
 
 export const AppliedEffectsManager = ({ item }) => {
     const appliedEffects = item.system.appliedEffects || []
-    const statusEffectChoices = VgLiteActiveEffect.statusEffects.map(it => it.id)
+    const statusEffectChoices = VagabondActiveEffect.statusEffects.map(it => it.id)
 
     const updateDocument = async (newEffects) => {
         await item.update({ 'system.appliedEffects': newEffects })

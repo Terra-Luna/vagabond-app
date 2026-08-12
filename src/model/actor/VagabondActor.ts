@@ -1,4 +1,4 @@
-export class VgLiteActor<SubType extends Actor.SubType = Actor.SubType> extends Actor<SubType> {
+export class VagabondActor<SubType extends Actor.SubType = Actor.SubType> extends Actor<SubType> {
 
     override prepareEmbeddedDocuments(): void {
         super.prepareEmbeddedDocuments()

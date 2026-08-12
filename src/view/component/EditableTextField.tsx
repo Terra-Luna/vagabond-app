@@ -1,5 +1,5 @@
 import { useCallback, useState, useRef, useEffect } from "react"
-import { VgLiteError}  from "../../model/common/VgLiteError"
+import { VagabondAppError } from "../../model/common/VagabondAppError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { Plus, Minus } from "lucide-react"
@@ -18,10 +18,10 @@ export const EditableTextField = (
     const { isEditMode: enabled } = useEditMode()
 
     if (onSave && updateProps) {
-        throw new VgLiteError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
+        throw new VagabondAppError({ name: "ARG_ERROR", message: "Only one of onSave or updateProps should be passed" })
     }
     else if (!onSave && !updateProps) {
-        throw new VgLiteError({ name: "ARG_ERROR", message: "One of onSave or updateProps is required" })
+        throw new VagabondAppError({ name: "ARG_ERROR", message: "One of onSave or updateProps is required" })
     }
 
     const [isInEditMode, setIsInEditMode] = useState(false)

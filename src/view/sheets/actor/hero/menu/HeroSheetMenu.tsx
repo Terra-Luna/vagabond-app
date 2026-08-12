@@ -1,6 +1,6 @@
 import { Menu, Moon, Sun, X } from "lucide-react"
 import { useCallback, useState } from "react"
-import { VgLiteActorSheet } from "../../VgLiteActorSheet"
+import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
@@ -9,7 +9,7 @@ import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationAp
 import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
 
-export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VgLiteActorSheet, className: string }) => {
+export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [isDarkMode, setIsDarkMode] = useState(
         sheet.classList.contains('theme-dark') || (

@@ -1,4 +1,4 @@
-import { fields } from "../common/sharedSchemas";
+import { fields } from "../common/sharedSchemas"
 
 const activeEffectSchema = () => {
     return {
@@ -6,7 +6,7 @@ const activeEffectSchema = () => {
     }
 }
 
-export type VgLiteActiveEffectSchema = ReturnType<typeof activeEffectSchema>
+export type VagabondActiveEffectSchema = ReturnType<typeof activeEffectSchema>
 
 const BaseActiveEffectModel = (foundry.data as any).ActiveEffectTypeDataModel || foundry.abstract.TypeDataModel
 

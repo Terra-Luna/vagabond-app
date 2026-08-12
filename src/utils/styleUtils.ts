@@ -10,7 +10,7 @@ import "../styles/vagabond-lite.css"
 
 const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement }
 
-const removeAndSaveVgLiteStyleTag = () => {
+const removeAndSaveVagabondStyleTag = () => {
     // todo - figure out what ID this tag gets in prod
     const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement;
     if (vgLiteStyleTag) {
@@ -19,7 +19,7 @@ const removeAndSaveVgLiteStyleTag = () => {
     }
 }
 
-removeAndSaveVgLiteStyleTag()
+removeAndSaveVagabondStyleTag()
 
 export const vgLiteStyles = documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string
 
@@ -29,6 +29,6 @@ if (import.meta.hot) {
     })
 
     import.meta.hot.on("vite:afterUpdate", () => {
-        removeAndSaveVgLiteStyleTag()
+        removeAndSaveVagabondStyleTag()
     })
 }

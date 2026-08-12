@@ -4,7 +4,7 @@ import { spellDamageBase } from "../../../../../../model/item/character/SpellDat
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { getId } from "../../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../../chat/AbilityChatCard"
-import { sendVgLiteChatMessage } from "../../../../../chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../../../../chat/ChatCardSerializer"
 import { useContextMenu } from "../../../../../component/ContextMenu"
 import { SkillCard } from "../../../../../component/SkillCard"
 
@@ -18,7 +18,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {
                                 icon: MessageSquareText, label: vgLiteLang.ButtonActions.chat, action: () =>
-                                    sendVgLiteChatMessage(
+                                    sendVagabondChatMessage(
                                         hero,
                                         <AbilityChatCard
                                             actorId={getId(hero)}

@@ -1,8 +1,8 @@
-import { VgLiteItemSheet } from "../VgLiteItemSheet"
+import { VagabondItemSheet } from "../VagabondItemSheet"
 import { PerkSheetComponent } from "./skills/PerkSheetComponent"
 import { SpellSheetComponent } from "./skills/SpellSheetComponent"
 
-export class PerkSheet extends VgLiteItemSheet {
+export class PerkSheet extends VagabondItemSheet {
     Component = PerkSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
@@ -16,7 +16,7 @@ export class PerkSheet extends VgLiteItemSheet {
     }
 }
 
-export class SpellSheet extends VgLiteItemSheet {
+export class SpellSheet extends VagabondItemSheet {
     Component = SpellSheetComponent
     static DEFAULT_OPTIONS = {
         position: {

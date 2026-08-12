@@ -1,5 +1,5 @@
 import { fields, requiredInteger } from "./sharedSchemas"
-import { VgLiteError}  from "./VgLiteError"
+import { VagabondAppError } from "./VagabondAppError"
 
 export interface Coins {
     g: number
@@ -65,7 +65,7 @@ export const subtractCoins = (coinsA: Coins, coinsB: Coins) => {
     const bTotal = toCopper(coinsB)
     const result = { g: 0, s: 0, c: aTotal - bTotal }
     if (result.c < 0) {
-        throw new VgLiteError({ name: NOT_ENOUGH_COINS_ERROR.name, message: NOT_ENOUGH_COINS_ERROR.message })
+        throw new VagabondAppError({ name: NOT_ENOUGH_COINS_ERROR.name, message: NOT_ENOUGH_COINS_ERROR.message })
     }
     consolidateCoins(result)
     return result

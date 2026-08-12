@@ -1,4 +1,4 @@
-import { VgLiteError } from "../model/common/VgLiteError"
+import { VagabondAppError } from "../model/common/VagabondAppError"
 import { CombinedItems } from "./modelUtil"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
@@ -19,7 +19,7 @@ export const localizeString = (localeString: string, args: Record<string, string
         }
         else {
             // error checking: each var found should have a matching argument given
-            throw new VgLiteError({ name: 'NO_MATCHING_ARGUMENT_ERROR', message: 'No argument supplied for {{' + variable + '}}' })
+            throw new VagabondAppError({ name: 'NO_MATCHING_ARGUMENT_ERROR', message: 'No argument supplied for {{' + variable + '}}' })
         }
     })
 

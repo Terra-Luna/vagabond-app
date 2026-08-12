@@ -2,10 +2,10 @@ const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { extractItemFromContainer } from "../../../model/item/equip/ContainerDataModel"
-import { VgLiteSheetMixin } from "../VgLiteSheetMixin"
+import { VagabondSheetMixin } from "../VagabondSheetMixin"
 import { deleteItemStack } from "../../../utils/heroInventoryUtil"
 
-export abstract class VgLiteActorSheet extends VgLiteSheetMixin(sheets.ActorSheetV2) {
+export abstract class VagabondActorSheet extends VagabondSheetMixin(sheets.ActorSheetV2) {
     getReactProps() { return { ...super.getReactProps(), actor: this.actor } }
     abstract Component: React.ComponentType<any>
 

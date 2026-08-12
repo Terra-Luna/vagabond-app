@@ -16,7 +16,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { ComboChatCard } from "../../../../chat/ComboChatCard"
 import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/DamageRoll"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
@@ -94,7 +94,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                                         dice: [new DiceRoll({ count: avgDamage, faces: 1 })],
                                                         dmgType: act.damage.type
                                                     }).roll()
-                                                    sendVgLiteChatMessage(
+                                                    sendVagabondChatMessage(
                                                         adversary,
                                                         <DamageRollChatCard
                                                             actorId={getId(adversary)}
@@ -138,7 +138,7 @@ const onClickActionCombo = async (adversary: AdversaryDataModel) => {
             rolls.push(result)
         }
     }
-    sendVgLiteChatMessage(
+    sendVagabondChatMessage(
         adversary,
         <ComboChatCard
             actorId={getId(adversary)}

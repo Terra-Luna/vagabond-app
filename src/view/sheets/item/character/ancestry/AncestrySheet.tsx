@@ -1,7 +1,7 @@
-import { VgLiteItemSheet } from "../../VgLiteItemSheet";
+import { VagabondItemSheet } from "../../VagabondItemSheet";
 import { AncestryReactComponent } from "./AncestrySheetComponent";
 
-export class AncestrySheet extends VgLiteItemSheet {
+export class AncestrySheet extends VagabondItemSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 800,

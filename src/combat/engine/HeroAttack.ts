@@ -1,7 +1,7 @@
 import { createElement } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
-import { sendVgLiteChatMessage } from "../../view/chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { Attack } from "./Attack"
 import { SkillCheck } from "./SkillCheck"
 import { InteractiveAttackChatCard } from "../ui/InteractiveAttackChatCard"
@@ -107,7 +107,7 @@ export class HeroAttack extends Attack {
     }
 
     private sendChatMessage() {
-        sendVgLiteChatMessage(
+        sendVagabondChatMessage(
             this.actor,
             createElement(InteractiveAttackChatCard, { actorId: this.actor.id!, attackId: this.id }),
             [...this.skillCheck?.result?.rolls ?? []]

@@ -1,13 +1,13 @@
-import { VgLiteCombatant } from "../../combat/documents/VgLiteCombat";
+import { VagabondCombatant } from "../../combat/documents/VagabondCombat";
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { BulkCombatantEditView } from "./BulkCombatantEditView";
 
 export class BulkCombatantEditApp extends VagabondApplication {
 
-    combatants: VgLiteCombatant[] = []
+    combatants: VagabondCombatant[] = []
 
-    constructor(combatants: VgLiteCombatant[]) {
+    constructor(combatants: VagabondCombatant[]) {
         super({
             window: { title: "Bulk Combatant Edit" },
             position: { width: 400 },

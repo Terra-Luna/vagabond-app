@@ -1,12 +1,12 @@
 import { Minus, Plus } from "lucide-react"
-import { VgLiteCombatant } from "../../combat/documents/VgLiteCombat"
+import { VagabondCombatant } from "../../combat/documents/VagabondCombat"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { useCallback } from "react"
 import { Widget } from "../../view/component/Widget"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
 
-export const BulkCombatantEditView = ({ combatants }: { combatants: VgLiteCombatant[] }) => {
+export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondCombatant[] }) => {
 
     const changeAllCombatantsHp = useCallback((amount: number) => {
         const updates = combatants

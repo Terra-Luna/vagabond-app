@@ -16,7 +16,7 @@ import { groupBy } from "./collectionUtil"
 import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
 import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
-import { sendVgLiteChatMessage } from "../view/chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
 import { DamageRoll } from "../combat/engine/DamageRoll"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import { ItemsCache } from "../rules/util/ItemsCache"
@@ -156,12 +156,12 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
                 flatDmgBonus: hero.modifiers.damage.attack ?? 0,
                 perDieDmgBonus: hero.modifiers.damage.attackPerDie ?? 0
             }).roll()
-            sendVgLiteChatMessage(hero, createElement(DamageRollChatCard, {
+            sendVagabondChatMessage(hero, createElement(DamageRollChatCard, {
                 actorId: getId(hero), tokenIds: getTargetIds(), result: dmgRoll
             }))
         }
         else {
-            sendVgLiteChatMessage(hero, createElement(ItemChatCard, {
+            sendVagabondChatMessage(hero, createElement(ItemChatCard, {
                 itemId: getId(item), itemName: `Used: ${getName(item)}`, isConsumable: item.isConsumable
             }))
         }
@@ -172,7 +172,7 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
 }
 
 export const sendItemToChat = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
-    sendVgLiteChatMessage(hero, createElement(ItemChatCard, { itemId: getId(item), itemName: getName(item) }))
+    sendVagabondChatMessage(hero, createElement(ItemChatCard, { itemId: getId(item), itemName: getName(item) }))
 }
 
 export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {

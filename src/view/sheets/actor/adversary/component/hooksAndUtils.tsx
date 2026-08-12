@@ -3,7 +3,7 @@ import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataMode
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { DamageRoll } from "../../../../../combat/engine/DamageRoll"
 import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/DiceRoll"
 
@@ -28,7 +28,7 @@ export const onClickAction = async (adversary: AdversaryDataModel, name: string,
             atkName: name, dmgType: dmgType, dice: [new DiceRoll(dice)]
         }).roll()
 
-        sendVgLiteChatMessage(
+        sendVagabondChatMessage(
             adversary,
             <DamageRollChatCard
                 actorId={getId(adversary)}
@@ -38,7 +38,7 @@ export const onClickAction = async (adversary: AdversaryDataModel, name: string,
         )
     }
     else {
-        sendVgLiteChatMessage(adversary, <AbilityChatCard
+        sendVagabondChatMessage(adversary, <AbilityChatCard
             actorId={getId(adversary)}
             title={name}
             description={description ?? ''}

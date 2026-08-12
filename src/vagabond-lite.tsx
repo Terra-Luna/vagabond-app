@@ -14,8 +14,8 @@ import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { StarterPackDataModel } from "./model/item/equip/StarterPackDataModel"
 import { ContainerDataModel } from "./model/item/equip/ContainerDataModel"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
-import { VgLiteCombat, VgLiteCombatant } from './combat/documents/VgLiteCombat'
-import { VgLiteActiveEffect } from './combat/documents/VgLiteActiveEffect'
+import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
+import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
 import { isInventoryItem } from "./model/actor/type/Inventory"
 import { AdversarySheet } from "./view/sheets/actor/adversary/AdversarySheet"
 import { createRoot } from "react-dom/client"
@@ -26,9 +26,9 @@ import { getFullItem, getId } from "./utils/modelUtil"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
-import { VgLiteCombatTracker } from "./combat/ui/CombatTrackerDocument"
-import { VgLiteActor } from "./model/actor/VgLiteActor"
-import { VGLiteCombatantModel } from "./model/combat/VgLiteCombatant"
+import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
+import { VagabondActor } from "./model/actor/VagabondActor"
+import { VagabondCombatModel } from "./model/combat/VagabondCombatant"
 import { vgLiteLang } from "./utils/lang"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
@@ -72,7 +72,7 @@ let countdownOverlay: CountdownApp | null = null
 Hooks.once("init", () => {
     Object.assign(
         // Actors
-        CONFIG.Actor.documentClass = VgLiteActor,
+        CONFIG.Actor.documentClass = VagabondActor,
         CONFIG.Actor.dataModels.adversary = AdversaryDataModel,
         CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.npc = NpcDataModel,
@@ -89,13 +89,13 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.tool = ToolDataModel,
         CONFIG.Item.dataModels.weapon = WeaponDataModel,
         // Combat
-        CONFIG.Combat.documentClass = VgLiteCombat,
-        CONFIG.Combatant.documentClass = VgLiteCombatant,
-        CONFIG.Combatant.dataModels.base = VGLiteCombatantModel,
-        CONFIG.ActiveEffect.documentClass = VgLiteActiveEffect,
-        CONFIG.statusEffects = VgLiteActiveEffect.statusEffects as any,
+        CONFIG.Combat.documentClass = VagabondCombat,
+        CONFIG.Combatant.documentClass = VagabondCombatant,
+        CONFIG.Combatant.dataModels.base = VagabondCombatModel,
+        CONFIG.ActiveEffect.documentClass = VagabondActiveEffect,
+        CONFIG.statusEffects = VagabondActiveEffect.statusEffects as any,
         CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any },
-        CONFIG.ui.combat = VgLiteCombatTracker
+        CONFIG.ui.combat = VagabondCombatTracker
     )
 
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
@@ -446,8 +446,8 @@ Hooks.on("preCreateActiveEffect", (effect: any, data: any, options: any, userId:
 })
 
 Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
-    const renderVgLiteChatMessages = () => {
-        const rootElement = html.querySelector('.vglite-react-chat-root') as HTMLElement
+    const renderVagabondChatMessages = () => {
+        const rootElement = html.querySelector('.vagabond-react-chat-root') as HTMLElement
         if (!rootElement) return
 
         // Stips out Foundry's default chat container. We don't need it
@@ -487,15 +487,15 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
     }
 
     if (!game.scenes?.active && ItemsCache.items.size > 0) {
-        renderVgLiteChatMessages()
+        renderVagabondChatMessages()
     }
     else if (canvas?.ready && ItemsCache.items.size > 0) {
-        renderVgLiteChatMessages()
+        renderVagabondChatMessages()
     }
     else {
         Hooks.once("canvasReady", () => {
             Hooks.once("onItemsCacheInitialized" as any, () => {
-                renderVgLiteChatMessages()
+                renderVagabondChatMessages()
             })
         })
     }

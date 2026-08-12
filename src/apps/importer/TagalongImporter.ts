@@ -1,6 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { inventoryItemTypes } from "../../model/actor/type/Inventory"
-import { VgLiteError } from "../../model/common/VgLiteError"
+import { VagabondAppError } from "../../model/common/VagabondAppError"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { updateDocument } from "../../utils/documentUtils"
 import { stackStackables } from "../../utils/heroInventoryUtil"
@@ -188,7 +188,7 @@ const isTrained = (skill: string, trainedSkills: string[]): boolean => {
 }
 
 const tagalongError = (message: string) => {
-    return new VgLiteError({
+    return new VagabondAppError({
         name: 'TAGALONG_API_ERROR', message: message
     })
 }

@@ -12,13 +12,13 @@ interface ElementBlueprint {
     }
 }
 
-export const sendVgLiteChatMessage = async (
+export const sendVagabondChatMessage = async (
     actor: any,
     card: React.ReactElement,
     rolls: any[] = []
 ) => {
     const blueprint = serializeElement(card)
-    const chatRoot = `<div class="vglite-react-chat-root"/>`
+    const chatRoot = `<div class="vagabond-react-chat-root"/>`
     await ChatMessage.create({
         speaker: { actor: getId(actor), alias: getName(actor) },
         content: chatRoot,
@@ -31,7 +31,7 @@ export const sendVgLiteChatMessage = async (
 
 export function sendCountdownRollMessage(cdRes: CountdownResult | null, Component: FunctionComponent<{ result: CountdownResult }>) {
     if (!cdRes) return
-    sendVgLiteChatMessage(null, createElement(Component, { result: cdRes }))
+    sendVagabondChatMessage(null, createElement(Component, { result: cdRes }))
 }
 
 // Converts a live ReactElement tree into serializable JSON

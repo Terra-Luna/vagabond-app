@@ -1,7 +1,7 @@
 import ReactDom from "react-dom/client"
 import { onClose, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "../../utils/sheetUtils"
 
-export const VgLiteSheetMixin = (superclass) => class extends superclass {
+export const VagabondSheetMixin = (superclass) => class extends superclass {
     _reactRoot: ReactDom.Root | null = null
     _scaduRoot: any
     _toolbarHeight: number = 0

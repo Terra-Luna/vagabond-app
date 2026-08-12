@@ -6,7 +6,7 @@ import { EquipmentDataModel } from "../../model/item/equip/EquipmentDataModel"
  * active effects for Classes, Ancestries, Equipment, etc... On-save, the path property can 
  * be used to apply the effect via #addActiveEffect(), below.
  */
-export class VgLiteActiveEffect<SubType extends ActiveEffect.SubType = ActiveEffect.SubType> extends ActiveEffect<SubType> {
+export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveEffect.SubType> extends ActiveEffect<SubType> {
 
     static statusEffects = [
         {

@@ -2,9 +2,9 @@ import { HeroDataModel } from "../actor/HeroDataModel";
 import fields = foundry.data.fields;
 import { AdversaryDataModel } from "../actor/AdversaryDataModel";
 
-type VgLiteCombatantModelSchema = ReturnType<typeof defineSchema>;
+type VagabondCombatantModelSchema = ReturnType<typeof defineSchema>;
 
-export type VgLiteCombatantInstance = InstanceType<typeof VGLiteCombatantModel>
+export type VagabondCombatantInstance = InstanceType<typeof VagabondCombatModel>
 export const COMBAT_GROUPS = ['heroes', 'adversaries', 'npcs'] as const
 export type CombatGroup = typeof COMBAT_GROUPS[number]
 
@@ -18,8 +18,8 @@ const defineSchema = () => {
     };
 };
 
-export class VGLiteCombatantModel extends foundry.abstract.TypeDataModel<
-    VgLiteCombatantModelSchema,
+export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
+    VagabondCombatantModelSchema,
     Combatant.Implementation
 > {
     static defineSchema() {

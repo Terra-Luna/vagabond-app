@@ -4,7 +4,6 @@
  * We've rendered our placeholder-template that just has a div for us to find, and we'll do normal
  *   react-root shadow-dom stuff from there.
  */
-
 import ReactDom from "react-dom/client"
 import { vgLiteStyles } from "../../utils/styleUtils"
 import { getTheme } from "../../utils/foundryUtils"
@@ -12,9 +11,9 @@ import { EditModeContextProvider } from "../../view/context/EditModeContext/Edit
 import { EmotionCacheContext } from "../../view/context/EmotionCacheContext"
 import { CombatTracker } from "./CombatTracker"
 import { createContext, useContext } from "react"
-import { CombatGroup } from "../../model/combat/VgLiteCombatant"
+import { CombatGroup } from "../../model/combat/VagabondCombatant"
 
-export class VgLiteCombatTracker extends foundry.applications.sidebar.tabs.CombatTracker {
+export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.CombatTracker {
     htmlRoot?: HTMLElement
     scaduRoot?: ShadowRoot
     reactRoot?: ReactDom.Root

@@ -9,7 +9,7 @@ import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { getId } from "../../../../../utils/modelUtil"
 import { useStatsDrawerStatus } from "./statdrawer/hooks"
 import { lang, vgLiteLang } from "../../../../../utils/lang"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { SkillCheck } from "../../../../../combat/engine/SkillCheck"
 
@@ -166,7 +166,7 @@ const Save = ({ hero, save }: { hero: HeroDataModel, save: { key: string, name: 
             <div className={`flex font-eskapade hover-glow border border-solid border-table-border/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { skill: save.key, clickEvent: e }).roll()
-                    sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                    sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                 }
             }>
                 <div className="mx-1 w-full">
@@ -208,7 +208,7 @@ export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack }: { he
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle hover-glow`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
                         const skillCheck = await new SkillCheck(hero, { skill: skillKey, clickEvent: e }).roll()
-                        sendVgLiteChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                        sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                     }
                 }>
                     <div>{name}</div>

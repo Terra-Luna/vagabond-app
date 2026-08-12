@@ -7,7 +7,7 @@ import { useContextMenu } from "../../../../component/ContextMenu"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { sendVgLiteChatMessage } from "../../../../chat/ChatCardSerializer"
+import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
@@ -38,7 +38,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         ).map(f => (
                             <div key={f.name} onContextMenu={(e) => onCtxMenu(e, [
                                 {
-                                    icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
+                                    icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
                                         <AbilityChatCard actorId={getId(hero)} img={''} title={f.name} description={f.description} />
                                     )
                                 }
@@ -64,7 +64,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                         .map((p: any, index: number) => (
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {
-                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVgLiteChatMessage(hero,
+                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
                                     <AbilityChatCard
                                         actorId={getId(hero)}
                                         img={p.parent.img}
