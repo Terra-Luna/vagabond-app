@@ -17,6 +17,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerItemShopToggle()
         VagabondSettingsRegistry.registerProgressClocks()
         VagabondSettingsRegistry.registerCountdowns()
+        VagabondSettingsRegistry.registerManaEnforcement()
 
         RelicPowers.register()
     }
@@ -169,6 +170,17 @@ export class VagabondSettingsRegistry {
         });
     }
 
+    private static registerManaEnforcement() {
+        game.settings?.register("vagabond-lite" as any, "enforceMana" as any, {
+            name: "Enforce Mana ",
+            hint: "Enable to enforce spellcasting Mana consumption and Max/Cast limits.",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true
+        })
+    }
+
     private static async refreshHeroSheets() {
         const heroes = game.actors?.contents.filter(it => (it.type as string) === 'hero')
         if (!heroes) return
@@ -176,6 +188,7 @@ export class VagabondSettingsRegistry {
             (hero?.system as HeroDataModel)?.forceUpdate()
         }
     }
+
 
 }
 
@@ -285,6 +298,10 @@ export const checkCountdownPermission = (): boolean => {
 }
 export const deleteAllCountdowns = async () => {
     await updateSetting("countdowns", [])
+}
+
+export const getManaEnforcement = (): boolean => {
+    return (game.settings as any)?.get("vagabond-lite", "enforceMana") || true
 }
 
 /**
