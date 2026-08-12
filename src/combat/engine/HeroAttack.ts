@@ -14,6 +14,7 @@ import { getTargetIds } from "../../utils/modelUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { DiceRoll } from "./DiceRoll"
 import { AttackPreset } from "../../apps/attack-builder/AttackBuilderApp"
+import { getManaEnforcement } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export class HeroAttack extends Attack {
 
@@ -357,8 +358,12 @@ export class HeroAttack extends Attack {
         skill: string,
         delivery: SpellDelivery,
         clickEvent?: any
-    ): HeroAttack {
+    ): HeroAttack | null {
         const hero = actor.system
+
+        if (getManaEnforcement() && (
+            delivery.manaCost > hero.mana.current || delivery.manaCost > hero.mana.maxCast
+        )) { return null }
 
         if (delivery.manaCost > 0) {
             actor.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) } as Record<string, number>)

@@ -301,7 +301,7 @@ export const deleteAllCountdowns = async () => {
 }
 
 export const getManaEnforcement = (): boolean => {
-    return (game.settings as any)?.get("vagabond-lite", "enforceMana") || true
+    return (game.settings as any)?.get("vagabond-lite", "enforceMana")
 }
 
 /**

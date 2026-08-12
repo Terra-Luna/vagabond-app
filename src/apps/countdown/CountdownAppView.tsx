@@ -5,7 +5,7 @@ import { checkCountdownPermission, CountdownSchema, getCountdowns, setCountdowns
 import { useOverlayItemSync } from "../overlay/usecase/OverlayItemSyncUseCase"
 import { CountdownRoll } from "../../combat/engine/CountdownRoll"
 import { CanvasOverlayObjectWrapper } from "../overlay/component/CanvasOverlayObjectWrapper"
-import { Minus, Plus, Trash, X } from "lucide-react"
+import { Minus, Plus, Trash } from "lucide-react"
 import { useContextMenu } from "../../view/component/ContextMenu"
 import { WidgetLabel } from "../overlay/component/WidgetLabel"
 

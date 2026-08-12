@@ -185,7 +185,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
         const delivery = deliveries[deliveryIndex]
         if (delivery && delivery.spell) {
-            HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e).initiate()
+            HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e)?.initiate()
         }
     }
 
@@ -232,7 +232,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                         </div>
 
                         {/* Insufficient mana error message */}
-                        {(delivery?.manaCost ?? 0) > hero.mana.current && <SpellcastingErrMsg />}
+                        <SpellcastingErrMsg cost={delivery?.manaCost ?? 0} mana={hero.mana.current} maxCast={hero.mana.maxCast} />
 
                         {/* User-help description of the chosen delivery */}
                         <SpellcastingSubtext text={delivery?.description ?? ''} />

@@ -686,7 +686,8 @@
         "labelDmgDice": "Damage Dice",
         "labelCost": "Cost",
         "btnCast": "Cast",
-        "manaErrMsg": "Insufficient mana"
+        "manaErrMsg": "Insufficient mana",
+        "maxErrMsg": "Max/Cast exceeded"
       }
     },
      "SpellDeliveries": {

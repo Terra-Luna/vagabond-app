@@ -1,3 +1,4 @@
+import { getManaEnforcement } from "../../../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { vgLiteLang } from "../../../../../../../utils/lang"
 
 export const SpellcastingLabel = ({ text }: { text: any }) => {
@@ -14,6 +15,15 @@ export const SpellcastingSubtext = ({ text }: { text: any }) => {
     </div>
 }
 
-export const SpellcastingErrMsg = () => {
-    return <div className="text-destructive-action text-base">{vgLiteLang.HeroSheet.Magic.manaErrMsg}</div>
+export const SpellcastingErrMsg = ({ cost, mana, maxCast }: { cost: number, mana: number, maxCast: number }) => {
+    const enforce = getManaEnforcement()
+    console.log(enforce)
+    return (<div className="flex gap-x-2">
+        {(enforce && cost > mana) && <div className="text-destructive-action text-base">
+            {vgLiteLang.HeroSheet.Magic.manaErrMsg}</div>
+        }
+        {(enforce && cost > maxCast) && <div className="text-destructive-action text-base">
+            {vgLiteLang.HeroSheet.Magic.maxErrMsg}</div>
+        }
+    </div>)
 }
