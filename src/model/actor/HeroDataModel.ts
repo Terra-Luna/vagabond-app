@@ -1,5 +1,5 @@
-import { createElement } from "react"
 import { vgLiteLang } from "../../utils/lang"
+import { createElement } from "react"
 import { getId } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"

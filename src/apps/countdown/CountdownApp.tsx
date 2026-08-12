@@ -1,4 +1,4 @@
-/* eslint-disable react-refresh/only-export-components */
+ 
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { VagabondCanvasOverlayApp } from "../overlay/CanvasOverlayApp"
 import { CountdownAppView } from "./CountdownAppView"
