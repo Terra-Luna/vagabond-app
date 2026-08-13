@@ -6,14 +6,14 @@ import { vgLiteLang } from "../../../utils/lang"
 import { SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
-import { AttackPreset } from "../AttackBuilderApp"
+import { RollPreset } from "../RollBuilderApp"
 import { Plus } from "lucide-react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 
 export const useCustomDamageRollBuilder = (
     actor: Actor & { system: HeroDataModel },
     weapon: (Item & { system: WeaponDataModel }) | undefined,
-    preset?: AttackPreset
+    preset?: RollPreset
 ) => {
 
     const [damageRolls, setDamageRolls] = useState<DiceRollSchema[]>([])

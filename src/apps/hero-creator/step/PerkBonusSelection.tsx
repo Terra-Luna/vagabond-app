@@ -62,7 +62,7 @@ export const usePerkBonusSelection = (
     }, [perks, selectedTrainings])
 
     const spellItemRules = useMemo((): ItemRule[] => {
-        const rules = getItemChoiceRules(perks?.flatMap(p => p.system.rules) ?? [])
+        const rules = getItemChoiceRules(1, perks?.flatMap(p => p.system.rules) ?? [])
         rules.forEach(r => {
             r.choices = [
                 ...[{ value: '', label: strings.emptySlot }],
@@ -80,7 +80,7 @@ export const usePerkBonusSelection = (
     }, [spell])
 
     const showAdditionalTrainingOnStatAdvancement = useMemo(() => {
-        return advancement?.value === 'stats.reason' && (((stats?.find(s => s.stat === 'reason')?.value ?? 1) % 2) === 0)
+        return navButtons?.length > 0 && advancement?.value === 'stats.reason' && (((stats?.find(s => s.stat === 'reason')?.value ?? 1) % 2) === 0)
     }, [advancement, stats])
 
     /**

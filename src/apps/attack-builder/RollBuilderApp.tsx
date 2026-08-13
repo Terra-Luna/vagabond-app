@@ -1,17 +1,17 @@
 import { DiceRollSchema } from "../../combat/engine/DiceRoll"
 import { VagabondApplication, VagabondAppArgs } from "../VagabondApplication"
-import { AttackBuilderView } from "./AttackBuilderView"
+import { RollBuilderView } from "./RollBuilderView"
 
-export class AttackBuilderApp extends VagabondApplication {
+export class RollBuilderApp extends VagabondApplication {
 
     actor: Actor
-    preset?: AttackPreset
+    preset?: RollPreset
 
-    constructor(actor: Actor, preset?: AttackPreset) {
+    constructor(actor: Actor, preset?: RollPreset) {
         super({
-            window: { title: "Attack Builder", resizable: false },
+            window: { title: "Roll Builder", resizable: false },
             position: { width: 420 },
-            Component: AttackBuilderView,
+            Component: RollBuilderView,
         } as VagabondAppArgs)
 
         this.actor = actor
@@ -29,7 +29,7 @@ export class AttackBuilderApp extends VagabondApplication {
 
 }
 
-export interface AttackPreset {
+export interface RollPreset {
     title: string, description: string,
     weaponId: string,
     skill: string,

@@ -4,7 +4,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
+import { calculateRecurringChoices, getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
@@ -14,13 +14,14 @@ import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { Grimoire } from "../component/Grimoire"
 
 export const useSpellSelection = (
+    level: number,
     ancestry: Item & { system: AncestryDataModel } | undefined,
     clazz: Item & { system: ClassDataModel } | undefined,
     perks: PerkDataModel[] | undefined,
     navButtons: ReactNode[]
 ) => {
     const strings = vgLiteLang.HeroCreation
-    const isCreationMode = navButtons.length > 0
+    const isCreationMode = navButtons?.length > 0
 
     // All spells for selection.
     const [spellsList, setSpellsList] = useState<{ value: string, label: string, img: string, dmgType: string, description: string }[]>([])
@@ -66,13 +67,13 @@ export const useSpellSelection = (
         getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
         getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
 
-        const ancestryRules = getItemChoiceRules(ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
+        const ancestryRules = getItemChoiceRules(level, ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
 
-        const classRules = getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
+        const classRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setClassSpellSlots(loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
 
-        const perkRules = getItemChoiceRules(perks?.flatMap(p => p.rules?.filter(r => (r as any).level <= 1)) ?? [])
+        const perkRules = getItemChoiceRules(level, perks?.flatMap(p => p.rules?.filter(r => (r as any).level <= 1)) ?? [])
         setPerkSpellSlots(loadInitialSlots(perkRules.filter(r => r.pack === 'spell')))
     }, [ancestry, clazz, perksSignature, loadInitialSlots])
 
@@ -133,7 +134,7 @@ export const useSpellSelection = (
                 }
 
                 {/* PERK SPELL SLOTS (MAGICAL SECRETS) */}
-                {perkSpellSlots.length > 0 &&
+                {(perkSpellSlots.length > 0 && isCreationMode) &&
                     <BonusChoiceContainer>
                         <BonusChoiceTitle text={strings.magicalSecrets} />
                         <ItemSelectorGroup

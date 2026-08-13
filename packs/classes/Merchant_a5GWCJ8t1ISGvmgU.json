@@ -1,0 +1,131 @@
+{
+  "name": "Merchant",
+  "type": "class",
+  "_id": "a5GWCJ8t1ISGvmgU",
+  "img": "systems/vagabond-lite/assets/class/merchant_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">May they be an appraiser of rare magic items, peddler of illicit substances, or bookkeeper for the court, merchants are masters of exchange.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Merchants</strong></b></p><p><span style=\"white-space:pre-wrap\">• Anna, Fire Emblem</span></p><p><span style=\"white-space:pre-wrap\">• Marco Polo, Venetian merchant</span></p><p><span style=\"white-space:pre-wrap\">• Torneko Taloon, Dragon Quest IV</span></p><p><span style=\"white-space:pre-wrap\">• Tressa Colzione, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Merchant</strong></b></p><p><span style=\"white-space:pre-wrap\">The merchant is a low-defense and damage character, who provides high-support through a wider inventory pool and optimizing your</span></p><p><span style=\"white-space:pre-wrap\">party’s resources. In combat, you should look out for allies in need of assistance and strategize what items to use.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible (skip to Use)</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Blacksmith, Cook, or Tinker</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Craft, Influence</span></p>",
+    "rules": [
+      {
+        "id": "eCdAhqrTAclxsdaQ",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "J8oiso2PvONaRPNu",
+        "key": "ToggleRule",
+        "label": "Training: Craft",
+        "level": "1",
+        "value": true,
+        "selector": "skills.craft.isTrained"
+      },
+      {
+        "id": "7s3Y3832Y0tfchRE",
+        "key": "ToggleRule",
+        "label": "Training: Influence",
+        "level": "1",
+        "value": true,
+        "selector": "skills.influence.isTrained"
+      },
+      {
+        "id": "4DnJ7fm2jpVECROf",
+        "key": "GrantItem",
+        "label": "Deep Pockets: Deft Hands",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.TcPtYma4aDbo9npG",
+        "type": null
+      },
+      {
+        "id": "XEFiSSPFSdMD6711",
+        "key": "FlatModifier",
+        "label": "Deep Pockets: Capacity",
+        "level": 1,
+        "value": 0.5,
+        "selector": "inventory.capacity",
+        "valueMultiplier": "level.current"
+      }
+    ],
+    "complexity": 3,
+    "keyStats": [
+      "reason",
+      "presence"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "name": "Deep Pockets",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Deft Hands Perk (p. 68), and you have extra Item Slots equal to (half your Level, round up).</span></p>"
+      },
+      {
+        "name": "Gold Sink",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can take the Use Action to place non-Relic Items into a container, close it, then choose an Item with a value no more than the original valuables’. The chosen Item replaces the valuables.</span></p>"
+      },
+      {
+        "name": "Bang for Your Buck",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you Use an Item with limited uses, you can spend 1 Luck and roll a d12. If the result is lower than your remaining Luck, the Item is not expended. This die size decreases every 6 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Anitquarian",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend a Shift to either remove one Power from a non-Fabled Relic in your possession or expend valuables of equal or higher value to the Power to add it to an Item.</span></p>"
+      },
+      {
+        "name": "Diamond Hands",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Any Relic Item Bonus or Rank is increased by 1 while you have it Equipped.</span></p>"
+      },
+      {
+        "name": "Bang for Your Buck",
+        "level": 8,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you Use an Item with limited uses, you can spend 1 Luck and roll a d10. If the result is lower than your remaining Luck, the Item is not expended.</span></p>"
+      },
+      {
+        "name": "Top Shelf",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Week, you can pull a non-Fabled Relic from your Gold Sink Feature with a value no higher than (your Level × 200g), otherwise</span></p><p><span style=\"white-space: pre-wrap;\">obeying all the rules for that Feature.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786566807612,
+    "modifiedTime": 1786567940191,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!a5GWCJ8t1ISGvmgU"
+}

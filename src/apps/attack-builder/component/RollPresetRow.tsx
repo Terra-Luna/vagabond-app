@@ -1,14 +1,14 @@
 import { ReactNode } from "react"
-import { AttackPreset } from "../AttackBuilderApp"
+import { RollPreset } from "../RollBuilderApp"
 import { DiceRoll } from "../../../combat/engine/DiceRoll"
 import { HeroAttack } from "../../../combat/engine/HeroAttack"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
-import { AttackButton } from "./AttackButton"
+import { RollButton } from "./RollButton"
 
-export const AttackPresetRow = ({ actor, preset, EditButton, TrashButton }: {
+export const RollPresetRow = ({ actor, preset, EditButton, TrashButton }: {
     actor: Actor & { system: HeroDataModel },
-    preset: AttackPreset,
+    preset: RollPreset,
     EditButton: ReactNode,
     TrashButton: ReactNode
 }) => {
@@ -17,7 +17,7 @@ export const AttackPresetRow = ({ actor, preset, EditButton, TrashButton }: {
             {/* ATTACK TITLE + DESCRIPTION */}
             <div>
                 <div className="flex gap-x-1 text-base font-eskapade">
-                    <p className="font-bold">{`${preset.title}${preset.description.length > 0 ? ':' : ''}`}</p>
+                    {preset.title.length > 0 && <p className="font-bold">{`${preset.title}${preset.description.length > 0 ? ':' : ''}`}</p>}
                     {preset.description.length > 0 && <p>{preset.description}</p>}
                 </div>
 
@@ -34,7 +34,7 @@ export const AttackPresetRow = ({ actor, preset, EditButton, TrashButton }: {
             {/* ATTACK | EDIT | DELETE BUTTONS */}
             <div className="flex gap-x-2 items-center content-center ml-auto">
                 <div className="mr-4">
-                    <AttackButton onClick={() => HeroAttack.buildCustomAttack(actor, preset)} />
+                    <RollButton onClick={() => HeroAttack.buildCustomRoll(actor, preset)} />
                 </div>
                 {EditButton}
                 {TrashButton}

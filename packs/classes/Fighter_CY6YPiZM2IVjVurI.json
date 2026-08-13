@@ -7,6 +7,20 @@
     "description": "<p><span style=\"white-space:pre-wrap\">Students of the art of violence, fighters are defined by their weapon skills, and variety of martial techniques.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Fighters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beowulf, English mythology</span></p><p><span style=\"white-space:pre-wrap\">• Gilgamesh, Mesopotamian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sir Lancelot, Arthurian legend</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Fighter</strong></b></p><p><span style=\"white-space:pre-wrap\">The fighter is a mid-defense striker. In combat, get within effective distance for offense and prioritize the Attack Action.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator, Knight, Warrior, or Watchman</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Melee, Ranged</span></p>",
     "rules": [
       {
+        "id": "3Zz32mqq4wp99hru",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
         "id": "rIsD3plKpPWRUesD",
         "key": "ToggleRule",
         "label": "Training: Melee",
@@ -76,58 +90,6 @@
         "level": 8,
         "value": 1,
         "selector": "modifiers.dice.crit.melee"
-      },
-      {
-        "id": "h9MCXUEtzun0pN8h",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 3",
-        "level": "3",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "2TsT0vAw1IWIvWbF",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 5",
-        "level": "5",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "DtBEk4hJEZWJrp9R",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 7",
-        "level": "7",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "jbeqkvLbKrhNi7SM",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 9",
-        "level": "9",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
       }
     ],
     "complexity": 1,
@@ -140,28 +102,45 @@
     "manaMultiplier": 0,
     "features": [
       {
-        "level": 1,
         "name": "Fighting Style",
+        "level": 1,
+        "recurEvery": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Situational Awareness Perk (p. 72) and another Perk with the Melee or Ranged Training Prerequisite (p. 64), ignoring prerequisites for this Perk.</span></p>"
       },
       {
-        "level": 1,
         "name": "Valor",
+        "level": 1,
+        "recurEvery": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more when you reach 4th and 8th Levels.</span></p>"
       },
       {
-        "level": 2,
         "name": "Momentum",
+        "level": 2,
+        "recurEvery": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an attack, your next attack before the end of your Turn is Favored.</span></p>"
       },
       {
-        "level": 6,
+        "name": "Valor",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 2.</span></p>"
+      },
+      {
         "name": "Muster for Battle",
+        "level": 6,
+        "recurEvery": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You have two Actions on your first Turn.</span></p>"
       },
       {
-        "level": 10,
+        "name": "Valor",
+        "level": 8,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 3.</span></p>"
+      },
+      {
         "name": "Harrying",
+        "level": 10,
+        "recurEvery": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">When you take the Attack Action, you can make one extra attack.</span></p>"
       }
     ]
@@ -179,8 +158,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
-    "modifiedTime": 1786171465252,
-    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "modifiedTime": 1786568001369,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

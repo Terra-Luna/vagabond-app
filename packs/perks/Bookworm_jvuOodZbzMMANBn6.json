@@ -1,0 +1,47 @@
+{
+  "name": "Bookworm",
+  "type": "perk",
+  "_id": "jvuOodZbzMMANBn6",
+  "img": "/icons/sundries/books/book-tooled-eye-gold-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain an extra Studied die when you Study (p. 18). You can take this Perk multiple times.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "reason",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786573167486,
+    "modifiedTime": 1786573254231,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!jvuOodZbzMMANBn6"
+}

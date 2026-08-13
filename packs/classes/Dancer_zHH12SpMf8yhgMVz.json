@@ -1,0 +1,129 @@
+{
+  "name": "Dancer",
+  "type": "class",
+  "_id": "zHH12SpMf8yhgMVz",
+  "img": "systems/vagabond-lite/assets/class/dancer_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Dancers are practitioners of the alluring art of dance. They have a flair for enlivening their audience and giving awe-inspiring shows.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Dancers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Apsalar, Malazan Book of the Fallen</span></p><p><span style=\"white-space:pre-wrap\">• Azura, Fire Emblem Fates</span></p><p><span style=\"white-space:pre-wrap\">• Sandrilene fa Toren, The Circle Opens</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Dancer</strong></b></p><p><span style=\"white-space:pre-wrap\">The dancer is a low-defense support with a focus on action efficiency. Grant Actions through Step Up, as your main offenses will occur when you Crit on Reflex Saves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Step Up</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Courtesan or Musician</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Finesse, Performance</span></p>",
+    "rules": [
+      {
+        "id": "3Zz32mqq4wp99hru",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "hQuQuqj4UoXvyOvd",
+        "key": "ToggleRule",
+        "label": "Training: Finesse",
+        "level": "1",
+        "value": true,
+        "selector": "skills.finesse.isTrained"
+      },
+      {
+        "id": "iZYdihJAFJ9ZIG6D",
+        "key": "ToggleRule",
+        "label": "Training: Performance",
+        "level": "1",
+        "value": true,
+        "selector": "skills.performance.isTrained"
+      },
+      {
+        "id": "BwMLDvk0vLuDEqJZ",
+        "key": "GrantItem",
+        "label": "Footloose: Fallaway Reverse",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.EA0tFzBH51SqEfWv",
+        "type": "perk"
+      },
+      {
+        "id": "P8yWc5IulexWxD4a",
+        "key": "FlatModifier",
+        "label": "Footloose",
+        "level": 1,
+        "value": 1,
+        "selector": "modifiers.skills.reflex.extraDice"
+      }
+    ],
+    "complexity": 2,
+    "keyStats": [
+      "dexterity"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "name": "Step Up",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round when you Move, you can make a Performance Check. On a pass, one Being of your choice other than yourself that sees you can immediately take an extra Action.</span></p>"
+      },
+      {
+        "name": "Footloose",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Fallaway Reverse Perk and, when you make a Reflex Save, roll two d20s and use the higher result.</span></p>"
+      },
+      {
+        "name": "Evasive",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed.</span></p>"
+      },
+      {
+        "name": "Don't Stop Me Now",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Difficult Terrain doesn’t impede your walking Speed, and you have Favor on Saves against being Paralyzed, Restrained, grappled, or moved.</span></p>"
+      },
+      {
+        "name": "Captivator",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Performance Check or Crit on any Save, you can cause a Being that can see you to become Berserk, Charmed, Confused, or Frightened for Cd4 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p>"
+      },
+      {
+        "name": "Flash of Beauty",
+        "level": 8,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you Crit on a Save and forgo the Luck, you can take two Actions, rather than one.</span></p>"
+      },
+      {
+        "name": "Double Time",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can use Step Up twice per Round, rather than once, and the Beings you use it on can also Move up to 10’ without using their Speed</span></p><p><span style=\"white-space: pre-wrap;\">that Turn.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786555298394,
+    "modifiedTime": 1786561798471,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!zHH12SpMf8yhgMVz"
+}

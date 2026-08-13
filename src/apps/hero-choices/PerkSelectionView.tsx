@@ -4,7 +4,7 @@ import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { usePerkSelection } from "../hero-creator/step/PerkSelectionUseCase"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { getItemChoiceRules } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { groupBy } from "../../utils/collectionUtil"
 
 export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
@@ -34,13 +34,13 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
     }
 
     const loadSelections = (rules, setSlots) => {
-        const slots = loadInitialSlots(rules.filter(r => r.level <= level))
+        const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.recurEvery)))
         let sharedIndex = 0
         rules.forEach(rule => {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
             ruleSelections.forEach(sel => {
                 if (slots[sharedIndex]) {
-                    slots[sharedIndex] = { value: sel, label: getPerkName(sel), ruleName: rule.label, ruleId: rule.id, isLocked: rule.level < level }
+                    slots[sharedIndex] = { value: sel, label: getPerkName(sel), ruleName: rule.label, ruleId: rule.id, isLocked: sel.length > 0 }
                 }
                 sharedIndex += 1
             })
@@ -58,15 +58,15 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
 
         const loadInitialPerkSelections = () => {
             if (clazz) {
-                const rules = getItemChoiceRules(clazz.system.rules ?? [])
+                const rules = getItemChoiceRules(level, clazz.system.rules ?? [])
                 loadSelections(rules.filter(r => r.pack === 'perk'), setClassPerkSlots)
             }
             if (ancestry) {
-                const rules = getItemChoiceRules(ancestry.system.rules ?? [])
+                const rules = getItemChoiceRules(level, ancestry.system.rules ?? [])
                 loadSelections(rules.filter(r => r.pack === 'perk'), setAncestryPerkSlots)
             }
             if (perks.length > 0) {
-                const rules = getItemChoiceRules(perks.flatMap(p => p.rules))
+                const rules = getItemChoiceRules(level, perks.flatMap(p => p.rules))
                 const selectionFlags = (actor.flags?.["vagabond-lite"] as any)?.perkSelections ?? {}
                 const targetRules = rules.filter(r => r.pack === 'perk')
                 targetRules.forEach(rule => {
@@ -84,7 +84,11 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
      * Monitors Class perk choices and makes async background changes on the fly.
      */
     useEffect(() => {
-        if (!clazz || !classPerkSlots.length || !dataLoaded.current) return
+        if (!clazz || !classPerkSlots.length || classPerkSlots.some(slot => !slot.isLocked) || !dataLoaded.current) {
+            return
+        }
+
+        console.log("Saving class perk slots...", classPerkSlots)
 
         const classRules = [...clazz.system.rules] as any[]
         const classPerkSlotGroups = groupBy("ruleId", classPerkSlots)
@@ -107,5 +111,5 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         }
     }, [classPerkSlots])
 
-    return { PerkSelection, classPerkSlots }
+    return { PerkSelection, classPerkSlots, setClassPerkSlots }
 }

@@ -15,7 +15,7 @@ export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navBu
 
     useEffect(() => {
         CombinedItems('class').then((res) => {
-            setClasses(res)
+            setClasses(res.sort((a, b) => a.name.localeCompare(b.name)))
             setClassOpts(res.map(it => ({ value: it._id, label: it.name })))
             getFullItem<ClassDataModel>(res[0]).then((item) => {
                 if (item) setClassItem(item)

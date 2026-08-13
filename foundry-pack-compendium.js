@@ -9,7 +9,7 @@ try {
         const targetDest = `./dist/packs`
 
         if (!fs.existsSync(sourceDir)) continue
-        console.log(`Packing: ${sourceDir} >>> ${targetDest}`)
+        console.info(`Packing: ${sourceDir} >>> ${targetDest}`)
 
         execSync(`pnpm exec fvtt package pack --type=System --id=vagabond-lite --in="${sourceDir}" --out="${targetDest}" ${pack.name}`, { stdio: "inherit" })
     }

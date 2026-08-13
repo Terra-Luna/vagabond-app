@@ -1,0 +1,47 @@
+{
+  "name": "Shapechanger",
+  "type": "perk",
+  "_id": "AoVmeWjebFc7CEss",
+  "img": "icons/creatures/mammals/wolf-howl-moon-forest-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you are a Target of your Polymorph Spell, you use your Cast Skill for its Actions, and it doesn’t cost you Mana to Focus on it as per the Spell’s description.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Polymorph",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786556380909,
+    "modifiedTime": 1786556732589,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!AoVmeWjebFc7CEss"
+}

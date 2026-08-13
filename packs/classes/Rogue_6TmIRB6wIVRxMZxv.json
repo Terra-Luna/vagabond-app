@@ -1,0 +1,131 @@
+{
+  "name": "Rogue",
+  "type": "class",
+  "_id": "6TmIRB6wIVRxMZxv",
+  "img": "systems/vagabond-lite/assets/class/rogue_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Rogues are the back-alley urchins, gutterborn scum, and shadowed assassins. To hammers, every problem looks like a nail. Rogues are</span></p><p><span style=\"white-space:pre-wrap\">blades, and every problem is a throat.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Rogues</strong></b></p><p><span style=\"white-space:pre-wrap\">• Locke Lamora, Gentleman Bastard Sequence</span></p><p><span style=\"white-space:pre-wrap\">• Nona Grey, Book of the Ancestor</span></p><p><span style=\"white-space:pre-wrap\">• Vin, Mistborn</span></p><p><span style=\"white-space:pre-wrap\">• Zidane Tribal, Final Fantasy IX</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Rogue</strong></b></p><p><span style=\"white-space:pre-wrap\">Rogues are low-defense, midline harassers that focus on one single, deadly shot. They are given Features that reinforce attempting to gain Favor on their Attacks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Assassin, Conman, Investigator, or Scout</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Ranged, Finesse, Sneak</span></p>",
+    "rules": [
+      {
+        "id": "DODyMdEd2qJWmupn",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "pFIGo5YbS3oImAQf",
+        "key": "ToggleRule",
+        "label": "Training: Ranged",
+        "level": "1",
+        "value": true,
+        "selector": "skills.ranged.isTrained"
+      },
+      {
+        "id": "sivfQHD0vOokCRzx",
+        "key": "ToggleRule",
+        "label": "Training: Finesse",
+        "level": "1",
+        "value": true,
+        "selector": "skills.finesse.isTrained"
+      },
+      {
+        "id": "ZoGZoCaryZ6haE1K",
+        "key": "ToggleRule",
+        "label": "Training: Sneak",
+        "level": "1",
+        "value": true,
+        "selector": "skills.sneak.isTrained"
+      },
+      {
+        "id": "2JI06SlrJcRVwfmk",
+        "key": "GrantItem",
+        "label": "Infiltrator: Resourceful",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.JEbCKsJglF8zdrPB",
+        "type": "perk"
+      }
+    ],
+    "complexity": 2,
+    "keyStats": [
+      "dexterity",
+      "awareness",
+      "luck"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "name": "Sneak Attack",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your Favored attacks with Finesse, Keen, or Ranged Weapons deal an extra d4 damage and ignore an amount of Armor equal to this number of extra dice. The number of extra d4s increases by 1 every 3 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Infiltrator",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Resourceful Perk (p. 71), and you have Favor on Checks and Saves made to ambush and against traps that you are aware of.</span></p>"
+      },
+      {
+        "name": "Evasive",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed.</span></p>"
+      },
+      {
+        "name": "Unflinching Luck",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d12. If the result is lower than your remaining Luck, the Luck is not spent. When you become an 8th Level Rogue, the d12 is a d10.</span></p>"
+      },
+      {
+        "name": "Waylay",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round, if you kill an Enemy, you can immediately take one Action.</span></p>"
+      },
+      {
+        "name": "Unflinching Luck",
+        "level": 8,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d10. If the result is lower than your remaining Luck, the Luck is not spent.</span></p>"
+      },
+      {
+        "name": "Lethal Weapon",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Sneak Attack damage dice can Explode.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786568828310,
+    "modifiedTime": 1786569706605,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!6TmIRB6wIVRxMZxv"
+}

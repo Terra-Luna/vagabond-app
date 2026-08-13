@@ -1,8 +1,8 @@
-import { Plus, Save, SquarePen, Trash } from "lucide-react"
+import { Save, SquarePen, Trash } from "lucide-react"
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { SkillCard } from "../../../../../component/SkillCard"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
-import { ClassSheetLabel, ClassSheetSectionHeader } from "./ClassSheetText"
+import { ClassSheetLabel } from "./ClassSheetText"
 import { useCallback, useEffect, useState } from "react"
 import { EditableTextField, NumericCounterInput } from "../../../../../component/EditableTextField"
 import { RichTextField } from "../../../../../component/RichTextField"
@@ -11,7 +11,7 @@ import { useContextMenu } from "../../../../../component/ContextMenu"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { ClassSheetBannerWrapper } from "./ClassSheetBannerWrapper"
 
-export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel } }) => {
+export const FeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const [isNewFeatureOpen, setIsNewFeatureOpen] = useState(false)
@@ -63,7 +63,7 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
                             }
                         ])
                     }}>
-                        <ClassFeatureCard item={item} feat={feat} />
+                        <FeatureCard item={item} feat={feat} />
                         {editFeatureIndex === index &&
                             <NewFeatureMenu item={item} editIndex={editFeatureIndex} setIsNewFeatureOpen={setEditFeatureIndex} />
                         }
@@ -75,7 +75,7 @@ export const ClassFeaturesConfig = ({ item }: { item: Item & { system: ClassData
     )
 }
 
-const ClassFeatureCard = ({ item, feat }) => {
+const FeatureCard = ({ item, feat }) => {
     return (
         <SkillCard
             title={feat.name}
@@ -89,6 +89,7 @@ const ClassFeatureCard = ({ item, feat }) => {
 const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item & { system: ClassDataModel }, editIndex?: number, setIsNewFeatureOpen: any }) => {
     const [title, setTitle] = useState('')
     const [level, setLevel] = useState(1)
+    const [recurEvery, setRecurEvery] = useState(0)
     const [description, setDescription] = useState('')
 
     const updateTitle = useCallback(async (title: string | null) => {
@@ -100,6 +101,11 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
         setLevel(Number(level))
         return true
     }, [setLevel, level])
+
+    const updateRecurEvery = useCallback(async (recurOn: string | null) => {
+        setRecurEvery(Number(recurOn))
+        return true
+    }, [setRecurEvery, recurEvery])
 
     const updateDescription = useCallback(async (descr: string | null) => {
         setDescription(descr ?? '')
@@ -126,12 +132,22 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                         placeholder={vgLiteLang.ClassSheet.placeholder_featurename}
                     />
                 </div>
-                <div className="flex gap-x-1 items-end">
-                    <ClassSheetLabel text={vgLiteLang.ClassSheet.labelLevel} />
-                    <NumericCounterInput
-                        value={level}
-                        onChange={updateLevel}
-                    />
+                <div className="flex gap-x-2">
+                    <div className="flex gap-x-1 items-end">
+                        <ClassSheetLabel text={vgLiteLang.ClassSheet.labelLevel} />
+                        <NumericCounterInput
+                            value={level}
+                            onChange={updateLevel}
+                        />
+                    </div>
+                    <div className="flex gap-x-1 items-end">
+                        <ClassSheetLabel text={vgLiteLang.ClassSheet.recurEvery} />
+                        <NumericCounterInput
+                            value={recurEvery}
+                            onChange={updateRecurEvery}
+                        />
+                        <ClassSheetLabel text={vgLiteLang.ClassSheet.levels} />
+                    </div>
                 </div>
             </div>
 
@@ -150,12 +166,12 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                     let features = [...item.system.features]
                     if (editIndex !== undefined) {
                         features = features.map((feature, index) => {
-                            if (index === editIndex) return { level: level, name: title, description: description }
+                            if (index === editIndex) return { name: title, level: level, recurEvery: recurEvery, description: description }
                             else return feature
                         })
                     }
                     else {
-                        features.push({ level: level, name: title, description: description })
+                        features.push({ name: title, level: level, recurEvery: recurEvery, description: description })
                     }
 
                     await item.update({ 'system.features': features } as Record<string, any>)

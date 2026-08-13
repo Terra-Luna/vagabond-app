@@ -1,4 +1,4 @@
-import { Save, Sword } from "lucide-react"
+import { Dices, Save } from "lucide-react"
 import { useCallback, useEffect, useMemo } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
@@ -11,13 +11,13 @@ import { useCustomDamageModifiersBuilder } from "./usecase/CustomDamageModsUseCa
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
-import { AttackPreset } from "./AttackBuilderApp"
+import { RollPreset } from "./RollBuilderApp"
 import { vgLiteLang } from "../../utils/lang"
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 
-export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed }: {
+export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }: {
     actor: Actor & { system: HeroDataModel },
-    preset?: AttackPreset,
+    preset?: RollPreset,
     showHeader?: boolean,
     setClosed?: () => void
 }) => {
@@ -47,7 +47,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         }
     }, [preset])
 
-    const form = useMemo((): AttackPreset => {
+    const form = useMemo((): RollPreset => {
         return {
             title: weapon?.name ?? '',
             description: description,
@@ -98,7 +98,7 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
         setWeapon(undefined)
     }, [preset])
 
-    const { savePreset, saveCustomAttack } = useSavePreset(actor, form)
+    const { savePreset, saveCustomRoll } = useSavePreset(actor, form)
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
@@ -126,16 +126,16 @@ export const AttackBuilderView = ({ actor, preset, showHeader = true, setClosed 
                         </div>
                     </>}
 
-                    {/* ATTACK BUTTON */}
+                    {/* ROLL BUTTON */}
                     {!setClosed && <div className="flex gap-x-1 ml-auto">
                         <SecondaryButton onClick={reset}>{vgLiteLang.ButtonActions.reset}</SecondaryButton>
 
                         <PrimaryButton onClick={async () => {
-                            await saveCustomAttack()
-                            HeroAttack.buildCustomAttack(actor, form)
+                            await saveCustomRoll()
+                            HeroAttack.buildCustomRoll(actor, form)
                         }}
-                            icon={<Sword size={16} className="text-btn-primary-text" />}>
-                            {vgLiteLang.ButtonActions.attack}
+                            icon={<Dices size={16} className="text-btn-primary-text" />}>
+                            {vgLiteLang.ButtonActions.roll}
                         </PrimaryButton>
                     </div>}
                 </div>

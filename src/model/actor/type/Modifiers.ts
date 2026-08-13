@@ -28,6 +28,7 @@ export const modifierSchema = () => {
         dice: new fields.SchemaField({
             size: new fields.SchemaField({
                 melee: new fields.NumberField({ ...uncappedInteger }),
+                defense: new fields.NumberField({ ...uncappedInteger }),
                 ranged: new fields.NumberField({ ...uncappedInteger }),
                 spell: new fields.NumberField({ ...uncappedInteger }),
                 spellHealing: new fields.NumberField({ ...uncappedInteger })
@@ -45,7 +46,8 @@ export const modifierSchema = () => {
                 melee: new fields.NumberField({ ...uncappedInteger }),
                 meleeExtraDie: new fields.BooleanField({ initial: false }),
                 ranged: new fields.NumberField({ ...uncappedInteger }),
-                rangedExtraDie: new fields.BooleanField({ initial: false })
+                rangedExtraDie: new fields.BooleanField({ initial: false }),
+                spell: new fields.NumberField({ ...uncappedInteger })
             })
         }),
 

@@ -7,12 +7,18 @@
     "description": "<p><span style=\"white-space:pre-wrap\">Attitude and tenacity are as core to the gunslinger as ammo. They stare down challenges through iron sights, fortified by their inner grit. </span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Gunslingers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Arthur Morgan, Red Dead Redemption 2</span></p><p><span style=\"white-space:pre-wrap\">• Django, Django Unchained</span></p><p><span style=\"white-space:pre-wrap\">• Roland Deschain, Dark Tower</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Gunslinger</strong></b></p><p><span style=\"white-space:pre-wrap\">The gunslinger is a low-defense, high-crit striker. In combat, stay as far back as possible and keep the enemy under constant fire.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Bounty Hunter or Tinker</span></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Ranged, Detect</span></p>",
     "rules": [
       {
-        "id": "qJRZL1JaHxK75whJ",
-        "key": "GrantItem",
-        "label": "Quick Draw: Marksmanship ",
-        "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.Pr9DWZMktkYQHpGx",
-        "type": "perk"
+        "id": "3Zz32mqq4wp99hru",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
       },
       {
         "id": "VUDabU8SRKHX5TuX",
@@ -31,56 +37,12 @@
         "selector": "skills.detect.isTrained"
       },
       {
-        "id": "h9MCXUEtzun0pN8h",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 3",
-        "level": "3",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "2TsT0vAw1IWIvWbF",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 5",
-        "level": "5",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "DtBEk4hJEZWJrp9R",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 7",
-        "level": "7",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "jbeqkvLbKrhNi7SM",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 9",
-        "level": "9",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
+        "id": "qJRZL1JaHxK75whJ",
+        "key": "GrantItem",
+        "label": "Quick Draw: Marksmanship",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.Pr9DWZMktkYQHpGx",
+        "type": "perk"
       }
     ],
     "complexity": 3,
@@ -94,36 +56,43 @@
     "features": [
       {
         "level": 1,
+        "recurEvery": 0,
         "name": "Deadeye",
         "description": "<p><span style=\"white-space: pre-wrap;\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, but no lower than 17. This resets to 0 at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>"
       },
       {
         "level": 1,
+        "recurEvery": 0,
         "name": "Quickdraw",
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Marksmanship Perk (p. 69) and, when Combat occurs, you can make one Ranged attack before the first Turn, which is Hindered if it is made with a 2H Weapon.</span></p>"
       },
       {
         "level": 2,
+        "recurEvery": 0,
         "name": "Skeet Shooter",
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round, you can make a Ranged attack against an attack that would hit. If you pass, reduce the damage dealt by the Target’s attack by your attack’s damage.</span></p>"
       },
       {
         "level": 4,
+        "recurEvery": 0,
         "name": "Grit",
         "description": "<p><span style=\"white-space: pre-wrap;\">When you Crit on a Ranged attack, the damage dice can Explode.</span></p>"
       },
       {
         "level": 6,
+        "recurEvery": 0,
         "name": "Devastator",
         "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, your Deadeye Feature is immediately set to 17.</span></p>"
       },
       {
         "level": 8,
+        "recurEvery": 0,
         "name": "Bad Medicine",
         "description": "<p><span style=\"white-space: pre-wrap;\">You deal an extra die of damage when you Crit with a Ranged Check.</span></p>"
       },
       {
         "level": 10,
+        "recurEvery": 0,
         "name": "High Noon",
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Turn, if you Crit on a Ranged Check, you can make one additional attack.</span></p>"
       }
@@ -142,8 +111,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786041519359,
-    "modifiedTime": 1786171475856,
-    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "modifiedTime": 1786564305717,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

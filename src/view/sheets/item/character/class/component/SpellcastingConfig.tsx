@@ -11,7 +11,7 @@ export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: Cla
     useEffect(() => { item.render(true) }, [item.system.castingSkill])
 
     return (
-        <div className="flex gap-x-1">
+        <div className="flex gap-x-1 items-center">
             {(isEditMode || item.system.castingSkill) &&
                 <>
                     <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelSpellSkill}:`} />
@@ -31,7 +31,7 @@ export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: Cla
 export const MaxCastFormulaSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     return (<>
         {item.system.castingSkill &&
-            <div className="flex gap-x-1">
+            <div className="flex gap-x-1 items-center">
                 <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelMaxMana}:`} />
                 <DropDown
                     value={item.system.maxCastFormula}
@@ -50,7 +50,7 @@ export const MaxManaPerLevelSelector = ({ item }: { item: Item & { system: Class
     return (
         <>
             {(isEditMode || item.system.castingSkill) &&
-                <div className="flex gap-x-1">
+                <div className="flex gap-x-1 items-center">
                     <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelManaLevel}:`} />
                     <DropDown
                         value={item.system.manaMultiplier?.toString()}

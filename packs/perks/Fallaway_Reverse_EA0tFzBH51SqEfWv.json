@@ -1,0 +1,61 @@
+{
+  "name": "Fallaway Reverse",
+  "type": "perk",
+  "_id": "EA0tFzBH51SqEfWv",
+  "img": "/icons/magic/control/silhouette-fall-slip-prone.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If you Crit on a Save against a Melee attack, the attacker falls Prone.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "dexterity",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "finesse"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786555679203,
+    "modifiedTime": 1786555804155,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!EA0tFzBH51SqEfWv"
+}

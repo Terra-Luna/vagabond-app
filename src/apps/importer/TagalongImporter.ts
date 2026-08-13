@@ -25,7 +25,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         const url = new URL(tagalongUrl)
         const res = (await fetchHero(url)).character
 
-        console.log(res)
+        console.info(res)
 
         /**
          * Build a list of failed item lookups...
@@ -178,7 +178,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
         ui.notifications?.success(`${res.name}'s info has been imported!`)
     }
     catch (e) {
-        console.log(e)
+        console.error(e)
         throw tagalongError((e as Error).message)
     }
 }

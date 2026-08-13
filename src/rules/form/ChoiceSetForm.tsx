@@ -86,6 +86,13 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     type="number"
                 />
                 <ItemRuleInput
+                    label="Recur Every"
+                    value={rule.recurEvery || 0}
+                    placeholder="0"
+                    onChange={(e) => onChange({ recurEvery: e.target.value })}
+                    type="number"
+                />
+                <ItemRuleInput
                     label="# Choices"
                     value={rule.maxChoices ?? 1}
                     onChange={(e) => onChange({ maxChoices: Math.max(1, Number(e.target.value)) })}

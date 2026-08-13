@@ -74,7 +74,7 @@ export class SkillCheck {
             return skillCheck
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
             return undefined
         }
     }

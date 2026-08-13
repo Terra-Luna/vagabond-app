@@ -7,12 +7,18 @@
     "description": "<p><span style=\"white-space:pre-wrap\">Barbarians are primal warriors that fight with the power of unbridled anger. The legends speak of their kills almost as their own unique deeds, using the barbarian’s name as a past-tense verb.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Barbarians</strong></b></p><p><span style=\"white-space:pre-wrap\">• Brock Samson, The Venture Bros.</span></p><p><span style=\"white-space:pre-wrap\">• Conan, Conan the Barbarian</span></p><p><span style=\"white-space:pre-wrap\">• Guts, Berserk</span></p><p><span style=\"white-space:pre-wrap\">• Logen Ninefingers, First Law Trilogy</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Barbarian</strong></b></p><p><span style=\"white-space:pre-wrap\">The barbarian is a mid-high-defense bruiser. Stick to an Enemy, and hit them very hard.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack (Melee)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator or Warrior</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Survival</span></p>",
     "rules": [
       {
-        "id": "KiBRwag7JSlWA7ur",
-        "key": "GrantItem",
-        "label": "Wrath",
-        "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.ixtkMiuqHctLr3oB",
-        "type": "perk"
+        "id": "3Zz32mqq4wp99hru",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
       },
       {
         "id": "64ZPYy34rHC94JCc",
@@ -31,56 +37,12 @@
         "selector": "skills.survival.isTrained"
       },
       {
-        "id": "h9MCXUEtzun0pN8h",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 3",
-        "level": "3",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "2TsT0vAw1IWIvWbF",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 5",
-        "level": "5",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "DtBEk4hJEZWJrp9R",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 7",
-        "level": "7",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
-      },
-      {
-        "id": "jbeqkvLbKrhNi7SM",
-        "key": "ChoiceSet",
-        "label": "Perk: Level 9",
-        "level": "9",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk"
+        "id": "KiBRwag7JSlWA7ur",
+        "key": "GrantItem",
+        "label": "Wrath",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.ixtkMiuqHctLr3oB",
+        "type": "perk"
       }
     ],
     "complexity": 2,
@@ -94,36 +56,43 @@
     "features": [
       {
         "level": 1,
+        "recurEvery": 0,
         "name": "Rage",
         "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice are one size larger and can Explode, and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>"
       },
       {
         "level": 1,
+        "recurEvery": 0,
         "name": "Wrath",
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Interceptor Perk (p. 69), and can make its attack against an Enemy that takes an Action.</span></p>"
       },
       {
         "level": 2,
+        "recurEvery": 0,
         "name": "Aggressor",
         "description": "<p><span style=\"white-space: pre-wrap;\">You have a 10’ bonus to Speed during the first Round of Combat, and having 3 or more Fatigue doesn’t prevent you from taking the Rush Action.</span></p>"
       },
       {
         "level": 4,
+        "recurEvery": 0,
         "name": "Fearmonger",
         "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, every Near Enemy with HD lower than your Level becomes Frightened until the end of your next Turn.</span></p>"
       },
       {
         "level": 6,
+        "recurEvery": 0,
         "name": "Mindless Rancor",
         "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Charmed, Confused, Frightened, or compelled to act against your will.</span></p>"
       },
       {
         "level": 8,
+        "recurEvery": 0,
         "name": "Bloodthirsty",
         "description": "<p><span style=\"white-space: pre-wrap;\">Your attacks against Beings that are missing any HP are Favored, and you can sense them within Far as if by Blindsight.</span></p>"
       },
       {
         "level": 10,
+        "recurEvery": 0,
         "name": "Rip and Tear",
         "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, you gain a +1 bonus to each die of damage you deal, and you reduce damage you take by 1 per damage die. This stacks with the benefits of Rage.</span></p>"
       }
@@ -142,8 +111,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1786171452387,
-    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "modifiedTime": 1786564231525,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

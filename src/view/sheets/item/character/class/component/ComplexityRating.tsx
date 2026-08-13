@@ -12,7 +12,7 @@ export const ComplexityRating = ({ item }: { item: Item & { system: ClassDataMod
             <div className="flex gap-x-0.25">
                 {
                     Array.from({ length: 5 }, (_, index) => (
-                        <Star key={index} size={14}
+                        <Star key={index} size={12}
                             className={`
                                 text-text-header-tertiary
                                 ${index < item.system.complexity ? 'fill-text-header-tertiary' : ''}

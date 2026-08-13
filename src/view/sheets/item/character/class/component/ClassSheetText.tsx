@@ -6,12 +6,12 @@ export const ClassSheetSectionHeader = ( { text }: { text: string }) => {
 
 export const ClassSheetLabel = ({ text }: { text: string }) => {
     return (
-        <p className="text-lg font-paradigm font-bold">{text}</p>
+        <p className="text-sm font-paradigm font-bold">{text}</p>
     )
 }
 
 export const ClassSheetText = ({ text }: { text: string }) => {
     return (
-        <p className="text-lg font-paradigm font-normal">{text}</p>
+        <p className="text-sm font-paradigm font-normal">{text}</p>
     )
 }

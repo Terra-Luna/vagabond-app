@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react"
 import { CustomDropDown } from "../../../view/component/Dropdown"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { LockKeyhole } from "lucide-react"
 
 /**
  * This component is good for tracking multiple user selections across an array
@@ -16,7 +17,6 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
     otherSlotGroup: any[],
     grants: any[],
     onSelect: any,
-    
 }) => {
 
     /**
@@ -25,7 +25,7 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
      * @param index 
      * @returns 
     */
-    const getOtherSelectedIds = useCallback((index) => {
+    const getOtherSelectedIds = useCallback((index: number) => {
         const otherGivenSlots = slotGroup.filter((_, i) => i !== index)
         return [
             ...otherGivenSlots,
@@ -42,13 +42,12 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
         <div className="flex flex-wrap gap-2 mt-2 w-full">
             {
                 slotGroup.map((slot, index) => {
-                    const isUnlocked = !slot.isLocked || slot.value.length === 0
-
-                    return (<div key={`spell-slot-selector-${index}-${slot.value}`}>
+                    const otherSelectedIds = getOtherSelectedIds(index)
+                    return (<div key={`item-slot-selector-${index}`}>
                         {/* SELECTABLE SLOTS */}
-                        {isUnlocked && <CustomDropDown
+                        {!slot.isLocked && <CustomDropDown
                             value={slot.value}
-                            options={options.filter(opt => opt.value === slot.value || stackablePerkIds.includes(opt.value) || !getOtherSelectedIds(index).includes(opt.value))}
+                            options={options.filter(opt => opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value))}
                             className={`
                                 flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
                                 ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}
@@ -59,13 +58,13 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                                 const label = selectedSpell ? selectedSpell.label : ''
                                 onSelect(index, label, selectedId)
                             }}
-                            editModeOverride={isUnlocked}
+                            editModeOverride={!slot.isLocked}
                         />}
 
                         {/* LOCKED / READ-ONLY MODE */}
-                        {!isUnlocked && <div className="flex gap-x-2 items-center text-xl font-eskapade font-bold border border-solid border-table-border px-2">
+                        {slot.isLocked && <div className="flex gap-x-2 items-center text-xl font-eskapade font-bold border border-solid border-table-border px-2">
                             {slot.label}
-                            <p className="text-xs">🔒</p>
+                            <LockKeyhole size={12} />
                         </div>}
 
                     </div>)

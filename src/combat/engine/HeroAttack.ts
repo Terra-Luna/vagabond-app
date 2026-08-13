@@ -13,8 +13,9 @@ import { DamageRoll } from "./DamageRoll"
 import { getTargetIds } from "../../utils/modelUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { DiceRoll } from "./DiceRoll"
-import { AttackPreset } from "../../apps/attack-builder/AttackBuilderApp"
+import { RollPreset } from "../../apps/attack-builder/RollBuilderApp"
 import { getManaEnforcement } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { SkillCheckChatCard } from "../../view/chat/SkillCheckChatCard"
 
 export class HeroAttack extends Attack {
 
@@ -414,33 +415,48 @@ export class HeroAttack extends Attack {
         return attack
     }
 
-    static buildCustomAttack(actor: Actor & { system: HeroDataModel }, preset: AttackPreset) {
-        if (!preset.weaponId || !preset.skill || !preset.damageRolls) return
-        const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
+    static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset) {
+        const makeSkillCheck = () => {
+            return new SkillCheck(actor.system, {
+                skill: preset.skill,
+                d20Count: preset.d20Count,
+                modifier: preset.skillCheckMod,
+                critThreshold: preset.critThreshold,
+                favorHinder: preset.favorHinder
+            })
+        }
 
-        if (!weapon) return
+        const makeDamageRoll = (weapon: Item & { system: WeaponDataModel }) => {
+            return new DamageRoll({
+                atkName: (weapon.name ?? '') + ": " + preset.description,
+                dice: preset.damageRolls.map(rollSchema => new DiceRoll(rollSchema)),
+                dmgType: weapon.system.damage.type,
+                flatDmgBonus: preset.flatModifier,
+                perDieDmgBonus: preset.perDieBonus,
+                armorPiercing: preset.armorPiercing
+            })
+        }
 
-        const skillCheck = new SkillCheck(actor.system, {
-            skill: preset.skill,
-            d20Count: preset.d20Count,
-            modifier: preset.skillCheckMod,
-            critThreshold: preset.critThreshold,
-            favorHinder: preset.favorHinder
-        })
+        if (preset.weaponId && preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
+            const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
+            if (!weapon) return
 
-        const damageRoll = new DamageRoll({
-            atkName: (weapon.name ?? '') + ": " + preset.description,
-            dice: preset.damageRolls.map(rollSchema => new DiceRoll(rollSchema)),
-            dmgType: weapon.system.damage.type,
-            flatDmgBonus: preset.flatModifier,
-            perDieDmgBonus: preset.perDieBonus,
-            armorPiercing: preset.armorPiercing
-        })
+            const skillCheck = makeSkillCheck()
+            const damageRoll = makeDamageRoll(weapon)
 
-        const attack = new HeroAttack(weapon.name, actor, getTargetIds(), skillCheck, damageRoll)
-        attack.itemId = weapon.id ?? ''
-        attack.skipSkillCheck = preset.skill === '-'
-        attack.initiate()
+            const attack = new HeroAttack(weapon.name, actor, getTargetIds(), skillCheck, damageRoll)
+            attack.itemId = weapon.id ?? ''
+            attack.skipSkillCheck = preset.skill === '-'
+            attack.initiate()
+        }
+        else if (preset.skill && !preset.damageRolls || preset.damageRolls.length === 0) {
+            const result = await makeSkillCheck().roll()
+            sendVagabondChatMessage(
+                actor,
+                createElement(SkillCheckChatCard, { actorId: actor.id ?? '', result: result }),
+                result.rolls
+            )
+        }
     }
 
     static getHighestDefaultWeaponSkill(hero: HeroDataModel, weapon: WeaponDataModel): { skill: string, value: number } {

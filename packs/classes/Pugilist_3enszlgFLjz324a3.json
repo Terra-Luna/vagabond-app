@@ -1,0 +1,113 @@
+{
+  "name": "Pugilist",
+  "type": "class",
+  "_id": "3enszlgFLjz324a3",
+  "img": "systems/vagabond-lite/assets/class/pugilist_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Pugilists are brawlers of swagger. While a monk may dedicate themself to a single focused blow, a pugilist will break their fingers and keep punching with the bloody stump.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Pugilists</strong></b></p><p><span style=\"white-space:pre-wrap\">• Carl, Dungeon Crawler Carl</span></p><p><span style=\"white-space:pre-wrap\">• Rocky Balboa, Rocky</span></p><p><span style=\"white-space:pre-wrap\">• Hellboy, Hellboy</span></p><p><span style=\"white-space:pre-wrap\">• Stiffener Medick, Redwall</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Pugilist</strong></b></p><p><span style=\"white-space:pre-wrap\">Pugilists are frontline bruisers. Stay in the frontline, even while at low HP.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack (Brawl)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Brawler or Monk</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Brawl</span></p>",
+    "rules": [
+      {
+        "id": "QDIj3XtEGzDgiUAr",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "AzAvMnccJEPsCQVu",
+        "key": "ToggleRule",
+        "label": "Training: Brawl",
+        "level": "1",
+        "value": true,
+        "selector": "skills.brawl.isTrained"
+      },
+      {
+        "id": "5naAQ5wtrzZd7bKt",
+        "key": "GrantItem",
+        "label": "Rope-a-Dope: Check Hook",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.K9EIIGNicXwlb2Ww",
+        "type": "perk"
+      }
+    ],
+    "complexity": 2,
+    "keyStats": [
+      "might"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "name": "Fisticuffs",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your Equipped Brawl Weapons have the Defense and Vicious properties and use a d4 for the damage if it was previously smaller. Further, when you hit an Enemy with a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your Brawl Weapons one die size until the start of your Turn.</span></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
+      },
+      {
+        "name": "Rope-a-Dome",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Check Hook Perk (p. 67) and can also Move 10’ without using Speed before or after you make its attack.</span></p>"
+      },
+      {
+        "name": "Moxie",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p>"
+      },
+      {
+        "name": "Iron Jaw",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The first time each Shift that you are reduced to 0 HP from damage, you can choose to instead be at (MIT + your Level) HP and immediately take an Action and Move up to 10’ without using Speed. At 8th Level, you can use this Ability once per Hour.</span></p>"
+      },
+      {
+        "name": "Haymaker",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you roll a 6 or higher on the damage die of a Brawl attack, the Target is Dazed until the start of your Turn.</span></p>"
+      },
+      {
+        "name": "Iron Jaw",
+        "level": 8,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can use this Ability once per Hour.</span></p>"
+      },
+      {
+        "name": "TItle Holder",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You use a d6 for the damage of Equipped Brawl Weapons if the damage was previously smaller.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786567444757,
+    "modifiedTime": 1786567882743,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!3enszlgFLjz324a3"
+}

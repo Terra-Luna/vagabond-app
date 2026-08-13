@@ -1,0 +1,129 @@
+{
+  "name": "Bard",
+  "type": "class",
+  "_id": "uxnA299tN8JJA9Ae",
+  "img": "systems/vagabond-lite/assets/class/bard_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Bard’s are heralds of the awe-inspiring beauty of creation. While the painter and sculptor decorate space, a Bard decorates time.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Bards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Edward Chris von Muir, Final Fantasy IV</span></p><p><span style=\"white-space:pre-wrap\">• Jaskier, The Witcher</span></p><p><span style=\"white-space:pre-wrap\">• Kvothe, The Kingkiller Chronicle</span></p><p><span style=\"white-space:pre-wrap\">• Sylvando, Dragon Quest XI</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Bards</strong></b></p><p><span style=\"white-space:pre-wrap\">The bard is a mid-defense, high-support class with a focus on optimizing your Group’s d20 rolls. It’s recommended that you avoid melee on most Bard builds.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Virtuoso</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Musician</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Finesse, Influence, Performance</span></p>",
+    "rules": [
+      {
+        "id": "3Zz32mqq4wp99hru",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "K3b81JdTlOWCJfF0",
+        "key": "ToggleRule",
+        "label": "Training: Finesse",
+        "level": "1",
+        "value": true,
+        "selector": "skills.finesse.isTrained"
+      },
+      {
+        "id": "FpanwmKt9fNTL2iA",
+        "key": "ToggleRule",
+        "label": "Training: Influence",
+        "level": "1",
+        "value": true,
+        "selector": "skills.influence.isTrained"
+      },
+      {
+        "id": "DDEFs7RaltHHVfCn",
+        "key": "ToggleRule",
+        "label": "Training: Performance",
+        "level": "1",
+        "value": true,
+        "selector": "skills.performance.isTrained"
+      },
+      {
+        "id": "twpml5DDQGe9zKKd",
+        "key": "ChoiceSet",
+        "label": "Well-Versed",
+        "level": "1",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": [],
+        "recurEvery": "0"
+      }
+    ],
+    "complexity": 2,
+    "keyStats": [
+      "presence"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "name": "VIrtuoso",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Action or skip your Move to choose one of the following benefits and make a Performance Check. If you pass, your</span></p><p><span style=\"white-space: pre-wrap;\">Group gains the benefit for that Round:</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Inspiration:</strong></b><span style=\"white-space: pre-wrap;\"> d6 bonus to Healing rolls</span></p><p><b><strong style=\"white-space: pre-wrap;\">Resolve:</strong></b><span style=\"white-space: pre-wrap;\"> Favor on Saves</span></p><p><b><strong style=\"white-space: pre-wrap;\">Valor:</strong></b><span style=\"white-space: pre-wrap;\"> Favor on Attack and Cast Checks</span></p>"
+      },
+      {
+        "name": "Well-Versed",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You ignore Stat minimum Prerequisites for Perks, and gain a Perk of your choice.</span></p>"
+      },
+      {
+        "name": "Overtuned",
+        "level": 2,
+        "recurEvery": 6,
+        "description": "<p><span style=\"white-space: pre-wrap;\">If a d6 bonus you grant causes a d20 result to be 21 or higher, you gain 1 Luck. The result needed is reduced by 1 every 6 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Enjoy the Silence",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You ignore effects that rely on you hearing them to be affected (such as a banshee’s scream), and you have Favor on Saves against being Berserk, Charmed, Confused, or Frightened.</span></p>"
+      },
+      {
+        "name": "Audacity",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Performance Check or Crit on any Save, you can cause a Being that can hear you to become Berserk, Charmed, Confused, or Frightened for Cd4 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p>"
+      },
+      {
+        "name": "Climax",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your bonus dice rolls and bonus dice rolls you grant can Explode.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786554651254,
+    "modifiedTime": 1786561520185,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!uxnA299tN8JJA9Ae"
+}

@@ -889,6 +889,8 @@
       "placeholder_classname": "New class...",
       "placeholder_featurename": "New feature...",
       "labelLevel": "Level",
+      "levels": "Levels",
+      "recurEvery": "Recur Every",
       "labelName": "Name",
       "labelDescr": "Description",
       "grants": "Grants",
@@ -934,7 +936,8 @@
       "effects": "Active Effects",
       "relic": "Relic Forge",
       "checkout": "Checkout",
-      "attack": "Attack"
+      "attack": "Attack",
+      "roll": "Roll"
     },
     "Effects": {
       "title": "Active Effects",

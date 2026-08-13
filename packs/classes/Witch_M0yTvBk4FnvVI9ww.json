@@ -1,0 +1,127 @@
+{
+  "name": "Witch",
+  "type": "class",
+  "_id": "M0yTvBk4FnvVI9ww",
+  "img": "systems/vagabond-lite/assets/class/witch_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Witches are mediaries of magical secrets. One may become a witch through the whispers of a familiar or the favor of a being from beyond.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Witches</strong></b></p><p><span style=\"white-space:pre-wrap\">• Dr. Facilier, The Princess and the Frog</span></p><p><span style=\"white-space:pre-wrap\">• Sabrina Spellman, Sabrina the Teenage Witch</span></p><p><span style=\"white-space:pre-wrap\">• The Morrigan, Celtic mythology</span></p><p><span style=\"white-space:pre-wrap\">• Yubaba, Spirited Away</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Witch</strong></b></p><p><span style=\"white-space:pre-wrap\">The witch is a debuffer focused on Casting Spells to stack detriments. Stick to the shadows and pile on Statuses through Hex.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Fortune Teller or Mage</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Mysticism</span></p>",
+    "rules": [
+      {
+        "id": "Je7SoewMQHf41lia",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "MRojRnoEZtKD2F1i",
+        "key": "ToggleRule",
+        "label": "Training: Mysticism",
+        "level": "1",
+        "value": true,
+        "selector": "skills.mysticism.isTrained"
+      },
+      {
+        "id": "cez3YXkFDNpICc8t",
+        "key": "ChoiceSet",
+        "label": "Occultist: Level 1 Spells",
+        "level": "1",
+        "recurEvery": 0,
+        "maxChoices": 4,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "pyt2WjJZjSesJ7Ki",
+        "key": "ChoiceSet",
+        "label": "Occultist: Spells",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      }
+    ],
+    "complexity": 3,
+    "keyStats": [
+      "awareness"
+    ],
+    "startingPacks": [],
+    "castingSkill": "mysticism",
+    "manaMultiplier": 4,
+    "maxCastFormula": "full",
+    "features": [
+      {
+        "name": "Occultist",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk with the Trained: Mysticism Prerequisite, and you can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (4 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (2 + your Level).</span></p>"
+      },
+      {
+        "name": "Hex",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you affect Enemies with a Spell, you can hex one of the Targets. Doing so causes the effect of the Spell (not the damage) to be continual  until you hex a new Target.</span></p>"
+      },
+      {
+        "name": "Ritualism",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, you can conduct a 10-minute Ritual as an Action.</span></p>"
+      },
+      {
+        "name": "Grudge Bearer",
+        "level": 4,
+        "recurEvery": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The number of Spells you can cause to be continual on the Target with your Hex Feature increases by 1 now and every 4 Levels hereafter.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, if you hex a new Target while you have an Enemy hexed, the new Target is affected by the previous Spells.</span></p>"
+      },
+      {
+        "name": "Spite",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Cast Checks against Enemies if you are not Casting the Spell to deal damage.</span></p>"
+      },
+      {
+        "name": "Widdershins",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You and your Allies ignore the Status Immunities of your hexed Target.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786571553719,
+    "modifiedTime": 1786581004726,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!M0yTvBk4FnvVI9ww"
+}

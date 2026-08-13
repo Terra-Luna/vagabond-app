@@ -11,8 +11,9 @@ const classSchema = () => {
         manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         maxCastFormula: new fields.StringField({ ...requiredString, choices: ['', "half", 'full'], blank: true }),
         features: new fields.ArrayField(new fields.SchemaField({
-            level: new fields.NumberField({ ...requiredInteger }),
             name: new fields.StringField({ ...requiredString }),
+            level: new fields.NumberField({ ...requiredInteger }),
+            recurEvery: new fields.NumberField({ ...requiredInteger }),
             description: new fields.HTMLField({ ...requiredString })
         }))
     }

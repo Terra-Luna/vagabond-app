@@ -1,10 +1,10 @@
 import { useCallback } from "react";
-import { AttackBuilderApp, AttackPreset } from "../../AttackBuilderApp";
+import { RollBuilderApp, RollPreset } from "../../RollBuilderApp";
 
 export const useEditPreset = (actor: Actor) => {
 
-    const editPreset = useCallback((preset: AttackPreset) => {
-        new AttackBuilderApp(actor, preset).render({ force: true })
+    const editPreset = useCallback((preset: RollPreset) => {
+        new RollBuilderApp(actor, preset).render({ force: true })
     }, [actor])
 
     return { editPreset }

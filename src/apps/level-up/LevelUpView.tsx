@@ -2,12 +2,12 @@ import { ArrowsUpFromLine } from "lucide-react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
-import { getItemChoiceRules } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { usePerkSelectionView } from "../hero-choices/PerkSelectionView"
 import { useSpellSelectionView } from "../hero-choices/SpellSelectionView"
 import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
 import { PerkBonusSelection } from "./LevelUpApp"
@@ -18,9 +18,13 @@ export const LevelUpView = ({ actor, onSave }: {
 }) => {
 
     const nextLevel = actor.system.level.current! + 1
-    const classFeature = actor.system.class.features.find(it => it.level === nextLevel)
-    const levelUpChoices = getItemChoiceRules(actor.system.class.rules).filter(r => r.level === nextLevel)
-    const { PerkSelection, classPerkSlots } = usePerkSelectionView(actor, true)
+    const classFeature = actor.system.class.features
+        .find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.recurEvery ?? 0))
+
+    const levelUpChoices = getItemChoiceRules(nextLevel, actor.system.class.rules)
+        .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.recurEvery))
+
+    const { PerkSelection, classPerkSlots, setClassPerkSlots } = usePerkSelectionView(actor, true)
     const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(actor, true)
 
     const perks = useMemo(() => {
@@ -46,7 +50,7 @@ export const LevelUpView = ({ actor, onSave }: {
         })
     }, [])
 
-    const { PerkBonusSelection, advancement, spell, perkTraining } = usePerkBonusSelection(
+    const { PerkBonusSelection, advancement, spell, perkTraining, resetPerkBonusSelections } = usePerkBonusSelection(
         latestPerk ? [latestPerk] : [], stats, [], trainings,
         [...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots],
         classSpellGrants, ancestrySpellGrants, []
@@ -62,16 +66,21 @@ export const LevelUpView = ({ actor, onSave }: {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const isDone =
-            (!showPerkSelection && !showSpellSelection) ||
-            latestPerk && (!showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining)))
+        const noSelectionsRequired = !showPerkSelection && !showSpellSelection
+        const isBonusSelectionMade = (!showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining)))
+        const isDone = noSelectionsRequired || (latestPerk && isBonusSelectionMade)
         if (isDone) {
+            setClassPerkSlots(classPerkSlots.map(slot => ({ ...slot, isLocked: true })))
             onSave({ advancement: advancement, spell: spell, perkTraining: perkTraining, isComplete: true })
         }
         else {
             ui.notifications?.warn("Complete selections to Save.")
         }
     }
+
+    useEffect(() => {
+        resetPerkBonusSelections()
+    }, [latestPerk])
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col h-full bg-sheet-main-fill p-2">
@@ -112,24 +121,28 @@ export const LevelUpView = ({ actor, onSave }: {
                     </p>
                 }
 
-                <div className="flex flex-col @2xl:flex-row h-full w-full gap-x-2 overflow-hidden">
-                    <div className="w-full @4xl:w-1/2 h-full overflow-y-auto">
-                        {/* NEW PERK SELECTION */}
-                        {showPerkSelection && <div className="mb-4">
+                <div className={`grid gap-4 w-full ${showPerkSelection && showSpellSelection
+                    ? "grid-cols-2 h-[calc(100vh-200px)] overflow-y-hidden"
+                    : "max-w-3xl mx-auto grid-cols-1"
+                    }`}>
+                    {showPerkSelection && (
+                        <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
+                            {/* PERK BONUS SELECTIONS */}
+                            {showBonusSelections && (
+                                <div className="w-full">
+                                    {PerkBonusSelection}
+                                </div>
+                            )}
+
                             {PerkSelection}
-                        </div>}
+                        </div>
+                    )}
 
-                        {/* PERK BONUS SELECTIONS */}
-                        {showBonusSelections && <div className="mb-4">
-                            {PerkBonusSelection}
-                        </div>}
-                    </div>
-
-                    {/* SPELL SLOT SELECTIONS */}
-                    {showSpellSelection && <div className="w-full @4xl:w-1/2 h-full overflow-y-auto mb-4">
-                        {SpellSelection}
-                    </div>}
-
+                    {showSpellSelection && (
+                        <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
+                            {SpellSelection}
+                        </div>
+                    )}
                 </div>
 
             </div>

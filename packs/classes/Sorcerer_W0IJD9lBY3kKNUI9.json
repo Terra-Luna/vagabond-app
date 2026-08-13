@@ -1,0 +1,153 @@
+{
+  "name": "Sorcerer",
+  "type": "class",
+  "_id": "W0IJD9lBY3kKNUI9",
+  "img": "systems/vagabond-lite/assets/class/sorcerer_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Arcanists given a precious gift of magical prowess, sorcerers can tap into their own inner reserves to provide more Mana for casting.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Sorcerers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Yennefer, The Witcher</span></p><p><span style=\"white-space:pre-wrap\">• Elsa, Frozen</span></p><p><span style=\"white-space:pre-wrap\">• Ganondorf, The Legend of Zelda</span></p><p><span style=\"white-space:pre-wrap\">• Storm, X-Men</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Sorcerer</strong></b></p><p><span style=\"white-space:pre-wrap\">The sorcerer is a squishy blaster focused on Casting Spells for instant burst damage. You should stay in safety to Cast.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack: </strong></b><span style=\"white-space:pre-wrap\">Mage or Occultist</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Influence</span></p>",
+    "rules": [
+      {
+        "id": "r17yHKIWoNHQ4NzA",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "2i75XyhMtbuFleja",
+        "key": "ToggleRule",
+        "label": "Training: Influence",
+        "level": "1",
+        "value": true,
+        "selector": "skills.influence.isTrained"
+      },
+      {
+        "id": "4zoWMbiuxCInWKcm",
+        "key": "ChoiceSet",
+        "label": "Glamour: Level 1 Spells",
+        "level": "1",
+        "recurEvery": 0,
+        "maxChoices": 4,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "BONuLnetueZnBzRS",
+        "key": "ChoiceSet",
+        "label": "Glamour: Spells",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "7KAGSXRgdDbLQ5KC",
+        "key": "GrantItem",
+        "label": "Tap: Vehement Magic",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.eDxdbBsCNsDdTsG0",
+        "type": "perk"
+      },
+      {
+        "id": "WU8eVWtRaDlhQsdU",
+        "key": "FlatModifier",
+        "label": "Spell-Slinger",
+        "level": 2,
+        "value": 2,
+        "selector": "modifiers.dice.size.spell"
+      },
+      {
+        "id": "XohL3cywNVuleWnh",
+        "key": "FlatModifier",
+        "label": "Spell-Slinger",
+        "level": 2,
+        "value": 1,
+        "selector": "modifiers.dice.crit.spell",
+        "recurEvery": 6
+      }
+    ],
+    "complexity": 3,
+    "keyStats": [
+      "might",
+      "presence"
+    ],
+    "startingPacks": [],
+    "castingSkill": "influence",
+    "manaMultiplier": 4,
+    "maxCastFormula": "full",
+    "features": [
+      {
+        "name": "Glamour",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Influence.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells: </strong></b><span style=\"white-space: pre-wrap;\">You learn 4 Spells. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (4 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (2 + your Level).</span></p>"
+      },
+      {
+        "name": "Tap",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Vehement Magic Perk (p. 73), and you can spend your HP as Mana, which also reduces your Max HP by the same amount until</span></p><p><span style=\"white-space: pre-wrap;\">you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p>"
+      },
+      {
+        "name": "Spell Slinger",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The damage die of your Spells is one size larger.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, the roll required for you to Crit on Cast Checks and Saves against Casts is reduced by 1, and is reduced by 1 more every 6 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Quickening",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can skip your Move to Cast a Spell. You can’t upcast this Casting.</span></p>"
+      },
+      {
+        "name": "Spell Twinning",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you Cast the same Spell twice on a Turn, the second Cast Check is Favored.</span></p>"
+      },
+      {
+        "name": "Overpowered",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you Cast, you can choose to gain 2 Fatigue. If you do, you regain Cd6 Mana at the start of your Turns, and your Cast Max is doubled during the countdown.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786569750999,
+    "modifiedTime": 1786570925653,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!W0IJD9lBY3kKNUI9"
+}

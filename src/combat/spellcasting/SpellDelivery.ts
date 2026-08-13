@@ -58,7 +58,7 @@ export abstract class SpellDelivery {
     }
 
     setDamageDice(dice: number) {
-        if (this.spell.damageType !== 'none') {
+        if (this.spell?.damageType !== 'none') {
             this.damageDice = dice
             this.calculateManaCost()
         }
@@ -74,7 +74,7 @@ export abstract class SpellDelivery {
     }
 
     applyEffectManaCost() {
-        if (this.applyEffect && this.damageDice > 0 && !this.spell.ignoreEffectCost) {
+        if (this.applyEffect && this.damageDice > 0 && !this.spell?.ignoreEffectCost) {
             this.manaCost += 1
         }
     }
@@ -113,7 +113,7 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
 
     protected calculateBaseManaCost() {
         this.manaCost = this.baseManaCost
-            + (this.damageDice > 0 ? this.spell?.baseManaCost : 0)
+            + (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
             + ((this.size - this.baseSize) / 5)
             + (Math.max(0, (this.damageDice - 1)))
     }
@@ -204,7 +204,7 @@ export abstract class PerTargetDelivery extends SpellDelivery {
         }
         this.manaCost = ((targets - 1) * this.extraTargetMultiplier)
             + this.baseManaCost
-            + (this.damageDice > 0 ? this.spell.baseManaCost : 0)
+            + (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
             + (Math.max(0, this.damageDice - 1))
         super.applyEffectManaCost()
     }

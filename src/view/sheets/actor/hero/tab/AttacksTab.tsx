@@ -1,21 +1,21 @@
-import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { AttackPresetsListView } from "../../../../../apps/attack-builder/component/AttackPresetsListView"
-import { AttackBuilderView } from "../../../../../apps/attack-builder/AttackBuilderView"
-import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useMemo } from "react"
-import { AttackPreset } from "../../../../../apps/attack-builder/AttackBuilderApp"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
+import { RollPresetsListView } from "../../../../../apps/attack-builder/component/RollPresetsListView"
+import { CollapsibleSection } from "../../../../component/Collapsible"
+import { RollPreset } from "../../../../../apps/attack-builder/RollBuilderApp"
+import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 
 export const AttacksTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const customAttack = useMemo(() => {
-        return actor.getFlag("vagabond-lite" as any, "customAttack") as AttackPreset | undefined
+        return actor.getFlag("vagabond-lite" as any, "customRoll") as RollPreset | undefined
     }, [actor])
 
     return (
         <div>
-            <AttackPresetsListView actor={actor} />
+            <RollPresetsListView actor={actor} />
             <div className="mt-1" />
             <CollapsibleSection title={"QUICK ROLL"} startCollapsed={false} content={
-                <AttackBuilderView actor={actor} preset={customAttack} showHeader={false} />
+                <RollBuilderView actor={actor} preset={customAttack} showHeader={false} />
             } />
             <div className="mt-8" />
         </div>

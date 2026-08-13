@@ -1,23 +1,11 @@
-import { useMemo } from "react"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput } from "../shared/ItemRuleInput"
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
 
 export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
 
-    const pathModifierOptions = useMemo(() => {
-        const actor = new Actor.implementation({ name: 'Hero', type: 'hero' as any }) as Actor & { system: HeroDataModel }
-        const hero = actor.system
-        const options: { value: string, label: string }[] = []
-
-        console.log(hero.toObject())
-
-
-    }, [])
-
     return (
         <div className="space-y-2">
-            <div className="flex gap-x-1">
+            <div className="flex flex-wrap gap-x-1">
                 <ItemRuleInput
                     label={"Name"}
                     value={rule.label || ""}
@@ -28,6 +16,12 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
                     label={"Level Req."}
                     value={rule.level ?? 0}
                     onChange={(e) => onChange({ level: Number(e.target.value) })}
+                    type={"number"}
+                />
+                <ItemRuleInput
+                    label={"Recur Every"}
+                    value={rule.recurEvery ?? 0}
+                    onChange={(e) => onChange({ recurEvery: Number(e.target.value) })}
                     type={"number"}
                 />
             </div>

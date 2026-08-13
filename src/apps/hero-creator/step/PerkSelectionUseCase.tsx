@@ -4,7 +4,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSuccessMessage } from "../component/HeroCreationTypography"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
+import { calculateRecurringChoices, getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { perkPrerequisites } from "../../../model/item/character/PerkDataModel"
 import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
 import { ItemGrantCard } from "../component/ItemGrantCard"
@@ -27,6 +27,7 @@ export const usePerkSelection = (
     level: number,
     isLevelUp?: boolean
 ) => {
+    const adjLevel = level + (isLevelUp ? 1 : 0)
     /**
      * A list of every perk in the game.
      */
@@ -53,7 +54,7 @@ export const usePerkSelection = (
      * on their perk choice filter rules.
      */
     const classRestrictedPerksList = useMemo(() => {
-        const perkRules = getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+        const perkRules = getItemChoiceRules(adjLevel, clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
         const filteredChoices = perkRules.flatMap(it => it.choices).map(it => it.value)
         return [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
@@ -78,7 +79,7 @@ export const usePerkSelection = (
         })
 
         setAncestryPerkSlots(loadInitialSlots(
-            getItemChoiceRules(ancestry?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+            getItemChoiceRules(adjLevel, ancestry?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
         ))
 
         getItemGrants('perk', [clazz]).then(grants => {
@@ -86,7 +87,7 @@ export const usePerkSelection = (
         })
 
         setClassPerkSlots(loadInitialSlots(
-            getItemChoiceRules(clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+            getItemChoiceRules(adjLevel, clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
         ))
     }, [ancestry, clazz])
 
@@ -103,7 +104,7 @@ export const usePerkSelection = (
     const onSelectPerk = useCallback((slotIndex: number, perk: string, perkId: string, setter: any) => {
         setter(prevSlots =>
             prevSlots.map((slot, index) =>
-                index === slotIndex ? { ...slot, label: perk, value: perkId } : slot
+                index === slotIndex ? { ...slot, label: perk, value: perkId, isLocked: false } : slot
             )
         )
     }, [])

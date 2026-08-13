@@ -19,11 +19,11 @@ export class TagalongItemCreator {
     async convert() {
         if (this.items.length > 0) {
             if (!game.folders?.getName(this.importsFolder)) {
-                console.log("Tagalong Item Creator: Creating folder:", this.importsFolder)
+                console.info("Tagalong Item Creator: Creating folder:", this.importsFolder)
                 await Folder.create({ name: this.importsFolder, type: "Item" })
             }
             for (const i of this.items) {
-                console.log("Tagalong Item Creator: Creating item", i)
+                console.info("Tagalong Item Creator: Creating item", i)
                 switch (i.type) {
                     case ItemType.ALCHEMY:
                     case ItemType.MEDICINE: {
@@ -56,7 +56,7 @@ export class TagalongItemCreator {
                     }
                 }
             }
-            console.log("Tagalong Item Creator: Item Creation Complete!")
+            console.info("Tagalong Item Creator: Item Creation Complete!")
             await new Promise((resolve) => setTimeout(resolve, 1000))
         }
     }

@@ -1,0 +1,142 @@
+{
+  "name": "Druid",
+  "type": "class",
+  "_id": "egDS2LUxZNOrh7NH",
+  "img": "systems/vagabond-lite/assets/class/druid_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Keepers of the wilderness, druids are mystics of nature that are adopted into beast-kind.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Druids</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beast Boy, DC Comics</span></p><p><span style=\"white-space:pre-wrap\">• Beorn, The Lord of the Rings</span></p><p><span style=\"white-space:pre-wrap\">• Frank Zhang, Percy Jackson</span></p><p><span style=\"white-space:pre-wrap\">• Poison Ivy, DC Comics</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Druid</strong></b></p><p><span style=\"white-space:pre-wrap\">The druid is a mid-defense, mixed support and control class with a focus on Casting Spells and shapechanging to powerful beasts.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast or Beast Attacks</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Hermit</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, Survival</span></p>",
+    "rules": [
+      {
+        "id": "3Zz32mqq4wp99hru",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "RsPlpmNZDeIvDSTk",
+        "key": "ToggleRule",
+        "label": "Training: Mysticism",
+        "level": "1",
+        "value": true,
+        "selector": "skills.mysticism.isTrained"
+      },
+      {
+        "id": "44iQSGTLh2FEFyO9",
+        "key": "ToggleRule",
+        "label": "Training: Survival",
+        "level": "1",
+        "value": true,
+        "selector": "skills.survival.isTrained"
+      },
+      {
+        "id": "0vamvPXOr6mt75xN",
+        "key": "GrantItem",
+        "label": "Primal Mystic: Polymorph",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.spells.Item.qwIbJIeHMzTvMaBK",
+        "type": "spell"
+      },
+      {
+        "id": "Y8xnTWLPrZGjXW4e",
+        "key": "ChoiceSet",
+        "label": "Primal Mystic: Level 1 Spells",
+        "level": "1",
+        "maxChoices": 3,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "Mg89MTrJYcB8LBpS",
+        "key": "ChoiceSet",
+        "label": "Primal Mystic: Spells",
+        "level": "3",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": [],
+        "recurEvery": "2"
+      }
+    ],
+    "complexity": 3,
+    "keyStats": [
+      "awareness"
+    ],
+    "startingPacks": [],
+    "castingSkill": "mysticism",
+    "manaMultiplier": 4,
+    "maxCastFormula": "full",
+    "features": [
+      {
+        "name": "Primal Mystic",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, one of which must always be Polymorph. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana: </strong></b><span style=\"white-space: pre-wrap;\">Your Max Mana is equal to (4 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (2 + your Level).</span></p>"
+      },
+      {
+        "name": "Feral Shift",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Shapechanger Perk (p. 72) and you can take an Action of the Beast as a part of the Cast Action.</span></p>"
+      },
+      {
+        "name": "Tempest Within",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You reduce Cold, Fire, and Shock damage you take by (half your Level) per damage die.</span></p>"
+      },
+      {
+        "name": "Savagery",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">While you Focus on Polymorph, you can Focus one additional Spell.</span></p><p><span style=\"white-space: pre-wrap;\">Further, you have a +1 bonus to attack damage and Armor while polymorphed. These attacks count as attacks with Relics. This bonus increases every 6 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Innervate",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Action or skip your Move to give a Close Being some of your Mana, or to end one Status affecting it from either Charmed, Confused, Frightened, or Sickened. This can be yourself.</span></p>"
+      },
+      {
+        "name": "Force of Nature",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, if you are reduced to 0 HP, you can polymorph into a Beast and regain HP equal to that shown in its Statblock.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786555887806,
+    "modifiedTime": 1786562006041,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!egDS2LUxZNOrh7NH"
+}

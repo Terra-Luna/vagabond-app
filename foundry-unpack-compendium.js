@@ -4,12 +4,12 @@ import fs from "fs";
 const manifest = JSON.parse(fs.readFileSync("./public/system.json", "utf8"));
 const packNames = manifest.packs.map(p => p.name);
 
-console.log(`[Foundry CLI | Unpacking ${packNames.length} compendiums...`);
+console.info(`[Foundry CLI | Unpacking ${packNames.length} compendiums...`);
 
 for (const name of packNames) {
     const outputDirectory = `./packs/${name}`;
 
-    console.log(`Unpacking: "${name}" -> ${outputDirectory}/`);
+    console.info(`Unpacking: "${name}" -> ${outputDirectory}/`);
 
     try {
         execSync(
@@ -21,4 +21,4 @@ for (const name of packNames) {
     }
 }
 
-console.log("Foundry CLI | All packs extracted successfully into ./packs");
+console.info("Foundry CLI | All packs extracted successfully into ./packs");

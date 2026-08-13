@@ -4,7 +4,7 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { Description } from "../../../shared/Description"
 import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
-import { ClassFeaturesConfig } from "./component/ClassFeaturesConfig"
+import { FeaturesConfig } from "./component/FeaturesConfig"
 import { ComplexityRating } from "./component/ComplexityRating"
 import { KeyStatsSelector } from "./component/ClassStatSelector"
 import { StartingPackSelector } from "./component/StartingPackSelector"
@@ -38,8 +38,8 @@ export const ClassSheetComponent = ({ item }: { item: Item & { system: ClassData
                             <StartingPackSelector item={item} />
                             <KeyStatsSelector item={item} />
                             <SpellcastingSkillSelector item={item} />
-                            <MaxCastFormulaSelector item={item} />
                             <MaxManaPerLevelSelector item={item} />
+                            <MaxCastFormulaSelector item={item} />
                         </>}
                         bodyClassName="flex flex-col m-2"
                     />
@@ -47,7 +47,7 @@ export const ClassSheetComponent = ({ item }: { item: Item & { system: ClassData
 
                 {/* CLASS FEATURES CONFIGURATION */}
                 <div className="w-full @4xl:w-1/3 h-full overflow-y-auto">
-                    <ClassFeaturesConfig item={item} />
+                    <FeaturesConfig item={item} />
                     <div className="mt-2">
                         <ItemRulesManager item={item} />
                     </div>

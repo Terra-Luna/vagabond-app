@@ -208,7 +208,7 @@ Hooks.on("createItem", async (item, _options, _userId) => {
 
 Hooks.on("updateItem", async (item, changed, options, userId) => {
     if ("name" in changed) {
-        console.log("Reinitializing ItemsCache")
+        console.info("Reinitializing ItemsCache")
         await ItemsCache.initialize()
     }
 

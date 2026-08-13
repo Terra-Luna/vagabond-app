@@ -3,7 +3,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { useSpellSelection } from "../hero-creator/step/SpellSelectionUseCase"
-import { getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { groupBy } from "../../utils/collectionUtil"
 
@@ -21,14 +21,14 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
         SpellSelection,
         classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
         setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
-    } = useSpellSelection(ancestry, clazz, perks, [])
+    } = useSpellSelection(level, ancestry, clazz, perks, [])
 
     const getSpellName = (id: string): string => {
         return spellsList.find(it => it.value === id)?.label ?? 'unk'
     }
 
     const loadSelections = (rules, setSlots) => {
-        const slots = loadInitialSlots(rules.filter(r => r.level <= level))
+        const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.recurEvery)))
         let sharedIndex = 0
         rules.forEach(rule => {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
@@ -59,15 +59,15 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
          */
         const loadInitialSpellSelections = async () => {
             if (clazz) {
-                const rules = await getItemChoiceRules(clazz.system.rules ?? [])
+                const rules = await getItemChoiceRules(level, clazz.system.rules ?? [])
                 loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
             }
             if (ancestry) {
-                const rules = await getItemChoiceRules(ancestry.system.rules ?? [])
+                const rules = await getItemChoiceRules(level, ancestry.system.rules ?? [])
                 loadSelections(rules.filter(r => r.pack === 'spell'), setAncestrySpellSlots)
             }
             if (perks.length > 0) {
-                const rules = await getItemChoiceRules(perks.flatMap(p => p.rules))
+                const rules = await getItemChoiceRules(level, perks.flatMap(p => p.rules))
                 const selectionFlags = (actor.flags?.["vagabond-lite"] as any)?.perkSelections ?? {}
                 const targetRules = rules.filter(r => r.pack === 'spell')
                 targetRules.forEach(rule => {

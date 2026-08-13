@@ -1,0 +1,56 @@
+{
+  "name": "Vehement Magic",
+  "type": "perk",
+  "_id": "eDxdbBsCNsDdTsG0",
+  "img": "icons/magic/symbols/runes-star-pentagon-orange-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Damage rolls from Spells you Cast Explode on a roll of 1.</span></p>",
+    "rules": [
+      {
+        "id": "p9rdiGqmdblO4boC",
+        "key": "FlatModifier",
+        "label": "Vehement Magic",
+        "level": 0,
+        "value": 1,
+        "selector": "modifiers.dice.exploding.spell"
+      }
+    ],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786570220284,
+    "modifiedTime": 1786570331512,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!eDxdbBsCNsDdTsG0"
+}

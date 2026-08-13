@@ -1,0 +1,160 @@
+{
+  "name": "Revelator",
+  "type": "class",
+  "_id": "1dT0mK0iwQTlJQFx",
+  "img": "systems/vagabond-lite/assets/class/revelator_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Revelators are warriors of radiance and justice. These oathsworn knights hold an honorable vow that becomes its own power.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Revelators</strong></b></p><p><span style=\"white-space:pre-wrap\">• Luke Skywalker, Star Wars</span></p><p><span style=\"white-space:pre-wrap\">• Michael Carpenter, The Dresden Files</span></p><p><span style=\"white-space:pre-wrap\">• She-Ra, She-Ra: Princess of Power</span></p><p><span style=\"white-space:pre-wrap\">• Wonder Woman, DC Comics</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Revelator</strong></b></p><p><span style=\"white-space:pre-wrap\">Revelators are high defense frontline strikers. Stay in the frontline for melee attacks, and smite the transgressors.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack/Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Knight or Warrior</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Leadership</span></p>",
+    "rules": [
+      {
+        "id": "PtvPWKDrgLxChr3e",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "2EtbjNREE27h5txg",
+        "key": "ToggleRule",
+        "label": "Training: Melee",
+        "level": "1",
+        "value": true,
+        "selector": "skills.melee.isTrained"
+      },
+      {
+        "id": "GgqPXzhjYOycY8GO",
+        "key": "ToggleRule",
+        "label": "Training: Leadership",
+        "level": "1",
+        "value": true,
+        "selector": "skills.leadership.isTrained"
+      },
+      {
+        "id": "LtPxovgFRQ9AI98j",
+        "key": "ChoiceSet",
+        "label": "Righteous: Level 1 Spells",
+        "level": "1",
+        "recurEvery": 0,
+        "maxChoices": 2,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "CuBuPHodeNZVRLM3",
+        "key": "ChoiceSet",
+        "label": "Righteous: Spells",
+        "level": "4",
+        "recurEvery": "3",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "KbMMARHXNkN7EHdo",
+        "key": "FlatModifier",
+        "label": "Holy Diver",
+        "level": 10,
+        "value": 2,
+        "selector": "modifiers.skills.reflex.rollMod"
+      },
+      {
+        "id": "2fQAoohUMDJH26q3",
+        "key": "FlatModifier",
+        "label": "Holy Diver",
+        "level": 10,
+        "value": 2,
+        "selector": "modifiers.skills.endure.rollMod"
+      },
+      {
+        "id": "0a0UBTlFynT6bepY",
+        "key": "FlatModifier",
+        "label": "Holy Diver",
+        "level": 10,
+        "value": 2,
+        "selector": "modifiers.skills.will.rollMod"
+      }
+    ],
+    "complexity": 3,
+    "keyStats": [
+      "might",
+      "presence"
+    ],
+    "startingPacks": [],
+    "castingSkill": "leadership",
+    "manaMultiplier": 2,
+    "maxCastFormula": "half",
+    "features": [
+      {
+        "name": "Righteous",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Gish Perk (p. 68), can Cast Spells using Leadership.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always have a damage base. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (2 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (1 + half</span></p><p><span style=\"white-space: pre-wrap;\">your Level, round up).</span></p>"
+      },
+      {
+        "name": "Enspell",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can have one Imbue Casting as continual duration on your Weapon, and can skip your Move to change the Spell.</span></p>"
+      },
+      {
+        "name": "Lay on Hands",
+        "level": 2,
+        "recurEvery": 6,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d6 + your Level) HP to yourself or a Close Being. The healing increases by another d6 every 6 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Paragon's Aura",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Casting a Spell with an Aura Delivery is free for you, but you must spend Mana on Focus and upcast costs.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target for no Mana.</span></p>"
+      },
+      {
+        "name": "Divine Resolve",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Blinded, Paralyzed, or Sickened, and Targets of your Lay on Hands Feature are cured of these Statuses as well.</span></p>"
+      },
+      {
+        "name": "Holy Diver",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have a +2 bonus to Saves.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786568076634,
+    "modifiedTime": 1786568733258,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!1dT0mK0iwQTlJQFx"
+}

@@ -1,0 +1,140 @@
+{
+  "name": "Hunter",
+  "type": "class",
+  "_id": "WzbdGJYn7tW7nxgi",
+  "img": "systems/vagabond-lite/assets/class/hunter_fps.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Keepers of the old way, hunters are survival experts that specialize in exploiting their enemies’ weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Hunters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Aloy, Horizon</span></p><p><span style=\"white-space:pre-wrap\">• Aragorn, The Lord of the Rings</span></p><p><span style=\"white-space:pre-wrap\">• Samus Aran, Metroid</span></p><p><span style=\"white-space:pre-wrap\">• San, Princess Mononoke</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Hunter</strong></b></p><p><span style=\"white-space:pre-wrap\">The hunter is a low defense, high-crit striker. They can be built for Melee or Ranged positions.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline or Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Scout or Warrior</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Ranged, Survival</span></p>",
+    "rules": [
+      {
+        "id": "UXZrxyWylRRuUZO6",
+        "key": "ChoiceSet",
+        "label": "Perks",
+        "level": "3",
+        "recurEvery": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": []
+      },
+      {
+        "id": "Ix4B1bP4SWC1WZCF",
+        "key": "ToggleRule",
+        "label": "Training: Melee",
+        "level": "1",
+        "value": true,
+        "selector": "skills.melee.isTrained"
+      },
+      {
+        "id": "g5GWYKbfHgPez3zV",
+        "key": "ToggleRule",
+        "label": "Training: Ranged",
+        "level": "1",
+        "value": true,
+        "selector": "skills.ranged.isTrained"
+      },
+      {
+        "id": "qNpX2DuEGuYOrV8k",
+        "key": "ToggleRule",
+        "label": "Training: Survival",
+        "level": "1",
+        "value": true,
+        "selector": "skills.survival.isTrained"
+      },
+      {
+        "id": "8SHi5WZRcUFaPlel",
+        "key": "ChoiceSet",
+        "label": "Survivalist: Perk",
+        "level": "1",
+        "recurEvery": 0,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": [
+          {
+            "type": "training",
+            "value": "survival"
+          }
+        ]
+      }
+    ],
+    "complexity": 2,
+    "keyStats": [
+      "awareness"
+    ],
+    "startingPacks": [],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
+    "features": [
+      {
+        "name": "Hunter's Mark",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can choose a Target when you attack it or by skipping your Move, declaring it is your Mark until you declare a new Mark. The following rules apply while you have a Mark:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Your attacks against it have the Keen and Vicious properties.</span></p><p><span style=\"white-space: pre-wrap;\">• When you attack or track the Mark, roll two d20s and use the highest for the Check.</span></p>"
+      },
+      {
+        "name": "Survivalist",
+        "level": 1,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk with Survival Training as a Prerequisite, ignoring other prerequisites for it. Further, you have Favor on Checks to track, navigate, and against extreme temperatures, and you can Forage at a Normal Travel Pace.</span></p>"
+      },
+      {
+        "name": "Rover",
+        "level": 2,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Difficult Terrain doesn’t impede your walking Speed, and you have Climb and Swim.</span></p>"
+      },
+      {
+        "name": "Overwatch",
+        "level": 4,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your additional d20 of Hunter’s Mark also applies to your Saves provoked by the Mark.</span></p>"
+      },
+      {
+        "name": "Lethal Precision",
+        "level": 6,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You ignore Hinder caused by your Mark.</span></p>"
+      },
+      {
+        "name": "Quarry",
+        "level": 8,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can sense Beings within Far as if by Blindsight if they are missing any HP or are your Mark.</span></p>"
+      },
+      {
+        "name": "Apex Predator",
+        "level": 10,
+        "recurEvery": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your Mark is Weak to your attacks.</span></p>"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786566364586,
+    "modifiedTime": 1786566769140,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!WzbdGJYn7tW7nxgi"
+}

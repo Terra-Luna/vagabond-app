@@ -23,12 +23,8 @@ export class CountdownRoll {
 
     public async roll() {
         const formula = `d${this.result.duration}`
-
         const roll = await new Roll(formula).evaluate()
-
         const nextDuration = this.adjustCountdownDuration(roll.total)
-
-        console.log(nextDuration, roll.total)
 
         this.result = {
             name: this.result.name,

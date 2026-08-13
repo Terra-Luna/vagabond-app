@@ -22,7 +22,7 @@ export const Description = ({ item, showFullView = false, italic = true }: {
                         isEditMode ?
                             <div className={`${showFullView ? 'h-fit' : 'h-[54px]'} p-0.5 overflow-hidden'}`}>
                                 <RichTextField
-                                    height={showFullView ? '100%' : 54}
+                                    height={showFullView ? 300 : 54}
                                     defaultValue={item.system.description}
                                     onChange={onDescriptionChange}
                                 />

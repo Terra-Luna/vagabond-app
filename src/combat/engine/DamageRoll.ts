@@ -66,7 +66,7 @@ export class DamageRoll {
             return roll
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
             return undefined
         }
     }

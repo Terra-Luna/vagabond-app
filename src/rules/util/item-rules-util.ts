@@ -1,5 +1,3 @@
-import { PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { CombinedItems } from "../../utils/modelUtil"
 import { ItemsCache } from "./ItemsCache"
@@ -8,6 +6,7 @@ export interface ItemRule {
     id: string,
     label: string,
     level: number,
+    recurEvery: number,
     maxChoices: number,
     value: number,
     pack: string,
@@ -237,10 +236,10 @@ export function getPerkChoices(): { value: string, label: string }[] {
     return ItemsCache.perks().map(item => ({ value: item.uuid, label: item.name ?? "" }))
 }
 
-export function getItemChoiceRules(rulesData: any[]): ItemRule[] {
+export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] {
     if (!Array.isArray(rulesData)) return []
 
-    const choiceSetRules = rulesData.filter(rule => rule.key === "ChoiceSet" && rule.channel === "item")
+    const choiceSetRules = rulesData.filter(rule => rule.level <= level && rule.key === "ChoiceSet" && rule.channel === "item")
 
     const parsedRules = choiceSetRules.map((rule) => {
         let finalizedChoices = Array.isArray(rule.choices) ? [...rule.choices] : []
@@ -269,11 +268,17 @@ export function getItemChoiceRules(rulesData: any[]): ItemRule[] {
             }
         }
 
+        const recur = Number(rule.recurEvery ?? "0")
+        const maxChoices = recur < 1
+            ? Number(rule.maxChoices ?? 1)
+            : calculateRecurringChoices(level, Number(rule.level), Number(rule.maxChoices), Number(rule.recurEvery))
+
         return {
             id: rule.id,
             label: rule.label ?? "",
             level: Number(rule.level ?? 0),
-            maxChoices: Number(rule.maxChoices ?? 1),
+            recurEvery: rule.recurEvery,
+            maxChoices: maxChoices,
             value: Number(rule.value ?? 1),
             pack: rule.pack,
             choices: finalizedChoices,
@@ -282,10 +287,6 @@ export function getItemChoiceRules(rulesData: any[]): ItemRule[] {
     })
 
     return parsedRules
-}
-
-export const getTotalMaxChoices = (rules): number => {
-    return rules.reduce((sum, r) => { return sum + r.maxChoices }, 0)
 }
 
 /**
@@ -334,4 +335,17 @@ const getPerkFlags = (actor) => {
 
 const getUniqueRuleIds = (slots) => {
     return [...new Set(slots.map(s => s.ruleId))]
+}
+
+export const calculateRecurringChoices = (level: number, ruleLevel: number, maxChoices: number, scale: number): number => {
+    if (scale < 1) {
+        return maxChoices
+    }
+    else {
+        return maxChoices * Math.floor((level - ruleLevel) / scale + 1)
+    }
+}
+
+export const calculateRecurringRuleEligibility = (level: number, ruleLevel: number, scale: number): boolean => {
+    return (level - ruleLevel) % (scale ?? 0) === 0
 }

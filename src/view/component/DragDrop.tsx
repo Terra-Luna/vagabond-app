@@ -61,7 +61,7 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
             onDrop()
         }
         catch (error) {
-            console.log(error)
+            console.error(error)
         }
         finally {
             nullifyAll()
