@@ -10,8 +10,8 @@ interface SingleSelectProps {
 
 export const SingleSelect = ({ options, value, setValue, canUnselect }: SingleSelectProps) => {
     const { isEditMode } = useEditMode()
-    const selectedClass = `bg-sheet-header-fill text-text-header-primary border-text-header-primary rounded-sm px-1 ${isEditMode && canUnselect ? 'cursor-pointer' : ''}`
-    const unselectedClass = `px-1 ${isEditMode ? 'cursor-pointer' : ''}`
+    const selectedClass = `text-text-header-secondary border-text-header-primary rounded-sm px-1 ${isEditMode && canUnselect ? 'cursor-pointer' : ''}`
+    const unselectedClass = `bg-sheet-main-fill px-1 ${isEditMode ? 'cursor-pointer' : ''}`
 
     const handleOptClick = useCallback((clickedVal) => {
         if (clickedVal === value) {
@@ -25,7 +25,7 @@ export const SingleSelect = ({ options, value, setValue, canUnselect }: SingleSe
     }, [value, setValue])
 
     return (
-        <div className="border border-solid border-stat-block-fill rounded-sm p-1 flex gap-1">
+        <div className="bg-sheet-header-fill border border-solid border-table-border rounded-sm px-0.5 flex gap-1">
             {options.map(opt => {
                 const isSelected = opt.value === value
                 return (

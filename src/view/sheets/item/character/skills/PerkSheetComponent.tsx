@@ -11,6 +11,8 @@ import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponen
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { Checkbox } from "../../../../component/Checkbox"
+import { UtilityButton } from "../../../../component/Button"
+import { TrashButton } from "../../../../component/TrashButton"
 
 export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()
@@ -19,34 +21,35 @@ export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataMo
         <BaseSkillSheetComponent item={item} content={
             <div className="w-full">
                 <div className="flex gap-x-2 items-center">
-                    {
-                        isEditMode &&
+                    {isEditMode &&
                         <div className="flex-col gap-2">
                             <Checkbox
                                 label={"Can take multiple times"}
                                 onCheckedChanged={() => { item.update({ 'system.canTakeMultiple': !item.system.canTakeMultiple } as Record<string, boolean>) }}
                                 checked={item.system.canTakeMultiple}
                             />
-                            <div className="flex gap-2">
-                                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} className={"font-bold"} />
-                                <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer" onClick={() => addPerkPrerequisite(item)} />
-                            </div>
+
+                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} className={"font-bold"} />
                         </div>
                     }
                 </div>
-                {
-                    !isEditMode ? <></> :
-                        <div className="space-y-0.5 mb-8">
-                            {
-                                item.system.prerequisites.map((_, index) => (
-                                    <Prerequisite key={index} perk={item} prereqIndex={index} />
-                                ))
-                            }
+                {isEditMode && <>
+                    <div className="space-y-0.5">
+                        {item.system.prerequisites.map((_, index) => (
+                            <Prerequisite key={index} perk={item} prereqIndex={index} />
+                        ))}
+                        <div className="ml-6 mt-1">
+                            <UtilityButton title="Add new prerequisite" onClick={() => addPerkPrerequisite(item)}>
+                                {vgLiteLang.ButtonActions.add}
+                            </UtilityButton>
                         </div>
-                }
-                <div className="mt-4">
+                    </div>
+                </>}
+
+                <div className="mt-8">
                     <ItemRulesManager item={item} />
                 </div>
+
             </div>
         } />
     </>)
@@ -138,9 +141,9 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
     }, [perk.system.prerequisites])
 
     return (
-        <div className="flex gap-x-1 items-end">
+        <div className="flex flex-wrap gap-1 items-end">
             {isEditMode &&
-                <Trash size={20} className="text-destructive-action mr-2 mb-1 cursor-pointer" onClick={() => deletePerkPrerequisite(perk, prereqIndex)} />
+                <TrashButton onDelete={() => deletePerkPrerequisite(perk, prereqIndex)} className="mb-1" />
             }
             {(isEditMode || prereq.type !== 'stat') &&
                 <div className="flex items-end">
@@ -154,7 +157,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                 </div>
             }
             {prereq.type === 'stat' &&
-                <div className="flex items-end gap-x-1">
+                <div className="flex flex-wrap items-end gap-1">
                     <DropDown
                         value={prereq.stat}
                         options={createDropdownEntriesFromObj(vgLiteLang.Stat)}
@@ -187,7 +190,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                 <>
                     {
                         prereq.skills.map((skillsGroup, skillGroupIndex) => (
-                            <div key={skillGroupIndex} className="flex gap-x-1 items-end">
+                            <div key={skillGroupIndex} className="flex flex-wrap gap-1 items-end">
                                 {
                                     skillsGroup.skillNames.map((skill, skillIndex) => (
                                         <div key={skillGroupIndex + skillIndex + skill} className="flex gap-x-1 items-end">
@@ -214,7 +217,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                                                 </div>
                                             }
                                             {isEditMode && skillIndex === skillsGroup.skillNames.length - 1 &&
-                                                <Plus size={20} strokeWidth={3} className="text-stat-block-fill cursor-pointer mb-1"
+                                                <Plus size={20} strokeWidth={3} className="text-text-tertiary cursor-pointer mb-1"
                                                     onClick={() => onAddTrainedSkill(skillGroupIndex)}
                                                 />
                                             }
