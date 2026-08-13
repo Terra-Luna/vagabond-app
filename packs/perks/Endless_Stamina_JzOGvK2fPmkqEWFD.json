@@ -1,0 +1,61 @@
+{
+  "name": "Endless Stamina",
+  "type": "perk",
+  "_id": "JzOGvK2fPmkqEWFD",
+  "img": "/icons/creatures/mammals/bull-horned-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Fatigue doesn’t prevent you from taking the Rush Action and, once per Day, you can remove 1 Fatigue during a Breather.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "might",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "brawl"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786636134384,
+    "modifiedTime": 1786636166270,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!JzOGvK2fPmkqEWFD"
+}

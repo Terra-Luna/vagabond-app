@@ -1,0 +1,48 @@
+{
+  "name": "Drunken Master",
+  "type": "perk",
+  "_id": "VRKilx4DWeZUfSYl",
+  "img": "/icons/consumables/drinks/alcohol-beer-mug-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can attack with 1H Crude Weapons using Finesse.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "brawl",
+              "finesse"
+            ],
+            "andOr": "and"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786636081860,
+    "modifiedTime": 1786636115459,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!VRKilx4DWeZUfSYl"
+}

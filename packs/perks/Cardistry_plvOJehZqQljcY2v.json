@@ -1,0 +1,61 @@
+{
+  "name": "Cardistry",
+  "type": "perk",
+  "_id": "plvOJehZqQljcY2v",
+  "img": "/icons/sundries/gaming/card-astronomy-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use a deck of cards as a Trinket and can make attacks with the cards using your Cast Skill. The cards attack as Daggers, and they are magically replenished when used.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "stat",
+        "stat": "dexterity",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786634528341,
+    "modifiedTime": 1786634602932,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!plvOJehZqQljcY2v"
+}

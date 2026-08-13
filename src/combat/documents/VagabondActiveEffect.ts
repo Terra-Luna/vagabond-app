@@ -70,7 +70,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             img: "icons/svg/terror.svg",
             changes: [
                 { key: "system.statuses.toggles.frightened", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.damage.all", mode: "ADD", value: "-2" }
+                { key: "system.modifiers.damage.out.all", mode: "ADD", value: "-2" }
             ]
         },
         {

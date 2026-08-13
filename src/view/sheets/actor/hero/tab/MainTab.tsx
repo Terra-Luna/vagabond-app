@@ -2,7 +2,7 @@ import { Shield } from "lucide-react"
 import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
-import { WeaponDataModel, isEquippedWeapon, gripStateDamage } from "../../../../../model/item/equip/WeaponDataModel"
+import { WeaponDataModel, isEquippedWeapon } from "../../../../../model/item/equip/WeaponDataModel"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { getId } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
@@ -11,6 +11,7 @@ import { Header, ItemDivider } from "../../../../component/Header"
 import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
+import { useMemo } from "react"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -54,38 +55,39 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={vgLiteLang.HeroSheet.weapons} />
             {
-                equippedWeapons?.map((weapon: WeaponDataModel, index: number) => (
-                    <div
-                        key={getId(weapon)}
-                        draggable
-                        onDragStart={(e) => onDragStart(e, index)}
-                        onDragEnter={(e) => onDragEnter(e, index)}
-                        onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                        onDragEnd={(e) => onDragEnd(e, index)}
-                        onContextMenu={async (e) => onCtxMenu(e, weaponContextMenuItems(hero, weapon))}
-                    >
-                        <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
-                            <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
-                            <div className="flex justify-end">
-                                <div title={"Toggle grip (if applicable)"} className={`${gripStyle} mr-2 hover-glow`} onClick={() => toggleGripState(hero, weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
-                                <div className="flex content-right">
-                                    <div
-                                        title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
-                                        className={`${dmgStyle} hover-glow`}
-                                        onClick={async (e) => {
-                                            HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [], e).initiate()
-                                        }}
-                                    >
-                                        {gripStateDamage(hero, weapon)}
+                equippedWeapons?.map((weapon: WeaponDataModel, index: number) => {
+                    const weaponAtk = HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [])
+                    return (
+                        <div
+                            key={getId(weapon)}
+                            draggable
+                            onDragStart={(e) => onDragStart(e, index)}
+                            onDragEnter={(e) => onDragEnter(e, index)}
+                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                            onDragEnd={(e) => onDragEnd(e, index)}
+                            onContextMenu={async (e) => onCtxMenu(e, weaponContextMenuItems(hero, weapon))}
+                        >
+                            <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
+                                <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
+                                <div className="flex justify-end">
+                                    <div title={"Toggle grip (if applicable)"} className={`${gripStyle} mr-2 hover-glow`} onClick={() => toggleGripState(weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
+                                    <div className="flex content-right">
+                                        <div
+                                            title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
+                                            className={`${dmgStyle} hover-glow`}
+                                            onClick={async (e) => { weaponAtk.initiate(e) }}
+                                        >
+                                            {weaponAtk.damageRoll?.toString()}
+                                        </div>
                                     </div>
                                 </div>
+                                <div className={propsStyle}>{weapon.properties.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
+                                <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[weapon.range]}</div>
                             </div>
-                            <div className={propsStyle}>{weapon.properties.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
-                            <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[weapon.range]}</div>
+                            <ItemDivider />
                         </div>
-                        <ItemDivider />
-                    </div>
-                ))
+                    )
+                })
             }
             <ContextMenu />
         </div>

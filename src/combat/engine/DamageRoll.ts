@@ -39,6 +39,10 @@ export class DamageRoll {
         this.armorPiercing = args.armorPiercing ?? 0
     }
 
+    toString(): string {
+        return this.dice.map(d => d.toRollFormula()).join('+')
+    }
+
     toJson() {
         return {
             atkName: this.atkName,

@@ -100,18 +100,10 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
  * @param hero
  * @param weapon
  */
-export async function toggleGripState(hero: HeroDataModel, weapon: WeaponDataModel) {
+export async function toggleGripState(weapon: WeaponDataModel) {
     if (weapon.grip.style === 'V') {
         if (weapon.grip.state === 'H') {
-            const equppedWeapons = hero.parent.items.filter((it) =>
-                it.type === 'weapon' && it.system.isEquipped && it.system.grip.style != 'F'
-            )
-            if (equppedWeapons.length > 1) {
-                ui.notifications?.warn("Unequip another 1H weapon before 2-handing.")
-            }
-            else {
-                weapon.parent.update({ 'system.grip.state': 'HH' })
-            }
+            weapon.parent.update({ 'system.grip.state': 'HH' })
         }
         else {
             weapon.parent.update({ 'system.grip.state': 'H' })
@@ -153,8 +145,8 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
                 atkName: getName(item),
                 dice: [],
                 dmgType: item.damage.type ?? 'none',
-                flatDmgBonus: hero.modifiers.damage.attack ?? 0,
-                perDieDmgBonus: hero.modifiers.damage.attackPerDie ?? 0
+                flatDmgBonus: hero.modifiers.damage.out.attack ?? 0,
+                perDieDmgBonus: hero.modifiers.damage.out.attackPerDie ?? 0
             }).roll()
             sendVagabondChatMessage(hero, createElement(DamageRollChatCard, {
                 actorId: getId(hero), tokenIds: getTargetIds(), result: dmgRoll
@@ -199,7 +191,7 @@ export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataMo
     ]
     if (weapon.grip.style === 'V') {
         menuItems.push(
-            { icon: HandFist, label: 'Change grip', action: () => toggleGripState(hero, weapon) }
+            { icon: HandFist, label: 'Change grip', action: () => toggleGripState(weapon) }
         )
     }
     menuItems.push(
@@ -214,7 +206,7 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         if (item.isEquipped) {
             if (item instanceof WeaponDataModel && item.grip.style === 'V') {
                 menuItems.push({
-                    icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(hero, item)
+                    icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(item)
                 })
             }
             menuItems.push({

@@ -70,7 +70,7 @@
         "label": "Holy Diver",
         "level": 10,
         "value": 2,
-        "selector": "modifiers.skills.reflex.rollMod"
+        "selector": "modifiers.skillCheck.reflex.modifier"
       },
       {
         "id": "2fQAoohUMDJH26q3",
@@ -78,7 +78,7 @@
         "label": "Holy Diver",
         "level": 10,
         "value": 2,
-        "selector": "modifiers.skills.endure.rollMod"
+        "selector": "modifiers.skillCheck.endure.modifier"
       },
       {
         "id": "0a0UBTlFynT6bepY",
@@ -86,7 +86,7 @@
         "label": "Holy Diver",
         "level": 10,
         "value": 2,
-        "selector": "modifiers.skills.will.rollMod"
+        "selector": "modifiers.skillCheck.will.modifier"
       }
     ],
     "complexity": 3,

@@ -1,0 +1,48 @@
+{
+  "name": "Athame",
+  "type": "perk",
+  "_id": "UNWMVJkvlPcxHmXl",
+  "img": "/icons/weapons/daggers/dagger-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can conduct a 10-minute Ritual with a Dagger, making it your athame until you conduct this ritual again. Your athame is a Relic with the Loyalty Power, and it can be used as a Trinket.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana",
+              "mysticism"
+            ],
+            "andOr": "or"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786633551138,
+    "modifiedTime": 1786633626666,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!UNWMVJkvlPcxHmXl"
+}

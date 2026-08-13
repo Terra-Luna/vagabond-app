@@ -1,0 +1,61 @@
+{
+  "name": "Chicanery",
+  "type": "perk",
+  "_id": "cINs8p5ftD2v8RPx",
+  "img": "/icons/magic/nature/stealth-hide-eyes-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If you fail a Check, it doesn’t alert Beings to your presence, or advance Progress Clocks.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "dexterity",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "sneak"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786634869416,
+    "modifiedTime": 1786634982469,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cINs8p5ftD2v8RPx"
+}

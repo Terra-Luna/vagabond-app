@@ -1,0 +1,61 @@
+{
+  "name": "Animal Companion",
+  "type": "perk",
+  "_id": "oK0cRcUt0oGbLijj",
+  "img": "icons/creatures/mammals/dog-husky-white-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If you spend a Shift taming and training a non-hostile Beast with a HD count no higher than (half your Level, round up), you can have it follow you as a companion. You command it with your Action or by skipping your Move. Otherwise, it instinctively attacks your Enemies. It uses your Survival for Checks. You can only have one such companion at a time.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "presence",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "survival"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786632611783,
+    "modifiedTime": 1786632792670,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!oK0cRcUt0oGbLijj"
+}

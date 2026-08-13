@@ -73,7 +73,7 @@
         "label": "Valor: Level 1",
         "level": 1,
         "value": 1,
-        "selector": "modifiers.dice.crit.melee"
+        "selector": "modifiers.skillCheck.attack.critThreshold"
       },
       {
         "id": "UgeuDdqYCRqm4w22",
@@ -81,7 +81,7 @@
         "label": "Valor: Level 4",
         "level": 4,
         "value": 1,
-        "selector": "modifiers.dice.crit.melee"
+        "selector": "modifiers.skillCheck.attack.critThreshold"
       },
       {
         "id": "RfxgJpCA7nMJfKeu",
@@ -89,7 +89,7 @@
         "label": "Valor: Level 8",
         "level": 8,
         "value": 1,
-        "selector": "modifiers.dice.crit.melee"
+        "selector": "modifiers.skillCheck.attack.critThreshold"
       }
     ],
     "complexity": 1,
@@ -123,7 +123,7 @@
         "name": "Valor",
         "level": 4,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 2.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 2.</span></p>"
       },
       {
         "name": "Muster for Battle",

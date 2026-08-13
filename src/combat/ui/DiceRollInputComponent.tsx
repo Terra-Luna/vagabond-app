@@ -38,8 +38,8 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
         onChange({ explodesOn: numbers })
     }, [])
 
-    const handleExtraDieOnCritChange = useCallback((isChecked: boolean) => {
-        onChange({ extraDieOnCrit: isChecked })
+    const handleExtraDiceOnCritChange = useCallback((value: number) => {
+        onChange({ extraDiceOnCrit: value })
     }, [])
 
     const handleExplodeOnCritOnlyChange = useCallback((isChecked: boolean) => {
@@ -85,9 +85,9 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
 
                     {/* ON-CRIT SETTINGS */}
                     {extendedSettings &&
-                        <div className="flex gap-x-8 justify-between items-center text-sm font-normal mt-0.5 pr-6">
-                            <div className="flex gap-x-1">
-                                <Checkbox label="" checked={diceRoll.extraDieOnCrit ?? false} onCheckedChanged={handleExtraDieOnCritChange} />
+                        <div className="flex gap-x-8 justify-between items-center font-normal mt-0.5 pr-6">
+                            <div className="flex gap-x-1 items-end">
+                                <DiceCountInput dmgDice={diceRoll.extraDiceOnCrit || 0} onUpdateDmgDice={(input) => handleExtraDiceOnCritChange(input)} />
                                 <p>{vgLiteLang.ItemSheet.extraDieOnCrit}</p>
                             </div>
 

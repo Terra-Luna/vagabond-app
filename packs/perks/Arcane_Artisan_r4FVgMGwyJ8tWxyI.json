@@ -1,0 +1,62 @@
+{
+  "name": "Arcane Artisan",
+  "type": "perk",
+  "_id": "r4FVgMGwyJ8tWxyI",
+  "img": "icons/magic/symbols/runes-triangle-orange-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you Craft, you can spend Mana to supplement Materials by 5s per Mana spent.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "reason",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana",
+              "craft"
+            ],
+            "andOr": "and"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786632909346,
+    "modifiedTime": 1786633295422,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!r4FVgMGwyJ8tWxyI"
+}

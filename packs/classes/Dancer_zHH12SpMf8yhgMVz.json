@@ -50,7 +50,7 @@
         "label": "Footloose",
         "level": 1,
         "value": 1,
-        "selector": "modifiers.skills.reflex.extraDice"
+        "selector": "modifiers.skillCheck.reflex.extraDice"
       }
     ],
     "complexity": 2,

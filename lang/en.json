@@ -785,7 +785,7 @@
       "baseManaCost": "Base Mana Cost",
       "explodingDice": "Exploding Dice",
       "canExplode": "Exploding Dice",
-      "extraDieOnCrit": "+1 die on crit",
+      "extraDieOnCrit": "Extra dice on crit",
       "explodeOnCritOnly": "❗crit only",
       "explodesOnTooltip": "Separate values with comma",
       "range": "Range",
@@ -824,8 +824,7 @@
     },
     "GripsAbbr": {
       "H": "1H",
-      "HH": "2H",
-      "F": "F"
+      "HH": "2H"
     },
     "Modifiers": {
       "TargetStat": {

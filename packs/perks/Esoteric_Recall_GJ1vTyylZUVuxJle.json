@@ -1,0 +1,62 @@
+{
+  "name": "Esoteric Recall",
+  "type": "perk",
+  "_id": "GJ1vTyylZUVuxJle",
+  "img": "icons/magic/symbols/triangle-glow-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use your Action or skip your Move to change one of your Spells Known. You can’t use this Ability again until you Rest or take 1 Fatigue to use it again.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana",
+              "mysticism"
+            ],
+            "andOr": "or"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786640170932,
+    "modifiedTime": 1786640266274,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!GJ1vTyylZUVuxJle"
+}

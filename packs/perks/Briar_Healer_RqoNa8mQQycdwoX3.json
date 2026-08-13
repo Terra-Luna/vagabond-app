@@ -1,26 +1,17 @@
 {
-  "name": "Vehement Magic",
+  "name": "Briar Healer",
   "type": "perk",
-  "_id": "eDxdbBsCNsDdTsG0",
-  "img": "icons/magic/symbols/runes-star-pentagon-orange-purple.webp",
+  "_id": "RqoNa8mQQycdwoX3",
+  "img": "icons/magic/nature/barrier-shield-wood-vines.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Damage rolls from Spells you Cast Explode on a roll of 1.</span></p>",
-    "rules": [
-      {
-        "id": "p9rdiGqmdblO4boC",
-        "key": "FlatModifier",
-        "label": "Vehement Magic",
-        "level": 0,
-        "value": 1,
-        "selector": "modifiers.dice.exploding.spell.values"
-      }
-    ],
+    "description": "<p><span style=\"white-space:pre-wrap\">If the Target of a Life Spell you are Focusing on is damaged by a Melee attack, the attacker takes d6 damage.</span></p>",
+    "rules": [],
     "prerequisites": [
       {
         "type": "spell",
         "stat": "might",
         "value": 3,
-        "spell": "Any",
+        "spell": "Life",
         "skills": [
           {
             "skillNames": [
@@ -45,12 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786570220284,
-    "modifiedTime": 1786570331512,
+    "createdTime": 1786633972065,
+    "modifiedTime": 1786634051347,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!eDxdbBsCNsDdTsG0"
+  "_key": "!items!RqoNa8mQQycdwoX3"
 }

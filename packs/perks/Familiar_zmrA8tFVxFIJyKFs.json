@@ -1,0 +1,48 @@
+{
+  "name": "Familiar",
+  "type": "perk",
+  "_id": "zmrA8tFVxFIJyKFs",
+  "img": "/icons/creatures/birds/raptor-owl-flying-moon.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can conduct a 10-minute Ritual to conjure a familiar that you control with your Action or by skipping your Move. The familiar can be any Small Being with HD: 1. It uses your Cast Skill for Checks, and you can Cast Spells from the familiar as if it were originating from you.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">The familiar is banished when it drops to 0 HP or if you conduct this Ritual again to create another familiar.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana",
+              "mysticism"
+            ],
+            "andOr": "or"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786640350386,
+    "modifiedTime": 1786640383451,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!zmrA8tFVxFIJyKFs"
+}

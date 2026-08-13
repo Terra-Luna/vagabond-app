@@ -91,7 +91,7 @@ export class RelicPowers {
                 value: 'keen',
                 label: 'Keen',
                 modifiers: [{
-                    path: 'modifiers.dice.crit.melee', value: 1
+                    path: 'modifiers.skillCheck.*.critThreshold', value: 1
                 }]
             },
             goldValue: 2000,
@@ -111,7 +111,7 @@ export class RelicPowers {
                 value: 'vicious',
                 label: 'Vicious',
                 modifiers: [{
-                    path: 'modifiers.dice.crit.meleeExtraDie', value: 1
+                    path: 'modifiers.dice.crit.*.extraDice', value: 1
                 }]
             },
             goldValue: 2000,
@@ -190,9 +190,9 @@ export class RelicPowers {
                 value: 'prot-1',
                 label: 'Protection +1',
                 modifiers: [
-                    { path: 'modifiers.skills.reflex.rollMod', value: 1},
-                    { path: 'modifiers.skills.endure.rollMod', value: 1},
-                    { path: 'modifiers.skills.will.rollMod', value: 1}
+                    { path: 'modifiers.skillCheck.reflex.modifier', value: 1 },
+                    { path: 'modifiers.skillCheck.endure.modifier', value: 1 },
+                    { path: 'modifiers.skillCheck.will.modifier', value: 1 }
                 ]
             },
             goldValue: 1000,
@@ -205,9 +205,9 @@ export class RelicPowers {
                 value: 'prot-2',
                 label: 'Protection +2',
                 modifiers: [
-                    { path: 'modifiers.skills.reflex.rollMod', value: 2 },
-                    { path: 'modifiers.skills.endure.rollMod', value: 2 },
-                    { path: 'modifiers.skills.will.rollMod', value: 2 }
+                    { path: 'modifiers.skillCheck.reflex.modifier', value: 2 },
+                    { path: 'modifiers.skillCheck.endure.modifier', value: 2 },
+                    { path: 'modifiers.skillCheck.will.modifier', value: 2 }
                 ]
             },
             goldValue: 10000,
@@ -220,9 +220,9 @@ export class RelicPowers {
                 value: 'prot-3',
                 label: 'Protection +3',
                 modifiers: [
-                    { path: 'modifiers.skills.reflex.rollMod', value: 3 },
-                    { path: 'modifiers.skills.endure.rollMod', value: 3 },
-                    { path: 'modifiers.skills.will.rollMod', value: 3 }
+                    { path: 'modifiers.skillCheck.reflex.modifier', value: 3 },
+                    { path: 'modifiers.skillCheck.endure.modifier', value: 3 },
+                    { path: 'modifiers.skillCheck.will.modifier', value: 3 }
                 ]
             },
             goldValue: 100000,
@@ -231,42 +231,78 @@ export class RelicPowers {
         {
             id: 'bonus-trinket-1',
             category: { value: 'bonus', label: 'Bonus' },
-            power: { value: 'trinket-1', label: 'Trinket +1' },
+            power: {
+                value: 'trinket-1',
+                label: 'Trinket +1',
+                modifiers: [
+                    { path: 'modifiers.damage.out.spell', value: 1 }
+                ]
+            },
             goldValue: 200,
             description: ''
         },
         {
             id: 'bonus-trinket-2',
             category: { value: 'bonus', label: 'Bonus' },
-            power: { value: 'trinket-2', label: 'Trinket +2' },
+            power: {
+                value: 'trinket-2',
+                label: 'Trinket +2',
+                modifiers: [
+                    { path: 'modifiers.damage.out.spell', value: 2 }
+                ]
+            },
             goldValue: 2500,
             description: ''
         },
         {
             id: 'bonus-trinket-3',
             category: { value: 'bonus', label: 'Bonus' },
-            power: { value: 'trinket-3', label: 'Trinket +3' },
+            power: {
+                value: 'trinket-3',
+                label: 'Trinket +3',
+                modifiers: [
+                    { path: 'modifiers.damage.out.spell', value: 3 }
+                ]
+            },
             goldValue: 10000,
             description: ''
         },
         {
             id: 'bonus-weapon-1',
             category: { value: 'bonus', label: 'Bonus' },
-            power: { value: 'weapon-1', label: 'Weapon +1' },
+            power: {
+                value: 'weapon-1',
+                label: 'Weapon +1',
+                modifiers: [
+                    { path: 'modifiers.damage.out.attack', value: 1 }
+                ]
+            },
             goldValue: 100,
             description: ''
         },
         {
             id: 'bonus-weapon-2',
             category: { value: 'bonus', label: 'Bonus' },
-            power: { value: 'weapon-2', label: 'Weapon +2' },
+            power: {
+                value: 'weapon-2',
+                label: 'Weapon +2',
+                modifiers: [
+                    { path: 'modifiers.damage.out.attack', value: 2 }
+                ]
+            },
             goldValue: 1250,
             description: ''
         },
         {
             id: 'bonus-weapon-3',
             category: { value: 'bonus', label: 'Bonus' },
-            power: { value: 'weapon-3', label: 'Weapon +3' },
+            power: {
+                value: 'weapon-3',
+                label: 'Weapon +3',
+                modifiers: [
+                    { path: 'modifiers.damage.out.attack', value: 3 }
+                ]
+            },
             goldValue: 5000,
             description: ''
         },
@@ -354,7 +390,7 @@ export class RelicPowers {
                 value: 'weak-1',
                 label: 'Weakness -1',
                 modifiers: [{
-                    path: 'modifiers.damage.attack', value: -1
+                    path: 'modifiers.damage.out.attack', value: -1
                 }]
             },
             goldValue: 0,
@@ -368,7 +404,7 @@ export class RelicPowers {
                 value: 'weak-2',
                 label: 'Weakness -2',
                 modifiers: [{
-                    path: 'modifiers.damage.attack', value: -2
+                    path: 'modifiers.damage.out.attack', value: -2
                 }]
             },
             goldValue: 0,
@@ -382,7 +418,7 @@ export class RelicPowers {
                 value: 'weak-3',
                 label: 'Weakness -3',
                 modifiers: [{
-                    path: 'modifiers.damage.attack', value: -3
+                    path: 'modifiers.damage.out.attack', value: -3
                 }]
             },
             goldValue: 0,

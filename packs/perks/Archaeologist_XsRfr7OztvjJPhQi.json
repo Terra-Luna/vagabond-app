@@ -1,0 +1,61 @@
+{
+  "name": "Archaeologist",
+  "type": "perk",
+  "_id": "XsRfr7OztvjJPhQi",
+  "img": "icons/sundries/scrolls/scroll-symbol-eye-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks and Saves against traps have Favor and, when you are subjected to a Curse (p. 99), you can make a Will Save to try to instantly break the curse’s hold on you.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "reason",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "craft"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786633318060,
+    "modifiedTime": 1786633518592,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!XsRfr7OztvjJPhQi"
+}

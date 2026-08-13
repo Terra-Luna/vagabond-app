@@ -1,0 +1,47 @@
+{
+  "name": "Climber",
+  "type": "perk",
+  "_id": "cSruT3so8sfezbY2",
+  "img": "/icons/tools/fishing/hook-multi-steel-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain Climb.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "dexterity",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786634996809,
+    "modifiedTime": 1786635903000,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cSruT3so8sfezbY2"
+}

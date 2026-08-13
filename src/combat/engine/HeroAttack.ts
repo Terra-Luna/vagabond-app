@@ -3,7 +3,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { Attack } from "./Attack"
-import { SkillCheck } from "./SkillCheck"
+import { SkillCheck, SkillCheckType } from "./SkillCheck"
 import { InteractiveAttackChatCard } from "../ui/InteractiveAttackChatCard"
 import { serializeAttack } from "./util/attack-serializer"
 import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
@@ -94,8 +94,9 @@ export class HeroAttack extends Attack {
         return (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets && isDmgOrEffect)
     }
 
-    async initiate() {
-        if (this.hasHostileTargets && !this.skipSkillCheck) {
+    async initiate(clickEvent?: any) {
+        if (this.skillCheck && this.hasHostileTargets && !this.skipSkillCheck) {
+            this.skillCheck.clickEvent = clickEvent
             await this.rollSkillCheck()
         }
 
@@ -309,13 +310,13 @@ export class HeroAttack extends Attack {
         actor: Actor & { system: HeroDataModel },
         item: Item & { system: WeaponDataModel },
         skill?: string,
-        extraDice?: DiceRoll[],
-        clickEvent?: any
-    ) {
+        extraDice?: DiceRoll[]
+    ): HeroAttack {
         const hero = actor.system
         const weapon = item.system
-        const mods = hero.modifiers
-        const damageDice = new DiceRoll(DiceRoll.getWeaponDamageWithHeroMods(actor.system, item.system))
+        const isKeen = weapon.properties.includes('keen')
+        const dmgMods = hero.modifiers.damage
+
         let weaponSkill = skill
 
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
@@ -324,28 +325,20 @@ export class HeroAttack extends Attack {
             weaponSkill = defaultSkill.skill ?? 'melee'
         }
 
-        const isRanged = weaponSkill === 'ranged'
-        const isKeen = weapon.properties.includes('keen')
-        damageDice.extraDieOnCrit =
-            weapon.properties.includes('vicious') ||
-            (isRanged && mods.dice.crit.rangedExtraDie) ||
-            (!isRanged && mods.dice.crit.meleeExtraDie)
+        const damageDice = new DiceRoll(DiceRoll.getWeaponDamageWithHeroMods(hero, weaponSkill, weapon))
 
         const skillCheck = new SkillCheck(hero, {
+            type: 'attack',
             skill: weaponSkill!,
-            critThreshold: 20 - (isRanged
-                ? (mods.dice.crit.ranged ?? 0)
-                : (mods.dice.crit.melee ?? 0)
-            ) - (isKeen ? 1 : 0),
-            clickEvent: clickEvent
+            critThreshold: 20 - (isKeen ? 1 : 0)
         })
 
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? []],
-            flatDmgBonus: (mods.damage.all ?? 0) + (mods.damage.attack ?? 0),
-            perDieDmgBonus: (mods.damage.allPerDie ?? 0) + (mods.damage.attackPerDie ?? 0),
+            flatDmgBonus: (dmgMods.out.all ?? 0) + (dmgMods.out.attack ?? 0),
+            perDieDmgBonus: (dmgMods.out.allPerDie ?? 0) + (dmgMods.out.attackPerDie ?? 0),
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, damageRoll)
@@ -370,7 +363,7 @@ export class HeroAttack extends Attack {
             actor.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) } as Record<string, number>)
         }
 
-        const skillCheck = new SkillCheck(hero, { skill: skill, clickEvent: clickEvent })
+        const skillCheck = new SkillCheck(hero, { type: 'cast', skill: skill, clickEvent: clickEvent })
 
         let damageRoll: DamageRoll | undefined = undefined
 
@@ -378,12 +371,12 @@ export class HeroAttack extends Attack {
             const isHealing = delivery.spell.damageType === 'healing'
 
             const dieSizeMod = isHealing
-                ? hero.modifiers.dice.size.spellHealing ?? 0
-                : hero.modifiers.dice.size.spell ?? 0
+                ? hero.modifiers.dice.size.spellHealing.bonus ?? 0
+                : hero.modifiers.dice.size.spell.bonus ?? 0
 
             const explosionsMod = isHealing
-                ? hero.modifiers.dice.exploding.spellHealing
-                : hero.modifiers.dice.exploding.spell
+                ? hero.modifiers.dice.exploding.spellHealing.values
+                : hero.modifiers.dice.exploding.spell.values
 
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,
@@ -394,8 +387,8 @@ export class HeroAttack extends Attack {
                     modifier: 0,
                     explodesOn: explosionsMod as number[]
                 })],
-                flatDmgBonus: (hero.modifiers.damage.all ?? 0) + (hero.modifiers.damage.spell ?? 0),
-                perDieDmgBonus: (hero.modifiers.damage.allPerDie ?? 0) + (hero.modifiers.damage.spellPerDie ?? 0)
+                flatDmgBonus: (hero.modifiers.damage.out.all ?? 0) + (hero.modifiers.damage.out.spell ?? 0),
+                perDieDmgBonus: (hero.modifiers.damage.out.allPerDie ?? 0) + (hero.modifiers.damage.out.spellPerDie ?? 0)
             })
         }
         else {
@@ -416,8 +409,9 @@ export class HeroAttack extends Attack {
     }
 
     static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset) {
-        const makeSkillCheck = () => {
+        const makeSkillCheck = (type: SkillCheckType) => {
             return new SkillCheck(actor.system, {
+                type: type,
                 skill: preset.skill,
                 d20Count: preset.d20Count,
                 modifier: preset.skillCheckMod,
@@ -441,7 +435,7 @@ export class HeroAttack extends Attack {
             const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
             if (!weapon) return
 
-            const skillCheck = makeSkillCheck()
+            const skillCheck = makeSkillCheck('attack')
             const damageRoll = makeDamageRoll(weapon)
 
             const attack = new HeroAttack(weapon.name, actor, getTargetIds(), skillCheck, damageRoll)
@@ -450,7 +444,7 @@ export class HeroAttack extends Attack {
             attack.initiate()
         }
         else if (preset.skill && !preset.damageRolls || preset.damageRolls.length === 0) {
-            const result = await makeSkillCheck().roll()
+            const result = await makeSkillCheck('check').roll()
             sendVagabondChatMessage(
                 actor,
                 createElement(SkillCheckChatCard, { actorId: actor.id ?? '', result: result }),

@@ -1,5 +1,6 @@
 import { DamageRoll } from "../../../combat/engine/DamageRoll"
 import { DiceRoll } from "../../../combat/engine/DiceRoll"
+import { HeroAttack } from "../../../combat/engine/HeroAttack"
 import { lang } from "../../../utils/lang"
 import { HeroDataModel } from "../../actor/HeroDataModel"
 import { damageTypeOptions, fields, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
@@ -70,12 +71,4 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
 
 export const isEquippedWeapon = (item: any): boolean => {
     return item.parent.type === 'weapon' && item.isEquipped
-}
-
-export const gripStateDamage = (hero: HeroDataModel, weapon: WeaponDataModel): string => {
-    const roll = DiceRoll.getWeaponDamageWithHeroMods(hero, weapon)
-    if (weapon.grip.style === 'V' && weapon.grip.state === 'HH') {
-        roll.faces += 2
-    }
-    return new DiceRoll(roll).toRollFormula()
 }

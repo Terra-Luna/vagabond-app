@@ -44,7 +44,7 @@
             "label": "Radiant Healer",
             "level": 1,
             "value": 6,
-            "selector": "statuses.modifiers.dice.exploding.spellHealing"
+            "selector": "statuses.modifiers.dice.exploding.spellHealing.values"
         },
         {
             "id": "Vq85xl2ccTb2nnEs",

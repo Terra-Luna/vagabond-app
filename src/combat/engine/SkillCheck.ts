@@ -3,7 +3,10 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { getDiceTerms } from "./util/dice-utils"
 
+export type SkillCheckType = 'attack' | 'cast' | 'save' | 'check'
+
 export interface SkillCheckArgs {
+    type: SkillCheckType
     skill: string
     d20Count?: number
     modifier?: number
@@ -28,6 +31,7 @@ export interface SkillCheckResult {
 }
 
 export class SkillCheck {
+    type: SkillCheckType
     skill: string
     difficulty: number
     d20Count: number
@@ -38,12 +42,19 @@ export class SkillCheck {
     result: SkillCheckResult | undefined
 
     constructor(hero: HeroDataModel, args: SkillCheckArgs) {
-        const skillMods = hero.modifiers.skills[args.skill]
+        const skillMods = hero.modifiers.skillCheck[args.skill]
+        const globalMods = args.type === 'attack'
+            ? hero.modifiers.skillCheck.attack
+            : (args.type === 'cast'
+                ? hero.modifiers.skillCheck.cast
+                : undefined)
+
+        this.type = args.type
         this.skill = args.skill
         this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
-        this.d20Count = args.d20Count ?? (1 + skillMods.extraDice)
-        this.modifier = args.modifier ?? skillMods.rollMod
-        this.critThreshold = args.critThreshold ?? (20 + skillMods.critMod)
+        this.d20Count = args.d20Count ?? (1 + skillMods.extraDice + (globalMods?.extraDice ?? 0))
+        this.modifier = args.modifier ?? (skillMods.modifier + (globalMods?.modifier ?? 0))
+        this.critThreshold = args.critThreshold ?? (20 - (skillMods.critThreshold + (globalMods?.critThreshold ?? 0)))
         this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
         this.clickEvent = args.clickEvent
     }
@@ -64,6 +75,7 @@ export class SkillCheck {
         if (!snapshot) return undefined
         try {
             const skillCheck = new SkillCheck(actor.system, {
+                type: snapshot.type,
                 skill: snapshot.skill,
                 d20Count: snapshot.d20Count,
                 modifier: snapshot.modifier,

@@ -1,0 +1,61 @@
+{
+  "name": "Ambusher",
+  "type": "perk",
+  "_id": "Vau3eNWeeNFpFOFr",
+  "img": "/icons/magic/nature/stealth-hide-eyes-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on attacks to initiate Combat and against Beings that haven’t acted in that Combat.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "awareness",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "sneak"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786632369413,
+    "modifiedTime": 1786632588493,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Vau3eNWeeNFpFOFr"
+}

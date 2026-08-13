@@ -78,7 +78,7 @@
         "label": "Spell-Slinger",
         "level": 2,
         "value": 1,
-        "selector": "modifiers.dice.crit.spell",
+        "selector": "modifiers.skillCheck.cast.critThreshold",
         "scale": 6
       }
     ],

@@ -85,7 +85,7 @@
         "label": "Radiant Healer",
         "level": 1,
         "value": 6,
-        "selector": "modifiers.dice.exploding.spellHealing"
+        "selector": "modifiers.dice.exploding.spellHealing.values"
       },
       {
         "id": "gjioL27qy0dNK5VW",
@@ -93,7 +93,7 @@
         "label": "Saving Grace",
         "level": 8,
         "value": 2,
-        "selector": "modifiers.dice.exploding.spellHealing"
+        "selector": "modifiers.dice.exploding.spellHealing.values"
       }
     ],
     "complexity": 3,

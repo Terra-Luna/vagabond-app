@@ -1,0 +1,49 @@
+{
+  "name": "Conjurer",
+  "type": "perk",
+  "_id": "V49o2G8mXKQvgXyT",
+  "img": "icons/magic/symbols/star-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can take the Cast Action to conjure a Summon, a Being with HD: (your Level or lower), spending Mana to do so equal to its HD. You must conduct a 10-minute Ritual to determine your Summon before doing so. The following rules apply to your Summon:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• You command it as an Action or by skipping your Move.</span></p><p><span style=\"white-space:pre-wrap\">• It uses your Cast Skill for Checks and Saves.</span></p><p><span style=\"white-space:pre-wrap\">• You must Focus on it, spending 1 Mana to do so each Turn. Otherwise, it is banished.</span></p><p><span style=\"white-space:pre-wrap\">• When it is reduced to 0 HP, it is banished.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana",
+              "influence",
+              "mysticism"
+            ],
+            "andOr": "or"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786635927298,
+    "modifiedTime": 1786636013224,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!V49o2G8mXKQvgXyT"
+}
