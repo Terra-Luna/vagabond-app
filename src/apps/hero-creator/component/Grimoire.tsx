@@ -6,7 +6,7 @@ export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
     const strings = vgLiteLang.HeroCreation
 
     return (
-        <div className="space-y-1 mt-4">
+        <div className="space-y-1 mt-2">
             <HeroCreationLabel text={strings.grimoire} />
 
             {/* GRANTED SPELLS */}

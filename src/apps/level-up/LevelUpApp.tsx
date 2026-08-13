@@ -1,7 +1,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { getClonedFlags, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 import { VagabondApplication, VagabondAppArgs } from "../VagabondApplication"
-import { LevelUpView } from "./LevelUpView"
+import { LevelUpArgs, LevelUpView } from "./LevelUpView"
 
 export class LevelUpApp extends VagabondApplication {
 
@@ -29,30 +29,29 @@ export class LevelUpApp extends VagabondApplication {
         return {
             ...super.getReactProps(),
             actor: this.actor,
-            onSave: (args: {
-                advancement?: PerkBonusSelection,
-                spell?: PerkBonusSelection,
-                perkTraining?: PerkBonusSelection,
-                isComplete?: boolean
-            }) => this.handleSave(args)
+            onSave: (args: LevelUpArgs) => this.handleSave(args)
         }
     }
 
     /**
      * Persists changes directly to the World Scope configuration DB.
      */
-    private async handleSave(args: {
-        advancement?: PerkBonusSelection,
-        spell?: PerkBonusSelection,
-        perkTraining?: PerkBonusSelection,
-        isComplete?: boolean
-    }): Promise<void> {
+    private async handleSave(args: LevelUpArgs): Promise<void> {
         if (args.isComplete) {
             const level = this.actor.system.level
-            await this.actor.update({
+
+            const updates: Record<string, any> = {
                 'system.level.current': (level.current ?? 0) + 1,
                 'system.level.xp': (level.xp ?? 0) - (level.xpToLevel ?? 0)
-            } as Record<string, number>)
+            }
+
+            if (args.levelUpStat) {
+                // Use _source here to get their true database stat value (no modifiers).
+                const currentValue = this.actor._source.system.stats[args.levelUpStat] ?? 0
+                updates[`system.stats.${args.levelUpStat}`] = currentValue + 1
+            }
+
+            await this.actor.update(updates)
 
             /**
              * Merges any new perk bonus choices into their existing flags...

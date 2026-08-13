@@ -41,7 +41,8 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
                             {`${rule.label || "Unnamed Feature"}`}
                         </div>
                         <div className="text-text-secondary font-normal italic">
-                            {`${rule.selections?.length > 0 ? ` (${rule.selections?.map(s => cleanSelectionName(s))?.join(", ")})` : ""}`}
+                            {`${rule.selections?.length > 0
+                                ? ` (${rule.selections?.filter(s => s.length > 0).map(s => cleanSelectionName(s))?.join(", ")})` : ""}`}
                         </div>
                     </div>
                     <div className="text-xs text-text-primary">

@@ -97,19 +97,21 @@ export const useSpellSelection = (
 
         <div className="flex flex-col w-full justify-center">
             <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto">
-                <div className="mt-4 space-y-1">
-                    {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
-                        <HeroCreationLabel text={strings.grantedSpells} />
-                    }
-                    {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
-                        <ItemGrantCard key={`grant-${index}`} name={grant.item} source={grant.source} />
-                    ))}
-                    {!isCreationMode && ancestrySpellSlots.length > 0 &&
-                        ancestrySpellSlots.map((slot, idx) => (<ItemGrantCard key={`ancestry-slot-view-${idx}`} name={slot.label} source={slot.ruleName} />))
-                    }
-                </div>
+                {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
+                    <div className="mt-4 space-y-1">
+                        {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
+                            <HeroCreationLabel text={strings.grantedSpells} />
+                        }
+                        {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
+                            <ItemGrantCard key={`grant-${index}`} name={grant.item} source={grant.source} />
+                        ))}
+                        {!isCreationMode && ancestrySpellSlots.length > 0 &&
+                            ancestrySpellSlots.map((slot, idx) => (<ItemGrantCard key={`ancestry-slot-view-${idx}`} name={slot.label} source={slot.ruleName} />))
+                        }
+                    </div>
+                }
 
-                <div className="mt-4 space-y-2">
+                <div className="mt-2 space-y-2">
                     <HeroCreationSubtext text={strings.classSpells} />
                     <ItemSelectorGroup
                         slotGroup={classSpellSlots}

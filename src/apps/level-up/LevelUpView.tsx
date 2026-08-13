@@ -7,16 +7,25 @@ import { usePerkSelectionView } from "../hero-choices/PerkSelectionView"
 import { useSpellSelectionView } from "../hero-choices/SpellSelectionView"
 import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
 import { PerkBonusSelection } from "./LevelUpApp"
+import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
+import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
+import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
 
-export const LevelUpView = ({ actor, onSave }: {
-    actor: Actor & { system: HeroDataModel },
-    onSave: (args: { advancement?: PerkBonusSelection, spell?: PerkBonusSelection, perkTraining?: PerkBonusSelection, isComplete?: boolean }) => void
-}) => {
+export interface LevelUpArgs {
+    levelUpStat?: string
+    advancement?: PerkBonusSelection
+    spell?: PerkBonusSelection
+    perkTraining?: PerkBonusSelection
+    isComplete?: boolean
+}
 
+export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDataModel }, onSave: (args: LevelUpArgs) => void }) => {
+
+    const [levelUpStat, setLevelUpStat] = useState<string | undefined>()
     const nextLevel = actor.system.level.current! + 1
     const classFeature = actor.system.class.features
         .find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.scale ?? 0))
@@ -64,23 +73,28 @@ export const LevelUpView = ({ actor, onSave }: {
 
     const showSpellSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'spell') }, [])
 
+    useEffect(() => {
+        resetPerkBonusSelections()
+    }, [latestPerk])
+
+    const upgradableStatsOptions = () => {
+        const allOptions = [{ value: '', label: '-' }, ...createDropdownEntriesFromObj(vgLiteLang.Stat)]
+        return allOptions.filter(it => it.value === '' || (stats?.find(s => s.stat === it.value)?.value ?? 0) < 7)
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const noSelectionsRequired = !showPerkSelection && !showSpellSelection
+        const isStatSelected = nextLevel % 2 > 0 || levelUpStat || upgradableStatsOptions().length === 1
         const isBonusSelectionMade = (!showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining)))
-        const isDone = noSelectionsRequired || (latestPerk && isBonusSelectionMade)
+        const isDone = isStatSelected && latestPerk && isBonusSelectionMade
         if (isDone) {
             setClassPerkSlots(classPerkSlots.map(slot => ({ ...slot, isLocked: true })))
-            onSave({ advancement: advancement, spell: spell, perkTraining: perkTraining, isComplete: true })
+            onSave({ levelUpStat: levelUpStat, advancement: advancement, spell: spell, perkTraining: perkTraining, isComplete: true })
         }
         else {
             ui.notifications?.warn("Complete selections to Save.")
         }
     }
-
-    useEffect(() => {
-        resetPerkBonusSelections()
-    }, [latestPerk])
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col h-full bg-sheet-main-fill p-2">
@@ -90,7 +104,11 @@ export const LevelUpView = ({ actor, onSave }: {
                     {vgLiteLang.ButtonActions.cancel}
                 </DestructiveButton>
 
-                <p className="text-2xl text-text-primary font-eskapade font-bold">LEVEL UP</p>
+                <p className="flex gap-x-2 items-center text-2xl text-text-primary font-eskapade font-bold">
+                    <ArrowsUpFromLine size={24} className="text-wealth-denom-label" />
+                    LEVEL UP
+                    <ArrowsUpFromLine size={24} className="text-wealth-denom-label" />
+                </p>
 
                 <PrimaryButton type="submit" icon={<ArrowsUpFromLine size={16} />}>
                     Save & Finish
@@ -100,25 +118,42 @@ export const LevelUpView = ({ actor, onSave }: {
             <div className="my-1"><Divider /></div>
 
             {/* SCROLLABLE BODY SECTION */}
-            <div className="@container flex flex-col grow h-full overflow-y-auto">
-                {/* CLASS FEATURE CARD */}
-                {classFeature &&
-                    <div className="space-y-1">
-                        <Header title={"CLASS FEATURE"} />
-                        <SkillCard
-                            title={classFeature.name}
-                            subtitles={[{ label: "Level", value: classFeature.level }]}
-                            description={classFeature.description}
-                            startCollapsed={false}
-                        />
-                    </div>
-                }
-
+            <div className="@container flex flex-col grow h-full gap-y-2 overflow-y-auto">
                 {/* NO SELECTIONS REQUIRED */}
-                {levelUpChoices.length === 0 &&
+                {levelUpChoices.length === 0 && upgradableStatsOptions().length === 1 &&
                     <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
                         No selections required.
                     </p>
+                }
+
+                {/* CLASS FEATURE CARD */}
+                {(classFeature || nextLevel % 2 === 0) &&
+                    <div className="flex gap-x-2">
+                        {classFeature &&
+                            <div className="flex-1 space-y-1">
+                                <Header title={"CLASS FEATURE"} />
+                                <SkillCard
+                                    title={classFeature.name}
+                                    subtitles={[{ label: "Level", value: classFeature.level }]}
+                                    description={classFeature.description}
+                                    startCollapsed={false}
+                                />
+                            </div>
+                        }
+                        {nextLevel % 2 === 0 && upgradableStatsOptions().length > 1 &&
+                            <div className="flex-1 space-y-1 text-center">
+                                <Header title="STAT INCREASE" />
+                                <HeroCreationLabel text={"Select a stat (Max: 7)"} />
+                                <div className="flex w-full justify-center">
+                                    <HeroCreationDropdown
+                                        value={levelUpStat ?? ''}
+                                        options={upgradableStatsOptions()}
+                                        onChange={(selection: string) => setLevelUpStat(selection)}
+                                    />
+                                </div>
+                            </div>
+                        }
+                    </div>
                 }
 
                 <div className={`grid gap-4 w-full ${showPerkSelection && showSpellSelection

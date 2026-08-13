@@ -131,16 +131,14 @@ export const usePerkSelection = (
                     {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
 
                     {/* GRANTED PERKS */}
-                    <div className="mt-4 space-y-1">
-                        {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
+                    {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
+                        <div className="mt-4 space-y-1">
                             <HeroCreationLabel text={strings.grantedPerks} />
-                        }
-                        {
-                            [...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
+                            {[...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
                                 <ItemGrantCard key={index} name={grant.item} source={grant.source} />
-                            ))
-                        }
-                    </div>
+                            ))}
+                        </div>
+                    }
 
                     {/* CHOOSE CLASS PERKS */}
                     {classPerkSlots.length > 0 &&
