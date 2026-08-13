@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -49,7 +49,7 @@
         "key": "ChoiceSet",
         "label": "Survivalist: Perk",
         "level": "1",
-        "recurEvery": 0,
+        "scale": 0,
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -76,43 +76,43 @@
       {
         "name": "Hunter's Mark",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can choose a Target when you attack it or by skipping your Move, declaring it is your Mark until you declare a new Mark. The following rules apply while you have a Mark:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Your attacks against it have the Keen and Vicious properties.</span></p><p><span style=\"white-space: pre-wrap;\">• When you attack or track the Mark, roll two d20s and use the highest for the Check.</span></p>"
       },
       {
         "name": "Survivalist",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk with Survival Training as a Prerequisite, ignoring other prerequisites for it. Further, you have Favor on Checks to track, navigate, and against extreme temperatures, and you can Forage at a Normal Travel Pace.</span></p>"
       },
       {
         "name": "Rover",
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Difficult Terrain doesn’t impede your walking Speed, and you have Climb and Swim.</span></p>"
       },
       {
         "name": "Overwatch",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Your additional d20 of Hunter’s Mark also applies to your Saves provoked by the Mark.</span></p>"
       },
       {
         "name": "Lethal Precision",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You ignore Hinder caused by your Mark.</span></p>"
       },
       {
         "name": "Quarry",
         "level": 8,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can sense Beings within Far as if by Blindsight if they are missing any HP or are your Mark.</span></p>"
       },
       {
         "name": "Apex Predator",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Your Mark is Weak to your attacks.</span></p>"
       }
     ]

@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -49,43 +49,43 @@
       {
         "name": "Fisticuffs",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Your Equipped Brawl Weapons have the Defense and Vicious properties and use a d4 for the damage if it was previously smaller. Further, when you hit an Enemy with a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your Brawl Weapons one die size until the start of your Turn.</span></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
       },
       {
         "name": "Rope-a-Dome",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Check Hook Perk (p. 67) and can also Move 10’ without using Speed before or after you make its attack.</span></p>"
       },
       {
         "name": "Moxie",
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p>"
       },
       {
         "name": "Iron Jaw",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">The first time each Shift that you are reduced to 0 HP from damage, you can choose to instead be at (MIT + your Level) HP and immediately take an Action and Move up to 10’ without using Speed. At 8th Level, you can use this Ability once per Hour.</span></p>"
       },
       {
         "name": "Haymaker",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">If you roll a 6 or higher on the damage die of a Brawl attack, the Target is Dazed until the start of your Turn.</span></p>"
       },
       {
         "name": "Iron Jaw",
         "level": 8,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can use this Ability once per Hour.</span></p>"
       },
       {
         "name": "TItle Holder",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You use a d6 for the damage of Equipped Brawl Weapons if the damage was previously smaller.</span></p>"
       }
     ]

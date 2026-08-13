@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -64,37 +64,37 @@
     "features": [
       {
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Alchemy",
         "description": "<p><span style=\"white-space: pre-wrap;\">Choose 4 Alchemical Items (p. 84) with a value no higher than (your Level × 50s). You only need 5s of Materials and Alchemy Tools equipped to Craft them.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">You learn to Craft 1 other Alchemical Item this way every 2 Levels hereafter.</span></p>"
       },
       {
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Catalyze",
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Deft Hands Perk (p. 68), and can Craft Alchemical Items with the Use Action.</span></p>"
       },
       {
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Eureka",
         "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Craft Check by 10 or more, you gain a Studied die (p. 18). The roll required to do so is decreased by 1 every 4 Levels hereafter.</span></p>"
       },
       {
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Potency",
         "description": "<p><span style=\"white-space: pre-wrap;\">The damage and healing dice of your Alchemical Items can Explode.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">At 8th Level, they can Explode on a roll of their two highest values.</span></p>"
       },
       {
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Mix",
         "description": "<p><span style=\"white-space: pre-wrap;\">You can combine two Alchemical Items together with the Use Action by spending a Studied die, causing both Items to occur simultaneously when used. The combined Item goes inert at the start of your next Turn.</span></p>"
       },
       {
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Prima Materia",
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Day, you can Craft an Alchemical Item with a value as high as 10g without Materials.</span></p>"
       }

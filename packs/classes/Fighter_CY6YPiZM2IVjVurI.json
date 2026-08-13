@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -104,43 +104,43 @@
       {
         "name": "Fighting Style",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Situational Awareness Perk (p. 72) and another Perk with the Melee or Ranged Training Prerequisite (p. 64), ignoring prerequisites for this Perk.</span></p>"
       },
       {
         "name": "Valor",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more when you reach 4th and 8th Levels.</span></p>"
       },
       {
         "name": "Momentum",
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an attack, your next attack before the end of your Turn is Favored.</span></p>"
       },
       {
         "name": "Valor",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 2.</span></p>"
       },
       {
         "name": "Muster for Battle",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You have two Actions on your first Turn.</span></p>"
       },
       {
         "name": "Valor",
         "level": 8,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 3.</span></p>"
       },
       {
         "name": "Harrying",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">When you take the Attack Action, you can make one extra attack.</span></p>"
       }
     ]

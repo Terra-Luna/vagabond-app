@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -41,7 +41,7 @@
         "key": "ChoiceSet",
         "label": "Righteous: Level 1 Spells",
         "level": "1",
-        "recurEvery": 0,
+        "scale": 0,
         "maxChoices": 2,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -55,7 +55,7 @@
         "key": "ChoiceSet",
         "label": "Righteous: Spells",
         "level": "4",
-        "recurEvery": "3",
+        "scale": "3",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -102,37 +102,37 @@
       {
         "name": "Righteous",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Gish Perk (p. 68), can Cast Spells using Leadership.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always have a damage base. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (2 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (1 + half</span></p><p><span style=\"white-space: pre-wrap;\">your Level, round up).</span></p>"
       },
       {
         "name": "Enspell",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can have one Imbue Casting as continual duration on your Weapon, and can skip your Move to change the Spell.</span></p>"
       },
       {
         "name": "Lay on Hands",
         "level": 2,
-        "recurEvery": 6,
+        "scale": 6,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d6 + your Level) HP to yourself or a Close Being. The healing increases by another d6 every 6 Levels hereafter.</span></p>"
       },
       {
         "name": "Paragon's Aura",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Casting a Spell with an Aura Delivery is free for you, but you must spend Mana on Focus and upcast costs.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target for no Mana.</span></p>"
       },
       {
         "name": "Divine Resolve",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Blinded, Paralyzed, or Sickened, and Targets of your Lay on Hands Feature are cured of these Statuses as well.</span></p>"
       },
       {
         "name": "Holy Diver",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You have a +2 bonus to Saves.</span></p>"
       }
     ]

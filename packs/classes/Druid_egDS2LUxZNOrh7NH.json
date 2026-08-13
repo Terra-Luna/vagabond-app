@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -69,7 +69,7 @@
         "selections": [],
         "pack": "spell",
         "filters": [],
-        "recurEvery": "2"
+        "scale": "2"
       }
     ],
     "complexity": 3,
@@ -84,37 +84,37 @@
       {
         "name": "Primal Mystic",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, one of which must always be Polymorph. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana: </strong></b><span style=\"white-space: pre-wrap;\">Your Max Mana is equal to (4 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (2 + your Level).</span></p>"
       },
       {
         "name": "Feral Shift",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You get the Shapechanger Perk (p. 72) and you can take an Action of the Beast as a part of the Cast Action.</span></p>"
       },
       {
         "name": "Tempest Within",
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You reduce Cold, Fire, and Shock damage you take by (half your Level) per damage die.</span></p>"
       },
       {
         "name": "Savagery",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">While you Focus on Polymorph, you can Focus one additional Spell.</span></p><p><span style=\"white-space: pre-wrap;\">Further, you have a +1 bonus to attack damage and Armor while polymorphed. These attacks count as attacks with Relics. This bonus increases every 6 Levels hereafter.</span></p>"
       },
       {
         "name": "Innervate",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Action or skip your Move to give a Close Being some of your Mana, or to end one Status affecting it from either Charmed, Confused, Frightened, or Sickened. This can be yourself.</span></p>"
       },
       {
         "name": "Force of Nature",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, if you are reduced to 0 HP, you can polymorph into a Beast and regain HP equal to that shown in its Statblock.</span></p>"
       }
     ]

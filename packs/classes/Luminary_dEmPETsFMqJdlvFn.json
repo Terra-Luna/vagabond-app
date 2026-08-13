@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -69,7 +69,7 @@
         "selections": [],
         "pack": "spell",
         "filters": [],
-        "recurEvery": "2"
+        "scale": "2"
       },
       {
         "id": "HJtHXsv7lS2i08sx",
@@ -107,43 +107,43 @@
     "features": [
       {
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Theurgy",
         "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, one of which must always be Life. You learn 1 other Spell every 2 Luminary Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Maximum Mana is equal to (4 × your Luminary Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (Awareness + half your Luminary Level, round up). You regain spent Mana when you Rest.</span></p>"
       },
       {
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Radiant Healer",
         "description": "<p><span style=\"white-space: pre-wrap;\">You get the Assured Healer Perk (p. 67), and the healing rolls of your Spells can also Explode on their highest value.</span></p>"
       },
       {
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Overheal",
         "description": "<p><span style=\"white-space: pre-wrap;\">If you restore HP that exceeds the Being’s Max HP, you can give the excess to yourself or a Being you can see.</span></p>"
       },
       {
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Evercure",
         "description": "<p><span style=\"white-space: pre-wrap;\">When you restore HP, you can end either a Charmed, Confused, Dazed, Frightened, or Sickened Status affecting the Target.</span></p>"
       },
       {
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Revivify",
         "description": "<p><span style=\"white-space: pre-wrap;\">You can revive a Being with the Life Spell if it has been dead for as long as 1 Hour. If you die, you are instantly revived. Afterward, you can’t be revived by this Ability for 1 Day.</span></p>"
       },
       {
         "level": 8,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Saving Grace",
         "description": "<p><span style=\"white-space: pre-wrap;\">Your healing rolls can also Explode on a 2.</span></p>"
       },
       {
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "name": "Life-Giver",
         "description": "<p><span style=\"white-space: pre-wrap;\">Beings you revive are revived at 4 Fatigue if their Fatigue was previously higher, and don’t gain Fatigue from your Life Spell.</span></p>"
       }

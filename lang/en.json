@@ -890,7 +890,7 @@
       "placeholder_featurename": "New feature...",
       "labelLevel": "Level",
       "levels": "Levels",
-      "recurEvery": "Recur Every",
+      "scale": "Levels Hereafter",
       "labelName": "Name",
       "labelDescr": "Description",
       "grants": "Grants",

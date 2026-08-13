@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -73,43 +73,43 @@
       {
         "name": "Stalwart",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Protector Perk (p. 71) and, when you take the Hold Action, you can use the held Action or Move as late as the end of your next Turn.</span></p>"
       },
       {
         "name": "Guard",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round, you can try to Shove a Close Target (no Action) when they become Close to you, or when you roll a Defense Weapon’s damage die.</span></p>"
       },
       {
         "name": "Rampant Charge",
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can push Targets you Shove ahead of you while you Move during the same Turn. If you push it into an occupied space, it deals your Weapon’s damage to the Target and whatever occupied the space.</span></p>"
       },
       {
         "name": "Wall",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You are considered Large for Shoves and the damage dice of Defense Weapons are one size larger while you have them Equipped. At 8th Level, you are considered Huge for Shoves and increase the damage die by another size.</span></p>"
       },
       {
         "name": "Unstoppable",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">If you use Rampant Charge and push a Being into another, you can attempt to push the additional Being ahead of you as well.</span></p>"
       },
       {
         "name": "Wall",
         "level": 8,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You are considered Huge for Shoves and the damage dice of Defense Weapons are two sizes larger while you have them Equipped.</span></p>"
       },
       {
         "name": "Indestructible",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">If you aren’t Incapacitated and are wearing Armor, you are Immune to attack damage.</span></p>"
       }
     ]

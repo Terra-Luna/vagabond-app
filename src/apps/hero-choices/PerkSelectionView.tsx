@@ -34,7 +34,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
     }
 
     const loadSelections = (rules, setSlots) => {
-        const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.recurEvery)))
+        const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.scale)))
         let sharedIndex = 0
         rules.forEach(rule => {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []

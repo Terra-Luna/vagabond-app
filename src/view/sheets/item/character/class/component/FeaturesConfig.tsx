@@ -89,7 +89,7 @@ const FeatureCard = ({ item, feat }) => {
 const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item & { system: ClassDataModel }, editIndex?: number, setIsNewFeatureOpen: any }) => {
     const [title, setTitle] = useState('')
     const [level, setLevel] = useState(1)
-    const [recurEvery, setRecurEvery] = useState(0)
+    const [scale, setscale] = useState(0)
     const [description, setDescription] = useState('')
 
     const updateTitle = useCallback(async (title: string | null) => {
@@ -102,10 +102,10 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
         return true
     }, [setLevel, level])
 
-    const updateRecurEvery = useCallback(async (recurOn: string | null) => {
-        setRecurEvery(Number(recurOn))
+    const updatescale = useCallback(async (recurOn: string | null) => {
+        setscale(Number(recurOn))
         return true
-    }, [setRecurEvery, recurEvery])
+    }, [setscale, scale])
 
     const updateDescription = useCallback(async (descr: string | null) => {
         setDescription(descr ?? '')
@@ -141,10 +141,10 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                         />
                     </div>
                     <div className="flex gap-x-1 items-end">
-                        <ClassSheetLabel text={vgLiteLang.ClassSheet.recurEvery} />
+                        <ClassSheetLabel text={vgLiteLang.ClassSheet.scale} />
                         <NumericCounterInput
-                            value={recurEvery}
-                            onChange={updateRecurEvery}
+                            value={scale}
+                            onChange={updatescale}
                         />
                         <ClassSheetLabel text={vgLiteLang.ClassSheet.levels} />
                     </div>
@@ -166,12 +166,12 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                     let features = [...item.system.features]
                     if (editIndex !== undefined) {
                         features = features.map((feature, index) => {
-                            if (index === editIndex) return { name: title, level: level, recurEvery: recurEvery, description: description }
+                            if (index === editIndex) return { name: title, level: level, scale: scale, description: description }
                             else return feature
                         })
                     }
                     else {
-                        features.push({ name: title, level: level, recurEvery: recurEvery, description: description })
+                        features.push({ name: title, level: level, scale: scale, description: description })
                     }
 
                     await item.update({ 'system.features': features } as Record<string, any>)

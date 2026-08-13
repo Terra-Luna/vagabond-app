@@ -19,10 +19,10 @@ export const LevelUpView = ({ actor, onSave }: {
 
     const nextLevel = actor.system.level.current! + 1
     const classFeature = actor.system.class.features
-        .find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.recurEvery ?? 0))
+        .find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.scale ?? 0))
 
     const levelUpChoices = getItemChoiceRules(nextLevel, actor.system.class.rules)
-        .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.recurEvery))
+        .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
 
     const { PerkSelection, classPerkSlots, setClassPerkSlots } = usePerkSelectionView(actor, true)
     const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(actor, true)

@@ -13,7 +13,7 @@ const classSchema = () => {
         features: new fields.ArrayField(new fields.SchemaField({
             name: new fields.StringField({ ...requiredString }),
             level: new fields.NumberField({ ...requiredInteger }),
-            recurEvery: new fields.NumberField({ ...requiredInteger }),
+            scale: new fields.NumberField({ ...requiredInteger }),
             description: new fields.HTMLField({ ...requiredString })
         }))
     }

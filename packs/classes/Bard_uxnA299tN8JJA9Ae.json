@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -56,7 +56,7 @@
         "selections": [],
         "pack": "perk",
         "filters": [],
-        "recurEvery": "0"
+        "scale": "0"
       }
     ],
     "complexity": 2,
@@ -71,37 +71,37 @@
       {
         "name": "VIrtuoso",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Action or skip your Move to choose one of the following benefits and make a Performance Check. If you pass, your</span></p><p><span style=\"white-space: pre-wrap;\">Group gains the benefit for that Round:</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Inspiration:</strong></b><span style=\"white-space: pre-wrap;\"> d6 bonus to Healing rolls</span></p><p><b><strong style=\"white-space: pre-wrap;\">Resolve:</strong></b><span style=\"white-space: pre-wrap;\"> Favor on Saves</span></p><p><b><strong style=\"white-space: pre-wrap;\">Valor:</strong></b><span style=\"white-space: pre-wrap;\"> Favor on Attack and Cast Checks</span></p>"
       },
       {
         "name": "Well-Versed",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You ignore Stat minimum Prerequisites for Perks, and gain a Perk of your choice.</span></p>"
       },
       {
         "name": "Overtuned",
         "level": 2,
-        "recurEvery": 6,
+        "scale": 6,
         "description": "<p><span style=\"white-space: pre-wrap;\">If a d6 bonus you grant causes a d20 result to be 21 or higher, you gain 1 Luck. The result needed is reduced by 1 every 6 Levels hereafter.</span></p>"
       },
       {
         "name": "Enjoy the Silence",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You ignore effects that rely on you hearing them to be affected (such as a banshee’s scream), and you have Favor on Saves against being Berserk, Charmed, Confused, or Frightened.</span></p>"
       },
       {
         "name": "Audacity",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Performance Check or Crit on any Save, you can cause a Being that can hear you to become Berserk, Charmed, Confused, or Frightened for Cd4 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p>"
       },
       {
         "name": "Climax",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Your bonus dice rolls and bonus dice rolls you grant can Explode.</span></p>"
       }
     ]

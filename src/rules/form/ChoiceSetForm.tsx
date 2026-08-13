@@ -86,10 +86,10 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     type="number"
                 />
                 <ItemRuleInput
-                    label="Recur Every"
-                    value={rule.recurEvery || 0}
+                    label="Levels Hereafter"
+                    value={rule.scale || 0}
                     placeholder="0"
-                    onChange={(e) => onChange({ recurEvery: e.target.value })}
+                    onChange={(e) => onChange({ scale: e.target.value })}
                     type="number"
                 />
                 <ItemRuleInput

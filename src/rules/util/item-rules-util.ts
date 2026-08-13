@@ -6,7 +6,7 @@ export interface ItemRule {
     id: string,
     label: string,
     level: number,
-    recurEvery: number,
+    scale: number,
     maxChoices: number,
     value: number,
     pack: string,
@@ -268,16 +268,16 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
             }
         }
 
-        const recur = Number(rule.recurEvery ?? "0")
+        const recur = Number(rule.scale ?? "0")
         const maxChoices = recur < 1
             ? Number(rule.maxChoices ?? 1)
-            : calculateRecurringChoices(level, Number(rule.level), Number(rule.maxChoices), Number(rule.recurEvery))
+            : calculateRecurringChoices(level, Number(rule.level), Number(rule.maxChoices), Number(rule.scale))
 
         return {
             id: rule.id,
             label: rule.label ?? "",
             level: Number(rule.level ?? 0),
-            recurEvery: rule.recurEvery,
+            scale: rule.scale,
             maxChoices: maxChoices,
             value: Number(rule.value ?? 1),
             pack: rule.pack,

@@ -19,9 +19,9 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
                     type={"number"}
                 />
                 <ItemRuleInput
-                    label={"Recur Every"}
-                    value={rule.recurEvery ?? 0}
-                    onChange={(e) => onChange({ recurEvery: Number(e.target.value) })}
+                    label={"Levels Hereafter"}
+                    value={rule.scale ?? 0}
+                    onChange={(e) => onChange({ scale: Number(e.target.value) })}
                     type={"number"}
                 />
             </div>

@@ -11,7 +11,7 @@
         "key": "ChoiceSet",
         "label": "Perks",
         "level": "3",
-        "recurEvery": "2",
+        "scale": "2",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -67,43 +67,43 @@
       {
         "name": "Sneak Attack",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Your Favored attacks with Finesse, Keen, or Ranged Weapons deal an extra d4 damage and ignore an amount of Armor equal to this number of extra dice. The number of extra d4s increases by 1 every 3 Levels hereafter.</span></p>"
       },
       {
         "name": "Infiltrator",
         "level": 1,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Resourceful Perk (p. 71), and you have Favor on Checks and Saves made to ambush and against traps that you are aware of.</span></p>"
       },
       {
         "name": "Evasive",
         "level": 2,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed.</span></p>"
       },
       {
         "name": "Unflinching Luck",
         "level": 4,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d12. If the result is lower than your remaining Luck, the Luck is not spent. When you become an 8th Level Rogue, the d12 is a d10.</span></p>"
       },
       {
         "name": "Waylay",
         "level": 6,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round, if you kill an Enemy, you can immediately take one Action.</span></p>"
       },
       {
         "name": "Unflinching Luck",
         "level": 8,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d10. If the result is lower than your remaining Luck, the Luck is not spent.</span></p>"
       },
       {
         "name": "Lethal Weapon",
         "level": 10,
-        "recurEvery": 0,
+        "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Sneak Attack damage dice can Explode.</span></p>"
       }
     ]

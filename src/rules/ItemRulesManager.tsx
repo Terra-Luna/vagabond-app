@@ -19,7 +19,7 @@ export interface ChoiceRule {
     key: "ChoiceSet",
     label: string,
     level: number,
-    recurEvery: number,
+    scale: number,
     maxChoices: number,
     channel: "path" | "item",
     sourceMode: "static" | "dynamic",
@@ -108,7 +108,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             key: "FlatModifier",
                                                             label: rule.label || "",
                                                             level: 0,
-                                                            recurEvery: 0,
+                                                            scale: 0,
                                                             value: 0,
                                                             valueMultiplier: '',
                                                             selector: rule.selector || ""
@@ -139,7 +139,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             key: "ChoiceSet",
                                                             label: rule.label || "",
                                                             level: 0,
-                                                            recurEvery: 0,
+                                                            scale: 0,
                                                             maxChoices: 1,
                                                             channel: "path", // "path" or "item"
                                                             sourceMode: "static", // "static" or "dynamic"
