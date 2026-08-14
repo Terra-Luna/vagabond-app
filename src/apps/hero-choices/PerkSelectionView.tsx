@@ -88,8 +88,6 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
             return
         }
 
-        console.log("Saving class perk slots...", classPerkSlots)
-
         const classRules = [...clazz.system.rules] as any[]
         const classPerkSlotGroups = groupBy("ruleId", classPerkSlots)
 

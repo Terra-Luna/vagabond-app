@@ -11,7 +11,7 @@ export interface TargetDisplayItem { id: string, src: string, token: Token | und
  * affect the attack's target selections but using this allows them to see
  * the live updates rendered in their chat log.
  */
-export function useLiveTargetSync(attack: Attack | undefined): string[] {
+export function useLiveTargetSync(attack?: Attack | undefined): string[] {
     
     const [targetIds, setTargetIds] = useState<string[]>(() =>
         attack?.targetIds ? [...attack.targetIds] : []

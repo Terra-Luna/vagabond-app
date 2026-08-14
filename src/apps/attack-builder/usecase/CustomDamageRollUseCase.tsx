@@ -3,11 +3,10 @@ import { DiceRoll, DiceRollSchema } from "../../../combat/engine/DiceRoll"
 import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"
-import { SecondaryButton } from "../../../view/component/Button"
+import { UtilityButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
 import { RollPreset } from "../RollBuilderApp"
-import { Plus } from "lucide-react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 
 export const useCustomDamageRollBuilder = (
@@ -73,9 +72,9 @@ export const useCustomDamageRollBuilder = (
                     ))}
                 </div>
                 <div className="flex w-full justify-end">
-                    <SecondaryButton onClick={addNewRoll} icon={<Plus size={16} />}>
-                        {vgLiteLang.ButtonActions.add}
-                    </SecondaryButton>
+                    <UtilityButton title={"Add additional damage roll"} onClick={addNewRoll}>
+                        +{vgLiteLang.ButtonActions.add}
+                    </UtilityButton>
                 </div>
             </div>
         </div>

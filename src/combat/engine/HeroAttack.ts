@@ -96,7 +96,7 @@ export class HeroAttack extends Attack {
 
     async initiate(clickEvent?: any) {
         if (this.skillCheck && this.hasHostileTargets && !this.skipSkillCheck) {
-            this.skillCheck.clickEvent = clickEvent
+            this.skillCheck.setFavorHinder(clickEvent)
             await this.rollSkillCheck()
         }
 
@@ -325,13 +325,15 @@ export class HeroAttack extends Attack {
             weaponSkill = defaultSkill.skill ?? 'melee'
         }
 
-        const damageDice = new DiceRoll(DiceRoll.getWeaponDamageWithHeroMods(hero, weaponSkill, weapon))
-
         const skillCheck = new SkillCheck(hero, {
             type: 'attack',
             skill: weaponSkill!,
             critThreshold: 20 - (isKeen ? 1 : 0)
         })
+
+        const damageDice = new DiceRoll(
+            DiceRoll.getWeaponDamageWithHeroMods(hero, weaponSkill, weapon)
+        )
 
         const damageRoll = new DamageRoll({
             atkName: item.name,

@@ -8,13 +8,22 @@ import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
+import { PerkSelectionApp } from "../../../../../apps/hero-choices/PerkSelectionApp"
+import { PrimaryButton } from "../../../../component/Button"
+import { groupBy } from "../../../../../utils/collectionUtil"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const beingSize = vgLiteLang.Sizes[hero.ancestry?.beingSize ?? '']
     const beingType = vgLiteLang.BeingTypes[hero.ancestry?.beingType ?? '']
     const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"
-    
+
+    const groupedFeatures = groupBy('name', hero.class?.features
+        ?.filter(f => f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK')
+    )
+
+    const classFeatures = Object.keys(groupedFeatures).map(f => groupedFeatures[f].reverse()[0])?.sort((a, b) => a.level! - b.level!)
+
     return (
         <div className="py-1">
             {
@@ -33,10 +42,8 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 <div className="mt-0.5" />
                 <div className={abilitiesGrid}>
                     {
-                        hero.class?.features?.sort((a, b) => a.level! - b.level!).filter(f =>
-                            f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK'
-                        ).map(f => (
-                            <div key={f.name} onContextMenu={(e) => onCtxMenu(e, [
+                        classFeatures.map((f, index) => (
+                            <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                 {
                                     icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
                                         <AbilityChatCard actorId={getId(hero)} img={''} title={f.name} description={f.description} />
@@ -87,11 +94,11 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             </div>
 
             {/* PERK SELECTIONS - Currently hidden because it's kinda buggy due to how it uses flags to save choices. */}
-            {/* <div className="flex mt-1 w-full justify-end mb-12">
+            <div className="flex mt-1 w-full justify-end mb-12">
                 <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
-                    Select Perks
+                    Perk Selections
                 </PrimaryButton>
-            </div> */}
+            </div>
 
             <ContextMenu />
         </div>

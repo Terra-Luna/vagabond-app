@@ -1,6 +1,6 @@
 import { Plus } from "lucide-react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { PrimaryButton } from "../../../view/component/Button"
+import { PrimaryButton, UtilityButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { RollPreset, RollBuilderApp } from "../RollBuilderApp"
 import { useDeletePreset } from "../usecase/preset/DeletePresetUseCase"
@@ -32,12 +32,9 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
 
                 {/* ADD NEW PRESET BUTTON */}
                 <div className="w-full flex justify-end mt-1">
-                    <PrimaryButton
-                        onClick={() => new RollBuilderApp(actor).render({ force: true })}
-                        icon={<Plus size={18} />}
-                    >
-                        {vgLiteLang.ButtonActions.add}
-                    </PrimaryButton>
+                    <UtilityButton title="Add new preset" onClick={() => new RollBuilderApp(actor).render({ force: true })}>
+                        +{vgLiteLang.ButtonActions.add}
+                    </UtilityButton>
                 </div>
 
             </>} />

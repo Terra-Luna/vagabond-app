@@ -86,12 +86,12 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                     {/* ON-CRIT SETTINGS */}
                     {extendedSettings &&
                         <div className="flex gap-x-8 justify-between items-center font-normal mt-0.5 pr-6">
-                            <div className="flex gap-x-1 items-end">
+                            <div title={"Adds additional damage dice on crit."} className="flex gap-x-1 items-end">
                                 <DiceCountInput dmgDice={diceRoll.extraDiceOnCrit || 0} onUpdateDmgDice={(input) => handleExtraDiceOnCritChange(input)} />
-                                <p>{vgLiteLang.ItemSheet.extraDieOnCrit}</p>
+                                <p className="text-sm">{vgLiteLang.ItemSheet.extraDieOnCrit}</p>
                             </div>
 
-                            {explosionValues.length > 0 && <div className="flex gap-x-1">
+                            {explosionValues.length > 0 && <div title={"Dice explode on crit only"} className="flex gap-x-1">
                                 <Checkbox label="" checked={diceRoll.explodeOnCritOnly ?? false} onCheckedChanged={handleExplodeOnCritOnlyChange} />
                                 <p>{vgLiteLang.ItemSheet.explodeOnCritOnly}</p>
                             </div>}

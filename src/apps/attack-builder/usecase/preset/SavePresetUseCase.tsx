@@ -8,8 +8,8 @@ export const useSavePreset = (actor: Actor, preset: RollPreset) => {
 
         const presets = [...actor.getFlag("vagabond-lite" as any, "rollPresets" as any) as RollPreset[] ?? []]
 
-        const updated: RollPreset[] = presets.some(p => p.title === preset.title)
-            ? [...presets.filter(it => it.title !== preset.title), preset]
+        const updated: RollPreset[] = presets.some(p => (p.title + p.description) === (preset.title + preset.description))
+            ? [...presets.filter(it => (it.title + it.description) !== (preset.title + preset.description)), preset]
             : [...presets, preset]
 
         if (updated.length > 0) {

@@ -785,7 +785,7 @@
       "baseManaCost": "Base Mana Cost",
       "explodingDice": "Exploding Dice",
       "canExplode": "Exploding Dice",
-      "extraDieOnCrit": "Extra dice on crit",
+      "extraDieOnCrit": "+Dice on crit",
       "explodeOnCritOnly": "❗crit only",
       "explodesOnTooltip": "Separate values with comma",
       "range": "Range",

@@ -5,7 +5,7 @@ import { CollapsibleSection } from "../../../../component/Collapsible"
 import { RollPreset } from "../../../../../apps/attack-builder/RollBuilderApp"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 
-export const AttacksTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
+export const RollsTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const customAttack = useMemo(() => {
         return actor.getFlag("vagabond-lite" as any, "customRoll") as RollPreset | undefined
     }, [actor])

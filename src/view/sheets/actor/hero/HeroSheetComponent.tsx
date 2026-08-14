@@ -1,4 +1,4 @@
-import { ArrowsUpFromLine, Swords } from "lucide-react"
+import { ArrowsUpFromLine, Dices } from "lucide-react"
 import { useEffect } from "react"
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs"
 import { importHero } from "../../../../apps/importer/TagalongImporter"
@@ -18,7 +18,7 @@ import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextP
 import { lang } from "../../../../utils/lang"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
-import { AttacksTab } from "./tab/AttacksTab"
+import { RollsTab } from "./tab/RollsTab"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
@@ -150,7 +150,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <Tab>{locale["tab-inv"]}</Tab>
                 {hero.spells?.length > 0 && <Tab>{locale["tab-magic"]}</Tab>}
                 <Tab> {locale["tab-abilities"]}</Tab>
-                <Tab title="Attack Presets"><Swords size={32} className="hover-glow" /></Tab>
+                <Tab title="Roll Presets"><Dices size={32} className="hover-glow" /></Tab>
             </TabList>
             <TabPanel className={tabPanelClasses}>
                 <MainTab hero={hero} />
@@ -167,7 +167,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <AbilitiesTab hero={hero} />
             </TabPanel>
             <TabPanel className={tabPanelClasses}>
-                <AttacksTab actor={hero.parent} />
+                <RollsTab actor={hero.parent} />
             </TabPanel>
         </Tabs>
     </div >

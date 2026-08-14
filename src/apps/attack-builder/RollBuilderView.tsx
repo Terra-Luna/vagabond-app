@@ -1,5 +1,5 @@
 import { Dices, Save } from "lucide-react"
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Header } from "../../view/component/Header"
@@ -22,6 +22,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
     setClosed?: () => void
 }) => {
 
+    const loadedPresetRef = useRef<string | null>(null)
+
     const weapons = useMemo((): (Item & { system: WeaponDataModel })[] => {
         return actor.items.filter(i => (i.type as string) === 'weapon' && isEquippedWeapon(i.system)) as any
     }, [actor])
@@ -31,8 +33,14 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
     const { CustomDamageRollBuilder, damageRolls, setDamageRolls } = useCustomDamageRollBuilder(actor, weapon, preset)
     const { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing, setFlatModifier, setPerDieBonus, setArmorPiercing } = useCustomDamageModifiersBuilder()
 
+    /**
+     * Load initial preset values.
+     */
     useEffect(() => {
-        if (preset) {
+        const presetSignature = preset ? `${preset.weaponId}-${preset.title}` : null
+
+        if (preset && loadedPresetRef.current !== presetSignature) {
+            loadedPresetRef.current = presetSignature
             setWeapon(weapons.find(w => w.id === preset?.weaponId))
             setDescription(preset.description)
             setSkill(preset.skill)
@@ -45,9 +53,31 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
             setPerDieBonus(preset.perDieBonus)
             setArmorPiercing(preset.armorPiercing)
         }
-    }, [preset])
+    }, [preset, weapons])
 
-    const form = useMemo((): RollPreset => {
+    /**
+     * When a new weapon is selected organically, preload some defaults.
+     */
+    useEffect(() => {
+        if (!weapon || !skill) return
+        if (preset && weapon.id === preset.weaponId && skill === preset.skill) {
+            return
+        }
+
+        const weaponAtk = HeroAttack.buildWeaponAttack(actor, weapon, skill)
+        const skChk = weaponAtk.skillCheck
+        const dmgRoll = weaponAtk.damageRoll
+        if (!skChk || !dmgRoll) return
+
+        setD20Count(skChk.d20Count)
+        setFavorHinder(skChk.favorHinder)
+        setSkillCheckMod(skChk.modifier)
+        setCritThreshold(skChk.critThreshold)
+        setDamageRolls(dmgRoll.dice.map(d => ({ ...d })))
+
+    }, [weapon, skill, preset])
+
+    const rollForm = useMemo((): RollPreset => {
         return {
             title: weapon?.name ?? '',
             description: description,
@@ -67,24 +97,7 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
         critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
-    /**
-     * When a new weapon is selected, preload some defaults.
-     */
-    useEffect(() => {
-        if (!weapon || !skill) return
-        const weaponAtk = HeroAttack.buildWeaponAttack(actor, weapon, skill)
-        const skChk = weaponAtk.skillCheck
-        const dmgRoll = weaponAtk.damageRoll
-        if (!skChk || !dmgRoll) return
-        setD20Count(skChk.d20Count)
-        setFavorHinder(skChk.favorHinder)
-        setSkillCheckMod(skChk.modifier)
-        setCritThreshold(skChk.critThreshold)
-        setDamageRolls(dmgRoll.dice)
-    }, [weapon, skill])
-
     const reset = useCallback(() => {
-        preset = undefined
         setDamageRolls([])
         setDescription('')
         setSkill("")
@@ -96,9 +109,9 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
         setPerDieBonus(0)
         setArmorPiercing(0)
         setWeapon(undefined)
-    }, [preset])
+    }, [])
 
-    const { savePreset, saveCustomRoll } = useSavePreset(actor, form)
+    const { savePreset, saveCustomRoll } = useSavePreset(actor, rollForm)
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
@@ -132,7 +145,7 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
 
                         <PrimaryButton onClick={async () => {
                             await saveCustomRoll()
-                            HeroAttack.buildCustomRoll(actor, form)
+                            HeroAttack.buildCustomRoll(actor, rollForm)
                         }}
                             icon={<Dices size={16} className="text-btn-primary-text" />}>
                             {vgLiteLang.ButtonActions.roll}

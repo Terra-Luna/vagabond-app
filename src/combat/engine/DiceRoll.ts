@@ -66,10 +66,10 @@ export class DiceRoll {
         return {
             count: weapon.damage.dice.count,
             faces: dieSize,
-            modifier: weapon.damage.dice.modifier,
-            explodesOn: explodesOn,
-            explodeOnCritOnly: explodesOnCrit,
-            extraDiceOnCrit: extraDiceOnCrit
+            modifier: weapon.damage.dice.modifier ?? 0,
+            explodesOn: explodesOn ?? [],
+            explodeOnCritOnly: explodesOnCrit ?? false,
+            extraDiceOnCrit: extraDiceOnCrit ?? 0
         }
     }
 

@@ -4,14 +4,15 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { WeaponDataModel, isEquippedWeapon } from "../../../../../model/item/equip/WeaponDataModel"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
-import { getId } from "../../../../../utils/modelUtil"
+import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
-import { useMemo } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
+import { useLiveTargetSync } from "../../../../../combat/engine/util/target-sync"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -51,12 +52,34 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         )
     )
 
+    const weaponsDependency = equippedWeapons.map(w => `${w.parent.id}-${w.grip.state}`).join(',')
+    const [targetIds, setTargetIds] = useState("")
+
+    useEffect(() => {
+        const handleTargetChange = (user, token, isTargeted) => {
+            if (user.id !== game.user?.id) return
+            setTargetIds(Array.from(game.user?.targets ?? []).join("."))
+        }
+        const hookId = Hooks.on('targetToken', handleTargetChange)
+        return () => { Hooks.off('targetToken', hookId) }
+    }, [])
+
+    const weaponDisplayData = useMemo(() => {
+        return equippedWeapons.map(weapon => {
+            const attackInstance = HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [])
+            return {
+                weapon,
+                damageString: attackInstance?.damageRoll?.toString() ?? '',
+                initiateAttack: (e: React.MouseEvent) => attackInstance.initiate(e)
+            }
+        })
+    }, [hero.parent, weaponsDependency, targetIds])
+
     return (
         <div className="w-full">
             <Header title={vgLiteLang.HeroSheet.weapons} />
             {
-                equippedWeapons?.map((weapon: WeaponDataModel, index: number) => {
-                    const weaponAtk = HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [])
+                weaponDisplayData?.map(({ weapon, damageString, initiateAttack }, index: number) => {
                     return (
                         <div
                             key={getId(weapon)}
@@ -75,9 +98,9 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                         <div
                                             title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
                                             className={`${dmgStyle} hover-glow`}
-                                            onClick={async (e) => { weaponAtk.initiate(e) }}
+                                            onClick={(e) => initiateAttack(e)}
                                         >
-                                            {weaponAtk.damageRoll?.toString()}
+                                            {damageString}
                                         </div>
                                     </div>
                                 </div>

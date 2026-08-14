@@ -54,7 +54,7 @@ export class SkillCheck {
         this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
         this.d20Count = args.d20Count ?? (1 + skillMods.extraDice + (globalMods?.extraDice ?? 0))
         this.modifier = args.modifier ?? (skillMods.modifier + (globalMods?.modifier ?? 0))
-        this.critThreshold = args.critThreshold ?? (20 - (skillMods.critThreshold + (globalMods?.critThreshold ?? 0)))
+        this.critThreshold = (args.critThreshold ?? 20) - (skillMods.critThreshold + (globalMods?.critThreshold ?? 0))
         this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
         this.clickEvent = args.clickEvent
     }
@@ -154,8 +154,13 @@ export class SkillCheck {
         return this.result
     }
 
-    get isFavored() { return this.favorHinder === vgLiteLang.FavorHinder.favor }
-    get isHindered() { return this.favorHinder === vgLiteLang.FavorHinder.hinder }
+    get isFavored() { return this.favorHinder === 'favor' }
+    get isHindered() { return this.favorHinder === 'hinder' }
+
+    setFavorHinder(e?: React.MouseEvent<HTMLDivElement>) {
+        this.clickEvent = e
+        this.favorHinder = this.getFavorHinderFromHotkey(e)
+    }
 
     private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): 'favor' | 'hinder' | 'none' {
         if (e?.shiftKey) {
