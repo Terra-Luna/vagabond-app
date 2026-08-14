@@ -63,6 +63,24 @@
         "level": "1",
         "uuid": "Compendium.vagabond-lite.perks.Item.jvuOodZbzMMANBn6",
         "type": "perk"
+      },
+      {
+        "id": "y4F03I89q89rniq5",
+        "key": "FlatModifier",
+        "label": "Manifold Mind",
+        "level": 4,
+        "value": 1,
+        "selector": "maxFocus",
+        "scale": 4
+      },
+      {
+        "id": "nIOZER6V6TiVVRJQ",
+        "key": "FlatModifier",
+        "label": "Sculpt Spell",
+        "level": 2,
+        "value": 1,
+        "selector": "modifiers.casting.deliveryUpcastDiscount",
+        "scale": 4
       }
     ],
     "complexity": 3,
@@ -119,7 +137,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786572729833,
-    "modifiedTime": 1786677473115,
+    "modifiedTime": 1786738912101,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
