@@ -18,6 +18,7 @@ import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { SpellSelector } from "./SpellSelector"
 import { Dices } from "lucide-react"
+import { DiscountToggle } from "./DiscountToggle"
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system
@@ -34,7 +35,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     }, [actor, JSON.stringify(actor.system.class?.rules ?? [])])
 
     useEffect(() => {
-        const deliveryOptions = getNewDeliveryOptions(spells[0])
+        const deliveryOptions = getNewDeliveryOptions(spells[0], { ...actor.system.modifiers.casting })
         setDeliveries(deliveryOptions)
     }, [])
 
@@ -141,6 +142,14 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         }))
     }, [deliveryIndex, deliveries])
 
+    const onToggleDiscount = useCallback((discount: boolean) => {
+        setDeliveries(deliveries.map(d => {
+            const clone = d.clone()
+            clone.setDiscount(discount)
+            return clone
+        }))
+    }, [deliveryIndex, deliveries])
+
     const onUpdateTargetCount = useCallback(async (input: string | null) => {
         const count = Math.max(1, Number(input) || 1)
         const delivs = deliveries.map(d => {
@@ -226,6 +235,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                                 <div className="flex-col ml-2">
                                     <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
                                     <SpellFocusToggle isFocused={delivery?.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
+                                    <DiscountToggle discount={delivery?.discount} onToggleDiscount={onToggleDiscount} />
                                 </div>
                                 <TotalMana cost={delivery?.manaCost ?? 0} />
                             </div>

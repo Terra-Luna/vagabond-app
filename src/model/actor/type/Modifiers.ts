@@ -1,4 +1,4 @@
-import { fields, requiredInteger, uncappedInteger } from "../../common/sharedSchemas"
+import { fields, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
 
 export const modifierSchema = () => {
     return {
@@ -73,6 +73,17 @@ export const modifierSchema = () => {
         healing: new fields.SchemaField({
             in: new fields.NumberField({ ...uncappedInteger }),
             out: new fields.NumberField({ ...uncappedInteger })
+        }),
+
+        casting: new fields.SchemaField({
+            damageUpcastDiscount: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            deliveryUpcastDiscount: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            deliveryDiscounts: new fields.SchemaField({
+                aura: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                cone: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                line: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                sphere: new fields.NumberField({ ...requiredInteger, initial: 0 })
+            })
         })
     }
 }

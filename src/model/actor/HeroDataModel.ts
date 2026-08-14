@@ -3,7 +3,7 @@ import { createElement } from "react"
 import { getId } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
-import { fields, optionalString } from "../common/sharedSchemas"
+import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
 import { AncestryDataModel } from "../item/character/AncestryDataModel"
 import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
@@ -31,6 +31,7 @@ const heroSchema = () => {
         saves: new fields.SchemaField({ ...savesSchema() }),
         speed: new fields.SchemaField({ ...speedSchema() }),
         mana: new fields.SchemaField({ ...manaSchema() }),
+        maxFocus: new fields.NumberField({ ...requiredInteger, initial: 1 }),
         boundRelicLimit: new fields.NumberField({ integer: true, initial: 3 }),
         inventory: new fields.SchemaField({ ...inventorySchema() }),
 
@@ -105,6 +106,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareDerivedData()
         validateCurrentHP(this)
         validateCurrentLuck(this)
+        validateCurrentFocus(this)
         PerkRulesSelectionsApplicator.apply(this.parent)
     }
 
@@ -182,6 +184,12 @@ export function setMaxHP(hero: HeroDataModel) {
 export function validateCurrentLuck(hero: HeroDataModel) {
     if (hero.statuses.counters.luck! > hero.stats.luck!) {
         hero.statuses.counters.luck = hero.stats.luck!
+    }
+}
+
+export function validateCurrentFocus(hero: HeroDataModel) {
+    if (hero.statuses.counters.focus! > hero.maxFocus!) {
+        hero.statuses.counters.focus = hero.maxFocus!
     }
 }
 

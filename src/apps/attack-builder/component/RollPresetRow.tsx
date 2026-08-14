@@ -14,14 +14,14 @@ export const RollPresetRow = ({ actor, preset, EditButton, TrashButton }: {
 }) => {
     return (
         <div className="flex px-2 py-1 border-t border-solid border-table-border">
-            {/* ATTACK TITLE + DESCRIPTION */}
+            {/* PRESET TITLE + DESCRIPTION */}
             <div>
                 <div className="flex gap-x-1 text-base font-eskapade">
                     {preset.title.length > 0 && <p className="font-bold">{`${preset.title}${preset.description.length > 0 ? ':' : ''}`}</p>}
                     {preset.description.length > 0 && <p>{preset.description}</p>}
                 </div>
 
-                {/* ATTACK METADATA GHOST TEXT */}
+                {/* PRESET METADATA GHOST TEXT */}
                 <div className="flex gap-x-1 text-xs text-text-tertiary font-paradigm italic -mt-1">
                     <p>{`${vgLiteLang.Skills[preset.skill]?.name ?? vgLiteLang.Saves[preset.skill]?.name ?? ''},`}</p>
                     <p>{`${preset.d20Count}d20,`}</p>
@@ -31,7 +31,7 @@ export const RollPresetRow = ({ actor, preset, EditButton, TrashButton }: {
                 </div>
             </div>
 
-            {/* ATTACK | EDIT | DELETE BUTTONS */}
+            {/* ROLL | EDIT | DELETE BUTTONS */}
             <div className="flex gap-x-2 items-center content-center ml-auto">
                 <div className="mr-4">
                     <RollButton onClick={() => HeroAttack.buildCustomRoll(actor, preset)} />

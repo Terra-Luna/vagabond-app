@@ -47,7 +47,8 @@ export class SkillCheck {
             ? hero.modifiers.skillCheck.attack
             : (args.type === 'cast'
                 ? hero.modifiers.skillCheck.cast
-                : undefined)
+                : undefined
+            )
 
         this.type = args.type
         this.skill = args.skill

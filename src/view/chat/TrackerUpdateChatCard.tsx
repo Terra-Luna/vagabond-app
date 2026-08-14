@@ -5,8 +5,11 @@ import { ChatCardBanner } from "./component/ChatCardBanner"
 import ReactHtmlParser from 'react-html-parser'
 import { lang } from "../../utils/lang"
 import { CardSubHeaderValues } from "../component/SkillCard"
+import { DiceRollComponent } from "./component/DiceRollComponent"
 
-export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: string, verb: string, resource: string }) => {
+export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
+    heroId: string, verb: string, resource: string, roll?: number
+}) => {
     const resources = lang.VGLITE.Resources
     const hero = game.actors?.get(heroId) as Actor & {
         system: { statuses: { counters: { luck: string, studied: string, fatigue: string } } }
@@ -30,12 +33,18 @@ export const TrackerUpdateChatCard = ({ heroId, verb, resource }: { heroId: stri
                 title={`${verb} ${res.name}`}
                 subtitle={subtitle}
             />}
-            contents={
-                <div className="text-sm text-justify font-paradigm font-normal max-h-16 overflow-y-auto">
-                    <TrackerIcon resource={resource} />
-                    {ReactHtmlParser(res.description)}
-                </div>
-            }
+            contents={<>
+                {roll ?
+                    <div className="flex gap-x-1 justify-center items-center font-eskapade">
+                        <TrackerIcon resource={resource} />
+                        <DiceRollComponent result={roll} faces={6} />
+                    </div>
+                    : <div className="text-sm text-justify font-paradigm font-normal max-h-16 overflow-y-auto">
+                        <TrackerIcon resource={resource} />
+                        {ReactHtmlParser(res.description)}
+                    </div>
+                }
+            </>}
         />
     )
 }

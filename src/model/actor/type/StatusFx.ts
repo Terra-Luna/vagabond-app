@@ -38,6 +38,7 @@ export const statusFxSchema = () => {
         counters: new fields.SchemaField({
             luck: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             studied: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            focus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             fatigue: new fields.NumberField({ ...requiredInteger, initial: 0, max: 5 })
         })
 

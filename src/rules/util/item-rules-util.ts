@@ -349,3 +349,7 @@ export const calculateRecurringChoices = (level: number, ruleLevel: number, maxC
 export const calculateRecurringRuleEligibility = (level: number, ruleLevel: number, scale: number): boolean => {
     return (level - ruleLevel) % (scale ?? 0) === 0
 }
+
+export const calculateRecurringRuleScale = (level: number, ruleLevel: number, scale: number): number => {
+    return Math.floor((level - ruleLevel) / scale + 1)
+}

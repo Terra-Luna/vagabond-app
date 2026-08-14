@@ -13,7 +13,7 @@ import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { MainTab } from "./tab/MainTab"
-import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills } from "./tab/TopSection"
+import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills, Focus } from "./tab/TopSection"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { lang } from "../../../../utils/lang"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
@@ -120,14 +120,15 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="flex">
             {/* UPPER SECTION */}
-            <div className="grid @sm:grid-cols-1 @md:grid-cols-1 ml-1 mr-1 mt-1 gap-1 w-full">
+            <div className="grid @sm:grid-cols-1 @md:grid-cols-1 mx-1 gap-1 w-full">
                 {/* SPEEDS, SAVES, & TRACKERS */}
                 <div className="flex w-full space-x-1">
                     <div className="w-full">
                         <Speeds hero={hero} />
-                        <div className="flex w-full justify-center space-x-4 mt-2">
+                        <div className="flex w-full justify-center space-x-3 mt-2">
                             <Luck hero={hero} />
                             <Studied hero={hero} />
+                            <Focus hero={hero} />
                         </div>
                     </div>
                     <Saves hero={hero} />

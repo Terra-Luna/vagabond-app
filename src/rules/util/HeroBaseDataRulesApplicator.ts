@@ -2,6 +2,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { inventoryItemTypes } from "../../model/actor/type/Inventory"
 import { addItems } from "../../utils/heroInventoryUtil"
 import { isPathOfType } from "../../utils/modelUtil"
+import { calculateRecurringRuleEligibility, calculateRecurringRuleScale } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class HeroBaseDataRulesApplicator {
@@ -65,8 +66,12 @@ export class HeroBaseDataRulesApplicator {
             const path = rule.selector.replace("system.", "")
             const currentValue = foundry.utils.getProperty(actor.system, path)
             const multiplierValue = foundry.utils.getProperty(actor.system, rule.valueMultiplier) as number
+            const scale = rule.scale > 0
+                ? calculateRecurringRuleScale(actor.system.level.current ?? 1, rule.level, rule.scale)
+                : 1
+
             if (typeof currentValue === "number") {
-                foundry.utils.setProperty(actor.system, path, currentValue + rule.value * (multiplierValue ?? 1))
+                foundry.utils.setProperty(actor.system, path, currentValue + rule.value * (multiplierValue ?? 1) * scale)
             }
             else if (Array.isArray(currentValue)) {
                 const updatedArray = [...currentValue, rule.value]

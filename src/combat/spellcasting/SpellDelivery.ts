@@ -6,7 +6,8 @@ export interface SpellDeliverySnapshot {
     applyEffect: boolean,
     isFocused: boolean,
     manaCost: number,
-    spell: SpellSnapshot
+    spell: SpellSnapshot,
+    mods: DeliveryMods
 }
 
 export interface SpellSnapshot {
@@ -16,6 +17,17 @@ export interface SpellSnapshot {
     baseManaCost: number,
     ignoreEffectCost: boolean,
     appliedEffects: { effect: string, duration: string | unknown, critDuration: string | unknown }[]
+}
+
+export interface DeliveryMods {
+    damageUpcastDiscount: number,
+    deliveryUpcastDiscount: number,
+    deliveryDiscounts?: {
+        aura?: number,
+        cone?: number,
+        line?: number,
+        sphere?: number
+    }
 }
 
 /**
@@ -33,16 +45,19 @@ export abstract class SpellDelivery {
     isFocused = false
     damageDice = 1
     manaCost = 0
+    discount = false
 
     spell: SpellSnapshot
+    mods: DeliveryMods
 
-    constructor(spell: SpellSnapshot) {
+    constructor(spell: SpellSnapshot, mods: DeliveryMods) {
         this.spell = spell
+        this.mods = mods
     }
 
     clone() {
-        const Ctor = this.constructor as new () => this
-        const clone = new Ctor()
+        const Ctor = this.constructor as new (spell: SpellSnapshot, mods: DeliveryMods) => this
+        const clone = new Ctor(this.spell, this.mods)
         Object.assign(clone, this)
         return clone
     }
@@ -73,10 +88,18 @@ export abstract class SpellDelivery {
         this.isFocused = isFocused
     }
 
+    setDiscount(discount: boolean) {
+        this.discount = discount
+        this.calculateManaCost()
+    }
+
     applyEffectManaCost() {
-        if (this.applyEffect && this.damageDice > 0 && !this.spell?.ignoreEffectCost) {
-            this.manaCost += 1
-        }
+        this.manaCost += this.applyEffect && this.damageDice > 0 && !this.spell?.ignoreEffectCost
+            ? 1
+            : 0
+        this.manaCost -= this.discount
+            ? 1
+            : 0
     }
 
     toJson(): SpellDeliverySnapshot {
@@ -85,7 +108,8 @@ export abstract class SpellDelivery {
             applyEffect: this.applyEffect,
             isFocused: this.isFocused,
             manaCost: this.manaCost,
-            spell: this.spell
+            spell: this.spell,
+            mods: this.mods
         }
     }
 
@@ -106,20 +130,30 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     baseSize = 0
     size = 0
 
+    private spellManaBase = 0
+    private damageCost = 0
+    protected deliveryUpcastCost = 0
+
     setSize(size: number) {
         this.size = Math.max(this.baseSize, size)
-        this.calculateBaseManaCost()
+        this.calculateManaCost()
     }
 
     protected calculateBaseManaCost() {
+        this.spellManaBase = (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
+        this.deliveryUpcastCost = ((this.size - this.baseSize) / 5)
+        this.damageCost = Math.max(0, (Math.max(0, (this.damageDice - 1))) - this.mods.damageUpcastDiscount)
         this.manaCost = this.baseManaCost
-            + (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
-            + ((this.size - this.baseSize) / 5)
-            + (Math.max(0, (this.damageDice - 1)))
+            + this.spellManaBase
+            + this.deliveryUpcastCost
+            + this.damageCost
     }
 
     override calculateManaCost() {
         this.calculateBaseManaCost()
+        if (this.size > this.baseSize) {
+            this.manaCost -= Math.min(this.deliveryUpcastCost, this.mods.deliveryUpcastDiscount)
+        }
         super.applyEffectManaCost()
     }
 }
@@ -128,17 +162,26 @@ export class Aura extends AreaOfEffectDelivery {
     override description = vgLiteLang.SpellDeliveries.aura.description
     override targetLabel = vgLiteLang.SpellDeliveries.aura.targetLabel
     override baseSize: number = 10
+    override baseManaCost: number = Math.max(
+        0, 2 - (this.mods.deliveryDiscounts?.aura ?? 0)
+    )
 }
 export class Cone extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.cone.name
     override description = vgLiteLang.SpellDeliveries.cone.description
     override targetLabel = vgLiteLang.SpellDeliveries.cone.targetLabel
     override baseSize: number = 15
+    override baseManaCost: number = Math.max(
+        0, 2 - (this.mods.deliveryDiscounts?.cone ?? 0)
+    )
 }
 export class Line extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.line.name
     override description = vgLiteLang.SpellDeliveries.line.description
     override targetLabel = vgLiteLang.SpellDeliveries.line.targetLabel
+    override baseManaCost: number = Math.max(
+        0, 2 - (this.mods.deliveryDiscounts?.line ?? 0)
+    )
     baseSize: number = 30
     baseHeight: number = 10
     baseWidth: number = 5
@@ -157,13 +200,33 @@ export class Line extends AreaOfEffectDelivery {
 
     override calculateManaCost() {
         super.calculateBaseManaCost()
-        if (this.height > 10 || this.width > 5) {
-            const mana = this.manaCost
+
+        // Track the delivery upcast discount and "expend" it as the calculations are done...
+        let discount = this.mods.deliveryUpcastDiscount
+        if (discount > 0) {
+            this.manaCost -= Math.min(this.deliveryUpcastCost, discount)
+            discount -= this.deliveryUpcastCost
+        }
+
+        const isLineExpanded = this.height > this.baseHeight || this.width > this.baseWidth
+        if (isLineExpanded) {
             const heightMultiplier = (this.height - this.baseHeight) / this.baseHeight
             const widthMultiplier = (this.width - this.baseWidth) / this.baseWidth
-            for (let i = 0; i < heightMultiplier; i++) { this.manaCost += mana }
-            for (let i = 0; i < widthMultiplier; i++) { this.manaCost += mana }
+            const mana = this.manaCost
+            for (let i = 0; i < heightMultiplier; i++) {
+                this.deliveryUpcastCost += mana
+                this.manaCost += mana
+            }
+            for (let i = 0; i < widthMultiplier; i++) {
+                this.deliveryUpcastCost += mana
+                this.manaCost += mana
+            }
         }
+
+        if (discount > 0 && discount < this.deliveryUpcastCost - this.baseManaCost) {
+            this.manaCost -= Math.min(this.deliveryUpcastCost, discount)
+        }
+
         super.applyEffectManaCost()
     }
 }
@@ -171,6 +234,9 @@ export class Sphere extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.sphere.name
     override description = vgLiteLang.SpellDeliveries.sphere.description
     override targetLabel = vgLiteLang.SpellDeliveries.sphere.targetLabel
+    override baseManaCost: number = Math.max(
+        0, 2 - (this.mods.deliveryDiscounts?.sphere ?? 0)
+    )
     baseSize: number = 5
 }
 
@@ -202,10 +268,13 @@ export abstract class PerTargetDelivery extends SpellDelivery {
         else {
             targets = Math.max(1, this.targetCount)
         }
-        this.manaCost = ((targets - 1) * this.extraTargetMultiplier)
+
+        targets -= Math.min(targets, this.mods.deliveryUpcastDiscount)
+        this.manaCost = ((Math.max(0, targets - 1)) * this.extraTargetMultiplier)
             + this.baseManaCost
             + (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
             + (Math.max(0, this.damageDice - 1))
+
         super.applyEffectManaCost()
     }
 }
@@ -241,11 +310,11 @@ export class Touch extends PerTargetDelivery {
     override targetLimit: number = 1
 }
 
-export const getNewDeliveryOptions = (spell: SpellSnapshot): SpellDelivery[] => {
+export const getNewDeliveryOptions = (spell: SpellSnapshot, mods: DeliveryMods): SpellDelivery[] => {
     const deliveries = [
-        new Aura(spell), new Cone(spell), new Cube(spell),
-        new Glyph(spell), new Imbue(spell), new Line(spell),
-        new Remote(spell), new Sphere(spell), new Touch(spell)
+        new Aura(spell, mods), new Cone(spell, mods), new Cube(spell, mods),
+        new Glyph(spell, mods), new Imbue(spell, mods), new Line(spell, mods),
+        new Remote(spell, mods), new Sphere(spell, mods), new Touch(spell, mods)
     ].sort((a, b) => a.name.localeCompare(b.name))
 
     deliveries.forEach(d => {

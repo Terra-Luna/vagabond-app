@@ -1,4 +1,4 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight } from "lucide-react"
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye } from "lucide-react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
@@ -12,6 +12,7 @@ import { lang, vgLiteLang } from "../../../../../utils/lang"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { SkillCheck } from "../../../../../combat/engine/SkillCheck"
+import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 
 interface Health {
     current: number | null
@@ -41,7 +42,10 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                         />
                     </span>
                 </div>
-                <div title={vgLiteLang.HeroSheet.counter_tooltip} className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold" onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}>
+                <div title={vgLiteLang.HeroSheet.counter_tooltip}
+                    className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
+                    onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}
+                >
                     <span className={`text-xl text-text-hp-max px-1 hover-glow`}>{health.max}</span>
                 </div>
             </div>
@@ -87,40 +91,99 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 export const Luck = ({ hero }: { hero: HeroDataModel }) => {
-    const currentLuck = hero.statuses.counters.luck
-    const updateLuck = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { statuses: { counters: { luck: (currentLuck ?? 0) + (auxClick ? 1 : -1) } } })
-    }, [currentLuck])
+    const luck = hero.statuses.counters.luck
+    const updateLuck = useCallback(async (auxClick: boolean, e?: any) => {
+        if (e?.shiftKey && !auxClick) {
+            const roll = await new Roll('1d6').evaluate()
+            sendVagabondChatMessage(
+                hero,
+                <TrackerUpdateChatCard
+                    heroId={hero.parent.id}
+                    resource="luck"
+                    verb={vgLiteLang.HeroSheet.spent}
+                    roll={roll.total}
+                />, [roll]
+            )
+            await hero.parent.update(
+                { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
+                { ['skipTrackerChatCard' as string]: true }
+            )
+        }
+        else {
+            await hero.parent.update({
+                'system.statuses.counters.luck': luck + (auxClick ? 1 : -1)
+            } as Record<string, number>)
+        }
+    }, [luck])
     return (
-        <Tracker
-            name={lang.VGLITE.HeroSheet.luck}
-            onClick={updateLuck}
-            content={<div className={trackerLayout + " text-text-luck-current"}><LucideClover size={20} strokeWidth={1} />{currentLuck}</div>}>
+        <Tracker name={lang.VGLITE.HeroSheet.luck} title={`${vgLiteLang.HeroSheet.counter_tooltip_roll}${vgLiteLang.HeroSheet.counter_tooltip}`} onClick={updateLuck}>
+            <div className={trackerLayout + " text-text-luck-current"}>
+                <LucideClover size={20} strokeWidth={1} />
+                {luck}
+            </div>
         </Tracker>
     )
 }
 
 export const Studied = ({ hero }: { hero: HeroDataModel }) => {
     const studied = hero.statuses.counters.studied
-    const updateStudied = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { statuses: { counters: { studied: (studied ?? 0) + (auxClick ? 1 : -1) } } })
+    const updateStudied = useCallback(async (auxClick: boolean, e?: any) => {
+        if (e?.shiftKey && !auxClick) {
+            const roll = await new Roll('1d6').evaluate()
+            sendVagabondChatMessage(
+                hero,
+                <TrackerUpdateChatCard
+                    heroId={hero.parent.id}
+                    resource="studied"
+                    verb={vgLiteLang.HeroSheet.spent}
+                    roll={roll.total}
+                />, [roll]
+            )
+            await hero.parent.update(
+                { 'system.statuses.counters.studied': studied - 1 } as Record<string, number>,
+                { ['skipTrackerChatCard' as string]: true }
+            )
+        }
+        else {
+            await hero.parent.update({
+                'system.statuses.counters.studied': studied + (auxClick ? 1 : -1)
+            } as Record<string, number>)
+        }
     }, [studied])
     return (
-        <Tracker
-            name={lang.VGLITE.HeroSheet.studied}
-            onClick={updateStudied}
-            content={<div className={trackerLayout + " text-text-studied-current"}><LucideBookMarked size={20} strokeWidth={1} />{studied}</div>}>
+        <Tracker name={lang.VGLITE.HeroSheet.studied} title={`${vgLiteLang.HeroSheet.counter_tooltip_roll}${vgLiteLang.HeroSheet.counter_tooltip}`} onClick={updateStudied}>
+            <div className={trackerLayout + " text-text-studied-current"}>
+                <LucideBookMarked size={20} strokeWidth={1} />
+                {studied}
+            </div>
         </Tracker>
     )
 }
 
-const Tracker = ({ name, content, onClick }: { name: string, content: ReactNode, onClick: (auxClick: boolean) => void }) => (
-    <div title={vgLiteLang.HeroSheet.counter_tooltip} className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 hover-glow`}
-        onClick={() => onClick(false)}
+export const Focus = ({ hero }: { hero: HeroDataModel }) => {
+    const focus = hero.statuses.counters.focus
+    const updateFocus = useCallback(async (auxClick: boolean) => {
+        await hero.parent.update({
+            'system.statuses.counters.focus': focus + (auxClick ? 1 : -1)
+        } as Record<string, number>)
+    }, [focus])
+    return (
+        <Tracker name={lang.VGLITE.HeroSheet.focus} title={`${vgLiteLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
+            <div className={trackerLayout + " text-text-secondary"}>
+                <Eye size={20} strokeWidth={1} />
+                {focus}
+            </div>
+        </Tracker>
+    )
+}
+
+const Tracker = ({ name, title, children, onClick }: { name: string, title: string, children: ReactNode, onClick: (auxClick: boolean, e?: any) => void }) => (
+    <div title={title} className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 hover-glow`}
+        onClick={(e) => onClick(false, e)}
         onAuxClick={() => onClick(true)}
     >
         {name}
-        <span className="font-eskapade font-bold text-4xl -mt-1 mb-1">{content}</span>
+        <span className="font-eskapade font-bold text-4xl -mt-1 mb-1">{children}</span>
     </div>
 )
 
@@ -165,7 +228,7 @@ const Save = ({ hero, save }: { hero: HeroDataModel, save: { key: string, name: 
         <div title={lang.VGLITE.HeroSheet.skills_tooltip}>
             <div className={`flex font-eskapade hover-glow border border-solid border-table-border/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
-                    const skillCheck = await new SkillCheck(hero, { skill: save.key, clickEvent: e }).roll()
+                    const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
                     sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                 }
             }>
@@ -207,7 +270,7 @@ export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack }: { he
                 <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle hover-glow`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
-                        const skillCheck = await new SkillCheck(hero, { skill: skillKey, clickEvent: e }).roll()
+                        const skillCheck = await new SkillCheck(hero, { type: isAttack ? 'attack' : 'check', skill: skillKey, clickEvent: e }).roll()
                         sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                     }
                 }>
