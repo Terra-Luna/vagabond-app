@@ -140,13 +140,12 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                             onChange={updateLevel}
                         />
                     </div>
-                    <div className="flex gap-x-1 items-end">
-                        <ClassSheetLabel text={vgLiteLang.ClassSheet.scale} />
+                    <div className="flex gap-x-1 items-end ml-2">
                         <NumericCounterInput
                             value={scale}
                             onChange={updatescale}
                         />
-                        <ClassSheetLabel text={vgLiteLang.ClassSheet.levels} />
+                        <ClassSheetLabel text={vgLiteLang.ClassSheet.scale} />
                     </div>
                 </div>
             </div>

@@ -84,9 +84,10 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const isStatSelected = nextLevel % 2 > 0 || levelUpStat || upgradableStatsOptions().length === 1
-        const isBonusSelectionMade = (!showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining)))
-        const isDone = isStatSelected && latestPerk && isBonusSelectionMade
+        const isStatLevel = nextLevel % 2 === 0
+        const isStatSelected = !isStatLevel || levelUpStat != null || upgradableStatsOptions().length === 1
+        const isBonusSelectionMade = !showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining))
+        const isDone = isStatSelected && isBonusSelectionMade && (latestPerk || isStatLevel)
         if (isDone) {
             setClassPerkSlots(classPerkSlots.map(slot => ({ ...slot, isLocked: true })))
             onSave({ levelUpStat: levelUpStat, advancement: advancement, spell: spell, perkTraining: perkTraining, isComplete: true })
