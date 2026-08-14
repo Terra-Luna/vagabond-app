@@ -1,0 +1,56 @@
+{
+  "name": "Pack Mule",
+  "type": "perk",
+  "_id": "wkmvRodmiclWC7vC",
+  "img": "/icons/containers/bags/pack-canvas-white-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain 2 Item Slots. You can take this Perk multiple Times.</span></p>",
+    "rules": [
+      {
+        "id": "SQ2T4e93E252IdzE",
+        "key": "FlatModifier",
+        "label": "Pack Mule",
+        "level": 0,
+        "value": 2,
+        "selector": "inventory.capacity"
+      }
+    ],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "might",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786726149019,
+    "modifiedTime": 1786726826312,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!wkmvRodmiclWC7vC"
+}

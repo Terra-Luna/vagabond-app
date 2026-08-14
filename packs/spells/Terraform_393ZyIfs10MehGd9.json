@@ -1,0 +1,34 @@
+{
+  "name": "Terraform",
+  "type": "spell",
+  "_id": "393ZyIfs10MehGd9",
+  "img": "icons/magic/earth/barrier-stone-explosion-spiked.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You manipulate the loose earth or stone around the Target in the following ways:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Area:</strong></b><span style=\"white-space:pre-wrap\"> You can manipulate terrain in the area, either causing it to be Difficult Terrain or a Structure that can fit within the area for the duration. This magic can't move any terrain supporting an Object.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Being or Object:</strong></b><span style=\"white-space:pre-wrap\"> Close earth or stone is Difficult Terrain for the duration.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "blunt",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786723404083,
+    "modifiedTime": 1786723448909,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!393ZyIfs10MehGd9"
+}

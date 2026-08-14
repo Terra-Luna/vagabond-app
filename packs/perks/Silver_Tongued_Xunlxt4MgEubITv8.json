@@ -1,15 +1,15 @@
 {
-  "name": "Bully",
+  "name": "Silver Tongued",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "Xunlxt4MgEubITv8",
+  "img": "/icons/skills/social/diplomacy-handshake-yellow.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it</span></p><p><span style=\"white-space:pre-wrap\">maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The roll required for you to Crit on social Influence Checks is reduced by 1. You can take this Perk up to 4 times.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, once per Scene, if you fail a social Influence Check, you can reroll it.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
+        "stat": "presence",
         "value": 7,
         "spell": "Any",
         "skills": [
@@ -29,14 +29,14 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "influence"
             ],
             "andOr": null
           }
         ]
       }
     ],
-    "canTakeMultiple": false
+    "canTakeMultiple": true
   },
   "effects": [],
   "folder": null,
@@ -50,12 +50,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1786723222058,
+    "createdTime": 1786728063408,
+    "modifiedTime": 1786728193337,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!Xunlxt4MgEubITv8"
 }

@@ -1,35 +1,21 @@
 {
-  "name": "Diplomat",
+  "name": "Telepath",
   "type": "perk",
-  "_id": "fQqmJbJE8M2x8WQe",
-  "img": "/icons/skills/social/diplomacy-writing-letter.webp",
+  "_id": "LPUrFhzLK4pcIVrW",
+  "img": "/icons/magic/control/energy-stream-link-spiral-teal.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Leadership Checks to parley and end Combat peacefully.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use your Action or skip your Move to begin Focusing on this Ability to gain Telepathy (Far).</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "presence",
-        "value": 4,
+        "stat": "reason",
+        "value": 7,
         "spell": "Any",
         "skills": [
           {
             "skillNames": [
               "arcana"
-            ],
-            "andOr": null
-          }
-        ]
-      },
-      {
-        "type": "trained",
-        "stat": "might",
-        "value": 3,
-        "spell": "Any",
-        "skills": [
-          {
-            "skillNames": [
-              "leadership"
             ],
             "andOr": null
           }
@@ -50,12 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786636029365,
-    "modifiedTime": 1786728205624,
+    "createdTime": 1786728878698,
+    "modifiedTime": 1786728903895,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQqmJbJE8M2x8WQe"
+  "_key": "!items!LPUrFhzLK4pcIVrW"
 }

@@ -1,0 +1,34 @@
+{
+  "name": "Gust",
+  "type": "spell",
+  "_id": "m0Zna2JVjPi3x8rw",
+  "img": "/icons/magic/air/weather-wind-gust.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is blasted with a wind shear in the following ways:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Feather:</strong></b><span style=\"white-space:pre-wrap\"> If Cast on a falling Target, this blast can slow the descent of a falling Medium or smaller Target to a safe Speed for the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Target:</strong></b><span style=\"white-space:pre-wrap\"> This can push an Item that occupies 1 or less Slots, or a Being with Level or HD 1 or lower. You can increase this number by spending additional Mana on the Cast, increasing it by 1 per Mana spent to do so.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Distance: </strong></b><span style=\"white-space:pre-wrap\">This pushes the Target 5', and you can increase the distance pushed by spending Mana, increasing the distance by 5' per Mana spent to do so.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786720588368,
+    "modifiedTime": 1786720686362,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!m0Zna2JVjPi3x8rw"
+}

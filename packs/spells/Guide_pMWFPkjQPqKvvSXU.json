@@ -1,0 +1,34 @@
+{
+  "name": "Guide",
+  "type": "spell",
+  "_id": "pMWFPkjQPqKvvSXU",
+  "img": "icons/magic/light/projectile-flare-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Checks that rely on sight made against the Target have Favor for the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is 1 minute (no Focus required).</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786720516121,
+    "modifiedTime": 1786720576347,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!pMWFPkjQPqKvvSXU"
+}

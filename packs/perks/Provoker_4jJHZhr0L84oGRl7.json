@@ -1,16 +1,16 @@
 {
-  "name": "Bully",
+  "name": "Provoker",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "4jJHZhr0L84oGRl7",
+  "img": "/icons/skills/social/intimidation-impressing.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it</span></p><p><span style=\"white-space:pre-wrap\">maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use your Action to intimidate or otherwise goad an Enemy that can see or hear you. When you do, your Allies make all Saves provoked by that Enemy’s Attacks with Favor until the start of your Group’s next Turn.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
-        "value": 7,
+        "stat": "presence",
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -29,7 +29,7 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "influence"
             ],
             "andOr": null
           }
@@ -50,12 +50,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1786723222058,
+    "createdTime": 1786726906110,
+    "modifiedTime": 1786726969195,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!4jJHZhr0L84oGRl7"
 }

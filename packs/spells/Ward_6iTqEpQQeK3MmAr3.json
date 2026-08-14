@@ -4,7 +4,7 @@
   "_id": "6iTqEpQQeK3MmAr3",
   "img": "icons/magic/defensive/shield-barrier-flaming-diamond-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If the Target takes damage, make a Cast Check. On a pass, you reduce that damage by d6, and you can spend Mana to reduce it by an additional d6 per Mana spent to do so.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit: </strong></b><span style=\"white-space:pre-wrap\">The Target takes no damage.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target has +1 Armor. You must spend 1 Mana per Target to Focus on this Spell, even for willing Targets.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Upcast:</strong></b><span style=\"white-space:pre-wrap\"> The +1 Armor is instead a d4. Each additional upcast Mana increases this die size.</span></p>",
     "rules": [],
     "damageType": "none",
     "appliesBurn": false,
@@ -23,8 +23,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497366772,
-    "modifiedTime": 1784497401413,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1786723713167,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -1,26 +1,12 @@
 {
-  "name": "Diplomat",
+  "name": "Medic",
   "type": "perk",
-  "_id": "fQqmJbJE8M2x8WQe",
-  "img": "/icons/skills/social/diplomacy-writing-letter.webp",
+  "_id": "rXH7tDF6nzPcwKxY",
+  "img": "/icons/magic/nature/leaf-hand-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Leadership Checks to parley and end Combat peacefully.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">As an Action, or during a Breather, you can heal a Close Being for (d6 + AWR or RSN) HP and remove the Blinded or Sickened Status if they have it. Doing so as an Action requires a Medicine or Survival Check to succeed. If they are healed, they can’t be affected by this Ability for the rest of the Shift.</span></p>",
     "rules": [],
     "prerequisites": [
-      {
-        "type": "stat",
-        "stat": "presence",
-        "value": 4,
-        "spell": "Any",
-        "skills": [
-          {
-            "skillNames": [
-              "arcana"
-            ],
-            "andOr": null
-          }
-        ]
-      },
       {
         "type": "trained",
         "stat": "might",
@@ -29,9 +15,10 @@
         "skills": [
           {
             "skillNames": [
-              "leadership"
+              "medicine",
+              "survival"
             ],
-            "andOr": null
+            "andOr": "or"
           }
         ]
       }
@@ -50,12 +37,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786636029365,
-    "modifiedTime": 1786728205624,
+    "createdTime": 1786725626837,
+    "modifiedTime": 1786725712369,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQqmJbJE8M2x8WQe"
+  "_key": "!items!rXH7tDF6nzPcwKxY"
 }

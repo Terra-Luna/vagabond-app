@@ -1,0 +1,42 @@
+{
+  "name": "Goop",
+  "type": "spell",
+  "_id": "f1t8oSJ8X5Z46ZSc",
+  "img": "/icons/magic/acid/projectiles-trio-salvo.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A glob of acidic sludge coats the nearest surface to the Target (minumum 5' square) for the duration, causing it to be Difficult Terrain.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">If also Cast to deal damage, those in the area are Burning (d6).</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Targets in the area are also Restrained.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "acid",
+    "appliedEffects": [
+      {
+        "effect": "burning",
+        "duration": 6
+      },
+      {
+        "effect": "restrained"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786720381925,
+    "modifiedTime": 1786720501426,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!f1t8oSJ8X5Z46ZSc"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Transvection",
+  "type": "perk",
+  "_id": "Jjb9oHLhlwHRTfwv",
+  "img": "/icons/commodities/materials/feather-stained-glass-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If you Cast Levitate on an Item, it gains Speed: 0’ (30’ Fly). This Casting is continual, but ends early if you use this Ability on another Item.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Levitate",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786728930080,
+    "modifiedTime": 1786729030533,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Jjb9oHLhlwHRTfwv"
+}

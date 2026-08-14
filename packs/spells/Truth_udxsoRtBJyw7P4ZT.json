@@ -1,0 +1,34 @@
+{
+  "name": "Truth",
+  "type": "spell",
+  "_id": "udxsoRtBJyw7P4ZT",
+  "img": "icons/magic/control/debuff-energy-snare-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target can't lie for the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The Target is compelled to answer any questions when asked.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786723462418,
+    "modifiedTime": 1786723580362,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!udxsoRtBJyw7P4ZT"
+}

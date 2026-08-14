@@ -1,16 +1,16 @@
 {
-  "name": "Bully",
+  "name": "Master Chef",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "iGoBP3SFIfXa4D1R",
+  "img": "/icons/consumables/meat/fish-raw-bowl-wooden-green-purple.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it</span></p><p><span style=\"white-space:pre-wrap\">maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">During a Scene, you can cook meals using 5s of Materials. Doing so makes d6+1 rations which restore d6 HP to anyone who eats one as part of a Breather. They function as normal rations after a Shift.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
-        "value": 7,
+        "stat": "presence",
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -29,7 +29,7 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "survival"
             ],
             "andOr": null
           }
@@ -50,12 +50,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1786723222058,
+    "createdTime": 1786725544225,
+    "modifiedTime": 1786725609696,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!iGoBP3SFIfXa4D1R"
 }

@@ -1,0 +1,34 @@
+{
+  "name": "Rust",
+  "type": "spell",
+  "_id": "tV5iF8O5qotyO26f",
+  "img": "/icons/skills/melee/blade-tip-damaged-acid-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Non-Relic metal Objects within the area rust for the duration. Each Turn when you Focus on this Spell, roll a d6 for each Item. On a roll of 1, the Item breaks. If the Item that breaks is larger than Medium, this creates a 1' square hole that is 1' deep in it.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "acid",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786722491321,
+    "modifiedTime": 1786722534944,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!tV5iF8O5qotyO26f"
+}

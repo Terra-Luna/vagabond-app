@@ -1,0 +1,47 @@
+{
+  "name": "Grim Harvest",
+  "type": "perk",
+  "_id": "Rk7gGn0Uq5vDXgy4",
+  "img": "icons/magic/unholy/hand-light-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When one of your Spells kills an Enemy that is not an Artificial or Undead, you regain HP equal to the damage of the Spell.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Raise",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786723915300,
+    "modifiedTime": 1786723949557,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Rk7gGn0Uq5vDXgy4"
+}

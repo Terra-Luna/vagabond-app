@@ -1,0 +1,34 @@
+{
+  "name": "Tempo",
+  "type": "spell",
+  "_id": "cGpccu79y0Z8JCnt",
+  "img": "icons/skills/movement/feet-winged-boots-glowing-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target's Speed increases or decreases by 5' for the duration. The Caster can increase or decrease this amount by 5' by spending additional Mana on the Cast for every 1 Mana spent to do so.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is 1 minute (no Focus required).</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786723312396,
+    "modifiedTime": 1786723382727,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cGpccu79y0Z8JCnt"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Fear",
+  "type": "spell",
+  "_id": "3eQATSTFDVjyL6W5",
+  "img": "/icons/magic/control/fear-fright-monster-grin-purple-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Frightened of another visible Target you choose for the duration, ending early if you Cast this Spell again.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786719579631,
+    "modifiedTime": 1786719845215,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!3eQATSTFDVjyL6W5"
+}

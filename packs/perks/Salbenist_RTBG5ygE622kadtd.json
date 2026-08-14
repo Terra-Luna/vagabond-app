@@ -1,0 +1,48 @@
+{
+  "name": "Salbenist",
+  "type": "perk",
+  "_id": "RTBG5ygE622kadtd",
+  "img": "/icons/consumables/potions/flask-corked-yellow-glow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can perform a 10-minute Ritual with a Weapon and an oil. After the Ritual, the following rules apply until you perform it again:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• You can use Craft to attack with the Weapon.</span></p><p><span style=\"white-space:pre-wrap\">• You can will the absorbed oil to coat it on your Turn (no Action) which doesn’t consume the oil. The Weapon is coated until you dismiss it, it leaves your hand, or when it is coated with another oil.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "craft",
+              "mysticism"
+            ],
+            "andOr": "and"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786727264717,
+    "modifiedTime": 1786727322974,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!RTBG5ygE622kadtd"
+}

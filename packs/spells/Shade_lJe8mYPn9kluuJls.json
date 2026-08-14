@@ -1,0 +1,34 @@
+{
+  "name": "Shade",
+  "type": "spell",
+  "_id": "lJe8mYPn9kluuJls",
+  "img": "icons/magic/unholy/barrier-shield-glowing-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is surrounded by magic darkness out to Close for the duration, which snuffs out nonmagic lights.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786722567314,
+    "modifiedTime": 1786722709270,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!lJe8mYPn9kluuJls"
+}

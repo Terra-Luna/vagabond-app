@@ -1,0 +1,34 @@
+{
+  "name": "Mend",
+  "type": "spell",
+  "_id": "e91Kd0O0sIff37tR",
+  "img": "/icons/commodities/materials/material-woven.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Targeted non-Relic Objects in the area are repaired on your Turns for the duration, if you can provide 5s of Material per d8 HP or 1 Slot of Items repaired. This Spell can reassemble a broken Item if the pieces of it are held together during the Casting. This Spell also functions as a Life Spell, but only for Artificials.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786721627164,
+    "modifiedTime": 1786721848743,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!e91Kd0O0sIff37tR"
+}

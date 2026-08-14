@@ -1,0 +1,34 @@
+{
+  "name": "Freeze",
+  "type": "spell",
+  "_id": "PQvjxnxcuXvUaOD1",
+  "img": "/icons/commodities/stone/ore-chunk-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Any freestanding water in the area is frozen. If the Target is a Being, its Speed is reduced by 10'. Alternatively, you can create an Object made of ice that can fit within the area, and is of a shape of your choice (such as an icicle dagger or a block of ice). If needed, the Object has HD: 1 (4 HP) and is Weak: Fire.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Any of these effects last for the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "cold",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786720025384,
+    "modifiedTime": 1786720112292,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!PQvjxnxcuXvUaOD1"
+}

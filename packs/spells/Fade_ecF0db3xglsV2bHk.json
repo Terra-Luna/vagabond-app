@@ -1,0 +1,34 @@
+{
+  "name": "Fade",
+  "type": "spell",
+  "_id": "ecF0db3xglsV2bHk",
+  "img": "/icons/magic/air/fog-gas-smoke-dense-gray.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Invisible for the duration, ending early if they use an Action.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786719519651,
+    "modifiedTime": 1786719564076,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ecF0db3xglsV2bHk"
+}

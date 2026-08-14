@@ -1,0 +1,61 @@
+{
+  "name": "Tactician",
+  "type": "perk",
+  "_id": "oK8wlR6uBFDTI7TL",
+  "img": "/icons/sundries/gaming/chess-knight-white-glass.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Round, you can use an Action or skip your Move to spend a Studied die and issue a command. When you do, roll the Studied die to determine the bonus granted from the command, which lasts until the start of your next Turn.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Attack:</strong></b><span style=\"white-space:pre-wrap\"> Your Allies can add this bonus to Checks Targeting an Enemy. If the Check would have passed without your bonus, it is added to the damage dealt instead.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Defend:</strong></b><span style=\"white-space:pre-wrap\"> Your Allies can add this bonus to Reflex Saves. If the Save fails, they gain the die as Armor against the Action instead.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "reason",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      },
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "leadership"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786728705607,
+    "modifiedTime": 1786728862028,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!oK8wlR6uBFDTI7TL"
+}

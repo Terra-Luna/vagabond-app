@@ -1,0 +1,34 @@
+{
+  "name": "Sprout",
+  "type": "spell",
+  "_id": "twBrc1gqct9fKmhx",
+  "img": "icons/magic/nature/root-vine-coiled-crook.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You create growing plants on the Target, causing Difficult Terrain out to Close from it. Alternatively, you can cause up to a 5' square patch of plants or fungus to magically grow to optimal harvesting and foraging.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The Target is Restrained.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "blunt",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786723240462,
+    "modifiedTime": 1786723303695,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!twBrc1gqct9fKmhx"
+}

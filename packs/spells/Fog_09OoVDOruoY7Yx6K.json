@@ -1,0 +1,34 @@
+{
+  "name": "Fog",
+  "type": "spell",
+  "_id": "09OoVDOruoY7Yx6K",
+  "img": "/icons/magic/air/fog-gas-smoke-blue-gray.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Caster creates a cloud that obscures an area equal to the size of the delivery (minimum 5' cube). It Hinders Checks relying on sight of a Target within the fog and Checks made by Beings within the fog relying on sight.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "cold",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786719860659,
+    "modifiedTime": 1786719893639,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!09OoVDOruoY7Yx6K"
+}

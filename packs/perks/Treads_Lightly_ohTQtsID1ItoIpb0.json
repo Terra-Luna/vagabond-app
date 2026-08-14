@@ -1,0 +1,56 @@
+{
+  "name": "Treads Lightly",
+  "type": "perk",
+  "_id": "ohTQtsID1ItoIpb0",
+  "img": "/icons/skills/movement/feet-winged-sandals-tan.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Your Speed increases by 5’, and isn’t impeded by Difficult Terrain that isn’t water, a vertical surface, or magical.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you don’t trigger traps by walking on them. You can take this Perk multiple times.</span></p>",
+    "rules": [
+      {
+        "id": "cdUxDhMjwmKCbwcc",
+        "key": "FlatModifier",
+        "label": "Treads Lightly",
+        "level": 0,
+        "value": 5,
+        "selector": "speed.turn"
+      }
+    ],
+    "prerequisites": [
+      {
+        "type": "stat",
+        "stat": "dexterity",
+        "value": 4,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786729047014,
+    "modifiedTime": 1786729174901,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ohTQtsID1ItoIpb0"
+}

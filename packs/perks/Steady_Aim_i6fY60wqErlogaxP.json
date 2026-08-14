@@ -1,26 +1,12 @@
 {
-  "name": "Diplomat",
+  "name": "Steady Aim",
   "type": "perk",
-  "_id": "fQqmJbJE8M2x8WQe",
-  "img": "/icons/skills/social/diplomacy-writing-letter.webp",
+  "_id": "i6fY60wqErlogaxP",
+  "img": "/icons/skills/targeting/crosshair-pointed-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Leadership Checks to parley and end Combat peacefully.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You have a +2 bonus to damage with Ranged attacks against Targets who haven’t Moved since the end of your last Turn.</span></p>",
     "rules": [],
     "prerequisites": [
-      {
-        "type": "stat",
-        "stat": "presence",
-        "value": 4,
-        "spell": "Any",
-        "skills": [
-          {
-            "skillNames": [
-              "arcana"
-            ],
-            "andOr": null
-          }
-        ]
-      },
       {
         "type": "trained",
         "stat": "might",
@@ -29,9 +15,10 @@
         "skills": [
           {
             "skillNames": [
-              "leadership"
+              "detect",
+              "ranged"
             ],
-            "andOr": null
+            "andOr": "and"
           }
         ]
       }
@@ -50,12 +37,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786636029365,
-    "modifiedTime": 1786728205624,
+    "createdTime": 1786728488939,
+    "modifiedTime": 1786728519002,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQqmJbJE8M2x8WQe"
+  "_key": "!items!i6fY60wqErlogaxP"
 }

@@ -1,16 +1,16 @@
 {
-  "name": "Bully",
+  "name": "Scout",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "MKocDaqfffcd0ECt",
+  "img": "/icons/creatures/abilities/wings-birdlike-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it</span></p><p><span style=\"white-space:pre-wrap\">maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can Forage or Hunt while you spend a Shift to Travel can’t get lost during Travel. Further, you gain a Studied die when you spend a Shift to Travel.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
-        "value": 7,
+        "stat": "awareness",
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -29,9 +29,10 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "detect",
+              "survival"
             ],
-            "andOr": null
+            "andOr": "and"
           }
         ]
       }
@@ -50,12 +51,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1786723222058,
+    "createdTime": 1786727332904,
+    "modifiedTime": 1786727385391,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!MKocDaqfffcd0ECt"
 }

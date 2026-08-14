@@ -1,0 +1,34 @@
+{
+  "name": "Zap",
+  "type": "spell",
+  "_id": "KC4JVbVqUCF4eaZm",
+  "img": "icons/magic/lightning/bolt-strike-beam-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Dazed for the duration if it can be damaged by shocks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The Target is Paralyzed, rather than Dazed, for the duration.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "shock",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786723596046,
+    "modifiedTime": 1786723671573,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!KC4JVbVqUCF4eaZm"
+}

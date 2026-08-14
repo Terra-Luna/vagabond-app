@@ -1,26 +1,12 @@
 {
-  "name": "Diplomat",
+  "name": "Mage Slayer",
   "type": "perk",
-  "_id": "fQqmJbJE8M2x8WQe",
-  "img": "/icons/skills/social/diplomacy-writing-letter.webp",
+  "_id": "UKxHDfsiFddvWYKu",
+  "img": "/icons/magic/unholy/hand-weapon-glow-black-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Leadership Checks to parley and end Combat peacefully.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When you damage a Focusing Being, the damage rolls can Explode, and if the result of your d20 roll on the Check is 10 or higher than your Difficulty, the Focus ends.</span></p>",
     "rules": [],
     "prerequisites": [
-      {
-        "type": "stat",
-        "stat": "presence",
-        "value": 4,
-        "spell": "Any",
-        "skills": [
-          {
-            "skillNames": [
-              "arcana"
-            ],
-            "andOr": null
-          }
-        ]
-      },
       {
         "type": "trained",
         "stat": "might",
@@ -29,9 +15,10 @@
         "skills": [
           {
             "skillNames": [
-              "leadership"
+              "arcana",
+              "mysticism"
             ],
-            "andOr": null
+            "andOr": "or"
           }
         ]
       }
@@ -50,12 +37,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786636029365,
-    "modifiedTime": 1786728205624,
+    "createdTime": 1786725267252,
+    "modifiedTime": 1786725363064,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQqmJbJE8M2x8WQe"
+  "_key": "!items!UKxHDfsiFddvWYKu"
 }

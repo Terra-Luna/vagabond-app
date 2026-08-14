@@ -1,0 +1,39 @@
+{
+  "name": "Erupt",
+  "type": "spell",
+  "_id": "9hbjm8dOGIydXvSQ",
+  "img": "/icons/magic/earth/lava-stone-fire-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Magma coats the nearest surface to the Target for the duration (minumum 5' square), causing it to be Difficult Terrain that deals d6 the first time a Being enters the area on a Turn and when it ends its Turn in the area.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Targets Burning (Cd4 while in the area).</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "fire",
+    "appliedEffects": [
+      {
+        "effect": "burning",
+        "critDuration": 4
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786719305966,
+    "modifiedTime": 1786719408049,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!9hbjm8dOGIydXvSQ"
+}

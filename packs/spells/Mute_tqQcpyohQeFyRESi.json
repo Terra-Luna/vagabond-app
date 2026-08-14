@@ -1,0 +1,34 @@
+{
+  "name": "Mute",
+  "type": "spell",
+  "_id": "tqQcpyohQeFyRESi",
+  "img": "/icons/commodities/gems/pearl-purple-rough.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Sound can't be heard from the Target for the duration, ending early if you Cast this again.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is continual.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786722201102,
+    "modifiedTime": 1786722325832,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!tqQcpyohQeFyRESi"
+}

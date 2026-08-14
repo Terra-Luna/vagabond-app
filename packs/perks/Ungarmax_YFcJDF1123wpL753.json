@@ -1,0 +1,47 @@
+{
+  "name": "Ungarmax",
+  "type": "perk",
+  "_id": "YFcJDF1123wpL753",
+  "img": "icons/magic/fire/dagger-rune-enchant-flame-strong-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Allies you cause to be Berserk with Apoplex have a +1 bonus to each damage die they deal.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Apoplex",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786729248717,
+    "modifiedTime": 1786729346233,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!YFcJDF1123wpL753"
+}

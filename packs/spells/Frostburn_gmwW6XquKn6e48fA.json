@@ -1,0 +1,40 @@
+{
+  "name": "Frostburn",
+  "type": "spell",
+  "_id": "gmwW6XquKn6e48fA",
+  "img": "/icons/magic/water/tendrils-ice-growth.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If the Target isn't Immune to Cold, they are Burning (d4, Speed reduced by 10') for the duration, ending early in extreme heat.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Target is instead Burning (d6).</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "cold",
+    "appliedEffects": [
+      {
+        "effect": "burning",
+        "duration": 4,
+        "critDuration": 6
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786720134389,
+    "modifiedTime": 1786720210007,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!gmwW6XquKn6e48fA"
+}

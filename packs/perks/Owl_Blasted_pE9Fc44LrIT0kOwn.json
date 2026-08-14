@@ -1,0 +1,47 @@
+{
+  "name": "Owl-Blasted",
+  "type": "perk",
+  "_id": "pE9Fc44LrIT0kOwn",
+  "img": "/icons/magic/control/buff-flight-wings-runes-blue-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If you spend Mana to attempt to cause a Being to be Charmed and the Check fails, you regain d4 Mana that was spent on the Casting.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Charm",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786726096197,
+    "modifiedTime": 1786726129674,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!pE9Fc44LrIT0kOwn"
+}

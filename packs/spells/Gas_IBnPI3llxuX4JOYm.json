@@ -1,0 +1,34 @@
+{
+  "name": "Gas",
+  "type": "spell",
+  "_id": "IBnPI3llxuX4JOYm",
+  "img": "/icons/magic/air/fog-gas-smoke-dense-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You create a cloud of gas in an area equal to the size of the delivery (minimum 5' cube) and causing those within to be Sickened (Vulnerable) while in the area. This effect is dispersed by strong winds.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The effect lasts 1 Hour unless dispersed.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "poison",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786720281713,
+    "modifiedTime": 1786720355565,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!IBnPI3llxuX4JOYm"
+}

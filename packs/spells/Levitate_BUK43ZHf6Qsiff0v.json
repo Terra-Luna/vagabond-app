@@ -1,0 +1,34 @@
+{
+  "name": "Levitate",
+  "type": "spell",
+  "_id": "BUK43ZHf6Qsiff0v",
+  "img": "/icons/magic/control/debuff-energy-hold-levitate-teal-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target flutters up to 1' in the air if they have solid ground below them for the duration. The Target can still Move in the air as if walking. If the Target is a secured Object or an Item that occupies more than 2 Slots, it is unaffected.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786721577486,
+    "modifiedTime": 1786721604797,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!BUK43ZHf6Qsiff0v"
+}

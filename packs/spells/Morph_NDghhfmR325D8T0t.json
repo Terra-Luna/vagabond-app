@@ -1,0 +1,34 @@
+{
+  "name": "Morph",
+  "type": "spell",
+  "_id": "NDghhfmR325D8T0t",
+  "img": "icons/magic/control/silhouette-hold-change-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">For the duration, the Target's body is altered in an illusionary manner. This magic is powerful enough to make them seem like a Being of the same Size and Being Type that has the same configuration of limbs and appendages (such as a Human appearing as a Dwarf, but not a horse).</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786722015088,
+    "modifiedTime": 1786722185115,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!NDghhfmR325D8T0t"
+}

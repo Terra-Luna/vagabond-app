@@ -1,0 +1,34 @@
+{
+  "name": "Mirage",
+  "type": "spell",
+  "_id": "wetFw586XiY7Kqsp",
+  "img": "icons/magic/perception/eye-ringed-glow-angry-small-teal.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You create an illusionary Object or effect which fits either within the area, or on the Target for the duration. The Object isn't tangible form and can't deal damage. However, its appearance, movement, and sound it produces are up to you. If any action is taken to investigate the Object, make a Cast Check to determine the outcome. When you Focus on it, you can change any of these aspects of the illusion.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786721864695,
+    "modifiedTime": 1786721927109,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!wetFw586XiY7Kqsp"
+}

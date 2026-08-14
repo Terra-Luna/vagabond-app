@@ -1,35 +1,21 @@
 {
-  "name": "Diplomat",
+  "name": "Swimmer",
   "type": "perk",
-  "_id": "fQqmJbJE8M2x8WQe",
-  "img": "/icons/skills/social/diplomacy-writing-letter.webp",
+  "_id": "04ieJQ9Ogk0HchHn",
+  "img": "/icons/creatures/fish/fish-shark-swimming.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Leadership Checks to parley and end Combat peacefully.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain Swim.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "presence",
+        "stat": "might",
         "value": 4,
         "spell": "Any",
         "skills": [
           {
             "skillNames": [
               "arcana"
-            ],
-            "andOr": null
-          }
-        ]
-      },
-      {
-        "type": "trained",
-        "stat": "might",
-        "value": 3,
-        "spell": "Any",
-        "skills": [
-          {
-            "skillNames": [
-              "leadership"
             ],
             "andOr": null
           }
@@ -50,12 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786636029365,
-    "modifiedTime": 1786728205624,
+    "createdTime": 1786728671363,
+    "modifiedTime": 1786728690841,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQqmJbJE8M2x8WQe"
+  "_key": "!items!04ieJQ9Ogk0HchHn"
 }

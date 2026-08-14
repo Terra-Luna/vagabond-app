@@ -1,0 +1,34 @@
+{
+  "name": "Portal",
+  "type": "spell",
+  "_id": "kd5UY0P0DOAAXlW9",
+  "img": "/icons/skills/movement/portal-silhouette-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You create a portal on a surface that fits within the area (minimum 5' square), and a second portal of the same size on a surface Near that portal. The portals remain for the duration and can teleport anything smaller than it to an open Close space at the other portal's location. Unsecured Objects don't cost Mana to teleport, but Beings cost 1 Mana. If the Being is unwilling, it also requires a passed Cast Check to teleport it.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786722345658,
+    "modifiedTime": 1786722374818,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!kd5UY0P0DOAAXlW9"
+}

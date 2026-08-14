@@ -1,16 +1,16 @@
 {
-  "name": "Bully",
+  "name": "Guardian Angel",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "xMkzeADKd3aAI5DM",
+  "img": "icons/skills/melee/sword-winged-holy-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it</span></p><p><span style=\"white-space:pre-wrap\">maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Round, if one of your Allies is Targeted by an Enemy, you can spend 1 Luck to make an attack against that Enemy. If you hit, your Ally has Favor on the Save.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
-        "value": 7,
+        "stat": "awareness",
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -29,9 +29,10 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "melee",
+              "ranged"
             ],
-            "andOr": null
+            "andOr": "or"
           }
         ]
       }
@@ -50,12 +51,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1786723222058,
+    "createdTime": 1786724068270,
+    "modifiedTime": 1786724155978,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!xMkzeADKd3aAI5DM"
 }

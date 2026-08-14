@@ -1,0 +1,38 @@
+{
+  "name": "Leech",
+  "type": "spell",
+  "_id": "TotJHgaOOqwmvClw",
+  "img": "icons/magic/unholy/hand-light-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Sickened for the duration. While Sickened this way, any healing that affects it instead heals you. Any subsequent Castings of this Spell that damage the Sickened Target also heals you for the damage dealt.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "poison",
+    "appliedEffects": [
+      {
+        "effect": "sickened"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786721455047,
+    "modifiedTime": 1786721556599,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!TotJHgaOOqwmvClw"
+}

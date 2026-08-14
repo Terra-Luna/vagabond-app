@@ -1,16 +1,25 @@
 {
-  "name": "Bully",
+  "name": "Skirmisher",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "E3nco1Jl3HRdsjn4",
+  "img": "/icons/skills/melee/weapons-crossed-daggers-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it</span></p><p><span style=\"white-space:pre-wrap\">maintain the grapple.</span></p>",
-    "rules": [],
+    "description": "<p><span style=\"white-space:pre-wrap\">You can Move through spaces occupied by Beings and, while you are wearing Light Armor or no armor, you have a 5’ bonus to Speed.</span></p>",
+    "rules": [
+      {
+        "id": "qGXsiqBFwLoJhWoC",
+        "key": "FlatModifier",
+        "label": "Skirmisher",
+        "level": 0,
+        "value": 5,
+        "selector": "speed.turn"
+      }
+    ],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
-        "value": 7,
+        "stat": "dexterity",
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -29,7 +38,7 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "melee"
             ],
             "andOr": null
           }
@@ -50,12 +59,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1786723222058,
+    "createdTime": 1786728336654,
+    "modifiedTime": 1786728407016,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!E3nco1Jl3HRdsjn4"
 }

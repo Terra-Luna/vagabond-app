@@ -1,0 +1,34 @@
+{
+  "name": "Speak",
+  "type": "spell",
+  "_id": "hZtjAEhYgukzkuP7",
+  "img": "icons/skills/trades/farming-wheat-circle-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is able to speak, understand, and be understood by you. If the Target was not previously capable of speech before gaining the ability to from this Spell, it can't speak through this Spell again after the Cast ends.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786722846837,
+    "modifiedTime": 1786723195484,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!hZtjAEhYgukzkuP7"
+}

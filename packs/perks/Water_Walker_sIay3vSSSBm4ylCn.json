@@ -1,0 +1,47 @@
+{
+  "name": "Water Walker",
+  "type": "perk",
+  "_id": "sIay3vSSSBm4ylCn",
+  "img": "/icons/magic/water/water-iceberg-bubbles.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can walk on water.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Aqua",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786729654739,
+    "modifiedTime": 1786729691823,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!sIay3vSSSBm4ylCn"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Mesmer",
+  "type": "perk",
+  "_id": "HR8kWusAKVtjiPfn",
+  "img": "icons/magic/control/hypnosis-mesmerism-pendulum.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If you pass a Cast Check by 10 or more to cause a Target to be Charmed or Frightened, you can also cause it to act in one of the following ways in a manner of your choice on its next Turn:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Move up to half its Speed.</span></p><p><span style=\"white-space:pre-wrap\">• Attack a Target (it can attack itself).</span></p><p><span style=\"white-space:pre-wrap\">• Drop or pick up an Item.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Charm",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786725833762,
+    "modifiedTime": 1786725870049,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!HR8kWusAKVtjiPfn"
+}

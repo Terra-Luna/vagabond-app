@@ -1,0 +1,34 @@
+{
+  "name": "Forge",
+  "type": "spell",
+  "_id": "8sTOgg06RUFt3YLa",
+  "img": "/icons/skills/trades/smithing-anvil-silver-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You materialize an Item of 1 Slot or less worth no more than 1g either in an unoccupied space near the Target, worn by the Target, or</span></p><p><span style=\"white-space:pre-wrap\">one Item per 5' cube within the Target area. This magic can create a solid Item made of either copper, iron, glass, stone, or wood. For example, this could create an iron flagon, but not a flagon of ale. If you Target yourself with this Spell, you can Equip the Item when it is created (no Action). Doing so can't cause an Equipped Item to become unequipped. The Item is usable for the duration, then disappears.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786719916346,
+    "modifiedTime": 1786720012273,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!8sTOgg06RUFt3YLa"
+}

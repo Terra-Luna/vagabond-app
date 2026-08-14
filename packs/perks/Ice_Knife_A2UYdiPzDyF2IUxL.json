@@ -1,0 +1,47 @@
+{
+  "name": "Ice Knife",
+  "type": "perk",
+  "_id": "A2UYdiPzDyF2IUxL",
+  "img": "/icons/magic/water/strike-ice-blade-axe.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Ice Objects you create with Freeze last for up to 1 minute without requiring Focus.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Freeze",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786724630661,
+    "modifiedTime": 1786724668914,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!A2UYdiPzDyF2IUxL"
+}

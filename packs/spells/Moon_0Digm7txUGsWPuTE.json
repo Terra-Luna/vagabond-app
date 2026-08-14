@@ -1,0 +1,39 @@
+{
+  "name": "Moon",
+  "type": "spell",
+  "_id": "0Digm7txUGsWPuTE",
+  "img": "/icons/magic/nature/moon-crescent.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target sheds Moonlight out to Near for the duration. Shapechangers are Burning (d6) while illuminated by this Moonlight.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "cold",
+    "appliedEffects": [
+      {
+        "effect": "burning",
+        "duration": 0
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786721944536,
+    "modifiedTime": 1786722000696,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!0Digm7txUGsWPuTE"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Unfailing Guidance",
+  "type": "perk",
+  "_id": "r7CZ3xrWH2ZPAd1I",
+  "img": "icons/magic/light/projectile-smoke-blue-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Targets of your Guide Spell ignore Hinder on their Saves if they can see you.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
+        "spell": "Guide",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana"
+            ],
+            "andOr": null
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786729196359,
+    "modifiedTime": 1786729235600,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!r7CZ3xrWH2ZPAd1I"
+}

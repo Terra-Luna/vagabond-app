@@ -1,26 +1,12 @@
 {
-  "name": "Diplomat",
+  "name": "Scrapper's Delight",
   "type": "perk",
-  "_id": "fQqmJbJE8M2x8WQe",
-  "img": "/icons/skills/social/diplomacy-writing-letter.webp",
+  "_id": "ok6KDQl4WkdJnvjA",
+  "img": "/icons/commodities/materials/powder-grey.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Leadership Checks to parley and end Combat peacefully.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can conduct a 10-minute Ritual to magically scrap an 2 Slot or less non-Relic Item you touch throughout the ritual. The Item must have a value of at least 5s. The Item becomes 5s of Materials for every Slot it previously occupied.</span></p>",
     "rules": [],
     "prerequisites": [
-      {
-        "type": "stat",
-        "stat": "presence",
-        "value": 4,
-        "spell": "Any",
-        "skills": [
-          {
-            "skillNames": [
-              "arcana"
-            ],
-            "andOr": null
-          }
-        ]
-      },
       {
         "type": "trained",
         "stat": "might",
@@ -29,9 +15,10 @@
         "skills": [
           {
             "skillNames": [
-              "leadership"
+              "arcana",
+              "craft"
             ],
-            "andOr": null
+            "andOr": "and"
           }
         ]
       }
@@ -50,12 +37,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786636029365,
-    "modifiedTime": 1786728205624,
+    "createdTime": 1786727405205,
+    "modifiedTime": 1786727488451,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQqmJbJE8M2x8WQe"
+  "_key": "!items!ok6KDQl4WkdJnvjA"
 }

@@ -45,7 +45,7 @@ export const createDropdownEntriesForItems = async (itemType: string, includeAny
     if (includeAnyOption) {
         items.push({ value: 'Any', label: 'Any' })
     }
-    (await CombinedItems(itemType)).map(it => (
+    (await CombinedItems(itemType)).sort((a, b) => a.name.localeCompare(b.name)).map(it => (
         items.push({ value: it.name, label: it.name })
     ))
     return items

@@ -1,0 +1,38 @@
+{
+  "name": "Sleep",
+  "type": "spell",
+  "_id": "6ZV4ojpFDJSU11sH",
+  "img": "/icons/magic/control/sleep-bubble-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If the Targets have a cumulative HD total equal to (1 + your Level) or lower, they are knocked Unconscious for the duration, ending early if they take damage or are shaken awake. You can spend Mana to increase your effective Level for the Casting by 1 per Mana spent to do.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": [
+      {
+        "effect": "unconscious"
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786722786055,
+    "modifiedTime": 1786722824288,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!6ZV4ojpFDJSU11sH"
+}

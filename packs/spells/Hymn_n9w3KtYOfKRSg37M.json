@@ -1,0 +1,34 @@
+{
+  "name": "Hymn",
+  "type": "spell",
+  "_id": "n9w3KtYOfKRSg37M",
+  "img": "/icons/creatures/birds/songbird-yellow-flying.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If the Target is Berserk, Charmed, Confused, or Frightened, the Status ends and they are Immune to these Statuses for the duration.</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786720794715,
+    "modifiedTime": 1786720818121,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!n9w3KtYOfKRSg37M"
+}

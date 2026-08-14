@@ -1,0 +1,34 @@
+{
+  "name": "Enchant",
+  "type": "spell",
+  "_id": "Tv7Wl8FCo1JttLZe",
+  "img": "/icons/magic/fire/dagger-rune-enchant-flame-teal.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">An Item that is a Target or equipped by the Target is considered a Relic for the duration.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Additionally, you can grant the Item the Relic Power of Bonus for this time by spending additional Mana per Item granted this Power when you Cast this Spell:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">+1 Bonus: 5 Mana</span></p><p><span style=\"white-space:pre-wrap\">+2 Bonus: 10 Mana</span></p><p><span style=\"white-space:pre-wrap\">+3 Bonus: 15 Mana</span></p>",
+    "rules": [],
+    "baseManaCost": 0,
+    "ignoreEffectCost": false,
+    "damageType": "none",
+    "appliedEffects": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786719022337,
+    "modifiedTime": 1786719123100,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Tv7Wl8FCo1JttLZe"
+}
