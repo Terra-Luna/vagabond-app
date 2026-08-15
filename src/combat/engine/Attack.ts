@@ -120,13 +120,13 @@ export abstract class Attack {
     static async handleIncomingAttackSnapshot(payload: { actorId: string, snapshot: AttackSnapshot }) {
         const { actorId, snapshot } = payload
         const registryRaw = getAttackRegistry()
-        const attacksRegistry = typeof registryRaw === "string" ? JSON.parse(registryRaw) : (registryRaw || {})
+        const attackRegistry = typeof registryRaw === "string" ? JSON.parse(registryRaw) : (registryRaw || {})
 
-        if (!attacksRegistry[actorId]) {
-            attacksRegistry[actorId] = []
+        if (!attackRegistry[actorId]) {
+            attackRegistry[actorId] = []
         }
 
-        const currentAttacks: AttackSnapshot[] = attacksRegistry[actorId]
+        const currentAttacks: AttackSnapshot[] = attackRegistry[actorId]
         const exists = currentAttacks.some(it => it.id === snapshot.id)
         let updatedAttacks: AttackSnapshot[]
 
@@ -138,8 +138,8 @@ export abstract class Attack {
             updatedAttacks = [...currentAttacks, snapshot].slice(-50)
         }
 
-        attacksRegistry[actorId] = updatedAttacks
-        await setAttackRegistry(attacksRegistry)
+        attackRegistry[actorId] = updatedAttacks
+        await setAttackRegistry(attackRegistry)
     }
 
 }

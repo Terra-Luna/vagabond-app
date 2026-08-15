@@ -121,15 +121,21 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                         </div>
                                         <InteractiveChatCardButton
                                             label="Resolve" tooltip="Resolve with no updates"
-                                            fn={async () => await attack.resolve(serializeAttack)}
+                                            fn={async () => {
+                                                await attack.resolve(serializeAttack)
+                                                setRevision(prev => prev + 1)
+                                            }}
                                         />
-                                        <InteractiveChatCardButton
-                                            label="Apply" tooltip="Apply damage & lock attack from edits"
-                                            fn={async () => await attack.applyDamageAndResolve(
-                                                { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
-                                                serializeAttack
-                                            )}
-                                        />
+                                        {attack.showDamage &&
+                                            <InteractiveChatCardButton label="Apply" tooltip="Apply damage & lock attack from edits"
+                                                fn={async () => {
+                                                    await attack.applyDamageAndResolve(
+                                                        { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
+                                                        serializeAttack
+                                                    )
+                                                    setRevision(prev => prev + 1)
+                                                }}
+                                            />}
                                     </div>
                                 </div>
                             </EditModeContextProvider>
@@ -152,15 +158,17 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
             if (updatedActor.id === actor.id) handleUpdate()
         })
 
-        const hookChatId = Hooks.on("updateChatMessage", (message: any) => {
-            handleUpdate()
+        const hookChatId = Hooks.on("updateChatMessage", (message: any, changes: any) => {
+            if (foundry.utils.hasProperty(changes, "flags.vagabond-lite")) {
+                handleUpdate()
+            }
         })
 
         return () => {
             Hooks.off("updateActor", hookActorId)
             Hooks.off("updateChatMessage", hookChatId)
         }
-    }, [actor.id, attack])
+    }, [actor.id])
 
     const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck, subRevision])
     const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck, subRevision])
@@ -194,23 +202,28 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
 
     const handleLuckReroll = useCallback(async () => {
         await attack.rollSkillCheck(true)
-    }, [luck, attack, subRevision])
+        setSubRevision(prev => prev + 1)
+    }, [attack])
 
     const handleLateD6 = useCallback(async (resource: 'luck' | 'studied', currentValue: number) => {
-        await attack.addLateFavor(resource, currentValue)
-    }, [luck, studied, subRevision])
+        await attack.addLateFavor(resource, currentValue);
+        setSubRevision(prev => prev + 1)
+    }, [attack])
 
     const addCritLuck = useCallback(async () => {
-        await attack.addCritLuck()
-    }, [attack, subRevision])
+        await attack.addCritLuck();
+        setSubRevision(prev => prev + 1)
+    }, [attack])
 
     const addCritDamage = useCallback(async () => {
-        await attack.addCritDamage()
-    }, [attack, subRevision])
+        await attack.addCritDamage();
+        setSubRevision(prev => prev + 1)
+    }, [attack])
 
     const addSpellFx = useCallback(async () => {
         await attack.addCritSpellFx()
-    }, [attack, subRevision])
+        setSubRevision(prev => prev + 1)
+    }, [attack])
 
     return (
         <div>
