@@ -12,11 +12,6 @@
       "s": 5,
       "c": 0
     },
-    "totalValue": {
-      "g": 0,
-      "s": 0,
-      "c": 0
-    },
     "bulk": {
       "slots": 0,
       "isStackable": true,
@@ -27,26 +22,27 @@
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": true,
-    "relicEffects": []
+    "relicPowers": []
   },
   "effects": [],
   "folder": null,
-  "sort": 100000,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "KkUM0xdZFWx39xs4": 3,
+    "PDLxeQclz2rj9enO": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784845721938,
-    "modifiedTime": 1785020439562,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "createdTime": 1786816510588,
+    "modifiedTime": 1786816510600,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": null
+    "duplicateSource": null
   },
+  "sort": 200000,
   "_key": "!items!sfhmK81aaZ462nGy"
 }

@@ -1,0 +1,58 @@
+{
+  "name": "Defoliator",
+  "type": "alchemical",
+  "_id": "8psdOCqV0yfM14Wc",
+  "img": "/icons/magic/acid/orb-bubble-smoke-drip.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Vile blighting acid. A hit Target takes d6 damage, plus Burning (Cd6) if made of wood or plants. If the Target is a point, all natural plants Close to it immediately die.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">If the Target is a non-Relic, the acid destroys a 1' circle of it down 1-inch deep, causing the following if it is Armor or a Weapon:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Armor is reduced by 1, breaking at 0.</span></p><p><span style=\"white-space:pre-wrap\">• Weapons reduce their damage die by one size until repaired. If the damage die is a d4 when this happens, it is destroyed.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "acid",
+    "damage": {
+      "dice": {
+        "count": 1,
+        "faces": 6,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786819006860,
+    "modifiedTime": 1786820374058,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!8psdOCqV0yfM14Wc"
+}

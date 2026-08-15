@@ -1,0 +1,58 @@
+{
+  "name": "Levin Shell",
+  "type": "alchemical",
+  "_id": "Vrjh3wZr3vRtIJH8",
+  "img": "/icons/magic/movement/trail-streak-zigzag-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">An unstable mass of electric energy that sparks when exposed to oxygen. A Target hit with this Item takes d6 damage and any other Close Beings take half. A Being that takes this damage is Dazed until the end of its next Turn.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "explosive",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "shock",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786821492397,
+    "modifiedTime": 1786826382603,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Vrjh3wZr3vRtIJH8"
+}

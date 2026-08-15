@@ -1,0 +1,58 @@
+{
+  "name": "Longbreath",
+  "type": "alchemical",
+  "_id": "DdN7qkQWhqmzkgu1",
+  "img": "/icons/consumables/potions/bottle-round-ring-teal.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">For 1 hour after inhaling the contents of the vial, the Being can hold its breath indefinitely while it's not Incapacitated.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "potion",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786821672602,
+    "modifiedTime": 1786826406227,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!DdN7qkQWhqmzkgu1"
+}

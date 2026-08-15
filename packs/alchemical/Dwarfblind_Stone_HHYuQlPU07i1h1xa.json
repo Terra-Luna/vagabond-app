@@ -1,0 +1,58 @@
+{
+  "name": "Dwarfblind Stone",
+  "type": "alchemical",
+  "_id": "HHYuQlPU07i1h1xa",
+  "img": "/icons/commodities/gems/gem-fragmented-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Treated stones with a purple sheen. A hit Target with Darksight is Blinded (Cd6).</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 2,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "explosive",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786820876705,
+    "modifiedTime": 1786826362141,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!HHYuQlPU07i1h1xa"
+}

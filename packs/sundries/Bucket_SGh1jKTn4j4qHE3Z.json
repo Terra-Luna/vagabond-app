@@ -1,34 +1,34 @@
 {
-  "name": "Med Kit",
+  "name": "Bucket",
   "type": "sundry",
-  "folder": null,
+  "_id": "SGh1jKTn4j4qHE3Z",
+  "img": "/icons/containers/misc/bucket-steel-blue.webp",
   "system": {
     "description": "",
+    "rules": [],
     "category": "alchemy",
     "value": {
       "g": 0,
-      "c": 0,
-      "s": 50
+      "s": 5,
+      "c": 0
     },
     "bulk": {
       "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
       "quantity": 1,
-      "isStackable": true,
-      "stackSize": 10,
       "totalSlots": 0
     },
-    "rules": [],
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
     "relicPowers": []
   },
-  "_id": "zWN1vMBOGuLj6ePh",
-  "img": "icons/tools/medical/medkit-heavy.webp",
   "effects": [],
+  "folder": null,
+  "sort": 0,
   "ownership": {
     "default": 0,
-    "ywhHfYnWZQBq7W9u": 3,
     "PDLxeQclz2rj9enO": 3
   },
   "flags": {},
@@ -36,13 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786816512432,
-    "modifiedTime": 1786816512432,
+    "createdTime": 1786817293755,
+    "modifiedTime": 1786817858677,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
-    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "sort": 0,
-  "_key": "!items!zWN1vMBOGuLj6ePh"
+  "_key": "!items!SGh1jKTn4j4qHE3Z"
 }

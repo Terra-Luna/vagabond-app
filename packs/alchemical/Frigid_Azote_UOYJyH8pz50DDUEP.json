@@ -1,0 +1,58 @@
+{
+  "name": "Frigid Azote",
+  "type": "alchemical",
+  "_id": "UOYJyH8pz50DDUEP",
+  "img": "/icons/consumables/potions/flask-corked-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A Target who is hit with this Item takes d6 damage and its Speed is halved until the end of its next Turn.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "explosive",
+    "damage": {
+      "dice": {
+        "count": 1,
+        "faces": 6,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "cold",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786820930370,
+    "modifiedTime": 1786826454669,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!UOYJyH8pz50DDUEP"
+}

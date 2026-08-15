@@ -1,0 +1,58 @@
+{
+  "name": "Oxidizing Acid",
+  "type": "alchemical",
+  "_id": "NEdqGBQxyCd2OIu3",
+  "img": "/icons/consumables/potions/bottle-conical-fumes-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Rapidly rusting acid. A hit Target takes d6 damage, plus Burning (Cd6) if made of metal. If the Target is a non-Relic, the acid destroys</span></p><p><span style=\"white-space:pre-wrap\">a 1' circle of it down 1-inch deep, causing the following if it is Armor or a Weapon:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Armor is reduced by 1, breaking at 0.</span></p><p><span style=\"white-space:pre-wrap\">• Weapons reduce their damage die by one size until repaired. If the damage die is a d4 when this happens, it is destroyed.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "acid",
+    "damage": {
+      "dice": {
+        "count": 1,
+        "faces": 6,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "acid",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786819257562,
+    "modifiedTime": 1786819676396,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!NEdqGBQxyCd2OIu3"
+}

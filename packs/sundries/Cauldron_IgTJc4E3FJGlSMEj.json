@@ -1,34 +1,34 @@
 {
-  "name": "Med Kit",
+  "name": "Cauldron",
   "type": "sundry",
-  "folder": null,
+  "_id": "IgTJc4E3FJGlSMEj",
+  "img": "/icons/tools/cooking/cauldron-empty.webp",
   "system": {
     "description": "",
-    "category": "alchemy",
+    "rules": [],
+    "category": "other",
     "value": {
-      "g": 0,
-      "c": 0,
-      "s": 50
+      "g": 2,
+      "s": 0,
+      "c": 0
     },
     "bulk": {
-      "slots": 1,
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
       "quantity": 1,
-      "isStackable": true,
-      "stackSize": 10,
       "totalSlots": 0
     },
-    "rules": [],
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
     "relicPowers": []
   },
-  "_id": "zWN1vMBOGuLj6ePh",
-  "img": "icons/tools/medical/medkit-heavy.webp",
   "effects": [],
+  "folder": null,
+  "sort": 0,
   "ownership": {
     "default": 0,
-    "ywhHfYnWZQBq7W9u": 3,
     "PDLxeQclz2rj9enO": 3
   },
   "flags": {},
@@ -36,13 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786816512432,
-    "modifiedTime": 1786816512432,
+    "createdTime": 1786817319948,
+    "modifiedTime": 1786817871479,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
-    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "sort": 0,
-  "_key": "!items!zWN1vMBOGuLj6ePh"
+  "_key": "!items!IgTJc4E3FJGlSMEj"
 }

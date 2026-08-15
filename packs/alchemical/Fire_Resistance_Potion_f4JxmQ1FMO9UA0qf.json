@@ -1,0 +1,58 @@
+{
+  "name": "Fire Resistance Potion",
+  "type": "alchemical",
+  "_id": "f4JxmQ1FMO9UA0qf",
+  "img": "/icons/consumables/potions/potion-flask-pink-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer gains these benefits:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• They aren't harmed by Sweltering Heat.</span></p><p><span style=\"white-space:pre-wrap\">• They gain a +2 bonus to Saves against Fire-based attacks and magic.</span></p><p><span style=\"white-space:pre-wrap\">•They reduce any Fire damage they take by 1 per die used for the damage.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 25,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "potion",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786824747109,
+    "modifiedTime": 1786826092848,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!f4JxmQ1FMO9UA0qf"
+}

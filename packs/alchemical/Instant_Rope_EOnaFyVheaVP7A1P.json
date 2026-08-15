@@ -1,0 +1,58 @@
+{
+  "name": "Instant Rope",
+  "type": "alchemical",
+  "_id": "EOnaFyVheaVP7A1P",
+  "img": "/icons/sundries/survival/rope-wrapped-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When poured, the liquid in this flask instantly forms into a 50' rope for 1 minute before crumbling to dust.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 2,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "concoction",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786821405714,
+    "modifiedTime": 1786826488863,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!EOnaFyVheaVP7A1P"
+}

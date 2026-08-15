@@ -1,0 +1,58 @@
+{
+  "name": "Instant Wall",
+  "type": "alchemical",
+  "_id": "Ldmni8I2JM9zu4DG",
+  "img": "/icons/environment/wilderness/terrain-rocky-ground.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Creates a wall that is 10' in length and height, and 1' in width. The wall appears in the orientation of the user's choice. It has 20 HP and Armor: 2. The wall crumbles to dust after 1 minute or if it is destroyed.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 5,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "concoction",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786821444941,
+    "modifiedTime": 1786826392715,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Ldmni8I2JM9zu4DG"
+}

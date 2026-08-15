@@ -1,0 +1,58 @@
+{
+  "name": "Basic Acid",
+  "type": "alchemical",
+  "_id": "9K2j06dVDRMGXJ9y",
+  "img": "/icons/consumables/potions/bottle-conical-fumes-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Corrosive liquid that eats away at matter. A Target hit with it takes d6 damage and is Burning (Cd4).</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "acid",
+    "damage": {
+      "dice": {
+        "count": 1,
+        "faces": 6,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "acid",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786818693629,
+    "modifiedTime": 1786818990718,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!9K2j06dVDRMGXJ9y"
+}

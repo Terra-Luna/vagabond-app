@@ -1,0 +1,58 @@
+{
+  "name": "Darksight Powder",
+  "type": "alchemical",
+  "_id": "HpWNCmMhVA3zh9W9",
+  "img": "/icons/commodities/materials/bowl-powder-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Can't be seen with normal vision or beyond Close. When viewed with Darksight, the powder glows. A vial contains enough powder to write a short sentence (10 words or less).</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "concoction",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786820820787,
+    "modifiedTime": 1786825857368,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!HpWNCmMhVA3zh9W9"
+}

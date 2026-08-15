@@ -1,0 +1,58 @@
+{
+  "name": "Polymorph Potion",
+  "type": "alchemical",
+  "_id": "tXe0qg9DWqNFRdNL",
+  "img": "/icons/consumables/potions/round-decorated-snake-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The consumer is transformed as per the Polymorph Spell (p. 97) for 1 Hour. If the consumer isn't aware they are drinking the potion or does not choose a form, roll d66 and refer to p. 88.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 70,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "potion",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786823652608,
+    "modifiedTime": 1786826108520,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!tXe0qg9DWqNFRdNL"
+}

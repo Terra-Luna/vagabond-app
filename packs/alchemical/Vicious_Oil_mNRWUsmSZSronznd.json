@@ -1,0 +1,58 @@
+{
+  "name": "Vicious Oil",
+  "type": "alchemical",
+  "_id": "mNRWUsmSZSronznd",
+  "img": "/icons/consumables/potions/potion-tube-corked-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Acts as basic oil. However, while coated on a Weapon that is then ignited, its damage from attacks that hit Beings with half their HP or less can Explode and cause them to bleed profusely for the Shift, granting Favor on Survival Checks to track it for this time.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 5,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "oil",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786821981739,
+    "modifiedTime": 1786825680882,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!mNRWUsmSZSronznd"
+}

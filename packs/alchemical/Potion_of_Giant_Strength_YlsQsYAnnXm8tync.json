@@ -1,0 +1,58 @@
+{
+  "name": "Potion of Giant Strength",
+  "type": "alchemical",
+  "_id": "YlsQsYAnnXm8tync",
+  "img": "/icons/consumables/potions/bottle-bulb-corked-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer gains these benefits:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Their attacks deal an extra die of damage.</span></p><p><span style=\"white-space:pre-wrap\">• They treat boulders as Melee Weapons with the Thrown Property (3d6 damage).</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">A Being can benefit from no more than one of</span></p><p><span style=\"white-space:pre-wrap\">these potions at a time.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 250,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "potion",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786822905438,
+    "modifiedTime": 1786826158955,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!YlsQsYAnnXm8tync"
+}

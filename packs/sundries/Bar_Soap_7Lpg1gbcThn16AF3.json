@@ -18,35 +18,31 @@
       "totalSlots": 0
     },
     "rules": [],
-    "totalValue": {
-      "g": 0,
-      "s": 0,
-      "c": 0
-    },
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
-    "relicEffects": []
+    "relicPowers": []
   },
   "_id": "7Lpg1gbcThn16AF3",
   "img": "icons/sundries/survival/soap.webp",
   "effects": [],
   "ownership": {
     "default": 0,
-    "ywhHfYnWZQBq7W9u": 3
+    "ywhHfYnWZQBq7W9u": 3,
+    "PDLxeQclz2rj9enO": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1785020439551,
-    "modifiedTime": 1785020867926,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "createdTime": 1786816506201,
+    "modifiedTime": 1786816510599,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "sort": 200000,
+  "sort": 100000,
   "_key": "!items!7Lpg1gbcThn16AF3"
 }

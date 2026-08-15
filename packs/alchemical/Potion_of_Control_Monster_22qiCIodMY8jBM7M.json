@@ -1,0 +1,58 @@
+{
+  "name": "Potion of Control Monster",
+  "type": "alchemical",
+  "_id": "22qiCIodMY8jBM7M",
+  "img": "/icons/consumables/potions/potion-flask-corked-labeled-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">(Dragon, Plant, Giant, Undead)</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">The consumer gains the ability to control a type of Being they can see for 1 Hour, which requires their Focus. The type of Being is determined by the name of the potion.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Once a Being is chosen, the consumer must make a Will Save. On a pass, the Being is Charmed and under their control for the duration. A Being controlled this way will not obey commands that clearly cause harm to itself. After this time, the Being becomes Hostile.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 1250,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "potion",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786822591854,
+    "modifiedTime": 1786822634441,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!22qiCIodMY8jBM7M"
+}

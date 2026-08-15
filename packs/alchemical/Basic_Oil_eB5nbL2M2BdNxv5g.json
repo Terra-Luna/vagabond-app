@@ -1,0 +1,58 @@
+{
+  "name": "Basic Oil",
+  "type": "alchemical",
+  "_id": "eB5nbL2M2BdNxv5g",
+  "img": "/icons/consumables/potions/bottle-conical-corked-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The oil can coat either a 5' square area or a Medium or smaller Target for as long as 1 week unless washed off. While coated, the Target can then be ignited, causing it to be Burning (Cd6, unless doused). Other Beings that touch the flames take d6 damage, and are Burning (d6) while still in contact with the flame.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">A full flask fuels a burning lantern for a Shift.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 1,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [],
+    "alchemyCategory": "oil",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786817603702,
+    "modifiedTime": 1786820442802,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!eB5nbL2M2BdNxv5g"
+}

@@ -1,0 +1,58 @@
+{
+  "name": "Potion of Gaseous Form",
+  "type": "alchemical",
+  "_id": "SVrfh2DBrSKfhQBF",
+  "img": "/icons/magic/air/fog-gas-smoke-dense-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">For 1 Hour, the consumer's body becomes a cloud of gas and the following rules apply:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• They immediately drop anything they have equipped, and can't equip anything.</span></p><p><span style=\"white-space:pre-wrap\">• They can Move by seeping into tiny spaces.</span></p><p><span style=\"white-space:pre-wrap\">• They can't Attack or Cast.</span></p><p><span style=\"white-space:pre-wrap\">• They are Immune to all damage from attacks that aren't made by Relics.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 250,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "potion",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786822863979,
+    "modifiedTime": 1786826180641,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!SVrfh2DBrSKfhQBF"
+}

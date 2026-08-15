@@ -1,0 +1,58 @@
+{
+  "name": "Smelling Salts",
+  "type": "alchemical",
+  "_id": "w1Rcidb1iggaxGpx",
+  "img": "/icons/consumables/food/salt-seasoning-spice-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">This pungent fluid can be administered by wafting the contents under a Being's nose. If the Being is Unconscious from sleep, it immediately wakes up.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 5,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "concoction",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786825037081,
+    "modifiedTime": 1786826049455,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!w1Rcidb1iggaxGpx"
+}

@@ -1,0 +1,58 @@
+{
+  "name": "Truth Serum",
+  "type": "alchemical",
+  "_id": "MLNWmZ4T9HMnuU7z",
+  "img": "/icons/consumables/potions/bottle-circular-corked-labeled-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Sickened (Cd8, can't willingly lie).</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Consumed:</strong></b><span style=\"white-space:pre-wrap\"> Affects Targets who consume it.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 2,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "poison",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786822155097,
+    "modifiedTime": 1786826287115,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!MLNWmZ4T9HMnuU7z"
+}

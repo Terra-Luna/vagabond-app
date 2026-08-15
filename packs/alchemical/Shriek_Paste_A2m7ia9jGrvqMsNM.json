@@ -1,0 +1,58 @@
+{
+  "name": "Shriek Paste",
+  "type": "alchemical",
+  "_id": "A2m7ia9jGrvqMsNM",
+  "img": "/icons/commodities/materials/slime-thick-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The paste can coat either a 5' square area or a Medium or smaller Being for as long as 1 week. When light is shed Near the paste, the paste rapidly crystallizes and emits a shriek audible within 300' for 1 minute. If the light moves out of range, the shriek ends at the end of the Turn. Afterward, the paste is inert.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [],
+    "alchemyCategory": "concoction",
+    "damage": {
+      "dice": {
+        "count": 0,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      },
+      "type": "none",
+      "appliedEffects": []
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1786825002074,
+    "modifiedTime": 1786826067440,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!A2m7ia9jGrvqMsNM"
+}

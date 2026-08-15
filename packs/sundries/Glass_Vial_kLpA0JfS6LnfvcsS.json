@@ -1,20 +1,15 @@
 {
-  "name": "Bedroll",
-  "type": "tool",
-  "_id": "Gr8RuaSTOrOH7K6r",
-  "img": "icons/sundries/survival/bedroll-grey.webp",
+  "name": "Glass Vial",
+  "type": "sundry",
+  "_id": "kLpA0JfS6LnfvcsS",
+  "img": "/icons/consumables/potions/vial-cork-empty.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "tools",
+    "category": "other",
     "value": {
       "g": 0,
-      "s": 0,
-      "c": 0
-    },
-    "totalValue": {
-      "g": 0,
-      "s": 0,
+      "s": 3,
       "c": 0
     },
     "bulk": {
@@ -27,26 +22,26 @@
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
-    "relicEffects": []
+    "relicPowers": []
   },
   "effects": [],
   "folder": null,
-  "sort": 400000,
+  "sort": 0,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "PDLxeQclz2rj9enO": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784505599632,
-    "modifiedTime": 1785020432465,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "createdTime": 1786817781474,
+    "modifiedTime": 1786818085123,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!Gr8RuaSTOrOH7K6r"
+  "_key": "!items!kLpA0JfS6LnfvcsS"
 }
