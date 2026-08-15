@@ -21,7 +21,12 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
     return (
         <EquipmentSheetSubtypeBody>
             <div className="grid grid-cols-2 gap-x-8 gap-y-4 items-start">
-                <DiceRollInputComponent label={vgLiteLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
+                <DiceRollInputComponent
+                    label={vgLiteLang.ItemSheet.damage}
+                    diceRoll={damageDice}
+                    onChange={handleDiceChange}
+                    wrap={true}
+                />
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <ConsumableToggle item={item} />
                 <AlechemyCategory item={item} />

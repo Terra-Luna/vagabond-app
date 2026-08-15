@@ -79,12 +79,12 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     return (
         <BaseItemSheetComponent
             banner={<EquipmentSheetBanner item={item} />}
-            description={<Description item={item} />}
+            description={<Description item={item} showFullView={true} />}
             body={<>
                 {sheet}
                 <ItemDivider />
                 {sharedContent}
-                {isEditMode && game.user?.isGM &&
+                {isEditMode && game.user?.isGM && (item.type as string) !== 'alchemical' &&
                     <RelicConfig item={item} />
                 }
             </>}

@@ -49,11 +49,9 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         }
     }
 
-    override async _onCreate(data: any, options: any, userId: string) {
-        super._onCreate(data, options, userId)
-        this.parent.update({
-            'system.category': 'weapons'
-        })
+    override async _preCreate(data: any, options: any, user: any) {
+        await super._preCreate(data, options, user)
+        this.parent.updateSource({ 'system.category': 'weapons' })
     }
 
     override prepareBaseData() {

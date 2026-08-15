@@ -17,11 +17,9 @@ export class ToolDataModel extends EquipmentDataModel<ToolSchema> {
         }
     }
 
-    override async _onCreate(data: any, options: any, userId: string) {
-        super._onCreate(data, options, userId)
-        this.parent.update({
-            'system.category': 'tools'
-        })
+    override async _preCreate(data: any, options: any, user: any) {
+        await super._preCreate(data, options, user)
+        this.parent.updateSource({ 'system.category': 'tools' })
     }
 
     override prepareBaseData() {

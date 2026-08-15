@@ -1,6 +1,6 @@
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { HeroDataModel } from "../../actor/HeroDataModel"
-import { addCoins, Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
+import { Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
 
@@ -45,9 +45,11 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
     /**
      * This is called from [Hooks.on("createItem"...] and adds its items
      * to the target Hero, then deletes itself.
-     * @param hero
+     * @param actor
      */
-    async unpack(hero: Actor & { system: HeroDataModel }): Promise<void> {
+    async unpack(actor: Actor & { system: HeroDataModel }): Promise<void> {
+        if (!actor || !actor.isOwner) return
+
         const itemsToCreate: any[] = []
         const eqipment = ItemsCache.equipment()
 
@@ -63,7 +65,7 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
         }
         
         if (itemsToCreate.length > 0) {
-            await hero.createEmbeddedDocuments("Item", itemsToCreate)
+            await actor.createEmbeddedDocuments("Item", itemsToCreate)
         }
 
         // Remove the starter pack itself
