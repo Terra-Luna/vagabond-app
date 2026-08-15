@@ -43,8 +43,7 @@ export abstract class Attack {
 
     async applyDamageAndResolve(args: AttackResolutionArgs, serialize: (attack: Attack) => AttackSnapshot | undefined) {
         this.processDamageRoll(args)
-        this.isResolved = true
-        this.save(serialize)
+        await this.resolve(serialize)
     }
 
     async resolve(serialize: (attack: Attack) => AttackSnapshot | undefined) {

@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from "react"
 import { createElement, ReactElement } from "react"
 import { getId, getName } from "../../utils/modelUtil"
-import { CountdownResult } from "../../combat/engine/CountdownRoll"
-import { Attack } from "../../combat/engine/Attack"
+import { CountdownResult } from "../../combat/engine/roll/CountdownRoll"
 
 interface ElementBlueprint {
     type: string

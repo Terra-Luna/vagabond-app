@@ -100,12 +100,11 @@ export class HeroAttack extends Attack {
             await this.rollSkillCheck()
         }
 
-        if (this.isEligibleForDmgRoll) {
+        if (this.isEligibleForDmgRoll && this.isSuccessOrCrit) {
             await this.rollDamage(this.skillCheck?.result?.outcome === vgLiteLang.RollResult.crit)
         }
 
         await this.save(serializeAttack)
-
         this.sendChatMessage()
     }
 
@@ -152,7 +151,8 @@ export class HeroAttack extends Attack {
 
             if (this.skillCheck?.result &&
                 this.skillCheck?.result.outcome !== vgLiteLang.RollResult.failure &&
-                this.isEligibleForDmgRoll) {
+                this.isEligibleForDmgRoll
+            ) {
                 await this.rollDamage()
                 await this.save(serializeAttack)
             }
@@ -199,7 +199,8 @@ export class HeroAttack extends Attack {
                 roll3dDice([d6])
 
                 if (newResult.outcome !== vgLiteLang.RollResult.failure) {
-                    await this.rollDamage()
+                    await this.damageRoll?.roll()
+                    roll3dDice(this.damageRoll?.result?.rolls ?? [])
                 }
                 else {
                     this.isResolved = true

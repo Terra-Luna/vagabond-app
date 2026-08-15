@@ -4,15 +4,14 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { WeaponDataModel, isEquippedWeapon } from "../../../../../model/item/equip/WeaponDataModel"
 import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
-import { getId, getTargetIds } from "../../../../../utils/modelUtil"
+import { getId } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { useLiveTargetSync } from "../../../../../combat/engine/usecase/LiveTargetSyncUseCase"
+import { useEffect, useMemo, useState } from "react"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

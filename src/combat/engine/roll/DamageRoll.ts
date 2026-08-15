@@ -76,7 +76,7 @@ export class DamageRoll {
     }
 
     async roll(isCrit?: boolean): Promise<DamageRollResult> {
-        const damageRoll = await new Roll(`${this.dice.map(d => d.toRollFormula(isCrit)).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
+        const damageRoll = await new Roll(`${this.dice.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
         const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
 
