@@ -12,7 +12,6 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
         <div>
             <div className="flex gap-x-1 justify-center">
                 <HeroCreationLabel text={stats[stat].name} />
-                {isKeyStat && <Key size={24} className="text-text-header-tertiary" strokeWidth={2} />}
             </div>
             <div
                 onDragOver={(e) => {
@@ -53,9 +52,16 @@ export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssi
                                 ${selectedBonus ? `+${selectedBonus}` : ''}
                             `}</span>
                         </div> :
-                        <p className="text-sm text-text-tertiary font-paradigm">
-                            {strings.dropHere}
-                        </p>
+                        <div className="text-sm text-text-tertiary font-paradigm block">
+                            {isKeyStat && (
+                                <Key
+                                    size={18}
+                                    className="inline-block mr-1 align-text-bottom text-text-header-secondary"
+                                    strokeWidth={2}
+                                />
+                            )}
+                            <span className="inline">{strings.dropHere}</span>
+                        </div>
                 }
             </div>
         </div>
