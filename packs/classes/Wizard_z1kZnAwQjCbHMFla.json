@@ -81,6 +81,14 @@
         "value": 1,
         "selector": "modifiers.casting.deliveryUpcastDiscount",
         "scale": 4
+      },
+      {
+        "id": "rBDQfNkA92wWSJ1p",
+        "key": "ToggleRule",
+        "label": "Page Master",
+        "level": "1",
+        "value": true,
+        "selector": "modifiers.casting.studyDiceDamage"
       }
     ],
     "complexity": 3,
@@ -137,7 +145,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786572729833,
-    "modifiedTime": 1786738912101,
+    "modifiedTime": 1786804999310,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,

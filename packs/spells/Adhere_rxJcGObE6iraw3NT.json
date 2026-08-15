@@ -8,7 +8,8 @@
     "rules": [],
     "damageType": "acid",
     "appliesBurn": false,
-    "burnCountdown": "Cd4"
+    "burnCountdown": "Cd4",
+    "appliedEffects": []
   },
   "effects": [],
   "folder": null,
@@ -23,8 +24,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497124303,
-    "modifiedTime": 1784497213907,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1786813473141,
+    "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

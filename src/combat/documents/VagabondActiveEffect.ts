@@ -1,5 +1,6 @@
 import { ActiveEffectDataModel } from "../../model/effect/ActiveEffectDataModel"
 import { EquipmentDataModel } from "../../model/item/equip/EquipmentDataModel"
+import { vgLiteLang } from "../../utils/lang";
 
 /**
  * The static effects' names and descriptions can be displayed to a GM user when configuring
@@ -245,6 +246,88 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
         }
 
         return false
+    }
+
+    /**
+     * Burn is allowed to stack once per damage type. If the incoming duration is
+     * greater than the current, it will be promoted to the higher value. Else, it's
+     * ignored.
+     * @param actor
+     * @param data 
+     * @param effect 
+     * @returns 
+     */
+    static handleBurnStackApplication(actor, data, effect) {
+        const incomingChanges = data.system?.changes || effect.system?.changes || []
+        const burnEffect = incomingChanges.find((c: any) => c.key === "system.statuses.stacks.burning")
+
+        if (burnEffect) {
+            const changeValue = burnEffect.value || {}
+            const incomingDuration = changeValue.duration || 4
+            const incomingDmgType = changeValue.damageType || "fire"
+
+            if (Array.isArray(actor.effects?.contents)) {
+                const existingBurnEffect = actor.effects.contents.find((eff: any) => {
+                    // Check whether the actor is already Burning.
+                    const hasStatus = eff.statuses?.has("burning") || eff.id === "burning" || eff.key === "burning"
+                    if (eff.disabled || !hasStatus || eff.id === data._id) return false
+
+                    const activeChanges = eff.system?.changes || eff.changes || []
+                    const existingChange = activeChanges.find((c: any) => c.key === "system.statuses.stacks.burning")
+                    if (!existingChange?.value) return false
+
+                    const val = existingChange.value
+                    if (typeof val === "object" && val !== null) {
+                        return val.damageType === incomingDmgType
+                    }
+
+                    try {
+                        return JSON.parse(val).damageType === incomingDmgType
+                    }
+                    catch {
+                        return false
+                    }
+                })
+
+                /**
+                 * If it's a new burning effect of a unique damage type, add it like normal, else
+                 * check whether the existing instance needs to be overwritten.
+                 */
+                if (existingBurnEffect) {
+                    /**
+                     * Apply the effect only if the incoming countdown die is larger than the original, else abort.
+                     */
+                    try {
+                        const activeChanges = existingBurnEffect.system?.changes || existingBurnEffect.changes || []
+                        const existingChange = activeChanges.find((c: any) => c.key === "system.statuses.stacks.burning")
+                        const val = existingChange.value
+
+                        let existingDuration = 4
+                        if (typeof val === "object" && val !== null) {
+                            existingDuration = val.duration || 4
+                        }
+                        else {
+                            existingDuration = JSON.parse(val).duration || 4
+                        }
+
+                        if (incomingDuration > existingDuration) {
+                            existingBurnEffect.delete()
+                            ui.notifications?.info(`Upgraded ${incomingDmgType} burn from ${existingDuration} to ${incomingDuration}!`)
+                            effect.updateSource({ statuses: ["burning"] })
+                        } else {
+                            ui.notifications?.info(`Target already ${vgLiteLang.StatusConditions.burning.name} from ${vgLiteLang.DamageTypes[incomingDmgType]} (${existingDuration}).`)
+                            return false
+                        }
+                    }
+                    catch (err) {
+                        console.error("VGLite | Error evaluating existing burning instance object mapping:", err)
+                    }
+                }
+                else {
+                    effect.updateSource({ statuses: ["burning"] })
+                }
+            }
+        }
     }
 
 }

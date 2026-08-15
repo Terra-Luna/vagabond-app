@@ -62,6 +62,14 @@
         "selections": [],
         "pack": "spell",
         "scale": "3"
+      },
+      {
+        "id": "i68KYUT2d83SY6nk",
+        "key": "ToggleRule",
+        "label": "Arcane Surge: Imbue Discount",
+        "level": "4",
+        "value": true,
+        "selector": "modifiers.casting.imbueDiscount"
       }
     ],
     "complexity": 4,
@@ -124,7 +132,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784995121741,
-    "modifiedTime": 1786562364687,
+    "modifiedTime": 1786804841636,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
