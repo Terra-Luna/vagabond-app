@@ -6,9 +6,7 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">If the Target is Blinded or Sickened, the Status ends and they are immune to these Statuses for the duration.</span></p>",
     "rules": [],
-    "damageType": "none",
-    "appliesBurn": false,
-    "burnCountdown": "Cd4"
+    "damageType": "none"
   },
   "effects": [],
   "folder": null,

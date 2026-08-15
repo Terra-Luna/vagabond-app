@@ -7,8 +7,6 @@
     "description": "<p><span style=\"white-space:pre-wrap\">If the Target isn't immune to Fire, they are Burning (Cd4, or until it is doused). This Burning Status does not require Focus.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The Cd4 instead starts at a Cd6.</span></p>",
     "rules": [],
     "damageType": "fire",
-    "appliesBurn": true,
-    "burnCountdown": "Cd4",
     "appliedEffects": [
       {
         "effect": "burning",

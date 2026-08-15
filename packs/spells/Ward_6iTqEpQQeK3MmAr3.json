@@ -6,9 +6,7 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">The Target has +1 Armor. You must spend 1 Mana per Target to Focus on this Spell, even for willing Targets.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Upcast:</strong></b><span style=\"white-space:pre-wrap\"> The +1 Armor is instead a d4. Each additional upcast Mana increases this die size.</span></p>",
     "rules": [],
-    "damageType": "none",
-    "appliesBurn": false,
-    "burnCountdown": "Cd4"
+    "damageType": "none"
   },
   "effects": [],
   "folder": null,
