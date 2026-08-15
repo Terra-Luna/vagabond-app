@@ -4,7 +4,9 @@ export const statusFxSchema = () => {
     const fields = foundry.data.fields
 
     return {
-        // Flat boolean tracking flags for simple conditions
+        /**
+         * Flat boolean tracking flags for simple conditions.
+         */
         toggles: new fields.SchemaField({
             berserk: new fields.BooleanField({ initial: false }),
             blinded: new fields.BooleanField({ initial: false }),
@@ -21,20 +23,31 @@ export const statusFxSchema = () => {
             sickened: new fields.BooleanField({ initial: false }),
             suffocating: new fields.BooleanField({ initial: false }),
             unconscious: new fields.BooleanField({ initial: false }),
-            vulnerable: new fields.BooleanField({ initial: false })
+            vulnerable: new fields.BooleanField({ initial: false }),
+
+            // Special toggles that represet Hero effects...
+            marked: new fields.BooleanField({ initial: false }),
+            warded: new fields.BooleanField({ initial: false }),
+            blessed: new fields.BooleanField({ initial: false })
         }),
 
+        /**
+         * Put statcking effects here. Burn can stack by unique damage type.
+         */
         stacks: new fields.SchemaField({
             burning: new fields.ArrayField(
                 new fields.SchemaField({
                     effectId: new fields.StringField({ required: true }),
-                    duration: new fields.StringField({ initial: "Cd4" }),
+                    duration: new fields.StringField({ initial: 4 }),
                     sourceUuid: new fields.StringField()
                 }),
                 { initial: [] }
             )
         }),
 
+        /**
+         * Hero counter items.
+         */
         counters: new fields.SchemaField({
             luck: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             studied: new fields.NumberField({ ...requiredInteger, initial: 0 }),

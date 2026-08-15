@@ -372,7 +372,7 @@ Hooks.on("preCreateActiveEffect", (effect: any, data: any, options: any, userId:
      */
     if (isBurningEffect) {
         const changeValue = isBurningEffect.value || {}
-        const incomingDuration = changeValue.duration || "Cd4"
+        const incomingDuration = changeValue.duration || 4
         const incomingDmgType = changeValue.damageType || "fire"
 
         if (Array.isArray(actor.effects?.contents)) {
@@ -417,12 +417,12 @@ Hooks.on("preCreateActiveEffect", (effect: any, data: any, options: any, userId:
                     const existingChange = activeChanges.find((c: any) => c.key === "system.statuses.stacks.burning")
                     const val = existingChange.value
 
-                    let existingDuration = "Cd4"
+                    let existingDuration = 4
                     if (typeof val === "object" && val !== null) {
-                        existingDuration = val.duration || "Cd4"
+                        existingDuration = val.duration || 4
                     }
                     else {
-                        existingDuration = JSON.parse(val).duration || "Cd4"
+                        existingDuration = JSON.parse(val).duration || 4
                     }
 
                     const existingSize = getDieSize(existingDuration)

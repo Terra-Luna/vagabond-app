@@ -9,7 +9,7 @@ export interface Effect {
     img: string
     disabled: boolean
     isTransfer: boolean // is from equipped gear
-    duration?: string // this is specifically for burning (Cd4, etc...)
+    duration?: number // this is specifically for burning (Cd4, etc...)
     sourceName?: string
 }
 
@@ -45,7 +45,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                 >
                     <span className="flex items-center gap-1.5 text-lg">
                         <span>🔥</span> {vgLiteLang.Effects.burn}:
-                        <span className="text-text-header-tertiary italic ml-1 text-sm">
+                        <span className="text-text-header-tertiary italic ml-1 text-sm line-clamp-1">
                             {`(${vgLiteLang.Effects.by} ${eff.sourceName || vgLiteLang.Effects.env})`}
                         </span>
                     </span>
@@ -56,8 +56,8 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                             onEdit={() => onEdit(eff.id)}
                             onDelete={() => onDelete(eff.id)}
                         />
-                    <span className="bg-sheet-main-fill px-2 py-0.5 rounded-sm border border-solid border-destructive-action/50 text-text-secondary text-lg">
-                        {eff.duration || "Cd4"}
+                        <span className="bg-sheet-main-fill px-2 py-0.5 rounded-sm border border-solid border-destructive-action/50 text-text-secondary text-lg">
+                            Cd{eff.duration?.toString()}
                         </span>
                     </div>
                 </div>

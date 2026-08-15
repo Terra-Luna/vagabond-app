@@ -9,10 +9,11 @@ import { Description } from "../../../shared/Description"
 import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
 import { Portrait } from "../../component/ActorPortrait"
 import { Abilities, NewAbilityWindow } from "./Ability"
-import { Actions, NewActionWindow } from "./Action"
+import { ActionMenuHeader, Actions, NewActionWindow } from "./Action"
 import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
 import { HPArmorHUD } from "./HPArmorHUD"
 import { lang  } from "../../../../../utils/lang"
+import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 
 const locale = lang.VGLITE.AdversarySheet
 
@@ -23,6 +24,7 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
     const adversary = actor.system
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
+
     return (
         <div className="@container flex grow overflow-y-hidden">
             <div className="flex flex-col border border-solid border-transparent border-r-table-border">
@@ -36,14 +38,20 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
                 <div className="overflow-y-auto">
                     <Description item={adversary.parent} />
                     <StatBlock adv={adversary} />
+
                     <Actions adversary={adversary} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
                     {isAddActionOpen ?
                         <NewActionWindow adv={adversary} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
                     }
+
                     <Abilities adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
                     {isAddAbilityOpen ?
                         <NewAbilityWindow adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
                     }
+
+                    <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })} className="ml-2 hover-glow cursor-pointer">
+                        <ActionMenuHeader label={"Active Effects"} />
+                    </button>
                 </div>
             </div>
         </div>

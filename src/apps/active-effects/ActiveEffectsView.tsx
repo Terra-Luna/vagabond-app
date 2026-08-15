@@ -69,7 +69,7 @@ export const ActiveEffectsView = ({ initialDocument }: { initialDocument: Actor 
     const getActiveEffects = (document: Actor | Item): Effect[] => {
         return document.effects.map((effect: any) => {
             const statusId = effect.statuses?.first() || effect.id || ""
-            let duration: string = "Cd4"
+            let duration: number = 4
             let sourceName: string = "Environment"
 
             if (statusId === 'burning') {
@@ -77,7 +77,7 @@ export const ActiveEffectsView = ({ initialDocument }: { initialDocument: Actor 
                 if (stackChange?.value) {
                     try {
                         const parsed = JSON.parse(stackChange.value)
-                        duration = parsed.duration || "Cd4"
+                        duration = parsed.duration || 4
 
                         // Look up the actor document live using the sourceUuid stored in the schema
                         if (parsed.sourceUuid) {
@@ -89,7 +89,7 @@ export const ActiveEffectsView = ({ initialDocument }: { initialDocument: Actor 
                         }
                     }
                     catch {
-                        duration = "Cd4"
+                        duration = 4
                     }
                 }
             }

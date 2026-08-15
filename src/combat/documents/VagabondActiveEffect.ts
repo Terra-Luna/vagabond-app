@@ -32,7 +32,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "VGLITE.StatusConditions.burning.name",
             img: "icons/svg/fire.svg",
             changes: [
-                { key: "system.statuses.stacks.burning", mode: "ADD", value: JSON.stringify({ duration: "Cd4", damageType: "fire" }) }
+                { key: "system.statuses.stacks.burning", mode: "ADD", value: JSON.stringify({ duration: 4, damageType: "fire" }) }
             ]
         },
         {

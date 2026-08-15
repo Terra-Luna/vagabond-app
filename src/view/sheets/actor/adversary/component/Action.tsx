@@ -23,7 +23,7 @@ import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/roll/Dice
 import { getDamageAverage } from "../../../../../model/actor/type/AdversaryAction"
 import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/roll/DamageRoll"
 
-export const ActionMenuHeader = ({ label, onClick }) => {
+export const ActionMenuHeader = ({ label, onClick }: { label: string, onClick?: () => void }) => {
     const { isEditMode } = useEditMode()
     return (
         <div className="flex items-center gap-x-2">

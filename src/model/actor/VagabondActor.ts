@@ -23,14 +23,14 @@ export class VagabondActor<SubType extends Actor.SubType = Actor.SubType> extend
                     const parsedData = JSON.parse(stackChange.value)
                     system.statuses.stacks.burning.push({
                         effectId: effect.id || "",
-                        duration: parsedData.duration || "Cd4",
+                        duration: parsedData.duration || 4,
                         sourceUuid: parsedData.sourceUuid || effect.origin || ""
                     })
                 }
                 catch (err) {
                     system.statuses.stacks.burning.push({
                         effectId: effect.id || "",
-                        duration: "Cd4",
+                        duration: 4,
                         sourceUuid: effect.origin || ""
                     })
                 }
