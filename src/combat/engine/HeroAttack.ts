@@ -361,8 +361,17 @@ export class HeroAttack extends Attack {
             delivery.manaCost > hero.mana.current || delivery.manaCost > hero.mana.maxCast
         )) { return null }
 
+        const updates: any = {}
         if (delivery.manaCost > 0) {
-            actor.update({ 'system.mana.current': Math.max(0, hero.mana.current - delivery.manaCost) } as Record<string, number>)
+            updates['system.mana.current'] = Math.max(0, hero.mana.current - delivery.manaCost)
+        }
+
+        if (delivery.studyDamageDice > 0) {
+            updates['system.statuses.counters.studied'] = Math.max(0, hero.statuses.counters.studied - delivery.studyDamageDice)
+        }
+
+        if (updates) {
+            actor.update(updates)
         }
 
         const skillCheck = new SkillCheck(hero, { type: 'cast', skill: skill, clickEvent: clickEvent })
@@ -384,7 +393,7 @@ export class HeroAttack extends Attack {
                 atkName: delivery.spell.name,
                 dmgType: delivery.spell.damageType,
                 dice: [new DiceRoll({
-                    count: delivery.damageDice,
+                    count: delivery.damageDice + delivery.studyDamageDice,
                     faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod,
                     modifier: 0,
                     explodesOn: explosionsMod as number[]

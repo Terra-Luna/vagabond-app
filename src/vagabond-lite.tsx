@@ -183,6 +183,8 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
 })
 
 Hooks.on("createItem", async (item, _options, _userId) => {
+    if (game.user?.id !== _userId) return
+
     const parent = item.parent
     const parentIsActor = parent && parent.documentName === "Actor"
 

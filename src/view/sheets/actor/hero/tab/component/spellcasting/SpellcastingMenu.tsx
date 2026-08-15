@@ -17,7 +17,7 @@ import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { SpellSelector } from "./SpellSelector"
-import { Dices } from "lucide-react"
+import { Bookmark, BookMarked, Dices } from "lucide-react"
 import { DiscountToggle } from "./DiscountToggle"
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
@@ -88,7 +88,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         setDeliveries(deliveries.map(d => {
             if (d instanceof AreaOfEffectDelivery) {
                 const clone = d.clone()
-                clone.setSize(size)
+                clone.setSize(Math.round(size / 5) * 5)
                 return clone
             }
             else return d
@@ -96,10 +96,11 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     }, [deliveryIndex, deliveries])
 
     const onUpdateLineHeight = useCallback((h: string) => {
+        const size = Number(h)
         setDeliveries(deliveries.map(d => {
             if (d instanceof Line) {
                 const clone = d.clone()
-                clone.setHeight(Number(h))
+                clone.setHeight(Math.round(size / 5) * 5)
                 return clone
             }
             else return d
@@ -107,10 +108,11 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     }, [deliveryIndex, deliveries])
 
     const onUpdateLineWidth = useCallback((w: string) => {
+        const size = Number(w)
         setDeliveries(deliveries.map(d => {
             if (d instanceof Line) {
                 const clone = d.clone()
-                clone.setWidth(Number(w))
+                clone.setWidth(Math.round(size / 5) * 5)
                 return clone
             }
             else return d
@@ -122,6 +124,15 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         setDeliveries(deliveries.map(d => {
             const clone = d.clone()
             clone.setDamageDice(dmgDice)
+            return clone
+        }))
+    }, [deliveryIndex, deliveries])
+
+    const onUpdateStudyDamageDice = useCallback(async (input: string | null) => {
+        const dice = Math.max(0, Number(input) || 0)
+        setDeliveries(deliveries.map(d => {
+            const clone = d.clone()
+            clone.setStudyDamageDice(Math.min(hero.statuses.counters.studied, dice))
             return clone
         }))
     }, [deliveryIndex, deliveries])
@@ -194,6 +205,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
         const delivery = deliveries[deliveryIndex]
         if (delivery && delivery.spell) {
+            onUpdateStudyDamageDice('0')
             HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e)?.initiate()
         }
     }
@@ -207,17 +219,25 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                     <div className="font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-2 space-y-2">
 
                         {/* SPELLCASTING MENU TOP ROW */}
-                        <div className="flex gap-x-2 items-end bottom text-lg">
+                        <div className="flex gap-x-1 items-end bottom text-lg">
                             <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
                             <div className="ml-auto">
                                 <PrimaryButton
                                     title={vgLiteLang.HeroSheet.skills_tooltip}
-                                    icon={<DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />}
                                     onClick={(e) => castSpell(e)}
                                 >
-                                    {vgLiteLang.HeroSheet.Magic.btnCast}
+                                    {/* CAST BUTTON */}
+                                    <div className="flex gap-x-2 text-sm items-center">
+                                        <TotalMana cost={delivery?.manaCost ?? 0} />
+                                        <div className="flex flex-col items-center">
+                                            {spell.damageType !== 'none' &&
+                                                <DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />
+                                            }
+                                            {vgLiteLang.HeroSheet.Magic.btnCast}
+                                        </div>
+                                    </div>
                                 </PrimaryButton>
                             </div>
                         </div>
@@ -227,17 +247,34 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             {renderConfigs()}
                             <div className="flex items-end ml-auto">
                                 {spell.damageType !== 'none' &&
-                                    <div>
-                                        <Dices size={18} className="text-text-secondary" />
-                                        <DiceCountInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
-                                    </div>
-                                }
+                                    <div className="flex gap-x-1">
+                                        {/* DAMAGE DICE INPUT */}
+                                        <div className="flex flex-col">
+                                            <div className="flex gap-x-1 items-baseline">
+                                                <Dices size={18} className="self-center text-text-header-tertiary" />
+                                                <p className="text-sm text-text-header-tertiary font-normal">d{hero.modifiers.dice.size.spell.bonus + 6}</p>
+                                            </div>
+                                            <DiceCountInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
+                                        </div>
+                                        {/* IF THE CLASS CAN USE STUDIED DICE AS DAMAGE */}
+                                        {hero.modifiers.casting.studyDiceDamage &&
+                                            <div className="flex flex-col">
+                                                <div className="flex gap-x-1 items-baseline">
+                                                    <BookMarked size={18} className="text-ic-studied self-center" />
+                                                    <p className="text-sm text-text-header-tertiary font-normal">d6</p>
+                                                </div>
+                                                <DiceCountInput dmgDice={delivery?.studyDamageDice} onUpdateDmgDice={onUpdateStudyDamageDice} />
+                                            </div>
+                                        }
+                                    </div>}
                                 <div className="flex-col ml-2">
                                     <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
                                     <SpellFocusToggle isFocused={delivery?.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
-                                    <DiscountToggle discount={delivery?.discount} onToggleDiscount={onToggleDiscount} />
+                                    {/* IF THE CLASS CAN CAST IMBUED SPELLS AT DISCOUNT */}
+                                    {hero.modifiers.casting.imbueDiscount &&
+                                        <DiscountToggle discount={delivery?.discount} onToggleDiscount={onToggleDiscount} />
+                                    }
                                 </div>
-                                <TotalMana cost={delivery?.manaCost ?? 0} />
                             </div>
                         </div>
 

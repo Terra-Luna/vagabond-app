@@ -77,7 +77,9 @@ export class LevelUpApp extends VagabondApplication {
                 'system.health.current': this.actor.system.health.max,
                 'system.mana.current': this.actor.system.mana.max,
                 'system.statuses.counters.luck': this.actor.system.stats.luck
-            } as Record<any, any>)
+            } as Record<any, any>,
+                { ['skipTrackerChatCard' as string]: true }
+            )
         }
         this.close()
     }

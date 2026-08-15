@@ -65,9 +65,9 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         this.parent.update({system: {forceUpdateTrack: !this.forceUpdateTrack}})
     }
 
-    override async _onCreate(data: any, options: any, userId: string) {
-        super._onCreate(data, options, userId)
-        this.parent.update({
+    override async _preCreate(data: any, options: any, user: any) {
+        await super._preCreate(data, options, user)
+        this.parent.updateSource({
             'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
             'prototypeToken.actorLink': true,
             'prototypeToken.sight.enabled': true,
@@ -78,15 +78,15 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override prepareBaseData() {
         super.prepareBaseData()
-        this.ancestry = this.parent.items.find((i: { type: string }) => i.type === 'ancestry')?.system
-        this.class = this.parent.items.find((i: { type: string }) => i.type === 'class')?.system
+        const actor = this.parent
+        if (!actor?.items) return
+
+        this.ancestry = actor.items.find((i: { type: string }) => i?.type === 'ancestry')?.system
+        this.class = actor.items.find((i: { type: string }) => i?.type === 'class')?.system
 
         /**
          * Apply bonuses from Item Rules...
          */
-        const actor = this.parent
-        if (!actor || !actor.items) return
-
         HeroBaseDataRulesApplicator.apply(this.parent)
 
         /**
@@ -104,6 +104,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override prepareDerivedData() {
         super.prepareDerivedData()
+        if (!this.parent) return
+
         validateCurrentHP(this)
         validateCurrentLuck(this)
         validateCurrentFocus(this)
@@ -112,6 +114,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     override async _preUpdate(changes, options, user) {
         await super._preUpdate(changes, options, user)
+
         const coinChanges = (changes.system as any)?.inventory?.coins
         if (coinChanges) {
             const { g, s, c } = this.inventory.coins

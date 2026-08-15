@@ -22,9 +22,9 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
                 </div>
                 <p className="text-xs text-text-header-secondary font-paradigm font-normalitalic">
                     {item.system.relicPowers
-                        .filter(relic => relic.category.value !== 'cursed')
-                        .map(relic => RelicPowers.getFormattedRelicName(relic as any))
-                        .join(", ")
+                        ?.filter(relic => relic.category.value !== 'cursed')
+                        ?.map(relic => RelicPowers.getFormattedRelicName(relic as any))
+                        ?.join(", ")
                     }
                 </p>
             </div>

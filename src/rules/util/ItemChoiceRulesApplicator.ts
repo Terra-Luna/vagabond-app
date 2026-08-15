@@ -9,6 +9,8 @@ export class PerkRulesSelectionsApplicator {
      * Reads all the Actor's virtual perk items and applies their rules' choice selections.
      */
     static apply(actor: Actor & { system: HeroDataModel }) {
+        if (!actor || !actor.isOwner) return
+
         actor.system.spells = []
         actor.system.perks = []
 

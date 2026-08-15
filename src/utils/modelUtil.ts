@@ -28,6 +28,7 @@ export const getTargets = (): Token[] => {
 export const getTargetIds = (): string[] => getTargets().map(t => t.id)
 
 export const getCanvasToken = (id): Token | undefined => {
+    if (!id) return undefined
     return canvas?.tokens?.get(id)
 }
 

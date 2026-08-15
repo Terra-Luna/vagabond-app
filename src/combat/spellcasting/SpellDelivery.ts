@@ -44,6 +44,7 @@ export abstract class SpellDelivery {
     applyEffect = false
     isFocused = false
     damageDice = 1
+    studyDamageDice = 0
     manaCost = 0
     discount = false
 
@@ -76,6 +77,12 @@ export abstract class SpellDelivery {
         if (this.spell?.damageType !== 'none') {
             this.damageDice = dice
             this.calculateManaCost()
+        }
+    }
+
+    setStudyDamageDice(dice: number) {
+        if (this.spell?.damageType !== 'none') {
+            this.studyDamageDice = dice
         }
     }
 

@@ -2,13 +2,14 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { inventoryItemTypes } from "../../model/actor/type/Inventory"
 import { addItems } from "../../utils/heroInventoryUtil"
 import { isPathOfType } from "../../utils/modelUtil"
-import { calculateRecurringRuleEligibility, calculateRecurringRuleScale } from "./item-rules-util"
+import { calculateRecurringRuleScale } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class HeroBaseDataRulesApplicator {
 
     static apply(actor: Actor & { system: HeroDataModel }) {
-        if (!actor) return
+        if (!actor || !actor.isOwner) return
+
         // Get rules from Ancestry, Class, and granted Perks and process them.
         const perkSelections = actor.getFlag("vagabond-lite" as any, "perkSelections") ?? []
         const activeRules = actor.system.getActiveRules()

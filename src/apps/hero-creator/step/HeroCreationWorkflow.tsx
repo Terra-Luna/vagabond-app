@@ -164,7 +164,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      * lifecycle step.
      */
     const handleSaveAndFinish = useCallback(async () => {
-        if (!ancestryItem || !classItem) return
+        if (!actor.isOwner || !ancestryItem || !classItem) return
 
         try {
             const createdItems = await actor.createEmbeddedDocuments("Item", [
@@ -257,7 +257,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                 'system.health.current': actor.system.health.max,
                 'system.mana.current': actor.system.mana.max,
                 'system.statuses.counters.luck': actor.system.stats.luck
-            } as Record<any, any>)
+            } as Record<any, any>,
+                { ['skipTrackerChatCard' as string]: true }
+            )
             setClosed()
         }
     }, [
