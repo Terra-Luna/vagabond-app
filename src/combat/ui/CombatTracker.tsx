@@ -1,5 +1,5 @@
-import { PlayIcon, Trash, StopCircle, Edit, Eye } from "lucide-react"
-import { ReactNode, useState, useMemo, useCallback, useEffect } from "react"
+import { PlayIcon, Trash, StopCircle, Eye } from "lucide-react"
+import { ReactNode, useState, useMemo, useCallback, useEffect, useRef, useLayoutEffect } from "react"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
@@ -11,13 +11,14 @@ import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 import { Gauge } from "../../view/component/Gauge"
 import { getCombatantStatuses } from "../engine/status"
-import { BulkCombatantEditApp } from "../../apps/bulk-combatant-edit/BulkCombatantEditApp"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { BulkCombatantEditView } from "../../apps/bulk-combatant-edit/BulkCombatantEditView"
 import { getCanvasToken } from "../../utils/modelUtil"
 import { useFoundryHook } from "../../view/wrappers/hooks"
+import { getControlledCombatants, getControlledTokens } from "../combat-utils"
 
 const getCombat = () => game.combat as VagabondCombat
+
 
 const getCombatantById = (id: string) => {
     const combatants = getCombat()?.combatants?.contents
@@ -57,25 +58,43 @@ export const CombatTracker = ({ combat }) => {
     const combatants = combat?.combatants?.contents
 
     const [lastClickedCombatants, setlastClickedCombatants] = useState([])
+    const [controlledCombatants, setControlledCombatants] = useState(getControlledCombatants())
+
+    const containerRef = useRef<HTMLDivElement>(null);
+    const scrollPosRef = useRef(0);
+
+    useFoundryHook("refreshToken" as any, () => {
+        setControlledCombatants(getControlledCombatants())
+    })
+
+    // for some reason scroll positioning isn't being maintained. this is a hack but it works
+    useLayoutEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = scrollPosRef.current;
+        }
+    }, [combatants]);
 
     if (!combatants?.length) {
         return <></>
     }
 
+    const handleScroll = () => {
+        if (containerRef.current) {
+            scrollPosRef.current = containerRef.current.scrollTop;
+        }
+    };
+
     const heroes = getHeroes(combatants)
     const adversaries = getAdversaries(combatants)
-
-    const controlledTokens = game.canvas?.tokens?.controlled
-    const controlledCombatants = controlledTokens?.filter(t => t.combatant).map(t => t.combatant!) ?? []
 
     return (
         <CanvasReadyWrapper>
             <div className="flex flex-col h-full">
-                <div className="flex flex-col gap-1 overflow-auto">
+                <div className="flex flex-col gap-1 overflow-auto" ref={containerRef} onScroll={handleScroll}>
                     {heroes?.length > 0 &&
                         <Group groupName="heroes">
                             <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
-                            <GroupBody>{heroes?.map((hero, index) => <Hero key={index} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                            <GroupBody>{heroes?.map((hero) => <Hero key={hero.id} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
                     {adversaries?.length > 0 &&
@@ -87,7 +106,7 @@ export const CombatTracker = ({ combat }) => {
                 </div>
                 {game.user?.isGM && (
                     <footer className="shrink-0 pt-4 mt-auto">
-                        <BulkCombatantEditView combatants={controlledCombatants as unknown as VagabondCombatant[]} />
+                        <BulkCombatantEditView combatants={controlledCombatants} />
                     </footer>)}
             </div>
         </CanvasReadyWrapper>
@@ -118,12 +137,12 @@ const GroupBody = ({ children }) => {
 }
 
 const CombatantHeader = ({ token, combatant, name, children }) => {
+    const realToken = getCanvasToken(token.id)
+
     const [hovered, setIsHovered] = useState(false)
     const [controlled, setIsControlled] = useState(false)
-    const [isHidden, setIsHidden] = useState(!token.visible)
+    const [isHidden, setIsHidden] = useState(realToken?.document.hidden)
     const { onCtxMenu, ContextMenu } = useContextMenu()
-
-    const realToken = getCanvasToken(token.id)
 
     useFoundryHook("hoverToken" as any, (hoveredToken, hover) => {
         if (hoveredToken === token) {
@@ -139,7 +158,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
                 setIsHovered(false)
             }
             setIsControlled(isControlled)
-            setIsHidden(!token.visible)
+            setIsHidden(realToken?.document.hidden)
         })
 
         const hookId2 = Hooks.on("controlToken", () => {
@@ -150,12 +169,19 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
             Hooks.off("refreshToken", hookId)
             Hooks.off("controlToken", hookId2)
         }
-    }, [token])
+    }, [token, realToken])
 
 
     const ctxMenuActions = () => {
+        const controlledTokens = new Set(getControlledTokens())
+
+        const updateVisibility = () => {
+            if (realToken) controlledTokens.add(realToken)
+            controlledTokens.forEach(token => token.document.update({ hidden: !token.document.hidden }))
+        }
+
         const actions = [
-            { label: isHidden ? "Show" : "Hide", action: () => realToken?.document.update({ hidden: !isHidden }), icon: Eye },
+            { label: controlledTokens.size > 1 ? "Toggle Visibility of Selected Tokens" : isHidden ? "Show" : "Hide", action: updateVisibility, icon: Eye },
             { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true }
         ] as any
 
@@ -169,7 +195,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     return (
         <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions())}>
             <div className={`flex w-full ${opacityClass}`}>
-                <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} />
+                <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} />
                 <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
                         <p className={`hover-glow ${hovered ? "vglite-hovered" : ""} leading-none -mb-0.5`}>{name}</p>
@@ -240,14 +266,15 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
     )
 }
 
-const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition }) => {
+const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHidden }) => {
     const dispositionColor = isControlled ? CONFIG.Canvas.dispositionColors.CONTROLLED : isHovered ? CONFIG.Canvas.dispositionColors[disposition] : ""
     const borderColor = `#${dispositionColor.toString(16)}`
     const borderStyle = (isHovered || isControlled) ? "border-solid border-2" : "";
+
     return (
         <img
             style={{ borderColor }}
-            className={`object-contain h-[54px] w-[54px] p-0.5 cursor-pointer mr-2 self-center ${borderStyle}`} src={src} alt={''}
+            className={`object-contain h-[54px] w-[54px] p-0.5 cursor-pointer mr-2 self-center ${borderStyle} transition-opacity duration-1200 ${isHidden ? 'opacity-50' : ''}`} src={src} alt={''}
         />
     )
 }
