@@ -1,10 +1,10 @@
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
+import { AdversaryAttack } from "../AdversaryAttack"
 import { Attack } from "../Attack"
 import { HeroAttack } from "../HeroAttack"
-import { AdversaryAttack } from "../AdversaryAttack"
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { DamageRoll } from "../DamageRoll"
-import { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
-import { SkillCheck } from "../SkillCheck"
+import { DamageRoll } from "../roll/DamageRoll"
+import { SkillCheck } from "../roll/SkillCheck"
 
 export interface AttackSnapshot {
     type: 'adversary' | 'hero'

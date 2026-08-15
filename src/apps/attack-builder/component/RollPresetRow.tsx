@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { RollPreset } from "../RollBuilderApp"
-import { DiceRoll } from "../../../combat/engine/DiceRoll"
+import { DiceRoll } from "../../../combat/engine/roll/DiceRoll"
 import { HeroAttack } from "../../../combat/engine/HeroAttack"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"

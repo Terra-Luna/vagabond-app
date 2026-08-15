@@ -18,10 +18,10 @@ import { DropDown } from "../../../../component/Dropdown"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { ComboChatCard } from "../../../../chat/ComboChatCard"
-import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/DamageRoll"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
-import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/DiceRoll"
+import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/roll/DiceRoll"
 import { getDamageAverage } from "../../../../../model/actor/type/AdversaryAction"
+import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/roll/DamageRoll"
 
 export const ActionMenuHeader = ({ label, onClick }) => {
     const { isEditMode } = useEditMode()

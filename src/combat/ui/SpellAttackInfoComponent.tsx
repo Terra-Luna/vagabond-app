@@ -6,9 +6,9 @@ import { DamageRollsComponent } from "../../view/chat/component/DamageRollsCompo
 import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { Sparkle } from "lucide-react"
-import { DamageRollResult } from "../engine/DamageRoll"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { useMemo } from "react"
+import { DamageRollResult } from "../engine/roll/DamageRoll"
 
 export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined }: {
     spell: Item & { system: SpellDataModel }, delivery: any, dmgRoll?: DamageRollResult | undefined

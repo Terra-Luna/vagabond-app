@@ -5,8 +5,8 @@ import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { TargetsDisplay } from "./component/TargetsDisplay"
 import { DamageRollsComponent } from "./component/DamageRollsComponent"
-import { DamageRollResult } from "../../combat/engine/DamageRoll"
 import { useCallback, useState } from "react"
+import { DamageRollResult } from "../../combat/engine/roll/DamageRoll"
 
 export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, rolls: DamageRollResult[], tokenIds: string[] }) => {
     const actor = game.actors?.get(actorId)

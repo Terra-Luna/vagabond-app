@@ -1,4 +1,4 @@
-import { DiceRollSchema } from "../../combat/engine/DiceRoll"
+import { DiceRollSchema } from "../../combat/engine/roll/DiceRoll"
 import { VagabondApplication, VagabondAppArgs } from "../VagabondApplication"
 import { RollBuilderView } from "./RollBuilderView"
 

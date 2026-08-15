@@ -1,29 +1,16 @@
-import { Eye, Heart, HeartMinusIcon, HeartPlusIcon, Minus, Plus, Trash } from "lucide-react"
-import { VagabondCombatant } from "../../combat/documents/VagabondCombat"
-import { useCallback, useState } from "react"
+import { Eye, HeartMinusIcon, HeartPlusIcon, Trash } from "lucide-react"
+import { VagabondCombatant } from "../documents/VagabondCombat"
 import { Widget } from "../../view/component/Widget"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
-import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel"
-import { buttonAnimation } from "../../view/component/Button"
-import { getControlledTokens } from "../../combat/combat-utils"
+import { getControlledTokens } from "../combat-utils"
 import { useContextMenu } from "../../view/component/ContextMenu"
+import { Header } from "../../view/component/Header"
+import { useAdjustCombatantHP } from "../engine/usecase/AdjustCombatantHPUseCase"
 
 export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondCombatant[] }) => {
 
     const enabled = combatants.length > 0
-
-    const [hpToAddOrRemove, setHpToAddOrRemove] = useState(1)
-    const [mode, setMode] = useState<'subtr' | 'add'>('subtr')
-
-    const changeAllCombatantsHp = useCallback(async () => {
-        await Promise.all(combatants
-            .filter(c => c.token?.actor)
-            .map(c => {
-                const currentHp = (c.token?.actor?.system as ActorDataModel<BaseActorSchema>).health.current ?? 0
-                return c.token?.actor?.update({ system: { health: { current: currentHp + (hpToAddOrRemove * (mode === 'add' ? 1 : -1)) } } })
-            }))
-    }, [combatants, mode, hpToAddOrRemove])
-
+    const { mode, setMode, hpAdjustment, setHpAdjustment, updateHP } = useAdjustCombatantHP(combatants)
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const updateVisibility = () => getControlledTokens().forEach(token => token.document.update({ hidden: !token.document.hidden }))
@@ -52,6 +39,7 @@ export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondComb
                 })}
                 <ContextMenu />
             </div>
+            <Header title={"GM TOOLS"} />
             <Widget label="Edit Combatant Hp">
                 <div className="text-text-primary font-eskapade">
                     Edit Combatant Hp
@@ -64,15 +52,15 @@ export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondComb
                                 border border-solid border-table-border rounded-sm p-1">
                             <input
                                 className="w-16 mr-1 hover-glow"
-                                value={hpToAddOrRemove}
+                                value={hpAdjustment}
                                 placeholder="0"
                                 type="number"
                                 onChange={(e) => {
-                                    setHpToAddOrRemove(Number(e.target.value))
+                                    setHpAdjustment(Number(e.target.value))
                                 }}
                             />
-                            {mode === "add" ? <HeartPlusIcon className="fill-text-hp-current hover-glow" size={36} onClick={changeAllCombatantsHp} />
-                                : <HeartMinusIcon className="fill-text-hp-current hover-glow" size={36} onClick={changeAllCombatantsHp} />}
+                            {mode === "add" ? <HeartPlusIcon className="fill-text-hp-current hover-glow cursor-pointer" size={36} onClick={updateHP} />
+                                : <HeartMinusIcon className="fill-text-hp-current hover-glow" size={36} onClick={updateHP} />}
                         </div>
                     </div>
                 </div>

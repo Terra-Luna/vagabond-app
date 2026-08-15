@@ -1,5 +1,5 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 
 export interface DiceRollSchema {
     count: number

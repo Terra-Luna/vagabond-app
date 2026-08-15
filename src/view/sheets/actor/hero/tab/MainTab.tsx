@@ -12,7 +12,7 @@ import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { useLiveTargetSync } from "../../../../../combat/engine/util/target-sync"
+import { useLiveTargetSync } from "../../../../../combat/engine/usecase/LiveTargetSyncUseCase"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

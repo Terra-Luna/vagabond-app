@@ -10,12 +10,13 @@ import { HeaderWithClipPath } from "../../view/component/SkillCard"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 import { Gauge } from "../../view/component/Gauge"
-import { getCombatantStatuses } from "../engine/status"
+import { getCombatantStatuses } from "../engine/util/status"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
-import { BulkCombatantEditView } from "../../apps/bulk-combatant-edit/BulkCombatantEditView"
+import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { getCanvasToken } from "../../utils/modelUtil"
 import { useFoundryHook } from "../../view/wrappers/hooks"
 import { getControlledCombatants, getControlledTokens } from "../combat-utils"
+import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 
 const getCombat = () => game.combat as VagabondCombat
 
@@ -106,7 +107,9 @@ export const CombatTracker = ({ combat }) => {
                 </div>
                 {game.user?.isGM && (
                     <footer className="shrink-0 pt-4 mt-auto">
-                        <BulkCombatantEditView combatants={controlledCombatants} />
+                        <FoundryHotkeyBlocker>
+                            <BulkCombatantEditView combatants={controlledCombatants} />
+                        </FoundryHotkeyBlocker>
                     </footer>)}
             </div>
         </CanvasReadyWrapper>
@@ -132,7 +135,7 @@ const GroupHeader = ({ label }: { groupName: CombatGroup, label: string }) => {
 
 const GroupBody = ({ children }) => {
     return (
-        <div className="pl-2 flex flex-col">{children}</div>
+        <div className="pl-2 flex flex-col gap-y-1">{children}</div>
     )
 }
 

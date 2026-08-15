@@ -11,7 +11,7 @@ import { useStatsDrawerStatus } from "./statdrawer/hooks"
 import { lang, vgLiteLang } from "../../../../../utils/lang"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { CollapsibleSection } from "../../../../component/Collapsible"
-import { SkillCheck } from "../../../../../combat/engine/SkillCheck"
+import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 
 interface Health {

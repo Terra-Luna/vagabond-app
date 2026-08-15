@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react"
-import { DiceRoll, DiceRollSchema } from "../../../combat/engine/DiceRoll"
+import { DiceRoll, DiceRollSchema } from "../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"

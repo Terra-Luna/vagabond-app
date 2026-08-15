@@ -1,11 +1,6 @@
-import { DamageRoll } from "../../../combat/engine/DamageRoll"
-import { DiceRoll } from "../../../combat/engine/DiceRoll"
-import { HeroAttack } from "../../../combat/engine/HeroAttack"
 import { lang } from "../../../utils/lang"
-import { HeroDataModel } from "../../actor/HeroDataModel"
-import { damageTypeOptions, fields, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import { EquipmentDataModel } from "./EquipmentDataModel"
-import { EquipmentSchema } from "./EquipmentDataModel"
+import { fields, rangeOptions, requiredInteger, damageTypeOptions, requiredString } from "../../common/sharedSchemas"
+import { EquipmentSchema, EquipmentDataModel } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
     return {

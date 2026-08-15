@@ -1,7 +1,8 @@
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
-import { DamageRoll } from "./DamageRoll"
-import { DiceRoll } from "./util/dice-utils"
 import { Attack } from "./Attack"
+import { DamageRoll } from "./roll/DamageRoll"
+import { DiceRoll } from "./roll/DiceRoll"
+
 
 export interface AdversaryAttackArgs { attackName: string, dmgType: string, dice: DiceRoll[] }
 

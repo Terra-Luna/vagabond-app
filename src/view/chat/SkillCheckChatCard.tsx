@@ -4,7 +4,7 @@ import { ChatCardBanner } from "./component/ChatCardBanner"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { getTokenImg } from "../../utils/modelUtil"
 import { vgLiteLang } from '../../utils/lang'
-import { SkillCheckResult } from '../../combat/engine/SkillCheck'
+import { SkillCheckResult } from '../../combat/engine/roll/SkillCheck'
 
 export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
     const actor = game.actors?.get(actorId)

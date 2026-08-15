@@ -4,8 +4,8 @@ import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
-import { DamageRoll } from "../../../../../combat/engine/DamageRoll"
-import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/DiceRoll"
+import { DiceRoll, DiceRollSchema } from "../../../../../combat/engine/roll/DiceRoll"
+import { DamageRoll } from "../../../../../combat/engine/roll/DamageRoll"
 
 export const useAddAbilityMenu = () => {
     const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)

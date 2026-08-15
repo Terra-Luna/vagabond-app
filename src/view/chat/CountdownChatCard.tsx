@@ -3,7 +3,7 @@ import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRollComponent } from "./component/DiceRollComponent"
 import { sendCountdownRollMessage } from "./ChatCardSerializer"
-import { CountdownResult, CountdownRoll } from "../../combat/engine/CountdownRoll"
+import { CountdownResult, CountdownRoll } from "../../combat/engine/roll/CountdownRoll"
 
 export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) => {
     const [isReRolled, setIsReRolled] = useState(false)

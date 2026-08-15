@@ -5,7 +5,7 @@ import { getCanvasToken, getTokenImg } from '../../utils/modelUtil'
 import { vgLiteLang } from '../../utils/lang'
 import { DamageRollsComponent } from './component/DamageRollsComponent'
 import { useCallback, useState } from 'react'
-import { DamageRollResult } from '../../combat/engine/DamageRoll'
+import { DamageRollResult } from '../../combat/engine/roll/DamageRoll'
 
 export const DamageRollChatCard = ({ actorId, tokenIds, result }: {
     actorId: string, tokenIds: string[], result: DamageRollResult

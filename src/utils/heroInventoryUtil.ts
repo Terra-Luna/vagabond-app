@@ -17,9 +17,9 @@ import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
 import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
 import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
-import { DamageRoll } from "../combat/engine/DamageRoll"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import { ItemsCache } from "../rules/util/ItemsCache"
+import { DamageRoll } from "../combat/engine/roll/DamageRoll"
 
 /**
  * Use this funtion for programatically adding items to Actors. It mimics

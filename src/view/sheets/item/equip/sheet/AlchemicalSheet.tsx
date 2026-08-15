@@ -7,7 +7,7 @@ import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBod
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { useCallback } from "react"
-import { DiceRoll } from "../../../../../combat/engine/DiceRoll"
+import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
 

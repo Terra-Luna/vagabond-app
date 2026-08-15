@@ -1,7 +1,7 @@
 import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { getTargetIds } from "../../utils/modelUtil"
-import { DamageRoll } from "./DamageRoll"
+import { DamageRoll } from "./roll/DamageRoll"
 import { AttackSnapshot } from "./util/attack-serializer"
 
 export interface AttackResolutionArgs {
