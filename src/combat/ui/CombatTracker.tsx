@@ -140,7 +140,7 @@ const GroupBody = ({ children }) => {
 }
 
 const CombatantHeader = ({ token, combatant, name, children }) => {
-    const realToken = getCanvasToken(token.id)
+    const realToken = getCanvasToken(token?.id)
 
     const [hovered, setIsHovered] = useState(false)
     const [controlled, setIsControlled] = useState(false)
@@ -193,7 +193,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
 
     const isActiveCombatant = game.combat?.combatant === combatant
     const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
-    const disposition = combatant.token.disposition
+    const disposition = combatant.token?.disposition
 
     return (
         <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions())}>
@@ -350,7 +350,7 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
 }
 
 const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants }) => {
-    const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === adversary.token._id) as Token, [adversary])
+    const token = useMemo(() => canvas?.tokens?.placeables?.find(t => t?.id === adversary?.token?._id) as Token, [adversary])
     const adversaryModel = adversary.actor.system
 
     return (
