@@ -30,7 +30,7 @@ const adversarySchema = () => {
         abilities: new fields.ArrayField(
             new fields.SchemaField({
                 name: new fields.StringField({ required: true, initial: '' }),
-                description: new fields.HTMLField({ required: true, initital: '' }),
+                description: new fields.HTMLField({ required: true, initital: '' })
             })
         )
     }

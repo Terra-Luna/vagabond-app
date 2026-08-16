@@ -13,13 +13,18 @@ import vgLiteStylesProd from "../styles/vagabond-lite.css?inline"
 const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement | null }
 
 const isProduction = process.env.NODE_ENV === 'production'
+console.log("isProduction:", isProduction, process.env.NODE_ENV)
 
 const removeAndSaveVagabondStyleTag = () => {
     const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement
+
+    console.log(vgLiteStyleTag)
+
     if (vgLiteStyleTag) {
         vgLiteStyleTag.remove()
         documentWithStyleTag.vgLiteDevStyleSheet = vgLiteStyleTag
-    } else {
+    }
+    else {
         documentWithStyleTag.vgLiteDevStyleSheet = null
     }
 }
@@ -30,9 +35,10 @@ if (isProduction) {
     vgLiteStyles = vgLiteStylesProd as unknown as string
 }
 else {
+    console.log("Hot reloading")
     removeAndSaveVagabondStyleTag()
     vgLiteStyles = documentWithStyleTag.vgLiteDevStyleSheet
-        ? (documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string)
+        ? documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string
         : ""
 }
 
@@ -47,3 +53,33 @@ if (import.meta.hot && !isProduction) {
         removeAndSaveVagabondStyleTag()
     })
 }
+
+
+/* 
+
+const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement }
+
+const removeAndSaveVgLiteStyleTag = () => {
+    const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement;
+    if (vgLiteStyleTag) {
+        vgLiteStyleTag.remove();
+        documentWithStyleTag.vgLiteDevStyleSheet = vgLiteStyleTag
+    }
+}
+
+removeAndSaveVgLiteStyleTag()
+
+export const vgLiteStyles = documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string
+
+if (import.meta.hot) {
+    import.meta.hot.on("vite:beforeUpdate", () => {
+        document.head.appendChild(documentWithStyleTag.vgLiteDevStyleSheet)
+    })
+
+    import.meta.hot.on("vite:afterUpdate", () => {
+        removeAndSaveVgLiteStyleTag()
+    })
+}
+
+
+*/

@@ -6,11 +6,18 @@ export class AdversarySheet extends VagabondActorSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 400,
-            height: "auto"
+            height: "auto",
+            top: 100,
+            left: 450
         },
         window: {
             resizable: true
         },
-        dragDrop: []
+        dragDrop: [
+            {
+                dragSelector: ".draggable",
+                dropSelector: ".sheet-body"
+            }
+        ]
     }
 }
