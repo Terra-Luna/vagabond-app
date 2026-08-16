@@ -94,8 +94,19 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                 contents={
                     <div>
                         {/* ATTACK CONTENT BY CHARACTER TYPE */}
-                        {attack instanceof HeroAttack && <HeroAttackComponent actor={actor as Actor & { system: HeroDataModel }} attack={attack} source={source} />}
-                        {attack instanceof AdversaryAttack && <AdversaryAttackComponent actor={actor} attack={attack} />}
+                        {attack instanceof HeroAttack &&
+                            <HeroAttackComponent
+                                actor={actor as Actor & { system: HeroDataModel }}
+                                attack={attack}
+                                source={source}
+                                setRevision={setRevision}
+                            />
+                        }
+
+                        {/* ADVERSARY ATTACK CHAT CARD */}
+                        {attack instanceof AdversaryAttack &&
+                            <AdversaryAttackComponent actor={actor} attack={attack} />
+                        }
 
                         {/* GM TOOLS */}
                         {(game.user?.isGM && !attack.isResolved) &&
@@ -147,12 +158,12 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     )
 }
 
-const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined }) => {
-
-    const [subRevision, setSubRevision] = useState(0)
+const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
+    actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
+}) => {
 
     useEffect(() => {
-        const handleUpdate = () => setSubRevision(prev => prev + 1)
+        const handleUpdate = () => setRevision(prev => prev + 1)
 
         const hookActorId = Hooks.on("updateActor", (updatedActor: any) => {
             if (updatedActor.id === actor.id) handleUpdate()
@@ -170,20 +181,20 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
         }
     }, [actor.id])
 
-    const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck, subRevision])
-    const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck, subRevision])
-    const studied = useMemo<number>(() => actor.system.statuses.counters.studied, [actor.system.statuses.counters.studied, subRevision])
+    const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck, setRevision])
+    const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck, setRevision])
+    const studied = useMemo<number>(() => actor.system.statuses.counters.studied, [actor.system.statuses.counters.studied, setRevision])
 
     const isFriendlySpell = useMemo<boolean>(() => {
         return attack.spellDelivery != null && !attack.hasHostileTargets
-    }, [attack, subRevision])
+    }, [attack, setRevision])
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
         const hasPermission = game.user?.isGM || game.user?.id === attack.userId
         const isFailure = attack.skillCheck?.result?.outcome === vgLiteLang.RollResult.failure
         const hasResources = luck > 0 || studied > 0
         return hasPermission && !attack.isResolved && !attack.isRerolled && isFailure && hasResources
-    }, [luck, studied, attack, subRevision])
+    }, [luck, studied, attack, setRevision])
 
     const liveTargetIds = useLiveTargetSync(attack)
 
@@ -198,31 +209,31 @@ const HeroAttackComponent = ({ actor, attack, source }: { actor: Actor & { syste
                 }
             })
             .filter(it => it.src != null && it.src.length > 0)
-    }, [liveTargetIds, subRevision])
+    }, [liveTargetIds, setRevision])
 
     const handleLuckReroll = useCallback(async () => {
         await attack.rollSkillCheck(true)
-        setSubRevision(prev => prev + 1)
+        setRevision(prev => prev + 1)
     }, [attack])
 
     const handleLateD6 = useCallback(async (resource: 'luck' | 'studied', currentValue: number) => {
         await attack.addLateFavor(resource, currentValue);
-        setSubRevision(prev => prev + 1)
+        setRevision(prev => prev + 1)
     }, [attack])
 
     const addCritLuck = useCallback(async () => {
         await attack.addCritLuck();
-        setSubRevision(prev => prev + 1)
+        setRevision(prev => prev + 1)
     }, [attack])
 
     const addCritDamage = useCallback(async () => {
         await attack.addCritDamage();
-        setSubRevision(prev => prev + 1)
+        setRevision(prev => prev + 1)
     }, [attack])
 
     const addSpellFx = useCallback(async () => {
         await attack.addCritSpellFx()
-        setSubRevision(prev => prev + 1)
+        setRevision(prev => prev + 1)
     }, [attack])
 
     return (
