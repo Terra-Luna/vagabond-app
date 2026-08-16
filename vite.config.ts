@@ -28,11 +28,18 @@ export default defineConfig(({ mode }) => {
       emptyOutDir: false,
       sourcemap: true,
       cssCodeSplit: false,
+      minify: false,
       lib: {
         name: "vagabond-lite",
         entry: "src/vagabond-lite.tsx",
         formats: ["es"],
         fileName: "vagabond-lite"
+      },
+      rollupOptions: {
+        treeshake: false,
+        output: {
+          exports: "named"
+        }
       }
     },
     plugins: [

@@ -365,13 +365,13 @@ Hooks.on("preCreateActiveEffect", (effect: any, data: any, options: any, userId:
     VagabondActiveEffect.handleBurnStackApplication(actor, data, effect)
 })
 
+const vagabondChatRoots = new Map<string, any>()
+
 Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
     const renderVagabondChatMessages = () => {
         const rootElement = html.querySelector('.vagabond-react-chat-root') as HTMLElement
         if (!rootElement) return
 
-        // Stips out Foundry's default chat container. We don't need it
-        // since we can still r-click and delete the card if needed.
         html.style.background = 'transparent'
         html.style.border = 'none'
         html.style.boxShadow = 'none'
@@ -383,7 +383,7 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
         if (!blueprint) return
 
         let scaduRoot = rootElement.shadowRoot
-        let root = (rootElement as any)._reactRoot
+        let root = vagabondChatRoots.get(message?.id ?? '')
 
         if (!scaduRoot) {
             scaduRoot = rootElement.attachShadow({ mode: 'open' })
@@ -395,31 +395,44 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
             const reactContainer = document.createElement('div')
             scaduRoot.appendChild(reactContainer)
 
-            root = createRoot(reactContainer);
-            (rootElement as any)._reactRoot = root
+            root = createRoot(reactContainer)
+            vagabondChatRoots.set(message?.id ?? '', root)
         }
 
+        const appThemeClass = (game.settings as any).get("core", "uiConfig")?.colorScheme?.applications ?? 'theme-dark'
+
         root.render(
-            <div key={message.id} className={`${(game.settings as any).get("core", "uiConfig").colorScheme.applications}`}>
-                <RehydratedChatCard blueprint={blueprint} />
+            <div className={`${appThemeClass}`}>
+                <RehydratedChatCard blueprint={blueprint} messageId={message?.id ?? ''} />
             </div>
         )
     }
 
-    if (!game.scenes?.active && ItemsCache.items.size > 0) {
-        renderVagabondChatMessages()
-    }
-    else if (canvas?.ready && ItemsCache.items.size > 0) {
-        renderVagabondChatMessages()
-    }
-    else {
-        Hooks.once("canvasReady", () => {
+    const checkStateAndRender = () => {
+        if (ItemsCache.items.size > 0) {
+            renderVagabondChatMessages()
+        } else {
             Hooks.once("onItemsCacheInitialized" as any, () => {
                 renderVagabondChatMessages()
             })
+        }
+    }
+
+    if (canvas?.ready || !game.scenes?.active) {
+        checkStateAndRender()
+    } else {
+        Hooks.once("canvasReady", () => {
+            checkStateAndRender()
         })
     }
 })
+
+Hooks.on("deleteChatMessage", (message: any) => {
+    if (vagabondChatRoots.has(message.id)) {
+        try { vagabondChatRoots.get(message.id).unmount(); } catch (e) { /* no-op */ }
+        vagabondChatRoots.delete(message.id);
+    }
+});
 
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, {
     types: ['hero'],

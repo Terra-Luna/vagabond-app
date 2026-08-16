@@ -24,4 +24,4 @@ export const ComponentRegistry = {
     "SkillCheckChatCard": SkillCheckChatCard,
     "SpellCastChatCard": SpellAttackInfoComponent,
     "TrackerUpdateChatCard": TrackerUpdateChatCard
-}
+} as const

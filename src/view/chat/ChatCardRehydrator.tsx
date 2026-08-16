@@ -2,10 +2,34 @@
 import React, { createElement, ReactNode, useEffect, useRef } from "react"
 import { ComponentRegistry } from "../component/ComponentRegistry"
 
-export const RehydratedChatCard = React.memo(({ blueprint }: any) => {
-    return <>{rehydrateElement(blueprint, true)}</>
+export const RehydratedChatCard = React.memo(({ blueprint, messageId }: { blueprint: any, messageId: string }) => {
+    const [subRev, setSubRev] = React.useState(0)
+
+    /**
+     * Listens to a few Foundry hooks to determine when its necessary to be
+     * rendering chat cards. Some dependencies exist for interactive chat
+     * cards as well as cards related to Actors and/or Items.
+     */
+    useEffect(() => {
+        const triggerUpdate = () => setSubRev(p => p + 1)
+        const chatHook = Hooks.on("updateChatMessage", (msg: any) => {
+            if (msg.id === messageId) triggerUpdate()
+        })
+        if (game.ready) {
+            triggerUpdate()
+        }
+        else {
+            Hooks.once("ready", triggerUpdate)
+            Hooks.once("canvasReady", triggerUpdate)
+        }
+        return () => {
+            Hooks.off("updateChatMessage", chatHook)
+        }
+    }, [messageId])
+
+    return <div key={`${blueprint?.id || 'card'}-${subRev}`}>{rehydrateElement(blueprint, true)}</div>
 }, (prevProps, nextProps) => {
-    return prevProps.blueprint?.id === nextProps.blueprint?.id
+    return prevProps.blueprint?.id === nextProps.blueprint?.id && prevProps.messageId === nextProps.messageId
 })
 
 export function rehydrateElement(blueprint: any, isRoot = true): React.ReactNode {
@@ -29,17 +53,10 @@ export function rehydrateElement(blueprint: any, isRoot = true): React.ReactNode
     const ResolvedComponent = ComponentRegistry[registryKey]
 
     const FinalType = ResolvedComponent || blueprint.type.toLowerCase()
-
     const { children: _, ...cleanProps } = blueprint.props || {}
 
     const renderedElement = createElement(FinalType as any, cleanProps, children)
-
-    if (isRoot) {
-        return <SmartScrollWrapper children={renderedElement} />
-    }
-    else {
-        return renderedElement
-    }
+    return isRoot ? <SmartScrollWrapper children={renderedElement} /> : renderedElement
 }
 
 /**

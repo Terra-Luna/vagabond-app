@@ -10,7 +10,6 @@ import vgLiteStylesProd from "../styles/vagabond-lite.css?inline"
  * innerHTML exported to be injected into the shadow DOM AND, when a hot reload happens, we can just put that
  * style element BACK as a child of document.head, have vite HMR it if necessary, and then remove it again!
  */
-
 const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement | null }
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -25,11 +24,9 @@ const removeAndSaveVagabondStyleTag = () => {
     }
 }
 
-// FIX: Completely isolate the logic branches based on your build environment
 export let vgLiteStyles = ""
 
 if (isProduction) {
-    // 1. PRODUCTION BRANCH: Directly assign Vite's compile-time inlined text string
     vgLiteStyles = vgLiteStylesProd as unknown as string
 }
 else {
@@ -39,7 +36,6 @@ else {
         : ""
 }
 
-// Handle HMR updates safely in development mode
 if (import.meta.hot && !isProduction) {
     import.meta.hot.on("vite:beforeUpdate", () => {
         if (documentWithStyleTag.vgLiteDevStyleSheet) {
