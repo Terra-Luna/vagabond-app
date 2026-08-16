@@ -1,4 +1,4 @@
-import { getManaEnforcement } from "../../../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getManaEnforcement } from "../../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { vgLiteLang } from "../../../../../../../utils/lang"
 
 export const SpellcastingLabel = ({ text }: { text: any }) => {

@@ -14,7 +14,6 @@ import { ItemChatCard } from "../view/chat/ItemChatCard"
 import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { groupBy } from "./collectionUtil"
 import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
-import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
 import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
 import { HeroAttack } from "../combat/engine/HeroAttack"
@@ -30,7 +29,7 @@ import { ToolDataModel } from "../model/item/equip/ToolDataModel"
  * @param uuid 
  * @returns 
  */
-export async function addItems(actor: Actor & { system: HeroDataModel }, uuids: string[]) {
+export async function addItems(actor: Actor & { system: any }, uuids: string[]) {
     const items: any[] = []
 
     for (const uuid of uuids) {
@@ -59,7 +58,7 @@ export async function addItems(actor: Actor & { system: HeroDataModel }, uuids: 
     await actor.createEmbeddedDocuments("Item", items)
 }
 
-export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
+export async function equipArmor(hero: any, armor: ArmorDataModel) {
     const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
     equippedArmor.forEach(async (it: any) => {
         await setEquipState(it, false)
@@ -67,7 +66,7 @@ export async function equipArmor(hero: HeroDataModel, armor: ArmorDataModel) {
     await setEquipState(armor, true)
 }
 
-export function getEquippedWeapons(actor: Actor & { system: HeroDataModel }) {
+export function getEquippedWeapons(actor: Actor & { system: any }) {
     return actor.items.filter(i => isEquippedWeapon(i.system)).map(w => (
         { value: w.uuid, label: w.name }
     ))
@@ -79,7 +78,7 @@ export function getEquippedWeapons(actor: Actor & { system: HeroDataModel }) {
  * @param hero
  * @param item 
  */
-export async function equipWeapon(hero: HeroDataModel, item: WeaponDataModel | ToolDataModel) {
+export async function equipWeapon(hero: any, item: WeaponDataModel | ToolDataModel) {
     console.log("Equipping weapon...")
     const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
     const equippedTools = hero.parent.items.filter((it: any) => it.type === "tool" && it.system.isEquipped)
@@ -119,18 +118,18 @@ export async function toggleGripState(item: WeaponDataModel | ToolDataModel) {
     }
 }
 
-export const getEncumbranceInfo = (hero: HeroDataModel): CapacityInfo => {
+export const getEncumbranceInfo = (hero: any): CapacityInfo => {
     const capacity = hero.inventory.capacity ?? 10
     const bulk = hero.inventory.items.filter(i => !isInContainer(i, getContainers(hero))).reduce((sum, i) => { return sum + (i.bulk.totalSlots ?? 0) }, 0)
     const isOverEncumbered = bulk / capacity > 1
     return { bulk, capacity, isOverEncumbered }
 }
 
-export const getContainers = (hero: HeroDataModel): ContainerDataModel[] => {
+export const getContainers = (hero: any): ContainerDataModel[] => {
     return hero.parent.items.filter(it => it.type === 'container').map(it => it.system as ContainerDataModel[])
 }
 
-export const stackStackables = async (hero: HeroDataModel) => {
+export const stackStackables = async (hero: any) => {
     const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.bulk.isStackable) as Item[]
     if (stackables?.length > 0) {
         ((Object.values(groupBy('name', stackables))) as any[][]).filter(it => it.length > 1).forEach(async items => {
@@ -143,7 +142,7 @@ export const stackStackables = async (hero: HeroDataModel) => {
     }
 }
 
-export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+export const useItem = async (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
     if (item) {
         if (item.isConsumable) {
             await deleteItems(hero, [getId(item)])
@@ -171,11 +170,11 @@ export const useItem = async (hero: HeroDataModel, item: EquipmentDataModel<Equi
     }
 }
 
-export const sendItemToChat = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+export const sendItemToChat = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
     sendVagabondChatMessage(hero, createElement(ItemChatCard, { itemId: getId(item), itemName: getName(item) }))
 }
 
-export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+export const equipItem = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
     if (item.parent instanceof ArmorDataModel) {
         equipArmor(hero, item as ArmorDataModel)
     }
@@ -187,7 +186,7 @@ export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<Equipmen
     }
 }
 
-export const equippedItemContextMenu = (hero: HeroDataModel, item: WeaponDataModel | ToolDataModel): CtxMenuItem[] => {
+export const equippedItemContextMenu = (hero: any, item: WeaponDataModel | ToolDataModel): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
     if (item instanceof WeaponDataModel) {
         menuItems.push({
@@ -210,7 +209,7 @@ export const equippedItemContextMenu = (hero: HeroDataModel, item: WeaponDataMod
     return menuItems
 }
 
-export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
+export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<EquipmentSchema>): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
     if (item.isEquippable) {
         if (item.isEquipped) {
@@ -257,7 +256,7 @@ export const containerItemContextMenuItems = (
 ): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
     if (item.isConsumable && actor?.parent?.type === 'hero') {
-        menuItems.push(useItemContextOption(actor as HeroDataModel, item))
+        menuItems.push(useItemContextOption(actor as any, item))
     }
     menuItems.push(viewItemSheetContextOption(item))
     menuItems.push({ icon: Undo, label: lang.VGLITE.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
@@ -268,7 +267,7 @@ export const containerItemContextMenuItems = (
     return menuItems
 }
 
-const useItemContextOption = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+const useItemContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
     return { icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
 }
 
@@ -276,7 +275,7 @@ const viewItemSheetContextOption = (item: EquipmentDataModel<EquipmentSchema>) =
     return { icon: Eye, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) }
 }
 
-const sendItemToChatContextOption = (hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) => {
+const sendItemToChatContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
     return { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
 }
 
@@ -341,6 +340,6 @@ export const inventoryItemDragDropHandler = async (
     }
 }
 
-export const applyStarterPack = async (hero: HeroDataModel, pack: StarterPackDataModel) => {
+export const applyStarterPack = async (hero: any, pack: StarterPackDataModel) => {
     await hero.parent.createEmbeddedDocuments("Item", [pack.items])
 }

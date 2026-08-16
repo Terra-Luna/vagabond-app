@@ -1,8 +1,8 @@
 import { useState, useCallback, useMemo } from "react"
-import { XpQuestion } from "./XpQuestionnaireConfigView"
 import { Check, Save } from "lucide-react"
 import { DestructiveButton, PrimaryButton } from "../../../view/component/Button"
 import { vgLiteLang } from "../../../utils/lang"
+import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const XpQuestionnairePlayerView = ({ questions, onSave }: {
     questions: XpQuestion[], onSave: (xp: number) => void

@@ -23,7 +23,7 @@ import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortrai
 import { Checkbox } from "../../view/component/Checkbox"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { getAttackRegistry } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
     const [revision, setRevision] = useState(0)

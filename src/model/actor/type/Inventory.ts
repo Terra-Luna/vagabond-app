@@ -1,4 +1,4 @@
-import { getName } from "../../../utils/modelUtil"
+import { getName, inventoryItemTypes } from "../../../utils/modelUtil"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import { ContainerDataModel } from "../../item/equip/ContainerDataModel"
@@ -37,10 +37,6 @@ export const sortedItems = <T>(items: EquipmentDataModel<EquipmentSchema>[]): T[
 
 export const isInventoryItem = (item: Item): boolean => {
     return inventoryItemTypes().includes(item.type)
-}
-
-export const inventoryItemTypes = () => {
-    return ['armor', 'weapon', 'tool', 'sundry', 'alchemical', 'container']
 }
 
 export const openItemSheet = (item: any) => {

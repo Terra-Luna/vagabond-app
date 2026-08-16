@@ -1,5 +1,6 @@
-import { useCallback } from "react";
-import { RollBuilderApp, RollPreset } from "../../RollBuilderApp";
+import { useCallback } from "react"
+import { RollBuilderApp } from "../../RollBuilderApp"
+import { RollPreset } from "../../model/RollPreset"
 
 export const useEditPreset = (actor: Actor) => {
 

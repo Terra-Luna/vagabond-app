@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { checkClockPermission, getProgressClocks, ProgressClockSchema, setProgressClocks } from '../vagabond-tools/VagabondSettingsRegistry'
 import { useDragOverlayComponent } from '../overlay/usecase/DragOverlayUseCase'
 import { useOverlayItemSync } from '../overlay/usecase/OverlayItemSyncUseCase'
 import { CanvasOverlayObjectWrapper } from '../overlay/component/CanvasOverlayObjectWrapper'
@@ -7,6 +6,7 @@ import { WidgetLabel } from '../overlay/component/WidgetLabel'
 import { useContextMenu } from '../../view/component/ContextMenu'
 import { vgLiteLang } from '../../utils/lang'
 import { Trash, Undo } from 'lucide-react'
+import { ProgressClockSchema, setProgressClocks, checkClockPermission, getProgressClocks } from '../vagabond-tools/usecase/VagabondSettingsHelper'
 
 export const ProgressClockAppView = () => {
 

@@ -1,11 +1,8 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { inventoryItemTypes } from "../../model/actor/type/Inventory"
 import { statsSchema } from "../../model/actor/type/Stats"
 import { isEligibleForPerk, PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
-import { StarterPackDataModel } from "../../model/item/equip/StarterPackDataModel"
-import { CombinedItemsMultiType, getFullItem } from "../../utils/modelUtil"
+import { CombinedItemsMultiType, getFullItem, inventoryItemTypes } from "../../utils/modelUtil"
 
 export class ItemsCache {
     /**
@@ -46,11 +43,11 @@ export class ItemsCache {
             .sort((a, b) => a.system.category.localeCompare(b.system.category)) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     }
 
-    static packs = (): (Item & { system: StarterPackDataModel })[] => {
+    static packs = (): (Item & { system: any })[] => {
         return [...new Map([...this.items.entries()]
             .filter(([_, item]) => item.type === 'starterpack')).values()]
             .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: StarterPackDataModel })[]
+            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: any })[]
     }
 
     /**
@@ -94,8 +91,8 @@ export class ItemsCache {
 
     static refreshAllActors() {
         game.actors
-            ?.filter(it => it.system instanceof HeroDataModel)
-            ?.forEach(actor => (actor.system as HeroDataModel).forceUpdate())
+            ?.filter(it => (it.type as string) === 'hero')
+            ?.forEach(actor => (actor as any).forceUpdate())
     }
 
 }

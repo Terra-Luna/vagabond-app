@@ -1,8 +1,8 @@
-import { Plus, Save, Trash } from "lucide-react"
+import { Plus, Save } from "lucide-react"
 import React, { useState } from "react"
 import { PrimaryButton, SecondaryButton } from "../../../view/component/Button"
-import { XpQuestion } from "../../vagabond-tools/VagabondSettingsRegistry"
 import { TrashButton } from "../../../view/component/TrashButton"
+import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 interface XpQuestionnaireProps {
     initialQuestions?: XpQuestion[]

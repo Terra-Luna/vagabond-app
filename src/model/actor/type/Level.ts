@@ -1,4 +1,4 @@
-import { getMaxLevel } from "../../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getMaxLevel } from "../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { fields } from "../../common/sharedSchemas"
 
 export const levelSchema = () => {

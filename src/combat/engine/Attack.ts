@@ -1,4 +1,4 @@
-import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { getTargetIds } from "../../utils/modelUtil"
 import { DamageRoll } from "./roll/DamageRoll"

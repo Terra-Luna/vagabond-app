@@ -85,5 +85,3 @@ export class LevelUpApp extends VagabondApplication {
     }
     
 }
-
-export interface PerkBonusSelection { value: string, ruleId: string }

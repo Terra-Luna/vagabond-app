@@ -1,5 +1,4 @@
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { HeroDataModel } from "../../actor/HeroDataModel"
 import { Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
@@ -47,7 +46,7 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
      * to the target Hero, then deletes itself.
      * @param actor
      */
-    async unpack(actor: Actor & { system: HeroDataModel }): Promise<void> {
+    async unpack(actor: Actor & { system: any }): Promise<void> {
         if (!actor || !actor.isOwner) return
 
         const itemsToCreate: any[] = []

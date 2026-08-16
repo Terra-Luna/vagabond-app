@@ -1,10 +1,9 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { inventoryItemTypes } from "../../model/actor/type/Inventory"
 import { VagabondAppError } from "../../model/common/VagabondAppError"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { updateDocument } from "../../utils/documentUtils"
 import { stackStackables } from "../../utils/heroInventoryUtil"
-import { addItemToActor, CombinedItems, CombinedItemsMultiType, TypedIndexEntry } from "../../utils/modelUtil"
+import { addItemToActor, CombinedItems, CombinedItemsMultiType, inventoryItemTypes, TypedIndexEntry } from "../../utils/modelUtil"
 import { fetchHero, TagalongItem } from "./TagalongApi"
 import { TagalongItemCreator } from "./TagalongItemCreator"
 

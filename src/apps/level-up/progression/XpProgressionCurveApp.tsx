@@ -1,4 +1,4 @@
-import { getXpCurve, setXpCurve, XpCurve } from "../../vagabond-tools/VagabondSettingsRegistry"
+import { getXpCurve, XpCurve, setXpCurve } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondApplication, VagabondAppArgs } from "../../VagabondApplication"
 import { XpProgressionCurveView } from "./XpProgressionCurveView"
 

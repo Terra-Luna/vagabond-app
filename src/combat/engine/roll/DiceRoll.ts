@@ -1,14 +1,5 @@
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
-
-export interface DiceRollSchema {
-    count: number
-    faces: number
-    modifier?: number
-    explodesOn?: number[]
-    explodeOnCritOnly?: boolean
-    extraDiceOnCrit?: number
-}
 
 export class DiceRoll {
     count: number
@@ -41,7 +32,7 @@ export class DiceRoll {
         }
     }
 
-    static getWeaponDamageWithHeroMods = (hero: HeroDataModel, skill: string, weapon: WeaponDataModel): DiceRollSchema => {
+    static getWeaponDamageWithHeroMods = (hero: { modifiers: any }, skill: string, weapon: WeaponDataModel): DiceRollSchema => {
         const mods = hero.modifiers
         const isVicious = weapon.properties.includes('vicious')
         const isDefense = weapon.properties.includes('defense')

@@ -10,10 +10,11 @@ import { SkillCard } from "../../view/component/SkillCard"
 import { useEffect, useMemo, useState } from "react"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
-import { PerkBonusSelection } from "./LevelUpApp"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
+
+export interface PerkBonusSelection { value: string, ruleId: string }
 
 export interface LevelUpArgs {
     levelUpStat?: string

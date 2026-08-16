@@ -22,7 +22,7 @@ import { RollsTab } from "./tab/RollsTab"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
-import { getMaxLevel } from "../../../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getMaxLevel } from "../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 
 const locale = lang.VGLITE.HeroSheet
 

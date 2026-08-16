@@ -1,13 +1,14 @@
 import { useState, useEffect, useCallback } from "react"
-import { DiceRoll, DiceRollSchema } from "../../../combat/engine/roll/DiceRoll"
+import { DiceRoll } from "../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { UtilityButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
-import { RollPreset } from "../RollBuilderApp"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { DiceRollSchema } from "../model/DieRollSchema"
+import { RollPreset } from "../model/RollPreset"
 
 export const useCustomDamageRollBuilder = (
     actor: Actor & { system: HeroDataModel },

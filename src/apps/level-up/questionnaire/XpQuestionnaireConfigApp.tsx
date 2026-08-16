@@ -1,6 +1,6 @@
 import { XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
-import { getXpQuestionnaiare, XpQuestion } from "../../vagabond-tools/VagabondSettingsRegistry"
+import { getXpQuestionnaiare, XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export class XpQuestionnaireConfigApp extends VagabondApplication {
 

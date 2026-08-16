@@ -1,5 +1,5 @@
+import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { createElement } from "react"
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { Attack } from "./Attack"
@@ -12,10 +12,10 @@ import { getDiceTerms } from "./util/dice-utils"
 import { getTargetIds } from "../../utils/modelUtil"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { DiceRoll } from "./roll/DiceRoll"
-import { RollPreset } from "../../apps/attack-builder/RollBuilderApp"
-import { getManaEnforcement } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { SkillCheckChatCard } from "../../view/chat/SkillCheckChatCard"
 import { DamageRoll } from "./roll/DamageRoll"
+import { RollPreset } from "../../apps/attack-builder/model/RollPreset"
+import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 
 export class HeroAttack extends Attack {
 

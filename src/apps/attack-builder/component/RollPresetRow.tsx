@@ -1,10 +1,10 @@
 import { ReactNode } from "react"
-import { RollPreset } from "../RollBuilderApp"
 import { DiceRoll } from "../../../combat/engine/roll/DiceRoll"
 import { HeroAttack } from "../../../combat/engine/HeroAttack"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { RollButton } from "./RollButton"
+import { RollPreset } from "../model/RollPreset"
 
 export const RollPresetRow = ({ actor, preset, EditButton, TrashButton }: {
     actor: Actor & { system: HeroDataModel },

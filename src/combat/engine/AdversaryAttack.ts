@@ -1,4 +1,4 @@
-import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
+import type { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"

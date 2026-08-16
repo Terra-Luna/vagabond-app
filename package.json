@@ -9,7 +9,7 @@
     "pack:packs": "(if exist dist\\packs rmdir /s /q dist\\packs) && node foundry-pack-compendium.js",
     "unpack:packs": "(if exist packs rmdir /s /q packs) && node foundry-unpack-compendium.js",
     "vite-no": "pnpm vite --open 0",
-    "circ-deps": "pnpm dlx madge --circular --extensions ts,tsx,js,jsx ./src",
+    "circ-deps": "pnpm dlx madge --circular --extensions ts,tsx ./src",
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
     "clean-": "echo Y | rmdir /s dist && pnpm clean",
     "lint": "eslint src && pnpm circ-deps",

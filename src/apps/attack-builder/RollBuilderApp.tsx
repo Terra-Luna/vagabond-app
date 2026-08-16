@@ -1,5 +1,5 @@
-import { DiceRollSchema } from "../../combat/engine/roll/DiceRoll"
 import { VagabondApplication, VagabondAppArgs } from "../VagabondApplication"
+import { RollPreset } from "./model/RollPreset"
 import { RollBuilderView } from "./RollBuilderView"
 
 export class RollBuilderApp extends VagabondApplication {
@@ -27,18 +27,4 @@ export class RollBuilderApp extends VagabondApplication {
         }
     }
 
-}
-
-export interface RollPreset {
-    title: string, description: string,
-    weaponId: string,
-    skill: string,
-    d20Count: number,
-    favorHinder: 'none' | 'favor' | 'hinder',
-    skillCheckMod: number,
-    critThreshold: number,
-    damageRolls: DiceRollSchema[],
-    flatModifier: number,
-    perDieBonus: number,
-    armorPiercing: number
 }

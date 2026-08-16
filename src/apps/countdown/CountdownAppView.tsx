@@ -1,4 +1,3 @@
-import { checkCountdownPermission, CountdownSchema, getCountdowns, setCountdowns } from "../vagabond-tools/VagabondSettingsRegistry"
 import { useCallback, useState } from "react"
 import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
 import { useDragOverlayComponent } from "../overlay/usecase/DragOverlayUseCase"
@@ -8,6 +7,7 @@ import { Minus, Plus, Trash } from "lucide-react"
 import { useContextMenu } from "../../view/component/ContextMenu"
 import { WidgetLabel } from "../overlay/component/WidgetLabel"
 import { CountdownRoll } from "../../combat/engine/roll/CountdownRoll"
+import { CountdownSchema, setCountdowns, checkCountdownPermission, getCountdowns } from "../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const CountdownAppView = () => {
 

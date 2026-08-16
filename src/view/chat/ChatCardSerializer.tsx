@@ -1,7 +1,5 @@
-import React, { FunctionComponent } from "react"
-import { createElement, ReactElement } from "react"
+import { ReactElement } from "react"
 import { getId, getName } from "../../utils/modelUtil"
-import { CountdownResult } from "../../combat/engine/roll/CountdownRoll"
 
 interface ElementBlueprint {
     type: string
@@ -26,11 +24,6 @@ export const sendVagabondChatMessage = async (
             "vagabond-lite": { blueprint }
         } as any
     })
-}
-
-export function sendCountdownRollMessage(cdRes: CountdownResult | null, Component: FunctionComponent<{ result: CountdownResult }>) {
-    if (!cdRes) return
-    sendVagabondChatMessage(null, createElement(Component, { result: cdRes }))
 }
 
 // Converts a live ReactElement tree into serializable JSON

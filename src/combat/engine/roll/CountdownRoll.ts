@@ -3,14 +3,7 @@ import { sendVagabondChatMessage } from "../../../view/chat/ChatCardSerializer"
 import { CountdownRollChatCard } from "../../../view/chat/CountdownChatCard"
 import { getDiceTerms } from "../util/dice-utils"
 import { RollSummary } from "./RollSummary"
-
-export interface CountdownResult {
-    name: string
-    duration: number
-    rollSummary?: RollSummary
-    rolls?: any[]
-    message?: string | null
-}
+import { CountdownResult } from "./CountdownResult"
 
 export class CountdownRoll {
 

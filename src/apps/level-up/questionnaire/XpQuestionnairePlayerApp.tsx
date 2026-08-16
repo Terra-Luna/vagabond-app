@@ -1,7 +1,7 @@
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnairePlayerView } from "./XpQuestionnairePlayerView"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { getXpQuestionnaiare } from "../../vagabond-tools/VagabondSettingsRegistry"
+import { getXpQuestionnaiare } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export class XpQuestionnairePlayerApp extends VagabondApplication {
 

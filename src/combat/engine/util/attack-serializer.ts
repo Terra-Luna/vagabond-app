@@ -1,8 +1,8 @@
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
-import { AdversaryAttack } from "../AdversaryAttack"
-import { Attack } from "../Attack"
+import type { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
+import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import type { Attack } from "../Attack"
 import { HeroAttack } from "../HeroAttack"
+import { AdversaryAttack } from "../AdversaryAttack"
 import { DamageRoll } from "../roll/DamageRoll"
 import { SkillCheck } from "../roll/SkillCheck"
 

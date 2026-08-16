@@ -8,7 +8,7 @@ import { sortedItems, isInContainer } from "../../../../../model/actor/type/Inve
 import { HeroCoinPurse } from "../../../../component/CoinPurse"
 import { PrimaryButton } from "../../../../component/Button"
 import { ItemShopApp } from "../../../../../apps/shop/ItemShopApp"
-import { getItemShopToggle } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getItemShopToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     const itemShopToggle = getItemShopToggle()

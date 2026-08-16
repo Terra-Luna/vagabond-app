@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Attack } from "../Attack"
 import { AttackSnapshot, serializeAttack } from "../util/attack-serializer"
-import { getAttackRegistry } from "../../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getAttackRegistry } from "../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 
 export interface TargetDisplayItem { id: string, src: string, token: Token | undefined }
 

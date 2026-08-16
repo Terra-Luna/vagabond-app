@@ -2,8 +2,8 @@ import { useMemo } from "react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { RollPresetsListView } from "../../../../../apps/attack-builder/component/RollPresetsListView"
 import { CollapsibleSection } from "../../../../component/Collapsible"
-import { RollPreset } from "../../../../../apps/attack-builder/RollBuilderApp"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
+import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 
 export const RollsTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const customAttack = useMemo(() => {

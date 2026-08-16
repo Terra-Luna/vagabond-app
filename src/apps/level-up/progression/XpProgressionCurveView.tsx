@@ -1,8 +1,8 @@
 import { Plus, Save } from "lucide-react"
 import React, { useState } from "react"
 import { SecondaryButton, PrimaryButton } from "../../../view/component/Button"
-import { XpCurve } from "../../vagabond-tools/VagabondSettingsRegistry"
 import { TrashButton } from "../../../view/component/TrashButton"
+import { XpCurve } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 interface XpCurveArgs {
     initialCurve?: XpCurve[]

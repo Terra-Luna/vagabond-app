@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { RollPreset } from "../../RollBuilderApp"
+import { RollPreset } from "../../model/RollPreset"
 
 export const useSavePreset = (actor: Actor, preset: RollPreset) => {
 

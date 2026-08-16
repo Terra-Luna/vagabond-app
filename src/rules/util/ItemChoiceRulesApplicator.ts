@@ -1,4 +1,3 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { ItemsCache } from "./ItemsCache"
@@ -8,7 +7,7 @@ export class PerkRulesSelectionsApplicator {
     /**
      * Reads all the Actor's virtual perk items and applies their rules' choice selections.
      */
-    static apply(actor: Actor & { system: HeroDataModel }) {
+    static apply(actor: Actor & { system: any }) {
         if (!actor || !actor.isOwner) return
 
         actor.system.spells = []

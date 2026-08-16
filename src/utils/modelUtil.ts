@@ -1,5 +1,3 @@
-import { inventoryItemTypes } from "../model/actor/type/Inventory"
-
 export const getId = (obj: any): string => {
     return obj?.id ?? obj?.parent?.id ?? ''
 }
@@ -166,4 +164,8 @@ export async function addItemsToActor(actor: Actor, items: (Item | TypedIndexEnt
 
 function isTypedIndexEntry(item: Item | TypedIndexEntry): item is TypedIndexEntry {
     return "uuid" in item && typeof (item as any).img === "string"
+}
+
+export const inventoryItemTypes = () => {
+    return ['armor', 'weapon', 'tool', 'sundry', 'alchemical', 'container']
 }

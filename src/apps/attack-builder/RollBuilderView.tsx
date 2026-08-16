@@ -11,9 +11,9 @@ import { useCustomDamageModifiersBuilder } from "./usecase/CustomDamageModsUseCa
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
-import { RollPreset } from "./RollBuilderApp"
 import { vgLiteLang } from "../../utils/lang"
 import { HeroAttack } from "../../combat/engine/HeroAttack"
+import { RollPreset } from "./model/RollPreset"
 
 export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }: {
     actor: Actor & { system: HeroDataModel },

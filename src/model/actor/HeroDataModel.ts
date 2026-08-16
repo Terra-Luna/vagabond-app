@@ -20,7 +20,7 @@ import { ArmorDataModel } from "../item/equip/ArmorDataModel"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
-import { getXpToNext } from "../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 
 const heroSchema = () => {
     return {

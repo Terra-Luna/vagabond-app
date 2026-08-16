@@ -4,8 +4,8 @@ import { EditModeContextProvider } from "../../view/context/EditModeContext/Edit
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 import { UtilityButton } from "../../view/component/Button"
-import { deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setCountdowns, setItemShopToggle, setProgressClocks } from "./VagabondSettingsRegistry"
 import { TrashButton } from "../../view/component/TrashButton"
+import { getItemShopToggle, setItemShopToggle, getCountdowns, setCountdowns, getProgressClocks, ProgressClockSchema, setProgressClocks, deleteAllCountdowns, deleteAllProgressClocks } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())

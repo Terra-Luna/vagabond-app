@@ -1,4 +1,4 @@
-import { DiceRollSchema } from "../../../combat/engine/roll/DiceRoll"
+import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 
 /**

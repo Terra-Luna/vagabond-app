@@ -1,13 +1,11 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { inventoryItemTypes } from "../../model/actor/type/Inventory"
 import { addItems } from "../../utils/heroInventoryUtil"
-import { isPathOfType } from "../../utils/modelUtil"
+import { inventoryItemTypes, isPathOfType } from "../../utils/modelUtil"
 import { calculateRecurringRuleScale } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class HeroBaseDataRulesApplicator {
 
-    static apply(actor: Actor & { system: HeroDataModel }) {
+    static apply(actor: Actor & { system: any }) {
         if (!actor || !actor.isOwner) return
 
         // Get rules from Ancestry, Class, and granted Perks and process them.
