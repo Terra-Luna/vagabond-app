@@ -86,7 +86,7 @@
         "name": "Unflinching Luck",
         "level": 4,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d12. If the result is lower than your remaining Luck, the Luck is not spent. When you become an 8th Level Rogue, the d12 is a d10.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d20. If the result is lower than your remaining Luck, the Luck is not spent. When you become an 8th Level Rogue, the d20 is a d12.</span></p>"
       },
       {
         "name": "Waylay",
@@ -98,13 +98,13 @@
         "name": "Unflinching Luck",
         "level": 8,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d10. If the result is lower than your remaining Luck, the Luck is not spent.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you spend Luck to Favor a Check, roll a d12. If the result is lower than your remaining Luck, the Luck is not spent.</span></p>"
       },
       {
         "name": "Lethal Weapon",
         "level": 10,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Sneak Attack damage dice can Explode.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your Sneak Attack damage dice can Explode.</span></p>"
       }
     ]
   },
@@ -121,7 +121,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786568828310,
-    "modifiedTime": 1786569706605,
+    "modifiedTime": 1786840203362,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,

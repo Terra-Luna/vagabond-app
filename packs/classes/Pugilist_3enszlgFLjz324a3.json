@@ -53,7 +53,7 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">Your Equipped Brawl Weapons have the Defense and Vicious properties and use a d4 for the damage if it was previously smaller. Further, when you hit an Enemy with a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your Brawl Weapons one die size until the start of your Turn.</span></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
       },
       {
-        "name": "Rope-a-Dome",
+        "name": "Rope-a-Dope",
         "level": 1,
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Check Hook Perk (p. 67) and can also Move 10’ without using Speed before or after you make its attack.</span></p>"
@@ -103,7 +103,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786567444757,
-    "modifiedTime": 1786567882743,
+    "modifiedTime": 1786839072578,
     "lastModifiedBy": "PDLxeQclz2rj9enO",
     "compendiumSource": null,
     "duplicateSource": null,
