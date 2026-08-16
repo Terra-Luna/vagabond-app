@@ -14,7 +14,7 @@ import { BorderedContent } from "../component/BorderedContent"
 import { getFlatStatBonuses, getStatChoiceRules } from "../../../rules/util/item-rules-util"
 import { TopNavButtons } from "../component/TopNavButtons"
 
-export const useCoreStats = (ancestry: Item & { system: AncestryDataModel } | undefined, clazz: Item & { system: ClassDataModel } | undefined, navButtons: ReactNode[]) => {
+export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | undefined, clazz: (Item & { system: ClassDataModel }) | undefined, navButtons: ReactNode[]) => {
     const STAT_MAX = 7
     const strings = vgLiteLang.HeroCreation
     const stats = vgLiteLang.Stat

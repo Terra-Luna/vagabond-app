@@ -11,6 +11,7 @@ import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 import { vgLiteLang } from "../../../utils/lang"
 import { inventoryItemDragDropHandler, equipArmor, equipWeapon } from "../../../utils/heroInventoryUtil"
+import { ToolDataModel } from "../../../model/item/equip/ToolDataModel"
 
 export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipColumn = true }: {
     actor: ActorDataModel<BaseActorSchema> | null,
@@ -32,7 +33,11 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                         <th className="text-left pl-2 w-5/9">{vgLiteLang.HeroSheet.Inventory.item}</th>
                         <th className="text-center">{vgLiteLang.HeroSheet.Inventory.slots}</th>
                         <th className="text-center">{vgLiteLang.HeroSheet.Inventory.value}</th>
-                        {showEquipColumn && <th className="text-center">{vgLiteLang.HeroSheet.Inventory.equip}</th>}
+                        {showEquipColumn &&
+                            <th className="text-center">
+                                {vgLiteLang.HeroSheet.Inventory.equip}
+                            </th>
+                        }
                     </tr>
                 </thead>
                 <tbody className="font-eskapade">{
@@ -68,8 +73,8 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             <td className="text-center font-normal">{coinsAsString(item.totalValue)}</td>
                             {
                                 showEquipColumn && (
-                                    item.isEquippable ?
-                                        <td className="items-center">
+                                    item.isEquippable
+                                        ? <td className="items-center">
                                             <EquipStateIcon
                                                 type={item.parent.type}
                                                 isEquipped={item.isEquipped}
@@ -78,8 +83,8 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                                     async () => await toggleEquipState(actor as HeroDataModel, item)
                                                 }
                                             />
-                                        </td> :
-                                        <td className="text-center" />
+                                        </td>
+                                        : <td className="text-center" />
                                 )
                             }
                         </tr>
@@ -137,11 +142,8 @@ async function toggleEquipState(hero: HeroDataModel, item: EquipmentDataModel<Eq
             if (item instanceof ArmorDataModel) {
                 await equipArmor(hero, item)
             }
-            else if (item instanceof WeaponDataModel) {
+            else if (item instanceof WeaponDataModel || item instanceof ToolDataModel) {
                 await equipWeapon(hero, item)
-            }
-            else {
-                await setEquipState(item, true)
             }
         }
         else {

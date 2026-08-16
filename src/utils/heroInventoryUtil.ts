@@ -20,6 +20,7 @@ import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import { ItemsCache } from "../rules/util/ItemsCache"
 import { DamageRoll } from "../combat/engine/roll/DamageRoll"
+import { ToolDataModel } from "../model/item/equip/ToolDataModel"
 
 /**
  * Use this funtion for programatically adding items to Actors. It mimics
@@ -76,20 +77,25 @@ export function getEquippedWeapons(actor: Actor & { system: HeroDataModel }) {
  * Shows a UI warning notification if the Hero doesn't have enough
  * free hands available to equip the given weapon.
  * @param hero
- * @param weapon 
+ * @param item 
  */
-export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) {
+export async function equipWeapon(hero: HeroDataModel, item: WeaponDataModel | ToolDataModel) {
+    console.log("Equipping weapon...")
     const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
-    const equippedSlots = equippedWeapons.reduce((sum, w) => { return sum + w.system.bulk.totalSlots }, 0)
+    const equippedTools = hero.parent.items.filter((it: any) => it.type === "tool" && it.system.isEquipped)
+    const equippedSlots = [...equippedWeapons, ...equippedTools].reduce((sum, it) => { return sum + it.system.bulk.totalSlots }, 0)
 
-    if (weapon.bulk.totalSlots > 0 && equippedSlots + weapon.bulk.totalSlots > hero.inventory.weaponSlots) {
-        ui.notifications?.warn("Cannot equip any more weapons!")
+    console.log(equippedSlots, [...equippedWeapons, ...equippedTools])
+
+    if (item.bulk.totalSlots > 0 && equippedSlots + item.bulk.totalSlots > hero.inventory.weaponSlots) {
+        ui.notifications?.warn("Cannot equip any more weapons or tools!")
     }
     else {
-        weapon.parent.update({
-            'system.isEquipped': true,
-            'system.grip.state': ['V', 'H'].includes(weapon.grip.style) ? 'H' : (weapon.grip.style === 'HH' ? 'HH' : '-')
-        })
+        const updates = { 'system.isEquipped': true }
+        if (item instanceof WeaponDataModel) {
+            updates['system.grip.state'] = ['V', 'H'].includes(item.grip.style) ? 'H' : (item.grip.style === 'HH' ? 'HH' : '-')
+        }
+        item.parent.update(updates)
     }
 }
 
@@ -98,15 +104,17 @@ export async function equipWeapon(hero: HeroDataModel, weapon: WeaponDataModel) 
  * the Hero doesn't have a free hand availalble, a UI warning
  * notification is shown to the user.
  * @param hero
- * @param weapon
+ * @param item
  */
-export async function toggleGripState(weapon: WeaponDataModel) {
-    if (weapon.grip.style === 'V') {
-        if (weapon.grip.state === 'H') {
-            weapon.parent.update({ 'system.grip.state': 'HH' })
+export async function toggleGripState(item: WeaponDataModel | ToolDataModel) {
+    if (item instanceof ToolDataModel) return
+
+    if (item.grip.style === 'V') {
+        if (item.grip.state === 'H') {
+            item.parent.update({ 'system.grip.state': 'HH' })
         }
         else {
-            weapon.parent.update({ 'system.grip.state': 'H' })
+            item.parent.update({ 'system.grip.state': 'H' })
         }
     }
 }
@@ -179,23 +187,25 @@ export const equipItem = (hero: HeroDataModel, item: EquipmentDataModel<Equipmen
     }
 }
 
-export const weaponContextMenuItems = (hero: HeroDataModel, weapon: WeaponDataModel): CtxMenuItem[] => {
-    const menuItems: CtxMenuItem[] = [
-        {
+export const equippedItemContextMenu = (hero: HeroDataModel, item: WeaponDataModel | ToolDataModel): CtxMenuItem[] => {
+    const menuItems: CtxMenuItem[] = []
+    if (item instanceof WeaponDataModel) {
+        menuItems.push({
             icon: Sword,
             label: 'Attack',
             action: () => {
-                HeroAttack.buildWeaponAttack(hero.parent, weapon.parent).initiate()
+                HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate()
             }
+        })
+        if (item.grip.style === 'V') {
+            menuItems.push(
+                { icon: HandFist, label: 'Change grip', action: () => toggleGripState(item) }
+            )
         }
-    ]
-    if (weapon.grip.style === 'V') {
-        menuItems.push(
-            { icon: HandFist, label: 'Change grip', action: () => toggleGripState(weapon) }
-        )
     }
+
     menuItems.push(
-        { icon: Hand, label: 'Unequip', action: () => setEquipState(weapon, false) }
+        { icon: Hand, label: 'Unequip', action: () => setEquipState(item, false) }
     )
     return menuItems
 }
@@ -216,9 +226,11 @@ export const equipmentContextMenuItems = (hero: HeroDataModel, item: EquipmentDa
         else {
             menuItems.push({
                 icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => {
-                    item instanceof WeaponDataModel ? equipWeapon(hero, item as WeaponDataModel) : (
-                        item instanceof ArmorDataModel ? equipArmor(hero, item as ArmorDataModel) :
-                            setEquipState(item, true)
+                    item instanceof WeaponDataModel || item instanceof ToolDataModel
+                        ? equipWeapon(hero, item)
+                        : (item instanceof ArmorDataModel
+                            ? equipArmor(hero, item as ArmorDataModel)
+                            : setEquipState(item, true)
                     )
                 }
             })

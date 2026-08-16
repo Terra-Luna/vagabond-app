@@ -8,7 +8,6 @@ import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeO
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
-import { ItemsCache } from "../../../rules/util/ItemsCache"
 
 export const useAncestrySelection = (navButtons: ReactNode[]) => {
     const strings = vgLiteLang.HeroCreation

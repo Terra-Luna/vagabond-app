@@ -65,3 +65,7 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
 export const isEquippedWeapon = (item: any): boolean => {
     return item.parent.type === 'weapon' && item.isEquipped
 }
+
+export const isEquippedTool = (item: any): boolean => {
+    return item.parent.type === 'tool' && item.isEquipped
+}

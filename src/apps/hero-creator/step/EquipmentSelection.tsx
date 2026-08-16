@@ -8,7 +8,7 @@ import { EditModeContextProvider } from "../../../view/context/EditModeContext/E
 import { useItemShopView } from "../../shop/ItemShopView"
 
 export const useEquipmentSelection = (
-    clazz: Item & { system: ClassDataModel } | undefined,
+    clazz: (Item & { system: ClassDataModel }) | undefined,
     navButtons: ReactNode[]
 ) => {
     const { ItemShop, wallet, cart, selectedPack } = useItemShopView(

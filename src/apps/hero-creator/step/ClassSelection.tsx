@@ -10,7 +10,7 @@ import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeO
 import { ClassSheetComponent } from "../../../view/sheets/item/character/class/ClassSheetComponent"
 import { TopNavButtons } from "../component/TopNavButtons"
 
-export const useClassSelection = (hero: Actor & { system: HeroDataModel }, navButtons: ReactNode[]) => {
+export const useClassSelection = (navButtons: ReactNode[]) => {
     const strings = vgLiteLang.HeroCreation
 
     useEffect(() => {

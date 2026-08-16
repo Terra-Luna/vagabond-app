@@ -15,8 +15,8 @@ import { Grimoire } from "../component/Grimoire"
 
 export const useSpellSelection = (
     level: number,
-    ancestry: Item & { system: AncestryDataModel } | undefined,
-    clazz: Item & { system: ClassDataModel } | undefined,
+    ancestry: (Item & { system: AncestryDataModel }) | undefined,
+    clazz: (Item & { system: ClassDataModel }) | undefined,
     perks: PerkDataModel[] | undefined,
     navButtons: ReactNode[]
 ) => {

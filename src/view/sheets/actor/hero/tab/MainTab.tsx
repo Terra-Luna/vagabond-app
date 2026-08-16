@@ -2,8 +2,8 @@ import { Shield } from "lucide-react"
 import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
-import { WeaponDataModel, isEquippedWeapon } from "../../../../../model/item/equip/WeaponDataModel"
-import { inventoryItemDragDropHandler, weaponContextMenuItems, toggleGripState } from "../../../../../utils/heroInventoryUtil"
+import { WeaponDataModel, isEquippedTool, isEquippedWeapon } from "../../../../../model/item/equip/WeaponDataModel"
+import { inventoryItemDragDropHandler, equippedItemContextMenu, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { getId } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
@@ -12,6 +12,7 @@ import { Skill } from "./TopSection"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { useEffect, useMemo, useState } from "react"
+import { ToolDataModel } from "../../../../../model/item/equip/ToolDataModel"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
@@ -39,19 +40,23 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Weapons = ({ hero }: { hero: HeroDataModel }) => {
-    const { onCtxMenu, ContextMenu } = useContextMenu()
-    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
+
+    const { onCtxMenu, ContextMenu } = useContextMenu()
+    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
+    const equippedTools = sortedItems<ToolDataModel>(hero.inventory.items.filter(it => isEquippedTool(it)) as ToolDataModel[])
+    const combinedEquipped = [...equippedWeapons, ...equippedTools]
+
     const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
-        equippedWeapons,
+        combinedEquipped,
         () => inventoryItemDragDropHandler(
-            hero, dragItem, targetItem ?? equippedWeapons[equippedWeapons.length - 1], equippedWeapons
+            hero, dragItem, targetItem ?? combinedEquipped[combinedEquipped.length - 1], combinedEquipped
         )
     )
 
-    const weaponsDependency = equippedWeapons.map(w => `${w.parent.id}-${w.grip.state}`).join(',')
+    const equipDependency = combinedEquipped.map(i => `${i.parent.id}-${(i as any)?.grip?.state ?? i.isEquipped}`).join(',')
     const [targetIds, setTargetIds] = useState("")
 
     useEffect(() => {
@@ -63,36 +68,49 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         return () => { Hooks.off('targetToken', hookId) }
     }, [])
 
-    const weaponDisplayData = useMemo(() => {
-        return equippedWeapons.map(weapon => {
-            const attackInstance = HeroAttack.buildWeaponAttack(hero.parent, weapon.parent, undefined, [])
+    const equipDisplayData = useMemo(() => {
+        const weaponData = equippedWeapons.map(item => {
+            const attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
             return {
-                weapon,
+                item,
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
                 initiateAttack: (e: React.MouseEvent) => attackInstance.initiate(e)
             }
         })
-    }, [hero.parent, weaponsDependency, targetIds])
+        const toolsData = equippedTools.map(item => {
+            return { item, damageString: "", initiateAttack: () => { } }
+        })
+        return [...weaponData, ...toolsData]
+    }, [hero.parent, equipDependency, targetIds])
 
     return (
         <div className="w-full">
             <Header title={vgLiteLang.HeroSheet.weapons} />
             {
-                weaponDisplayData?.map(({ weapon, damageString, initiateAttack }, index: number) => {
+                equipDisplayData?.map(({ item, damageString, initiateAttack }, index: number) => {
                     return (
                         <div
-                            key={getId(weapon)}
+                            key={getId(item)}
                             draggable
                             onDragStart={(e) => onDragStart(e, index)}
                             onDragEnter={(e) => onDragEnter(e, index)}
                             onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                             onDragEnd={(e) => onDragEnd(e, index)}
-                            onContextMenu={async (e) => onCtxMenu(e, weaponContextMenuItems(hero, weapon))}
+                            onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
                             <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
-                                <div className={`text-lg line-clamp-1`}>{weapon.parent.name}</div>
+                                <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
                                 <div className="flex justify-end">
-                                    <div title={"Toggle grip (if applicable)"} className={`${gripStyle} mr-2 hover-glow`} onClick={() => toggleGripState(weapon)}>{vgLiteLang.GripsAbbr[weapon.grip.state]}</div>
+                                    <div title={"Toggle grip (if applicable)"}
+                                        className={`${gripStyle} mr-2 hover-glow`}
+                                        onClick={() => toggleGripState(item)}
+                                    >
+                                        {vgLiteLang.GripsAbbr[
+                                            item instanceof WeaponDataModel
+                                                ? item.grip.state
+                                                : item.bulk.slots > 1 ? 'HH' : 'H'
+                                        ]}
+                                    </div>
                                     <div className="flex content-right">
                                         <div
                                             title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
@@ -103,8 +121,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className={propsStyle}>{weapon.properties.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
-                                <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[weapon.range]}</div>
+                                <div className={propsStyle}>{(item as any).properties?.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
+                                <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[(item as any).range ?? '']}</div>
                             </div>
                             <ItemDivider />
                         </div>

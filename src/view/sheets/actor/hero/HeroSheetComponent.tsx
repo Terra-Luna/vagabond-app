@@ -77,7 +77,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                                 <button
                                     title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
                                     onClick={async () => {
-                                        if (hero.ancestry && hero.class) {
+                                        if (hero.ancestry && hero.class && hero.level.current! > 0) {
                                             new LevelUpApp(hero.parent).render({ force: true })
                                         }
                                         else {

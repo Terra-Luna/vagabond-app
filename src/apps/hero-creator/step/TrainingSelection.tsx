@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback, ReactNode, useMemo } from "react"
+import { useState, useEffect, useCallback, ReactNode, useMemo } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
@@ -13,8 +13,8 @@ import { TopNavButtons } from "../component/TopNavButtons"
 import { ChoiceRule } from "../../../rules/ItemRulesManager"
 
 export const useTrainingSelection = (
-    ancestry: Item & { system: AncestryDataModel } | undefined,
-    clazz: Item & { system: ClassDataModel } | undefined,
+    ancestry: (Item & { system: AncestryDataModel }) | undefined,
+    clazz: (Item & { system: ClassDataModel }) | undefined,
     stats: { stat: string, value: number }[],
     navButtons: ReactNode[]
 ) => {
@@ -30,6 +30,7 @@ export const useTrainingSelection = (
             key: "ChoiceSet",
             label: "Level 1 Trainings",
             level: 1,
+            scale: 0,
             channel: "path",
             sourceMode: "static",
             maxChoices: Math.ceil((stats.find(s => s.stat === 'reason')?.value ?? 0) / 2),

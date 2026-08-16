@@ -13,6 +13,7 @@ import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { usePerkBonusSelection } from "./PerkBonusSelection"
 import { Coins } from "../../../model/common/CoinValue"
 import { savePerkSelectionFlags } from "../../../rules/util/item-rules-util"
+import { addItems } from "../../../utils/heroInventoryUtil"
 
 export interface HeroCreatorArgs {
     actor: Actor & { system: HeroDataModel }
@@ -27,7 +28,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      * Ancestry & Class
      */
     const { AncestrySelection, ancestryItem } = useAncestrySelection([backButton, nextButton])
-    const { ClassSelection, classItem } = useClassSelection(actor, [backButton, nextButton])
+    const { ClassSelection, classItem } = useClassSelection([backButton, nextButton])
 
     /**
      * Core stats
@@ -233,9 +234,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             }
 
             // Process their shop selections and add their wallet balance to their starting coin.
-            const cartItems = [...cart.map(it => it.toObject())]
-            if (selectedPack) cartItems.push(selectedPack.toObject())
-            await actor.createEmbeddedDocuments("Item", cartItems)
+            const cartItems = [...cart.map(it => it.uuid)]
+            if (selectedPack) cartItems.push(selectedPack.uuid)
+            await addItems(actor, cartItems)
             await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
 
             /**
