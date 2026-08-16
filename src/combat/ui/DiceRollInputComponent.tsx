@@ -1,7 +1,6 @@
 import { ReactNode, useCallback } from "react"
 import { DiceCountInput } from "../../view/sheets/actor/hero/tab/component/spellcasting/DiceCountInput"
 import { DiceRoll, DiceRollSchema } from "../engine/roll/DiceRoll"
-import { CustomDropDown } from "../../view/component/Dropdown"
 import { NumericCounterInput } from "../../view/component/EditableTextField"
 import { useEditMode } from "../../view/context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../view/sheets/item/equip/component/ItemSheetLabelComponent"
@@ -23,7 +22,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
     const { isEditMode } = useEditMode()
 
     const updateDmgDice = useCallback((input: string | null) => {
-        onChange({ count: Number(input) || 1 })
+        onChange({ count: Number(input) || 0 })
     }, [onChange])
 
     const updateFaces = useCallback((input: string) => {

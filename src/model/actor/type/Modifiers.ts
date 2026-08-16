@@ -1,4 +1,4 @@
-import { fields, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
+import { fields, requiredInteger, uncappedInteger } from "../../common/sharedSchemas"
 
 export const modifierSchema = () => {
     return {

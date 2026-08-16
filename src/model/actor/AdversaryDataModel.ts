@@ -48,7 +48,7 @@ export class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
 
     override async _preCreate(data: any, options: any, user: any) {
         await super._preCreate(data, options, user)
-        this.parent.update({
+        this.parent.updateSource({
             'prototypeToken.name': data.name,
             'prototypeToken.sight.enabled': true,
             'prototypeToken.sight.range': 500,

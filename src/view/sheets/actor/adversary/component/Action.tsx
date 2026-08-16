@@ -81,7 +81,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                         {/* ATTACK DESCRIPTION */}
                                         <EnrichedContent content={act.effect} styleClasses="text-text-secondary italic" />
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
-                                        {act.damage.dice &&
+                                        {act.damage.dice.count > 0 &&
                                             <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(adversary, act.name, act.effect, act.damage.type, act.damage.dice as DiceRollSchema)}>
                                                 <p className="text-text-secondary leading-none">Dmg:</p>
                                                 <p className={`${damageRoll} leading-none`}>{new DiceRoll(act.damage.dice as any).toRollFormula()}</p>
@@ -99,7 +99,8 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                                         <DamageRollChatCard
                                                             actorId={getId(adversary)}
                                                             tokenIds={getTargetIds()}
-                                                            result={result} />, result.rolls
+                                                            result={result}
+                                                        />, result.rolls
                                                     )
                                                 }}>
                                                     {getDamageAverage(act.damage.dice as DiceRollSchema)}
@@ -286,7 +287,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         {/* DAMAGE ROLL */}
                         <div className="flex items-end">
                             <DiceRollInputComponent
-                                diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 0 }}
+                                diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 4 }}
                                 onChange={(updated) => {
                                     updateDamageRoll(updated)
                                 }}
@@ -367,9 +368,11 @@ const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, edit
         return
     }
     else if (editTarget == null) {
+        console.log(newAction)
         updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
     }
     else {
+        console.log(newAction)
         const actions = adv.actions
         actions[editTargetIndex] = newAction
         updateDocumentAtPath(adv.parent, ['actions'], [...actions])

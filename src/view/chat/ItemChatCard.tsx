@@ -9,6 +9,7 @@ import { EnrichedContent } from "../component/EnrichedContent"
 import { ItemValue } from "../sheets/item/equip/component/ItemValueComponent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
+import { DiceRoll } from "../../combat/engine/roll/DiceRoll"
 
 export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
     itemId: string, itemName: string, isConsumable?: boolean
@@ -115,32 +116,15 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
         <ItemCardBody item={item}>
             <div className="flex space-x-2">
                 <ItemCardProp label={lang.VGLITE.ItemSheet.dmg} children={
-                    item.grip.style === 'V' ?
-                        <div className="flex space-x-2">
-                            <ItemCardValue children={`${lang.VGLITE.Grips.H}: ${item.damage.oneHand},`} />
-                            <ItemCardValue children={`${lang.VGLITE.Grips.HH}: ${item.damage.twoHand}`} />
-                        </div> : (
-                            item.grip.style === 'H' ?
-                                <ItemCardValue children={`${lang.VGLITE.Grips.H}: ${item.damage.oneHand}`} /> :
-                                <ItemCardValue children={`${lang.VGLITE.Grips.HH}: ${item.damage.twoHand}`} />
-                        )
+                    <ItemCardValue children={new DiceRoll(item.damage.dice as any).toRollFormula()} />
                 } />
                 <DamageTypeIcon dmgType={item.damage.type as string} size={18} />
             </div>
             <ItemCardProp label={lang.VGLITE.ItemSheet.props} children={
                 <div className="flex gap-x-1">
-                    {
-                        item.skills.map(type => (
-                            <p key={type} className="italic">{lang.VGLITE.WeaponTypes[type].name}</p>
-                        ))
-                    }
-                    {
-                        item.properties.map(prop => (
-                            <button key={prop} title={lang.VGLITE.WeaponProps[prop].description}>
-                                <p className="italic">{lang.VGLITE.WeaponProps[prop].name}</p>
-                            </button>
-                        ))
-                    }
+                    <p className="italic">{item.skills.map(sk => lang.VGLITE.WeaponSkills[sk].name).join(", ")}</p>
+                    <p>|</p>
+                    <p className="italic">{item.properties.map(sk => lang.VGLITE.WeaponProps[sk].name).join(", ")}</p>
                 </div>
             } />
             <ItemCardProp label={lang.VGLITE.ItemSheet.range} children={lang.VGLITE.Ranges[item.range]} />

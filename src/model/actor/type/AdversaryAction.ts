@@ -10,8 +10,8 @@ export const adversaryActionSchema = () => {
         effect: new fields.StringField({ ...optionalString }),
         damage: new fields.SchemaField({
             dice: new fields.SchemaField({
-                count: new fields.NumberField({ ...requiredInteger, initial: 1, min: 1 }),
-                faces: new fields.NumberField({ ...requiredInteger, initial: 4, min: 1, max: 20 }),
+                count: new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 }),
+                faces: new fields.NumberField({ ...requiredInteger, initial: 4, min: 0, max: 20 }),
                 modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
                 explodesOn: new fields.ArrayField(
                     new fields.NumberField({ integer: true, initial: 0, required: false }),
