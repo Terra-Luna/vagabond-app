@@ -95,6 +95,7 @@ export class HeroAttack extends Attack {
     }
 
     async initiate(clickEvent?: any) {
+        this.id = foundry.utils.randomID()
         if (this.skillCheck && this.hasHostileTargets && !this.skipSkillCheck) {
             this.skillCheck.setFavorHinder(clickEvent)
             await this.rollSkillCheck()

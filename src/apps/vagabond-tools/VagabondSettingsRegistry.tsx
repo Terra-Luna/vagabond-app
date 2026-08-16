@@ -24,7 +24,7 @@ export class VagabondSettingsRegistry {
 
     /**
      * This is called from vagabond-lite.tsx and is triggered when a user
-     * with permission tries to udpated a setting.
+     * with permission tries to udpate a setting.
      * @param data
      */
     static handleIncomingSettingsChange(data: { setting: string, update: any, pw: string }) {
@@ -103,7 +103,7 @@ export class VagabondSettingsRegistry {
     private static registerAttackRegistry() {
         (game.settings as any).register("vagabond-lite", "attackRegistry", {
             name: "Attack Registry",
-            hint: "Stores attack data from Heros and Adversaries",
+            hint: "Stores attack data from Heroes and Adversaries",
             scope: "world",
             config: false,
             type: Object,
@@ -167,7 +167,7 @@ export class VagabondSettingsRegistry {
                 "gmOnly": "GM Only",
                 "everyone": "All Players"
             }
-        });
+        })
     }
 
     private static registerManaEnforcement() {
@@ -188,7 +188,6 @@ export class VagabondSettingsRegistry {
             (hero?.system as HeroDataModel)?.forceUpdate()
         }
     }
-
 
 }
 

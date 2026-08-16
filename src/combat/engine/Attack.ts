@@ -12,7 +12,7 @@ export interface AttackResolutionArgs {
 export abstract class Attack {
 
     // Unique ID for interacting with the attack in chat card
-    id: string = foundry.utils.randomID()
+    id: string
     // User ID for keeping track of who has permission to interact in chat card
     userId: string = game.userId ?? ''
 
@@ -23,6 +23,7 @@ export abstract class Attack {
     isResolved: boolean = false
 
     constructor(title) {
+        this.id = foundry.utils.randomID()
         this.title = title
     }
 
@@ -135,8 +136,8 @@ export abstract class Attack {
             updatedAttacks = currentAttacks.map(it => it.id === snapshot.id ? snapshot : it)
         }
         else {
-            // Keeps only 50 attacks per player in the database. Adjust as needed.
-            updatedAttacks = [...currentAttacks, snapshot].slice(-50)
+            // Keeps only 50 attacks by actor count in the database. Adjust as needed.
+            updatedAttacks = [...currentAttacks, snapshot]
         }
 
         attackRegistry[actorId] = updatedAttacks
