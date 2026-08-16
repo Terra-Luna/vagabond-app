@@ -46,6 +46,16 @@ export const VagabondSheetMixin = (superclass) => class extends superclass {
         }, { capture: true })
     }
 
+    _toggleDisabled(disabled: boolean) {
+        try {
+            if (!this.element) return
+            super._toggleDisabled(disabled)
+        }
+        catch (error) {
+            console.warn("Vagabond | Form permission check exception:", error)
+        }
+    }
+
     async _onRender(context, options) {
         super._onRender(context, options)
         onRender(this as any)

@@ -1,4 +1,5 @@
 import "../styles/vagabond-lite.css"
+import vgLiteStylesProd from "../styles/vagabond-lite.css?inline"
 
 /** 
  * Because we use the shadow DOM very prolifically so our tailwind styles don't blow up the core Foundry
@@ -10,24 +11,40 @@ import "../styles/vagabond-lite.css"
  * style element BACK as a child of document.head, have vite HMR it if necessary, and then remove it again!
  */
 
-const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement }
+const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement | null }
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 const removeAndSaveVagabondStyleTag = () => {
-    // todo - figure out what ID this tag gets in prod
-    const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement;
+    const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement
     if (vgLiteStyleTag) {
-        vgLiteStyleTag.remove();
+        vgLiteStyleTag.remove()
         documentWithStyleTag.vgLiteDevStyleSheet = vgLiteStyleTag
+    } else {
+        documentWithStyleTag.vgLiteDevStyleSheet = null
     }
 }
 
-removeAndSaveVagabondStyleTag()
+// FIX: Completely isolate the logic branches based on your build environment
+export let vgLiteStyles = ""
 
-export const vgLiteStyles = documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string
+if (isProduction) {
+    // 1. PRODUCTION BRANCH: Directly assign Vite's compile-time inlined text string
+    vgLiteStyles = vgLiteStylesProd as unknown as string
+}
+else {
+    removeAndSaveVagabondStyleTag()
+    vgLiteStyles = documentWithStyleTag.vgLiteDevStyleSheet
+        ? (documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string)
+        : ""
+}
 
-if (import.meta.hot) {
+// Handle HMR updates safely in development mode
+if (import.meta.hot && !isProduction) {
     import.meta.hot.on("vite:beforeUpdate", () => {
-        document.head.appendChild(documentWithStyleTag.vgLiteDevStyleSheet)
+        if (documentWithStyleTag.vgLiteDevStyleSheet) {
+            document.head.appendChild(documentWithStyleTag.vgLiteDevStyleSheet)
+        }
     })
 
     import.meta.hot.on("vite:afterUpdate", () => {

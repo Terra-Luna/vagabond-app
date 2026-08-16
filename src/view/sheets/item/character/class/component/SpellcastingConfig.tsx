@@ -8,7 +8,7 @@ import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
 
 export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()
-    useEffect(() => { item.render(true) }, [item.system.castingSkill])
+    useEffect(() => { item?.render(true) }, [item?.system?.castingSkill])
 
     return (
         <div className="flex gap-x-1 items-center">

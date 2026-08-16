@@ -47,7 +47,10 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
 }
 
 export const onRender = (sheet: VGLiteApplication) => {
-    sheet._toolbarHeight = sheet.element.children[0]?.getBoundingClientRect()?.height ?? 0
+    queueMicrotask(() => {
+        if (!sheet.element) return
+        sheet._toolbarHeight = sheet.element.children?.[0]?.getBoundingClientRect()?.height ?? 0
+    })
 }
 
 export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {

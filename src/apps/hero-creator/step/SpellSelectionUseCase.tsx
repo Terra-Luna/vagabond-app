@@ -111,16 +111,18 @@ export const useSpellSelection = (
                     </div>
                 }
 
-                <div className="mt-2 space-y-2">
-                    <HeroCreationSubtext text={strings.classSpells} />
-                    <ItemSelectorGroup
-                        slotGroup={classSpellSlots}
-                        options={spellsList}
-                        otherSlotGroup={[...ancestrySpellSlots, ...perkSpellSlots]}
-                        grants={[...ancestrySpellGrants, ...classSpellGrants]}
-                        onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
-                    />
-                </div>
+                {classSpellSlots.length > 0 &&
+                    <div className="mt-2 space-y-2">
+                        <HeroCreationSubtext text={strings.classSpells} />
+                        <ItemSelectorGroup
+                            slotGroup={classSpellSlots}
+                            options={spellsList}
+                            otherSlotGroup={[...ancestrySpellSlots, ...perkSpellSlots]}
+                            grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                            onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
+                        />
+                    </div>
+                }
 
                 {(ancestrySpellSlots.length > 0 && isCreationMode) &&
                     <BonusChoiceContainer>
