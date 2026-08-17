@@ -1,3 +1,4 @@
+// important note - never import vagabond-lite.css?inline up here
 import "../styles/vagabond-lite.css"
 const isProduction = process.env.NODE_ENV === 'production'
 
@@ -19,18 +20,17 @@ const removeAndSaveVagabondStyleTag = () => {
         vgLiteStyleTag.remove()
         documentWithStyleTag.vgLiteDevStyleSheet = vgLiteStyleTag
     }
-    else {
-        documentWithStyleTag.vgLiteDevStyleSheet = null
-    }
 }
 
 export let vgLiteStyles: any = ""
 if (isProduction) {
+    // in prod, dynamically import the css file (which vite rolls up as a javascript file with a weird filename, ew)
     import("../styles/vagabond-lite.css?inline").then(css => {
         vgLiteStyles = css.default
     })
 }
 else {
+    // in dev, do what the big comment says
     removeAndSaveVagabondStyleTag()
     vgLiteStyles = documentWithStyleTag.vgLiteDevStyleSheet
         ? documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string
@@ -48,28 +48,3 @@ if (import.meta.hot && !isProduction) {
         removeAndSaveVagabondStyleTag()
     })
 }
-/* 
-const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement }
-
-const removeAndSaveVgLiteStyleTag = () => {
-    const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement;
-    if (vgLiteStyleTag) {
-        vgLiteStyleTag.remove();
-        documentWithStyleTag.vgLiteDevStyleSheet = vgLiteStyleTag
-    }
-}
-
-removeAndSaveVgLiteStyleTag()
-
-export const vgLiteStyles = documentWithStyleTag.vgLiteDevStyleSheet.innerHTML as string
-
-if (import.meta.hot) {
-    import.meta.hot.on("vite:beforeUpdate", () => {
-        document.head.appendChild(documentWithStyleTag.vgLiteDevStyleSheet)
-    })
-
-    import.meta.hot.on("vite:afterUpdate", () => {
-        removeAndSaveVgLiteStyleTag()
-    })
-}
-*/
