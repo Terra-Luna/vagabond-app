@@ -1,5 +1,5 @@
 import "../styles/vagabond-lite.css"
-import vgLiteStylesProd from "../styles/vagabond-lite.css?inline"
+const isProduction = process.env.NODE_ENV === 'production'
 
 /** 
  * Because we use the shadow DOM very prolifically so our tailwind styles don't blow up the core Foundry
@@ -11,8 +11,6 @@ import vgLiteStylesProd from "../styles/vagabond-lite.css?inline"
  * style element BACK as a child of document.head, have vite HMR it if necessary, and then remove it again!
  */
 const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement | null }
-
-const isProduction = process.env.NODE_ENV === 'production'
 
 const removeAndSaveVagabondStyleTag = () => {
     const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement
@@ -26,10 +24,11 @@ const removeAndSaveVagabondStyleTag = () => {
     }
 }
 
-export let vgLiteStyles = ""
-
+export let vgLiteStyles: any = ""
 if (isProduction) {
-    vgLiteStyles = vgLiteStylesProd as unknown as string
+    import("../styles/vagabond-lite.css?inline").then(css => {
+        vgLiteStyles = css.default
+    })
 }
 else {
     removeAndSaveVagabondStyleTag()

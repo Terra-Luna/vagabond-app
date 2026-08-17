@@ -1,4 +1,4 @@
-import { MessageSquareText, Trash } from "lucide-react"
+import { MessageSquareText } from "lucide-react"
 import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
@@ -22,7 +22,12 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         ?.filter(f => f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK')
     )
 
-    const classFeatures = Object.keys(groupedFeatures).map(f => groupedFeatures[f].reverse()[0])?.sort((a, b) => a.level! - b.level!)
+    let classFeatures: any[] = []
+    if (groupedFeatures) {
+        classFeatures = Object.keys(groupedFeatures)
+            ?.map(f => groupedFeatures[f]?.reverse()[0])
+            ?.sort((a, b) => a.level! - b.level!)
+    }
 
     return (
         <div className="py-1">
@@ -93,7 +98,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 }
             </div>
 
-            {/* PERK SELECTIONS - Currently hidden because it's kinda buggy due to how it uses flags to save choices. */}
+            {/* PERK SELECTIONS - Read-only due to how it uses flags to save choices. */}
             <div className="flex mt-1 w-full justify-end mb-12">
                 <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
                     Perk Selections
