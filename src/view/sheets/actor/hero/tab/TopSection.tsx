@@ -18,9 +18,11 @@ interface Health {
     current: number | null
     max: number | null
 }
+
 interface Armor {
     rating: number | null
 }
+
 export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
     const hp = hero.health.current
     const updateHp = useCallback((auxClick: boolean) => {
@@ -214,16 +216,27 @@ const Speed = ({ name, value }: { name: string, value: string }) => (
 )
 
 export const Saves = ({ hero }: { hero: HeroDataModel }) => {
+    const { reflex, endure, will } = hero.modifiers.skillCheck
     return (
         <div className="w-full flex flex-col gap-y-0.5">
             <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save hero={hero} save={{ key: 'reflex', ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex }} />
-            <Save hero={hero} save={{ key: 'endure', ...lang.VGLITE.Saves.endure, value: hero.saves.endure }} />
-            <Save hero={hero} save={{ key: 'will', ...lang.VGLITE.Saves.will, value: hero.saves.will }} />
+            <Save hero={hero} save={{ key: 'reflex', ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex, mod: reflex.modifier ?? 0 }} />
+            <Save hero={hero} save={{ key: 'endure', ...lang.VGLITE.Saves.endure, value: hero.saves.endure, mod: endure.modifier ?? 0 }} />
+            <Save hero={hero} save={{ key: 'will', ...lang.VGLITE.Saves.will, value: hero.saves.will, mod: will.modifier ?? 0 }} />
         </div>
     )
 }
-const Save = ({ hero, save }: { hero: HeroDataModel, save: { key: string, name: string, formula: string, description: string, value: number } }) => {
+const Save = ({ hero, save }: {
+    hero: HeroDataModel,
+    save: {
+        key: string,
+        name: string,
+        formula: string,
+        description: string,
+        value: number,
+        mod: number
+    }
+}) => {
     return (
         <div title={lang.VGLITE.HeroSheet.skills_tooltip}>
             <div className={`flex font-eskapade hover-glow border border-solid border-table-border/50`} onClick={
@@ -234,7 +247,12 @@ const Save = ({ hero, save }: { hero: HeroDataModel, save: { key: string, name: 
             }>
                 <div className="mx-1 w-full">
                     <div className="flex justify-between">
-                        <span className="-mt-1 text-xl font-bold">{save.name}</span>
+                        <div className="flex gap-x-1 items-center">
+                            <span className="-mt-1 text-xl font-bold">{save.name}</span>
+                            {save.mod !== 0 &&
+                                <span className="-mt-1 text-sm text-text-tertiary font-normal">{`(${save.mod > 0 ? '+' : '-'}${save.mod})`}</span>
+                            }
+                        </div>
                         <span className="mt-0.5 text-xs text-text-tertiary font-paradigm font-regular">{save.formula}</span>
                     </div>
                     <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1">{save.description}</span>

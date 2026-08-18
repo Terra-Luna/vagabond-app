@@ -3,7 +3,7 @@ import { createElement } from "react"
 import { getId } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
-import { fields, optionalString, requiredInteger } from "../common/sharedSchemas"
+import { fields, optionalString, requiredInteger, requiredString } from "../common/sharedSchemas"
 import { AncestryDataModel } from "../item/character/AncestryDataModel"
 import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
@@ -40,8 +40,15 @@ const heroSchema = () => {
          */
         ancestry: new fields.SchemaField({ ...AncestryDataModel.defineSchema() }),
         class: new fields.SchemaField({ ...ClassDataModel.defineSchema() }),
+        trackers: new fields.ArrayField(
+            new fields.SchemaField({
+                name: new fields.StringField({ ...requiredString }),
+                value: new fields.NumberField({ ...requiredInteger }),
+                sort: new fields.NumberField({ ...requiredInteger, initial: 1000 })
+            }), { initial: [] }
+        ),
 
-        // certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
+        // Certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
         // this just is a boolean value we flip back and forth to trigger the update lifecycle
         forceUpdateTrack: new fields.BooleanField({initial: false})
     }
