@@ -53,9 +53,9 @@ export class SkillCheck {
         this.type = args.type
         this.skill = args.skill
         this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
-        this.d20Count = args.d20Count ?? (1 + skillMods.extraDice + (globalMods?.extraDice ?? 0))
-        this.modifier = args.modifier ?? (skillMods.modifier + (globalMods?.modifier ?? 0))
-        this.critThreshold = args.critThreshold ?? (20 - (skillMods.critThreshold + (globalMods?.critThreshold ?? 0)))
+        this.d20Count = args.d20Count ?? (1 + (skillMods?.extraDice ?? 0) + (globalMods?.extraDice ?? 0))
+        this.modifier = args.modifier ?? ((skillMods?.modifier ?? 0) + (globalMods?.modifier ?? 0))
+        this.critThreshold = args.critThreshold ?? (20 - ((skillMods?.critThreshold ?? 0) + (globalMods?.critThreshold ?? 0)))
         this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
         this.clickEvent = args.clickEvent
     }

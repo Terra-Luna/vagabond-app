@@ -6,9 +6,9 @@ export class HeroSheet extends VagabondActorSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 430,
-            height: 790 as any,
+            height: "auto",
             top: 0,
-            left: 66
+            left: 333
         },
         window: {
             resizable: true

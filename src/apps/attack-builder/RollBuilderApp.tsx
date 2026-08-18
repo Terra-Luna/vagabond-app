@@ -11,7 +11,7 @@ export class RollBuilderApp extends VagabondApplication {
         super({
             window: { title: "Roll Builder", resizable: false },
             position: { width: 420 },
-            Component: RollBuilderView,
+            Component: RollBuilderView
         } as VagabondAppArgs)
 
         this.actor = actor
