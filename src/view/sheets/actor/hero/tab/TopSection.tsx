@@ -238,22 +238,19 @@ const Save = ({ hero, save }: {
     }
 }) => {
     return (
-        <div title={lang.VGLITE.HeroSheet.skills_tooltip}>
+        <div title={`${save.formula}\n${lang.VGLITE.HeroSheet.skills_tooltip}`}>
             <div className={`flex font-eskapade hover-glow border border-solid border-table-border/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
                     sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                 }
             }>
-                <div className="mx-1 w-full">
-                    <div className="flex justify-between">
-                        <div className="flex gap-x-1 items-center">
-                            <span className="-mt-1 text-xl font-bold">{save.name}</span>
-                            {save.mod !== 0 &&
-                                <span className="-mt-1 text-sm text-text-tertiary font-normal">{`(${save.mod > 0 ? '+' : '-'}${save.mod})`}</span>
-                            }
-                        </div>
-                        <span className="mt-0.5 text-xs text-text-tertiary font-paradigm font-regular">{save.formula}</span>
+                <div className="mx-1 w-full line-clamp-1">
+                    <div className="flex justify-between items-center">
+                        <span className="-mt-1 text-xl font-bold">{save.name}</span>
+                        {save.mod !== 0 &&
+                            <span className="-mt-1 text-xs text-text-tertiary font-normal">{`(${save.mod > 0 ? '+' : '-'}${save.mod})`}</span>
+                        }
                     </div>
                     <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1">{save.description}</span>
                 </div>
