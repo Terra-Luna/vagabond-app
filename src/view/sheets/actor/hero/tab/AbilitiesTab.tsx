@@ -72,7 +72,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 {
                     hero.perks
                         .sort((a, b) => a.parent.name.localeCompare(b.parent.name))
-                        .sort((a, b) => Number(a.canTakeMultiple) - Number(b.canTakeMultiple))
+                        .filter(p => !p.canTakeMultiple)
                         .map((p: any, index: number) => (
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {

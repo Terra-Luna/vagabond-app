@@ -79,12 +79,9 @@ export function getEquippedWeapons(actor: Actor & { system: any }) {
  * @param item 
  */
 export async function equipWeapon(hero: any, item: WeaponDataModel | ToolDataModel) {
-    console.log("Equipping weapon...")
     const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
     const equippedTools = hero.parent.items.filter((it: any) => it.type === "tool" && it.system.isEquipped)
     const equippedSlots = [...equippedWeapons, ...equippedTools].reduce((sum, it) => { return sum + it.system.bulk.totalSlots }, 0)
-
-    console.log(equippedSlots, [...equippedWeapons, ...equippedTools])
 
     if (item.bulk.totalSlots > 0 && equippedSlots + item.bulk.totalSlots > hero.inventory.weaponSlots) {
         ui.notifications?.warn("Cannot equip any more weapons or tools!")

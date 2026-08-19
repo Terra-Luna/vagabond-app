@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useMemo, useState } from "react"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { Header, Divider } from "../../../view/component/Header"
+import { Header } from "../../../view/component/Header"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { vgLiteLang } from "../../../utils/lang"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
@@ -91,13 +91,19 @@ export const usePerkBonusSelection = (
     }, [advancement])
 
     const PerkBonusSelection = (
-        <div className="@container bg-sheet-main-fill space-y-4 text-center items-center">
-            <Header title={strings.bonusChoicesHeader} />
-            <TopNavButtons navButtons={navButtons} subtitle="A Perk selection has granted another choice..." canProceed={!!advancement || !!spell || !!perkTraining} />
+        <div className="@container bg-sheet-main-fill space-y-1 mb-4 text-center items-center">
 
+            <Header title={strings.bonusChoicesHeader} />
+            {navButtons.length > 0 &&
+                <TopNavButtons
+                    navButtons={navButtons}
+                    subtitle="A Perk selection has granted another choice..."
+                    canProceed={!!advancement || !!spell || !!perkTraining}
+                />
+            }
 
             <div className="flex flex-col w-full justify-center">
-                <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto">
+                <div className="inline-flex flex-col items-stretch space-y-1 @2xl:w-1/2 mx-auto">
                     <BonusChoiceContainer>
                         {
                             advancements.map((rule, index) => {

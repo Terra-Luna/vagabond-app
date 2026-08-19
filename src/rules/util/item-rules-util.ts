@@ -268,8 +268,8 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
             }
         }
 
-        const recur = Number(rule.scale ?? "0")
-        const maxChoices = recur < 1
+        const scale = Number(rule.scale ?? "0")
+        const maxChoices = scale < 1
             ? Number(rule.maxChoices ?? 1)
             : calculateRecurringChoices(level, Number(rule.level), Number(rule.maxChoices), Number(rule.scale))
 

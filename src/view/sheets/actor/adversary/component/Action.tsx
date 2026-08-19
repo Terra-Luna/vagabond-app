@@ -369,11 +369,9 @@ const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, edit
         return
     }
     else if (editTarget == null) {
-        console.log(newAction)
         updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
     }
     else {
-        console.log(newAction)
         const actions = adv.actions
         actions[editTargetIndex] = newAction
         updateDocumentAtPath(adv.parent, ['actions'], [...actions])
