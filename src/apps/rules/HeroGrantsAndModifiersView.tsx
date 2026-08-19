@@ -75,7 +75,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             {flatModifiers.length > 0 && (
                 <CollapsibleSection title={`Passive Modifiers Summary`} settingsKey={'rules-data-summary'} content={
                     <EffectCardContainer>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="flex flex-col gap-1">
                             {flatModifiers.map(mod => {
                                 // Extract a clean readable path suffix (e.g., system.attributes.hp.max -> hp.max)
                                 const cleanPath = mod.selector?.replace("system.", "") || "stat"
@@ -83,7 +83,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                                     <div
                                         key={mod.id}
                                         className="flex justify-between items-center text-xs bg-sheet-main-fill border border-solid border-table-border/50 px-2 py-1.5 rounded">
-                                        <span className="text-text-primary">
+                                        <span className="text-text-primary line-clamp-1">
                                             {mod.label || "Modifier"} <span className="text-text-primary">({cleanPath})</span>
                                         </span>
                                         {/* BONUS VALUE PILL */}

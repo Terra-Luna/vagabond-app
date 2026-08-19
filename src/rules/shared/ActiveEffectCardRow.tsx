@@ -34,7 +34,7 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
             ${isActive ? '' : 'opacity-50 select-none'}
         `}>
             <div className="flex items-center gap-2.5">
-                <img src={rule.sourceImg} className="w-8 h-20 object-cover rounded-sm border border-solid border-table-border/50 shrink-0" alt="" />
+                <img src={rule.sourceImg} className="h-8 object-cover rounded-sm border border-solid border-table-border/50 shrink-0" alt="" />
                 <div>
                     <div className="flex gap-x-2">
                         <div className="text-text-primary font-bold">

@@ -43,11 +43,15 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
             {
                 slotGroup.map((slot, index) => {
                     const otherSelectedIds = getOtherSelectedIds(index)
+                    const filteredOptions = options.filter(opt =>
+                        opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value)
+                    )
+
                     return (<div key={`item-slot-selector-${index}`}>
                         {/* SELECTABLE SLOTS */}
                         {!slot.isLocked && <CustomDropDown
                             value={slot.value}
-                            options={options.filter(opt => opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value))}
+                            options={filteredOptions}
                             className={`
                                 flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
                                 ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}

@@ -95,11 +95,13 @@ export const usePerkBonusSelection = (
 
             <Header title={strings.bonusChoicesHeader} />
             {navButtons.length > 0 &&
-                <TopNavButtons
-                    navButtons={navButtons}
-                    subtitle="A Perk selection has granted another choice..."
-                    canProceed={!!advancement || !!spell || !!perkTraining}
-                />
+                <div className="mt-4">
+                    <TopNavButtons
+                        navButtons={navButtons}
+                        subtitle="A Perk selection has granted another choice..."
+                        canProceed={!!advancement || !!spell || !!perkTraining}
+                    />
+                </div>
             }
 
             <div className="flex flex-col w-full justify-center">

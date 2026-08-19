@@ -286,7 +286,7 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
         }
     })
 
-    return parsedRules
+    return parsedRules.sort((a, b) => a.level - b.level)
 }
 
 /**
