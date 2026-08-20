@@ -5,6 +5,7 @@ import { RichTextField } from "../../component/RichTextField"
 import ReactHtmlParser from 'react-html-parser'
 import { useEditMode } from "../../context/EditModeContext/Hooks"
 import { BaseItemSchema, ItemDataModel } from "../../../model/item/ItemDataModel"
+import { EnrichedContent } from "../../component/EnrichedContent"
 
 export const Description = ({ item, showFullView = false, italic = true }: {
     item: Item & { system: ItemDataModel<BaseItemSchema> }, showFullView?: boolean, italic?: boolean
@@ -30,7 +31,7 @@ export const Description = ({ item, showFullView = false, italic = true }: {
                             <div className={`${showFullView ? 'h-fit' : ''} px-2 text-justify text-sm font-paradigm font-light ${italic ? 'italic' : ''} overflow-hidden`}>
                                 {stripHtml(item.system.description).length > 0 &&
                                     <div className={`${showFullView ? 'h-fit' : 'max-h-54 overflow-hidden'}`}>
-                                        {ReactHtmlParser(item.system.description)}
+                                        <EnrichedContent content={item.system.description} />
                                     </div>
                                 }
                             </div>

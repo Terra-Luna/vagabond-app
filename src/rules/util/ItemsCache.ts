@@ -92,7 +92,7 @@ export class ItemsCache {
     static refreshAllActors() {
         game.actors
             ?.filter(it => (it.type as string) === 'hero')
-            ?.forEach(actor => (actor as any).forceUpdate())
+            ?.forEach(actor => (actor as any)?.system?.forceUpdate())
     }
 
 }

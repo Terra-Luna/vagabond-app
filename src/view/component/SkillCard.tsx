@@ -2,6 +2,7 @@ import ReactHtmlParser from 'react-html-parser'
 import { Collapsible } from "./Collapsible"
 import { CardHeader } from './CardHeader'
 import { ReactNode } from 'react'
+import { EnrichedContent } from './EnrichedContent'
 
 const cardSubheaderLayout = "flex -mt-0.5"
 const cardSubheaderStyle = "flex gap-x-2 py-1 pl-2 pr-1 items-center bg-section-header-fill"
@@ -20,12 +21,10 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
             dmgType={dmgType}
             title={title}
             Header={CardHeader}
-            content={(
-                <>
-                    <CardSubHeader values={subtitles} />
-                    <CardBody description={description} />
-                </>
-            )}
+            content={(<>
+                <CardSubHeader values={subtitles} />
+                <CardBody description={description} />
+            </>)}
         />
     )
 }
@@ -67,15 +66,12 @@ export const CardSubHeader = ({ values, showRightBorder = true }: { values: Card
     )
 }
 
-/**
- * Special example: [
- *      {key: "Crit", value: "Some on-crit effect." }
-        * ]
-        */
 const CardBody = ({ description }: { description: string }) => {
     return (
         <div className={cardBodyLayout}>
-            <div className={cardBodyStyle}>{ReactHtmlParser(description)}</div>
+            <div className={cardBodyStyle}>
+                <EnrichedContent content={description} />
+            </div>
         </div>
     )
 }

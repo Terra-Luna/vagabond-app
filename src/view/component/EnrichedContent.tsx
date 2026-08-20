@@ -1,71 +1,83 @@
-import { useEffect, useRef, useState } from "react"
+import React, { useRef, useState, useEffect } from 'react'
+import ReactHtmlParser from 'react-html-parser'
 
 export const EnrichedContent = ({ content, styleClasses = '' }) => {
-    const ref = useRef(null)
-    const [enrichedText, setEnrichedText] = useState('')
+    const ref = useRef(null);
+    const [enrichedText, setEnrichedText] = useState('');
 
     useEffect(() => {
         const enrich = async () => {
-            const rc = await foundry.applications.ux.TextEditor.enrichHTML(content)
-            setEnrichedText(rc)
-        }
-        enrich()
-    }, [content])
+            const rc = await foundry.applications.ux.TextEditor.enrichHTML(content);
+            setEnrichedText(rc);
+        };
+        enrich();
+    }, [content]);
 
-    const onClick = async (e) => {
-        e.preventDefault()
+    const onClick = async (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault();
 
-        const inlineRoll = e.target.closest('a.inline-roll')
+        const inlineRoll = (e.target as HTMLElement).closest('a.inline-roll') as HTMLAnchorElement | null;
         if (inlineRoll) {
-            const { formula, roll, flavor } = inlineRoll.dataset
+            const { formula, roll, flavor } = inlineRoll.dataset;
 
             try {
-                let rollInstance
+                let rollInstance;
 
                 if (roll) {
-                    rollInstance = Roll.fromData(JSON.parse(decodeURIComponent(roll)))
+                    rollInstance = Roll.fromData(JSON.parse(decodeURIComponent(roll)));
                 } else if (formula) {
-                    rollInstance = new Roll(formula)
+                    rollInstance = new Roll(formula);
                 }
 
                 if (rollInstance) {
-                    await rollInstance.evaluate()
+                    await rollInstance.evaluate();
                     await rollInstance.toMessage({
                         flavor: flavor || "Roll Result",
                         speaker: ChatMessage.getSpeaker()
-                    })
+                    });
                 }
             }
             catch (err) {
-                console.error("Failed to parse or execute inline dice roll:", err)
+                console.error("Failed to parse or execute inline dice roll:", err);
             }
+            return;
         }
 
-        const contentLink = e.target.closest('a.content-link')
-        if (!contentLink) return
-        foundry.applications.ux.TextEditor.getContentLink(e).then((uuid) => {
+        const contentLink = (e.target as HTMLElement).closest('a.content-link') as HTMLAnchorElement | null;
+        if (!contentLink) return;
+
+        // Fix: Pass the link's dataset object cast to `any` or `Record<string, unknown>` 
+        // instead of passing the entire DOM node.
+        foundry.applications.ux.TextEditor.getContentLink(contentLink.dataset as any).then((uuid) => {
             if (uuid) {
-                fromUuid(uuid).then((document) => (document as any)?.sheet.render(true))
+                fromUuid(uuid).then((document) => {
+                    if (document && 'sheet' in document && document.sheet) {
+                        (document.sheet as any).render(true);
+                    } else {
+                        console.warn(`Could not render sheet. Document with UUID "${uuid}" is invalid.`);
+                    }
+                });
             }
-        })
-    }
+        });
+    };
 
     return (
         <div
             ref={ref}
             className={`${styleClasses} ${linkStyles}`}
             onClick={onClick}
-            dangerouslySetInnerHTML={{ __html: enrichedText }}
-        />
-    )
-}
+        >
+            {ReactHtmlParser(enrichedText)}
+        </div>
+    );
+};
 
 /**
  * Probably move these to vagabond-lite.css ??
  */
 const inlineRollStyle = `
     /* Rolls style defaults */
-    [&_.inline-roll]:text-stat-block-fill
+    [&_.inline-roll]:text-text-header-tertiary
     [&_.inline-roll]:font-eskapade
     [&_.inline-roll]:font-bold
     [&_.inline-roll]:font-lg

@@ -1,4 +1,4 @@
-import { Plus, Trash } from "lucide-react"
+import { Plus } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 import { PerkDataModel, addPerkPrerequisite, deletePerkPrerequisite } from "../../../../../model/item/character/PerkDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
