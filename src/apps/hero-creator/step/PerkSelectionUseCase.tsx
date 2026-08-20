@@ -56,7 +56,7 @@ export const usePerkSelection = (
      * on their perk choice filter rules.
      */
     const classRestrictedPerksList = useMemo(() => {
-        const perkRules = getItemChoiceRules(adjLevel, clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+        const perkRules = getItemChoiceRules(adjLevel, clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? []).filter(it => it.pack === "perk")
         const filteredChoices = perkRules.flatMap(it => it.choices).map(it => it.value)
         return [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
@@ -117,13 +117,6 @@ export const usePerkSelection = (
             )
         )
     }, [])
-
-    const grantedPerks = () => {
-        return [...ancestryPerkGrants, ...classPerkGrants].map(g => {
-            const perk = perksList.find(p => p.value === g.uuid)
-            return { value: perk?.value, label: perk?.label }
-        })
-    }
 
     const isAllSelected = useMemo(() => {
         return ![...ancestryPerkSlots, ...classPerkSlots].some(slot => slot.value.length === 0)

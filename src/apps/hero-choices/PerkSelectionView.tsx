@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useRef } from "react"
+import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { usePerkSelection } from "../hero-creator/step/PerkSelectionUseCase"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { groupBy } from "../../utils/collectionUtil"
+import { ItemsCache } from "../../rules/util/ItemsCache"
 
 export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
     const dataLoaded = useRef(false)
@@ -27,7 +28,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
 
     const {
         PerkSelection, perksList, classPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots
-    } = usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, true)
+    } = usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, isLevelUp)
 
     const getPerkName = (id: string): string => {
         return perksList.find(it => it.value === id)?.label ?? 'unk'
@@ -38,9 +39,12 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         let sharedIndex = 0
         rules.forEach(rule => {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
+            const perkSelectionRuleIds = Object.keys(actor.getFlag("vagabond-lite" as any, "perkSelections"))
+            const perks = ItemsCache.perks().filter(p => ruleSelections.includes(p.uuid))
+            const isLocked = perks.some(p => p.system.rules.some(r => perkSelectionRuleIds.includes((r as any).id)))
             ruleSelections.forEach(sel => {
                 if (slots[sharedIndex]) {
-                    slots[sharedIndex] = { value: sel, label: getPerkName(sel), ruleName: rule.label, ruleId: rule.id, isLocked: sel.length > 0 }
+                    slots[sharedIndex] = { value: sel, label: getPerkName(sel), ruleName: rule.label, ruleId: rule.id, isLocked: isLocked }
                 }
                 sharedIndex += 1
             })
