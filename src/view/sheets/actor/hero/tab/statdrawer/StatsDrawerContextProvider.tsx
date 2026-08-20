@@ -8,8 +8,7 @@ export const StatsDrawerContextProvider = ({ children }) => {
         <StatsDrawerContext.Provider value={{
             isStatsDrawerOpen,
             toggleStatsDrawer
-        }
-        }>
+        }}>
             {children}
         </StatsDrawerContext.Provider>
     )

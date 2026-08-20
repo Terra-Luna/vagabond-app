@@ -312,7 +312,7 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
             isStatsDrawerOpen &&
             <div className="absolute pt-1 pb-1 mt-1 -ml-11.5 space-y-4 bg-sheet-main-fill/75 rounded-bl-lg rounded-tl-lg border-2 border-solid border-section-header-fill border-r-transparent">
                 {stats.map(stat => (
-                    <Stat key={stat} name={lang.VGLITE.Stat[stat].abbr} value={hero.stats[stat]} />
+                    <Stat key={stat} actor={hero.parent} stat={stat} />
                 ))}
                 <div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
                     <ChevronRight size={28} />
@@ -321,12 +321,29 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
         }</>
     )
 }
-const Stat = ({ name, value }: { name: string, value: number }) => {
+const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string }) => {
+    const name = lang.VGLITE.Stat[stat].abbr
+    const value = actor.system.stats[stat]
     return (
         <div className="text-text-special font-bold text-center">
             {name}
             <div className="flex items-center justify-center text-text-stat-block font-eskapade text-4xl">
-                <span className="bg-stat-block-fill min-w-[42px] pb-1">{value}</span>
+                {/* GM's can edit stats directly - modifiers from rules will not be affected. */}
+                {game.user?.isActiveGM
+                    ? <span className="bg-stat-block-fill min-w-[42px] pb-1">
+                        <EditableTextField
+                            boundValue={actor.system.stats[stat]}
+                            placeholder={"2"}
+                            onSave={async (value) => {
+                                await actor.update({ [`system.stats.${stat}`]: value })
+                                return true
+                            }}
+                        />
+                    </span>
+                    : <span className="bg-stat-block-fill min-w-[42px] pb-1">
+                        {value}
+                    </span>
+                }
             </div>
         </div>
     )

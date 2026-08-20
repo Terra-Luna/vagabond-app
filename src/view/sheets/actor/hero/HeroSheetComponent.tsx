@@ -73,6 +73,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                         <EditableNameField actor={hero.parent} />
 
                         <div className="flex gap-x-2 ml-auto">
+                            {/* LEVEL-UP BUTTON */}
                             {((hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < getMaxLevel() || !hero.ancestry) &&
                                 <button
                                     title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
@@ -94,6 +95,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                         </div>
                     </div>
                     <div className="flex text-text-header-secondary ml-2 pb-1">
+                        {/* ANCESTRY & CLASS LABELS */}
                         <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                         <span>&nbsp;•&nbsp;</span>
                         <div className="flex gap-x-1 cursor-pointer">
