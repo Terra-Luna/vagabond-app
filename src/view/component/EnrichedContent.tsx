@@ -46,8 +46,6 @@ export const EnrichedContent = ({ content, styleClasses = '' }) => {
         const contentLink = (e.target as HTMLElement).closest('a.content-link') as HTMLAnchorElement | null
         if (!contentLink) return
 
-        // Fix: Pass the link's dataset object cast to `any` or `Record<string, unknown>` 
-        // instead of passing the entire DOM node.
         foundry.applications.ux.TextEditor.getContentLink(contentLink.dataset as any).then((uuid) => {
             if (uuid) {
                 fromUuid(uuid).then((document) => {
@@ -61,13 +59,26 @@ export const EnrichedContent = ({ content, styleClasses = '' }) => {
         })
     }
 
+    const parserConfig = {
+        transform: (node: any) => {
+            if (node.type === 'tag' && node.attribs) {
+                if (node.attribs.inert === "" || node.attribs.inert === "inert") {
+                    node.attribs.inert = true
+                } else if (node.attribs.inert === "false") {
+                    delete node.attribs.inert
+                }
+            }
+            return undefined
+        }
+    }
+
     return (
         <div
             ref={ref}
             className={`${styleClasses} ${linkStyles}`}
             onClick={onClick}
         >
-            {ReactHtmlParser(enrichedText)}
+            {ReactHtmlParser(enrichedText, parserConfig)}
         </div>
     )
 }
