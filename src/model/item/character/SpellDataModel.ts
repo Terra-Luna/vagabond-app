@@ -1,6 +1,6 @@
 import { vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { fields, damageTypeOptions, optionalString, requiredInteger, requiredString, optionalInteger } from "../../common/sharedSchemas"
+import { fields, damageTypeOptions, requiredInteger, requiredString, optionalInteger } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const spellSchema = () => {

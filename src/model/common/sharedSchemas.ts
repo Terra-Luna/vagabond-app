@@ -67,9 +67,3 @@ export const statusEffOptions = () => {
         choices: statusFx
     }
 }
-
-export const effectSchema = () => {
-    return {
-        type: new fields.StringField({ ...requiredString, choices: ['TEMPORARY', 'PASSIVE', 'INAC'] })
-    }
-}

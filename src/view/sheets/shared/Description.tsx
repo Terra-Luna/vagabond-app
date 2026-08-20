@@ -2,7 +2,6 @@ import { useCallback } from "react"
 import { updateDocument } from "../../../utils/documentUtils"
 import { stripHtml } from "../../../utils/stringUtil"
 import { RichTextField } from "../../component/RichTextField"
-import ReactHtmlParser from 'react-html-parser'
 import { useEditMode } from "../../context/EditModeContext/Hooks"
 import { BaseItemSchema, ItemDataModel } from "../../../model/item/ItemDataModel"
 import { EnrichedContent } from "../../component/EnrichedContent"
