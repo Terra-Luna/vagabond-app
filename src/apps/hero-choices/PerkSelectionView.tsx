@@ -27,24 +27,31 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
     const level = (actor.system.level.current ?? 0) + (isLevelUp ? 1 : 0)
 
     const {
-        PerkSelection, perksList, classPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots
+        PerkSelection, allPerks, perksList, classPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots
     } = usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, isLevelUp)
 
     const getPerkName = (id: string): string => {
-        return perksList.find(it => it.value === id)?.label ?? 'unk'
+        return allPerks.find(it => it.uuid === id)?.name ?? 'unk'
     }
 
     const loadSelections = (rules, setSlots) => {
         const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.scale)))
         let sharedIndex = 0
+        const perkSelectionRuleIds = Object.keys(actor.getFlag("vagabond-lite" as any, "perkSelections") ?? {})
+
         rules.forEach(rule => {
             const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
-            const perkSelectionRuleIds = Object.keys(actor.getFlag("vagabond-lite" as any, "perkSelections"))
-            const perks = ItemsCache.perks().filter(p => ruleSelections.includes(p.uuid))
-            const isLocked = perks.some(p => p.system.rules.some(r => perkSelectionRuleIds.includes((r as any).id)))
             ruleSelections.forEach(sel => {
+                const perkRuleIds = ItemsCache.perks().find(p => p.uuid === sel)?.system?.rules?.map(r => r.id) ?? []
+                const isLocked = perkSelectionRuleIds?.some((id: string) => perkRuleIds.includes(id))
                 if (slots[sharedIndex]) {
-                    slots[sharedIndex] = { value: sel, label: getPerkName(sel), ruleName: rule.label, ruleId: rule.id, isLocked: isLocked }
+                    slots[sharedIndex] = {
+                        value: sel,
+                        label: getPerkName(sel),
+                        ruleName: rule.label,
+                        ruleId: rule.id,
+                        isLocked: isLocked
+                    }
                 }
                 sharedIndex += 1
             })
@@ -88,7 +95,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
      * Monitors Class perk choices and makes async background changes on the fly.
      */
     useEffect(() => {
-        if (!clazz || !classPerkSlots.length || classPerkSlots.some(slot => !slot.isLocked) || !dataLoaded.current) {
+        if (!clazz || !classPerkSlots.length || !dataLoaded.current) {
             return
         }
 

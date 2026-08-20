@@ -30,13 +30,29 @@ export const usePerkSelection = (
 ) => {
     const isCreationMode = navButtons.length > 0
     const adjLevel = level + (isLevelUp ? 1 : 0)
+
+    const allPerks = useMemo(() => {
+        return [...ItemsCache.perks()]
+    }, [])
+
+    const selectablePerks = useMemo(() => {
+        let perks = [...allPerks.map(perk => toDisplayablePerk(perk))]
+        if (!isLevelUp) {
+            perks = perks.filter(perk => {
+                const match = allPerks.find(perkItem => perkItem.uuid === perk.value)
+                return !match?.system?.rules?.some(r => r.key === 'ChoiceSet')
+            })
+        }
+        return perks
+    }, [isLevelUp, allPerks])
+
     /**
      * A list of every perk in the game.
      */
     const perksList = useMemo(() => {
         return [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '', multi: false },
-            ...ItemsCache.perks().map(perk => toDisplayablePerk(perk))
+            ...selectablePerks
         ]
     }, [])
 
@@ -47,7 +63,7 @@ export const usePerkSelection = (
     const eligiblePerksList = useMemo(() => {
         return [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-            ...ItemsCache.eligiblePerks(stats, trainings, spells).map(perk => toDisplayablePerk(perk))
+            ...selectablePerks
         ]
     }, [stats, trainings, spells])
 
@@ -135,7 +151,7 @@ export const usePerkSelection = (
                     {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
 
                     {/* GRANTED PERKS */}
-                    {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
+                    {([...ancestryPerkGrants, ...classPerkGrants].length > 0 || ancestryPerkSlots.length > 0) &&
                         <div className="mt-4 space-y-1">
                             <HeroCreationLabel text={strings.grantedPerks} />
                             {[...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
@@ -224,7 +240,7 @@ export const usePerkSelection = (
         </div>
 
     return {
-        PerkSelection, ancestryPerkSlots, classPerkSlots, perksList,
+        PerkSelection, ancestryPerkSlots, classPerkSlots, allPerks, perksList,
         setAncestryPerkSlots, setClassPerkSlots, loadInitialSlots
     }
 }
