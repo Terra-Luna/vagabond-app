@@ -63,7 +63,9 @@ export const usePerkSelection = (
     const eligiblePerksList = useMemo(() => {
         return [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
-            ...selectablePerks
+            ...ItemsCache.eligiblePerks(stats, trainings, spells)
+                .filter(it => selectablePerks.some(sp => sp.value === it.uuid))
+                .map(perk => toDisplayablePerk(perk))
         ]
     }, [stats, trainings, spells])
 
@@ -132,7 +134,7 @@ export const usePerkSelection = (
                 index === slotIndex ? { ...slot, label: perk, value: perkId, isLocked: false } : slot
             )
         )
-    }, [])
+    }, [ancestryPerkSlots, classPerkSlots, ancestry])
 
     const isAllSelected = useMemo(() => {
         return ![...ancestryPerkSlots, ...classPerkSlots].some(slot => slot.value.length === 0)

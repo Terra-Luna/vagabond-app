@@ -278,6 +278,7 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
+
 export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack }: { hero: HeroDataModel, isTrained: boolean, skillKey: string, name: string, value: number, isAttack: boolean }) => {
     return (
         <div title={lang.VGLITE.HeroSheet.skills_tooltip} className="w-full">
@@ -321,6 +322,7 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
         }</>
     )
 }
+
 const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string }) => {
     const name = lang.VGLITE.Stat[stat].abbr
     const value = actor.system.stats[stat]
