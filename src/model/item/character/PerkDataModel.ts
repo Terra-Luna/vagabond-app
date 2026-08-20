@@ -142,7 +142,7 @@ export const isEligibleForPerk = (stats: ReturnType<typeof statsSchema>, trainin
             }
         }
         else if (pre.type === 'spell') {
-            isEligible = pre.spell.toUpperCase() === 'ANY' && spells.length > 0 || spells.includes(pre.spell)
+            isEligible = (pre.spell.toUpperCase() === 'ANY' && spells.length > 0) || spells.includes(pre.spell)
         }
     }
 

@@ -97,6 +97,8 @@ export const useSpellSelection = (
 
         <div className="flex flex-col w-full justify-center">
             <div className="inline-flex flex-col items-stretch space-y-4 w-full @2xl:w-3/5 mx-auto">
+                
+                {/* GRANTED SPELLS (BY CLASS & ANCESTRY) */}
                 {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
                     <div className="mt-4 space-y-1">
                         {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
@@ -123,6 +125,7 @@ export const useSpellSelection = (
                     </div>
                 }
 
+                {/* SELECTABLE CLASS SPELL SLOTS (INCLUDES MAGICAL SECRETS) */}
                 {classSpellSlots.length > 0 &&
                     <div className="mt-2 space-y-2">
                         <HeroCreationSubtext text={strings.classSpells} />
@@ -136,6 +139,7 @@ export const useSpellSelection = (
                     </div>
                 }
 
+                {/* SELECTABLE ANCESTRY SPELL SLOTS (HERO CREATION ONLY) */}
                 {(ancestrySpellSlots.length > 0 && isCreationMode) &&
                     <BonusChoiceContainer>
                         <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />

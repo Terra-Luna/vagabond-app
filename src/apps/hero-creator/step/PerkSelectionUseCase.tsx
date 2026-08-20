@@ -219,7 +219,7 @@ export const usePerkSelection = (
                     <div className="mt-4 space-y-1">
                         {/* CHOSEN PERKS */}
                         <HeroCreationLabel text={strings.perksList} />
-                        {[...classPerkSlots].filter(slot => (slot.value?.length ?? 0) > 0).map((slot, index) => {
+                        {[...ancestryPerkSlots, ...classPerkGrants, ...classPerkSlots].filter(slot => ((slot.value as any)?.length ?? 0) > 0).map((slot, index) => {
                             const perk = perksList.find(p => p.value === slot.value)
                             if (perk) {
                                 return (

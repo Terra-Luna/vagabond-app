@@ -63,8 +63,12 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelection(1, ancestryItem, classItem, undefined, [backButton, nextButton])
 
     const selectedSpellNames = useMemo(() => {
-        return [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)
-    }, [ancestrySpellSlots, classSpellSlots])
+        const selectedSpells = [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)
+        const grantedSpells = ItemsCache.spells()
+            .filter(sp => [...classSpellGrants, ...ancestrySpellGrants].map(g => g.uuid).includes(sp.uuid))
+            .map(sp => sp.name)
+        return [...selectedSpells, ...grantedSpells]
+    }, [ancestrySpellSlots, classSpellSlots, classSpellGrants])
 
     const hasSpellSlots = useMemo(() => {
         return [...ancestrySpellSlots, ...classSpellSlots].length > 0
