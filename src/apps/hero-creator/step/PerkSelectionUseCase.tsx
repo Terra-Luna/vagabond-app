@@ -149,7 +149,7 @@ export const usePerkSelection = (
             <TopNavButtons navButtons={navButtons} canProceed={isAllSelected} />
 
             <div className="flex flex-col w-full justify-center">
-                <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto">
+                <div className="inline-flex flex-col items-stretch space-y-4 w-full @2xl:w-3/4 mx-auto">
                     {isAllSelected && !isLevelUp && <HeroCreationSuccessMessage text={strings.allPerksSelected} />}
 
                     {/* GRANTED PERKS */}
@@ -233,7 +233,7 @@ export const usePerkSelection = (
                                 )
                             }
                             else {
-                                return <></>
+                                return <div key={index} />
                             }
                         })}
                     </div>

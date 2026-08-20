@@ -4,7 +4,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { calculateRecurringChoices, getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
@@ -96,17 +96,29 @@ export const useSpellSelection = (
         </div>
 
         <div className="flex flex-col w-full justify-center">
-            <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto">
+            <div className="inline-flex flex-col items-stretch space-y-4 w-full @2xl:w-3/5 mx-auto">
                 {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
                     <div className="mt-4 space-y-1">
                         {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
                             <HeroCreationLabel text={strings.grantedSpells} />
                         }
                         {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
-                            <ItemGrantCard key={`grant-${index}`} name={grant.item} source={grant.source} />
+                            <ItemGrantCard
+                                key={`grant-${index}`}
+                                img={spellsList.find(sp => sp.value === grant.uuid)?.img}
+                                name={grant.item}
+                                source={grant.source}
+                            />
                         ))}
                         {!isCreationMode && ancestrySpellSlots.length > 0 &&
-                            ancestrySpellSlots.map((slot, idx) => (<ItemGrantCard key={`ancestry-slot-view-${idx}`} name={slot.label} source={slot.ruleName} />))
+                            ancestrySpellSlots.map((slot, idx) => (
+                                <ItemGrantCard
+                                    key={`ancestry-slot-view-${idx}`}
+                                    img={spellsList.find(sp => sp.value === slot.value)?.img}
+                                    name={slot.label}
+                                    source={slot.ruleName}
+                                />
+                            ))
                         }
                     </div>
                 }

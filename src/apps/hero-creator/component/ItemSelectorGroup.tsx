@@ -39,41 +39,44 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
     }, [])
 
     return (
-        <div className="flex flex-wrap gap-2 mt-2 w-full">
-            {
-                slotGroup.map((slot, index) => {
-                    const otherSelectedIds = getOtherSelectedIds(index)
-                    const filteredOptions = options.filter(opt =>
-                        opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value)
-                    )
+        <div className="@container w-full">
+            <div className="grid grid-cols-1 @xs:grid-cols-2 gap-2 mt-2 w-full">
+                {
+                    slotGroup.map((slot, index) => {
+                        const otherSelectedIds = getOtherSelectedIds(index)
+                        const filteredOptions = options.filter(opt =>
+                            opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value)
+                        )
 
-                    return (<div key={`item-slot-selector-${index}`}>
-                        {/* SELECTABLE SLOTS */}
-                        {!slot.isLocked && <CustomDropDown
-                            value={slot.value}
-                            options={filteredOptions}
-                            className={`
-                                flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
+                        return (
+                            <div key={`item-slot-selector-${index}`} className="w-full min-w-0">
+                                {/* SELECTABLE SLOTS */}
+                                {!slot.isLocked && <CustomDropDown
+                                    value={slot.value}
+                                    options={filteredOptions}
+                                    className={`
+                                w-full flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
                                 ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}
                             `}
-                            onChange={(e) => {
-                                const selectedId = e.target.value
-                                const selectedSpell = options.find(opt => opt.value === selectedId)
-                                const label = selectedSpell ? selectedSpell.label : ''
-                                onSelect(index, label, selectedId)
-                            }}
-                            editModeOverride={!slot.isLocked}
-                        />}
+                                    onChange={(e) => {
+                                        const selectedId = e.target.value
+                                        const selectedSpell = options.find(opt => opt.value === selectedId)
+                                        const label = selectedSpell ? selectedSpell.label : ''
+                                        onSelect(index, label, selectedId)
+                                    }}
+                                    editModeOverride={!slot.isLocked}
+                                />}
 
-                        {/* LOCKED / READ-ONLY MODE */}
-                        {slot.isLocked && <div className="flex gap-x-2 items-center text-xl font-eskapade font-bold border border-solid border-table-border px-2">
-                            {slot.label}
-                            <LockKeyhole size={12} />
-                        </div>}
-
-                    </div>)
-                })
-            }
+                                {/* LOCKED / READ-ONLY MODE */}
+                                {slot.isLocked && <div className="w-full h-full flex gap-x-2 items-center justify-between text-xl font-eskapade font-bold border border-solid border-table-border px-2">
+                                    <span className="truncate">{slot.label}</span>
+                                    <LockKeyhole size={12} className="flex-shrink-0" />
+                                </div>}
+                            </div>
+                        )
+                    })
+                }
+            </div>
         </div>
     )
 }
