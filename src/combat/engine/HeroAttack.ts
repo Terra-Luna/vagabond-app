@@ -433,26 +433,26 @@ export class HeroAttack extends Attack {
             })
         }
 
-        const makeDamageRoll = (weapon: Item & { system: WeaponDataModel }) => {
+        const makeDamageRoll = (weapon: (Item & { system: WeaponDataModel }) | undefined, title: string) => {
             return new DamageRoll({
-                atkName: (weapon.name ?? '') + ": " + preset.description,
+                atkName: title,
                 dice: preset.damageRolls.map(rollSchema => new DiceRoll(rollSchema)),
-                dmgType: weapon.system.damage.type,
+                dmgType: weapon?.system?.damage?.type ?? 'physical',
                 flatDmgBonus: preset.flatModifier,
                 perDieDmgBonus: preset.perDieBonus,
                 armorPiercing: preset.armorPiercing
             })
         }
 
-        if (preset.weaponId && preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
+        if (preset.skill && preset.damageRolls && preset.damageRolls.length > 0) {
             const weapon = actor.items.find(it => it.id === preset.weaponId) as Item & { system: WeaponDataModel }
-            if (!weapon) return
 
+            const title = (weapon?.name ? weapon.name + ": " : "") + preset.description
             const skillCheck = makeSkillCheck('attack')
-            const damageRoll = makeDamageRoll(weapon)
+            const damageRoll = makeDamageRoll(weapon, title)
 
-            const attack = new HeroAttack(weapon.name, actor, getTargetIds(), skillCheck, damageRoll)
-            attack.itemId = weapon.id ?? ''
+            const attack = new HeroAttack(title, actor, getTargetIds(), skillCheck, damageRoll)
+            attack.itemId = weapon?.id ?? ''
             attack.skipSkillCheck = preset.skill === '-'
             attack.initiate()
         }
