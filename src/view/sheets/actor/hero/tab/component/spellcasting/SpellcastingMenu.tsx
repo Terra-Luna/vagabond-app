@@ -19,6 +19,7 @@ import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { SpellSelector } from "./SpellSelector"
 import { BookMarked, Dices } from "lucide-react"
 import { DiscountToggle } from "./DiscountToggle"
+import { VagabondSettingsRegistry } from "../../../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system

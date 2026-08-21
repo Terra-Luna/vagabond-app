@@ -42,17 +42,15 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                 </div>
 
                 {/* SPELLCASTING TAB */}
-                {!isCastMenuOpen && <div className={`
-                    flex items-center gap-x-1 ml-auto -mb-1 pl-6 pr-2 
-                    bg-context-menu-fill hover-glow
-                    [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]
-                `}
-                    onClick={() => {
-                        setIsSpellcastingOpen(!isSpellcastingOpen)
-                    }}
-                >
-                    {
-                        !isSpellcastingOpen ?
+                {!isCastMenuOpen &&
+                    <div className={`
+                            flex items-center gap-x-1 ml-auto -mb-1 pl-6 pr-2 
+                            bg-context-menu-fill hover-glow
+                            [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]
+                        `}
+                        onClick={() => { setIsSpellcastingOpen(!isSpellcastingOpen) }}
+                    >
+                        {!isSpellcastingOpen ?
                             <>
                                 <DamageTypeIcon dmgType="magical" />
                                 <p className="text-lg">{vgLiteLang.HeroSheet.Magic.btnCast}</p></> :
@@ -60,8 +58,7 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                                 <X size={14} />
                                 <p className="text-lg">{vgLiteLang.ButtonActions.close}</p>
                             </>
-                    }
-
+                        }
                 </div>}
             </div>
 

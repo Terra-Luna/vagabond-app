@@ -1,3 +1,4 @@
+import { fields } from "../../model/common/sharedSchemas"
 import { XpProgressionCurveApp } from "../level-up/progression/XpProgressionCurveApp"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 import { RelicPowers } from "./relic/RelicPowers"
@@ -18,6 +19,24 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerManaEnforcement()
 
         RelicPowers.register()
+    }
+
+    static registerClientSetting(settingKey: any) {
+        game.settings?.register("vagabond-lite" as any, settingKey, {
+            name: `Custom client setting`,
+            hint: `${settingKey}`,
+            scope: "client",
+            type: new fields.BooleanField(),
+            default: false
+        })
+    }
+
+    static async toggleClientSetting(settingKey: any, actorId?: string | undefined | null) {
+        const state = game.settings?.get("vagabond-lite" as any, settingKey)
+        await game.settings?.set("vagabond-lite" as any, settingKey, !state)
+        if (actorId) {
+            game.actors?.get(actorId)?.render()
+        }
     }
 
     /**

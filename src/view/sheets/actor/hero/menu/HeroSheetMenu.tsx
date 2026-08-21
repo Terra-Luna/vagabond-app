@@ -9,6 +9,7 @@ import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationAp
 import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
 import { fields } from "../../../../../model/common/sharedSchemas"
+import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -39,16 +40,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
     }, [sheet, isDarkMode])
 
     const toggleClientSetting = useCallback(async (settingKey) => {
-        game.settings?.register("vagabond-lite" as any, settingKey, {
-            name: "Hero Sheet Setting",
-            hint: "Hero Sheet Dynamic Setting",
-            scope: "client",
-            type: new fields.BooleanField(),
-            default: false
-        })
-        const current = game.settings?.get("vagabond-lite" as any, settingKey)
-        await game.settings?.set("vagabond-lite" as any, settingKey, !current)
-        hero.parent.render({ force: false })
+        VagabondSettingsRegistry.registerClientSetting(settingKey)
+        VagabondSettingsRegistry.toggleClientSetting(settingKey, hero.parent.id)
     }, [])
 
     return (<>

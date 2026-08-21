@@ -16,6 +16,7 @@ import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 import { buttonAnimation } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { fields } from "../../../../../model/common/sharedSchemas"
+import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 interface Health {
     current: number | null
@@ -357,23 +358,14 @@ const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string })
 
 export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const { ContextMenu, onCtxMenu } = useContextMenu()
-    const settingKey = `hero-sheet-trackers-hide-${actor.id}`
-    const settings = game.settings as any
-
-    settings.register("vagabond-lite", settingKey, {
-        name: "Hero Sheet Setting",
-        hint: "Hero Sheet Dynamic Setting",
-        scope: "client",
-        type: new fields.BooleanField(),
-        default: false
-    })
-
-    const isHidden = settings.get("vagabond-lite", settingKey)
+    const settingKey = `hero-sheet-trackers-hide-${actor.id}` as any
+    VagabondSettingsRegistry.registerClientSetting(settingKey)
+    const isHidden = game.settings?.get("vagabond-lite" as any, settingKey)
 
     if (isHidden) return
     else return (
         <div onContextMenu={(e) => onCtxMenu(e, [
-            { icon: EyeOff, label: "Hide", action: async () => await settings.set("vagabond-lite", settingKey, true) }
+            { icon: EyeOff, label: "Hide", action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
         ])}>
             <CollapsibleSection title="TRACKERS" settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
                 <div className="grid grid-cols-2 gap-1 w-full mt-1">
