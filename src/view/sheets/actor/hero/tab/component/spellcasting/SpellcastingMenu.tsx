@@ -17,7 +17,7 @@ import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { SpellSelector } from "./SpellSelector"
-import { Bookmark, BookMarked, Dices } from "lucide-react"
+import { BookMarked, Dices } from "lucide-react"
 import { DiscountToggle } from "./DiscountToggle"
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
@@ -26,7 +26,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
     const [skill, setSkill] = useState(hero.class?.castingSkill ?? '')
     const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
-    const [deliveryIndex, setDeliveryIndex] = useState<number>(0)
+    const [deliveryIndex, setDeliveryIndex] = useState<number>(6)
 
     const spells = useMemo((): SpellSnapshot[] => {
         return ItemsCache.spells()
@@ -216,7 +216,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         return (<>
             {
                 isSpellcastingOpen && delivery && spell &&
-                    <div className="font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-2 space-y-2">
+                <div className="font-eskapade font-bold bg-context-menu-fill border border-solid border-table-border -mt-1 mb-1 p-2 space-y-2">
 
                         {/* SPELLCASTING MENU TOP ROW */}
                         <div className="flex gap-x-1 items-end bottom text-lg">
@@ -288,5 +288,5 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         </>)
     }
 
-    return { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu }
+    return { isSpellcastingOpen, setIsSpellcastingOpen, onSelectSpell, SpellcastingMenu }
 }

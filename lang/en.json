@@ -638,6 +638,7 @@
       "skills_tooltip": "[Shift]: Favored\n[Ctrl]: Hindered",
       "counter_tooltip": "[L-click]: Decrease\n[R-click]: Increase",
       "counter_tooltip_roll": "[Shift + L-click]: Roll\n",
+      "context_tooltip": "R-click for options",
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
       "ancestry": "ANCESTRY",

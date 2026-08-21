@@ -1,12 +1,12 @@
 import { Sparkle, Sparkles, X } from "lucide-react"
-import { useCallback, useEffect } from "react"
+import { useCallback } from "react"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
-import { useSpellCastingMenu } from "./SpellcastingMenu"
 import { SpellcastingLabel } from "./SpellcastingTypography"
+import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
 export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean }) => {
     const mana = hero.mana.current
@@ -14,11 +14,7 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
         updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
 
-    const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellCastingMenu(hero.parent)
-
-    useEffect(() => {
-        setIsSpellcastingOpen(isCastMenuOpen)
-    }, [])
+    const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellcastingMenuContext()
 
     return (
         <div>
@@ -46,7 +42,11 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                 </div>
 
                 {/* SPELLCASTING TAB */}
-                {!isCastMenuOpen && <div className={`flex items-center gap-x-1 ml-auto -mb-1.5 pl-6 pr-2 bg-context-menu-fill hover-glow [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]`}
+                {!isCastMenuOpen && <div className={`
+                    flex items-center gap-x-1 ml-auto -mb-1 pl-6 pr-2 
+                    bg-context-menu-fill hover-glow
+                    [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]
+                `}
                     onClick={() => {
                         setIsSpellcastingOpen(!isSpellcastingOpen)
                     }}
