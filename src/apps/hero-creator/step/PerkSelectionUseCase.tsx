@@ -176,7 +176,9 @@ export const usePerkSelection = (
                                     .filter(k => k !== key)
                                     .flatMap(k => groupedClassPerkSlots[k])
                                 const indexOffset = Object.keys(groupedClassPerkSlots).indexOf(key)
-                                const useClassRestrictedFilter = index === 0 && Object.keys(groupedClassPerkSlots).length > 1
+                                const useClassRestrictedFilter = index === 0 && (
+                                    Object.keys(groupedClassPerkSlots).length > 1 || isCreationMode
+                                )
 
                                 return (
                                     <div key={index} className="flex flex-col">
@@ -187,6 +189,7 @@ export const usePerkSelection = (
                                             otherSlotGroup={[...ancestryPerkSlots, ...otherClassSlots]}
                                             grants={[...ancestryPerkGrants, ...classPerkGrants].filter(g => !perksList.find(p => p.value === g.uuid)?.multi)}
                                             onSelect={(index, label, selectedId) => onSelectPerk(index + indexOffset, label, selectedId, setClassPerkSlots)}
+                                            lockOldSlots={isLevelUp}
                                         />
                                     </div>
                                 )

@@ -11,12 +11,13 @@ import { LockKeyhole } from "lucide-react"
  * @param param0
  * @returns 
  */
-export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, onSelect }: {
+export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, onSelect, lockOldSlots }: {
     slotGroup: { value: string, label: string, isLocked?: boolean }[],
     options: { value: string, label: string }[],
     otherSlotGroup: any[],
     grants: any[],
-    onSelect: any
+    onSelect: any,
+    lockOldSlots?: boolean
 }) => {
 
     /**
@@ -47,28 +48,29 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                         const filteredOptions = options.filter(opt =>
                             opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value)
                         )
+                        const isLocked = slot.isLocked || (lockOldSlots && index + 1 < slotGroup.length)
 
                         return (
                             <div key={`item-slot-selector-${index}`} className="w-full min-w-0">
                                 {/* SELECTABLE SLOTS */}
-                                {!slot.isLocked && <CustomDropDown
+                                {!isLocked && <CustomDropDown
                                     value={slot.value}
                                     options={filteredOptions}
                                     className={`
-                                w-full flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
-                                ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}
-                            `}
+                                        w-full flex flex-wrap gap-x-1 text-lg font-eskapade font-normal
+                                        ${slot.value === '' ? 'border-2 border-solid border-wealth-denom-label' : ''}
+                                    `}
                                     onChange={(e) => {
                                         const selectedId = e.target.value
                                         const selectedSpell = options.find(opt => opt.value === selectedId)
                                         const label = selectedSpell ? selectedSpell.label : ''
                                         onSelect(index, label, selectedId)
                                     }}
-                                    editModeOverride={!slot.isLocked}
+                                    editModeOverride={!isLocked}
                                 />}
 
                                 {/* LOCKED / READ-ONLY MODE */}
-                                {slot.isLocked && <div className="w-full h-full flex gap-x-2 items-center justify-between text-xl font-eskapade font-bold border border-solid border-table-border px-2">
+                                {isLocked && <div className="w-full h-full flex gap-x-2 items-center justify-between text-xl font-eskapade font-bold border border-solid border-table-border px-2">
                                     <span className="truncate">{slot.label}</span>
                                     <LockKeyhole size={12} className="flex-shrink-0" />
                                 </div>}

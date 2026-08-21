@@ -365,10 +365,10 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
 
     if (isHidden) return
     else return (
-        <div onContextMenu={(e) => onCtxMenu(e, [
+        <div title={vgLiteLang.HeroSheet.context_tooltip} onContextMenu={(e) => onCtxMenu(e, [
             { icon: EyeOff, label: "Hide", action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
         ])}>
-            <CollapsibleSection title="TRACKERS" settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
+            <CollapsibleSection title={vgLiteLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
                 <div className="grid grid-cols-2 gap-1 w-full mt-1">
                     {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
                         <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
