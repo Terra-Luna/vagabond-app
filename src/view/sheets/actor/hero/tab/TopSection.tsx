@@ -1,4 +1,4 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye, Trash } from "lucide-react"
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye, Trash, EyeOff } from "lucide-react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
@@ -7,7 +7,7 @@ import { EditableTextField, NumericCounterInput } from "../../../../component/Ed
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { getId } from "../../../../../utils/modelUtil"
-import { useStatsDrawerStatus } from "./statdrawer/hooks"
+import { useStatsDrawerStatus } from "./statdrawer/StatsDrawerContext"
 import { lang, vgLiteLang } from "../../../../../utils/lang"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { CollapsibleSection } from "../../../../component/Collapsible"
@@ -15,6 +15,7 @@ import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
 import { buttonAnimation } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
+import { fields } from "../../../../../model/common/sharedSchemas"
 
 interface Health {
     current: number | null
@@ -318,7 +319,7 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
                 {stats.map(stat => (
                     <Stat key={stat} actor={hero.parent} stat={stat} />
                 ))}
-                <div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
+                    <div className={`w-full ml-1.5 -mt-1 mb-1 cursor-pointer`} onClick={toggleStatsDrawer}>
                     <ChevronRight size={28} />
                 </div>
             </div>
@@ -355,15 +356,35 @@ const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string })
 }
 
 export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
-    return (
-        <CollapsibleSection title="TRACKERS" settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
-            <div className="grid grid-cols-2 gap-1 w-full mt-1">
-                {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
-                    <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
-                ))}
-                <GhostTracker actor={actor} />
-            </div>
-        } />
+    const { ContextMenu, onCtxMenu } = useContextMenu()
+    const settingKey = `hero-sheet-trackers-hide-${actor.id}`
+    const settings = game.settings as any
+
+    settings.register("vagabond-lite", settingKey, {
+        name: "Hero Sheet Setting",
+        hint: "Hero Sheet Dynamic Setting",
+        scope: "client",
+        type: new fields.BooleanField(),
+        default: false
+    })
+
+    const isHidden = settings.get("vagabond-lite", settingKey)
+
+    if (isHidden) return
+    else return (
+        <div onContextMenu={(e) => onCtxMenu(e, [
+            { icon: EyeOff, label: "Hide", action: async () => await settings.set("vagabond-lite", settingKey, true) }
+        ])}>
+            <CollapsibleSection title="TRACKERS" settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
+                <div className="grid grid-cols-2 gap-1 w-full mt-1">
+                    {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
+                        <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
+                    ))}
+                    <GhostTracker actor={actor} />
+                </div>
+            } />
+            <ContextMenu />
+        </div>
     )
 }
 

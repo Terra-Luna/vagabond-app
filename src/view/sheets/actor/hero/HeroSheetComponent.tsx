@@ -48,7 +48,7 @@ export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { sys
 
     return (
         <div className="@container flex flex-col grow min-h-0 overflow-y-hidden">
-            <StatsDrawerContextProvider>
+            <StatsDrawerContextProvider id={hero.parent.id}>
                 <HeroSheetHeader hero={hero} sheet={sheet} />
                 <HeroSheetUpperSection hero={hero} />
                 <HeroSheetTabbedSection hero={hero} />

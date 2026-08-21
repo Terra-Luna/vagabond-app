@@ -8,6 +8,7 @@ import { ItemDivider } from "../../../../component/Header"
 import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
 import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
+import { fields } from "../../../../../model/common/sharedSchemas"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -36,6 +37,19 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         })
         sheet._renderHTML()
     }, [sheet, isDarkMode])
+
+    const toggleClientSetting = useCallback(async (settingKey) => {
+        game.settings?.register("vagabond-lite" as any, settingKey, {
+            name: "Hero Sheet Setting",
+            hint: "Hero Sheet Dynamic Setting",
+            scope: "client",
+            type: new fields.BooleanField(),
+            default: false
+        })
+        const current = game.settings?.get("vagabond-lite" as any, settingKey)
+        await game.settings?.set("vagabond-lite" as any, settingKey, !current)
+        hero.parent.render({ force: false })
+    }, [])
 
     return (<>
         <div className={`relative ${className}`}>
@@ -71,6 +85,12 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     }
                     <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => new ActiveEffectsApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
+                    <MenuListItem text={"TOGGLE TRACKERS"} toggleMenu={toggleMenu} onClick={async () => {
+                        toggleClientSetting(`hero-sheet-trackers-hide-${hero.parent.id}`)
+                    }} />
+                    <MenuListItem text={"TOGGLE STATS"} toggleMenu={toggleMenu} onClick={async () => {
+                        toggleClientSetting(`hero-sheet-stats-hide-${hero.parent.id}`)
+                    }} />
                     <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />
