@@ -80,7 +80,7 @@
 
 .light {
   --color-sheet-header-fill: #181818;
-  --color-text-header-primary: #eeeeed;
+  --color-text-header-primary: #E7E5E4;
   --color-text-header-secondary: #d2b450;
   --color-text-header-tertiary: #212e41;
   --color-sheet-main-fill: #fbfbfb;
@@ -91,7 +91,7 @@
   --color-scroll-bar-track: #f0f0f0;
   --color-section-header-fill: #181818;
   --color-section-header-line: #212e41;
-  --color-text-section-header: #eeeeed;
+  --color-text-section-header: #E7E5E4;
   --color-text-primary: #181818;
   --color-text-secondary: #44403b;
   --color-text-tertiary: #6f5e53;
@@ -129,7 +129,7 @@
   --color-ic-equipped: #3d5541;
   --color-text-encumbrance: #181818;
   --color-btn-primary-fill: #181818;
-  --color-btn-primary-text: #eeeeed;
+  --color-btn-primary-text: #E7E5E4;
   --color-btn-secondary-text: #3d2622;
   --color-destructive-action: #f72b35;
   --color-context-menu-fill: #c5c5c5;
@@ -154,7 +154,7 @@
 
 .dark {
   --color-sheet-header-fill: #181818;
-  --color-text-header-primary: #eeeeed;
+  --color-text-header-primary: #E7E5E4;
   --color-text-header-secondary: #d2b450;
   --color-text-header-tertiary: #d2b450;
   --color-sheet-main-fill: #292524;
@@ -165,11 +165,11 @@
   --color-scroll-bar-track: #221f21;
   --color-section-header-fill: #181818;
   --color-section-header-line: #212e41;
-  --color-text-section-header: #eeeeed;
-  --color-text-primary: #F5F5F4;
+  --color-text-section-header: #E7E5E4;
+  --color-text-primary: #E7E5E4;
   --color-text-secondary: #d1c8c0;
   --color-text-tertiary: #918780;
-  --color-text-special: #F5F5F4;
+  --color-text-special: #E7E5E4;
   --color-text-aux: #c1bebd;
   --color-text-dmg: #ee5e61;
   --color-text-glow: #d2b450;
@@ -203,7 +203,7 @@
   --color-text-encumbrance: #d2b450;
   --color-btn-primary-fill: #d2b450;
   --color-btn-primary-text: #181818;
-  --color-btn-secondary-text: #F5F5F4;
+  --color-btn-secondary-text: #E7E5E4;
   --color-destructive-action: #f72b35;
   --color-context-menu-fill: #0c0c0c;
   --color-context-menu-hover: #2b2a2a;

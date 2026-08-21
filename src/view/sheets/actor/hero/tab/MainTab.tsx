@@ -16,11 +16,13 @@ import { ToolDataModel } from "../../../../../model/item/equip/ToolDataModel"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
-        <div className="grid @sm:grid-cols-[44%_55%] my-1 gap-x-1">
-            <Attacks hero={hero} />
-            <div className="space-y-2">
-                <Weapons hero={hero} />
-                <Armor hero={hero} />
+        <div className="flex flex-col h-full">
+            <div className="grid @sm:grid-cols-[44%_55%] my-1 gap-x-1 flex-1">
+                <Attacks hero={hero} />
+                <div className="space-y-2">
+                    <Weapons hero={hero} />
+                    <Armor hero={hero} />
+                </div>
             </div>
         </div>
     )
@@ -94,7 +96,10 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                             draggable
                             onDragStart={(e) => onDragStart(e, index)}
                             onDragEnter={(e) => onDragEnter(e, index)}
-                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                            onDragOver={(e) => {
+                                e.preventDefault()
+                                e.stopPropagation()
+                            }}
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >

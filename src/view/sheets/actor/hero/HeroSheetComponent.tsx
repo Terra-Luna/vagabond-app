@@ -13,7 +13,7 @@ import { AbilitiesTab } from "./tab/AbilitiesTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
 import { MainTab } from "./tab/MainTab"
-import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills, Focus } from "./tab/TopSection"
+import { Stats, HPArmorFatigueHUD, Speeds, Luck, Studied, Saves, Skills, Focus, CustomTrackers } from "./tab/TopSection"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { lang } from "../../../../utils/lang"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
@@ -127,7 +127,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <div className="flex w-full space-x-1">
                     <div className="w-full">
                         <Speeds hero={hero} />
-                        <div className="flex w-full justify-center space-x-3 mt-2">
+                        <div className="flex w-full justify-center space-x-3 mt-4">
                             <Luck hero={hero} />
                             <Studied hero={hero} />
                             <Focus hero={hero} />
@@ -135,6 +135,9 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                     </div>
                     <Saves hero={hero} />
                 </div>
+
+                {/* CUSTOM TRACKERS */}
+                <CustomTrackers actor={hero.parent} />
 
                 {/* SKILL CHECKS AND DIFFICULTIES */}
                 <Skills hero={hero} />

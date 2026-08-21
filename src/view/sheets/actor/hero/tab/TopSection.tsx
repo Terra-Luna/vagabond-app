@@ -1,9 +1,9 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye } from "lucide-react"
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye, Trash } from "lucide-react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
 import { localizeString } from "../../../../../utils/localeUtils"
-import { EditableTextField } from "../../../../component/EditableTextField"
+import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { getId } from "../../../../../utils/modelUtil"
@@ -13,6 +13,8 @@ import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
+import { buttonAnimation } from "../../../../component/Button"
+import { useContextMenu } from "../../../../component/ContextMenu"
 
 interface Health {
     current: number | null
@@ -45,7 +47,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                     </span>
                 </div>
                 <div title={vgLiteLang.HeroSheet.counter_tooltip}
-                    className="absolute -right-1 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
+                    className="absolute -right-2.5 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
                     onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}
                 >
                     <span className={`text-xl text-text-hp-max px-1 hover-glow`}>{health.max}</span>
@@ -226,6 +228,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
         </div>
     )
 }
+
 const Save = ({ hero, save }: {
     hero: HeroDataModel,
     save: {
@@ -348,5 +351,78 @@ const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string })
                 }
             </div>
         </div>
+    )
+}
+
+export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
+    return (
+        <CollapsibleSection title="TRACKERS" settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
+            <div className="grid grid-cols-2 gap-1 w-full mt-1">
+                {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
+                    <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
+                ))}
+                <GhostTracker actor={actor} />
+            </div>
+        } />
+    )
+}
+
+const CustomTracker = ({ actor, tracker, index }) => {
+    const { ContextMenu, onCtxMenu } = useContextMenu()
+
+    const updateTracker = useCallback(async (field: 'name' | 'value', newValue: string | number | null) => {
+        const trackers = foundry.utils.deepClone(actor.system.trackers)
+        trackers[index] = {
+            ...trackers[index],
+            [field]: newValue
+        }
+        await actor.update({ "system.trackers": trackers })
+        return true
+    }, [actor, index])
+
+    const deleteTracker = useCallback(async () => {
+        const trackers = foundry.utils.deepClone(actor.system.trackers).filter((_, idx) => idx !== index)
+        await actor.update({ "system.trackers": trackers })
+    }, [actor, index])
+
+    return (
+        <div onContextMenu={(e) => onCtxMenu(e, [
+            { icon: Trash, label: vgLiteLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
+        ])}
+            className="flex items-center justify-between text-sm border border-solid border-table-border rounded-sm pl-2 pr-0.5 py-0.5"
+            title={"R-click for options"}
+        >
+            <EditableTextField
+                boundValue={tracker.name}
+                placeholder={"Tracker"}
+                hideBorderOnEditMode={true}
+                className="line-clamp-1"
+                onSave={(val) => updateTracker('name', val)}
+            />
+            <NumericCounterInput
+                value={tracker.value}
+                hideBorder={true}
+                onChange={(val) => updateTracker('value', val)}
+            />
+            <ContextMenu />
+        </div>
+    )
+}
+
+const GhostTracker = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
+    const addTracker = useCallback(async () => {
+        const trackers = actor.system.trackers
+        await actor.update({
+            'system.trackers': [...trackers, {
+                name: 'Tracker', value: 0, sort: ([...trackers].reverse()[0]?.sort ?? 0) + 1000
+            }]
+        } as Record<string, any>)
+    }, [actor.system.trackers])
+
+    return (
+        <button onClick={() => addTracker()}
+            className={`flex items-center border border-dashed border-table-border rounded-sm px-2 hover-glow ${buttonAnimation}`}>
+            <p className="text-sm italic">+Add custom tracker</p>
+        </button>
     )
 }

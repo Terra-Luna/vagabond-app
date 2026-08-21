@@ -70,7 +70,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
     }
 
     if (!isEditMode) return
-    return (
+    else return (
         <FoundryHotkeyBlocker>
             <CollapsibleSection title={"GRANTS & MODIFIERS"} content={
                 <div className="p-2 bg-context-menu-fill border border-solid border-table-border mb-24">

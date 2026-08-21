@@ -324,7 +324,7 @@ export class HeroAttack extends Attack {
         // If a skill wasn't provided for the skill check, use the highest applicable skill.
         if (!weaponSkill) {
             const defaultSkill = HeroAttack.getHighestDefaultWeaponSkill(hero, weapon)
-            weaponSkill = defaultSkill.skill ?? 'melee'
+            weaponSkill = defaultSkill?.skill ?? 'melee'
         }
 
         const skillCheck = new SkillCheck(hero, {

@@ -101,8 +101,8 @@ export const EditableNameField = ({ actor }: { actor: Actor }) => {
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
 }
 
-export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, editModeOverride = false }: {
-    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, editModeOverride?: boolean
+export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, hideBorder, editModeOverride }: {
+    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, hideBorder?: boolean, editModeOverride?: boolean
 }) => {
     const { isEditMode } = useEditMode()
     const inputRef = useRef<HTMLInputElement>(null)
@@ -121,7 +121,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
 
     return (<>
         {isEditMode || editModeOverride ?
-            <div className="flex items-center justify-center border border-solid border-table-border/50">
+            <div className={`flex items-center justify-center ${hideBorder ? '' : 'border border-solid border-table-border/50'}`}>
                 <form onSubmit={(e) => {
                     e.stopPropagation()
                     e.preventDefault()
@@ -144,8 +144,8 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
                 </form>
                 <p>{valueAppend}</p>
                 <div className="flex flex-col -mb-0.5">
-                    <Plus size={14} className="cursor-pointer" onClick={() => onChange(value + incrementBy)} />
-                    <Minus size={14} className="cursor-pointer -mt-1" onClick={() => onChange(value - incrementBy)} />
+                    <Plus size={14} className="cursor-pointer hover-glow" onClick={() => onChange(value + incrementBy)} />
+                    <Minus size={14} className="cursor-pointer hover-glow -mt-1" onClick={() => onChange(value - incrementBy)} />
                 </div>
             </div> : <div className="text-lg text-text-primary font-eskapade">{value}</div>
         }

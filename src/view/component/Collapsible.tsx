@@ -36,8 +36,8 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
     const settings = (game.settings! as any)
     if (settingsKey) {
         settings.register("vagabond-lite", settingsKey, {
-            name: "Hero Sheet Skills Collapsed",
-            hint: "Hero Sheet Skills start collapsed",
+            name: "Hero Sheet Setting",
+            hint: "Hero Sheet Dynamic Setting",
             scope: "client",
             type: new fields.BooleanField(),
             default: false
