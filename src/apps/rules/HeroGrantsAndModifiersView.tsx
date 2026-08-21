@@ -34,6 +34,25 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
         }))
     })
 
+    console.log(actor.system.perks)
+    actor.system.perks.forEach(item => {
+        const itemRules = item.rules || []
+
+        const rules = itemRules.map((rule: any) => ({
+            ...rule,
+            id: rule.id || foundry.utils.randomID(),
+            level: rule.level || 1,
+            pack: rule.pack,
+            selections: rule.selections,
+            sourceName: item.parent.name,
+            sourceImg: item.parent.img,
+        })) as ActiveRuleDisplay[]
+
+        rules.forEach(rule => {
+            allRules.push(rule)
+        })
+    })
+
     // Separate rules into Active and Upcoming (Locked) categories
     const activeRules = allRules.filter(r => r.level <= currentLevel)
     const lockedRules = allRules.filter(r => r.level > currentLevel).sort((a, b) => { return a.level - b.level })
