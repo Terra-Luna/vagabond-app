@@ -10,6 +10,7 @@ import { ItemsCache } from "../../rules/util/ItemsCache"
 
 export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
     const dataLoaded = useRef(false)
+    const loadedSelectionKey = useRef("")
 
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
@@ -61,11 +62,13 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
 
     const ancestryId = ancestry?.id ?? ''
     const classId = clazz?.id ?? ''
-    const perksSignature = JSON.stringify(perks.map(p => (p as any).id ?? p._sourceId))
     const perksLoaded = perksList.length > 1
 
     useEffect(() => {
         if (!perksLoaded) return
+
+        const selectionKey = `${ancestryId}:${classId}:${level}`
+        if (loadedSelectionKey.current === selectionKey) return
 
         const loadInitialPerkSelections = () => {
             if (clazz) {
@@ -86,10 +89,11 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
             }
 
             dataLoaded.current = true
+            loadedSelectionKey.current = selectionKey
         }
 
         loadInitialPerkSelections()
-    }, [ancestryId, classId, perksSignature, perksLoaded])
+    }, [ancestryId, classId, level, perksLoaded])
 
     /**
      * Monitors Class perk choices and makes async background changes on the fly.
@@ -118,7 +122,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
             clazz.update({ 'system.rules': classRules } as Record<string, any>)
             actor.system.forceUpdate()
         }
-    }, [classPerkSlots])
+    }, [clazz, dataLoaded, classPerkSlots])
 
     return { PerkSelection, classPerkSlots, setClassPerkSlots }
 }

@@ -93,6 +93,9 @@ export const usePerkSelection = (
     const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
     const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, level: number, isLocked: boolean }[]>([])
 
+    const ancestryId = ancestry?.id
+    const classId = clazz?.id
+
     useEffect(() => {
         getItemGrants('perk', [ancestry]).then(grants => {
             setAncestryPerkGrants(grants)  
@@ -109,7 +112,7 @@ export const usePerkSelection = (
         setClassPerkSlots(loadInitialSlots(
             getItemChoiceRules(adjLevel, clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
         ))
-    }, [ancestry, clazz])
+    }, [ancestryId, classId])
 
     const loadInitialSlots = (rules) => {
         const perkRules = rules.filter(r => r.pack === 'perk')
@@ -134,7 +137,7 @@ export const usePerkSelection = (
                 index === slotIndex ? { ...slot, label: perk, value: perkId, isLocked: false } : slot
             )
         )
-    }, [ancestryPerkSlots, classPerkSlots, ancestry])
+    }, [])
 
     const isAllSelected = useMemo(() => {
         return ![...ancestryPerkSlots, ...classPerkSlots].some(slot => slot.value.length === 0)
@@ -175,7 +178,10 @@ export const usePerkSelection = (
                                 const otherClassSlots = Object.keys(groupedClassPerkSlots)
                                     .filter(k => k !== key)
                                     .flatMap(k => groupedClassPerkSlots[k])
-                                const indexOffset = Object.keys(groupedClassPerkSlots).indexOf(key)
+
+                                const groupKeys = Object.keys(groupedClassPerkSlots)
+                                const indexOffset = groupKeys.slice(0, index).reduce((offset, groupKey) => offset + groupedClassPerkSlots[groupKey].length, 0)
+
                                 const useClassRestrictedFilter = index === 0 && (
                                     Object.keys(groupedClassPerkSlots).length > 1 || isCreationMode
                                 )

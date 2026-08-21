@@ -34,10 +34,8 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
         }))
     })
 
-    console.log(actor.system.perks)
     actor.system.perks.forEach(item => {
         const itemRules = item.rules || []
-
         const rules = itemRules.map((rule: any) => ({
             ...rule,
             id: rule.id || foundry.utils.randomID(),
@@ -47,7 +45,6 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             sourceName: item.parent.name,
             sourceImg: item.parent.img,
         })) as ActiveRuleDisplay[]
-
         rules.forEach(rule => {
             allRules.push(rule)
         })
