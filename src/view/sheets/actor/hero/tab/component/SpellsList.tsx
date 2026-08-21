@@ -12,7 +12,7 @@ import { useSpellcastingMenuContext } from "./spellcasting/SpellcastingMenuConte
 export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    const { isSpellcastingOpen, setIsSpellcastingOpen, onSelectSpell, SpellcastingMenu } = useSpellcastingMenuContext()
+    const { setIsSpellcastingOpen, onSelectSpell } = useSpellcastingMenuContext()
 
     return (
         <div>

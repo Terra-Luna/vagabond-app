@@ -1,5 +1,5 @@
 import { ReactElement } from "react"
-import { Brain, Cross, Droplets, Flame, FlaskRound, HandFist, Skull, Snowflake, Sparkle, Strikethrough, Sword, Swords, Wand, Zap } from "lucide-react"
+import { Brain, Cross, Droplets, Flame, FlaskRound, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
 import { lang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
@@ -7,7 +7,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
     let element: ReactElement | undefined
     switch (lang.VGLITE.DamageTypes[dmgType]) {
         case lang.VGLITE.DamageTypes.magical: {
-            element = <Wand size={size} className='text-magical' />
+            element = <Wand2 size={size} className='text-magical' />
             break
         }
         case lang.VGLITE.DamageTypes.fire: {

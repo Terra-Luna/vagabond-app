@@ -341,6 +341,7 @@ const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string })
                         <EditableTextField
                             boundValue={actor.system.stats[stat]}
                             placeholder={"2"}
+                            hideBorderOnEditMode={true}
                             onSave={async (value) => {
                                 await actor.update({ [`system.stats.${stat}`]: value })
                                 return true
