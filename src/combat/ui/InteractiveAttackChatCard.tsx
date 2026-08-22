@@ -222,12 +222,12 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     }, [attack])
 
     const addCritLuck = useCallback(async () => {
-        await attack.addCritLuck();
+        await attack.addCritLuck()
         setRevision(prev => prev + 1)
     }, [attack])
 
     const addCritDamage = useCallback(async () => {
-        await attack.addCritDamage();
+        await attack.addCritDamage()
         setRevision(prev => prev + 1)
     }, [attack])
 
@@ -256,7 +256,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
 
                         {/* CRIT CHOICE BUTTONS */}
                         {attack.showCritChoices &&
-                            <div className="flex wrap gap-1 mb-1 justify-center text-lg text-center font-normal content-center">
+                            <div className="flex wrap gap-1 mb-1 justify-center text-center text-base font-normal content-center">
                                 {/* GAIN A LUCK */}
                                 {!isMaxLuck && <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />}
                                 {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
@@ -272,7 +272,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                         {canUpdateSkillCheck &&
                             <div className="flex flex-col w-full gap-2">
                                 <Divider />
-                                <div className="flex gap-x-1 items-center justify-between px-4 mb-2">
+                                <div className="flex gap-x-1 items-center justify-between text-base font-normal px-4 mb-2">
                                     {luck > 0 && <>
                                         <InteractiveChatCardButton
                                             icon={<Clover size={18} className="text-ic-luck h-full" />}

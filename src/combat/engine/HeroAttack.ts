@@ -284,7 +284,10 @@ export class HeroAttack extends Attack {
     async addCritLuck() {
         this.critChoice = 'luck'
         const luck = this.actor.system.statuses.counters.luck
-        await this.actor.update({ 'system.statuses.counters.luck': luck + 1 } as Record<string, number>)
+        await this.actor.update(
+            { 'system.statuses.counters.luck': luck + 1 } as Record<string, number>,
+            { ['skipTrackerChatCard' as string]: true }
+        )
         await this.save(serializeAttack)
     }
 

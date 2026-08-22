@@ -110,15 +110,16 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
                     roll={roll.total}
                 />, [roll]
             )
-            await hero.parent.update(
+            hero.parent.update(
                 { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
-                { ['skipTrackerChatCard' as string]: true }
+                //{ ['skipTrackerChatCard' as string]: true }
             )
         }
         else {
-            await hero.parent.update({
-                'system.statuses.counters.luck': luck + (auxClick ? 1 : -1)
-            } as Record<string, number>)
+            hero.parent.update(
+                { 'system.statuses.counters.luck': luck + (auxClick ? 1 : -1) } as Record<string, number>,
+                //{ ['skipTrackerChatCard' as string]: true }
+            )
         }
     }, [luck])
     return (
@@ -390,7 +391,7 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
                     {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
                         <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
                     ))}
-                    {actor.system.trackers.length % 2 > 0 &&
+                    {(actor.system.trackers.length === 0 || actor.system.trackers.length % 2 > 0) &&
                         <GhostTracker actor={actor} />
                     }
                 </div>
