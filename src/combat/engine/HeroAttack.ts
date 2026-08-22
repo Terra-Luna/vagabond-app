@@ -21,6 +21,7 @@ import { getDiceTerms } from "./util/dice-utils"
 export class HeroAttack extends Attack {
 
     static SPELL_DIE_SIZE = 6
+    override readonly attackType = 'hero' as const
 
     override actor: Actor & { system: HeroDataModel }
     override targetIds?: string[]

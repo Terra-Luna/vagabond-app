@@ -1,9 +1,7 @@
-import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
-import { AdversaryAttack } from "../AdversaryAttack"
+import type { AdversaryAttack } from "../AdversaryAttack"
 import type { Attack } from "../Attack"
-import { HeroAttack } from "../HeroAttack"
-import { DamageRoll } from "../roll/DamageRoll"
+import type { HeroAttack } from "../HeroAttack"
 import { SkillCheck } from "../roll/SkillCheck"
 
 export interface AttackSnapshot {
@@ -23,17 +21,8 @@ export interface AttackSnapshot {
 }
 
 export function serializeAttack(atk: Attack): AttackSnapshot | undefined {
-    if (atk instanceof HeroAttack) {
-        return serializeHeroAttack(atk)
-    }
-    else if (atk instanceof AdversaryAttack) {
-        return serializeAdversaryAttack(atk)
-    }
-}
-
-export function deserializeAttack(snapshot: AttackSnapshot): AdversaryAttack | HeroAttack | undefined {
-    if (snapshot.type === 'adversary') return deserializeAdversaryAttack(snapshot)
-    else if (snapshot.type === 'hero') return deserializeHeroAttack(snapshot)
+    if (atk.attackType === 'adversary') return serializeAdversaryAttack(atk as AdversaryAttack)
+    return serializeHeroAttack(atk as HeroAttack)
 }
 
 function serializeCommonFields(
@@ -59,7 +48,7 @@ function serializeCommonFields(
 
     return {
         id: atk.id,
-        type: atk instanceof HeroAttack ? "hero" : "adversary",
+        type: atk.attackType,
         userId: atk.userId,
         title: atk.title,
         actorId: atk.actor.id ?? '',
@@ -98,40 +87,6 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
     } as AttackSnapshot
 }
 
-export function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | undefined {
-    const actor = game.actors?.get(snapshot.actorId) as Actor & { system: HeroDataModel } | undefined
-    if (!actor) return
-
-    const atk = new HeroAttack(snapshot.title, actor, [...snapshot.targetIds])
-
-    atk.id = snapshot.id
-    atk.userId = snapshot.userId
-    atk.itemId = snapshot.itemId
-    atk.spellDelivery = snapshot.spellDelivery
-    atk.critChoice = snapshot.critChoice
-    atk.isRerolled = snapshot.isRerolled
-    atk.isResolved = snapshot.isResolved
-
-    atk.skillCheck = SkillCheck.fromJson(
-        actor,
-        snapshot.skillCheck
-            ? foundry.utils.deepClone(snapshot.skillCheck)
-            : undefined
-    )
-
-    atk.damageRoll = DamageRoll.fromJson(
-        snapshot.damageRoll
-            ? foundry.utils.deepClone(snapshot.damageRoll)
-            : undefined
-    )
-
-    return atk
-}
-
 function serializeAdversaryAttack(atk: AdversaryAttack): AttackSnapshot {
     return { ...serializeCommonFields(atk), type: 'adversary' } as AttackSnapshot
-}
-
-export function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack | undefined {
-    return undefined
 }

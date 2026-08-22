@@ -2,7 +2,7 @@ import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/
 import { roll3dDice } from "../../utils/foundryUtils"
 import { getTargetIds } from "../../utils/modelUtil"
 import { DamageRoll } from "./roll/DamageRoll"
-import { AttackSnapshot } from "./util/attack-serializer"
+import type { AttackSnapshot } from "./util/attack-serializer"
 
 export interface AttackResolutionArgs {
     bypassArmor: boolean
@@ -10,6 +10,8 @@ export interface AttackResolutionArgs {
 }
 
 export abstract class Attack {
+
+    abstract readonly attackType: 'adversary' | 'hero'
 
     // Unique ID for interacting with the attack in chat card
     id: string

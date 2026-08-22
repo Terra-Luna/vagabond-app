@@ -1,6 +1,5 @@
 import { BookMarked, Clover } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
-
 import { getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
@@ -23,7 +22,8 @@ import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortrai
 import { AdversaryAttack } from "../engine/AdversaryAttack"
 import { HeroAttack } from "../engine/HeroAttack"
 import { TargetDisplayItem,useLiveTargetSync } from "../engine/usecase/LiveTargetSyncUseCase"
-import { deserializeAttack, serializeAttack } from "../engine/util/attack-serializer"
+import { deserializeAttack } from "../engine/util/attack-deserializer"
+import { serializeAttack } from "../engine/util/attack-serializer"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {

@@ -3,11 +3,11 @@ import { Attack } from "./Attack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 
-
 export interface AdversaryAttackArgs { attackName: string, dmgType: string, dice: DiceRoll[] }
 
 export class AdversaryAttack extends Attack {
 
+    override readonly attackType = 'adversary' as const
     override actor: Actor & { system: AdversaryDataModel }
     override targetIds: string[]
 
