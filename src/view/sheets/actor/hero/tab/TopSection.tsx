@@ -1,4 +1,4 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye, Trash, EyeOff } from "lucide-react"
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye, Trash, EyeOff, Plus } from "lucide-react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
@@ -363,9 +363,19 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
     VagabondSettingsRegistry.registerClientSetting(settingKey)
     const isHidden = game.settings?.get("vagabond-lite" as any, settingKey)
 
+    const addTracker = useCallback(async () => {
+        const trackers = actor.system.trackers
+        await actor.update({
+            'system.trackers': [...trackers, {
+                name: 'Tracker', value: 0, sort: ([...trackers].reverse()[0]?.sort ?? 0) + 1000
+            }]
+        } as Record<string, any>)
+    }, [actor.system.trackers])
+
     if (isHidden) return
     else return (
         <div title={vgLiteLang.HeroSheet.context_tooltip} onContextMenu={(e) => onCtxMenu(e, [
+            { icon: Plus, label: "Add new", action: async () => await addTracker() },
             { icon: EyeOff, label: "Hide", action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
         ])}>
             <CollapsibleSection title={vgLiteLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
@@ -373,7 +383,9 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
                     {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
                         <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
                     ))}
-                    <GhostTracker actor={actor} />
+                    {actor.system.trackers.length === 0 &&
+                        <GhostTracker actor={actor} />
+                    }
                 </div>
             } />
             <ContextMenu />
