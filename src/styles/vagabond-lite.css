@@ -153,7 +153,7 @@
 }
 
 .dark {
-  --color-sheet-header-fill: #181818;
+  --color-sheet-header-fill: #020617;
   --color-text-header-primary: #E7E5E4;
   --color-text-header-secondary: #d2b450;
   --color-text-header-tertiary: #d2b450;
@@ -163,7 +163,7 @@
   --color-text-tab-inactive: #675e38;
   --color-scroll-bar-handle: #787677;
   --color-scroll-bar-track: #221f21;
-  --color-section-header-fill: #181818;
+  --color-section-header-fill: #020617;
   --color-section-header-line: #212e41;
   --color-text-section-header: #E7E5E4;
   --color-text-primary: #E7E5E4;
@@ -179,11 +179,11 @@
   --color-skill-bg-fill: #1d1a19;
   --color-skill-border: #44403b;
   --color-text-stat-block: #d2b450;
-  --color-stat-block-fill: #181818;
-  --color-wealth-fill: #181818;
+  --color-stat-block-fill: #020617;
+  --color-wealth-fill: #020617;
   --color-wealth-denom-label: #bb4d00;
-  --color-table-border: #575757;
-  --color-table-row-odd: #181818;
+  --color-table-border: #757575;
+  --color-table-row-odd: #020617;
   --color-table-row-even: ##212e41;
   --color-text-table-item: #eae8e7;
   --color-ic-hp: #e7000b;
@@ -202,7 +202,7 @@
   --color-ic-equipped: #d2b450;
   --color-text-encumbrance: #d2b450;
   --color-btn-primary-fill: #d2b450;
-  --color-btn-primary-text: #181818;
+  --color-btn-primary-text: #020617;
   --color-btn-secondary-text: #E7E5E4;
   --color-destructive-action: #f72b35;
   --color-context-menu-fill: #0c0c0c;

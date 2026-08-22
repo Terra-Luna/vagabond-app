@@ -252,12 +252,19 @@ const Save = ({ hero, save }: {
             }>
                 <div className="mx-1 w-full line-clamp-1">
                     <div className="flex justify-between items-center">
-                        <span className="-mt-1 text-xl font-bold">{save.name}</span>
+                        {/* SAVE NAME (REFLEX / ENDURE / WILL) */}
+                        <span className="-mt-0.5 text-xl font-bold">{save.name}</span>
+                        {/* SAVE MODIFIER (+3) */}
                         {save.mod !== 0 &&
-                            <span className="-mt-1 text-xs text-text-tertiary font-normal">{`(${save.mod > 0 ? '+' : '-'}${save.mod})`}</span>
+                            <span className="-mt-1 text-xs text-text-tertiary font-normal">
+                                {`(d20${save.mod > 0 ? '+' : '-'}${save.mod})`}
+                            </span>
                         }
                     </div>
-                    <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1">{save.description}</span>
+                    {/* SAVE DESCRIPTION */}
+                    <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1">
+                        {save.description}
+                    </span>
                 </div>
                 <div className="flex w-1/4 items-center justify-center text-3xl text-text-section-header font-bold bg-section-header-fill">
                     {save.value}
