@@ -4,7 +4,7 @@
   "_id": "RqoNa8mQQycdwoX3",
   "img": "icons/magic/nature/barrier-shield-wood-vines.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If the Target of a Life Spell you are Focusing on is damaged by a Melee attack, the attacker takes d6 damage.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If the Target of a Life Spell you are Focusing on is damaged by a Melee attack, the attacker takes [[/r 1d6#Briar Healer]]{d6 damage}.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -37,8 +37,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786633972065,
-    "modifiedTime": 1786634051347,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787196146927,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

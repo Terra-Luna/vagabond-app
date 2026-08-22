@@ -37,14 +37,6 @@
         "selector": "skills.influence.isTrained"
       },
       {
-        "id": "4DnJ7fm2jpVECROf",
-        "key": "GrantItem",
-        "label": "Deep Pockets: Deft Hands",
-        "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.TcPtYma4aDbo9npG",
-        "type": null
-      },
-      {
         "id": "XEFiSSPFSdMD6711",
         "key": "FlatModifier",
         "label": "Deep Pockets: Capacity",
@@ -52,6 +44,14 @@
         "value": 0.5,
         "selector": "inventory.capacity",
         "valueMultiplier": "level.current"
+      },
+      {
+        "id": "gMetRnM4MBR1gDJ9",
+        "key": "GrantItem",
+        "label": "Deep Pockets: Deft Hands",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.TcPtYma4aDbo9npG",
+        "type": "perk"
       }
     ],
     "complexity": 3,
@@ -121,8 +121,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786566807612,
-    "modifiedTime": 1786567940191,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787376789374,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -4,7 +4,7 @@
   "_id": "vUJFHredgEC697DS",
   "img": "/icons/magic/life/cross-beam-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Once per Shift, you can use your Action or skip your Move to regain (d6 + MIT) HP.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Shift, you can use your Action or skip your Move to regain [[/r 1d6 + @actor.system.stats.might # Second Wind]]{(d6 + MIT) HP}.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -51,8 +51,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786727506333,
-    "modifiedTime": 1786727553760,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787198819166,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
