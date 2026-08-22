@@ -161,25 +161,30 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
 }) => {
+    const hasPermission = game.user?.isGM || game.user?.id === attack.userId
+    const isFailure = attack.skillCheck?.result?.outcome === vgLiteLang.RollResult.failure
+    const needsResourceUpdates = hasPermission && !attack.isResolved && (
+        isFailure || attack.showCritChoices
+    )
 
     useEffect(() => {
+        if (!needsResourceUpdates) return
+
         const handleUpdate = () => setRevision(prev => prev + 1)
 
-        const hookActorId = Hooks.on("updateActor", (updatedActor: any) => {
-            if (updatedActor.id === actor.id) handleUpdate()
-        })
+        const hookActorId = Hooks.on("updateActor", (updatedActor: any, changes: any) => {
+            if (updatedActor.id !== actor.id) return
 
-        const hookChatId = Hooks.on("updateChatMessage", (message: any, changes: any) => {
-            if (foundry.utils.hasProperty(changes, "flags.vagabond-lite")) {
+            if (foundry.utils.hasProperty(changes, "system.statuses.counters.luck") ||
+                foundry.utils.hasProperty(changes, "system.statuses.counters.studied")) {
                 handleUpdate()
             }
         })
 
         return () => {
             Hooks.off("updateActor", hookActorId)
-            Hooks.off("updateChatMessage", hookChatId)
         }
-    }, [actor.id])
+    }, [actor.id, needsResourceUpdates, setRevision])
 
     const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck, setRevision])
     const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck, setRevision])
@@ -190,8 +195,6 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     }, [attack, setRevision])
 
     const canUpdateSkillCheck = useMemo<boolean>(() => {
-        const hasPermission = game.user?.isGM || game.user?.id === attack.userId
-        const isFailure = attack.skillCheck?.result?.outcome === vgLiteLang.RollResult.failure
         const hasResources = luck > 0 || studied > 0
         return hasPermission && !attack.isResolved && !attack.isRerolled && isFailure && hasResources
     }, [luck, studied, attack, setRevision])
