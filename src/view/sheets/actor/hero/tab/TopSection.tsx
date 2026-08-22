@@ -184,7 +184,7 @@ export const Focus = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Tracker = ({ name, title, children, onClick }: { name: string, title: string, children: ReactNode, onClick: (auxClick: boolean, e?: any) => void }) => (
-    <div title={title} className={`flex items-center flex-col text-text-primary font-paradigm w-1/3 hover-glow`}
+    <div title={title} className={`flex items-center flex-col text-xs text-text-primary font-paradigm w-1/3 hover-glow`}
         onClick={(e) => onClick(false, e)}
         onAuxClick={() => onClick(true)}
     >
