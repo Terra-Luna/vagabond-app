@@ -70,7 +70,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     }, [actor, attackId, revision])
 
     const attack = useMemo(() => {
-        return snapshot ? deserializeAttack(snapshot) : null
+        return snapshot ? deserializeAttack(snapshot, (title, actor, targetIds) => new HeroAttack(title, actor, targetIds)) : null
     }, [snapshot])
 
     const source = useMemo<Item | undefined>(() => {

@@ -1,20 +1,26 @@
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { AdversaryAttack } from "../AdversaryAttack"
-import { HeroAttack } from "../HeroAttack"
+import type { AdversaryAttack } from "../AdversaryAttack"
+import type { HeroAttack } from "../HeroAttack"
 import { DamageRoll } from "../roll/DamageRoll"
 import { SkillCheck } from "../roll/SkillCheck"
 import type { AttackSnapshot } from "./attack-serializer"
 
-export function deserializeAttack(snapshot: AttackSnapshot): AdversaryAttack | HeroAttack | undefined {
+export function deserializeAttack(
+    snapshot: AttackSnapshot,
+    createHeroAttack: (title: string, actor: Actor & { system: HeroDataModel }, targetIds: string[]) => HeroAttack
+): AdversaryAttack | HeroAttack | undefined {
     if (snapshot.type === 'adversary') return deserializeAdversaryAttack(snapshot)
-    else if (snapshot.type === 'hero') return deserializeHeroAttack(snapshot)
+    else if (snapshot.type === 'hero') return deserializeHeroAttack(snapshot, createHeroAttack)
 }
 
-function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | undefined {
+function deserializeHeroAttack(
+    snapshot: AttackSnapshot,
+    createHeroAttack: (title: string, actor: Actor & { system: HeroDataModel }, targetIds: string[]) => HeroAttack
+): HeroAttack | undefined {
     const actor = game.actors?.get(snapshot.actorId) as Actor & { system: HeroDataModel } | undefined
     if (!actor) return
 
-    const atk = new HeroAttack(snapshot.title, actor, [...snapshot.targetIds])
+    const atk = createHeroAttack(snapshot.title, actor, [...snapshot.targetIds])
 
     atk.id = snapshot.id
     atk.userId = snapshot.userId
@@ -41,5 +47,6 @@ function deserializeHeroAttack(snapshot: AttackSnapshot): HeroAttack | undefined
 }
 
 function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack | undefined {
+    void snapshot
     return undefined
 }
