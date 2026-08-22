@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useMemo, useRef, useState } from "react"
 import { addCoins, Coins, coinsAsString, isAffordable, subtractCoins } from "../../model/common/CoinValue"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
@@ -21,6 +21,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
     const [selectedPack, setSelectedPack] = useState<Item & { system: StarterPackDataModel } | undefined>(undefined)
     const [cart, setCart] = useState<(Item & { system: EquipmentDataModel<EquipmentSchema> })[]>([])
     const [shopCategory, setShopCategory] = useState<string>('all')
+    const shopSearchRef = useRef('')
 
     const packs = ItemsCache.packs()
     const equipmentCache = ItemsCache.equipment()
@@ -44,7 +45,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
     }, [shopCategory, cart, wallet])
 
     const ItemShopView = ({ includeStarterPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
-        const [shopSearch, setShopSearch] = useState<string>('')
+        const [shopSearch, setShopSearch] = useState(() => shopSearchRef.current)
 
         const onSelectPack = useCallback((packId) => {
             const pack = packs.find(it => it.id === packId)
@@ -139,13 +140,19 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                                         value={shopSearch}
                                         placeholder="Search items..."
                                         className="w-full text-lg text-text-secondary font-paradigm font-normal italic p-1 pr-8"
-                                        onChange={(e) => setShopSearch(e.target.value)}
+                                        onChange={(e) => {
+                                            shopSearchRef.current = e.target.value
+                                            setShopSearch(e.target.value)
+                                        }}
                                         autoComplete="off"
                                     />
                                     {shopSearch.length > 0 && (
                                         <button
                                             type="button"
-                                            onClick={() => setShopSearch("")}
+                                            onClick={() => {
+                                                shopSearchRef.current = ""
+                                                setShopSearch("")
+                                            }}
                                             className="absolute right-0 pr-2 text-text-secondary hover:text-destructive-action font-bold cursor-pointer"
                                             aria-label="Clear search"
                                         >✕</button>
