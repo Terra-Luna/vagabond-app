@@ -28,6 +28,7 @@ export class VagabondActor<SubType extends Actor.SubType = Actor.SubType> extend
                     })
                 }
                 catch (err) {
+                    console.warn("Failed to parse burning stack data for effect", effect, err)
                     system.statuses.stacks.burning.push({
                         effectId: effect.id || "",
                         duration: 4,
