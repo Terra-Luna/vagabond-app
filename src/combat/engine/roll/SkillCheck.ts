@@ -43,6 +43,7 @@ export class SkillCheck {
 
     constructor(hero: HeroDataModel, args: SkillCheckArgs) {
         const skillMods = hero.modifiers.skillCheck[args.skill]
+
         const globalMods = args.type === 'attack'
             ? hero.modifiers.skillCheck.attack
             : (args.type === 'cast'

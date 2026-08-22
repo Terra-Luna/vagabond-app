@@ -37,7 +37,7 @@ export const usePerkSelection = (
 
     const selectablePerks = useMemo(() => {
         let perks = [...allPerks.map(perk => toDisplayablePerk(perk))]
-        if (!isLevelUp) {
+        if (!isLevelUp && !isCreationMode) {
             perks = perks.filter(perk => {
                 const match = allPerks.find(perkItem => perkItem.uuid === perk.value)
                 return !match?.system?.rules?.some(r => r.key === 'ChoiceSet')

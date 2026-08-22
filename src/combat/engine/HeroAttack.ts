@@ -329,9 +329,10 @@ export class HeroAttack extends Attack {
 
         const skillCheck = new SkillCheck(hero, {
             type: 'attack',
-            skill: weaponSkill!,
-            critThreshold: 20 - (isKeen ? 1 : 0)
+            skill: weaponSkill!
         })
+
+        skillCheck.critThreshold -= (isKeen ? 1 : 0)
 
         const damageDice = new DiceRoll(
             DiceRoll.getWeaponDamageWithHeroMods(hero, weaponSkill, weapon)

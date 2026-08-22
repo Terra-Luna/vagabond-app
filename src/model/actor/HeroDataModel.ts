@@ -112,7 +112,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     override prepareDerivedData() {
         super.prepareDerivedData()
         if (!this.parent) return
-
         validateCurrentHP(this)
         validateCurrentLuck(this)
         validateCurrentFocus(this)
