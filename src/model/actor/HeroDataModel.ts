@@ -1,5 +1,5 @@
-import { vgLiteLang } from "../../utils/lang"
 import { createElement } from "react"
+import { vgLiteLang } from "../../utils/lang"
 import { getId } from "../../utils/modelUtil"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
@@ -43,6 +43,7 @@ const heroSchema = () => {
         trackers: new fields.ArrayField(
             new fields.SchemaField({
                 name: new fields.StringField({ ...requiredString }),
+                type: new fields.StringField({ ...requiredString, initial: "numeric", choices: ["numeric", "boolean"] }),
                 value: new fields.NumberField({ ...requiredInteger }),
                 sort: new fields.NumberField({ ...requiredInteger, initial: 1000 })
             }), { initial: [] }

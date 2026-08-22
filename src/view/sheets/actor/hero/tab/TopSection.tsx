@@ -1,4 +1,4 @@
-import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye, Trash, EyeOff, Plus } from "lucide-react"
+import { Heart, Shield, LucideBookMarked, LucideHeartOff, LucideClover, Star, ChevronRight, Eye, Trash, EyeOff, Plus, SquarePen, ToggleLeft, ToggleRight } from "lucide-react"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ReactNode, useCallback } from "react"
 import { Divider, Header, ItemDivider } from "../../../../component/Header"
@@ -404,7 +404,7 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
 const CustomTracker = ({ actor, tracker, index }) => {
     const { ContextMenu, onCtxMenu } = useContextMenu()
 
-    const updateTracker = useCallback(async (field: 'name' | 'value', newValue: string | number | null) => {
+    const updateTracker = useCallback(async (field: 'name' | 'value' | 'type', newValue: string | number | null) => {
         const trackers = foundry.utils.deepClone(actor.system.trackers)
         trackers[index] = {
             ...trackers[index],
@@ -421,6 +421,7 @@ const CustomTracker = ({ actor, tracker, index }) => {
 
     return (
         <div onContextMenu={(e) => onCtxMenu(e, [
+            { icon: SquarePen, label: `${tracker.type === 'numeric' ? 'Change to toggle' : 'Change to counter'}`, action: () => updateTracker('type', `${tracker.type === 'numeric' ? 'boolean' : 'numeric'}`) },
             { icon: Trash, label: vgLiteLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
         ])}
             className="flex items-center justify-between text-sm border border-solid border-table-border rounded-sm pl-2 pr-0.5 py-0.5"
@@ -433,11 +434,23 @@ const CustomTracker = ({ actor, tracker, index }) => {
                 className="line-clamp-1"
                 onSave={(val) => updateTracker('name', val)}
             />
-            <NumericCounterInput
-                value={tracker.value}
-                hideBorder={true}
-                onChange={(val) => updateTracker('value', val)}
-            />
+
+            {tracker.type === 'numeric' &&
+                <NumericCounterInput
+                    value={tracker.value}
+                    hideBorder={true}
+                    onChange={(val) => updateTracker('value', val)}
+                />
+            }
+
+            {tracker.type === 'boolean' &&
+                <button className="flex" onClick={() => updateTracker('value', tracker.value > 0 ? 0 : 1)}>
+                    {tracker.value === 0
+                        ? <ToggleLeft className="text-text-tertiary hover-glow" />
+                        : <ToggleRight className="text-text-primary hover-glow" />
+                    }
+                </button>
+            }
             <ContextMenu />
         </div>
     )
