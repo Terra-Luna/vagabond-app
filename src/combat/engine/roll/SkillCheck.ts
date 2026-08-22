@@ -23,7 +23,7 @@ export interface SkillCheckResult {
     d20Count: number
     modifier: number
     favorHinder: string
-    d20: number
+    d20s: number[]
     d6: number
     total: number
     outcome: string
@@ -134,9 +134,9 @@ export class SkillCheck {
         const terms = getDiceTerms(roll)
         const d20Term = terms.find(it => it.faces === 20)
         const d6Term = terms.find(it => it.faces === 6)
-        const d20Res = d20Term?.results.find(r => r.active)?.result ?? 0
+        const d20Res = d20Term?.results?.map(r => r.result)?.sort((a, b) => a - b) ?? [0]
         const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
-        const isCrit = d20Res >= this.critThreshold
+        const isCrit = d20Res.some(res => res >= this.critThreshold)
 
         this.result =  {
             skill: this.skill,
@@ -146,7 +146,7 @@ export class SkillCheck {
             critThreshold: this.critThreshold,
             d20Count: this.d20Count,
             favorHinder: this.favorHinder,
-            d20: d20Res,
+            d20s: d20Res,
             d6: isReroll ? existingD6 ?? 0 : d6Res,
             total: roll.total,
             outcome: isCrit ? vgLiteLang.RollResult.crit : (isSuccess ? vgLiteLang.RollResult.success : vgLiteLang.RollResult.failure),

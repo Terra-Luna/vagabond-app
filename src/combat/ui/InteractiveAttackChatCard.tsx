@@ -251,7 +251,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                     ]} />
                     <div className="flex flex-col justify-center items-center">
                         <SkillCheckDiceComponent
-                            d20={attack.skillCheck?.result?.d20}
+                            d20s={attack.skillCheck?.result?.d20s}
                             d6={attack.skillCheck?.result?.d6}
                             modifier={attack.skillCheck?.modifier}
                             favHinder={attack.skillCheck?.favorHinder}

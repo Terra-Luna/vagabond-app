@@ -70,26 +70,44 @@ const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
     const localRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (!document.querySelector('div.chat-scroll[data-application-part="log"]')) return
+        let frameId: number | undefined
+        let timeoutId: number | undefined
+
+        const scrollToBottom = () => {
+            if (frameId !== undefined) cancelAnimationFrame(frameId)
+            frameId = requestAnimationFrame(() => {
+                frameId = undefined
+                if (ui?.chat) {
+                    (ui.chat as any).scrollBottom({ popout: true })
+                }
+            })
+        }
 
         const observer = new MutationObserver(() => {
-            setTimeout(() => {
-                requestAnimationFrame(() => {
-                    if (!ui || !ui.chat) return
-                    (ui.chat as any).scrollBottom({ popout: true })
-                })
-            }, 50)
+            scrollToBottom()
         })
 
         if (localRef.current) {
             observer.observe(localRef.current, {
                 childList: true,
                 subtree: true,
-                attributes: true
             })
         }
 
-        return () => observer.disconnect()
+        const resizeObserver = typeof ResizeObserver === 'undefined'
+            ? undefined
+            : new ResizeObserver(scrollToBottom)
+        if (localRef.current) resizeObserver?.observe(localRef.current)
+
+        scrollToBottom()
+        timeoutId = window.setTimeout(scrollToBottom, 50)
+
+        return () => {
+            observer.disconnect()
+            resizeObserver?.disconnect()
+            if (frameId !== undefined) cancelAnimationFrame(frameId)
+            if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+        }
     }, [])
 
     return (
