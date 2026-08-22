@@ -71,7 +71,6 @@ const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
 
     useEffect(() => {
         let frameId: number | undefined
-        let timeoutId: number | undefined
 
         const scrollToBottom = () => {
             if (frameId !== undefined) cancelAnimationFrame(frameId)
@@ -100,13 +99,13 @@ const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
         if (localRef.current) resizeObserver?.observe(localRef.current)
 
         scrollToBottom()
-        timeoutId = window.setTimeout(scrollToBottom, 50)
+        const timeoutId = window.setTimeout(scrollToBottom, 50)
 
         return () => {
             observer.disconnect()
             resizeObserver?.disconnect()
             if (frameId !== undefined) cancelAnimationFrame(frameId)
-            if (timeoutId !== undefined) window.clearTimeout(timeoutId)
+            window.clearTimeout(timeoutId)
         }
     }, [])
 
