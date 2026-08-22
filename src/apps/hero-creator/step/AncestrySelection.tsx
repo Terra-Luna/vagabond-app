@@ -1,11 +1,12 @@
 import { ReactNode, useCallback, useEffect, useState } from "react"
-import { vgLiteLang } from "../../../utils/lang"
-import { Header } from "../../../view/component/Header"
+
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
-import { AncestryReactComponent } from "../../../view/sheets/item/character/ancestry/AncestrySheetComponent"
+import { vgLiteLang } from "../../../utils/lang"
+import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
+import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
-import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
+import { AncestryReactComponent } from "../../../view/sheets/item/character/ancestry/AncestrySheetComponent"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 

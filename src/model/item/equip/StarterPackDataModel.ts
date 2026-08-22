@@ -1,7 +1,7 @@
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
+import { BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
 export const starterPackSchema = () => {
     return {

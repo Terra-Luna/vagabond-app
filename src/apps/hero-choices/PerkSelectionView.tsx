@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useRef } from "react"
-import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
+
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { usePerkSelection } from "../hero-creator/step/PerkSelectionUseCase"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { groupBy } from "../../utils/collectionUtil"
+import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
+import { groupBy } from "../../utils/collectionUtil"
+import { usePerkSelection } from "../hero-creator/step/PerkSelectionUseCase"
 
 export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
     const dataLoaded = useRef(false)

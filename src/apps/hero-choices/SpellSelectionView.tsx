@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react"
+
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { useSpellSelection } from "../hero-creator/step/SpellSelectionUseCase"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
 import { groupBy } from "../../utils/collectionUtil"
+import { useSpellSelection } from "../hero-creator/step/SpellSelectionUseCase"
 
 export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
 

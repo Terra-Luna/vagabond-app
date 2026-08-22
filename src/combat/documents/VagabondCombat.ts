@@ -1,4 +1,3 @@
-import { ActorDataModel, BaseActorSchema } from "../../model/actor/ActorDataModel";
 
 export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {

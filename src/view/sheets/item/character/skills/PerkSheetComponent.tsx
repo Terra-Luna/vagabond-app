@@ -1,18 +1,19 @@
 import { Plus } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
-import { PerkDataModel, addPerkPrerequisite, deletePerkPrerequisite } from "../../../../../model/item/character/PerkDataModel"
+
+import { addPerkPrerequisite, deletePerkPrerequisite,PerkDataModel } from "../../../../../model/item/character/PerkDataModel"
+import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { vgLiteLang } from "../../../../../utils/lang"
-import { createDropdownEntries, createDropdownEntriesFromObj, createDropdownEntriesForItems } from "../../../../../utils/localeUtils"
+import { createDropdownEntries, createDropdownEntriesForItems,createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { andOrToSymbol } from "../../../../../utils/stringUtil"
+import { UtilityButton } from "../../../../component/Button"
+import { Checkbox } from "../../../../component/Checkbox"
 import { DropDown } from "../../../../component/Dropdown"
 import { SingleSelect } from "../../../../component/SingleSelect"
+import { TrashButton } from "../../../../component/TrashButton"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
-import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
-import { Checkbox } from "../../../../component/Checkbox"
-import { UtilityButton } from "../../../../component/Button"
-import { TrashButton } from "../../../../component/TrashButton"
 
 export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataModel } }) => {
     const { isEditMode } = useEditMode()

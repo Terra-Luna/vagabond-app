@@ -1,7 +1,8 @@
 import { useCallback } from "react"
+
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { Checkbox } from "../../../../component/Checkbox"
 import { vgLiteLang } from "../../../../../utils/lang"
+import { Checkbox } from "../../../../component/Checkbox"
 
 export const ConsumableToggle = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const onCheckConsumable = useCallback((isChecked) => {

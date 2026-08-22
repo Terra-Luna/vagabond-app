@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+
 import { Divider } from "../../component/Header"
 import { CardSubHeader, CardSubHeaderValues } from "../../component/SkillCard"
 import { ChatCardPortrait } from "./ChatCardPortrait"

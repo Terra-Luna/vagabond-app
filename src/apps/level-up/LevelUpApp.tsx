@@ -1,6 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { getClonedFlags, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
-import { VagabondApplication, VagabondAppArgs } from "../VagabondApplication"
+import { VagabondAppArgs,VagabondApplication } from "../VagabondApplication"
 import { LevelUpArgs, LevelUpView } from "./LevelUpView"
 
 export class LevelUpApp extends VagabondApplication {

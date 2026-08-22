@@ -1,7 +1,8 @@
-import { useNavigation } from "./NavigationContext"
 import { MoveLeft, MoveRight } from "lucide-react"
+
 import { vgLiteLang } from "../../../utils/lang"
-import { SecondaryButton, PrimaryButton } from "../../component/Button"
+import { PrimaryButton,SecondaryButton } from "../../component/Button"
+import { useNavigation } from "./NavigationContext"
 
 export const NavigationButtons = () => {
     const { isFirstStep, isLastStep, onNext, onBack, onFinish } = useNavigation()

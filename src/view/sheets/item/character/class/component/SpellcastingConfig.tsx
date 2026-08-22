@@ -1,4 +1,5 @@
 import { useEffect } from "react"
+
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../../utils/localeUtils"

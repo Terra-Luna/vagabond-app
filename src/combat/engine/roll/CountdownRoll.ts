@@ -1,9 +1,10 @@
 import { createElement } from "react"
+
 import { sendVagabondChatMessage } from "../../../view/chat/ChatCardSerializer"
 import { CountdownRollChatCard } from "../../../view/chat/CountdownChatCard"
 import { getDiceTerms } from "../util/dice-utils"
-import { RollSummary } from "./RollSummary"
 import { CountdownResult } from "./CountdownResult"
+import { RollSummary } from "./RollSummary"
 
 export class CountdownRoll {
 

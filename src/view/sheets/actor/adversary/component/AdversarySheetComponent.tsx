@@ -1,9 +1,11 @@
+import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { getDocumentAtPath } from "../../../../../utils/documentUtils"
+import { lang  } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField } from "../../../../component/EditableTextField"
-import { OptionsSelectionMenu, DamageTypeIconDisplay } from "../../../../component/OptionsSelectionMenu"
+import { DamageTypeIconDisplay,OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { Description } from "../../../shared/Description"
 import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
@@ -12,8 +14,6 @@ import { Abilities, NewAbilityWindow } from "./Ability"
 import { ActionMenuHeader, Actions, NewActionWindow } from "./Action"
 import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
 import { HPArmorHUD } from "./HPArmorHUD"
-import { lang  } from "../../../../../utils/lang"
-import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 
 const locale = lang.VGLITE.AdversarySheet
 

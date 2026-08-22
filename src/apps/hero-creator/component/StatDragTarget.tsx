@@ -1,4 +1,5 @@
 import { Key } from "lucide-react"
+
 import { vgLiteLang } from "../../../utils/lang"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 

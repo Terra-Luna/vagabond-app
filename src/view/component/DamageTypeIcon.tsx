@@ -1,5 +1,6 @@
-import { ReactElement } from "react"
 import { Brain, Cross, Droplets, Flame, FlaskRound, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
+import { ReactElement } from "react"
+
 import { lang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {

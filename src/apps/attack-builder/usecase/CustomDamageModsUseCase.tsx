@@ -1,7 +1,7 @@
 import { SectionLabel } from "../component/Labels"
+import { useArmorPiercingInput } from "./damage/ArmorPiercingInputUseCase"
 import { useFlatModifierInput } from "./damage/FlatModifierInputUseCase"
 import { usePerDieBonusInput } from "./damage/PerDieBonusInputUseCase"
-import { useArmorPiercingInput } from "./damage/ArmorPiercingInputUseCase"
 
 export const useCustomDamageModifiersBuilder = () => {
     const { FlatModifierInput, flatModifier, setFlatModifier } = useFlatModifierInput()

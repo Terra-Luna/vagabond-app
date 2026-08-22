@@ -1,7 +1,8 @@
 import { useState } from "react"
+
 import { NumericCounterInput } from "../../../../view/component/EditableTextField"
-import { Label } from "../../component/Labels"
 import { CounterInput } from "../../component/CounterInput"
+import { Label } from "../../component/Labels"
 
 export const usePerDieBonusInput = () => {
     const [perDieBonus, setPerDieBonus] = useState<number>(0)

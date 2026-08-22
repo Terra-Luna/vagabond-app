@@ -1,4 +1,5 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
+
 import { getDiceTerms, getResults } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
 import { RollSummary } from "./RollSummary"

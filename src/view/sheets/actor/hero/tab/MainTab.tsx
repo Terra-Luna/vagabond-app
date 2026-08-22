@@ -1,18 +1,19 @@
 import { Shield } from "lucide-react"
-import { HeroDataModel, getArmor } from "../../../../../model/actor/HeroDataModel"
+import { useEffect, useMemo, useState } from "react"
+
+import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
+import { getArmor,HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
-import { WeaponDataModel, isEquippedTool, isEquippedWeapon } from "../../../../../model/item/equip/WeaponDataModel"
-import { inventoryItemDragDropHandler, equippedItemContextMenu, toggleGripState } from "../../../../../utils/heroInventoryUtil"
+import { ToolDataModel } from "../../../../../model/item/equip/ToolDataModel"
+import { isEquippedTool, isEquippedWeapon,WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
+import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
+import { vgLiteLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Skill } from "./TopSection"
-import { vgLiteLang } from "../../../../../utils/lang"
-import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
-import { useEffect, useMemo, useState } from "react"
-import { ToolDataModel } from "../../../../../model/item/equip/ToolDataModel"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (

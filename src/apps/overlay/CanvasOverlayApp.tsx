@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react"
-import { Root, createRoot } from "react-dom/client"
-import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
+import { createPortal } from "react-dom"
+import { createRoot,Root } from "react-dom/client"
+
 import { getTheme } from "../../utils/foundryUtils"
 import { vgLiteStyles } from "../../utils/styleUtils"
-import { createPortal } from "react-dom"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 
 export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
 

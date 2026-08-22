@@ -1,6 +1,7 @@
 import { useCallback } from "react"
-import { StatsDrawerContext } from "./StatsDrawerContext"
+
 import { VagabondSettingsRegistry } from "../../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
+import { StatsDrawerContext } from "./StatsDrawerContext"
 
 export const StatsDrawerContextProvider = ({ id, children }) => {
 

@@ -1,10 +1,11 @@
+import { Cog } from "lucide-react"
 import { createRoot } from "react-dom/client"
+
+import { getTheme } from "../../utils/foundryUtils"
 import { vgLiteStyles } from "../../utils/styleUtils"
+import { PrimaryButton } from "../../view/component/Button"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { VagabondToolsAppView } from "./VagabondToolsAppView"
-import { PrimaryButton } from "../../view/component/Button"
-import { getTheme } from "../../utils/foundryUtils"
-import { Cog } from "lucide-react"
 
 export class VagabondToolsApp extends VagabondApplication {
 

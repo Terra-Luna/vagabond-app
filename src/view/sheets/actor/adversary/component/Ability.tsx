@@ -1,16 +1,17 @@
 import { PenSquare, Trash } from "lucide-react"
-import { useState, useCallback } from "react"
+import { useCallback,useState } from "react"
+
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
-import { tableBorderRounded, subMenuLayout } from "../../../../common/border-styles"
+import { vgLiteLang as locale } from "../../../../../utils/lang"
+import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { RichTextField } from "../../../../component/RichTextField"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ActionMenuHeader, AddMenuButtons } from "./Action"
 import { onClickAction } from "./hooksAndUtils"
-import { vgLiteLang as locale } from "../../../../../utils/lang"
-import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 
 export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { isEditMode } = useEditMode()

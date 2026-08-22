@@ -1,12 +1,13 @@
 import { Sparkle, Sparkles, X } from "lucide-react"
 import { useCallback } from "react"
+
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
-import { SpellcastingLabel } from "./SpellcastingTypography"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
+import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean }) => {
     const mana = hero.mana.current

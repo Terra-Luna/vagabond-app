@@ -1,17 +1,18 @@
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
+import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
+import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
-import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
-import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
+import { Grimoire } from "../component/Grimoire"
+import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
+import { ItemGrantCard } from "../component/ItemGrantCard"
 import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
 import { TopNavButtons } from "../component/TopNavButtons"
-import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { Grimoire } from "../component/Grimoire"
 
 export const useSpellSelection = (
     level: number,

@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { getId, getUuid } from "../../utils/modelUtil"
+
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
+import { getId, getUuid } from "../../utils/modelUtil"
 
 /**
  * Provides drag-drop functionality for inventory items. Consuming

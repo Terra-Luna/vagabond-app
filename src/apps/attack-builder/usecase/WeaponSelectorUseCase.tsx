@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react"
+import { useEffect,useState } from "react"
+
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { CustomDropDown } from "../../../view/component/Dropdown"
 import { SectionLabel } from "../component/Labels"

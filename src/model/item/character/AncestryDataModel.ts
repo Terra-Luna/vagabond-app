@@ -1,7 +1,7 @@
 import { lang, vgLiteLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
-import { ItemDataModel, BaseItemSchema } from "../ItemDataModel"
+import { BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
 const ancestrySchema = () => {
     return {

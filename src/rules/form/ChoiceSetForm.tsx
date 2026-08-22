@@ -1,12 +1,13 @@
-import React, { useState } from "react"
 import { Plus, Trash } from "lucide-react"
+import React, { useState } from "react"
+
+import { vgLiteLang } from "../../utils/lang"
+import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
+import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { ChoiceOption } from "../shared/ChoiceOption"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
 import { ItemRulesLabel } from "../shared/ItemRulesTypography"
-import { IconOnlyButton } from "../../view/component/IconOnlyButton"
-import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
-import { vgLiteLang } from "../../utils/lang"
 
 export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     // Read the options list array, defaulting to an empty array if uninitialized

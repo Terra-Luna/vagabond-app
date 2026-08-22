@@ -1,18 +1,19 @@
-import { useCallback } from "react"
 import { Plus, Trash } from "lucide-react"
+import { useCallback } from "react"
+
+import { HeroCreationLabel } from "../apps/hero-creator/component/HeroCreationTypography"
 import { BaseItemSchema, ItemDataModel } from "../model/item/ItemDataModel"
-import { PrimaryButton } from "../view/component/Button"
-import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
 import { vgLiteLang } from "../utils/lang"
-import { RuleElement } from "./shared/RuleElement"
+import { PrimaryButton } from "../view/component/Button"
 import { CollapsibleSection } from "../view/component/Collapsible"
+import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
 import { useEditMode } from "../view/context/EditModeContext/Hooks"
-import { ItemRuleSelector } from "./shared/ItemRuleInput"
 import { ChoiceSetForm } from "./form/ChoiceSetForm"
 import { FlatModifierForm } from "./form/FlatModifierForm"
 import { GrantItemForm } from "./form/GrantItemForm"
 import { ToggleRuleForm } from "./form/ToggleRuleForm"
-import { HeroCreationLabel } from "../apps/hero-creator/component/HeroCreationTypography"
+import { ItemRuleSelector } from "./shared/ItemRuleInput"
+import { RuleElement } from "./shared/RuleElement"
 
 export interface ChoiceRule {
     id: string

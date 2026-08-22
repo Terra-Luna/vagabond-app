@@ -1,8 +1,9 @@
-import { Pencil, MessageSquareText } from "lucide-react"
+import { MessageSquareText } from "lucide-react"
+
 import { getId } from "../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../chat/ChatCardSerializer"
 import { ItemChatCard } from "../../../chat/ItemChatCard"
-import { useContextMenu, CtxMenuItem } from "../../../component/ContextMenu"
+import { CtxMenuItem,useContextMenu } from "../../../component/ContextMenu"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 
 export const ItemPortraitComponent = ({ item, size = 56, className }: {

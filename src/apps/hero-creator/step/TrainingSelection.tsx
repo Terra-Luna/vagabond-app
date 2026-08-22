@@ -1,16 +1,17 @@
-import { useState, useEffect, useCallback, ReactNode, useMemo } from "react"
+import { ReactNode, useCallback, useEffect, useMemo,useState } from "react"
+
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
+import { ChoiceRule } from "../../../rules/ItemRulesManager"
+import { getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { vgLiteLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
-import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
-import { BorderedContent } from "../component/BorderedContent"
-import { TrainingSelector } from "../component/TrainingSelector"
-import { ItemGrantCard } from "../component/ItemGrantCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
+import { BorderedContent } from "../component/BorderedContent"
+import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
+import { ItemGrantCard } from "../component/ItemGrantCard"
 import { TopNavButtons } from "../component/TopNavButtons"
-import { ChoiceRule } from "../../../rules/ItemRulesManager"
+import { TrainingSelector } from "../component/TrainingSelector"
 
 export const useTrainingSelection = (
     ancestry: (Item & { system: AncestryDataModel }) | undefined,

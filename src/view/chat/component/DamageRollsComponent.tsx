@@ -1,6 +1,7 @@
 import { Plus } from "lucide-react"
-import { DiceRollComponent } from "./DiceRollComponent"
+
 import { DamageRollResult } from "../../../combat/engine/roll/DamageRoll"
+import { DiceRollComponent } from "./DiceRollComponent"
 
 export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) => {
     return (

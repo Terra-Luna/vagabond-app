@@ -1,15 +1,16 @@
-import { WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
-import { CustomDropDown } from "../../../../component/Dropdown"
-import { createDropdownEntries } from "../../../../../utils/localeUtils"
-import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
-import { MaterialSelection } from "../component/MaterialSelectionComponent"
-import { ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
-import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
-import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
-import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
-import { vgLiteLang } from "../../../../../utils/lang"
-import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { useCallback } from "react"
+
+import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
+import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
+import { WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
+import { vgLiteLang } from "../../../../../utils/lang"
+import { createDropdownEntries } from "../../../../../utils/localeUtils"
+import { CustomDropDown } from "../../../../component/Dropdown"
+import { OptionsSelectionMenu, StringOptionsDisplay } from "../../../../component/OptionsSelectionMenu"
+import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
+import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
+import { MaterialSelection } from "../component/MaterialSelectionComponent"
 
 export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
 

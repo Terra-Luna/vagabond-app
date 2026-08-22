@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from "react"
+
 import { openItemSheet } from "../../model/actor/type/Inventory"
 import { coinsAsString } from "../../model/common/CoinValue"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"

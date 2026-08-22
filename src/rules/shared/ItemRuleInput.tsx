@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+
 import { ItemRulesLabel } from "./ItemRulesTypography"
 
 export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type = 'text' }) => {

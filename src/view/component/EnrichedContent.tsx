@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useEffect,useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
 
 export const EnrichedContent = ({ content, styleClasses = '' }) => {

@@ -1,15 +1,16 @@
+import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { ContentEditable } from '@lexical/react/LexicalContentEditable';
-import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
-import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
-import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
 import { EditorRefPlugin } from '@lexical/react/LexicalEditorRefPlugin';
-import { IFrameWrapper } from './IFrameWrapper';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin';
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { $insertNodes, LexicalEditor } from 'lexical';
-import { $generateHtmlFromNodes, $generateNodesFromDOM } from '@lexical/html';
 import { useCallback, useEffect, useRef, useState } from 'react';
+
 import { useEditMode } from '../context/EditModeContext/Hooks';
+import { IFrameWrapper } from './IFrameWrapper';
 
 export const RichTextField = ({
     width = "100%",

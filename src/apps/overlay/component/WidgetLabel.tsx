@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react"
+
 import { FoundryHotkeyBlocker } from "../../../view/component/FoundryHotkeyBlocker"
 
 export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {

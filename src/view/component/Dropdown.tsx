@@ -1,10 +1,9 @@
 import { useCallback } from "react"
+
 import { updateDocumentAtPath } from "../../utils/documentUtils"
-import { LabelledField } from "./LabelledField"
 import { menuOptionContainer, menuOptionTextDefault } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
-import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
-import { EditModeOptions } from "../context/EditModeContext/EditModeOptions"
+import { LabelledField } from "./LabelledField"
 
 type UpdateMechanism = { updatePath: string[]; onChange?: never; } | { onChange: (val: any) => any; updatePath?: never }
 

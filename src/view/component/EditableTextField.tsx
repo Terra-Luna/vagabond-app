@@ -1,8 +1,9 @@
-import { useCallback, useState, useRef, useEffect } from "react"
+import { Minus,Plus } from "lucide-react"
+import { useCallback, useEffect,useRef, useState } from "react"
+
 import { VagabondAppError } from "../../model/common/VagabondAppError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { useEditMode } from "../context/EditModeContext/Hooks"
-import { Plus, Minus } from "lucide-react"
 
 const editModeBorder = "border border-solid border-table-border px-1"
 

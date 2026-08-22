@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react"
+
+import { DiceRoll } from "../../combat/engine/roll/DiceRoll"
 import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
@@ -9,7 +11,6 @@ import { EnrichedContent } from "../component/EnrichedContent"
 import { ItemValue } from "../sheets/item/equip/component/ItemValueComponent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
-import { DiceRoll } from "../../combat/engine/roll/DiceRoll"
 
 export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
     itemId: string, itemName: string, isConsumable?: boolean

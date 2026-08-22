@@ -1,18 +1,19 @@
 import { ArrowsUpFromLine } from "lucide-react"
+import { useEffect, useMemo, useState } from "react"
+
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { vgLiteLang } from "../../utils/lang"
-import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
-import { usePerkSelectionView } from "../hero-choices/PerkSelectionView"
-import { useSpellSelectionView } from "../hero-choices/SpellSelectionView"
+import { ItemsCache } from "../../rules/util/ItemsCache"
+import { vgLiteLang } from "../../utils/lang"
+import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
+import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
-import { useEffect, useMemo, useState } from "react"
-import { ItemsCache } from "../../rules/util/ItemsCache"
-import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
+import { usePerkSelectionView } from "../hero-choices/PerkSelectionView"
+import { useSpellSelectionView } from "../hero-choices/SpellSelectionView"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
-import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
+import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
 
 export interface PerkBonusSelection { value: string, ruleId: string }
 

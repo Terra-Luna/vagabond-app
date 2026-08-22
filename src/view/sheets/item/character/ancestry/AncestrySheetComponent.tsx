@@ -1,14 +1,14 @@
 import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel"
+import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
+import { lang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
+import { useContextMenu } from "../../../../component/ContextMenu"
 import { DropDown } from "../../../../component/Dropdown"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { lang } from "../../../../../utils/lang"
-import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
-import { ItemSheetBanner } from "../../shared/ItemSheetBanner"
-import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { Description } from "../../../shared/Description"
 import { useImageEdit } from "../../../shared/ImageEditUseCase"
-import { useContextMenu } from "../../../../component/ContextMenu"
+import { BaseItemSheetComponent } from "../../shared/BaseItemSheetComponent"
+import { ItemSheetBanner } from "../../shared/ItemSheetBanner"
 
 export const AncestryReactComponent = ({ item }: { item: Item & { system: AncestryDataModel } | null }) => {
     if (!item) return

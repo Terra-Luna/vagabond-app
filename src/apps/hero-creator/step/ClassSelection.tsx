@@ -1,13 +1,13 @@
 import { ReactNode, useCallback, useEffect, useState } from "react"
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+
+import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { Header } from "../../../view/component/Header"
-import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { ClassSheetComponent } from "../../../view/sheets/item/character/class/ClassSheetComponent"
+import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useClassSelection = (navButtons: ReactNode[]) => {

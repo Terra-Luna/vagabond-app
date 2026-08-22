@@ -1,6 +1,7 @@
 import { Plus, Save } from "lucide-react"
 import React, { useState } from "react"
-import { SecondaryButton, PrimaryButton } from "../../../view/component/Button"
+
+import { PrimaryButton,SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { XpCurve } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 

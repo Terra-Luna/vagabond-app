@@ -1,16 +1,17 @@
 import { MessageSquareText } from "lucide-react"
+
+import { PerkSelectionApp } from "../../../../../apps/hero-choices/PerkSelectionApp"
+import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
+import { groupBy } from "../../../../../utils/collectionUtil"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
+import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
+import { PrimaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { Header } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
-import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
-import { PerkSelectionApp } from "../../../../../apps/hero-choices/PerkSelectionApp"
-import { PrimaryButton } from "../../../../component/Button"
-import { groupBy } from "../../../../../utils/collectionUtil"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()

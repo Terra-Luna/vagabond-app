@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createElement, ReactNode, useEffect, useRef } from "react"
+
 import { ComponentRegistry } from "../component/ComponentRegistry"
 
 export const RehydratedChatCard = React.memo(({ blueprint, messageId }: { blueprint: any, messageId: string }) => {

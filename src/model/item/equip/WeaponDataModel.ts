@@ -1,6 +1,6 @@
 import { lang } from "../../../utils/lang"
-import { fields, rangeOptions, requiredInteger, damageTypeOptions, requiredString } from "../../common/sharedSchemas"
-import { EquipmentSchema, EquipmentDataModel } from "./EquipmentDataModel"
+import { damageTypeOptions, fields, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { EquipmentDataModel,EquipmentSchema } from "./EquipmentDataModel"
 
 const weaponSchema = () => {
     return {

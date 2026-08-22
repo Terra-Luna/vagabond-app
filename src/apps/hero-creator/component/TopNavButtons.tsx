@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+
 import { HeroCreationSubtext } from "./HeroCreationTypography"
 
 export const TopNavButtons = ({ navButtons, subtitle = "", canProceed }: { navButtons: ReactNode[], subtitle?: string, canProceed: boolean }) => {

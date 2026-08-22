@@ -1,11 +1,12 @@
+import { useCallback, useState } from 'react'
+
+import { DamageRollResult } from '../../combat/engine/roll/DamageRoll'
+import { vgLiteLang } from '../../utils/lang'
+import { getCanvasToken, getTokenImg } from '../../utils/modelUtil'
 import { BaseChatCardHost } from './component/BaseChatCardHost'
 import { ChatCardBanner } from './component/ChatCardBanner'
-import { TargetsDisplay } from './component/TargetsDisplay'
-import { getCanvasToken, getTokenImg } from '../../utils/modelUtil'
-import { vgLiteLang } from '../../utils/lang'
 import { DamageRollsComponent } from './component/DamageRollsComponent'
-import { useCallback, useState } from 'react'
-import { DamageRollResult } from '../../combat/engine/roll/DamageRoll'
+import { TargetsDisplay } from './component/TargetsDisplay'
 
 export const DamageRollChatCard = ({ actorId, tokenIds, result }: {
     actorId: string, tokenIds: string[], result: DamageRollResult

@@ -3,9 +3,9 @@ import { vgLiteLang } from "../../../../../utils/lang"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
-import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 import { AppliedEffectsManager } from "../../shared/AppliedEffectsManager"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
+import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 
 export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellDataModel } }) => {
     const { isEditMode } = useEditMode()

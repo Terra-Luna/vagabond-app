@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from "react"
+import { useCallback,useEffect, useState } from "react"
+
 import { DiceRoll } from "../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { UtilityButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
-import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { DiceRollSchema } from "../model/DieRollSchema"
 import { RollPreset } from "../model/RollPreset"
 

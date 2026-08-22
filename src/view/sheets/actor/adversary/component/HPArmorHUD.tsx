@@ -1,9 +1,10 @@
 import { Shield } from "lucide-react"
 import { useCallback } from "react"
+
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
-import { EditableTextField } from "../../../../component/EditableTextField"
 import { vgLiteLang as locale } from "../../../../../utils/lang"
+import { EditableTextField } from "../../../../component/EditableTextField"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 

@@ -1,4 +1,5 @@
 import ReactDom from "react-dom/client"
+
 import { onClose, onRender, onRenderHTML, onRenderWithWrappers, onUpdatePosition } from "../../utils/sheetUtils"
 
 export const VagabondSheetMixin = (superclass) => class extends superclass {

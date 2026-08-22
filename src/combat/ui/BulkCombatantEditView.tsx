@@ -1,10 +1,11 @@
 import { Eye, HeartMinusIcon, HeartPlusIcon, Trash } from "lucide-react"
-import { VagabondCombatant } from "../documents/VagabondCombat"
-import { Widget } from "../../view/component/Widget"
+
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
-import { getControlledTokens } from "../combat-utils"
 import { useContextMenu } from "../../view/component/ContextMenu"
 import { Header } from "../../view/component/Header"
+import { Widget } from "../../view/component/Widget"
+import { getControlledTokens } from "../combat-utils"
+import { VagabondCombatant } from "../documents/VagabondCombat"
 import { useAdjustCombatantHP } from "../engine/usecase/AdjustCombatantHPUseCase"
 
 export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondCombatant[] }) => {

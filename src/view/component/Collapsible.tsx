@@ -1,7 +1,8 @@
 import { LucideChevronDown, LucideChevronUp } from "lucide-react"
 import { ReactNode, useCallback, useState } from "react"
-import { Header } from "./Header"
+
 import { fields } from "../../model/common/sharedSchemas"
+import { Header } from "./Header"
 
 export interface CollapsibleHeaderProps {
     img?: string

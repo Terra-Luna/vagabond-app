@@ -1,6 +1,6 @@
 import { lang } from "../../../utils/lang"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
-import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
+import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
 const classSchema = () => {
     return {

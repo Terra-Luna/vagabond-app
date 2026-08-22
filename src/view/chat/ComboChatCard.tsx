@@ -1,12 +1,13 @@
+import { useCallback, useState } from "react"
+
+import { DamageRollResult } from "../../combat/engine/roll/DamageRoll"
 import { lang } from "../../utils/lang"
-import { getCanvasToken, getTargets, getTokenImg } from "../../utils/modelUtil"
+import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
-import { TargetsDisplay } from "./component/TargetsDisplay"
 import { DamageRollsComponent } from "./component/DamageRollsComponent"
-import { useCallback, useState } from "react"
-import { DamageRollResult } from "../../combat/engine/roll/DamageRoll"
+import { TargetsDisplay } from "./component/TargetsDisplay"
 
 export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, rolls: DamageRollResult[], tokenIds: string[] }) => {
     const actor = game.actors?.get(actorId)

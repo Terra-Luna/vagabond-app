@@ -1,7 +1,8 @@
 import { LockKeyhole, LockKeyholeOpen } from "lucide-react";
 import { ReactNode, useCallback, useMemo, useState } from "react"
-import { EditModeContext } from "./Hooks";
+
 import { EditModeOptions } from "./EditModeOptions";
+import { EditModeContext } from "./Hooks";
 
 /** Consuming parents just have to add one of these and all their children then get access to useEditMode() for free */
 export const EditModeContextProvider = ({ children, initialEditMode = EditModeOptions.FALSE }: {

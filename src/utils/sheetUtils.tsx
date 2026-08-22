@@ -1,12 +1,13 @@
+import { FunctionComponent } from "react"
 import ReactDom from "react-dom/client"
-import { getTheme } from "./foundryUtils"
-import { vgLiteStyles } from "./styleUtils"
+
+import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
 import { DimensionsContext } from "../view/context/DimensionsContext"
 import { EditModeContextProvider } from "../view/context/EditModeContext/EditModeContext"
-import { EmotionCacheContext } from "../view/context/EmotionCacheContext"
-import { FunctionComponent } from "react"
 import { EditModeOptions } from "../view/context/EditModeContext/EditModeOptions"
-import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
+import { EmotionCacheContext } from "../view/context/EmotionCacheContext"
+import { getTheme } from "./foundryUtils"
+import { vgLiteStyles } from "./styleUtils"
 
 export interface VGLiteApplication {
     _reactRoot: ReactDom.Root | null

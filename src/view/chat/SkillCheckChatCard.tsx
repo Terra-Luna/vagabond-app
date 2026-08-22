@@ -1,10 +1,11 @@
 import { Minus, Plus } from 'lucide-react'
-import { DiceRollComponent } from './component/DiceRollComponent'
-import { ChatCardBanner } from "./component/ChatCardBanner"
-import { BaseChatCardHost } from "./component/BaseChatCardHost"
-import { getTokenImg } from "../../utils/modelUtil"
-import { vgLiteLang } from '../../utils/lang'
+
 import { SkillCheckResult } from '../../combat/engine/roll/SkillCheck'
+import { vgLiteLang } from '../../utils/lang'
+import { getTokenImg } from "../../utils/modelUtil"
+import { BaseChatCardHost } from "./component/BaseChatCardHost"
+import { ChatCardBanner } from "./component/ChatCardBanner"
+import { DiceRollComponent } from './component/DiceRollComponent'
 
 export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, result: SkillCheckResult }) => {
     const actor = game.actors?.get(actorId)

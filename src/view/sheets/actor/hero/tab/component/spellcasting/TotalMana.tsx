@@ -1,4 +1,5 @@
 import { Sparkle } from "lucide-react"
+
 import { SpellcastingMana } from "./SpellcastingTypography"
 
 export const TotalMana = ({ cost }: { cost: number }) => {

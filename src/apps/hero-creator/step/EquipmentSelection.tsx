@@ -1,11 +1,12 @@
 import { ReactNode } from "react"
+
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
-import { TopNavButtons } from "../component/TopNavButtons"
-import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useItemShopView } from "../../shop/ItemShopView"
+import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useEquipmentSelection = (
     clazz: (Item & { system: ClassDataModel }) | undefined,

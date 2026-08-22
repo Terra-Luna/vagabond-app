@@ -1,7 +1,7 @@
-import ReactHtmlParser from 'react-html-parser'
-import { Collapsible } from "./Collapsible"
-import { CardHeader } from './CardHeader'
 import { ReactNode } from 'react'
+
+import { CardHeader } from './CardHeader'
+import { Collapsible } from "./Collapsible"
 import { EnrichedContent } from './EnrichedContent'
 
 const cardSubheaderLayout = "flex -mt-0.5"

@@ -1,19 +1,20 @@
 import { Dices, Save } from "lucide-react"
 import { useCallback, useEffect, useMemo, useRef } from "react"
+
+import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { isEquippedWeapon,WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { vgLiteLang } from "../../utils/lang"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Header } from "../../view/component/Header"
-import { useWeaponSelector } from "./usecase/WeaponSelectorUseCase"
-import { useCustomSkillCheckBuilder } from "./usecase/CustomSkillCheckUseCase"
-import { WeaponDataModel, isEquippedWeapon } from "../../model/item/equip/WeaponDataModel"
-import { useCustomDamageRollBuilder } from "./usecase/CustomDamageRollUseCase"
-import { useCustomDamageModifiersBuilder } from "./usecase/CustomDamageModsUseCase"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
-import { vgLiteLang } from "../../utils/lang"
-import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { RollPreset } from "./model/RollPreset"
+import { useCustomDamageModifiersBuilder } from "./usecase/CustomDamageModsUseCase"
+import { useCustomDamageRollBuilder } from "./usecase/CustomDamageRollUseCase"
+import { useCustomSkillCheckBuilder } from "./usecase/CustomSkillCheckUseCase"
+import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
+import { useWeaponSelector } from "./usecase/WeaponSelectorUseCase"
 
 export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }: {
     actor: Actor & { system: HeroDataModel },

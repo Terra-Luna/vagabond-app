@@ -1,9 +1,10 @@
-import { SquarePen } from "lucide-react"
-import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { Menu, MenuItem } from '@szhsin/react-menu'
-import { DamageTypeIcon } from "./DamageTypeIcon"
+import { SquarePen } from "lucide-react"
+
+import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { menuOptionContainer, menuOptionText, menuOptionTextDefault, menuOptionTextSelected } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
+import { DamageTypeIcon } from "./DamageTypeIcon"
 
 export interface OptionsSelectionMenuOption {
     key: string

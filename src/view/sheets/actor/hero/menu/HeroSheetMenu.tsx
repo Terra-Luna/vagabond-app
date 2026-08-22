@@ -1,15 +1,15 @@
 import { Menu, Moon, Sun, X } from "lucide-react"
 import { useCallback, useState } from "react"
-import { VagabondActorSheet } from "../../VagabondActorSheet"
+
+import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
+import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
+import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
+import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
+import { ItemDivider } from "../../../../component/Header"
+import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { MenuListItem } from "./item/MenuListItem"
 import { importFromVgbndApp } from "./util/vgbnd-import"
-import { ItemDivider } from "../../../../component/Header"
-import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
-import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
-import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
-import { fields } from "../../../../../model/common/sharedSchemas"
-import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)

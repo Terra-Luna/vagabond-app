@@ -1,6 +1,7 @@
 import { Trash } from "lucide-react"
-import { useContextMenu } from "../../component/ContextMenu"
+
 import { vgLiteLang } from "../../../utils/lang"
+import { useContextMenu } from "../../component/ContextMenu"
 
 /**
  * Displays an array of Token icons. Utilize target-sync.tsx to get live token target tracking updates.

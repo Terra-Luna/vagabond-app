@@ -1,7 +1,8 @@
 import { FC } from "react"
 import { Root } from "react-dom/client"
-import { EditModeOptions } from "../view/context/EditModeContext/EditModeOptions"
+
 import * as sheetUtils from "../utils/sheetUtils"
+import { EditModeOptions } from "../view/context/EditModeContext/EditModeOptions"
 
 export interface VagabondAppArgs {
     window?: Partial<{ title: string, minimizable: boolean, resizable: boolean }>,

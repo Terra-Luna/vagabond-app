@@ -1,9 +1,9 @@
-import D20 from "../../../icons/dice/d20.svg?react"
-import D12 from "../../../icons/dice/d12.svg?react"
-import D10 from "../../../icons/dice/d10.svg?react"
-import D8 from "../../../icons/dice/d8.svg?react"
-import D6 from "../../../icons/dice/d6.svg?react"
 import D4 from "../../../icons/dice/d4.svg?react"
+import D6 from "../../../icons/dice/d6.svg?react"
+import D8 from "../../../icons/dice/d8.svg?react"
+import D10 from "../../../icons/dice/d10.svg?react"
+import D12 from "../../../icons/dice/d12.svg?react"
+import D20 from "../../../icons/dice/d20.svg?react"
 
 export const DieIcon = ({ faces, exploded, discarded }: { faces: number, exploded: boolean, discarded: boolean }) => {
     const wh = `w-[1em] h-[1em]`

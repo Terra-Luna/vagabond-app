@@ -1,10 +1,11 @@
 import { useCallback } from "react"
+
+import { BaseItemSchema, ItemDataModel } from "../../../model/item/ItemDataModel"
 import { updateDocument } from "../../../utils/documentUtils"
 import { stripHtml } from "../../../utils/stringUtil"
+import { EnrichedContent } from "../../component/EnrichedContent"
 import { RichTextField } from "../../component/RichTextField"
 import { useEditMode } from "../../context/EditModeContext/Hooks"
-import { BaseItemSchema, ItemDataModel } from "../../../model/item/ItemDataModel"
-import { EnrichedContent } from "../../component/EnrichedContent"
 
 export const Description = ({ item, showFullView = false, italic = true }: {
     item: Item & { system: ItemDataModel<BaseItemSchema> }, showFullView?: boolean, italic?: boolean

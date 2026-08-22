@@ -1,5 +1,5 @@
-import { ReactNode } from "react"
 import { Trash } from "lucide-react"
+import { ReactNode } from "react"
 
 export const buttonAnimation = `pointer-events-auto cursor-pointer transition-transform active:scale-95`
 const buttonShaping = `flex items-center text-base text-center justify-center px-2 py-1 rounded-sm hover-glow`

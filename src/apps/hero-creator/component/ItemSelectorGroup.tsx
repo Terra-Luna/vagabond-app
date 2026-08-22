@@ -1,7 +1,8 @@
-import { useCallback, useMemo } from "react"
-import { CustomDropDown } from "../../../view/component/Dropdown"
-import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { LockKeyhole } from "lucide-react"
+import { useCallback, useMemo } from "react"
+
+import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { CustomDropDown } from "../../../view/component/Dropdown"
 
 /**
  * This component is good for tracking multiple user selections across an array

@@ -1,8 +1,8 @@
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
-import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
 import { vgLiteLang } from "../../../../../../utils/lang"
 import { OptionsSelectionMenu } from "../../../../../component/OptionsSelectionMenu"
+import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
+import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
 
 export const KeyStatsSelector = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()

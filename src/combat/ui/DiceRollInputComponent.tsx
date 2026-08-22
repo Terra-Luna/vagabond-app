@@ -1,15 +1,16 @@
+import { Plus } from "lucide-react"
 import { ReactNode, useCallback } from "react"
-import { DiceCountInput } from "../../view/sheets/actor/hero/tab/component/spellcasting/DiceCountInput"
-import { DiceRoll } from "../engine/roll/DiceRoll"
+
+import { DiceRollSchema } from "../../apps/attack-builder/model/DieRollSchema"
+import { vgLiteLang } from "../../utils/lang"
+import { Checkbox } from "../../view/component/Checkbox"
+import { CSVTextInput } from "../../view/component/CSVTextInput"
 import { NumericCounterInput } from "../../view/component/EditableTextField"
 import { useEditMode } from "../../view/context/EditModeContext/Hooks"
+import { DiceCountInput } from "../../view/sheets/actor/hero/tab/component/spellcasting/DiceCountInput"
 import { ItemSheetPropLabel } from "../../view/sheets/item/equip/component/ItemSheetLabelComponent"
-import { vgLiteLang } from "../../utils/lang"
-import { CSVTextInput } from "../../view/component/CSVTextInput"
-import { Plus } from "lucide-react"
-import { Checkbox } from "../../view/component/Checkbox"
+import { DiceRoll } from "../engine/roll/DiceRoll"
 import { DieSizeSelector } from "./DieSizeSelector"
-import { DiceRollSchema } from "../../apps/attack-builder/model/DieRollSchema"
 
 export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false, editModeOverride = false, extendedSettings, TrashButton }: {
     label?: string,

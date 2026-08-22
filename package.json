@@ -15,6 +15,17 @@
     "lint": "eslint src && pnpm circ-deps",
     "lint:fix": "eslint --fix src"
   },
+  "madge": {
+    "tsConfig": "tsconfig.json",
+    "detectiveOptions": {
+      "ts": {
+        "skipTypeImports": true
+      },
+      "tsx": {
+        "skipTypeImports": true
+      }
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -58,6 +69,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-refresh": "^0.5.3",
     "eslint-plugin-simple-import-sort": "13.0.0",
+    "eslint-plugin-unused-imports": "^4.4.1",
     "globals": "^17.7.0",
     "jest": "30.4.1",
     "jiti": "^2.7.0",

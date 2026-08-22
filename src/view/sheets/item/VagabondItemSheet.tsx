@@ -1,9 +1,10 @@
 const { sheets } = foundry.applications
 import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils"
-import { ContainerDataModel, addItemToContainer } from "../../../model/item/equip/ContainerDataModel"
-import { VagabondSheetMixin } from "../VagabondSheetMixin"
-import { StarterPackDataModel } from "../../../model/item/equip/StarterPackDataModel"
+
+import { addItemToContainer,ContainerDataModel } from "../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
+import { StarterPackDataModel } from "../../../model/item/equip/StarterPackDataModel"
+import { VagabondSheetMixin } from "../VagabondSheetMixin"
 
 export abstract class VagabondItemSheet extends VagabondSheetMixin(sheets.ItemSheetV2) {
     getReactProps() { return { ...super.getReactProps(), item: this.item } }

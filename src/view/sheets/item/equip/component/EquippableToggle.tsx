@@ -1,4 +1,5 @@
 import { useCallback } from "react"
+
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { Checkbox } from "../../../../component/Checkbox"

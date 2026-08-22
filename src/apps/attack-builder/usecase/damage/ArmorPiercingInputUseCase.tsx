@@ -1,6 +1,7 @@
 import { ShieldBan } from "lucide-react"
-import { NumericCounterInput } from "../../../../view/component/EditableTextField"
 import { useState } from "react"
+
+import { NumericCounterInput } from "../../../../view/component/EditableTextField"
 import { CounterInput } from "../../component/CounterInput"
 
 export const useArmorPiercingInput = () => {

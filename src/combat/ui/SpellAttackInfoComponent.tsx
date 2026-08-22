@@ -1,13 +1,14 @@
-import { vgLiteLang } from "../../utils/lang"
+import { Sparkle } from "lucide-react"
+import { useMemo } from "react"
 import ReactHtmlParser from 'react-html-parser'
-import { CardSubHeader, CardSubHeaderValues } from "../../view/component/SkillCard"
-import { SpellcastingLabel, SpellcastingSubtext } from "../../view/sheets/actor/hero/tab/component/spellcasting/SpellcastingTypography"
+
+import { SpellDataModel } from "../../model/item/character/SpellDataModel"
+import { vgLiteLang } from "../../utils/lang"
 import { DamageRollsComponent } from "../../view/chat/component/DamageRollsComponent"
 import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
-import { SpellDataModel } from "../../model/item/character/SpellDataModel"
-import { Sparkle } from "lucide-react"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
-import { useMemo } from "react"
+import { CardSubHeader, CardSubHeaderValues } from "../../view/component/SkillCard"
+import { SpellcastingLabel, SpellcastingSubtext } from "../../view/sheets/actor/hero/tab/component/spellcasting/SpellcastingTypography"
 import { DamageRollResult } from "../engine/roll/DamageRoll"
 
 export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined }: {

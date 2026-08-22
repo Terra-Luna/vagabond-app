@@ -1,4 +1,5 @@
-import { SquareCheckBig, Square } from "lucide-react"
+import { Square,SquareCheckBig } from "lucide-react"
+
 import { vgLiteLang } from "../../../utils/lang"
 import { HeroCreationLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 

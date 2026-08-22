@@ -1,10 +1,9 @@
-import { Trash } from "lucide-react"
 import { VagabondActiveEffect } from "../../../../combat/documents/VagabondActiveEffect"
-import { vgLiteLang } from "../../../../utils/lang"
-import { ItemSheetPropLabel } from "../equip/component/ItemSheetLabelComponent"
 import { DieSizeSelector } from "../../../../combat/ui/DieSizeSelector"
+import { vgLiteLang } from "../../../../utils/lang"
 import { UtilityButton } from "../../../component/Button"
 import { TrashButton } from "../../../component/TrashButton"
+import { ItemSheetPropLabel } from "../equip/component/ItemSheetLabelComponent"
 
 export const AppliedEffectsManager = ({ item }) => {
     const appliedEffects = item.system.appliedEffects || []

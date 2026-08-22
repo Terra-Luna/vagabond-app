@@ -1,15 +1,16 @@
 import { ReactNode, useEffect, useMemo, useState } from "react"
+
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { Header } from "../../../view/component/Header"
-import { TopNavButtons } from "../component/TopNavButtons"
+import { getItemChoiceRules, getSkillTrainingChoiceRules, getStatChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
+import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { vgLiteLang } from "../../../utils/lang"
+import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
+import { Header } from "../../../view/component/Header"
+import { SkillCard } from "../../../view/component/SkillCard"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { getItemChoiceRules, getSkillTrainingChoiceRules, getStatChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { SkillCard } from "../../../view/component/SkillCard"
-import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
+import { TopNavButtons } from "../component/TopNavButtons"
 
 export const usePerkBonusSelection = (
     perks: (Item & { system: PerkDataModel })[] | undefined,

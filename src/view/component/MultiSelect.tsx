@@ -1,4 +1,5 @@
 import Select, { MultiValue } from 'react-select'
+
 import { useEditMode } from '../context/EditModeContext/Hooks'
 
 export interface SelectOption {

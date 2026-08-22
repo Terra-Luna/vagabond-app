@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+
 import { ActiveEffectsComponent, Effect } from './component/ActiveEffectsComponent'
 
 /**

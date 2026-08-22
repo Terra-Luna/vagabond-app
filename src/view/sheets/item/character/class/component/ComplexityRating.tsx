@@ -1,8 +1,9 @@
 import { Star } from "lucide-react"
+
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { ClassSheetLabel } from "./ClassSheetText"
-import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { vgLiteLang } from "../../../../../../utils/lang"
+import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
+import { ClassSheetLabel } from "./ClassSheetText"
 
 export const ComplexityRating = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()

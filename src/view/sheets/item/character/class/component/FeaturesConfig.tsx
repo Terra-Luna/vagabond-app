@@ -1,15 +1,16 @@
 import { Save, SquarePen, Trash } from "lucide-react"
-import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { SkillCard } from "../../../../../component/SkillCard"
-import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
-import { ClassSheetLabel } from "./ClassSheetText"
 import { useCallback, useEffect, useState } from "react"
-import { EditableTextField, NumericCounterInput } from "../../../../../component/EditableTextField"
-import { RichTextField } from "../../../../../component/RichTextField"
+
+import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
+import { vgLiteLang } from "../../../../../../utils/lang"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { EditableTextField, NumericCounterInput } from "../../../../../component/EditableTextField"
+import { RichTextField } from "../../../../../component/RichTextField"
+import { SkillCard } from "../../../../../component/SkillCard"
+import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetBannerWrapper } from "./ClassSheetBannerWrapper"
+import { ClassSheetLabel } from "./ClassSheetText"
 
 export const FeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel } }) => {
     const { isEditMode } = useEditMode()

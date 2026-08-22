@@ -1,4 +1,5 @@
 import { ReactNode } from "react"
+
 import { vgLiteLang } from "../../utils/lang"
 
 export const ShoppingCart = ({ children }: { children: ReactNode }) => {

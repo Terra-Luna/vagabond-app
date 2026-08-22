@@ -1,6 +1,6 @@
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { ProgressClockAppView } from "./ProgressClockAppView"
 import { VagabondCanvasOverlayApp } from "../overlay/CanvasOverlayApp"
+import { ProgressClockAppView } from "./ProgressClockAppView"
 
 export class ProgressClockApp extends VagabondCanvasOverlayApp {
 

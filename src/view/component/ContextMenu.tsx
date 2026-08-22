@@ -1,6 +1,7 @@
-import { FunctionComponent, useState } from 'react'
-import { Divider } from './Header'
 import { ControlledMenu, MenuItem } from '@szhsin/react-menu'
+import { FunctionComponent, useState } from 'react'
+
+import { Divider } from './Header'
 
 export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99 pointer-events-auto"
 export const ctxMenuTextStyle = "text-base font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"

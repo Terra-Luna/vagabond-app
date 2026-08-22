@@ -1,7 +1,8 @@
-import { useState, useCallback, useMemo } from "react"
 import { Check, Save } from "lucide-react"
-import { DestructiveButton, PrimaryButton } from "../../../view/component/Button"
+import { useCallback, useMemo,useState } from "react"
+
 import { vgLiteLang } from "../../../utils/lang"
+import { DestructiveButton, PrimaryButton } from "../../../view/component/Button"
 import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const XpQuestionnairePlayerView = ({ questions, onSave }: {

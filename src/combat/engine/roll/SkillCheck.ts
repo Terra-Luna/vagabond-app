@@ -1,5 +1,6 @@
-import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
+
+import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { getDiceTerms } from "../util/dice-utils"
 

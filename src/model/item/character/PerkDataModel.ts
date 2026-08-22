@@ -3,7 +3,7 @@ import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { statsSchema } from "../../actor/type/Stats"
 import { fields, optionalString, requiredString, standardInteger } from "../../common/sharedSchemas"
-import {ItemDataModel, BaseItemSchema } from "../ItemDataModel"
+import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
 const perkSchema = () => {
     return {

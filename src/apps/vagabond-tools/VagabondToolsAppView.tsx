@@ -1,11 +1,12 @@
 import { useCallback, useState } from "react"
+
+import { UtilityButton } from "../../view/component/Button"
 import { Checkbox } from "../../view/component/Checkbox"
+import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
+import { TrashButton } from "../../view/component/TrashButton"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
-import { UtilityButton } from "../../view/component/Button"
-import { TrashButton } from "../../view/component/TrashButton"
-import { getItemShopToggle, setItemShopToggle, getCountdowns, setCountdowns, getProgressClocks, ProgressClockSchema, setProgressClocks, deleteAllCountdowns, deleteAllProgressClocks } from "./usecase/VagabondSettingsHelper"
+import { deleteAllCountdowns, deleteAllProgressClocks,getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setCountdowns, setItemShopToggle, setProgressClocks } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())

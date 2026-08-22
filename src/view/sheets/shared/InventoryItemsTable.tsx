@@ -1,17 +1,18 @@
-import { Shield, HandFist, Hand } from "lucide-react"
+import { Hand,HandFist, Shield } from "lucide-react"
+
 import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { openItemSheet, itemNameQty } from "../../../model/actor/type/Inventory"
+import { itemNameQty,openItemSheet } from "../../../model/actor/type/Inventory"
 import { coinsAsString } from "../../../model/common/CoinValue"
 import { ArmorDataModel } from "../../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
+import { ToolDataModel } from "../../../model/item/equip/ToolDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
+import { equipArmor, equipWeapon,inventoryItemDragDropHandler } from "../../../utils/heroInventoryUtil"
+import { vgLiteLang } from "../../../utils/lang"
 import { getId, getName } from "../../../utils/modelUtil"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
-import { vgLiteLang } from "../../../utils/lang"
-import { inventoryItemDragDropHandler, equipArmor, equipWeapon } from "../../../utils/heroInventoryUtil"
-import { ToolDataModel } from "../../../model/item/equip/ToolDataModel"
 
 export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipColumn = true }: {
     actor: ActorDataModel<BaseActorSchema> | null,

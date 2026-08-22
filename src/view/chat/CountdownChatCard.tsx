@@ -1,7 +1,7 @@
+import { CountdownResult } from "../../combat/engine/roll/CountdownResult"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 import { DiceRollComponent } from "./component/DiceRollComponent"
-import { CountdownResult } from "../../combat/engine/roll/CountdownResult"
 
 export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) => {
     return (

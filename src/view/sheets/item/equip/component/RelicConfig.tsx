@@ -1,12 +1,13 @@
+import { Diamond } from "lucide-react"
 import { useMemo } from "react"
+
 import { RelicPower, RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { CollapsibleSection } from "../../../../component/Collapsible"
-import { Diamond } from "lucide-react"
-import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { vgLiteLang } from "../../../../../utils/lang"
-import { ItemSheetPropLabel } from "./ItemSheetLabelComponent"
 import { buttonAnimation } from "../../../../component/Button"
+import { CollapsibleSection } from "../../../../component/Collapsible"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { ItemSheetPropLabel } from "./ItemSheetLabelComponent"
 
 export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     
