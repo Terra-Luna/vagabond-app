@@ -224,9 +224,9 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full flex flex-col gap-y-0.5">
             <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save hero={hero} save={{ key: 'reflex', ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex, mod: reflex.modifier ?? 0 }} />
-            <Save hero={hero} save={{ key: 'endure', ...lang.VGLITE.Saves.endure, value: hero.saves.endure, mod: endure.modifier ?? 0 }} />
-            <Save hero={hero} save={{ key: 'will', ...lang.VGLITE.Saves.will, value: hero.saves.will, mod: will.modifier ?? 0 }} />
+            <Save hero={hero} save={{ key: 'reflex', ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex, mod: reflex.modifier ?? 0, d20s: reflex.extraDice ?? 0 }} />
+            <Save hero={hero} save={{ key: 'endure', ...lang.VGLITE.Saves.endure, value: hero.saves.endure, mod: endure.modifier ?? 0, d20s: endure.extraDice ?? 0 }} />
+            <Save hero={hero} save={{ key: 'will', ...lang.VGLITE.Saves.will, value: hero.saves.will, mod: will.modifier ?? 0, d20s: will.extraDice ?? 0 }} />
         </div>
     )
 }
@@ -239,12 +239,13 @@ const Save = ({ hero, save }: {
         formula: string,
         description: string,
         value: number,
-        mod: number
+        mod: number,
+        d20s: number
     }
 }) => {
     return (
         <div title={`${save.formula}\n${lang.VGLITE.HeroSheet.skills_tooltip}`}>
-            <div className={`flex font-eskapade hover-glow border border-solid border-table-border/50`} onClick={
+            <div className="flex items-center font-eskapade hover-glow border border-solid border-table-border/50" onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
                     sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
@@ -252,21 +253,20 @@ const Save = ({ hero, save }: {
             }>
                 <div className="mx-1 w-full line-clamp-1">
                     <div className="flex justify-between items-center">
-                        {/* SAVE NAME (REFLEX / ENDURE / WILL) */}
-                        <span className="-mt-0.5 text-xl font-bold">{save.name}</span>
-                        {/* SAVE MODIFIER (+3) */}
-                        {save.mod !== 0 &&
-                            <span className="-mt-1 text-xs text-text-tertiary font-normal">
-                                {`(d20${save.mod > 0 ? '+' : '-'}${save.mod})`}
-                            </span>
-                        }
+                        {/* SAVING THROW (REFLEX / ENDURE / WILL) */}
+                        <span className="text-xl font-bold">{save.name}</span>
+                        {/* SAVING THROW MODIFIER */}
+                        <span className="text-sm text-text-tertiary font-normal">
+                            {`(${1 + save.d20s}d20${save.mod !== 0 ? `${save.mod > 0 ? '+' : ''}${save.mod}` : ''})`}
+                        </span>
                     </div>
                     {/* SAVE DESCRIPTION */}
                     <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1">
                         {save.description}
                     </span>
                 </div>
-                <div className="flex w-1/4 items-center justify-center text-3xl text-text-section-header font-bold bg-section-header-fill">
+                {/* SAVING THROW DIFFICULTY */}
+                <div className="flex w-1/4 py-1 items-center justify-center text-3xl text-text-section-header font-bold bg-section-header-fill">
                     {save.value}
                 </div>
             </div>
@@ -390,7 +390,7 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
                     {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
                         <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
                     ))}
-                    {actor.system.trackers.length === 0 &&
+                    {actor.system.trackers.length % 2 > 0 &&
                         <GhostTracker actor={actor} />
                     }
                 </div>

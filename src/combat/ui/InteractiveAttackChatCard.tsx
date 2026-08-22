@@ -111,7 +111,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                         {/* GM TOOLS */}
                         {(game.user?.isGM && !attack.isResolved) &&
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                                <div className="mt-0.5">
+                                <div className="mt-0.5 text-base font-normal">
                                     <Header title={"GM Tools"} />
                                     <div className="flex items-end justify-between">
                                         <div>
@@ -256,7 +256,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
 
                         {/* CRIT CHOICE BUTTONS */}
                         {attack.showCritChoices &&
-                            <div className="flex wrap gap-1 mb-1 justify-center text-center content-center">
+                            <div className="flex wrap gap-1 mb-1 justify-center text-lg text-center font-normal content-center">
                                 {/* GAIN A LUCK */}
                                 {!isMaxLuck && <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />}
                                 {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
@@ -353,7 +353,7 @@ const AdversaryAttackComponent = ({ actor, attack }: { actor: Actor, attack: Adv
 const InteractiveChatCardButton = ({ icon, label, tooltip, fn }: { icon?: ReactNode, label: string, tooltip: string, fn: () => void }) => {
     return (
         <button title={tooltip}
-            className="flex text-base items-center border border-solid border-table-border px-1 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer"
+            className="flex items-center border border-solid border-table-border px-1 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer"
             onClick={fn}
         >
             {icon}
