@@ -27,6 +27,22 @@ export const sendVagabondChatMessage = async (
     })
 }
 
+export const sendVagabondChatCard = async (
+    actor: any,
+    type: string,
+    props: Record<string, any>,
+    rolls: any[] = []
+) => {
+    const blueprint: ElementBlueprint = { type, props }
+    const chatRoot = `<div class="vagabond-react-chat-root"/>`
+    await ChatMessage.create({
+        speaker: { actor: getId(actor), alias: getName(actor) },
+        content: chatRoot,
+        rolls,
+        flags: { "vagabond-lite": { blueprint } } as any
+    })
+}
+
 // Converts a live ReactElement tree into serializable JSON
 function serializeElement(element: ReactElement): ElementBlueprint {
     const { type, props } = element

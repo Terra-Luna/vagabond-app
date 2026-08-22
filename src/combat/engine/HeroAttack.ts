@@ -1,5 +1,3 @@
-import { createElement } from "react"
-
 import { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
@@ -7,7 +5,7 @@ import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { vgLiteLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
-import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
+import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { SkillCheckChatCard } from "../../view/chat/SkillCheckChatCard"
 import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
 import { Attack } from "./Attack"
@@ -107,14 +105,10 @@ export class HeroAttack extends Attack {
         }
 
         await this.save(serializeAttack)
-        await this.sendChatMessage()
-    }
-
-    private async sendChatMessage() {
-        const { InteractiveAttackChatCard } = await import("../ui/InteractiveAttackChatCard")
-        sendVagabondChatMessage(
+        await sendVagabondChatCard(
             this.actor,
-            createElement(InteractiveAttackChatCard, { actorId: this.actor.id!, attackId: this.id }),
+            "InteractiveAttackChatCard",
+            { actorId: this.actor.id!, attackId: this.id },
             [...this.skillCheck?.result?.rolls ?? []]
         )
     }
