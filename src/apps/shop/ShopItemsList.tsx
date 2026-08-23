@@ -2,7 +2,9 @@ import { useLayoutEffect, useRef } from "react"
 
 import { openItemSheet } from "../../model/actor/type/Inventory"
 import { coinsAsString } from "../../model/common/CoinValue"
+import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
+import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../utils/lang"
 import { SecondaryButton } from "../../view/component/Button"
 import { ItemDivider } from "../../view/component/Header"
@@ -34,10 +36,28 @@ export const ShopItemsList = ({ items, onAddItemToCart }: {
             {
                 items.map(item => (
                     <div key={item.uuid}>
-                        <div className="items-center content-center p-2">
+                        <div className="items-center content-center px-2 py-0.5">
                             <div className="flex justify-between">
                                 <div className="-space-y-1">
+                                    <div className="flex gap-x-1">
+                                        <div className="flex gap-x-1">
                                     <p className="font-bold hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</p>
+                                            {item.system instanceof WeaponDataModel &&
+                                                <p className="text-text-secondary italic">{`
+                                                ${item.system.skills.map(s => vgLiteLang.WeaponSkills[s]?.name).join(", ")} 
+                                                | d${item.system.damage.dice.faces} 
+                                                | ${vgLiteLang.Grips[item.system.grip.style]}
+                                                | ${item.system.properties.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}
+                                            `}</p>
+                                            }
+                                        </div>
+                                        {item.system instanceof ArmorDataModel &&
+                                            <p className="text-text-secondary">{`
+                                                Rating: ${item.system.rating}
+                                                | MIT: ${item.system.mightReq}
+                                            `}</p>
+                                        }
+                                    </div>
                                     <div className="flex gap-x-2">
                                         <p className="text-text-secondary">{`${vgLiteLang.EquipmentCategories[item.system.category]}`}</p>
                                         <p className="text-text-secondary">•</p>
