@@ -26,7 +26,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         ruleId: ""
     })).filter(spell => spell.value), [actor.system.spells])
     const { PerkSelection, allPerks, perksList, classPerkSlots, ancestryPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots } =
-        usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level)
+        usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, true)
     const bonusPerks = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
         const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
         return perk?.system.rules.some(rule => rule.key === "ChoiceSet") ? [{ sourceKey: slot.selectionId, system: perk.system } as any] : []
@@ -40,9 +40,11 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
                     .map(rule => [`${selection.id}:${rule.id}`, selection.subselect ? [selection.subselect] : []])
             })))
     ), [actor.items])
-    const { bonusChoicesByPerk, allBonusSelections, isBonusSelectionHydrated } = usePerkBonusSelection(
-        bonusPerks, actorStats, [], trainings.map(skill => ({ skill, ruleId: "" })), actorSpellSlots, [], [], [], initialSelections)
+
+    const { bonusChoicesByPerk, allBonusSelections, isBonusSelectionHydrated } = usePerkBonusSelection(bonusPerks, actorStats, [], trainings.map(skill => ({ skill, ruleId: "" })), actorSpellSlots, [], [], [], initialSelections)
+
     const getPerkName = (id: string) => allPerks.find(item => item.uuid === id)?.name ?? "unk"
+
     const loadSelections = (rules: any[], setSlots: any) => {
         const slots = loadInitialSlots(rules.filter(rule => rule.level <= level || calculateRecurringRuleEligibility(level, rule.level, rule.scale)))
         let sharedIndex = 0
@@ -52,7 +54,9 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         }))
         setSlots(slots)
     }
+
     const perksLoaded = perksList.length > 1
+
     useEffect(() => {
         if (!perksLoaded) return
         const key = `${ancestry?.id ?? ""}:${clazz?.id ?? ""}:${level}`
@@ -62,6 +66,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         dataLoaded.current = true
         loadedSelectionKey.current = key
     }, [ancestry?.id, clazz?.id, level, perksLoaded])
+
     const persistSlots = (item: any, slots: any[]) => {
         if (!item || !slots.length || !dataLoaded.current) return
         const rules = foundry.utils.deepClone(item.system.rules ?? []) as any[]

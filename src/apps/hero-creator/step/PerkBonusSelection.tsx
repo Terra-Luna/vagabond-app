@@ -74,6 +74,12 @@ export const usePerkBonusSelection = (
         return rules
     }, [advancementSelections, initialSelections, perks, stats])
 
+    // Advancement rules that bumped Reason from an even to an odd value, unlocking another skill training.
+    const reasonTrainingRules = useMemo(() => {
+        const reasonValue = stats.find(s => s.stat === 'reason')?.value ?? 1
+        return advancements.filter(rule => advancementSelections[rule.selectionKey] === 'stats.reason' && reasonValue % 2 === 0)
+    }, [advancements, advancementSelections, stats])
+
     const trainings = useMemo(() => {
         const rules = expandChoiceRules((perks ?? []).flatMap((perk, perkIndex) => getSkillTrainingChoiceRules([{ system: { rules: perk.system.rules.map(rule => ({ ...rule, sourceKey: (perk as any).sourceKey ?? perkIndex })) } } as any])))
         rules.forEach(r => {
@@ -316,6 +322,9 @@ export const usePerkBonusSelection = (
         spells: selectedSpells,
         allBonusSelections,
         bonusChoicesByPerk,
+        reasonTrainingRules,
+        reasonTrainingSelections,
+        setReasonTrainingSelections,
         isBonusSelectionHydrated: hydratedBonusSignatureState === currentBonusSignature,
         resetPerkBonusSelections
     }

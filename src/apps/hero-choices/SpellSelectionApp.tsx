@@ -1,4 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useSpellSelectionView } from "./SpellSelectionView"
 
@@ -13,9 +15,13 @@ export class SpellSelectionApp extends VagabondApplication {
             position: { width: 400 },
             Component: () => {
                 const { SpellSelection } = useSpellSelectionView(actor, isLevelUp)
-                return <div className="flex flex-col min-h-0 w-full p-1 mb-4 overflow-y-auto">
-                    {SpellSelection}
-                </div>
+                return (
+                    <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                        <div className="flex flex-col min-h-0 w-full p-1 mb-4 overflow-y-auto">
+                            {SpellSelection}
+                        </div>
+                    </EditModeContextProvider>
+                )
             }
         } as VagabondAppArgs)
         this.actor = actor

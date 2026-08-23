@@ -59,13 +59,13 @@ export const DropDown = ({ label = '', value, options, includeNullOption = false
     )
 }
 
-export const CustomDropDown = ({ value, options, className, onChange, editModeOverride = false }: {
-    value: string, options: { value: string, label: string }[], className?: string, onChange: (val: any) => any, editModeOverride?: boolean
+export const CustomDropDown = ({ value, options, className, onChange }: {
+    value: string, options: { value: string, label: string }[], className?: string, onChange: (val: any) => any
 }) => {
     const { isEditMode } = useEditMode()
 
     return (<>
-        {editModeOverride || isEditMode
+        {isEditMode
             ? <Select
                 value={value}
                 onChange={onChange}

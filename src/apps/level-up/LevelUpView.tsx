@@ -9,12 +9,13 @@ import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
+import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { usePerkSelectionView } from "../hero-choices/PerkSelectionView"
 import { useSpellSelectionView } from "../hero-choices/SpellSelectionView"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
 import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
-import { areLevelUpSelectionsComplete } from "./util/levelUpSelectionUtils"
 
 export interface PerkBonusSelection {
     value: string
@@ -45,7 +46,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     const levelUpChoices = getItemChoiceRules(nextLevel, actor.system.class.rules)
         .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
 
-    const { PerkSelection, bonusChoicesByPerk, classPerkSlots, setClassPerkSlots } = usePerkSelectionView(actor, true)
+    const { PerkSelection, bonusChoicesByPerk, classPerkSlots } = usePerkSelectionView(actor, true)
     const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(actor, true)
 
     const perks = useMemo(() => {
@@ -83,13 +84,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     )
 
     const latestPerk = selectedPerks[selectedPerks.length - 1]
-
     const showPerkSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'perk') }, [])
-
-    const showBonusSelections = useMemo(() => {
-        return showPerkSelection && selectedPerks.some(perk => perk?.system.rules.some(r => r.key === "ChoiceSet"))
-    }, [showPerkSelection, latestPerk])
-
     const showSpellSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'spell') }, [])
 
     useEffect(() => {
@@ -103,36 +98,18 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const isStatLevel = nextLevel % 2 === 0
-        const isStatSelected = !isStatLevel || levelUpStat != null || upgradableStatsOptions().length === 1
-        const isDone = areLevelUpSelectionsComplete({
-            isStatLevel,
-            isStatSelected,
-            showBonusSelections: Boolean(showBonusSelections),
-            selectedPerks,
+        onSave({
+            levelUpStat: levelUpStat,
+            advancement: advancement,
+            spell: spell,
+            perkTraining: perkTraining,
+            reasonTraining: reasonTraining,
             advancements,
+            spells,
             perkTrainings,
             reasonTrainings,
-            spells
+            isComplete: true
         })
-
-        if (isDone) {
-            onSave({
-                levelUpStat: levelUpStat,
-                advancement: advancement,
-                spell: spell,
-                perkTraining: perkTraining,
-                reasonTraining: reasonTraining,
-                advancements,
-                spells,
-                perkTrainings,
-                reasonTrainings,
-                isComplete: true
-            })
-        }
-        else {
-            ui.notifications?.warn("Complete selections to Save.")
-        }
     }
 
     return (
@@ -157,62 +134,63 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
             <div className="my-1"><Divider /></div>
 
             {/* SCROLLABLE BODY SECTION */}
-            <div className="@container flex flex-col grow h-full gap-y-2 overflow-y-auto">
-                {/* NO SELECTIONS REQUIRED */}
-                {levelUpChoices.length === 0 && upgradableStatsOptions().length === 1 &&
-                    <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
-                        No selections required.
-                    </p>
-                }
+            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                <div className="@container flex flex-col grow h-full gap-y-2 overflow-y-auto">
+                    {/* NO SELECTIONS REQUIRED */}
+                    {levelUpChoices.length === 0 && upgradableStatsOptions().length === 1 &&
+                        <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
+                            No selections required.
+                        </p>
+                    }
 
-                {/* CLASS FEATURE CARD */}
-                {(classFeature || nextLevel % 2 === 0) &&
-                    <div className="flex gap-x-2">
-                        {classFeature &&
-                            <div className="flex-1 space-y-1">
-                                <Header title={"CLASS FEATURE"} />
-                                <SkillCard
-                                    title={classFeature.name}
-                                    subtitles={[{ label: "Level", value: classFeature.level }]}
-                                    description={classFeature.description}
-                                    startCollapsed={false}
-                                />
-                            </div>
-                        }
-                        {nextLevel % 2 === 0 && upgradableStatsOptions().length > 1 &&
-                            <div className="flex-1 space-y-1 text-center">
-                                <Header title="STAT INCREASE" />
-                                <HeroCreationLabel text={"Select a stat (Max: 7)"} />
-                                <div className="flex w-full justify-center">
-                                    <HeroCreationDropdown
-                                        value={levelUpStat ?? ''}
-                                        options={upgradableStatsOptions()}
-                                        onChange={(selection: string) => setLevelUpStat(selection)}
+                    {/* CLASS FEATURE CARD */}
+                    {(classFeature || nextLevel % 2 === 0) &&
+                        <div className="flex gap-x-2">
+                            {classFeature &&
+                                <div className="flex-1 space-y-1">
+                                    <Header title={"CLASS FEATURE"} />
+                                    <SkillCard
+                                        title={classFeature.name}
+                                        subtitles={[{ label: "Level", value: classFeature.level }]}
+                                        description={classFeature.description}
+                                        startCollapsed={false}
                                     />
                                 </div>
+                            }
+                            {nextLevel % 2 === 0 && upgradableStatsOptions().length > 1 &&
+                                <div className="flex-1 space-y-1 text-center">
+                                    <Header title="STAT INCREASE" />
+                                    <HeroCreationLabel text={"Select a stat (Max: 7)"} />
+                                    <div className="flex w-full justify-center">
+                                        <HeroCreationDropdown
+                                            value={levelUpStat ?? ''}
+                                            options={upgradableStatsOptions()}
+                                            onChange={(selection: string) => setLevelUpStat(selection)}
+                                        />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+
+                    <div className={`grid gap-4 w-full ${showPerkSelection && showSpellSelection
+                        ? "grid-cols-2 h-[calc(100vh-200px)] overflow-y-hidden"
+                        : "max-w-3xl mx-auto grid-cols-1"
+                        }`}>
+                        {showPerkSelection && (
+                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
+                                <PerkSelection bonusChoices={bonusChoicesByPerk} />
                             </div>
-                        }
+                        )}
+
+                        {showSpellSelection && (
+                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
+                                {SpellSelection}
+                            </div>
+                        )}
                     </div>
-                }
-
-                <div className={`grid gap-4 w-full ${showPerkSelection && showSpellSelection
-                    ? "grid-cols-2 h-[calc(100vh-200px)] overflow-y-hidden"
-                    : "max-w-3xl mx-auto grid-cols-1"
-                    }`}>
-                    {showPerkSelection && (
-                        <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
-                            <PerkSelection bonusChoices={bonusChoicesByPerk} />
-                        </div>
-                    )}
-
-                    {showSpellSelection && (
-                        <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
-                            {SpellSelection}
-                        </div>
-                    )}
                 </div>
-
-            </div>
+            </EditModeContextProvider>
         </form>
     )
 }

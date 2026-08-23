@@ -12,12 +12,11 @@ import { ItemSheetPropLabel } from "../../view/sheets/item/equip/component/ItemS
 import { DiceRoll } from "../engine/roll/DiceRoll"
 import { DieSizeSelector } from "./DieSizeSelector"
 
-export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false, editModeOverride = false, extendedSettings, TrashButton }: {
+export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false, extendedSettings, TrashButton }: {
     label?: string,
     diceRoll: DiceRoll | DiceRollSchema,
     onChange: (updatedFields: Partial<DiceRoll>) => void,
     wrap?: boolean,
-    editModeOverride?: boolean,
     extendedSettings?: boolean,
     TrashButton?: ReactNode
 }) => {
@@ -51,7 +50,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
 
     return (
         <div className="flex text-base font-eskapade font-bold">
-            {(isEditMode || editModeOverride) &&
+            {isEditMode &&
                 <div>
                     {label && <ItemSheetPropLabel label={label} />}
 
@@ -103,7 +102,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
             }
 
             {/* DISPLAY MODE */}
-            {!isEditMode && !editModeOverride &&
+            {!isEditMode &&
                 <div>
                     {diceRoll.count > 0 && <>
                         <ItemSheetPropLabel label={label} />

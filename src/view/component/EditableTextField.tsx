@@ -102,8 +102,8 @@ export const EditableNameField = ({ actor }: { actor: Actor }) => {
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
 }
 
-export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, hideBorder, editModeOverride }: {
-    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, hideBorder?: boolean, editModeOverride?: boolean
+export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, hideBorder }: {
+    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, hideBorder?: boolean
 }) => {
     const { isEditMode } = useEditMode()
     const inputRef = useRef<HTMLInputElement>(null)
@@ -121,7 +121,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
     }
 
     return (<>
-        {isEditMode || editModeOverride ?
+        {isEditMode ?
             <div className={`flex items-center justify-center ${hideBorder ? '' : 'border border-solid border-table-border/50'}`}>
                 <form onSubmit={(e) => {
                     e.stopPropagation()

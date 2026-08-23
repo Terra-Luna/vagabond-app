@@ -12,7 +12,6 @@ export const HeroCreationDropdown = ({ label, value, options, onChange }: {
                 options={options}
                 className={"text-xl"}
                 onChange={(e) => { onChange(e.target.value) }}
-                editModeOverride={true}
             />
         </div>
     )

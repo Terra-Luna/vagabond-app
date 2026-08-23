@@ -6,7 +6,14 @@ import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { normalizeRuleSelections, randomId, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { addItems } from "../../../utils/heroInventoryUtil"
+import { vgLiteLang } from "../../../utils/lang"
+import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
+import { Header } from "../../../view/component/Header"
+import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
+import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
+import { TopNavButtons } from "../component/TopNavButtons"
 import { useAncestrySelection } from "./AncestrySelection"
 import { useClassSelection } from "./ClassSelection"
 import { useCoreStats } from "./CoreStats"
@@ -51,7 +58,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Trainings
      */
-    const { TrainingSelection, requiredTrainingRules, chosenLevel1Skills, chosenBonusSkills, setChosenLevel1Skills, setChosenBonusSkills, level1TrainingRules } = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
+    const { TrainingSelection, requiredTrainingRules, chosenLevel1Skills, chosenBonusSkills, setChosenLevel1Skills, setChosenBonusSkills, level1TrainingRules, level1RuleId } = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
 
     const selectedTrainings = useMemo(() => {
         return [...chosenLevel1Skills, ...chosenBonusSkills].map(sk => sk.skill)
@@ -84,12 +91,45 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         return perk?.system.rules.some(rule => rule.key === "ChoiceSet") ? [{ ...perk, sourceKey: slot.selectionId }] : []
     }), [ancestryPerkSlots, classPerkSlots]) as unknown as (Item & { system: PerkDataModel })[]
 
-    const { bonusChoicesByPerk, advancement, perkTraining, reasonTraining, advancements, perkTrainings, reasonTrainings, spells, resetPerkBonusSelections } = usePerkBonusSelection(
+    const {
+        bonusChoicesByPerk, advancement, perkTraining, reasonTraining, advancements, perkTrainings, reasonTrainings, spells, resetPerkBonusSelections,
+        reasonTrainingRules, reasonTrainingSelections, setReasonTrainingSelections
+    } = usePerkBonusSelection(
         perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
         [...chosenLevel1Skills, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
         classSpellGrants, ancestrySpellGrants,
         [backButton, nextButton]
+    )
+
+    // Whether the Advancement perk pushed Reason from even to odd, unlocking another training slot.
+    const needsExtraTraining = reasonTrainingRules.length > 0
+
+    const canProceedExtraTraining = useMemo(() => {
+        return reasonTrainingRules.every(rule => Boolean(reasonTrainingSelections[rule.selectionKey]))
+    }, [reasonTrainingRules, reasonTrainingSelections])
+
+    const ExtraTrainingSelection = (
+        <div className="@container bg-sheet-main-fill space-y-4">
+            <Header title="Additional Training" />
+            <TopNavButtons navButtons={[backButton, nextButton]} subtitle="The Advancement perk unlocked another skill training." canProceed={canProceedExtraTraining} />
+            <div className="flex flex-col w-full justify-center">
+                <div className="inline-flex flex-col items-stretch space-y-2 @2xl:w-1/2 mx-auto">
+                    {reasonTrainingRules.map(rule => (
+                        <div key={rule.selectionKey} className="flex flex-col items-center gap-y-1">
+                            <HeroCreationDropdown
+                                value={reasonTrainingSelections[rule.selectionKey] ?? ''}
+                                options={createDropdownEntriesFromObj(vgLiteLang.Skills).filter(sk =>
+                                    !requiredTrainingRules.map(t => t.skill).includes(sk.value) &&
+                                    !selectedTrainings.includes(sk.value)
+                                )}
+                                onChange={(val) => setReasonTrainingSelections(prev => ({ ...prev, [rule.selectionKey]: val }))}
+                            />
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
     )
 
     /**
@@ -110,12 +150,13 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             case 'training-selection': return TrainingSelection
             case 'spell-selection': return hasSpellSlots ? SpellSelection : null
             case 'perk-selection': return <PerkSelection bonusChoices={bonusChoicesByPerk} />
+            case 'extra-training-selection': return ExtraTrainingSelection
             case 'equipment-selection': return EquipmentSelection
             default: return null
         }
     }, [
         hasSpellSlots, perksWithBonusChoices, statsWithBonuses, AncestrySelection, ClassSelection,
-        CoreStats, TrainingSelection, SpellSelection, PerkSelection, bonusChoicesByPerk, EquipmentSelection
+        CoreStats, TrainingSelection, SpellSelection, PerkSelection, bonusChoicesByPerk, ExtraTrainingSelection, EquipmentSelection
     ])
 
     /**
@@ -125,9 +166,10 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         const baseIds = ['identity', 'class-selection', 'core-stats', 'training-selection']
         if (hasSpellSlots) { baseIds.push('spell-selection') }
         if ([...ancestryPerkSlots, ...classPerkSlots].length > 0) baseIds.push('perk-selection')
+        if (needsExtraTraining) baseIds.push('extra-training-selection')
         baseIds.push('equipment-selection')
         return baseIds
-    }, [hasSpellSlots, perksWithBonusChoices])
+    }, [hasSpellSlots, perksWithBonusChoices, needsExtraTraining])
 
     useEffect(() => {
         registerStepIds(activeStepIds)
@@ -197,7 +239,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
 
             const chosenSkills = [...chosenLevel1Skills, ...chosenBonusSkills]
             reasonTrainings.forEach(selection => {
-                chosenSkills.push({ skill: selection.value, ruleId: selection.ruleId })
+                chosenSkills.push({ skill: selection.value, ruleId: level1RuleId })
             })
             chosenSkills.forEach(selection => {
                 addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.isTrained`)
@@ -229,11 +271,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
              * Process selections made due to choosing perks:
              * 'Advancement', 'New Training', and 'Magical Secret'.
              */
-            const reasonTrainingSelections = reasonTrainings.map(selection => ({
-                ruleId: selection.ruleId,
-                value: `skills.${selection.value}.isTrained`
-            }))
-            const bonusSelections = [...advancements, ...perkTrainings, ...spells, ...reasonTrainingSelections]
+            const bonusSelections = [...advancements, ...perkTrainings, ...spells]
             if (bonusSelections.length > 0) await savePerkSelections(actor, bonusSelections)
 
         }
@@ -267,9 +305,11 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     return (
         <div className="text-text-primary text-lg font-eskapade flex flex-col min-h-0 h-full p-2 overflow-hidden">
             {/* Current Step View */}
-            <div className="flex-1 overflow-auto">
-                {renderStepContent(stepId)}
-            </div>
+            <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                <div className="flex-1 overflow-auto">
+                    {renderStepContent(stepId)}
+                </div>
+            </EditModeContextProvider>
         </div>
     )
 }

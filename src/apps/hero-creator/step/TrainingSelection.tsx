@@ -213,6 +213,7 @@ export const useTrainingSelection = (
 
     return {
         TrainingSelection, requiredTrainingRules, chosenLevel1Skills, chosenBonusSkills,
-        setRequiredTrainingRules, setChosenLevel1Skills, setChosenBonusSkills, level1TrainingRules
+        setRequiredTrainingRules, setChosenLevel1Skills, setChosenBonusSkills, level1TrainingRules,
+        level1RuleId
     }
 }
