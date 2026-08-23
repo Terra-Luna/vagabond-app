@@ -1,17 +1,23 @@
-import { ControlledMenu, MenuItem } from '@szhsin/react-menu'
+import { ControlledMenu, MenuItem, SubMenu } from '@szhsin/react-menu'
 import { FunctionComponent, useState } from 'react'
 
 import { Divider } from './Header'
 
 export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99 pointer-events-auto"
-export const ctxMenuTextStyle = "text-base font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"
-export const ctxMenuDestructiveTextStyle = "text-destructive-action text-lg font-eskapade font-bold hover:bg-context-menu-hover px-2 pr-4 z-99"
+export const ctxSubMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99 pointer-events-auto relative left-[2px]"
+const baseCtxMenuTextStyle = "font-eskapade font-bold z-99"
+const normalHover = "hover:bg-context-menu-hover"
+export const ctxMenuTextStyle = `${baseCtxMenuTextStyle} ${normalHover} text-base`
+export const ctxMenuDestructiveTextStyle = `${baseCtxMenuTextStyle} ${normalHover} text-destructive-action text-lg z-99`
+export const ctxMenuSelectedTextStyle = `${baseCtxMenuTextStyle} bg-context-menu-hover/60`
 
 export interface CtxMenuItem {
-    icon: FunctionComponent<{ size, className }>
+    icon?: FunctionComponent<{ size, className }>
     label: string
-    action: (e: any) => void
+    action?: (e: any) => void
     isDestructive?: boolean
+    isSelected?: boolean
+    subMenuItems?: CtxMenuItem[]
 }
 
 export const useContextMenu = () => {
@@ -30,37 +36,48 @@ export const useContextMenu = () => {
 
     const ContextMenu = () => {
         return (
-            <ControlledMenu
-                menuClassName={ctxMenuContainerStyle}
-                anchorPoint={menuAnchorPoint}
-                state={isMenuOpen ? 'open' : 'closed'}
-                direction="right"
-                onClose={() => setIsMenuOpen(false)}
-            >
-                {
-                    menuItems.map((item) => (
-                        <div key={item.label}>
-                            {item.isDestructive && menuItems.length > 1 && <Divider />}
-                            <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : ctxMenuTextStyle} onClick={item.action}>
-                                {item.icon &&
-                                    <div className="flex items-center text-sm">
-                                        {formattedIcon(item.icon, item.isDestructive)}
-                                        <div className="mx-1" />
-                                        <p className="my-1">{item.label}</p>
-                                        <div className="mr-1" />
-                                    </div>
-                                }
-                            </MenuItem>
-                        </div>
-                    ))
-                }
-            </ControlledMenu>
+            <div
+                onMouseEnter={e => e.stopPropagation()}
+                onMouseOver={e => e.stopPropagation()}>
+                <ControlledMenu
+                    menuClassName={ctxMenuContainerStyle}
+                    anchorPoint={menuAnchorPoint}
+                    state={isMenuOpen ? 'open' : 'closed'}
+                    direction="right"
+                    onClose={() => setIsMenuOpen(false)}
+                >
+                    {
+                        menuItems.map((item) => <OneMenuItem item={item} length={menuItems.length} />)
+                    }
+                </ControlledMenu>
+            </div>
         )
     }
 
     return { onCtxMenu, ContextMenu }
 }
 
-const formattedIcon = (IconComponent: FunctionComponent<{ size, className }>, isDestructive) => {
-    return <IconComponent size={14} className={isDestructive ? `text-destructive-action` : `text-context-menu-text`} />
+const OneMenuItem = ({ item, length }: { item: CtxMenuItem, length: number | undefined }) => {
+    if (item.subMenuItems) {
+        return (
+            <SubMenu label={<LabelAndIcon item={item} isSubMenu />} className={ctxMenuTextStyle} menuClassName={ctxSubMenuContainerStyle}>
+                {item.subMenuItems.map(subItem => <OneMenuItem item={subItem} length={item.subMenuItems?.length} />)}
+            </SubMenu>)
+    }
+
+    return <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : item?.isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} onClick={item.action}>
+        {item.isDestructive && (length ?? 0) > 1 && <Divider />}
+        <LabelAndIcon item={item} />
+    </MenuItem>
+}
+
+const LabelAndIcon = ({ item, isSubMenu }: { item: CtxMenuItem, isSubMenu?: boolean }) => (
+    <div className="flex items-center text-sm px-1">
+        {formattedIcon(item.icon, item.isDestructive)}
+        <p className="my-1">{`${item.label}${isSubMenu ? '...' : ''}`}</p>
+    </div>)
+
+const formattedIcon = (IconComponent: FunctionComponent<{ size, className }> | undefined, isDestructive) => {
+    if (!IconComponent) return undefined
+    return <IconComponent size={14} className={`mr-2 ${isDestructive ? `text-destructive-action` : `text-context-menu-text`}`} />
 }

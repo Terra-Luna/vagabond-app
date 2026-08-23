@@ -1,12 +1,12 @@
-import { Eye,PlayIcon, StopCircle, Trash } from "lucide-react"
-import { ReactNode, useCallback, useEffect, useLayoutEffect,useMemo, useRef, useState } from "react"
+import { Eye, PlayIcon, StopCircle, Trash } from "lucide-react"
+import { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { lang } from "../../utils/lang"
 import { getCanvasToken } from "../../utils/modelUtil"
-import { useContextMenu } from "../../view/component/ContextMenu"
+import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 import { Gauge } from "../../view/component/Gauge"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
@@ -15,7 +15,7 @@ import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { useFoundryHook } from "../../view/wrappers/hooks"
 import { getControlledCombatants, getControlledTokens } from "../combat-utils"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
-import { getCombatantStatuses } from "../engine/util/status"
+import { combatantHasStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 
@@ -146,7 +146,6 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     const [hovered, setIsHovered] = useState(false)
     const [controlled, setIsControlled] = useState(false)
     const [isHidden, setIsHidden] = useState(realToken?.document.hidden)
-    const { onCtxMenu, ContextMenu } = useContextMenu()
 
     useFoundryHook("hoverToken" as any, (hoveredToken, hover) => {
         if (hoveredToken === token) {
@@ -176,28 +175,12 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     }, [token, realToken])
 
 
-    const ctxMenuActions = () => {
-        const controlledTokens = new Set(getControlledTokens())
-
-        const updateVisibility = () => {
-            if (realToken) controlledTokens.add(realToken)
-            controlledTokens.forEach(token => token.document.update({ hidden: !token.document.hidden }))
-        }
-
-        const actions = [
-            { label: controlledTokens.size > 1 ? "Toggle Visibility of Selected Tokens" : isHidden ? "Show" : "Hide", action: updateVisibility, icon: Eye },
-            { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true }
-        ] as any
-
-        return actions
-    }
-
     const isActiveCombatant = game.combat?.combatant === combatant
     const opacityClass = isActiveCombatant || (combatant.activations.value ?? 0 > 0) ? '' : 'opacity-90 grayscale-[85%]'
     const disposition = combatant.token?.disposition
 
     return (
-        <div className="flex w-full" onContextMenu={e => onCtxMenu(e, ctxMenuActions())}>
+        <div className="flex w-full">
             <div className={`flex w-full ${opacityClass}`}>
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} />
                 <div className="w-full pr-4">
@@ -207,7 +190,6 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
                     {children}
                 </div>
             </div>
-            <ContextMenu />
         </div>
 
     )
@@ -254,19 +236,70 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
         token.actor?.sheet?.render(true)
     }, [token])
 
+    const { onCtxMenu, ContextMenu } = useContextMenu()
+
+    const ctxMenuActions = () => {
+        const controlledTokens = new Set(getControlledTokens())
+
+        const updateVisibility = () => {
+            const realToken = getCanvasToken(token?.id)
+            if (realToken) controlledTokens.add(realToken)
+            controlledTokens.forEach(token => token.document.update({ hidden: !token.document.hidden }))
+        }
+
+        const makeStatusConditionMenuItem = (statusKey: string) => {
+            const StatusMenuItemIcon = () => <StatusIcon status={statusKey} size={24} className="mr-1 bg-sheet-header-fill" />
+            const hasStatus = combatantHasStatus(combatant, statusKey)
+            const action = () => {
+                combatant.actor?.toggleStatusEffect(statusKey, { active: !hasStatus })
+            }
+            return { label: lang.VGLITE.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: hasStatus } as CtxMenuItem
+        }
+
+        const makeBurnMenuItem = () => {
+            const StatusMenuItemIcon = () => <StatusIcon status="burning" size={24} className="mr-1 bg-sheet-header-fill" />
+            return {
+                label: lang.VGLITE.StatusConditions["burning"].name, icon: StatusMenuItemIcon, subMenuItems: Object.keys(lang.VGLITE.DamageTypes).filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType))).map(damageType => {
+                    return {
+                        label: lang.VGLITE.DamageTypes[damageType], subMenuItems: [
+                            { label: "cd4" },
+                            { label: "cd6" },
+                            { label: "cd8" },
+                            { label: "cd10" },
+                            { label: "cd12" },
+                            { label: "cd20" },
+                        ]
+                    }
+                })
+            } as CtxMenuItem
+        }
+
+        const actions = [
+            { label: controlledTokens.size > 1 ? "Toggle Visibility of Selected Tokens" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide", action: updateVisibility, icon: Eye },
+            { label: "Apply Effect", subMenuItems: [makeBurnMenuItem(), ...Object.keys(lang.VGLITE.StatusConditions).filter(statusKey => statusKey !== "burning").map(statusKey => makeStatusConditionMenuItem(statusKey))] },
+            { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true },
+        ] as CtxMenuItem[]
+
+        return actions
+    }
+
     return (
-        <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id}`}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            onClick={onClick as any}
-            onDoubleClick={onDoubleClick}
-            title={lang.VGLITE.Combat.keyExplainer}
-        >
-            <div className="w-full">
-                {children}
+        <>
+            <ContextMenu />
+            <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id}`}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
+                onClick={onClick as any}
+                onDoubleClick={onDoubleClick}
+                onContextMenu={e => onCtxMenu(e, ctxMenuActions())}
+                title={lang.VGLITE.Combat.keyExplainer}
+            >
+                <div className="w-full">
+                    {children}
+                </div>
+                <ActivateCombatantButton combatant={combatant} />
             </div>
-            <ActivateCombatantButton combatant={combatant} />
-        </div>
+        </>
     )
 }
 
@@ -290,6 +323,12 @@ const getStatusIcons = (combatant) => {
         const title = lang.VGLITE.StatusConditions[status].name
         return img ? <img key={status} src={img} height={12} width={12} title={title} /> : <></>
     })
+}
+
+const StatusIcon = ({ status, size, className }: { status: string, size?: number, className?: string }) => {
+    const img = CONFIG.statusEffects.find(e => e.id === status)?.img
+    const title = lang.VGLITE.StatusConditions[status].name
+    return img ? <img key={status} src={img} height={size ?? 12} width={size ?? 12} title={title} className={className} /> : <></>
 }
 
 const StatusIcons = ({ combatant }) => {

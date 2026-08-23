@@ -7,3 +7,7 @@ export const getCombatantStatuses = (combatant) => {
         return acc
     }, [] as string[])
 }
+
+export const combatantHasStatus = (combatant, status) => {
+    return getCombatantStatuses(combatant).includes(status)
+}
