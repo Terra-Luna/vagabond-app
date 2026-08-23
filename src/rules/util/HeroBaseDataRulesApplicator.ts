@@ -1,6 +1,6 @@
 import { addItems } from "../../utils/heroInventoryUtil"
 import { inventoryItemTypes, isPathOfType } from "../../utils/modelUtil"
-import { calculateRecurringRuleScale } from "./item-rules-util"
+import { calculateRecurringRuleScale, getRuleSelectionValues, normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class HeroBaseDataRulesApplicator {
@@ -8,8 +8,6 @@ export class HeroBaseDataRulesApplicator {
     static apply(actor: Actor & { system: any }) {
         if (!actor || !actor.isOwner) return
 
-        // Get rules from Ancestry, Class, and granted Perks and process them.
-        const perkSelections = actor.getFlag("vagabond-lite" as any, "perkSelections") ?? []
         const activeRules = actor.system.getActiveRules()
         const perkGrants = activeRules.filter(r => r.key === "GrantItem" && r.type === "perk")
         const chosenPerkRules = activeRules.filter(r => r.key === "ChoiceSet" && r.pack === "perk")
@@ -19,15 +17,6 @@ export class HeroBaseDataRulesApplicator {
         const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && inventoryItemTypes().includes(r.type))
 
         const perks = ItemsCache.perks()
-
-        const applyPerkSelections = (perkSelections) => {
-            Object.keys(perkSelections ?? {})?.forEach(key => {
-                perkSelections[key].forEach(path => {
-                    const currentValue = foundry.utils.getProperty(actor.system, path)
-                    foundry.utils.setProperty(actor.system, path, (typeof currentValue === "number") ? currentValue + 1 : true)
-                })
-            })
-        }
 
         const injectGrantedPerkRules = (perkGrants) => {
             perkGrants?.forEach(grant => {
@@ -44,13 +33,25 @@ export class HeroBaseDataRulesApplicator {
 
         const injectChosenPerkRules = (chosenPerkRules) => {
             chosenPerkRules?.forEach(rule => {
-                rule.selections?.forEach(selection => {
-                    const perk = perks.find(it => it.uuid === selection)
+                const ruleSelections = normalizeRuleSelections(rule.selections)
+                ruleSelections.forEach(selection => {
+                    const perk = perks.find(it => it.uuid === selection.value)
                     const perkRules = perk?.system.rules
                     perkRules?.forEach(rule => {
                         if (rule.key === "ToggleRule") toggleRules.push(rule)
                         if (rule.key === "FlatModifier") flatModifiers.push(rule)
                     })
+                })
+
+                ruleSelections.forEach(selection => {
+                    if (!selection.subselect) return
+                    const perk = perks.find(it => it.uuid === selection.value)
+                    perk?.system.rules
+                        ?.filter(perkRule => perkRule.key === "ChoiceSet" && perkRule.channel === "path")
+                        .forEach(perkRule => choiceRules.push({
+                            ...perkRule,
+                            selections: [{ id: selection.id, value: selection.subselect, subselect: "" }]
+                        }))
                 })
             })
         }
@@ -79,7 +80,7 @@ export class HeroBaseDataRulesApplicator {
         }
 
         const applyChoiceRule = (rule) => {
-            rule.selections.map(s => s.replace("system.", "")).forEach(path => {
+            getRuleSelectionValues(rule.selections).map(s => s.replace("system.", "")).forEach(path => {
                 if (isPathOfType(actor.system, path, "boolean")) {
                     foundry.utils.setProperty(actor.system, path, true)
                 }
@@ -99,7 +100,6 @@ export class HeroBaseDataRulesApplicator {
             await addItems(actor, [rule.uuid])
         }
 
-        applyPerkSelections(perkSelections)
         injectGrantedPerkRules(perkGrants)
         injectChosenPerkRules(chosenPerkRules)
         for (const rule of toggleRules) { applyToggleRule(rule) }

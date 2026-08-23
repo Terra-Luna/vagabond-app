@@ -69,7 +69,20 @@ export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {
         height = calculatedHeight
     }
 
-    sheet.renderWithWrappers({ theme: getTheme(), position: { width: realWidth, height, top, left } })
+    const nextPosition = { width: realWidth, height, top, left }
+    const previousPosition = (sheet as any)._lastNormalizedPosition
+    const shouldRerender = !previousPosition || previousPosition.width !== nextPosition.width || previousPosition.height !== nextPosition.height;
+    (sheet as any)._lastNormalizedPosition = nextPosition
+
+    if (!sheet._reactRoot || !shouldRerender) return { ...position, width: realWidth, height }
+
+    const pendingFrame = (sheet as any)._positionRenderFrame as number | undefined
+    if (pendingFrame) cancelAnimationFrame(pendingFrame);
+    (sheet as any)._positionRenderFrame = requestAnimationFrame(() => {
+        (sheet as any)._positionRenderFrame = undefined
+        sheet.renderWithWrappers({ theme: getTheme(), position: nextPosition })
+    })
+
     return { ...position, width: realWidth, height }
 }
 

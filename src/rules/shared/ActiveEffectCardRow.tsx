@@ -1,4 +1,5 @@
 import { vgLiteLang } from "../../utils/lang"
+import { normalizeRuleSelections } from "../util/item-rules-util"
 import { ItemsCache } from "../util/ItemsCache"
 
 export const EffectCardContainer = ({ children }) => {
@@ -15,17 +16,26 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
 
     const items = ItemsCache.items
 
-    const cleanSelectionName = (path: string) => {
+    const cleanSelectionName = (path?: string) => {
+        if (!path) return ""
         if (path.includes("skills.")) {
-            return vgLiteLang.Skills[path.replace(".isTrained", "").split(".").reverse()[0]].name
+            const skillKey = path.replace(".isTrained", "").split(".").reverse()[0]
+            return vgLiteLang.Skills[skillKey]?.name ?? skillKey
         }
-        else if (path.includes("stats.")) { 
-            return vgLiteLang.Stat[path.split(".").reverse()[0]].name
+        else if (path.includes("stats.")) {
+            const statKey = path.split(".").reverse()[0]
+            return vgLiteLang.Stat[statKey]?.name ?? statKey
         }
         else {
-            return items.get(path)?.name
+            return items.get(path)?.name ?? path
         }
     }
+
+    const displaySelections = normalizeRuleSelections(rule.selections)
+        .flatMap(selection => (selection.subselect || selection.value) ? [selection.subselect || selection.value] : [])
+        .filter(Boolean)
+        .map(cleanSelectionName)
+        .filter(Boolean)
 
     return (
         <div key={rule.id} className={`
@@ -41,8 +51,7 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
                             {`${rule.label || "Unnamed Feature"}`}
                         </div>
                         <div className="text-text-secondary font-normal italic">
-                            {`${rule.selections?.length > 0
-                                ? ` (${rule.selections?.filter(s => s.length > 0).map(s => cleanSelectionName(s))?.join(", ")})` : ""}`}
+                            {displaySelections.length > 0 ? ` (${displaySelections.join(", ")})` : ""}
                         </div>
                     </div>
                     <div className="text-xs text-text-primary">

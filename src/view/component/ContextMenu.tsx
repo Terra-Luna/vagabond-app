@@ -47,7 +47,9 @@ export const useContextMenu = () => {
                     onClose={() => setIsMenuOpen(false)}
                 >
                     {
-                        menuItems.map((item) => <OneMenuItem item={item} length={menuItems.length} />)
+                        menuItems.map((item, index) =>
+                            <OneMenuItem key={index} item={item} length={menuItems.length} />
+                        )
                     }
                 </ControlledMenu>
             </div>

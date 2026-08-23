@@ -4,6 +4,7 @@ import { ItemsCache } from "./ItemsCache"
 
 export interface ItemRule {
     id: string,
+    key: string,
     label: string,
     level: number,
     scale: number,
@@ -11,7 +12,83 @@ export interface ItemRule {
     value: number,
     pack: string,
     choices: { value: string, label: string }[],
-    selections: string[]
+    selections: RuleSelection[]
+}
+
+export interface RuleSelection {
+    id: string
+    value: string
+    subselect: string
+}
+
+export const randomId = () => foundry.utils.randomID()
+
+export const normalizeRuleSelections = (selections: unknown): RuleSelection[] => {
+    if (!Array.isArray(selections)) return []
+
+    return selections.flatMap(selection => {
+        if (typeof selection === "string") {
+            return selection ? [{ id: randomId(), value: selection, subselect: "" }] : []
+        }
+
+        if (!selection || typeof selection !== "object" || typeof (selection as any).value !== "string") return []
+        return [{
+            id: typeof (selection as any).id === "string" ? (selection as any).id : randomId(),
+            value: (selection as any).value,
+            subselect: typeof (selection as any).subselect === "string" ? (selection as any).subselect : ""
+        }]
+    })
+}
+
+export const getRuleSelectionValues = (selections: unknown, ruleId?: string): string[] =>
+    normalizeRuleSelections(selections)
+        .filter(selection => ruleId == null || selection.value === ruleId)
+        .map(selection => selection.value)
+
+export async function savePerkSelections(actor: Actor & { system: any }, slots: { ruleId: string, value: string, selectionId?: string }[]) {
+    const sourceItems = actor.items.filter(item => ["class", "ancestry"].includes(item.type as string)) as any[]
+    const rulesByItem = sourceItems.map(item => ({
+        item,
+        rules: foundry.utils.deepClone((item.system as any).rules ?? []) as any[]
+    }))
+    const virtualPerkRules = actor.system.perks.flatMap(perk => (perk.rules ?? []).map(rule => ({
+        ruleId: rule.id,
+        sourceId: perk._sourceId
+    })))
+
+    for (const slot of slots.filter(slot => slot.value)) {
+        const directRule = rulesByItem.flatMap(source => source.rules).find(rule => rule.id === slot.ruleId)
+        if (directRule) {
+            const selections = normalizeRuleSelections(directRule.selections)
+            const existing = selections.find(selection => slot.selectionId
+                ? selection.id === slot.selectionId
+                : selection.value === slot.value)
+            if (existing) existing.value = slot.value
+            else selections.push({ id: slot.selectionId ?? randomId(), value: slot.value, subselect: "" })
+            directRule.selections = selections
+            continue
+        }
+
+        const virtualRule = virtualPerkRules.find(rule => rule.ruleId === slot.ruleId)
+        const parentSelection = virtualRule && rulesByItem
+            .flatMap(source => source.rules)
+            .find(rule => normalizeRuleSelections(rule.selections).some(selection =>
+                slot.selectionId
+                    ? selection.id === slot.selectionId
+                    : selection.value === virtualRule.sourceId))
+        if (!parentSelection) continue
+
+        const selections = normalizeRuleSelections(parentSelection.selections)
+        const existing = selections.find(selection =>
+            slot.selectionId
+                ? selection.id === slot.selectionId
+                : selection.value === virtualRule.sourceId)
+        if (existing) existing.subselect = slot.value
+        parentSelection.selections = selections
+    }
+
+    await Promise.all(rulesByItem.map(({ item, rules }) => item.update({ "system.rules": rules } as Record<string, any>)))
+    await actor.system?.forceUpdate?.()
 }
 
 export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | undefined)[]): { name: string, stat: string, bonus: number }[] {
@@ -275,6 +352,8 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
 
         return {
             id: rule.id,
+            key: rule.key,
+            sourceKey: rule.sourceKey,
             label: rule.label ?? "",
             level: Number(rule.level ?? 0),
             scale: rule.scale,
@@ -287,54 +366,6 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
     })
 
     return parsedRules.sort((a, b) => a.level - b.level)
-}
-
-/**
- * Perks such as 'Magical Secret', 'Advancement', 'New Training', & 'Tough' allow 
- * for a single selection, but may be taken multiple times. In this case, each one 
- * is combined into the same Perk where it's choice rule's maxChoices is a sum 
- * of how many times the player has chosen that perk.
- * @param actor 
- * @param slots 
- */
-export async function savePerkSelectionFlags(actor, slots: { ruleId: string, value: string }[]) {
-    const mutableFlags = getClonedFlags(actor)
-    const uniqueRuleIds = getUniqueRuleIds(slots)
-
-    let hasChanges = false
-    uniqueRuleIds.forEach(ruleId => {
-        // Clears out deselected slots.
-        const nextValues = slots.filter(s => s.ruleId === ruleId).map(s => s.value).filter(Boolean)
-
-        if (nextValues.length === 0) {
-            if (mutableFlags[ruleId as string] !== undefined) {
-                mutableFlags[ruleId as string] = []
-                hasChanges = true
-            }
-        }
-        else {
-            if (JSON.stringify(mutableFlags[ruleId as string]) !== JSON.stringify(nextValues)) {
-                mutableFlags[ruleId as string] = nextValues
-                hasChanges = true
-            }
-        }
-    })
-
-    if (hasChanges) {
-        await actor.update({ 'flags.vagabond-lite.perkSelections': mutableFlags } as Record<string, any>)
-    }
-}
-
-export const getClonedFlags = (actor) => {
-    return foundry.utils.duplicate(getPerkFlags(actor)) as Record<string, any>
-}
-
-const getPerkFlags = (actor) => {
-    return actor.getFlag("vagabond-lite" as any, "perkSelections") ?? {}
-}
-
-const getUniqueRuleIds = (slots) => {
-    return [...new Set(slots.map(s => s.ruleId))]
 }
 
 export const calculateRecurringChoices = (level: number, ruleLevel: number, maxChoices: number, scale: number): number => {

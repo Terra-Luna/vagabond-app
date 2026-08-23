@@ -2,7 +2,7 @@ import { ArrowsUpFromLine } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, getRuleSelectionValues } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { vgLiteLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
@@ -14,14 +14,24 @@ import { useSpellSelectionView } from "../hero-choices/SpellSelectionView"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
 import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
+import { areLevelUpSelectionsComplete } from "./util/levelUpSelectionUtils"
 
-export interface PerkBonusSelection { value: string, ruleId: string }
+export interface PerkBonusSelection {
+    value: string
+    ruleId: string
+    selectionId?: string
+}
 
 export interface LevelUpArgs {
     levelUpStat?: string
     advancement?: PerkBonusSelection
     spell?: PerkBonusSelection
     perkTraining?: PerkBonusSelection
+    reasonTraining?: PerkBonusSelection
+    advancements?: PerkBonusSelection[]
+    perkTrainings?: PerkBonusSelection[]
+    reasonTrainings?: PerkBonusSelection[]
+    spells?: PerkBonusSelection[]
     isComplete?: boolean
 }
 
@@ -35,18 +45,23 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     const levelUpChoices = getItemChoiceRules(nextLevel, actor.system.class.rules)
         .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
 
-    const { PerkSelection, classPerkSlots, setClassPerkSlots } = usePerkSelectionView(actor, true)
+    const { PerkSelection, bonusChoicesByPerk, classPerkSlots, setClassPerkSlots } = usePerkSelectionView(actor, true)
     const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(actor, true)
 
     const perks = useMemo(() => {
         return ItemsCache.perks()
     }, [])
 
-    const latestPerk = useMemo(() => {
-        const latestSelection = [...classPerkSlots].reverse()[0]
-        const perk = perks.find(p => p.uuid === latestSelection?.value)
-        return perk
-    }, [classPerkSlots])
+    const selectedPerks = useMemo(() => {
+        return classPerkSlots
+            .map(slot => perks.find(perk => perk.uuid === slot.value))
+            .filter(Boolean)
+    }, [classPerkSlots, perks])
+
+    const initialBonusSelections = useMemo(() => {
+        return Object.fromEntries(actor.system.perks.flatMap(perk =>
+            (perk.rules ?? []).map(rule => [rule.id, getRuleSelectionValues(rule.selections)])))
+    }, [actor.system.perks])
 
     const stats = useMemo(() => {
         return Object.keys(vgLiteLang.Stat).map(k => (
@@ -61,16 +76,18 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
         })
     }, [])
 
-    const { PerkBonusSelection, advancement, spell, perkTraining, resetPerkBonusSelections } = usePerkBonusSelection(
-        latestPerk ? [latestPerk] : [], stats, [], trainings,
+    const { advancement, spell, perkTraining, reasonTraining, advancements, spells, perkTrainings, reasonTrainings, resetPerkBonusSelections } = usePerkBonusSelection(
+        selectedPerks as any, stats, [], trainings,
         [...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots],
-        classSpellGrants, ancestrySpellGrants, []
+        classSpellGrants, ancestrySpellGrants, [], initialBonusSelections
     )
+
+    const latestPerk = selectedPerks[selectedPerks.length - 1]
 
     const showPerkSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'perk') }, [])
 
     const showBonusSelections = useMemo(() => {
-        return showPerkSelection && latestPerk?.system.rules.some(r => r.key === "ChoiceSet")
+        return showPerkSelection && selectedPerks.some(perk => perk?.system.rules.some(r => r.key === "ChoiceSet"))
     }, [showPerkSelection, latestPerk])
 
     const showSpellSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'spell') }, [])
@@ -88,11 +105,30 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
         e.preventDefault()
         const isStatLevel = nextLevel % 2 === 0
         const isStatSelected = !isStatLevel || levelUpStat != null || upgradableStatsOptions().length === 1
-        const isBonusSelectionMade = !showBonusSelections || (showBonusSelections && (advancement || spell || perkTraining))
-        const isDone = isStatSelected && isBonusSelectionMade && (latestPerk || isStatLevel)
+        const isDone = areLevelUpSelectionsComplete({
+            isStatLevel,
+            isStatSelected,
+            showBonusSelections: Boolean(showBonusSelections),
+            selectedPerks,
+            advancements,
+            perkTrainings,
+            reasonTrainings,
+            spells
+        })
+
         if (isDone) {
-            setClassPerkSlots(classPerkSlots.map(slot => ({ ...slot, isLocked: true })))
-            onSave({ levelUpStat: levelUpStat, advancement: advancement, spell: spell, perkTraining: perkTraining, isComplete: true })
+            onSave({
+                levelUpStat: levelUpStat,
+                advancement: advancement,
+                spell: spell,
+                perkTraining: perkTraining,
+                reasonTraining: reasonTraining,
+                advancements,
+                spells,
+                perkTrainings,
+                reasonTrainings,
+                isComplete: true
+            })
         }
         else {
             ui.notifications?.warn("Complete selections to Save.")
@@ -165,14 +201,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                     }`}>
                     {showPerkSelection && (
                         <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
-                            {/* PERK BONUS SELECTIONS */}
-                            {showBonusSelections && (
-                                <div className="w-full">
-                                    {PerkBonusSelection}
-                                </div>
-                            )}
-
-                            {PerkSelection}
+                            <PerkSelection bonusChoices={bonusChoicesByPerk} />
                         </div>
                     )}
 

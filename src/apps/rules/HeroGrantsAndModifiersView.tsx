@@ -1,5 +1,6 @@
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { ActiveEffectCardRow, EffectCardContainer } from '../../rules/shared/ActiveEffectCardRow'
+import { RuleSelection } from '../../rules/util/item-rules-util'
 import { CollapsibleSection } from '../../view/component/Collapsible'
 import { HeroCreationLabel, HeroCreationSubtext } from '../hero-creator/component/HeroCreationTypography'
 
@@ -12,7 +13,7 @@ interface ActiveRuleDisplay {
     uuid?: string
     level: number
     pack: string
-    selections: string[] | null
+    selections: RuleSelection[] | null
     sourceName: string
     sourceImg: string
 }

@@ -1,4 +1,3 @@
-import { LockKeyhole } from "lucide-react"
 import { useCallback, useMemo } from "react"
 
 import { ItemsCache } from "../../../rules/util/ItemsCache"
@@ -12,13 +11,12 @@ import { CustomDropDown } from "../../../view/component/Dropdown"
  * @param param0
  * @returns 
  */
-export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, onSelect, lockOldSlots }: {
-    slotGroup: { value: string, label: string, isLocked?: boolean }[],
+export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, onSelect }: {
+    slotGroup: { value: string, label: string }[],
     options: { value: string, label: string }[],
     otherSlotGroup: any[],
     grants: any[],
-    onSelect: any,
-    lockOldSlots?: boolean
+    onSelect: any
 }) => {
 
     /**
@@ -49,12 +47,10 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                         const filteredOptions = options.filter(opt =>
                             opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value)
                         )
-                        const isLocked = slot.isLocked || (lockOldSlots && index + 1 < slotGroup.length)
 
                         return (
                             <div key={`item-slot-selector-${index}`} className="w-full min-w-0">
-                                {/* SELECTABLE SLOTS */}
-                                {!isLocked && <CustomDropDown
+                                <CustomDropDown
                                     value={slot.value}
                                     options={filteredOptions}
                                     className={`
@@ -67,14 +63,8 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                                         const label = selectedSpell ? selectedSpell.label : ''
                                         onSelect(index, label, selectedId)
                                     }}
-                                    editModeOverride={!isLocked}
-                                />}
-
-                                {/* LOCKED / READ-ONLY MODE */}
-                                {isLocked && <div className="w-full h-full flex gap-x-2 items-center justify-between text-xl font-eskapade font-bold border border-solid border-table-border px-2">
-                                    <span className="truncate">{slot.label}</span>
-                                    <LockKeyhole size={12} className="flex-shrink-0" />
-                                </div>}
+                                    editModeOverride={true}
+                                />
                             </div>
                         )
                     })

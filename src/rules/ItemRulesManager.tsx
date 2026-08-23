@@ -14,6 +14,7 @@ import { GrantItemForm } from "./form/GrantItemForm"
 import { ToggleRuleForm } from "./form/ToggleRuleForm"
 import { ItemRuleSelector } from "./shared/ItemRuleInput"
 import { RuleElement } from "./shared/RuleElement"
+import { RuleSelection } from "./util/item-rules-util"
 
 export interface ChoiceRule {
     id: string
@@ -25,7 +26,7 @@ export interface ChoiceRule {
     channel: "path" | "item",
     sourceMode: "static" | "dynamic",
     choices: { value: string, label: string }[],
-    selections: string[]
+    selections: RuleSelection[]
 }
 
 export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataModel<BaseItemSchema> } }) => {

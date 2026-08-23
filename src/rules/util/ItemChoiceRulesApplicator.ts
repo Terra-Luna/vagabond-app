@@ -1,5 +1,6 @@
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
+import { normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
 export class PerkRulesSelectionsApplicator {
@@ -15,12 +16,13 @@ export class PerkRulesSelectionsApplicator {
 
         const activeRules = actor.system.getActiveRules()
 
-        const perkSelections = actor.flags["vagabond-lite"]?.perkSelections ?? {}
-
-        const itemRuleSelections = [
-            ...activeRules.filter(r => r.key === "ChoiceSet" && r.channel === "item").flatMap(r => r.selections),
-            ...Object.values(perkSelections).deepFlatten()
-        ]
+        const itemRuleSelections = activeRules
+            .filter(r => r.key === "ChoiceSet" && r.channel === "item")
+            .flatMap(r => normalizeRuleSelections(r.selections).flatMap(selection => {
+                const selectedItem = ItemsCache.items.get(selection.value)
+                const hasItemSubselect = selectedItem?.system?.rules?.some(rule => rule.key === "ChoiceSet" && rule.channel === "item")
+                return [selection.value, ...(hasItemSubselect && selection.subselect ? [selection.subselect] : [])]
+            }))
 
         const grantRules = activeRules.filter(r => r.key === "GrantItem")
         const spellPerkGrantRules = grantRules.filter(r => r.type === "spell" || r.type === "perk")
@@ -30,6 +32,17 @@ export class PerkRulesSelectionsApplicator {
         spellPerkItemIds.forEach(id => {
             const cachedItem = ItemsCache.items.get(id)
             if (cachedItem) spellPerkItems.push(cachedItem)
+        })
+
+        const selectedPerkSelections = activeRules
+            .filter(r => r.key === "ChoiceSet" && r.channel === "item")
+            .flatMap(r => normalizeRuleSelections(r.selections))
+            .filter(selection => ItemsCache.perks().some(perk => perk.uuid === selection.value))
+        const selectionsByPerk = new Map<string, any[]>()
+        selectedPerkSelections.forEach(selection => {
+            const selections = selectionsByPerk.get(selection.value) ?? []
+            selections.push(selection)
+            selectionsByPerk.set(selection.value, selections)
         })
 
         for (const fullItem of spellPerkItems) {
@@ -42,9 +55,11 @@ export class PerkRulesSelectionsApplicator {
                 const systemClone = foundry.utils.deepClone(fullItem.system.toObject())
 
                 if (fullItem.system instanceof PerkDataModel) {
+                    const parentSelection = selectionsByPerk.get(fullItem.uuid)?.shift()
                     systemClone.rules.forEach(rule => {
-                        const id = rule.id as string
-                        rule.selections = id in perkSelections ? perkSelections[id] : []
+                        rule.selections = parentSelection?.subselect
+                            ? [{ ...parentSelection, value: parentSelection.subselect, subselect: "" }]
+                            : []
                     })
 
                     const duplicatePerk = actor.system.perks.find(it => (it as any)._sourceId === fullItem.uuid)

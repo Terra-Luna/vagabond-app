@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { Coins } from "../../../model/common/CoinValue"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { savePerkSelectionFlags } from "../../../rules/util/item-rules-util"
+import { normalizeRuleSelections, randomId, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { addItems } from "../../../utils/heroInventoryUtil"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
@@ -23,7 +23,6 @@ export interface HeroCreatorArgs {
 
 export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     const { stepId, registerStepIds, registerOnFinish, backButton, nextButton } = useNavigation()
-    const [perksWithBonusChoices, setPerksWithBonusChoices] = useState<(Item & { system: PerkDataModel })[]>([])
 
     /**
      * Ancestry & Class
@@ -78,9 +77,14 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Perks
      */
-    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton], 1, false)
+    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton], 1)
 
-    const { PerkBonusSelection, advancement, perkTraining, reasonTraining, spell, resetPerkBonusSelections } = usePerkBonusSelection(
+    const perksWithBonusChoices = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
+        const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
+        return perk?.system.rules.some(rule => rule.key === "ChoiceSet") ? [{ ...perk, sourceKey: slot.selectionId }] : []
+    }), [ancestryPerkSlots, classPerkSlots]) as unknown as (Item & { system: PerkDataModel })[]
+
+    const { bonusChoicesByPerk, advancement, perkTraining, reasonTraining, advancements, perkTrainings, reasonTrainings, spells, resetPerkBonusSelections } = usePerkBonusSelection(
         perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
         [...chosenLevel1Skills, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
@@ -105,14 +109,13 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             case 'core-stats': return CoreStats
             case 'training-selection': return TrainingSelection
             case 'spell-selection': return hasSpellSlots ? SpellSelection : null
-            case 'perk-selection': return PerkSelection
-            case 'perk-bonus-selection': return perksWithBonusChoices.length > 0 ? PerkBonusSelection : null
+            case 'perk-selection': return <PerkSelection bonusChoices={bonusChoicesByPerk} />
             case 'equipment-selection': return EquipmentSelection
             default: return null
         }
     }, [
         hasSpellSlots, perksWithBonusChoices, statsWithBonuses, AncestrySelection, ClassSelection,
-        CoreStats, TrainingSelection, SpellSelection, PerkSelection, EquipmentSelection
+        CoreStats, TrainingSelection, SpellSelection, PerkSelection, bonusChoicesByPerk, EquipmentSelection
     ])
 
     /**
@@ -122,7 +125,6 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         const baseIds = ['identity', 'class-selection', 'core-stats', 'training-selection']
         if (hasSpellSlots) { baseIds.push('spell-selection') }
         if ([...ancestryPerkSlots, ...classPerkSlots].length > 0) baseIds.push('perk-selection')
-        if (perksWithBonusChoices.length > 0) { baseIds.push('perk-bonus-selection') }
         baseIds.push('equipment-selection')
         return baseIds
     }, [hasSpellSlots, perksWithBonusChoices])
@@ -132,26 +134,6 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     }, [activeStepIds, registerStepIds])
 
     /**
-     * Monitors the player's perk selections and will save a list
-     * of any they select which will require a subsequent choice
-     * selection.
-     */
-    useEffect(() => {
-        const perks = ItemsCache.perks()
-        const perksWithChoices: (Item & { system: PerkDataModel })[] = []
-        for (const perkId of [...ancestryPerkSlots, ...classPerkSlots].map(slot => slot.value)) {
-            const perk = perks.find(p => p.uuid === perkId)
-            if (perk) {
-                const choiceRules = perk.system.rules.filter(r => r.key === "ChoiceSet")
-                if (choiceRules.length > 0) {
-                    perksWithChoices.push(perk)
-                }
-            }
-        }
-        setPerksWithBonusChoices(perksWithChoices)
-    }, [ancestryPerkSlots, classPerkSlots])
-
-    /**
      * Clear out selections when key updates are made.
      */
     useEffect(() => {
@@ -159,7 +141,6 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         setChosenLevel1Skills([])
         setChosenBonusSkills([])
         resetPerkBonusSelections()
-        setPerksWithBonusChoices([])
     }, [ancestryItem, classItem])
     
     /**
@@ -200,12 +181,12 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                     classRules.find((r: any) => r.id === id && r.key === 'ChoiceSet')
             }
 
-            const addSelection = (targetRuleSet: any, selection: string) => {
+            const addSelection = (targetRuleSet: any, selection: string, selectionId?: string) => {
                 if (targetRuleSet) {
                     if (!Array.isArray(targetRuleSet.selections)) {
                         targetRuleSet.selections = []
                     }
-                    (targetRuleSet.selections as string[]).push(selection)
+                    targetRuleSet.selections = [...normalizeRuleSelections(targetRuleSet.selections), { id: selectionId ?? randomId(), value: selection, subselect: "" }]
                 }
             }
 
@@ -215,9 +196,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             });
 
             const chosenSkills = [...chosenLevel1Skills, ...chosenBonusSkills]
-            if (reasonTraining) {
-                chosenSkills.push({ skill: reasonTraining.value, ruleId: chosenLevel1Skills[0].ruleId })
-            }
+            reasonTrainings.forEach(selection => {
+                chosenSkills.push({ skill: selection.value, ruleId: selection.ruleId })
+            })
             chosenSkills.forEach(selection => {
                 addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.isTrained`)
             });
@@ -227,7 +208,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             });
 
             [...classPerkSlots, ...ancestryPerkSlots].forEach(selection => {
-                addSelection(getRuleSet(selection.ruleId), selection.value)
+                addSelection(getRuleSet(selection.ruleId), selection.value, selection.selectionId)
             });
 
             // Push Rule alterations to Ancestry and Class
@@ -248,9 +229,12 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
              * Process selections made due to choosing perks:
              * 'Advancement', 'New Training', and 'Magical Secret'.
              */
-            if (advancement) savePerkSelectionFlags(actor, [advancement])
-            if (perkTraining) savePerkSelectionFlags(actor, [perkTraining])
-            if (spell) savePerkSelectionFlags(actor, [spell])
+            const reasonTrainingSelections = reasonTrainings.map(selection => ({
+                ruleId: selection.ruleId,
+                value: `skills.${selection.value}.isTrained`
+            }))
+            const bonusSelections = [...advancements, ...perkTrainings, ...spells, ...reasonTrainingSelections]
+            if (bonusSelections.length > 0) await savePerkSelections(actor, bonusSelections)
 
         }
         catch (error) {
@@ -272,7 +256,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         actor, ancestryItem, classItem, selectedArr, assignedStats,
         bonusStatSelections, chosenLevel1Skills, chosenBonusSkills,
         ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
-        advancement, perkTraining, reasonTraining, spell,
+        advancement, perkTraining, reasonTraining, advancements, perkTrainings, reasonTrainings, spells,
         wallet, cart, selectedPack, setClosed
     ])
 

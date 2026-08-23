@@ -1,7 +1,14 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { getClonedFlags, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
+import { savePerkSelections } from "../../rules/util/item-rules-util"
 import { VagabondAppArgs,VagabondApplication } from "../VagabondApplication"
 import { LevelUpArgs, LevelUpView } from "./LevelUpView"
+
+export const getBonusSelections = (args: LevelUpArgs) => [
+    ...(args.advancements ?? (args.advancement ? [args.advancement] : [])),
+    ...(args.perkTrainings ?? (args.perkTraining ? [args.perkTraining] : [])),
+    ...(args.reasonTrainings ?? (args.reasonTraining ? [args.reasonTraining] : [])),
+    ...(args.spells ?? (args.spell ? [args.spell] : []))
+].filter((selection): selection is NonNullable<typeof selection> => !!selection && !!selection.value)
 
 export class LevelUpApp extends VagabondApplication {
 
@@ -10,7 +17,7 @@ export class LevelUpApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         const appArgs: VagabondAppArgs = {
             position: {
-                width: 855,
+                width: 900,
                 height: 840,
                 top: 0,
                 left: 60
@@ -56,21 +63,9 @@ export class LevelUpApp extends VagabondApplication {
             /**
              * Merges any new perk bonus choices into their existing flags...
              */
-            if (args.advancement || args.perkTraining || args.spell) {
-                const flags = getClonedFlags(this.actor)
-                const slots = Object.entries(flags).flatMap(([ruleId, values]) =>
-                    values.map(value => ({ ruleId, value }))
-                )
-
-                if (args.advancement) {
-                    await savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.advancement?.ruleId), args.advancement])
-                }
-                if (args.perkTraining) {
-                    await savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.perkTraining?.ruleId), args.perkTraining])
-                }
-                if (args.spell) {
-                    await savePerkSelectionFlags(this.actor, [...slots.filter(s => s.ruleId === args.spell?.ruleId), args.spell])
-                }
+            if (args.advancement || args.perkTraining || args.reasonTraining || args.spell) {
+                const bonusSelections = getBonusSelections(args)
+                await savePerkSelections(this.actor, bonusSelections)
             }
 
             await this.actor.update({

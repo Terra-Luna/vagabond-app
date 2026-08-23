@@ -4,7 +4,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, savePerkSelectionFlags } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, savePerkSelections } from "../../rules/util/item-rules-util"
 import { groupBy } from "../../utils/collectionUtil"
 import { useSpellSelection } from "../hero-creator/step/SpellSelectionUseCase"
 
@@ -32,10 +32,10 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
         const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.scale)))
         let sharedIndex = 0
         rules.forEach(rule => {
-            const ruleSelections = Array.isArray(rule.selections) ? rule.selections : []
+            const ruleSelections = normalizeRuleSelections(rule.selections)
             ruleSelections.forEach(sel => {
                 if (slots[sharedIndex]) {
-                    slots[sharedIndex] = { value: sel, label: getSpellName(sel), ruleName: rule.label, ruleId: rule.id }
+                    slots[sharedIndex] = { value: sel.value, label: getSpellName(sel.value), ruleName: rule.label, ruleId: rule.id }
                 }
                 sharedIndex += 1
             })
@@ -69,10 +69,9 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
             }
             if (perks.length > 0) {
                 const rules = await getItemChoiceRules(level, perks.flatMap(p => p.rules))
-                const selectionFlags = (actor.flags?.["vagabond-lite"] as any)?.perkSelections ?? {}
                 const targetRules = rules.filter(r => r.pack === 'spell')
                 targetRules.forEach(rule => {
-                    rule.selections = selectionFlags[rule.id] ?? []
+                    rule.selections = normalizeRuleSelections(rule.selections)
                 })
                 loadSelections(targetRules, setPerkSpellSlots)
             }
@@ -96,9 +95,15 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
         Object.keys(classSpellSlotGroups).forEach(ruleId => {
             const ruleIndex = classRules.findIndex(r => r.id === ruleId)
             if (ruleIndex !== -1) {
-                const nextValues = classSpellSlotGroups[ruleId]?.map(it => it.value ?? "") ?? []
-                if (JSON.stringify(classRules[ruleIndex].selections) !== JSON.stringify(nextValues)) {
-                    classRules[ruleIndex].selections = nextValues
+                const nextValues = classSpellSlotGroups[ruleId]?.map(it => it.value ?? "").filter(Boolean) ?? []
+                const currentSelections = normalizeRuleSelections(classRules[ruleIndex].selections).filter(selection => !selection.subselect)
+                const nextSelections = nextValues.map((value, index) => ({
+                    ...(currentSelections[index] ?? { id: foundry.utils.randomID() }),
+                    value,
+                    subselect: ""
+                }))
+                if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
+                    classRules[ruleIndex].selections = nextSelections
                     hasChanges = true
                 }
             }
@@ -114,8 +119,8 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
      */
     useEffect(() => {
         if (!actor || !perkSpellSlots.length || !dataLoaded.current) return
-        savePerkSelectionFlags(actor, perkSpellSlots)
-    }, [perkSpellSlots])
+        savePerkSelections(actor, perkSpellSlots)
+    }, [actor, perkSpellSlots, perks])
 
     return { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants }
 }
