@@ -11,3 +11,7 @@ export const getCombatantStatuses = (combatant) => {
 export const combatantHasStatus = (combatant, status) => {
     return getCombatantStatuses(combatant).includes(status)
 }
+
+export const allCombatantsHaveStatus = (combatants: any[], status) => {
+    return combatants.every(combatant => combatantHasStatus(combatant, status))
+}

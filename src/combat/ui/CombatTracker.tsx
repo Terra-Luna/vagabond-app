@@ -15,7 +15,7 @@ import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { useFoundryHook } from "../../view/wrappers/hooks"
 import { getControlledCombatants, getControlledTokens } from "../combat-utils"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
-import { combatantHasStatus, getCombatantStatuses } from "../engine/util/status"
+import { allCombatantsHaveStatus, combatantHasStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 
@@ -239,19 +239,24 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
     const ctxMenuActions = () => {
-        const controlledTokens = new Set(getControlledTokens())
+        const controlledTokens = () => {
+            const tokens = new Set(getControlledTokens())
+            const realToken = getCanvasToken(token?.id)
+            if (realToken) tokens.add(realToken)
+            return tokens
+        }
 
         const updateVisibility = () => {
-            const realToken = getCanvasToken(token?.id)
-            if (realToken) controlledTokens.add(realToken)
-            controlledTokens.forEach(token => token.document.update({ hidden: !token.document.hidden }))
+            controlledTokens().forEach(token => token.document.update({ hidden: !token.document.hidden }))
         }
 
         const makeStatusConditionMenuItem = (statusKey: string) => {
             const StatusMenuItemIcon = () => <StatusIcon status={statusKey} size={24} className="mr-1 bg-sheet-header-fill" />
-            const hasStatus = combatantHasStatus(combatant, statusKey)
+            const allCombatants = new Set(getControlledCombatants())
+            allCombatants.add(combatant)
+            const hasStatus = allCombatantsHaveStatus([...allCombatants], statusKey)
             const action = () => {
-                combatant.actor?.toggleStatusEffect(statusKey, { active: !hasStatus })
+                allCombatants.forEach(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !hasStatus }))
             }
             return { label: lang.VGLITE.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: hasStatus } as CtxMenuItem
         }
@@ -275,8 +280,8 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
         }
 
         const actions = [
-            { label: controlledTokens.size > 1 ? "Toggle Visibility of Selected Tokens" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide", action: updateVisibility, icon: Eye },
-            { label: "Apply Effect", subMenuItems: [makeBurnMenuItem(), ...Object.keys(lang.VGLITE.StatusConditions).filter(statusKey => statusKey !== "burning").map(statusKey => makeStatusConditionMenuItem(statusKey))] },
+            { label: controlledTokens().size > 1 ? "Toggle Visibility of Selected Tokens" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide", action: updateVisibility, icon: Eye },
+            { label: controlledTokens().size > 1 ? "Apply Effect to Selected Tokens" : "Apply Effect", subMenuItems: [makeBurnMenuItem(), ...Object.keys(lang.VGLITE.StatusConditions).filter(statusKey => statusKey !== "burning").map(statusKey => makeStatusConditionMenuItem(statusKey))] },
             { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true },
         ] as CtxMenuItem[]
 
