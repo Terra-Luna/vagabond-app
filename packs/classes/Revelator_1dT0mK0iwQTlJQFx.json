@@ -37,6 +37,14 @@
         "selector": "skills.leadership.isTrained"
       },
       {
+        "id": "hPgNr3TmaVs2efrm",
+        "key": "GrantItem",
+        "label": "Righteous: Gish",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.1A4MdMdz7EAAoMzI",
+        "type": "perk"
+      },
+      {
         "id": "LtPxovgFRQ9AI98j",
         "key": "ChoiceSet",
         "label": "Righteous: Level 1 Spells",
@@ -166,8 +174,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786568076634,
-    "modifiedTime": 1786804922809,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787508526103,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

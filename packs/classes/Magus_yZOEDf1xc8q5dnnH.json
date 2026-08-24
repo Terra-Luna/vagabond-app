@@ -37,6 +37,14 @@
         "selector": "skills.arcana.isTrained"
       },
       {
+        "id": "Ez2ZZkSPBrWpLSa9",
+        "key": "GrantItem",
+        "label": "Arcanum: Gish",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.perks.Item.1A4MdMdz7EAAoMzI",
+        "type": "perk"
+      },
+      {
         "id": "HL3o3YzxYRMtzqHm",
         "key": "ChoiceSet",
         "label": "Arcanum: Level 1 Spells",
@@ -132,8 +140,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784995121741,
-    "modifiedTime": 1786804841636,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787508373420,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
