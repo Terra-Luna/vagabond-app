@@ -2,7 +2,7 @@
   "name": "Animate",
   "type": "spell",
   "_id": "aR85nxMCKoeGVlI8",
-  "img": "icons/magic/control/voodoo-doll-pain-damage-green.webp",
+  "img": "/icons/weapons/staves/broom-yellow-purple.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You animate an Item that occupies no more than 1 Slot in the Area or carried by the Target.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">For the duration, the Item gains a Speed of 30' (Fly), and uses the Object Armor &amp; HP rules (p. 12) for its Stats. It obeys your commands, which you can issue when you Focus on this Spell. If it is a Weapon, it can make attacks using your Cast Skill.</span></p>",
     "rules": [],
@@ -21,8 +21,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497260174,
-    "modifiedTime": 1784497299744,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1787596812024,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

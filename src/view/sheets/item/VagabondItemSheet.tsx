@@ -3,7 +3,8 @@ import { JSONValue } from "@league-of-foundry-developers/foundry-vtt-types/utils
 
 import { addItemToContainer,ContainerDataModel } from "../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
-import { StarterPackDataModel } from "../../../model/item/equip/StarterPackDataModel"
+import { StartingPackDataModel } from "../../../model/item/equip/StartingPackDataModel"
+import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
 import { VagabondSheetMixin } from "../VagabondSheetMixin"
 
 export abstract class VagabondItemSheet extends VagabondSheetMixin(sheets.ItemSheetV2) {
@@ -33,15 +34,15 @@ export abstract class VagabondItemSheet extends VagabondSheetMixin(sheets.ItemSh
              */
             return addItemToContainer(this.item.system, droppedItem)
         }
-        else if (this.item.system instanceof StarterPackDataModel) {
+        else if (this.item.system instanceof StartingPackDataModel) {
             const dragData = foundry.applications.ux.TextEditor.getDragEventData(event)
             if (!dragData || (dragData as any)?.type !== "Item") return super._onDrop(event)
 
             const droppedItem = await (Item as any).fromDropData(dragData) as Item | undefined
             if (!droppedItem) return super._onDrop(event)
 
-            if (!(droppedItem.system instanceof EquipmentDataModel)) {
-                ui.notifications?.error("Only Equipment items can be added to a Starter Pack.")
+            if (!(droppedItem.system instanceof EquipmentDataModel || droppedItem.system instanceof SundryDataModel)) {
+                ui.notifications?.error("Only gear can be added to a Starting Pack.")
                 return false
             }
 

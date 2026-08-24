@@ -3,7 +3,7 @@ import { Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
-export const starterPackSchema = () => {
+export const startingPackSchema = () => {
     return {
         items: new fields.ArrayField(new fields.SchemaField({
             id: new fields.StringField({ ...requiredString }),
@@ -15,21 +15,26 @@ export const starterPackSchema = () => {
     }
 }
 
-export type StarterPackSchema = ReturnType<typeof starterPackSchema> & BaseItemSchema
+export type StartingPackSchema = ReturnType<typeof startingPackSchema> & BaseItemSchema
 
-export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
+export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            ...starterPackSchema()
+            ...startingPackSchema()
         }
+    }
+
+    override async _preCreate(data: any, options: any, user: any) {
+        await super._preCreate(data, options, user)
+        this.parent.updateSource({ 'img': '/icons/containers/bags/pouch-leather-silver-white.webp' })
     }
 
     get cost(): Coins {
         return subtractCoins({ g: 3, s: 0, c: 0 }, this.value)
     }
 
-    get consolidatedItems(): { name: string, qty: number }[] {
+    get consolidatedItems(): { name: string, qty: number, id: string }[] {
         const items: { id: string, name: string, qty: number }[] = []
         this.items.forEach(item => {
             const match = items.find(it => it.id === item.id)
@@ -67,7 +72,7 @@ export class StarterPackDataModel extends ItemDataModel<StarterPackSchema> {
             await actor.createEmbeddedDocuments("Item", itemsToCreate)
         }
 
-        // Remove the starter pack itself
+        // Remove the starting pack itself
         await this.parent.delete()
     }
 

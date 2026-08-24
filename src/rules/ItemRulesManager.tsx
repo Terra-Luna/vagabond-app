@@ -38,7 +38,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
         await item.update({ "system.rules": newRules } as Record<string, RuleElement[]>)
     }, [item])
 
-    // Provide a starter template...
+    // Provide a starting template...
     const handleAddRule = () => {
         const defaultRule: RuleElement = {
             id: foundry.utils.randomID(),

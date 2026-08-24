@@ -45,7 +45,7 @@ export class ItemsCache {
 
     static packs = (): (Item & { system: any })[] => {
         return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.type === 'starterpack')).values()]
+            .filter(([_, item]) => item.type === 'startingpack')).values()]
             .filter(it => it != null)
             .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: any })[]
     }
@@ -58,7 +58,7 @@ export class ItemsCache {
         this.items.clear()
 
         const allItems = await CombinedItemsMultiType(
-            ['spell', 'perk', 'alchemical', 'weapon', 'armor', 'tool', 'sundry', 'container', 'starterpack']
+            ['spell', 'perk', 'alchemical', 'weapon', 'armor', 'tool', 'sundry', 'container', 'startingpack']
         )
 
         for (const item of allItems) {

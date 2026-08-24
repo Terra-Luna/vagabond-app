@@ -9,7 +9,7 @@ import { AlchemicalItemDataModel } from "../model/item/equip/AlchemicalItemDataM
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema,setEquipState } from "../model/item/equip/EquipmentDataModel"
-import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
+import { StartingPackDataModel } from "../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../model/item/equip/SundryDataModel"
 import { isEquippedWeapon, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../rules/util/ItemsCache"
@@ -338,6 +338,6 @@ export const inventoryItemDragDropHandler = async (
     }
 }
 
-export const applyStarterPack = async (hero: any, pack: StarterPackDataModel) => {
+export const applyStartingPack = async (hero: any, pack: StartingPackDataModel) => {
     await hero.parent.createEmbeddedDocuments("Item", [pack.items])
 }

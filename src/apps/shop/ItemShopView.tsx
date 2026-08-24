@@ -4,7 +4,7 @@ import { openItemSheet } from "../../model/actor/type/Inventory"
 import { addCoins, Coins, coinsAsString, isAffordable, subtractCoins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
-import { StarterPackDataModel } from "../../model/item/equip/StarterPackDataModel"
+import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { vgLiteLang } from "../../utils/lang"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
@@ -21,7 +21,7 @@ import { ShoppingCart } from "./ShoppingCart"
 export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: ClassDataModel }) => {
 
     const [wallet, setWallet] = useState<Coins>(startingFunds)
-    const [selectedPack, setSelectedPack] = useState<Item & { system: StarterPackDataModel } | undefined>(undefined)
+    const [selectedPack, setSelectedPack] = useState<Item & { system: StartingPackDataModel } | undefined>(undefined)
     const [cart, setCart] = useState<(Item & { system: EquipmentDataModel<EquipmentSchema> })[]>([])
     const [shopCategory, setShopCategory] = useState<string>('all')
     const shopSearchRef = useRef('')
@@ -30,7 +30,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
     const equipmentCache = ItemsCache.equipment()
     const shopItems = useMemo(() => {
         return equipmentCache.filter(it =>
-            !(it.system instanceof StarterPackDataModel) && it.name.toUpperCase() !== 'BREATH ATTACK'
+            !(it.system instanceof StartingPackDataModel) && it.name.toUpperCase() !== 'BREATH ATTACK'
         ) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     }, [])
 
@@ -47,7 +47,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         setCart([])
     }, [shopCategory, cart, wallet])
 
-    const ItemShopView = ({ includeStarterPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
+    const ItemShopView = ({ includeStartingPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
         const [shopSearch, setShopSearch] = useState(() => shopSearchRef.current)
 
         const onSelectPack = useCallback((packId) => {
@@ -107,7 +107,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                     <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto h-full overflow-hidden">
                         <div className="flex gap-x-4 items-end">
                             {/* STARTER PACK SELECTION */}
-                            {includeStarterPacks &&
+                            {includeStartingPacks &&
                                 <div className="space-y-2">
                                     <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                         <HeroCreationDropdown

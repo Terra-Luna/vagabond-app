@@ -1,19 +1,19 @@
 {
   "name": "Assassin",
-  "type": "starterpack",
-  "_id": "LD79jkhydTKw5mct",
-  "img": "icons/svg/item-bag.svg",
+  "type": "startingpack",
+  "_id": "YD5v9D76fPIczKKy",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
   "system": {
     "description": "",
     "rules": [],
     "items": [
       {
-        "id": "4flPjLCMlFWOZPml",
+        "id": "qDdEzxtfDOmBLtJW",
         "name": "Alchemy Tools",
         "qty": 1
       },
       {
-        "id": "sfhmK81aaZ462nGy",
+        "id": "d58md1ZTOqcXcz31",
         "name": "Materials",
         "qty": 20
       },
@@ -28,41 +28,41 @@
         "qty": 1
       },
       {
-        "id": "RuQvlBLIYGNkiVAB",
-        "name": "Light Armor",
-        "qty": 1
-      },
-      {
         "id": "CNgpBbHg5dRh0YDP",
         "name": "Basic Poison",
         "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
       }
     ],
+    "category": "containers",
     "value": {
       "g": 0,
       "s": 60,
       "c": 0
-    },
-    "category": "containers"
+    }
   },
   "effects": [],
   "folder": null,
   "sort": 0,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784846131321,
-    "modifiedTime": 1784846266453,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "createdTime": 1787601404170,
+    "modifiedTime": 1787601488246,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!LD79jkhydTKw5mct"
+  "_key": "!items!YD5v9D76fPIczKKy"
 }

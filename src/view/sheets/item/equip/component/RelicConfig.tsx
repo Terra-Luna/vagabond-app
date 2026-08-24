@@ -32,7 +32,7 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
             {/* ACTIVE POWERS */}
             <ItemSheetPropLabel label={vgLiteLang.ButtonActions.relic} />
             <div className="flex flex-wrap gap-1">
-                {item.system.relicPowers.map(relic => (
+                {item.system.relicPowers?.map(relic => (
                     <RelicCard key={relic.id} item={item} relic={relic} />
                 ))}
             </div>

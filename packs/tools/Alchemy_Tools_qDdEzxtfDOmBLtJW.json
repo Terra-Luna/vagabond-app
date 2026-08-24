@@ -1,8 +1,8 @@
 {
-  "name": "Brewing Tools",
-  "type": "tool",
-  "_id": "G9wRyaTKYtM7ulv9",
-  "img": "/icons/skills/trades/farming-sickle-harvest-wheat.webp",
+  "name": "Alchemy Tools",
+  "type": "sundry",
+  "_id": "qDdEzxtfDOmBLtJW",
+  "img": "/icons/tools/laboratory/vials-blue-pink.webp",
   "system": {
     "description": "",
     "rules": [],
@@ -15,11 +15,11 @@
     "bulk": {
       "slots": 2,
       "isStackable": false,
-      "stackSize": 100,
+      "stackSize": 10,
       "quantity": 1,
       "totalSlots": 0
     },
-    "isEquippable": false,
+    "isEquippable": true,
     "isEquipped": false,
     "isConsumable": false,
     "relicPowers": []
@@ -36,12 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787547516254,
-    "modifiedTime": 1787547665004,
+    "createdTime": 1787600808847,
+    "modifiedTime": 1787600849818,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!G9wRyaTKYtM7ulv9"
+  "_key": "!items!qDdEzxtfDOmBLtJW"
 }

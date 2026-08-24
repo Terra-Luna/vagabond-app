@@ -22,7 +22,7 @@ import { SpellDataModel } from "./model/item/character/SpellDataModel"
 import { AlchemicalItemDataModel } from "./model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "./model/item/equip/ArmorDataModel"
 import { ContainerDataModel } from "./model/item/equip/ContainerDataModel"
-import { StarterPackDataModel } from "./model/item/equip/StarterPackDataModel"
+import { StartingPackDataModel } from "./model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "./model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "./model/item/equip/WeaponDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
@@ -83,7 +83,7 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.class = ClassDataModel,
         CONFIG.Item.dataModels.perk = PerkDataModel,
         CONFIG.Item.dataModels.spell = SpellDataModel,
-        CONFIG.Item.dataModels.starterpack = StarterPackDataModel,
+        CONFIG.Item.dataModels.startingpack = StartingPackDataModel,
         CONFIG.Item.dataModels.sundry = SundryDataModel,
         CONFIG.Item.dataModels.weapon = WeaponDataModel,
         // Combat
@@ -196,7 +196,7 @@ Hooks.on("createItem", async (item, _options, _userId) => {
             item.update({ 'sort': newSortVal })
         }
 
-        if (item.system instanceof StarterPackDataModel && parent.system instanceof HeroDataModel) {
+        if (item.system instanceof StartingPackDataModel && parent.system instanceof HeroDataModel) {
             await item.system.unpack(parent as Actor & { system: HeroDataModel })
         }
     }
@@ -464,6 +464,6 @@ foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet
 });
 
 foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet as any, {
-    types: ['alchemical', 'armor', 'container', 'starterpack', 'sundry', 'tool', 'weapon'],
+    types: ['alchemical', 'armor', 'container', 'startingpack', 'sundry', 'tool', 'weapon'],
     makeDefault: true
 });

@@ -26,7 +26,7 @@ export const useEquipmentSelection = (
                     <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} canProceed={true} />
                 </div>
                 <div className="flex-1 overflow-y-auto">
-                    <ItemShop includeStarterPacks={true} />
+                    <ItemShop includeStartingPacks={true} />
                 </div>
             </div>
         </EditModeContextProvider >

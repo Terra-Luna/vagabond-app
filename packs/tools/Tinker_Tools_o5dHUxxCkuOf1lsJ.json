@@ -1,8 +1,8 @@
 {
-  "name": "Alchemy Tools",
-  "type": "tool",
-  "_id": "4flPjLCMlFWOZPml",
-  "img": "icons/tools/laboratory/vials-blue-pink.webp",
+  "name": "Tinker Tools",
+  "type": "sundry",
+  "_id": "o5dHUxxCkuOf1lsJ",
+  "img": "/icons/tools/medical/toolkit-surgical-pink.webp",
   "system": {
     "description": "",
     "rules": [],
@@ -12,41 +12,36 @@
       "s": 50,
       "c": 0
     },
-    "totalValue": {
-      "g": 0,
-      "s": 0,
-      "c": 0
-    },
     "bulk": {
       "slots": 2,
       "isStackable": false,
-      "stackSize": 100,
+      "stackSize": 10,
       "quantity": 1,
       "totalSlots": 0
     },
-    "isEquippable": false,
+    "isEquippable": true,
     "isEquipped": false,
     "isConsumable": false,
-    "relicEffects": []
+    "relicPowers": []
   },
   "effects": [],
   "folder": null,
-  "sort": 100000,
+  "sort": 0,
   "ownership": {
     "default": 0,
-    "KkUM0xdZFWx39xs4": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1784845693974,
-    "modifiedTime": 1785094060384,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "createdTime": 1787601302222,
+    "modifiedTime": 1787601321268,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!4flPjLCMlFWOZPml"
+  "_key": "!items!o5dHUxxCkuOf1lsJ"
 }

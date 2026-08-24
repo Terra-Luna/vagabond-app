@@ -79,7 +79,7 @@
           "description"
         ]
       },
-      "starterpack": {
+      "startingpack": {
         "htmlFields": [
           "description"
         ]
@@ -170,11 +170,11 @@
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
-      "name": "starterpacks",
-      "label": "Starter Packs",
+      "name": "startingpacks",
+      "label": "Starting Packs",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/starterpacks",
+      "path": "packs/startingpacks",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -292,7 +292,7 @@
       "name": "Gear",
       "packs": [
         "alchemical",
-        "starterpacks",
+        "startingpacks",
         "containers",
         "cooking",
         "games",

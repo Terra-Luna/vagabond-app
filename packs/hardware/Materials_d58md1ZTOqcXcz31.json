@@ -1,22 +1,22 @@
 {
-  "name": "Scribing Tools",
-  "type": "tool",
-  "_id": "QSlhnfAb072VEAtn",
-  "img": "/icons/skills/trades/academics-merchant-scribe.webp",
+  "name": "Materials",
+  "type": "sundry",
+  "_id": "d58md1ZTOqcXcz31",
+  "img": "/icons/commodities/materials/powder-teal.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "tools",
+    "category": "hardware",
     "value": {
       "g": 0,
-      "s": 50,
+      "s": 5,
       "c": 0
     },
     "bulk": {
-      "slots": 2,
-      "isStackable": false,
-      "stackSize": 100,
-      "quantity": 1,
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 20,
+      "quantity": 20,
       "totalSlots": 0
     },
     "isEquippable": false,
@@ -36,12 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787547922621,
-    "modifiedTime": 1787547937720,
+    "createdTime": 1787600409396,
+    "modifiedTime": 1787600459415,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!QSlhnfAb072VEAtn"
+  "_key": "!items!d58md1ZTOqcXcz31"
 }

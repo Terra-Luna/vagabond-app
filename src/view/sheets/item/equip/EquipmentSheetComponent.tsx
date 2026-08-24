@@ -4,7 +4,7 @@ import { AlchemicalItemDataModel } from "../../../../model/item/equip/Alchemical
 import { ArmorDataModel } from "../../../../model/item/equip/ArmorDataModel"
 import { ContainerDataModel } from "../../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
-import { StarterPackDataModel } from "../../../../model/item/equip/StarterPackDataModel"
+import { StartingPackDataModel } from "../../../../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../../utils/lang"
@@ -21,7 +21,7 @@ import { RelicConfig } from "./component/RelicConfig"
 import { AlchemicalSheet } from "./sheet/AlchemicalSheet"
 import { ArmorSheet } from "./sheet/ArmorSheet"
 import { ContainerSheet } from "./sheet/ContainerSheet"
-import { StarterPackSheet } from "./sheet/StarterPackSheet"
+import { StartingPackSheet } from "./sheet/StartingPackSheet"
 import { SundrySheet } from "./sheet/SundrySheet"
 import { WeaponSheet } from "./sheet/WeaponSheet"
 
@@ -42,8 +42,8 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     else if (item.system instanceof ContainerDataModel) {
         sheet = <ContainerSheet item={item as any} />
     }
-    else if (item.system instanceof StarterPackDataModel) {
-        sheet = <StarterPackSheet item={item as any} />
+    else if (item.system instanceof StartingPackDataModel) {
+        sheet = <StartingPackSheet item={item as any} />
     }
     else if (item.system instanceof SundryDataModel) {
         sheet = <SundrySheet item={item as any} />
