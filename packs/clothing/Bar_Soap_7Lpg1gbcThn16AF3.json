@@ -1,33 +1,35 @@
 {
-  "name": "Materials",
+  "name": "Bar Soap",
   "type": "sundry",
-  "_id": "d58md1ZTOqcXcz31",
-  "img": "/icons/commodities/materials/powder-teal.webp",
+  "folder": null,
   "system": {
     "description": "",
-    "rules": [],
-    "category": "hardware",
+    "category": "clothing",
     "value": {
+      "s": 0,
       "g": 0,
-      "s": 5,
-      "c": 0
+      "c": 2
     },
     "bulk": {
-      "slots": 0,
+      "slots": 1,
+      "quantity": 1,
       "isStackable": true,
-      "stackSize": 20,
-      "quantity": 10,
+      "stackSize": 10,
       "totalSlots": 0
     },
+    "rules": [],
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
     "relicPowers": []
   },
+  "_id": "7Lpg1gbcThn16AF3",
+  "img": "icons/sundries/survival/soap.webp",
   "effects": [],
-  "folder": null,
   "ownership": {
     "default": 0,
+    "ywhHfYnWZQBq7W9u": 3,
+    "PDLxeQclz2rj9enO": 3,
     "LxjckWttmatU52UJ": 3
   },
   "flags": {},
@@ -35,13 +37,13 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787603134539,
-    "modifiedTime": 1787607275018,
+    "createdTime": 1787607101877,
+    "modifiedTime": 1787607101877,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "sort": 800000,
-  "_key": "!items!d58md1ZTOqcXcz31"
+  "sort": 0,
+  "_key": "!items!7Lpg1gbcThn16AF3"
 }

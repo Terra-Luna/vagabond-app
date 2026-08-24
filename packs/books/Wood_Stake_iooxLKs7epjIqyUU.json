@@ -1,22 +1,22 @@
 {
-  "name": "Materials",
+  "name": "Wood Stake",
   "type": "sundry",
-  "_id": "d58md1ZTOqcXcz31",
-  "img": "/icons/commodities/materials/powder-teal.webp",
+  "_id": "iooxLKs7epjIqyUU",
+  "img": "/icons/sundries/survival/stake-rough-simple-brown.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "hardware",
+    "category": "books",
     "value": {
       "g": 0,
-      "s": 5,
-      "c": 0
+      "s": 0,
+      "c": 2
     },
     "bulk": {
-      "slots": 0,
+      "slots": 1,
       "isStackable": true,
-      "stackSize": 20,
-      "quantity": 10,
+      "stackSize": 100,
+      "quantity": 1,
       "totalSlots": 0
     },
     "isEquippable": false,
@@ -35,13 +35,13 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787603134539,
-    "modifiedTime": 1787607275018,
+    "createdTime": 1787605399574,
+    "modifiedTime": 1787605399574,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "sort": 800000,
-  "_key": "!items!d58md1ZTOqcXcz31"
+  "sort": 0,
+  "_key": "!items!iooxLKs7epjIqyUU"
 }

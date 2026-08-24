@@ -1,37 +1,47 @@
 {
-  "name": "Astronomer",
+  "name": "Noble",
   "type": "startingpack",
-  "_id": "rGKOD30vhnEC8c6k",
+  "_id": "xyg5wQefIwSyBgJG",
   "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
   "system": {
     "description": "",
     "rules": [],
     "items": [
       {
-        "id": "3LTmKJXo1CHgOsv0",
-        "name": "Trinket",
+        "id": "LIMNsTfn9uaUbu7a",
+        "name": "Shortsword",
         "qty": 1
       },
       {
-        "id": "juPIop3hCd6ZrKOs",
-        "name": "Telescope",
+        "id": "7Jn4QInDDD0wJT2M",
+        "name": "Handgun",
         "qty": 1
       },
       {
-        "id": "iWK86ZUNsRQylRX8",
-        "name": "Astrolabe",
+        "id": "GO9mgAXNLPas3p8b",
+        "name": "Box of Bullets",
         "qty": 1
       },
       {
-        "id": "P5KKN8h4OQoTYA95",
-        "name": "Map Case",
+        "id": "SqK4TCmvQMXVEVdc",
+        "name": "Clothes, formal",
+        "qty": 1
+      },
+      {
+        "id": "GIHVty69pEYqgeyz",
+        "name": "Mirror",
+        "qty": 1
+      },
+      {
+        "id": "LfBXH0KF4CVwXxJC",
+        "name": "Signet Ring",
         "qty": 1
       }
     ],
     "category": "containers",
     "value": {
       "g": 0,
-      "s": 7,
+      "s": 5,
       "c": 0
     }
   },
@@ -47,12 +57,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787601505292,
-    "modifiedTime": 1787607192934,
+    "createdTime": 1787609406502,
+    "modifiedTime": 1787609449647,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!rGKOD30vhnEC8c6k"
+  "_key": "!items!xyg5wQefIwSyBgJG"
 }

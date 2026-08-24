@@ -1,22 +1,22 @@
 {
-  "name": "Materials",
+  "name": "Playing Cards",
   "type": "sundry",
-  "_id": "d58md1ZTOqcXcz31",
-  "img": "/icons/commodities/materials/powder-teal.webp",
+  "_id": "uKT1MA9L86UFZ2i7",
+  "img": "/icons/sundries/gaming/game-playing-cards-deck.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "hardware",
+    "category": "games",
     "value": {
       "g": 0,
       "s": 5,
       "c": 0
     },
     "bulk": {
-      "slots": 0,
-      "isStackable": true,
-      "stackSize": 20,
-      "quantity": 10,
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
       "totalSlots": 0
     },
     "isEquippable": false,
@@ -35,13 +35,13 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787603134539,
-    "modifiedTime": 1787607275018,
+    "createdTime": 1787593680648,
+    "modifiedTime": 1787608033215,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "sort": 800000,
-  "_key": "!items!d58md1ZTOqcXcz31"
+  "sort": 500000,
+  "_key": "!items!uKT1MA9L86UFZ2i7"
 }

@@ -1,37 +1,37 @@
 {
-  "name": "Astronomer",
+  "name": "Musician",
   "type": "startingpack",
-  "_id": "rGKOD30vhnEC8c6k",
+  "_id": "3vDJJSHn1yUcfRT0",
   "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
   "system": {
     "description": "",
     "rules": [],
     "items": [
       {
-        "id": "3LTmKJXo1CHgOsv0",
-        "name": "Trinket",
+        "id": "Zb149dejlRYQh8j5",
+        "name": "Lute",
         "qty": 1
       },
       {
-        "id": "juPIop3hCd6ZrKOs",
-        "name": "Telescope",
+        "id": "gcJCzp5c0VgnJa8l",
+        "name": "Sheet Music Book",
         "qty": 1
       },
       {
-        "id": "iWK86ZUNsRQylRX8",
-        "name": "Astrolabe",
+        "id": "LIMNsTfn9uaUbu7a",
+        "name": "Shortsword",
         "qty": 1
       },
       {
-        "id": "P5KKN8h4OQoTYA95",
-        "name": "Map Case",
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
         "qty": 1
       }
     ],
     "category": "containers",
     "value": {
       "g": 0,
-      "s": 7,
+      "s": 75,
       "c": 0
     }
   },
@@ -47,12 +47,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787601505292,
-    "modifiedTime": 1787607192934,
+    "createdTime": 1787609360142,
+    "modifiedTime": 1787609387983,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!rGKOD30vhnEC8c6k"
+  "_key": "!items!3vDJJSHn1yUcfRT0"
 }

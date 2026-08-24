@@ -74,13 +74,16 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     return (
         <BaseItemSheetComponent
             banner={<EquipmentSheetBanner item={item} />}
-            description={<Description item={item} showFullView={true} />}
+            description={<>{(item.type as string) !== 'startingpack' && <Description item={item} showFullView={true} />}</>}
             body={<>
                 {sheet}
                 <ItemDivider />
                 {sharedContent}
-                {isEditMode && game.user?.isGM && (item.type as string) !== 'alchemical' &&
-                    <RelicConfig item={item} />
+                {
+                    isEditMode && game.user?.isGM
+                    && (item.type as string) !== 'alchemical'
+                    && (item.type as string) !== 'startingpack'
+                    && <RelicConfig item={item} />
                 }
             </>}
             bodyClassName="text-text-primary bg-sheet-main-fill rounded-b-md px-4 w-full"

@@ -1,37 +1,42 @@
 {
-  "name": "Astronomer",
+  "name": "Nomad",
   "type": "startingpack",
-  "_id": "rGKOD30vhnEC8c6k",
+  "_id": "FYsRQpSkQGOR6ugQ",
   "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
   "system": {
     "description": "",
     "rules": [],
     "items": [
       {
-        "id": "3LTmKJXo1CHgOsv0",
-        "name": "Trinket",
+        "id": "rLK8nU5PMhP7PUta",
+        "name": "Staff",
         "qty": 1
       },
       {
-        "id": "juPIop3hCd6ZrKOs",
-        "name": "Telescope",
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
         "qty": 1
       },
       {
-        "id": "iWK86ZUNsRQylRX8",
-        "name": "Astrolabe",
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
         "qty": 1
       },
       {
-        "id": "P5KKN8h4OQoTYA95",
-        "name": "Map Case",
+        "id": "fKoh22bOQdBT5eRH",
+        "name": "Shortbow",
+        "qty": 1
+      },
+      {
+        "id": "NJGEvpZddVCfCvoM",
+        "name": "Quiver of Arrows",
         "qty": 1
       }
     ],
     "category": "containers",
     "value": {
-      "g": 0,
-      "s": 7,
+      "g": 1,
+      "s": 75,
       "c": 0
     }
   },
@@ -47,12 +52,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787601505292,
-    "modifiedTime": 1787607192934,
+    "createdTime": 1787609459633,
+    "modifiedTime": 1787609503143,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!rGKOD30vhnEC8c6k"
+  "_key": "!items!FYsRQpSkQGOR6ugQ"
 }

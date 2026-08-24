@@ -1,7 +1,7 @@
 {
   "name": "Materials",
   "type": "sundry",
-  "_id": "d58md1ZTOqcXcz31",
+  "_id": "xc4i1D7xVF0qUuNc",
   "img": "/icons/commodities/materials/powder-teal.webp",
   "system": {
     "description": "",
@@ -26,6 +26,7 @@
   },
   "effects": [],
   "folder": null,
+  "sort": 0,
   "ownership": {
     "default": 0,
     "LxjckWttmatU52UJ": 3
@@ -35,13 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787603134539,
-    "modifiedTime": 1787607275018,
+    "createdTime": 1787607361162,
+    "modifiedTime": 1787607395855,
     "lastModifiedBy": "LxjckWttmatU52UJ",
-    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "sort": 800000,
-  "_key": "!items!d58md1ZTOqcXcz31"
+  "_key": "!items!xc4i1D7xVF0qUuNc"
 }

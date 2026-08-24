@@ -1,37 +1,37 @@
 {
-  "name": "Astronomer",
+  "name": "Scout",
   "type": "startingpack",
-  "_id": "rGKOD30vhnEC8c6k",
+  "_id": "F62niHMK5Hg4TmMn",
   "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
   "system": {
     "description": "",
     "rules": [],
     "items": [
       {
-        "id": "3LTmKJXo1CHgOsv0",
-        "name": "Trinket",
+        "id": "xgA8vboUQI2ysw1n",
+        "name": "Longbow",
         "qty": 1
       },
       {
-        "id": "juPIop3hCd6ZrKOs",
-        "name": "Telescope",
+        "id": "NJGEvpZddVCfCvoM",
+        "name": "Quiver of Arrows",
         "qty": 1
       },
       {
-        "id": "iWK86ZUNsRQylRX8",
-        "name": "Astrolabe",
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
         "qty": 1
       },
       {
-        "id": "P5KKN8h4OQoTYA95",
-        "name": "Map Case",
+        "id": "Ts4qJdWl79CiK7C1",
+        "name": "Compass",
         "qty": 1
       }
     ],
     "category": "containers",
     "value": {
-      "g": 0,
-      "s": 7,
+      "g": 1,
+      "s": 25,
       "c": 0
     }
   },
@@ -47,12 +47,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787601505292,
-    "modifiedTime": 1787607192934,
+    "createdTime": 1787609631615,
+    "modifiedTime": 1787609669839,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!rGKOD30vhnEC8c6k"
+  "_key": "!items!F62niHMK5Hg4TmMn"
 }

@@ -1,37 +1,37 @@
 {
-  "name": "Astronomer",
+  "name": "Brawler",
   "type": "startingpack",
-  "_id": "rGKOD30vhnEC8c6k",
+  "_id": "AHRBDaSRg8yRq6am",
   "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
   "system": {
     "description": "",
     "rules": [],
     "items": [
       {
-        "id": "3LTmKJXo1CHgOsv0",
-        "name": "Trinket",
+        "id": "TzRdKAAv790IPDvp",
+        "name": "Caestus",
         "qty": 1
       },
       {
-        "id": "juPIop3hCd6ZrKOs",
-        "name": "Telescope",
+        "id": "TzRdKAAv790IPDvp",
+        "name": "Caestus",
         "qty": 1
       },
       {
-        "id": "iWK86ZUNsRQylRX8",
-        "name": "Astrolabe",
+        "id": "V1Ou5SBmDGgoNPW9",
+        "name": "Medium Armor",
         "qty": 1
       },
       {
-        "id": "P5KKN8h4OQoTYA95",
-        "name": "Map Case",
+        "id": "p58eUiJL9MiAR1b2",
+        "name": "Tankard",
         "qty": 1
       }
     ],
     "category": "containers",
     "value": {
       "g": 0,
-      "s": 7,
+      "s": 15,
       "c": 0
     }
   },
@@ -47,12 +47,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787601505292,
-    "modifiedTime": 1787607192934,
+    "createdTime": 1787607724166,
+    "modifiedTime": 1787607758767,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!rGKOD30vhnEC8c6k"
+  "_key": "!items!AHRBDaSRg8yRq6am"
 }

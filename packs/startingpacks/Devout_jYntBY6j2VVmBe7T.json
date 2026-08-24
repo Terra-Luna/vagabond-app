@@ -1,0 +1,158 @@
+{
+  "name": "Devout",
+  "type": "startingpack",
+  "_id": "jYntBY6j2VVmBe7T",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "3LTmKJXo1CHgOsv0",
+        "name": "Trinket",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "8jID9aMd01vcKbtV",
+        "name": "Incense",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "jaFzuBqhhuKwo9BO",
+        "name": "Holy Water",
+        "qty": 1
+      },
+      {
+        "id": "TU8frsbwItG3Y0E1",
+        "name": "Anointing Oil",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 91,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787608515790,
+    "modifiedTime": 1787608608918,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!jYntBY6j2VVmBe7T"
+}

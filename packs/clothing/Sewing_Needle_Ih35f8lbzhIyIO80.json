@@ -1,22 +1,22 @@
 {
-  "name": "Materials",
+  "name": "Sewing Needle",
   "type": "sundry",
-  "_id": "d58md1ZTOqcXcz31",
-  "img": "/icons/commodities/materials/powder-teal.webp",
+  "_id": "Ih35f8lbzhIyIO80",
+  "img": "/icons/tools/hand/needle-grey.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "hardware",
+    "category": "clothing",
     "value": {
       "g": 0,
-      "s": 5,
-      "c": 0
+      "s": 0,
+      "c": 1
     },
     "bulk": {
       "slots": 0,
       "isStackable": true,
-      "stackSize": 20,
-      "quantity": 10,
+      "stackSize": 10,
+      "quantity": 1,
       "totalSlots": 0
     },
     "isEquippable": false,
@@ -26,6 +26,7 @@
   },
   "effects": [],
   "folder": null,
+  "sort": 3500000,
   "ownership": {
     "default": 0,
     "LxjckWttmatU52UJ": 3
@@ -35,13 +36,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787603134539,
-    "modifiedTime": 1787607275018,
+    "createdTime": 1787607055260,
+    "modifiedTime": 1787607088899,
     "lastModifiedBy": "LxjckWttmatU52UJ",
-    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "sort": 800000,
-  "_key": "!items!d58md1ZTOqcXcz31"
+  "_key": "!items!Ih35f8lbzhIyIO80"
 }

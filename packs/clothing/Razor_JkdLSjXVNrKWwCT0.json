@@ -1,15 +1,15 @@
 {
-  "name": "Playing Card Deck",
+  "name": "Razor",
   "type": "sundry",
-  "_id": "uKT1MA9L86UFZ2i7",
-  "img": "/icons/sundries/gaming/game-playing-cards-deck.webp",
+  "_id": "JkdLSjXVNrKWwCT0",
+  "img": "/icons/sundries/survival/razor.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "games",
+    "category": "clothing",
     "value": {
       "g": 0,
-      "s": 5,
+      "s": 10,
       "c": 0
     },
     "bulk": {
@@ -35,13 +35,13 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787593680648,
-    "modifiedTime": 1787593811578,
+    "createdTime": 1787607096496,
+    "modifiedTime": 1787607096496,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "sort": 500000,
-  "_key": "!items!uKT1MA9L86UFZ2i7"
+  "sort": 0,
+  "_key": "!items!JkdLSjXVNrKWwCT0"
 }

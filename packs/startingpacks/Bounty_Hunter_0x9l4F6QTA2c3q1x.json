@@ -1,0 +1,83 @@
+{
+  "name": "Bounty Hunter",
+  "type": "startingpack",
+  "_id": "0x9l4F6QTA2c3q1x",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "trmqaSVPEiBkJgTE",
+        "name": "Rifle",
+        "qty": 1
+      },
+      {
+        "id": "7Jn4QInDDD0wJT2M",
+        "name": "Handgun",
+        "qty": 1
+      },
+      {
+        "id": "ZhdrNo9vkxoMHnyE",
+        "name": "Rope",
+        "qty": 1
+      },
+      {
+        "id": "mvZocdpwSRRyEJir",
+        "name": "Manacles",
+        "qty": 1
+      },
+      {
+        "id": "jwncHpSlFzpzhN9x",
+        "name": "Lockpick",
+        "qty": 1
+      },
+      {
+        "id": "jwncHpSlFzpzhN9x",
+        "name": "Lockpick",
+        "qty": 1
+      },
+      {
+        "id": "jwncHpSlFzpzhN9x",
+        "name": "Lockpick",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "GO9mgAXNLPas3p8b",
+        "name": "Box of Bullets",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 15,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787607463740,
+    "modifiedTime": 1787607694699,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!0x9l4F6QTA2c3q1x"
+}

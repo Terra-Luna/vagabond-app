@@ -1,21 +1,21 @@
 {
-  "name": "Oil Flask",
+  "name": "Clothes, casual",
   "type": "sundry",
-  "_id": "Iv3DTI2MD3ORVYwa",
-  "img": "/icons/consumables/potions/potion-bottle-corked-stopper-yellow.webp",
+  "_id": "CmTmWEV7S923ces4",
+  "img": "/icons/equipment/chest/shirt-collared-yellow.webp",
   "system": {
     "description": "",
     "rules": [],
-    "category": "alchemy",
+    "category": "clothing",
     "value": {
       "g": 0,
-      "s": 1,
+      "s": 50,
       "c": 0
     },
     "bulk": {
       "slots": 1,
       "isStackable": false,
-      "stackSize": 10,
+      "stackSize": 100,
       "quantity": 1,
       "totalSlots": 0
     },
@@ -26,7 +26,6 @@
   },
   "effects": [],
   "folder": null,
-  "sort": 1000000,
   "ownership": {
     "default": 0,
     "LxjckWttmatU52UJ": 3
@@ -36,12 +35,13 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787603206346,
-    "modifiedTime": 1787603314100,
+    "createdTime": 1787605788421,
+    "modifiedTime": 1787607088895,
     "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": null
+    "duplicateSource": null
   },
-  "_key": "!items!Iv3DTI2MD3ORVYwa"
+  "sort": 200000,
+  "_key": "!items!CmTmWEV7S923ces4"
 }
