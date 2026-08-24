@@ -19,7 +19,7 @@ export class LevelUpApp extends VagabondApplication {
             position: {
                 width: 1533,
                 height: 980,
-                top: 0,
+                top: 20,
                 left: 60
             },
             window: {

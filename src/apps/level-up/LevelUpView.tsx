@@ -113,9 +113,9 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex flex-col h-full bg-sheet-main-fill p-2">
+        <form onSubmit={handleSubmit} className="flex flex-col h-full bg-sheet-main-fill p-2 overflow-hidden">
             {/* HEADER WITH SAVE & CANCEL BUTTONS */}
-            <div className="flex justify-between my-1">
+            <div className="flex justify-between my-1 shrink-0">
                 <DestructiveButton onClick={() => onSave({ isComplete: false })}>
                     {vgLiteLang.ButtonActions.cancel}
                 </DestructiveButton>
@@ -131,21 +131,23 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                 </PrimaryButton>
             </div>
 
-            <div className="my-1"><Divider /></div>
+            <div className="my-1 shrink-0">
+                <Divider />
+            </div>
 
             {/* SCROLLABLE BODY SECTION */}
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <div className="@container flex flex-col grow h-full gap-y-2 overflow-y-auto">
+                <div className="@container flex-1 min-h-0 flex flex-col gap-y-2 overflow-y-auto">
                     {/* NO SELECTIONS REQUIRED */}
                     {levelUpChoices.length === 0 && upgradableStatsOptions().length === 1 &&
-                        <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal">
+                        <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal shrink-0">
                             No selections required.
                         </p>
                     }
 
                     {/* CLASS FEATURE CARD */}
                     {(classFeature || nextLevel % 2 === 0) &&
-                        <div className="flex gap-x-2">
+                        <div className="flex gap-x-2 shrink-0">
                             {classFeature &&
                                 <div className="flex-1 space-y-1">
                                     <Header title={"CLASS FEATURE"} />
@@ -173,18 +175,19 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                         </div>
                     }
 
-                    <div className={`grid gap-4 w-full ${showPerkSelection && showSpellSelection
-                        ? "grid-cols-2 h-[calc(100vh-200px)] overflow-y-hidden"
+                    {/* SELECTIONS GRID SECTION */}
+                    <div className={`grid gap-4 w-full flex-1 min-h-0 ${showPerkSelection && showSpellSelection
+                        ? "grid-cols-2"
                         : "max-w-3xl mx-auto grid-cols-1"
                         }`}>
                         {showPerkSelection && (
-                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
+                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full">
                                 <PerkSelection bonusChoices={bonusChoicesByPerk} />
                             </div>
                         )}
 
                         {showSpellSelection && (
-                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full max-h-full">
+                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full">
                                 {SpellSelection}
                             </div>
                         )}
