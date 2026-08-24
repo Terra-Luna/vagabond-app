@@ -62,7 +62,7 @@ export class PerkRulesSelectionsApplicator {
                             : []
                     })
 
-                    // Perks with their own per-instance choice (e.g. Advancement) must stay as separate entries instead of being compounded.
+                    // Compound repeatable perks if the player has selected the same perk multiple times.
                     const hasOwnChoice = Boolean(parentSelection?.subselect)
                     const duplicatePerk = actor.system.perks.find(it => (it as any)._sourceId === fullItem.uuid)
                     if (duplicatePerk && !hasOwnChoice) {

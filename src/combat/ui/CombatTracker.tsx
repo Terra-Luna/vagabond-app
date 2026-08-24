@@ -15,7 +15,7 @@ import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { useFoundryHook } from "../../view/wrappers/hooks"
 import { getControlledCombatants, getControlledTokens } from "../combat-utils"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
-import { allCombatantsHaveStatus, combatantHasStatus, getCombatantStatuses } from "../engine/util/status"
+import { allCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 
