@@ -25,12 +25,14 @@ export const usePerkSelection = (
     level: number,
     lockAncestrySlots: boolean = false
 ) => {
-    const adjLevel = level
 
     const allPerks = useMemo(() => {
         return [...ItemsCache.perks()]
     }, [])
 
+    /**
+     * A list of every perk in the game that is eligible for selection by the hero, based on their current stats, trainings, and spells.
+     */
     const selectablePerks = useMemo(() => {
         const perks = [...allPerks.map(perk => toDisplayablePerk(perk))]
         return perks
@@ -64,14 +66,14 @@ export const usePerkSelection = (
      * on their perk choice filter rules.
      */
     const classRestrictedPerksLists = useMemo(() => {
-        const perkRules = getItemChoiceRules(adjLevel, clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? []).filter(it => it.pack === "perk")
+        const perkRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? []).filter(it => it.pack === "perk")
         return Object.fromEntries(perkRules.map(rule => [rule.id, [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
             ...ItemsCache.perks()
                 .filter(perk => rule.choices.some(choice => choice.value === perk.uuid))
                 .map(perk => toDisplayablePerk(perk))
         ]]))
-    }, [adjLevel, clazz])
+    }, [level, clazz])
 
     // Perks automatically granted by chosen Ancestry & Class.
     const [ancestryPerkGrants, setAncestryPerkGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
@@ -81,6 +83,7 @@ export const usePerkSelection = (
     const [ancestryPerkSlots, setAncestryPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId: string }[]>([])
     const [classPerkSlots, setClassPerkSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId: string, level: number }[]>([])
 
+    // Dependency items for useEffect to load initial perk selections only once per ancestry/class/level combination.
     const ancestryId = ancestry?.id
     const classId = clazz?.id
 
@@ -90,7 +93,7 @@ export const usePerkSelection = (
         })
 
         setAncestryPerkSlots(loadInitialSlots(
-            getItemChoiceRules(adjLevel, ancestry?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+            getItemChoiceRules(level, ancestry?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
         ))
 
         getItemGrants('perk', [clazz]).then(grants => {
@@ -98,10 +101,15 @@ export const usePerkSelection = (
         })
 
         setClassPerkSlots(loadInitialSlots(
-            getItemChoiceRules(adjLevel, clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+            getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
         ))
     }, [ancestryId, classId])
 
+    /**
+     * Prepares the perk data for display in the perk selection list.
+     * @param rules 
+     * @returns 
+     */
     const loadInitialSlots = (rules) => {
         const perkRules = rules.filter(r => r.pack === 'perk')
         const slots = perkRules.flatMap(rule => {
@@ -260,17 +268,22 @@ export const usePerkSelection = (
         )
     }, [activeSlot, getPerkOption, getSlotLabel, getSlotOptions, notifyInvalidDrop, onSelectPerk, renderPerkCard])
 
+    const grantedPerkIds = useMemo(() => new Set(
+        [...ancestryPerkGrants, ...classPerkGrants].map(grant => grant.uuid)
+    ), [ancestryPerkGrants, classPerkGrants])
+
     const availablePerks = useMemo(() => {
         const targetOptions = isSlotFilterEnabled
             ? (activeSlot ? getSlotOptions(activeSlot) : eligiblePerksList)
             : perksList
         return targetOptions
             .filter(perk => perk.value)
+            .filter(perk => !grantedPerkIds.has(perk.value))
             .filter(perk => stackablePerkIds.has(perk.value) || !selectedPerkIds.has(perk.value))
-    }, [activeSlot, getSlotOptions, eligiblePerksList, isSlotFilterEnabled, perksList, selectedPerkIds, stackablePerkIds])
+    }, [activeSlot, getSlotOptions, eligiblePerksList, grantedPerkIds, isSlotFilterEnabled, perksList, selectedPerkIds, stackablePerkIds])
 
     const PerkSelection = ({ bonusChoices = {} }: { bonusChoices?: Record<string, ReactNode> } = {}) =>
-        <div className="bg-sheet-main-fill flex flex-col h-screen overflow-hidden space-y-2">
+        <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden space-y-2">
             {/* FIXED HEADER AND NAVIGATION BUTTONS */}
             <div className="flex flex-col gap-4 flex-shrink-0">
                 <Header title={strings.perksHeader} />

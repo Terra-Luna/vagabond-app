@@ -165,12 +165,14 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
     }
 
     const CoreStats = (
-        <div className="bg-sheet-main-fill space-y-4">
+        <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
             {/* HEADER */}
-            <Header title={strings.coreStats} />
-            <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!assignedStats.some(s => s.value === null) && (requiredChoiceRules.length === bonusStatSelections.length)} />
+            <div className="flex-shrink-0 space-y-4">
+                <Header title={strings.coreStats} />
+                <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!assignedStats.some(s => s.value === null) && (requiredChoiceRules.length === bonusStatSelections.length)} />
+            </div>
 
-            <div className="w-full space-y-2 items-center justify-center text-center">
+            <div className="flex-1 overflow-y-auto w-full space-y-2 items-center justify-center text-center">
                 {/* STAT ARRAY HEADER */}
                 <HeroCreationLabel text={strings.statArrayPool} />
 

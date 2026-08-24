@@ -18,21 +18,29 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
     const stats = actor.system.stats as any
     const trainings = useMemo(() => Object.keys(actor.system.skills).filter(skill => actor.system.skills[skill].isTrained), [actor.system.skills])
     const spells = useMemo(() => actor.system.spells.map(spell => spell.parent.name), [actor.system.spells])
-    // Not memoized: Foundry mutates actor.system.stats in place, so a memo keyed on that reference would never see a bonus update.
+
+    /**
+     * Keep these as-is, since they are used as a key to determine whether to reload the perk selections.
+     * Foundry will track the added bonuses applied by Perk sub-selections so they can be used as a source
+     * of truth after Hero creation is done. During Hero creation, the stat assignments and bonuses are held
+     * in-memory and not persisted to the Actor on the final save.
+     */
     const actorStats = Object.keys(stats).map(stat => ({ stat, value: stats[stat] }))
+
     const actorSpellSlots = useMemo(() => actor.system.spells.map(spell => ({
         value: (spell as any)._sourceId ?? (spell as any).uuid ?? "",
         label: (spell as any).parent?.name ?? "",
         ruleName: "",
         ruleId: ""
     })).filter(spell => spell.value), [actor.system.spells])
-    const { PerkSelection, allPerks, perksList, classPerkSlots, ancestryPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots } =
-        usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, true)
+
+    const { PerkSelection, allPerks, perksList, classPerkSlots, ancestryPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots } = usePerkSelection(ancestry, clazz, stats, trainings, spells, [], level, true)
+
     const bonusPerks = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
         const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
         return perk?.system.rules.some(rule => rule.key === "ChoiceSet") ? [{ sourceKey: slot.selectionId, system: perk.system } as any] : []
     }), [ancestryPerkSlots, classPerkSlots])
-    // Not memoized: actor.items is a persistent collection mutated in place, so a memo on it would never see a saved rule change.
+
     const initialSelections = Object.fromEntries(
         (actor.items.contents as any[]).filter(item => ["class", "ancestry"].includes(item.type)).flatMap(item =>
             (((item.system as any).rules ?? []) as any[]).flatMap(parentRule => normalizeRuleSelections(parentRule.selections).flatMap(selection => {
@@ -59,6 +67,11 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
 
     const perksLoaded = perksList.length > 1
 
+    /**
+     * This side-effect is used to load the initial perk selections for the Actor's ancestry and class.
+     * It will only run once per ancestry/class/level combination, and will not re-run if the Actor's
+     * perks are updated in-memory (like a sub-selection, stat or training).
+     */
     useEffect(() => {
         if (!perksLoaded) return
         const key = `${ancestry?.id ?? ""}:${clazz?.id ?? ""}:${level}`
@@ -69,6 +82,14 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         loadedSelectionKey.current = key
     }, [ancestry?.id, clazz?.id, level, perksLoaded])
 
+    /**
+     * When the Actor's perks are updated in-memory (a sub-selection like a stat or training), this side-effect will
+     * persist the changes to the Actor's ancestry and class items.
+     * @param item 
+     * @param slots 
+     * @param pendingBonusSelections 
+     * @returns 
+     */
     const persistSlots = (item: any, slots: any[], pendingBonusSelections: { ruleId: string, selectionId?: string, value: string }[] = []) => {
         if (!item || !slots.length || !dataLoaded.current) return
         const rules = foundry.utils.deepClone(item.system.rules ?? []) as any[]
@@ -82,7 +103,6 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
             rule.selections = grouped.map(slot => {
                 const existing = current.find(selection => selection.id === slot.selectionId)
                 const existingValue = existing?.value
-                // Prefer the in-memory bonus selection over the server read, which may not yet reflect a subselect save still in flight.
                 const pendingBonus = pendingBonusSelections.find(b => b.selectionId === slot.selectionId)
                 const preservedSubselect = pendingBonus ? pendingBonus.value : (existing?.subselect ?? "")
                 return {
@@ -107,4 +127,5 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         classPerkSlots,
         setClassPerkSlots
     }
+
 }

@@ -265,19 +265,22 @@ export const usePerkBonusSelection = (
     })), [advancementSelections, advancements, perkTrainingSelections, perks, spellItemRules, spellSelections, strings.magicalSecrets, trainings])
 
     const PerkBonusSelection = (
-        <div className="@container bg-sheet-main-fill space-y-1 mb-4 text-center items-center">
+        <div className="@container bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden mb-4 text-center items-center">
 
-            <Header title={strings.bonusChoicesHeader} />
-            {navButtons.length > 0 &&
-                <div className="mt-4">
-                    <TopNavButtons
-                        navButtons={navButtons}
-                        subtitle="A Perk selection has granted another choice..."
-                        canProceed={selectedAdvancements.length > 0 || selectedSpells.length > 0 || selectedPerkTrainings.length > 0}
-                    />
-                </div>
-            }
+            <div className="flex-shrink-0 w-full space-y-1">
+                <Header title={strings.bonusChoicesHeader} />
+                {navButtons.length > 0 &&
+                    <div className="mt-4">
+                        <TopNavButtons
+                            navButtons={navButtons}
+                            subtitle="A Perk selection has granted another choice..."
+                            canProceed={selectedAdvancements.length > 0 || selectedSpells.length > 0 || selectedPerkTrainings.length > 0}
+                        />
+                    </div>
+                }
+            </div>
 
+            <div className="flex-1 overflow-y-auto w-full space-y-1">
             <div className="flex flex-col w-full justify-center">
                 <div className="inline-flex flex-col items-stretch space-y-1 @2xl:w-1/2 mx-auto">
                     <BonusChoiceContainer>
@@ -384,6 +387,7 @@ export const usePerkBonusSelection = (
                     />
                 </div>
             }
+            </div>
         </div>
     )
 

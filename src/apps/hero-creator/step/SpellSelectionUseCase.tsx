@@ -90,13 +90,13 @@ export const useSpellSelection = (
         return ![...classSpellSlots, ...ancestrySpellSlots].some(slot => slot.value.length === 0)
     }, [classSpellSlots, ancestrySpellSlots])
 
-    const SpellSelection = <div className="@container p2">
-        <div className="bg-sheet-main-fill space-y-4 text-center items-center">
+    const SpellSelection = <div className="@container p2 h-full min-h-0 flex flex-col overflow-hidden">
+        <div className="sticky top-0 bg-sheet-main-fill space-y-4 text-center items-center pb-4">
             <Header title={strings.spellsHeader} />
             <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} canProceed={isAllSelected} />
         </div>
 
-        <div className="flex flex-col w-full justify-center">
+        <div className="flex flex-col flex-1 overflow-y-auto w-full justify-start">
             <div className="inline-flex flex-col items-stretch space-y-4 w-full @2xl:w-3/5 mx-auto">
                 
                 {/* GRANTED SPELLS (BY CLASS & ANCESTRY) */}
@@ -113,6 +113,8 @@ export const useSpellSelection = (
                                 source={grant.source}
                             />
                         ))}
+
+                        {/* ANCESTRY SPELL GRANT SLOT */}
                         {!isCreationMode && ancestrySpellSlots.length > 0 &&
                             ancestrySpellSlots.map((slot, idx) => (
                                 <ItemGrantCard

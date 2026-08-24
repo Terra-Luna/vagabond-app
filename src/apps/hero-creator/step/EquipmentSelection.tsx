@@ -20,10 +20,14 @@ export const useEquipmentSelection = (
 
     const EquipmentSelection = (
         <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-            <div className="flex flex-col gap-y-4 h-full overflow-hidden">
-                <Header title={strings.equipHeader} />
-                <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} canProceed={true} />
-                <ItemShop includeStarterPacks={true} />
+            <div className="flex flex-col h-full min-h-0 overflow-hidden">
+                <div className="flex-shrink-0 space-y-4">
+                    <Header title={strings.equipHeader} />
+                    <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} canProceed={true} />
+                </div>
+                <div className="flex-1 overflow-y-auto">
+                    <ItemShop includeStarterPacks={true} />
+                </div>
             </div>
         </EditModeContextProvider >
     )

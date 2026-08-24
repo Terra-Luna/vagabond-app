@@ -102,11 +102,14 @@ export const useTrainingSelection = (
     }, [chosenLevel1Skills, level1TrainingRule, chosenBonusSkills, ancestryTrainingMaxChoices])
 
     const TrainingSelection = (
-        <div className="@container bg-sheet-main-fill space-y-4">
+        <div className="@container bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
             {/* HEADER AND NAVIGATION BUTTONS */}
-            <Header title={strings.traingingsHeader} />
-            <TopNavButtons navButtons={navButtons} subtitle={strings.trainingSubheader} canProceed={canProceed} />
+            <div className="flex-shrink-0 space-y-4">
+                <Header title={strings.traingingsHeader} />
+                <TopNavButtons navButtons={navButtons} subtitle={strings.trainingSubheader} canProceed={canProceed} />
+            </div>
 
+            <div className="flex-1 overflow-y-auto space-y-4">
             <div className="items-center justify-center text-center w-full space-y-2">
 
                 {/* SELECTED STATS W/ BONUSES APPLIED */}
@@ -207,6 +210,7 @@ export const useTrainingSelection = (
                         </BonusChoiceContainer>
                     }
                 </div>
+            </div>
             </div>
         </div>
     )

@@ -33,21 +33,24 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
     }, [classes])
 
     const ClassSelection = (
-        <div className="relative bg-sheet-main-fill space-y-4">
-            <Header title={strings.class} />
-            <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!!classItem} />
-
-            <HeroCreationDropdown
-                label={strings.class}
-                value={classItem?.id ?? strings.selectClass}
-                options={classOpts ?? []}
-                onChange={onSelectClass}
-            />
-            {classItem &&
-                <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                    <ClassSheetComponent item={classItem} />
-                </EditModeContextProvider>
-            }
+        <div className="relative bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
+            <div className="flex-shrink-0 space-y-4">
+                <Header title={strings.class} />
+                <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!!classItem} />
+            </div>
+            <div className="flex-1 overflow-y-auto space-y-4">
+                <HeroCreationDropdown
+                    label={strings.class}
+                    value={classItem?.id ?? strings.selectClass}
+                    options={classOpts ?? []}
+                    onChange={onSelectClass}
+                />
+                {classItem &&
+                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                        <ClassSheetComponent item={classItem} />
+                    </EditModeContextProvider>
+                }
+            </div>
         </div>
     )
 

@@ -33,22 +33,26 @@ export const useAncestrySelection = (navButtons: ReactNode[]) => {
     }, [ancestries])
 
     const AncestrySelection = (
-        <div className="bg-sheet-main-fill space-y-4">
-            <Header title={strings.identity} />
-            <TopNavButtons navButtons={navButtons} canProceed={!!ancestryItem} />
-            <div className="gap-x-4">
-                <HeroCreationDropdown
-                    label={strings.selectAncestry}
-                    value={ancestryItem?.id ?? strings.selectAncestry}
-                    options={ancestryOptions ?? []}
-                    onChange={(val) => onSelectAncestry(val)}
-                />
+        <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
+            <div className="flex-shrink-0 space-y-4">
+                <Header title={strings.identity} />
+                <TopNavButtons navButtons={navButtons} canProceed={!!ancestryItem} />
             </div>
-            {ancestryItem &&
-                <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                    <AncestryReactComponent item={ancestryItem} />
-                </EditModeContextProvider>
-            }
+            <div className="flex-1 overflow-y-auto space-y-4">
+                <div className="gap-x-4">
+                    <HeroCreationDropdown
+                        label={strings.selectAncestry}
+                        value={ancestryItem?.id ?? strings.selectAncestry}
+                        options={ancestryOptions ?? []}
+                        onChange={(val) => onSelectAncestry(val)}
+                    />
+                </div>
+                {ancestryItem &&
+                    <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                        <AncestryReactComponent item={ancestryItem} />
+                    </EditModeContextProvider>
+                }
+            </div>
         </div>
     )
 

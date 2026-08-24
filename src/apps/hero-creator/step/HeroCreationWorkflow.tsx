@@ -112,10 +112,12 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     }, [reasonTrainingRules, reasonTrainingSelections])
 
     const ExtraTrainingSelection = (
-        <div className="@container bg-sheet-main-fill space-y-4">
-            <Header title="Additional Training" />
-            <TopNavButtons navButtons={[backButton, nextButton]} subtitle="The Advancement perk unlocked another skill training." canProceed={canProceedExtraTraining} />
-            <div className="flex flex-col w-full justify-center">
+        <div className="@container bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
+            <div className="flex-shrink-0 space-y-4">
+                <Header title="Additional Training" />
+                <TopNavButtons navButtons={[backButton, nextButton]} subtitle="The Advancement perk unlocked another skill training." canProceed={canProceedExtraTraining} />
+            </div>
+            <div className="flex-1 overflow-y-auto flex flex-col w-full justify-center">
                 <div className="inline-flex flex-col items-stretch space-y-2 @2xl:w-1/2 mx-auto">
                     {reasonTrainingRules.map(rule => (
                         <div key={rule.selectionKey} className="flex flex-col items-center gap-y-1">
@@ -308,7 +310,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         <div className="text-text-primary text-lg font-eskapade flex flex-col min-h-0 h-full p-2 overflow-hidden">
             {/* Current Step View */}
             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                <div className="flex-1 overflow-auto">
+                <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
                     {renderStepContent(stepId)}
                 </div>
             </EditModeContextProvider>

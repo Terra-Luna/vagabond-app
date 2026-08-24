@@ -10,6 +10,8 @@ import { vgLiteLang } from "../../utils/lang"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { ReadOnlyCoinPurse } from "../../view/component/CoinPurse"
 import { Divider, Header } from "../../view/component/Header"
+import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { EquipmentSheetComponent } from "../../view/sheets/item/equip/EquipmentSheetComponent"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { CategoryButtons } from "./CategoryButtons"
@@ -107,16 +109,18 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                             {/* STARTER PACK SELECTION */}
                             {includeStarterPacks &&
                                 <div className="space-y-2">
-                                    <HeroCreationDropdown
-                                        label={"SELECT PACK"}
-                                        value={selectedPack?.id ?? ''}
-                                        options={[
-                                            { value: '', label: "-" },
-                                            ...recommendedPacks?.map(p => ({ value: p?.id, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
-                                            ...otherPacks?.map(p => ({ value: p.id, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
-                                        ]}
-                                        onChange={(packId) => onSelectPack(packId)}
-                                    />
+                                    <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                                        <HeroCreationDropdown
+                                            label={"SELECT PACK"}
+                                            value={selectedPack?.id ?? ''}
+                                            options={[
+                                                { value: '', label: "-" },
+                                                ...recommendedPacks?.map(p => ({ value: p?.id, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
+                                                ...otherPacks?.map(p => ({ value: p.id, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
+                                            ]}
+                                            onChange={(packId) => onSelectPack(packId)}
+                                        />
+                                    </EditModeContextProvider>
                                 </div>
                             }
                             {/* WALLET */}
