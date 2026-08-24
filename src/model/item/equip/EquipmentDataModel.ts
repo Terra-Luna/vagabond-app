@@ -14,7 +14,7 @@ const baseEquipmentSchema = () => {
         bulk: new fields.SchemaField({
             slots: new fields.NumberField({ ...requiredInteger, initial: 1 }),
             isStackable: new fields.BooleanField({ initial: false }),
-            stackSize: new fields.NumberField({ ...requiredInteger, initial: 100 }),
+            stackSize: new fields.NumberField({ ...requiredInteger, initial: 10 }),
             quantity: new fields.NumberField({ ...requiredInteger, initial: 1 }),
             totalSlots: new fields.NumberField({ ...requiredInteger, initial: 0 })
         }),

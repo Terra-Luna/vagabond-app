@@ -1,0 +1,47 @@
+{
+  "name": "Liquor",
+  "type": "sundry",
+  "_id": "RiWn7wLboTgSiwaN",
+  "img": "/icons/containers/barrels/barrel-walnut-steel-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Barrel</span></p>",
+    "rules": [],
+    "category": "booze",
+    "value": {
+      "g": 1,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787583287907,
+    "modifiedTime": 1787583339441,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!RiWn7wLboTgSiwaN"
+}
