@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
-import { Aura, Cone, Line, Sphere, Cube, Imbue, Glyph, Remote, Touch, SpellSnapshot } from "../../../src/combat/spellcasting/SpellDelivery"
+
+import { Aura, Cone, Cube, Glyph, Imbue, Line, Remote, SpellSnapshot, Sphere, Touch } from "../../../src/combat/spellcasting/SpellDelivery"
 
 const spell: SpellSnapshot = {
     uuid: "x", name: "X", baseManaCost: 0, damageType: 'fire', ignoreEffectCost: false, appliedEffects: []
@@ -8,7 +9,7 @@ const spell: SpellSnapshot = {
 describe('spell delivery mana calc tests', () => {
     test('aura', () => {
         // Setup
-        const aura = new Aura(spell)
+        const aura = new Aura(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         aura.size = 35
         // Execute & Verify
         aura.calculateManaCost()
@@ -17,7 +18,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('aura upcast w/ effect', () => {
         // Setup
-        const aura = new Aura(spell)
+        const aura = new Aura(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         aura.size = 35
         aura.applyEffect = true
         aura.damageDice = 3
@@ -28,7 +29,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('cone', () => {
         // Setup
-        const cone = new Cone(spell)
+        const cone = new Cone(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         cone.size = 35
         // Execute & Verify
         cone.calculateManaCost()
@@ -36,7 +37,7 @@ describe('spell delivery mana calc tests', () => {
     })
     test('cone upcast w/ effect', () => {
         // Setup
-        const cone = new Cone(spell)
+        const cone = new Cone(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         cone.size = 35
         cone.applyEffect = true
         cone.damageDice = 3
@@ -47,7 +48,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('line', () => {
         // Setup
-        const line = new Line(spell)
+        const line = new Line(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         line.size = 35
         // Execute & Verify
         line.calculateManaCost()
@@ -55,7 +56,7 @@ describe('spell delivery mana calc tests', () => {
     })
     test('line upcast w/ effect', () => {
         // Setup
-        const line = new Line(spell)
+        const line = new Line(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         line.size = 35
         line.applyEffect = true
         line.damageDice = 3
@@ -66,7 +67,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('sphere', () => {
         // Setup
-        const sphere = new Sphere(spell)
+        const sphere = new Sphere(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         sphere.size = 35
         // Execute & Verify
         sphere.calculateManaCost()
@@ -74,7 +75,7 @@ describe('spell delivery mana calc tests', () => {
     })
     test('sphere upcast w/ effect', () => {
         // Setup
-        const sphere = new Sphere(spell)
+        const sphere = new Sphere(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         sphere.size = 35
         sphere.applyEffect = true
         sphere.damageDice = 3
@@ -85,7 +86,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('cube', () => {
         // Setup
-        const cube = new Cube(spell)
+        const cube = new Cube(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         cube.targetCount = 2
         cube.damageDice = 2
         // Execute & Verify
@@ -94,7 +95,7 @@ describe('spell delivery mana calc tests', () => {
     })
     test('cube upcast w/ effect', () => {
         // Setup
-        const cube = new Cube(spell)
+        const cube = new Cube(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         cube.applyEffect = true
         cube.damageDice = 5
         // Execute & Verify
@@ -104,7 +105,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('imbue', () => {
         // Setup
-        const imbue = new Imbue(spell)
+        const imbue = new Imbue(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         imbue.targetTokenIds = ['a', 'b', 'c']
         imbue.damageDice = 3
         // Execute & Verify
@@ -114,7 +115,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('remote single target', () => {
         // Setup
-        const remote = new Remote(spell)
+        const remote = new Remote(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         remote.damageDice = 1
         remote.targetCount = 1
         // Execute & Verify
@@ -123,7 +124,7 @@ describe('spell delivery mana calc tests', () => {
     })
     test('remote', () => {
         // Setup
-        const remote = new Remote(spell)
+        const remote = new Remote(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         remote.targetTokenIds = ['a', 'b']
         remote.damageDice = 3
         // Execute & Verify
@@ -132,7 +133,7 @@ describe('spell delivery mana calc tests', () => {
     })
     test('remote upcast w/ effect', () => {
         // Setup
-        const remote = new Remote(spell)
+        const remote = new Remote(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         remote.applyEffect = true
         remote.damageDice = 8
         // Execute & Verify
@@ -142,14 +143,14 @@ describe('spell delivery mana calc tests', () => {
 
     test('touch', () => {
         // Setup
-        const touch = new Touch(spell)
+        const touch = new Touch(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         // Execute & Verify
         touch.calculateManaCost()
         expect(0).toEqual(touch.manaCost)
     })
     test('touch upcast w/ effect', () => {
         // Setup
-        const touch = new Touch(spell)
+        const touch = new Touch(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         touch.applyEffect = true
         touch.damageDice = 6
         // Execute & Verify
@@ -160,7 +161,7 @@ describe('spell delivery mana calc tests', () => {
 
     test('glyph', () => {
         // Setup
-        const glyph = new Glyph(spell)
+        const glyph = new Glyph(spell, { damageUpcastDiscount: 0, deliveryUpcastDiscount: 0 })
         // Execute & Verify
         glyph.calculateManaCost()
         expect(glyph.damageDice).toEqual(1)

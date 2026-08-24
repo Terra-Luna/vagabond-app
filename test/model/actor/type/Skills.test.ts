@@ -1,4 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
+
 import { setSkill, setSkillDifficulties } from "../../../../src/model/actor/HeroDataModel"
 
 describe('test basic skill calc', () => {

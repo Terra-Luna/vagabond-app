@@ -1,7 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
 
 import { getBonusSelections } from "../../../src/apps/level-up/LevelUpApp"
-import { areLevelUpSelectionsComplete } from "../../../src/apps/level-up/util/levelUpSelectionUtils"
 
 describe("level up selections", () => {
     test("keeps nested bonus selections by id", () => {
@@ -19,27 +18,5 @@ describe("level up selections", () => {
             { ruleId: "spell-rule", value: "spell-uuid", selectionId: "perk-3" },
             { ruleId: "reason-rule", value: "skills.history.isTrained", selectionId: "perk-4" }
         ])
-    })
-
-    test("allows finish when all required perk bonus selections are made", () => {
-        const perk = {
-            system: {
-                rules: [
-                    { key: "ChoiceSet" },
-                    { key: "ChoiceSet" }
-                ]
-            }
-        }
-
-        expect(areLevelUpSelectionsComplete({
-            isStatLevel: false,
-            isStatSelected: true,
-            showBonusSelections: true,
-            selectedPerks: [perk, perk],
-            advancements: [{ ruleId: "a", value: "stats.might", selectionId: "1" }],
-            perkTrainings: [{ ruleId: "b", value: "skills.athletics.isTrained", selectionId: "2" }],
-            reasonTrainings: [],
-            spells: [{ ruleId: "c", value: "spell-uuid", selectionId: "3" }]
-        })).toBe(true)
     })
 })

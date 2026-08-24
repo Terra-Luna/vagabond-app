@@ -1,4 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
+
 import { setSpeeds } from "../../../../src/model/actor/HeroDataModel"
 
 describe('test hero speed data', () => {

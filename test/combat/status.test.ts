@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals"
-import { getCombatantStatuses } from "../../src/combat/status"
+
+import { getCombatantStatuses } from "../../src/combat/engine/util/status"
 
 describe('get combatant statuses', () => {
     const createCombatantWithStatuses = (activeStatuses: string[]) => {
