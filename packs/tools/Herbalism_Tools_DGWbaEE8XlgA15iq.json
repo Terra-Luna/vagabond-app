@@ -1,0 +1,47 @@
+{
+  "name": "Herbalism Tools",
+  "type": "tool",
+  "_id": "DGWbaEE8XlgA15iq",
+  "img": "/icons/tools/cooking/mortar-black.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "tools",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787547679740,
+    "modifiedTime": 1787547726192,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!DGWbaEE8XlgA15iq"
+}

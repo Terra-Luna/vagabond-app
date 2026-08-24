@@ -1,0 +1,47 @@
+{
+  "name": "Blacksmithing Tools",
+  "type": "tool",
+  "_id": "J1aeK4OhRKCnr6Zz",
+  "img": "/icons/skills/trades/smithing-smelter-tongs.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "tools",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787547457958,
+    "modifiedTime": 1787547656531,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!J1aeK4OhRKCnr6Zz"
+}

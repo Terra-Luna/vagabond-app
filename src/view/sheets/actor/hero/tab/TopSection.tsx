@@ -1,4 +1,4 @@
-import { ChevronRight, Eye, EyeOff, Heart, LucideBookMarked, LucideClover, LucideHeartOff, Plus, Shield, SquarePen, Star, ToggleLeft, ToggleRight,Trash } from "lucide-react"
+import { ChevronRight, Eye, EyeOff, Heart, LucideBookMarked, LucideClover, LucideHeartOff, Plus, Shield, SquarePen, Star, ToggleLeft, ToggleRight, Trash, Wand2 } from "lucide-react"
 import { ReactNode, useCallback } from "react"
 
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
@@ -277,13 +277,14 @@ const Save = ({ hero, save }: {
 
 export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     const skills = Object.keys(vgLiteLang.Skills)
+    const castingSkill = hero.class.castingSkill
     return (
         <div>
             <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={lang.VGLITE.HeroSheet.skills} content={
                 <div className="grid @sm:grid-cols-2 gap-x-2">
                     {
                         skills.map(sk => (
-                            <Skill key={sk} hero={hero} isTrained={hero.skills[sk].isTrained} skillKey={sk} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isAttack={false} />
+                            <Skill key={sk} hero={hero} skillKey={sk} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isTrained={hero.skills[sk].isTrained} isAttack={false} isCastSkill={sk === castingSkill} />
                         ))
                     }
                 </div>
@@ -292,7 +293,7 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack }: { hero: HeroDataModel, isTrained: boolean, skillKey: string, name: string, value: number, isAttack: boolean }) => {
+export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack, isCastSkill }: { hero: HeroDataModel, isTrained: boolean, skillKey: string, name: string, value: number, isAttack: boolean, isCastSkill: boolean }) => {
     return (
         <div title={lang.VGLITE.HeroSheet.skills_tooltip} className="w-full">
             <div className="flex items-center ml-1">
@@ -303,7 +304,12 @@ export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack }: { he
                         sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
                     }
                 }>
-                    <div>{name}</div>
+                    <div className="flex gap-x-2 items-center">
+                        {name}
+                        {isCastSkill &&
+                            <Wand2 size={16} className="text-ic-skill-trained" />
+                        }
+                    </div>
                     <div className={(isAttack ?
                         'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center' :
                         'text-xl mr-2'
