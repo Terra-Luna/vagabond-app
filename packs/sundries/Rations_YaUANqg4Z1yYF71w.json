@@ -1,0 +1,47 @@
+{
+  "name": "Rations",
+  "type": "sundry",
+  "_id": "YaUANqg4Z1yYF71w",
+  "img": "/icons/consumables/food/ration-canned-fish.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">1 day</span></p>",
+    "rules": [],
+    "category": "cooking",
+    "value": {
+      "g": 0,
+      "s": 1,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": true,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787546445273,
+    "modifiedTime": 1787546692445,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!YaUANqg4Z1yYF71w"
+}

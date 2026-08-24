@@ -22,24 +22,27 @@ export const Bulk = ({ item }) => {
                     placeholder="0"
                 />
             } />
-            {isEditMode || item.system.bulk?.isStackable &&
-                <div>
-                    <ItemSheetProperty label={vgLiteLang.ItemSheet.stackable} value={
-                        <Checkbox
-                            label={''}
-                            onCheckedChanged={onCheckStackable}
-                            checked={item.system.bulk?.isStackable}
-                        />
-                    } />
-                    <ItemSheetProperty label={vgLiteLang.ItemSheet.qty} value={
-                        <EditableTextField
-                            boundValue={item.system.bulk?.quantity}
-                            updateProps={{ object: item, path: ['bulk', 'quantity'] }}
-                            placeholder="1"
-                        />
-                    } />
-                </div>
+
+            {isEditMode &&
+                <ItemSheetProperty label={vgLiteLang.ItemSheet.stackable} value={
+                    <Checkbox
+                        label={''}
+                        onCheckedChanged={onCheckStackable}
+                        checked={item.system.bulk?.isStackable}
+                    />
+                } />
             }
+
+            {(isEditMode || item.system.bulk?.isStackable) &&
+                <ItemSheetProperty label={vgLiteLang.ItemSheet.qty} value={
+                    <EditableTextField
+                        boundValue={item.system.bulk?.quantity}
+                        updateProps={{ object: item, path: ['bulk', 'quantity'] }}
+                        placeholder="1"
+                    />
+                } />
+            }
+
             {item.system.bulk?.isStackable && item.system.bulk?.slots === 0 &&
                 <ItemSheetProperty label={vgLiteLang.ItemSheet.stackSize} value={
                     <EditableTextField

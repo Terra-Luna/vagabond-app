@@ -1,0 +1,47 @@
+{
+  "name": "Pants, casual",
+  "type": "sundry",
+  "_id": "y1GDPBwU9riCZOae",
+  "img": "/icons/equipment/leg/pants-mud-leather-pants.webp",
+  "system": {
+    "description": "<p><br></p>",
+    "rules": [],
+    "category": "clothing",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787543043684,
+    "modifiedTime": 1787543133681,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!y1GDPBwU9riCZOae"
+}

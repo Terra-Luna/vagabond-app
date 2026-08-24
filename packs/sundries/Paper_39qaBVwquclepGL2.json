@@ -1,0 +1,47 @@
+{
+  "name": "Paper",
+  "type": "sundry",
+  "_id": "39qaBVwquclepGL2",
+  "img": "/icons/sundries/documents/paper-plain-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">1 Sheet</span></p>",
+    "rules": [],
+    "category": "books",
+    "value": {
+      "g": 0,
+      "s": 2,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787541581064,
+    "modifiedTime": 1787545241726,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!39qaBVwquclepGL2"
+}

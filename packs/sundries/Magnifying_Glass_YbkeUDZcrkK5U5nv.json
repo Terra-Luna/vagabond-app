@@ -1,0 +1,47 @@
+{
+  "name": "Magnifying Glass",
+  "type": "sundry",
+  "_id": "YbkeUDZcrkK5U5nv",
+  "img": "/icons/tools/scribal/magnifying-glass.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "books",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787541551142,
+    "modifiedTime": 1787541568065,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!YbkeUDZcrkK5U5nv"
+}

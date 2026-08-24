@@ -1,0 +1,47 @@
+{
+  "name": "Needle, sewing",
+  "type": "sundry",
+  "_id": "Oj4pc0XiwVkJytCK",
+  "img": "/icons/tools/hand/sewing-needle-thread.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "clothing",
+    "value": {
+      "g": 0,
+      "s": 0,
+      "c": 1
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787544033861,
+    "modifiedTime": 1787545490202,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Oj4pc0XiwVkJytCK"
+}

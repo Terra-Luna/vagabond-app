@@ -1,0 +1,47 @@
+{
+  "name": "Cowl",
+  "type": "sundry",
+  "_id": "yXbfH8LBjUwGtI9x",
+  "img": "/icons/equipment/head/hood-cowl-mask-purple.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "clothing",
+    "value": {
+      "g": 0,
+      "s": 2,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787542418842,
+    "modifiedTime": 1787542432264,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yXbfH8LBjUwGtI9x"
+}
