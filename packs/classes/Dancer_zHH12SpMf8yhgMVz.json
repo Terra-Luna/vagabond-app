@@ -4,7 +4,7 @@
   "_id": "zHH12SpMf8yhgMVz",
   "img": "systems/vagabond-lite/assets/class/dancer_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Dancers are practitioners of the alluring art of dance. They have a flair for enlivening their audience and giving awe-inspiring shows.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Dancers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Apsalar, Malazan Book of the Fallen</span></p><p><span style=\"white-space:pre-wrap\">• Azura, Fire Emblem Fates</span></p><p><span style=\"white-space:pre-wrap\">• Sandrilene fa Toren, The Circle Opens</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Dancer</strong></b></p><p><span style=\"white-space:pre-wrap\">The dancer is a low-defense support with a focus on action efficiency. Grant Actions through Step Up, as your main offenses will occur when you Crit on Reflex Saves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Step Up</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Courtesan or Musician</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Finesse, Performance</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Dancers are practitioners of the alluring art of dance. They have a flair for enlivening their audience and giving awe-inspiring shows.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Dancers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Apsalar, Malazan Book of the Fallen</span></p><p><span style=\"white-space:pre-wrap\">• Azura, Fire Emblem Fates</span></p><p><span style=\"white-space:pre-wrap\">• Sandrilene fa Toren, The Circle Opens</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Dancer</strong></b></p><p><span style=\"white-space:pre-wrap\">The dancer is a low-defense support with a focus on action efficiency. Grant Actions through Step Up, as your main offenses will occur when you Crit on Reflex Saves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Step Up</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Finesse, Performance</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -57,7 +57,10 @@
     "keyStats": [
       "dexterity"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.riYRYZ03gPSdRCNI",
+      "Compendium.vagabond-lite.startingpacks.Item.3vDJJSHn1yUcfRT0"
+    ],
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
@@ -119,8 +122,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786555298394,
-    "modifiedTime": 1786561798471,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787611685179,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

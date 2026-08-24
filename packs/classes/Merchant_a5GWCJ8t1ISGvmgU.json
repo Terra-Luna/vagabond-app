@@ -4,7 +4,7 @@
   "_id": "a5GWCJ8t1ISGvmgU",
   "img": "systems/vagabond-lite/assets/class/merchant_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">May they be an appraiser of rare magic items, peddler of illicit substances, or bookkeeper for the court, merchants are masters of exchange.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Merchants</strong></b></p><p><span style=\"white-space:pre-wrap\">• Anna, Fire Emblem</span></p><p><span style=\"white-space:pre-wrap\">• Marco Polo, Venetian merchant</span></p><p><span style=\"white-space:pre-wrap\">• Torneko Taloon, Dragon Quest IV</span></p><p><span style=\"white-space:pre-wrap\">• Tressa Colzione, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Merchant</strong></b></p><p><span style=\"white-space:pre-wrap\">The merchant is a low-defense and damage character, who provides high-support through a wider inventory pool and optimizing your</span></p><p><span style=\"white-space:pre-wrap\">party’s resources. In combat, you should look out for allies in need of assistance and strategize what items to use.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible (skip to Use)</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Blacksmith, Cook, or Tinker</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Craft, Influence</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">May they be an appraiser of rare magic items, peddler of illicit substances, or bookkeeper for the court, merchants are masters of exchange.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Merchants</strong></b></p><p><span style=\"white-space:pre-wrap\">• Anna, Fire Emblem</span></p><p><span style=\"white-space:pre-wrap\">• Marco Polo, Venetian merchant</span></p><p><span style=\"white-space:pre-wrap\">• Torneko Taloon, Dragon Quest IV</span></p><p><span style=\"white-space:pre-wrap\">• Tressa Colzione, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Merchant</strong></b></p><p><span style=\"white-space:pre-wrap\">The merchant is a low-defense and damage character, who provides high-support through a wider inventory pool and optimizing your</span></p><p><span style=\"white-space:pre-wrap\">party’s resources. In combat, you should look out for allies in need of assistance and strategize what items to use.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible (skip to Use)</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Craft, Influence</span></p>",
     "rules": [
       {
         "id": "eCdAhqrTAclxsdaQ",
@@ -59,7 +59,11 @@
       "reason",
       "presence"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.ycpzC6K9R1qFrLBZ",
+      "Compendium.vagabond-lite.startingpacks.Item.tfyvhtABlx28fMIr",
+      "Compendium.vagabond-lite.startingpacks.Item.ZWUDKbFvClb1RUJu"
+    ],
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
@@ -121,7 +125,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786566807612,
-    "modifiedTime": 1787376789374,
+    "modifiedTime": 1787612255526,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

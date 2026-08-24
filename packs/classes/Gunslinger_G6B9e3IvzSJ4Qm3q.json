@@ -4,7 +4,7 @@
   "_id": "G6B9e3IvzSJ4Qm3q",
   "img": "systems/vagabond-lite/assets/class/gunslinger_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Attitude and tenacity are as core to the gunslinger as ammo. They stare down challenges through iron sights, fortified by their inner grit. </span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Gunslingers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Arthur Morgan, Red Dead Redemption 2</span></p><p><span style=\"white-space:pre-wrap\">• Django, Django Unchained</span></p><p><span style=\"white-space:pre-wrap\">• Roland Deschain, Dark Tower</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Gunslinger</strong></b></p><p><span style=\"white-space:pre-wrap\">The gunslinger is a low-defense, high-crit striker. In combat, stay as far back as possible and keep the enemy under constant fire.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Bounty Hunter or Tinker</span></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Ranged, Detect</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Attitude and tenacity are as core to the gunslinger as ammo. They stare down challenges through iron sights, fortified by their inner grit. </span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Gunslingers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Arthur Morgan, Red Dead Redemption 2</span></p><p><span style=\"white-space:pre-wrap\">• Django, Django Unchained</span></p><p><span style=\"white-space:pre-wrap\">• Roland Deschain, Dark Tower</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Gunslinger</strong></b></p><p><span style=\"white-space:pre-wrap\">The gunslinger is a low-defense, high-crit striker. In combat, stay as far back as possible and keep the enemy under constant fire.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Ranged, Detect</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -49,7 +49,10 @@
     "keyStats": [
       "awareness"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.0x9l4F6QTA2c3q1x",
+      "Compendium.vagabond-lite.startingpacks.Item.ZWUDKbFvClb1RUJu"
+    ],
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
@@ -111,8 +114,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786041519359,
-    "modifiedTime": 1786564305717,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787611860309,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

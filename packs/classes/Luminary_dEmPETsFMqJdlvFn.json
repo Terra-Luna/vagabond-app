@@ -4,7 +4,7 @@
   "_id": "dEmPETsFMqJdlvFn",
   "img": "systems/vagabond-lite/assets/class/luminary_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Luminaries</strong></b></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Devout</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Influence, Mysticism</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Luminaries</strong></b></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Influence, Mysticism</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -100,7 +100,9 @@
     "keyStats": [
       "awareness"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.jYntBY6j2VVmBe7T"
+    ],
     "castingSkill": "mysticism",
     "maxCastFormula": "full",
     "manaMultiplier": 4,
@@ -162,8 +164,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1786562350278,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787611886640,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

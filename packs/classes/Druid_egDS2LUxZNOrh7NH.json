@@ -4,7 +4,7 @@
   "_id": "egDS2LUxZNOrh7NH",
   "img": "systems/vagabond-lite/assets/class/druid_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Keepers of the wilderness, druids are mystics of nature that are adopted into beast-kind.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Druids</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beast Boy, DC Comics</span></p><p><span style=\"white-space:pre-wrap\">• Beorn, The Lord of the Rings</span></p><p><span style=\"white-space:pre-wrap\">• Frank Zhang, Percy Jackson</span></p><p><span style=\"white-space:pre-wrap\">• Poison Ivy, DC Comics</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Druid</strong></b></p><p><span style=\"white-space:pre-wrap\">The druid is a mid-defense, mixed support and control class with a focus on Casting Spells and shapechanging to powerful beasts.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast or Beast Attacks</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Hermit</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, Survival</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Keepers of the wilderness, druids are mystics of nature that are adopted into beast-kind.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Druids</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beast Boy, DC Comics</span></p><p><span style=\"white-space:pre-wrap\">• Beorn, The Lord of the Rings</span></p><p><span style=\"white-space:pre-wrap\">• Frank Zhang, Percy Jackson</span></p><p><span style=\"white-space:pre-wrap\">• Poison Ivy, DC Comics</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Druid</strong></b></p><p><span style=\"white-space:pre-wrap\">The druid is a mid-defense, mixed support and control class with a focus on Casting Spells and shapechanging to powerful beasts.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast or Beast Attacks</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, Survival</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -76,7 +76,9 @@
     "keyStats": [
       "awareness"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.j05Zi3ASkGB2J19f"
+    ],
     "castingSkill": "mysticism",
     "manaMultiplier": 4,
     "maxCastFormula": "full",
@@ -132,8 +134,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786555887806,
-    "modifiedTime": 1786562006041,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787611701213,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

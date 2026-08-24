@@ -4,7 +4,7 @@
   "_id": "DfGZ3FOXXjRRaxe2",
   "img": "systems/vagabond-lite/assets/class/barbarian_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Barbarians are primal warriors that fight with the power of unbridled anger. The legends speak of their kills almost as their own unique deeds, using the barbarian’s name as a past-tense verb.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Barbarians</strong></b></p><p><span style=\"white-space:pre-wrap\">• Brock Samson, The Venture Bros.</span></p><p><span style=\"white-space:pre-wrap\">• Conan, Conan the Barbarian</span></p><p><span style=\"white-space:pre-wrap\">• Guts, Berserk</span></p><p><span style=\"white-space:pre-wrap\">• Logen Ninefingers, First Law Trilogy</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Barbarian</strong></b></p><p><span style=\"white-space:pre-wrap\">The barbarian is a mid-high-defense bruiser. Stick to an Enemy, and hit them very hard.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack (Melee)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator or Warrior</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Survival</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Barbarians are primal warriors that fight with the power of unbridled anger. The legends speak of their kills almost as their own unique deeds, using the barbarian’s name as a past-tense verb.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Barbarians</strong></b></p><p><span style=\"white-space:pre-wrap\">• Brock Samson, The Venture Bros.</span></p><p><span style=\"white-space:pre-wrap\">• Conan, Conan the Barbarian</span></p><p><span style=\"white-space:pre-wrap\">• Guts, Berserk</span></p><p><span style=\"white-space:pre-wrap\">• Logen Ninefingers, First Law Trilogy</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Barbarian</strong></b></p><p><span style=\"white-space:pre-wrap\">The barbarian is a mid-high-defense bruiser. Stick to an Enemy, and hit them very hard.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack (Melee)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Survival</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -49,7 +49,10 @@
     "keyStats": [
       "might"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.3svveHnNn60fHHiX",
+      "Compendium.vagabond-lite.startingpacks.Item.hug6ifnaIOy45vvj"
+    ],
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
@@ -111,8 +114,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1786564231525,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787611641080,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

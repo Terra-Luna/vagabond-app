@@ -4,7 +4,7 @@
   "_id": "8ZZkn46z7F7tuAld",
   "img": "systems/vagabond-lite/assets/class/vanguard_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Vanguards are terrifying sentinels of heavy metal armor that use shields to devastate their foes, standing tall as mobile bastions of</span></p><p><span style=\"white-space:pre-wrap\">fortitude and might.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Vanguards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Groot, Guardians of the Galaxy</span></p><p><span style=\"white-space:pre-wrap\">• Havel, Dark Souls</span></p><p><span style=\"white-space:pre-wrap\">• Juggernaut, X-Men</span></p><p><span style=\"white-space:pre-wrap\">• Reinhardt, Overwatch</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Vanguard</strong></b></p><p><span style=\"white-space:pre-wrap\">The vanguard is a high-defense tank, trading off raw damage output for control. Actively defend through the Rush Action and Shoves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action: </strong></b><span style=\"white-space:pre-wrap\">Shove (Attack)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Sentinel</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Brawl</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Vanguards are terrifying sentinels of heavy metal armor that use shields to devastate their foes, standing tall as mobile bastions of</span></p><p><span style=\"white-space:pre-wrap\">fortitude and might.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Vanguards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Groot, Guardians of the Galaxy</span></p><p><span style=\"white-space:pre-wrap\">• Havel, Dark Souls</span></p><p><span style=\"white-space:pre-wrap\">• Juggernaut, X-Men</span></p><p><span style=\"white-space:pre-wrap\">• Reinhardt, Overwatch</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Vanguard</strong></b></p><p><span style=\"white-space:pre-wrap\">The vanguard is a high-defense tank, trading off raw damage output for control. Actively defend through the Rush Action and Shoves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action: </strong></b><span style=\"white-space:pre-wrap\">Shove (Attack)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Brawl</span></p>",
     "rules": [
       {
         "id": "m2aideftpkbEKz1N",
@@ -65,7 +65,9 @@
     "keyStats": [
       "might"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.89DHDbGM3hZwfo1Y"
+    ],
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
@@ -127,8 +129,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786571011722,
-    "modifiedTime": 1786571526303,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787612359895,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

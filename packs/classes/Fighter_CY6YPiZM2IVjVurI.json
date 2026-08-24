@@ -4,7 +4,7 @@
   "_id": "CY6YPiZM2IVjVurI",
   "img": "systems/vagabond-lite/assets/class/fighter_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Students of the art of violence, fighters are defined by their weapon skills, and variety of martial techniques.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Fighters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beowulf, English mythology</span></p><p><span style=\"white-space:pre-wrap\">• Gilgamesh, Mesopotamian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sir Lancelot, Arthurian legend</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Fighter</strong></b></p><p><span style=\"white-space:pre-wrap\">The fighter is a mid-defense striker. In combat, get within effective distance for offense and prioritize the Attack Action.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Gladiator, Knight, Warrior, or Watchman</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Melee, Ranged</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Students of the art of violence, fighters are defined by their weapon skills, and variety of martial techniques.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Fighters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beowulf, English mythology</span></p><p><span style=\"white-space:pre-wrap\">• Gilgamesh, Mesopotamian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sir Lancelot, Arthurian legend</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Fighter</strong></b></p><p><span style=\"white-space:pre-wrap\">The fighter is a mid-defense striker. In combat, get within effective distance for offense and prioritize the Attack Action.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Melee, Ranged</span></p>",
     "rules": [
       {
         "id": "3Zz32mqq4wp99hru",
@@ -97,7 +97,12 @@
       "might",
       "awareness"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.3svveHnNn60fHHiX",
+      "Compendium.vagabond-lite.startingpacks.Item.ImIcBC3E6UZcHsK4",
+      "Compendium.vagabond-lite.startingpacks.Item.hug6ifnaIOy45vvj",
+      "Compendium.vagabond-lite.startingpacks.Item.skbkscLdu2nlcgHW"
+    ],
     "castingSkill": "",
     "manaMultiplier": 0,
     "features": [
@@ -158,8 +163,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
-    "modifiedTime": 1786568001369,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787611725952,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

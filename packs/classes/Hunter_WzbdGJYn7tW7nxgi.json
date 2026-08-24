@@ -4,7 +4,7 @@
   "_id": "WzbdGJYn7tW7nxgi",
   "img": "systems/vagabond-lite/assets/class/hunter_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Keepers of the old way, hunters are survival experts that specialize in exploiting their enemies’ weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Hunters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Aloy, Horizon</span></p><p><span style=\"white-space:pre-wrap\">• Aragorn, The Lord of the Rings</span></p><p><span style=\"white-space:pre-wrap\">• Samus Aran, Metroid</span></p><p><span style=\"white-space:pre-wrap\">• San, Princess Mononoke</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Hunter</strong></b></p><p><span style=\"white-space:pre-wrap\">The hunter is a low defense, high-crit striker. They can be built for Melee or Ranged positions.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline or Backline</span></p><p><b><strong style=\"white-space:pre-wrap\">Starting Pack:</strong></b><span style=\"white-space:pre-wrap\"> Scout or Warrior</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Ranged, Survival</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Keepers of the old way, hunters are survival experts that specialize in exploiting their enemies’ weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Hunters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Aloy, Horizon</span></p><p><span style=\"white-space:pre-wrap\">• Aragorn, The Lord of the Rings</span></p><p><span style=\"white-space:pre-wrap\">• Samus Aran, Metroid</span></p><p><span style=\"white-space:pre-wrap\">• San, Princess Mononoke</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Hunter</strong></b></p><p><span style=\"white-space:pre-wrap\">The hunter is a low defense, high-crit striker. They can be built for Melee or Ranged positions.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline or Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Ranged, Survival</span></p>",
     "rules": [
       {
         "id": "UXZrxyWylRRuUZO6",
@@ -68,7 +68,10 @@
     "keyStats": [
       "awareness"
     ],
-    "startingPacks": [],
+    "startingPacks": [
+      "Compendium.vagabond-lite.startingpacks.Item.F62niHMK5Hg4TmMn",
+      "Compendium.vagabond-lite.startingpacks.Item.hug6ifnaIOy45vvj"
+    ],
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
@@ -130,8 +133,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786566364586,
-    "modifiedTime": 1786566769140,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1787611874489,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
