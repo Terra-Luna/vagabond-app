@@ -62,8 +62,10 @@ export class PerkRulesSelectionsApplicator {
                             : []
                     })
 
+                    // Perks with their own per-instance choice (e.g. Advancement) must stay as separate entries instead of being compounded.
+                    const hasOwnChoice = Boolean(parentSelection?.subselect)
                     const duplicatePerk = actor.system.perks.find(it => (it as any)._sourceId === fullItem.uuid)
-                    if (duplicatePerk) {
+                    if (duplicatePerk && !hasOwnChoice) {
                         if (!systemClone.canTakeMultiple) continue
 
                         systemClone.rules.forEach(rule => {

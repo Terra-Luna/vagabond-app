@@ -56,15 +56,20 @@ export async function savePerkSelections(actor: Actor & { system: any }, slots: 
         sourceId: perk._sourceId
     })))
 
-    for (const slot of slots.filter(slot => slot.value)) {
+    for (const slot of slots.filter(slot => slot.value || slot.selectionId)) {
         const directRule = rulesByItem.flatMap(source => source.rules).find(rule => rule.id === slot.ruleId)
         if (directRule) {
             const selections = normalizeRuleSelections(directRule.selections)
             const existing = selections.find(selection => slot.selectionId
                 ? selection.id === slot.selectionId
                 : selection.value === slot.value)
-            if (existing) existing.value = slot.value
-            else selections.push({ id: slot.selectionId ?? randomId(), value: slot.value, subselect: "" })
+            if (slot.value) {
+                if (existing) existing.value = slot.value
+                else selections.push({ id: slot.selectionId ?? randomId(), value: slot.value, subselect: "" })
+            }
+            else if (existing) {
+                existing.value = ""
+            }
             directRule.selections = selections
             continue
         }

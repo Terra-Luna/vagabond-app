@@ -35,7 +35,8 @@ export const usePerkBonusSelection = (
     classSpellGrants: (ItemRule & { item: string; uuid: string; source: string; })[],
     ancestrySpellGrants: (ItemRule & { item: string; uuid: string; source: string; })[],
     navButtons: ReactNode[],
-    initialSelections: Record<string, string[]> = {}
+    initialSelections: Record<string, string[]> = {},
+    isHeroCreation: boolean = false
 ) => {
     const strings = vgLiteLang.HeroCreation
     const [advancementSelections, setAdvancementSelections] = useState<Record<string, string>>({})
@@ -61,18 +62,39 @@ export const usePerkBonusSelection = (
     }
 
     const advancements = useMemo(() => {
-        const maxStats = stats.filter(it => it.value >= 7).map(it => it.stat)
         const rules = expandChoiceRules((perks ?? []).flatMap((perk, perkIndex) => getStatChoiceRules([{ system: { rules: perk.system.rules.map(rule => ({ ...rule, sourceKey: (perk as any).sourceKey ?? perkIndex })) } } as any])))
+
+        const savedValueByRule: Record<string, string> = {}
+        const selectedValueByRule: Record<string, string> = {}
         rules.forEach(r => {
-            const savedValue = getRuleSelections({ ...r, selections: getInitialRuleSelections(r, initialSelections) }, value => value.startsWith('stats.'))[r.selectionIndex] ?? ''
-            const selectedValue = advancementSelections[r.selectionKey] || savedValue
+            const savedValue = isHeroCreation ? '' : (getRuleSelections({ ...r, selections: getInitialRuleSelections(r, initialSelections) }, value => value.startsWith('stats.'))[r.selectionIndex] ?? '')
+            savedValueByRule[r.selectionKey] = savedValue
+            selectedValueByRule[r.selectionKey] = advancementSelections[r.selectionKey] || savedValue
+        })
+
+        rules.forEach(r => {
+            const selectedValue = selectedValueByRule[r.selectionKey] ?? ''
             r.choices = [
                 ...[{ value: '', label: strings.emptySlot }],
-                ...r.choices.filter(c => !maxStats.includes(c.value.replace("stats.", "")) || c.value === selectedValue)
+                ...r.choices.filter(c => {
+                    if (c.value === selectedValue) return true
+                    const stat = c.value.replace("stats.", "")
+                    const baseValue = Number(stats.find(it => it.stat === stat)?.value ?? 0)
+                    // `stats` already reflects every saved pick outside hero creation; only count OTHER rules' picks
+                    // that differ from what was already saved, since those aren't reflected in `baseValue` yet.
+                    const otherPendingAdjustment = Object.keys(selectedValueByRule).reduce((sum, key) => {
+                        if (key === r.selectionKey) return sum
+                        const current = selectedValueByRule[key]
+                        const saved = savedValueByRule[key]
+                        if (current === saved) return sum
+                        return sum + (current === c.value ? 1 : 0) - (saved === c.value ? 1 : 0)
+                    }, 0)
+                    return (baseValue + otherPendingAdjustment) < 7
+                })
             ]
         })
         return rules
-    }, [advancementSelections, initialSelections, perks, stats])
+    }, [advancementSelections, initialSelections, isHeroCreation, perks, stats])
 
     // Advancement rules that bumped Reason from an even to an odd value, unlocking another skill training.
     const reasonTrainingRules = useMemo(() => {
@@ -121,6 +143,45 @@ export const usePerkBonusSelection = (
         return rules
     }, [ancestrySpellGrants, classSpellGrants, initialSelections, perks, spellSlots])
 
+    // Tracks which perk currently occupies each slot, so a removed-then-reused slot doesn't inherit a stale sub-selection.
+    const perkIdBySourceKey = useMemo(() => {
+        const map: Record<string, string> = {}
+            ; (perks ?? []).forEach((perk, perkIndex) => {
+                const sourceKey = String((perk as any).sourceKey ?? perkIndex)
+                map[sourceKey] = (perk as any).uuid ?? (perk as any).id ?? (perk as any)._sourceId ?? ''
+            })
+        return map
+    }, [perks])
+    const previousPerkIdBySourceKey = useRef<Record<string, string>>({})
+
+    useEffect(() => {
+        const previous = previousPerkIdBySourceKey.current
+        const changedSourceKeys = new Set<string>()
+        new Set([...Object.keys(previous), ...Object.keys(perkIdBySourceKey)]).forEach(sourceKey => {
+            if (previous[sourceKey] !== perkIdBySourceKey[sourceKey]) changedSourceKeys.add(sourceKey)
+        })
+        previousPerkIdBySourceKey.current = perkIdBySourceKey
+        if (changedSourceKeys.size === 0) return
+
+        const purgeStaleSelections = (setter: React.Dispatch<React.SetStateAction<Record<string, string>>>) => {
+            setter(previous => {
+                const next = { ...previous }
+                let changed = false
+                Object.keys(next).forEach(selectionKey => {
+                    if (changedSourceKeys.has(selectionKey.split(':')[1])) {
+                        delete next[selectionKey]
+                        changed = true
+                    }
+                })
+                return changed ? next : previous
+            })
+        }
+        purgeStaleSelections(setAdvancementSelections)
+        purgeStaleSelections(setPerkTrainingSelections)
+        purgeStaleSelections(setReasonTrainingSelections)
+        purgeStaleSelections(setSpellSelections)
+    }, [perkIdBySourceKey])
+
     useEffect(() => {
         if (hydratedBonusSignature.current === currentBonusSignature) return
         hydratedBonusSignature.current = currentBonusSignature
@@ -130,7 +191,14 @@ export const usePerkBonusSelection = (
             transform(getRuleSelections({ ...rule, selections: getInitialRuleSelections(rule, initialSelections) }, predicate)[rule.selectionIndex] ?? '')
         ]))
         const updateSelections = (setter: React.Dispatch<React.SetStateAction<Record<string, string>>>, next: Record<string, string>) => {
-            setter(previous => JSON.stringify(previous) === JSON.stringify(next) ? previous : next)
+            setter(previous => {
+                // Keep any in-memory selections for rules that still exist; only seed new rules from initialSelections.
+                const merged = { ...next }
+                Object.keys(previous).forEach(key => {
+                    if (key in merged) merged[key] = previous[key]
+                })
+                return JSON.stringify(previous) === JSON.stringify(merged) ? previous : merged
+            })
         }
         updateSelections(setAdvancementSelections, getSelections(advancements, value => value.startsWith('stats.')))
         updateSelections(setPerkTrainingSelections, getSelections(trainings, value => value.startsWith('skills.')))
@@ -177,7 +245,16 @@ export const usePerkBonusSelection = (
                         value={advancementSelections[rule.selectionKey] ?? perkTrainingSelections[rule.selectionKey] ?? spellSelections[rule.selectionKey] ?? ''}
                         options={rule.choices}
                         onChange={(value) => {
-                            if (perkAdvancements.includes(rule)) setAdvancementSelections(previous => ({ ...previous, [rule.selectionKey]: value }))
+                            if (perkAdvancements.includes(rule)) {
+                                setAdvancementSelections(previous => ({ ...previous, [rule.selectionKey]: value }))
+                                if (value !== 'stats.reason') {
+                                    setReasonTrainingSelections(previous => {
+                                        const next = { ...previous }
+                                        delete next[rule.selectionKey]
+                                        return next
+                                    })
+                                }
+                            }
                             else if (perkTrainings.includes(rule)) setPerkTrainingSelections(previous => ({ ...previous, [rule.selectionKey]: value }))
                             else setSpellSelections(previous => ({ ...previous, [rule.selectionKey]: value }))
                         }}

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, randomId, savePerkSelections } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, randomId } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { groupBy } from "../../utils/collectionUtil"
 import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
@@ -18,7 +18,8 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
     const stats = actor.system.stats as any
     const trainings = useMemo(() => Object.keys(actor.system.skills).filter(skill => actor.system.skills[skill].isTrained), [actor.system.skills])
     const spells = useMemo(() => actor.system.spells.map(spell => spell.parent.name), [actor.system.spells])
-    const actorStats = useMemo(() => Object.keys(stats).map(stat => ({ stat, value: stats[stat] })), [stats])
+    // Not memoized: Foundry mutates actor.system.stats in place, so a memo keyed on that reference would never see a bonus update.
+    const actorStats = Object.keys(stats).map(stat => ({ stat, value: stats[stat] }))
     const actorSpellSlots = useMemo(() => actor.system.spells.map(spell => ({
         value: (spell as any)._sourceId ?? (spell as any).uuid ?? "",
         label: (spell as any).parent?.name ?? "",
@@ -31,7 +32,8 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
         return perk?.system.rules.some(rule => rule.key === "ChoiceSet") ? [{ sourceKey: slot.selectionId, system: perk.system } as any] : []
     }), [ancestryPerkSlots, classPerkSlots])
-    const initialSelections = useMemo(() => Object.fromEntries(
+    // Not memoized: actor.items is a persistent collection mutated in place, so a memo on it would never see a saved rule change.
+    const initialSelections = Object.fromEntries(
         (actor.items.contents as any[]).filter(item => ["class", "ancestry"].includes(item.type)).flatMap(item =>
             (((item.system as any).rules ?? []) as any[]).flatMap(parentRule => normalizeRuleSelections(parentRule.selections).flatMap(selection => {
                 const perk = ItemsCache.perks().find(candidate => candidate.uuid === selection.value)
@@ -39,9 +41,9 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
                     .filter(rule => rule.key === "ChoiceSet")
                     .map(rule => [`${selection.id}:${rule.id}`, selection.subselect ? [selection.subselect] : []])
             })))
-    ), [actor.items])
+    )
 
-    const { bonusChoicesByPerk, allBonusSelections, isBonusSelectionHydrated } = usePerkBonusSelection(bonusPerks, actorStats, [], trainings.map(skill => ({ skill, ruleId: "" })), actorSpellSlots, [], [], [], initialSelections)
+    const { bonusChoicesByPerk, allBonusSelections } = usePerkBonusSelection(bonusPerks, actorStats, [], trainings.map(skill => ({ skill, ruleId: "" })), actorSpellSlots, [], [], [], initialSelections)
 
     const getPerkName = (id: string) => allPerks.find(item => item.uuid === id)?.name ?? "unk"
 
@@ -67,7 +69,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         loadedSelectionKey.current = key
     }, [ancestry?.id, clazz?.id, level, perksLoaded])
 
-    const persistSlots = (item: any, slots: any[]) => {
+    const persistSlots = (item: any, slots: any[], pendingBonusSelections: { ruleId: string, selectionId?: string, value: string }[] = []) => {
         if (!item || !slots.length || !dataLoaded.current) return
         const rules = foundry.utils.deepClone(item.system.rules ?? []) as any[]
 
@@ -80,11 +82,13 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
             rule.selections = grouped.map(slot => {
                 const existing = current.find(selection => selection.id === slot.selectionId)
                 const existingValue = existing?.value
-                const existingSubselect = existing?.subselect ?? ""
+                // Prefer the in-memory bonus selection over the server read, which may not yet reflect a subselect save still in flight.
+                const pendingBonus = pendingBonusSelections.find(b => b.selectionId === slot.selectionId)
+                const preservedSubselect = pendingBonus ? pendingBonus.value : (existing?.subselect ?? "")
                 return {
                     ...(existing ?? { id: slot.selectionId ?? randomId() }),
                     value: slot.value,
-                    subselect: existingValue === slot.value ? existingSubselect : ""
+                    subselect: existingValue === slot.value ? preservedSubselect : ""
                 }
             }).filter(selection => selection.value)
         })
@@ -93,11 +97,8 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
         actor.system.forceUpdate()
     }
 
-    useEffect(() => persistSlots(clazz, classPerkSlots), [clazz, classPerkSlots])
-    useEffect(() => persistSlots(ancestry, ancestryPerkSlots), [ancestry, ancestryPerkSlots])
-    useEffect(() => {
-        if (dataLoaded.current && isBonusSelectionHydrated) savePerkSelections(actor, allBonusSelections)
-    }, [actor, allBonusSelections, isBonusSelectionHydrated])
+    useEffect(() => persistSlots(clazz, classPerkSlots, allBonusSelections), [clazz, classPerkSlots, allBonusSelections])
+    useEffect(() => persistSlots(ancestry, ancestryPerkSlots, allBonusSelections), [ancestry, ancestryPerkSlots, allBonusSelections])
 
     return {
         PerkSelection,

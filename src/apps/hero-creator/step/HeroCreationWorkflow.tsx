@@ -99,7 +99,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         [...chosenLevel1Skills, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
         classSpellGrants, ancestrySpellGrants,
-        [backButton, nextButton]
+        [backButton, nextButton],
+        {},
+        true
     )
 
     // Whether the Advancement perk pushed Reason from even to odd, unlocking another training slot.
