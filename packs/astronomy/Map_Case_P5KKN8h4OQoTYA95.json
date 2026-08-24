@@ -1,0 +1,47 @@
+{
+  "name": "Map Case",
+  "type": "sundry",
+  "_id": "P5KKN8h4OQoTYA95",
+  "img": "/icons/containers/bags/case-scroll-leather-tan.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "astrnonomy",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787603414610,
+    "modifiedTime": 1787603590729,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!P5KKN8h4OQoTYA95"
+}

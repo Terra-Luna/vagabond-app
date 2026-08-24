@@ -178,6 +178,46 @@
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
+      "name": "astronomy",
+      "label": "Astronomy & Navigation",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/astronomy",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "alchmed",
+      "label": "Alchemy & Medicine",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/alchmed",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "husbandry",
+      "label": "Beasts & Husbandry",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/husbandry",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "books",
+      "label": "Books & Magic",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/books",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "clothing",
+      "label": "Clothing, Hygiene, & Textiles",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/clothing",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
       "name": "containers",
       "label": "Containers & Packs",
       "type": "Item",
@@ -283,6 +323,7 @@
     {
       "name": "Equipment",
       "packs": [
+        "alchemical",
         "armor",
         "weapons",
         "relics"
@@ -291,8 +332,12 @@
     {
       "name": "Gear",
       "packs": [
-        "alchemical",
-        "startingpacks",
+        "alchmed",
+        "astronomy",
+        "husbandry",
+        "blacksmithing",
+        "books",
+        "clothing",
         "containers",
         "cooking",
         "games",
@@ -302,8 +347,9 @@
         "musical",
         "outdoors",
         "personal",
-        "trade",
-        "tools"
+        "startingpacks",
+        "tools",
+        "trade"
       ]
     }
   ],

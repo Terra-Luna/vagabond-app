@@ -1,0 +1,47 @@
+{
+  "name": "Periscope",
+  "type": "sundry",
+  "_id": "BRDooV9d1MItcV1X",
+  "img": "/icons/tools/navigation/spyglass-telescope-brass-blue.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "astrnonomy",
+    "value": {
+      "g": 2,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787603530763,
+    "modifiedTime": 1787603590729,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!BRDooV9d1MItcV1X"
+}
