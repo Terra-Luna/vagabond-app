@@ -277,7 +277,7 @@ const Save = ({ hero, save }: {
 
 export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     const skills = Object.keys(vgLiteLang.Skills)
-    const castingSkill = hero.class.castingSkill
+    const castingSkill = hero.class?.castingSkill
     return (
         <div>
             <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={lang.VGLITE.HeroSheet.skills} content={

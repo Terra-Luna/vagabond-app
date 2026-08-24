@@ -13,17 +13,16 @@ export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: Cla
 
     return (
         <div className="flex gap-x-1 items-center">
-            {(isEditMode || item.system.castingSkill) &&
-                <>
-                    <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelSpellSkill}:`} />
-                    <DropDown
-                        value={item.system.castingSkill}
-                        options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
-                        includeNullOption={true}
-                        updateMechanism={{ updatePath: ['castingSkill'] }}
-                        parent={item}
-                    />
-                </>}
+            {(isEditMode || item.system.castingSkill) && <>
+                <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelSpellSkill}:`} />
+                <DropDown
+                    value={item.system.castingSkill}
+                    options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
+                    includeNullOption={true}
+                    updateMechanism={{ updatePath: ['castingSkill'] }}
+                    parent={item}
+                />
+            </>}
             <ClassSheetText text={vgLiteLang.Stat[item.system.castingSkill ?? '']?.name} />
         </div>
     )

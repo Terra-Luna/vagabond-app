@@ -3,6 +3,7 @@ import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
+import { ItemDivider } from "../../../../component/Header"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { Description } from "../../../shared/Description"
 import { useImageEdit } from "../../../shared/ImageEditUseCase"
@@ -37,9 +38,16 @@ export const ClassSheetComponent = ({ item }: { item: Item & { system: ClassData
                             <ComplexityRating item={item} />
                             <StartingPackSelector item={item} />
                             <KeyStatsSelector item={item} />
+
+                            <div className="mt-2" />
+                            <ItemDivider />
+                            <div className="mb-1" />
+
                             <SpellcastingSkillSelector item={item} />
-                            <MaxManaPerLevelSelector item={item} />
-                            <MaxCastFormulaSelector item={item} />
+                            <div className="flex gap-x-2">
+                                <MaxManaPerLevelSelector item={item} />
+                                <MaxCastFormulaSelector item={item} />
+                            </div>
                         </>}
                         bodyClassName="flex flex-col m-2"
                     />

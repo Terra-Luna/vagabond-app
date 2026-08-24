@@ -34,12 +34,15 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         ) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     }, [])
 
+    console.log(clazz?.system.startingPacks)
+    console.log(packs)
+
     const recommendedPacks = useMemo(() => {
-        return clazz?.system.startingPacks.map(p => packs.find(s => s.id === p))
+        return clazz?.system.startingPacks.map(p => packs.find(s => s.uuid === p))
     }, [clazz])
 
     const otherPacks = useMemo(() => {
-        return packs.filter(p => !clazz?.system.startingPacks.includes(p.id!))
+        return packs.filter(p => !clazz?.system.startingPacks.includes(p.uuid!))
     }, [clazz])
 
     const reset = useCallback(() => {
@@ -51,7 +54,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         const [shopSearch, setShopSearch] = useState(() => shopSearchRef.current)
 
         const onSelectPack = useCallback((packId) => {
-            const pack = packs.find(it => it.id === packId)
+            const pack = packs.find(it => it.uuid === packId)
             const refund = addCoins([wallet, selectedPack?.system.cost ?? { g: 0, s: 0, c: 0 }])
 
             if (!pack) {
@@ -106,17 +109,17 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                 <div className="flex flex-col w-full justify-center h-full overflow-hidden">
                     <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto h-full overflow-hidden">
                         <div className="flex gap-x-4 items-end">
-                            {/* STARTER PACK SELECTION */}
+                            {/* STARTING PACK SELECTION */}
                             {includeStartingPacks &&
                                 <div className="space-y-2">
                                     <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                         <HeroCreationDropdown
                                             label={"SELECT PACK"}
-                                            value={selectedPack?.id ?? ''}
+                                            value={selectedPack?.uuid ?? ''}
                                             options={[
                                                 { value: '', label: "-" },
-                                                ...recommendedPacks?.map(p => ({ value: p?.id, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
-                                                ...otherPacks?.map(p => ({ value: p.id, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
+                                                ...recommendedPacks?.map(p => ({ value: p?.uuid, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
+                                                ...otherPacks?.map(p => ({ value: p.uuid, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
                                             ]}
                                             onChange={(packId) => onSelectPack(packId)}
                                         />

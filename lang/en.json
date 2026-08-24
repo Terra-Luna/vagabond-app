@@ -898,6 +898,7 @@
       "labelClassFeat": "Features",
       "labelKeyStats": "Key Stats",
       "labelComplexity": "Complexity",
+      "startingPacks": "Starting Pack",
       "labelSpellSkill": "Spellcasting Skill",
       "labelMaxMana": "Max Mana/Cast",
       "labelManaLevel": "Mana/Level",
