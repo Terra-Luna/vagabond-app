@@ -1,0 +1,47 @@
+{
+  "name": "Personal Seal",
+  "type": "sundry",
+  "_id": "en7PTKwGA3K7miCW",
+  "img": "/icons/equipment/finger/ring-signet-copper.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "trade",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787596303113,
+    "modifiedTime": 1787596318168,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 600000,
+  "_key": "!items!en7PTKwGA3K7miCW"
+}

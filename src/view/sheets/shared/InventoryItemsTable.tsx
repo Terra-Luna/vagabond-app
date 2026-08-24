@@ -6,7 +6,7 @@ import { itemNameQty,openItemSheet } from "../../../model/actor/type/Inventory"
 import { coinsAsString } from "../../../model/common/CoinValue"
 import { ArmorDataModel } from "../../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
-import { ToolDataModel } from "../../../model/item/equip/ToolDataModel"
+import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { equipArmor, equipWeapon,inventoryItemDragDropHandler } from "../../../utils/heroInventoryUtil"
 import { vgLiteLang } from "../../../utils/lang"
@@ -143,7 +143,7 @@ async function toggleEquipState(hero: HeroDataModel, item: EquipmentDataModel<Eq
             if (item instanceof ArmorDataModel) {
                 await equipArmor(hero, item)
             }
-            else if (item instanceof WeaponDataModel || item instanceof ToolDataModel) {
+            else if (item instanceof WeaponDataModel || item instanceof SundryDataModel) {
                 await equipWeapon(hero, item)
             }
         }

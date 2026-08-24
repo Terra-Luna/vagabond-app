@@ -1,0 +1,47 @@
+{
+  "name": "Iron Nails",
+  "type": "sundry",
+  "_id": "NnByp3FRTWA6ostA",
+  "img": "/icons/tools/fasteners/nails-steel-brown.webp",
+  "system": {
+    "description": "<p><br></p>",
+    "rules": [],
+    "category": "hardware",
+    "value": {
+      "g": 0,
+      "s": 5,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 50,
+      "quantity": 50,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787594017244,
+    "modifiedTime": 1787594057844,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 1800000,
+  "_key": "!items!NnByp3FRTWA6ostA"
+}

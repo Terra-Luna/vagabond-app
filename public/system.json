@@ -89,11 +89,6 @@
           "description"
         ]
       },
-      "tool": {
-        "htmlFields": [
-          "description"
-        ]
-      },
       "weapon": {
         "htmlFields": [
           "description"
@@ -143,14 +138,6 @@
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
-      "name": "weapons",
-      "label": "Weapons",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/weapons",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
       "name": "armor",
       "label": "Armor",
       "type": "Item",
@@ -159,19 +146,27 @@
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
+      "name": "weapons",
+      "label": "Weapons",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/weapons",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "relics",
+      "label": "Relics",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/relics",
+      "ownership": { "PLAYER": "NONE", "ASSISTANT": "OWNER" }
+    },
+    {
       "name": "alchemical",
       "label": "Alchemical Items",
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/alchemical",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "tools",
-      "label": "Tools",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/tools",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -183,11 +178,91 @@
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
-      "name": "sundries",
-      "label": "Sundries",
+      "name": "containers",
+      "label": "Containers & Packs",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/sundries",
+      "path": "packs/containers",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "cooking",
+      "label": "Cooking & Food",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/cooking",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "games",
+      "label": "Games & Toys",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/games",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "gems",
+      "label": "Gems, Jewelry, & Smithing",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/gems",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "hardware",
+      "label": "Hardware",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/hardware",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "liquor",
+      "label": "Liquor & Spirits",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/liquor",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "musical",
+      "label": "Musical",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/musical",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "outdoors",
+      "label": "Outdoors",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/outdoors",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "personal",
+      "label": "Personal Items",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/personal",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "tools",
+      "label": "Tools",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/tools",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "trade",
+      "label": "Trade Goods",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/trade",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     }
   ],
@@ -206,14 +281,29 @@
       ]
     },
     {
+      "name": "Equipment",
+      "packs": [
+        "armor",
+        "weapons",
+        "relics"
+      ]
+    },
+    {
       "name": "Gear",
       "packs": [
         "alchemical",
-        "armor",
         "starterpacks",
-        "sundries",
-        "tools",
-        "weapons"
+        "containers",
+        "cooking",
+        "games",
+        "gems",
+        "hardware",
+        "liquor",
+        "musical",
+        "outdoors",
+        "personal",
+        "trade",
+        "tools"
       ]
     }
   ],
@@ -235,7 +325,7 @@
     "units": "ft",
     "diagonals": 0
   },
-  "primaryTokenAttribute": "resources.health",
+  "primaryTokenAttribute": "health.current",
   "media": [
     {
       "type": "setup",

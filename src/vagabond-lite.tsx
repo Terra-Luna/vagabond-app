@@ -24,7 +24,6 @@ import { ArmorDataModel } from "./model/item/equip/ArmorDataModel"
 import { ContainerDataModel } from "./model/item/equip/ContainerDataModel"
 import { StarterPackDataModel } from "./model/item/equip/StarterPackDataModel"
 import { SundryDataModel } from "./model/item/equip/SundryDataModel"
-import { ToolDataModel } from "./model/item/equip/ToolDataModel"
 import { WeaponDataModel } from "./model/item/equip/WeaponDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
 import { stackStackables } from "./utils/heroInventoryUtil"
@@ -86,7 +85,6 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.spell = SpellDataModel,
         CONFIG.Item.dataModels.starterpack = StarterPackDataModel,
         CONFIG.Item.dataModels.sundry = SundryDataModel,
-        CONFIG.Item.dataModels.tool = ToolDataModel,
         CONFIG.Item.dataModels.weapon = WeaponDataModel,
         // Combat
         CONFIG.Combat.documentClass = VagabondCombat,

@@ -10,7 +10,7 @@ import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema,setEquipState } from "../model/item/equip/EquipmentDataModel"
 import { StarterPackDataModel } from "../model/item/equip/StarterPackDataModel"
-import { ToolDataModel } from "../model/item/equip/ToolDataModel"
+import { SundryDataModel } from "../model/item/equip/SundryDataModel"
 import { isEquippedWeapon, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../rules/util/ItemsCache"
 import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
@@ -79,9 +79,9 @@ export function getEquippedWeapons(actor: Actor & { system: any }) {
  * @param hero
  * @param item 
  */
-export async function equipWeapon(hero: any, item: WeaponDataModel | ToolDataModel) {
+export async function equipWeapon(hero: any, item: WeaponDataModel | SundryDataModel) {
     const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
-    const equippedTools = hero.parent.items.filter((it: any) => it.type === "tool" && it.system.isEquipped)
+    const equippedTools = hero.parent.items.filter((it: any) => it.type === "sundry" && it.system.isEquipped)
     const equippedSlots = [...equippedWeapons, ...equippedTools].reduce((sum, it) => { return sum + it.system.bulk.totalSlots }, 0)
 
     if (item.bulk.totalSlots > 0 && equippedSlots + item.bulk.totalSlots > hero.inventory.weaponSlots) {
@@ -103,8 +103,8 @@ export async function equipWeapon(hero: any, item: WeaponDataModel | ToolDataMod
  * @param hero
  * @param item
  */
-export async function toggleGripState(item: WeaponDataModel | ToolDataModel) {
-    if (item instanceof ToolDataModel) return
+export async function toggleGripState(item: WeaponDataModel | SundryDataModel) {
+    if (item instanceof SundryDataModel) return
 
     if (item.grip.style === 'V') {
         if (item.grip.state === 'H') {
@@ -184,7 +184,7 @@ export const equipItem = (hero: any, item: EquipmentDataModel<EquipmentSchema>) 
     }
 }
 
-export const equippedItemContextMenu = (hero: any, item: WeaponDataModel | ToolDataModel): CtxMenuItem[] => {
+export const equippedItemContextMenu = (hero: any, item: WeaponDataModel | SundryDataModel): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
     if (item instanceof WeaponDataModel) {
         menuItems.push({
@@ -223,7 +223,7 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
         else {
             menuItems.push({
                 icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => {
-                    item instanceof WeaponDataModel || item instanceof ToolDataModel
+                    item instanceof WeaponDataModel || item instanceof SundryDataModel
                         ? equipWeapon(hero, item)
                         : (item instanceof ArmorDataModel
                             ? equipArmor(hero, item as ArmorDataModel)

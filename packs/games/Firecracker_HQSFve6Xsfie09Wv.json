@@ -1,0 +1,47 @@
+{
+  "name": "Firecracker",
+  "type": "sundry",
+  "_id": "HQSFve6Xsfie09Wv",
+  "img": "/icons/weapons/thrown/explosive-dynamite-fuse-red.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "games",
+    "value": {
+      "g": 0,
+      "s": 1,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787593804318,
+    "modifiedTime": 1787593811578,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 200000,
+  "_key": "!items!HQSFve6Xsfie09Wv"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Bell",
+  "type": "sundry",
+  "_id": "W51i16ZJPgkng0fB",
+  "img": "/icons/tools/instruments/bell-gold.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "hardware",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787593932205,
+    "modifiedTime": 1787594057845,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 2900000,
+  "_key": "!items!W51i16ZJPgkng0fB"
+}

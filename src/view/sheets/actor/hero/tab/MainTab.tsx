@@ -5,7 +5,7 @@ import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { getArmor,HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
-import { ToolDataModel } from "../../../../../model/item/equip/ToolDataModel"
+import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
 import { isEquippedTool, isEquippedWeapon,WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
 import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { vgLiteLang } from "../../../../../utils/lang"
@@ -49,7 +49,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
-    const equippedTools = sortedItems<ToolDataModel>(hero.inventory.items.filter(it => isEquippedTool(it)) as ToolDataModel[])
+    const equippedTools = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => isEquippedTool(it)) as SundryDataModel[])
     const combinedEquipped = [...equippedWeapons, ...equippedTools]
 
     const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(

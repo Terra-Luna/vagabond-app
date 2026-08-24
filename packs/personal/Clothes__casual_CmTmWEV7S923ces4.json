@@ -1,0 +1,47 @@
+{
+  "name": "Clothes, casual",
+  "type": "sundry",
+  "_id": "CmTmWEV7S923ces4",
+  "img": "/icons/equipment/chest/shirt-collared-yellow.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "clothing",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787596152959,
+    "modifiedTime": 1787596250727,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 1100000,
+  "_key": "!items!CmTmWEV7S923ces4"
+}

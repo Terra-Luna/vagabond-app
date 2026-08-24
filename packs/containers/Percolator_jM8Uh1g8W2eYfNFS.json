@@ -1,0 +1,48 @@
+{
+  "name": "Percolator",
+  "type": "sundry",
+  "_id": "jM8Uh1g8W2eYfNFS",
+  "img": "/icons/tools/laboratory/funnel-steel-grey.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787593492777,
+    "modifiedTime": 1787593499338,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 1200000,
+  "_key": "!items!jM8Uh1g8W2eYfNFS"
+}

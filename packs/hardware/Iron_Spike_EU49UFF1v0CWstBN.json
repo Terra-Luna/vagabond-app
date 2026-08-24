@@ -1,0 +1,47 @@
+{
+  "name": "Iron Spike",
+  "type": "sundry",
+  "_id": "EU49UFF1v0CWstBN",
+  "img": "/icons/tools/fasteners/nails-steel-blue.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "hardware",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 10,
+      "quantity": 10,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787594066705,
+    "modifiedTime": 1787594066705,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 0,
+  "_key": "!items!EU49UFF1v0CWstBN"
+}

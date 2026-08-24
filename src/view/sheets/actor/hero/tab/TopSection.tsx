@@ -293,7 +293,9 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack, isCastSkill }: { hero: HeroDataModel, isTrained: boolean, skillKey: string, name: string, value: number, isAttack: boolean, isCastSkill: boolean }) => {
+export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack, isCastSkill }: {
+    hero: HeroDataModel, isTrained: boolean, skillKey: string, name: string, value: number, isAttack: boolean, isCastSkill?: boolean
+}) => {
     return (
         <div title={lang.VGLITE.HeroSheet.skills_tooltip} className="w-full">
             <div className="flex items-center ml-1">

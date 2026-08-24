@@ -1,0 +1,48 @@
+{
+  "name": "Glass Bottle",
+  "type": "sundry",
+  "_id": "CBO1oDNNfrDqCNhg",
+  "img": "/icons/consumables/potions/bottle-bulb-empty-glass.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 2,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "PDLxeQclz2rj9enO": 3,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787592466758,
+    "modifiedTime": 1787593499337,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 200000,
+  "_key": "!items!CBO1oDNNfrDqCNhg"
+}

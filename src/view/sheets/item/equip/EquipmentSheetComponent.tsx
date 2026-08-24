@@ -6,7 +6,6 @@ import { ContainerDataModel } from "../../../../model/item/equip/ContainerDataMo
 import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equip/EquipmentDataModel"
 import { StarterPackDataModel } from "../../../../model/item/equip/StarterPackDataModel"
 import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
-import { ToolDataModel } from "../../../../model/item/equip/ToolDataModel"
 import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../../utils/lang"
 import { ItemDivider } from "../../../component/Header"
@@ -24,7 +23,6 @@ import { ArmorSheet } from "./sheet/ArmorSheet"
 import { ContainerSheet } from "./sheet/ContainerSheet"
 import { StarterPackSheet } from "./sheet/StarterPackSheet"
 import { SundrySheet } from "./sheet/SundrySheet"
-import { ToolSheet } from "./sheet/ToolSheet"
 import { WeaponSheet } from "./sheet/WeaponSheet"
 
 export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
@@ -49,9 +47,6 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     }
     else if (item.system instanceof SundryDataModel) {
         sheet = <SundrySheet item={item as any} />
-    }
-    else if (item.system instanceof ToolDataModel) {
-        sheet = <ToolSheet item={item as any} />
     }
     else if (item.system instanceof WeaponDataModel) {
         sheet = <WeaponSheet item={item as any} />
