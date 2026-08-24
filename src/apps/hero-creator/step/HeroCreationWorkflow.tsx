@@ -117,7 +117,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                 <Header title="Additional Training" />
                 <TopNavButtons navButtons={[backButton, nextButton]} subtitle="The Advancement perk unlocked another skill training." canProceed={canProceedExtraTraining} />
             </div>
-            <div className="flex-1 overflow-y-auto flex flex-col w-full justify-center">
+            <div className="flex-1 overflow-y-auto flex flex-col w-full justify-start">
                 <div className="inline-flex flex-col items-stretch space-y-2 @2xl:w-1/2 mx-auto">
                     {reasonTrainingRules.map(rule => (
                         <div key={rule.selectionKey} className="flex flex-col items-center gap-y-1">
