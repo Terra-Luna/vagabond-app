@@ -432,7 +432,7 @@ const CustomTracker = ({ actor, tracker, index }) => {
             { icon: SquarePen, label: `${tracker.type === 'numeric' ? 'Change to toggle' : 'Change to counter'}`, action: () => updateTracker('type', `${tracker.type === 'numeric' ? 'boolean' : 'numeric'}`) },
             { icon: Trash, label: vgLiteLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
         ])}
-            className="flex items-center justify-between text-sm border border-solid border-table-border rounded-sm pl-2 pr-0.5 py-0.5"
+            className="flex justify-between text-sm border border-solid border-table-border rounded-sm px-1 py-0.5"
             title={"R-click for options"}
         >
             <EditableTextField
@@ -443,6 +443,7 @@ const CustomTracker = ({ actor, tracker, index }) => {
                 onSave={(val) => updateTracker('name', val)}
             />
 
+            <div className="ml-auto">
             {tracker.type === 'numeric' &&
                 <NumericCounterInput
                     value={tracker.value}
@@ -458,7 +459,9 @@ const CustomTracker = ({ actor, tracker, index }) => {
                         : <ToggleRight className="text-text-primary hover-glow" />
                     }
                 </button>
-            }
+                }
+            </div>
+            
             <ContextMenu />
         </div>
     )
