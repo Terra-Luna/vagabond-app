@@ -143,6 +143,15 @@
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
+      "name": "alchemical",
+      "label": "Alchemical Items",
+      "type": "Item",
+      "system": "vagabond-lite",
+      "path": "packs/alchemical",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
       "name": "armor",
       "label": "Armor",
       "type": "Item",
@@ -170,15 +179,6 @@
       "ownership": { "PLAYER": "NONE", "ASSISTANT": "OWNER" }
     },
     {
-      "name": "alchemical",
-      "label": "Alchemical Items",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/alchemical",
-      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
       "name": "gear",
       "label": "Gear",
       "type": "Item",
@@ -186,21 +186,6 @@
       "path": "packs/gear",
       "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    }
-  ],
-  "packFolders": [
-    {
-      "name": "Adversaries",
-      "packs": ["adversaries"]
-    },
-    {
-      "name": "Hero",
-      "packs": [
-        "ancestries", 
-        "classes", 
-        "perks", 
-        "spells"
-      ]
     }
   ],
   "esmodules": [
