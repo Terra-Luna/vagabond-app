@@ -62,8 +62,8 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.2AvL41sfAOamV2oe",
-      "Compendium.vagabond-lite.startingpacks.Item.5y2TEMR983wkMy3s"
+      "Compendium.vagabond-lite.gear.Item.2AvL41sfAOamV2oe",
+      "Compendium.vagabond-lite.gear.Item.5y2TEMR983wkMy3s"
     ],
     "castingSkill": "mysticism",
     "manaMultiplier": 4,
@@ -120,7 +120,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786571553719,
-    "modifiedTime": 1787612373512,
+    "modifiedTime": 1787622563679,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Musical",
+  "color": null,
+  "sorting": "a",
+  "_id": "FitJas22S56JvLyp",
+  "description": "",
+  "sort": 1000000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620782606,
+    "modifiedTime": 1787620993348,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!FitJas22S56JvLyp"
+}

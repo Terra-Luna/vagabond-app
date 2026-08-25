@@ -1,0 +1,58 @@
+{
+  "name": "Blacksmith",
+  "type": "startingpack",
+  "_id": "ycpzC6K9R1qFrLBZ",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "3h8WWUocmjX4fMPb",
+        "name": "Warhammer",
+        "qty": 1
+      },
+      {
+        "id": "fGqt4d2i9Gx0jJWj",
+        "name": "Heavy Armor",
+        "qty": 1
+      },
+      {
+        "id": "GnRoQn1x8jPan4cb",
+        "name": "Blacksmithing Tools",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 10
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 47,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889541,
+    "modifiedTime": 1787621755412,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!ycpzC6K9R1qFrLBZ"
+}

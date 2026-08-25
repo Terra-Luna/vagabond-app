@@ -1,0 +1,46 @@
+{
+  "name": "Bar Soap",
+  "type": "sundry",
+  "folder": "04PPaIKbkYxCWTkx",
+  "system": {
+    "description": "",
+    "category": "clothing",
+    "value": {
+      "s": 0,
+      "g": 0,
+      "c": 2
+    },
+    "bulk": {
+      "slots": 1,
+      "quantity": 1,
+      "isStackable": true,
+      "stackSize": 10,
+      "totalSlots": 0
+    },
+    "rules": [],
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "_id": "7Lpg1gbcThn16AF3",
+  "img": "icons/sundries/survival/soap.webp",
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620854843,
+    "modifiedTime": 1787620854843,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_key": "!items!7Lpg1gbcThn16AF3"
+}

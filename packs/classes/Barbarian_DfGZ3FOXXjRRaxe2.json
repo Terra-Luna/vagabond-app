@@ -50,8 +50,8 @@
       "might"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.3svveHnNn60fHHiX",
-      "Compendium.vagabond-lite.startingpacks.Item.hug6ifnaIOy45vvj"
+      "Compendium.vagabond-lite.gear.Item.3svveHnNn60fHHiX",
+      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -114,7 +114,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1787611641080,
+    "modifiedTime": 1787622327642,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

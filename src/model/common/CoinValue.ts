@@ -16,6 +16,8 @@ export const coinSchema = () => {
 }
 
 export const coinsAsString = (coins: any) => {
+    if (!coins) return
+
     let coinString = ''
     if (coins.c > 0) {
         coinString = coins.c + "c"

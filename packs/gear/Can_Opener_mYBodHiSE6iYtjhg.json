@@ -1,0 +1,47 @@
+{
+  "name": "Can Opener",
+  "type": "sundry",
+  "_id": "mYBodHiSE6iYtjhg",
+  "img": "/icons/environment/traps/saw-mechanical-toothed-steel-red.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "cooking",
+    "value": {
+      "g": 0,
+      "s": 5,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "vnsof3f5thyVmHVf",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620618753,
+    "modifiedTime": 1787620618758,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!mYBodHiSE6iYtjhg"
+}

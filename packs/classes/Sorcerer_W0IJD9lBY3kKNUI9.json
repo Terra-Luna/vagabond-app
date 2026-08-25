@@ -88,8 +88,8 @@
       "presence"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.5y2TEMR983wkMy3s",
-      "Compendium.vagabond-lite.startingpacks.Item.E71U6Aoc2sOmDE5V"
+      "Compendium.vagabond-lite.gear.Item.5y2TEMR983wkMy3s",
+      "Compendium.vagabond-lite.gear.Item.E71U6Aoc2sOmDE5V"
     ],
     "castingSkill": "influence",
     "manaMultiplier": 4,
@@ -146,7 +146,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786569750999,
-    "modifiedTime": 1787612347117,
+    "modifiedTime": 1787622526508,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

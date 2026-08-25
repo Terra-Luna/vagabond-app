@@ -1,0 +1,47 @@
+{
+  "name": "Clothes, winter",
+  "type": "sundry",
+  "_id": "Rs58g17WB5nnW4IK",
+  "img": "/icons/equipment/back/cloak-heavy-collared-fur-green.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "clothing",
+    "value": {
+      "g": 1,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "gzQIxnG0FFy3OjNh",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620350157,
+    "modifiedTime": 1787620350164,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!Rs58g17WB5nnW4IK"
+}

@@ -1,0 +1,63 @@
+{
+  "name": "Nomad",
+  "type": "startingpack",
+  "_id": "FYsRQpSkQGOR6ugQ",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "rLK8nU5PMhP7PUta",
+        "name": "Staff",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "fKoh22bOQdBT5eRH",
+        "name": "Shortbow",
+        "qty": 1
+      },
+      {
+        "id": "NJGEvpZddVCfCvoM",
+        "name": "Quiver of Arrows",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 1,
+      "s": 75,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889537,
+    "modifiedTime": 1787620889543,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!FYsRQpSkQGOR6ugQ"
+}

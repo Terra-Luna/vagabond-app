@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Gems, Jewelry, & Smithing",
+  "color": null,
+  "sorting": "a",
+  "_id": "140uawsAbBo6MK6p",
+  "description": "",
+  "sort": 800000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620692763,
+    "modifiedTime": 1787620993348,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!140uawsAbBo6MK6p"
+}

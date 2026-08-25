@@ -119,8 +119,8 @@
       "presence"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.ImIcBC3E6UZcHsK4",
-      "Compendium.vagabond-lite.startingpacks.Item.hug6ifnaIOy45vvj"
+      "Compendium.vagabond-lite.gear.Item.ImIcBC3E6UZcHsK4",
+      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj"
     ],
     "castingSkill": "leadership",
     "manaMultiplier": 2,
@@ -177,7 +177,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786568076634,
-    "modifiedTime": 1787612297746,
+    "modifiedTime": 1787622496605,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -1,0 +1,63 @@
+{
+  "name": "Highwayman",
+  "type": "startingpack",
+  "_id": "tPUZpoqFgbroqaoP",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "1TyyGV43hZF7s673",
+        "name": "Sawn-off Shotgun",
+        "qty": 1
+      },
+      {
+        "id": "7JA8se3NJSVrjJRt",
+        "name": "Box of Shells",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 45,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889540,
+    "modifiedTime": 1787620889545,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!tPUZpoqFgbroqaoP"
+}

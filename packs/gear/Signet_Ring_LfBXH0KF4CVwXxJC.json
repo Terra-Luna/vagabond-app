@@ -1,0 +1,47 @@
+{
+  "name": "Signet Ring",
+  "type": "sundry",
+  "_id": "LfBXH0KF4CVwXxJC",
+  "img": "/icons/equipment/finger/ring-signet-tech.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "valuables",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "140uawsAbBo6MK6p",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620702473,
+    "modifiedTime": 1787620702476,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!LfBXH0KF4CVwXxJC"
+}

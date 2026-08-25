@@ -1,0 +1,47 @@
+{
+  "name": "Tent, one-person",
+  "type": "sundry",
+  "img": "/icons/sundries/survival/shelter-tent-small.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "outdoors",
+    "value": {
+      "g": 0,
+      "s": 30,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "l5D3vYPFgbH4SAOt",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620825001,
+    "modifiedTime": 1787620825004,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_id": "UHJ2zH1c7ZPS2CXM",
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!UHJ2zH1c7ZPS2CXM"
+}

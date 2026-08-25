@@ -1,0 +1,68 @@
+{
+  "name": "Noble",
+  "type": "startingpack",
+  "_id": "xyg5wQefIwSyBgJG",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "LIMNsTfn9uaUbu7a",
+        "name": "Shortsword",
+        "qty": 1
+      },
+      {
+        "id": "7Jn4QInDDD0wJT2M",
+        "name": "Handgun",
+        "qty": 1
+      },
+      {
+        "id": "GO9mgAXNLPas3p8b",
+        "name": "Box of Bullets",
+        "qty": 1
+      },
+      {
+        "id": "SqK4TCmvQMXVEVdc",
+        "name": "Clothes, formal",
+        "qty": 1
+      },
+      {
+        "id": "GIHVty69pEYqgeyz",
+        "name": "Mirror",
+        "qty": 1
+      },
+      {
+        "id": "LfBXH0KF4CVwXxJC",
+        "name": "Signet Ring",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 5,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889541,
+    "modifiedTime": 1787620889545,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!xyg5wQefIwSyBgJG"
+}

@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Starting Packs",
+  "color": null,
+  "sorting": "a",
+  "_id": "4GQqeJ9m6W2vIYON",
+  "description": "",
+  "sort": 1300000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620882522,
+    "modifiedTime": 1787620993348,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!4GQqeJ9m6W2vIYON"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Large Barrel",
+  "type": "sundry",
+  "_id": "XqSunOMkvqFBy9L0",
+  "img": "/icons/containers/barrels/barrel-chestnut-tan.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "booze",
+    "value": {
+      "g": 0,
+      "s": 40,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "DjKgiExHvSeQIdMv",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620763781,
+    "modifiedTime": 1787620763784,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!XqSunOMkvqFBy9L0"
+}

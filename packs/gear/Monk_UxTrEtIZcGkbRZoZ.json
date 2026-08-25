@@ -1,0 +1,58 @@
+{
+  "name": "Monk",
+  "type": "startingpack",
+  "_id": "UxTrEtIZcGkbRZoZ",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "beGegV4soh08wLqm",
+        "name": "Katar",
+        "qty": 1
+      },
+      {
+        "id": "beGegV4soh08wLqm",
+        "name": "Katar",
+        "qty": 1
+      },
+      {
+        "id": "rLK8nU5PMhP7PUta",
+        "name": "Staff",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 1,
+      "s": 85,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889538,
+    "modifiedTime": 1787620889543,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!UxTrEtIZcGkbRZoZ"
+}

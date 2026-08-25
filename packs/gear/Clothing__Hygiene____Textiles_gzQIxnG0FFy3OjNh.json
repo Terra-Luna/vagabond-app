@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Clothing, Hygiene, & Textiles",
+  "color": null,
+  "sorting": "a",
+  "_id": "gzQIxnG0FFy3OjNh",
+  "description": "",
+  "sort": 400000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620342448,
+    "modifiedTime": 1787620993348,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!gzQIxnG0FFy3OjNh"
+}

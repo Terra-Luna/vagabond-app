@@ -98,10 +98,10 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.3svveHnNn60fHHiX",
-      "Compendium.vagabond-lite.startingpacks.Item.ImIcBC3E6UZcHsK4",
-      "Compendium.vagabond-lite.startingpacks.Item.hug6ifnaIOy45vvj",
-      "Compendium.vagabond-lite.startingpacks.Item.skbkscLdu2nlcgHW"
+      "Compendium.vagabond-lite.gear.Item.3svveHnNn60fHHiX",
+      "Compendium.vagabond-lite.gear.Item.ImIcBC3E6UZcHsK4",
+      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj",
+      "Compendium.vagabond-lite.gear.Item.skbkscLdu2nlcgHW"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -163,7 +163,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
-    "modifiedTime": 1787611725952,
+    "modifiedTime": 1787622385169,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

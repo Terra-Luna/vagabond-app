@@ -1,0 +1,58 @@
+{
+  "name": "Physician",
+  "type": "startingpack",
+  "_id": "eas4yAHCmeYtm0gI",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "3blp5UmZJoh8J7uZ",
+        "name": "Med Kit",
+        "qty": 1
+      },
+      {
+        "id": "CwOP6xuNUqNVeJqs",
+        "name": "Herbalism Tools",
+        "qty": 1
+      },
+      {
+        "id": "xlprLCEunNQAyFMd",
+        "name": "Antitoxin",
+        "qty": 2
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 10
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 35,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889539,
+    "modifiedTime": 1787622092218,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!eas4yAHCmeYtm0gI"
+}

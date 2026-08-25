@@ -1,0 +1,63 @@
+{
+  "name": "Charlatan",
+  "type": "startingpack",
+  "_id": "vTYxz6OZ9HSUHeLg",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "zYejNVfFpKYyqHOF",
+        "name": "Club",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "HnUP5l9c49a08aNN",
+        "name": "Loaded Dice Set",
+        "qty": 1
+      },
+      {
+        "id": "uKT1MA9L86UFZ2i7",
+        "name": "Playing Cards",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 2,
+      "s": 34,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889541,
+    "modifiedTime": 1787620889545,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!vTYxz6OZ9HSUHeLg"
+}

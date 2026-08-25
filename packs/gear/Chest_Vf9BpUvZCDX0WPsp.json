@@ -1,0 +1,47 @@
+{
+  "name": "Chest",
+  "type": "sundry",
+  "_id": "Vf9BpUvZCDX0WPsp",
+  "img": "/icons/containers/chest/chest-simple-box-steel-brown.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "hardware",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "hqQBaAS4VoQcJflQ",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620735342,
+    "modifiedTime": 1787620735349,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!Vf9BpUvZCDX0WPsp"
+}

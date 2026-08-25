@@ -1,0 +1,47 @@
+{
+  "name": "Ingredients",
+  "type": "sundry",
+  "_id": "t7hVHvMp66VeS9kH",
+  "img": "/icons/magic/nature/cornucopia-orange.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "cooking",
+    "value": {
+      "g": 0,
+      "s": 5,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 20,
+      "quantity": 20,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "vnsof3f5thyVmHVf",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620618754,
+    "modifiedTime": 1787620618759,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!t7hVHvMp66VeS9kH"
+}

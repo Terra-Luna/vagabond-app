@@ -1,0 +1,63 @@
+{
+  "name": "Seaman",
+  "type": "startingpack",
+  "_id": "iajTuM5gPvdON5cc",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "7Jn4QInDDD0wJT2M",
+        "name": "Handgun",
+        "qty": 1
+      },
+      {
+        "id": "GO9mgAXNLPas3p8b",
+        "name": "Box of Bullets",
+        "qty": 1
+      },
+      {
+        "id": "LIMNsTfn9uaUbu7a",
+        "name": "Shortsword",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "HvESqNvfULZNLW76",
+        "name": "Net",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 1,
+      "s": 55,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889540,
+    "modifiedTime": 1787620889544,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!iajTuM5gPvdON5cc"
+}

@@ -1,0 +1,113 @@
+{
+  "name": "Envoy",
+  "type": "startingpack",
+  "_id": "zT1VMI2aDPnZfamh",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "LIMNsTfn9uaUbu7a",
+        "name": "Shortsword",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "P5KKN8h4OQoTYA95",
+        "name": "Scroll Case",
+        "qty": 1
+      },
+      {
+        "id": "tUG4Feyyiz6tnW1H",
+        "name": "Quill",
+        "qty": 1
+      },
+      {
+        "id": "NfZa8W7sTgBAVpJM",
+        "name": "Ink",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      },
+      {
+        "id": "fSaA1SZCWppyStx2",
+        "name": "Parchment",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 1,
+      "s": 45,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889541,
+    "modifiedTime": 1787620889546,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!zT1VMI2aDPnZfamh"
+}

@@ -1,0 +1,63 @@
+{
+  "name": "Mage",
+  "type": "startingpack",
+  "_id": "5y2TEMR983wkMy3s",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "3LTmKJXo1CHgOsv0",
+        "name": "Trinket",
+        "qty": 1
+      },
+      {
+        "id": "3LTmKJXo1CHgOsv0",
+        "name": "Trinket",
+        "qty": 1
+      },
+      {
+        "id": "h8PFXhIogzjDhwaG",
+        "name": "Robe",
+        "qty": 1
+      },
+      {
+        "id": "OYDZHBLBd1xvzPWD",
+        "name": "Book",
+        "qty": 1
+      },
+      {
+        "id": "wpcudCI2ymsnPN4o",
+        "name": "Scribing Tools",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 31,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889536,
+    "modifiedTime": 1787620889542,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!5y2TEMR983wkMy3s"
+}

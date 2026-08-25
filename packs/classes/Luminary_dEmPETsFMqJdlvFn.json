@@ -101,7 +101,7 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.jYntBY6j2VVmBe7T"
+      "Compendium.vagabond-lite.gear.Item.jYntBY6j2VVmBe7T"
     ],
     "castingSkill": "mysticism",
     "maxCastFormula": "full",
@@ -164,7 +164,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
-    "modifiedTime": 1787611886640,
+    "modifiedTime": 1787622434096,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

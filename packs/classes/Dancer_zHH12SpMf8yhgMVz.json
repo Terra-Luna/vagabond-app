@@ -58,8 +58,8 @@
       "dexterity"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.riYRYZ03gPSdRCNI",
-      "Compendium.vagabond-lite.startingpacks.Item.3vDJJSHn1yUcfRT0"
+      "Compendium.vagabond-lite.gear.Item.riYRYZ03gPSdRCNI",
+      "Compendium.vagabond-lite.gear.Item.3vDJJSHn1yUcfRT0"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -122,7 +122,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786555298394,
-    "modifiedTime": 1787611685179,
+    "modifiedTime": 1787622356258,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

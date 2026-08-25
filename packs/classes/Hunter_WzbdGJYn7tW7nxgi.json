@@ -69,8 +69,8 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.F62niHMK5Hg4TmMn",
-      "Compendium.vagabond-lite.startingpacks.Item.hug6ifnaIOy45vvj"
+      "Compendium.vagabond-lite.gear.Item.F62niHMK5Hg4TmMn",
+      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -133,7 +133,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786566364586,
-    "modifiedTime": 1787611874489,
+    "modifiedTime": 1787622424980,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -1,0 +1,47 @@
+{
+  "name": "Eggs",
+  "type": "sundry",
+  "_id": "kMlhEUBQ8n0IshJT",
+  "img": "/icons/consumables/eggs/egg-cracked-white.webp",
+  "system": {
+    "description": "<p><br></p>",
+    "rules": [],
+    "category": "cooking",
+    "value": {
+      "g": 0,
+      "s": 2,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 12,
+      "quantity": 12,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "vnsof3f5thyVmHVf",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620618753,
+    "modifiedTime": 1787620618758,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!kMlhEUBQ8n0IshJT"
+}

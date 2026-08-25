@@ -1,0 +1,47 @@
+{
+  "name": "Cooking Oil",
+  "type": "sundry",
+  "_id": "TkwJ0al97F2scEcq",
+  "img": "/icons/consumables/potions/potion-bottle-corked-stopper-yellow.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "cooking",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": true,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "vnsof3f5thyVmHVf",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620618752,
+    "modifiedTime": 1787620618757,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!TkwJ0al97F2scEcq"
+}

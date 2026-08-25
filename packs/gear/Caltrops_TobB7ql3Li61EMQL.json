@@ -1,0 +1,47 @@
+{
+  "name": "Caltrops",
+  "type": "sundry",
+  "img": "/icons/equipment/shoulder/shoulderguard-spiked-rough-grey.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "outdoors",
+    "value": {
+      "g": 0,
+      "s": 4,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 10,
+      "quantity": 10,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "l5D3vYPFgbH4SAOt",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620825001,
+    "modifiedTime": 1787620825004,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_id": "TobB7ql3Li61EMQL",
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!TobB7ql3Li61EMQL"
+}

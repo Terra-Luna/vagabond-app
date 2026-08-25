@@ -1,0 +1,63 @@
+{
+  "name": "Hermit",
+  "type": "startingpack",
+  "_id": "j05Zi3ASkGB2J19f",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "rLK8nU5PMhP7PUta",
+        "name": "Staff",
+        "qty": 1
+      },
+      {
+        "id": "CwOP6xuNUqNVeJqs",
+        "name": "Herbalism Tools",
+        "qty": 1
+      },
+      {
+        "id": "qe3zY2PRL6JlUk75",
+        "name": "Tarot Deck",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 10
+      },
+      {
+        "id": "FjpvneXkav58tvAe",
+        "name": "Hooded Lantern",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 1,
+      "s": 5,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889540,
+    "modifiedTime": 1787621916882,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!j05Zi3ASkGB2J19f"
+}

@@ -1,0 +1,47 @@
+{
+  "name": "Marked Deck",
+  "type": "sundry",
+  "_id": "FcQSOcaHTUCSIULk",
+  "img": "/icons/sundries/gaming/game-playing-cards-deck.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "games",
+    "value": {
+      "g": 0,
+      "s": 20,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "jUo4OSd9Z2Q1AE1z",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620654592,
+    "modifiedTime": 1787620654595,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!FcQSOcaHTUCSIULk"
+}

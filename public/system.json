@@ -103,6 +103,7 @@
       "type": "Actor",
       "system": "vagabond-lite",
       "path": "packs/adversaries",
+      "banner": "systems/vagabond-lite/assets/compendium/adversaries_banner.png",
       "ownership": { "PLAYER": "NONE", "ASSISTANT": "OWNER" }
     },
     {
@@ -111,6 +112,7 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/ancestries",
+      "banner": "systems/vagabond-lite/assets/compendium/ancestries_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -119,6 +121,7 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/classes",
+      "banner": "systems/vagabond-lite/assets/compendium/classes_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -127,6 +130,7 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/perks",
+      "banner": "systems/vagabond-lite/assets/compendium/perks_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -135,6 +139,7 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/spells",
+      "banner": "systems/vagabond-lite/assets/compendium/spells_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -143,6 +148,7 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/armor",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -151,6 +157,7 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/weapons",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
@@ -159,6 +166,7 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/relics",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
       "ownership": { "PLAYER": "NONE", "ASSISTANT": "OWNER" }
     },
     {
@@ -167,142 +175,16 @@
       "type": "Item",
       "system": "vagabond-lite",
       "path": "packs/alchemical",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     },
     {
-      "name": "startingpacks",
-      "label": "Starting Packs",
+      "name": "gear",
+      "label": "Gear",
       "type": "Item",
       "system": "vagabond-lite",
-      "path": "packs/startingpacks",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "astronomy",
-      "label": "Astronomy & Navigation",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/astronomy",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "alchmed",
-      "label": "Alchemy & Medicine",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/alchmed",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "husbandry",
-      "label": "Beasts & Husbandry",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/husbandry",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "books",
-      "label": "Books & Magic",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/books",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "clothing",
-      "label": "Clothing, Hygiene, & Textiles",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/clothing",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "containers",
-      "label": "Containers & Packs",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/containers",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "cooking",
-      "label": "Cooking & Food",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/cooking",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "games",
-      "label": "Games & Toys",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/games",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "gems",
-      "label": "Gems, Jewelry, & Smithing",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/gems",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "hardware",
-      "label": "Hardware",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/hardware",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "liquor",
-      "label": "Liquor & Spirits",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/liquor",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "musical",
-      "label": "Musical",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/musical",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "outdoors",
-      "label": "Outdoors",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/outdoors",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "personal",
-      "label": "Personal Items",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/personal",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "tools",
-      "label": "Tools",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/tools",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
-    },
-    {
-      "name": "trade",
-      "label": "Trade Goods",
-      "type": "Item",
-      "system": "vagabond-lite",
-      "path": "packs/trade",
+      "path": "packs/gear",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     }
   ],
@@ -318,38 +200,6 @@
         "classes", 
         "perks", 
         "spells"
-      ]
-    },
-    {
-      "name": "Equipment",
-      "packs": [
-        "alchemical",
-        "armor",
-        "weapons",
-        "relics"
-      ]
-    },
-    {
-      "name": "Gear",
-      "packs": [
-        "alchmed",
-        "astronomy",
-        "husbandry",
-        "blacksmithing",
-        "books",
-        "clothing",
-        "containers",
-        "cooking",
-        "games",
-        "gems",
-        "hardware",
-        "liquor",
-        "musical",
-        "outdoors",
-        "personal",
-        "startingpacks",
-        "tools",
-        "trade"
       ]
     }
   ],

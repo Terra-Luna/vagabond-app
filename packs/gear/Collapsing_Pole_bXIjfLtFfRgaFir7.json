@@ -1,0 +1,47 @@
+{
+  "name": "Collapsing Pole",
+  "type": "sundry",
+  "_id": "bXIjfLtFfRgaFir7",
+  "img": "/icons/commodities/wood/wood-pole.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">10'</span></p>",
+    "rules": [],
+    "category": "hardware",
+    "value": {
+      "g": 1,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "hqQBaAS4VoQcJflQ",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620735344,
+    "modifiedTime": 1787620735350,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!bXIjfLtFfRgaFir7"
+}

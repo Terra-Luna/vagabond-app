@@ -1,0 +1,68 @@
+{
+  "name": "Investigator",
+  "type": "startingpack",
+  "_id": "d54X9I57KQhfvtsi",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "7Jn4QInDDD0wJT2M",
+        "name": "Handgun",
+        "qty": 1
+      },
+      {
+        "id": "GO9mgAXNLPas3p8b",
+        "name": "Box of Bullets",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "YbkeUDZcrkK5U5nv",
+        "name": "Magnifying Glass",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 1,
+      "s": 15,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889539,
+    "modifiedTime": 1787620889544,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!d54X9I57KQhfvtsi"
+}

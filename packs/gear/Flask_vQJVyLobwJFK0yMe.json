@@ -1,0 +1,46 @@
+{
+  "name": "Flask",
+  "type": "sundry",
+  "_id": "vQJVyLobwJFK0yMe",
+  "img": "/icons/consumables/potions/bottle-round-empty-glass.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 0,
+      "s": 0,
+      "c": 2
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "lLCNB3xHLRtTYAwn",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620578830,
+    "modifiedTime": 1787620578830,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0
+  },
+  "sort": 0,
+  "_key": "!items!vQJVyLobwJFK0yMe"
+}

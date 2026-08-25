@@ -1,0 +1,47 @@
+{
+  "name": "Sacbut",
+  "type": "sundry",
+  "_id": "OdJzhqdAKQJq34z5",
+  "img": "icons/tools/instruments/horn-flared-wood.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "musical",
+    "value": {
+      "g": 0,
+      "s": 50,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "FitJas22S56JvLyp",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620788186,
+    "modifiedTime": 1787620788189,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!OdJzhqdAKQJq34z5"
+}

@@ -1,0 +1,68 @@
+{
+  "name": "Assassin",
+  "type": "startingpack",
+  "_id": "YD5v9D76fPIczKKy",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "qDdEzxtfDOmBLtJW",
+        "name": "Alchemy Tools",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 20
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
+        "qty": 1
+      },
+      {
+        "id": "CNgpBbHg5dRh0YDP",
+        "name": "Basic Poison",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 60,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889538,
+    "modifiedTime": 1787620889543,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!YD5v9D76fPIczKKy"
+}

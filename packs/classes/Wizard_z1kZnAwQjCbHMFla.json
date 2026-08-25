@@ -96,8 +96,8 @@
       "reason"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.startingpacks.Item.rGKOD30vhnEC8c6k",
-      "Compendium.vagabond-lite.startingpacks.Item.5y2TEMR983wkMy3s"
+      "Compendium.vagabond-lite.gear.Item.rGKOD30vhnEC8c6k",
+      "Compendium.vagabond-lite.gear.Item.5y2TEMR983wkMy3s"
     ],
     "castingSkill": "arcana",
     "manaMultiplier": 4,
@@ -148,7 +148,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786572729833,
-    "modifiedTime": 1787612385687,
+    "modifiedTime": 1787622578573,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

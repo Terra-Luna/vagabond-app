@@ -1,0 +1,53 @@
+{
+  "name": "Sellsword",
+  "type": "startingpack",
+  "_id": "gf11G2zaJiqeqjIf",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "Dy5ScV9PimQvyD4p",
+        "name": "Longsword",
+        "qty": 1
+      },
+      {
+        "id": "eunJDTG6hnHJVnWP",
+        "name": "Buckler",
+        "qty": 1
+      },
+      {
+        "id": "V1Ou5SBmDGgoNPW9",
+        "name": "Medium Armor",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 95,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889539,
+    "modifiedTime": 1787620889544,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!gf11G2zaJiqeqjIf"
+}

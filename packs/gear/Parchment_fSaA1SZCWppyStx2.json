@@ -1,0 +1,47 @@
+{
+  "name": "Parchment",
+  "type": "sundry",
+  "_id": "fSaA1SZCWppyStx2",
+  "img": "/icons/sundries/documents/parchment-plain-tan.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "books",
+    "value": {
+      "g": 0,
+      "s": 1,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "fcy8YKJyMEaZwunn",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620298020,
+    "modifiedTime": 1787620298025,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!fSaA1SZCWppyStx2"
+}

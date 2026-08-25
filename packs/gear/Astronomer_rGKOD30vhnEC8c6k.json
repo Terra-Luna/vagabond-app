@@ -1,0 +1,58 @@
+{
+  "name": "Astronomer",
+  "type": "startingpack",
+  "_id": "rGKOD30vhnEC8c6k",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "3LTmKJXo1CHgOsv0",
+        "name": "Trinket",
+        "qty": 1
+      },
+      {
+        "id": "juPIop3hCd6ZrKOs",
+        "name": "Telescope",
+        "qty": 1
+      },
+      {
+        "id": "iWK86ZUNsRQylRX8",
+        "name": "Astrolabe",
+        "qty": 1
+      },
+      {
+        "id": "P5KKN8h4OQoTYA95",
+        "name": "Map Case",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 7,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889540,
+    "modifiedTime": 1787620889545,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!rGKOD30vhnEC8c6k"
+}

@@ -1,0 +1,63 @@
+{
+  "name": "Cook",
+  "type": "startingpack",
+  "_id": "tfyvhtABlx28fMIr",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "qX5BWPp9TCDEmSu3",
+        "name": "Cooking Tools",
+        "qty": 1
+      },
+      {
+        "id": "sWaAKxaqGvac1YS0",
+        "name": "Flour",
+        "qty": 1
+      },
+      {
+        "id": "PeJV7aLGuaEOmlKh",
+        "name": "Mess Kit",
+        "qty": 1
+      },
+      {
+        "id": "vBEaM6skG0sUca2g",
+        "name": "Iron Pan",
+        "qty": 1
+      },
+      {
+        "id": "t7hVHvMp66VeS9kH",
+        "name": "Ingredients",
+        "qty": 20
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 76,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889541,
+    "modifiedTime": 1787620889545,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!tfyvhtABlx28fMIr"
+}

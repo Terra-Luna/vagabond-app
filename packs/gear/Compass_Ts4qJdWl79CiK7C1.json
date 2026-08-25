@@ -1,0 +1,47 @@
+{
+  "name": "Compass",
+  "type": "sundry",
+  "_id": "Ts4qJdWl79CiK7C1",
+  "img": "/icons/tools/navigation/compass-worn-copper.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "astrnonomy",
+    "value": {
+      "g": 0,
+      "s": 20,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "folder": "2fbNaIB4jg0vS6tW",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620249572,
+    "modifiedTime": 1787620249573,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!Ts4qJdWl79CiK7C1"
+}

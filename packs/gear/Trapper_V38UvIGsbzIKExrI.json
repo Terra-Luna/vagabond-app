@@ -1,0 +1,63 @@
+{
+  "name": "Trapper",
+  "type": "startingpack",
+  "_id": "V38UvIGsbzIKExrI",
+  "img": "/icons/containers/bags/pouch-leather-silver-white.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "items": [
+      {
+        "id": "xgA8vboUQI2ysw1n",
+        "name": "Longbow",
+        "qty": 1
+      },
+      {
+        "id": "NJGEvpZddVCfCvoM",
+        "name": "Quiver of Arrows",
+        "qty": 1
+      },
+      {
+        "id": "qUiyKn111AGU8sli",
+        "name": "Leatherworking Tools",
+        "qty": 1
+      },
+      {
+        "id": "RuQvlBLIYGNkiVAB",
+        "name": "Light Armor",
+        "qty": 1
+      },
+      {
+        "id": "vJIu7kWGy7U4YIwi",
+        "name": "Hunting Trap",
+        "qty": 1
+      }
+    ],
+    "category": "containers",
+    "value": {
+      "g": 0,
+      "s": 25,
+      "c": 0
+    }
+  },
+  "effects": [],
+  "folder": "4GQqeJ9m6W2vIYON",
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787620889538,
+    "modifiedTime": 1787621666969,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "sort": 0,
+  "_key": "!items!V38UvIGsbzIKExrI"
+}
