@@ -1,4 +1,4 @@
-import { PenSquare, Plus, Save,Trash } from "lucide-react"
+import { PenSquare, Save,Trash } from "lucide-react"
 import { useCallback,useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
@@ -8,7 +8,7 @@ import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputCo
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { getDamageAverage } from "../../../../../model/actor/type/AdversaryAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
-import { vgLiteLang as locale, vgLiteLang } from "../../../../../utils/lang"
+import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
@@ -16,7 +16,7 @@ import { ComboChatCard } from "../../../../chat/ComboChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
 import { damageRoll } from "../../../../common/text-styles"
-import { DestructiveButton, PrimaryButton } from "../../../../component/Button"
+import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../component/Dropdown"
@@ -25,19 +25,25 @@ import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
 
+const locale = vgLiteLang.AdversarySheet
+
 export const ActionMenuHeader = ({ label, onClick }: { label: string, onClick?: () => void }) => {
     const { isEditMode } = useEditMode()
     return (
         <div className="flex items-center gap-x-2">
             <p className="font-eskapade font-bold text-text-header-tertiary text-xl">{label}</p>
-            {isEditMode && <AddNewIconButton onClick={onClick} />}
+            {isEditMode && onClick &&
+                <AddNewIconButton onClick={onClick} />
+            }
         </div>
     )
 }
 
 export const AddNewIconButton = ({ onClick }) => {
     return (
-        <Plus size={18} strokeWidth={4} className={`text-text-header-tertiary hover-glow`} onClick={onClick} />
+        <UtilityButton onClick={onClick}>
+            {`+${vgLiteLang.ButtonActions.add}`}
+        </UtilityButton>
     )
 }
 
@@ -48,7 +54,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
     return (
         <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
-            <ActionMenuHeader label={locale.AdversarySheet.actions} onClick={() => setIsAddMenuOpen(true)} />
+            <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
 
             {/* DISPLAY COMBO FIRST */}
             <div
@@ -58,7 +64,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
             >
                 {adversary.combo.name !== '' &&
                     <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
-                        <p className="font-paradigm font-bold">{locale.AdversarySheet.combo}:</p>
+                        <p className="font-paradigm font-bold">{locale.combo}:</p>
                         <p className="text-text-secondary">{adversary.combo.name}</p>
                     </div>
                 }

@@ -739,8 +739,8 @@
     "AdversarySheet": {
       "tl": "TL",
       "hd": "HD",
-      "hp": "HIT POINTS",
-      "armor": "ARMOR",
+      "hp": "HP",
+      "armor": "Armor",
       "zone": "Zone",
       "senses": "Senses",
       "as": "as",

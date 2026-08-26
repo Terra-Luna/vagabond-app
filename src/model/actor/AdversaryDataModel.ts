@@ -49,6 +49,7 @@ export class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
     override async _preCreate(data: any, options: any, user: any) {
         await super._preCreate(data, options, user)
         this.parent.updateSource({
+            'img': 'systems/vagabond-lite/assets/icons/default_adversary.svg',
             'prototypeToken.name': data.name,
             'prototypeToken.sight.enabled': true,
             'prototypeToken.sight.range': 500,
@@ -59,6 +60,8 @@ export class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
 
     override async _onUpdate(changed, options, userId) {
         super._onUpdate(changed, options, userId)
+        if (!this.parent.isOwner) return
+
         if (changed.name) {
             this.parent.update({ 'prototypeToken.name': changed.name })
         }

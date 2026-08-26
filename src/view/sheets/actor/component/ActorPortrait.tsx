@@ -2,7 +2,7 @@ import { ActorDataModel, BaseActorSchema } from "../../../../model/actor/ActorDa
 import { useContextMenu } from "../../../component/ContextMenu"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 
-export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
+export const ActorPortrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const { imageEditCtxMenuItems } = useImageEdit(actor.parent)
 
@@ -10,7 +10,7 @@ export const Portrait = ({ actor }: { actor: ActorDataModel<BaseActorSchema> }) 
         <div onContextMenu={(e) => onCtxMenu(e, imageEditCtxMenuItems)}>
             <img
                 src={actor.parent.img} alt={actor.parent.name}
-                className={`bg-black/5 border border-solid border-black/5 object-cover h-[154px] w-[110px]`}
+                className={`bg-black/5 border border-solid border-black/5 object-contain h-[154px] w-[110px]`}
             />
             <ContextMenu />
         </div>

@@ -13,11 +13,10 @@ export const SelectableTextOptions = ({ obj, label, path, localeObj }: {
     return (<>
         {
             !isEditMode && field.length === 0 ? <></> :
-                <div className="flex space-x-2 mt-2">
-                    {
-                        isEditMode ?
-                            <OptionsSelectionMenu obj={obj} label={label} path={path} options={options} /> :
-                            <p className="text-sm text-text-primary font-paradigm font-normal">{label}:</p>
+                <div className="flex space-x-2">
+                    {isEditMode
+                        ? <OptionsSelectionMenu obj={obj} label={label} path={path} options={options} />
+                        : <p>{label}:</p>
                     }
                     <StringOptionsDisplay options={options.filter(o => o.isSelected).map(o => o.value)} />
                 </div>

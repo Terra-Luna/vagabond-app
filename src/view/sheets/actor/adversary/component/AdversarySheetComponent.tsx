@@ -1,38 +1,47 @@
+import { Heart, Shield } from "lucide-react"
+import { useCallback, useEffect } from "react"
+
 import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
-import { getDocumentAtPath } from "../../../../../utils/documentUtils"
-import { lang  } from "../../../../../utils/lang"
+import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
+import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField } from "../../../../component/EditableTextField"
+import { Divider } from "../../../../component/Header"
 import { DamageTypeIconDisplay,OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
+import { CardSubHeader } from "../../../../component/SkillCard"
+import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { Description } from "../../../shared/Description"
 import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
-import { Portrait } from "../../component/ActorPortrait"
-import { Abilities, NewAbilityWindow } from "./Ability"
-import { ActionMenuHeader, Actions, NewActionWindow } from "./Action"
+import { ActorPortrait } from "../../component/ActorPortrait"
+import { Abilities, NewAbilityWindow } from "./Abilities"
+import { ActionMenuHeader, Actions, NewActionWindow } from "./Actions"
 import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
-import { HPArmorHUD } from "./HPArmorHUD"
 
-const locale = lang.VGLITE.AdversarySheet
-
-const statLabelStyle = `text-sm text-text-header-tertiary font-eskapade font-bold`
-const statValueStyle = `text-lg text-text-primary font-eskapade font-normal`
+const locale = vgLiteLang.AdversarySheet
 
 export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel } }) => {
     const adversary = actor.system
+    const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
 
+    useEffect(() => {
+        if (!isEditMode) {
+            setIsAddActionOpen(false)
+            setIsAddAbilityOpen(false)
+        }
+    }, [isEditMode, setIsAddActionOpen, setIsAddAbilityOpen])
+
     return (
         <div className="@container flex grow overflow-y-hidden">
-            <div className="flex flex-col border border-solid border-transparent border-r-table-border">
-                <Portrait actor={adversary} />
-                <div className="flex flex-col grow p-2">
-                    <HPArmorHUD adv={adversary} />
-                </div>
+            <div className="absolute left-0 w-[110px] -ml-[110px] border border-solid border-table-border bg-sheet-main-fill/33 rounded-l-md">
+                <ActorPortrait actor={adversary} />
             </div>
+
             <div className="flex flex-col grow">
                 <AdversarySheetHeader adv={adversary} />
                 <div className="overflow-y-auto">
@@ -40,16 +49,16 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
                     <StatBlock adv={adversary} />
 
                     <Actions adversary={adversary} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
-                    {isAddActionOpen ?
-                        <NewActionWindow adv={adversary} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} /> : undefined
+                    {isAddActionOpen &&
+                        <NewActionWindow adv={adversary} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} />
                     }
 
                     <Abilities adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
-                    {isAddAbilityOpen ?
-                        <NewAbilityWindow adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} /> : undefined
+                    {isAddAbilityOpen &&
+                        <NewAbilityWindow adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} />
                     }
 
-                    <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })} className="ml-2 hover-glow cursor-pointer">
+                    <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })} className="ml-2 hover-glow cursor-pointer mb-4" title="Click to open active effects">
                         <ActionMenuHeader label={"Active Effects"} />
                     </button>
                 </div>
@@ -61,10 +70,20 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
 const AdversarySheetHeader = ({ adv }) => {
     const { editModeToggleBtn } = useEditMode()
     return (
-        <div className="bg-sheet-header-fill font-eskapade p-2">
-            <div className="text-2xl text-text-header-primary font-bold flex">
+        <div>
+            <div className="flex text-2xl text-text-header-primary font-bold bg-sheet-header-fill font-eskapade pl-2 items-center gap-x-1">
                 <EditableNameField actor={adv.parent} />
-                <div className="flex ml-auto mt-2">
+                <Divider />
+                <div className="flex gap-x-1 ml-auto self-center">
+                    {/* THREAT LEVEL DISPLAY */}
+                    <span className="flex gap-x-1 text-text-header-primary font-eskapade font-normal text-base mr-1">
+                        <p>{vgLiteLang.AdversarySheet.tl}:</p>
+                        <EditableTextField
+                            boundValue={adv.threatLevelOverride?.toString() ?? adv.threatLevel?.toString() ?? ''}
+                            updateProps={{ object: adv.parent, path: ['threatLevelOverride'] }}
+                            placeholder={adv.threatLevel?.toString() ?? '1.00'}
+                        />
+                    </span>
                     {editModeToggleBtn}
                 </div>
             </div>
@@ -76,33 +95,33 @@ const AdversarySheetHeader = ({ adv }) => {
 const TraitSelectors = ({ adv }) => {
     const { isEditMode } = useEditMode()
     return (
-        <div className="flex gap-2 text-text-header-secondary mt-1">
+        <div className="flex gap-x-1 text-text-header-secondary">
             {
-                isEditMode ? <>
+                isEditMode ? <div className="flex gap-x-1 px-1 mt-1">
                     <DropDown
-                        options={createDropdownEntries(lang.VGLITE.Sizes)}
+                        options={createDropdownEntries(vgLiteLang.Sizes)}
                         parent={adv.parent}
                         updateMechanism={{ updatePath: ['beingSize'] }}
                         value={adv.beingSize}
                     />
                     <DropDown
-                        options={createDropdownEntries(lang.VGLITE.BeingTypes)}
+                        options={createDropdownEntries(vgLiteLang.BeingTypes)}
                         parent={adv.parent}
                         updateMechanism={{ updatePath: ['beingType'] }}
                         value={adv.beingType}
                     />
                     <DropDown
-                        options={createDropdownEntries(lang.VGLITE.BeingSubtypes)}
+                        options={createDropdownEntries(vgLiteLang.BeingSubtypes)}
                         parent={adv.parent}
                         updateMechanism={{ updatePath: ['beingSubtype'] }}
                         value={adv.beingSubtype}
                     />
-                </> :
-                    <>
-                        <p>{lang.VGLITE.Sizes[adv.beingSize]}</p>
-                        <p>{lang.VGLITE.BeingTypes[adv.beingType]}</p>
-                        <p>{lang.VGLITE.BeingSubtypes[adv.beingSubtype]}</p>
-                    </>
+                </div>
+                    : <CardSubHeader values={[
+                        { label: vgLiteLang.Sizes[adv.beingSize], value: "" },
+                        { label: vgLiteLang.BeingTypes[adv.beingType], value: "" },
+                        { label: vgLiteLang.BeingSubtypes[adv.beingSubtype], value: "" }
+                    ]} showRightBorder={false} />
             }
         </div>
     )
@@ -110,79 +129,174 @@ const TraitSelectors = ({ adv }) => {
 
 const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     const { isEditMode } = useEditMode()
-    return (<>
-        <div className="flex flex-wrap justify-between gap-x-8 gap-y-2 w-full px-2 mt-1 mb-4">
-            {/* ZONE */}
-            <StatBlockField label={locale.zone} content={<>
-                {
-                    isEditMode ?
+    const hp = adv.health.current
+
+    const incrementHP = useCallback((auxClick: boolean) => {
+        updateDocument(adv.parent, { health: { current: (hp ?? 0) + (auxClick ? 1 : -1) } })
+    }, [adv.health])
+
+    const inlineRoll = async (formula: string, flavor: string) => {
+        if (isEditMode) return
+        const roll = await new Roll(formula).evaluate()
+        await roll.toMessage({
+            flavor: flavor,
+            speaker: ChatMessage.getSpeaker()
+        }, { rollMode: "gmroll" })
+    }
+
+    return (
+        <div className="flex flex-col gap-y-1 px-2">
+            <StatBlockRow>
+                {/* HIT DICE */}
+                <StatBlockField label={locale.hd} content={
+                    <EditableTextField
+                        boundValue={adv.hitDice?.toString() ?? '1'}
+                        updateProps={{ object: adv.parent, path: ['hitDice'] }}
+                        placeholder="1"
+                    />
+                } />
+                {/* HIT POINTS */}
+                <StatBlockField label={locale.hp} content={
+                    <StatBlockRow>
+                        <button
+                            title={vgLiteLang.HeroSheet.counter_tooltip}
+                            className="cursor-pointer hover-glow"
+                            onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}
+                        >
+                            <Heart size={18} className="text-text-hp-current fill-text-hp-current -mr-1" />
+                        </button>
+                        <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                            <EditableTextField
+                                boundValue={adv.health.current?.toString() ?? '1'}
+                                updateProps={{ object: adv.parent, path: ['health', 'current'] }}
+                                hideBorderOnEditMode={true}
+                                placeholder="4"
+                            />
+                        </EditModeContextProvider>
+                    </StatBlockRow>
+                } />
+                {/* ARMOR RATING & INFO */}
+                <div className="flex gap-x-1 text-text-primary items-center justify-center">
+                    <div className="relative w-[32px] h-[32px]">
+                        <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                            <div className={`text-xl text-text-armor font-eskapade font-bold`}>
+                                <EditableTextField
+                                    boundValue={adv.armor.rating?.toString() ?? ''}
+                                    updateProps={{ object: adv.parent, path: ['armor', 'rating'] }}
+                                    placeholder="0"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <StatBlockField label={vgLiteLang.AdversarySheet.as} content={
+                        <EditableTextField
+                            boundValue={adv.armor.as ?? 'Unarmored'}
+                            updateProps={{ object: adv.parent, path: ['armor', 'as'] }}
+                            placeholder="Unarmored"
+                        />}
+                    />
+                </div>
+            </StatBlockRow>
+
+            <StatBlockRow>
+                {/* ZONE */}
+                <StatBlockField label={locale.zone} content={<>
+                    {isEditMode ?
                         <DropDown
-                            options={createDropdownEntries(lang.VGLITE.Zones)}
+                            options={createDropdownEntries(vgLiteLang.Zones)}
                             parent={adv.parent}
                             updateMechanism={{ updatePath: ['zone'] }}
                             value={adv.zone}
-                        /> : <p className={statValueStyle}>{lang.VGLITE.Zones[adv.zone]}</p>
-                }
-            </>} />
-            {/* SPEED */}
-            <StatBlockField label={locale.speed} content={
-                <div className="flex space-x-1">
-                    <div className={`flex space-x-1 ${statValueStyle}`}>
-                        <EditableTextField
-                            boundValue={adv.movement?.speed?.toString() ?? '30'}
-                            updateProps={{ object: adv.parent, path: ['movement', 'speed'] }}
-                            placeholder="30"
-                        />
-                    </div>
-                    <div>
-                        {
-                            isEditMode ?
-                                <DropDown
-                                    options={createDropdownEntries(lang.VGLITE.Movement)}
+                        /> : <StatBlockValue value={vgLiteLang.Zones[adv.zone]} />
+                    }
+                </>} />
+                {/* SPEED */}
+                <StatBlockField label={locale.speed} content={
+                    <div className="flex space-x-1">
+                        <div className="flex">
+                            <EditableTextField
+                                boundValue={adv.movement?.speed?.toString() ?? '30'}
+                                updateProps={{ object: adv.parent, path: ['movement', 'speed'] }}
+                                placeholder="30"
+                            />
+                            <StatBlockValue value={"'"} />
+                        </div>
+                        <div>
+                            {isEditMode
+                                ? <DropDown
+                                    options={createDropdownEntries(vgLiteLang.Movement)}
                                     parent={adv.parent}
                                     updateMechanism={{ updatePath: ['movement', 'type'] }}
                                     value={adv.movement.type}
-                                /> : <p>{lang.VGLITE.Movement[adv.movement.type]}</p>
-                        }
+                                />
+                                : <p>{vgLiteLang.Movement[adv.movement.type]}</p>
+                            }
+                        </div>
                     </div>
+                } />
+            </StatBlockRow>
+
+            <StatBlockRow>
+                {/* MORALE */}
+                <div onClick={() => inlineRoll(adv.morale?.toString() ?? '12', locale.morale + " Check")} className="hover-glow cursor-pointer" title="Click to roll morale check">
+                    <StatBlockField label={locale.morale} content={
+                        <EditableTextField
+                            boundValue={adv.morale?.toString() ?? '6'}
+                            updateProps={{ object: adv.parent, path: ['morale'] }}
+                            placeholder="6"
+                        />
+                    } />
                 </div>
-            } />
-            {/* MORALE */}
-            <StatBlockField label={locale.morale} content={
-                <EditableTextField
-                    boundValue={adv.morale?.toString() ?? '6'}
-                    updateProps={{ object: adv.parent, path: ['morale'] }}
-                    placeholder="6"
-                />
-            } />
-            {/* NUBMER APPEARING */}
-            <StatBlockField label={locale.appearing} content={
-                <EditableTextField
-                    boundValue={adv.numberAppearing?.toString() ?? '1'}
-                    updateProps={{ object: adv.parent, path: ['numberAppearing'] }}
-                    placeholder="1d6"
-                />
-            } />
-            {/* SENSENS & STATUS IMMUNITIES */}
-            <div className="w-full space-y-4">
-                <SelectableTextOptions obj={adv.parent} label={locale.senses} path={['senses']} localeObj={lang.VGLITE.Senses} />
-                <SelectableTextOptions obj={adv.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={lang.VGLITE.StatusConditions} />
+                {/* NUMBER APPEARING */}
+                <div onClick={() => inlineRoll(adv.numberAppearing?.toString() ?? '1', locale.appearing + " Roll")} className="hover-glow cursor-pointer" title="Click to roll number appearing">
+                    <StatBlockField label={locale.appearing} content={
+                        <EditableTextField
+                            boundValue={adv.numberAppearing?.toString() ?? '1'}
+                            updateProps={{ object: adv.parent, path: ['numberAppearing'] }}
+                            placeholder="d4"
+                        />
+                    } />
+                </div>
+            </StatBlockRow>
+
+            {/* SENSES, IMMUNITIES, & WEAKNESSES */}
+            <div className="w-full space-y-2 text-base text-text-header-tertiary font-bold">
+                <SelectableTextOptions obj={adv.parent} label={locale.senses} path={['senses']} localeObj={vgLiteLang.Senses} />
+                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={vgLiteLang.DamageTypes} />
+                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={vgLiteLang.DamageTypes} />
+                <SelectableTextOptions obj={adv.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={vgLiteLang.StatusConditions} />
             </div>
-            {/* WEAKNESS & IMMUNITY */}
-            <div className="w-full space-y-4">
-                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={lang.VGLITE.DamageTypes} />
-                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={lang.VGLITE.DamageTypes} />
-            </div>
+        </div >
+    )
+}
+
+const StatBlockRow = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <div className="flex justify-between items-center gap-x-2 w-full">
+            {children}
         </div>
-    </>)
+    )
 }
 
 const StatBlockField = ({ label, content }) => {
     return (
-        <div className="flex space-x-2 items-center">
-            <p className={statLabelStyle}>{label}</p>
-            <div className={statValueStyle}>{content}</div>
+        <div className="flex gap-x-1 items-center line-clamp-1">
+            <StatBlockLabel text={label} />
+            <StatBlockValue value={content} />
         </div>
+    )
+}
+
+const StatBlockLabel = ({ text }) => {
+    return (
+        <div className={`text-base text-text-header-tertiary font-paradigm font-bold`}>{text}:</div>
+    )
+}
+
+const StatBlockValue = ({ value }) => {
+    return (
+        <div className={`text-base text-text-primary font-paradigm font-normal`}>{value}</div>
     )
 }
 
@@ -193,16 +307,15 @@ const DamageTypeSelector = ({ adv, label, path, localeObj }: { adv: AdversaryDat
         { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }
     ))
     return (<>
-        {
-            !isEditMode && field.length === 0 ? <></> :
-                <div className="flex space-x-2 mt-2">
-                    {
-                        isEditMode ?
-                            <OptionsSelectionMenu obj={adv.parent} label={label} path={path} options={damageTypes} /> :
-                            <p className={statLabelStyle}>{label}:</p>
-                    }
-                    <DamageTypeIconDisplay dmgTypes={field} />
-                </div>
+        {!isEditMode && field.length === 0
+            ? <></>
+            : <div className="flex space-x-2 mt-2">
+                {isEditMode
+                    ? <OptionsSelectionMenu obj={adv.parent} label={label} path={path} options={damageTypes} />
+                    : <StatBlockLabel text={label} />
+                }
+                <DamageTypeIconDisplay dmgTypes={field} />
+            </div>
         }
     </>)
 }

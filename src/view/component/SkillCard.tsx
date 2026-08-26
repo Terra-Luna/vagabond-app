@@ -55,12 +55,16 @@ export const CardSubHeader = ({ values, showRightBorder = true }: { values: Card
     return (
         <HeaderWithClipPath showRightBorder={showRightBorder}>
             {
-                values.map((content, index) => (
-                    <div key={content.label + index} className="flex gap-x-1">
-                        <div className={cardSubheaderLabel}>{content.label}:</div>
-                        <div className={cardSubheaderValue}>{content.value}</div>
-                    </div>
-                ))
+                values.map((content, index) => {
+                    const hasBlank = content.label.length === 0 || (content.value?.toString()?.length ?? 0) === 0
+                    const gap = hasBlank ? "" : "gap-x-1"
+                    return (
+                        <div key={content.label + index} className={`flex ${gap}`}>
+                            <div className={cardSubheaderLabel}>{`${content.label}${hasBlank ? '' : ':'}`}</div>
+                            <div className={cardSubheaderValue}>{content.value}</div>
+                        </div>
+                    )
+                })
             }
         </HeaderWithClipPath>
     )

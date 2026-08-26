@@ -3,22 +3,24 @@ import { useCallback,useState } from "react"
 
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
-import { vgLiteLang as locale } from "../../../../../utils/lang"
+import { vgLiteLang } from "../../../../../utils/lang"
 import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { RichTextField } from "../../../../component/RichTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { ActionMenuHeader, AddMenuButtons } from "./Action"
+import { ActionMenuHeader, AddMenuButtons } from "./Actions"
 import { onClickAction } from "./hooksAndUtils"
+
+const locale = vgLiteLang.AdversarySheet
 
 export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
         <div className="m-2 space-y-1">
-            <ActionMenuHeader label={locale.AdversarySheet.abilities} onClick={() => setIsAddMenuOpen(true)} />
+            <ActionMenuHeader label={locale.abilities} onClick={() => setIsAddMenuOpen(true)} />
             {
                 adv.abilities.map(ability => (
                     <div
@@ -29,7 +31,7 @@ export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                         ])}
                     >
                         <div className={`${tableBorderRounded} p-2`}>
-                            <p className={`font-paradigm font-bold hover-glow`} onClick={() => onClickAction(adv, ability.name, ability.description, '', '', '')}>
+                            <p className={`font-paradigm font-bold hover-glow`} onClick={() => onClickAction(adv, ability.name, ability.description, undefined, undefined)}>
                                 {ability.name}
                             </p>
                             <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" />

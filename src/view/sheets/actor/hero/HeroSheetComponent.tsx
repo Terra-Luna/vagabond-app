@@ -14,7 +14,7 @@ import { localizeString } from "../../../../utils/localeUtils"
 import { getName } from "../../../../utils/modelUtil"
 import { EditableNameField } from "../../../component/EditableTextField"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
-import { Portrait } from "../component/ActorPortrait"
+import { ActorPortrait } from "../component/ActorPortrait"
 import { VagabondActorSheet } from "../VagabondActorSheet"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
@@ -65,7 +65,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
             <Stats hero={hero} />
 
             {/* PORTRAIT */}
-            <Portrait actor={hero} />
+            <ActorPortrait actor={hero} />
 
             {/* MAIN HEADER CONTENT + MENU BUTTON */}
             <div className="flex flex-col grow">
