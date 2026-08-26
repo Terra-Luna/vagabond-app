@@ -210,9 +210,9 @@
   "media": [
     {
       "type": "setup",
-      "url": "systems/vagabond-lite/assets/splash.png",
-      "thumbnail": "systems/vagabond-lite/assets/splash.png"
+      "url": "systems/vagabond-lite/assets/splash.webp",
+      "thumbnail": "systems/vagabond-lite/assets/splash.webp"
     }
   ],
-  "background": "systems/vagabond-lite/assets/splash.png"
+  "background": "systems/vagabond-lite/assets/splash.webp"
 }

@@ -59,7 +59,7 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
                     }
 
                     <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })} className="ml-2 hover-glow cursor-pointer mb-4" title="Click to open active effects">
-                        <ActionMenuHeader label={"Active Effects"} />
+                        <ActionMenuHeader label={vgLiteLang.ButtonActions.effects} />
                     </button>
                 </div>
             </div>
