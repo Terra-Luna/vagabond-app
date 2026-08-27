@@ -1,5 +1,5 @@
-import { Heart, Shield } from "lucide-react"
-import { useCallback, useEffect } from "react"
+import { ChevronLeft, ChevronRight, Heart, Shield } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
 
 import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
@@ -14,6 +14,7 @@ import { CardSubHeader } from "../../../../component/SkillCard"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
+import { useFoundryHook } from "../../../../wrappers/hooks"
 import { Description } from "../../../shared/Description"
 import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
 import { ActorPortrait } from "../../component/ActorPortrait"
@@ -23,11 +24,39 @@ import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
 
 const locale = vgLiteLang.AdversarySheet
 
+/**
+ * Persists the portrait's collapsed/expanded state as a flag on the actor's token, so it's
+ * per-token rather than a transient client-side value.
+ */
+const usePortraitOpenFlag = (actor: Actor) => {
+    const token = actor.isToken ? actor.token : actor.getActiveTokens()[0]?.document
+    const [isPortraitOpen, setIsPortraitOpenState] = useState<boolean>(
+        (token?.getFlag("vagabond-lite" as any, "portraitOpen" as any) as boolean | undefined) ?? true
+    )
+
+    useFoundryHook("updateToken" as any, (doc: any, changes: any) => {
+        if (!token || doc.id !== token.id) return
+        const flagChange = foundry.utils.getProperty(changes, "flags.vagabond-lite.portraitOpen") as boolean | undefined
+        if (flagChange !== undefined) setIsPortraitOpenState(flagChange ?? true)
+    })
+
+    const setIsPortraitOpen = useCallback((value: boolean | ((prev: boolean) => boolean)) => {
+        setIsPortraitOpenState(prev => {
+            const next = typeof value === 'function' ? (value as (prev: boolean) => boolean)(prev) : value
+            token?.setFlag("vagabond-lite" as any, "portraitOpen" as any, next)
+            return next
+        })
+    }, [token])
+
+    return { isPortraitOpen, setIsPortraitOpen }
+}
+
 export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel } }) => {
     const adversary = actor.system
     const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
+    const { isPortraitOpen, setIsPortraitOpen } = usePortraitOpenFlag(actor)
 
     useEffect(() => {
         if (!isEditMode) {
@@ -38,15 +67,19 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
 
     return (
         <div className="@container flex grow overflow-y-hidden">
-            <div className="absolute left-0 w-[110px] -ml-[110px] border border-solid border-table-border bg-sheet-main-fill/33 rounded-l-md">
-                <ActorPortrait actor={adversary} />
+            <div className="absolute left-0 flex items-start">
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out border border-solid border-table-border bg-sheet-main-fill/33 rounded-l-md ${isPortraitOpen ? 'w-[110px] -ml-[110px]' : 'w-0 ml-0'}`}>
+                    <div className="w-[110px]">
+                        <ActorPortrait actor={adversary} />
+                    </div>
+                </div>
             </div>
 
             <div className="flex flex-col grow">
                 <AdversarySheetHeader adv={adversary} />
                 <div className="overflow-y-auto">
                     <Description item={adversary.parent} />
-                    <StatBlock adv={adversary} />
+                    <StatBlock adv={adversary} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
 
                     <Actions adversary={adversary} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
                     {isAddActionOpen &&
@@ -127,7 +160,9 @@ const TraitSelectors = ({ adv }) => {
     )
 }
 
-const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
+const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
+    adv: AdversaryDataModel, isPortraitOpen: boolean, setIsPortraitOpen: React.Dispatch<React.SetStateAction<boolean>>
+}) => {
     const { isEditMode } = useEditMode()
     const hp = adv.health.current
 
@@ -147,6 +182,17 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
     return (
         <div className="flex flex-col gap-y-1 px-2">
             <StatBlockRow>
+                {/* EXPAND / COLLAPSE BUTTON */}
+                <button
+                    onClick={() => setIsPortraitOpen(open => !open)}
+                    title={isPortraitOpen ? "Collapse portrait" : "Expand portrait"}
+                    className="bg-sheet-header-fill border border-solid border-table-border rounded-r-md -ml-2 -mt-3 -mr-6 px-0.5 py-2 hover-glow cursor-pointer"
+                >
+                    {isPortraitOpen
+                        ? <ChevronRight size={14} className="text-text-header-primary" />
+                        : <ChevronLeft size={14} className="text-text-header-primary" />
+                    }
+                </button>
                 {/* HIT DICE */}
                 <StatBlockField label={locale.hd} content={
                     <EditableTextField
