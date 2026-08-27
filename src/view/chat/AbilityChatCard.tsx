@@ -43,7 +43,7 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
                                 <ImageWithDamageTypeBadge img={img} size={46} className="mr-2" />
                         }
                         <div className="text-justify">
-                            <EnrichedContent content={description} />
+                            <EnrichedContent content={description} actor={actor} />
                         </div>
                     </div>
                 </div>

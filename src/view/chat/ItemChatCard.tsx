@@ -74,7 +74,7 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
                         }
                         contents={
                             <div className="font-paradigm font-normal text-lg">
-                                <EnrichedContent content={equipment.description} />
+                                <EnrichedContent content={equipment.description} actor={actor} />
                                 <ItemCardContents item={equipment} />
                             </div>
                         }

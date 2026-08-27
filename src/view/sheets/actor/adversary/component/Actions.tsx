@@ -22,6 +22,7 @@ import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
+import { RichTextField } from "../../../../component/RichTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
 
@@ -87,7 +88,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                     {/* ACTION TRAITS... */}
                                     <div>
                                         {/* ATTACK DESCRIPTION */}
-                                        <EnrichedContent content={act.effect} styleClasses="text-text-secondary italic" />
+                                        <EnrichedContent content={act.effect} styleClasses="text-text-secondary italic" actor={adversary.parent} />
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
                                         {act.damage.dice.count > 0 &&
                                             <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(adversary, act.name, act.effect, act.damage.type, act.damage.dice as DiceRollSchema)}>
@@ -118,7 +119,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                         {/* RECHARGE ROLL */}
                                         {act.recharge != null && act.recharge != '' &&
                                             <div className="flex gap-x-2 text-text-secondary">
-                                                {'Recharge:'}<EnrichedContent content={act.recharge} />
+                                                {'Recharge:'}<EnrichedContent content={act.recharge} actor={adversary.parent} />
                                             </div>
                                         }
                                     </div>
@@ -171,64 +172,32 @@ export interface AdversaryAction {
 
 export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
     const editTargetIndex = adv.actions.indexOf(editTarget as any)
-    const [newAction, setNewActionInternal] = editTarget == null ? useState<AdversaryAction>() : useState<AdversaryAction>(editTarget as AdversaryAction)
+    const [newAction, setNewAction] = useState<Partial<AdversaryAction>>(editTarget ?? {})
 
-    const setNewAction = useCallback(async (action: any) => {
-        setNewActionInternal(action)
+    const updateAction = useCallback(async (patch: Partial<AdversaryAction>) => {
+        setNewAction(prev => ({ ...prev, ...patch }))
         return true
     }, [])
 
-    const updateName = useCallback(async (name: string | null) => {
-        return setNewAction({ ...newAction, name: name })
-    }, [setNewAction, newAction])
-
-    const updateEffect = useCallback(async (eff: string | null) => {
-        return setNewAction({ ...newAction, effect: eff })
-    }, [setNewAction, newAction])
-
-    const updateDamageRoll = useCallback(async (dice: Partial<DiceRollSchema>) => {
-        return setNewAction({
-            ...newAction, damage: {
-                ...newAction?.damage, dice: {
-                    ...newAction?.damage?.dice, ...dice
-                }
-            }
-        })
-    }, [setNewAction, newAction])
-
-    const updateDamageType = useCallback(async (type: string | null) => {
-        return setNewAction({ ...newAction, damage: { ...newAction?.damage, type: type } })
-    }, [setNewAction, newAction])
-
-    const updateRecharge = useCallback(async (rchg: string | null) => {
-        return setNewAction({ ...newAction, recharge: rchg })
-    }, [setNewAction, newAction])
+    const updateDamage = useCallback(async (patch: Partial<AdversaryAction["damage"]>) => {
+        setNewAction(prev => ({ ...prev, damage: { ...prev.damage, ...patch } as AdversaryAction["damage"] }))
+        return true
+    }, [])
 
     const [comboName, setComboName] = useState<string | null>(null)
     const [isCombo, setIsCombo] = useState(false)
-    const [comboSelections, setComboSelections] = useState<{ action: AdversaryAction, comboCount: number | null }[]>([])
+    const [comboSelections, setComboSelections] = useState<{ action: AdversaryAction, comboCount: number }[]>([])
 
-    const updateComboName = useCallback(async (name: string | null) => {
-        setComboName(name)
-        return true
-    }, [])
-
-    const updateComboSelections = (action: AdversaryAction) => {
-        if (comboSelections.length === 0 || comboSelections.findIndex(it => it.action.name === action.name) === -1) {
-            setComboSelections([...comboSelections, { action: action as AdversaryAction, comboCount: null }])
-        }
-        else {
-            setComboSelections(comboSelections.filter(it => it.action.name !== action.name))
-        }
+    const toggleComboSelection = (action: AdversaryAction) => {
+        setComboSelections(prev =>
+            prev.some(it => it.action.name === action.name)
+                ? prev.filter(it => it.action.name !== action.name)
+                : [...prev, { action, comboCount: 0 }]
+        )
     }
 
-    const udpateComboCount = async (action: AdversaryAction, count: number | null) => {
-        const comboAction = comboSelections.find(it => it.action.name === action.name)
-        if (comboAction) {
-            comboAction.comboCount = count
-        }
-        setComboSelections(comboSelections)
-        return true
+    const updateComboCount = (action: AdversaryAction, comboCount: number) => {
+        setComboSelections(prev => prev.map(it => it.action.name === action.name ? { ...it, comboCount } : it))
     }
 
     /**
@@ -238,16 +207,15 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
         <div className={subMenuLayout}>
             <div>
                 <p className="text-xl font-eskapade font-bold mb-1">{editTarget ? "Edit Action" : "New Action"}</p>
-                {
-                    editTarget == null && adv.actions.length > 0 ?
-                        <div className="flex space-x-2">
-                            <input
-                                type="checkbox"
-                                checked={isCombo}
-                                onChange={() => setIsCombo(!isCombo)}
-                            />
-                            <p>Action Combo</p>
-                        </div> : undefined
+                {editTarget == null && adv.actions.length > 0 &&
+                    <div className="flex space-x-2">
+                        <input
+                            type="checkbox"
+                            checked={isCombo}
+                            onChange={() => setIsCombo(!isCombo)}
+                        />
+                        <p>Action Combo</p>
+                    </div>
                 }
             </div>
 
@@ -255,23 +223,26 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                 isCombo ? <div className="space-y-1">
                     <div className="flex space-x-2">
                         <p>Combo Name:</p>
-                        <EditableTextField boundValue={comboName} onSave={updateComboName} placeholder='Enter name...' />
+                        <EditableTextField boundValue={comboName} onSave={async (name) => { setComboName(name); return true }} placeholder='Enter name...' />
                     </div>
                     {
-                        adv.actions.map((act) => (
-                            <div key={act.name} className="flex content-center space-x-1">
-                                <input
-                                    type="checkbox"
-                                    checked={comboSelections.findIndex(it => it.action.name === act.name) > -1}
-                                    onChange={() => updateComboSelections(act as AdversaryAction)}
-                                />
-                                <div>{act.name}: x</div>
-                                <NumericCounterInput
-                                    value={comboSelections.find(it => it.action.name === act.name)?.comboCount ?? 0}
-                                    onChange={(count) => udpateComboCount(act as AdversaryAction, count)}                                
-                                />
-                            </div>
-                        ))
+                        adv.actions.map((act) => {
+                            const selection = comboSelections.find(it => it.action.name === act.name)
+                            return (
+                                <div key={act.name} className="flex content-center space-x-1">
+                                    <input
+                                        type="checkbox"
+                                        checked={selection != null}
+                                        onChange={() => toggleComboSelection(act as AdversaryAction)}
+                                    />
+                                    <div>{act.name}: x</div>
+                                    <NumericCounterInput
+                                        value={selection?.comboCount ?? 0}
+                                        onChange={(count) => updateComboCount(act as AdversaryAction, count)}
+                                    />
+                                </div>
+                            )
+                        })
                     }
                 </div> :
                     <div className="space-y-2">
@@ -279,7 +250,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         <div className="flex items-end">
                             <p>Name:&nbsp;</p>
                             <div className={`font-eskapade font-bold hover-glow`}>
-                                <EditableTextField boundValue={newAction?.name ?? null} onSave={updateName} placeholder='Claws [Melee, Near]' />
+                                <EditableTextField boundValue={newAction?.name ?? null} onSave={(name) => updateAction({ name: name ?? '' })} placeholder='Claws [Melee, Near]' />
                             </div>
                         </div>
 
@@ -287,7 +258,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         <div className="flex items-end">
                             <p>Effect:&nbsp;</p>
                             <div className={`font-eskapade font-bold hover-glow`}>
-                                <EditableTextField boundValue={newAction?.effect ?? null} onSave={updateEffect} placeholder='Effect description...' />
+                                <RichTextField defaultValue={newAction?.effect ?? ''} onChange={(effect) => updateAction({ effect })} className="text-xs font-paradigm font-normal" />
                             </div>
                         </div>
 
@@ -295,9 +266,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         <div className="flex items-end">
                             <DiceRollInputComponent
                                 diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 4 }}
-                                onChange={(updated) => {
-                                    updateDamageRoll(updated)
-                                }}
+                                onChange={(dice) => updateDamage({ dice: { ...newAction?.damage?.dice, ...dice } as DiceRollSchema })}
                             />
                         </div>
 
@@ -309,7 +278,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                                     value={newAction?.damage?.type ?? ''}
                                     options={createDropdownEntries(vgLiteLang.DamageTypes)}
                                     updateMechanism={{
-                                        onChange: updateDamageType
+                                        onChange: (type) => updateDamage({ type: type ?? '' })
                                     }}
                                     parent={undefined}
                                 />
@@ -320,7 +289,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         <div className="flex items-end">
                             <p>Recharge:&nbsp;</p>
                             <div className={`font-eskapade font-bold hover-glow`}>
-                                <EditableTextField boundValue={newAction?.recharge ?? null} onSave={updateRecharge} placeholder="CdX" />
+                                <EditableTextField boundValue={newAction?.recharge ?? null} onSave={(recharge) => updateAction({ recharge: recharge ?? '' })} placeholder="CdX" />
                             </div>
                         </div>
                     </div>
@@ -358,11 +327,10 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
 
 const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex) => {
     if (isCombo) {
-        if (comboSelections.length > 0 && comboSelections.every(it => it.comboCount)) {
-            const comboActions: any[] = []
-            comboSelections.forEach(cs => {
-                comboActions.push({ ...adv.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount })
-            })
+        if (comboName && comboSelections.length > 0 && comboSelections.every(it => it.comboCount > 0)) {
+            const comboActions = comboSelections.map(cs => ({
+                ...adv.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount
+            }))
             updateDocumentAtPath(adv.parent, ['combo'], { name: comboName, actions: comboActions })
         }
         else {

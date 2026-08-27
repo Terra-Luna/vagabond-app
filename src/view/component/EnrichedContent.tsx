@@ -1,7 +1,11 @@
 import React, { useEffect,useRef, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser'
 
-export const EnrichedContent = ({ content, styleClasses = '' }) => {
+import { addCountdown, checkCountdownPermission } from '../../apps/vagabond-tools/usecase/VagabondSettingsHelper'
+
+const countdownFormulaPattern = /^cd(\d+)$/i
+
+export const EnrichedContent = ({ content, styleClasses = '', actor }: { content: any, styleClasses?: string, actor?: Actor | null }) => {
     const ref = useRef(null)
     const [enrichedText, setEnrichedText] = useState('')
 
@@ -19,6 +23,18 @@ export const EnrichedContent = ({ content, styleClasses = '' }) => {
         const inlineRoll = (e.target as HTMLElement).closest('a.inline-roll') as HTMLAnchorElement | null
         if (inlineRoll) {
             const { formula, roll, flavor } = inlineRoll.dataset
+            const speaker = ChatMessage.getSpeaker(actor ? { actor } : undefined)
+
+            const countdownMatch = formula?.match(countdownFormulaPattern)
+            if (countdownMatch) {
+                if (!checkCountdownPermission()) return
+                const speakerName = speaker.alias ?? ''
+                const label = flavor ? `${speakerName}: ${flavor}` : speakerName
+                const actorId: string | undefined = actor?.id ?? undefined
+                const tokenUuid: string | undefined = (actor?.isToken ? actor.token?.uuid : undefined) ?? undefined
+                await addCountdown(label, Number(countdownMatch[1]), undefined, undefined, actorId, tokenUuid)
+                return
+            }
 
             try {
                 let rollInstance
@@ -33,7 +49,7 @@ export const EnrichedContent = ({ content, styleClasses = '' }) => {
                     await rollInstance.evaluate()
                     await rollInstance.toMessage({
                         flavor: flavor || "Roll Result",
-                        speaker: ChatMessage.getSpeaker()
+                        speaker: speaker
                     })
                 }
             }

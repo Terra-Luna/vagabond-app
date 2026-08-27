@@ -34,7 +34,7 @@ export const Abilities = ({ adv, setIsAddMenuOpen, setEditTarget }) => {
                             <p className={`font-paradigm font-bold hover-glow`} onClick={() => onClickAction(adv, ability.name, ability.description, undefined, undefined)}>
                                 {ability.name}
                             </p>
-                            <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" />
+                            <EnrichedContent content={ability.description} styleClasses="text-xs font-paradigm font-normal" actor={adv.parent} />
                         </div>
                     </div>
                 ))

@@ -1,5 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import { ControlledMenu, MenuItem, SubMenu } from '@szhsin/react-menu'
-import { FunctionComponent, useState } from 'react'
+import { FunctionComponent, useCallback, useMemo, useRef, useState } from 'react'
 
 import { Divider } from './Header'
 
@@ -16,7 +17,7 @@ export interface CtxMenuItem {
     label: string
     action?: (e: any) => void
     isDestructive?: boolean
-    isSelected?: boolean
+    isSelected?: boolean | (() => boolean)
     subMenuItems?: CtxMenuItem[]
 }
 
@@ -34,40 +35,68 @@ export const useContextMenu = () => {
         setIsMenuOpen(true)
     }
 
-    const ContextMenu = () => {
-        return (
-            <div
-                onMouseEnter={e => e.stopPropagation()}
-                onMouseOver={e => e.stopPropagation()}>
-                <ControlledMenu
-                    menuClassName={ctxMenuContainerStyle}
-                    anchorPoint={menuAnchorPoint}
-                    state={isMenuOpen ? 'open' : 'closed'}
-                    direction="right"
-                    onClose={() => setIsMenuOpen(false)}
-                >
-                    {
-                        menuItems.map((item, index) =>
-                            <OneMenuItem key={index} item={item} length={menuItems.length} />
-                        )
-                    }
-                </ControlledMenu>
-            </div>
-        )
-    }
+    const keepOpenRef = useRef(false)
+
+    const onClose = useCallback((closeEvent?: { reason?: string }) => {
+        if (closeEvent?.reason === 'blur' && keepOpenRef.current) {
+            keepOpenRef.current = false
+            return
+        }
+        setIsMenuOpen(false)
+    }, [])
+
+    const onItemAction = useCallback((e: any) => {
+        if (e?.keepOpen) keepOpenRef.current = true
+    }, [])
+
+    const ContextMenu = useMemo(() => () => (
+        <ContextMenuHost
+            isMenuOpen={isMenuOpen}
+            menuAnchorPoint={menuAnchorPoint}
+            menuItems={menuItems}
+            onClose={onClose}
+            onItemAction={onItemAction}
+        />
+    ), [isMenuOpen, menuAnchorPoint, menuItems, onClose, onItemAction])
 
     return { onCtxMenu, ContextMenu }
 }
 
-const OneMenuItem = ({ item, length }: { item: CtxMenuItem, length: number | undefined }) => {
+const ContextMenuHost = ({ isMenuOpen, menuAnchorPoint, menuItems, onClose, onItemAction }: {
+    isMenuOpen: boolean, menuAnchorPoint: { x: number, y: number }, menuItems: CtxMenuItem[], onClose: (closeEvent?: { reason?: string }) => void, onItemAction: (e: any) => void
+}) => {
+    return (
+        <div
+            onMouseEnter={e => e.stopPropagation()}
+            onMouseOver={e => e.stopPropagation()}>
+            <ControlledMenu
+                menuClassName={ctxMenuContainerStyle}
+                anchorPoint={menuAnchorPoint}
+                state={isMenuOpen ? 'open' : 'closed'}
+                direction="right"
+                onClose={onClose}
+            >
+                {
+                    menuItems.map((item, index) =>
+                        <OneMenuItem key={index} item={item} length={menuItems.length} onItemAction={onItemAction} />
+                    )
+                }
+            </ControlledMenu>
+        </div>
+    )
+}
+
+const OneMenuItem = ({ item, length, onItemAction }: { item: CtxMenuItem, length: number | undefined, onItemAction: (e: any) => void }) => {
     if (item.subMenuItems) {
         return (
             <SubMenu label={<LabelAndIcon item={item} isSubMenu />} className={ctxMenuTextStyle} menuClassName={ctxSubMenuContainerStyle}>
-                {item.subMenuItems.map(subItem => <OneMenuItem item={subItem} length={item.subMenuItems?.length} />)}
+                {item.subMenuItems.map((subItem, index) => <OneMenuItem key={index} item={subItem} length={item.subMenuItems?.length} onItemAction={onItemAction} />)}
             </SubMenu>)
     }
 
-    return <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : item?.isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} onClick={item.action}>
+    const isSelected = typeof item.isSelected === 'function' ? item.isSelected() : item.isSelected
+
+    return <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} onClick={(e) => { item.action?.(e); onItemAction(e) }}>
         {item.isDestructive && (length ?? 0) > 1 && <Divider />}
         <LabelAndIcon item={item} />
     </MenuItem>
@@ -77,7 +106,8 @@ const LabelAndIcon = ({ item, isSubMenu }: { item: CtxMenuItem, isSubMenu?: bool
     <div className="flex items-center text-sm px-1">
         {formattedIcon(item.icon, item.isDestructive)}
         <p className="my-1">{`${item.label}${isSubMenu ? '...' : ''}`}</p>
-    </div>)
+    </div>
+)
 
 const formattedIcon = (IconComponent: FunctionComponent<{ size, className }> | undefined, isDestructive) => {
     if (!IconComponent) return undefined

@@ -93,6 +93,8 @@ export interface CountdownSchema {
     x: number
     y: number
     label?: string
+    actorId?: string
+    tokenUuid?: string
     result: CountdownResult
 }
 export const getCountdowns = (): CountdownSchema[] => {
@@ -106,6 +108,16 @@ export const checkCountdownPermission = (): boolean => {
 }
 export const deleteAllCountdowns = async () => {
     await updateSetting("countdowns", [])
+}
+export const addCountdown = async (label: string, duration: number, x = 0.1, y = 0.2, actorId?: string, tokenUuid?: string) => {
+    const newCountdown: CountdownSchema = {
+        id: foundry.utils.randomID(),
+        x: x, y: y,
+        actorId: actorId,
+        tokenUuid: tokenUuid,
+        result: { name: label, duration: duration }
+    }
+    await setCountdowns([...getCountdowns(), newCountdown])
 }
 
 export const getManaEnforcement = (): boolean => {

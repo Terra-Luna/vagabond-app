@@ -6,7 +6,7 @@ import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 import { TrashButton } from "../../view/component/TrashButton"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { deleteAllCountdowns, deleteAllProgressClocks,getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setCountdowns, setItemShopToggle, setProgressClocks } from "./usecase/VagabondSettingsHelper"
+import { addCountdown, deleteAllCountdowns, deleteAllProgressClocks, getItemShopToggle, getProgressClocks, ProgressClockSchema, setItemShopToggle, setProgressClocks } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())
@@ -24,15 +24,7 @@ export const VagabondToolsAppView = () => {
 
     const createNewCountdown = useCallback(async (label: string, duration: number) => {
         const { x, y } = spawnPoint()
-        const existingCds = getCountdowns()
-
-        const newCountdown = {
-            id: foundry.utils.randomID(),
-            x: x, y: y,
-            result: { name: label, duration: duration }
-        }
-
-        setCountdowns([...existingCds, newCountdown])
+        await addCountdown(label, duration, x, y)
     }, [])
 
     const createNewProgressClock = useCallback(async (clockName = "Clock", duration = 4) => {

@@ -254,35 +254,60 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             const StatusMenuItemIcon = () => <StatusIcon status={statusKey} size={24} className="mr-1 bg-sheet-header-fill" />
             const allCombatants = new Set(getControlledCombatants())
             allCombatants.add(combatant)
-            const hasStatus = allCombatantsHaveStatus([...allCombatants], statusKey)
-            const action = () => {
+            const getHasStatus = () => allCombatantsHaveStatus([...allCombatants], statusKey)
+            const action = (e) => {
+                e.keepOpen = true
+                const hasStatus = getHasStatus()
                 allCombatants.forEach(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !hasStatus }))
             }
-            return { label: lang.VGLITE.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: hasStatus } as CtxMenuItem
+            return { label: lang.VGLITE.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: getHasStatus } as CtxMenuItem
         }
 
         const makeBurnMenuItem = () => {
             const StatusMenuItemIcon = () => <StatusIcon status="burning" size={24} className="mr-1 bg-sheet-header-fill" />
             return {
-                label: lang.VGLITE.StatusConditions["burning"].name, icon: StatusMenuItemIcon, subMenuItems: Object.keys(lang.VGLITE.DamageTypes).filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType))).map(damageType => {
-                    return {
-                        label: lang.VGLITE.DamageTypes[damageType], subMenuItems: [
-                            { label: "cd4" },
-                            { label: "cd6" },
-                            { label: "cd8" },
-                            { label: "cd10" },
-                            { label: "cd12" },
-                            { label: "cd20" },
+                label: lang.VGLITE.StatusConditions["burning"].name,
+                icon: StatusMenuItemIcon,
+                subMenuItems: Object.keys(lang.VGLITE.DamageTypes)
+                    .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
+                    .map(damageType => ({
+                        label: lang.VGLITE.DamageTypes[damageType],
+                        subMenuItems: [
+                            { label: "Cd4" },
+                            { label: "Cd6" },
+                            { label: "Cd8" },
+                            { label: "Cd10" },
+                            { label: "Cd12" },
+                            { label: "Cd20" }
                         ]
-                    }
-                })
+                    }))
             } as CtxMenuItem
         }
 
         const actions = [
-            { label: controlledTokens().size > 1 ? "Toggle Visibility of Selected Tokens" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide", action: updateVisibility, icon: Eye },
-            { label: controlledTokens().size > 1 ? "Apply Effect to Selected Tokens" : "Apply Effect", subMenuItems: [makeBurnMenuItem(), ...Object.keys(lang.VGLITE.StatusConditions).filter(statusKey => statusKey !== "burning").map(statusKey => makeStatusConditionMenuItem(statusKey))] },
-            { label: "Remove", action: () => getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id]), icon: Trash, isDestructive: true },
+            {
+                label: controlledTokens().size > 1 ? "Toggle Visibility of Selected Tokens" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
+                action: updateVisibility,
+                icon: Eye
+            },
+            {
+                label: controlledTokens().size > 1 ? "Apply Effect to Selected Tokens" : "Apply Effect",
+                subMenuItems: [
+                    makeBurnMenuItem(),
+                    ...Object.keys(lang.VGLITE.StatusConditions)
+                        .filter(statusKey => statusKey !== "burning")
+                        .map(statusKey => makeStatusConditionMenuItem(statusKey))
+                ]
+            },
+            {
+                label: "Remove",
+                action: (e) => {
+                    e.keepOpen = true
+                    getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id])
+                },
+                icon: Trash,
+                isDestructive: true
+            },
         ] as CtxMenuItem[]
 
         return actions

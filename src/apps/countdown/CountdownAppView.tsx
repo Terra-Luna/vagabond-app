@@ -1,4 +1,4 @@
-import { Minus, Plus, Trash } from "lucide-react"
+import { Minus, Plus, Trash, User } from "lucide-react"
 import { useCallback, useState } from "react"
 
 import { CountdownRoll } from "../../combat/engine/roll/CountdownRoll"
@@ -96,6 +96,19 @@ export const CountdownAppView = () => {
         await setCountdowns(cds.filter(cd => cd.id !== cdId))
     }, [cds])
 
+    const openLinkedActorSheet = useCallback(async (actorId?: string, tokenUuid?: string) => {
+        if (tokenUuid) {
+            const token = await fromUuid(tokenUuid) as TokenDocument | null
+            if (token?.actor) {
+                (token.actor.sheet as any)?.render(true)
+                return
+            }
+        }
+        if (actorId) {
+            (game.actors?.get(actorId)?.sheet as any)?.render(true)
+        }
+    }, [])
+
     return (<>
         <CanvasOverlayObjectWrapper objects={cds} onMouseDown={handleMouseDown}>
             {(countdown: CountdownSchema) => (
@@ -106,6 +119,7 @@ export const CountdownAppView = () => {
                         onCtxMenu(e, [
                             { label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) },
                             { label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) },
+                            ...(countdown.actorId ? [{ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.actorId, countdown.tokenUuid) }] : []),
                             { label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true }
                         ])
                     }}
