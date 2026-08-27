@@ -70,40 +70,13 @@ export const ActiveEffectsView = ({ initialDocument }: { initialDocument: Actor 
     const getActiveEffects = (document: Actor | Item): Effect[] => {
         return document.effects.map((effect: any) => {
             const statusId = effect.statuses?.first() || effect.id || ""
-            let duration: number = 4
-            let sourceName: string = "Environment"
-
-            if (statusId === 'burning') {
-                const stackChange = effect.changes.find((c: any) => c.key === "system.statuses.stacks.burning")
-                if (stackChange?.value) {
-                    try {
-                        const parsed = JSON.parse(stackChange.value)
-                        duration = parsed.duration || 4
-
-                        // Look up the actor document live using the sourceUuid stored in the schema
-                        if (parsed.sourceUuid) {
-                            const sourceActor = fromUuidSync(parsed.sourceUuid) as any
-                            if (sourceActor) {
-                                // If the source is an Item, get its parent Actor name, otherwise get the Actor's name
-                                sourceName = sourceActor.actor?.name || sourceActor.name || "Unknown"
-                            }
-                        }
-                    }
-                    catch {
-                        duration = 4
-                    }
-                }
-            }
-
             return {
                 id: effect.id,
                 statusId: statusId,
                 name: effect.name,
                 img: effect.img,
                 disabled: effect.disabled,
-                isTransfer: effect.transfer,
-                duration: duration,
-                sourceName: sourceName
+                isTransfer: effect.transfer
             }
         })
     }

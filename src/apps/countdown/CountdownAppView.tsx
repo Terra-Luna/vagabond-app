@@ -119,7 +119,7 @@ export const CountdownAppView = () => {
                         onCtxMenu(e, [
                             { label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) },
                             { label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) },
-                            ...(countdown.actorId ? [{ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.actorId, countdown.tokenUuid) }] : []),
+                            ...(countdown.result.actorId ? [{ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.result.actorId, countdown.result.tokenUuid) }] : []),
                             { label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true }
                         ])
                     }}

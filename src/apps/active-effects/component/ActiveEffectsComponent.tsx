@@ -9,7 +9,7 @@ export interface Effect {
     img: string
     disabled: boolean
     isTransfer: boolean // is from equipped gear
-    duration?: number // this is specifically for burning (Cd4, etc...)
+    duration?: number // (Cd4, etc...)
     sourceName?: string
 }
 

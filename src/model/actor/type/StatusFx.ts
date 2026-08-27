@@ -10,11 +10,13 @@ export const statusFxSchema = () => {
         toggles: new fields.SchemaField({
             berserk: new fields.BooleanField({ initial: false }),
             blinded: new fields.BooleanField({ initial: false }),
+            burning: new fields.BooleanField({ initial: false }),
             charmed: new fields.BooleanField({ initial: false }),
             confused: new fields.BooleanField({ initial: false }),
             dazed: new fields.BooleanField({ initial: false }),
             dead: new fields.BooleanField({ initial: false }),
             frightened: new fields.BooleanField({ initial: false }),
+            grappling: new fields.BooleanField({ initial: false }),
             incapacitated: new fields.BooleanField({ initial: false }),
             invisible: new fields.BooleanField({ initial: false }),
             paralyzed: new fields.BooleanField({ initial: false }),
@@ -28,21 +30,9 @@ export const statusFxSchema = () => {
             // Special toggles that represet Hero effects...
             marked: new fields.BooleanField({ initial: false }),
             warded: new fields.BooleanField({ initial: false }),
-            blessed: new fields.BooleanField({ initial: false })
-        }),
-
-        /**
-         * Put statcking effects here. Burn can stack by unique damage type.
-         */
-        stacks: new fields.SchemaField({
-            burning: new fields.ArrayField(
-                new fields.SchemaField({
-                    effectId: new fields.StringField({ required: true }),
-                    duration: new fields.StringField({ initial: 4 }),
-                    sourceUuid: new fields.StringField()
-                }),
-                { initial: [] }
-            )
+            blessed: new fields.BooleanField({ initial: false }),
+            exalted: new fields.BooleanField({ initial: false }),
+            hexed: new fields.BooleanField({ initial: false })
         }),
 
         /**

@@ -1,6 +1,7 @@
 import { Eye, PlayIcon, Sparkles, StopCircle, Trash } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
+import { addCountdown } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
@@ -266,6 +267,26 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
 
         const makeBurnMenuItem = () => {
             const StatusMenuItemIcon = () => <StatusIcon status="burning" size={24} className="mr-1 bg-sheet-header-fill" />
+            const allCombatants = new Set(getControlledCombatants())
+            allCombatants.add(combatant)
+            const getHasStatus = () => allCombatantsHaveStatus([...allCombatants], 'burning')
+
+            const applyBurn = (damageType: string, duration: number) => {
+                const hasStatus = getHasStatus()
+                allCombatants.forEach(combatant => {
+                    combatant.actor?.toggleStatusEffect('burning', { active: !hasStatus })
+                    if (!hasStatus) {
+                        addCountdown(
+                            `${combatant.actor?.name}: ${vgLiteLang.StatusConditions["burning"].name} (${vgLiteLang.DamageTypes[damageType]})`,
+                            duration, 0.1, 0.2,
+                            combatant.actor?.id ?? '',
+                            combatant.token?.uuid,
+                            { id: "burning", damageType }
+                        )
+                    }
+                })
+            }
+
             return {
                 label: vgLiteLang.StatusConditions["burning"].name,
                 icon: StatusMenuItemIcon,
@@ -274,12 +295,12 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                     .map(damageType => ({
                         label: vgLiteLang.DamageTypes[damageType],
                         subMenuItems: [
-                            { label: "Cd4" },
-                            { label: "Cd6" },
-                            { label: "Cd8" },
-                            { label: "Cd10" },
-                            { label: "Cd12" },
-                            { label: "Cd20" }
+                            { label: "Cd4", action: () => applyBurn(damageType, 4) },
+                            { label: "Cd6", action: () => applyBurn(damageType, 6) },
+                            { label: "Cd8", action: () => applyBurn(damageType, 8) },
+                            { label: "Cd10", action: () => applyBurn(damageType, 10) },
+                            { label: "Cd12", action: () => applyBurn(damageType, 12) },
+                            { label: "Cd20", action: () => applyBurn(damageType, 20) }
                         ]
                     }))
             } as CtxMenuItem
@@ -288,7 +309,9 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
         const actions = [
             {
                 icon: Sparkles,
-                label: controlledTokens().size > 1 ? `${vgLiteLang.Combat.applyEff} ${vgLiteLang.Combat.allSelected}` : vgLiteLang.Combat.applyEff,
+                label: controlledTokens().size > 1
+                    ? `${vgLiteLang.Combat.applyEff} ${vgLiteLang.Combat.allSelected}`
+                    : vgLiteLang.Combat.applyEff,
                 subMenuItems: [
                     makeBurnMenuItem(),
                     ...Object.keys(vgLiteLang.StatusConditions)

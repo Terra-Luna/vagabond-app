@@ -357,13 +357,6 @@ Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any)
     }
 })
 
-Hooks.on("preCreateActiveEffect", (effect: any, data: any, options: any, userId: string) => {
-    if (userId !== game.userId) return
-    const actor = options.parent || effect.parent
-    if (!actor) return
-    VagabondActiveEffect.handleBurnStackApplication(actor, data, effect)
-})
-
 const vagabondChatRoots = new Map<string, any>()
 
 Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
