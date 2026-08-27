@@ -265,7 +265,7 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
             </StatBlockRow>
 
             {/* SENSES, IMMUNITIES, & WEAKNESSES */}
-            <div className="w-full space-y-2 text-base text-text-header-tertiary font-bold">
+            <div className="w-full space-y-2 text-base text-text-header-tertiary font-normal">
                 <SelectableTextOptions obj={adv.parent} label={locale.senses} path={['senses']} localeObj={vgLiteLang.Senses} />
                 <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={vgLiteLang.DamageTypes} />
                 <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={vgLiteLang.DamageTypes} />
@@ -294,7 +294,7 @@ const StatBlockField = ({ label, content }) => {
 
 const StatBlockLabel = ({ text }) => {
     return (
-        <div className={`text-base text-text-header-tertiary font-paradigm font-bold`}>{text}:</div>
+        <div className={`text-base text-text-header-tertiary font-paradigm font-normal`}>{text}:</div>
     )
 }
 

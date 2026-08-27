@@ -20,7 +20,7 @@ import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../com
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../component/Dropdown"
-import { EditableTextField } from "../../../../component/EditableTextField"
+import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
@@ -206,7 +206,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
 
     const [comboName, setComboName] = useState<string | null>(null)
     const [isCombo, setIsCombo] = useState(false)
-    const [comboSelections, setComboSelections] = useState<{ action: AdversaryAction, comboCount: string | null }[]>([])
+    const [comboSelections, setComboSelections] = useState<{ action: AdversaryAction, comboCount: number | null }[]>([])
 
     const updateComboName = useCallback(async (name: string | null) => {
         setComboName(name)
@@ -222,7 +222,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
         }
     }
 
-    const udpateComboCount = async (action: AdversaryAction, count: string | null) => {
+    const udpateComboCount = async (action: AdversaryAction, count: number | null) => {
         const comboAction = comboSelections.find(it => it.action.name === action.name)
         if (comboAction) {
             comboAction.comboCount = count
@@ -266,10 +266,9 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                                     onChange={() => updateComboSelections(act as AdversaryAction)}
                                 />
                                 <div>{act.name}: x</div>
-                                <EditableTextField
-                                    boundValue={comboSelections.find(it => it.action.name === act.name)?.comboCount ?? null}
-                                    onSave={(count) => udpateComboCount(act as AdversaryAction, count)}
-                                    placeholder="#"
+                                <NumericCounterInput
+                                    value={comboSelections.find(it => it.action.name === act.name)?.comboCount ?? 0}
+                                    onChange={(count) => udpateComboCount(act as AdversaryAction, count)}                                
                                 />
                             </div>
                         ))
