@@ -7,7 +7,7 @@ import { getDocumentAtPath, updateDocument } from "../../../../../utils/document
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
-import { EditableNameField, EditableTextField } from "../../../../component/EditableTextField"
+import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
 import { DamageTypeIconDisplay,OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { CardSubHeader } from "../../../../component/SkillCard"
@@ -166,12 +166,15 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                             <Heart size={18} className="text-text-hp-current fill-text-hp-current -mr-1" />
                         </button>
                         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-                            <EditableTextField
-                                boundValue={adv.health.current?.toString() ?? '1'}
-                                updateProps={{ object: adv.parent, path: ['health', 'current'] }}
-                                hideBorderOnEditMode={true}
-                                placeholder="4"
-                            />
+                            <div className="flex gap-x-0.5">
+                                <EditableTextField
+                                    boundValue={adv.health.current?.toString() ?? '1'}
+                                    updateProps={{ object: adv.parent, path: ['health', 'current'] }}
+                                    hideBorderOnEditMode={true}
+                                    placeholder="4"
+                                />
+                                <p>/{adv.health.max?.toString() ?? '4'}</p>
+                            </div>
                         </EditModeContextProvider>
                     </StatBlockRow>
                 } />
@@ -241,10 +244,11 @@ const StatBlock = ({ adv }: { adv: AdversaryDataModel }) => {
                 {/* MORALE */}
                 <div onClick={() => inlineRoll(adv.morale?.toString() ?? '12', locale.morale + " Check")} className="hover-glow cursor-pointer" title="Click to roll morale check">
                     <StatBlockField label={locale.morale} content={
-                        <EditableTextField
-                            boundValue={adv.morale?.toString() ?? '6'}
-                            updateProps={{ object: adv.parent, path: ['morale'] }}
-                            placeholder="6"
+                        <NumericCounterInput
+                            value={adv.morale ?? 6}
+                            onChange={(value: string) => {
+                                adv.parent.update({ 'system.morale': Number(value) })
+                            }}
                         />
                     } />
                 </div>

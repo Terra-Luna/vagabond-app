@@ -47,14 +47,16 @@ export class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
     }
 
     override async _preCreate(data: any, options: any, user: any) {
-        await super._preCreate(data, options, user)
+        const allowed = await super._preCreate(data, options, user)
+        if (allowed === false) return false
+        if (options.pack) return
+
         this.parent.updateSource({
-            'img': 'systems/vagabond-lite/assets/icons/default_adversary.svg',
+            'img': 'systems/vagabond-lite/assets/icons/ic_adversary.webp',
             'prototypeToken.name': data.name,
             'prototypeToken.sight.enabled': true,
             'prototypeToken.sight.range': 500,
-            'prototypeToken.occludable.radius': 8,
-            'system.health.current': 4
+            'prototypeToken.occludable.radius': 8
         })
     }
 
@@ -117,4 +119,46 @@ export const setThreatLevel = (adv: AdversaryDataModel): number => {
     c = c / 6
 
     return Number(((a + b) / 4 + (c ?? 0)).toFixed(2))
+}
+
+/**
+ * Foundry's default behaviour when dragging an Actor from the Compendium to the canvas
+ * is to import them into the world's DB. This function will intercept subsequent drag/
+ * drop events and prevent duplicated world Actor entries from being created in the Actors
+ * sidebar.
+ * @param data 
+ * @param canvas 
+ * @returns 
+ */
+export const enforceSingletonPlaceholder = async (data: Record<string, any>, canvas: Canvas): Promise<void> => {
+    const compendiumActor = await fromUuid(data.uuid) as any
+    if (!compendiumActor || compendiumActor.type !== "adversary") return
+
+    let worldActor = game.actors?.find(a =>
+        (a.type as string) === "adversary" &&
+        (a.flags?.core as any)?.sourceId === compendiumActor.uuid
+    )
+
+    if (!worldActor) {
+        const actorData = game.actors?.fromCompendium(compendiumActor) as Record<string, any>
+        if (actorData) {
+            actorData.flags = actorData.flags || {}
+            actorData.flags.core = actorData.flags.core || {}
+            actorData.flags.core.sourceId = compendiumActor.uuid
+            worldActor = await Actor.create(actorData as any) as any
+        }
+    }
+
+    // TODO: maybe figure out how to make this snap-to-grid.
+    if (worldActor && canvas.scene) {
+        const gridSize = canvas.grid?.size ?? 100
+        const x = data.x - (gridSize / 2)
+        const y = data.y - (gridSize / 2)
+
+        const tokenDocument = await worldActor.getTokenDocument({ x, y })
+        const tokenCreationPayload = tokenDocument.toObject()
+        tokenCreationPayload.actorLink = false
+
+        await canvas.scene.createEmbeddedDocuments("Token", [tokenCreationPayload])
+    }
 }

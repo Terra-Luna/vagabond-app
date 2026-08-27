@@ -8,7 +8,7 @@ import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
 import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
 import { Attack } from "./combat/engine/Attack"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
-import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
+import { AdversaryDataModel, enforceSingletonPlaceholder } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
 import { NpcDataModel } from "./model/actor/NpcDataModel"
 import { isInventoryItem } from "./model/actor/type/Inventory"
@@ -431,6 +431,27 @@ Hooks.on("deleteChatMessage", (message: any) => {
         try { vagabondChatRoots.get(message.id).unmount(); } catch (e) { /* no-op */ }
         vagabondChatRoots.delete(message.id);
     }
+});
+
+Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean | void => {
+    if (data.type !== "Actor" || !data.uuid || !data.uuid.startsWith("Compendium.")) return true
+
+    /**
+     * The following will prevent duplicate Adversary Actors from being
+     * created in the world database when dragging them from a compendium
+     * to the canvas (default Foundry behavior).
+     */
+    const parts = data.uuid.split(".")
+    const packId = `${parts[1]}.${parts[2]}`
+    const actorId = parts[4]
+
+    const pack = game.packs?.get(packId)
+    const indexEntry = pack?.index?.get(actorId) as any
+
+    if (!indexEntry || indexEntry.type !== "adversary") return true
+
+    enforceSingletonPlaceholder(data, canvas)
+    return false
 });
 
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, {
