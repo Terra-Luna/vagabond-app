@@ -52,7 +52,6 @@ export class AdversaryDataModel extends ActorDataModel<AdversarySchema> {
         if (options.pack) return
 
         this.parent.updateSource({
-            'img': 'systems/vagabond-lite/assets/icons/ic_adversary.webp',
             'prototypeToken.name': data.name,
             'prototypeToken.sight.enabled': true,
             'prototypeToken.sight.range': 500,

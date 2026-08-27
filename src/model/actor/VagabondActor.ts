@@ -1,4 +1,13 @@
+const defaultArtworkByType: Partial<Record<Actor.SubType, string>> = {
+    adversary: 'systems/vagabond-lite/assets/icons/ic_adversary.webp'
+}
+
 export class VagabondActor<SubType extends Actor.SubType = Actor.SubType> extends Actor<SubType> {
+
+    static override getDefaultArtwork(actorData: any): { img: string, texture: { src: string } } {
+        const img = defaultArtworkByType[actorData.type as Actor.SubType] ?? (super.getDefaultArtwork(actorData) as any).img
+        return { img, texture: { src: img } }
+    }
 
     override prepareEmbeddedDocuments(): void {
         super.prepareEmbeddedDocuments()
