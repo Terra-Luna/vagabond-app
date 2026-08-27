@@ -5,7 +5,7 @@ import { DestructiveButton, PrimaryButton } from "./Button"
 
 export const Widget = ({ children, label, onSave, onCancel }: { children: ReactNode, label?: string, onSave?: () => void, onCancel?: () => void }) => {
     return (
-        <div className="border border-solid border-table-border bg-sheet-main-fill p-2 space-y-4">
+        <div className="border border-solid border-table-border bg-sheet-main-fill p-2 space-y-4 z-50">
             <div className="flex gap-x-2 items-center">
                 {children}
             </div>

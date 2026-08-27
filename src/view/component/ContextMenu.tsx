@@ -6,11 +6,11 @@ import { Divider } from './Header'
 
 export const ctxMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99 pointer-events-auto"
 export const ctxSubMenuContainerStyle = "bg-context-menu-fill text-context-menu-text border-2 border-solid border-table-border z-99 pointer-events-auto relative left-[2px]"
-const baseCtxMenuTextStyle = "font-eskapade font-bold z-99"
+const baseCtxMenuTextStyle = "font-eskapade font-normal z-99"
 const normalHover = "hover:bg-context-menu-hover"
 export const ctxMenuTextStyle = `${baseCtxMenuTextStyle} ${normalHover} text-base`
 export const ctxMenuDestructiveTextStyle = `${baseCtxMenuTextStyle} ${normalHover} text-destructive-action text-lg z-99`
-export const ctxMenuSelectedTextStyle = `${baseCtxMenuTextStyle} bg-context-menu-hover/60`
+export const ctxMenuSelectedTextStyle = `${baseCtxMenuTextStyle} bg-sheet-header-fill text-text-header-secondary`
 
 export interface CtxMenuItem {
     icon?: FunctionComponent<{ size, className }>

@@ -1,10 +1,11 @@
-import { Eye, PlayIcon, StopCircle, Trash } from "lucide-react"
+import { Eye, PlayIcon, Sparkles, StopCircle, Trash } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
-import { lang } from "../../utils/lang"
+import { vgLiteLang } from "../../utils/lang"
+import { localizeString } from "../../utils/localeUtils"
 import { getCanvasToken } from "../../utils/modelUtil"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
 import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
@@ -95,13 +96,13 @@ export const CombatTracker = ({ combat }) => {
                 <div className="flex flex-col gap-1 overflow-auto" ref={containerRef} onScroll={handleScroll}>
                     {heroes?.length > 0 &&
                         <Group groupName="heroes">
-                            <GroupHeader groupName="heroes" label={lang.VGLITE.Combat.heroes} />
+                            <GroupHeader groupName="heroes" label={vgLiteLang.Combat.heroes} />
                             <GroupBody>{heroes?.map((hero) => <Hero key={hero.id} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
                     {adversaries?.length > 0 &&
                         <Group groupName="adversaries">
-                            <GroupHeader groupName="adversaries" label={lang.VGLITE.Combat.adversaries} />
+                            <GroupHeader groupName="adversaries" label={vgLiteLang.Combat.adversaries} />
                             <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
@@ -185,7 +186,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} />
                 <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
-                        <p className={`hover-glow ${hovered ? "vglite-hovered" : ""} leading-none -mb-0.5`}>{name}</p>
+                        <p className={`hover-glow ${hovered ? "vglite-hovered" : ""} leading-none`}>{name}</p>
                     </div>
                     {children}
                 </div>
@@ -260,18 +261,18 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                 const hasStatus = getHasStatus()
                 allCombatants.forEach(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !hasStatus }))
             }
-            return { label: lang.VGLITE.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: getHasStatus } as CtxMenuItem
+            return { label: vgLiteLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: getHasStatus } as CtxMenuItem
         }
 
         const makeBurnMenuItem = () => {
             const StatusMenuItemIcon = () => <StatusIcon status="burning" size={24} className="mr-1 bg-sheet-header-fill" />
             return {
-                label: lang.VGLITE.StatusConditions["burning"].name,
+                label: vgLiteLang.StatusConditions["burning"].name,
                 icon: StatusMenuItemIcon,
-                subMenuItems: Object.keys(lang.VGLITE.DamageTypes)
+                subMenuItems: Object.keys(vgLiteLang.DamageTypes)
                     .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
                     .map(damageType => ({
-                        label: lang.VGLITE.DamageTypes[damageType],
+                        label: vgLiteLang.DamageTypes[damageType],
                         subMenuItems: [
                             { label: "Cd4" },
                             { label: "Cd6" },
@@ -286,26 +287,27 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
 
         const actions = [
             {
-                label: controlledTokens().size > 1 ? "Toggle Visibility of Selected Tokens" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
-                action: updateVisibility,
-                icon: Eye
-            },
-            {
-                label: controlledTokens().size > 1 ? "Apply Effect to Selected Tokens" : "Apply Effect",
+                icon: Sparkles,
+                label: controlledTokens().size > 1 ? `${vgLiteLang.Combat.applyEff} ${vgLiteLang.Combat.allSelected}` : vgLiteLang.Combat.applyEff,
                 subMenuItems: [
                     makeBurnMenuItem(),
-                    ...Object.keys(lang.VGLITE.StatusConditions)
+                    ...Object.keys(vgLiteLang.StatusConditions)
                         .filter(statusKey => statusKey !== "burning")
                         .map(statusKey => makeStatusConditionMenuItem(statusKey))
                 ]
             },
             {
+                icon: Eye,
+                label: controlledTokens().size > 1 ? "Toggle Visibility (All selected)" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
+                action: updateVisibility,
+            },
+            {
+                icon: Trash,
                 label: "Remove",
                 action: (e) => {
                     e.keepOpen = true
                     getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id])
                 },
-                icon: Trash,
                 isDestructive: true
             },
         ] as CtxMenuItem[]
@@ -322,7 +324,7 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                 onClick={onClick as any}
                 onDoubleClick={onDoubleClick}
                 onContextMenu={e => onCtxMenu(e, ctxMenuActions())}
-                title={lang.VGLITE.Combat.keyExplainer}
+                title={vgLiteLang.Combat.keyExplainer}
             >
                 <div className="w-full">
                     {children}
@@ -350,14 +352,14 @@ const getStatusIcons = (combatant) => {
     const statuses = getCombatantStatuses(combatant)
     return statuses.map((status) => {
         const img = CONFIG.statusEffects.find(e => e.id === status)?.img
-        const title = lang.VGLITE.StatusConditions[status].name
+        const title = vgLiteLang.StatusConditions[status].name
         return img ? <img key={status} src={img} height={12} width={12} title={title} /> : <></>
     })
 }
 
 const StatusIcon = ({ status, size, className }: { status: string, size?: number, className?: string }) => {
     const img = CONFIG.statusEffects.find(e => e.id === status)?.img
-    const title = lang.VGLITE.StatusConditions[status].name
+    const title = vgLiteLang.StatusConditions[status].name
     return img ? <img key={status} src={img} height={size ?? 12} width={size ?? 12} title={title} className={className} /> : <></>
 }
 
@@ -376,12 +378,14 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     return (
         <Combatant token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={hero.name} token={token} combatant={hero}>
-                <div className="w-full">
-                    <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
-                    <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck" size="sm" />
-                    {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana" size="sm" />}
+                <div className="w-full" title={heroActorModel.mana.max > 0
+                    ? localizeString(vgLiteLang.Combat.statTooltip, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString(), mana: heroActorModel.mana.current?.toString(), manaMax: heroActorModel.mana.max?.toString() })
+                    : localizeString(vgLiteLang.Combat.statTooltipNoMana, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString() })}>
+                    <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
+                    <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck/75" size="sm" rounded={false} />
+                    {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
                 </div>
-                <div className="mt-1">
+                <div>
                     <StatusIcons combatant={hero} />
                 </div>
             </CombatantHeader>
@@ -411,9 +415,10 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
     }, [combatant])
 
     if (isCurrentCombatant) {
-        component = <IconOnlyButton title="Finish Turn (localify me)" Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
-    } else if (hasActivationsLeft) {
-        component = <IconOnlyButton title="Activate Combatant (localify me)" Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
+        component = <IconOnlyButton title={vgLiteLang.Combat.end} Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
+    }
+    else if (hasActivationsLeft) {
+        component = <IconOnlyButton title={vgLiteLang.Combat.activate} Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
     }
 
     return component
@@ -426,10 +431,10 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     return (
         <Combatant token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token}>
-                <div className="w-full">
-                    <Gauge max={adversaryModel.health.max} value={adversaryModel.health.current} fillColorClassName="bg-ic-hp" size="sm" />
+                <div className="w-full" title={localizeString(vgLiteLang.Combat.hpTooltip, { hp: adversaryModel.health.current?.toString(), hpMax: adversaryModel.health.max?.toString() })}>
+                    <Gauge max={adversaryModel.health.max} value={adversaryModel.health.current} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
                 </div>
-                <div className="mt-1">
+                <div>
                     <StatusIcons combatant={adversary} />
                 </div>
             </CombatantHeader>

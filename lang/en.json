@@ -950,7 +950,14 @@
       "heroes": "Heroes",
       "adversaries": "Adversaries",
       "npcs": "NPCs",
-      "keyExplainer": "Shift+click to multi-select, alt+click to ping. Right click for menu."
+      "activate": "Activate",
+      "end": "End turn",
+      "applyEff": "Apply Effects",
+      "allSelected": "(All selected)",
+      "keyExplainer": "[Shift/Ctrl] to multi-select\n[Alt] to ping.\nR-click for menu.",
+      "hpTooltip": "HP: {{hp}} / {{hpMax}}",
+      "statTooltip": "HP: {{hp}} / {{hpMax}}\nLuck: {{luck}} / {{luckMax}}\nMana: {{mana}} / {{manaMax}}",
+      "statTooltipNoMana": "HP: {{hp}} / {{hpMax}}\nLuck: {{luck}} / {{luckMax}}"
     }
   }
 }

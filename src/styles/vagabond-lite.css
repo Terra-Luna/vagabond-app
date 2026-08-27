@@ -134,7 +134,7 @@
   --color-destructive-action: #f72b35;
   --color-context-menu-fill: #c5c5c5;
   --color-context-menu-hover: #212e4144;
-  --color-context-menu-text: #181818;
+  --color-context-menu-text: #000000;
   --color-dice: #212e41;
   --color-dice-text: #ffffff;
   --color-magical: #155dfc;
@@ -205,9 +205,9 @@
   --color-btn-primary-text: #020617;
   --color-btn-secondary-text: #E7E5E4;
   --color-destructive-action: #f72b35;
-  --color-context-menu-fill: #0c0c0c;
-  --color-context-menu-hover: #2b2a2a;
-  --color-context-menu-text: #d2b450;
+  --color-context-menu-fill: #020617;
+  --color-context-menu-hover: #212e41;
+  --color-context-menu-text: #E7E5E4;
   --color-dice: #d2b450;
   --color-dice-text: #212e41;
   --color-magical: #155dfc;
