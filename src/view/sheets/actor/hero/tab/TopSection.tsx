@@ -281,7 +281,7 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div>
             <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={lang.VGLITE.HeroSheet.skills} content={
-                <div className="grid @sm:grid-cols-2 gap-x-2">
+                <div className="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-x-2">
                     {
                         skills.map(sk => (
                             <Skill key={sk} hero={hero} skillKey={sk} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isTrained={hero.skills[sk].isTrained} isAttack={false} isCastSkill={sk === castingSkill} />
@@ -395,7 +395,7 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
             { icon: EyeOff, label: "Hide", action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
         ])}>
             <CollapsibleSection title={vgLiteLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
-                <div className="grid grid-cols-2 gap-1 w-full mt-1">
+                <div className="grid grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-1 w-full mt-1">
                     {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
                         <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
                     ))}
@@ -432,7 +432,7 @@ const CustomTracker = ({ actor, tracker, index }) => {
             { icon: SquarePen, label: `${tracker.type === 'numeric' ? 'Change to toggle' : 'Change to counter'}`, action: () => updateTracker('type', `${tracker.type === 'numeric' ? 'boolean' : 'numeric'}`) },
             { icon: Trash, label: vgLiteLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
         ])}
-            className="flex justify-between text-sm border border-solid border-table-border rounded-sm px-1 py-0.5"
+            className="flex justify-between text-sm line-clamp-1 border border-solid border-table-border rounded-sm px-1 py-0.5"
             title={"R-click for options"}
         >
             <EditableTextField

@@ -33,11 +33,14 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
         vgLiteDiv.setAttribute("class", "vglite-root")
         const reactRootElem = sheet.element.appendChild(vgLiteDiv)
 
+        const resizeHandle = sheet.element.querySelector('.window-resize-handle')
+        if (resizeHandle) sheet.element.appendChild(resizeHandle)
+
         sheet.element.style.setProperty("overflow", "visible")
         sheet._scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
         sheet._reactRoot = ReactDom.createRoot(sheet._scaduRoot)
 
-        const header = sheet.element.querySelector('.window-header');
+        const header = sheet.element.querySelector('.window-header')
         header?.addEventListener('dblclick', () => {
             sheet._isCollapsed = !sheet._isCollapsed
             sheet.render()
@@ -57,8 +60,12 @@ export const onRender = (sheet: VGLiteApplication) => {
 export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {
     const minWidth = 380
     const minHeight = 248
-    const maxHeight = 1440
     const { width, top, left } = position
+    /**
+     * Bottom edge (top + height) must not go past 88vh, i.e. within 12vh of the screen bottom
+     * or else Foundry messes with the re-size handle positioning by nudging it above the hotbar.
+     */
+    const maxHeight = Math.min(1440, Math.max(minHeight, (window.innerHeight * 0.88) - top))
     const realWidth = width === "auto" ? width : Math.max(minWidth, width)
 
     let height = position.height
@@ -105,15 +112,14 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
     let height: number
 
     /**
-     * Sheets may be height "auto", in which case their height needs to be
-     * calculated based off the DOM height. This is probably glitchy.
+     * Sheets may be height "auto", in which case their height needs to be calculated based off the DOM height.
      */
     if (typeof rawHeight === "number" && !isNaN(rawHeight)) {
         height = rawHeight - toolbarOffset
     }
     else {
         const totalDomHeight = sheet.element?.offsetHeight || 600
-        height = Math.max(totalDomHeight - toolbarOffset, 100)
+        height = Math.max(Math.min(totalDomHeight, window.innerHeight) - toolbarOffset, 100)
     }
 
     sheet?.element?.style?.setProperty("overflow", sheet._isCollapsed ? "hidden" : "visible")
@@ -128,7 +134,11 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
                             ${theme} vglite-themed-content flex flex-col bg-sheet-main-fill
                             font-paradigm tracking-wider rounded-b-lg overflow-hidden
                         `}
-                            style={{ height: typeof rawHeight === "number" ? height : "100%" }}>
+                            style={{
+                                height: typeof rawHeight === "number" ? height : "100%",
+                                maxHeight: `calc(88vh - ${top}px)`,
+                                overflowY: rawHeight === "auto" ? "auto" : undefined,
+                            }}>
                             <sheet.Component {...sheet.getReactProps()} />
                         </div>
                     </EmotionCacheContext>

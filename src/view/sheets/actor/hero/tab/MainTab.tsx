@@ -18,7 +18,7 @@ import { Skill } from "./TopSection"
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="flex flex-col h-full">
-            <div className="grid @sm:grid-cols-[44%_55%] my-1 gap-x-1 flex-1">
+            <div className="grid @md:grid-cols-[44%_55%] my-1 gap-x-1 flex-1">
                 <Attacks hero={hero} />
                 <div className="space-y-2">
                     <Weapons hero={hero} />
