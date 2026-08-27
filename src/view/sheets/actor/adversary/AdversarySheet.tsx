@@ -5,7 +5,7 @@ export class AdversarySheet extends VagabondActorSheet {
     Component = AdversarySheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 420,
+            width: 380,
             height: "auto",
             top: 120,
             left: 500

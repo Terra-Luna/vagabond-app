@@ -34,9 +34,6 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         ) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     }, [])
 
-    console.log(clazz?.system.startingPacks)
-    console.log(packs)
-
     const recommendedPacks = useMemo(() => {
         return clazz?.system.startingPacks.map(p => packs.find(s => s.uuid === p))
     }, [clazz])

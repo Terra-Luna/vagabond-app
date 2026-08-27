@@ -71,7 +71,7 @@ const AdversarySheetHeader = ({ adv }) => {
     const { editModeToggleBtn } = useEditMode()
     return (
         <div>
-            <div className="flex text-2xl text-text-header-primary font-bold bg-sheet-header-fill font-eskapade pl-2 items-center gap-x-1">
+            <div className="flex text-2xl text-text-header-primary font-bold bg-sheet-header-fill font-eskapade pl-2 py-1 items-center gap-x-1">
                 <EditableNameField actor={adv.parent} />
                 <Divider />
                 <div className="flex gap-x-1 ml-auto self-center">

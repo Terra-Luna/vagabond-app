@@ -32,7 +32,7 @@ export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
 const Attacks = ({ hero }: { hero: HeroDataModel }) => {
     const { melee, brawl, finesse, ranged } = hero.skills
     return (
-        <div className="w-full">
+        <div className="w-full mb-2">
             <Header title={vgLiteLang.HeroSheet.attacks} />
             <Skill hero={hero} name={vgLiteLang.Attacks.melee} skillKey="melee" value={melee.value!} isTrained={melee.isTrained} isAttack={true} />
             <Skill hero={hero} name={vgLiteLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} isTrained={brawl.isTrained} isAttack={true} />

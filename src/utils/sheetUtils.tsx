@@ -55,7 +55,7 @@ export const onRender = (sheet: VGLiteApplication) => {
 }
 
 export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {
-    const minWidth = 400
+    const minWidth = 380
     const minHeight = 248
     const maxHeight = 1440
     const { width, top, left } = position
