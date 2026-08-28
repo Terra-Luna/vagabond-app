@@ -1,6 +1,5 @@
 import { HeroDataModel } from "../actor/HeroDataModel";
 import fields = foundry.data.fields;
-import { VagabondCombatant } from "../../combat/documents/VagabondCombat";
 import { AdversaryDataModel } from "../actor/AdversaryDataModel";
 
 type VagabondCombatantModelSchema = ReturnType<typeof defineSchema>;
@@ -45,7 +44,5 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
                 }
             }
         }
-
-        (this.parent as VagabondCombatant).updateBurningStatus()
     }
 }

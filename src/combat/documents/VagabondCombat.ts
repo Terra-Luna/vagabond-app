@@ -108,6 +108,7 @@ interface Activations {
 export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combatant.SubType> extends Combatant<ActorDataModel> {
     override prepareBaseData(): void {
         super.prepareBaseData()
+        this.updateBurningStatus()
     }
 
     /**
@@ -117,7 +118,7 @@ export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combat
         return (this.system as any).activations;
     }
 
-    updateBurningStatus = () => {
+    updateBurningStatus() {
         const actor = this.token?.actor
         if (actor) {
             const isBurning = !!getCountdowns().find(countdown => countdown.result.actorUuid === actor.uuid && countdown.result.status === "burning" && countdown.result.tokenUuid === this.token?.uuid);
