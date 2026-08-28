@@ -96,8 +96,16 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
         return allOptions.filter(it => it.value === '' || (stats?.find(s => s.stat === it.value)?.value ?? 0) < 7)
     }
 
+    const showStatBoostOption = () => {
+        return nextLevel % 2 === 0 && upgradableStatsOptions().length > 1
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        if (showStatBoostOption() && !levelUpStat) {
+            ui.notifications?.warn("Select a Stat to increase before saving...")
+            return
+        }
         onSave({
             levelUpStat: levelUpStat,
             advancement: advancement,
@@ -159,7 +167,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                                     />
                                 </div>
                             }
-                            {nextLevel % 2 === 0 && upgradableStatsOptions().length > 1 &&
+                            {showStatBoostOption() &&
                                 <div className="flex-1 space-y-1 text-center">
                                     <Header title="STAT INCREASE" />
                                     <HeroCreationLabel text={"Select a stat (Max: 7)"} />
