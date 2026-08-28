@@ -1,3 +1,4 @@
+import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper";
 
 export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
@@ -114,6 +115,14 @@ export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combat
      */
     get activations(): Activations {
         return (this.system as any).activations;
+    }
+
+    updateBurningStatus = () => {
+        const actor = this.token?.actor
+        if (actor) {
+            const isBurning = !!getCountdowns().find(countdown => countdown.result.actorUuid === actor.uuid && countdown.result.status === "burning" && countdown.result.tokenUuid === this.token?.uuid);
+            return actor.toggleStatusEffect("burning", { active: isBurning })
+        }
     }
 
     activate() {

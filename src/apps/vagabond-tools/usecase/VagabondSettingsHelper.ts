@@ -1,3 +1,4 @@
+import { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 
 /**
@@ -100,10 +101,10 @@ export const getCountdowns = (): CountdownSchema[] => {
 }
 export const setCountdowns = async (countdowns: CountdownSchema[]) => {
     await updateSetting("countdowns", countdowns);
-    const combatants = game.combat?.combatants.contents as any;
+    const combatants = game.combat?.combatants.contents as VagabondCombatant[];
     if (combatants) {
         for (const combatant of combatants) {
-            await combatant.system.updateBurningStatus();
+            await combatant.updateBurningStatus();
         }
     }
 }

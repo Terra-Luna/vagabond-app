@@ -1,6 +1,6 @@
 import { HeroDataModel } from "../actor/HeroDataModel";
 import fields = foundry.data.fields;
-import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper";
+import { VagabondCombatant } from "../../combat/documents/VagabondCombat";
 import { AdversaryDataModel } from "../actor/AdversaryDataModel";
 
 type VagabondCombatantModelSchema = ReturnType<typeof defineSchema>;
@@ -29,16 +29,6 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
         return defineSchema();
     }
 
-    updateBurningStatus = () => {
-        const actor = this.parent?.token?.actor
-        if (actor) {
-            const isBurning = !!getCountdowns().find(countdown => countdown.result.actorUuid === actor.uuid && countdown.result.status === "burning" && countdown.result.tokenUuid === this.parent.token?.uuid);
-            return actor.toggleStatusEffect("burning", {active: isBurning})
-        }
-
-        return
-    }
-
     prepareBaseData(): void {
         const activations = foundry.utils.getProperty(this.parent.actor?.getRollData() ?? {}, "activations") as number;
         this.activations.max ??= activations ?? 1;
@@ -56,6 +46,6 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
             }
         }
 
-        this.updateBurningStatus()
+        (this.parent as VagabondCombatant).updateBurningStatus()
     }
 }
