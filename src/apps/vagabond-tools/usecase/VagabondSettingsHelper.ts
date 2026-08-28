@@ -99,13 +99,19 @@ export const getCountdowns = (): CountdownSchema[] => {
     return (game.settings as any)?.get("vagabond-lite", "countdowns") || []
 }
 export const setCountdowns = async (countdowns: CountdownSchema[]) => {
-    await updateSetting("countdowns", countdowns)
+    await updateSetting("countdowns", countdowns);
+    const combatants = game.combat?.combatants.contents as any;
+    if (combatants) {
+        for (const combatant of combatants) {
+            await combatant.system.updateBurningStatus();
+        }
+    }
 }
 export const checkCountdownPermission = (): boolean => {
     return checkPermissionLevel("countdownPermissionLevel")
 }
-export const deleteAllCountdowns = async () => {
-    await updateSetting("countdowns", [])
+export const deleteAllCountdowns = () => {
+    return setCountdowns([])
 }
 export const addCountdown = async (
     label: string,

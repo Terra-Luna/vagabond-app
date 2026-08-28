@@ -33,9 +33,10 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
         const actor = this.parent?.token?.actor
         if (actor) {
             const isBurning = !!getCountdowns().find(countdown => countdown.result.actorUuid === actor.uuid && countdown.result.status === "burning" && countdown.result.tokenUuid === this.parent.token?.uuid);
-            (actor.system as any).statuses.toggles.burning = isBurning
-            actor.toggleStatusEffect('burning', { active: isBurning })
+            return actor.toggleStatusEffect("burning", {active: isBurning})
         }
+
+        return
     }
 
     prepareBaseData(): void {
@@ -54,18 +55,7 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
                 }
             }
         }
-    }
 
-    prepareDerivedData() {
-        super.prepareDerivedData()
         this.updateBurningStatus()
-
-        if (!this.hookId) {
-            this.hookId = Hooks.on("updateSetting", (setting) => {
-                if (setting.key === "vagabond-lite.countdowns") {
-                    this.updateBurningStatus()
-                }
-            })
-        }
     }
 }
