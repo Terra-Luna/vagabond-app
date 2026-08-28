@@ -308,7 +308,7 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             if (getHasStatus()) {
                 subMenuItems.unshift({
                     label: "Clear All", action: async () => {
-                        performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid))
+                        performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid), combatant)
                     }, isSelected: true
                 })
             }
@@ -339,11 +339,11 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                 label: controlledTokens().size > 1 ? "Toggle Visibility (All selected)" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
                 action: updateVisibility,
             },
-            {
+            ...(controlledTokens().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
                 icon: RefreshCw,
                 label: "Refresh Activations",
                 action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
-            },
+            }] : []),
             {
                 icon: Trash,
                 label: "Remove",
