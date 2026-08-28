@@ -1,7 +1,7 @@
 import { RollSummary } from "./RollSummary"
 
 export interface CountdownResult {
-    actorId?: string
+    actorUuid?: string
     tokenUuid?: string
     name: string
     duration: number

@@ -1,7 +1,7 @@
 import { Eye, PlayIcon, Sparkles, StopCircle, Trash } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
-import { addCountdown } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { addCountdown, removeAllBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
@@ -271,38 +271,62 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             allCombatants.add(combatant)
             const getHasStatus = () => allCombatantsHaveStatus([...allCombatants], 'burning')
 
-            const applyBurn = (damageType: string, duration: number) => {
-                const hasStatus = getHasStatus()
-                allCombatants.forEach(combatant => {
-                    combatant.actor?.toggleStatusEffect('burning', { active: !hasStatus })
-                    if (!hasStatus) {
-                        addCountdown(
-                            `${combatant.actor?.name}: ${vgLiteLang.StatusConditions["burning"].name} (${vgLiteLang.DamageTypes[damageType]})`,
-                            duration, 0.1, 0.2,
-                            combatant.actor?.id ?? '',
-                            combatant.token?.uuid,
-                            { id: "burning", damageType }
-                        )
+            const xStart = 0.1
+            const yStart = 0.1
+            let x = xStart
+            let y = yStart
+            const step = 0.1
+
+            const applyBurn = async (damageType: string, duration: number) => {
+                for (const combatant of allCombatants) {
+                    await addCountdown(
+                        `${combatant.actor?.name}: ${vgLiteLang.StatusConditions["burning"].name} (${vgLiteLang.DamageTypes[damageType]})`,
+                        duration, 0.1, y,
+                        combatant.actor?.uuid ?? '',
+                        combatant.token?.uuid,
+                        { id: "burning", damageType }
+                    )
+
+
+                    if (y + step < 0.8) {
+                        y += step
+                    } else if (x + step < 0.8) {
+                        x += step
+                        y = yStart
                     }
+                }
+            }
+
+            const subMenuItems = Object.keys(vgLiteLang.DamageTypes)
+                .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
+                .map(damageType => ({
+                    label: vgLiteLang.DamageTypes[damageType],
+                    subMenuItems: [
+                        { label: "Cd4", action: () => applyBurn(damageType, 4) },
+                        { label: "Cd6", action: () => applyBurn(damageType, 6) },
+                        { label: "Cd8", action: () => applyBurn(damageType, 8) },
+                        { label: "Cd10", action: () => applyBurn(damageType, 10) },
+                        { label: "Cd12", action: () => applyBurn(damageType, 12) },
+                        { label: "Cd20", action: () => applyBurn(damageType, 20) }
+                    ]
+                })) as CtxMenuItem[]
+
+
+            if (getHasStatus()) {
+                subMenuItems.unshift({
+                    label: "Clear All", action: async () => {
+                        for (const combatant of allCombatants){
+                            await removeAllBurns(combatant.token?.actor?.uuid)
+                        }
+                    }, isSelected: true
                 })
             }
 
             return {
                 label: vgLiteLang.StatusConditions["burning"].name,
                 icon: StatusMenuItemIcon,
-                subMenuItems: Object.keys(vgLiteLang.DamageTypes)
-                    .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
-                    .map(damageType => ({
-                        label: vgLiteLang.DamageTypes[damageType],
-                        subMenuItems: [
-                            { label: "Cd4", action: () => applyBurn(damageType, 4) },
-                            { label: "Cd6", action: () => applyBurn(damageType, 6) },
-                            { label: "Cd8", action: () => applyBurn(damageType, 8) },
-                            { label: "Cd10", action: () => applyBurn(damageType, 10) },
-                            { label: "Cd12", action: () => applyBurn(damageType, 12) },
-                            { label: "Cd20", action: () => applyBurn(damageType, 20) }
-                        ]
-                    }))
+                isSelected: getHasStatus(),
+                subMenuItems
             } as CtxMenuItem
         }
 

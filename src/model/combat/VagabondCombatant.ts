@@ -1,5 +1,6 @@
 import { HeroDataModel } from "../actor/HeroDataModel";
 import fields = foundry.data.fields;
+import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper";
 import { AdversaryDataModel } from "../actor/AdversaryDataModel";
 
 type VagabondCombatantModelSchema = ReturnType<typeof defineSchema>;
@@ -22,8 +23,19 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
     VagabondCombatantModelSchema,
     Combatant.Implementation
 > {
+    hookId: number | undefined = undefined;
+
     static defineSchema() {
         return defineSchema();
+    }
+
+    updateBurningStatus = () => {
+        const actor = this.parent?.token?.actor
+        if (actor) {
+            const isBurning = !!getCountdowns().find(countdown => countdown.result.actorUuid === actor.uuid && countdown.result.status === "burning" && countdown.result.tokenUuid === this.parent.token?.uuid);
+            (actor.system as any).statuses.toggles.burning = isBurning
+            actor.toggleStatusEffect('burning', { active: isBurning })
+        }
     }
 
     prepareBaseData(): void {
@@ -41,6 +53,19 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
                     this.combatGroup = "npcs"
                 }
             }
+        }
+    }
+
+    prepareDerivedData() {
+        super.prepareDerivedData()
+        this.updateBurningStatus()
+
+        if (!this.hookId) {
+            this.hookId = Hooks.on("updateSetting", (setting) => {
+                if (setting.key === "vagabond-lite.countdowns") {
+                    this.updateBurningStatus()
+                }
+            })
         }
     }
 }
