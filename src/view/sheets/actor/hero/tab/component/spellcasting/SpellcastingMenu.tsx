@@ -10,8 +10,8 @@ import { PrimaryButton } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { DeliverySelector } from "./DeliverySelectior"
 import { DiceCountInput } from "./DiceCountInput"
-import { DiscountToggle } from "./DiscountToggle"
 import { LineExpansionInut } from "./LineExpansionInput"
+import { ManaDiscount } from "./ManaDiscount"
 import { SkillSelector } from "./SkillSelector"
 import { SpellcastingErrMsg, SpellcastingSubtext } from "./SpellcastingTypography"
 import { SpellEffectToggle } from "./SpellEffectToggle"
@@ -154,7 +154,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         }))
     }, [deliveryIndex, deliveries])
 
-    const onToggleDiscount = useCallback((discount: boolean) => {
+    const onUpdateDiscount = useCallback((discount: number) => {
         setDeliveries(deliveries.map(d => {
             const clone = d.clone()
             clone.setDiscount(discount)
@@ -246,7 +246,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                         {/* SECOND ROW, DELIVERY CUSTOMIZATION INPUTS */}
                         <div className="flex gap-x-1 items-end mt-4">
                             {renderConfigs()}
-                            <div className="flex items-end ml-auto">
+                            <div className="flex gap-x-2 items-end ml-auto">
                                 {spell.damageType !== 'none' &&
                                     <div className="flex gap-x-1">
                                         {/* DAMAGE DICE INPUT */}
@@ -268,13 +268,13 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                                             </div>
                                         }
                                     </div>}
-                                <div className="flex-col ml-2">
+
+                                {/* MANA DISCOUNT INPUT */}
+                                <ManaDiscount discount={delivery?.discount} onUpdateDiscount={onUpdateDiscount} />
+
+                                <div className="flex-col">
                                     <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
                                     <SpellFocusToggle isFocused={delivery?.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
-                                    {/* IF THE CLASS CAN CAST IMBUED SPELLS AT DISCOUNT */}
-                                    {hero.modifiers.casting.imbueDiscount &&
-                                        <DiscountToggle discount={delivery?.discount} onToggleDiscount={onToggleDiscount} />
-                                    }
                                 </div>
                             </div>
                         </div>

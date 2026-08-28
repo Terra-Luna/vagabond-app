@@ -45,8 +45,13 @@ export abstract class SpellDelivery {
     isFocused = false
     damageDice = 1
     studyDamageDice = 0
-    manaCost = 0
-    discount = false
+    discount = 0
+
+    protected _manaCost = 0
+
+    get manaCost() {
+        return Math.max(0, this._manaCost - this.discount)
+    }
 
     spell: SpellSnapshot
     mods: DeliveryMods
@@ -95,16 +100,12 @@ export abstract class SpellDelivery {
         this.isFocused = isFocused
     }
 
-    setDiscount(discount: boolean) {
-        this.discount = discount
-        this.calculateManaCost()
+    setDiscount(discount: number) {
+        this.discount = Math.max(0, discount)
     }
 
     applyEffectManaCost() {
-        this.manaCost += this.applyEffect && this.damageDice > 0 && !this.spell?.ignoreEffectCost
-            ? 1
-            : 0
-        this.manaCost -= this.discount
+        this._manaCost += this.applyEffect && this.damageDice > 0 && !this.spell?.ignoreEffectCost
             ? 1
             : 0
     }
@@ -147,10 +148,11 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     }
 
     protected calculateBaseManaCost() {
+        this.discount = 0
         this.spellManaBase = (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
         this.deliveryUpcastCost = ((this.size - this.baseSize) / 5)
-        this.damageCost = Math.max(0, (Math.max(0, (this.damageDice - 1))) - this.mods.damageUpcastDiscount)
-        this.manaCost = this.baseManaCost
+        this.damageCost = Math.max(0, (Math.max(0, this.damageDice - 1)))
+        this._manaCost = this.baseManaCost
             + this.spellManaBase
             + this.deliveryUpcastCost
             + this.damageCost
@@ -159,7 +161,7 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     override calculateManaCost() {
         this.calculateBaseManaCost()
         if (this.size > this.baseSize) {
-            this.manaCost -= Math.min(this.deliveryUpcastCost, this.mods.deliveryUpcastDiscount)
+            this.discount += Math.min(this.deliveryUpcastCost, this.mods.deliveryUpcastDiscount)
         }
         super.applyEffectManaCost()
     }
@@ -169,26 +171,20 @@ export class Aura extends AreaOfEffectDelivery {
     override description = vgLiteLang.SpellDeliveries.aura.description
     override targetLabel = vgLiteLang.SpellDeliveries.aura.targetLabel
     override baseSize: number = 10
-    override baseManaCost: number = Math.max(
-        0, 2 - (this.mods.deliveryDiscounts?.aura ?? 0)
-    )
+    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.aura ?? 0))
 }
 export class Cone extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.cone.name
     override description = vgLiteLang.SpellDeliveries.cone.description
     override targetLabel = vgLiteLang.SpellDeliveries.cone.targetLabel
     override baseSize: number = 15
-    override baseManaCost: number = Math.max(
-        0, 2 - (this.mods.deliveryDiscounts?.cone ?? 0)
-    )
+    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.cone ?? 0))
 }
 export class Line extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.line.name
     override description = vgLiteLang.SpellDeliveries.line.description
     override targetLabel = vgLiteLang.SpellDeliveries.line.targetLabel
-    override baseManaCost: number = Math.max(
-        0, 2 - (this.mods.deliveryDiscounts?.line ?? 0)
-    )
+    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.line ?? 0))
     baseSize: number = 30
     baseHeight: number = 10
     baseWidth: number = 5
@@ -209,10 +205,10 @@ export class Line extends AreaOfEffectDelivery {
         super.calculateBaseManaCost()
 
         // Track the delivery upcast discount and "expend" it as the calculations are done...
-        let discount = this.mods.deliveryUpcastDiscount
-        if (discount > 0) {
-            this.manaCost -= Math.min(this.deliveryUpcastCost, discount)
-            discount -= this.deliveryUpcastCost
+        let dud = this.mods.deliveryUpcastDiscount
+        if (dud > 0) {
+            this.discount += Math.min(this.deliveryUpcastCost, dud)
+            dud -= this.deliveryUpcastCost
         }
 
         const isLineExpanded = this.height > this.baseHeight || this.width > this.baseWidth
@@ -222,16 +218,16 @@ export class Line extends AreaOfEffectDelivery {
             const mana = this.manaCost
             for (let i = 0; i < heightMultiplier; i++) {
                 this.deliveryUpcastCost += mana
-                this.manaCost += mana
+                this._manaCost += mana
             }
             for (let i = 0; i < widthMultiplier; i++) {
                 this.deliveryUpcastCost += mana
-                this.manaCost += mana
+                this._manaCost += mana
             }
         }
 
-        if (discount > 0 && discount < this.deliveryUpcastCost - this.baseManaCost) {
-            this.manaCost -= Math.min(this.deliveryUpcastCost, discount)
+        if (dud > 0 && dud < this.deliveryUpcastCost - this.baseManaCost) {
+            this._manaCost -= Math.min(this.deliveryUpcastCost, dud)
         }
 
         super.applyEffectManaCost()
@@ -241,9 +237,7 @@ export class Sphere extends AreaOfEffectDelivery {
     override name = vgLiteLang.SpellDeliveries.sphere.name
     override description = vgLiteLang.SpellDeliveries.sphere.description
     override targetLabel = vgLiteLang.SpellDeliveries.sphere.targetLabel
-    override baseManaCost: number = Math.max(
-        0, 2 - (this.mods.deliveryDiscounts?.sphere ?? 0)
-    )
+    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.sphere ?? 0))
     baseSize: number = 5
 }
 
@@ -276,8 +270,9 @@ export abstract class PerTargetDelivery extends SpellDelivery {
             targets = Math.max(1, this.targetCount)
         }
 
-        targets -= Math.min(targets, this.mods.deliveryUpcastDiscount)
-        this.manaCost = ((Math.max(0, targets - 1)) * this.extraTargetMultiplier)
+        this.discount += Math.min(targets, this.mods.deliveryUpcastDiscount)
+
+        this._manaCost = ((Math.max(0, targets - 1)) * this.extraTargetMultiplier)
             + this.baseManaCost
             + (this.damageDice > 0 ? (this.spell?.baseManaCost ?? 0) : 0)
             + (Math.max(0, this.damageDice - 1))
@@ -295,7 +290,7 @@ export class Imbue extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.imbue.name
     override description = vgLiteLang.SpellDeliveries.imbue.description
     override targetLabel = vgLiteLang.SpellDeliveries.imbue.targetLabel
-    override baseManaCost: number = 1
+    override baseManaCost = Math.max(0, 1 - (this.mods.deliveryDiscounts?.imbue ?? 0))
 }
 export class Glyph extends PerTargetDelivery {
     override name = vgLiteLang.SpellDeliveries.glyph.name

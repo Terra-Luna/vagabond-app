@@ -75,7 +75,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
     else return (
         <FoundryHotkeyBlocker>
             <CollapsibleSection title={"GRANTS & MODIFIERS"} content={
-                <div className="p-2 bg-context-menu-fill border border-solid border-table-border mb-24">
+                <div className="p-2 bg-sheet-main-fill border border-solid border-table-border mb-24">
                     <div className="flex justify-between items-center mb-4 border-b border-solid border-table-border pb-2">
                         <HeroCreationLabel text={'Item Grants & Modifiers'} />
                         <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
@@ -83,7 +83,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                         </PrimaryButton>
                     </div>
 
-                    <div className="space-y-4">
+                    <div className="space-y-2">
                         {rules.length === 0 ? (
                             <p className="text-text-primary text-sm italic">Click +Add to get started...</p>
                         ) : (
