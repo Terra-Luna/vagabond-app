@@ -112,12 +112,12 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
 }
 
 export const setEquipState = async (item: any, isEquipped: boolean) => {
-    if (item.system !== undefined) {
+    if (item?.system) {
         if (item.system.isEquippable && item.system.isEquipped != isEquipped) {
             await item.update({ 'system.isEquipped': isEquipped })
         }
     }
-    else {
+    else if (item) {
         if (item.isEquippable && item.isEquipped != isEquipped) {
             await item.parent.update({ 'system.isEquipped': isEquipped })
         }

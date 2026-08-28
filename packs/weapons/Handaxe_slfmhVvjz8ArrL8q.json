@@ -43,8 +43,7 @@
     "properties": [],
     "material": "steel",
     "skills": [
-      "melee",
-      "thrown"
+      "melee"
     ]
   },
   "effects": [],

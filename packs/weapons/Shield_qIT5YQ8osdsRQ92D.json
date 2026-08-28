@@ -41,8 +41,7 @@
       "state": "H"
     },
     "properties": [
-      "defense",
-      "parry"
+      "defense"
     ],
     "material": "steel",
     "skills": [

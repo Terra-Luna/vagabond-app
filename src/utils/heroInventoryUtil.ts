@@ -59,11 +59,13 @@ export async function addItems(actor: Actor & { system: any }, uuids: string[]) 
     await actor.createEmbeddedDocuments("Item", items)
 }
 
+export function getEquippedArmor(hero: any): (Item & { system: ArmorDataModel }) | undefined {
+    return hero.parent.items.find((it: any) => it.type === "armor" && it.system.isEquipped)
+}
+
 export async function equipArmor(hero: any, armor: ArmorDataModel) {
-    const equippedArmor = hero.parent.items.filter((it: any) => it.type === "armor" && it.system.isEquipped)
-    equippedArmor.forEach(async (it: any) => {
-        await setEquipState(it, false)
-    })
+    const equippedArmor = getEquippedArmor(hero)
+    await setEquipState(equippedArmor, false)
     await setEquipState(armor, true)
 }
 

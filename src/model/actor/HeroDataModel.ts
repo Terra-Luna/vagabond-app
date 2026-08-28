@@ -3,6 +3,7 @@ import { createElement } from "react"
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
+import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { vgLiteLang } from "../../utils/lang"
 import { getId } from "../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
@@ -259,9 +260,14 @@ export function setSkill(stat: number, isTrained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
-    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
     hero.saves.endure = base - (hero.stats.might! * 2)
     hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)
+    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
+
+    const armor = getEquippedArmor(hero)
+    if (armor) {
+        hero.modifiers.skillCheck.reflex.modifier! -= armor.system.bulk.slots
+    }
 }
 
 export function setSpellcastingStats(hero: HeroDataModel) {

@@ -36,7 +36,7 @@ export class DiceRoll {
         const mods = hero.modifiers
         const isVicious = weapon.properties.includes('vicious')
         const isDefense = weapon.properties.includes('defense')
-        const isThrown = weapon.skills.includes('thrown')
+        const isThrown = weapon.properties.includes('thrown')
         const versatileBonus = (weapon.grip.style === 'V' && weapon.grip.state === 'HH') ? 2 : 0
 
         const dieSize =

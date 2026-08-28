@@ -72,8 +72,8 @@
       "light": {
         "name": "Light",
         "rating": 1,
-        "slots": 2,
-        "mitReq": 3,
+        "slots": 1,
+        "mitReq": 2,
         "value": {"g": 0, "s": 50, "c": 0}
       },
       "medium": {
@@ -87,7 +87,7 @@
         "name": "Heavy",
         "rating": 3,
         "slots": 3,
-        "mitReq": 5,
+        "mitReq": 6,
         "value": {"g": 2, "s": 0, "c": 0}
       }
     },
@@ -455,9 +455,9 @@
         "name": "Long",
         "description": "Its Range is doubled."
       },
-      "parry": {
-        "name": "Parry",
-        "description": "Crits 1 lower on Melee attack Saves."
+      "thrown": {
+        "name": "Thrown",
+        "description": "Can throw attack to Near, or Far with Hinder. Can be drawn from the Inventory as a part of the attack. You can use this Property if you aren't Trained with it."
       },
       "vicious": {
         "name": "Vicious",
@@ -480,14 +480,6 @@
       "ranged": {
         "name": "Ranged",
         "description": "Can use Ranged to attack. Close attacks are Hindered."
-      },
-      "thrown": {
-        "name": "Thrown",
-        "description": "Uses Melee by default. Can throw attack to Near, or Far with Hinder."
-      },
-      "reflex": {
-        "name": "Reflex",
-        "description": ""
       },
       "endure": {
         "name": "Endure",

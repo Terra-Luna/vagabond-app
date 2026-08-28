@@ -46,8 +46,7 @@
     "material": "steel",
     "skills": [
       "finesse",
-      "melee",
-      "thrown"
+      "melee"
     ]
   },
   "effects": [],

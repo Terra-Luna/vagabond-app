@@ -10,6 +10,7 @@ export interface SkillCheckArgs {
     type: SkillCheckType
     skill: string
     d20Count?: number
+    blockDie?: number
     modifier?: number
     critThreshold?: number
     favorHinder?: 'favor' | 'hinder' | 'none'
@@ -18,6 +19,7 @@ export interface SkillCheckArgs {
 
 export interface SkillCheckResult {
     skill: string
+    blockDie: number
     skillName: string
     difficulty: number
     critThreshold: number
@@ -35,6 +37,7 @@ export class SkillCheck {
     type: SkillCheckType
     skill: string
     difficulty: number
+    blockDie: number
     d20Count: number
     modifier: number
     critThreshold: number
@@ -43,7 +46,7 @@ export class SkillCheck {
     result: SkillCheckResult | undefined
 
     constructor(hero: HeroDataModel, args: SkillCheckArgs) {
-        const skillMods = hero.modifiers.skillCheck[args.skill]
+        const skillMods = args.blockDie ? undefined : hero.modifiers.skillCheck[args.skill]
 
         const globalMods = args.type === 'attack'
             ? hero.modifiers.skillCheck.attack
@@ -54,6 +57,7 @@ export class SkillCheck {
 
         this.type = args.type
         this.skill = args.skill
+        this.blockDie = args.blockDie ?? 0
         this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
         this.d20Count = args.d20Count ?? (1 + (skillMods?.extraDice ?? 0) + (globalMods?.extraDice ?? 0))
         this.modifier = args.modifier ?? ((skillMods?.modifier ?? 0) + (globalMods?.modifier ?? 0))
@@ -65,6 +69,7 @@ export class SkillCheck {
     toJson() {
         return {
             skill: this.skill,
+            blockDie: this.blockDie,
             difficulty: this.difficulty,
             d20Count: this.d20Count,
             modifier: this.modifier,
@@ -80,6 +85,7 @@ export class SkillCheck {
             const skillCheck = new SkillCheck(actor.system, {
                 type: snapshot.type,
                 skill: snapshot.skill,
+                blockDie: snapshot.blockDie,
                 d20Count: snapshot.d20Count,
                 modifier: snapshot.modifier,
                 critThreshold: snapshot.critThreshold,
@@ -112,17 +118,20 @@ export class SkillCheck {
          * Build roll formula and evaluate.
          * "kh" = "keep highest"
          */
-        let formula = `${this.d20Count ?? 1}d20kh`
-        if (this.modifier) {
-            formula += `+${this.modifier}`
-        }
+        let formula = this.blockDie > 0 ? `d${this.blockDie}` : `${this.d20Count ?? 1}d20kh`
 
-        if (!isReroll) {
-            if (favorHinder === 'favor') {
-                formula += '+1d6'
+        if (this.blockDie === 0) {
+            if (this.modifier) {
+                formula += `+${this.modifier}`
             }
-            else if (favorHinder === 'hinder') {
-                formula += '-1d6'
+
+            if (!isReroll) {
+                if (favorHinder === 'favor') {
+                    formula += '+1d6'
+                }
+                else if (favorHinder === 'hinder') {
+                    formula += '-1d6'
+                }
             }
         }
 
@@ -133,7 +142,7 @@ export class SkillCheck {
          */
         const isSuccess = roll.total >= this.difficulty
         const terms = getDiceTerms(roll)
-        const d20Term = terms.find(it => it.faces === 20)
+        const d20Term = terms.find(it => it.faces === (this.blockDie > 0 ? this.blockDie : 20))
         const d6Term = terms.find(it => it.faces === 6)
         const d20Res = d20Term?.results?.map(r => r.result)?.sort((a, b) => a - b) ?? [0]
         const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
@@ -141,6 +150,7 @@ export class SkillCheck {
 
         this.result =  {
             skill: this.skill,
+            blockDie: this.blockDie,
             skillName: vgLiteLang.Skills[this.skill]?.name ?? vgLiteLang.Saves[this.skill]?.name ?? '',
             difficulty: this.difficulty,
             modifier: this.modifier,

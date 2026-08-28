@@ -15,33 +15,33 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
             banner={<ChatCardBanner
                 tokenId={actor?.getActiveTokens()[0]?.id}
                 portrait={getTokenImg(actor)}
-                title={`${vgLiteLang.Skills[result.skill]?.name ?? vgLiteLang.Saves[result.skill]?.name} Check`}
+                title={`${vgLiteLang.Skills[result.skill]?.name ?? vgLiteLang.Saves[result.skill]?.name} ${result.blockDie > 0 ? '(Defensive) ' : ''}Check`}
                 subtitle={[
                     { label: "Difficulty", value: result.difficulty.toString() },
                     { label: "Result", value: result.outcome }
                 ]}
             />}
             contents={<>
-                <SkillCheckDiceComponent d20s={result.d20s} d6={result.d6} modifier={result.modifier} favHinder={result.favorHinder} />
+                <SkillCheckDiceComponent d20s={result.d20s} d6={result.d6} modifier={result.modifier} favHinder={result.favorHinder} blockDie={result.blockDie} />
             </>}
         />
     )
 }
 
-export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder }) => {
+export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, blockDie }) => {
     return (
         <div className="flex mt-2 justify-center">
             {/* D20 DICE ARRAY */}
             {d20s.map((d20: number, index: number) => (
-                <DiceRollComponent key={index} faces={20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
+                <DiceRollComponent key={index} faces={blockDie > 0 ? blockDie : 20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
             ))}
             {/* FAVOR/HINDER DICE */}
             {favHinder !== 'none' &&
                 <div className="flex">
                     <div className="h-full content-center">{
-                        favHinder === 'favor' ?
-                            <Plus size={24} strokeWidth={2} /> :
-                            <Minus size={24} strokeWidth={2} />
+                        favHinder === 'favor'
+                            ? <Plus size={24} strokeWidth={2} />
+                            : <Minus size={24} strokeWidth={2} />
                     }</div>
                     <div className="h-full content-center">
                         <DiceRollComponent faces={6} result={d6} textSize="text-4xl" />
@@ -52,11 +52,11 @@ export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder }) => {
             {modifier !== 0 &&
                 <div className="flex items-center">
                     <div className="h-full content-center">{
-                        modifier > 0 ?
-                            <Plus size={22} strokeWidth={2} /> :
-                            <Minus size={22} strokeWidth={2} />
+                        modifier > 0
+                            ? <Plus size={22} strokeWidth={2} />
+                            : <Minus size={22} strokeWidth={2} />
                     }</div>
-                    <p className="text-3xl">{modifier}</p>
+                    <p className="text-3xl">{Math.abs(modifier)}</p>
                 </div>
             }
         </div>

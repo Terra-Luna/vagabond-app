@@ -2,6 +2,7 @@ import { Shield } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
+import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { getArmor,HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
@@ -10,6 +11,8 @@ import { isEquippedTool, isEquippedWeapon,WeaponDataModel } from "../../../../..
 import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
+import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
+import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
@@ -77,11 +80,15 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
             return {
                 item,
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
-                initiateAttack: (e: React.MouseEvent) => attackInstance.initiate(e)
+                initiateAttack: (e: React.MouseEvent) => attackInstance.initiate(e),
+                rollDefensiveReflexSave: async () => {
+                    const skillCheck = await new SkillCheck(hero, { type: 'save', skill: 'reflex', blockDie: item.damage.dice.faces }).roll()
+                    sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                }
             }
         })
         const toolsData = equippedTools.map(item => {
-            return { item, damageString: "", initiateAttack: () => { } }
+            return { item, damageString: "", initiateAttack: () => { }, rollDefensiveReflexSave: () => { } }
         })
         return [...weaponData, ...toolsData]
     }, [hero.parent, equipDependency, targetIds])
@@ -90,7 +97,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={vgLiteLang.HeroSheet.weapons} />
             {
-                equipDisplayData?.map(({ item, damageString, initiateAttack }, index: number) => {
+                equipDisplayData?.map(({ item, damageString, initiateAttack, rollDefensiveReflexSave }, index: number) => {
                     return (
                         <div
                             key={getId(item)}
@@ -104,31 +111,40 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
-                            <div className="grid grid-cols-[53%_47%] place-content-between -gap-y-1">
-                                <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
-                                <div className="flex justify-end">
-                                    <div title={"Toggle grip (if applicable)"}
-                                        className={`${gripStyle} mr-2 hover-glow`}
-                                        onClick={() => toggleGripState(item)}
-                                    >
-                                        {vgLiteLang.GripsAbbr[
-                                            item instanceof WeaponDataModel
-                                                ? item.grip.state
-                                                : item.bulk.slots > 1 ? 'HH' : 'H'
-                                        ]}
-                                    </div>
-                                    <div className="flex content-right">
-                                        <div
-                                            title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
-                                            className={`${dmgStyle} hover-glow`}
-                                            onClick={(e) => initiateAttack(e)}
+                            <div className="flex flex-col gap-y-0.5">
+                                <div className="flex justify-between items-center">
+                                    <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
+                                    <div className="flex justify-end items-center">
+                                        <div title={"Toggle grip (if applicable)"}
+                                            className={`${gripStyle} mr-2 hover-glow`}
+                                            onClick={() => toggleGripState(item)}
                                         >
-                                            {damageString}
+                                            {vgLiteLang.GripsAbbr[
+                                                item instanceof WeaponDataModel
+                                                    ? item.grip.state
+                                                    : item.bulk.slots > 1 ? 'HH' : 'H'
+                                            ]}
+                                        </div>
+                                        <div className="flex content-right items-center gap-x-1">
+                                            <div
+                                                title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
+                                                className={`${dmgStyle} hover-glow`}
+                                                onClick={(e) => initiateAttack(e)}
+                                            >
+                                                {damageString}
+                                            </div>
+                                            {item instanceof WeaponDataModel && item.properties.includes("defense") &&
+                                                <button title={"Roll as Reflex Save"} onClick={() => rollDefensiveReflexSave()} className="hover-glow cursor-pointer">
+                                                    <Shield className="text-ic-armor-border fill-ic-armor-fill" size={22} />
+                                                </button>
+                                            }
                                         </div>
                                     </div>
                                 </div>
-                                <div className={propsStyle}>{(item as any).properties?.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
-                                <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[(item as any).range ?? '']}</div>
+                                <div className="flex justify-between items-center">
+                                    <div className={propsStyle}>{(item as any).properties?.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
+                                    <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[(item as any).range ?? '']}</div>
+                                </div>
                             </div>
                             <ItemDivider />
                         </div>
