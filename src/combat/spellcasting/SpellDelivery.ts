@@ -5,7 +5,8 @@ export interface SpellDeliverySnapshot {
     name: string,
     applyEffect: boolean,
     isFocused: boolean,
-    manaCost: number,
+    discount: number,
+    _manaCost: number,
     spell: SpellSnapshot,
     mods: DeliveryMods
 }
@@ -26,7 +27,8 @@ export interface DeliveryMods {
         aura?: number,
         cone?: number,
         line?: number,
-        sphere?: number
+        sphere?: number,
+        imbue?: number
     }
 }
 
@@ -115,7 +117,8 @@ export abstract class SpellDelivery {
             name: this.name,
             applyEffect: this.applyEffect,
             isFocused: this.isFocused,
-            manaCost: this.manaCost,
+            discount: this.discount,
+            _manaCost: this._manaCost,
             spell: this.spell,
             mods: this.mods
         }
@@ -262,6 +265,7 @@ export abstract class PerTargetDelivery extends SpellDelivery {
     }
 
     override calculateManaCost() {
+        this.discount = 0
         let targets: number
         if (this instanceof Remote || this instanceof Imbue || this instanceof Touch) {
             targets = Math.max(1, this.targetTokenIds.length)
