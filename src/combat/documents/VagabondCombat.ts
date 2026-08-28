@@ -128,4 +128,8 @@ export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combat
     activate() {
         return this.update({ system: { activations: { value: Math.max((this.activations.value ?? 0) - 1, 0) } } })
     }
+
+    resetActivations() {
+        return this.update({ system: { activations: { value: this.activations.max } } })
+    }
 }

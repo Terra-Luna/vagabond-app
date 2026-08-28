@@ -1,4 +1,4 @@
-import { Eye, PlayIcon, Sparkles, StopCircle, Trash } from "lucide-react"
+import { Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import { addCountdown, removeAllBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
@@ -15,9 +15,9 @@ import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { HeaderWithClipPath } from "../../view/component/SkillCard"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { useFoundryHook } from "../../view/wrappers/hooks"
-import { getControlledCombatants, getControlledTokens } from "../combat-utils"
+import { getControlledCombatants, getControlledTokens, performAsyncActionOnControlledCombatants } from "../combat-utils"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
-import { allCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
+import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 
@@ -254,22 +254,16 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
 
         const makeStatusConditionMenuItem = (statusKey: string) => {
             const StatusMenuItemIcon = () => <StatusIcon status={statusKey} size={24} className="mr-1 bg-sheet-header-fill" />
-            const allCombatants = new Set(getControlledCombatants())
-            allCombatants.add(combatant)
-            const getHasStatus = () => allCombatantsHaveStatus([...allCombatants], statusKey)
             const action = (e) => {
                 e.keepOpen = true
-                const hasStatus = getHasStatus()
-                allCombatants.forEach(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !hasStatus }))
+                performAsyncActionOnControlledCombatants(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !controlledCombatantsHaveStatus(statusKey) }), combatant)
             }
-            return { label: vgLiteLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: getHasStatus } as CtxMenuItem
+            return { label: vgLiteLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: controlledCombatantsHaveStatus(statusKey) } as CtxMenuItem
         }
 
         const makeBurnMenuItem = () => {
             const StatusMenuItemIcon = () => <StatusIcon status="burning" size={24} className="mr-1 bg-sheet-header-fill" />
-            const allCombatants = new Set(getControlledCombatants())
-            allCombatants.add(combatant)
-            const getHasStatus = () => allCombatantsHaveStatus([...allCombatants], 'burning')
+            const getHasStatus = () => controlledCombatantsHaveStatus("burning", combatant)
 
             const xStart = 0.1
             const yStart = 0.1
@@ -278,7 +272,7 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             const step = 0.1
 
             const applyBurn = async (damageType: string, duration: number) => {
-                for (const combatant of allCombatants) {
+                performAsyncActionOnControlledCombatants(async combatant => {
                     await addCountdown(
                         `${combatant.actor?.name}: ${vgLiteLang.StatusConditions["burning"].name} (${vgLiteLang.DamageTypes[damageType]})`,
                         duration, 0.1, y,
@@ -287,14 +281,13 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                         { id: "burning", damageType }
                     )
 
-
                     if (y + step < 0.8) {
                         y += step
                     } else if (x + step < 0.8) {
                         x += step
                         y = yStart
                     }
-                }
+                }, combatant)
             }
 
             const subMenuItems = Object.keys(vgLiteLang.DamageTypes)
@@ -315,9 +308,7 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             if (getHasStatus()) {
                 subMenuItems.unshift({
                     label: "Clear All", action: async () => {
-                        for (const combatant of allCombatants){
-                            await removeAllBurns(combatant.token?.actor?.uuid)
-                        }
+                        performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid))
                     }, isSelected: true
                 })
             }
@@ -347,6 +338,11 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                 icon: Eye,
                 label: controlledTokens().size > 1 ? "Toggle Visibility (All selected)" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
                 action: updateVisibility,
+            },
+            {
+                icon: RefreshCw,
+                label: "Refresh Activations",
+                action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
             },
             {
                 icon: Trash,
