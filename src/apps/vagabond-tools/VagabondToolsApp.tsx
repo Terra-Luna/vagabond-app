@@ -12,7 +12,7 @@ export class VagabondToolsApp extends VagabondApplication {
     constructor() {
         super({
             window: { title: "Vagabond Tools" },
-            position: { width: 400, top: 800, left: 18 },
+            position: { width: 400, top: 500, left: 18 },
             Component: VagabondToolsAppView,
         } as VagabondAppArgs)
     }

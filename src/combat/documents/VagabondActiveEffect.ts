@@ -31,7 +31,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "burning",
             name: "VGLITE.StatusConditions.burning.name",
             img: "icons/svg/fire.svg",
-            changes: [{ key: "system.statuses.burning", mode: "OVERRIDE", value: "true" }]
+            changes: [{ key: "system.statuses.toggles.burning", mode: "OVERRIDE", value: "true" }]
         },
         {
             _id: "vg0000charmed000",

@@ -87,14 +87,14 @@ const ContextMenuHost = ({ isMenuOpen, menuAnchorPoint, menuItems, onClose, onIt
 }
 
 const OneMenuItem = ({ item, length, onItemAction }: { item: CtxMenuItem, length: number | undefined, onItemAction: (e: any) => void }) => {
+    const isSelected = typeof item.isSelected === 'function' ? item.isSelected() : item.isSelected
+
     if (item.subMenuItems) {
         return (
-            <SubMenu label={<LabelAndIcon item={item} isSubMenu />} className={ctxMenuTextStyle} menuClassName={ctxSubMenuContainerStyle}>
+            <SubMenu label={<LabelAndIcon item={item} isSubMenu />} className={isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} menuClassName={ctxSubMenuContainerStyle}>
                 {item.subMenuItems.map((subItem, index) => <OneMenuItem key={index} item={subItem} length={item.subMenuItems?.length} onItemAction={onItemAction} />)}
             </SubMenu>)
     }
-
-    const isSelected = typeof item.isSelected === 'function' ? item.isSelected() : item.isSelected
 
     return <MenuItem className={item.isDestructive ? ctxMenuDestructiveTextStyle : isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} onClick={(e) => { item.action?.(e); onItemAction(e) }}>
         {item.isDestructive && (length ?? 0) > 1 && <Divider />}

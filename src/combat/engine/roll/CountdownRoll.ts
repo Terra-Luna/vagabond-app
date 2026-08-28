@@ -22,7 +22,7 @@ export class CountdownRoll {
         this.result = {
             name: this.result.name,
             duration: nextDuration,
-            actorId: this.result.actorId,
+            actorUuid: this.result.actorUuid,
             tokenUuid: this.result.tokenUuid,
             damageType: this.result.damageType,
             status: this.result.status,

@@ -14,7 +14,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
     const dmgType = result.damageType
 
     const apply = async () => {
-        if (!result.actorId && !result.tokenUuid || !dmgType) return
+        if (!result.actorUuid && !result.tokenUuid || !dmgType) return
 
         const token = game.canvas?.tokens?.get(result.tokenUuid?.split(".").pop() ?? '') as any
         if (!token) return

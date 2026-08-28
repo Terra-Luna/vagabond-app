@@ -116,7 +116,7 @@ export const addCountdown = async (
     const newCountdown: CountdownSchema = {
         id: foundry.utils.randomID(), x: x, y: y,
         result: {
-            actorId: actorId,
+            actorUuid: actorId,
             tokenUuid: tokenUuid,
             name: label,
             duration: duration,
@@ -125,6 +125,10 @@ export const addCountdown = async (
         }
     }
     await setCountdowns([...getCountdowns(), newCountdown])
+}
+export const removeAllBurns = (actorUuid: string | null | undefined) => {
+    if (!actorUuid) return Promise.resolve(true)
+    return setCountdowns(getCountdowns().filter(countdown => countdown.result.status !== "burning" || countdown.result.actorUuid !== actorUuid))
 }
 
 export const getManaEnforcement = (): boolean => {

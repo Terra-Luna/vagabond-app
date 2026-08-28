@@ -46,5 +46,4 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
             }
         }
     }
-
 }
