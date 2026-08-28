@@ -18,7 +18,7 @@
       "c": 0
     },
     "bulk": {
-      "slots": 2,
+      "slots": 1,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -30,7 +30,7 @@
     "relicEffects": [],
     "armorType": "light",
     "rating": 1,
-    "mightReq": 3,
+    "mightReq": 2,
     "material": "steel"
   },
   "effects": [],
@@ -46,8 +46,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784498849175,
-    "modifiedTime": 1784498946501,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1787942383750,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

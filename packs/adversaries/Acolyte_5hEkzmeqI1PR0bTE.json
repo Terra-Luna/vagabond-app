@@ -261,7 +261,6 @@
         "damageUpcastDiscount": 0,
         "deliveryUpcastDiscount": 0,
         "studyDiceDamage": false,
-        "imbueDiscount": false,
         "deliveryDiscounts": {
           "aura": 0,
           "cone": 0,

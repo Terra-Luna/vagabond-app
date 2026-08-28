@@ -30,7 +30,7 @@
     "relicEffects": [],
     "armorType": "heavy",
     "rating": 3,
-    "mightReq": 5,
+    "mightReq": 6,
     "material": "steel"
   },
   "effects": [],
@@ -46,8 +46,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784498878575,
-    "modifiedTime": 1784498913422,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1787942373079,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -41,7 +41,8 @@
       "state": "H"
     },
     "properties": [
-      "keen"
+      "keen",
+      "thrown"
     ],
     "material": "steel",
     "skills": [
@@ -62,8 +63,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784506324545,
-    "modifiedTime": 1785871375015,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1787941920769,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

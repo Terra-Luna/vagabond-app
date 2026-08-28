@@ -79,14 +79,6 @@
         "level": 4,
         "value": 2,
         "selector": "modifiers.casting.deliveryDiscounts.aura"
-      },
-      {
-        "id": "H4PIc23MZ6dyJY37",
-        "key": "ToggleRule",
-        "label": "Paragon's Aura: Imbue Discount",
-        "level": "4",
-        "value": true,
-        "selector": "modifiers.casting.imbueDiscount"
       }
     ],
     "complexity": 3,
@@ -123,8 +115,8 @@
       {
         "name": "Paragon's Aura",
         "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have a 2 Mana discount on the Aura Delivery.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target with a 1 Mana discount. This discount increases every 4 Levels hereafter.</span></p>"
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Casting a Spell with an Aura Delivery is free for you, but you must spend Mana on Focus and upcast costs.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target for no Mana.</span></p>"
       },
       {
         "name": "Divine Resolve",
@@ -183,7 +175,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786568076634,
-    "modifiedTime": 1787882024831,
+    "modifiedTime": 1787960552393,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
