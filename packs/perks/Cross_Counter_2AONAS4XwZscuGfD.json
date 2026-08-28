@@ -1,10 +1,10 @@
 {
-  "name": "Bully",
+  "name": "Cross Counter",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "2AONAS4XwZscuGfD",
+  "img": "/icons/skills/melee/weapons-crossed-swords-yellow.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Round, you can choose to fail a Reflex Save against an attack from a Close Being to make an attack against them.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -29,9 +29,10 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "brawl",
+              "melee"
             ],
-            "andOr": null
+            "andOr": "or"
           }
         ]
       }
@@ -43,19 +44,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "PDLxeQclz2rj9enO": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1787806185478,
+    "createdTime": 1787884063762,
+    "modifiedTime": 1787884222608,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!2AONAS4XwZscuGfD"
 }

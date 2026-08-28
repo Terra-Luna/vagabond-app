@@ -1,0 +1,48 @@
+{
+  "name": "Ritualist",
+  "type": "perk",
+  "_id": "m23uO8bQDmB665V3",
+  "img": "icons/magic/symbols/runes-triangle-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Shift, you can conduct a 10-minute Ritual as an Action.</span></p>",
+    "rules": [],
+    "prerequisites": [
+      {
+        "type": "trained",
+        "stat": "might",
+        "value": 3,
+        "spell": "Any",
+        "skills": [
+          {
+            "skillNames": [
+              "arcana",
+              "mysticism"
+            ],
+            "andOr": "or"
+          }
+        ]
+      }
+    ],
+    "canTakeMultiple": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787884939884,
+    "modifiedTime": 1787884983914,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!m23uO8bQDmB665V3"
+}

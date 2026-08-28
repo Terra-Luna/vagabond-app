@@ -1,0 +1,479 @@
+{
+  "folder": "FLVLlhgM8ePOrzwY",
+  "name": "Crawling Wall",
+  "type": "adversary",
+  "_id": "qgQJkMAskPy4gYvX",
+  "img": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+  "system": {
+    "health": {
+      "current": 58,
+      "max": 0
+    },
+    "armor": {
+      "rating": 3,
+      "as": "Plate"
+    },
+    "senses": [],
+    "statuses": {
+      "toggles": {
+        "berserk": false,
+        "blinded": false,
+        "charmed": false,
+        "confused": false,
+        "dazed": false,
+        "dead": false,
+        "frightened": false,
+        "incapacitated": false,
+        "invisible": false,
+        "paralyzed": false,
+        "prone": false,
+        "restrained": false,
+        "sickened": false,
+        "suffocating": false,
+        "unconscious": false,
+        "vulnerable": false,
+        "marked": false,
+        "warded": false,
+        "blessed": false
+      },
+      "stacks": {
+        "burning": []
+      },
+      "counters": {
+        "luck": 0,
+        "studied": 0,
+        "focus": 0,
+        "fatigue": 0
+      }
+    },
+    "modifiers": {
+      "skillCheck": {
+        "attack": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "cast": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "arcana": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "brawl": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "craft": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "detect": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "finesse": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "influence": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "leadership": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "medicine": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "melee": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "mysticism": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "performance": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "sneak": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "survival": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "ranged": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "reflex": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "endure": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "will": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        }
+      },
+      "dice": {
+        "size": {
+          "melee": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "finesse": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "brawl": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "ranged": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "thrown": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "defense": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "spell": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "spellHealing": {
+            "minimum": 0,
+            "bonus": 0
+          }
+        },
+        "exploding": {
+          "melee": {
+            "values": []
+          },
+          "finesse": {
+            "values": []
+          },
+          "brawl": {
+            "values": []
+          },
+          "ranged": {
+            "values": []
+          },
+          "thrown": {
+            "values": []
+          },
+          "defense": {
+            "values": []
+          },
+          "spell": {
+            "values": []
+          },
+          "spellHealing": {
+            "values": []
+          }
+        },
+        "crit": {
+          "melee": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "finesse": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "brawl": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "ranged": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "thrown": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "defense": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "spell": {
+            "extraDice": 0,
+            "explodes": false
+          }
+        }
+      },
+      "damage": {
+        "in": {
+          "all": 0,
+          "allPerDie": 0,
+          "attack": 0,
+          "attackPerDie": 0,
+          "spell": 0,
+          "spellPerDie": 0
+        },
+        "out": {
+          "all": 0,
+          "allPerDie": 0,
+          "attack": 0,
+          "attackPerDie": 0,
+          "spell": 0,
+          "spellPerDie": 0
+        }
+      },
+      "healing": {
+        "in": 0,
+        "out": 0
+      },
+      "casting": {
+        "damageUpcastDiscount": 0,
+        "deliveryUpcastDiscount": 0,
+        "studyDiceDamage": false,
+        "imbueDiscount": false,
+        "deliveryDiscounts": {
+          "aura": 0,
+          "cone": 0,
+          "line": 0,
+          "sphere": 0
+        }
+      }
+    },
+    "beingSize": "large",
+    "beingType": "artificial",
+    "beingSubtype": "none",
+    "threatLevel": 1,
+    "threatLevelOverride": 6.1,
+    "description": "<p><span style=\"white-space: pre-wrap;\">A silent, moving wall that catches its prey by crushing it and soaking the pulp through its cracks. They may have arms and a mouth.</span></p>",
+    "hitDice": 13,
+    "zone": "front",
+    "movement": {
+      "type": "walk",
+      "speed": 20
+    },
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "poison"
+    ],
+    "dmgWeaknesses": [
+      "blunt"
+    ],
+    "statusImmunities": [
+      "paralyzed",
+      "sickened",
+      "suffocating"
+    ],
+    "actions": [
+      {
+        "name": "Grasp",
+        "effect": "[Melee Attack]: Restrained",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 8,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        }
+      },
+      {
+        "name": "Crush",
+        "effect": "[Rush]: Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        }
+      }
+    ],
+    "combo": {
+      "name": "1×Grasp & 1×Crush",
+      "actions": [
+        {
+          "name": "Grasp",
+          "effect": "[Melee Attack]: Restrained",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 8,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "comboCount": 1
+        },
+        {
+          "name": "Crush",
+          "effect": "[Rush]: Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "comboCount": 1
+        }
+      ]
+    },
+    "abilities": [
+      {
+        "name": "Immutable",
+        "description": "<p><span style=\"white-space: pre-wrap;\">It can't be transformed.</span></p>"
+      }
+    ],
+    "morale": 12
+  },
+  "prototypeToken": {
+    "name": "Crawling Wall",
+    "displayName": 0,
+    "actorLink": false,
+    "width": 2,
+    "height": 2,
+    "depth": 2,
+    "texture": {
+      "src": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": -1,
+    "displayBars": 0,
+    "bar1": {
+      "attribute": "health.current"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "light": {
+      "negative": false,
+      "priority": 0,
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": true,
+      "range": 500,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "occludable": {
+      "radius": 8
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 0,
+      "subject": {
+        "scale": 1,
+        "texture": "systems/vagabond-lite/assets/icons/ic_adversary.webp"
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null,
+    "flags": {},
+    "randomImg": false,
+    "appendNumber": false,
+    "prependAdjective": false
+  },
+  "items": [],
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787710168878,
+    "modifiedTime": 1787793313642,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!actors!qgQJkMAskPy4gYvX"
+}

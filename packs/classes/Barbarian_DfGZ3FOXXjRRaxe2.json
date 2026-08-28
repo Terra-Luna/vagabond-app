@@ -43,6 +43,15 @@
         "level": "1",
         "uuid": "Compendium.vagabond-lite.perks.Item.ixtkMiuqHctLr3oB",
         "type": "perk"
+      },
+      {
+        "id": "uVgBkVjXOKOJNDHP",
+        "key": "FlatModifier",
+        "label": "Aggressor",
+        "level": 2,
+        "value": 5,
+        "selector": "speed.turn",
+        "scale": 4
       }
     ],
     "complexity": 2,
@@ -58,46 +67,40 @@
     "maxCastFormula": "",
     "features": [
       {
+        "name": "Rage",
         "level": 1,
         "scale": 0,
-        "name": "Rage",
         "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice are one size larger and can Explode, and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>"
       },
       {
+        "name": "Wrath",
         "level": 1,
         "scale": 0,
-        "name": "Wrath",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Interceptor Perk (p. 69), and can make its attack against an Enemy that takes an Action.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Interceptor Perk, and can make its attack against an Enemy that takes an Action.</span></p>"
       },
       {
-        "level": 2,
-        "scale": 0,
         "name": "Aggressor",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have a 10’ bonus to Speed during the first Round of Combat, and having 3 or more Fatigue doesn’t prevent you from taking the Rush Action.</span></p>"
+        "level": 2,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have a 5’ bonus to Speed, which increases by 5’ every 4 Levels hereafter. During the first Round of Combat, this bonus is doubled.</span></p>"
       },
       {
+        "name": "Murder Mode",
         "level": 4,
-        "scale": 0,
-        "name": "Fearmonger",
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, every Near Enemy with HD lower than your Level becomes Frightened until the end of your next Turn.</span></p>"
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Charmed, Confused, Frightened, or compelled to act against your will.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, while Berserk, your attack damage dice can Explode and they each have a +1 bonus. This increases by 1 every 4 Levels hereafter.</span></p>"
       },
       {
-        "level": 6,
-        "scale": 0,
-        "name": "Mindless Rancor",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Charmed, Confused, Frightened, or compelled to act against your will.</span></p>"
-      },
-      {
+        "name": "Bloodthirsty",
         "level": 8,
         "scale": 0,
-        "name": "Bloodthirsty",
         "description": "<p><span style=\"white-space: pre-wrap;\">Your attacks against Beings that are missing any HP are Favored, and you can sense them within Far as if by Blindsight.</span></p>"
       },
       {
+        "name": "Rip and Tear",
         "level": 10,
         "scale": 0,
-        "name": "Rip and Tear",
-        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, you gain a +1 bonus to each die of damage you deal, and you reduce damage you take by 1 per damage die. This stacks with the benefits of Rage.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, you reduce damage you take by 1 per damage die. This stacks with Rage.</span></p>"
       }
     ]
   },
@@ -114,7 +117,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1787622327642,
+    "modifiedTime": 1787877608153,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

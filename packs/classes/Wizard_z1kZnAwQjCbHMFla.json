@@ -68,7 +68,7 @@
         "id": "y4F03I89q89rniq5",
         "key": "FlatModifier",
         "label": "Manifold Mind",
-        "level": 4,
+        "level": 2,
         "value": 1,
         "selector": "maxFocus",
         "scale": 4
@@ -77,18 +77,24 @@
         "id": "nIOZER6V6TiVVRJQ",
         "key": "FlatModifier",
         "label": "Sculpt Spell",
-        "level": 2,
+        "level": 4,
         "value": 1,
         "selector": "modifiers.casting.deliveryUpcastDiscount",
         "scale": 4
       },
       {
-        "id": "rBDQfNkA92wWSJ1p",
-        "key": "ToggleRule",
+        "id": "VbMdj0crhMhBMz4f",
+        "key": "ChoiceSet",
         "label": "Page Master",
         "level": "1",
-        "value": true,
-        "selector": "modifiers.casting.studyDiceDamage"
+        "scale": 0,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
       }
     ],
     "complexity": 3,
@@ -113,25 +119,19 @@
         "name": "Page Master",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Bookworm Perk (p. 64).</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can spend your Studied dice and add them to the damage or healing roll of a Spell you Cast.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Bookworm Perk, and you can spend a Studied die to learn a Spell for the Shift.</span></p>"
       },
       {
         "name": "Sculpt Spell",
-        "level": 2,
+        "level": 4,
         "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You pay 1 less Mana for Delivery upcasting. This discount is increased by 1 every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You pay 1 less Mana for Delivery upcasting.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This discount is increased by 1 every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Manifold Mind",
-        "level": 4,
+        "level": 2,
         "scale": 4,
         "description": "<p><span style=\"white-space: pre-wrap;\">The number of Spells you can Focus on at the same time increases by 1 now and every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Extracurricular",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend a Studied die to learn a Spell for the Shift.</span></p>"
       }
     ]
   },
@@ -148,7 +148,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786572729833,
-    "modifiedTime": 1787622578573,
+    "modifiedTime": 1787883778972,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

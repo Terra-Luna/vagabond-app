@@ -1,15 +1,15 @@
 {
-  "name": "Bully",
+  "name": "Quick Draw",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "0KPyLXzTcPTQ3wFg",
+  "img": "icons/skills/ranged/tracers-triple-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When Combat occurs, you can make one Ranged attack before the first Turn, which is Hindered if it is made with a 2H Weapon.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
+        "stat": "awareness",
         "value": 7,
         "spell": "Any",
         "skills": [
@@ -29,9 +29,10 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "detect",
+              "ranged"
             ],
-            "andOr": null
+            "andOr": "and"
           }
         ]
       }
@@ -43,19 +44,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "PDLxeQclz2rj9enO": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1787806185478,
+    "createdTime": 1787884750967,
+    "modifiedTime": 1787884848189,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!0KPyLXzTcPTQ3wFg"
 }

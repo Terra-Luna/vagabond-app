@@ -73,30 +73,6 @@
         "filters": []
       },
       {
-        "id": "KbMMARHXNkN7EHdo",
-        "key": "FlatModifier",
-        "label": "Holy Diver",
-        "level": 10,
-        "value": 2,
-        "selector": "modifiers.skillCheck.reflex.modifier"
-      },
-      {
-        "id": "2fQAoohUMDJH26q3",
-        "key": "FlatModifier",
-        "label": "Holy Diver",
-        "level": 10,
-        "value": 2,
-        "selector": "modifiers.skillCheck.endure.modifier"
-      },
-      {
-        "id": "0a0UBTlFynT6bepY",
-        "key": "FlatModifier",
-        "label": "Holy Diver",
-        "level": 10,
-        "value": 2,
-        "selector": "modifiers.skillCheck.will.modifier"
-      },
-      {
         "id": "Reh1gwndjkILqZKW",
         "key": "FlatModifier",
         "label": "Paragon's Aura",
@@ -141,26 +117,56 @@
       {
         "name": "Lay on Hands",
         "level": 2,
-        "scale": 6,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d6 + your Level) HP to yourself or a Close Being. The healing increases by another d6 every 6 Levels hereafter.</span></p>"
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d4 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Paragon's Aura",
         "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Casting a Spell with an Aura Delivery is free for you, but you must spend Mana on Focus and upcast costs.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target for no Mana.</span></p>"
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have a 2 Mana discount on the Aura Delivery.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target with a 1 Mana discount. This discount increases every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Divine Resolve",
         "level": 6,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Blinded, Paralyzed, or Sickened, and Targets of your Lay on Hands Feature are cured of these Statuses as well.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Blinded, Paralyzed, or Sickened, and Targets of your Lay on Hands Ability are cured of these Statuses.</span></p>"
+      },
+      {
+        "name": "Lay on Hands",
+        "level": 6,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d6 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Holy Diver",
         "level": 10,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have a +2 bonus to Saves.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You and Weapons you wield are permanently under the effects of the Bless and Exalt Spells.</span></p>"
+      },
+      {
+        "name": "Lay on Hands",
+        "level": 10,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d8 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Lay on Hands",
+        "level": 14,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d10 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Lay on Hands",
+        "level": 18,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d12 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Lay on Hands",
+        "level": 22,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d20 + your Level) HP to yourself or a Close Being.</span></p>"
       }
     ]
   },
@@ -177,7 +183,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786568076634,
-    "modifiedTime": 1787622496605,
+    "modifiedTime": 1787882024831,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

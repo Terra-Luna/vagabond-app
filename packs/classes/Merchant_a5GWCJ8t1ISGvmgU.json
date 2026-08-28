@@ -41,9 +41,10 @@
         "key": "FlatModifier",
         "label": "Deep Pockets: Capacity",
         "level": 1,
-        "value": 0.5,
+        "value": 2,
         "selector": "inventory.capacity",
-        "valueMultiplier": "level.current"
+        "valueMultiplier": "",
+        "scale": 3
       },
       {
         "id": "gMetRnM4MBR1gDJ9",
@@ -72,43 +73,37 @@
         "name": "Deep Pockets",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Deft Hands Perk (p. 68), and you have extra Item Slots equal to (half your Level, round up).</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Deft Hands Perk, and you gain 2 extra Item Slots now and every 3 Levels hereafter.</span></p>"
       },
       {
         "name": "Gold Sink",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can take the Use Action to place non-Relic Items into a container, close it, then choose an Item with a value no more than the original valuables’. The chosen Item replaces the valuables.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can take the Use Action to place non-Relic Items into a container, close it, then spend 1 Luck to choose an Item with a value no more than the original valuables’. The chosen Item replaces the valuables.</span></p>"
       },
       {
-        "name": "Bang for Your Buck",
+        "name": "Line Goes Up",
         "level": 2,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you Use an Item with limited uses, you can spend 1 Luck and roll a d12. If the result is lower than your remaining Luck, the Item is not expended. This die size decreases every 6 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Anitquarian",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend a Shift to either remove one Power from a non-Fabled Relic in your possession or expend valuables of equal or higher value to the Power to add it to an Item.</span></p>"
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain 1 Luck during a Breather and when you spend a Shift to Craft or Travel.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you Rest, you gain 1 extra Luck. This extra Luck gained from a Rest increases by 1 every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Diamond Hands",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Any Relic Item Bonus or Rank is increased by 1 while you have it Equipped.</span></p>"
+        "level": 4,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Items count as Relics with a compatible +1 Bonus Relic Power while you have them Equipped. This Bonus stacks with any other Bonus the Item may have. The Bonus Relic Power is increased by 1 every 4 Levels hereafter.</span></p>"
       },
       {
-        "name": "Bang for Your Buck",
-        "level": 8,
+        "name": "Opportunist",
+        "level": 6,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you Use an Item with limited uses, you can spend 1 Luck and roll a d10. If the result is lower than your remaining Luck, the Item is not expended.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can immediately take the Use Action.</span></p>"
       },
       {
         "name": "Top Shelf",
         "level": 10,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Week, you can pull a non-Fabled Relic from your Gold Sink Feature with a value no higher than (your Level × 200g), otherwise</span></p><p><span style=\"white-space: pre-wrap;\">obeying all the rules for that Feature.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Gold Sink Ability to pull non-Fabled Relics by spending 1 additional Luck per 250g of the Relic’s value, otherwise obeying all the rules for that Ability.</span></p>"
       }
     ]
   },
@@ -125,7 +120,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786566807612,
-    "modifiedTime": 1787622465365,
+    "modifiedTime": 1787880856159,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -43,6 +43,14 @@
         "level": "1",
         "uuid": "Compendium.vagabond-lite.perks.Item.Pr9DWZMktkYQHpGx",
         "type": "perk"
+      },
+      {
+        "id": "iDjSPeebyKzauYTh",
+        "key": "ToggleRule",
+        "label": "Devastator",
+        "level": "6",
+        "value": true,
+        "selector": "modifiers.dice.crit.ranged.explodes"
       }
     ],
     "complexity": 3,
@@ -58,46 +66,52 @@
     "maxCastFormula": "",
     "features": [
       {
-        "level": 1,
-        "scale": 0,
         "name": "Deadeye",
-        "description": "<p><span style=\"white-space: pre-wrap;\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, but no lower than 17. This resets to 0 at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>"
-      },
-      {
         "level": 1,
         "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, and can stack up to 3 times. It resets at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>"
+      },
+      {
         "name": "Quickdraw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Marksmanship Perk (p. 69) and, when Combat occurs, you can make one Ranged attack before the first Turn, which is Hindered if it is made with a 2H Weapon.</span></p>"
-      },
-      {
-        "level": 2,
+        "level": 1,
         "scale": 0,
-        "name": "Skeet Shooter",
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round, you can make a Ranged attack against an attack that would hit. If you pass, reduce the damage dealt by the Target’s attack by your attack’s damage.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Quick Draw Perk and, once per Round, you can make a Ranged attack against an attack that would hit. If you pass, reduce the damage dealt by the Target’s attack by your attack’s damage.</span></p>"
       },
       {
+        "name": "Bad Medicine",
+        "level": 2,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You deal an extra die of damage when you Crit with a Ranged Check. The number of extra dice increases by 1 every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Grit",
         "level": 4,
         "scale": 0,
-        "name": "Grit",
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you Crit on a Ranged attack, the damage dice can Explode.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of your Turn, you can increase your Deadeye by 3 to remove a Status from yourself from either Blinded, Burning, Confused, Dazed, or Frightened.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">The increase is reduced by 1 every 4 Levels hereafter (minimum 0).</span></p>"
       },
       {
+        "name": "Devastator",
         "level": 6,
         "scale": 0,
-        "name": "Devastator",
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, your Deadeye Feature is immediately set to 17.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you Crit with a Ranged Check, the damage dice can Explode.</span></p>"
       },
       {
+        "name": "Grit",
         "level": 8,
         "scale": 0,
-        "name": "Bad Medicine",
-        "description": "<p><span style=\"white-space: pre-wrap;\">You deal an extra die of damage when you Crit with a Ranged Check.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of your Turn, you can increase your Deadeye by 2 to remove a Status from yourself from either Blinded, Burning, Confused, Dazed, or Frightened.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">The increase is reduced by 1 every 4 Levels hereafter (minimum 0)</span></p>"
       },
       {
+        "name": "High Noon",
         "level": 10,
         "scale": 0,
-        "name": "High Noon",
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Turn, if you Crit on a Ranged Check, you can make one additional attack.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, your Deadeye is immediately set to 17.</span></p>"
+      },
+      {
+        "name": "Grit",
+        "level": 12,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of your Turn, you can remove a Status from yourself from either Blinded, Burning, Confused, Dazed, or Frightened.</span></p>"
       }
     ]
   },
@@ -114,7 +128,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786041519359,
-    "modifiedTime": 1787622408776,
+    "modifiedTime": 1787879444191,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -62,6 +62,15 @@
             "value": "survival"
           }
         ]
+      },
+      {
+        "id": "cfrvvBQbzPJQfuvM",
+        "key": "FlatModifier",
+        "label": "Rover",
+        "level": 2,
+        "value": 5,
+        "selector": "speed.turn",
+        "scale": 4
       }
     ],
     "complexity": 2,
@@ -80,35 +89,29 @@
         "name": "Hunter's Mark",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can choose a Target when you attack it or by skipping your Move, declaring it is your Mark until you declare a new Mark. The following rules apply while you have a Mark:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Your attacks against it have the Keen and Vicious properties.</span></p><p><span style=\"white-space: pre-wrap;\">• When you attack or track the Mark, roll two d20s and use the highest for the Check.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can choose a Target when you attack it or by skipping your Move, declaring it is your Mark until you declare a new Mark. The following rules apply while you have a Mark:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Your attacks against it with Weapons that have the Keen or Vicious property also have the other property, and Crit if a Bonus causes the result to exceed your Crit range.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• You roll two d20s on Checks to track it, and use the higher result.</span></p>"
       },
       {
         "name": "Survivalist",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk with Survival Training as a Prerequisite, ignoring other prerequisites for it. Further, you have Favor on Checks to track, navigate, and against extreme temperatures, and you can Forage at a Normal Travel Pace.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain a Perk with Survival Training as a Prerequisite, ignoring other prerequisites for it.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you have Favor on Checks to track, navigate, and against extreme temperatures, and you can Forage at a Normal Travel Pace.</span></p>"
       },
       {
         "name": "Rover",
         "level": 2,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Difficult Terrain doesn’t impede your walking Speed, and you have Climb and Swim.</span></p>"
-      },
-      {
-        "name": "Overwatch",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Your additional d20 of Hunter’s Mark also applies to your Saves provoked by the Mark.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">Difficult Terrain doesn’t impede your walking Speed, and you have Climb and Swim.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you have a 5' bonus to Speed, which increases by 5' every 4 levels hereafter.</span></p>"
       },
       {
         "name": "Lethal Precision",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You ignore Hinder caused by your Mark.</span></p>"
+        "level": 4,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When damage is dealt to your Mark by you or an Ally on your Turn, the Mark takes 1 extra damage. This extra damage increases by 1 every 4 Levels hereafter.</span></p>"
       },
       {
-        "name": "Quarry",
-        "level": 8,
+        "name": "Killer Instinct",
+        "level": 6,
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can sense Beings within Far as if by Blindsight if they are missing any HP or are your Mark.</span></p>"
       },
@@ -133,7 +136,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786566364586,
-    "modifiedTime": 1787622424980,
+    "modifiedTime": 1787879855132,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

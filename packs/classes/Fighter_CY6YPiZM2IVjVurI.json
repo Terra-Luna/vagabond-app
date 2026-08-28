@@ -70,26 +70,11 @@
       {
         "id": "XpvDpGdc4H2ByW6v",
         "key": "FlatModifier",
-        "label": "Valor: Level 1",
-        "level": 1,
+        "label": "Valor",
+        "level": 2,
         "value": 1,
-        "selector": "modifiers.skillCheck.attack.critThreshold"
-      },
-      {
-        "id": "UgeuDdqYCRqm4w22",
-        "key": "FlatModifier",
-        "label": "Valor: Level 4",
-        "level": 4,
-        "value": 1,
-        "selector": "modifiers.skillCheck.attack.critThreshold"
-      },
-      {
-        "id": "RfxgJpCA7nMJfKeu",
-        "key": "FlatModifier",
-        "label": "Valor: Level 8",
-        "level": 8,
-        "value": 1,
-        "selector": "modifiers.skillCheck.attack.critThreshold"
+        "selector": "modifiers.skillCheck.attack.critThreshold",
+        "scale": 4
       }
     ],
     "complexity": 1,
@@ -110,37 +95,25 @@
         "name": "Fighting Style",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Situational Awareness Perk (p. 72) and another Perk with the Melee or Ranged Training Prerequisite (p. 64), ignoring prerequisites for this Perk.</span></p>"
-      },
-      {
-        "name": "Valor",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more when you reach 4th and 8th Levels.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Situational Awareness Perk and another Perk with the Melee or Ranged Training Prerequisite, ignoring prerequisites for this Perk.</span></p>"
       },
       {
         "name": "Momentum",
-        "level": 2,
+        "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an attack, your next attack before the end of your Turn is Favored.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an Enemy’s attack or reduce its damage to 0, your next attack before the end of your Turn is Favored</span></p>"
       },
       {
         "name": "Valor",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 2.</span></p>"
+        "level": 2,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more at 4th Level and every 4 Levels thereafter.</span></p>"
       },
       {
         "name": "Muster for Battle",
         "level": 6,
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You have two Actions on your first Turn.</span></p>"
-      },
-      {
-        "name": "Valor",
-        "level": 8,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 3.</span></p>"
       },
       {
         "name": "Harrying",
@@ -163,7 +136,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
-    "modifiedTime": 1787622385169,
+    "modifiedTime": 1787878719425,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

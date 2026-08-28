@@ -1,16 +1,16 @@
 {
-  "name": "Perfect Parry",
+  "name": "Quality Assurance",
   "type": "perk",
-  "_id": "btgnNRym2RT4gWIl",
-  "img": "/icons/skills/melee/swords-parry-block-blue.webp",
+  "_id": "zfhQUGrTt2em8NIJ",
+  "img": "icons/magic/symbols/elements-air-earth-fire-water.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If you pass a Reflex Save against an attack by 10 or more, you can deflect the attack to another viable Target of the attack, which could be the attacker, rerolling the damage.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If you spend Mana on a Casting and the Target is unaffected or the Cast Check fails, you regain half of the Mana that was spent.</span></p>",
     "rules": [],
     "prerequisites": [
       {
-        "type": "stat",
-        "stat": "dexterity",
-        "value": 7,
+        "type": "spell",
+        "stat": "might",
+        "value": 3,
         "spell": "Any",
         "skills": [
           {
@@ -29,19 +29,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "PDLxeQclz2rj9enO": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786726740979,
-    "modifiedTime": 1787884597040,
+    "createdTime": 1787884691789,
+    "modifiedTime": 1787884727248,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!btgnNRym2RT4gWIl"
+  "_key": "!items!zfhQUGrTt2em8NIJ"
 }

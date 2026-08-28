@@ -68,7 +68,7 @@
         "id": "WU8eVWtRaDlhQsdU",
         "key": "FlatModifier",
         "label": "Spell-Slinger",
-        "level": 2,
+        "level": 4,
         "value": 2,
         "selector": "modifiers.dice.size.spell.bonus"
       },
@@ -76,10 +76,10 @@
         "id": "XohL3cywNVuleWnh",
         "key": "FlatModifier",
         "label": "Spell-Slinger",
-        "level": 2,
+        "level": 4,
         "value": 1,
         "selector": "modifiers.skillCheck.cast.critThreshold",
-        "scale": 6
+        "scale": 4
       }
     ],
     "complexity": 3,
@@ -105,31 +105,25 @@
         "name": "Tap",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Vehement Magic Perk (p. 73), and you can spend your HP as Mana, which also reduces your Max HP by the same amount until</span></p><p><span style=\"white-space: pre-wrap;\">you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p>"
-      },
-      {
-        "name": "Spell Slinger",
-        "level": 2,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The damage die of your Spells is one size larger.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, the roll required for you to Crit on Cast Checks and Saves against Casts is reduced by 1, and is reduced by 1 more every 6 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Vehement Magic Perk, and you can spend your HP as Mana, which also reduces your Max HP by the same amount until you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p>"
       },
       {
         "name": "Quickening",
+        "level": 2,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can skip your Move to Cast a Spell.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">You can spend 0 Mana to upcast this Spell, but the amount of Mana you can spend to upcast it increases by 1 every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Spell Slinger",
         "level": 4,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can skip your Move to Cast a Spell. You can’t upcast this Casting.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">The damage die of your Spells is one size larger.</span></p>"
       },
       {
-        "name": "Spell Twinning",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you Cast the same Spell twice on a Turn, the second Cast Check is Favored.</span></p>"
-      },
-      {
-        "name": "Overpowered",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you Cast, you can choose to gain 2 Fatigue. If you do, you regain Cd6 Mana at the start of your Turns, and your Cast Max is doubled during the countdown.</span></p>"
+        "name": "Spell Slinger",
+        "level": 4,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Cast Checks and Saves against Casts is reduced by 1, and is reduced by 1 more every 4 Levels hereafter.</span></p>"
       }
     ]
   },
@@ -146,7 +140,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786569750999,
-    "modifiedTime": 1787622526508,
+    "modifiedTime": 1787882830507,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

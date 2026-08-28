@@ -1,16 +1,16 @@
 {
-  "name": "Bully",
+  "name": "Ricochet",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "lV9CJvPqnlnV6hAn",
+  "img": "/icons/skills/ranged/dagger-thrown-jeweled-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Your attacks with Ranged and Thrown Weapons can Target around corners, provided you have at least seen or heard the Target in the last Round.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
-        "value": 7,
+        "stat": "awareness",
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -29,7 +29,7 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "detect"
             ],
             "andOr": null
           }
@@ -43,19 +43,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "PDLxeQclz2rj9enO": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1787806185478,
+    "createdTime": 1787885000395,
+    "modifiedTime": 1787885036173,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!lV9CJvPqnlnV6hAn"
 }

@@ -69,7 +69,7 @@
         "name": "Step Up",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round when you Move, you can make a Performance Check. On a pass, one Being of your choice other than yourself that sees you can immediately take an extra Action.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round when you Move, you can make a Finesse Check. On a pass, one Being of your choice other than yourself that sees you can immediately take an extra Action.</span></p>"
       },
       {
         "name": "Footloose",
@@ -80,32 +80,32 @@
       {
         "name": "Evasive",
         "level": 2,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed. This free Speed increases by 5’ every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Captivator",
+        "level": 4,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Finesse Check or Crit on any Save, you can cause a Being that can see you to become Berserk, Charmed, Confused, or Frightened for Cd4 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This countdown die increases to a Cd6 at 8th Level.</span></p>"
       },
       {
         "name": "Don't Stop Me Now",
-        "level": 4,
+        "level": 6,
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Difficult Terrain doesn’t impede your walking Speed, and you have Favor on Saves against being Paralyzed, Restrained, grappled, or moved.</span></p>"
       },
       {
         "name": "Captivator",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Performance Check or Crit on any Save, you can cause a Being that can see you to become Berserk, Charmed, Confused, or Frightened for Cd4 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p>"
-      },
-      {
-        "name": "Flash of Beauty",
         "level": 8,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you Crit on a Save and forgo the Luck, you can take two Actions, rather than one.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Finesse Check or Crit on any Save, you can cause a Being that can see you to become Berserk, Charmed, Confused, or Frightened for Cd6 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p>"
       },
       {
         "name": "Double Time",
         "level": 10,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can use Step Up twice per Round, rather than once, and the Beings you use it on can also Move up to 10’ without using their Speed</span></p><p><span style=\"white-space: pre-wrap;\">that Turn.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can use Step Up twice per Round, rather than once, and the Beings you use it on can also Move up to 10’ without using their Speed that Turn.</span></p>"
       }
     ]
   },
@@ -122,7 +122,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786555298394,
-    "modifiedTime": 1787622356258,
+    "modifiedTime": 1787878083472,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

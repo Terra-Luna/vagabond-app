@@ -1,0 +1,435 @@
+{
+  "folder": "FLVLlhgM8ePOrzwY",
+  "name": "Dungeonheart",
+  "type": "adversary",
+  "_id": "djAK3oNGTw7AshcV",
+  "img": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+  "system": {
+    "health": {
+      "current": 45,
+      "max": 0
+    },
+    "armor": {
+      "rating": 1,
+      "as": "Leather"
+    },
+    "senses": [],
+    "statuses": {
+      "toggles": {
+        "berserk": false,
+        "blinded": false,
+        "charmed": false,
+        "confused": false,
+        "dazed": false,
+        "dead": false,
+        "frightened": false,
+        "incapacitated": false,
+        "invisible": false,
+        "paralyzed": false,
+        "prone": false,
+        "restrained": false,
+        "sickened": false,
+        "suffocating": false,
+        "unconscious": false,
+        "vulnerable": false,
+        "marked": false,
+        "warded": false,
+        "blessed": false
+      },
+      "stacks": {
+        "burning": []
+      },
+      "counters": {
+        "luck": 0,
+        "studied": 0,
+        "focus": 0,
+        "fatigue": 0
+      }
+    },
+    "modifiers": {
+      "skillCheck": {
+        "attack": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "cast": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "arcana": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "brawl": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "craft": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "detect": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "finesse": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "influence": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "leadership": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "medicine": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "melee": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "mysticism": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "performance": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "sneak": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "survival": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "ranged": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "reflex": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "endure": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        },
+        "will": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0
+        }
+      },
+      "dice": {
+        "size": {
+          "melee": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "finesse": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "brawl": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "ranged": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "thrown": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "defense": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "spell": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "spellHealing": {
+            "minimum": 0,
+            "bonus": 0
+          }
+        },
+        "exploding": {
+          "melee": {
+            "values": []
+          },
+          "finesse": {
+            "values": []
+          },
+          "brawl": {
+            "values": []
+          },
+          "ranged": {
+            "values": []
+          },
+          "thrown": {
+            "values": []
+          },
+          "defense": {
+            "values": []
+          },
+          "spell": {
+            "values": []
+          },
+          "spellHealing": {
+            "values": []
+          }
+        },
+        "crit": {
+          "melee": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "finesse": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "brawl": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "ranged": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "thrown": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "defense": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "spell": {
+            "extraDice": 0,
+            "explodes": false
+          }
+        }
+      },
+      "damage": {
+        "in": {
+          "all": 0,
+          "allPerDie": 0,
+          "attack": 0,
+          "attackPerDie": 0,
+          "spell": 0,
+          "spellPerDie": 0
+        },
+        "out": {
+          "all": 0,
+          "allPerDie": 0,
+          "attack": 0,
+          "attackPerDie": 0,
+          "spell": 0,
+          "spellPerDie": 0
+        }
+      },
+      "healing": {
+        "in": 0,
+        "out": 0
+      },
+      "casting": {
+        "damageUpcastDiscount": 0,
+        "deliveryUpcastDiscount": 0,
+        "studyDiceDamage": false,
+        "imbueDiscount": false,
+        "deliveryDiscounts": {
+          "aura": 0,
+          "cone": 0,
+          "line": 0,
+          "sphere": 0
+        }
+      }
+    },
+    "beingSize": "huge",
+    "beingType": "artificial",
+    "beingSubtype": "none",
+    "threatLevel": 1,
+    "threatLevelOverride": null,
+    "description": "<p><span style=\"white-space: pre-wrap;\">The creation of a dungeonheart involves opening a summoning portal within a living troll's heart. The troll must survive the initial process to guarantee its regeneration works. Over time, the troll's blood and tissue seeps through the portal, which spits out all manner of bizarre creatures.</span></p>",
+    "hitDice": 10,
+    "zone": "front",
+    "movement": {
+      "type": "walk",
+      "speed": 0
+    },
+    "numberAppearing": "1",
+    "dmgImmunities": [],
+    "dmgWeaknesses": [
+      "pierce"
+    ],
+    "statusImmunities": [
+      "berserk",
+      "charmed",
+      "confused",
+      "dazed",
+      "frightened",
+      "incapacitated",
+      "suffocating",
+      "unconscious"
+    ],
+    "actions": [
+      {
+        "name": "Spawn",
+        "effect": "<p><span style=\"white-space: pre-wrap;\">At the start of its Turn, roll d4. On a roll of 2 to 4, this Being spawns an Ally Being (d6, roll two and take the highest if this Being is at half HP or lower), which appears in the nearest open space:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1 Giant Spider (p. 132) </span></p><p><span style=\"white-space: pre-wrap;\">2 Basilisk (p. 135) </span></p><p><span style=\"white-space: pre-wrap;\">3 Owl Bear (p. 145) </span></p><p><span style=\"white-space: pre-wrap;\">4 Rust Monster (p. 147) </span></p><p><span style=\"white-space: pre-wrap;\">5 Warp Beast (p. 151) </span></p><p><span style=\"white-space: pre-wrap;\">6 Gelatinous Cube (p. 172)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 4,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        }
+      }
+    ],
+    "combo": {
+      "name": "",
+      "actions": []
+    },
+    "abilities": [],
+    "morale": 12
+  },
+  "prototypeToken": {
+    "name": "Dungeonheart",
+    "displayName": 0,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "depth": 1,
+    "texture": {
+      "src": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "lockRotation": true,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": -1,
+    "displayBars": 0,
+    "bar1": {
+      "attribute": "health.current"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "light": {
+      "negative": false,
+      "priority": 0,
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": true,
+      "range": 500,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "occludable": {
+      "radius": 8
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null,
+    "flags": {},
+    "randomImg": false,
+    "appendNumber": false,
+    "prependAdjective": false
+  },
+  "items": [],
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787794178977,
+    "modifiedTime": 1787794551917,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!actors!djAK3oNGTw7AshcV"
+}

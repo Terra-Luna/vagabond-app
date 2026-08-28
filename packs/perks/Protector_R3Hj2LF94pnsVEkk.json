@@ -4,7 +4,7 @@
   "_id": "R3Hj2LF94pnsVEkk",
   "img": "icons/skills/melee/shield-block-gray-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can Block on behalf of an Ally that fails their Save against the attack of an Enemy that is Close to you.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When a Close Ally is attacked while you have a Defend Weapon Equipped, you can grant them a bonus to Armor equal to a roll of its damage die instead of yourself for the attack.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -51,8 +51,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1784994603132,
-    "modifiedTime": 1785020904962,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1787884645508,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

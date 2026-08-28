@@ -1,16 +1,25 @@
 {
-  "name": "Bully",
+  "name": "Dusted Knuckle",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "zqTnJZseG8Q8Pf7Z",
+  "img": "/icons/skills/melee/unarmed-punch-fist-white.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it maintain the grapple.</span></p>",
-    "rules": [],
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use a d4 for the the damage dice of Brawl Weapons, and they Explode on a 1.</span></p>",
+    "rules": [
+      {
+        "id": "rRvPbbxYPltXR014",
+        "key": "FlatModifier",
+        "label": "Dusted Knuckle",
+        "level": 0,
+        "value": 1,
+        "selector": "modifirs.dice.exploding.brawl.values"
+      }
+    ],
     "prerequisites": [
       {
         "type": "stat",
         "stat": "might",
-        "value": 7,
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -43,19 +52,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "PDLxeQclz2rj9enO": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1787806185478,
+    "createdTime": 1787881307891,
+    "modifiedTime": 1787881432404,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!zqTnJZseG8Q8Pf7Z"
 }

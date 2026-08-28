@@ -55,6 +55,25 @@
         "selections": [],
         "pack": "spell",
         "filters": []
+      },
+      {
+        "id": "j0Ca0NABaovevGfp",
+        "key": "ChoiceSet",
+        "label": "Occultist: Perk",
+        "level": "1",
+        "scale": 0,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": [
+          {
+            "type": "training",
+            "value": "mysticism"
+          }
+        ]
       }
     ],
     "complexity": 3,
@@ -79,31 +98,19 @@
         "name": "Hex",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you affect Enemies with a Spell, you can hex one of the Targets. Doing so causes the effect of the Spell (not the damage) to be continual  until you hex a new Target.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you affect Enemies with the effect of a Spell, you can hex one of the Targeted Enemies. Doing so causes the effect to be continual until you hex a new Target.</span></p>"
       },
       {
-        "name": "Ritualism",
+        "name": "Widdershins",
         "level": 2,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, you can conduct a 10-minute Ritual as an Action.</span></p>"
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Your damage from Spell effects and your effective Level for the purpose of Spell effects are both increased by 1 against your hexed Target, and increased 1 more every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Grudge Bearer",
         "level": 4,
         "scale": 4,
         "description": "<p><span style=\"white-space: pre-wrap;\">The number of Spells you can cause to be continual on the Target with your Hex Feature increases by 1 now and every 4 Levels hereafter.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, if you hex a new Target while you have an Enemy hexed, the new Target is affected by the previous Spells.</span></p>"
-      },
-      {
-        "name": "Spite",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Cast Checks against Enemies if you are not Casting the Spell to deal damage.</span></p>"
-      },
-      {
-        "name": "Widdershins",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You and your Allies ignore the Status Immunities of your hexed Target.</span></p>"
       }
     ]
   },
@@ -120,7 +127,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786571553719,
-    "modifiedTime": 1787622563679,
+    "modifiedTime": 1787883564283,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -29,12 +29,20 @@
         "selector": "skills.brawl.isTrained"
       },
       {
-        "id": "5naAQ5wtrzZd7bKt",
+        "id": "IDuVOOXohHFErtza",
         "key": "GrantItem",
-        "label": "Rope-a-Dope: Check Hook",
+        "label": "Fisticuffs: Dusted Knuckle",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.K9EIIGNicXwlb2Ww",
+        "uuid": "Compendium.vagabond-lite.perks.Item.zqTnJZseG8Q8Pf7Z",
         "type": "perk"
+      },
+      {
+        "id": "q4MRXtAgzvkqavZI",
+        "key": "FlatModifier",
+        "label": "Title Holder",
+        "level": 6,
+        "value": 2,
+        "selector": "modifiers.dice.exploding.brawl.values"
       }
     ],
     "complexity": 2,
@@ -53,43 +61,43 @@
         "name": "Fisticuffs",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Your Equipped Brawl Weapons have the Defense and Vicious properties and use a d4 for the damage if it was previously smaller. Further, when you hit an Enemy with a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your Brawl Weapons one die size until the start of your Turn.</span></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have the Dusted Knuckle Perk, and your Equipped Brawl Weapons have the Defense and Vicious properties.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you roll any damage dice for a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your subsequent Brawl damage dice one size until the start of your Turn.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
       },
       {
         "name": "Rope-a-Dope",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Check Hook Perk (p. 67) and can also Move 10’ without using Speed before or after you make its attack.</span></p>"
-      },
-      {
-        "name": "Moxie",
-        "level": 2,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p>"
-      },
-      {
-        "name": "Iron Jaw",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The first time each Shift that you are reduced to 0 HP from damage, you can choose to instead be at (MIT + your Level) HP and immediately take an Action and Move up to 10’ without using Speed. At 8th Level, you can use this Ability once per Hour.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">If you reduce damage from a Close Enemy’s attack to 0 with the Defense property of a Brawl Weapon, you can immediately make one attack or Move 5’ without using Speed.</span></p>"
       },
       {
         "name": "Haymaker",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you roll a 6 or higher on the damage die of a Brawl attack, the Target is Dazed until the start of your Turn.</span></p>"
+        "level": 2,
+        "scale": 6,
+        "description": "<p><span style=\"white-space: pre-wrap;\">If the result of your Brawl Check for an attack exceeds your Difficulty by 10, the Target is Dazed until the start of your Turn. </span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">The number needed to exceed is reduced by 1 every 6 Levels hereafter.</span></p>"
       },
       {
-        "name": "Iron Jaw",
-        "level": 8,
+        "name": "Moxie",
+        "level": 4,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can use this Ability once per Hour.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, being at 0 HP doesn’t kill you for Cd4 Rounds. Each time you take damage during this time, also roll this countdown die.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">At 10th Level, this starts at Cd6.</span></p>"
       },
       {
         "name": "TItle Holder",
+        "level": 6,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You use a d6 for the damage dice of your Brawl Weapons, and they Explode on a roll of 1 or 2.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">At 10th Level, this increases to a d8.</span></p>"
+      },
+      {
+        "name": "Moxie",
         "level": 10,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You use a d6 for the damage of Equipped Brawl Weapons if the damage was previously smaller.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, being at 0 HP doesn’t kill you for Cd6 Rounds. Each time you take damage during this time, also roll this countdown die.</span></p>"
+      },
+      {
+        "name": "Title Holder",
+        "level": 10,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You use a d8 for the damage dice of your Brawl Weapons, and they Explode on a roll of 1 or 2.</span></p>"
       }
     ]
   },
@@ -106,7 +114,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786567444757,
-    "modifiedTime": 1787622482385,
+    "modifiedTime": 1787881598007,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

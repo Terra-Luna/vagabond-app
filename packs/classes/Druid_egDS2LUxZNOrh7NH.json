@@ -49,7 +49,7 @@
         "key": "ChoiceSet",
         "label": "Primal Mystic: Level 1 Spells",
         "level": "1",
-        "maxChoices": 3,
+        "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
         "choices": [],
@@ -61,7 +61,7 @@
         "id": "Mg89MTrJYcB8LBpS",
         "key": "ChoiceSet",
         "label": "Primal Mystic: Spells",
-        "level": "3",
+        "level": "4",
         "maxChoices": 1,
         "channel": "item",
         "sourceMode": "dynamic",
@@ -69,7 +69,7 @@
         "selections": [],
         "pack": "spell",
         "filters": [],
-        "scale": "2"
+        "scale": "3"
       }
     ],
     "complexity": 3,
@@ -79,45 +79,45 @@
     "startingPacks": [
       "Compendium.vagabond-lite.gear.Item.j05Zi3ASkGB2J19f"
     ],
-    "castingSkill": "mysticism",
-    "manaMultiplier": 4,
-    "maxCastFormula": "full",
+    "castingSkill": "survival",
+    "manaMultiplier": 2,
+    "maxCastFormula": "half",
     "features": [
       {
         "name": "Primal Mystic",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 4 Spells, one of which must always be Polymorph. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana: </strong></b><span style=\"white-space: pre-wrap;\">Your Max Mana is equal to (4 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (2 + your Level).</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Survival.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always be Polymorph. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana: </strong></b><span style=\"white-space: pre-wrap;\">Your Max Mana is equal to (2 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (1 + half your Level, round up).</span></p>"
       },
       {
         "name": "Feral Shift",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Shapechanger Perk (p. 72) and you can take an Action of the Beast as a part of the Cast Action.</span></p>"
-      },
-      {
-        "name": "Tempest Within",
-        "level": 2,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You reduce Cold, Fire, and Shock damage you take by (half your Level) per damage die.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Shapechanger Perk and, when you Cast Polymorph on yourself, you can also take an Action of the Beast.</span></p>"
       },
       {
         "name": "Savagery",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">While you Focus on Polymorph, you can Focus one additional Spell.</span></p><p><span style=\"white-space: pre-wrap;\">Further, you have a +1 bonus to attack damage and Armor while polymorphed. These attacks count as attacks with Relics. This bonus increases every 6 Levels hereafter.</span></p>"
+        "level": 2,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The damage you deal with the attacks of Beasts and your effective Level for the purposes of the Polymorph Spell are both increased by 1 now and every 4 Levels hereafter.</span></p>"
       },
       {
-        "name": "Innervate",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Action or skip your Move to give a Close Being some of your Mana, or to end one Status affecting it from either Charmed, Confused, Frightened, or Sickened. This can be yourself.</span></p>"
+        "name": "Tempest Within",
+        "level": 4,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You reduce Cold, Fire, and Shock damage you take by 1 per damage die. This reduction is increased by 1 every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Force of Nature",
         "level": 10,
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, if you are reduced to 0 HP, you can polymorph into a Beast and regain HP equal to that shown in its Statblock.</span></p>"
+      },
+      {
+        "name": "Beast Mode",
+        "level": 6,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">The attacks you make as Beasts ignore Immune to non-Relic damage.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you are the sole Target of a casting of your polymorph Spell, you can make the duration continual.</span></p>"
       }
     ]
   },
@@ -134,7 +134,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786555887806,
-    "modifiedTime": 1787622367614,
+    "modifiedTime": 1787878505886,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -1,16 +1,16 @@
 {
-  "name": "Bully",
+  "name": "Cryptozoologist",
   "type": "perk",
-  "_id": "ewIN0LfW9WJUxw1Q",
-  "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
+  "_id": "V81R7UCiaXJt9lby",
+  "img": "/icons/creatures/unholy/demon-horned-black-yellow.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Choose a Being Type. You can use an Action or skip your Move to spend a Studied die and make those Beings Weak to your next damage instance this Round. You can take this Perk multiple times to choose other Being Types.</span></p>",
     "rules": [],
     "prerequisites": [
       {
         "type": "stat",
-        "stat": "might",
-        "value": 7,
+        "stat": "awareness",
+        "value": 4,
         "spell": "Any",
         "skills": [
           {
@@ -29,33 +29,34 @@
         "skills": [
           {
             "skillNames": [
-              "brawl"
+              "mysticism",
+              "survival"
             ],
-            "andOr": null
+            "andOr": "and"
           }
         ]
       }
     ],
-    "canTakeMultiple": false
+    "canTakeMultiple": true
   },
   "effects": [],
   "folder": null,
   "sort": 0,
   "ownership": {
     "default": 0,
-    "PDLxeQclz2rj9enO": 3
+    "LxjckWttmatU52UJ": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1786634070721,
-    "modifiedTime": 1787806185478,
+    "createdTime": 1787884243892,
+    "modifiedTime": 1787884347981,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!ewIN0LfW9WJUxw1Q"
+  "_key": "!items!V81R7UCiaXJt9lby"
 }
