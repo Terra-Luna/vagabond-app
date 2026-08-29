@@ -52,6 +52,14 @@
         "value": 5,
         "selector": "speed.turn",
         "scale": 4
+      },
+      {
+        "id": "wkge3yJHrae2obfb",
+        "key": "GrantItem",
+        "label": "Rage",
+        "level": "1",
+        "uuid": "Compendium.vagabond-lite.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "type": "ActiveEffect"
       }
     ],
     "complexity": 2,
@@ -104,7 +112,90 @@
       }
     ]
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Barbarian: Rage",
+      "_id": "5DoqHVFCSJzzb5Bh",
+      "img": "/icons/skills/melee/strike-axe-red.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.dice.size.melee.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.finesse.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.brawl.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.exploding.melee.max",
+            "type": "add",
+            "value": true,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.exploding.finesse.max",
+            "type": "add",
+            "value": true,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.exploding.brawl.max",
+            "type": "add",
+            "value": true,
+            "phase": "initial",
+            "priority": null
+          }
+        ],
+        "requiresEquip": true
+      },
+      "disabled": false,
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "showIcon": 1,
+      "folder": null,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-lite",
+        "systemVersion": "0.0.0",
+        "createdTime": 1787978691548,
+        "modifiedTime": 1787978691548,
+        "lastModifiedBy": "LxjckWttmatU52UJ",
+        "compendiumSource": "Compendium.vagabond-lite.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "sort": 0,
+      "_key": "!items.effects!DfGZ3FOXXjRRaxe2.5DoqHVFCSJzzb5Bh"
+    }
+  ],
   "folder": null,
   "sort": 0,
   "ownership": {
@@ -117,7 +208,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1787877608153,
+    "modifiedTime": 1787978696623,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

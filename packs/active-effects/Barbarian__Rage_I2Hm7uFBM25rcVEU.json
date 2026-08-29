@@ -50,7 +50,7 @@
     ],
     "requiresEquip": true
   },
-  "disabled": false,
+  "disabled": true,
   "start": null,
   "duration": {
     "value": null,
@@ -63,7 +63,7 @@
   "tint": "#ffffff",
   "transfer": false,
   "statuses": [],
-  "showIcon": 1,
+  "showIcon": 2,
   "folder": null,
   "flags": {},
   "_stats": {
@@ -71,7 +71,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1787977235075,
-    "modifiedTime": 1787977235075,
+    "modifiedTime": 1787980766016,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
