@@ -107,6 +107,7 @@ const dieSizeModifierSchema = () => {
 
 const explodingModSchema = () => {
     return {
+        max: new fields.BooleanField({ initial: false }),
         values: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
     }
 }

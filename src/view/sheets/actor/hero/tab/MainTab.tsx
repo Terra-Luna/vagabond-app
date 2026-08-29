@@ -74,6 +74,31 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         return () => { Hooks.off('targetToken', hookId) }
     }, [])
 
+
+
+    /**
+     * Monitor for Active Effect updates that might alter their
+     * equipped weapon attack rolls.
+     */
+    const [effectUpdateKey, setEffectUpdateKey] = useState(0)
+
+    useEffect(() => {
+        const triggerUpdate = (effect: any) => {
+            if (effect.parent?.id === hero.parent?.id) {
+                setEffectUpdateKey(prev => prev + 1)
+            }
+        }
+
+        Hooks.on("createActiveEffect", triggerUpdate)
+        Hooks.on("updateActiveEffect", triggerUpdate)
+        Hooks.on("deleteActiveEffect", triggerUpdate)
+        return () => {
+            Hooks.off("createActiveEffect", triggerUpdate)
+            Hooks.off("updateActiveEffect", triggerUpdate)
+            Hooks.off("deleteActiveEffect", triggerUpdate)
+        }
+    }, [hero.parent?.id])
+
     const equipDisplayData = useMemo(() => {
         const weaponData = equippedWeapons.map(item => {
             const attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
@@ -91,7 +116,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
             return { item, damageString: "", initiateAttack: () => { }, rollDefensiveReflexSave: () => { } }
         })
         return [...weaponData, ...toolsData]
-    }, [hero.parent, equipDependency, targetIds])
+    }, [hero.parent, equipDependency, targetIds, effectUpdateKey])
 
     return (
         <div className="w-full">

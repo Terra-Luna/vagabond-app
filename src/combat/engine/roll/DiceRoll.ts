@@ -46,9 +46,12 @@ export class DiceRoll {
             (isDefense ? mods.dice.size['defense']?.bonus : 0) +
             (isThrown ? mods.dice.size['thrown']?.bonus : 0)
 
-        const explodesOn = mods.dice.exploding[skill]?.values
         const explodesOnCrit = mods.dice.crit[skill]?.explodes
-        if (explodesOnCrit) explodesOn.push(dieSize)
+        const explodesOn = [
+            ...mods.dice.exploding[skill]?.values ?? [],
+            ...mods.dice.exploding[skill]?.max ? [dieSize] : [],
+            ...explodesOnCrit ? [dieSize] : []
+        ]
 
         const extraDiceOnCrit =
             (isVicious ? 1 : 0) +
