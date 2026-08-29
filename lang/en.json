@@ -535,6 +535,16 @@
         "name": "Orichalcum",
         "description": "Counts as 1 more Slot to Equip, and Weapons increase the damage die one size.",
         "valueMultiplier": 50
+      },
+      "gold": {
+        "name": "Gold",
+        "description": "Damage die is a countdown die. Armor decreases by 1 after taking damage, breaking at 0.",
+        "valueMultiplier": 100
+      },
+      "wood": {
+        "name": "Wood",
+        "description": "Damage die is a countdown die. Armor decreases by 1 after taking damage, breaking at 0.",
+        "valueMultiplier": 0.5
       }
     },
     "EquipmentCategories": {

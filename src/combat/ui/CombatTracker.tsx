@@ -333,27 +333,32 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                         .filter(statusKey => statusKey !== "burning")
                         .map(statusKey => makeStatusConditionMenuItem(statusKey))
                 ]
-            },
-            {
-                icon: Eye,
-                label: controlledTokens().size > 1 ? "Toggle Visibility (All selected)" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
-                action: updateVisibility,
-            },
-            ...(controlledTokens().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
-                icon: RefreshCw,
-                label: "Refresh Activations",
-                action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
-            }] : []),
-            {
-                icon: Trash,
-                label: "Remove",
-                action: (e) => {
-                    e.keepOpen = true
-                    getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id])
-                },
-                isDestructive: true
-            },
+            }
         ] as CtxMenuItem[]
+
+        if (game.user?.isGM) {
+            actions.push(
+                {
+                    icon: Eye,
+                    label: controlledTokens().size > 1 ? "Toggle Visibility (All selected)" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
+                    action: updateVisibility,
+                },
+                ...(controlledTokens().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
+                    icon: RefreshCw,
+                    label: "Refresh Activations",
+                    action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
+                }] : []),
+                {
+                    icon: Trash,
+                    label: "Remove",
+                    action: (e) => {
+                        e.keepOpen = true
+                        getCombat().deleteEmbeddedDocuments("Combatant", [token.combatant.id])
+                    },
+                    isDestructive: true
+                }
+            )
+        }
 
         return actions
     }
@@ -366,7 +371,11 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                 onMouseLeave={onMouseLeave}
                 onClick={onClick as any}
                 onDoubleClick={onDoubleClick}
-                onContextMenu={e => onCtxMenu(e, ctxMenuActions())}
+                onContextMenu={e => {
+                    if (game.user?.isGM || combatant.isOwner) {
+                        onCtxMenu(e, ctxMenuActions())
+                    }
+                }}
                 title={vgLiteLang.Combat.keyExplainer}
             >
                 <div className="w-full">
