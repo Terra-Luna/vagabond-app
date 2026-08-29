@@ -186,6 +186,24 @@
       "path": "packs/gear",
       "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
       "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "active-effects",
+      "label": "Active Effects",
+      "type": "ActiveEffect",
+      "system": "vagabond-lite",
+      "path": "packs/active-effects",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+    },
+    {
+      "name": "macros",
+      "label": "Macros",
+      "type": "Macro",
+      "system": "vagabond-lite",
+      "path": "packs/macros",
+      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.png",
+      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
     }
   ],
   "esmodules": [

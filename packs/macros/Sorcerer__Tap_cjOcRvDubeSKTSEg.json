@@ -1,0 +1,28 @@
+{
+  "name": "Sorcerer: Tap",
+  "type": "script",
+  "_id": "cjOcRvDubeSKTSEg",
+  "img": "icons/magic/symbols/circle-ouroboros.webp",
+  "scope": "global",
+  "command": "const hero = game.user.character;\nconst name = hero.system.parent.name;\nlet tap = hero.effects.find(fx => fx.name.toUpperCase() === \"TAP\");\n\n// Add 'Tap' Active Effect if they don't yet have it...\nif (!tap) {\n  const effectData = {\n    name: \"Tap\",\n    img: \"icons/magic/symbols/circle-ouroboros.webp\",\n    changes: [\n      {\n        key: \"system.health.max\",\n        mode: 2,\n        value: \"0\",\n        priority: 20\n      }\n    ]\n  }\n  await token.actor.createEmbeddedDocuments(\"ActiveEffect\", [effectData]);\n  tap = hero.effects.find(fx => fx.name.toUpperCase() === \"TAP\");\n}\n\n// Current Tap HP value...\nconst tapHp = (hero.effects.find(fx => fx.name.toUpperCase() ===\"TAP\").changes[0]?.value || 0) - 1;\n\n// Exchange HP for Mana, 1:1...\nif (hero.system.health.max > 0) {\n  \n  // Update the Tap ActiveEffect document\n  await tap.update({\n    \"changes\": [{\n      \"key\": \"system.health.max\",\n      \"mode\": 2,\n      \"value\": tapHp,\n      \"priority\": 20\n    }]\n  });\n\n  if (hero.system.health.current > hero.system.health.max) {\n    await hero.update({ \"system.health.current\": hero.system.health.max });\n  }\n  \n  // Add 1 Mana\n  await hero.update({ \"system.mana.current\": hero.system.mana.current + 1 });\n\n  // Notify chat...\n  ChatMessage.create({\n    user: game.user._id,\n    speaker: ChatMessage.getSpeaker({ token: hero }),\n    content: hero.system.health.max > 0\n      ? `${name}: Tapping HP for Mana. Max HP reduced to: ${hero.system.health.max}`\n      : `${name} has been vaporized by their own <i>magnificense</i>. The spell will now resolve...`\n  })\n}",
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787977243474,
+    "modifiedTime": 1787977243474,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 2,
+    "LxjckWttmatU52UJ": 3
+  },
+  "author": "LxjckWttmatU52UJ",
+  "sort": 0,
+  "_key": "!macros!cjOcRvDubeSKTSEg"
+}

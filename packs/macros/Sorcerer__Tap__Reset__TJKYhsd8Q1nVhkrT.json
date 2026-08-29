@@ -1,0 +1,28 @@
+{
+  "name": "Sorcerer: Tap (Reset)",
+  "type": "script",
+  "_id": "TJKYhsd8Q1nVhkrT",
+  "img": "/icons/magic/life/heart-red-blue.webp",
+  "scope": "global",
+  "command": "const hero = game.user.character;\nconst name = hero.system.parent.name;\nconst tap = hero.effects.find(fx => fx.name.toUpperCase() === \"TAP\");\nif (!tap) return\n\n// Reset HP\nawait tap.update({ \"changes\": [] })\nawait hero.update({\n  \"system.health.value\": hero.system.health.max,\n  \"system.mana.current\": hero.system.mana.max\n})\n\nChatMessage.create({\n  user: game.user._id,\n  speaker: ChatMessage.getSpeaker({ token: hero }),\n  content: `${name}: (Tap) Resetting max HP / Mana`\n});",
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1787977244211,
+    "modifiedTime": 1787977244211,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 2,
+    "LxjckWttmatU52UJ": 3
+  },
+  "author": "LxjckWttmatU52UJ",
+  "sort": 0,
+  "_key": "!macros!TJKYhsd8Q1nVhkrT"
+}
