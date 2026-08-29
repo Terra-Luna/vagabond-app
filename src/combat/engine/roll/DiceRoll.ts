@@ -48,6 +48,7 @@ export class DiceRoll {
 
         const explodesOnCrit = mods.dice.crit[skill]?.explodes
         const explodesOn = [
+            ...weapon.damage.dice.explodesOn ?? [],
             ...mods.dice.exploding[skill]?.values ?? [],
             ...mods.dice.exploding[skill]?.max ? [dieSize] : [],
             ...explodesOnCrit ? [dieSize] : []

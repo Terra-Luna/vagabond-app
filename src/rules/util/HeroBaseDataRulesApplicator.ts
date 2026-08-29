@@ -15,6 +15,7 @@ export class HeroBaseDataRulesApplicator {
         const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
         const choiceRules = activeRules.filter(r => r.key === "ChoiceSet" && r.channel === "path" && r.sourceMode === "static")
         const itemGrantRules = activeRules.filter(r => r.key === "GrantItem" && inventoryItemTypes().includes(r.type))
+        const activeEffectGrantRules = activeRules.filter(r => r.key === "GrantItem" && r.type === "ActiveEffect")
 
         const perks = ItemsCache.perks()
 
@@ -100,12 +101,58 @@ export class HeroBaseDataRulesApplicator {
             await addItems(actor, [rule.uuid])
         }
 
+        const applyActiveEffectGrants = async (rule: any) => {
+            const actorId = actor.id
+            if (!actorId) return
+
+            const currentOrigins = actor.effects.map(fx => fx.origin)
+            if (currentOrigins.includes(rule.uuid)) return
+
+            if (!globalInFlightGrants.has(actorId)) {
+                globalInFlightGrants.set(actorId, new Set())
+            }
+            const actorLockSet = globalInFlightGrants.get(actorId)!
+            if (actorLockSet.has(rule.uuid)) return
+
+            actorLockSet.add(rule.uuid)
+
+            try {
+                const sourceEffect = await fromUuid(rule.uuid)
+                if (!sourceEffect) {
+                    actorLockSet.delete(rule.uuid)
+                    return
+                }
+
+                if (actor.effects.some(fx => fx.origin === rule.uuid)) {
+                    actorLockSet.delete(rule.uuid)
+                    return
+                }
+
+                const effectData = sourceEffect.toObject() as unknown as { name: string;[key: string]: any }
+                effectData.origin = rule.uuid
+
+                await actor.createEmbeddedDocuments("ActiveEffect", [effectData])
+            }
+            catch (err) {
+                console.error("Vagabond | Error applying rule grant:", err)
+            }
+            finally {
+                setTimeout(() => {
+                    actorLockSet.delete(rule.uuid)
+                }, 500)
+            }
+        }
+
         injectGrantedPerkRules(perkGrants)
         injectChosenPerkRules(chosenPerkRules)
         for (const rule of toggleRules) { applyToggleRule(rule) }
         for (const rule of flatModifiers) { applyFlatModifier(rule) }
         for (const rule of choiceRules) { applyChoiceRule(rule) }
         for (const rule of itemGrantRules) { applyInventoryItems(rule) }
+        for (const rule of activeEffectGrantRules) { applyActiveEffectGrants(rule) }
+
     }
-    
+
 }
+
+const globalInFlightGrants = new Map<string, Set<string>>()

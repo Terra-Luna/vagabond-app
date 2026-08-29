@@ -101,11 +101,14 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
     const equipDisplayData = useMemo(() => {
         const weaponData = equippedWeapons.map(item => {
-            const attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
+            let attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
             return {
                 item,
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
-                initiateAttack: (e: React.MouseEvent) => attackInstance.initiate(e),
+                initiateAttack: async (e: React.MouseEvent) => {
+                    await attackInstance.initiate(e)
+                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
+                },
                 rollDefensiveReflexSave: async () => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: 'reflex', blockDie: item.damage.dice.faces }).roll()
                     sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)

@@ -22,11 +22,13 @@ export const GrantItemForm = ({ rule, onChange }: FormProps) => {
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
         const dropData = JSON.parse(rawData)
-        if (dropData.type === "Item" && dropData.uuid) {
+        if ((dropData.type === "Item" || dropData.type === "ActiveEffect") && dropData.uuid) {
             const item = fromUuidSync(dropData.uuid)
             onChange({
                 uuid: dropData.uuid,
-                type: (item instanceof foundry.abstract.Document && "type" in item) ? item.type : null,
+                type: item instanceof foundry.abstract.Document && "type" in item
+                    ? (item.type === "base" ? "ActiveEffect" : item.type)
+                    : null,
                 label: item ? `Grant: ${item.name}` : rule.label
             })
         }
