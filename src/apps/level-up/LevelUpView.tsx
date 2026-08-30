@@ -51,7 +51,6 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
         ?.find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.scale ?? 0))
 
     const levelUpChoices = () => {
-        console.log(getItemChoiceRules(nextLevel, actor.system.class?.rules).filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale)))
         return getItemChoiceRules(nextLevel, actor.system.class?.rules)
             .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
     }
@@ -158,7 +157,6 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
         if (!selectedClass && classItem) {
             await actor.createEmbeddedDocuments("Item", [classItem.toObject()])
-            console.log("Setting selected class:", classItem)
             setSelectedClass(classItem)
             setIsSaving(false)
         }
