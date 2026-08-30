@@ -5,7 +5,6 @@ import { addCountdown, removeAllBurns } from "../../apps/vagabond-tools/usecase/
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
-import { vgLiteLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getCanvasToken } from "../../utils/modelUtil"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
@@ -20,6 +19,7 @@ import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
+import { vgLiteLang } from "../../utils/lang"
 
 const getCombat = () => game.combat as VagabondCombat
 
@@ -34,6 +34,8 @@ const getCombatantById = (id: string) => {
     return combatants.find(c => c.id === id || c._id === id)
 }
 
+const getSortedCombatants = (combatants) => [...getHeroes(combatants), ...getAdversaries(combatants), ...getNpcs(combatants)]
+
 const getIndexOfCombatant = (combatant) => {
     const combatants = getCombat()?.combatants?.contents
 
@@ -41,9 +43,7 @@ const getIndexOfCombatant = (combatant) => {
         return -1
     }
 
-    const sortedCombatants = [...getHeroes(combatants), ...getAdversaries(combatants)]
-
-    return sortedCombatants.indexOf(combatant)
+    return getSortedCombatants(combatants).indexOf(combatant)
 }
 
 const getCombatantsBetweenIndices = (idx1, idx2) => {
@@ -53,9 +53,7 @@ const getCombatantsBetweenIndices = (idx1, idx2) => {
         return []
     }
 
-    const sortedCombatants = [...getHeroes(combatants), ...getAdversaries(combatants)]
-
-    return sortedCombatants.slice(Math.min(idx1, idx2), Math.max(idx1, idx2) + 1)
+    return getSortedCombatants(combatants).slice(Math.min(idx1, idx2), Math.max(idx1, idx2) + 1)
 }
 
 export const CombatTracker = ({ combat }) => {
@@ -90,6 +88,7 @@ export const CombatTracker = ({ combat }) => {
 
     const heroes = getHeroes(combatants)
     const adversaries = getAdversaries(combatants)
+    const npcs = getNpcs(combatants)
 
     return (
         <CanvasReadyWrapper>
@@ -105,6 +104,12 @@ export const CombatTracker = ({ combat }) => {
                         <Group groupName="adversaries">
                             <GroupHeader groupName="adversaries" label={vgLiteLang.Combat.adversaries} />
                             <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                        </Group>
+                    }
+                    {npcs?.length > 0 &&
+                        <Group groupName="npcs">
+                            <GroupHeader groupName="npcs" label={vgLiteLang.Combat.npcs} />
+                            <GroupBody>{npcs?.map(npc => <Adversary key={npc.id} adversary={npc} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
                 </div>
@@ -498,3 +503,5 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
 const getCombatantSystem = (combatant) => combatant?.actor?.system
 const getHeroes = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof HeroDataModel)
 const getAdversaries = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof AdversaryDataModel)
+// todo: if necessary, check instanceof NpcDataModel instead of "not hero or adversary"
+const getNpcs = (combatants) => combatants?.filter(c => !(getCombatantSystem(c) instanceof HeroDataModel) && !(getCombatantSystem(c) instanceof AdversaryDataModel))
