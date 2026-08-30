@@ -1,0 +1,82 @@
+{
+  "name": "Barbarian: Murder Mode",
+  "_id": "qEWCYWZL4e4FDdBw",
+  "img": "/icons/skills/melee/strike-axe-blood-red.webp",
+  "type": "base",
+  "system": {
+    "changes": [
+      {
+        "key": "system.modifiers.dice.exploding.melee.max",
+        "type": "override",
+        "value": true,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.modifiers.dice.exploding.finesse.max",
+        "type": "override",
+        "value": true,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.modifiers.dice.exploding.brawl.max",
+        "type": "override",
+        "value": true,
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.modifiers.damage.out.melee.perDieBonus",
+        "type": "add",
+        "value": "floor(@level.current / 4)",
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.modifiers.damage.out.finesse.perDieBonus",
+        "type": "add",
+        "value": "floor(@level.current / 4)",
+        "phase": "initial",
+        "priority": null
+      },
+      {
+        "key": "system.modifiers.damage.out.brawl.perDieBonus",
+        "type": "add",
+        "value": "floor(@level.current / 4)",
+        "phase": "initial",
+        "priority": null
+      }
+    ],
+    "requiresEquip": true
+  },
+  "disabled": true,
+  "start": null,
+  "duration": {
+    "value": null,
+    "units": "seconds",
+    "expiry": null,
+    "expired": false
+  },
+  "description": "",
+  "origin": null,
+  "tint": "#ffffff",
+  "transfer": false,
+  "statuses": [],
+  "showIcon": 1,
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1788051979669,
+    "modifiedTime": 1788054201060,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!effects!qEWCYWZL4e4FDdBw"
+}

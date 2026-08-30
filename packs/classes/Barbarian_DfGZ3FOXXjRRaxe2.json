@@ -60,6 +60,14 @@
         "level": "1",
         "uuid": "Compendium.vagabond-lite.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
         "type": "ActiveEffect"
+      },
+      {
+        "id": "FBbDE8j0POojVFAh",
+        "key": "GrantItem",
+        "label": "Murder Mode",
+        "level": "4",
+        "uuid": "Compendium.vagabond-lite.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
+        "type": "ActiveEffect"
       }
     ],
     "complexity": 2,
@@ -78,7 +86,7 @@
         "name": "Rage",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice are one size larger and can Explode, and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice are one size larger and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>"
       },
       {
         "name": "Wrath",
@@ -96,7 +104,7 @@
         "name": "Murder Mode",
         "level": 4,
         "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Charmed, Confused, Frightened, or compelled to act against your will.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, while Berserk, your attack damage dice can Explode and they each have a +1 bonus. This increases by 1 every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice can Explode and they each have a +1 bonus. This increases by 1 every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Bloodthirsty",
@@ -194,6 +202,88 @@
       },
       "sort": 0,
       "_key": "!items.effects!DfGZ3FOXXjRRaxe2.5DoqHVFCSJzzb5Bh"
+    },
+    {
+      "name": "Barbarian: Murder Mode",
+      "_id": "w26ZpBwd82VxVc3d",
+      "img": "/icons/skills/melee/strike-axe-blood-red.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.dice.exploding.melee.max",
+            "type": "override",
+            "value": true,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.exploding.finesse.max",
+            "type": "override",
+            "value": true,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.exploding.brawl.max",
+            "type": "override",
+            "value": true,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.damage.out.melee.perDieBonus",
+            "type": "add",
+            "value": "floor(@level.current / 4)",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.damage.out.finesse.perDieBonus",
+            "type": "add",
+            "value": "floor(@level.current / 4)",
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.damage.out.brawl.perDieBonus",
+            "type": "add",
+            "value": "floor(@level.current / 4)",
+            "phase": "initial",
+            "priority": null
+          }
+        ],
+        "requiresEquip": true
+      },
+      "disabled": true,
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "showIcon": 1,
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-lite",
+        "systemVersion": "0.0.0",
+        "createdTime": 1788054472297,
+        "modifiedTime": 1788054472297,
+        "lastModifiedBy": "LxjckWttmatU52UJ",
+        "compendiumSource": "Compendium.vagabond-lite.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!DfGZ3FOXXjRRaxe2.w26ZpBwd82VxVc3d"
     }
   ],
   "folder": null,
@@ -208,7 +298,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
-    "modifiedTime": 1787978696623,
+    "modifiedTime": 1788054482699,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -25,27 +25,6 @@
         "value": 2,
         "phase": "initial",
         "priority": null
-      },
-      {
-        "key": "system.modifiers.dice.exploding.melee.max",
-        "type": "add",
-        "value": true,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.modifiers.dice.exploding.finesse.max",
-        "type": "add",
-        "value": true,
-        "phase": "initial",
-        "priority": null
-      },
-      {
-        "key": "system.modifiers.dice.exploding.brawl.max",
-        "type": "add",
-        "value": true,
-        "phase": "initial",
-        "priority": null
       }
     ],
     "requiresEquip": true
@@ -71,7 +50,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1787977235075,
-    "modifiedTime": 1787980766016,
+    "modifiedTime": 1788052259288,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
