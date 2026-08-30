@@ -2,6 +2,7 @@ import { ArrowsUpFromLine } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { calculateRecurringRuleEligibility, getItemChoiceRules, getRuleSelectionValues } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { vgLiteLang } from "../../utils/lang"
@@ -15,6 +16,7 @@ import { usePerkSelectionView } from "../hero-choices/PerkSelectionView"
 import { useSpellSelectionView } from "../hero-choices/SpellSelectionView"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
+import { useClassSelection } from "../hero-creator/step/ClassSelection"
 import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
 
 export interface PerkBonusSelection {
@@ -39,22 +41,26 @@ export interface LevelUpArgs {
 
 export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDataModel }, onSave: (args: LevelUpArgs) => void }) => {
 
+    const [selectedClass, setSelectedClass] = useState<(Item & { system: ClassDataModel }) | undefined>(actor.items.find(it => (it.type as string) === 'class') as any)
     const [levelUpStat, setLevelUpStat] = useState<string | undefined>()
     const [startingRsn, setStartingRsn] = useState<number>(actor.system.stats.reason ?? 2)
     const [newRsnTraining, setNewRsnTraining] = useState<string | undefined>()
     const nextLevel = actor.system.level.current! + 1
-    const classFeature = actor.system.class.features
-        .find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.scale ?? 0))
 
-    const levelUpChoices = getItemChoiceRules(nextLevel, actor.system.class.rules)
-        .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
+    const classFeature = actor.system.class?.features
+        ?.find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.scale ?? 0))
 
+    const levelUpChoices = () => {
+        console.log(getItemChoiceRules(nextLevel, actor.system.class?.rules).filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale)))
+        return getItemChoiceRules(nextLevel, actor.system.class?.rules)
+            .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
+    }
+
+    const { ClassSelection, classItem } = useClassSelection([])
     const { PerkSelection, bonusChoicesByPerk, classPerkSlots } = usePerkSelectionView(actor, true)
     const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(actor, true)
 
-    const perks = useMemo(() => {
-        return ItemsCache.perks()
-    }, [])
+    const perks = useMemo(() => { return ItemsCache.perks() }, [])
 
     const selectedPerks = useMemo(() => {
         return classPerkSlots
@@ -89,8 +95,10 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     )
 
     const latestPerk = selectedPerks[selectedPerks.length - 1]
-    const showPerkSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'perk') }, [])
-    const showSpellSelection = useMemo(() => { return levelUpChoices.some(ch => ch.pack === 'spell') }, [])
+    const showPerkSelection = useMemo(() => { return levelUpChoices().some(ch => ch.pack === 'perk') }, [selectedClass])
+    const showSpellSelection = useMemo(() => { return levelUpChoices().some(ch => ch.pack === 'spell') }, [selectedClass])
+
+
 
     useEffect(() => {
         resetPerkBonusSelections()
@@ -134,6 +142,10 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
+        if (!selectedClass && !classItem) {
+            ui.notifications?.warn("Select a class to continue...")
+            return
+        }
         if (isStatBoostOptionAvailable() && !levelUpStat) {
             ui.notifications?.warn("Select a Stat to increase before saving...")
             return
@@ -143,19 +155,28 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
             return
         }
         setIsSaving(true)
-        onSave({
-            levelUpStat: levelUpStat,
-            newRsnTraining: newRsnTraining,
-            advancement: advancement,
-            spell: spell,
-            perkTraining: perkTraining,
-            reasonTraining: reasonTraining,
-            advancements,
-            spells,
-            perkTrainings,
-            reasonTrainings,
-            isComplete: true
-        })
+
+        if (!selectedClass && classItem) {
+            await actor.createEmbeddedDocuments("Item", [classItem.toObject()])
+            console.log("Setting selected class:", classItem)
+            setSelectedClass(classItem)
+            setIsSaving(false)
+        }
+        else {
+            onSave({
+                levelUpStat: levelUpStat,
+                newRsnTraining: newRsnTraining,
+                advancement: advancement,
+                spell: spell,
+                perkTraining: perkTraining,
+                reasonTraining: reasonTraining,
+                advancements,
+                spells,
+                perkTrainings,
+                reasonTrainings,
+                isComplete: true
+            })
+        }
     }
 
     return (
@@ -173,7 +194,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                 </p>
 
                 <PrimaryButton type="submit" icon={<ArrowsUpFromLine size={16} />}>
-                    Save & Finish
+                    {`${!selectedClass ? 'Save & Continue' : 'Save & Finish'}`}
                 </PrimaryButton>
             </div>
 
@@ -184,6 +205,13 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
             {!isSaving &&
                 <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                     <div className="@container flex-1 min-h-0 flex flex-col gap-y-2 overflow-y-auto">
+                        {/* LEVEL 1 CLASS SELECTION */}
+                        {!selectedClass &&
+                            <div>
+                                {ClassSelection}
+                            </div>
+                        }
+
                         {/* NO SELECTIONS REQUIRED */}
                         {levelUpChoices.length === 0 && upgradableStatsOptions().length === 1 &&
                             <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal shrink-0">

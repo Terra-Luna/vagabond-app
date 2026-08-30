@@ -9,7 +9,6 @@ import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { ItemDivider } from "../../../../component/Header"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { MenuListItem } from "./item/MenuListItem"
-import { importFromVgbndApp } from "./util/vgbnd-import"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -70,10 +69,10 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     </div>
                 </div>
                 <ul className="space-y-2 text-sm text-text-primary font-eskapade font-bold">
-                    {!hero.tagalongId &&
+                    {/* {!hero.tagalongId &&
                         <MenuListItem text={"IMPORT"} onClick={() => importFromVgbndApp(hero)} />
-                    }
-                    {(!hero.ancestry || !hero.class) &&
+                    } */}
+                    {!hero.ancestry &&
                         <MenuListItem text={"CREATE"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
                     {game.user?.isActiveGM && hero.level.xpToLevel === -1 &&

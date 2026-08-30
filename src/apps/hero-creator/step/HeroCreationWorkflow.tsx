@@ -34,8 +34,8 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Ancestry & Class
      */
-    const { AncestrySelection, ancestryItem } = useAncestrySelection([backButton, nextButton])
-    const { ClassSelection, classItem } = useClassSelection([backButton, nextButton])
+    const { AncestrySelection, ancestryItem, levelZero } = useAncestrySelection([backButton, nextButton])
+    const { ClassSelection, classItem, setClassItem } = useClassSelection([backButton, nextButton])
 
     /**
      * Core stats
@@ -167,13 +167,20 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      * This memo will "inject" optional views into the workflow.
      */
     const activeStepIds = useMemo(() => {
-        const baseIds = ['identity', 'class-selection', 'core-stats', 'training-selection']
-        if (hasSpellSlots) { baseIds.push('spell-selection') }
-        if ([...ancestryPerkSlots, ...classPerkSlots].length > 0) baseIds.push('perk-selection')
-        if (needsExtraTraining) baseIds.push('extra-training-selection')
-        baseIds.push('equipment-selection')
-        return baseIds
-    }, [hasSpellSlots, perksWithBonusChoices, needsExtraTraining])
+        const ids = ['identity']
+        if (!levelZero) { ids.push('class-selection') }
+
+        ids.push('core-stats')
+        ids.push('training-selection')
+
+        if (hasSpellSlots) { ids.push('spell-selection') }
+        if ([...ancestryPerkSlots, ...classPerkSlots].length > 0) ids.push('perk-selection')
+        if (needsExtraTraining) ids.push('extra-training-selection')
+
+        ids.push('equipment-selection')
+
+        return ids
+    }, [hasSpellSlots, perksWithBonusChoices, needsExtraTraining, levelZero])
 
     useEffect(() => {
         registerStepIds(activeStepIds)
@@ -188,6 +195,13 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         setChosenBonusSkills([])
         resetPerkBonusSelections()
     }, [ancestryItem, classItem])
+
+    /**
+     * If Level Zero start gets toggled, blank-out their selected Class.
+     */
+    useEffect(() => {
+        setClassItem(undefined)
+    }, [levelZero])
     
     /**
      * Copies the selected ancestry and class onto the Hero and maps
@@ -197,16 +211,15 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      * lifecycle step.
      */
     const handleSaveAndFinish = useCallback(async () => {
-        if (!actor.isOwner || !ancestryItem || !classItem) return
+        if (!actor.isOwner || !ancestryItem || (!classItem && !levelZero)) return
 
         try {
-            const createdItems = await actor.createEmbeddedDocuments("Item", [
-                ancestryItem.toObject(),
-                classItem.toObject()
-            ]) as (Item & { system: { rules: any } })[]
+            const heroItems = [ancestryItem.toObject()]
+            if (classItem) heroItems.push(classItem.toObject())
+            const createdItems = await actor.createEmbeddedDocuments("Item", heroItems) as (Item & { system: { rules: any } })[]
 
             const stats: Record<string, number | number[]> = {
-                'system.level.current': 1,
+                'system.level.current': levelZero ? 0 : 1,
                 'system.stats.baseStatBlock': selectedArr?.values ?? [],
                 'system.stats.might': assignedStats?.find(s => s.stat === 'might')?.value ?? 2,
                 'system.stats.dexterity': assignedStats?.find(s => s.stat === 'dexterity')?.value ?? 2,
@@ -233,6 +246,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                         targetRuleSet.selections = []
                     }
                     targetRuleSet.selections = [...normalizeRuleSelections(targetRuleSet.selections), { id: selectionId ?? randomId(), value: selection, subselect: "" }]
+                }
+                else {
+                    actor.update({ [`system.${selection}`]: true })
                 }
             }
 

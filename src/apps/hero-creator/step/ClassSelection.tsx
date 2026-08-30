@@ -11,21 +11,20 @@ import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useClassSelection = (navButtons: ReactNode[]) => {
-    const strings = vgLiteLang.HeroCreation
 
     useEffect(() => {
         CombinedItems('class').then((res) => {
             setClasses(res.sort((a, b) => a.name.localeCompare(b.name)))
-            setClassOpts(res.map(it => ({ value: it._id, label: it.name })))
-            getFullItem<ClassDataModel>(res[0]).then((item) => {
-                if (item) setClassItem(item)
-            })
+            setClassOpts([
+                { value: null, label: " -- Select your Class -- " },
+                ...res.map(it => ({ value: it._id, label: it.name }))
+            ])
         })
     }, [])
 
     const [classes, setClasses] = useState<(Item | TypedIndexEntry)[]>()
     const [classOpts, setClassOpts] = useState<{ value: string | null, label: string }[]>()
-    const [classItem, setClassItem] = useState<Item & { system: ClassDataModel | null }>()
+    const [classItem, setClassItem] = useState<(Item & { system: ClassDataModel }) | undefined>()
 
     const onSelectClass = useCallback(async (selection: string) => {
         const item = await getFullItem<ClassDataModel>(classes?.find(it => it._id === selection) ?? null)
@@ -35,13 +34,13 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
     const ClassSelection = (
         <div className="relative bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
             <div className="flex-shrink-0 space-y-4">
-                <Header title={strings.class} />
+                <Header title={vgLiteLang.HeroCreation.class} />
                 <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!!classItem} />
             </div>
-            <div className="flex-1 overflow-y-auto space-y-4">
+            <div className="flex-1 overflow-y-auto space-y-4 mt-2">
                 <HeroCreationDropdown
-                    label={strings.class}
-                    value={classItem?.id ?? strings.selectClass}
+                    label={vgLiteLang.HeroCreation.class}
+                    value={classItem?.id ?? vgLiteLang.HeroCreation.selectClass}
                     options={classOpts ?? []}
                     onChange={onSelectClass}
                 />
@@ -54,5 +53,5 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
         </div>
     )
 
-    return { ClassSelection, classItem }
+    return { ClassSelection, classItem, setClassItem }
 }

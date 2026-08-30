@@ -85,7 +85,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                                 <button
                                     title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
                                     onClick={async () => {
-                                        if (hero.ancestry && hero.class && hero.level.current! > 0) {
+                                        if (hero.ancestry) {
                                             new LevelUpApp(hero.parent).render({ force: true })
                                         }
                                         else {
@@ -107,7 +107,10 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                         <span>&nbsp;•&nbsp;</span>
                         <div className="flex gap-x-1 cursor-pointer">
                             <p onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</p>
-                            <p onClick={() => openItemSheet(hero.class)}>{getName(hero.class) ?? "Vagabond"}</p>
+                            {hero.class
+                                ? <p onClick={() => openItemSheet(hero.class)}>{getName(hero.class)}</p>
+                                : <p>Vagabond</p>
+                            }
                         </div>
 
                         {/* EXPERIENCE POINTS */}
