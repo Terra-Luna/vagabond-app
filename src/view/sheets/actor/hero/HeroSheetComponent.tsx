@@ -6,7 +6,6 @@ import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
 import { importHero } from "../../../../apps/importer/TagalongImporter"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
-import { getMaxLevel } from "../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
 import { lang } from "../../../../utils/lang"
@@ -59,6 +58,13 @@ export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { sys
 }
 
 const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondActorSheet }) => {
+    const canLevelUp = () => {
+        const hasDestiny = hero.parent.getFlag("vagabond-lite", "destiny") || false
+        const hasXpLevel = hero.level.xp! > hero.level.xpToLevel! && hero.level.xpToLevel! > -1
+        const isNewChar = !hero.ancestry
+        return hasDestiny || hasXpLevel || isNewChar
+    }
+
     return (
         <div className="flex">
             {/* MAIN STATS ARRAY */}
@@ -75,7 +81,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
 
                         <div className="flex gap-x-2 ml-auto">
                             {/* LEVEL-UP BUTTON */}
-                            {((hero.level.xp ?? 0) >= (hero.level.xpToLevel ?? 9999) && hero.level.current! < getMaxLevel() || !hero.ancestry) &&
+                            {canLevelUp() &&
                                 <button
                                     title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
                                     onClick={async () => {
@@ -105,9 +111,11 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                         </div>
 
                         {/* EXPERIENCE POINTS */}
-                        <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })} >
-                            {localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}
-                        </div>
+                        {(hero.level.xpToLevel ?? -1) > 0 &&
+                            <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })} >
+                                {localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}
+                            </div>
+                        }
                     </div>
                 </div>
                 {/* HP, ARMOR, FATIGUE HUD */}

@@ -76,6 +76,9 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     {(!hero.ancestry || !hero.class) &&
                         <MenuListItem text={"CREATE"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
+                    {game.user?.isActiveGM && hero.level.xpToLevel === -1 &&
+                        <MenuListItem text={'GRANT LEVEL UP'} onClick={() => hero.parent.setFlag("vagabond-lite", "destiny", true)} toggleMenu={toggleMenu} />
+                    }
                     <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => new ActiveEffectsApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     <MenuListItem text={"TOGGLE TRACKERS"} toggleMenu={toggleMenu} onClick={async () => {

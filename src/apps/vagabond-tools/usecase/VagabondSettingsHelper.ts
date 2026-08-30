@@ -12,19 +12,28 @@ export const getMaxLevel = (): number => {
 /**
  * XP Curve Settings
  */
-export interface XpCurve {
-    id: string
-    level: number
-    xp: number
-}
-export const getXpCurve = (): XpCurve[] => {
-    return (game as any).settings.get("vagabond-lite", "xpCurve") || []
-}
-export const setXpCurve = async (curve) => {
-    await (game as any).settings.set("vagabond-lite", "xpCurve", curve)
+export const getLevelPacing = (): string => {
+    return (game as any).settings.get("vagabond-lite", "levelPacing") || 'normal'
 }
 export const getXpToNext = (level: number): number => {
-    return getXpCurve().find(it => it.level === level)?.xp ?? (level + 1) * 5
+    const xpFormulae = {
+        quick: {
+            calculate: () => { return 5 }
+        },
+        normal: {
+            calculate: () => { return (level + 1) * 5 }
+        },
+        epic: {
+            calculate: () => { return (level + 1) * 7 }
+        },
+        saga: {
+            calculate: () => { return (level + 1) * 10 }
+        },
+        destiny: {
+            calculate: () => { return -1 }
+        }
+    }
+    return xpFormulae[getLevelPacing()].calculate()
 }
 
 /**

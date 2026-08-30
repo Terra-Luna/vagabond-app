@@ -1,5 +1,4 @@
 import { fields } from "../../model/common/sharedSchemas"
-import { XpProgressionCurveApp } from "../level-up/progression/XpProgressionCurveApp"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 import { RelicPowers } from "./relic/RelicPowers"
 
@@ -10,7 +9,7 @@ export class VagabondSettingsRegistry {
 
     static register() {
         VagabondSettingsRegistry.registerMaxLevel()
-        VagabondSettingsRegistry.registerXpCurve()
+        VagabondSettingsRegistry.registerLevelPacing()
         VagabondSettingsRegistry.registerXpQuestionnaire()
         VagabondSettingsRegistry.registerAttackRegistry()
         VagabondSettingsRegistry.registerItemShopToggle()
@@ -60,34 +59,22 @@ export class VagabondSettingsRegistry {
         })
     }
 
-    private static registerXpCurve() {
-        game.settings?.register("vagabond-lite" as any, "xpCurve" as any, {
-            name: "XP Progression Curve",
-            hint: "Adjust required XP values to reach next level.",
+    private static registerLevelPacing() {
+        game.settings?.register("vagabond-lite" as any, "levelPacing" as any, {
+            name: "Level Pacing",
+            hint: "Pace at which the Heroes gain levels.",
             scope: "world",
-            config: false,
-            type: Object,
-            default: [
-                { id: "l0", level: 0, xp: 5 },
-                { id: "l1", level: 1, xp: 10 },
-                { id: "l2", level: 2, xp: 15 },
-                { id: "l3", level: 3, xp: 20 },
-                { id: "l4", level: 4, xp: 25 },
-                { id: "l5", level: 5, xp: 30 },
-                { id: "l6", level: 6, xp: 35 },
-                { id: "l7", level: 7, xp: 40 },
-                { id: "l8", level: 8, xp: 45 },
-                { id: "l9", level: 9, xp: 50 }
-            ] as any,
+            config: true,
+            type: String,
+            default: 'normal',
+            choices: {
+                "quick": "Quick: 5 XP / Level (2-5 month campaign)",
+                "normal": "Normal: 5x next Level (5-12 month campaign)",
+                "epic": "Epic: 7x next Level (1-2 year campaign)",
+                "saga": "Saga: 10x next Level (2+ year campaign)",
+                "destiny": "Destiny: Grant level-ups from Hero sheet menu."
+            },
             onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
-        })
-        game.settings?.registerMenu("vagabond-lite", "xpCurveConfig", {
-            name: "XP Progression Curve Editor",
-            label: "Modify Curve",
-            hint: "Edit the XP curve for Hero leveling pace.",
-            icon: "fas fa-tasks",
-            type: XpProgressionCurveApp,
-            restricted: true
         })
     }
 
@@ -101,9 +88,10 @@ export class VagabondSettingsRegistry {
             default: [
                 { id: "q1", text: "Did you complete a Quest?", xp: 1 },
                 { id: "q2", text: "Did you Fail and allow the Fail to resolve?", xp: 1 },
-                { id: "q3", text: "Did you pass a Hindered Check?", xp: 1 },
-                { id: "q4", text: "Did you make a discovery?", xp: 1 },
-                { id: "q5", text: "Did you loot at least 50g of treasure?", xp: 1 }
+                { id: "q3", text: "Did you defeat a Boss Enemy?", xp: 1 },
+                { id: "q4", text: "Did you pass a Hindered Check?", xp: 1 },
+                { id: "q5", text: "Did you make a discovery?", xp: 1 },
+                { id: "q6", text: "Did you loot at least 50g of treasure?", xp: 1 }
             ] as any,
             onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })

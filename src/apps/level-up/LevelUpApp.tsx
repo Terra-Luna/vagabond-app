@@ -45,6 +45,8 @@ export class LevelUpApp extends VagabondApplication {
      */
     private async handleSave(args: LevelUpArgs): Promise<void> {
         if (args.isComplete) {
+            this.actor.setFlag("vagabond-lite" as any, "destiny", false)
+
             const level = this.actor.system.level
 
             const updates: Record<string, any> = {
