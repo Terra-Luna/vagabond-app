@@ -26,7 +26,7 @@
         "label": "Training: Finesse",
         "level": "1",
         "value": true,
-        "selector": "skills.finesse.isTrained"
+        "selector": "skills.finesse.trained"
       },
       {
         "id": "iZYdihJAFJ9ZIG6D",
@@ -34,7 +34,7 @@
         "label": "Training: Performance",
         "level": "1",
         "value": true,
-        "selector": "skills.performance.isTrained"
+        "selector": "skills.performance.trained"
       },
       {
         "id": "BwMLDvk0vLuDEqJZ",

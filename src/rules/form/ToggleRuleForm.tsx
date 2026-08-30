@@ -22,7 +22,7 @@ export const ToggleRuleForm = ({ rule, onChange }) => {
                 label={"Path"}
                 value={rule.selector || ""}
                 onChange={(e) => onChange({ selector: e.target.value })}
-                placeholder={"e.g., skills.arcana.isTrained"}
+                placeholder={"e.g., skills.arcana.trained"}
             />
             <ItemRuleSelector
                 label={"Select State"}

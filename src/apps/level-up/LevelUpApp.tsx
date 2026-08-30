@@ -61,7 +61,7 @@ export class LevelUpApp extends VagabondApplication {
             }
 
             if (args.newRsnTraining) {
-                updates[`system.skills.${args.newRsnTraining}.isTrained`] = true
+                updates[`system.skills.${args.newRsnTraining}.trained`] = true
             }
 
             /**

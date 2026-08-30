@@ -26,7 +26,7 @@
         "label": "Training: Mysticism",
         "level": "1",
         "value": true,
-        "selector": "skills.mysticism.isTrained"
+        "selector": "skills.mysticism.trained"
       },
       {
         "id": "q9dlRNd8mlAV2uyE",
@@ -34,7 +34,7 @@
         "label": "Training: Influence",
         "level": "1",
         "value": true,
-        "selector": "skills.influence.isTrained"
+        "selector": "skills.influence.trained"
       },
       {
         "id": "SuDob7qulK9ECBI3",

@@ -26,7 +26,7 @@
         "label": "Training: Craft",
         "level": "1",
         "value": true,
-        "selector": "skills.craft.isTrained"
+        "selector": "skills.craft.trained"
       },
       {
         "id": "7s3Y3832Y0tfchRE",
@@ -34,7 +34,7 @@
         "label": "Training: Influence",
         "level": "1",
         "value": true,
-        "selector": "skills.influence.isTrained"
+        "selector": "skills.influence.trained"
       },
       {
         "id": "XEFiSSPFSdMD6711",

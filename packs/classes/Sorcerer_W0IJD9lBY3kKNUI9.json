@@ -26,7 +26,7 @@
         "label": "Training: Influence",
         "level": "1",
         "value": true,
-        "selector": "skills.influence.isTrained"
+        "selector": "skills.influence.trained"
       },
       {
         "id": "4zoWMbiuxCInWKcm",

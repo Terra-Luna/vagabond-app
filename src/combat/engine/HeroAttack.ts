@@ -295,7 +295,7 @@ export class HeroAttack extends Attack {
         if (this.skillCheck.skill && this.damageRoll?.result) {
             this.critChoice = 'damage'
             const skill = this.actor.system.skills[this.skillCheck.skill]
-            const critDmg = skill.isTrained
+            const critDmg = skill.trained
                 ? (20 - skill.value) / 2
                 : 20 - skill.value
             this.damageRoll.result.bonus += critDmg

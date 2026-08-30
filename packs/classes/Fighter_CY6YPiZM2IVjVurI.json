@@ -26,7 +26,7 @@
         "label": "Training: Melee",
         "level": "1",
         "value": true,
-        "selector": "skills.melee.isTrained"
+        "selector": "skills.melee.trained"
       },
       {
         "id": "ejcaoUWp9wHWUYJL",
@@ -34,7 +34,7 @@
         "label": "Training: Ranged",
         "level": "1",
         "value": true,
-        "selector": "skills.ranged.isTrained"
+        "selector": "skills.ranged.trained"
       },
       {
         "id": "VQWJJrXPuJra5YFp",

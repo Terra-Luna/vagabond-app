@@ -26,7 +26,7 @@
         "label": "Training: Brawl",
         "level": "1",
         "value": true,
-        "selector": "skills.brawl.isTrained"
+        "selector": "skills.brawl.trained"
       },
       {
         "id": "IDuVOOXohHFErtza",

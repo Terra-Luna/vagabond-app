@@ -33,7 +33,7 @@ export const useTrainingSelection = (
             channel: "path",
             sourceMode: "static",
             maxChoices: Math.ceil((stats.find(s => s.stat === 'reason')?.value ?? 0) / 2),
-            choices: [{ value: "skills.*.isTrained", label: "Skills" }],
+            choices: [{ value: "skills.*.trained", label: "Skills" }],
             selections: []
         }
     }, [ancestry, clazz, stats, level1RuleId])
@@ -141,7 +141,9 @@ export const useTrainingSelection = (
                         <div className="justify-center text-center bg-context-menu-fill/25">
                             <BorderedContent className="flex-col gap-y-2 justify-center w-full">
                                 <HeroCreationSubtext text={vgLiteLang.HeroCreation.trainingSlots} />
-                                <p className="text-4xl text-text-header-tertiary font-bold">{`${chosenLevel1Skills.length} / ${level1TrainingRule!.maxChoices} ${vgLiteLang.HeroCreation.selected}`}</p>
+                                <p className="text-4xl text-text-header-tertiary font-bold">
+                                    {`${chosenLevel1Skills.length} / ${level1TrainingRule!.maxChoices} ${vgLiteLang.HeroCreation.selected}`}
+                                </p>
                             </BorderedContent>
                         </div>
 

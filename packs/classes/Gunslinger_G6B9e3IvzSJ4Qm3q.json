@@ -26,7 +26,7 @@
         "label": "Training: Ranged",
         "level": "1",
         "value": true,
-        "selector": "skills.ranged.isTrained"
+        "selector": "skills.ranged.trained"
       },
       {
         "id": "86sTIWJSY0IRqMge",
@@ -34,7 +34,7 @@
         "label": "Training: Detect",
         "level": "1",
         "value": true,
-        "selector": "skills.detect.isTrained"
+        "selector": "skills.detect.trained"
       },
       {
         "id": "qJRZL1JaHxK75whJ",

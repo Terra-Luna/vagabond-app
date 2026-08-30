@@ -37,10 +37,10 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full mb-2">
             <Header title={vgLiteLang.HeroSheet.attacks} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.melee} skillKey="melee" value={melee.value!} isTrained={melee.isTrained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} isTrained={brawl.isTrained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} isTrained={finesse.isTrained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} isTrained={ranged.isTrained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.melee} skillKey="melee" value={melee.value!} trained={melee.trained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} trained={brawl.trained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} trained={finesse.trained} isAttack={true} />
+            <Skill hero={hero} name={vgLiteLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} trained={ranged.trained} isAttack={true} />
         </div>
     )
 }

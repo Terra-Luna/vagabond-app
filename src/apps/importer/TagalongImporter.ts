@@ -51,20 +51,20 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
             },
 
             skills: {
-                brawl: { isTrained: isTrained('Brawl', res.trained_skills) },
-                melee: { isTrained: isTrained('Melee', res.trained_skills) },
-                finesse: { isTrained: isTrained('Finesse', res.trained_skills) },
-                ranged: { isTrained: isTrained('Ranged', res.trained_skills) },
-                arcana: { isTrained: isTrained('Arcana', res.trained_skills) },
-                craft: { isTrained: isTrained('Craft', res.trained_skills) },
-                detect: { isTrained: isTrained('Detect', res.trained_skills) },
-                influence: { isTrained: isTrained('Influence', res.trained_skills) },
-                leadership: { isTrained: isTrained('Leadership', res.trained_skills) },
-                medicine: { isTrained: isTrained('Medicine', res.trained_skills) },
-                mysticism: { isTrained: isTrained('Mysticism', res.trained_skills) },
-                performance: { isTrained: isTrained('Performance', res.trained_skills) },
-                sneak: { isTrained: isTrained('Sneak', res.trained_skills) },
-                survival: { isTrained: isTrained('Survival', res.trained_skills) }
+                brawl: { trained: trained('Brawl', res.trained_skills) },
+                melee: { trained: trained('Melee', res.trained_skills) },
+                finesse: { trained: trained('Finesse', res.trained_skills) },
+                ranged: { trained: trained('Ranged', res.trained_skills) },
+                arcana: { trained: trained('Arcana', res.trained_skills) },
+                craft: { trained: trained('Craft', res.trained_skills) },
+                detect: { trained: trained('Detect', res.trained_skills) },
+                influence: { trained: trained('Influence', res.trained_skills) },
+                leadership: { trained: trained('Leadership', res.trained_skills) },
+                medicine: { trained: trained('Medicine', res.trained_skills) },
+                mysticism: { trained: trained('Mysticism', res.trained_skills) },
+                performance: { trained: trained('Performance', res.trained_skills) },
+                sneak: { trained: trained('Sneak', res.trained_skills) },
+                survival: { trained: trained('Survival', res.trained_skills) }
             },
 
             inventory: {
@@ -182,7 +182,7 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
     }
 }
 
-const isTrained = (skill: string, trainedSkills: string[]): boolean => {
+const trained = (skill: string, trainedSkills: string[]): boolean => {
     return trainedSkills.indexOf(skill) > -1
 }
 

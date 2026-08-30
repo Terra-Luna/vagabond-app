@@ -284,7 +284,7 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-x-2">
                     {
                         skills.map(sk => (
-                            <Skill key={sk} hero={hero} skillKey={sk} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} isTrained={hero.skills[sk].isTrained} isAttack={false} isCastSkill={sk === castingSkill} />
+                            <Skill key={sk} hero={hero} skillKey={sk} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} trained={hero.skills[sk].trained} isAttack={false} isCastSkill={sk === castingSkill} />
                         ))
                     }
                 </div>
@@ -293,13 +293,13 @@ export const Skills = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-export const Skill = ({ hero, isTrained, skillKey, name, value, isAttack, isCastSkill }: {
-    hero: HeroDataModel, isTrained: boolean, skillKey: string, name: string, value: number, isAttack: boolean, isCastSkill?: boolean
+export const Skill = ({ hero, trained, skillKey, name, value, isAttack, isCastSkill }: {
+    hero: HeroDataModel, trained: boolean, skillKey: string, name: string, value: number, isAttack: boolean, isCastSkill?: boolean
 }) => {
     return (
         <div title={lang.VGLITE.HeroSheet.skills_tooltip} className="w-full">
             <div className="flex items-center ml-1">
-                <Star className={(isTrained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
+                <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle hover-glow`} onClick={
                     async (e: React.MouseEvent<HTMLDivElement>) => {
                         const skillCheck = await new SkillCheck(hero, { type: isAttack ? 'attack' : 'check', skill: skillKey, clickEvent: e }).roll()

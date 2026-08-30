@@ -262,7 +262,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                 chosenSkills.push({ skill: selection.value, ruleId: level1RuleId })
             })
             chosenSkills.forEach(selection => {
-                addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.isTrained`)
+                addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.trained`)
             });
 
             [...classSpellSlots, ...ancestrySpellSlots].forEach(selection => {

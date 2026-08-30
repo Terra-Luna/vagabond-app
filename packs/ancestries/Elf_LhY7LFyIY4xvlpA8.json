@@ -12,7 +12,7 @@
         "label": "Ascendancy",
         "level": 0,
         "value": true,
-        "selector": "skills.detect.isTrained"
+        "selector": "skills.detect.trained"
       },
       {
         "id": "7KkcA8nFI98kMjNH",
@@ -25,7 +25,7 @@
         "sourceMode": "static",
         "choices": [
           {
-            "value": "skills.*.isTrained",
+            "value": "skills.*.trained",
             "label": "Training"
           }
         ],

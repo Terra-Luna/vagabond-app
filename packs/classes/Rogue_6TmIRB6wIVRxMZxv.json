@@ -26,7 +26,7 @@
         "label": "Training: Ranged",
         "level": "1",
         "value": true,
-        "selector": "skills.ranged.isTrained"
+        "selector": "skills.ranged.trained"
       },
       {
         "id": "sivfQHD0vOokCRzx",
@@ -34,7 +34,7 @@
         "label": "Training: Finesse",
         "level": "1",
         "value": true,
-        "selector": "skills.finesse.isTrained"
+        "selector": "skills.finesse.trained"
       },
       {
         "id": "ZoGZoCaryZ6haE1K",
@@ -42,7 +42,7 @@
         "label": "Training: Sneak",
         "level": "1",
         "value": true,
-        "selector": "skills.sneak.isTrained"
+        "selector": "skills.sneak.trained"
       },
       {
         "id": "2JI06SlrJcRVwfmk",

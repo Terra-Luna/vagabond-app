@@ -26,7 +26,7 @@
         "label": "Training: Melee",
         "level": "1",
         "value": true,
-        "selector": "skills.melee.isTrained"
+        "selector": "skills.melee.trained"
       },
       {
         "id": "xAoJt7g9Qv9tNhWL",
@@ -34,7 +34,7 @@
         "label": "Training: Survival",
         "level": "1",
         "value": true,
-        "selector": "skills.survival.isTrained"
+        "selector": "skills.survival.trained"
       },
       {
         "id": "KiBRwag7JSlWA7ur",

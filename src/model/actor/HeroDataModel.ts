@@ -238,24 +238,24 @@ export function setSpeeds(hero: HeroDataModel) {
 export function setSkillDifficulties(hero: HeroDataModel) {
     const skills = hero.skills
     const stats = hero.stats
-    skills.brawl.value = setSkill(Number(stats.might), skills.brawl.isTrained)
-    skills.finesse.value = setSkill(Number(stats.dexterity), skills.finesse.isTrained)
-    skills.melee.value = setSkill(Number(stats.might), skills.melee.isTrained)
-    skills.ranged.value = setSkill(Number(stats.awareness), skills.ranged.isTrained)
-    skills.arcana.value = setSkill(Number(stats.reason), skills.arcana.isTrained)
-    skills.craft.value = setSkill(Number(stats.reason), skills.craft.isTrained)
-    skills.detect.value = setSkill(Number(stats.awareness), skills.detect.isTrained)
-    skills.influence.value = setSkill(Number(stats.presence), skills.influence.isTrained)
-    skills.leadership.value = setSkill(Number(stats.presence), skills.leadership.isTrained)
-    skills.medicine.value = setSkill(Number(stats.reason), skills.medicine.isTrained)
-    skills.mysticism.value = setSkill(Number(stats.awareness), skills.mysticism.isTrained)
-    skills.performance.value = setSkill(Number(stats.presence), skills.performance.isTrained)
-    skills.sneak.value = setSkill(Number(stats.dexterity), skills.sneak.isTrained)
-    skills.survival.value = setSkill(Number(stats.awareness), skills.survival.isTrained)
+    skills.brawl.value = setSkill(Number(stats.might), skills.brawl.trained)
+    skills.finesse.value = setSkill(Number(stats.dexterity), skills.finesse.trained)
+    skills.melee.value = setSkill(Number(stats.might), skills.melee.trained)
+    skills.ranged.value = setSkill(Number(stats.awareness), skills.ranged.trained)
+    skills.arcana.value = setSkill(Number(stats.reason), skills.arcana.trained)
+    skills.craft.value = setSkill(Number(stats.reason), skills.craft.trained)
+    skills.detect.value = setSkill(Number(stats.awareness), skills.detect.trained)
+    skills.influence.value = setSkill(Number(stats.presence), skills.influence.trained)
+    skills.leadership.value = setSkill(Number(stats.presence), skills.leadership.trained)
+    skills.medicine.value = setSkill(Number(stats.reason), skills.medicine.trained)
+    skills.mysticism.value = setSkill(Number(stats.awareness), skills.mysticism.trained)
+    skills.performance.value = setSkill(Number(stats.presence), skills.performance.trained)
+    skills.sneak.value = setSkill(Number(stats.dexterity), skills.sneak.trained)
+    skills.survival.value = setSkill(Number(stats.awareness), skills.survival.trained)
 }
 
-export function setSkill(stat: number, isTrained: boolean): number {
-    return isTrained ? (20 - stat * 2) : (20 - stat)
+export function setSkill(stat: number, trained: boolean): number {
+    return trained ? (20 - stat * 2) : (20 - stat)
 }
 
 export function setSaves(hero: HeroDataModel) {

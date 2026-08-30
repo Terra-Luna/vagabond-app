@@ -70,9 +70,9 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             {/* ACTIVE RULES LIST */}
             <CollapsibleSection title={`Active (${activeRules.length})`} settingsKey={'rules-active-features'} content={
                 <EffectCardContainer>
-                    {activeRules.length > 0 ?
-                        activeRules.map(rule => (<ActiveEffectCardRow key={rule.id} rule={rule} />)) :
-                        <HeroCreationSubtext text={"No active rules are adjusting data values."} />
+                    {activeRules.length > 0
+                        ? activeRules.map(rule => (<ActiveEffectCardRow key={rule.id} rule={rule} />))
+                        : <HeroCreationSubtext text={"No active rules are adjusting data values."} />
                     }
                 </EffectCardContainer>
             } />

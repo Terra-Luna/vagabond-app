@@ -16,7 +16,7 @@ export const usePerkSelectionView = (actor: Actor & { system: HeroDataModel }, i
     const clazz = actor.items.find(item => (item.type as string) === "class") as Item & { system: ClassDataModel }
     const level = (actor.system.level.current ?? 0) + (isLevelUp ? 1 : 0)
     const stats = actor.system.stats as any
-    const trainings = useMemo(() => Object.keys(actor.system.skills).filter(skill => actor.system.skills[skill].isTrained), [actor.system.skills])
+    const trainings = useMemo(() => Object.keys(actor.system.skills).filter(skill => actor.system.skills[skill].trained), [actor.system.skills])
     const spells = useMemo(() => actor.system.spells.map(spell => spell.parent.name), [actor.system.spells])
 
     /**

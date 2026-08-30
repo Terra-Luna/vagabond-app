@@ -19,7 +19,7 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
     const cleanSelectionName = (path?: string) => {
         if (!path) return ""
         if (path.includes("skills.")) {
-            const skillKey = path.replace(".isTrained", "").split(".").reverse()[0]
+            const skillKey = path.replace(".trained", "").split(".").reverse()[0]
             return vgLiteLang.Skills[skillKey]?.name ?? skillKey
         }
         else if (path.includes("stats.")) {
@@ -32,7 +32,7 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
     }
 
     const displaySelections = normalizeRuleSelections(rule.selections)
-        .flatMap(selection => (selection.subselect || selection.value) ? [selection.subselect || selection.value] : [])
+        .flatMap(selection => [selection.value])
         .filter(Boolean)
         .map(cleanSelectionName)
         .filter(Boolean)

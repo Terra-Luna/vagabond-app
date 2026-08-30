@@ -26,7 +26,7 @@
         "label": "Training: Melee",
         "level": "1",
         "value": true,
-        "selector": "skills.melee.isTrained"
+        "selector": "skills.melee.trained"
       },
       {
         "id": "ws28DYPWa19S6TK6",
@@ -34,7 +34,7 @@
         "label": "Training: Arcana",
         "level": "1",
         "value": true,
-        "selector": "skills.arcana.isTrained"
+        "selector": "skills.arcana.trained"
       },
       {
         "id": "Ez2ZZkSPBrWpLSa9",

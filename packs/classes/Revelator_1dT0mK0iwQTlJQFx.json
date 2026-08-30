@@ -26,7 +26,7 @@
         "label": "Training: Melee",
         "level": "1",
         "value": true,
-        "selector": "skills.melee.isTrained"
+        "selector": "skills.melee.trained"
       },
       {
         "id": "GgqPXzhjYOycY8GO",
@@ -34,7 +34,7 @@
         "label": "Training: Leadership",
         "level": "1",
         "value": true,
-        "selector": "skills.leadership.isTrained"
+        "selector": "skills.leadership.trained"
       },
       {
         "id": "hPgNr3TmaVs2efrm",

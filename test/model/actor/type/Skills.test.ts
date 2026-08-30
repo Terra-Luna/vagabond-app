@@ -46,18 +46,18 @@ const mockStats = {
 }
 
 const mockSkills = {
-    brawl: { value: 0, isTrained: true },
-    finesse: { value: 0, isTrained: false },
-    melee: { value: 0, isTrained: false },
-    ranged: { value: 0, isTrained: false },
-    arcana: { value: 0, isTrained: false },
-    craft: { value: 0, isTrained: false },
-    detect: { value: 0, isTrained: false },
-    influence: { value: 0, isTrained: true },
-    leadership: { value: 0, isTrained: false },
-    medicine: { value: 0, isTrained: false },
-    mysticism: { value: 0, isTrained: false },
-    performance: { value: 0, isTrained: false },
-    sneak: { value: 0, isTrained: true },
-    survival: { value: 0, isTrained: false }
+    brawl: { value: 0, trained: true },
+    finesse: { value: 0, trained: false },
+    melee: { value: 0, trained: false },
+    ranged: { value: 0, trained: false },
+    arcana: { value: 0, trained: false },
+    craft: { value: 0, trained: false },
+    detect: { value: 0, trained: false },
+    influence: { value: 0, trained: true },
+    leadership: { value: 0, trained: false },
+    medicine: { value: 0, trained: false },
+    mysticism: { value: 0, trained: false },
+    performance: { value: 0, trained: false },
+    sneak: { value: 0, trained: true },
+    survival: { value: 0, trained: false }
 }

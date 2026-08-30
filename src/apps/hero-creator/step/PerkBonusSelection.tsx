@@ -111,8 +111,8 @@ export const usePerkBonusSelection = (
             r.choices = [
                 ...[{ value: '', label: strings.emptySlot }],
                 ...r.choices.filter(c =>
-                    !requiredValues.includes(c.value.replace("skills.", "").replace(".isTrained", "")) &&
-                    (!selectedValues.includes(c.value.replace("skills.", "").replace(".isTrained", "")) || c.value === currentValue))
+                    !requiredValues.includes(c.value.replace("skills.", "").replace(".trained", "")) &&
+                    (!selectedValues.includes(c.value.replace("skills.", "").replace(".trained", "")) || c.value === currentValue))
             ]
         })
         return rules
@@ -202,7 +202,7 @@ export const usePerkBonusSelection = (
         }
         updateSelections(setAdvancementSelections, getSelections(advancements, value => value.startsWith('stats.')))
         updateSelections(setPerkTrainingSelections, getSelections(trainings, value => value.startsWith('skills.')))
-        updateSelections(setReasonTrainingSelections, getSelections(advancements, value => value.startsWith('skills.'), value => value.replace('skills.', '').replace('.isTrained', '')))
+        updateSelections(setReasonTrainingSelections, getSelections(advancements, value => value.startsWith('skills.'), value => value.replace('skills.', '').replace('.trained', '')))
         updateSelections(setSpellSelections, getSelections(spellItemRules, value => !value.startsWith('stats.') && !value.startsWith('skills.')))
         setHydratedBonusSignatureState(currentBonusSignature)
     }, [advancements, currentBonusSignature, initialSelections, spellItemRules, trainings])
@@ -228,7 +228,7 @@ export const usePerkBonusSelection = (
     const allBonusSelections = useMemo(() => [
         ...Object.entries(advancementSelections).map(([selectionKey, value]) => ({ ruleId: selectionKey.split(':')[0], selectionId: selectionKey.split(':')[1], value })),
         ...Object.entries(perkTrainingSelections).map(([selectionKey, value]) => ({ ruleId: selectionKey.split(':')[0], selectionId: selectionKey.split(':')[1], value })),
-        ...Object.entries(reasonTrainingSelections).map(([selectionKey, value]) => ({ ruleId: selectionKey.split(':')[0], selectionId: selectionKey.split(':')[1], value: value ? `skills.${value}.isTrained` : '' })),
+        ...Object.entries(reasonTrainingSelections).map(([selectionKey, value]) => ({ ruleId: selectionKey.split(':')[0], selectionId: selectionKey.split(':')[1], value: value ? `skills.${value}.trained` : '' })),
         ...Object.entries(spellSelections).map(([selectionKey, value]) => ({ ruleId: selectionKey.split(':')[0], selectionId: selectionKey.split(':')[1], value }))
     ], [advancementSelections, perkTrainingSelections, reasonTrainingSelections, spellSelections])
 

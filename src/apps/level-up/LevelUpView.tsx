@@ -82,7 +82,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
     const trainings = useMemo(() => {
         return Object.keys(actor.system.skills).flatMap(k => {
-            if (actor.system.skills[k].isTrained) return [{ skill: k, ruleId: '' }]
+            if (actor.system.skills[k].trained) return [{ skill: k, ruleId: '' }]
             else return []
         })
     }, [])

@@ -26,7 +26,7 @@
         "label": "Training: Arcana",
         "level": "1",
         "value": true,
-        "selector": "skills.arcana.isTrained"
+        "selector": "skills.arcana.trained"
       },
       {
         "id": "14oGP1pUTvXH2Vs1",

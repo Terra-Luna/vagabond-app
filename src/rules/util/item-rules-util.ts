@@ -249,7 +249,7 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
             ? firstChoiceObj
             : (firstChoiceObj?.value || "")
 
-        // Handle the Wildcard string blueprint pattern: "skills.*.isTrained"
+        // Handle the Wildcard string blueprint pattern: "skills.*.trained"
         if (firstChoiceVal.toLowerCase().includes("skills.*")) {
             return {
                 ...rule,

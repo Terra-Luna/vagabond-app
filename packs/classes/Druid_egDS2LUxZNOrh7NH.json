@@ -26,7 +26,7 @@
         "label": "Training: Mysticism",
         "level": "1",
         "value": true,
-        "selector": "skills.mysticism.isTrained"
+        "selector": "skills.mysticism.trained"
       },
       {
         "id": "44iQSGTLh2FEFyO9",
@@ -34,7 +34,7 @@
         "label": "Training: Survival",
         "level": "1",
         "value": true,
-        "selector": "skills.survival.isTrained"
+        "selector": "skills.survival.trained"
       },
       {
         "id": "0vamvPXOr6mt75xN",

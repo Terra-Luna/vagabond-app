@@ -17,7 +17,7 @@
         "sourceMode": "static",
         "choices": [
           {
-            "value": "skills.*.isTrained",
+            "value": "skills.*.trained",
             "label": "Training"
           }
         ],
