@@ -20,6 +20,19 @@ export const FeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel
     const onAddNewFeature = useCallback(() => { setIsNewFeatureOpen(true) }, [])
     const sortedFeats = item.system.features.sort((a, b) => (a.level ?? 0) - (b.level ?? 0))
 
+    const displayableFeats = () => {
+        if (isEditMode) return sortedFeats
+
+        const seen = new Set()
+        return sortedFeats.filter(feat => {
+            if (seen.has(feat.name)) {
+                return false
+            }
+            seen.add(feat.name)
+            return true
+        })
+    }
+
     return (
         <div className="space-y-1">
             <ClassSheetBannerWrapper>
@@ -42,7 +55,7 @@ export const FeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel
 
             {/* FEATURES LISTED BY LEVEL */}
             {
-                sortedFeats.map((feat, index) => (
+                displayableFeats().map((feat, index) => (
                     <div key={index} className="px-1" onContextMenu={(e) => {
                         if (!isEditMode) return
                         onCtxMenu(e, [
