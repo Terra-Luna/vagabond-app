@@ -87,7 +87,9 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                     {extendedSettings &&
                         <div className="flex gap-x-8 justify-between items-center font-normal mt-0.5 pr-6">
                             <div title={"Adds additional damage dice on crit."} className="flex gap-x-1 items-end">
-                                <DiceCountInput dmgDice={diceRoll.extraDiceOnCrit || 0} onUpdateDmgDice={(input) => handleExtraDiceOnCritChange(input)} />
+                                <span className="font-bold">
+                                    <DiceCountInput dmgDice={diceRoll.extraDiceOnCrit ?? 0} onUpdateDmgDice={(input) => handleExtraDiceOnCritChange(input)} />
+                                </span>
                                 <p className="text-sm">{vgLiteLang.ItemSheet.extraDieOnCrit}</p>
                             </div>
 

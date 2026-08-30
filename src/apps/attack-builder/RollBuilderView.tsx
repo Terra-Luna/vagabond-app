@@ -61,7 +61,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
      */
     useEffect(() => {
         if (!weapon || !skill) return
-        if (preset && weapon.id === preset.weaponId && skill === preset.skill) {
+        if (loadedPresetRef.current && weapon.id === preset?.weaponId && skill === preset?.skill) {
+            console.log("Returning...")
             return
         }
 
@@ -69,6 +70,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
         const skChk = weaponAtk.skillCheck
         const dmgRoll = weaponAtk.damageRoll
         if (!skChk || !dmgRoll) return
+
+        console.log(weaponAtk)
 
         setD20Count(skChk.d20Count)
         setFavorHinder(skChk.favorHinder)
@@ -111,6 +114,7 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
         setPerDieBonus(0)
         setArmorPiercing(0)
         setWeapon(undefined)
+        loadedPresetRef.current = null
     }, [])
 
     const { savePreset, saveCustomRoll } = useSavePreset(actor, rollForm)
