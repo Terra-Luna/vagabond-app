@@ -58,7 +58,10 @@ export class LevelUpApp extends VagabondApplication {
                 updates[`system.stats.${args.levelUpStat}`] = currentValue + 1
             }
 
-            await this.actor.update(updates)
+            if (args.newRsnTraining) {
+                console.log(args.newRsnTraining)
+                updates[`system.skills.${args.newRsnTraining}.isTrained`] = true
+            }
 
             /**
              * Merges any new perk bonus choices into their existing flags...
@@ -68,6 +71,9 @@ export class LevelUpApp extends VagabondApplication {
                 await savePerkSelections(this.actor, bonusSelections)
             }
 
+            await this.actor.update(updates)
+
+            // Give Hero a "full rest" after level-up to update attributes to new max's.
             await this.actor.update({
                 'system.health.current': this.actor.system.health.max,
                 'system.mana.current': this.actor.system.mana.max,

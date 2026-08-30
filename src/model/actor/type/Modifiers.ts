@@ -30,7 +30,7 @@ export const modifierSchema = () => {
              */
             reflex: new fields.SchemaField({ ...skillModifierSchema() }),
             endure: new fields.SchemaField({ ...skillModifierSchema() }),
-            will: new fields.SchemaField({ ...skillModifierSchema() }),
+            will: new fields.SchemaField({ ...skillModifierSchema() })
         }),
 
         dice: new fields.SchemaField({
@@ -121,11 +121,19 @@ const critModSchema = () => {
 
 const damageModifierSchema = () => {
     return {
-        all: new fields.NumberField({ ...uncappedInteger }),
-        allPerDie: new fields.NumberField({ ...uncappedInteger }),
-        attack: new fields.NumberField({ ...uncappedInteger }),
-        attackPerDie: new fields.NumberField({ ...uncappedInteger }),
-        spell: new fields.NumberField({ ...uncappedInteger }),
-        spellPerDie: new fields.NumberField({ ...uncappedInteger })
+        melee: new fields.SchemaField({ ...damageBonusSchema() }),
+        finesse: new fields.SchemaField({ ...damageBonusSchema() }),
+        brawl: new fields.SchemaField({ ...damageBonusSchema() }),
+        ranged: new fields.SchemaField({ ...damageBonusSchema() }),
+        thrown: new fields.SchemaField({ ...damageBonusSchema() }),
+        defense: new fields.SchemaField({ ...damageBonusSchema() }),
+        spell: new fields.SchemaField({ ...damageBonusSchema() })
+    }
+}
+
+const damageBonusSchema = () => {
+    return {
+        flatBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        perDieBonus: new fields.NumberField({ ...requiredInteger, initial: 0 })
     }
 }

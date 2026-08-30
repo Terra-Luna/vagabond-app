@@ -323,10 +323,21 @@ export const usePerkSelection = (
                                 {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
                                     <div className="space-y-1 flex-shrink-0">
                                         <BonusChoiceTitle text={strings.grantedPerks} />
-                                    {[...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
-                                        renderSlot({ value: grant.uuid, label: grant.item, ruleName: grant.source, ruleId: grant.id }, index, () => { }, "granted", bonusChoices, true)
-                                    ))}
-                                </div>
+                                        {[...ancestryPerkGrants, ...classPerkGrants].map((grant, index) => (
+                                            renderSlot(
+                                                {
+                                                    value: grant.uuid,
+                                                    label: grant.item,
+                                                    ruleName: grant.source,
+                                                    ruleId: grant.id
+                                                },
+                                                index, () => { },
+                                                "granted",
+                                                bonusChoices,
+                                                true
+                                            )
+                                        ))}
+                                    </div>
                                 }
                             </div>
                             {/* PERK SLOTS - DRAG-DROPPABLE */}

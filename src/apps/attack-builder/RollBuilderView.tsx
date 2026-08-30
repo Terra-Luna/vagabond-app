@@ -57,7 +57,7 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
     }, [preset, weapons])
 
     /**
-     * When a new weapon is selected organically, preload some defaults.
+     * When a new weapon is selected, preload some defaults.
      */
     useEffect(() => {
         if (!weapon || !skill) return
@@ -75,7 +75,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
         setSkillCheckMod(skChk.modifier)
         setCritThreshold(skChk.critThreshold)
         setDamageRolls(dmgRoll.dice.map(d => ({ ...d })))
-
+        setFlatModifier(dmgRoll.flatDmgBonus)
+        setPerDieBonus(dmgRoll.perDieDmgBonus)
     }, [weapon, skill, preset])
 
     const rollForm = useMemo((): RollPreset => {

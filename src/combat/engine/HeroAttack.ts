@@ -343,8 +343,8 @@ export class HeroAttack extends Attack {
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? []],
-            flatDmgBonus: (dmgMods.out.all ?? 0) + (dmgMods.out.attack ?? 0),
-            perDieDmgBonus: (dmgMods.out.allPerDie ?? 0) + (dmgMods.out.attackPerDie ?? 0),
+            flatDmgBonus: (dmgMods.out[weaponSkill]?.flatBonus ?? 0),
+            perDieDmgBonus: (dmgMods.out[weaponSkill]?.perDieBonus ?? 0)
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, damageRoll)
@@ -402,8 +402,8 @@ export class HeroAttack extends Attack {
                     modifier: 0,
                     explodesOn: explosionsMod as number[]
                 })],
-                flatDmgBonus: (hero.modifiers.damage.out.all ?? 0) + (hero.modifiers.damage.out.spell ?? 0),
-                perDieDmgBonus: (hero.modifiers.damage.out.allPerDie ?? 0) + (hero.modifiers.damage.out.spellPerDie ?? 0)
+                flatDmgBonus: hero.modifiers.damage.out.spell.flatBonus ?? 0,
+                perDieDmgBonus: hero.modifiers.damage.out.spell.perDieBonus ?? 0
             })
         }
         else {
