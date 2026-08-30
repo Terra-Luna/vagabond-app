@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 
 import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
+import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
@@ -22,7 +23,7 @@ import { Abilities, NewAbilityWindow } from "./Abilities"
 import { ActionMenuHeader, Actions, NewActionWindow } from "./Actions"
 import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
 
-const locale = vgLiteLang.AdversarySheet
+const locale = vgLiteLang.NpcSheet
 
 /**
  * Persists the portrait's collapsed/expanded state as a flag on the actor's token, so it's
@@ -51,8 +52,8 @@ const usePortraitOpenFlag = (actor: Actor) => {
     return { isPortraitOpen, setIsPortraitOpen }
 }
 
-export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel } }) => {
-    const adversary = actor.system
+export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: AdversaryDataModel | NpcDataModel } }) => {
+    const npc = actor.system
     const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
     const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
@@ -70,25 +71,25 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
             <div className="absolute left-0 flex items-start">
                 <div className={`overflow-hidden transition-all duration-300 ease-in-out border border-solid border-table-border bg-sheet-main-fill/33 rounded-l-md ${isPortraitOpen ? 'w-[110px] -ml-[110px]' : 'w-0 ml-0'}`}>
                     <div className="w-[110px]">
-                        <ActorPortrait actor={adversary} />
+                        <ActorPortrait actor={npc} />
                     </div>
                 </div>
             </div>
 
             <div className="flex flex-col grow">
-                <AdversarySheetHeader adv={adversary} />
+                <NpcSheetHeader npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
                 <div className="overflow-y-auto">
-                    <Description item={adversary.parent} />
-                    <StatBlock adv={adversary} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
+                    <Description item={npc.parent} />
+                    <StatBlock npc={npc} />
 
-                    <Actions adversary={adversary} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
+                    <Actions npc={npc} setIsAddMenuOpen={setIsAddActionOpen} setEditTarget={setEditActionTarget} />
                     {isAddActionOpen &&
-                        <NewActionWindow adv={adversary} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} />
+                        <NewActionWindow npc={npc} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} />
                     }
 
-                    <Abilities adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
+                    <Abilities npc={npc} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
                     {isAddAbilityOpen &&
-                        <NewAbilityWindow adv={adversary} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} />
+                        <NewAbilityWindow npc={npc} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} />
                     }
 
                     <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })} className="ml-2 hover-glow cursor-pointer mb-4" title="Click to open active effects">
@@ -100,32 +101,49 @@ export const AdversarySheetReactComponent = ({ actor }: { actor: Actor & { syste
     )
 }
 
-const AdversarySheetHeader = ({ adv }) => {
+const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
     const { editModeToggleBtn } = useEditMode()
     return (
         <div>
             <div className="flex text-2xl text-text-header-primary font-bold bg-sheet-header-fill font-eskapade pl-2 py-1 items-center gap-x-1">
-                <EditableNameField actor={adv.parent} />
+                {/* NPC NAME */}
+                <EditableNameField actor={npc.parent} />
+                
                 <Divider />
+
+                {/* THREAT LEVEL DISPLAY (ADVERSARY ONLY) */}
                 <div className="flex gap-x-1 ml-auto self-center">
-                    {/* THREAT LEVEL DISPLAY */}
-                    <span className="flex gap-x-1 text-text-header-primary font-eskapade font-normal text-base mr-1">
-                        <p>{vgLiteLang.AdversarySheet.tl}:</p>
-                        <EditableTextField
-                            boundValue={adv.threatLevelOverride?.toString() ?? adv.threatLevel?.toString() ?? ''}
-                            updateProps={{ object: adv.parent, path: ['threatLevelOverride'] }}
-                            placeholder={adv.threatLevel?.toString() ?? '1.00'}
-                        />
-                    </span>
-                    {editModeToggleBtn}
+                    {npc instanceof AdversaryDataModel &&
+                        <span className="flex gap-x-1 text-text-header-primary font-eskapade font-normal text-base mr-1">
+                            <p>{vgLiteLang.NpcSheet.tl}:</p>
+                            <EditableTextField
+                                boundValue={npc.threatLevelOverride?.toString() ?? npc.threatLevel?.toString() ?? ''}
+                                updateProps={{ object: npc.parent, path: ['threatLevelOverride'] }}
+                                placeholder={npc.threatLevel?.toString() ?? '1.00'}
+                            />
+                        </span>
+                    }
+                        {editModeToggleBtn}
                 </div>
             </div>
-            <TraitSelectors adv={adv} />
+            <TraitSelectors npc={npc} />
+
+            {/* EXPAND / COLLAPSE BUTTON */}
+            <button
+                onClick={() => setIsPortraitOpen(open => !open)}
+                title={isPortraitOpen ? "Collapse portrait" : "Expand portrait"}
+                className="bg-sheet-header-fill border border-solid border-table-border rounded-r-md -mt-3 -mr-6 px-0.5 py-2 hover-glow cursor-pointer"
+            >
+                {isPortraitOpen
+                    ? <ChevronRight size={14} className="text-text-header-primary" />
+                    : <ChevronLeft size={14} className="text-text-header-primary" />
+                }
+            </button>
         </div>
     )
 }
 
-const TraitSelectors = ({ adv }) => {
+const TraitSelectors = ({ npc }) => {
     const { isEditMode } = useEditMode()
     return (
         <div className="flex gap-x-1 text-text-header-secondary">
@@ -133,42 +151,40 @@ const TraitSelectors = ({ adv }) => {
                 isEditMode ? <div className="flex gap-x-1 px-1 mt-1">
                     <DropDown
                         options={createDropdownEntries(vgLiteLang.Sizes)}
-                        parent={adv.parent}
+                        parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingSize'] }}
-                        value={adv.beingSize}
+                        value={npc.beingSize}
                     />
                     <DropDown
                         options={createDropdownEntries(vgLiteLang.BeingTypes)}
-                        parent={adv.parent}
+                        parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingType'] }}
-                        value={adv.beingType}
+                        value={npc.beingType}
                     />
                     <DropDown
                         options={createDropdownEntries(vgLiteLang.BeingSubtypes)}
-                        parent={adv.parent}
+                        parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingSubtype'] }}
-                        value={adv.beingSubtype}
+                        value={npc.beingSubtype}
                     />
                 </div>
                     : <CardSubHeader values={[
-                        { label: vgLiteLang.Sizes[adv.beingSize], value: "" },
-                        { label: vgLiteLang.BeingTypes[adv.beingType], value: "" },
-                        { label: vgLiteLang.BeingSubtypes[adv.beingSubtype], value: "" }
+                        { label: vgLiteLang.Sizes[npc.beingSize], value: "" },
+                        { label: vgLiteLang.BeingTypes[npc.beingType], value: "" },
+                        { label: vgLiteLang.BeingSubtypes[npc.beingSubtype], value: "" }
                     ]} showRightBorder={false} />
             }
         </div>
     )
 }
 
-const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
-    adv: AdversaryDataModel, isPortraitOpen: boolean, setIsPortraitOpen: React.Dispatch<React.SetStateAction<boolean>>
-}) => {
+const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
     const { isEditMode } = useEditMode()
-    const hp = adv.health.current
+    const hp = npc.health.current
 
     const incrementHP = useCallback((auxClick: boolean) => {
-        updateDocument(adv.parent, { health: { current: (hp ?? 0) + (auxClick ? 1 : -1) } })
-    }, [adv.health])
+        updateDocument(npc.parent, { health: { current: (hp ?? 0) + (auxClick ? 1 : -1) } })
+    }, [npc.health])
 
     const inlineRoll = async (formula: string, flavor: string) => {
         if (isEditMode) return
@@ -182,22 +198,11 @@ const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
     return (
         <div className="flex flex-col gap-y-1 px-2">
             <StatBlockRow>
-                {/* EXPAND / COLLAPSE BUTTON */}
-                <button
-                    onClick={() => setIsPortraitOpen(open => !open)}
-                    title={isPortraitOpen ? "Collapse portrait" : "Expand portrait"}
-                    className="bg-sheet-header-fill border border-solid border-table-border rounded-r-md -ml-2 -mt-3 -mr-6 px-0.5 py-2 hover-glow cursor-pointer"
-                >
-                    {isPortraitOpen
-                        ? <ChevronRight size={14} className="text-text-header-primary" />
-                        : <ChevronLeft size={14} className="text-text-header-primary" />
-                    }
-                </button>
                 {/* HIT DICE */}
                 <StatBlockField label={locale.hd} content={
                     <EditableTextField
-                        boundValue={adv.hitDice?.toString() ?? '1'}
-                        updateProps={{ object: adv.parent, path: ['hitDice'] }}
+                        boundValue={npc.hitDice?.toString() ?? '1'}
+                        updateProps={{ object: npc.parent, path: ['hitDice'] }}
                         placeholder="1"
                     />
                 } />
@@ -214,12 +219,12 @@ const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
                         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                             <div className="flex gap-x-0.5">
                                 <EditableTextField
-                                    boundValue={adv.health.current?.toString() ?? '1'}
-                                    updateProps={{ object: adv.parent, path: ['health', 'current'] }}
+                                    boundValue={npc.health.current?.toString() ?? '1'}
+                                    updateProps={{ object: npc.parent, path: ['health', 'current'] }}
                                     hideBorderOnEditMode={true}
                                     placeholder="4"
                                 />
-                                <p>/{adv.health.max?.toString() ?? '4'}</p>
+                                <p>/{npc.health.max?.toString() ?? '4'}</p>
                             </div>
                         </EditModeContextProvider>
                     </StatBlockRow>
@@ -231,17 +236,17 @@ const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className={`text-xl text-text-armor font-eskapade font-bold`}>
                                 <EditableTextField
-                                    boundValue={adv.armor.rating?.toString() ?? ''}
-                                    updateProps={{ object: adv.parent, path: ['armor', 'rating'] }}
+                                    boundValue={npc.armor.rating?.toString() ?? ''}
+                                    updateProps={{ object: npc.parent, path: ['armor', 'rating'] }}
                                     placeholder="0"
                                 />
                             </div>
                         </div>
                     </div>
-                    <StatBlockField label={vgLiteLang.AdversarySheet.as} content={
+                    <StatBlockField label={vgLiteLang.NpcSheet.as} content={
                         <EditableTextField
-                            boundValue={adv.armor.as ?? 'Unarmored'}
-                            updateProps={{ object: adv.parent, path: ['armor', 'as'] }}
+                            boundValue={npc.armor.as ?? 'Unarmored'}
+                            updateProps={{ object: npc.parent, path: ['armor', 'as'] }}
                             placeholder="Unarmored"
                         />}
                     />
@@ -254,10 +259,10 @@ const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
                     {isEditMode ?
                         <DropDown
                             options={createDropdownEntries(vgLiteLang.Zones)}
-                            parent={adv.parent}
+                            parent={npc.parent}
                             updateMechanism={{ updatePath: ['zone'] }}
-                            value={adv.zone}
-                        /> : <StatBlockValue value={vgLiteLang.Zones[adv.zone]} />
+                            value={npc.zone}
+                        /> : <StatBlockValue value={vgLiteLang.Zones[npc.zone]} />
                     }
                 </>} />
                 {/* SPEED */}
@@ -265,8 +270,8 @@ const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
                     <div className="flex space-x-1">
                         <div className="flex">
                             <EditableTextField
-                                boundValue={adv.movement?.speed?.toString() ?? '30'}
-                                updateProps={{ object: adv.parent, path: ['movement', 'speed'] }}
+                                boundValue={npc.movement?.speed?.toString() ?? '30'}
+                                updateProps={{ object: npc.parent, path: ['movement', 'speed'] }}
                                 placeholder="30"
                             />
                             <StatBlockValue value={"'"} />
@@ -275,11 +280,11 @@ const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
                             {isEditMode
                                 ? <DropDown
                                     options={createDropdownEntries(vgLiteLang.Movement)}
-                                    parent={adv.parent}
+                                    parent={npc.parent}
                                     updateMechanism={{ updatePath: ['movement', 'type'] }}
-                                    value={adv.movement.type}
+                                    value={npc.movement.type}
                                 />
-                                : <p>{vgLiteLang.Movement[adv.movement.type]}</p>
+                                : <p>{vgLiteLang.Movement[npc.movement.type]}</p>
                             }
                         </div>
                     </div>
@@ -288,34 +293,36 @@ const StatBlock = ({ adv, isPortraitOpen, setIsPortraitOpen }: {
 
             <StatBlockRow>
                 {/* MORALE */}
-                <div onClick={() => inlineRoll(adv.morale?.toString() ?? '12', locale.morale + " Check")} className="hover-glow cursor-pointer" title="Click to roll morale check">
+                <div onClick={() => inlineRoll(npc.morale?.toString() ?? '12', locale.morale + " Check")} className="hover-glow cursor-pointer" title="Click to roll morale check">
                     <StatBlockField label={locale.morale} content={
                         <NumericCounterInput
-                            value={adv.morale ?? 6}
+                            value={npc.morale ?? 6}
                             onChange={(value: string) => {
-                                adv.parent.update({ 'system.morale': Number(value) })
+                                npc.parent.update({ 'system.morale': Number(value) })
                             }}
                         />
                     } />
                 </div>
                 {/* NUMBER APPEARING */}
-                <div onClick={() => inlineRoll(adv.numberAppearing?.toString() ?? '1', locale.appearing + " Roll")} className="hover-glow cursor-pointer" title="Click to roll number appearing">
-                    <StatBlockField label={locale.appearing} content={
-                        <EditableTextField
-                            boundValue={adv.numberAppearing?.toString() ?? '1'}
-                            updateProps={{ object: adv.parent, path: ['numberAppearing'] }}
-                            placeholder="d4"
-                        />
-                    } />
-                </div>
+                {npc instanceof AdversaryDataModel &&
+                    <div onClick={() => inlineRoll(npc.numberAppearing?.toString() ?? '1', locale.appearing + " Roll")} className="hover-glow cursor-pointer" title="Click to roll number appearing">
+                        <StatBlockField label={locale.appearing} content={
+                            <EditableTextField
+                                boundValue={npc.numberAppearing?.toString() ?? '1'}
+                                updateProps={{ object: npc.parent, path: ['numberAppearing'] }}
+                                placeholder="d4"
+                            />
+                        } />
+                    </div>
+                }
             </StatBlockRow>
 
             {/* SENSES, IMMUNITIES, & WEAKNESSES */}
             <div className="w-full space-y-2 text-base text-text-header-tertiary font-normal">
-                <SelectableTextOptions obj={adv.parent} label={locale.senses} path={['senses']} localeObj={vgLiteLang.Senses} />
-                <DamageTypeSelector adv={adv} label={locale.immune} path={['dmgImmunities']} localeObj={vgLiteLang.DamageTypes} />
-                <DamageTypeSelector adv={adv} label={locale.weak} path={['dmgWeaknesses']} localeObj={vgLiteLang.DamageTypes} />
-                <SelectableTextOptions obj={adv.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={vgLiteLang.StatusConditions} />
+                <SelectableTextOptions obj={npc.parent} label={locale.senses} path={['senses']} localeObj={vgLiteLang.Senses} />
+                <DamageTypeSelector npc={npc} label={locale.immune} path={['dmgImmunities']} localeObj={vgLiteLang.DamageTypes} />
+                <DamageTypeSelector npc={npc} label={locale.weak} path={['dmgWeaknesses']} localeObj={vgLiteLang.DamageTypes} />
+                <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={vgLiteLang.StatusConditions} />
             </div>
         </div >
     )
@@ -350,9 +357,9 @@ const StatBlockValue = ({ value }) => {
     )
 }
 
-const DamageTypeSelector = ({ adv, label, path, localeObj }: { adv: AdversaryDataModel, label: string, path: string[], localeObj: any }) => {
+const DamageTypeSelector = ({ npc, label, path, localeObj }: { npc: AdversaryDataModel | NpcDataModel, label: string, path: string[], localeObj: any }) => {
     const { isEditMode } = useEditMode()
-    const field = getDocumentAtPath(adv.parent, path)
+    const field = getDocumentAtPath(npc.parent, path)
     const damageTypes = Object.keys(localeObj).filter(k => k != 'none').map(k => (
         { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }
     ))
@@ -361,7 +368,7 @@ const DamageTypeSelector = ({ adv, label, path, localeObj }: { adv: AdversaryDat
             ? <></>
             : <div className="flex space-x-2 mt-2">
                 {isEditMode
-                    ? <OptionsSelectionMenu obj={adv.parent} label={label} path={path} options={damageTypes} />
+                    ? <OptionsSelectionMenu obj={npc.parent} label={label} path={path} options={damageTypes} />
                     : <StatBlockLabel text={label} />
                 }
                 <DamageTypeIconDisplay dmgTypes={field} />

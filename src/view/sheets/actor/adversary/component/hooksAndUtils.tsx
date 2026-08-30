@@ -4,6 +4,7 @@ import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRoll
 import { DamageRoll } from "../../../../../combat/engine/roll/DamageRoll"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
+import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
@@ -21,7 +22,7 @@ export const useAddActionMenu = () => {
     return { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget }
 }
 
-export const onClickAction = async (adversary: AdversaryDataModel, name: string, description?: string, dmgType?: string, dice?: DiceRollSchema) => {
+export const onClickAction = async (npc: AdversaryDataModel | NpcDataModel, name: string, description?: string, dmgType?: string, dice?: DiceRollSchema) => {
     /**
      * TODO: create a config item to toggle between using damage rolls vs. flat damage.
      */
@@ -31,17 +32,17 @@ export const onClickAction = async (adversary: AdversaryDataModel, name: string,
         }).roll()
 
         sendVagabondChatMessage(
-            adversary,
+            npc,
             <DamageRollChatCard
-                actorId={getId(adversary)}
+                actorId={getId(npc)}
                 tokenIds={getTargetIds()}
                 result={result}
             />, result.rolls
         )
     }
     else {
-        sendVagabondChatMessage(adversary, <AbilityChatCard
-            actorId={getId(adversary)}
+        sendVagabondChatMessage(npc, <AbilityChatCard
+            actorId={getId(npc)}
             title={name}
             description={description ?? ''}
             tokenIds={getTargetIds()}

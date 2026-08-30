@@ -1,8 +1,8 @@
 import { VagabondActorSheet } from "../VagabondActorSheet"
-import { AdversarySheetReactComponent } from "./component/AdversarySheetComponent"
+import { NpcSheetComponent } from "./component/NpcSheetComponent"
 
-export class AdversarySheet extends VagabondActorSheet {
-    Component = AdversarySheetReactComponent
+export class NpcSheet extends VagabondActorSheet {
+    Component = NpcSheetComponent
     static DEFAULT_OPTIONS = {
         position: {
             width: 380,

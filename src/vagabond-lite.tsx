@@ -8,10 +8,11 @@ import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
 import { VagabondCombat, VagabondCombatant } from './combat/documents/VagabondCombat'
 import { Attack } from "./combat/engine/Attack"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
-import { AdversaryDataModel, enforceSingletonPlaceholder } from "./model/actor/AdversaryDataModel"
+import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
 import { NpcDataModel } from "./model/actor/NpcDataModel"
 import { isInventoryItem } from "./model/actor/type/Inventory"
+import { enforceSingletonPlaceholder } from "./model/actor/util/NpcDataModelUtil"
 import { VagabondActor } from "./model/actor/VagabondActor"
 import { VagabondCombatModel } from "./model/combat/VagabondCombatant"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
@@ -30,7 +31,7 @@ import { stackStackables } from "./utils/heroInventoryUtil"
 import { getFullItem, getId } from "./utils/modelUtil"
 import { vgLiteStyles } from "./utils/styleUtils"
 import { RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
-import { AdversarySheet } from "./view/sheets/actor/adversary/AdversarySheet"
+import { NpcSheet } from "./view/sheets/actor/adversary/AdversarySheet"
 import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
@@ -100,6 +101,19 @@ Hooks.once("init", () => {
 
     VagabondSettingsRegistry.register()
 })
+
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, { types: ['hero'], makeDefault: true });
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', NpcSheet as any, { types: ['npc'], makeDefault: true });
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', NpcSheet as any, { types: ['adversary'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet('vagabond-lite', ClassSheet as any, { types: ['class'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet as any, { types: ['perk'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet('vagabond-lite', SpellSheet as any, { types: ['spell'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet as any, { types: ['ancestry'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet as any, {
+    types: [
+        'alchemical', 'armor', 'container', 'startingpack', 'sundry', 'tool', 'weapon'
+    ], makeDefault: true
+});
 
 Hooks.once("ready", async () => {
     game.socket?.on("system.vagabond-lite", async (packet: any) => {
@@ -445,39 +459,4 @@ Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean 
 
     enforceSingletonPlaceholder(data, canvas)
     return false
-});
-
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, {
-    types: ['hero'],
-    makeDefault: true
-});
-
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', AdversarySheet as any, {
-    types: ['adversary'],
-    makeDefault: true
-});
-
-foundry.documents.collections.Items.registerSheet('vagabond-lite', ClassSheet as any, {
-    types: ['class'],
-    makeDefault: true
-});
-
-foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet as any, {
-    types: ['perk'],
-    makeDefault: true
-});
-
-foundry.documents.collections.Items.registerSheet('vagabond-lite', SpellSheet as any, {
-    types: ['spell'],
-    makeDefault: true
-});
-
-foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet as any, {
-    types: ['ancestry'],
-    makeDefault: true
-});
-
-foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet as any, {
-    types: ['alchemical', 'armor', 'container', 'startingpack', 'sundry', 'tool', 'weapon'],
-    makeDefault: true
 });

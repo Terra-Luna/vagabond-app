@@ -190,7 +190,9 @@ export class VagabondSettingsRegistry {
         const heroes = game.actors?.contents.filter(it => (it.type as string) === 'hero')
         if (!heroes) return
         for (const hero of heroes) {
-            (hero?.system as any)?.forceUpdate()
+            if (hero.isOwner) {
+                (hero?.system as any)?.forceUpdate()
+            }
         }
     }
 

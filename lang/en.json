@@ -738,7 +738,7 @@
         "description": "A Close Target, or yourself."
       }
     },
-    "AdversarySheet": {
+    "NpcSheet": {
       "tl": "TL",
       "hd": "HD",
       "hp": "HP",

@@ -1,15 +1,6 @@
-import { fields } from "../common/sharedSchemas"
-import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
-import { inventorySchema, isInventoryItem } from "./type/Inventory"
-
-const npcSchema = () => {
-    return {
-        inventory: new fields.SchemaField({ ...inventorySchema() })
-    }
-}
-
-export type NpcSchema = ReturnType<typeof npcSchema> & BaseActorSchema
-export type Npc = NpcDataModel & NpcSchema
+import { ActorDataModel } from "./ActorDataModel"
+import { NpcSchema, npcSchema } from "./type/NpcSchema"
+import { onNpcPreCreate, onUpdateNpc, prepareNpcBaseData } from "./util/NpcDataModelUtil"
 
 export class NpcDataModel extends ActorDataModel<NpcSchema> {
     static defineSchema() {
@@ -19,15 +10,19 @@ export class NpcDataModel extends ActorDataModel<NpcSchema> {
         }
     }
 
-    override async _onCreate(data: any, options: any, userId: string) {
-        super._onCreate(data, options, userId)
-        this.parent.update({ 'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.NEUTRAL })
-        this.parent.update({ 'prototypeToken.actorLink': true })
-        this.parent.update({ 'system.health.current': 1 })
+    override async _preCreate(data: any, options: any, user: any) {
+        const allowed = await super._preCreate(data, options, user)
+        onNpcPreCreate(this, options, data, allowed, true, CONST.TOKEN_DISPOSITIONS.NEUTRAL)
+    }
+
+    override async _onUpdate(changed, options, userId) {
+        super._onUpdate(changed, options, userId)
+        onUpdateNpc(this, changed)
     }
 
     override prepareBaseData() {
         super.prepareBaseData()
-        this.inventory.items = this.parent.items.filter((i: any) => isInventoryItem(i))
+        prepareNpcBaseData(this)
     }
+
 }

@@ -25,7 +25,7 @@ export const ComboChatCard = ({ actorId, rolls, tokenIds }: { actorId: string, r
             banner={<ChatCardBanner
                 tokenId={actor?.getActiveTokens()[0]?.id}
                 portrait={getTokenImg(actor)}
-                title={lang.VGLITE.AdversarySheet.combo} />
+                title={lang.VGLITE.NpcSheet.combo} />
             }
             contents={
                 <div>

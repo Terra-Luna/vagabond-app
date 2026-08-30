@@ -6,7 +6,8 @@ import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/roll/
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
-import { getDamageAverage } from "../../../../../model/actor/type/AdversaryAction"
+import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
+import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
@@ -26,7 +27,7 @@ import { RichTextField } from "../../../../component/RichTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction } from "./hooksAndUtils"
 
-const locale = vgLiteLang.AdversarySheet
+const locale = vgLiteLang.NpcSheet
 
 export const ActionMenuHeader = ({ label, onClick }: { label: string, onClick?: () => void }) => {
     const { isEditMode } = useEditMode()
@@ -48,7 +49,7 @@ export const AddNewIconButton = ({ onClick }) => {
     )
 }
 
-export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { adversary: AdversaryDataModel, setIsAddMenuOpen: any, setEditTarget: any }) => {
+export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: AdversaryDataModel | NpcDataModel, setIsAddMenuOpen: any, setEditTarget: any }) => {
     const { isEditMode } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
 
@@ -60,13 +61,13 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
             {/* DISPLAY COMBO FIRST */}
             <div
                 className={`hover-glow`}
-                onClick={() => onClickActionCombo(adversary)}
-                onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(adversary), isDestructive: true }])}
+                onClick={() => onClickActionCombo(npc)}
+                onContextMenu={(e) => onCtxMenu(e, [{ icon: Trash, label: 'Delete', action: () => deleteCombo(npc), isDestructive: true }])}
             >
-                {adversary.combo.name !== '' &&
+                {npc.combo.name !== '' &&
                     <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
                         <p className="font-paradigm font-bold">{locale.combo}:</p>
-                        <p className="text-text-secondary">{adversary.combo.name}</p>
+                        <p className="text-text-secondary">{npc.combo.name}</p>
                     </div>
                 }
             </div>
@@ -74,11 +75,11 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
             {/* DISPLAY ALL ACTIONS */}
             <div className="flex flex-col gap-1">
                 {
-                    adversary.actions.map((act, i) => {
+                    npc.actions.map((act, i) => {
                         return (
                             <div key={i} className="flex gap-2 p-2 justify-between border border-solid border-table-border rounded" onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
-                                { icon: Trash, label: 'Delete', action: () => deleteAction(adversary, act), isDestructive: true }
+                                { icon: Trash, label: 'Delete', action: () => deleteAction(npc, act), isDestructive: true }
                             ])}>
                                 <div className="flex flex-col">
 
@@ -88,10 +89,10 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                     {/* ACTION TRAITS... */}
                                     <div>
                                         {/* ATTACK DESCRIPTION */}
-                                        <EnrichedContent content={act.effect} styleClasses="text-text-secondary italic" actor={adversary.parent} />
+                                        <EnrichedContent content={act.effect} styleClasses="text-text-secondary italic" actor={npc.parent} />
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
                                         {act.damage.dice.count > 0 &&
-                                            <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(adversary, act.name, act.effect, act.damage.type, act.damage.dice as DiceRollSchema)}>
+                                            <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(npc, act.name, act.effect, act.damage.type, act.damage.dice as DiceRollSchema)}>
                                                 <p className="text-text-secondary leading-none">Dmg:</p>
                                                 <p className={`${damageRoll} leading-none`}>{new DiceRoll(act.damage.dice as any).toRollFormula()}</p>
                                                 <p className="leading-none text-text-secondary">|</p>
@@ -104,9 +105,9 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                                         dmgType: act.damage.type
                                                     }).roll()
                                                     sendVagabondChatMessage(
-                                                        adversary,
+                                                        npc,
                                                         <DamageRollChatCard
-                                                            actorId={getId(adversary)}
+                                                            actorId={getId(npc)}
                                                             tokenIds={getTargetIds()}
                                                             result={result}
                                                         />, result.rolls
@@ -119,7 +120,7 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
                                         {/* RECHARGE ROLL */}
                                         {act.recharge != null && act.recharge != '' &&
                                             <div className="flex gap-x-2 text-text-secondary">
-                                                {'Recharge:'}<EnrichedContent content={act.recharge} actor={adversary.parent} />
+                                                {'Recharge:'}<EnrichedContent content={act.recharge} actor={npc.parent} />
                                             </div>
                                         }
                                     </div>
@@ -135,10 +136,10 @@ export const Actions = ({ adversary, setIsAddMenuOpen, setEditTarget }: { advers
     )
 }
 
-const onClickActionCombo = async (adversary: AdversaryDataModel) => {
+const onClickActionCombo = async (npc: AdversaryDataModel | NpcDataModel) => {
     const rolls: DamageRollResult[] = []
-    for (let action = 0; action < adversary.combo.actions.length; action++) {
-        const act = adversary.combo.actions[action]
+    for (let action = 0; action < npc.combo.actions.length; action++) {
+        const act = npc.combo.actions[action]
         for (let count = 0; count < (act.comboCount ?? 0); count++) {
             const result = await new DamageRoll({
                 atkName: act.name,
@@ -149,46 +150,46 @@ const onClickActionCombo = async (adversary: AdversaryDataModel) => {
         }
     }
     sendVagabondChatMessage(
-        adversary,
+        npc,
         <ComboChatCard
-            actorId={getId(adversary)}
+            actorId={getId(npc)}
             rolls={rolls}
             tokenIds={getTargetIds()}
         />, rolls.flatMap(r => r.rolls)
     )
 }
 
-const deleteCombo = (adv: AdversaryDataModel) => {
-    updateDocumentAtPath(adv.parent, ['combo'], null)
+const deleteCombo = (npc: AdversaryDataModel | NpcDataModel) => {
+    updateDocumentAtPath(npc.parent, ['combo'], null)
 }
 
-const deleteAction = (adv: AdversaryDataModel, action: any) => {
-    updateDocumentAtPath(adv.parent, ['actions'], adv.actions.filter(it => it != action))
+const deleteAction = (npc: AdversaryDataModel | NpcDataModel, action: any) => {
+    updateDocumentAtPath(npc.parent, ['actions'], npc.actions.filter(it => it != action))
 }
 
-export interface AdversaryAction {
+export interface NpcAction {
     name: string, effect: string, damage: { dice: DiceRollSchema, type: string }, recharge: string, comboCount: number
 }
 
-export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
-    const editTargetIndex = adv.actions.indexOf(editTarget as any)
-    const [newAction, setNewAction] = useState<Partial<AdversaryAction>>(editTarget ?? {})
+export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
+    const editTargetIndex = npc.actions.indexOf(editTarget as any)
+    const [newAction, setNewAction] = useState<Partial<NpcAction>>(editTarget ?? {})
 
-    const updateAction = useCallback(async (patch: Partial<AdversaryAction>) => {
+    const updateAction = useCallback(async (patch: Partial<NpcAction>) => {
         setNewAction(prev => ({ ...prev, ...patch }))
         return true
     }, [])
 
-    const updateDamage = useCallback(async (patch: Partial<AdversaryAction["damage"]>) => {
-        setNewAction(prev => ({ ...prev, damage: { ...prev.damage, ...patch } as AdversaryAction["damage"] }))
+    const updateDamage = useCallback(async (patch: Partial<NpcAction["damage"]>) => {
+        setNewAction(prev => ({ ...prev, damage: { ...prev.damage, ...patch } as NpcAction["damage"] }))
         return true
     }, [])
 
     const [comboName, setComboName] = useState<string | null>(null)
     const [isCombo, setIsCombo] = useState(false)
-    const [comboSelections, setComboSelections] = useState<{ action: AdversaryAction, comboCount: number }[]>([])
+    const [comboSelections, setComboSelections] = useState<{ action: NpcAction, comboCount: number }[]>([])
 
-    const toggleComboSelection = (action: AdversaryAction) => {
+    const toggleComboSelection = (action: NpcAction) => {
         setComboSelections(prev =>
             prev.some(it => it.action.name === action.name)
                 ? prev.filter(it => it.action.name !== action.name)
@@ -196,7 +197,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
         )
     }
 
-    const updateComboCount = (action: AdversaryAction, comboCount: number) => {
+    const updateComboCount = (action: NpcAction, comboCount: number) => {
         setComboSelections(prev => prev.map(it => it.action.name === action.name ? { ...it, comboCount } : it))
     }
 
@@ -207,7 +208,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
         <div className={subMenuLayout}>
             <div>
                 <p className="text-xl font-eskapade font-bold mb-1">{editTarget ? "Edit Action" : "New Action"}</p>
-                {editTarget == null && adv.actions.length > 0 &&
+                {editTarget == null && npc.actions.length > 0 &&
                     <div className="flex space-x-2">
                         <input
                             type="checkbox"
@@ -226,19 +227,19 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
                         <EditableTextField boundValue={comboName} onSave={async (name) => { setComboName(name); return true }} placeholder='Enter name...' />
                     </div>
                     {
-                        adv.actions.map((act) => {
+                        npc.actions.map((act) => {
                             const selection = comboSelections.find(it => it.action.name === act.name)
                             return (
                                 <div key={act.name} className="flex content-center space-x-1">
                                     <input
                                         type="checkbox"
                                         checked={selection != null}
-                                        onChange={() => toggleComboSelection(act as AdversaryAction)}
+                                        onChange={() => toggleComboSelection(act as NpcAction)}
                                     />
                                     <div>{act.name}: x</div>
                                     <NumericCounterInput
                                         value={selection?.comboCount ?? 0}
-                                        onChange={(count) => updateComboCount(act as AdversaryAction, count)}
+                                        onChange={(count) => updateComboCount(act as NpcAction, count)}
                                     />
                                 </div>
                             )
@@ -297,7 +298,7 @@ export const NewActionWindow = ({ adv, setIsAddMenuOpen, editTarget = null, setE
 
             {/* SAVE & CANCEL BUTTONS*/}
             <AddMenuButtons
-                onSave={() => saveNewAction(adv, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex)}
+                onSave={() => saveNewAction(npc, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex)}
                 setEditTarget={setEditTarget}
                 setIsAddMenuOpen={setIsAddMenuOpen}
             />
@@ -325,13 +326,13 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
     )
 }
 
-const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex) => {
+const saveNewAction = (npc, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex) => {
     if (isCombo) {
         if (comboName && comboSelections.length > 0 && comboSelections.every(it => it.comboCount > 0)) {
             const comboActions = comboSelections.map(cs => ({
-                ...adv.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount
+                ...npc.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount
             }))
-            updateDocumentAtPath(adv.parent, ['combo'], { name: comboName, actions: comboActions })
+            updateDocumentAtPath(npc.parent, ['combo'], { name: comboName, actions: comboActions })
         }
         else {
             ui.notifications?.error("Error: [Name] and [Count] are required fields and at least 1 action must be selected.")
@@ -343,11 +344,11 @@ const saveNewAction = (adv, isCombo, comboSelections, comboName, newAction, edit
         return
     }
     else if (editTarget == null) {
-        updateDocumentAtPath(adv.parent, ['actions'], [...adv.actions, newAction])
+        updateDocumentAtPath(npc.parent, ['actions'], [...npc.actions, newAction])
     }
     else {
-        const actions = adv.actions
+        const actions = npc.actions
         actions[editTargetIndex] = newAction
-        updateDocumentAtPath(adv.parent, ['actions'], [...actions])
+        updateDocumentAtPath(npc.parent, ['actions'], [...actions])
     }
 }

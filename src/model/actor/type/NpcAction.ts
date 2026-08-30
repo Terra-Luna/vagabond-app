@@ -4,7 +4,7 @@ import { damageTypeOptions, fields, optionalString, requiredInteger, requiredStr
 /**
  * A detailed adversary offensive action.
  */
-export const adversaryActionSchema = () => {
+export const npcActionSchema = () => {
     return {
         name: new fields.StringField({ required: true }),
         effect: new fields.StringField({ ...optionalString }),
@@ -31,12 +31,12 @@ export const getDamageAverage = (dice: DiceRollSchema): number => {
 /**
  * Special NPC combo actions. E.g.: "Combo: 2x Claw & 1x Bite".
  */
-export const adversaryActionComboSchema = () => {
+export const npcActionComboSchema = () => {
     return {
         name: new fields.StringField({ ...requiredString }),
         actions: new fields.ArrayField(
             new fields.SchemaField({
-                ...adversaryActionSchema(),
+                ...npcActionSchema(),
                 comboCount: new fields.NumberField({ ...requiredInteger })
             }))
     }
