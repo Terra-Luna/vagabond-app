@@ -62,8 +62,7 @@ export const useTrainingSelection = (
                 system: {
                     ...item.system,
                     rules: [
-                        ...item.system.rules,
-                        level1TrainingRule //<-- fake rule, gets saved on Hero's Class/Ancestry Item later.
+                        level1TrainingRule //<-- fake rule, gets saved on Hero's Class Item later (or directly on the Hero if starting at level 0).
                     ]
                 }
             } as any]))
