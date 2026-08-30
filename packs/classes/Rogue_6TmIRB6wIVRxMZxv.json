@@ -83,7 +83,7 @@
       },
       {
         "name": "Knack",
-        "level": 1,
+        "level": 4,
         "scale": 4,
         "description": "<p><span style=\"white-space: pre-wrap;\">You gain 1 Luck during a Breather and when you Crit, in addition to other Crit benefits.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you Rest, you gain 1 extra Luck.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This extra Luck gained from a Rest increases by 1 every 4 Levels hereafter.</span></p>"
       },
@@ -94,16 +94,16 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This free Speed increases by 5’ every 4 levels hereafter.</span></p>"
       },
       {
-        "name": "Waylay",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy or use your Evasive Ability, you can spend 1 Luck to immediately take an Action. You can’t spend more than 1 Luck on this Ability at a time.</span></p>"
-      },
-      {
         "name": "Lethal Weapon",
         "level": 6,
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Your Sneak Attack damage dice can Explode.</span></p>"
+      },
+      {
+        "name": "Waylay",
+        "level": 10,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy or use your Evasive Ability, you can spend 1 Luck to immediately take an Action. You can’t spend more than 1 Luck on this Ability at a time.</span></p>"
       }
     ]
   },
@@ -120,7 +120,7 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786568828310,
-    "modifiedTime": 1787882459275,
+    "modifiedTime": 1788062197225,
     "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,

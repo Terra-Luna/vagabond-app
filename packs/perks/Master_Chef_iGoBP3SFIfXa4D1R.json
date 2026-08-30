@@ -4,7 +4,7 @@
   "_id": "iGoBP3SFIfXa4D1R",
   "img": "/icons/consumables/meat/fish-raw-bowl-wooden-green-purple.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">During a Scene, you can cook meals using 5s of Materials. Doing so makes d6+1 rations which restore d6 HP to anyone who eats one as part of a Breather. They function as normal rations after a Shift.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">During a Scene, you can cook meals using 5s of Materials. Doing so makes [[/r d6+1#Master Chef Rations]]{d6+1} rations which restore d6 HP to anyone who eats one as part of a Breather. They function as normal rations after a Shift.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -51,8 +51,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786725544225,
-    "modifiedTime": 1786725609696,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1788067067950,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
