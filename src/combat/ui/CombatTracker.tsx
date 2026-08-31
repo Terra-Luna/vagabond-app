@@ -20,6 +20,7 @@ import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useIsCurrentCombatant } from "./CombatTrackerDocument"
 import { vgLiteLang } from "../../utils/lang"
+import { NpcDataModel } from "../../model/actor/NpcDataModel"
 
 const getCombat = () => game.combat as VagabondCombat
 
@@ -100,16 +101,16 @@ export const CombatTracker = ({ combat }) => {
                             <GroupBody>{heroes?.map((hero) => <Hero key={hero.id} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
-                    {adversaries?.length > 0 &&
-                        <Group groupName="adversaries">
-                            <GroupHeader groupName="adversaries" label={vgLiteLang.Combat.adversaries} />
-                            <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
-                        </Group>
-                    }
                     {npcs?.length > 0 &&
                         <Group groupName="npcs">
                             <GroupHeader groupName="npcs" label={vgLiteLang.Combat.npcs} />
                             <GroupBody>{npcs?.map(npc => <Adversary key={npc.id} adversary={npc} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
+                        </Group>
+                    }
+                    {adversaries?.length > 0 &&
+                        <Group groupName="adversaries">
+                            <GroupHeader groupName="adversaries" label={vgLiteLang.Combat.adversaries} />
+                            <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
                 </div>
@@ -212,8 +213,6 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
     const onMouseLeave = useCallback(() => {
         (token as any)?._onHoverOut(new MouseEvent('mouseleave'))
     }, [token])
-
-    const [updateCtxMenuTracker, setUpdateCtxMenuTracker] = useState(false)
 
     const onClick = useCallback((e: MouseEvent, tokenWasClicked?: boolean) => {
         if (token.controlled && (e.shiftKey || e.ctrlKey)) {
@@ -516,5 +515,4 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
 const getCombatantSystem = (combatant) => combatant?.actor?.system
 const getHeroes = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof HeroDataModel)
 const getAdversaries = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof AdversaryDataModel)
-// todo: if necessary, check instanceof NpcDataModel instead of "not hero or adversary"
-const getNpcs = (combatants) => combatants?.filter(c => !(getCombatantSystem(c) instanceof HeroDataModel) && !(getCombatantSystem(c) instanceof AdversaryDataModel))
+const getNpcs = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof NpcDataModel)
