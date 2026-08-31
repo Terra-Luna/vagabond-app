@@ -18,7 +18,7 @@ export interface CtxMenuItem {
     action?: (e: any) => void
     isDestructive?: boolean
     isSelected?: boolean | (() => boolean)
-    subMenuItems?: CtxMenuItem[]
+    subMenuItems?: CtxMenuItem[] | (() => CtxMenuItem[])
 }
 
 export const useContextMenu = () => {
@@ -88,11 +88,12 @@ const ContextMenuHost = ({ isMenuOpen, menuAnchorPoint, menuItems, onClose, onIt
 
 const OneMenuItem = ({ item, length, onItemAction }: { item: CtxMenuItem, length: number | undefined, onItemAction: (e: any) => void }) => {
     const isSelected = typeof item.isSelected === 'function' ? item.isSelected() : item.isSelected
+    const subMenuItems = typeof item.subMenuItems === 'function' ? item.subMenuItems() : item.subMenuItems
 
-    if (item.subMenuItems) {
+    if (subMenuItems) {
         return (
             <SubMenu label={<LabelAndIcon item={item} isSubMenu />} className={isSelected ? ctxMenuSelectedTextStyle : ctxMenuTextStyle} menuClassName={ctxSubMenuContainerStyle}>
-                {item.subMenuItems.map((subItem, index) => <OneMenuItem key={index} item={subItem} length={item.subMenuItems?.length} onItemAction={onItemAction} />)}
+                {subMenuItems.map((subItem, index) => <OneMenuItem key={index} item={subItem} length={item.subMenuItems?.length} onItemAction={onItemAction} />)}
             </SubMenu>)
     }
 

@@ -282,7 +282,8 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             let y = yStart
             const step = 0.1
 
-            const applyBurn = async (damageType: string, duration: number) => {
+            const applyBurn = async (e, damageType: string, duration: number) => {
+                e.keepOpen = true
                 performAsyncActionOnControlledCombatants(async combatant => {
                     await addCountdown(
                         `${combatant.actor?.name}: ${vgLiteLang.StatusConditions["burning"].name} (${vgLiteLang.DamageTypes[damageType]})`,
@@ -301,33 +302,35 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 })
             }
 
-            const subMenuItems = Object.keys(vgLiteLang.DamageTypes)
-                .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
-                .map(damageType => ({
-                    label: vgLiteLang.DamageTypes[damageType],
-                    subMenuItems: [
-                        { label: "Cd4", action: () => applyBurn(damageType, 4) },
-                        { label: "Cd6", action: () => applyBurn(damageType, 6) },
-                        { label: "Cd8", action: () => applyBurn(damageType, 8) },
-                        { label: "Cd10", action: () => applyBurn(damageType, 10) },
-                        { label: "Cd12", action: () => applyBurn(damageType, 12) },
-                        { label: "Cd20", action: () => applyBurn(damageType, 20) }
-                    ]
-                })) as CtxMenuItem[]
-
-
-            if (getHasStatus()) {
-                subMenuItems.unshift({
-                    label: "Clear All", action: async () => {
-                        performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid))
-                    }, isSelected: true
-                })
+            const subMenuItems = () => {
+                const items = Object.keys(vgLiteLang.DamageTypes)
+                    .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
+                    .map(damageType => ({
+                        label: vgLiteLang.DamageTypes[damageType],
+                        subMenuItems: [
+                            { label: "Cd4", action: (e) => applyBurn(e, damageType, 4) },
+                            { label: "Cd6", action: (e) => applyBurn(e, damageType, 6) },
+                            { label: "Cd8", action: (e) => applyBurn(e, damageType, 8) },
+                            { label: "Cd10", action: (e) => applyBurn(e, damageType, 10) },
+                            { label: "Cd12", action: (e) => applyBurn(e, damageType, 12) },
+                            { label: "Cd20", action: (e) => applyBurn(e, damageType, 20) }
+                        ]
+                    })) as CtxMenuItem[]
+                if (getHasStatus()) {
+                    items.unshift({
+                        label: "Clear All", action: async (e) => {
+                            e.keepOpen = true
+                            performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid))
+                        }, isSelected: true
+                    })
+                }
+                return items
             }
 
             return {
                 label: vgLiteLang.StatusConditions["burning"].name,
                 icon: StatusMenuItemIcon,
-                isSelected: getHasStatus(),
+                isSelected: getHasStatus,
                 subMenuItems
             } as CtxMenuItem
         }
@@ -493,7 +496,7 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
 const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = useMemo(() => canvas?.tokens?.placeables?.find(t => t?.id === adversary?.token?._id) as Token, [adversary])
     const adversaryModel = adversary.actor.system
-    const combatantComponentRef = useRef<{onClick: any}>(null)
+    const combatantComponentRef = useRef<{ onClick: any }>(null)
 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
