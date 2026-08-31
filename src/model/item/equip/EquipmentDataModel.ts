@@ -1,5 +1,5 @@
 import { lang } from "../../../utils/lang"
-import { addCoins as addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins } from "../../common/CoinValue"
+import { addCoins as addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper } from "../../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
@@ -11,6 +11,7 @@ const baseEquipmentSchema = () => {
     return {
         category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'other' }),
         value: new fields.SchemaField({ ...coinSchema() }),
+        copperValue: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         bulk: new fields.SchemaField({
             slots: new fields.NumberField({ ...requiredInteger, initial: 1 }),
             isStackable: new fields.BooleanField({ initial: false }),
@@ -62,6 +63,22 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
+    /**
+     * The purpose of this is to ensure when an item is dragged from one place to another
+     * that its total copper value is serialized. This is, mostly, a patch for a bug within
+     * Item Piles where it can't otherwise recognize item values for use with Merchants.
+     * @param data 
+     * @param options 
+     * @param user 
+     * @returns 
+     */ 
+    override async _preCreate(data: any, options: any, user: any) {
+        const result = await super._preCreate(data, options, user)
+        const totalCopper = toCopper(data.system?.value ?? { g: 0, s: 0, c: 0 })
+        this.parent.updateSource({ "system.copperValue": totalCopper })
+        return result
+    }
+
     override prepareBaseData() {
         super.prepareBaseData()
         if ((this as any).material) {
@@ -79,11 +96,13 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
     override prepareDerivedData() {
         super.prepareDerivedData()
         this.bulk.totalSlots = getTotalSlots(this)
+        this.copperValue = toCopper((this as any)?.value ?? { g: 0, s: 0, c: 0 })
     }
 
     override async _preUpdate(changes, options, user) {
         await super._preUpdate(changes, options, user)
         const coinChanges = (changes.system as any)?.value
+
         if (coinChanges !== undefined) {
             const { g, s, c } = this.value
             const newG = coinChanges.g ?? g

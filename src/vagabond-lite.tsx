@@ -10,6 +10,7 @@ import { Attack } from "./combat/engine/Attack"
 import { VagabondCombatTracker } from "./combat/ui/CombatTrackerDocument"
 import { AdversaryDataModel } from "./model/actor/AdversaryDataModel"
 import { HeroDataModel } from "./model/actor/HeroDataModel"
+import { ItemActorDataModel } from "./model/actor/ItemActorDataModel"
 import { NpcDataModel } from "./model/actor/NpcDataModel"
 import { isInventoryItem } from "./model/actor/type/Inventory"
 import { enforceSingletonPlaceholder } from "./model/actor/util/NpcDataModelUtil"
@@ -28,10 +29,12 @@ import { SundryDataModel } from "./model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "./model/item/equip/WeaponDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
 import { stackStackables } from "./utils/heroInventoryUtil"
+import { ItemPilesConfig } from "./utils/ItemPilesConfig"
 import { getFullItem, getId } from "./utils/modelUtil"
 import { vgLiteStyles } from "./utils/styleUtils"
 import { RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
-import { NpcSheet } from "./view/sheets/actor/adversary/AdversarySheet"
+import { ItemActorSheet } from "./view/sheets/actor/adversary/ItemActorSheet"
+import { NpcSheet } from "./view/sheets/actor/adversary/NpcSheet"
 import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
@@ -76,6 +79,7 @@ Hooks.once("init", () => {
         CONFIG.Actor.dataModels.adversary = AdversaryDataModel,
         CONFIG.Actor.dataModels.hero = HeroDataModel,
         CONFIG.Actor.dataModels.npc = NpcDataModel,
+        CONFIG.Actor.dataModels.itemActor = ItemActorDataModel,
         // Items
         CONFIG.Item.dataModels.alchemical = AlchemicalItemDataModel,
         CONFIG.Item.dataModels.ancestry = AncestryDataModel,
@@ -105,6 +109,7 @@ Hooks.once("init", () => {
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, { types: ['hero'], makeDefault: true });
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', NpcSheet as any, { types: ['npc'], makeDefault: true });
 foundry.documents.collections.Actors.registerSheet('vagabond-lite', NpcSheet as any, { types: ['adversary'], makeDefault: true });
+foundry.documents.collections.Actors.registerSheet('vagabond-lite', ItemActorSheet as any, { types: ['itemActor'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet('vagabond-lite', ClassSheet as any, { types: ['class'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet as any, { types: ['perk'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet('vagabond-lite', SpellSheet as any, { types: ['spell'], makeDefault: true });
@@ -460,3 +465,5 @@ Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean 
     enforceSingletonPlaceholder(data, canvas)
     return false
 });
+
+Hooks.once("item-piles-ready" as any, () => ItemPilesConfig.configure());

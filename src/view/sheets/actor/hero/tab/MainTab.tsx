@@ -140,7 +140,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
                             <div className="flex flex-col gap-y-0.5">
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center px-1">
                                     <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
                                     <div className="flex justify-end items-center">
                                         <div title={"Toggle grip (if applicable)"}
@@ -169,7 +169,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center px-1">
                                     <div className={propsStyle}>{(item as any).properties?.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
                                     <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[(item as any).range ?? '']}</div>
                                 </div>

@@ -1,4 +1,6 @@
+import { fields } from "../common/sharedSchemas"
 import { ActorDataModel } from "./ActorDataModel"
+import { inventorySchema } from "./type/Inventory"
 import { NpcSchema, npcSchema } from "./type/NpcSchema"
 import { onNpcPreCreate, onUpdateNpc, prepareNpcBaseData } from "./util/NpcDataModelUtil"
 
@@ -6,7 +8,8 @@ export class NpcDataModel extends ActorDataModel<NpcSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            ...npcSchema()
+            ...npcSchema(),
+            inventory: new fields.SchemaField({ ...inventorySchema() })
         }
     }
 

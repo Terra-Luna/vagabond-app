@@ -3,7 +3,8 @@
     "Actor": {
       "hero": "Hero",
       "adversary": "Adversary",
-      "npc": "NPC"
+      "npc": "NPC",
+      "itemActor": "Item"
     },
     "Item": {
       "alchemical": "Alchemical",

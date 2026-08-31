@@ -41,7 +41,8 @@
     "Actor": {
       "hero": {},
       "adversary": {},
-      "npc": {}
+      "npc": {},
+      "itemActor": {}
     },
     "Item": {
       "alchemical": {

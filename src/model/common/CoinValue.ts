@@ -90,7 +90,7 @@ export const isAffordable = (coinsA: Coins, coinsB: Coins) => {
     }
 }
 
-const toCopper = (coins: Coins): number => {
+export const toCopper = (coins: Coins): number => {
     return (coins.g * 10000) + (coins.s * 100) + coins.c
 }
 
