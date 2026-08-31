@@ -310,6 +310,26 @@
       "vulnerable": {
         "name": "Vulnerable",
         "description": "Its attacks and Saves against attacks have Hinder. Attacks targeting it and Saves against its attacks have Favor."
+      },
+      "warded": {
+        "name": "Warded",
+        "description": ""
+      },
+      "exalted": {
+        "name": "Exalted",
+        "description": ""
+      },
+      "blessed": {
+        "name": "Blessed",
+        "description": ""
+      },
+      "marked": {
+        "name": "Marked",
+        "description": ""
+      },
+      "hexed": {
+        "name": "Hexed",
+        "description": ""
       }
     },
     "Wealth": {

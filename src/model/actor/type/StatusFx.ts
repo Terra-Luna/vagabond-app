@@ -28,10 +28,10 @@ export const statusFxSchema = () => {
             vulnerable: new fields.BooleanField({ initial: false }),
 
             // Special toggles that represet Hero effects...
-            marked: new fields.BooleanField({ initial: false }),
             warded: new fields.BooleanField({ initial: false }),
-            blessed: new fields.BooleanField({ initial: false }),
             exalted: new fields.BooleanField({ initial: false }),
+            blessed: new fields.BooleanField({ initial: false }),
+            marked: new fields.BooleanField({ initial: false }),
             hexed: new fields.BooleanField({ initial: false })
         }),
 

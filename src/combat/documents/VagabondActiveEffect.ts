@@ -58,7 +58,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             _id: "vg0000fatigued00",
             id: "fatigued",
             name: "VGLITE.StatusConditions.fatigued.name",
-            img: "icons/svg/downgrade.svg",
+            img: "/icons/svg/unconscious.svg",
             changes: [{ key: "system.counters.statuses.fatigue", mode: "ADD", value: "1" }]
         },
         {
@@ -75,7 +75,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             _id: "vg0000grappling0",
             id: "grappling",
             name: "VGLITE.StatusConditions.grappling.name",
-            img: "icons/svg/terror.svg",
+            img: "/icons/svg/bones.svg",
             changes: [
                 { key: "system.statuses.toggles.grappling", mode: "OVERRIDE", value: "true" }
             ]
@@ -101,7 +101,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             _id: "vg0000paralyzed0",
             id: "paralyzed",
             name: "VGLITE.StatusConditions.paralyzed.name",
-            img: "icons/svg/paralysis.svg",
+            img: "/icons/svg/ice-aura.svg",
             changes: [
                 { key: "system.statuses.toggles.paralyzed", mode: "OVERRIDE", value: "true" },
                 { key: "system.statuses.toggles.incapacitated", mode: "OVERRIDE", value: "true" },
@@ -112,7 +112,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             _id: "vg0000prone00000",
             id: "prone",
             name: "VGLITE.StatusConditions.prone.name",
-            img: "icons/svg/wall-direction.svg",
+            img: "/icons/svg/falling.svg",
             changes: [{ key: "system.statuses.toggles.prone", mode: "OVERRIDE", value: "true" }]
         },
         {
@@ -130,7 +130,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             _id: "vg0000sickened00",
             id: "sickened",
             name: "VGLITE.StatusConditions.sickened.name",
-            img: "icons/svg/poison.svg",
+            img: "/icons/svg/degen.svg",
             changes: [
                 { key: "system.statuses.toggles.sickened", mode: "OVERRIDE", value: "true" },
                 { key: "system.modifiers.healing.in", mode: "ADD", value: "-2" }
@@ -140,14 +140,14 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             _id: "vg0000suffocatin",
             id: "suffocating",
             name: "VGLITE.StatusConditions.suffocating.name",
-            img: "icons/svg/silenced.svg",
+            img: "/icons/svg/acid.svg",
             changes: [{ key: "system.statuses.toggles.suffocating", mode: "OVERRIDE", value: "true" }]
         },
         {
             _id: "vg0000unconsciou",
             id: "unconscious",
             name: "VGLITE.StatusConditions.unconscious.name",
-            img: "icons/svg/unconscious.svg",
+            img: "/icons/svg/sleep.svg",
             changes: [
                 { key: "system.statuses.toggles.unconscious", mode: "OVERRIDE", value: "true" },
                 { key: "system.statuses.toggles.blinded", mode: "OVERRIDE", value: "true" },
@@ -159,7 +159,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             _id: "vg0000vulnerable",
             id: "vulnerable",
             name: "VGLITE.StatusConditions.vulnerable.name",
-            img: "icons/svg/target.svg",
+            img: "/icons/svg/dice-target.svg",
             changes: [{ key: "system.statuses.toggles.vulnerable", mode: "OVERRIDE", value: "true" }]
         },
         {
@@ -168,6 +168,45 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             name: "VGLITE.StatusConditions.dead.name",
             img: "icons/svg/skull.svg",
             changes: [{ key: "system.statuses.toggles.dead", mode: "OVERRIDE", value: "true" }]
+        },
+
+        /**
+         * Special effects from Hero abilities...
+         */
+        {
+            _id: "vWarded000000000",
+            id: "warded",
+            name: "VGLITE.StatusConditions.warded.name",
+            img: "/icons/svg/mage-shield.svg",
+            changes: [{ key: "system.statuses.toggles.warded", mode: "OVERRIDE", value: "true" }]
+        },
+        {
+            _id: "vExalted00000000",
+            id: "exalted",
+            name: "VGLITE.StatusConditions.exalted.name",
+            img: "/icons/svg/paralysis.svg",
+            changes: [{ key: "system.statuses.toggles.exalted", mode: "OVERRIDE", value: "true" }]
+        },
+        {
+            _id: "vBlessed00000000",
+            id: "blessed",
+            name: "VGLITE.StatusConditions.blessed.name",
+            img: "/icons/svg/angel.svg",
+            changes: [{ key: "system.statuses.toggles.blessed", mode: "OVERRIDE", value: "true" }]
+        },
+        {
+            _id: "vMarked000000000",
+            id: "marked",
+            name: "VGLITE.StatusConditions.marked.name",
+            img: "/icons/svg/target.svg",
+            changes: [{ key: "system.statuses.toggles.marked", mode: "OVERRIDE", value: "true" }]
+        },
+        {
+            _id: "vHexed0000000000",
+            id: "hexed",
+            name: "VGLITE.StatusConditions.hexed.name",
+            img: "/icons/svg/cancel.svg",
+            changes: [{ key: "system.statuses.toggles.hexed", mode: "OVERRIDE", value: "true" }]
         }
     ]
 
