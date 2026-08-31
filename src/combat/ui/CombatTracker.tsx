@@ -343,7 +343,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 subMenuItems: [
                     makeBurnMenuItem(),
                     ...Object.keys(vgLiteLang.StatusConditions)
-                        .filter(statusKey => statusKey !== "burning")
+                        .filter(statusKey => !["burning", "dead", "fatigued"].includes(statusKey))
                         .map(statusKey => makeStatusConditionMenuItem(statusKey))
                 ]
             }
