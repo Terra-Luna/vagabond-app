@@ -13,6 +13,7 @@ import { vgLiteStyles } from "../../utils/styleUtils"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EmotionCacheContext } from "../../view/context/EmotionCacheContext"
 import { CombatTracker } from "./CombatTracker"
+import { CombatContext } from "./hooks"
 
 export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.CombatTracker {
     htmlRoot?: HTMLElement
@@ -59,17 +60,3 @@ export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.Com
 interface CombatTracker {
     hoverCombatant: (combatant: any, hovered: boolean) => void;
 }
-
-interface CombatContextProps {
-    activeCombatantId?: string | null;
-    activeGroup?: CombatGroup | null;
-    combatTracker?: CombatTracker;
-}
-const CombatContext = createContext<CombatContextProps>({ activeCombatantId: null, activeGroup: null, combatTracker: {} as CombatTracker })
-
-export const useIsCurrentCombatant = (combatant) => {
-    const { activeCombatantId } = useContext(CombatContext)
-    return activeCombatantId === combatant.id || activeCombatantId === combatant._id
-}
-
-export const useCombatContext = () => useContext(CombatContext)

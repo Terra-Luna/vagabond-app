@@ -1,6 +1,6 @@
 import { getName } from "../../../utils/modelUtil"
-import { AdversaryDataModel } from "../AdversaryDataModel"
-import { NpcDataModel } from "../NpcDataModel"
+import type { AdversaryDataModel } from "../AdversaryDataModel"
+import type { NpcDataModel } from "../NpcDataModel"
 import { getDamageAverage } from "../type/NpcAction"
 
 export const onNpcPreCreate = (npc, options, data, allowed, actorLink, disposition) => {

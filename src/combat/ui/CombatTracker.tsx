@@ -18,7 +18,7 @@ import { getControlledCombatants, getControlledTokens, performAsyncActionOnContr
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
-import { useIsCurrentCombatant } from "./CombatTrackerDocument"
+import { useIsCurrentCombatant } from "./hooks"
 import { vgLiteLang } from "../../utils/lang"
 import { NpcDataModel } from "../../model/actor/NpcDataModel"
 

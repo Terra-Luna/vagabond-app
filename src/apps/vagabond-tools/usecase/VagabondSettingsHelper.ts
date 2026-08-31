@@ -1,4 +1,4 @@
-import { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
+import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
 
 /**
