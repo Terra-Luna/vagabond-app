@@ -8,7 +8,7 @@ import { isInContainer, isInventoryItem, openItemSheet } from "../model/actor/ty
 import { AlchemicalItemDataModel } from "../model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
-import { EquipmentDataModel, EquipmentSchema,setEquipState } from "../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../model/item/equip/SundryDataModel"
 import { isEquippedWeapon, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
@@ -230,7 +230,7 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
                         : (item instanceof ArmorDataModel
                             ? equipArmor(hero, item as ArmorDataModel)
                             : setEquipState(item, true)
-                    )
+                        )
                 }
             })
         }
@@ -331,12 +331,16 @@ export const inventoryItemDragDropHandler = async (
             sortBefore: sortBefore,
             siblings: siblings.map(it => it.parent)
         })
+
         const sortingUpdate = sorted.map((it: any) => {
             const update = it.update
             update._id = it.target._id
             return update
         })
-        await actor?.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
+
+        if (targetItem.parent.id !== dragItem.parent.id) {
+            await actor?.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
+        }
     }
 }
 
