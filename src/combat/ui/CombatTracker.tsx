@@ -1,5 +1,5 @@
 import { Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
-import { ReactNode, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import { addCountdown, removeAllBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
@@ -147,7 +147,7 @@ const GroupBody = ({ children }) => {
     )
 }
 
-const CombatantHeader = ({ token, combatant, name, children }) => {
+const CombatantHeader = ({ token, combatant, name, children, onClick }) => {
     const realToken = getCanvasToken(token?.id)
 
     const [hovered, setIsHovered] = useState(false)
@@ -189,7 +189,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     return (
         <div className="flex w-full">
             <div className={`flex w-full ${opacityClass}`}>
-                <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} />
+                <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} onClick={onClick} />
                 <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
                         <p className={`hover-glow ${hovered ? "vglite-hovered" : ""} leading-none`}>{name}</p>
@@ -202,7 +202,7 @@ const CombatantHeader = ({ token, combatant, name, children }) => {
     )
 }
 
-const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastClickedCombatants }: { token: Token, children: ReactNode, combatant: VagabondCombatant, lastClickedCombatants: string[], setlastClickedCombatants: (ids: string[]) => void }) => {
+const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatants, setlastClickedCombatants }: { token: Token, children: ReactNode, combatant: VagabondCombatant, lastClickedCombatants: string[], setlastClickedCombatants: (ids: string[]) => void }, ref) => {
     // we are cheating a bit here, but it works!
     //  act like hovering our entries in the tracker is hovering the token
     const onMouseEnter = useCallback(() => {
@@ -213,7 +213,9 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
         (token as any)?._onHoverOut(new MouseEvent('mouseleave'))
     }, [token])
 
-    const onClick = useCallback((e: MouseEvent) => {
+    const [updateCtxMenuTracker, setUpdateCtxMenuTracker] = useState(false)
+
+    const onClick = useCallback((e: MouseEvent, tokenWasClicked?: boolean) => {
         if (token.controlled && (e.shiftKey || e.ctrlKey)) {
             token.release()
             setlastClickedCombatants(lastClickedCombatants.filter(c => c !== combatant.id))
@@ -231,13 +233,17 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             canvas?.ping(token.center)
         } else {
             token.control({ releaseOthers: true })
-            game.canvas?.animatePan({ x: token.x, y: token.y });
+            if (tokenWasClicked) {
+                game.canvas?.animatePan({ x: token.x, y: token.y });
+            }
         }
 
         if (combatant.id) {
             setlastClickedCombatants([...lastClickedCombatants, combatant.id])
         }
     }, [token, combatant, lastClickedCombatants])
+
+    useImperativeHandle(ref, () => ({ onClick }))
 
     const onDoubleClick = useCallback(() => {
         token.actor?.sheet?.render(true)
@@ -259,16 +265,16 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
 
         const makeStatusConditionMenuItem = (statusKey: string) => {
             const StatusMenuItemIcon = () => <StatusIcon status={statusKey} size={24} className="mr-1 bg-sheet-header-fill" />
-            const action = (e) => {
+            const action = async (e) => {
                 e.keepOpen = true
-                performAsyncActionOnControlledCombatants(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !controlledCombatantsHaveStatus(statusKey) }), combatant)
+                await performAsyncActionOnControlledCombatants(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !controlledCombatantsHaveStatus(statusKey) }))
             }
-            return { label: vgLiteLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: controlledCombatantsHaveStatus(statusKey) } as CtxMenuItem
+            return { label: vgLiteLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: () => controlledCombatantsHaveStatus(statusKey) } as CtxMenuItem
         }
 
         const makeBurnMenuItem = () => {
             const StatusMenuItemIcon = () => <StatusIcon status="burning" size={24} className="mr-1 bg-sheet-header-fill" />
-            const getHasStatus = () => controlledCombatantsHaveStatus("burning", combatant)
+            const getHasStatus = () => controlledCombatantsHaveStatus("burning")
 
             const xStart = 0.1
             const yStart = 0.1
@@ -292,7 +298,7 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                         x += step
                         y = yStart
                     }
-                }, combatant)
+                })
             }
 
             const subMenuItems = Object.keys(vgLiteLang.DamageTypes)
@@ -313,7 +319,7 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             if (getHasStatus()) {
                 subMenuItems.unshift({
                     label: "Clear All", action: async () => {
-                        performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid), combatant)
+                        performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid))
                     }, isSelected: true
                 })
             }
@@ -351,7 +357,7 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
                 ...(controlledTokens().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
                     icon: RefreshCw,
                     label: "Refresh Activations",
-                    action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
+                    action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations())
                 }] : []),
                 {
                     icon: Trash,
@@ -374,8 +380,9 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id}`}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
-                onClick={onClick as any}
+                onClick={e => onClick(e as any)}
                 onDoubleClick={onDoubleClick}
+                onAuxClick={e => onClick(e as any)}
                 onContextMenu={e => {
                     if (game.user?.isGM || combatant.isOwner) {
                         onCtxMenu(e, ctxMenuActions())
@@ -390,15 +397,16 @@ const Combatant = ({ token, children, combatant, lastClickedCombatants, setlastC
             </div>
         </>
     )
-}
+})
 
-const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHidden }) => {
+const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHidden, onClick }) => {
     const dispositionColor = isControlled ? CONFIG.Canvas.dispositionColors.CONTROLLED : isHovered ? CONFIG.Canvas.dispositionColors[disposition] : ""
     const borderColor = `#${dispositionColor.toString(16)}`
     const borderStyle = (isHovered || isControlled) ? "border-solid border-2" : "";
 
     return (
         <img
+            onClick={(e) => onClick(e, true)}
             style={{ borderColor }}
             className={`object-contain h-[54px] w-[54px] p-0.5 cursor-pointer mr-2 self-center ${borderStyle} transition-opacity duration-1200 ${isHidden ? 'opacity-50' : ''}`} src={src} alt={''}
         />
@@ -431,10 +439,11 @@ const StatusIcons = ({ combatant }) => {
 const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
     const heroActorModel = hero.actor.system
+    const combatantComponentRef = useRef<{ onClick: any }>(null)
 
     return (
-        <Combatant token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
-            <CombatantHeader name={hero.name} token={token} combatant={hero}>
+        <Combatant ref={combatantComponentRef} token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
+            <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick}>
                 <div className="w-full" title={heroActorModel.mana.max > 0
                     ? localizeString(vgLiteLang.Combat.statTooltip, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString(), mana: heroActorModel.mana.current?.toString(), manaMax: heroActorModel.mana.max?.toString() })
                     : localizeString(vgLiteLang.Combat.statTooltipNoMana, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString() })}>
@@ -484,10 +493,11 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
 const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = useMemo(() => canvas?.tokens?.placeables?.find(t => t?.id === adversary?.token?._id) as Token, [adversary])
     const adversaryModel = adversary.actor.system
+    const combatantComponentRef = useRef<{onClick: any}>(null)
 
     return (
-        <Combatant token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
-            <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token}>
+        <Combatant ref={combatantComponentRef} token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
+            <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token} onClick={combatantComponentRef.current?.onClick}>
                 <div className="w-full" title={localizeString(vgLiteLang.Combat.hpTooltip, { hp: adversaryModel.health.current?.toString(), hpMax: adversaryModel.health.max?.toString() })}>
                     <Gauge max={adversaryModel.health.max} value={adversaryModel.health.current} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
                 </div>
