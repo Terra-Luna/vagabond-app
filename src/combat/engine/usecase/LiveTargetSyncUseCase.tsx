@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react"
 
 import { getAttackRegistry } from "../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { sys_id } from "../../../utils/foundryUtils"
 import { Attack } from "../Attack"
 import { AttackSnapshot, serializeAttack } from "../util/attack-serializer"
 
@@ -50,7 +51,7 @@ export function useLiveTargetSync(attack?: Attack | undefined): string[] {
          * and trigger an update for all users so their chat card can be re-rendered.
          */
         const settingHookId = Hooks.on('updateSetting', (settingDoc: any, changed: any, options: any, userId: string) => {
-            if (settingDoc.key !== "vagabond-lite.attackRegistry") return
+            if (settingDoc.key !== `${sys_id}.attackRegistry`) return
 
             const currentRegistry = getAttackRegistry()
 

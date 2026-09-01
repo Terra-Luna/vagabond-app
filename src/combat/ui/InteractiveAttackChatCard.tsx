@@ -5,6 +5,7 @@ import { getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSet
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
+import { sys_id } from "../../utils/foundryUtils"
 import { vgLiteLang } from "../../utils/lang"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { BaseChatCardHost } from "../../view/chat/component/BaseChatCardHost"
@@ -41,7 +42,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
      */
     useEffect(() => {
         const hookId = Hooks.on("updateSetting", (settingDoc: any, changes: any) => {
-            if (settingDoc.key !== "vagabond-lite.attackRegistry") return
+            if (settingDoc.key !== `${sys_id}.attackRegistry`) return
 
             let updatedData: Record<string, any>
             try {

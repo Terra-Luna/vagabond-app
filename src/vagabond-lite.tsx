@@ -46,22 +46,22 @@ import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
 const fontFaces = [
     new FontFace(
         'Eskapade',
-        'url("systems/vagabond-lite/assets/fonts/eskapade-black.ttf")',
+        `url("systems/${sys_id}/assets/fonts/eskapade-black.ttf")`,
         { weight: 'bold', style: 'normal', }
     ),
     new FontFace(
         'Eskapade',
-        'url("systems/vagabond-lite/assets/fonts/eskapade-regular.ttf")',
+        `url("systems/${sys_id}/assets/fonts/eskapade-regular.ttf")`,
         { weight: 'normal', style: 'normal', }
     ),
     new FontFace(
         'Paradigm',
-        'url("systems/vagabond-lite/assets/fonts/paradigm-regular.otf")',
+        `url("systems/${sys_id}/assets/fonts/paradigm-regular.otf")`,
         { weight: 'normal', style: 'normal', }
     ),
     new FontFace(
         'Paradigm',
-        'url("systems/vagabond-lite/assets/fonts/paradigm-bold.otf")',
+        `url("systems/${sys_id}/assets/fonts/paradigm-bold.otf")`,
         { weight: 'bold', style: 'normal', }
     ),
 ];
@@ -102,7 +102,7 @@ Hooks.once("init", () => {
         CONFIG.ui.combat = VagabondCombatTracker
     )
 
-    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = "systems/vagabond-lite/react-placeholder.hbs"
+    foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`
 
     VagabondSettingsRegistry.register()
 })
@@ -122,7 +122,7 @@ foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any,
 });
 
 Hooks.once("ready", async () => {
-    game.socket?.on("system.vagabond-lite", async (packet: any) => {
+    game.socket?.on(`system.${sys_id}`, async (packet: any) => {
         if (!game.user?.isGM) return
 
         const activeGM = game.users?.activeGM

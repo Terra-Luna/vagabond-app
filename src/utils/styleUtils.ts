@@ -1,5 +1,7 @@
 // important note - never import vagabond-lite.css?inline up here
 import "../styles/vagabond-lite.css"
+
+import { sys_id } from "./foundryUtils"
 const isProduction = process.env.NODE_ENV === 'production'
 
 /** 
@@ -14,7 +16,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 const documentWithStyleTag = (document as any) as { vgLiteDevStyleSheet: HTMLStyleElement | null }
 
 const removeAndSaveVagabondStyleTag = () => {
-    const vgLiteStyleTag = document.querySelector('style[data-vite-dev-id*="vagabond-lite.css"]') as HTMLStyleElement
+    const vgLiteStyleTag = document.querySelector(`style[data-vite-dev-id*="${sys_id}.css"]`) as HTMLStyleElement
 
     if (vgLiteStyleTag) {
         vgLiteStyleTag.remove()
@@ -25,7 +27,7 @@ const removeAndSaveVagabondStyleTag = () => {
 export let vgLiteStyles: any = ""
 if (isProduction) {
     // in prod, dynamically import the css file (which vite rolls up as a javascript file with a weird filename, ew)
-    import("../styles/vagabond-lite.css?inline").then(css => {
+    import(`../styles/${sys_id}.css?inline`).then(css => {
         vgLiteStyles = css.default
     })
 }

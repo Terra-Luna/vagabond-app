@@ -100,7 +100,7 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
 }
 
 /**
- * Probably move these to vagabond-lite.css ??
+ * Probably move these to our css ??
  */
 const inlineRollStyle = `
     /* Rolls style defaults */

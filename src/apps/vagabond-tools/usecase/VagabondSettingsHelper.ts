@@ -169,7 +169,7 @@ const updateSetting = async (setting: string, update: any) => {
             user: game.user.id, action: "updateGameSetting",
             data: { setting: setting, update: update }
         }
-        game.socket?.emit("system.vagabond-lite", payload)
+        game.socket?.emit(`system.${sys_id}`, payload)
     }
 }
 

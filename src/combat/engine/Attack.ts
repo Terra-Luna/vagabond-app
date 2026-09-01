@@ -1,5 +1,5 @@
 import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { roll3dDice } from "../../utils/foundryUtils"
+import { roll3dDice, sys_id } from "../../utils/foundryUtils"
 import { getTargetIds } from "../../utils/modelUtil"
 import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
@@ -118,7 +118,7 @@ export abstract class Attack {
                 snapshot: snapshot
             }
         }
-        game.socket?.emit("system.vagabond-lite", payload)
+        game.socket?.emit(`system.${sys_id}`, payload)
     }
 
     static async handleIncomingAttackSnapshot(payload: { actorId: string, snapshot: AttackSnapshot }) {

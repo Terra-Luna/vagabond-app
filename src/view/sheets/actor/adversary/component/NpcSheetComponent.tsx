@@ -39,7 +39,7 @@ const usePortraitOpenFlag = (actor: Actor) => {
 
     useFoundryHook("updateToken" as any, (doc: any, changes: any) => {
         if (!token || doc.id !== token.id) return
-        const flagChange = foundry.utils.getProperty(changes, "flags.vagabond-lite.portraitOpen") as boolean | undefined
+        const flagChange = foundry.utils.getProperty(changes, `flags.${sys_id}.portraitOpen`) as boolean | undefined
         if (flagChange !== undefined) setIsPortraitOpenState(flagChange ?? true)
     })
 

@@ -1,6 +1,7 @@
 import { ReactNode, useRef } from "react";
 import { createPortal } from "react-dom";
 
+import { sys_id } from "../../utils/foundryUtils";
 import { vgLiteStyles } from "../../utils/styleUtils";
 
 // Component that wraps children with an iFrame. If you want to save a bit of performance and aren't styling the children, you can use skipStyleInjection to not inject our css
@@ -37,22 +38,22 @@ export const IFrameWrapper = (
     const fontFaces = [
         new FontFace(
             'Eskapade',
-            'url("systems/vagabond-lite/assets/fonts/eskapade-black.ttf")',
+            `url("systems/${sys_id}/assets/fonts/eskapade-black.ttf")`,
             { weight: 'bold', style: 'normal', }
         ),
         new FontFace(
             'Eskapade',
-            'url("systems/vagabond-lite/assets/fonts/eskapade-regular.ttf")',
+            `url("systems/${sys_id}/assets/fonts/eskapade-regular.ttf")`,
             { weight: 'normal', style: 'normal', }
         ),
         new FontFace(
             'Paradigm',
-            'url("systems/vagabond-lite/assets/fonts/paradigm-regular.otf")',
+            `url("systems/${sys_id}/assets/fonts/paradigm-regular.otf")`,
             { weight: 'normal', style: 'normal', }
         ),
         new FontFace(
             'Paradigm',
-            'url("systems/vagabond-lite/assets/fonts/paradigm-bold.otf")',
+            `url("systems/${sys_id}/assets/fonts/paradigm-bold.otf")`,
             { weight: 'bold', style: 'normal', }
         ),
     ];

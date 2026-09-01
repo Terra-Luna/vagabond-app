@@ -1,6 +1,8 @@
+import { sys_id } from "../../utils/foundryUtils"
+
 const defaultArtworkByType = {
-    adversary: 'systems/vagabond-lite/assets/icons/ic_adversary.webp',
-    itemActor: '/icons/containers/bags/coinpouch-simple-leather-silver-brown.webp'
+    adversary: `systems/${sys_id}/assets/icons/ic_adversary.webp`,
+    itemActor: `/icons/containers/bags/coinpouch-simple-leather-silver-brown.webp`
 }
 
 export class VagabondActor<SubType extends Actor.SubType = Actor.SubType> extends Actor<SubType> {

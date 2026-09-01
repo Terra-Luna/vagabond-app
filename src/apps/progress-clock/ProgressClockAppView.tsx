@@ -1,6 +1,7 @@
 import { Trash, Undo } from 'lucide-react'
 import { useState } from 'react'
 
+import { sys_id } from '../../utils/foundryUtils'
 import { vgLiteLang } from '../../utils/lang'
 import { useContextMenu } from '../../view/component/ContextMenu'
 import { CanvasOverlayObjectWrapper } from '../overlay/component/CanvasOverlayObjectWrapper'
@@ -15,7 +16,7 @@ export const ProgressClockAppView = () => {
     const { ContextMenu, onCtxMenu } = useContextMenu()
     const { dragInfo, handleMouseDown } = useDragOverlayComponent(setClocks, setProgressClocks, checkClockPermission)
 
-    useOverlayItemSync(setClocks, getProgressClocks, "vagabond-lite.progressClocks")
+    useOverlayItemSync(setClocks, getProgressClocks, `${sys_id}.progressClocks`)
 
     const incrementClock = async (clockId: string) => {
         if (dragInfo.current?.hasMoved) return

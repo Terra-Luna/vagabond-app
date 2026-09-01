@@ -1,6 +1,7 @@
 import { Brain, Cross, Droplets, Flame, FlaskRound, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
+import { sys_id } from "../../utils/foundryUtils"
 import { lang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
@@ -60,15 +61,15 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case lang.VGLITE.DamageTypes.blunt: {
-            element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/blunt.svg'} size={size} />
+            element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/blunt.svg`} size={size} />
             break 
         }
         case lang.VGLITE.DamageTypes.pierce: {
-            element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/pierce.svg'} size={size} />
+            element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/pierce.svg`} size={size} />
             break
         }
         case lang.VGLITE.DamageTypes.slash: {
-            element = <CustomIcon path={'systems/vagabond-lite/assets/icons/dmg/slash.svg'} size={size} />
+            element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/slash.svg`} size={size} />
             break
         }
     }

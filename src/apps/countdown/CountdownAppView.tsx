@@ -2,6 +2,7 @@ import { Minus, Plus, Trash, User } from "lucide-react"
 import { useCallback, useState } from "react"
 
 import { CountdownRoll } from "../../combat/engine/roll/CountdownRoll"
+import { sys_id } from "../../utils/foundryUtils"
 import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
 import { useContextMenu } from "../../view/component/ContextMenu"
 import { CanvasOverlayObjectWrapper } from "../overlay/component/CanvasOverlayObjectWrapper"
@@ -16,7 +17,7 @@ export const CountdownAppView = () => {
     const { dragInfo, handleMouseDown } = useDragOverlayComponent(setCds, setCountdowns, checkCountdownPermission)
     const { ContextMenu, onCtxMenu } = useContextMenu()
 
-    useOverlayItemSync(setCds, getCountdowns, "vagabond-lite.countdowns")
+    useOverlayItemSync(setCds, getCountdowns, `${sys_id}.countdowns`)
 
     const handleCountdownClick = useCallback(async (cdId: string) => {
         if (dragInfo.current?.hasMoved) return

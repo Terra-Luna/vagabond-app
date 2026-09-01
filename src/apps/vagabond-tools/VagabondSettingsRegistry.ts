@@ -40,7 +40,7 @@ export class VagabondSettingsRegistry {
     }
 
     /**
-     * This is called from vagabond-lite.tsx and is triggered when a user
+     * This is called from 'main' and is triggered when a user
      * with permission tries to udpate a setting.
      * @param data
      */
