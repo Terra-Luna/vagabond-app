@@ -1,5 +1,6 @@
 import { ReactElement } from "react"
 
+import { sys_id } from "../../utils/foundryUtils"
 import { getId, getName } from "../../utils/modelUtil"
 
 interface ElementBlueprint {
@@ -22,7 +23,7 @@ export const sendVagabondChatMessage = async (
         content: chatRoot,
         rolls: rolls,
         flags: {
-            sys_id: { blueprint }
+            [sys_id]: { blueprint }
         } as any
     })
 }
@@ -39,7 +40,7 @@ export const sendVagabondChatCard = async (
         speaker: { actor: getId(actor), alias: getName(actor) },
         content: chatRoot,
         rolls,
-        flags: { sys_id: { blueprint } } as any
+        flags: { [sys_id]: { blueprint } } as any
     })
 }
 

@@ -1,5 +1,6 @@
 import { PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
+import { sys_id } from "../../utils/foundryUtils"
 import { normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
@@ -90,7 +91,7 @@ export class PerkRulesSelectionsApplicator {
                         name: fullItem.name || "Unknown Feature",
                         img: fullItem.img || "icons/svg/item-bag.svg",
                         type: fullItem.type,
-                        flags: { sys_id: { sourceId: fullItem.uuid }, isRuleSelection: true }
+                        flags: { [sys_id]: { sourceId: fullItem.uuid }, isRuleSelection: true }
                     },
                     ...systemClone
                 }
