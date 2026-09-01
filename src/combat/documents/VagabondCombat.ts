@@ -1,4 +1,5 @@
 import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper";
+import { sys_id } from "../../utils/foundryUtils";
 
 export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
@@ -37,11 +38,11 @@ export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> ext
     }
 
     getVagabondFlag(flagName) {
-        return this.getFlag("vagabond-lite" as any, flagName)
+        return this.getFlag(sys_id, flagName)
     }
 
     setVagabondFlag(flagName, flagValue) {
-        return this.setFlag("vagabond-lite" as any, flagName, flagValue)
+        return this.setFlag(sys_id, flagName, flagValue)
     }
 
     async activateCombatant(id: string) {

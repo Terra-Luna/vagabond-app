@@ -28,6 +28,7 @@ import { StartingPackDataModel } from "./model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "./model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "./model/item/equip/WeaponDataModel"
 import { ItemsCache } from "./rules/util/ItemsCache"
+import { sys_id } from "./utils/foundryUtils"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { ItemPilesConfig } from "./utils/ItemPilesConfig"
 import { getFullItem, getId } from "./utils/modelUtil"
@@ -106,15 +107,15 @@ Hooks.once("init", () => {
     VagabondSettingsRegistry.register()
 })
 
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', HeroSheet as any, { types: ['hero'], makeDefault: true });
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', NpcSheet as any, { types: ['npc'], makeDefault: true });
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', NpcSheet as any, { types: ['adversary'], makeDefault: true });
-foundry.documents.collections.Actors.registerSheet('vagabond-lite', ItemActorSheet as any, { types: ['itemActor'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet('vagabond-lite', ClassSheet as any, { types: ['class'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet('vagabond-lite', PerkSheet as any, { types: ['perk'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet('vagabond-lite', SpellSheet as any, { types: ['spell'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet('vagabond-lite', AncestrySheet as any, { types: ['ancestry'], makeDefault: true });
-foundry.documents.collections.Items.registerSheet('vagabond-lite', EquipmentSheet as any, {
+foundry.documents.collections.Actors.registerSheet(sys_id, HeroSheet as any, { types: ['hero'], makeDefault: true });
+foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, { types: ['npc'], makeDefault: true });
+foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, { types: ['adversary'], makeDefault: true });
+foundry.documents.collections.Actors.registerSheet(sys_id, ItemActorSheet as any, { types: ['itemActor'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet(sys_id, ClassSheet as any, { types: ['class'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet(sys_id, PerkSheet as any, { types: ['perk'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet(sys_id, SpellSheet as any, { types: ['spell'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet(sys_id, AncestrySheet as any, { types: ['ancestry'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any, {
     types: [
         'alchemical', 'armor', 'container', 'startingpack', 'sundry', 'tool', 'weapon'
     ], makeDefault: true
@@ -270,7 +271,7 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     if (game.user?.id !== userId || !item.parent) return
     
     const childrenToDelete = item.parent.items.filter(
-        (i: any) => i.getFlag("vagabond-lite", "grantedBy") === item.id
+        (i: any) => i.getFlag(sys_id, "grantedBy") === item.id
     ).map((i: any) => i.id)
 
     if (childrenToDelete.length > 0) {
@@ -390,7 +391,7 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
         const coreHeader = html.querySelector('.message-header') as HTMLElement
         if (coreHeader) coreHeader.style.display = 'none'
 
-        const blueprint = message.getFlag("vagabond-lite" as any, "blueprint")
+        const blueprint = message.getFlag(sys_id, "blueprint")
         if (!blueprint) return
 
         let scaduRoot = rootElement.shadowRoot

@@ -8,6 +8,7 @@ import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
+import { sys_id } from "../../../../utils/foundryUtils"
 import { lang } from "../../../../utils/lang"
 import { localizeString } from "../../../../utils/localeUtils"
 import { getName } from "../../../../utils/modelUtil"
@@ -59,7 +60,7 @@ export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { sys
 
 const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondActorSheet }) => {
     const canLevelUp = () => {
-        const hasDestiny = hero.parent.getFlag("vagabond-lite", "destiny") || false
+        const hasDestiny = hero.parent.getFlag(sys_id, "destiny") || false
         const hasXpLevel = hero.level.xp! > hero.level.xpToLevel! && hero.level.xpToLevel! > -1
         const isNewChar = !hero.ancestry
         return hasDestiny || hasXpLevel || isNewChar

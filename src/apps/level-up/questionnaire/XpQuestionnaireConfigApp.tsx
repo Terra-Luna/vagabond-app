@@ -1,3 +1,4 @@
+import { sys_id } from "../../../utils/foundryUtils"
 import { getXpQuestionnaiare, XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { XpQuestionnaireConfigView } from "./XpQuestionnaireConfigView"
@@ -29,7 +30,7 @@ export class XpQuestionnaireConfigApp extends VagabondApplication {
      */
     private async handleSave(updatedQuestions: XpQuestion[]): Promise<void> {
         try {
-            await (game as any).settings.set("vagabond-lite", "xpQuestionnaire", updatedQuestions)
+            await (game as any).settings.set(sys_id, "xpQuestionnaire", updatedQuestions)
             ui.notifications?.info("XP Questionnaire settings saved successfully!")
             this.close()
         }

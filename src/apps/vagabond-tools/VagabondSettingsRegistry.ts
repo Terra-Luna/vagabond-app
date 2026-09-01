@@ -1,4 +1,5 @@
 import { fields } from "../../model/common/sharedSchemas"
+import { sys_id } from "../../utils/foundryUtils"
 import { XpQuestionnaireConfigApp } from "../level-up/questionnaire/XpQuestionnaireConfigApp"
 import { RelicPowers } from "./relic/RelicPowers"
 
@@ -21,7 +22,7 @@ export class VagabondSettingsRegistry {
     }
 
     static registerClientSetting(settingKey: any) {
-        game.settings?.register("vagabond-lite" as any, settingKey, {
+        game.settings?.register(sys_id, settingKey, {
             name: `Custom client setting`,
             hint: `${settingKey}`,
             scope: "client",
@@ -31,8 +32,8 @@ export class VagabondSettingsRegistry {
     }
 
     static async toggleClientSetting(settingKey: any, actorId?: string | undefined | null) {
-        const state = game.settings?.get("vagabond-lite" as any, settingKey)
-        await game.settings?.set("vagabond-lite" as any, settingKey, !state)
+        const state = game.settings?.get(sys_id, settingKey)
+        await game.settings?.set(sys_id, settingKey, !state)
         if (actorId) {
             game.actors?.get(actorId)?.render()
         }
@@ -44,11 +45,11 @@ export class VagabondSettingsRegistry {
      * @param data
      */
     static handleIncomingSettingsChange(data: { setting: string, update: any, pw: string }) {
-        (game.settings as any)?.set("vagabond-lite", data.setting, data.update)
+        (game.settings as any)?.set(sys_id, data.setting, data.update)
     }
 
     private static registerMaxLevel() {
-        game.settings?.register("vagabond-lite" as any, "maxLevel" as any, {
+        game.settings?.register(sys_id, "maxLevel" as any, {
             name: "Max Level (default: 10)",
             hint: "The highest level a Hero can achieve.",
             scope: "world",
@@ -60,7 +61,7 @@ export class VagabondSettingsRegistry {
     }
 
     private static registerLevelPacing() {
-        game.settings?.register("vagabond-lite" as any, "levelPacing" as any, {
+        game.settings?.register(sys_id, "levelPacing" as any, {
             name: "Level Pacing",
             hint: "Pace at which the Heroes gain levels.",
             scope: "world",
@@ -79,7 +80,7 @@ export class VagabondSettingsRegistry {
     }
 
     private static registerXpQuestionnaire() {
-        game.settings?.register("vagabond-lite" as any, "xpQuestionnaire" as any, {
+        game.settings?.register(sys_id, "xpQuestionnaire" as any, {
             name: "XP Questionnaire",
             hint: "An array of questions and their XP values.",
             scope: "world",
@@ -95,7 +96,7 @@ export class VagabondSettingsRegistry {
             ] as any,
             onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
-        game.settings?.registerMenu("vagabond-lite", "xpQuestionnaireConfig", {
+        game.settings?.registerMenu(sys_id, "xpQuestionnaireConfig", {
             name: "XP Questionnaire Editor",
             label: "Modify Questions",
             hint: "Add, remove, or edit the XP questionnaire.",
@@ -106,7 +107,7 @@ export class VagabondSettingsRegistry {
     }
 
     private static registerAttackRegistry() {
-        (game.settings as any).register("vagabond-lite", "attackRegistry", {
+        (game.settings as any).register(sys_id, "attackRegistry", {
             name: "Attack Registry",
             hint: "Stores attack data from Heroes and Adversaries",
             scope: "world",
@@ -117,7 +118,7 @@ export class VagabondSettingsRegistry {
     }
 
     private static registerItemShopToggle() {
-        (game.settings as any).register("vagabond-lite", "itemShopToggle", {
+        (game.settings as any).register(sys_id, "itemShopToggle", {
             name: "Toggle Item Shop",
             hint: "Control visibility of Item Shop to players",
             scope: "world",
@@ -129,7 +130,7 @@ export class VagabondSettingsRegistry {
     }
 
     private static async registerProgressClocks() {
-        (game.settings as any).register("vagabond-lite", "progressClocks" as any, {
+        (game.settings as any).register(sys_id, "progressClocks" as any, {
             name: "Progress Clocks",
             hint: "World Progress Clocks",
             scope: "world",
@@ -137,7 +138,7 @@ export class VagabondSettingsRegistry {
             type: Array,
             default: []
         });
-        (game.settings as any).register("vagabond-lite", "clockPermissionLevel" as any, {
+        (game.settings as any).register(sys_id, "clockPermissionLevel" as any, {
             name: "Clock Interaction Permissions",
             hint: "Determines whether players can advance progress clocks or if it is restricted to GM.",
             scope: "world",
@@ -152,7 +153,7 @@ export class VagabondSettingsRegistry {
     }
 
     private static async registerCountdowns() {
-        (game.settings as any).register("vagabond-lite", "countdowns" as any, {
+        (game.settings as any).register(sys_id, "countdowns" as any, {
             name: "Countdown Timers",
             hint: "Countdown Timers",
             scope: "world",
@@ -161,7 +162,7 @@ export class VagabondSettingsRegistry {
             default: []
         });
 
-        (game.settings as any).register("vagabond-lite", "countdownPermissionLevel" as any, {
+        (game.settings as any).register(sys_id, "countdownPermissionLevel" as any, {
             name: "Countdown Interaction Permissions",
             hint: "Determines whether players can interact with countdown dice or if it is restricted to GM.",
             scope: "world",
@@ -176,7 +177,7 @@ export class VagabondSettingsRegistry {
     }
 
     private static registerManaEnforcement() {
-        game.settings?.register("vagabond-lite" as any, "enforceMana" as any, {
+        game.settings?.register(sys_id, "enforceMana" as any, {
             name: "Enforce Mana ",
             hint: "Enable to enforce spellcasting Mana consumption and Max/Cast limits.",
             scope: "world",

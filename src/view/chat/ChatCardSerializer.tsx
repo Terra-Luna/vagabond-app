@@ -22,7 +22,7 @@ export const sendVagabondChatMessage = async (
         content: chatRoot,
         rolls: rolls,
         flags: {
-            "vagabond-lite": { blueprint }
+            sys_id: { blueprint }
         } as any
     })
 }
@@ -39,7 +39,7 @@ export const sendVagabondChatCard = async (
         speaker: { actor: getId(actor), alias: getName(actor) },
         content: chatRoot,
         rolls,
-        flags: { "vagabond-lite": { blueprint } } as any
+        flags: { sys_id: { blueprint } } as any
     })
 }
 

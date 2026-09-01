@@ -1,3 +1,5 @@
+import { sys_id } from "./foundryUtils"
+
 export class ItemPilesConfig {
 
     static configure = () => {
@@ -7,7 +9,7 @@ export class ItemPilesConfig {
     }
 
     static config = {
-        system: "vagabond-lite",
+        system: sys_id,
         VERSION: "1.0.0",
 
         ACTOR_CLASS_TYPE: "itemActor",

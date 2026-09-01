@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { Root } from "react-dom/client"
 
+import { sys_id } from "../utils/foundryUtils"
 import * as sheetUtils from "../utils/sheetUtils"
 import { EditModeOptions } from "../view/context/EditModeContext/EditModeOptions"
 
@@ -16,7 +17,7 @@ export interface VagabondAppArgs {
 export abstract class VagabondApplication extends foundry.applications.api.ApplicationV2 {
     Component: FC
     editModeOptions: EditModeOptions
-    protected SYSTEM_ID = "vagabond-lite" as any
+    protected SYSTEM_ID = sys_id
 
     private _reactRoot: Root | null = null
     private static _openAppsRegistry = new Map<any, VagabondApplication>()

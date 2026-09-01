@@ -1,5 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { savePerkSelections } from "../../rules/util/item-rules-util"
+import { sys_id } from "../../utils/foundryUtils"
 import { VagabondAppArgs,VagabondApplication } from "../VagabondApplication"
 import { LevelUpArgs, LevelUpView } from "./LevelUpView"
 
@@ -45,7 +46,7 @@ export class LevelUpApp extends VagabondApplication {
      */
     private async handleSave(args: LevelUpArgs): Promise<void> {
         if (args.isComplete) {
-            this.actor.setFlag("vagabond-lite" as any, "destiny", false)
+            this.actor.setFlag(sys_id, "destiny", false)
 
             const level = this.actor.system.level
 

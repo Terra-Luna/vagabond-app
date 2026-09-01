@@ -1,4 +1,5 @@
 import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
+import { sys_id } from "../../../utils/foundryUtils"
 
 export interface RelicPower {
     id: string,
@@ -18,7 +19,7 @@ export interface RelicPower {
 
 export class RelicPowers {
     static register() {
-        game.settings?.register("vagabond-lite" as any, "relics" as any, {
+        game.settings?.register(sys_id, "relics" as any, {
             name: "Relics",
             hint: "Relic Powers",
             scope: "world",
@@ -40,7 +41,7 @@ export class RelicPowers {
     }
 
     static get(): RelicPower[] {
-        return (game.settings as any)?.get("vagabond-lite", "relics")
+        return (game.settings as any)?.get(sys_id, "relics")
     }
 
     static async toggleRelicEffect(item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower) {

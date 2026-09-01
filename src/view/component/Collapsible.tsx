@@ -2,6 +2,7 @@ import { LucideChevronDown, LucideChevronUp } from "lucide-react"
 import { ReactNode, useCallback, useState } from "react"
 
 import { fields } from "../../model/common/sharedSchemas"
+import { sys_id } from "../../utils/foundryUtils"
 import { Header } from "./Header"
 
 export interface CollapsibleHeaderProps {
@@ -36,7 +37,7 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
     let initialCollapsedValue = startCollapsed
     const settings = (game.settings! as any)
     if (settingsKey) {
-        settings.register("vagabond-lite", settingsKey, {
+        settings.register(sys_id, settingsKey, {
             name: "Hero Sheet Setting",
             hint: "Hero Sheet Dynamic Setting",
             scope: "client",
@@ -44,13 +45,13 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
             default: false
         })
 
-        initialCollapsedValue = settings.get("vagabond-lite", settingsKey)
+        initialCollapsedValue = settings.get(sys_id, settingsKey)
     }
     const [isCollapsed, setCollapsed] = useState(initialCollapsedValue)
     const toggleCollapsed = useCallback(() => {
         const newVal = !isCollapsed
         if (settingsKey) {
-            settings.set("vagabond-lite", settingsKey, newVal)
+            settings.set(sys_id, settingsKey, newVal)
         }
         setCollapsed(newVal)
     }, [isCollapsed, settingsKey])

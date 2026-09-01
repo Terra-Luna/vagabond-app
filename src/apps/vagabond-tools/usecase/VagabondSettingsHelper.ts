@@ -1,19 +1,20 @@
 import type { VagabondCombatant } from "../../../combat/documents/VagabondCombat"
 import { CountdownResult } from "../../../combat/engine/roll/CountdownResult"
+import { sys_id } from "../../../utils/foundryUtils"
 
 /**
  * Max Level
  * @returns
  */
 export const getMaxLevel = (): number => {
-    return (game as any).settings.get("vagabond-lite", "maxLevel") || 10
+    return (game as any).settings.get(sys_id, "maxLevel") || 10
 }
 
 /**
  * XP Curve Settings
  */
 export const getLevelPacing = (): string => {
-    return (game as any).settings.get("vagabond-lite", "levelPacing") || 'normal'
+    return (game as any).settings.get(sys_id, "levelPacing") || 'normal'
 }
 export const getXpToNext = (level: number): number => {
     const xpFormulae = {
@@ -45,30 +46,30 @@ export interface XpQuestion {
     xp: number
 }
 export const getXpQuestionnaiare = () => {
-    return (game as any).settings.get("vagabond-lite", "xpQuestionnaire") as XpQuestion[] || []
+    return (game as any).settings.get(sys_id, "xpQuestionnaire") as XpQuestion[] || []
 }
 export const setXpQuestionnaire = async (updatedQuestions) => {
-    (game as any).settings.set("vagabond-lite", "xpQuestionnaire", updatedQuestions)
+    (game as any).settings.set(sys_id, "xpQuestionnaire", updatedQuestions)
 }
 
 /**
  * Attack registry (keeps last 50)
  */
 export const getAttackRegistry = () => {
-    return (game.settings as any)?.get("vagabond-lite", "attackRegistry") || {}
+    return (game.settings as any)?.get(sys_id, "attackRegistry") || {}
 }
 export const setAttackRegistry = async (attackRegistry) => {
-    (game.settings as any)?.set("vagabond-lite", "attackRegistry", attackRegistry)
+    (game.settings as any)?.set(sys_id, "attackRegistry", attackRegistry)
 }
 
 /**
  * Item Shop Toggle
  */
 export const getItemShopToggle = (): boolean => {
-    return (game.settings as any)?.get("vagabond-lite", "itemShopToggle") || false
+    return (game.settings as any)?.get(sys_id, "itemShopToggle") || false
 }
 export const setItemShopToggle = async (toggle: boolean) => {
-    (game.settings as any)?.set("vagabond-lite", "itemShopToggle", toggle)
+    (game.settings as any)?.set(sys_id, "itemShopToggle", toggle)
 }
 
 /**
@@ -83,7 +84,7 @@ export interface ProgressClockSchema {
     filled: number
 }
 export const getProgressClocks = (): ProgressClockSchema[] => {
-    return (game.settings as any)?.get("vagabond-lite", "progressClocks") || []
+    return (game.settings as any)?.get(sys_id, "progressClocks") || []
 }
 export const setProgressClocks = async (clocks: ProgressClockSchema[]) => {
     await updateSetting("progressClocks", clocks)
@@ -106,7 +107,7 @@ export interface CountdownSchema {
     result: CountdownResult
 }
 export const getCountdowns = (): CountdownSchema[] => {
-    return (game.settings as any)?.get("vagabond-lite", "countdowns") || []
+    return (game.settings as any)?.get(sys_id, "countdowns") || []
 }
 export const setCountdowns = async (countdowns: CountdownSchema[]) => {
     await updateSetting("countdowns", countdowns);
@@ -148,7 +149,7 @@ export const removeAllBurns = (actorUuid: string | null | undefined) => {
 }
 
 export const getManaEnforcement = (): boolean => {
-    return (game.settings as any)?.get("vagabond-lite", "enforceMana")
+    return (game.settings as any)?.get(sys_id, "enforceMana")
 }
 
 /**
@@ -161,7 +162,7 @@ const updateSetting = async (setting: string, update: any) => {
     if (!game.user) return
 
     if (game.user.isGM || game.user.isActiveGM) {
-        await (game.settings as any)?.set("vagabond-lite", setting, update)
+        await (game.settings as any)?.set(sys_id, setting, update)
     }
     else {
         const payload = {
@@ -177,7 +178,7 @@ const updateSetting = async (setting: string, update: any) => {
  * Enhance as needed to additionally control visibility as well as editability.
  */
 const checkPermissionLevel = (settingName: string): boolean => {
-    const setting = (game.settings as any)?.get("vagabond-lite", settingName) || 'gmOnly'
+    const setting = (game.settings as any)?.get(sys_id, settingName) || 'gmOnly'
     return setting === 'everyone' || (
         setting === 'gmOnly' && (
             (game.user?.isGM ?? false) || (game.user?.isActiveGM ?? false)

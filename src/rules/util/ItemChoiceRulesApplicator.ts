@@ -90,7 +90,7 @@ export class PerkRulesSelectionsApplicator {
                         name: fullItem.name || "Unknown Feature",
                         img: fullItem.img || "icons/svg/item-bag.svg",
                         type: fullItem.type,
-                        flags: { "vagabond-lite": { sourceId: fullItem.uuid }, isRuleSelection: true }
+                        flags: { sys_id: { sourceId: fullItem.uuid }, isRuleSelection: true }
                     },
                     ...systemClone
                 }

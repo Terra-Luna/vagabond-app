@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { sys_id } from "../../../utils/foundryUtils"
 import { vgLiteLang } from "../../../utils/lang"
 import { tableBorder } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
@@ -12,7 +13,7 @@ import { useEditPreset } from "../usecase/preset/EditPresetUseCase"
 import { RollPresetRow } from "./RollPresetRow"
 
 export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
-    const presets = actor.getFlag("vagabond-lite" as any, "rollPresets" as any) as RollPreset[] ?? []
+    const presets = actor.getFlag(sys_id, "rollPresets" as any) as RollPreset[] ?? []
     const { editPreset } = useEditPreset(actor)
     const { deletePreset } = useDeletePreset(actor)
 

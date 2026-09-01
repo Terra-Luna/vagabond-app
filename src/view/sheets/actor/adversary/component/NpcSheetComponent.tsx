@@ -5,6 +5,7 @@ import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffec
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
+import { sys_id } from "../../../../../utils/foundryUtils"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { tableBorder } from "../../../../common/border-styles"
@@ -33,7 +34,7 @@ const locale = vgLiteLang.NpcSheet
 const usePortraitOpenFlag = (actor: Actor) => {
     const token = actor.isToken ? actor.token : actor.getActiveTokens()[0]?.document
     const [isPortraitOpen, setIsPortraitOpenState] = useState<boolean>(
-        (token?.getFlag("vagabond-lite" as any, "portraitOpen" as any) as boolean | undefined) ?? true
+        (token?.getFlag(sys_id, "portraitOpen" as any) as boolean | undefined) ?? true
     )
 
     useFoundryHook("updateToken" as any, (doc: any, changes: any) => {
@@ -45,7 +46,7 @@ const usePortraitOpenFlag = (actor: Actor) => {
     const setIsPortraitOpen = useCallback((value: boolean | ((prev: boolean) => boolean)) => {
         setIsPortraitOpenState(prev => {
             const next = typeof value === 'function' ? (value as (prev: boolean) => boolean)(prev) : value
-            token?.setFlag("vagabond-lite" as any, "portraitOpen" as any, next)
+            token?.setFlag(sys_id, "portraitOpen" as any, next)
             return next
         })
     }, [token])

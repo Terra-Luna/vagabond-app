@@ -5,6 +5,7 @@ import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/Vag
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
+import { sys_id } from "../../../../../utils/foundryUtils"
 import { lang, vgLiteLang } from "../../../../../utils/lang"
 import { localizeString } from "../../../../../utils/localeUtils"
 import { getId } from "../../../../../utils/modelUtil"
@@ -378,7 +379,7 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
     const { ContextMenu, onCtxMenu } = useContextMenu()
     const settingKey = `hero-sheet-trackers-hide-${actor.id}` as any
     VagabondSettingsRegistry.registerClientSetting(settingKey)
-    const isHidden = game.settings?.get("vagabond-lite" as any, settingKey)
+    const isHidden = game.settings?.get(sys_id, settingKey)
 
     const addTracker = useCallback(async () => {
         const trackers = actor.system.trackers

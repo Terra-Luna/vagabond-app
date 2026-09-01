@@ -1,5 +1,7 @@
 export const getTheme = () => (game.settings as any).get("core", "uiConfig").colorScheme.applications
 
+export const sys_id = "vagabond-lite" as any
+
 /**
  * Triggers Dice-so-Nice 3D rolls without a chat message.
  * @param rolls 

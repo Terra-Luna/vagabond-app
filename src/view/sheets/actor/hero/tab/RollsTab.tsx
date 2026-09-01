@@ -4,11 +4,12 @@ import { RollPresetsListView } from "../../../../../apps/attack-builder/componen
 import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
 import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
+import { sys_id } from "../../../../../utils/foundryUtils"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 
 export const RollsTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const customAttack = useMemo(() => {
-        return actor.getFlag("vagabond-lite" as any, "customRoll") as RollPreset | undefined
+        return actor.getFlag(sys_id, "customRoll") as RollPreset | undefined
     }, [actor])
 
     return (
