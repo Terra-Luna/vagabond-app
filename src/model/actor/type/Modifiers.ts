@@ -94,7 +94,10 @@ const skillModifierSchema = () => {
     return {
         modifier: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
         critThreshold: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        extraDice: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        extraDice: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        d4: new fields.BooleanField({ initial: false }),
+        d6: new fields.BooleanField({ initial: false }),
+        d8: new fields.BooleanField({ initial: false })
     }
 }
 

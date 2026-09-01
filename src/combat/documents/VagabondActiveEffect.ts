@@ -185,14 +185,28 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             id: "exalted",
             name: "VGLITE.StatusConditions.exalted.name",
             img: "/icons/svg/paralysis.svg",
-            changes: [{ key: "system.statuses.toggles.exalted", mode: "OVERRIDE", value: "true" }]
+            changes: [
+                { key: "system.statuses.toggles.exalted", mode: "OVERRIDE", value: "true" },
+                { key: "system.modifiers.damage.out.melee.perDieBonus", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.brawl.perDieBonus", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.finesse.perDieBonus", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.ranged.perDieBonus", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.thrown.perDieBonus", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.defense.perDieBonus", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.spell.perDieBonus", mode: "ADD", value: "1" }
+            ]
         },
         {
             _id: "vBlessed00000000",
             id: "blessed",
             name: "VGLITE.StatusConditions.blessed.name",
             img: "/icons/svg/angel.svg",
-            changes: [{ key: "system.statuses.toggles.blessed", mode: "OVERRIDE", value: "true" }]
+            changes: [
+                { key: "system.statuses.toggles.blessed", mode: "OVERRIDE", value: "true" },
+                { key: "system.skillChecks.reflex.d4", mode: "OVERRIDE", value: "true" },
+                { key: "system.skillChecks.endure.d4", mode: "OVERRIDE", value: "true" },
+                { key: "system.skillChecks.will.d4", mode: "OVERRIDE", value: "true" }
+            ]
         },
         {
             _id: "vMarked000000000",

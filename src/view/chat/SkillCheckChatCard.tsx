@@ -22,15 +22,22 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
                 ]}
             />}
             contents={<>
-                <SkillCheckDiceComponent d20s={result.d20s} d6={result.d6} modifier={result.modifier} favHinder={result.favorHinder} blockDie={result.blockDie} />
+                <SkillCheckDiceComponent
+                    d20s={result.d20s}
+                    d6={result.d6}
+                    modifier={result.modifier}
+                    favHinder={result.favorHinder}
+                    blockDie={result.blockDie}
+                    bonusDice={result.bonusDice}
+                />
             </>}
         />
     )
 }
 
-export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, blockDie = 0 }) => {
+export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, blockDie = 0, bonusDice }) => {
     return (
-        <div className="flex mt-2 justify-center">
+        <div className="flex gap-x-1 mt-2 justify-center items-center">
             {/* D20 DICE ARRAY */}
             {d20s.map((d20: number, index: number) => (
                 <DiceRollComponent key={index} faces={blockDie > 0 ? blockDie : 20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
@@ -48,6 +55,15 @@ export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, blockDi
                     </div>
                 </div>
             }
+
+            {/* BONUS DICE */}
+            {bonusDice?.map((bonusDie, index) => (
+                <div className="flex items-center" key={index}>
+                    <Plus size={24} strokeWidth={2} />
+                    <DiceRollComponent key={index} faces={bonusDie.faces} result={bonusDie.result} textSize="text-4xl" />
+                </div>
+            ))}
+
             {/* MODIFIER */}
             {modifier !== 0 &&
                 <div className="flex items-center">

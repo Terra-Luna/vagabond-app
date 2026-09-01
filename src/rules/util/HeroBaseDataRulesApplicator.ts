@@ -60,7 +60,12 @@ export class HeroBaseDataRulesApplicator {
         const applyToggleRule = (rule) => {
             const path = rule.selector.replace("system.", "")
             const booleanValue = rule.value === true || rule.value === "true" || rule.value === "enabled"
-            foundry.utils.setProperty(actor.system, path, booleanValue)
+            if (path.startsWith("statuses.toggles")) {
+                actor.toggleStatusEffect(path.split(".").pop(), { active: booleanValue })
+            }
+            else {
+                foundry.utils.setProperty(actor.system, path, booleanValue)
+            }
         }
 
         const applyFlatModifier = (rule) => {

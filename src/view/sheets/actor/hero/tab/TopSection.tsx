@@ -227,9 +227,29 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full flex flex-col gap-y-0.5">
             <Header title={lang.VGLITE.HeroSheet.saves} />
-            <Save hero={hero} save={{ key: 'reflex', ...lang.VGLITE.Saves.reflex, value: hero.saves.reflex, mod: reflex.modifier ?? 0, d20s: reflex.extraDice ?? 0 }} />
-            <Save hero={hero} save={{ key: 'endure', ...lang.VGLITE.Saves.endure, value: hero.saves.endure, mod: endure.modifier ?? 0, d20s: endure.extraDice ?? 0 }} />
-            <Save hero={hero} save={{ key: 'will', ...lang.VGLITE.Saves.will, value: hero.saves.will, mod: will.modifier ?? 0, d20s: will.extraDice ?? 0 }} />
+            <Save hero={hero} save={{
+                key: 'reflex',
+                ...lang.VGLITE.Saves.reflex,
+                value: hero.saves.reflex,
+                mod: reflex.modifier ?? 0,
+                d20s: reflex.extraDice ?? 0,
+                bonusDice: reflex.d4 ? [4] : (reflex.d6 ? [6] : (reflex.d8 ? [8] : undefined))
+            }} />
+            <Save hero={hero} save={{
+                key: 'endure', ...lang.VGLITE.Saves.endure,
+                value: hero.saves.endure,
+                mod: endure.modifier ?? 0,
+                d20s: endure.extraDice ?? 0,
+                bonusDice: endure.d4 ? [4] : (endure.d6 ? [6] : (will.d8 ? [8] : undefined))
+            }} />
+            <Save hero={hero} save={{
+                key: 'will',
+                ...lang.VGLITE.Saves.will,
+                value: hero.saves.will,
+                mod: will.modifier ?? 0,
+                d20s: will.extraDice ?? 0,
+                bonusDice: will.d4 ? [4] : (will.d6 ? [6] : (will.d8 ? [8] : undefined))
+            }} />
         </div>
     )
 }
@@ -243,7 +263,8 @@ const Save = ({ hero, save }: {
         description: string,
         value: number,
         mod: number,
-        d20s: number
+        d20s: number,
+        bonusDice?: number[]
     }
 }) => {
     return (
@@ -260,7 +281,7 @@ const Save = ({ hero, save }: {
                         <span className="text-xl font-bold">{save.name}</span>
                         {/* SAVING THROW MODIFIER */}
                         <span className="text-sm text-text-tertiary font-normal">
-                            {`(${1 + save.d20s}d20${save.mod !== 0 ? `${save.mod > 0 ? '+' : ''}${save.mod}` : ''})`}
+                            {`(${1 + save.d20s}d20${save.bonusDice?.map(d => `+d${d}`)?.join('') ?? ''}${save.mod !== 0 ? `${save.mod > 0 ? '+' : ''}${save.mod}` : ''})`}
                         </span>
                     </div>
                     {/* SAVE DESCRIPTION */}

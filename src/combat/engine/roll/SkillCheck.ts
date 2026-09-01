@@ -1,8 +1,10 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
+import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
 import { getDiceTerms } from "../util/dice-utils"
+import { DiceRoll } from "./DiceRoll"
 
 export type SkillCheckType = 'attack' | 'cast' | 'save' | 'check'
 
@@ -10,6 +12,7 @@ export interface SkillCheckArgs {
     type: SkillCheckType
     skill: string
     d20Count?: number
+    bonusDice?: DiceRollSchema[]
     blockDie?: number
     modifier?: number
     critThreshold?: number
@@ -24,6 +27,7 @@ export interface SkillCheckResult {
     difficulty: number
     critThreshold: number
     d20Count: number
+    bonusDice?: { faces: number, result: number }[]
     modifier: number
     favorHinder: string
     d20s: number[]
@@ -39,6 +43,7 @@ export class SkillCheck {
     difficulty: number
     blockDie: number
     d20Count: number
+    bonusDice?: DiceRoll[]
     modifier: number
     critThreshold: number
     favorHinder: 'favor' | 'hinder' | 'none'
@@ -55,11 +60,19 @@ export class SkillCheck {
                 : undefined
             )
 
+        const bonusRolls = args.bonusDice?.map(d => new DiceRoll(d)) ?? []
+        if (bonusRolls.length === 0) {
+            if (skillMods?.d4) bonusRolls.push(new DiceRoll({ count: 1, faces: 4 }))
+            if (skillMods?.d6) bonusRolls.push(new DiceRoll({ count: 1, faces: 6 }))
+            if (skillMods?.d8) bonusRolls.push(new DiceRoll({ count: 1, faces: 8 }))
+        }
+
         this.type = args.type
         this.skill = args.skill
         this.blockDie = args.blockDie ?? 0
         this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
         this.d20Count = args.d20Count ?? (1 + (skillMods?.extraDice ?? 0) + (globalMods?.extraDice ?? 0))
+        this.bonusDice = bonusRolls
         this.modifier = args.modifier ?? ((skillMods?.modifier ?? 0) + (globalMods?.modifier ?? 0))
         this.critThreshold = args.critThreshold ?? (20 - ((skillMods?.critThreshold ?? 0) + (globalMods?.critThreshold ?? 0)))
         this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
@@ -72,6 +85,7 @@ export class SkillCheck {
             blockDie: this.blockDie,
             difficulty: this.difficulty,
             d20Count: this.d20Count,
+            bonusDice: this.bonusDice?.map(d => ({ count: d.count, faces: d.faces })),
             modifier: this.modifier,
             critThreshold: this.critThreshold,
             favorHinder: this.favorHinder,
@@ -87,6 +101,7 @@ export class SkillCheck {
                 skill: snapshot.skill,
                 blockDie: snapshot.blockDie,
                 d20Count: snapshot.d20Count,
+                bonusDice: snapshot.bonusDice?.map(d => ({ count: 1, faces: d.faces })),
                 modifier: snapshot.modifier,
                 critThreshold: snapshot.critThreshold,
                 favorHinder: snapshot.favorHinder
@@ -136,16 +151,25 @@ export class SkillCheck {
         }
 
         const roll = await new Roll(formula).evaluate()
-    
+
+        const bonusRolls: any[] = []
+        if (this.bonusDice?.length) {
+            for (const bonusDie of this.bonusDice) {
+                bonusRolls.push(await new Roll(bonusDie.toRollFormula()).evaluate())
+            }
+        }
+
         /**
          * Extract roll results...
          */
-        const isSuccess = roll.total >= this.difficulty
         const terms = getDiceTerms(roll)
         const d20Term = terms.find(it => it.faces === (this.blockDie > 0 ? this.blockDie : 20))
         const d6Term = terms.find(it => it.faces === 6)
         const d20Res = d20Term?.results?.map(r => r.result)?.sort((a, b) => a - b) ?? [0]
         const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
+        const bonusTerms = bonusRolls.flatMap(b => getDiceTerms(b))
+        const total = roll.total + bonusTerms.reduce((acc, term) => acc + term.results.reduce((sum, r) => sum + r.result, 0), 0)
+        const isSuccess = total >= this.difficulty
         const isCrit = d20Res.some(res => res >= this.critThreshold)
 
         this.result =  {
@@ -158,10 +182,11 @@ export class SkillCheck {
             d20Count: this.d20Count,
             favorHinder: this.favorHinder,
             d20s: d20Res,
-            d6: isReroll ? existingD6 ?? 0 : d6Res,
-            total: roll.total,
+            bonusDice: bonusTerms.map(term => ({ faces: term.faces ?? 0, result: term.results?.reduce((sum, r) => sum + r.result, 0) ?? 0 })),
+            d6: isReroll ? (existingD6 ?? 0) : d6Res,
+            total: total,
             outcome: isCrit ? vgLiteLang.RollResult.crit : (isSuccess ? vgLiteLang.RollResult.success : vgLiteLang.RollResult.failure),
-            rolls: [roll]
+            rolls: [roll, ...bonusRolls]
         }
 
         return this.result

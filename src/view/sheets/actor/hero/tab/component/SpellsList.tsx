@@ -41,13 +41,17 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                                     )
                             }
                         ])}>
-                            <SkillCard
-                                img={sp.parent.img}
-                                dmgType={sp.damageType}
-                                title={sp.parent.name}
-                                subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.damageType] }]}
-                                description={sp.description}
-                            />
+                            <div onClick={() => onSelectSpell(sp._sourceId)} className="w-full">
+                                <SkillCard
+                                    img={sp.parent.img}
+                                    dmgType={sp.damageType}
+                                    title={sp.parent.name}
+                                    subtitles={[
+                                        { label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.damageType] }
+                                    ]}
+                                    description={sp.description}
+                                />
+                            </div>
                         </div>
                     ))
                 }
