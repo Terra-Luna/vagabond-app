@@ -5,8 +5,9 @@ import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
 
 export interface AttackResolutionArgs {
-    bypassArmor: boolean
-    gmTargetsOnly: boolean
+    bypassArmor?: boolean
+    gmTargetsOnly?: boolean
+    halveDamage?: boolean
 }
 
 export abstract class Attack {
@@ -75,12 +76,15 @@ export abstract class Attack {
     private applyDamage(args: AttackResolutionArgs) {
         const targetIds = args.gmTargetsOnly ? getTargetIds() : this.targetIds
         this.getActors(targetIds ?? []).forEach(actor => {
-            const damage = this.damageRoll?.result?.total ?? 0
+            let damage = this.damageRoll?.result?.total ?? 0
+            damage = args.halveDamage ? Math.ceil(damage / 2) : damage
+
             const target = actor?.system
             const armorRating = (target as any)?.armor?.rating ?? 0
             const armorPiercing = this.damageRoll?.armorPiercing ?? 0
             const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
             const adjDamage = Math.max(0, damage - armor)
+
             this.updateHP(target, this.getHP(target) - adjDamage)
         })
     }
