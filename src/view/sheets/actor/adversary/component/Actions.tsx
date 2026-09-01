@@ -120,7 +120,7 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                         {/* RECHARGE ROLL */}
                                         {act.recharge != null && act.recharge != '' &&
                                             <div className="flex gap-x-2 text-text-secondary">
-                                                {'Recharge:'}<EnrichedContent content={act.recharge} actor={npc.parent} />
+                                                {'Recharge:'}<EnrichedContent content={`[[/r ${act.recharge}#Recharge: ${act.name}]]{${act.recharge}}`} actor={npc.parent} />
                                             </div>
                                         }
                                     </div>
@@ -290,7 +290,11 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                         <div className="flex items-end">
                             <p>Recharge:&nbsp;</p>
                             <div className={`font-eskapade font-bold hover-glow`}>
-                                <EditableTextField boundValue={newAction?.recharge ?? null} onSave={(recharge) => updateAction({ recharge: recharge ?? '' })} placeholder="CdX" />
+                                <EditableTextField
+                                    boundValue={newAction?.recharge ?? null}
+                                    onSave={(recharge) => updateAction({ recharge: recharge ?? '' })}
+                                    placeholder="CdX"
+                                />
                             </div>
                         </div>
                     </div>

@@ -126,27 +126,26 @@ const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                         {editModeToggleBtn}
                 </div>
             </div>
-            <TraitSelectors npc={npc} />
+            <TraitSelectors npc={npc} isPortraitOpen={isPortraitOpen} setIsPortraitOpen={setIsPortraitOpen} />
+        </div>
+    )
+}
 
+const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
+    const { isEditMode } = useEditMode()
+    return (
+        <div className="flex text-text-header-secondary">
             {/* EXPAND / COLLAPSE BUTTON */}
             <button
                 onClick={() => setIsPortraitOpen(open => !open)}
                 title={isPortraitOpen ? "Collapse portrait" : "Expand portrait"}
-                className="bg-sheet-header-fill border border-solid border-table-border rounded-r-md -mt-3 -mr-6 px-0.5 py-2 hover-glow cursor-pointer"
+                className="bg-sheet-header-fill border border-solid border-table-border px-0.5 py-2 hover-glow cursor-pointer"
             >
                 {isPortraitOpen
                     ? <ChevronRight size={14} className="text-text-header-primary" />
                     : <ChevronLeft size={14} className="text-text-header-primary" />
                 }
             </button>
-        </div>
-    )
-}
-
-const TraitSelectors = ({ npc }) => {
-    const { isEditMode } = useEditMode()
-    return (
-        <div className="flex gap-x-1 text-text-header-secondary">
             {
                 isEditMode ? <div className="flex gap-x-1 px-1 mt-1">
                     <DropDown
