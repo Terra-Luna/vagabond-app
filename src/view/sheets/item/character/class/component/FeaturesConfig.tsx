@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { vgLiteLang } from "../../../../../../utils/lang"
+import { tableBorder } from "../../../../../common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
 import { EditableTextField, NumericCounterInput } from "../../../../../component/EditableTextField"
@@ -135,7 +136,7 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
     }, [editIndex])
 
     return (
-        <div className="border border-solid border-table-border space-y-1 p-2">
+        <div className={`${tableBorder} space-y-1 p-2`}>
             {/* NAME & LEVEL */}
             <div className="space-y-2">
                 <div className="flex gap-x-1 items-end">

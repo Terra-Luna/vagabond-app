@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { FoundryHotkeyBlocker } from "../../../view/component/FoundryHotkeyBlocker"
 
 export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
@@ -50,7 +51,7 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
                     onKeyDown={handleKeyDown}
                     className={`
                         text-sm text-text-header-primary font-eskapade font-normal
-                        bg-sheet-header-fill border border-solid border-table-border rounded
+                        bg-sheet-header-fill ${tableBorderRounded}
                         mt-2 px-1 text-center focus:outline-none focus:border-destructive-action/33 w-32
                     `}
                 />

@@ -77,7 +77,7 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                 {
                     npc.actions.map((act, i) => {
                         return (
-                            <div key={i} className="flex gap-2 p-2 justify-between border border-solid border-table-border rounded" onContextMenu={(e) => onCtxMenu(e, [
+                            <div key={i} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
                                 { icon: Trash, label: 'Delete', action: () => deleteAction(npc, act), isDestructive: true }
                             ])}>

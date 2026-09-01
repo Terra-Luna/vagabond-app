@@ -1,5 +1,6 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { useSkillCheckCritThresholdInput } from "./skillcheck/CritThresholdInputUseCase"
 import { useD20CountSelector } from "./skillcheck/D20CountSelectorUseCase"
 import { useFavorHinderSelector } from "./skillcheck/FavorSelectorUseCase"
@@ -17,7 +18,7 @@ export const useCustomSkillCheckBuilder = (
     const { SkillCheckCritThresholdInput, critThreshold, setCritThreshold } = useSkillCheckCritThresholdInput()
 
     const CustomSkillCheckBuilder =
-        <div className="flex flex-wrap gap-x-1 items-end justify-between border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
+        <div className={`flex flex-wrap gap-x-1 items-end justify-between bg-context-menu-fill/40 p-1 ${tableBorderRounded}`}>
             {SkillSelector}
             {D20CountSelector}
             {FavorHinderSelector}

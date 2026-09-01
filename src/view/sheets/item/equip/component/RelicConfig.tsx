@@ -4,6 +4,7 @@ import { useMemo } from "react"
 import { RelicPower, RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
+import { tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -67,8 +68,7 @@ const RelicCard = ({ item, relic }) => {
             onClick={async () => await RelicPowers.toggleRelicEffect(item, relic)}
         >
             <div className={`
-                flex flex-col justify-center text-center p-2 
-                border border-solid border-table-border rounded-sm hover-glow
+                flex flex-col justify-center text-center p-2 ${tableBorderRounded} hover-glow
                 ${item.system.relicPowers.some(p => p.id === relic.id) ? 'bg-context-menu-fill' : ''}
             `}>
                 <div className="flex gap-x-1">

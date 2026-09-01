@@ -1,5 +1,7 @@
 import { useEffect,useState } from 'react'
 
+import { tableBorder } from '../common/border-styles'
+
 interface CSVTextInputProps {
     value: number[]
     onChange: (values: number[]) => void
@@ -45,7 +47,7 @@ export const CSVTextInput = ({
                 onChange={(e) => setLocalString(e.target.value)}
                 onBlur={handleBlur}
                 placeholder={placeholder}
-                className={`border border-solid border-table-border/50 px-2 py-1 text-sm ${className}`}
+                className={`${tableBorder}/50 px-2 py-1 text-sm ${className}`}
             />
         </div>
     )

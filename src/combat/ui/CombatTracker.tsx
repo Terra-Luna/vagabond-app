@@ -4,7 +4,9 @@ import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, use
 import { addCountdown, removeAllBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { NpcDataModel } from "../../model/actor/NpcDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
+import { vgLiteLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getCanvasToken } from "../../utils/modelUtil"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
@@ -19,8 +21,6 @@ import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
 import { useIsCurrentCombatant } from "./hooks"
-import { vgLiteLang } from "../../utils/lang"
-import { NpcDataModel } from "../../model/actor/NpcDataModel"
 
 const getCombat = () => game.combat as VagabondCombat
 

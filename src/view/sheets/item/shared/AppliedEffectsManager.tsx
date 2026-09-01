@@ -1,6 +1,7 @@
 import { VagabondActiveEffect } from "../../../../combat/documents/VagabondActiveEffect"
 import { DieSizeSelector } from "../../../../combat/ui/DieSizeSelector"
 import { vgLiteLang } from "../../../../utils/lang"
+import { tableBorderRounded } from "../../../common/border-styles"
 import { UtilityButton } from "../../../component/Button"
 import { TrashButton } from "../../../component/TrashButton"
 import { ItemSheetPropLabel } from "../equip/component/ItemSheetLabelComponent"
@@ -51,7 +52,7 @@ export const AppliedEffectsManager = ({ item }) => {
                             <select
                                 value={applied.effect}
                                 onChange={(e) => handleFieldChange(index, 'effect', e.target.value)}
-                                className="text-sm border border-solid border-table-border rounded px-2 py-1 focus:outline-none"
+                                className={`text-sm px-2 py-1 focus:outline-none ${tableBorderRounded}`}
                             >
                                 {statusEffectChoices.map(id => (
                                     <option key={id} value={id}>{vgLiteLang.StatusConditions[id].name}</option>

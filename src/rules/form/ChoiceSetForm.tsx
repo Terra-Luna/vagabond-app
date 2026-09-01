@@ -3,6 +3,7 @@ import React, { useState } from "react"
 
 import { vgLiteLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
+import { tableBorder } from "../../view/common/border-styles"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { ChoiceOption } from "../shared/ChoiceOption"
 import { FormProps } from "../shared/FormProps"
@@ -68,7 +69,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
     }
 
     return (
-        <div className="flex flex-col gap-3 text-text-primary bg-sheet-main-fill border border-solid border-table-border p-2">
+        <div className={`flex flex-col gap-3 text-text-primary bg-sheet-main-fill p-2 ${tableBorder}`}>
 
             {/* CHOICE CONFIGURATION SETTINGS */}
             <div className="grid grid-cols-2 gap-2 items-start">
@@ -218,7 +219,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                         <button
                             type="button"
                             onClick={handleAddOption}
-                            className="flex items-center gap-1 border border-solid border-table-border bg-sheet-main-fill text-text-primary px-2 py-0.5 hover:bg-table-border/10 transition-colors"
+                            className={`flex items-center gap-1 bg-sheet-main-fill text-text-primary px-2 py-0.5 hover:bg-table-border/10 transition-colors ${tableBorder}`}
                         >
                             <Plus size={14} /> Add Option
                         </button>

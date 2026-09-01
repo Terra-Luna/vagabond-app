@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 
+import { tableBorder, tableBorderRounded } from "../../view/common/border-styles"
 import { ItemRulesLabel } from "./ItemRulesTypography"
 
 export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type = 'text' }) => {
@@ -23,7 +24,7 @@ export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type =
                     value={localValue}
                     onChange={handleInputChange}
                     className={`
-                        border border-solid border-table-border/50 rounded-sm 
+                        ${tableBorderRounded}
                         px-2 py-1 -mt-2
                         text-sm text-white 
                         focus:border-table-border 
@@ -43,7 +44,7 @@ export const ItemRuleSelector = ({ label, value, options, onChange }) => {
             <select
                 value={value}
                 onChange={(e) => onChange(e)}
-                className="text-text-primary bg-sheet-main-fill border border-solid border-table-border p-1"
+                className={`${tableBorder} text-text-primary bg-sheet-main-fill p-1`}
             >
                 {options}
             </select>

@@ -11,6 +11,7 @@ import { getId } from "../../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { TrackerUpdateChatCard } from "../../../../chat/TrackerUpdateChatCard"
+import { tableBorder, tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
@@ -246,7 +247,7 @@ const Save = ({ hero, save }: {
 }) => {
     return (
         <div title={`${save.formula}\n${lang.VGLITE.HeroSheet.skills_tooltip}`}>
-            <div className="flex items-center font-eskapade hover-glow border border-solid border-table-border/50" onClick={
+            <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
                     sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
@@ -432,7 +433,7 @@ const CustomTracker = ({ actor, tracker, index }) => {
             { icon: SquarePen, label: `${tracker.type === 'numeric' ? 'Change to toggle' : 'Change to counter'}`, action: () => updateTracker('type', `${tracker.type === 'numeric' ? 'boolean' : 'numeric'}`) },
             { icon: Trash, label: vgLiteLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
         ])}
-            className="flex justify-between text-sm line-clamp-1 border border-solid border-table-border rounded-sm px-1 py-0.5"
+            className={`flex justify-between text-sm line-clamp-1 px-1 py-0.5 ${tableBorderRounded}`}
             title={"R-click for options"}
         >
             <EditableTextField

@@ -1,11 +1,12 @@
 import { ReactNode } from "react"
 
 import { vgLiteLang } from "../../utils/lang"
+import { tableBorder } from "../../view/common/border-styles"
 
 export const ShoppingCart = ({ children }: { children: ReactNode }) => {
     return (
         <div className="overflow-auto">
-            <table className="table-fixed w-full border border-solid border-table-border">
+            <table className={`${tableBorder} table-fixed w-full`}>
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
                         <th className="text-left pl-2 w-5/9">{vgLiteLang.HeroSheet.Inventory.item}</th>

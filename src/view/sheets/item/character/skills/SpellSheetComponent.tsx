@@ -1,5 +1,6 @@
 import { SpellDataModel } from "../../../../../model/item/character/SpellDataModel"
 import { vgLiteLang } from "../../../../../utils/lang"
+import { tableBorder } from "../../../../common/border-styles"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
@@ -22,7 +23,7 @@ export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellData
                                     type="number"
                                     value={item.system.baseManaCost}
                                     onChange={(e) => item.update({ 'system.baseManaCost': Number(e.target.value) } as Record<string, number>)}
-                                    className="border border-solid border-table-border font-eskapade font-bold px-2 max-w-[8ch]"
+                                    className={`${tableBorder} font-eskapade font-bold px-2 max-w-[8ch]`}
                                 />
                             </div>
                         </div>

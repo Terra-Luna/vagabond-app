@@ -1,4 +1,5 @@
 import { createContext, useContext } from "react"
+
 import { CombatGroup } from "../../model/combat/VagabondCombatant";
 
 interface CombatContextProps {

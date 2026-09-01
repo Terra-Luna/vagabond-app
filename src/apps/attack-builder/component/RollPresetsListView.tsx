@@ -1,5 +1,6 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { vgLiteLang } from "../../../utils/lang"
+import { tableBorder } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { CollapsibleSection } from "../../../view/component/Collapsible"
 import { EditButton } from "../../../view/component/EditButton"
@@ -18,7 +19,7 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
     return (
         <div className="flex flex-col">
             <CollapsibleSection title={"PRESETS"} content={<>
-                <div className="border border-solid border-table-border border-t-0 rounded-b-sm">
+                <div className={`${tableBorder} border-t-0 rounded-b-sm`}>
                     {presets.map((preset, index) => (
                         <div key={index} className="w-full even:bg-table-row-even/50 odd:bg-table-row-odd/50">
                             <RollPresetRow

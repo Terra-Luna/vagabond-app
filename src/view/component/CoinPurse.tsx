@@ -4,6 +4,7 @@ import { useCoinApp } from "../../apps/shop/CoinApp"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { addCoins, Coins, isAffordable, subtractCoins } from "../../model/common/CoinValue"
 import { lang } from "../../utils/lang"
+import { tableBorder } from "../common/border-styles"
 import { EditableTextField } from "./EditableTextField"
 
 export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
@@ -31,7 +32,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     }, [coinAppCoin, mode, reset, hero.inventory.coins])
 
     return (
-        <div className={"relative flex pl-2 content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"}>
+        <div className={`relative flex pl-2 content-center bg-wealth-fill/50 ${tableBorder} w-full py-1`}>
             <button title={"Click to add/subtract coins"} onClick={() => {
                 reset()
                 setIsCoinAppOpen(true)
@@ -62,7 +63,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
 
 export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
     return (
-        <div className={"flex pl-2 content-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"}>
+        <div className={`flex pl-2 content-center bg-wealth-fill/50 ${tableBorder} w-full py-1`}>
             <div className="content-center">
                 <p className="text-2xl text-wealth-denom-label font-eskapade font-bold">FUNDS</p>
             </div>

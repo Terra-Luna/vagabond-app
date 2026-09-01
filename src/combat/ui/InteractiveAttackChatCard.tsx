@@ -13,6 +13,7 @@ import { DamageRollsComponent } from "../../view/chat/component/DamageRollsCompo
 import { TargetsDisplay } from "../../view/chat/component/TargetsDisplay"
 import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
 import { SkillCheckDiceComponent } from "../../view/chat/SkillCheckChatCard"
+import { tableBorder } from "../../view/common/border-styles"
 import { Checkbox } from "../../view/component/Checkbox"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { Divider, Header } from "../../view/component/Header"
@@ -358,7 +359,7 @@ const AdversaryAttackComponent = ({ actor, attack }: { actor: Actor, attack: Adv
 const InteractiveChatCardButton = ({ icon, label, tooltip, fn }: { icon?: ReactNode, label: string, tooltip: string, fn: () => void }) => {
     return (
         <button title={tooltip}
-            className="flex items-center border border-solid border-table-border px-1 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer"
+            className={`flex items-center px-1 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer ${tableBorder}`}
             onClick={fn}
         >
             {icon}

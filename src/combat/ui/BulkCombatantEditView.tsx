@@ -1,6 +1,7 @@
 import { Eye, HeartMinusIcon, HeartPlusIcon, Trash } from "lucide-react"
 
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
+import { tableBorderRounded } from "../../view/common/border-styles"
 import { useContextMenu } from "../../view/component/ContextMenu"
 import { Header } from "../../view/component/Header"
 import { Widget } from "../../view/component/Widget"
@@ -45,12 +46,11 @@ export const BulkCombatantEditView = ({ combatants }: { combatants: VagabondComb
                 <div className="text-text-primary font-eskapade">
                     Edit Combatant Hp
                     <div className="flex items-center gap-x-2">
-                        <div className="flex items-center border border-solid border-table-border rounded-md cursor-pointer h-full w-full" onClick={() => setMode(mode === 'add' ? 'subtr' : 'add')}>
+                        <div className={`flex items-center cursor-pointer h-full w-full ${tableBorderRounded}`} onClick={() => setMode(mode === 'add' ? 'subtr' : 'add')}>
                             <div className={`text-4xl text-text-primary font-eskapade font-bold px-2 rounded-l-md ${mode === 'add' ? 'bg-ic-luck/50' : 'bg-sheet-main-fill'}`}>+</div>
                             <div className={`text-4xl text-text-primary font-eskapade font-bold px-2 rounded-r-md ${mode === 'add' ? 'bg-sheet-main-fill' : 'bg-destructive-action/50'}`}>-</div>
                         </div>
-                        <div className="flex items-end text-3xl text-text-primary
-                                border border-solid border-table-border rounded-sm p-1">
+                        <div className={`flex items-end text-3xl text-text-primary ${tableBorderRounded} p-1`}>
                             <input
                                 className="w-16 mr-1 hover-glow"
                                 value={hpAdjustment}

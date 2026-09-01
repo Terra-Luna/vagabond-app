@@ -2,6 +2,7 @@ import { Check, Save } from "lucide-react"
 import { useCallback, useMemo,useState } from "react"
 
 import { vgLiteLang } from "../../../utils/lang"
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../../view/component/Button"
 import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
 
@@ -35,7 +36,7 @@ export const XpQuestionnairePlayerView = ({ questions, onSave }: {
             <div className="flex flex-col gap-2">
                 {questions.map((q) => (
                     <div key={q.id} onClick={() => handleSelection(q)} className={`
-                        border border-solid border-table-border rounded-sm p-2 hover-glow cursor-pointer
+                        ${tableBorderRounded} p-2 hover-glow cursor-pointer
                         ${selections.includes(q.id) ? 'bg-context-menu-fill' : ''}
                     `}>
                         <div className="flex justify-between">

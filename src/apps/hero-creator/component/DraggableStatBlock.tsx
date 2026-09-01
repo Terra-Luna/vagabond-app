@@ -1,3 +1,5 @@
+import { tableBorderRounded } from "../../../view/common/border-styles"
+
 export const DraggableStatBlock = ({ index, value, isUsed, onDragStart }) => {
     return (
         <div
@@ -6,8 +8,7 @@ export const DraggableStatBlock = ({ index, value, isUsed, onDragStart }) => {
             onDragStart={(e) => onDragStart(e, value, index)}
             className={`
                 text-4xl text-text-stat-block text-center
-                bg-stat-block-fill px-4 pb-2 rounded-md
-                border border-solid border-table-border 
+                bg-stat-block-fill px-4 pb-2 ${tableBorderRounded}
                 select-none group transition-all duration-200
                 ${isUsed ? 'opacity-0 pointer-events-none w-[40px]' : 'cursor-grab active:cursor-grabbing'}
             `}

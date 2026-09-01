@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react"
 
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { CustomDropDown } from "../../../view/component/Dropdown"
 import { SectionLabel } from "../component/Labels"
 import { TextInput } from "../component/TextInput"
@@ -12,7 +13,7 @@ export const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[
     useEffect(() => { if (weapons.length > 0) { setWeapon(weapons[0]) } }, [])
 
     const WeaponSelector =
-        <div className="border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1 space-y-1 overflow-hidden">
+        <div className={`bg-context-menu-fill/40 p-1 space-y-1 overflow-hidden ${tableBorderRounded}`}>
             <SectionLabel text={"Weapon"} />
 
             {/* WEAPON SELECTION DROPDOWN & DESCRIPTION */}

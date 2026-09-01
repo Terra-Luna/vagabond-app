@@ -11,6 +11,7 @@ import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { equipArmor, equipWeapon,inventoryItemDragDropHandler } from "../../../utils/heroInventoryUtil"
 import { vgLiteLang } from "../../../utils/lang"
 import { getId, getName } from "../../../utils/modelUtil"
+import { tableBorder } from "../../common/border-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 
@@ -28,7 +29,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
 
     return (
         <div className="overflow-auto" onDragLeave={(e) => onDragLeave(e)}>
-            <table className="table-fixed w-full border border-solid border-table-border">
+            <table className={`table-fixed w-full ${tableBorder}`}>
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
                         <th className="text-left pl-2 w-5/9">{vgLiteLang.HeroSheet.Inventory.item}</th>

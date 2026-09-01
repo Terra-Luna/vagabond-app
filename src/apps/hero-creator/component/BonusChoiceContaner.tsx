@@ -1,8 +1,10 @@
 import { ReactNode } from "react"
 
+import { tableBorderRounded } from "../../../view/common/border-styles"
+
 export const BonusChoiceContainer = ({ children }: { children: ReactNode }) => {
     return (
-        <div className="bg-wealth-fill border border-solid border-table-border rounded-md p-2 mt-4">
+        <div className={`bg-wealth-fill p-2 mt-4 ${tableBorderRounded}`}>
             {children}
         </div>
     )

@@ -1,5 +1,6 @@
 import { ReactNode, useCallback } from "react"
 
+import { tableBorderRounded } from "../common/border-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 
 interface SingleSelectProps {
@@ -26,7 +27,7 @@ export const SingleSelect = ({ options, value, setValue, canUnselect }: SingleSe
     }, [value, setValue])
 
     return (
-        <div className="bg-sheet-header-fill border border-solid border-table-border rounded-sm px-0.5 flex gap-1">
+        <div className={`bg-sheet-header-fill px-0.5 flex gap-1 ${tableBorderRounded}`}>
             {options.map(opt => {
                 const isSelected = opt.value === value
                 return (

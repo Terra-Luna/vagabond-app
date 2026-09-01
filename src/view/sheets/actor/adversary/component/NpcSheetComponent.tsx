@@ -7,6 +7,7 @@ import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
 import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
+import { tableBorder } from "../../../../common/border-styles"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
@@ -69,7 +70,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     return (
         <div className="@container flex grow overflow-y-hidden">
             <div className="absolute left-0 flex items-start">
-                <div className={`overflow-hidden transition-all duration-300 ease-in-out border border-solid border-table-border bg-sheet-main-fill/33 rounded-l-md ${isPortraitOpen ? 'w-[110px] -ml-[110px]' : 'w-0 ml-0'}`}>
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out bg-sheet-main-fill/33 ${tableBorder} rounded-l-md ${isPortraitOpen ? 'w-[110px] -ml-[110px]' : 'w-0 ml-0'}`}>
                     <div className="w-[110px]">
                         <ActorPortrait actor={npc} />
                     </div>
@@ -139,7 +140,7 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
             <button
                 onClick={() => setIsPortraitOpen(open => !open)}
                 title={isPortraitOpen ? "Collapse portrait" : "Expand portrait"}
-                className="bg-sheet-header-fill border border-solid border-table-border px-0.5 py-2 hover-glow cursor-pointer"
+                className={`bg-sheet-header-fill px-0.5 py-2 hover-glow cursor-pointer ${tableBorder}`}
             >
                 {isPortraitOpen
                     ? <ChevronRight size={14} className="text-text-header-primary" />

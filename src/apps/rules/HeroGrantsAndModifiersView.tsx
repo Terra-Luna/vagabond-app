@@ -1,6 +1,7 @@
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { ActiveEffectCardRow, EffectCardContainer } from '../../rules/shared/ActiveEffectCardRow'
 import { RuleSelection } from '../../rules/util/item-rules-util'
+import { tableBorder } from '../../view/common/border-styles'
 import { CollapsibleSection } from '../../view/component/Collapsible'
 import { HeroCreationLabel, HeroCreationSubtext } from '../hero-creator/component/HeroCreationTypography'
 
@@ -62,7 +63,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             {/* HEADER AND LEVEL PILL */}
             <div className="flex justify-between items-center">
                 <HeroCreationLabel text={"GRANTS & MODIFIERS"} />
-                <span className="text-sm text-text-header-tertiary bg-sheet-main-fill px-2 py-0.5 rounded-sm border border-solid border-table-border/50">
+                <span className={`text-sm text-text-header-tertiary bg-sheet-main-fill px-2 py-0.5 ${tableBorder}/50 rounded-sm`}>
                     Level {currentLevel}
                 </span>
             </div>
@@ -99,14 +100,14 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                                 return (
                                     <div
                                         key={mod.id}
-                                        className="flex justify-between items-center text-xs bg-sheet-main-fill border border-solid border-table-border/50 px-2 py-1.5 rounded">
+                                        className={`flex justify-between items-center text-xs bg-sheet-main-fill px-2 py-1.5 ${tableBorder}/50 rounded`}>
                                         <span className="text-text-primary line-clamp-1">
                                             {mod.label || "Modifier"} <span className="text-text-primary">({cleanPath})</span>
                                         </span>
                                         {/* BONUS VALUE PILL */}
                                         <span className={`
                                                 text-base font-eskapade font-bold px-1.5
-                                                border border-solid border-table-border/50 rounded-sm
+                                                ${tableBorder}/50 rounded-sm
                                                 ${(mod.value ?? 0) >= 0 ?
                                                 'text-text-primary bg-sheet-main-fill' :
                                                 'text-destructive-action bg-destructive-action/10'}`

@@ -1,6 +1,7 @@
 import { Square,SquareCheckBig } from "lucide-react"
 
 import { vgLiteLang } from "../../../utils/lang"
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { HeroCreationLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 
 export const TrainingSelector = ({ skill, label, isSelected, onSelect }) => {
@@ -8,8 +9,7 @@ export const TrainingSelector = ({ skill, label, isSelected, onSelect }) => {
         <div onClick={() => onSelect(skill, !isSelected)}
             className={`
                 flex gap-x-2 justify-between items-center p-2 
-                border border-solid border-table-border rounded-sm 
-                cursor-pointer
+                ${tableBorderRounded} cursor-pointer
                 hover:bg-context-menu-fill/75
                 ${isSelected ? 'bg-context-menu-fill' : 'bg-context-menu-fill/25'}
             `}>

@@ -1,4 +1,5 @@
 import { vgLiteLang } from "../../../utils/lang"
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { PrimaryButton } from "../../../view/component/Button"
 import { ActiveEffectButtons } from "./ActiveEffectButtons"
 
@@ -72,7 +73,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                         className={`
                             flex items-center justify-between p-2
                             text-xl text-text-header-primary transition-all 
-                            bg-sheet-header-fill border border-solid border-table-border rounded-md
+                            bg-sheet-header-fill ${tableBorderRounded}
                             ${eff.disabled ? 'opacity-50' : ''}
                         `}
                     >

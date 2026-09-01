@@ -1,6 +1,7 @@
+import { tableBorder } from "../../common/border-styles"
 import { Gauge } from "../../component/Gauge"
 
-const infoBoxLayout = "items-center bg-wealth-fill/50 border border-solid border-table-border w-full py-1"
+const infoBoxLayout = `items-center bg-wealth-fill/50 ${tableBorder} w-full py-1`
 const infoBoxText = "text-text-encumbrance text-sm"
 
 export interface CapacityInfo {

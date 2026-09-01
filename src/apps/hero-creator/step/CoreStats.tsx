@@ -6,6 +6,7 @@ import { AncestryDataModel } from "../../../model/item/character/AncestryDataMod
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { getFlatStatBonuses, getStatChoiceRules } from "../../../rules/util/item-rules-util"
 import { vgLiteLang } from "../../../utils/lang"
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { SecondaryButton } from "../../../view/component/Button"
 import { Divider, Header } from "../../../view/component/Header"
 import { BorderedContent } from "../component/BorderedContent"
@@ -260,7 +261,7 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
 
                 {/* BONUS STAT CHOICE SELECTION */}
                 {requiredChoiceRules.length > 0 && (
-                    <div className="flex flex-col w-fit gap-y-2 py-2 px-8 mx-auto justify-center border border-solid border-table-border bg-sheet-main-fill rounded-md">
+                    <div className={`flex flex-col w-fit gap-y-2 py-2 px-8 mx-auto justify-center bg-sheet-main-fill ${tableBorderRounded}`}>
                         {requiredChoiceRules.map((rule) => {
                             const totalChoicesForRule = rule.maxChoices || 1
 

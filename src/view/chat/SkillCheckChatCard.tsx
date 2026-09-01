@@ -28,12 +28,14 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
     )
 }
 
-export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, blockDie }) => {
+export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, blockDie }: {
+    d20s: number[], d6: number, modifier: number, favHinder: string, blockDie?: number
+}) => {
     return (
         <div className="flex mt-2 justify-center">
             {/* D20 DICE ARRAY */}
             {d20s.map((d20: number, index: number) => (
-                <DiceRollComponent key={index} faces={blockDie > 0 ? blockDie : 20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
+                <DiceRollComponent key={index} faces={(blockDie ?? 0) > 0 ? blockDie! : 20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
             ))}
             {/* FAVOR/HINDER DICE */}
             {favHinder !== 'none' &&

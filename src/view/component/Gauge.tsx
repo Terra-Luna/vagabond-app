@@ -1,3 +1,5 @@
+import { tableBorder } from "../common/border-styles";
+
 interface GaugeProps {
     value: number;
     max: number;
@@ -17,7 +19,7 @@ export const Gauge = ({ value, max, fillColorClassName, maxColorClassName, negat
     const innerHeight = size === "sm" ? "h-[5px]" : "h-[10px]"
 
     return (
-        <div className={`${outerHeight} w-full border border-solid border-table-border ${rounded ? 'rounded-md' : ''} flex items-center`}>
+        <div className={`${outerHeight} w-full ${tableBorder} ${rounded ? 'rounded-md' : ''} flex items-center`}>
             <div
                 className={fillColor + ` ${innerHeight} ${rounded ? 'rounded-md' : ''}`}
                 style={{

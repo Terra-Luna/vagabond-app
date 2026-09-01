@@ -6,6 +6,7 @@ import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDeli
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { vgLiteLang } from "../../../../../../../utils/lang"
+import { tableBorder } from "../../../../../../common/border-styles"
 import { PrimaryButton } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { DeliverySelector } from "./DeliverySelectior"
@@ -217,7 +218,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         return (<>
             {
                 isSpellcastingOpen && delivery && spell &&
-                <div className="font-eskapade font-bold bg-context-menu-fill border border-solid border-table-border -mt-1 mb-1 p-2 space-y-2">
+                <div className={`font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-2 space-y-2 ${tableBorder}`}>
 
                         {/* SPELLCASTING MENU TOP ROW */}
                         <div className="flex gap-x-1 items-end bottom text-lg">

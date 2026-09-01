@@ -6,6 +6,7 @@ import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationAp
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
+import { tableBorderRounded } from "../../../../common/border-styles"
 import { ItemDivider } from "../../../../component/Header"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { MenuListItem } from "./item/MenuListItem"
@@ -61,11 +62,11 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}
             `}>
                 {/* DARK/LIGHT THEME SELECTOR */}
-                <div className="flex gap-x-2 items-center justify-between mb-4 px-2 py-1 bg-sheet-header-fill border border-solid border-table-border rounded-md cursor-pointer" onClick={toggleTheme}>
+                <div className={`flex gap-x-2 items-center justify-between mb-4 px-2 py-1 bg-sheet-header-fill cursor-pointer ${tableBorderRounded}`} onClick={toggleTheme}>
                     <p className="text-sm">THEME</p>
                     <div className="flex gap-x-2 px-2 py-1 border border-solid border-text-header-tertiary rounded-sm">
-                        <Sun size={18} className={`${!isDarkMode ? 'text-text-header-secondary' : 'text-text-header-primary'}`} />
-                        <Moon size={18} className={`${isDarkMode ? 'text-text-header-secondary' : 'text-text-header-primary'}`} />
+                        <Sun size={18} className={`${isDarkMode ? 'text-text-header-primary hover-glow' : 'text-text-header-secondary'}`} />
+                        <Moon size={18} className={`${isDarkMode ? 'text-text-header-secondary' : 'text-text-header-primary hover-glow'}`} />
                     </div>
                 </div>
                 <ul className="space-y-2 text-sm text-text-primary font-eskapade font-bold">

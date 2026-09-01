@@ -5,6 +5,7 @@ import { isInContainer,sortedItems } from "../../../../../model/actor/type/Inven
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { equipmentContextMenuItems,getContainers, getEncumbranceInfo } from "../../../../../utils/heroInventoryUtil"
 import { lang } from "../../../../../utils/lang"
+import { tableBorder } from "../../../../common/border-styles"
 import { PrimaryButton } from "../../../../component/Button"
 import { HeroCoinPurse } from "../../../../component/CoinPurse"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
@@ -19,7 +20,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                 <CapacityGauge label={lang.VGLITE.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
                 <HeroCoinPurse hero={hero} />
             </div>
-            <div className={`border border-solid border-table-border mt-1 w-full ${itemShopToggle ? '' : 'mb-28'}`}>
+            <div className={`${tableBorder} mt-1 w-full ${itemShopToggle ? '' : 'mb-28'}`}>
                 <InventoryItemsTable
                     actor={hero}
                     items={

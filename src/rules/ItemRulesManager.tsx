@@ -4,6 +4,7 @@ import { useCallback } from "react"
 import { HeroCreationLabel } from "../apps/hero-creator/component/HeroCreationTypography"
 import { BaseItemSchema, ItemDataModel } from "../model/item/ItemDataModel"
 import { vgLiteLang } from "../utils/lang"
+import { tableBorder } from "../view/common/border-styles"
 import { PrimaryButton } from "../view/component/Button"
 import { CollapsibleSection } from "../view/component/Collapsible"
 import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
@@ -75,7 +76,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
     else return (
         <FoundryHotkeyBlocker>
             <CollapsibleSection title={"GRANTS & MODIFIERS"} content={
-                <div className="p-2 bg-sheet-main-fill border border-solid border-table-border mb-24">
+                <div className={`p-2 bg-sheet-main-fill mb-24 ${tableBorder}`}>
                     <div className="flex justify-between items-center mb-4 border-b border-solid border-table-border pb-2">
                         <HeroCreationLabel text={'Item Grants & Modifiers'} />
                         <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
@@ -89,7 +90,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                         ) : (
                             rules.map((rule, index) => (
                                 <CollapsibleSection key={index} title={rule.label} startCollapsed={true} content={
-                                    <div className="bg-sheet-main-fill border border-solid border-table-border border-t-0 p-2 relative group">
+                                    <div className={`bg-sheet-main-fill border-t-0 p-2 relative group ${tableBorder}`}>
                                         {/* HEADER ROW W/ +ADD BUTTON */}
                                         <div className="flex gap-4 items-center mb-2">
                                             <ItemRuleSelector

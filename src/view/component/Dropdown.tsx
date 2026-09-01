@@ -1,6 +1,7 @@
 import { useCallback } from "react"
 
 import { updateDocumentAtPath } from "../../utils/documentUtils"
+import { tableBorder } from "../common/border-styles"
 import { menuOptionContainer, menuOptionTextDefault } from "../common/text-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { LabelledField } from "./LabelledField"
@@ -72,7 +73,7 @@ export const CustomDropDown = ({ value, options, className, onChange }: {
                 className={`
                     flex px-1 pb-0.5 pt-0.5
                     outline-none focus:outline-none focus:ring-0
-                    border border-solid border-table-border/50
+                    ${tableBorder}/50
                     ${className}
                 `}>
                 {options.map(opt => (<Option key={opt.value} value={opt.value}>{opt.label}</Option>))}

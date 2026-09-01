@@ -5,6 +5,7 @@ import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponen
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { vgLiteLang } from "../../../utils/lang"
+import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { SectionLabel } from "../component/Labels"
@@ -58,7 +59,7 @@ export const useCustomDamageRollBuilder = (
     }, [])
 
     const CustomDamageRollBuilder =
-        <div className="flex flex-col items-start justify-between border border-solid border-table-border bg-context-menu-fill/40 rounded-sm p-1">
+        <div className={`flex flex-col items-start justify-between bg-context-menu-fill/40 p-1 ${tableBorderRounded}`}>
             <SectionLabel text={"Damage Rolls"} />
             <div className="flex items-end w-full">
                 <div className="flex flex-col gap-y-2 items-end">

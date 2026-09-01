@@ -1,4 +1,5 @@
 import { vgLiteLang } from "../../utils/lang"
+import { tableBorderRounded } from "../../view/common/border-styles"
 import { PopOutWidget } from "../../view/component/Widget"
 
 const denominations = ['g', 's', 'c']
@@ -11,7 +12,7 @@ const denominations = ['g', 's', 'c']
 export const CoinAppView = ({ coin, mode, setMode, onUpdateCoins, onSave, onCancel }) => {
     return (
         <PopOutWidget label="Add or remove coins" onCancel={onCancel} onSave={onSave}>
-            <div className="flex items-center border border-solid border-table-border rounded-md cursor-pointer h-full w-full" onClick={() => setMode(mode === 'add' ? 'subtr' : 'add')}>
+            <div className={`flex items-center cursor-pointer h-full w-full ${tableBorderRounded}`} onClick={() => setMode(mode === 'add' ? 'subtr' : 'add')}>
                 <div className={`text-4xl text-text-primary font-eskapade font-bold px-2 rounded-l-md ${mode === 'add' ? 'bg-ic-luck/50' : 'bg-sheet-main-fill'}`}>+</div>
                 <div className={`text-4xl text-text-primary font-eskapade font-bold px-2 rounded-r-md ${mode === 'add' ? 'bg-sheet-main-fill' : 'bg-destructive-action/50'}`}>-</div>
             </div>
@@ -20,7 +21,7 @@ export const CoinAppView = ({ coin, mode, setMode, onUpdateCoins, onSave, onCanc
                     denominations.map(denomination => (
                         <div key={denomination} className={`
                                 flex items-end text-3xl text-text-primary font-eskapade hover-glow
-                                border border-solid border-table-border rounded-sm p-1
+                                ${tableBorderRounded} p-1
                             `}>
                             <input
                                 className="w-16 mr-1"

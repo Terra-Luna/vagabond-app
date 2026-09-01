@@ -7,6 +7,7 @@ import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/Equi
 import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { vgLiteLang } from "../../utils/lang"
+import { tableBorder } from "../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { ReadOnlyCoinPurse } from "../../view/component/CoinPurse"
 import { Divider, Header } from "../../view/component/Header"
@@ -129,7 +130,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                             </div>
                         </div>
 
-                        <div className="border border-solid border-table-border">
+                        <div className={`${tableBorder}`}>
                             {selectedPack && <EquipmentSheetComponent item={selectedPack as any} hideBottomSection={true} />}
                         </div>
 

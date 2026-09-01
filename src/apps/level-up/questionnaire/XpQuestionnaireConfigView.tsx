@@ -1,6 +1,7 @@
 import { Plus, Save } from "lucide-react"
 import React, { useState } from "react"
 
+import { tableBorder } from "../../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
@@ -58,7 +59,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                             value={q.text}
                             placeholder="Question description..."
                             onChange={(e) => handleInputChange(q.id, "text", e.target.value)}
-                            className="flex-1 bg-context-menu-fill border border-solid border-table-border px-3 py-1.5 placeholder-text-tertiary"
+                            className={`${tableBorder} flex-1 bg-context-menu-fill px-3 py-1.5 placeholder-text-tertiary`}
                         />
 
                         {/* XP VALUE INPUT */}
@@ -66,7 +67,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                             type="number"
                             value={q.xp || ""}
                             onChange={(e) => handleInputChange(q.id, "xp", e.target.value)}
-                            className="text-center bg-context-menu-fill border border-solid border-table-border w-[6ch] py-1.5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                            className={`${tableBorder} text-center bg-context-menu-fill w-[6ch] py-1.5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`}
                         />
                         <p className="text-sm text-text-secondary mr-2">XP</p>
 
