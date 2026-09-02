@@ -45,10 +45,15 @@ export const useImageEdit = (item: Actor | Item) => {
 
     const imageEditCtxMenuItems: CtxMenuItem[] = []
     imageEditCtxMenuItems.push(
-        { icon: Eye, label: 'View', action: () => viewImage() },
-        { icon: Pencil, label: 'Edit', action: () => editImage() },
-        { icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
+        { icon: Eye, label: 'View', action: () => viewImage() }
     )
+
+    if (item.isOwner) {
+        imageEditCtxMenuItems.push(
+            { icon: Pencil, label: 'Edit', action: () => editImage() },
+            { icon: Trash, label: 'Remove', action: () => removeImage(), isDestructive: true }
+        )
+    }
     
     return { viewImage, editImage, removeImage, imageEditCtxMenuItems }
 }

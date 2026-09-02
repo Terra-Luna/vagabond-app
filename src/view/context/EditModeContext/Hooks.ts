@@ -1,8 +1,9 @@
 /**
- * This is a variation of a React Context that I really like. 
- * This implements the "Provider" in a more fleshed-out way such that I think the logic is very nicely encapsulated here,
- *  versus the "consumers" having to implement the react states themselves */
-
+ * This is a variation of a React Context that I (Ada) really like...
+ * This implements the "Provider" in a more fleshed-out way such that I think the logic
+ * is very nicely encapsulated here, versus the "consumers" having to implement the react
+ * states themselves.
+ * */
 import { createContext, ReactNode, useContext } from "react";
 
 /** Properties our context value has, and what "useEditMode" will give you */
@@ -24,5 +25,8 @@ const DefaultEditModeContextValue: EditModeContextProps = {
 /** This is the react wiring to make a context, all we care about is that now there is a EditModeContext.Provider property we can render out */
 export const EditModeContext = createContext(DefaultEditModeContextValue)
 
-/** Consuming children just use this and can destructure it to get any of {isEditMode, setEditMode, toggleEditMode} they want */
-export const useEditMode = () => useContext(EditModeContext)
+export const useEditMode = (item?: Item) => {
+    const context = useContext(EditModeContext)
+    const canToggleEditMode = game.user?.isGM || item?.isOwner
+    return { ...context, editModeToggleBtn: canToggleEditMode ? context.editModeToggleBtn : null }
+}

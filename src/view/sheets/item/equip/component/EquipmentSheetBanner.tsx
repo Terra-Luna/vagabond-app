@@ -6,7 +6,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemPortraitComponent } from "../../shared/ItemPortraitComponent"
 
 export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
-    const { editModeToggleBtn } = useEditMode()
+    const { editModeToggleBtn } = useEditMode(item)
     return (<>
         <div className="flex space-x-1 items-center bg-section-header-fill py-1 px-2 font-eskapade font-bold">
             <ItemPortraitComponent item={item} />
@@ -20,7 +20,7 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
                     <Divider />
                     {editModeToggleBtn}
                 </div>
-                <p className="text-xs text-text-header-secondary font-paradigm font-normalitalic">
+                <p className="text-xs text-text-header-secondary font-paradigm font-normal italic">
                     {item.system.relicPowers
                         ?.filter(relic => relic.category.value !== 'cursed')
                         ?.map(relic => RelicPowers.getFormattedRelicName(relic as any))
