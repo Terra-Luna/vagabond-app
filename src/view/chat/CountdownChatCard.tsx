@@ -46,7 +46,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
                     }
                 </div>
 
-                <p className="font-normal text-lg">{result.message}</p>
+                <p className="font-normal text-lg text-center">{result.message}</p>
 
                 {game.user?.isGM && result.duration > 0 && dmgType && !isApplied &&
                     <div className="flex flex-col gap-1">
