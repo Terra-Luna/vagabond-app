@@ -356,7 +356,8 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                     label: controlledTokens().size > 1 ? "Toggle Visibility (All selected)" : getCanvasToken(token?.id)?.document.hidden ? "Show" : "Hide",
                     action: updateVisibility,
                 },
-                ...(controlledTokens().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
+                ...(controlledTokens
+                    ().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
                     icon: RefreshCw,
                     label: "Refresh Activations",
                     action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations())
@@ -379,7 +380,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
     return (
         <>
             <ContextMenu />
-            <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id}`}
+            <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id} bg-color-red`}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 onClick={e => onClick(e as any)}

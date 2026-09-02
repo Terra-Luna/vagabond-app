@@ -1,6 +1,5 @@
-declare module "*.css" {
-  const content: any;
-  export default content;
+declare module "*.css?inline" {
+  export const injectedCss: string;
 }
 
 declare module '*.svg?react' {
