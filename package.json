@@ -13,7 +13,9 @@
     "test": "pnpm build && node --trace-warnings node_modules/jest/bin/jest.js",
     "clean-": "echo Y | rmdir /s dist && pnpm clean",
     "lint": "eslint src && pnpm circ-deps",
-    "lint:fix": "eslint --fix src"
+    "lint:fix": "eslint --fix src",
+    "clean-dist": "node scripts/cleanDist.ts",
+    "deploy": "pnpm clean-dist && pnpm build && node scripts/deploy.ts"
   },
   "madge": {
     "tsConfig": "tsconfig.json",
@@ -65,6 +67,7 @@
     "@typescript-eslint/eslint-plugin": "8.59.2",
     "@typescript-eslint/parser": "8.59.2",
     "@vitejs/plugin-react": "6.0.1",
+    "adm-zip": "^0.6.0",
     "eslint": "10.3.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-refresh": "^0.5.3",

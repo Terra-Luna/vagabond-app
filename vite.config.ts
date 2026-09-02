@@ -91,7 +91,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: "dist",
       emptyOutDir: false,
-      sourcemap: true,
+      sourcemap: false,
       cssCodeSplit: false,
       minify: false,
       lib: {
