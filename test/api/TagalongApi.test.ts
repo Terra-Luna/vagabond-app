@@ -1,5 +1,6 @@
-import { test, describe, expect } from "@jest/globals";
-import { parseHeroId, fetchHero } from "../../src/apps/importer/TagalongApi"
+import { describe, expect,test } from "@jest/globals";
+
+import { parseHeroId } from "../../src/apps/importer/TagalongApi"
 
 const tagalong = 'https://www.vgbnd.app/character/'
 const testId = 'e38db88c-ec28-4b67-a44c-09f0fe199d01'

@@ -1,4 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
+
 import { addCoins, consolidateCoins, multiplyCoins, NOT_ENOUGH_COINS_ERROR, subtractCoins } from "../../../src/model/common/CoinValue"
 
 describe('coin arithmetic tests', () => {

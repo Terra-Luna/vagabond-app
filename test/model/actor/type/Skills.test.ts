@@ -42,7 +42,11 @@ describe('test hero skill check calcs', () => {
 })
 
 const mockStats = {
-    might: 7, dexterity: 6, awareness: 5, reason: 4, presence: 3
+    might: 7,
+    dexterity: 6,
+    awareness: 5,
+    reason: 4,
+    presence: 3
 }
 
 const mockSkills = {

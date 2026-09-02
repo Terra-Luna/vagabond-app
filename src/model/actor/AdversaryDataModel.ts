@@ -1,6 +1,8 @@
 import { ActorDataModel } from "./ActorDataModel"
 import { NpcSchema, npcSchema } from "./type/NpcSchema"
-import { onNpcPreCreate, onUpdateNpc, prepareNpcBaseData } from "./util/NpcDataModelUtil"
+import { onNpcPreCreate, onUpdateNpc, prepareNpcBaseData, setThreatLevel } from "./util/NpcDataModelUtil"
+
+export { setThreatLevel }
 
 export class AdversaryDataModel extends ActorDataModel<NpcSchema> {
     static defineSchema() {

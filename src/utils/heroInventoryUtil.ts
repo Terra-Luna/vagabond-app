@@ -60,7 +60,8 @@ export async function addItems(actor: Actor & { system: any }, uuids: string[]) 
 }
 
 export function getEquippedArmor(hero: any): (Item & { system: ArmorDataModel }) | undefined {
-    return hero.parent.items.find((it: any) => it.type === "armor" && it.system.isEquipped)
+    const items = hero?.parent?.items ?? hero?.items ?? []
+    return items.find((it: any) => it.type === "armor" && it.system.isEquipped)
 }
 
 export async function equipArmor(hero: any, armor: ArmorDataModel) {

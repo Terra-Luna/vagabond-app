@@ -7,8 +7,8 @@ import { LevelUpArgs, LevelUpView } from "./LevelUpView"
 export const getBonusSelections = (args: LevelUpArgs) => [
     ...(args.advancements ?? (args.advancement ? [args.advancement] : [])),
     ...(args.perkTrainings ?? (args.perkTraining ? [args.perkTraining] : [])),
-    ...(args.reasonTrainings ?? (args.reasonTraining ? [args.reasonTraining] : [])),
-    ...(args.spells ?? (args.spell ? [args.spell] : []))
+    ...(args.spells ?? (args.spell ? [args.spell] : [])),
+    ...(args.reasonTrainings ?? (args.reasonTraining ? [args.reasonTraining] : []))
 ].filter((selection): selection is NonNullable<typeof selection> => !!selection && !!selection.value)
 
 export class LevelUpApp extends VagabondApplication {

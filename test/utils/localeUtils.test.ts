@@ -1,4 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
+
 import { localizeString } from "../../src/utils/localeUtils"
 
 describe('localizeString', () => {

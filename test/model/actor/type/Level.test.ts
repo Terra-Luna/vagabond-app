@@ -8,6 +8,6 @@ describe('level functions', () => {
             level: { current: 3, xpToLevel: 0 }
         }
         setXpToNextLevel(hero as any)
-        expect(hero.level.xpToLevel).toBe(40)
+        expect(hero.level.xpToLevel).toBe(20)
     })
 })

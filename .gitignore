@@ -6,3 +6,4 @@ dist
 # Lint
 .lint/tmp/
 public/styles/*.css.map
+jest-results.json

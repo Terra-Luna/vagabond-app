@@ -2,13 +2,12 @@ import { combineCombatantWithControlledCombatants } from "../../combat-utils"
 import { VagabondCombatant } from "../../documents/VagabondCombat"
 
 export const getCombatantStatuses = (combatant) => {
-    const allStatuses = Object.keys(combatant.actor.system.statuses.toggles)
-    return allStatuses.reduce((acc, statusKey) => {
-        if (combatant.actor.system.statuses.toggles[statusKey]) {
-            return [...acc, statusKey]
-        }
-        return acc
-    }, [] as string[])
+    const statuses = combatant?.actor?.system?.statuses ?? {}
+    const toggles = statuses.toggles ?? statuses.statuses ?? {}
+
+    return Object.entries(toggles)
+        .filter(([, isActive]) => Boolean(isActive))
+        .map(([statusKey]) => statusKey)
 }
 
 export const combatantHasStatus = (combatant, status) => {

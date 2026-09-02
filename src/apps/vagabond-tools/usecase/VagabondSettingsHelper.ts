@@ -14,7 +14,7 @@ export const getMaxLevel = (): number => {
  * XP Curve Settings
  */
 export const getLevelPacing = (): string => {
-    return (game as any).settings.get(sys_id, "levelPacing") || 'normal'
+    return (game as any)?.settings?.get?.(sys_id, "levelPacing") || 'normal'
 }
 export const getXpToNext = (level: number): number => {
     const xpFormulae = {
