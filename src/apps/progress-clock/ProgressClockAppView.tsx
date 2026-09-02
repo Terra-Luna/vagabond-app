@@ -3,35 +3,43 @@ import { useState } from 'react'
 
 import { sys_id } from '../../utils/foundryUtils'
 import { vgLiteLang } from '../../utils/lang'
-import { useContextMenu } from '../../view/component/ContextMenu'
+import { CtxMenuItem, useContextMenu } from '../../view/component/ContextMenu'
 import { CanvasOverlayObjectWrapper } from '../overlay/component/CanvasOverlayObjectWrapper'
 import { WidgetLabel } from '../overlay/component/WidgetLabel'
 import { useDragOverlayComponent } from '../overlay/usecase/DragOverlayUseCase'
 import { useOverlayItemSync } from '../overlay/usecase/OverlayItemSyncUseCase'
-import { checkClockPermission, getProgressClocks,ProgressClockSchema, setProgressClocks } from '../vagabond-tools/usecase/VagabondSettingsHelper'
+import { useOverlayObjectPermissionsMenu } from '../overlay/usecase/OverlayObjectPermissionsMenuUseCase'
+import {
+    canInteractWithOverlayObject, checkClockPermission, getClockPlayerDefaultPermission, getProgressClocks,
+    ProgressClockSchema, setProgressClocks
+} from '../vagabond-tools/usecase/VagabondSettingsHelper'
 
 export const ProgressClockAppView = () => {
 
     const [clocks, setClocks] = useState<ProgressClockSchema[]>([])
     const { ContextMenu, onCtxMenu } = useContextMenu()
-    const { dragInfo, handleMouseDown } = useDragOverlayComponent(setClocks, setProgressClocks, checkClockPermission)
+    const { dragInfo, handleMouseDown } = useDragOverlayComponent(setClocks, setProgressClocks,
+        (clock: ProgressClockSchema) => canInteractWithOverlayObject(clock, checkClockPermission))
 
     useOverlayItemSync(setClocks, getProgressClocks, `${sys_id}.progressClocks`)
 
-    const incrementClock = async (clockId: string) => {
-        if (dragInfo.current?.hasMoved) return
-        if (!checkClockPermission()) return
+    const { itemsRef: clocksRef, visibleItems, gmMenuItems } = useOverlayObjectPermissionsMenu(
+        clocks, setProgressClocks, getClockPlayerDefaultPermission)
 
-        const updatedClocks = clocks.map((clock: ProgressClockSchema) => {
-            if (clock.id === clockId) return { ...clock, filled: (clock.filled + 1) > clock.segments ? 0 : clock.filled + 1 }
-            else return clock
+    const incrementClock = async (clock: ProgressClockSchema) => {
+        if (dragInfo.current?.hasMoved) return
+        if (!canInteractWithOverlayObject(clock, checkClockPermission)) return
+
+        const updatedClocks = clocksRef.current.map((c: ProgressClockSchema) => {
+            if (c.id === clock.id) return { ...c, filled: (c.filled + 1) > c.segments ? 0 : c.filled + 1 }
+            else return c
         })
 
         await setProgressClocks(updatedClocks)
     }
 
     const updateLabel = async (clockId: string, newLabel: string) => {
-        const updatedClocks = clocks.map((clock: ProgressClockSchema) => {
+        const updatedClocks = clocksRef.current.map((clock: ProgressClockSchema) => {
             if (clock.id === clockId) return { ...clock, label: newLabel }
             else return clock
         })
@@ -40,29 +48,39 @@ export const ProgressClockAppView = () => {
     }
 
     const reduceProgress = async (clockId: string) => {
-        await setProgressClocks(clocks.map((clock: ProgressClockSchema) => {
+        await setProgressClocks(clocksRef.current.map((clock: ProgressClockSchema) => {
             if (clock.id === clockId) return { ...clock, filled: (Math.max(0, clock.filled - 1)) }
             else return clock
         }))
     }
 
     const deleteClock = async (clockId: string) => {
-        await setProgressClocks(clocks.filter(clock => clock.id !== clockId))
+        await setProgressClocks(clocksRef.current.filter(clock => clock.id !== clockId))
+    }
+
+    const clockMenuItems = (clock: ProgressClockSchema): CtxMenuItem[] => {
+        const canInteract = canInteractWithOverlayObject(clock, checkClockPermission)
+        return [
+            ...(canInteract ? [{ label: "Reduce Progress", icon: Undo, action: async () => await reduceProgress(clock.id) }] : []),
+            ...gmMenuItems(clock),
+            ...(canInteract ? [{ label: vgLiteLang.ButtonActions.delete, icon: Trash, action: async () => await deleteClock(clock.id), isDestructive: true }] : [])
+        ]
     }
 
     return (<>
-        <CanvasOverlayObjectWrapper objects={clocks} onMouseDown={handleMouseDown}>
+        <CanvasOverlayObjectWrapper objects={visibleItems} onMouseDown={handleMouseDown}>
             {(clock) => (
-                <div title={`Click to advance\nR-click for options`} onContextMenu={(e) => onCtxMenu(e, [
-                    { label: "Reduce Progress", icon: Undo, action: async () => await reduceProgress(clock.id) },
-                    { label: vgLiteLang.ButtonActions.delete, icon: Trash, action: async () => await deleteClock(clock.id), isDestructive: true }
-                ])}>
+                <div title={`Click to advance\nR-click for options`} onContextMenu={(e) => {
+                    const items = clockMenuItems(clock)
+                    if (items.length === 0) { e.preventDefault(); return }
+                    onCtxMenu(e, items)
+                }}>
                     <ProgressClock
                         label={clock.label}
                         segments={clock.segments}
                         filled={clock.filled}
                         size={66}
-                        onClockClick={() => incrementClock(clock.id)}
+                        onClockClick={() => incrementClock(clock)}
                         onLabelChange={(newLabel) => updateLabel(clock.id, newLabel)}
                     />
                 </div>
@@ -70,7 +88,7 @@ export const ProgressClockAppView = () => {
             )}
         </CanvasOverlayObjectWrapper>
 
-        {checkClockPermission() && <ContextMenu />}
+        <ContextMenu />
 
     </>)
 }

@@ -75,7 +75,7 @@ export const setItemShopToggle = async (toggle: boolean) => {
 /**
  * Progress Clocks
  */
-export interface ProgressClockSchema {
+export interface ProgressClockSchema extends OverlayObjectPermissions {
     id: string
     x: number
     y: number
@@ -99,7 +99,7 @@ export const deleteAllProgressClocks = async () => {
 /**
  * Countdown Timers
  */
-export interface CountdownSchema {
+export interface CountdownSchema extends OverlayObjectPermissions {
     id: string
     x: number
     y: number
@@ -184,4 +184,54 @@ const checkPermissionLevel = (settingName: string): boolean => {
             (game.user?.isGM ?? false) || (game.user?.isActiveGM ?? false)
         )
     )
+}
+
+/**
+ * Handle granting permissions to specific players for interacting with specific
+ * progress clocks or countdown timers. The settings will default to the global
+ * "everyone/gmOnly" setting.
+ */
+const isPermissionLevelEveryone = (settingName: string): boolean => {
+    return ((game.settings as any)?.get(sys_id, settingName) || 'gmOnly') === 'everyone'
+}
+export const getClockPlayerDefaultPermission = (): boolean => isPermissionLevelEveryone("clockPermissionLevel")
+export const getCountdownPlayerDefaultPermission = (): boolean => isPermissionLevelEveryone("countdownPermissionLevel")
+
+/**
+ * Per-object overrides shared by Progress Clocks and Countdown Timers.
+ */
+export interface OverlayObjectPermissions {
+    hiddenFromUserIds?: string[]
+    interactableUserIds?: string[]
+    sceneId?: string | null
+}
+
+export const isVisibleToCurrentUser = (obj: OverlayObjectPermissions): boolean => {
+    if (game.user?.isGM) return true
+    return !obj.hiddenFromUserIds?.includes(game.user?.id ?? '')
+}
+
+export const isVisibleInCurrentScene = (obj: OverlayObjectPermissions): boolean => {
+    return !obj.sceneId || obj.sceneId === canvas?.scene?.id
+}
+
+export const canInteractWithOverlayObject = (obj: OverlayObjectPermissions, globalPermissionCheck: () => boolean): boolean => {
+    if (game.user?.isGM || game.user?.isActiveGM) return true
+    if (obj.interactableUserIds) return obj.interactableUserIds.includes(game.user?.id ?? '')
+    return globalPermissionCheck()
+}
+
+export const togglePlayerVisibility = (obj: OverlayObjectPermissions, userId: string): string[] => {
+    const hidden = obj.hiddenFromUserIds ?? []
+    return hidden.includes(userId) ? hidden.filter(id => id !== userId) : [...hidden, userId]
+}
+
+export const togglePlayerInteraction = (obj: OverlayObjectPermissions, userId: string, playerDefaultPermission: boolean): string[] => {
+    const players = game.users?.filter(u => !u.isGM) ?? []
+    const baseline = obj.interactableUserIds ?? (playerDefaultPermission ? players.map(p => p.id) : [])
+    return baseline.includes(userId) ? baseline.filter(id => id !== userId) : [...baseline, userId]
+}
+
+export const toggleSceneLink = (obj: OverlayObjectPermissions): string | null => {
+    return obj.sceneId ? null : (canvas?.scene?.id ?? null)
 }

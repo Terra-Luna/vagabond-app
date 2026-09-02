@@ -46,7 +46,10 @@ export const useContextMenu = () => {
     }, [])
 
     const onItemAction = useCallback((e: any) => {
-        if (e?.keepOpen) keepOpenRef.current = true
+        if (e?.keepOpen) {
+            keepOpenRef.current = true
+            setTimeout(() => { keepOpenRef.current = false }, 0)
+        }
     }, [])
 
     const ContextMenu = useMemo(() => () => (

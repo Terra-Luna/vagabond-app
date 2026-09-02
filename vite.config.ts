@@ -1,7 +1,5 @@
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import fs from 'fs'
-import path from 'path'
 import { defineConfig } from 'vite'
 import svgr from 'vite-plugin-svgr'
 
@@ -85,7 +83,7 @@ export default defineConfig(({ mode }) => {
       },
       watch: {
         ignored: [
-          //"**/src/{pathToYourFile}"
+          "**/src/rules/util/ItemsCache.ts",
         ]
       }
     },

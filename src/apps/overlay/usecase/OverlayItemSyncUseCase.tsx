@@ -5,7 +5,7 @@ export const useOverlayItemSync = (setState: (objects) => void, getObjects: () =
     useEffect(() => {
         const updateObjects = () => {
             const objects = getObjects()
-            setState(objects)
+            setState([...objects])
         }
 
         updateObjects()

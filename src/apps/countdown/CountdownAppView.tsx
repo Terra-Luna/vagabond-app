@@ -4,41 +4,49 @@ import { useCallback, useState } from "react"
 import { CountdownRoll } from "../../combat/engine/roll/CountdownRoll"
 import { sys_id } from "../../utils/foundryUtils"
 import { DiceRollComponent } from "../../view/chat/component/DiceRollComponent"
-import { useContextMenu } from "../../view/component/ContextMenu"
+import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
 import { CanvasOverlayObjectWrapper } from "../overlay/component/CanvasOverlayObjectWrapper"
 import { WidgetLabel } from "../overlay/component/WidgetLabel"
 import { useDragOverlayComponent } from "../overlay/usecase/DragOverlayUseCase"
 import { useOverlayItemSync } from "../overlay/usecase/OverlayItemSyncUseCase"
-import { checkCountdownPermission, CountdownSchema, getCountdowns,setCountdowns } from "../vagabond-tools/usecase/VagabondSettingsHelper"
+import { useOverlayObjectPermissionsMenu } from "../overlay/usecase/OverlayObjectPermissionsMenuUseCase"
+import {
+    canInteractWithOverlayObject, checkCountdownPermission, CountdownSchema, getCountdownPlayerDefaultPermission, getCountdowns,
+    setCountdowns
+} from "../vagabond-tools/usecase/VagabondSettingsHelper"
 
 export const CountdownAppView = () => {
 
     const [cds, setCds] = useState<CountdownSchema[]>([])
-    const { dragInfo, handleMouseDown } = useDragOverlayComponent(setCds, setCountdowns, checkCountdownPermission)
+    const { dragInfo, handleMouseDown } = useDragOverlayComponent(setCds, setCountdowns,
+        (countdown: CountdownSchema) => canInteractWithOverlayObject(countdown, checkCountdownPermission))
     const { ContextMenu, onCtxMenu } = useContextMenu()
 
     useOverlayItemSync(setCds, getCountdowns, `${sys_id}.countdowns`)
 
+    const { itemsRef: cdsRef, visibleItems, gmMenuItems } = useOverlayObjectPermissionsMenu(
+        cds, setCountdowns, getCountdownPlayerDefaultPermission)
+
     const handleCountdownClick = useCallback(async (cdId: string) => {
         if (dragInfo.current?.hasMoved) return
-        if (!checkCountdownPermission()) return
 
-        const countdown = cds.find(cd => cd.id === cdId)
+        const countdown = cdsRef.current.find(cd => cd.id === cdId)
         if (!countdown || countdown.result.duration === 0) return
+        if (!canInteractWithOverlayObject(countdown, checkCountdownPermission)) return
 
         const roll = new CountdownRoll(countdown.result)
         await roll.roll()
 
-        await setCountdowns(cds.map((countdown: any) => {
+        await setCountdowns(cdsRef.current.map((countdown: any) => {
             if (countdown.id === cdId) {
                 return { ...countdown, result: roll.result }
             }
             return countdown
         }))
-    }, [cds])
+    }, [cdsRef])
 
     const increaseSize = useCallback(async (cdId: string) => {
-        const target = cds.find(cd => cd.id === cdId)
+        const target = cdsRef.current.find(cd => cd.id === cdId)
         if (!target) return
 
         const duration = target.result.duration === 12
@@ -48,14 +56,14 @@ export const CountdownAppView = () => {
                 : target.result.duration + 2
             )
 
-        await setCountdowns(cds.map((countdown: any) => {
+        await setCountdowns(cdsRef.current.map((countdown: any) => {
             if (countdown.id === cdId) return updateCountdownDuration(countdown, duration)
             return countdown
         }))
-    }, [cds])
+    }, [cdsRef])
 
     const decreaseSize = useCallback(async (cdId: string) => {
-        const target = cds.find(cd => cd.id === cdId)
+        const target = cdsRef.current.find(cd => cd.id === cdId)
         if (!target) return
         const duration = target.result.duration === 4
             ? 4
@@ -64,11 +72,11 @@ export const CountdownAppView = () => {
                 : target.result.duration - 2
             )
 
-        await setCountdowns(cds.map((countdown: any) => {
+        await setCountdowns(cdsRef.current.map((countdown: any) => {
             if (countdown.id === cdId) return updateCountdownDuration(countdown, duration)
             return countdown
         }))
-    }, [cds])
+    }, [cdsRef])
 
     const updateCountdownDuration = (countdown: CountdownSchema, duration: number) => {
         return {
@@ -87,15 +95,15 @@ export const CountdownAppView = () => {
             }
         }
 
-        await setCountdowns(cds.map((cd: CountdownSchema) => {
+        await setCountdowns(cdsRef.current.map((cd: CountdownSchema) => {
             if (cd.id === countdown.id) return updatedCountdown
             else return cd
         }))
-    }, [cds])
+    }, [cdsRef])
 
     const deleteCountdown = useCallback(async (cdId: string) => {
-        await setCountdowns(cds.filter(cd => cd.id !== cdId))
-    }, [cds])
+        await setCountdowns(cdsRef.current.filter(cd => cd.id !== cdId))
+    }, [cdsRef])
 
     const openLinkedActorSheet = useCallback(async (actorId?: string, tokenUuid?: string) => {
         if (tokenUuid) {
@@ -110,19 +118,29 @@ export const CountdownAppView = () => {
         }
     }, [])
 
+    const countdownMenuItems = (countdown: CountdownSchema): CtxMenuItem[] => {
+        const canInteract = canInteractWithOverlayObject(countdown, checkCountdownPermission)
+        return [
+            ...(canInteract ? [
+                { label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) },
+                { label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) }
+            ] : []),
+            ...(countdown.result.actorUuid ? [{ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.result.actorUuid, countdown.result.tokenUuid) }] : []),
+            ...gmMenuItems(countdown),
+            ...(canInteract ? [{ label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true }] : [])
+        ]
+    }
+
     return (<>
-        <CanvasOverlayObjectWrapper objects={cds} onMouseDown={handleMouseDown}>
+        <CanvasOverlayObjectWrapper objects={visibleItems} onMouseDown={handleMouseDown}>
             {(countdown: CountdownSchema) => (
                 <div className={`flex flex-col p-0.5 rounded pointer-events-auto items-center`}
                     onContextMenu={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
-                        onCtxMenu(e, [
-                            { label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) },
-                            { label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) },
-                            ...(countdown.result.actorUuid ? [{ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.result.actorUuid, countdown.result.tokenUuid) }] : []),
-                            { label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true }
-                        ])
+                        const items = countdownMenuItems(countdown)
+                        if (items.length === 0) return
+                        onCtxMenu(e, items)
                     }}
                 >
                     {/* DIE ICON AND BUTTON */}
@@ -149,7 +167,7 @@ export const CountdownAppView = () => {
             )}
         </CanvasOverlayObjectWrapper>
 
-        {checkCountdownPermission() && <ContextMenu />}
+        <ContextMenu />
 
     </>)
 }
