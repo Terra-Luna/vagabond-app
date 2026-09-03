@@ -7,7 +7,7 @@ import { EditModeContextProvider } from "../view/context/EditModeContext/EditMod
 import { EditModeOptions } from "../view/context/EditModeContext/EditModeOptions"
 import { EmotionCacheContext } from "../view/context/EmotionCacheContext"
 import { getTheme } from "./foundryUtils"
-import { vgLiteStyles } from "./styleUtils"
+import { createStyleTag } from "./styleUtils"
 
 export interface VGLiteApplication {
     _reactRoot: ReactDom.Root | null
@@ -16,10 +16,10 @@ export interface VGLiteApplication {
     _toolbarHeight: number
     element: HTMLElement
     position: any
-    
+
     render: () => void
     renderWithWrappers: ({ theme, position }) => any
-    
+
     Component: FunctionComponent
     getReactProps: () => any
 }
@@ -38,6 +38,7 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
 
         sheet.element.style.setProperty("overflow", "visible")
         sheet._scaduRoot = reactRootElem.attachShadow({ mode: 'open' })
+        sheet._scaduRoot.appendChild(createStyleTag())
         sheet._reactRoot = ReactDom.createRoot(sheet._scaduRoot)
 
         const header = sheet.element.querySelector('.window-header')
@@ -129,7 +130,6 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
             <DimensionsContext.Provider value={{ width, height, top, left }}>
                 <EditModeContextProvider initialEditMode={(typeof startInEditMode === "boolean") ? (startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE) : startInEditMode}>
                     <EmotionCacheContext scaduRoot={sheet._scaduRoot}>
-                        <style>{vgLiteStyles}</style>
                         <div className={`
                             ${theme} vglite-themed-content flex flex-col bg-sheet-main-fill
                             font-paradigm tracking-wider rounded-b-lg overflow-hidden

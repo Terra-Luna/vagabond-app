@@ -2,7 +2,7 @@ import { Cog } from "lucide-react"
 import { createRoot } from "react-dom/client"
 
 import { getTheme } from "../../utils/foundryUtils"
-import { vgLiteStyles } from "../../utils/styleUtils"
+import { createStyleTag } from "../../utils/styleUtils"
 import { PrimaryButton } from "../../view/component/Button"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { VagabondToolsAppView } from "./VagabondToolsAppView"
@@ -38,9 +38,7 @@ export class VagabondToolsApp extends VagabondApplication {
             playersElement.before(hostElement)
             const scaduRoot = hostElement.attachShadow({ mode: 'open' })
 
-            const styleTag = document.createElement('style')
-            styleTag.textContent = vgLiteStyles
-            scaduRoot.appendChild(styleTag)
+            scaduRoot.appendChild(createStyleTag())
 
             const reactContainer = document.createElement('div')
             scaduRoot.appendChild(reactContainer)
@@ -51,7 +49,6 @@ export class VagabondToolsApp extends VagabondApplication {
 
         root.render(
             <div className={`${getTheme()} vglite-themed-content flex w-50`}>
-                <style>{vgLiteStyles}</style>
                 <PrimaryButton onClick={(e) => {
                     e.preventDefault()
                     e.stopPropagation()

@@ -32,7 +32,7 @@ import { sys_id } from "./utils/foundryUtils"
 import { stackStackables } from "./utils/heroInventoryUtil"
 import { ItemPilesConfig } from "./utils/ItemPilesConfig"
 import { getFullItem, getId } from "./utils/modelUtil"
-import { vgLiteStyles } from "./utils/styleUtils"
+import { createStyleTag } from "./utils/styleUtils"
 import { RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
 import { ItemActorSheet } from "./view/sheets/actor/adversary/ItemActorSheet"
 import { NpcSheet } from "./view/sheets/actor/adversary/NpcSheet"
@@ -269,7 +269,7 @@ Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
 
 Hooks.on("deleteItem", async (item, options, userId) => {
     if (game.user?.id !== userId || !item.parent) return
-    
+
     const childrenToDelete = item.parent.items.filter(
         (i: any) => i.getFlag(sys_id, "grantedBy") === item.id
     ).map((i: any) => i.id)
@@ -400,9 +400,7 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
         if (!scaduRoot) {
             scaduRoot = rootElement.attachShadow({ mode: 'open' })
 
-            const styleTag = document.createElement('style')
-            styleTag.textContent = vgLiteStyles
-            scaduRoot.appendChild(styleTag)
+            scaduRoot.appendChild(createStyleTag())
 
             const reactContainer = document.createElement('div')
             scaduRoot.appendChild(reactContainer)

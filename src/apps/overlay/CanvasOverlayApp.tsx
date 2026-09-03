@@ -1,31 +1,31 @@
 import React, { useEffect, useRef, useState } from "react"
 import { createPortal } from "react-dom"
-import { createRoot,Root } from "react-dom/client"
+import { createRoot, Root } from "react-dom/client"
 
 import { getTheme } from "../../utils/foundryUtils"
-import { vgLiteStyles } from "../../utils/styleUtils"
+import { createStyleTag } from "../../utils/styleUtils"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 
 export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
 
     private anchor: string
     private overlayReactRoot: Root | null = null
-    
+
     static override DEFAULT_OPTIONS = foundry.utils.mergeObject(
         super.DEFAULT_OPTIONS, {
-            window: {
-                frame: false,
-                minimizable: false,
-                resizable: false
-            },
-            position: {
-                width: window.innerWidth,
-                height: window.innerHeight,
-                top: 0,
-                left: 0
-            },
-            classes: ["canvas-overlay-window"] as string[]
+        window: {
+            frame: false,
+            minimizable: false,
+            resizable: false
         },
+        position: {
+            width: window.innerWidth,
+            height: window.innerHeight,
+            top: 0,
+            left: 0
+        },
+        classes: ["canvas-overlay-window"] as string[]
+    },
         { inplace: false }
     )
 
@@ -44,6 +44,7 @@ export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
             useEffect(() => {
                 if (hostRef.current && !scaduRoot) {
                     const root = hostRef.current.attachShadow({ mode: 'open' })
+                    root.appendChild(createStyleTag())
                     setScaduRoot(root)
                 }
             }, [scaduRoot])
@@ -52,7 +53,6 @@ export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
                 <div id={this.anchor} ref={hostRef}>
                     {scaduRoot && createPortal(
                         <div className={`${getTheme()} vglite-themed-content`}>
-                            <style>{vgLiteStyles}</style>
                             <args.Component />
                         </div>,
                         scaduRoot
@@ -126,5 +126,5 @@ export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
         }
         Object.getPrototypeOf(VagabondApplication).prototype._onClose.call(this, options)
     }
-    
+
 }

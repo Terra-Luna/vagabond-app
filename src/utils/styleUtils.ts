@@ -13,3 +13,23 @@ if (import.meta.hot) {
         }
     });
 }
+
+export const createStyleTag = () => {
+    const styleTag = document.createElement('style')
+    styleTag.textContent = vgLiteStyles
+    listenForTailwindUpdates(styleTag)
+    return styleTag
+}
+
+export const listenForTailwindUpdates = (styleTag: HTMLStyleElement) => {
+    if (import.meta.env.DEV) {
+        const handleUpdate = (e: Event) => {
+            const customEvent = e as CustomEvent<string>;
+            if (styleTag) {
+                styleTag.textContent = customEvent.detail;
+            }
+        };
+
+        window.addEventListener('tailwind-styles-updated', handleUpdate);
+    }
+}

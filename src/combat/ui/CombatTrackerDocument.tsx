@@ -7,7 +7,7 @@
 import ReactDom from "react-dom/client"
 
 import { getTheme } from "../../utils/foundryUtils"
-import { vgLiteStyles } from "../../utils/styleUtils"
+import { createStyleTag } from "../../utils/styleUtils"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EmotionCacheContext } from "../../view/context/EmotionCacheContext"
 import { CombatTracker } from "./CombatTracker"
@@ -28,6 +28,7 @@ export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.Com
             this.htmlRoot = result.tracker
             this.scaduRoot = this.htmlRoot.attachShadow({ mode: 'open' })
             this.reactRoot = ReactDom.createRoot(this.scaduRoot!)
+            this.scaduRoot.appendChild(createStyleTag())
         } else {
             result.tracker = this.htmlRoot!
         }
@@ -42,7 +43,6 @@ export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.Com
             <EditModeContextProvider>
                 <CombatContext.Provider value={{ activeCombatantId: activeCombatantId, activeGroup: null, combatTracker: this }}>
                     <EmotionCacheContext scaduRoot={this.scaduRoot}>
-                        <style>{vgLiteStyles}</style>
                         <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col h-full`}>
                             <CombatTracker combat={combat} />
                         </div>
