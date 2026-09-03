@@ -12,6 +12,8 @@ const releaseVersion = (args[0] || 'v0.0.1')
 const destination = (args[1] || `./dist/vagabond-app-${releaseVersion}.zip`)
 const zip = new AdmZip()
 zip.addLocalFolder("./dist")
+// include lang as it's not in "public"
+zip.addLocalFolder("./lang", "lang")
 zip.writeZip(destination)
 
 console.log(`\nRelease zip created at ${destination}`)
