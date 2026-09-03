@@ -298,7 +298,7 @@
     "actions": [
       {
         "name": "Weapon",
-        "effect": "[Melee Attack]",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) or (by Weapon)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -307,7 +307,11 @@
             "explodesOn": []
           },
           "type": "physical"
-        }
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
       }
     ],
     "combo": {
@@ -431,8 +435,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1787708617762,
-    "modifiedTime": 1787785283553,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788471021344,
+    "lastModifiedBy": "v9goaChjagLBZLpc",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

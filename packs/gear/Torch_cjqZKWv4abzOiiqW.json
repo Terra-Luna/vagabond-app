@@ -1,0 +1,47 @@
+{
+  "folder": "l5D3vYPFgbH4SAOt",
+  "name": "Torch",
+  "type": "sundry",
+  "_id": "cjqZKWv4abzOiiqW",
+  "img": "/icons/sundries/lights/torch-brown-lit.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "outdoors",
+    "value": {
+      "g": 0,
+      "s": 1,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1788112165326,
+    "modifiedTime": 1788112184685,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cjqZKWv4abzOiiqW"
+}

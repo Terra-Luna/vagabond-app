@@ -12,8 +12,8 @@ export interface OptionsSelectionMenuOption {
     isSelected: boolean
 }
 
-export const OptionsSelectionMenu = ({ obj, label, path, options }: {
-    obj: any, label?: string, path: string[], options: OptionsSelectionMenuOption[]
+export const OptionsSelectionMenu = ({ obj, label, path, options, onChange }: {
+    obj?: any, label?: string, path?: string[], options: OptionsSelectionMenuOption[], onChange?: (selectedKeys: string[]) => void
 }) => {
     const { isEditMode } = useEditMode()
     return (
@@ -30,7 +30,9 @@ export const OptionsSelectionMenu = ({ obj, label, path, options }: {
                                         onClick={(e) => {
                                             e.keepOpen = true
                                             options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
-                                            updateDocumentAtPath(obj, path, options.filter(it => it.isSelected).map(it => it.key))
+                                            const selectedKeys = options.filter(it => it.isSelected).map(it => it.key)
+                                            if (onChange) onChange(selectedKeys)
+                                            else if (obj && path) updateDocumentAtPath(obj, path, selectedKeys)
                                         }}
                                     >
                                         {

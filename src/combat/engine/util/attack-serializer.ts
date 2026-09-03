@@ -1,11 +1,21 @@
 import type { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
-import type { AdversaryAttack } from "../AdversaryAttack"
+import type { AdversaryAttack, SavingThrowType } from "../AdversaryAttack"
 import type { Attack } from "../Attack"
+import type { AdversaryComboAttack, ComboSubAttack } from "../AdversaryComboAttack"
 import type { HeroAttack } from "../HeroAttack"
 import { SkillCheck } from "../roll/SkillCheck"
 
+export interface ComboSubAttackSnapshot {
+    name: string
+    saveTypes: SavingThrowType[]
+    statuses: string[]
+    damageRoll: any | undefined
+    saveResults: Record<string, any>
+    rerolledSaveTargetIds: string[]
+}
+
 export interface AttackSnapshot {
-    type: 'adversary' | 'hero'
+    type: 'adversary' | 'hero' | 'combo'
     id: string
     itemId: string
     userId: string
@@ -18,10 +28,17 @@ export interface AttackSnapshot {
     critChoice: "luck" | "damage" | "spellFx" | undefined
     isRerolled: boolean
     isResolved: boolean
+    saveTypes: SavingThrowType[] | undefined
+    saveResults: Record<string, any> | undefined
+    description: string | undefined
+    statuses: string[] | undefined
+    rerolledSaveTargetIds: string[] | undefined
+    subAttacks: ComboSubAttackSnapshot[] | undefined
 }
 
 export function serializeAttack(atk: Attack): AttackSnapshot | undefined {
     if (atk.attackType === 'adversary') return serializeAdversaryAttack(atk as AdversaryAttack)
+    if (atk.attackType === 'combo') return serializeComboAttack(atk as AdversaryComboAttack)
     return serializeHeroAttack(atk as HeroAttack)
 }
 
@@ -88,5 +105,31 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
 }
 
 function serializeAdversaryAttack(atk: AdversaryAttack): AttackSnapshot {
-    return { ...serializeCommonFields(atk), type: 'adversary' } as AttackSnapshot
+    const cleanSaveResults: Record<string, any> = {}
+    for (const [targetId, result] of Object.entries(atk.saveResults ?? {})) {
+        cleanSaveResults[targetId] = {
+            ...result,
+            rolls: result.rolls?.map((r: any) =>
+                r && typeof r.toJSON === "function" ? r.toJSON() : r
+            ) ?? []
+        }
+    }
+
+    return {
+        ...serializeCommonFields(atk),
+        type: 'adversary',
+        saveTypes: atk.saveTypes,
+        saveResults: cleanSaveResults,
+        description: atk.description,
+        statuses: atk.statuses,
+        rerolledSaveTargetIds: atk.rerolledSaveTargetIds
+    } as AttackSnapshot
+}
+
+function serializeComboAttack(atk: AdversaryComboAttack): AttackSnapshot {
+    return {
+        ...serializeCommonFields(atk),
+        type: 'combo',
+        subAttacks: atk.subAttacks.map((sub: ComboSubAttack) => sub.toJson())
+    } as AttackSnapshot
 }

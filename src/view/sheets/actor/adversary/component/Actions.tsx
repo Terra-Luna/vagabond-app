@@ -2,7 +2,9 @@ import { PenSquare, Save,Trash } from "lucide-react"
 import { useCallback,useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
-import { DamageRoll, DamageRollResult } from "../../../../../combat/engine/roll/DamageRoll"
+import { VagabondActiveEffect } from "../../../../../combat/documents/VagabondActiveEffect"
+import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
+import { DamageRoll } from "../../../../../combat/engine/roll/DamageRoll"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
@@ -13,7 +15,6 @@ import { vgLiteLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
-import { ComboChatCard } from "../../../../chat/ComboChatCard"
 import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
 import { damageRoll } from "../../../../common/text-styles"
@@ -23,9 +24,10 @@ import { DamageTypeIcon } from "../../../../component/DamageTypeIcon"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
 import { EnrichedContent } from "../../../../component/EnrichedContent"
+import { OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { RichTextField } from "../../../../component/RichTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { onClickAction } from "./hooksAndUtils"
+import { onClickAction, onClickActionCombo } from "./hooksAndUtils"
 
 const locale = vgLiteLang.NpcSheet
 
@@ -89,10 +91,10 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                     {/* ACTION TRAITS... */}
                                     <div>
                                         {/* ATTACK DESCRIPTION */}
-                                        <EnrichedContent content={act.effect} styleClasses="text-text-secondary italic" actor={npc.parent} />
+                                        <EnrichedContent content={act.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
                                         {act.damage.dice.count > 0 &&
-                                            <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(npc, act.name, act.effect, act.damage.type, act.damage.dice as DiceRollSchema)}>
+                                            <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(npc, act.name, act.description, act.damage.type, act.damage.dice as DiceRollSchema, act.saves as SavingThrowType[], act.statuses as string[])}>
                                                 <p className="text-text-secondary leading-none">Dmg:</p>
                                                 <p className={`${damageRoll} leading-none`}>{new DiceRoll(act.damage.dice as any).toRollFormula()}</p>
                                                 <p className="leading-none text-text-secondary">|</p>
@@ -136,29 +138,6 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
     )
 }
 
-const onClickActionCombo = async (npc: AdversaryDataModel | NpcDataModel) => {
-    const rolls: DamageRollResult[] = []
-    for (let action = 0; action < npc.combo.actions.length; action++) {
-        const act = npc.combo.actions[action]
-        for (let count = 0; count < (act.comboCount ?? 0); count++) {
-            const result = await new DamageRoll({
-                atkName: act.name,
-                dmgType: act.damage.type,
-                dice: [new DiceRoll(act.damage.dice as any)]
-            }).roll()
-            rolls.push(result)
-        }
-    }
-    sendVagabondChatMessage(
-        npc,
-        <ComboChatCard
-            actorId={getId(npc)}
-            rolls={rolls}
-            tokenIds={getTargetIds()}
-        />, rolls.flatMap(r => r.rolls)
-    )
-}
-
 const deleteCombo = (npc: AdversaryDataModel | NpcDataModel) => {
     updateDocumentAtPath(npc.parent, ['combo'], null)
 }
@@ -168,7 +147,7 @@ const deleteAction = (npc: AdversaryDataModel | NpcDataModel, action: any) => {
 }
 
 export interface NpcAction {
-    name: string, effect: string, damage: { dice: DiceRollSchema, type: string }, recharge: string, comboCount: number
+    name: string, description: string, damage: { dice: DiceRollSchema, type: string }, saves: string[], statuses: string[], recharge: string, comboCount: number
 }
 
 export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
@@ -183,6 +162,16 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
     const updateDamage = useCallback(async (patch: Partial<NpcAction["damage"]>) => {
         setNewAction(prev => ({ ...prev, damage: { ...prev.damage, ...patch } as NpcAction["damage"] }))
         return true
+    }, [])
+
+    const toggleSave = useCallback((save: SavingThrowType) => {
+        setNewAction(prev => {
+            const saves = prev.saves ?? []
+            return {
+                ...prev,
+                saves: saves.includes(save) ? saves.filter(it => it !== save) : [...saves, save]
+            }
+        })
     }, [])
 
     const [comboName, setComboName] = useState<string | null>(null)
@@ -220,8 +209,8 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                 }
             </div>
 
-            {
-                isCombo ? <div className="space-y-1">
+            {isCombo
+                ? <div className="space-y-1">
                     <div className="flex space-x-2">
                         <p>Combo Name:</p>
                         <EditableTextField boundValue={comboName} onSave={async (name) => { setComboName(name); return true }} placeholder='Enter name...' />
@@ -245,59 +234,93 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                             )
                         })
                     }
-                </div> :
-                    <div className="space-y-2">
-                        {/* ACTION NAME */}
-                        <div className="flex items-end">
-                            <p>Name:&nbsp;</p>
-                            <div className={`font-eskapade font-bold hover-glow`}>
-                                <EditableTextField boundValue={newAction?.name ?? null} onSave={(name) => updateAction({ name: name ?? '' })} placeholder='Claws [Melee, Near]' />
-                            </div>
-                        </div>
-
-                        {/* EFFECT DESCRIPTION */}
-                        <div className="flex items-end">
-                            <p>Effect:&nbsp;</p>
-                            <div className={`font-eskapade font-bold hover-glow`}>
-                                <RichTextField defaultValue={newAction?.effect ?? ''} onChange={(effect) => updateAction({ effect })} className="text-xs font-paradigm font-normal" />
-                            </div>
-                        </div>
-
-                        {/* DAMAGE ROLL */}
-                        <div className="flex items-end">
-                            <DiceRollInputComponent
-                                diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 4 }}
-                                onChange={(dice) => updateDamage({ dice: { ...newAction?.damage?.dice, ...dice } as DiceRollSchema })}
-                            />
-                        </div>
-
-                        {/* DAMAGE TYPE */}
-                        <div className="flex items-end">
-                            <p>Damage Type:&nbsp;</p>
-                            <div className={`font-eskapade font-bold hover-glow`}>
-                                <DropDown
-                                    value={newAction?.damage?.type ?? ''}
-                                    options={createDropdownEntries(vgLiteLang.DamageTypes)}
-                                    updateMechanism={{
-                                        onChange: (type) => updateDamage({ type: type ?? '' })
-                                    }}
-                                    parent={undefined}
-                                />
-                            </div>
-                        </div>
-
-                        {/* RECHARGE */}
-                        <div className="flex items-end">
-                            <p>Recharge:&nbsp;</p>
-                            <div className={`font-eskapade font-bold hover-glow`}>
-                                <EditableTextField
-                                    boundValue={newAction?.recharge ?? null}
-                                    onSave={(recharge) => updateAction({ recharge: recharge ?? '' })}
-                                    placeholder="CdX"
-                                />
-                            </div>
+                </div>
+                : <div className="space-y-2">
+                    {/* ACTION NAME */}
+                    <div className="flex items-end">
+                        <p>Name:&nbsp;</p>
+                        <div className={`font-eskapade font-bold hover-glow`}>
+                            <EditableTextField boundValue={newAction?.name ?? null} onSave={(name) => updateAction({ name: name ?? '' })} placeholder='Claws [Melee, Near]' />
                         </div>
                     </div>
+
+                    {/* EFFECT DESCRIPTION */}
+                    <div className="flex items-end">
+                        <p>Effect:&nbsp;</p>
+                        <div className={`font-eskapade font-bold hover-glow`}>
+                            <RichTextField defaultValue={newAction?.description ?? ''} onChange={(description) => updateAction({ description })} className="text-xs font-paradigm font-normal" />
+                        </div>
+                    </div>
+
+                    {/* DAMAGE ROLL */}
+                    <div className="flex items-end">
+                        <DiceRollInputComponent
+                            diceRoll={newAction?.damage?.dice ?? { count: 1, faces: 4 }}
+                            onChange={(dice) => updateDamage({ dice: { ...newAction?.damage?.dice, ...dice } as DiceRollSchema })}
+                        />
+                    </div>
+
+                    {/* DAMAGE TYPE */}
+                    <div className="flex items-end">
+                        <p>Damage Type:&nbsp;</p>
+                        <div className={`font-eskapade font-bold hover-glow`}>
+                            <DropDown
+                                value={newAction?.damage?.type ?? ''}
+                                options={createDropdownEntries(vgLiteLang.DamageTypes)}
+                                updateMechanism={{
+                                    onChange: (type) => updateDamage({ type: type ?? '' })
+                                }}
+                                parent={undefined}
+                            />
+                        </div>
+                    </div>
+
+                    {/* SAVING THROWS */}
+                    <div className="flex items-end">
+                        <p>Saves:&nbsp;</p>
+                        <div className="flex gap-x-3">
+                            {Object.entries(vgLiteLang.Saves).map(([key, save]) => (
+                                <div key={key} className="flex items-center gap-1">
+                                    <input
+                                        type="checkbox"
+                                        checked={(newAction?.saves ?? []).includes(key)}
+                                        onChange={() => toggleSave(key as SavingThrowType)}
+                                    />
+                                    <p>{(save as { name: string }).name}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* STATUS EFFECTS */}
+                    <div className="flex items-end">
+                        <p>Statuses:&nbsp;</p>
+                        <OptionsSelectionMenu
+                            options={VagabondActiveEffect.statusEffects.map(effect => ({
+                                key: effect.id,
+                                value: vgLiteLang.StatusConditions[effect.id]?.name ?? effect.id,
+                                isSelected: (newAction?.statuses ?? []).includes(effect.id)
+                            }))}
+                            onChange={(statuses) => updateAction({ statuses })}
+                        />
+                        <p className="text-text-secondary italic">
+                            {(newAction?.statuses ?? []).map(id => vgLiteLang.StatusConditions[id]?.name ?? id).join(", ")}
+                        </p>
+                    </div>
+
+                    {/* RECHARGE */}
+                    <div className="flex items-end">
+                        <p>Recharge:&nbsp;</p>
+                        <div className={`font-eskapade font-bold hover-glow`}>
+                            <EditableTextField
+                                boundValue={newAction?.recharge ?? null}
+                                onSave={(recharge) => updateAction({ recharge: recharge ?? '' })}
+                                placeholder="CdX"
+                            />
+                        </div>
+                    </div>
+
+                </div>
             }
 
             {/* SAVE & CANCEL BUTTONS*/}

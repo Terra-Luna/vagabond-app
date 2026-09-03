@@ -1,27 +1,31 @@
 {
-  "folder": "QKf9Kfy4zVpf06sn",
-  "name": "Adversary",
+  "folder": "FLVLlhgM8ePOrzwY",
+  "name": "Flying Spellbook",
   "type": "adversary",
-  "_id": "mBdeY8Eqj4EisXXP",
+  "_id": "WWeawsuFybnJNTBL",
   "img": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "current": 4,
+      "current": 1,
       "max": 0
     },
     "armor": {
       "rating": 0
     },
-    "senses": [],
+    "senses": [
+      "blindsight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
         "blinded": false,
+        "burning": false,
         "charmed": false,
         "confused": false,
         "dazed": false,
         "dead": false,
         "frightened": false,
+        "grappling": false,
         "incapacitated": false,
         "invisible": false,
         "paralyzed": false,
@@ -31,12 +35,11 @@
         "suffocating": false,
         "unconscious": false,
         "vulnerable": false,
-        "marked": false,
         "warded": false,
-        "blessed": false
-      },
-      "stacks": {
-        "burning": []
+        "exalted": false,
+        "blessed": false,
+        "marked": false,
+        "hexed": false
       },
       "counters": {
         "luck": 0,
@@ -180,27 +183,35 @@
         },
         "exploding": {
           "melee": {
+            "max": false,
             "values": []
           },
           "finesse": {
+            "max": false,
             "values": []
           },
           "brawl": {
+            "max": false,
             "values": []
           },
           "ranged": {
+            "max": false,
             "values": []
           },
           "thrown": {
+            "max": false,
             "values": []
           },
           "defense": {
+            "max": false,
             "values": []
           },
           "spell": {
+            "max": false,
             "values": []
           },
           "spellHealing": {
+            "max": false,
             "values": []
           }
         },
@@ -237,20 +248,64 @@
       },
       "damage": {
         "in": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "melee": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "finesse": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "brawl": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "ranged": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "thrown": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "defense": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "spell": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          }
         },
         "out": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "melee": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "finesse": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "brawl": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "ranged": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "thrown": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "defense": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "spell": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          }
         }
       },
       "healing": {
@@ -265,34 +320,91 @@
           "aura": 0,
           "cone": 0,
           "line": 0,
-          "sphere": 0
+          "sphere": 0,
+          "imbue": 0
         }
       }
     },
-    "beingSize": "medium",
-    "beingType": "humanlike",
+    "beingSize": "small",
+    "beingType": "artificial",
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": null,
-    "description": "",
+    "description": "<p><span style=\"white-space: pre-wrap;\">An animated spellbook that flies like a bird, capable of casting the magic written on its pages.</span></p>",
     "hitDice": 1,
-    "zone": "front",
+    "zone": "back",
     "movement": {
-      "type": "walk"
+      "type": "fly"
     },
-    "numberAppearing": "1d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
-    "actions": [],
+    "numberAppearing": "d6",
+    "dmgImmunities": [
+      "poison"
+    ],
+    "dmgWeaknesses": [
+      "fire"
+    ],
+    "statusImmunities": [
+      "sickened",
+      "suffocating"
+    ],
+    "actions": [
+      {
+        "name": "Freeze",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Remote | Endure] (Recharge Cd4):</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) and its Speed is reduced by 10' (Cd4).</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "cold"
+        },
+        "saves": [
+          "endure"
+        ],
+        "statuses": [],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Zap",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex] (Recharge Cd4):</strong></b><span style=\"white-space: pre-wrap;\"> 3 (d6) and Dazed (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "shock"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "dazed"
+        ],
+        "recharge": "Cd4"
+      }
+    ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "abilities": []
+    "abilities": [
+      {
+        "name": "Antimagic Vulnerability",
+        "description": "<p><span style=\"white-space: pre-wrap;\">It is [[/r Cd4#Dazed]]{Dazed for Cd4} if affected by the Dispel Spell or other antimagic.</span></p>"
+      },
+      {
+        "name": "Nimble",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Attacks against it can't be Favored if it can Move.</span></p>"
+      }
+    ],
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Adversary",
+    "name": "Flying Spellbook",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -308,7 +420,7 @@
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
-    "lockRotation": true,
+    "lockRotation": false,
     "rotation": 0,
     "alpha": 1,
     "disposition": -1,
@@ -388,19 +500,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "LxjckWttmatU52UJ": 3
+    "v9goaChjagLBZLpc": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
-    "createdTime": 1787790634805,
-    "modifiedTime": 1787790634806,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "createdTime": 1788236226607,
+    "modifiedTime": 1788473470767,
+    "lastModifiedBy": "v9goaChjagLBZLpc",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!actors!mBdeY8Eqj4EisXXP"
+  "_key": "!actors!WWeawsuFybnJNTBL"
 }

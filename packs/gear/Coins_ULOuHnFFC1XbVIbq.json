@@ -1,0 +1,47 @@
+{
+  "folder": "HjCjQmXdy92a5EPk",
+  "name": "Coins",
+  "type": "sundry",
+  "_id": "ULOuHnFFC1XbVIbq",
+  "img": "/icons/commodities/currency/coins-plain-stack-gold-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A pile of coins...</span></p>",
+    "rules": [],
+    "category": "trade",
+    "value": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 0,
+      "isStackable": true,
+      "stackSize": 1000,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-lite",
+    "systemVersion": "0.0.0",
+    "createdTime": 1788112930419,
+    "modifiedTime": 1788113003760,
+    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ULOuHnFFC1XbVIbq"
+}

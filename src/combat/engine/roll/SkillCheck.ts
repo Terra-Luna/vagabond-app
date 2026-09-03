@@ -60,11 +60,15 @@ export class SkillCheck {
                 : undefined
             )
 
-        const bonusRolls = args.bonusDice?.map(d => new DiceRoll(d)) ?? []
+        let bonusRolls = args.bonusDice?.map(d => new DiceRoll(d)) ?? []
+
+        console.log(args.skill, skillMods)
+
+        // Keep the highest bonus die if multiple are present, otherwise use the one specified in the skill modifier args.
         if (bonusRolls.length === 0) {
-            if (skillMods?.d4) bonusRolls.push(new DiceRoll({ count: 1, faces: 4 }))
-            if (skillMods?.d6) bonusRolls.push(new DiceRoll({ count: 1, faces: 6 }))
-            if (skillMods?.d8) bonusRolls.push(new DiceRoll({ count: 1, faces: 8 }))
+            if (skillMods?.d4) bonusRolls = [new DiceRoll({ count: 1, faces: 4 })]
+            if (skillMods?.d6) bonusRolls = [new DiceRoll({ count: 1, faces: 6 })]
+            if (skillMods?.d8) bonusRolls = [new DiceRoll({ count: 1, faces: 8 })]
         }
 
         this.type = args.type
@@ -135,18 +139,16 @@ export class SkillCheck {
          */
         let formula = this.blockDie > 0 ? `d${this.blockDie}` : `${this.d20Count ?? 1}d20kh`
 
-        if (this.blockDie === 0) {
-            if (this.modifier) {
-                formula += `+${this.modifier}`
-            }
+        if (this.blockDie === 0 && this.modifier) {
+            formula += `+${this.modifier}`
+        }
 
-            if (!isReroll) {
-                if (favorHinder === 'favor') {
-                    formula += '+1d6'
-                }
-                else if (favorHinder === 'hinder') {
-                    formula += '-1d6'
-                }
+        if (!isReroll) {
+            if (favorHinder === 'favor') {
+                formula += '+1d6'
+            }
+            else if (favorHinder === 'hinder') {
+                formula += '-1d6'
             }
         }
 

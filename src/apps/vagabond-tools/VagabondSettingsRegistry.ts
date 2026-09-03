@@ -17,6 +17,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerProgressClocks()
         VagabondSettingsRegistry.registerCountdowns()
         VagabondSettingsRegistry.registerManaEnforcement()
+        VagabondSettingsRegistry.registerAllowLateLuckStudy()
 
         RelicPowers.register()
     }
@@ -178,12 +179,23 @@ export class VagabondSettingsRegistry {
 
     private static registerManaEnforcement() {
         game.settings?.register(sys_id, "enforceMana" as any, {
-            name: "Enforce Mana ",
+            name: "Enforce Mana",
             hint: "Enable to enforce spellcasting Mana consumption and Max/Cast limits.",
             scope: "world",
             config: true,
             type: Boolean,
             default: true
+        })
+    }
+
+    private static registerAllowLateLuckStudy() {
+        game.settings?.register(sys_id, "allowLateLuckStudy" as any, {
+            name: "Allow Late Luck/Study",
+            hint: "Allow Heroes to spend Luck/Study dice after a failed check.",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: false
         })
     }
 

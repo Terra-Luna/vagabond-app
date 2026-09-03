@@ -79,6 +79,22 @@
         "level": 4,
         "value": 2,
         "selector": "modifiers.casting.deliveryDiscounts.aura"
+      },
+      {
+        "id": "VBGjlHRr4usvfaGs",
+        "key": "ToggleRule",
+        "label": "Holy Diver: Exalt",
+        "level": "10",
+        "value": true,
+        "selector": "statuses.toggles.exalted"
+      },
+      {
+        "id": "OAHAhI06aiy5SZHY",
+        "key": "ToggleRule",
+        "label": "Holy Diver: Bless",
+        "level": "10",
+        "value": true,
+        "selector": "statuses.toggles.blessed"
       }
     ],
     "complexity": 3,
@@ -175,8 +191,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1786568076634,
-    "modifiedTime": 1787960552393,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788297113627,
+    "lastModifiedBy": "v9goaChjagLBZLpc",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -287,7 +287,7 @@
     "actions": [
       {
         "name": "Cure Wounds",
-        "effect": "[Cast, Touch (Ally)]: (3/Day)",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Touch (Ally)] (3/Day):</strong></b><span style=\"white-space: pre-wrap;\"> Regain 3 (d6) HP</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -296,11 +296,13 @@
             "explodesOn": []
           },
           "type": "healing"
-        }
+        },
+        "saves": [],
+        "statuses": []
       },
       {
         "name": "Ward",
-        "effect": "[Cast, Aura Near] (Focus, 1/Day): Targets reduce damage by d6. This reduction can occur 2 times per Round.",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Aura Near] (Focus, 1/Day):</strong></b><span style=\"white-space: pre-wrap;\"> Targets reduce damage by [[/r d6#Ward]]{d6}. This reduction can occur 2 times per Round.</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -309,11 +311,13 @@
             "explodesOn": []
           },
           "type": "none"
-        }
+        },
+        "saves": [],
+        "statuses": []
       },
       {
         "name": "Holy Flame",
-        "effect": "[Cast, Aura Near | Endure]: (2d6) and Blinded (Cd4)",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Cast, Aura Near | Endure]:</strong></b><span style=\"white-space: pre-wrap;\"> 7 (2d6) and Blinded (Cd4)</span></p>",
         "damage": {
           "dice": {
             "count": 2,
@@ -322,20 +326,30 @@
             "explodesOn": []
           },
           "type": "magical"
-        }
+        },
+        "saves": [
+          "endure"
+        ],
+        "statuses": [
+          "blinded"
+        ]
       },
       {
         "name": "Mace",
-        "effect": "[Melee Attack]",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]</strong></b></p>",
         "damage": {
           "dice": {
-            "faces": 6,
             "count": 1,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
           "type": "physical"
-        }
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
       }
     ],
     "combo": {
@@ -450,8 +464,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1787785846565,
-    "modifiedTime": 1787791644797,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788472883231,
+    "lastModifiedBy": "v9goaChjagLBZLpc",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

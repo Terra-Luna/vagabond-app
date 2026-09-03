@@ -1,5 +1,5 @@
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
-import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString, savingThrowOptions, statusEffOptions } from "../../common/sharedSchemas"
 
 /**
  * A detailed adversary offensive action.
@@ -7,7 +7,7 @@ import { damageTypeOptions, fields, optionalString, requiredInteger, requiredStr
 export const npcActionSchema = () => {
     return {
         name: new fields.StringField({ required: true }),
-        effect: new fields.StringField({ ...optionalString }),
+        description: new fields.StringField({ ...optionalString }),
         damage: new fields.SchemaField({
             dice: new fields.SchemaField({
                 count: new fields.NumberField({ ...requiredInteger, initial: 1, min: 0 }),
@@ -20,6 +20,15 @@ export const npcActionSchema = () => {
             }),
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
+        // Saving throws a targeted player may choose from to resist this action.
+        saves: new fields.ArrayField(
+            new fields.StringField({ ...savingThrowOptions() }),
+            { initial: [] }
+        ),
+        statuses: new fields.ArrayField(
+            new fields.StringField({ ...statusEffOptions() }),
+            { initial: [] }
+        ),
         recharge: new fields.StringField({ ...optionalString })
     }
 }

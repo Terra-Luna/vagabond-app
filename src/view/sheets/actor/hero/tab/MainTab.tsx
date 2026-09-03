@@ -162,7 +162,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                                 {damageString}
                                             </div>
                                             {item instanceof WeaponDataModel && item.properties.includes("defense") &&
-                                                <button title={"Roll as Reflex Save"} onClick={() => rollDefensiveReflexSave()} className="hover-glow cursor-pointer">
+                                                <button title={"Roll to defend"} onClick={() => rollDefensiveReflexSave()} className="hover-glow cursor-pointer">
                                                     <Shield className="text-ic-armor-border fill-ic-armor-fill" size={22} />
                                                 </button>
                                             }

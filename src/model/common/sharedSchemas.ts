@@ -67,3 +67,13 @@ export const statusEffOptions = () => {
         choices: statusFx
     }
 }
+
+export const savingThrowOptions = () => {
+    const saves = Object.keys(locale.VGLITE.Saves)
+    return {
+        required: true,
+        nullable: false,
+        choices: saves,
+        initial: 'reflex'
+    }
+}

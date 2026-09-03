@@ -300,16 +300,18 @@
     "actions": [
       {
         "name": "Spawn",
-        "effect": "<p><span style=\"white-space: pre-wrap;\">At the start of its Turn, roll d4. On a roll of 2 to 4, this Being spawns an Ally Being (d6, roll two and take the highest if this Being is at half HP or lower), which appears in the nearest open space:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1 Giant Spider (p. 132) </span></p><p><span style=\"white-space: pre-wrap;\">2 Basilisk (p. 135) </span></p><p><span style=\"white-space: pre-wrap;\">3 Owl Bear (p. 145) </span></p><p><span style=\"white-space: pre-wrap;\">4 Rust Monster (p. 147) </span></p><p><span style=\"white-space: pre-wrap;\">5 Warp Beast (p. 151) </span></p><p><span style=\"white-space: pre-wrap;\">6 Gelatinous Cube (p. 172)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of its Turn, roll d4. On a roll of 2 to 4, this Being spawns an Ally Being (d6, roll two and take the highest if this Being is at half HP or lower), which appears in the nearest open space:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1 Giant Spider</span></p><p><span style=\"white-space: pre-wrap;\">2 Basilisk</span></p><p><span style=\"white-space: pre-wrap;\">3 Owl Bear</span></p><p><span style=\"white-space: pre-wrap;\">4 Rust Monster</span></p><p><span style=\"white-space: pre-wrap;\">5 Warp Beast</span></p><p><span style=\"white-space: pre-wrap;\">6 Gelatinous Cube</span></p>",
         "damage": {
           "dice": {
             "count": 0,
-            "faces": 4,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
           "type": "none"
-        }
+        },
+        "saves": [],
+        "statuses": []
       }
     ],
     "combo": {
@@ -323,9 +325,9 @@
     "name": "Dungeonheart",
     "displayName": 0,
     "actorLink": false,
-    "width": 1,
-    "height": 1,
-    "depth": 1,
+    "width": 3,
+    "height": 3,
+    "depth": 3,
     "texture": {
       "src": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
       "anchorX": 0.5,
@@ -393,7 +395,7 @@
         "ring": null,
         "background": null
       },
-      "effects": 1,
+      "effects": 0,
       "subject": {
         "scale": 1,
         "texture": null
@@ -424,8 +426,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1787794178977,
-    "modifiedTime": 1787794551917,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788472650980,
+    "lastModifiedBy": "v9goaChjagLBZLpc",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

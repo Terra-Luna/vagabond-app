@@ -152,6 +152,10 @@ export const getManaEnforcement = (): boolean => {
     return (game.settings as any)?.get(sys_id, "enforceMana")
 }
 
+export const getAllowLateLuckStudy = (): boolean => {
+    return (game.settings as any)?.get(sys_id, "allowLateLuckStudy")
+}
+
 /**
  * Use this function to provide access for players with ganted permissions.
  * @param setting 

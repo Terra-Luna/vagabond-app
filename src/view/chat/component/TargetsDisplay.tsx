@@ -13,7 +13,7 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
     return (
         <div>
             {targets && targets.length > 0 &&
-                <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
+                <div className="flex flex-wrap -space-x-4 justify-center items-center px-2 mb-1">
                     {targets.map((target, index) => (
                         <button
                             key={target.id}

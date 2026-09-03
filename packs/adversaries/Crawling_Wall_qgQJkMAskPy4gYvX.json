@@ -297,7 +297,7 @@
     "actions": [
       {
         "name": "Grasp",
-        "effect": "[Melee Attack]: Restrained",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and Restrained</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -306,11 +306,15 @@
             "explodesOn": []
           },
           "type": "physical"
-        }
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
       },
       {
         "name": "Crush",
-        "effect": "[Rush]: Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Rush]:</strong></b><span style=\"white-space: pre-wrap;\"> Any Huge or smaller Being in its path is pushed in front of it for the Move. If there is no open space within Close for the Being to go when this happens, it takes 3 (d6) for every 5' of Speed this Being has remaining.</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -319,7 +323,9 @@
             "explodesOn": []
           },
           "type": "physical"
-        }
+        },
+        "saves": [],
+        "statuses": []
       }
     ],
     "combo": {
@@ -468,8 +474,8 @@
     "systemId": "vagabond-lite",
     "systemVersion": "0.0.0",
     "createdTime": 1787710168878,
-    "modifiedTime": 1787793313642,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788472573588,
+    "lastModifiedBy": "v9goaChjagLBZLpc",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

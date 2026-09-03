@@ -48,7 +48,7 @@ export const DestructiveButton = ({ type = "button", title = '', children, icon 
 }
 
 export const UtilityButton = ({ type = "button", title = "", children, icon = null, onClick }: {
-    type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick: () => any
+    type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick: (e?: React.MouseEvent<HTMLButtonElement>) => any
 }) => {
     return (
         <button type={type} title={title} onClick={onClick}

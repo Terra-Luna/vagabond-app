@@ -12,7 +12,7 @@ export interface AttackResolutionArgs {
 
 export abstract class Attack {
 
-    abstract readonly attackType: 'adversary' | 'hero'
+    abstract readonly attackType: 'adversary' | 'hero' | 'combo'
 
     // Unique ID for interacting with the attack in chat card
     id: string
@@ -67,37 +67,54 @@ export abstract class Attack {
         }
     }
 
+    protected shouldApplyDamageToTarget(targetId: string): boolean {
+        void targetId
+        return true
+    }
+
     private applyHealing(args: AttackResolutionArgs) {
-        this.getActors(this.targetIds ?? []).forEach(target => {
+        const targetIds = (this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        this.getActors(targetIds).forEach(target => {
             this.updateHP(target?.system, this.getHP(target?.system) + (this.damageRoll?.result?.total ?? 0))
         })
     }
 
     private applyDamage(args: AttackResolutionArgs) {
-        const targetIds = args.gmTargetsOnly ? getTargetIds() : this.targetIds
-        this.getActors(targetIds ?? []).forEach(actor => {
-            let damage = this.damageRoll?.result?.total ?? 0
-            damage = args.halveDamage ? Math.ceil(damage / 2) : damage
-
-            const target = actor?.system
-            const armorRating = (target as any)?.armor?.rating ?? 0
-            const armorPiercing = this.damageRoll?.armorPiercing ?? 0
-            const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
-            const adjDamage = Math.max(0, damage - armor)
-
-            this.updateHP(target, this.getHP(target) - adjDamage)
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
+            .filter(id => this.shouldApplyDamageToTarget(id))
+        targetIds.forEach(id => {
+            const actor = canvas?.scene?.tokens?.get(id)?.actor
+            const adjDamage = this.calculateAdjustedDamage(id, args)
+            this.updateHP(actor?.system, this.getHP(actor?.system) - adjDamage)
         })
     }
 
-    private getActors(targetIds: string[]) {
+    protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
+        const actor = canvas?.scene?.tokens?.get(targetId)?.actor
+        let damage = this.damageRoll?.result?.total ?? 0
+        damage = args.halveDamage ? Math.ceil(damage / 2) : damage
+
+        const target = actor?.system
+        const armorRating = (target as any)?.armor?.rating ?? 0
+        const armorPiercing = this.damageRoll?.armorPiercing ?? 0
+        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + this.getBonusArmor(targetId) - armorPiercing)
+        return Math.max(0, damage - armor)
+    }
+
+    protected getBonusArmor(targetId: string): number {
+        void targetId
+        return 0
+    }
+
+    protected getActors(targetIds: string[]) {
         return targetIds.map(id => canvas?.scene?.tokens?.get(id)?.actor)
     }
 
-    private getHP(target) {
+    protected getHP(target) {
         return target.health.current
     }
 
-    private updateHP(target, hp) {
+    protected updateHP(target, hp) {
         target?.parent.update({ "system.health.current": hp })
     }
 

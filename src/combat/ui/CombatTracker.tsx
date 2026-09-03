@@ -134,10 +134,9 @@ const Group = ({ children }: { groupName: CombatGroup, children: ReactNode }) =>
 }
 
 const GroupHeader = ({ label }: { groupName: CombatGroup, label: string }) => {
-
     return (
         <div className="flex bg-section-header-fill px-1 font-eskapade font-bold py-1 mb-1">
-            <p className={`flex text-xl text-text-section-header`}>{`${label}`}</p>
+            <p className={`flex text-xl text-text-header-secondary`}>{`${label}`}</p>
         </div>
     )
 }
@@ -192,7 +191,7 @@ const CombatantHeader = ({ token, combatant, name, children, onClick }) => {
             <div className={`flex w-full ${opacityClass}`}>
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} onClick={onClick} />
                 <div className="w-full pr-4">
-                    <div className={`px-1 font-eskapade text-text-header-tertiary font-bold text-lg`}>
+                    <div className={`px-1 font-eskapade text-text-secondary font-bold text-lg`}>
                         <p className={`hover-glow ${hovered ? "vglite-hovered" : ""} leading-none`}>{name}</p>
                     </div>
                     {children}
