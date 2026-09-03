@@ -214,7 +214,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
         (token as any)?._onHoverOut(new MouseEvent('mouseleave'))
     }, [token])
 
-    const onClick = useCallback((e: MouseEvent, tokenWasClicked?: boolean) => {
+    const onClick = useCallback((e: MouseEvent, rightClick?: boolean, tokenWasClicked?: boolean) => {
         if (token.controlled && (e.shiftKey || e.ctrlKey)) {
             token.release()
             setlastClickedCombatants(lastClickedCombatants.filter(c => c !== combatant.id))
@@ -231,7 +231,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
         else if (e.altKey) {
             canvas?.ping(token.center)
         } else {
-            token.control({ releaseOthers: true })
+            token.control({ releaseOthers: !rightClick || !(getControlledTokens().length > 1) })
             if (tokenWasClicked) {
                 game.canvas?.animatePan({ x: token.x, y: token.y });
             }
@@ -358,10 +358,10 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 },
                 ...(controlledTokens
                     ().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
-                    icon: RefreshCw,
-                    label: "Refresh Activations",
-                    action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations())
-                }] : []),
+                        icon: RefreshCw,
+                        label: "Refresh Activations",
+                        action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations())
+                    }] : []),
                 {
                     icon: Trash,
                     label: "Remove",
@@ -385,7 +385,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 onMouseLeave={onMouseLeave}
                 onClick={e => onClick(e as any)}
                 onDoubleClick={onDoubleClick}
-                onAuxClick={e => onClick(e as any)}
+                onAuxClick={e => onClick(e as any, true)}
                 onContextMenu={e => {
                     if (game.user?.isGM || combatant.isOwner) {
                         onCtxMenu(e, ctxMenuActions())
@@ -409,7 +409,8 @@ const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHi
 
     return (
         <img
-            onClick={(e) => onClick(e, true)}
+            onClick={(e) => { onClick(e, false, true); e.stopPropagation(); }}
+            onAuxClick={(e) => { onClick(e, true, true); e.stopPropagation(); }}
             style={{ borderColor }}
             className={`object-contain h-[54px] w-[54px] p-0.5 cursor-pointer mr-2 self-center ${borderStyle} transition-opacity duration-1200 ${isHidden ? 'opacity-50' : ''}`} src={src} alt={''}
         />

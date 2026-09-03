@@ -26,6 +26,11 @@ export const useContextMenu = () => {
     const [menuAnchorPoint, setMenuAnchorPoint] = useState({ x: 0, y: 0 })
     const [menuItems, setMenuItems] = useState<CtxMenuItem[]>([])
 
+    // because of shadow dom shenanigans, the context menu gets blurred too often and thinks it needs to close when it's on top of another component that we render with react
+    // we can get around this by monitoring whether the mouse is currently in the context menu, and whether the selected menu item had "keepOpen" set
+    const isHoveringInMenu = useRef(false)
+    const keepOpenRef = useRef(false)
+
     const onCtxMenu = (e: any, menuItems: CtxMenuItem[]) => {
         if (typeof document.hasFocus === 'function' && !document.hasFocus()) return
         e.stopPropagation()
@@ -35,21 +40,16 @@ export const useContextMenu = () => {
         setIsMenuOpen(true)
     }
 
-    const keepOpenRef = useRef(false)
-
     const onClose = useCallback((closeEvent?: { reason?: string }) => {
-        if (closeEvent?.reason === 'blur' && keepOpenRef.current) {
-            keepOpenRef.current = false
+        // if the mouse hasn't left the context menu, and the menu item had keepOpen set, we shouldn't actually close
+        if (closeEvent?.reason === "blur" && isHoveringInMenu.current && keepOpenRef.current) {
             return
         }
         setIsMenuOpen(false)
     }, [])
 
     const onItemAction = useCallback((e: any) => {
-        if (e?.keepOpen) {
-            keepOpenRef.current = true
-            setTimeout(() => { keepOpenRef.current = false }, 0)
-        }
+        keepOpenRef.current = !!e?.keepOpen
     }, [])
 
     const ContextMenu = useMemo(() => () => (
@@ -58,20 +58,21 @@ export const useContextMenu = () => {
             menuAnchorPoint={menuAnchorPoint}
             menuItems={menuItems}
             onClose={onClose}
+            setIsHovering={(isHovering) => { isHoveringInMenu.current = isHovering }}
             onItemAction={onItemAction}
         />
-    ), [isMenuOpen, menuAnchorPoint, menuItems, onClose, onItemAction])
+    ), [isMenuOpen, menuAnchorPoint, menuItems, onClose])
 
     return { onCtxMenu, ContextMenu }
 }
 
-const ContextMenuHost = ({ isMenuOpen, menuAnchorPoint, menuItems, onClose, onItemAction }: {
-    isMenuOpen: boolean, menuAnchorPoint: { x: number, y: number }, menuItems: CtxMenuItem[], onClose: (closeEvent?: { reason?: string }) => void, onItemAction: (e: any) => void
+const ContextMenuHost = ({ isMenuOpen, menuAnchorPoint, menuItems, onClose, onItemAction, setIsHovering }: {
+    isMenuOpen: boolean, menuAnchorPoint: { x: number, y: number }, menuItems: CtxMenuItem[], onClose: (closeEvent?: { reason?: string }) => void, onItemAction: (e: any) => void, setIsHovering: (hovering: boolean) => void
 }) => {
     return (
         <div
-            onMouseEnter={e => e.stopPropagation()}
-            onMouseOver={e => e.stopPropagation()}>
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}>
             <ControlledMenu
                 menuClassName={ctxMenuContainerStyle}
                 anchorPoint={menuAnchorPoint}

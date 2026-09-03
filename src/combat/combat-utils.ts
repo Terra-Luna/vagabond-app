@@ -17,7 +17,7 @@ export const performAsyncActionOnControlledCombatants = async (action: (combatan
 }
 
 export const performAsyncActionOnCombatants = async (combatants: VagabondCombatant[], action: (combatant: VagabondCombatant) => Promise<any> | null | undefined) => {
-    for (const combatant of combatants) {
-        await action(combatant)
+    for await (const combatant of combatants) {
+        action(combatant)
     }
 }
