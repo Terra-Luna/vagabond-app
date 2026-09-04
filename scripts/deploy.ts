@@ -23,7 +23,7 @@ if (!fs.existsSync(targetDir)) {
 // Update the manifest with the correct repository path
 const manifestPath = "./public/system.json"
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
-manifest.version = version
+manifest.version = version.replace("v", "")
 manifest.download = `https://github.com/Terra-Luna/vagabond-app/releases/download/${version}/${zipName}`
 fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
 
