@@ -39,9 +39,9 @@
       {
         "id": "qJRZL1JaHxK75whJ",
         "key": "GrantItem",
-        "label": "Quick Draw: Marksmanship",
+        "label": "Quickdraw",
         "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.Pr9DWZMktkYQHpGx",
+        "uuid": "Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg",
         "type": "perk"
       },
       {
@@ -126,10 +126,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "v0.0.6",
     "createdTime": 1786041519359,
-    "modifiedTime": 1787879444191,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788556673339,
+    "lastModifiedBy": "verUzfB2esLt5vCo",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

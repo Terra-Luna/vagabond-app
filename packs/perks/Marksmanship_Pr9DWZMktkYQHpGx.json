@@ -12,7 +12,7 @@
         "label": "Marksmanship",
         "level": 0,
         "value": 2,
-        "selector": "modifiers.dice.size.ranged"
+        "selector": "modifiers.dice.size.ranged.bonus"
       }
     ],
     "prerequisites": [
@@ -58,10 +58,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "v0.0.6",
     "createdTime": 1786041197208,
-    "modifiedTime": 1786053572624,
-    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "modifiedTime": 1788556648366,
+    "lastModifiedBy": "verUzfB2esLt5vCo",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -61,7 +61,7 @@ export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { sys
 const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: VagabondActorSheet }) => {
     const canLevelUp = () => {
         const hasDestiny = hero.parent.getFlag(sys_id, "destiny") || false
-        const hasXpLevel = hero.level.xp! > hero.level.xpToLevel! && hero.level.xpToLevel! > -1
+        const hasXpLevel = hero.level.xp! >= hero.level.xpToLevel! && hero.level.xpToLevel! > -1
         const isNewChar = !hero.ancestry
         return hasDestiny || hasXpLevel || isNewChar
     }
