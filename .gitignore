@@ -7,3 +7,4 @@ dist
 .lint/tmp/
 public/styles/*.css.map
 jest-results.json
+releases/

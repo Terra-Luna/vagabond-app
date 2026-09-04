@@ -2,10 +2,10 @@
   "id": "vagabond-lite",
   "title": "Vagabond App",
   "description": "A lightweight system for the Vagabond TTRPG.",
-  "version": "0.0.0",
+  "version": "v0.0.1",
   "url": "https://github.com/Terra-Luna/vagabond-lite",
-  "manifest": "https://github.com/Terra-Luna/vagabond-lite/system.json",
-  "download": "https://github.com/Terra-Luna/vagabond-lite/archive/vagabond-lite.zip",
+  "manifest": "https://github.com/Terra-Luna/vagabond-lite/releases/latest/download/system.json",
+  "download": "https://github.com/Terra-Luna/vagabond-lite/releases/download/v0.0.1/vagabond-app-v0.0.1.zip",
   "license": "LICENSE",
   "compatibility": {
     "minimum": "14",
@@ -105,7 +105,10 @@
       "system": "vagabond-lite",
       "path": "packs/adversaries",
       "banner": "systems/vagabond-lite/assets/compendium/adversaries_banner.webp",
-      "ownership": { "PLAYER": "NONE", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "ancestries",
@@ -114,7 +117,10 @@
       "system": "vagabond-lite",
       "path": "packs/ancestries",
       "banner": "systems/vagabond-lite/assets/compendium/ancestries_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "classes",
@@ -123,7 +129,10 @@
       "system": "vagabond-lite",
       "path": "packs/classes",
       "banner": "systems/vagabond-lite/assets/compendium/classes_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "perks",
@@ -132,7 +141,10 @@
       "system": "vagabond-lite",
       "path": "packs/perks",
       "banner": "systems/vagabond-lite/assets/compendium/perks_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "spells",
@@ -141,7 +153,10 @@
       "system": "vagabond-lite",
       "path": "packs/spells",
       "banner": "systems/vagabond-lite/assets/compendium/spells_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "alchemical",
@@ -150,7 +165,10 @@
       "system": "vagabond-lite",
       "path": "packs/alchemical",
       "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "armor",
@@ -159,7 +177,10 @@
       "system": "vagabond-lite",
       "path": "packs/armor",
       "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "weapons",
@@ -168,7 +189,10 @@
       "system": "vagabond-lite",
       "path": "packs/weapons",
       "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "relics",
@@ -177,7 +201,10 @@
       "system": "vagabond-lite",
       "path": "packs/relics",
       "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
-      "ownership": { "PLAYER": "NONE", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "NONE",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "gear",
@@ -186,7 +213,10 @@
       "system": "vagabond-lite",
       "path": "packs/gear",
       "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "active-effects",
@@ -195,7 +225,10 @@
       "system": "vagabond-lite",
       "path": "packs/active-effects",
       "banner": "systems/vagabond-lite/assets/compendium/effects.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     },
     {
       "name": "macros",
@@ -204,7 +237,10 @@
       "system": "vagabond-lite",
       "path": "packs/macros",
       "banner": "systems/vagabond-lite/assets/compendium/macros.webp",
-      "ownership": { "PLAYER": "OBSERVER", "ASSISTANT": "OWNER" }
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
     }
   ],
   "esmodules": [
