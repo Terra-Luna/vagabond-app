@@ -62,8 +62,6 @@ export class SkillCheck {
 
         let bonusRolls = args.bonusDice?.map(d => new DiceRoll(d)) ?? []
 
-        console.log(args.skill, skillMods)
-
         // Keep the highest bonus die if multiple are present, otherwise use the one specified in the skill modifier args.
         if (bonusRolls.length === 0) {
             if (skillMods?.d4) bonusRolls = [new DiceRoll({ count: 1, faces: 4 })]

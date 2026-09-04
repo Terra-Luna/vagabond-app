@@ -7,7 +7,6 @@ if (import.meta.hot) {
         if (newModule && newModule.default) {
             // replace our exported variable with the new content
             appStyles = newModule.default;
-            console.log('Updating tailwind styles...');
 
             // and let all our scaduRoots know they need to update
             window.dispatchEvent(new CustomEvent('tailwind-styles-updated', {
