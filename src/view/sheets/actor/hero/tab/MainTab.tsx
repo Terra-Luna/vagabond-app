@@ -13,6 +13,7 @@ import { appLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
+import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
@@ -36,11 +37,12 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
     const { melee, brawl, finesse, ranged } = hero.skills
     return (
         <div className="w-full mb-2">
-            <Header title={appLang.HeroSheet.attacks} />
-            <Skill hero={hero} name={appLang.Attacks.melee} skillKey="melee" value={melee.value!} trained={melee.trained} isAttack={true} />
-            <Skill hero={hero} name={appLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} trained={brawl.trained} isAttack={true} />
-            <Skill hero={hero} name={appLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} trained={finesse.trained} isAttack={true} />
-            <Skill hero={hero} name={appLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} trained={ranged.trained} isAttack={true} />
+            <CollapsibleSection title={appLang.HeroSheet.attacks} settingsKey={`hero-sheet-attacks-${(hero as any)._id}`} content={<>
+                <Skill hero={hero} name={appLang.Attacks.melee} skillKey="melee" value={melee.value!} trained={melee.trained} isAttack={true} />
+                <Skill hero={hero} name={appLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} trained={brawl.trained} isAttack={true} />
+                <Skill hero={hero} name={appLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} trained={finesse.trained} isAttack={true} />
+                <Skill hero={hero} name={appLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} trained={ranged.trained} isAttack={true} />
+            </>} />
         </div>
     )
 }
