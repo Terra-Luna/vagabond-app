@@ -19,7 +19,6 @@ import { tableBorder, tableBorderRounded } from "../../view/common/border-styles
 import { UtilityButton } from "../../view/component/Button"
 import { Checkbox } from "../../view/component/Checkbox"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
-import { EnrichedContent } from "../../view/component/EnrichedContent"
 import { Divider, Header } from "../../view/component/Header"
 import { CardSubHeader } from "../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
@@ -416,11 +415,6 @@ const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAt
 
     return (
         <div className="flex flex-col gap-1">
-            {/* ATTACK DESCRIPTION */}
-            {attack.description &&
-                <EnrichedContent content={attack.description} styleClasses="text-sm text-text-secondary text-center font-normal italic" actor={attack.actor} />
-            }
-
             {/* TARGET TOKENS ARRAY */}
             {attack.showTargets &&
                 <div className="flex flex-col w-full">
