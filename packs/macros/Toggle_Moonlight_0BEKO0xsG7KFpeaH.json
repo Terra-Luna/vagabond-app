@@ -1,0 +1,28 @@
+{
+  "name": "Toggle Moonlight",
+  "type": "script",
+  "_id": "0BEKO0xsG7KFpeaH",
+  "author": "verUzfB2esLt5vCo",
+  "img": "icons/magic/nature/moon-crescent.webp",
+  "scope": "global",
+  "command": "if (canvas.tokens.controlled.length === 0) {\n  ui.notifications.warn(\"Please select at least one token first!\");\n} else {\n  for (let token of canvas.tokens.controlled) {\n    const currentDim = token.document.light.dim;\n\n    if (currentDim === 0) {\n      await token.document.update({\n        light: {\n          bright: 5,\n          dim: 30,\n          angle: 360,\n          color: \"#b0c4de\",\n          alpha: 0.35,\n          animation: {\n            type: \"pulse\",\n            speed: 2,\n            intensity: 2\n          }\n        }\n      });\n      ui.notifications.info(`Activated moonlight for ${token.name}`);\n    }\n    else {\n      await token.document.update({\n        light: {\n          bright: 0,\n          dim: 0,\n          angle: 360,\n          color: null,\n          alpha: 0.5,\n          animation: {\n            type: null,\n            speed: null,\n            intensity: null\n          }\n        }\n      });\n      ui.notifications.info(`Deactivated moonlight for ${token.name}`);\n    }\n  }\n}",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "verUzfB2esLt5vCo": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.10",
+    "createdTime": 1788560815644,
+    "modifiedTime": 1788560983538,
+    "lastModifiedBy": "verUzfB2esLt5vCo",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!0BEKO0xsG7KFpeaH"
+}

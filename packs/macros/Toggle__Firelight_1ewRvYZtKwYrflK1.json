@@ -1,0 +1,28 @@
+{
+  "name": "Toggle  Firelight",
+  "type": "script",
+  "_id": "1ewRvYZtKwYrflK1",
+  "author": "verUzfB2esLt5vCo",
+  "img": "icons/sundries/lights/torch-brown-lit.webp",
+  "scope": "global",
+  "command": "if (canvas.tokens.controlled.length === 0) {\n  ui.notifications.warn(\"Please select at least one token first!\");\n} else {\n  for (let token of canvas.tokens.controlled) {\n    const currentDim = token.document.light.dim;\n\n    if (currentDim === 0) {\n      await token.document.update({\n        light: {\n          bright: 5,\n          dim: 30,\n          angle: 360,\n          color: \"#a26b3c\",\n          alpha: 0.4,\n          animation: {\n            type: \"torch\",\n            speed: 3,\n            intensity: 3\n          }\n        }\n      });\n      ui.notifications.info(`Directly lit torch for ${token.name}`);\n    }\n    else {\n      await token.document.update({\n        light: {\n          bright: 0,\n          dim: 0,\n          angle: 360,\n          color: null,\n          alpha: 0.5,\n          animation: {\n            type: null,\n            speed: null,\n            intensity: null\n          }\n        }\n      });\n      ui.notifications.info(`Directly extinguished torch for ${token.name}`);\n    }\n  }\n}",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "verUzfB2esLt5vCo": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.10",
+    "createdTime": 1788560731950,
+    "modifiedTime": 1788560760362,
+    "lastModifiedBy": "verUzfB2esLt5vCo",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!1ewRvYZtKwYrflK1"
+}
