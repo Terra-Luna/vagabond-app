@@ -6,7 +6,9 @@ export class EquipmentSheet extends VagabondItemSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 380,
-            height: "auto"
+            height: "auto",
+            top: 100,
+            left: 100
         },
         window: {
             resizable: true

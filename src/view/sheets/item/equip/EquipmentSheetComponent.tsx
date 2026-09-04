@@ -74,7 +74,7 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     return (
         <BaseItemSheetComponent
             banner={<EquipmentSheetBanner item={item} />}
-            description={<>{(item.type as string) !== 'startingpack' && <Description item={item} showFullView={true} />}</>}
+            description={<>{(item.type as string) !== 'startingpack' && <Description item={item} showFullView={true} italic={false} />}</>}
             body={<>
                 {sheet}
                 <ItemDivider />
