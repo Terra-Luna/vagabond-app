@@ -1,5 +1,5 @@
 import { Dices, Undo } from "lucide-react"
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react"
+import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
 import { calculateManaValues } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
@@ -22,7 +22,6 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
     const stats = appLang.Stat
     const statBlocks = appLang.BaseStatBlocks
 
-    const lastCanProceedRef = useRef<boolean>(false)
     const [selectedArr, setSelectedArr] = useState<{ index: number, values: number[], usedIndices: number[] }>()
     const [assignedStats, setAssignedStats] = useState<{ stat: string, value: number | null, poolIndex: number | null }[]>([])
     const [bonusStatSelections, setBonusStatSelections] = useState<{ stat: string, id_index: string, bonus: number }[]>([])
@@ -66,19 +65,6 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
         setSelectedArr({ index: 0, values: statBlocks[0], usedIndices: [] })
         resetAssignedStats()
     }, [])
-
-    /**
-     * Check stat allocations and choices to see if the user can proceed.
-     */
-    useEffect(() => {
-        let shouldProceed = false
-        if (assignedStats.length > 0 && assignedStats.every(s => s.value !== null)) {
-            const totalRequiredSelections = requiredChoiceRules.reduce((sum, r) => sum + (r.maxChoices || 1), 0)
-            if (totalRequiredSelections === 0 || (totalRequiredSelections === bonusStatSelections.length)) {
-                shouldProceed = true
-            }
-        }
-    }, [assignedStats, bonusStatSelections, requiredChoiceRules])
 
     /**
      * Automagically clear out any bonuses assigned to a maxed-out stat.
@@ -177,15 +163,15 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
                 {/* STAT ARRAY HEADER */}
                 <HeroCreationLabel text={strings.statArrayPool} />
 
-                {/* TODO: DELETE THIS HELPER BUTTON LATER */}
-                <div className="flex w-full justify-center">
+                {/* HELPER BUTTON FOR DEVELOPMENT TESTING */}
+                {/* <div className="flex w-full justify-center">
                     <SecondaryButton onClick={() => {
                         assignedStats.forEach((s, i) => {
                             s.value = selectedArr?.values[i] ?? 2
                         })
                         setAssignedStats([...assignedStats])
                     }} children={<p>AUTO ASSIGN (TEST ONLY)</p>} />
-                </div>
+                </div> */}
 
                 <HeroCreationSubtext text={strings.statArrayDrag} />
 

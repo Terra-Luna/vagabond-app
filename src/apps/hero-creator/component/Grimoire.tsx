@@ -1,3 +1,4 @@
+import { appLang } from "../../../utils/lang"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
