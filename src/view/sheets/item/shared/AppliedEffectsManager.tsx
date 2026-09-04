@@ -1,6 +1,6 @@
 import { VagabondActiveEffect } from "../../../../combat/documents/VagabondActiveEffect"
 import { DieSizeSelector } from "../../../../combat/ui/DieSizeSelector"
-import { vgLiteLang } from "../../../../utils/lang"
+import { appLang } from "../../../../utils/lang"
 import { tableBorderRounded } from "../../../common/border-styles"
 import { UtilityButton } from "../../../component/Button"
 import { TrashButton } from "../../../component/TrashButton"
@@ -36,9 +36,9 @@ export const AppliedEffectsManager = ({ item }) => {
         <div className="flex flex-col gap-2 w-full">
             {/* Header / Add Button Row */}
             <div className="flex items-center gap-2">
-                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.effects} />
+                <ItemSheetPropLabel label={appLang.ItemSheet.effects} />
                 <UtilityButton title="Add applied effect" onClick={handleAddEffect}>
-                    {vgLiteLang.ButtonActions.add}
+                    {appLang.ButtonActions.add}
                 </UtilityButton>
             </div>
 
@@ -55,7 +55,7 @@ export const AppliedEffectsManager = ({ item }) => {
                                 className={`text-sm px-2 py-1 focus:outline-none ${tableBorderRounded}`}
                             >
                                 {statusEffectChoices.map(id => (
-                                    <option key={id} value={id}>{vgLiteLang.StatusConditions[id].name}</option>
+                                    <option key={id} value={id}>{appLang.StatusConditions[id].name}</option>
                                 ))}
                             </select>
 

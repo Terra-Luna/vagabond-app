@@ -1,11 +1,11 @@
 import { Fragment } from "react/jsx-runtime"
 
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { createDropdownEntries } from "../../utils/localeUtils"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
 
 export const CategoryButtons = ({ shopCategory, setShopCategory }: { shopCategory: string, setShopCategory: (cat) => void }) => {
-    const shopCategories = createDropdownEntries(vgLiteLang.ItemShop.Categories)
+    const shopCategories = createDropdownEntries(appLang.ItemShop.Categories)
     return (
         <div className="flex gap-x-1 justify-center">
             {

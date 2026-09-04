@@ -3,7 +3,7 @@ import { useCallback } from "react"
 
 import { HeroCreationLabel } from "../apps/hero-creator/component/HeroCreationTypography"
 import { BaseItemSchema, ItemDataModel } from "../model/item/ItemDataModel"
-import { vgLiteLang } from "../utils/lang"
+import { appLang } from "../utils/lang"
 import { tableBorder } from "../view/common/border-styles"
 import { PrimaryButton } from "../view/component/Button"
 import { CollapsibleSection } from "../view/component/Collapsible"
@@ -80,7 +80,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                     <div className="flex justify-between items-center mb-4 border-b border-solid border-table-border pb-2">
                         <HeroCreationLabel text={'Item Grants & Modifiers'} />
                         <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
-                            <p>{vgLiteLang.ButtonActions.add}</p>
+                            <p>{appLang.ButtonActions.add}</p>
                         </PrimaryButton>
                     </div>
 
@@ -173,7 +173,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                     <div className="flex w-full mt-2">
                         <div className="ml-auto">
                             <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
-                                <p>{vgLiteLang.ButtonActions.add}</p>
+                                <p>{appLang.ButtonActions.add}</p>
                             </PrimaryButton>
                         </div>
                     </div>

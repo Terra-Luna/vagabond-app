@@ -2,11 +2,11 @@ import js from "@eslint/js"
 import json from "@eslint/json"
 import { defineConfig } from "eslint/config"
 import pluginReact from "eslint-plugin-react"
+import { reactRefresh } from 'eslint-plugin-react-refresh';
 import simpleImportSort from "eslint-plugin-simple-import-sort"
 import unusedImports from "eslint-plugin-unused-imports"
 import globals from "globals"
 import tseslint from "typescript-eslint"
-import { reactRefresh } from 'eslint-plugin-react-refresh';
 
 export default defineConfig([
   {

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react"
 
 import { addPerkPrerequisite, deletePerkPrerequisite,PerkDataModel } from "../../../../../model/item/character/PerkDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries, createDropdownEntriesForItems,createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { andOrToSymbol } from "../../../../../utils/stringUtil"
 import { UtilityButton } from "../../../../component/Button"
@@ -30,7 +30,7 @@ export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataMo
                                 checked={item.system.canTakeMultiple}
                             />
 
-                            <ItemSheetPropLabel label={vgLiteLang.ItemSheet.prerequisites} className={"font-bold"} />
+                            <ItemSheetPropLabel label={appLang.ItemSheet.prerequisites} className={"font-bold"} />
                         </div>
                     }
                 </div>
@@ -41,7 +41,7 @@ export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataMo
                         ))}
                         <div className="ml-6 mt-1">
                             <UtilityButton title="Add new prerequisite" onClick={() => addPerkPrerequisite(item)}>
-                                {vgLiteLang.ButtonActions.add}
+                                {appLang.ButtonActions.add}
                             </UtilityButton>
                         </div>
                     </div>
@@ -137,7 +137,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
 
     const onAddTrainedSkill = useCallback((skillGroupIndex) => {
         const currentSkillGroup = prereq.skills[skillGroupIndex]
-        currentSkillGroup.skillNames.push(Object.keys(vgLiteLang.Skills)[0])
+        currentSkillGroup.skillNames.push(Object.keys(appLang.Skills)[0])
         perk.render()
     }, [perk.system.prerequisites])
 
@@ -150,7 +150,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                 <div className="flex items-end">
                     <DropDown
                         value={prereq.type}
-                        options={createDropdownEntries(vgLiteLang.PrerequisiteTypes)}
+                        options={createDropdownEntries(appLang.PrerequisiteTypes)}
                         updateMechanism={{ onChange: onUpdateType }}
                         parent={perk}
                     />
@@ -161,7 +161,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                 <div className="flex flex-wrap items-end gap-1">
                     <DropDown
                         value={prereq.stat}
-                        options={createDropdownEntriesFromObj(vgLiteLang.Stat)}
+                        options={createDropdownEntriesFromObj(appLang.Stat)}
                         updateMechanism={{ onChange: onUpdateStat }}
                         parent={perk}
                     />
@@ -197,15 +197,15 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
                                         <div key={skillGroupIndex + skillIndex + skill} className="flex gap-x-1 items-end">
                                             <DropDown
                                                 value={skill}
-                                                options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
+                                                options={createDropdownEntriesFromObj(appLang.Skills)}
                                                 updateMechanism={{ onChange: (skill) => onUpdateTrainedSkill(skillGroupIndex, skillIndex, skill) }}
                                                 parent={perk}
                                             />
                                             {isEditMode && skillsGroup.skillNames.length > 1 && skillIndex < skillsGroup.skillNames.length - 1 ?
                                                 <SingleSelect
                                                     options={[
-                                                        { value: 'and', label: vgLiteLang.PerkSheet.prereqAnd },
-                                                        { value: 'or', label: vgLiteLang.PerkSheet.prereqOr }
+                                                        { value: 'and', label: appLang.PerkSheet.prereqAnd },
+                                                        { value: 'or', label: appLang.PerkSheet.prereqOr }
                                                     ]}
                                                     value={skillsGroup.andOr}
                                                     setValue={(selection) => onUpdateAndOr(skillGroupIndex, selection)}

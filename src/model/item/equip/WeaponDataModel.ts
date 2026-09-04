@@ -18,23 +18,23 @@ const weaponSchema = () => {
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
         grip: new fields.SchemaField({
-            style: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Grips), initial: 'H' }),
-            state: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Grips), initial: 'H' })
+            style: new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Grips), initial: 'H' }),
+            state: new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Grips), initial: 'H' })
         }),
         skills: new fields.ArrayField(
             new fields.StringField({
-                ...requiredString, choices: [...Object.keys(lang.VGLITE.WeaponSkills)]
+                ...requiredString, choices: [...Object.keys(lang.APP.WeaponSkills)]
             }),
             { initial: [] }
         ),
         properties: new fields.ArrayField(
             new fields.StringField({
-                ...requiredString, choices: Object.keys(lang.VGLITE.WeaponProps)
+                ...requiredString, choices: Object.keys(lang.APP.WeaponProps)
             }),
             { initial: [] }
         ),
         material: new fields.StringField({
-            ...requiredString, initial: 'steel', choices: Object.keys(lang.VGLITE.Metals)
+            ...requiredString, initial: 'steel', choices: Object.keys(lang.APP.Metals)
         })
     }
 }

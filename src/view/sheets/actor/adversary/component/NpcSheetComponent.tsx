@@ -6,7 +6,7 @@ import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataMode
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { tableBorder } from "../../../../common/border-styles"
 import { DropDown } from "../../../../component/Dropdown"
@@ -25,7 +25,7 @@ import { Abilities, NewAbilityWindow } from "./Abilities"
 import { ActionMenuHeader, Actions, NewActionWindow } from "./Actions"
 import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
 
-const locale = vgLiteLang.NpcSheet
+const locale = appLang.NpcSheet
 
 /**
  * Persists the portrait's collapsed/expanded state as a flag on the actor's token, so it's
@@ -95,7 +95,7 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
                     }
 
                     <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })} className="ml-2 hover-glow cursor-pointer mb-4" title="Click to open active effects">
-                        <ActionMenuHeader label={vgLiteLang.ButtonActions.effects} />
+                        <ActionMenuHeader label={appLang.ButtonActions.effects} />
                     </button>
                 </div>
             </div>
@@ -117,7 +117,7 @@ const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                 <div className="flex gap-x-1 ml-auto self-center">
                     {npc instanceof AdversaryDataModel &&
                         <span className="flex gap-x-1 text-text-header-primary font-eskapade font-normal text-base mr-1">
-                            <p>{vgLiteLang.NpcSheet.tl}:</p>
+                            <p>{appLang.NpcSheet.tl}:</p>
                             <EditableTextField
                                 boundValue={npc.threatLevelOverride?.toString() ?? npc.threatLevel?.toString() ?? ''}
                                 updateProps={{ object: npc.parent, path: ['threatLevelOverride'] }}
@@ -151,28 +151,28 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
             {
                 isEditMode ? <div className="flex gap-x-1 px-1 mt-1">
                     <DropDown
-                        options={createDropdownEntries(vgLiteLang.Sizes)}
+                        options={createDropdownEntries(appLang.Sizes)}
                         parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingSize'] }}
                         value={npc.beingSize}
                     />
                     <DropDown
-                        options={createDropdownEntries(vgLiteLang.BeingTypes)}
+                        options={createDropdownEntries(appLang.BeingTypes)}
                         parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingType'] }}
                         value={npc.beingType}
                     />
                     <DropDown
-                        options={createDropdownEntries(vgLiteLang.BeingSubtypes)}
+                        options={createDropdownEntries(appLang.BeingSubtypes)}
                         parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingSubtype'] }}
                         value={npc.beingSubtype}
                     />
                 </div>
                     : <CardSubHeader values={[
-                        { label: vgLiteLang.Sizes[npc.beingSize], value: "" },
-                        { label: vgLiteLang.BeingTypes[npc.beingType], value: "" },
-                        { label: vgLiteLang.BeingSubtypes[npc.beingSubtype], value: "" }
+                        { label: appLang.Sizes[npc.beingSize], value: "" },
+                        { label: appLang.BeingTypes[npc.beingType], value: "" },
+                        { label: appLang.BeingSubtypes[npc.beingSubtype], value: "" }
                     ]} showRightBorder={false} />
             }
         </div>
@@ -211,7 +211,7 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 <StatBlockField label={locale.hp} content={
                     <StatBlockRow>
                         <button
-                            title={vgLiteLang.HeroSheet.counter_tooltip}
+                            title={appLang.HeroSheet.counter_tooltip}
                             className="cursor-pointer hover-glow"
                             onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}
                         >
@@ -244,7 +244,7 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                             </div>
                         </div>
                     </div>
-                    <StatBlockField label={vgLiteLang.NpcSheet.as} content={
+                    <StatBlockField label={appLang.NpcSheet.as} content={
                         <EditableTextField
                             boundValue={npc.armor.as ?? 'Unarmored'}
                             updateProps={{ object: npc.parent, path: ['armor', 'as'] }}
@@ -259,11 +259,11 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 <StatBlockField label={locale.zone} content={<>
                     {isEditMode ?
                         <DropDown
-                            options={createDropdownEntries(vgLiteLang.Zones)}
+                            options={createDropdownEntries(appLang.Zones)}
                             parent={npc.parent}
                             updateMechanism={{ updatePath: ['zone'] }}
                             value={npc.zone}
-                        /> : <StatBlockValue value={vgLiteLang.Zones[npc.zone]} />
+                        /> : <StatBlockValue value={appLang.Zones[npc.zone]} />
                     }
                 </>} />
                 {/* SPEED */}
@@ -280,12 +280,12 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                         <div>
                             {isEditMode
                                 ? <DropDown
-                                    options={createDropdownEntries(vgLiteLang.Movement)}
+                                    options={createDropdownEntries(appLang.Movement)}
                                     parent={npc.parent}
                                     updateMechanism={{ updatePath: ['movement', 'type'] }}
                                     value={npc.movement.type}
                                 />
-                                : <p>{vgLiteLang.Movement[npc.movement.type]}</p>
+                                : <p>{appLang.Movement[npc.movement.type]}</p>
                             }
                         </div>
                     </div>
@@ -320,10 +320,10 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
 
             {/* SENSES, IMMUNITIES, & WEAKNESSES */}
             <div className="w-full space-y-2 text-base text-text-header-tertiary font-normal">
-                <SelectableTextOptions obj={npc.parent} label={locale.senses} path={['senses']} localeObj={vgLiteLang.Senses} />
-                <DamageTypeSelector npc={npc} label={locale.immune} path={['dmgImmunities']} localeObj={vgLiteLang.DamageTypes} />
-                <DamageTypeSelector npc={npc} label={locale.weak} path={['dmgWeaknesses']} localeObj={vgLiteLang.DamageTypes} />
-                <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={vgLiteLang.StatusConditions} />
+                <SelectableTextOptions obj={npc.parent} label={locale.senses} path={['senses']} localeObj={appLang.Senses} />
+                <DamageTypeSelector npc={npc} label={locale.immune} path={['dmgImmunities']} localeObj={appLang.DamageTypes} />
+                <DamageTypeSelector npc={npc} label={locale.weak} path={['dmgWeaknesses']} localeObj={appLang.DamageTypes} />
+                <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={appLang.StatusConditions} />
             </div>
         </div >
     )

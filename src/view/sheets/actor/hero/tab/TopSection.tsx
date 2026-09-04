@@ -6,7 +6,7 @@ import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
-import { lang, vgLiteLang } from "../../../../../utils/lang"
+import { appLang,lang } from "../../../../../utils/lang"
 import { localizeString } from "../../../../../utils/localeUtils"
 import { getId } from "../../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
@@ -38,7 +38,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
         <div className={`flex grow items-center justify-between mt-1 mx-1`}>
             {/* HP CURRENT / MAX */}
             <div className="relative items-center justify-center w-[80px] h-[80px]">
-                <span className="absolute -top-0.5 w-full text-center text-xs text-text-primary pb-1">{lang.VGLITE.HeroSheet.hp}</span>
+                <span className="absolute -top-0.5 w-full text-center text-xs text-text-primary pb-1">{lang.APP.HeroSheet.hp}</span>
                 <Heart className="w-full h-full text-text-primary fill-sheet-header-fill/10" strokeWidth={0.5} />
                 <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
                     <span className={`text-4xl text-text-hp-current hover-glow`}>
@@ -50,7 +50,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                         />
                     </span>
                 </div>
-                <div title={vgLiteLang.HeroSheet.counter_tooltip}
+                <div title={appLang.HeroSheet.counter_tooltip}
                     className="absolute -right-2.5 bottom-1.5 flex items-center justify-center min-w-[28px] border-2 border-solid border-text-primary rounded-full bg-sheet-main-fill font-eskapade font-bold"
                     onClick={() => updateHp(false)} onAuxClick={() => updateHp(true)}
                 >
@@ -60,7 +60,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
             <Divider />
             {/* ARMOR RATING */}
             <div className="relative items-center justify-center w-[60px] h-[60px]">
-                <span className="absolute -top-3 w-full text-center text-xs text-text-primary">{lang.VGLITE.HeroSheet.armor}</span>
+                <span className="absolute -top-3 w-full text-center text-xs text-text-primary">{lang.APP.HeroSheet.armor}</span>
                 <Shield className="w-full h-full text-ic-armor-border fill-ic-armor-fill" strokeWidth={1} />
                 <div className="absolute inset-0 flex items-center justify-center">
                     <span className={`text-3xl text-text-armor font-eskapade font-bold`}>
@@ -70,7 +70,7 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
             </div>
             <Divider />
             {/* FATIGUE TRACKER */}
-            <div title={vgLiteLang.HeroSheet.counter_tooltip} className="ml-6">
+            <div title={appLang.HeroSheet.counter_tooltip} className="ml-6">
                 <Fatigue hero={hero} />
             </div>
         </div>
@@ -87,7 +87,7 @@ export const Fatigue = ({ hero }: { hero: HeroDataModel }) => {
             onClick={() => updateFatigue(false)}
             onAuxClick={() => updateFatigue(true)}
         >
-            <span className="text-xs">{lang.VGLITE.HeroSheet.fatigue}</span>
+            <span className="text-xs">{lang.APP.HeroSheet.fatigue}</span>
             <span className="font-eskapade font-bold text-4xl">{
                 <div className={trackerLayout + " text-text-fatigue-current"}>
                     <LucideHeartOff size={28} />
@@ -108,7 +108,7 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
                 <TrackerUpdateChatCard
                     heroId={hero.parent.id}
                     resource="luck"
-                    verb={vgLiteLang.HeroSheet.spent}
+                    verb={appLang.HeroSheet.spent}
                     roll={roll.total}
                 />, [roll]
             )
@@ -125,7 +125,7 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
         }
     }, [luck])
     return (
-        <Tracker name={lang.VGLITE.HeroSheet.luck} title={`${vgLiteLang.HeroSheet.counter_tooltip_roll}${vgLiteLang.HeroSheet.counter_tooltip}`} onClick={updateLuck}>
+        <Tracker name={lang.APP.HeroSheet.luck} title={`${appLang.HeroSheet.counter_tooltip_roll}${appLang.HeroSheet.counter_tooltip}`} onClick={updateLuck}>
             <div className={trackerLayout + " text-text-luck-current"}>
                 <LucideClover size={20} strokeWidth={1} />
                 {luck}
@@ -144,7 +144,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
                 <TrackerUpdateChatCard
                     heroId={hero.parent.id}
                     resource="studied"
-                    verb={vgLiteLang.HeroSheet.spent}
+                    verb={appLang.HeroSheet.spent}
                     roll={roll.total}
                 />, [roll]
             )
@@ -160,7 +160,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
         }
     }, [studied])
     return (
-        <Tracker name={lang.VGLITE.HeroSheet.studied} title={`${vgLiteLang.HeroSheet.counter_tooltip_roll}${vgLiteLang.HeroSheet.counter_tooltip}`} onClick={updateStudied}>
+        <Tracker name={lang.APP.HeroSheet.studied} title={`${appLang.HeroSheet.counter_tooltip_roll}${appLang.HeroSheet.counter_tooltip}`} onClick={updateStudied}>
             <div className={trackerLayout + " text-text-studied-current"}>
                 <LucideBookMarked size={20} strokeWidth={1} />
                 {studied}
@@ -177,7 +177,7 @@ export const Focus = ({ hero }: { hero: HeroDataModel }) => {
         } as Record<string, number>)
     }, [focus])
     return (
-        <Tracker name={lang.VGLITE.HeroSheet.focus} title={`${vgLiteLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
+        <Tracker name={lang.APP.HeroSheet.focus} title={`${appLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
             <div className={trackerLayout + " text-text-secondary"}>
                 <Eye size={20} strokeWidth={1} />
                 {focus}
@@ -202,15 +202,15 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     const { crawl, travel, turn } = hero.speed
     if (crawl == null || travel == null || turn == null) return
 
-    const localizeSpeed = (type: (keyof typeof lang.VGLITE.Speeds), speed: number) => localizeString(lang.VGLITE.Speeds[type], { speed: speed.toString() })
+    const localizeSpeed = (type: (keyof typeof lang.APP.Speeds), speed: number) => localizeString(lang.APP.Speeds[type], { speed: speed.toString() })
 
     return (
         <div className="min-w-1/2">
-            <Header title={lang.VGLITE.HeroSheet.speeds} />
+            <Header title={lang.APP.HeroSheet.speeds} />
             <div className="flex items-center justify-around">
-                <Speed name={lang.VGLITE.Speeds.turn} value={localizeSpeed('turnSpeed', turn)} />
-                <Speed name={lang.VGLITE.Speeds.crawl} value={localizeSpeed('crawlSpeed', crawl)} />
-                <Speed name={lang.VGLITE.Speeds.travel} value={localizeSpeed('travelSpeed', travel)} />
+                <Speed name={lang.APP.Speeds.turn} value={localizeSpeed('turnSpeed', turn)} />
+                <Speed name={lang.APP.Speeds.crawl} value={localizeSpeed('crawlSpeed', crawl)} />
+                <Speed name={lang.APP.Speeds.travel} value={localizeSpeed('travelSpeed', travel)} />
             </div>
         </div>
     )
@@ -226,17 +226,17 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     const { reflex, endure, will } = hero.modifiers.skillCheck
     return (
         <div className="w-full flex flex-col gap-y-0.5">
-            <Header title={lang.VGLITE.HeroSheet.saves} />
+            <Header title={lang.APP.HeroSheet.saves} />
             <Save hero={hero} save={{
                 key: 'reflex',
-                ...lang.VGLITE.Saves.reflex,
+                ...lang.APP.Saves.reflex,
                 value: hero.saves.reflex,
                 mod: reflex.modifier ?? 0,
                 d20s: reflex.extraDice ?? 0,
                 bonusDice: reflex.d4 ? [4] : (reflex.d6 ? [6] : (reflex.d8 ? [8] : undefined))
             }} />
             <Save hero={hero} save={{
-                key: 'endure', ...lang.VGLITE.Saves.endure,
+                key: 'endure', ...lang.APP.Saves.endure,
                 value: hero.saves.endure,
                 mod: endure.modifier ?? 0,
                 d20s: endure.extraDice ?? 0,
@@ -244,7 +244,7 @@ export const Saves = ({ hero }: { hero: HeroDataModel }) => {
             }} />
             <Save hero={hero} save={{
                 key: 'will',
-                ...lang.VGLITE.Saves.will,
+                ...lang.APP.Saves.will,
                 value: hero.saves.will,
                 mod: will.modifier ?? 0,
                 d20s: will.extraDice ?? 0,
@@ -268,7 +268,7 @@ const Save = ({ hero, save }: {
     }
 }) => {
     return (
-        <div title={`${save.formula}\n${lang.VGLITE.HeroSheet.skills_tooltip}`}>
+        <div title={`${save.formula}\n${lang.APP.HeroSheet.skills_tooltip}`}>
             <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
@@ -299,15 +299,15 @@ const Save = ({ hero, save }: {
 }
 
 export const Skills = ({ hero }: { hero: HeroDataModel }) => {
-    const skills = Object.keys(vgLiteLang.Skills)
+    const skills = Object.keys(appLang.Skills)
     const castingSkill = hero.class?.castingSkill
     return (
         <div>
-            <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={lang.VGLITE.HeroSheet.skills} content={
+            <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={lang.APP.HeroSheet.skills} content={
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-x-2">
                     {
                         skills.map(sk => (
-                            <Skill key={sk} hero={hero} skillKey={sk} name={lang.VGLITE.Skills[sk].name} value={hero.skills[sk].value} trained={hero.skills[sk].trained} isAttack={false} isCastSkill={sk === castingSkill} />
+                            <Skill key={sk} hero={hero} skillKey={sk} name={lang.APP.Skills[sk].name} value={hero.skills[sk].value} trained={hero.skills[sk].trained} isAttack={false} isCastSkill={sk === castingSkill} />
                         ))
                     }
                 </div>
@@ -320,7 +320,7 @@ export const Skill = ({ hero, trained, skillKey, name, value, isAttack, isCastSk
     hero: HeroDataModel, trained: boolean, skillKey: string, name: string, value: number, isAttack: boolean, isCastSkill?: boolean
 }) => {
     return (
-        <div title={lang.VGLITE.HeroSheet.skills_tooltip} className="w-full">
+        <div title={lang.APP.HeroSheet.skills_tooltip} className="w-full">
             <div className="flex items-center ml-1">
                 <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle hover-glow`} onClick={
@@ -368,7 +368,7 @@ export const Stats = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string }) => {
-    const name = lang.VGLITE.Stat[stat].abbr
+    const name = lang.APP.Stat[stat].abbr
     const value = actor.system.stats[stat]
     return (
         <div className="text-text-special font-bold text-center">
@@ -413,11 +413,11 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
 
     if (isHidden) return
     else return (
-        <div title={vgLiteLang.HeroSheet.context_tooltip} onContextMenu={(e) => onCtxMenu(e, [
+        <div title={appLang.HeroSheet.context_tooltip} onContextMenu={(e) => onCtxMenu(e, [
             { icon: Plus, label: "Add new", action: async () => await addTracker() },
             { icon: EyeOff, label: "Hide", action: async () => await VagabondSettingsRegistry.toggleClientSetting(settingKey, actor.id) }
         ])}>
-            <CollapsibleSection title={vgLiteLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
+            <CollapsibleSection title={appLang.HeroSheet.trackers} settingsKey={`hero-sheet-trackers-collapsed-${actor.id}`} content={
                 <div className="grid grid-cols-2 @lg:grid-cols-3 @xl:grid-cols-4 gap-1 w-full mt-1">
                     {actor.system.trackers.sort((a, b) => a.sort - b.sort).map((tracker, index) => (
                         <CustomTracker key={index} actor={actor} tracker={tracker} index={index} />
@@ -453,7 +453,7 @@ const CustomTracker = ({ actor, tracker, index }) => {
     return (
         <div onContextMenu={(e) => onCtxMenu(e, [
             { icon: SquarePen, label: `${tracker.type === 'numeric' ? 'Change to toggle' : 'Change to counter'}`, action: () => updateTracker('type', `${tracker.type === 'numeric' ? 'boolean' : 'numeric'}`) },
-            { icon: Trash, label: vgLiteLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
+            { icon: Trash, label: appLang.ButtonActions.delete, action: () => deleteTracker(), isDestructive: true }
         ])}
             className={`flex justify-between text-sm line-clamp-1 px-1 py-0.5 ${tableBorderRounded}`}
             title={"R-click for options"}

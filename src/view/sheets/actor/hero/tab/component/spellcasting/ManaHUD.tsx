@@ -3,7 +3,7 @@ import { useCallback } from "react"
 
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { updateDocument } from "../../../../../../../utils/documentUtils"
-import { vgLiteLang } from "../../../../../../../utils/lang"
+import { appLang } from "../../../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
@@ -21,8 +21,8 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
         <div>
             <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
                 <div className="flex gap-x-1 ml-2 items-center">
-                    <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelMana} />
-                    <span title={vgLiteLang.HeroSheet.counter_tooltip}>
+                    <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} />
+                    <span title={appLang.HeroSheet.counter_tooltip}>
                         <Sparkle className={`text-mana mr-1 hover-glow`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
                     </span>
                     <span className="text-mana">
@@ -37,7 +37,7 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                     <p>{hero.mana.max}</p>
                 </div>
                 <div className="flex gap-x-1 items-center">
-                    <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelCastMax} />
+                    <SpellcastingLabel text={appLang.HeroSheet.Magic.labelCastMax} />
                     <Sparkles size={20} className="text-mana" />
                     <p>{hero.mana.maxCast}</p>
                 </div>
@@ -54,10 +54,10 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                         {!isSpellcastingOpen ?
                             <>
                                 <DamageTypeIcon dmgType="magical" />
-                                <p className="text-lg">{vgLiteLang.HeroSheet.Magic.btnCast}</p></> :
+                                <p className="text-lg">{appLang.HeroSheet.Magic.btnCast}</p></> :
                             <>
                                 <X size={14} />
-                                <p className="text-lg">{vgLiteLang.ButtonActions.close}</p>
+                                <p className="text-lg">{appLang.ButtonActions.close}</p>
                             </>
                         }
                 </div>}

@@ -3,7 +3,7 @@ import { MessageSquareText } from "lucide-react"
 import { AncestryDataModel, ancestrySizeAndType } from "../../../../model/item/character/AncestryDataModel"
 import { PerkDataModel, perkPrerequisites } from "../../../../model/item/character/PerkDataModel"
 import { spellDamageBase,SpellDataModel } from "../../../../model/item/character/SpellDataModel"
-import { vgLiteLang } from "../../../../utils/lang"
+import { appLang } from "../../../../utils/lang"
 import { AbilityChatCard } from "../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../chat/ChatCardSerializer"
 import { CtxMenuItem,useContextMenu } from "../../../component/ContextMenu"
@@ -22,7 +22,7 @@ export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: an
     contextMenuItems.push(
         {
             icon: MessageSquareText,
-            label: vgLiteLang.ButtonActions.chat,
+            label: appLang.ButtonActions.chat,
             action: () => {
                 sendVagabondChatMessage(
                     null,
@@ -63,7 +63,7 @@ export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: an
                         <EditableTextField
                             boundValue={item.name}
                             updateProps={{ object: item, path: ['name'] }}
-                            placeholder={vgLiteLang.ItemSheet.placeholder_name}
+                            placeholder={appLang.ItemSheet.placeholder_name}
                         />
                     </div>
                     <Divider />

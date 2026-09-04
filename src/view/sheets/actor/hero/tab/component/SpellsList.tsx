@@ -2,7 +2,7 @@ import { MessageSquareText, Wand2 } from "lucide-react"
 
 import { HeroDataModel } from "../../../../../../model/actor/HeroDataModel"
 import { spellDamageBase } from "../../../../../../model/item/character/SpellDataModel"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { appLang } from "../../../../../../utils/lang"
 import { getId } from "../../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../../chat/ChatCardSerializer"
@@ -17,18 +17,18 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div>
-            <div className="flex flex-col gap-x-1 gap-y-0.5" title={vgLiteLang.HeroSheet.context_tooltip}>
+            <div className="flex flex-col gap-x-1 gap-y-0.5" title={appLang.HeroSheet.context_tooltip}>
                 {
                     hero.spells.sort((a, b) => a.parent.name.localeCompare(b.parent.name)).map((sp: any, index: number) => (
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                             {
-                                icon: Wand2, label: vgLiteLang.HeroSheet.Magic.btnCast, action: () => {
+                                icon: Wand2, label: appLang.HeroSheet.Magic.btnCast, action: () => {
                                     onSelectSpell(sp._sourceId)
                                     setIsSpellcastingOpen(true)
                                 }
                             },
                             {
-                                icon: MessageSquareText, label: vgLiteLang.ButtonActions.chat, action: () =>
+                                icon: MessageSquareText, label: appLang.ButtonActions.chat, action: () =>
                                     sendVagabondChatMessage(
                                         hero,
                                         <AbilityChatCard
@@ -47,7 +47,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                                     dmgType={sp.damageType}
                                     title={sp.parent.name}
                                     subtitles={[
-                                        { label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.damageType] }
+                                        { label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[sp.damageType] }
                                     ]}
                                     description={sp.description}
                                 />

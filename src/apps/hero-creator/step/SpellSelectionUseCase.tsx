@@ -5,7 +5,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { Grimoire } from "../component/Grimoire"
@@ -21,7 +21,7 @@ export const useSpellSelection = (
     perks: PerkDataModel[] | undefined,
     navButtons: ReactNode[]
 ) => {
-    const strings = vgLiteLang.HeroCreation
+    const strings = appLang.HeroCreation
     const isCreationMode = navButtons?.length > 0
 
     // All spells for selection.

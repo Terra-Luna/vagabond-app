@@ -2,7 +2,7 @@
   "name": "Druid",
   "type": "class",
   "_id": "egDS2LUxZNOrh7NH",
-  "img": "systems/vagabond-lite/assets/class/druid_fps.webp",
+  "img": "systems/vagabond-app/assets/class/druid_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Keepers of the wilderness, druids are mystics of nature that are adopted into beast-kind.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Druids</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beast Boy, DC Comics</span></p><p><span style=\"white-space:pre-wrap\">• Beorn, The Lord of the Rings</span></p><p><span style=\"white-space:pre-wrap\">• Frank Zhang, Percy Jackson</span></p><p><span style=\"white-space:pre-wrap\">• Poison Ivy, DC Comics</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Druid</strong></b></p><p><span style=\"white-space:pre-wrap\">The druid is a mid-defense, mixed support and control class with a focus on Casting Spells and shapechanging to powerful beasts.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast or Beast Attacks</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Mysticism, Survival</span></p>",
     "rules": [
@@ -41,7 +41,7 @@
         "key": "GrantItem",
         "label": "Primal Mystic: Polymorph",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.spells.Item.qwIbJIeHMzTvMaBK",
+        "uuid": "Compendium.vagabond-app.spells.Item.qwIbJIeHMzTvMaBK",
         "type": "spell"
       },
       {
@@ -77,7 +77,7 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.j05Zi3ASkGB2J19f"
+      "Compendium.vagabond-app.gear.Item.j05Zi3ASkGB2J19f"
     ],
     "castingSkill": "survival",
     "manaMultiplier": 2,
@@ -131,7 +131,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1786555887806,
     "modifiedTime": 1787878505886,

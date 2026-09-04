@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { CustomDropDown } from "../../../../component/Dropdown"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -10,11 +10,11 @@ export const MaterialSelection = ({ item }: { item: Item & { system: { material:
         <div>
             {(isEditMode || item.system.material !== 'none') && (
                 <>
-                    <ItemSheetPropLabel label={vgLiteLang.ItemSheet.material} />
+                    <ItemSheetPropLabel label={appLang.ItemSheet.material} />
                     <div className="flex gap-x-1 items-start">
                         <CustomDropDown
                             value={item.system.material}
-                            options={createDropdownEntriesFromObj(vgLiteLang.Metals)}
+                            options={createDropdownEntriesFromObj(appLang.Metals)}
                             onChange={(e) => item.update({ 'system.material': e.target.value } as Record<string, string>)}
                         />
                     </div>

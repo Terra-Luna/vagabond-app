@@ -2,7 +2,7 @@
   "name": "Fighter",
   "type": "class",
   "_id": "CY6YPiZM2IVjVurI",
-  "img": "systems/vagabond-lite/assets/class/fighter_fps.webp",
+  "img": "systems/vagabond-app/assets/class/fighter_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Students of the art of violence, fighters are defined by their weapon skills, and variety of martial techniques.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Fighters</strong></b></p><p><span style=\"white-space:pre-wrap\">• Beowulf, English mythology</span></p><p><span style=\"white-space:pre-wrap\">• Gilgamesh, Mesopotamian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sir Lancelot, Arthurian legend</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Fighter</strong></b></p><p><span style=\"white-space:pre-wrap\">The fighter is a mid-defense striker. In combat, get within effective distance for offense and prioritize the Attack Action.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Melee, Ranged</span></p>",
     "rules": [
@@ -41,7 +41,7 @@
         "key": "GrantItem",
         "label": "Fighting Style",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.6aUzsiWQ0IpvS0y4",
+        "uuid": "Compendium.vagabond-app.perks.Item.6aUzsiWQ0IpvS0y4",
         "type": "perk"
       },
       {
@@ -83,10 +83,10 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.3svveHnNn60fHHiX",
-      "Compendium.vagabond-lite.gear.Item.ImIcBC3E6UZcHsK4",
-      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj",
-      "Compendium.vagabond-lite.gear.Item.skbkscLdu2nlcgHW"
+      "Compendium.vagabond-app.gear.Item.3svveHnNn60fHHiX",
+      "Compendium.vagabond-app.gear.Item.ImIcBC3E6UZcHsK4",
+      "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj",
+      "Compendium.vagabond-app.gear.Item.skbkscLdu2nlcgHW"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -133,7 +133,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1784497758223,
     "modifiedTime": 1787878719425,

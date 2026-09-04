@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { normalizeRuleSelections } from "../util/item-rules-util"
 import { ItemsCache } from "../util/ItemsCache"
@@ -21,11 +21,11 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
         if (!path) return ""
         if (path.includes("skills.")) {
             const skillKey = path.replace(".trained", "").split(".").reverse()[0]
-            return vgLiteLang.Skills[skillKey]?.name ?? skillKey
+            return appLang.Skills[skillKey]?.name ?? skillKey
         }
         else if (path.includes("stats.")) {
             const statKey = path.split(".").reverse()[0]
-            return vgLiteLang.Stat[statKey]?.name ?? statKey
+            return appLang.Stat[statKey]?.name ?? statKey
         }
         else {
             return items.get(path)?.name ?? path

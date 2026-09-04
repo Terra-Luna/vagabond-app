@@ -24,7 +24,7 @@ if (!fs.existsSync(targetDir)) {
 const manifestPath = "./public/system.json"
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
 manifest.version = version
-manifest.download = `https://github.com/Terra-Luna/vagabond-lite/releases/download/${version}/${zipName}`
+manifest.download = `https://github.com/Terra-Luna/vagabond-app/releases/download/${version}/${zipName}`
 fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
 
 // Build the ZIP

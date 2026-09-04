@@ -37,17 +37,17 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
                             {isEditMode && (
                                 <div className="text-header-text-secondary flex gap-2 mb-2">
                                     <DropDown
-                                        label={lang.VGLITE.ItemSheet.size}
+                                        label={lang.APP.ItemSheet.size}
                                         variant="alternate"
-                                        options={createDropdownEntries(lang.VGLITE.Sizes)}
+                                        options={createDropdownEntries(lang.APP.Sizes)}
                                         parent={ancestry.parent}
                                         updateMechanism={{ updatePath: ['beingSize'] }}
                                         value={ancestry.beingSize ?? ''}
                                     />
                                     <DropDown
-                                        label={lang.VGLITE.ItemSheet.type}
+                                        label={lang.APP.ItemSheet.type}
                                         variant="alternate"
-                                        options={createDropdownEntries(lang.VGLITE.BeingTypes)}
+                                        options={createDropdownEntries(lang.APP.BeingTypes)}
                                         parent={ancestry.parent}
                                         updateMechanism={{ updatePath: ['beingType'] }}
                                         value={ancestry.beingType}

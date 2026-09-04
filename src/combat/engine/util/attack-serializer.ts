@@ -1,7 +1,7 @@
 import type { SpellDeliverySnapshot } from "../../spellcasting/SpellDelivery"
 import type { AdversaryAttack, SavingThrowType } from "../AdversaryAttack"
-import type { Attack } from "../Attack"
 import type { AdversaryComboAttack, ComboSubAttack } from "../AdversaryComboAttack"
+import type { Attack } from "../Attack"
 import type { HeroAttack } from "../HeroAttack"
 import { SkillCheck } from "../roll/SkillCheck"
 

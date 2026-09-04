@@ -2,7 +2,7 @@ import { Plus } from "lucide-react"
 import { ReactNode, useCallback } from "react"
 
 import { DiceRollSchema } from "../../apps/attack-builder/model/DieRollSchema"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { Checkbox } from "../../view/component/Checkbox"
 import { CSVTextInput } from "../../view/component/CSVTextInput"
 import { NumericCounterInput } from "../../view/component/EditableTextField"
@@ -90,12 +90,12 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                                 <span className="font-bold">
                                     <DiceCountInput dmgDice={diceRoll.extraDiceOnCrit ?? 0} onUpdateDmgDice={(input) => handleExtraDiceOnCritChange(input)} />
                                 </span>
-                                <p className="text-sm">{vgLiteLang.ItemSheet.extraDieOnCrit}</p>
+                                <p className="text-sm">{appLang.ItemSheet.extraDieOnCrit}</p>
                             </div>
 
                             {explosionValues.length > 0 && <div title={"Dice explode on crit only"} className="flex gap-x-1">
                                 <Checkbox label="" checked={diceRoll.explodeOnCritOnly ?? false} onCheckedChanged={handleExplodeOnCritOnlyChange} />
-                                <p>{vgLiteLang.ItemSheet.explodeOnCritOnly}</p>
+                                <p>{appLang.ItemSheet.explodeOnCritOnly}</p>
                             </div>}
                         </div>
                     }

@@ -9,7 +9,7 @@ export const requiredInteger = { required: true, integer: true, min: 0, nullable
 export const uncappedInteger = { required: true, integer: true, initial: 0 }
 
 export const rangeOptions = () => {
-    const ranges = Object.keys(locale.VGLITE.Ranges)
+    const ranges = Object.keys(locale.APP.Ranges)
     return {
         choices: ranges,
         initial: ranges[0]
@@ -17,7 +17,7 @@ export const rangeOptions = () => {
 }
 
 export const beingSizeOptions = () => {
-    const sizes = Object.keys(locale.VGLITE.Sizes)
+    const sizes = Object.keys(locale.APP.Sizes)
     return {
         choices: sizes,
         initital: sizes[0]
@@ -25,7 +25,7 @@ export const beingSizeOptions = () => {
 }
 
 export const beingTypeOptions = () => {
-    const beingTypes = Object.keys(locale.VGLITE.BeingTypes)
+    const beingTypes = Object.keys(locale.APP.BeingTypes)
     return {
         choices: beingTypes,
         initial: beingTypes[0]
@@ -33,7 +33,7 @@ export const beingTypeOptions = () => {
 }
 
 export const zonePreferences = () => {
-    const zones = Object.keys(locale.VGLITE.Zones)
+    const zones = Object.keys(locale.APP.Zones)
     return {
         choices: zones,
         initial: zones[0]
@@ -41,7 +41,7 @@ export const zonePreferences = () => {
 }
 
 export const movementTypes = () => {
-    const moveTypes = Object.keys(locale.VGLITE.Movement)
+    const moveTypes = Object.keys(locale.APP.Movement)
     return {
         choices: moveTypes,
         initial: moveTypes[0]
@@ -49,7 +49,7 @@ export const movementTypes = () => {
 }
 
 export const damageTypeOptions = () => {
-    const damageTypes = Object.keys(locale.VGLITE.DamageTypes)
+    const damageTypes = Object.keys(locale.APP.DamageTypes)
     return {
         required: false,
         nullable: true,
@@ -60,7 +60,7 @@ export const damageTypeOptions = () => {
 }
 
 export const statusEffOptions = () => {
-    const statusFx = Object.keys(locale.VGLITE.StatusConditions)
+    const statusFx = Object.keys(locale.APP.StatusConditions)
     return {
         required: true,
         nullable: false,
@@ -69,7 +69,7 @@ export const statusEffOptions = () => {
 }
 
 export const savingThrowOptions = () => {
-    const saves = Object.keys(locale.VGLITE.Saves)
+    const saves = Object.keys(locale.APP.Saves)
     return {
         required: true,
         nullable: false,

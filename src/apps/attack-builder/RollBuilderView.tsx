@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react"
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { isEquippedWeapon,WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Header } from "../../view/component/Header"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
@@ -131,27 +131,27 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
                     {/* SAVE & CANCEL */}
                     {setClosed && <>
                         <DestructiveButton onClick={setClosed}>
-                            {vgLiteLang.ButtonActions.cancel}
+                            {appLang.ButtonActions.cancel}
                         </DestructiveButton>
 
                         <div className="flex gap-x-1">
-                            <SecondaryButton onClick={reset}>{vgLiteLang.ButtonActions.reset}</SecondaryButton>
+                            <SecondaryButton onClick={reset}>{appLang.ButtonActions.reset}</SecondaryButton>
                             <PrimaryButton onClick={() => savePreset(setClosed)} icon={<Save size={16} className="text-btn-primary-text" />}>
-                                {vgLiteLang.ButtonActions.save}
+                                {appLang.ButtonActions.save}
                             </PrimaryButton>
                         </div>
                     </>}
 
                     {/* ROLL BUTTON */}
                     {!setClosed && <div className="flex gap-x-1 ml-auto">
-                        <SecondaryButton onClick={reset}>{vgLiteLang.ButtonActions.reset}</SecondaryButton>
+                        <SecondaryButton onClick={reset}>{appLang.ButtonActions.reset}</SecondaryButton>
 
                         <PrimaryButton onClick={async () => {
                             await saveCustomRoll()
                             HeroAttack.buildCustomRoll(actor, rollForm)
                         }}
                             icon={<Dices size={16} className="text-btn-primary-text" />}>
-                            {vgLiteLang.ButtonActions.roll}
+                            {appLang.ButtonActions.roll}
                         </PrimaryButton>
                     </div>}
                 </div>

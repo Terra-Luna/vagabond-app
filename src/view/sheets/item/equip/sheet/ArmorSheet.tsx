@@ -9,7 +9,7 @@ import { EditableTextField } from "../../../../component/EditableTextField"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
 import { MaterialSelection } from "../component/MaterialSelectionComponent"
-const lang = fullLang.VGLITE
+const lang = fullLang.APP
 
 export const ArmorSheet = ({ item }: { item: Item & { system: ArmorDataModel } }) => {
     return (

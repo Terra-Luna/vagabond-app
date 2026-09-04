@@ -7,7 +7,7 @@ import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equi
 import { StartingPackDataModel } from "../../../../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
-import { vgLiteLang } from "../../../../utils/lang"
+import { appLang } from "../../../../utils/lang"
 import { ItemDivider } from "../../../component/Header"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { Description } from "../../shared/Description"
@@ -60,8 +60,8 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
             <div className="space-y-2">
                 <Bulk item={item} />
                 <div className="flex flex-col gap-y-2 items-start">
-                    <button title={vgLiteLang.ButtonActions.effects} onClick={() => new ActiveEffectsApp(item).render({ force: true })} className={"hover-glow"}>
-                        <ItemSheetPropLabel label={vgLiteLang.ButtonActions.effects} />
+                    <button title={appLang.ButtonActions.effects} onClick={() => new ActiveEffectsApp(item).render({ force: true })} className={"hover-glow"}>
+                        <ItemSheetPropLabel label={appLang.ButtonActions.effects} />
                     </button>
                 </div>
             </div>

@@ -5,9 +5,9 @@ import { npcActionComboSchema,npcActionSchema } from "./NpcAction"
 
 export const npcSchema = () => {
     return {
-        beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(lang.VGLITE.Sizes) }),
-        beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(lang.VGLITE.BeingTypes) }),
-        beingSubtype: new fields.StringField({ ...optionalString, initial: 'none', choices: Object.keys(lang.VGLITE.BeingSubtypes) }),
+        beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(lang.APP.Sizes) }),
+        beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(lang.APP.BeingTypes) }),
+        beingSubtype: new fields.StringField({ ...optionalString, initial: 'none', choices: Object.keys(lang.APP.BeingSubtypes) }),
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
         threatLevelOverride: new fields.NumberField({ integer: false, min: 0, initial: null }),
         description: new fields.HTMLField(),

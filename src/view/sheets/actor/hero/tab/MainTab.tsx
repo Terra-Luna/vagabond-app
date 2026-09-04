@@ -9,7 +9,7 @@ import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
 import { isEquippedTool, isEquippedWeapon,WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
 import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
@@ -36,11 +36,11 @@ const Attacks = ({ hero }: { hero: HeroDataModel }) => {
     const { melee, brawl, finesse, ranged } = hero.skills
     return (
         <div className="w-full mb-2">
-            <Header title={vgLiteLang.HeroSheet.attacks} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.melee} skillKey="melee" value={melee.value!} trained={melee.trained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} trained={brawl.trained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} trained={finesse.trained} isAttack={true} />
-            <Skill hero={hero} name={vgLiteLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} trained={ranged.trained} isAttack={true} />
+            <Header title={appLang.HeroSheet.attacks} />
+            <Skill hero={hero} name={appLang.Attacks.melee} skillKey="melee" value={melee.value!} trained={melee.trained} isAttack={true} />
+            <Skill hero={hero} name={appLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} trained={brawl.trained} isAttack={true} />
+            <Skill hero={hero} name={appLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} trained={finesse.trained} isAttack={true} />
+            <Skill hero={hero} name={appLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} trained={ranged.trained} isAttack={true} />
         </div>
     )
 }
@@ -123,7 +123,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className="w-full">
-            <Header title={vgLiteLang.HeroSheet.weapons} />
+            <Header title={appLang.HeroSheet.weapons} />
             {
                 equipDisplayData?.map(({ item, damageString, initiateAttack, rollDefensiveReflexSave }, index: number) => {
                     return (
@@ -147,7 +147,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                             className={`${gripStyle} mr-2 hover-glow`}
                                             onClick={() => toggleGripState(item)}
                                         >
-                                            {vgLiteLang.GripsAbbr[
+                                            {appLang.GripsAbbr[
                                                 item instanceof WeaponDataModel
                                                     ? item.grip.state
                                                     : item.bulk.slots > 1 ? 'HH' : 'H'
@@ -155,7 +155,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                         </div>
                                         <div className="flex content-right items-center gap-x-1">
                                             <div
-                                                title={`Attack Action:\n${vgLiteLang.HeroSheet.skills_tooltip}`}
+                                                title={`Attack Action:\n${appLang.HeroSheet.skills_tooltip}`}
                                                 className={`${dmgStyle} hover-glow`}
                                                 onClick={(e) => initiateAttack(e)}
                                             >
@@ -170,8 +170,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center px-1">
-                                    <div className={propsStyle}>{(item as any).properties?.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}</div>
-                                    <div className={propsStyle + " text-right mr-1.5"}>{vgLiteLang.Ranges[(item as any).range ?? '']}</div>
+                                    <div className={propsStyle}>{(item as any).properties?.map(p => appLang.WeaponProps[p].name).join(", ")}</div>
+                                    <div className={propsStyle + " text-right mr-1.5"}>{appLang.Ranges[(item as any).range ?? '']}</div>
                                 </div>
                             </div>
                             <ItemDivider />
@@ -189,15 +189,15 @@ const Armor = ({ hero }: { hero: HeroDataModel }) => {
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
     return (
         <div className="w-full">
-            <Header title={vgLiteLang.HeroSheet.armor} />
+            <Header title={appLang.HeroSheet.armor} />
             <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1">
                 <div className="text-lg line-clamp-1">{armor?.parent.name ?? '-'}</div>
                 <div className="flex justify-end items-center">
                     <Shield className="mr-1" size={18} />
                     <div className="line-clamp-1 text-lg text-right mr-1">{armor?.rating ?? '-'}</div>
                 </div>
-                <div className={propsStyle}>{vgLiteLang.EquipmentCategories[armor?.category] ?? '-'}</div>
-                <div className={propsStyle + " text-right mr-1"}>{vgLiteLang.Metals[armor?.material]?.name ?? '-'}</div>
+                <div className={propsStyle}>{appLang.EquipmentCategories[armor?.category] ?? '-'}</div>
+                <div className={propsStyle + " text-right mr-1"}>{appLang.Metals[armor?.material]?.name ?? '-'}</div>
             </div>
             <ItemDivider />
         </div>

@@ -3,7 +3,7 @@
   "name": "Acolyte",
   "type": "adversary",
   "_id": "5hEkzmeqI1PR0bTE",
-  "img": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+  "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
       "current": 4,
@@ -367,7 +367,7 @@
     "height": 1,
     "depth": 1,
     "texture": {
-      "src": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+      "src": "systems/vagabond-app/assets/icons/ic_adversary.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
       "fit": "contain",
@@ -436,7 +436,7 @@
       "effects": 1,
       "subject": {
         "scale": 1,
-        "texture": "systems/vagabond-lite/assets/icons/ic_adversary.webp"
+        "texture": "systems/vagabond-app/assets/icons/ic_adversary.webp"
       }
     },
     "turnMarker": {
@@ -461,7 +461,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1787785846565,
     "modifiedTime": 1788472883231,

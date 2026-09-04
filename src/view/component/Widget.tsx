@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { tableBorder } from "../common/border-styles"
 import { DestructiveButton, PrimaryButton } from "./Button"
 
@@ -21,10 +21,10 @@ export const SaveCancelButtons = ({ onSave, onCancel, label }) => (
         {label && <p className="text-sm font-eskapade font-normal">{label}</p>}
         <div className="flex gap-x-1 justify-end w-full">
             <PrimaryButton onClick={onSave}>
-                <p>{vgLiteLang.ButtonActions.save}</p>
+                <p>{appLang.ButtonActions.save}</p>
             </PrimaryButton>
             <DestructiveButton onClick={onCancel}>
-                <p>{vgLiteLang.ButtonActions.cancel}</p>
+                <p>{appLang.ButtonActions.cancel}</p>
             </DestructiveButton>
         </div>
     </div>

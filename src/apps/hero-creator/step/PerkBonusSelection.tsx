@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from "react"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { getItemChoiceRules, getRuleSelectionValues, getSkillTrainingChoiceRules, getSpellChoices, getStatChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
 import { Header } from "../../../view/component/Header"
 import { SkillCard } from "../../../view/component/SkillCard"
@@ -38,7 +38,7 @@ export const usePerkBonusSelection = (
     initialSelections: Record<string, string[]> = {},
     isHeroCreation: boolean = false
 ) => {
-    const strings = vgLiteLang.HeroCreation
+    const strings = appLang.HeroCreation
     const [advancementSelections, setAdvancementSelections] = useState<Record<string, string>>({})
     const [perkTrainingSelections, setPerkTrainingSelections] = useState<Record<string, string>>({})
     const [reasonTrainingSelections, setReasonTrainingSelections] = useState<Record<string, string>>({})
@@ -290,7 +290,7 @@ export const usePerkBonusSelection = (
                                 <HeroCreationSubtext text={
                                     stats
                                         .filter(stat => stat.stat !== "baseStatBlock")
-                                        .map(stat => `${vgLiteLang.Stat[stat.stat]?.abbr}: ${stat.value}`)
+                                            .map(stat => `${appLang.Stat[stat.stat]?.abbr}: ${stat.value}`)
                                         .join(" | ")
                                 } />
                                 <div className="flex flex-wrap gap-2">
@@ -316,7 +316,7 @@ export const usePerkBonusSelection = (
                                                     <HeroCreationLabel text={"Addt'l Training:"} />
                                                     <HeroCreationDropdown
                                                         value={reasonTrainingSelections[rule.selectionKey] ?? ''}
-                                                        options={createDropdownEntriesFromObj(vgLiteLang.Skills).filter(sk =>
+                                                        options={createDropdownEntriesFromObj(appLang.Skills).filter(sk =>
                                                             !requiredTrainings.map(t => t.skill).includes(sk.value) &&
                                                             !selectedTrainings.map(t => t.skill).includes(sk.value)
                                                         )}
@@ -380,7 +380,7 @@ export const usePerkBonusSelection = (
                     <SkillCard
                         img={selectedSpell.img ?? ''}
                         title={selectedSpell.name}
-                        subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[selectedSpell.system.damageType] }]}
+                            subtitles={[{ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[selectedSpell.system.damageType] }]}
                         dmgType={selectedSpell.system.damageType}
                         description={selectedSpell.system.description}
                         startCollapsed={false}

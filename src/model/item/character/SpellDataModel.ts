@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { damageTypeOptions, fields, optionalInteger,requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
@@ -10,7 +10,7 @@ const spellSchema = () => {
         damageType: new fields.StringField({ ...damageTypeOptions() }),
         appliedEffects: new fields.ArrayField(
             new fields.SchemaField({
-                effect: new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.StatusConditions) }),
+                effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
                 duration: new fields.NumberField({ ...optionalInteger }),
                 critDuration: new fields.NumberField({ ...optionalInteger })
             }),
@@ -34,5 +34,5 @@ export class SpellDataModel extends ItemDataModel<SpellSchema> {
 }
 
 export const spellDamageBase = (spell: SpellDataModel): CardSubHeaderValues[] => {
-    return [{ label: 'Damage Base', value: vgLiteLang.DamageTypes[spell.damageType] }]
+    return [{ label: 'Damage Base', value: appLang.DamageTypes[spell.damageType] }]
 }

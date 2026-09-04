@@ -9,7 +9,7 @@ import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../mod
 import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { equipArmor, equipWeapon,inventoryItemDragDropHandler } from "../../../utils/heroInventoryUtil"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { getId, getName } from "../../../utils/modelUtil"
 import { tableBorder } from "../../common/border-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
@@ -32,12 +32,12 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
             <table className={`table-fixed w-full ${tableBorder}`}>
                 <thead className="bg-section-header-fill text-text-section-header text-sm">
                     <tr>
-                        <th className="text-left pl-2 w-5/9">{vgLiteLang.HeroSheet.Inventory.item}</th>
-                        <th className="text-center">{vgLiteLang.HeroSheet.Inventory.slots}</th>
-                        <th className="text-center">{vgLiteLang.HeroSheet.Inventory.value}</th>
+                        <th className="text-left pl-2 w-5/9">{appLang.HeroSheet.Inventory.item}</th>
+                        <th className="text-center">{appLang.HeroSheet.Inventory.slots}</th>
+                        <th className="text-center">{appLang.HeroSheet.Inventory.value}</th>
                         {showEquipColumn &&
                             <th className="text-center">
-                                {vgLiteLang.HeroSheet.Inventory.equip}
+                                {appLang.HeroSheet.Inventory.equip}
                             </th>
                         }
                     </tr>
@@ -117,7 +117,7 @@ const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { typ
                     ? <div>
                         {isEquipped
                             ? <div className="flex items-center justify-end -space-x-4 font-eskapade text-text-secondary">
-                                <p>{vgLiteLang.GripsAbbr[gripState]}</p>
+                                <p>{appLang.GripsAbbr[gripState]}</p>
                                 <HandFist size={18} className={equippedIconStyle} />
                             </div>
                             : <Hand size={18} className={unEquipedIconStyle} />

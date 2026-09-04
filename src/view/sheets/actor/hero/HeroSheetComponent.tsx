@@ -25,7 +25,7 @@ import { RollsTab } from "./tab/RollsTab"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { CustomTrackers,Focus, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, Stats, Studied } from "./tab/TopSection"
 
-const locale = lang.VGLITE.HeroSheet
+const locale = lang.APP.HeroSheet
 
 export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { system: HeroDataModel }, sheet: VagabondActorSheet }) => {
     const hero = actor.system

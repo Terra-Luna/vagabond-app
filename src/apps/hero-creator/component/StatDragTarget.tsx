@@ -1,10 +1,10 @@
 import { Key } from "lucide-react"
 
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
 export const StatDragTarget = ({ stat, stats, isKeyStat, onDragDrop, currentAssignment, dragOverStat, setDragOverStat, bonusStats, flatStatBonuses }) => {
-    const strings = vgLiteLang.HeroCreation
+    const strings = appLang.HeroCreation
     const isHovered = dragOverStat === stat
     const selectedBonus = bonusStats?.filter(b => b.stat.replace("stats.", "") === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.bonus }, 0) ?? 0
     const flatBonus = flatStatBonuses?.filter(b => b.stat === currentAssignment.stat)?.reduce((sum, b) => { return sum + b.bonus }, 0) ?? 0

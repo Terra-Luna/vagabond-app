@@ -1,5 +1,5 @@
 import { SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
-import { vgLiteLang } from "../../../../../../../utils/lang"
+import { appLang } from "../../../../../../../utils/lang"
 import { DropDown } from "../../../../../../component/Dropdown"
 
 export const SpellSelector = ({ spell, spells, onSelect }: {
@@ -8,7 +8,7 @@ export const SpellSelector = ({ spell, spells, onSelect }: {
     return (
         <div className="flex gap-x-1 items-end text-text-header-tertiary">
             <DropDown
-                label={vgLiteLang.HeroSheet.Magic.labelSelectSpell}
+                label={appLang.HeroSheet.Magic.labelSelectSpell}
                 value={spell?.uuid}
                 options={spellDropdownOptons(spells)}
                 updateMechanism={{ onChange: onSelect }}

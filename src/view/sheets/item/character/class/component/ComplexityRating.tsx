@@ -1,7 +1,7 @@
 import { Star } from "lucide-react"
 
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { appLang } from "../../../../../../utils/lang"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel } from "./ClassSheetText"
 
@@ -9,7 +9,7 @@ export const ComplexityRating = ({ item }: { item: Item & { system: ClassDataMod
     const { isEditMode } = useEditMode()
     return (
         <div className="flex gap-x-1 items-center">
-            <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelComplexity}:`} />
+            <ClassSheetLabel text={`${appLang.ClassSheet.labelComplexity}:`} />
             <div className="flex gap-x-0.25">
                 {
                     Array.from({ length: 5 }, (_, index) => (

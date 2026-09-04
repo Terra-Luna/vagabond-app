@@ -2,7 +2,7 @@
   "name": "Elf",
   "type": "ancestry",
   "_id": "LhY7LFyIY4xvlpA8",
-  "img": "systems/vagabond-lite/assets/ancestry/elf_fps.webp",
+  "img": "systems/vagabond-app/assets/ancestry/elf_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Elves are known for their tall height, ethereal beauty, and inquisitive passion to witness awe. This passion embodies itself in their clothing, language, arts, and cuisine, as elves seek to make every moment one worth savoring. Of all the peoples that inhabit the world, it is likely no other lives as peacefully and permissively with the fae, fauna, and flora as elves.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Ascendancy:</strong></b><span style=\"white-space:pre-wrap\"> You are Trained in Detect and 1 other skill.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Elven Eyes: </strong></b><span style=\"white-space:pre-wrap\">You have Favor on sight-based Detect Checks.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Naturally Attuned:</strong></b><span style=\"white-space:pre-wrap\"> You know a Spell of your choice and can Cast it with a Skill of your choice. Further, once per Round, you can Cast it with a 1 Mana discount on its Delivery.</span></p>",
     "rules": [
@@ -59,7 +59,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1784494454047,
     "modifiedTime": 1786171231312,

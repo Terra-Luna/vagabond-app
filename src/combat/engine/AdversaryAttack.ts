@@ -1,6 +1,6 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { roll3dDice } from "../../utils/foundryUtils"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Attack, AttackResolutionArgs } from "./Attack"
@@ -82,7 +82,7 @@ export class AdversaryAttack extends Attack {
     // Only one reroll per target is allowed and Block (defense weapon) rolls are not eligible.
     async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
         const existing = this.saveResults[targetId]
-        if (!existing || existing.outcome !== vgLiteLang.RollResult.failure) return
+        if (!existing || existing.outcome !== appLang.RollResult.failure) return
         if (existing.blockDie) return
         if (this.rerolledSaveTargetIds.includes(targetId)) return
 
@@ -130,7 +130,7 @@ export class AdversaryAttack extends Attack {
     protected override shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
         if (result?.blockDie) return result.total < result.difficulty
-        return !result || result.outcome === vgLiteLang.RollResult.failure
+        return !result || result.outcome === appLang.RollResult.failure
     }
 
     // A Block roll counts its weapon damage die (but not any Favor/Hinder d6) as bonus armor.

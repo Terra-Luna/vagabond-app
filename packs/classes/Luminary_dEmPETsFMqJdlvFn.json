@@ -2,7 +2,7 @@
   "name": "Luminary",
   "type": "class",
   "_id": "dEmPETsFMqJdlvFn",
-  "img": "systems/vagabond-lite/assets/class/luminary_fps.webp",
+  "img": "systems/vagabond-app/assets/class/luminary_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Channelers of the magic of creation, luminaries are philosophers, muses, and healers of the people.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Luminaries</strong></b></p><p><span style=\"white-space:pre-wrap\">• Aerith Gainsborough, Final Fantasy VII</span></p><p><span style=\"white-space:pre-wrap\">• Goldmoon, Dragonlance</span></p><p><span style=\"white-space:pre-wrap\">• Nynaeve Sedai, The Wheel of Time</span></p><p><span style=\"white-space:pre-wrap\">• Ophilia Clement, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Luminary</strong></b></p><p><span style=\"white-space:pre-wrap\">Luminary is a high-support healer. It’s recommended that you avoid direct melee.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training</strong></b><span style=\"white-space:pre-wrap\">: Influence, Mysticism</span></p>",
     "rules": [
@@ -41,7 +41,7 @@
         "key": "GrantItem",
         "label": "Theurgy: Life",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.spells.Item.pTpQKxsiYMR2yZ0G",
+        "uuid": "Compendium.vagabond-app.spells.Item.pTpQKxsiYMR2yZ0G",
         "type": "spell"
       },
       {
@@ -76,7 +76,7 @@
         "key": "GrantItem",
         "label": "Radiant Healer",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.KXp0umL4on7OoRFF",
+        "uuid": "Compendium.vagabond-app.perks.Item.KXp0umL4on7OoRFF",
         "type": "perk"
       },
       {
@@ -93,7 +93,7 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.jYntBY6j2VVmBe7T"
+      "Compendium.vagabond-app.gear.Item.jYntBY6j2VVmBe7T"
     ],
     "castingSkill": "mysticism",
     "maxCastFormula": "full",
@@ -147,7 +147,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1784496452535,
     "modifiedTime": 1787880134064,

@@ -1,7 +1,7 @@
 import { Plus, Trash } from "lucide-react"
 import React, { useState } from "react"
 
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { tableBorder } from "../../view/common/border-styles"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
@@ -191,7 +191,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                     <ItemRuleSelector
                                         label="Skill"
                                         value={filter.value}
-                                        options={createDropdownEntriesFromObj(vgLiteLang.Skills).map(it => (
+                                        options={createDropdownEntriesFromObj(appLang.Skills).map(it => (
                                             <option value={it.value}>{it.label}</option>
                                         ))}
                                         onChange={(e) => {

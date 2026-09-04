@@ -5,7 +5,7 @@ import { calculateManaValues } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { getFlatStatBonuses, getStatChoiceRules } from "../../../rules/util/item-rules-util"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { SecondaryButton } from "../../../view/component/Button"
 import { Divider, Header } from "../../../view/component/Header"
@@ -18,9 +18,9 @@ import { TopNavButtons } from "../component/TopNavButtons"
 
 export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | undefined, clazz: (Item & { system: ClassDataModel }) | undefined, navButtons: ReactNode[]) => {
     const STAT_MAX = 7
-    const strings = vgLiteLang.HeroCreation
-    const stats = vgLiteLang.Stat
-    const statBlocks = vgLiteLang.BaseStatBlocks
+    const strings = appLang.HeroCreation
+    const stats = appLang.Stat
+    const statBlocks = appLang.BaseStatBlocks
 
     const lastCanProceedRef = useRef<boolean>(false)
     const [selectedArr, setSelectedArr] = useState<{ index: number, values: number[], usedIndices: number[] }>()
@@ -329,7 +329,7 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
                         <div className="flex gap-x-2">
                             {
                                 flatStatBonuses.map((b, index) => (
-                                    <HeroCreationLabeledField key={index} label={b.name} value={`${vgLiteLang.Stat[b.stat].name} +${b.bonus}`} />
+                                    <HeroCreationLabeledField key={index} label={b.name} value={`${appLang.Stat[b.stat].name} +${b.bonus}`} />
                                 ))
                             }
                         </div>

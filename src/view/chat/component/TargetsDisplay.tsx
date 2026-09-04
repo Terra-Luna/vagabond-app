@@ -1,6 +1,6 @@
 import { Trash } from "lucide-react"
 
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { useContextMenu } from "../../component/ContextMenu"
 
 /**
@@ -30,7 +30,7 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
                                     onCtxMenu(e, [
                                         {
                                             icon: Trash,
-                                            label: vgLiteLang.ButtonActions.remove,
+                                            label: appLang.ButtonActions.remove,
                                             action: () => onRemoveTarget(index),
                                             isDestructive: true
                                         }

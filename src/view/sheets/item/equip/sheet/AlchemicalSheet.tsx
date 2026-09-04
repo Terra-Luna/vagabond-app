@@ -3,7 +3,7 @@ import { useCallback } from "react"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
@@ -23,7 +23,7 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
         <EquipmentSheetSubtypeBody>
             <div className="grid grid-cols-2 gap-x-8 gap-y-4 items-start">
                 <DiceRollInputComponent
-                    label={vgLiteLang.ItemSheet.damage}
+                    label={appLang.ItemSheet.damage}
                     diceRoll={damageDice}
                     onChange={handleDiceChange}
                     wrap={true}
@@ -39,9 +39,9 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
 const AlechemyCategory = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
     return (
         <DropDown
-            label={vgLiteLang.ItemSheet.alchCategory}
+            label={appLang.ItemSheet.alchCategory}
             value={item.system.alchemyCategory}
-            options={createDropdownEntriesFromObj(vgLiteLang.AlchemyCategories)}
+            options={createDropdownEntriesFromObj(appLang.AlchemyCategories)}
             updateMechanism={{ updatePath: ['alchemyCategory'] }}
             parent={item}
         />

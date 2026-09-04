@@ -9,7 +9,7 @@ import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
  */
 const baseEquipmentSchema = () => {
     return {
-        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.EquipmentCategories), initial: 'other' }),
+        category: new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.EquipmentCategories), initial: 'other' }),
         value: new fields.SchemaField({ ...coinSchema() }),
         copperValue: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         bulk: new fields.SchemaField({
@@ -83,7 +83,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         super.prepareBaseData()
         if ((this as any).material) {
             const baseValue = this.value
-            this.value = multiplyCoins(baseValue, lang.VGLITE.Metals[(this as any).material].valueMultiplier)
+            this.value = multiplyCoins(baseValue, lang.APP.Metals[(this as any).material].valueMultiplier)
         }
         if (this.relicPowers.length > 0) {
             this.value = addCoins(this.relicPowers.flatMap(power => (

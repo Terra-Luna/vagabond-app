@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../../../../../../utils/lang"
+import { appLang } from "../../../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../../../utils/localeUtils"
 import { DropDown } from "../../../../../../component/Dropdown"
 import { SpellcastingLabel } from "./SpellcastingTypography"
@@ -7,10 +7,10 @@ export const SkillSelector = ({ skill, onSelectSkill }: { skill: string, onSelec
     return (
         <div className="flex gap-x-2">
             <div>
-                <SpellcastingLabel text={vgLiteLang.HeroSheet.Magic.labelSkill} />
+                <SpellcastingLabel text={appLang.HeroSheet.Magic.labelSkill} />
                 <DropDown
                     value={skill}
-                    options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
+                    options={createDropdownEntriesFromObj(appLang.Skills)}
                     updateMechanism={{ onChange: onSelectSkill }}
                 />
             </div>

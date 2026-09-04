@@ -4,7 +4,7 @@ import { DiceRoll } from "../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../combat/ui/DiceRollInputComponent"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { TrashButton } from "../../../view/component/TrashButton"
@@ -76,7 +76,7 @@ export const useCustomDamageRollBuilder = (
                 </div>
                 <div className="flex w-full justify-end">
                     <UtilityButton title={"Add additional damage roll"} onClick={addNewRoll}>
-                        +{vgLiteLang.ButtonActions.add}
+                        +{appLang.ButtonActions.add}
                     </UtilityButton>
                 </div>
             </div>

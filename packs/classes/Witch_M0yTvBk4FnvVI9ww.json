@@ -2,7 +2,7 @@
   "name": "Witch",
   "type": "class",
   "_id": "M0yTvBk4FnvVI9ww",
-  "img": "systems/vagabond-lite/assets/class/witch_fps.webp",
+  "img": "systems/vagabond-app/assets/class/witch_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Witches are mediaries of magical secrets. One may become a witch through the whispers of a familiar or the favor of a being from beyond.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Witches</strong></b></p><p><span style=\"white-space:pre-wrap\">• Dr. Facilier, The Princess and the Frog</span></p><p><span style=\"white-space:pre-wrap\">• Sabrina Spellman, Sabrina the Teenage Witch</span></p><p><span style=\"white-space:pre-wrap\">• The Morrigan, Celtic mythology</span></p><p><span style=\"white-space:pre-wrap\">• Yubaba, Spirited Away</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Witch</strong></b></p><p><span style=\"white-space:pre-wrap\">The witch is a debuffer focused on Casting Spells to stack detriments. Stick to the shadows and pile on Statuses through Hex.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Mysticism</span></p>",
     "rules": [
@@ -81,8 +81,8 @@
       "awareness"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.2AvL41sfAOamV2oe",
-      "Compendium.vagabond-lite.gear.Item.5y2TEMR983wkMy3s"
+      "Compendium.vagabond-app.gear.Item.2AvL41sfAOamV2oe",
+      "Compendium.vagabond-app.gear.Item.5y2TEMR983wkMy3s"
     ],
     "castingSkill": "mysticism",
     "manaMultiplier": 4,
@@ -124,7 +124,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1786571553719,
     "modifiedTime": 1787883564283,

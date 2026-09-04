@@ -1,4 +1,4 @@
-# vagabond-lite
+# vagabond-app
 #### Project setup
 1. Install foundry
 2. Install pnpm: `pnpm install`

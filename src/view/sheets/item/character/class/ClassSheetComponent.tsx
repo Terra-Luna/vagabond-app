@@ -1,6 +1,6 @@
 import { ClassDataModel } from "../../../../../model/item/character/ClassDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { ItemDivider } from "../../../../component/Header"
@@ -72,7 +72,7 @@ const ClassSheetBanner = ({ item }: { item: Item & { system: ClassDataModel } })
             <EditableTextField
                 boundValue={item.name}
                 updateProps={{ object: item, path: ['name'] }}
-                placeholder={vgLiteLang.ClassSheet.placeholder_classname}
+                placeholder={appLang.ClassSheet.placeholder_classname}
             />
         </ClassSheetBannerWrapper>
     )

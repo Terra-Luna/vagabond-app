@@ -52,7 +52,7 @@ export abstract class VagabondCanvasOverlayApp extends VagabondApplication {
             return (
                 <div id={this.anchor} ref={hostRef}>
                     {scaduRoot && createPortal(
-                        <div className={`${getTheme()} vglite-themed-content`}>
+                        <div className={`${getTheme()} app-themed-content`}>
                             <args.Component />
                         </div>,
                         scaduRoot

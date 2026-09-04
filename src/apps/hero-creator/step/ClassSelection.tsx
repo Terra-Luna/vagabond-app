@@ -1,7 +1,7 @@
 import { ReactNode, useCallback, useEffect, useState } from "react"
 
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
@@ -34,13 +34,13 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
     const ClassSelection = (
         <div className="relative bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
             <div className="flex-shrink-0 space-y-4">
-                <Header title={vgLiteLang.HeroCreation.class} />
+                <Header title={appLang.HeroCreation.class} />
                 <TopNavButtons navButtons={navButtons} subtitle="" canProceed={!!classItem} />
             </div>
             <div className="flex-1 overflow-y-auto space-y-4 mt-2">
                 <HeroCreationDropdown
-                    label={vgLiteLang.HeroCreation.class}
-                    value={classItem?.id ?? vgLiteLang.HeroCreation.selectClass}
+                    label={appLang.HeroCreation.class}
+                    value={classItem?.id ?? appLang.HeroCreation.selectClass}
                     options={classOpts ?? []}
                     onChange={onSelectClass}
                 />

@@ -2,7 +2,7 @@
   "name": "Sorcerer",
   "type": "class",
   "_id": "W0IJD9lBY3kKNUI9",
-  "img": "systems/vagabond-lite/assets/class/sorcerer_fps.webp",
+  "img": "systems/vagabond-app/assets/class/sorcerer_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Arcanists given a precious gift of magical prowess, sorcerers can tap into their own inner reserves to provide more Mana for casting.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Sorcerers</strong></b></p><p><span style=\"white-space:pre-wrap\">• Yennefer, The Witcher</span></p><p><span style=\"white-space:pre-wrap\">• Elsa, Frozen</span></p><p><span style=\"white-space:pre-wrap\">• Ganondorf, The Legend of Zelda</span></p><p><span style=\"white-space:pre-wrap\">• Storm, X-Men</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Sorcerer</strong></b></p><p><span style=\"white-space:pre-wrap\">The sorcerer is a squishy blaster focused on Casting Spells for instant burst damage. You should stay in safety to Cast.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Influence</span></p>",
     "rules": [
@@ -61,7 +61,7 @@
         "key": "GrantItem",
         "label": "Tap: Vehement Magic",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.eDxdbBsCNsDdTsG0",
+        "uuid": "Compendium.vagabond-app.perks.Item.eDxdbBsCNsDdTsG0",
         "type": "perk"
       },
       {
@@ -88,8 +88,8 @@
       "presence"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.5y2TEMR983wkMy3s",
-      "Compendium.vagabond-lite.gear.Item.E71U6Aoc2sOmDE5V"
+      "Compendium.vagabond-app.gear.Item.5y2TEMR983wkMy3s",
+      "Compendium.vagabond-app.gear.Item.E71U6Aoc2sOmDE5V"
     ],
     "castingSkill": "influence",
     "manaMultiplier": 4,
@@ -137,7 +137,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1786569750999,
     "modifiedTime": 1787882830507,

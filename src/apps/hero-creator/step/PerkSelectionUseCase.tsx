@@ -7,7 +7,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { perkPrerequisites } from "../../../model/item/character/PerkDataModel"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
@@ -356,7 +356,7 @@ export const usePerkSelection = (
     }
 }
 
-const strings = vgLiteLang.HeroCreation
+const strings = appLang.HeroCreation
 
 const toDisplayablePerk = (perk) => {
     return {

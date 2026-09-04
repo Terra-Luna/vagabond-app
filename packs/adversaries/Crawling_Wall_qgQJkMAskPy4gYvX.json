@@ -3,7 +3,7 @@
   "name": "Crawling Wall",
   "type": "adversary",
   "_id": "qgQJkMAskPy4gYvX",
-  "img": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+  "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
       "current": 58,
@@ -377,7 +377,7 @@
     "height": 2,
     "depth": 2,
     "texture": {
-      "src": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+      "src": "systems/vagabond-app/assets/icons/ic_adversary.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
       "fit": "contain",
@@ -446,7 +446,7 @@
       "effects": 0,
       "subject": {
         "scale": 1,
-        "texture": "systems/vagabond-lite/assets/icons/ic_adversary.webp"
+        "texture": "systems/vagabond-app/assets/icons/ic_adversary.webp"
       }
     },
     "turnMarker": {
@@ -471,7 +471,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1787710168878,
     "modifiedTime": 1788472573588,

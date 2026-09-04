@@ -11,7 +11,7 @@ import { DiceRollComponent } from "./component/DiceRollComponent"
 export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
     heroId: string, verb: string, resource: string, roll?: number
 }) => {
-    const resources = lang.VGLITE.Resources
+    const resources = lang.APP.Resources
     const hero = game.actors?.get(heroId) as Actor & {
         system: { statuses: { counters: { luck: string, studied: string, fatigue: string } } }
     }

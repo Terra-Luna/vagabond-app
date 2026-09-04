@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 import { HeroAttack } from "../../../combat/engine/HeroAttack"
 import { DiceRoll } from "../../../combat/engine/roll/DiceRoll"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { RollPreset } from "../model/RollPreset"
 import { RollButton } from "./RollButton"
 
@@ -24,9 +24,9 @@ export const RollPresetRow = ({ actor, preset, EditButton, TrashButton }: {
 
                 {/* PRESET METADATA GHOST TEXT */}
                 <div className="flex gap-x-1 text-xs text-text-tertiary font-paradigm italic -mt-1">
-                    <p>{`${vgLiteLang.Skills[preset.skill]?.name ?? vgLiteLang.Saves[preset.skill]?.name ?? ''},`}</p>
+                    <p>{`${appLang.Skills[preset.skill]?.name ?? appLang.Saves[preset.skill]?.name ?? ''},`}</p>
                     <p>{`${preset.d20Count}d20,`}</p>
-                    <p>{`${preset.favorHinder !== 'none' ? vgLiteLang.FavorHinder[preset.favorHinder] + "," : ''}`}</p>
+                    <p>{`${preset.favorHinder !== 'none' ? appLang.FavorHinder[preset.favorHinder] + "," : ''}`}</p>
                     <p>{`Crit: ${preset.critThreshold},`}</p>
                     <p>{`${preset.damageRolls.map(r => new DiceRoll(r).toRollFormula()).join("+")}`}</p>
                 </div>

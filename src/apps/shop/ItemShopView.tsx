@@ -6,7 +6,7 @@ import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { ReadOnlyCoinPurse } from "../../view/component/CoinPurse"
@@ -194,8 +194,8 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
 
                                 {useCheckout &&
                                     <div className="flex gap-x-1">
-                                        <PrimaryButton onClick={onCheckout}>{vgLiteLang.ButtonActions.checkout}</PrimaryButton>
-                                        <DestructiveButton onClick={onCancel}>{vgLiteLang.ButtonActions.cancel}</DestructiveButton>
+                                        <PrimaryButton onClick={onCheckout}>{appLang.ButtonActions.checkout}</PrimaryButton>
+                                        <DestructiveButton onClick={onCancel}>{appLang.ButtonActions.cancel}</DestructiveButton>
                                     </div>
                                 }
 

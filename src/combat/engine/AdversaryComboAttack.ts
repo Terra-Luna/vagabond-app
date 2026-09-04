@@ -1,6 +1,6 @@
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { roll3dDice } from "../../utils/foundryUtils"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import type { SavingThrowType } from "./AdversaryAttack"
@@ -51,7 +51,7 @@ export class ComboSubAttack {
     shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
         if (result?.blockDie) return result.total < result.difficulty
-        return !result || result.outcome === vgLiteLang.RollResult.failure
+        return !result || result.outcome === appLang.RollResult.failure
     }
 
     getBonusArmor(targetId: string): number {
@@ -90,7 +90,7 @@ export class ComboSubAttack {
 
     async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
         const existing = this.saveResults[targetId]
-        if (!existing || existing.outcome !== vgLiteLang.RollResult.failure) return
+        if (!existing || existing.outcome !== appLang.RollResult.failure) return
         if (existing.blockDie) return
         if (this.rerolledSaveTargetIds.includes(targetId)) return
 

@@ -1,6 +1,6 @@
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
 import { ItemsCache } from "../../../../../../rules/util/ItemsCache"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { appLang } from "../../../../../../utils/lang"
 import { OptionsSelectionMenu, OptionsSelectionMenuOption } from "../../../../../component/OptionsSelectionMenu"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
@@ -19,7 +19,7 @@ export const StartingPackSelector = ({ item }: { item: Item & { system: ClassDat
 
             <span className="line-clamp-1">
                 <ClassSheetLabel text={`
-                    ${vgLiteLang.ClassSheet.startingPacks}${packs.filter(p => p.isSelected).length > 1 ? 's' : ''}:
+                    ${appLang.ClassSheet.startingPacks}${packs.filter(p => p.isSelected).length > 1 ? 's' : ''}:
                 `} />
             </span>
 

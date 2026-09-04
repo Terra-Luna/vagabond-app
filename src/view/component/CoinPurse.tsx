@@ -42,9 +42,9 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                 </div>
             </button>
             <div className="flex content-center justify-end w-full">
-                <CoinValue hero={hero} value={hero.inventory.coins.g ?? 0} label={lang.VGLITE.HeroSheet.Currency.g} path='g' />
-                <CoinValue hero={hero} value={hero.inventory.coins.s ?? 0} label={lang.VGLITE.HeroSheet.Currency.s} path='s' />
-                <CoinValue hero={hero} value={hero.inventory.coins.c ?? 0} label={lang.VGLITE.HeroSheet.Currency.c} path='c' />
+                <CoinValue hero={hero} value={hero.inventory.coins.g ?? 0} label={lang.APP.HeroSheet.Currency.g} path='g' />
+                <CoinValue hero={hero} value={hero.inventory.coins.s ?? 0} label={lang.APP.HeroSheet.Currency.s} path='s' />
+                <CoinValue hero={hero} value={hero.inventory.coins.c ?? 0} label={lang.APP.HeroSheet.Currency.c} path='c' />
             </div>
 
             {isCoinAppOpen &&
@@ -68,9 +68,9 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
                 <p className="text-2xl text-wealth-denom-label font-eskapade font-bold">FUNDS</p>
             </div>
             <div className="flex content-center justify-end w-full">
-                <CoinValue value={coins.g ?? 0} label={lang.VGLITE.HeroSheet.Currency.g} path='g' />
-                <CoinValue value={coins.s ?? 0} label={lang.VGLITE.HeroSheet.Currency.s} path='s' />
-                <CoinValue value={coins.c ?? 0} label={lang.VGLITE.HeroSheet.Currency.c} path='c' />
+                <CoinValue value={coins.g ?? 0} label={lang.APP.HeroSheet.Currency.g} path='g' />
+                <CoinValue value={coins.s ?? 0} label={lang.APP.HeroSheet.Currency.s} path='s' />
+                <CoinValue value={coins.c ?? 0} label={lang.APP.HeroSheet.Currency.c} path='c' />
             </div>
         </div>
     )

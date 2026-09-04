@@ -2,7 +2,7 @@
   "name": "Revelator",
   "type": "class",
   "_id": "1dT0mK0iwQTlJQFx",
-  "img": "systems/vagabond-lite/assets/class/revelator_fps.webp",
+  "img": "systems/vagabond-app/assets/class/revelator_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Revelators are warriors of radiance and justice. These oathsworn knights hold an honorable vow that becomes its own power.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Revelators</strong></b></p><p><span style=\"white-space:pre-wrap\">• Luke Skywalker, Star Wars</span></p><p><span style=\"white-space:pre-wrap\">• Michael Carpenter, The Dresden Files</span></p><p><span style=\"white-space:pre-wrap\">• She-Ra, She-Ra: Princess of Power</span></p><p><span style=\"white-space:pre-wrap\">• Wonder Woman, DC Comics</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Revelator</strong></b></p><p><span style=\"white-space:pre-wrap\">Revelators are high defense frontline strikers. Stay in the frontline for melee attacks, and smite the transgressors.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack/Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Leadership</span></p>",
     "rules": [
@@ -41,7 +41,7 @@
         "key": "GrantItem",
         "label": "Righteous: Gish",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.1A4MdMdz7EAAoMzI",
+        "uuid": "Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI",
         "type": "perk"
       },
       {
@@ -103,8 +103,8 @@
       "presence"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.ImIcBC3E6UZcHsK4",
-      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj"
+      "Compendium.vagabond-app.gear.Item.ImIcBC3E6UZcHsK4",
+      "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj"
     ],
     "castingSkill": "leadership",
     "manaMultiplier": 2,
@@ -188,7 +188,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1786568076634,
     "modifiedTime": 1788297113627,

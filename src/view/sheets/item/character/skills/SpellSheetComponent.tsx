@@ -1,5 +1,5 @@
 import { SpellDataModel } from "../../../../../model/item/character/SpellDataModel"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { tableBorder } from "../../../../common/border-styles"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -18,7 +18,7 @@ export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellData
                         <div className="flex gap-x-8 items-end">
                             <DamageTypeSelector item={item} path={'system.damageType'} />
                             <div>
-                                <ItemSheetPropLabel label={vgLiteLang.ItemSheet.baseManaCost} />
+                                <ItemSheetPropLabel label={appLang.ItemSheet.baseManaCost} />
                                 <input
                                     type="number"
                                     value={item.system.baseManaCost}
@@ -28,7 +28,7 @@ export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellData
                             </div>
                         </div>
                         <Checkbox
-                            label={vgLiteLang.ItemSheet.ignoreEffCost}
+                            label={appLang.ItemSheet.ignoreEffCost}
                             checked={item.system.ignoreEffectCost}
                             onCheckedChanged={(isChecked) => item.update({ 'system.ignoreEffectCost': isChecked } as Record<string, boolean>)}
                         />

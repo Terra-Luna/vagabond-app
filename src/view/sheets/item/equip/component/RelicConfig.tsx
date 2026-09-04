@@ -3,7 +3,7 @@ import { useMemo } from "react"
 
 import { RelicPower, RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
@@ -31,7 +31,7 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
     return (<>
         {isEditMode && <div className="flex flex-col gap-y-2 items-start mt-2">
             {/* ACTIVE POWERS */}
-            <ItemSheetPropLabel label={vgLiteLang.ButtonActions.relic} />
+            <ItemSheetPropLabel label={appLang.ButtonActions.relic} />
             <div className="flex flex-wrap gap-1">
                 {item.system.relicPowers?.map(relic => (
                     <RelicCard key={relic.id} item={item} relic={relic} />

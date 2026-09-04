@@ -1,6 +1,6 @@
 import { MoveLeft, MoveRight } from "lucide-react"
 
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { PrimaryButton,SecondaryButton } from "../../component/Button"
 import { useNavigation } from "./NavigationContext"
 
@@ -13,14 +13,14 @@ export const NavigationButtons = () => {
                 <SecondaryButton onClick={onBack}>
                     <div className="flex items-center gap-x-2">
                         <MoveLeft size={14} />
-                        {vgLiteLang.ButtonActions.back}
+                        {appLang.ButtonActions.back}
                     </div>
                 </SecondaryButton>
             )}
 
             <PrimaryButton onClick={isLastStep ? onFinish : onNext}>
                 <div className="flex items-center gap-x-2">
-                    {isLastStep ? vgLiteLang.ButtonActions.finish : vgLiteLang.ButtonActions.next}
+                    {isLastStep ? appLang.ButtonActions.finish : appLang.ButtonActions.next}
                     <MoveRight size={14} />
                 </div>
             </PrimaryButton>

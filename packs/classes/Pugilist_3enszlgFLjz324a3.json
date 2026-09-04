@@ -2,7 +2,7 @@
   "name": "Pugilist",
   "type": "class",
   "_id": "3enszlgFLjz324a3",
-  "img": "systems/vagabond-lite/assets/class/pugilist_fps.webp",
+  "img": "systems/vagabond-app/assets/class/pugilist_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Pugilists are brawlers of swagger. While a monk may dedicate themself to a single focused blow, a pugilist will break their fingers and keep punching with the bloody stump.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Pugilists</strong></b></p><p><span style=\"white-space:pre-wrap\">• Carl, Dungeon Crawler Carl</span></p><p><span style=\"white-space:pre-wrap\">• Rocky Balboa, Rocky</span></p><p><span style=\"white-space:pre-wrap\">• Hellboy, Hellboy</span></p><p><span style=\"white-space:pre-wrap\">• Stiffener Medick, Redwall</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Pugilist</strong></b></p><p><span style=\"white-space:pre-wrap\">Pugilists are frontline bruisers. Stay in the frontline, even while at low HP.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack (Brawl)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Brawl</span></p>",
     "rules": [
@@ -33,7 +33,7 @@
         "key": "GrantItem",
         "label": "Fisticuffs: Dusted Knuckle",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.zqTnJZseG8Q8Pf7Z",
+        "uuid": "Compendium.vagabond-app.perks.Item.zqTnJZseG8Q8Pf7Z",
         "type": "perk"
       },
       {
@@ -50,8 +50,8 @@
       "might"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.AHRBDaSRg8yRq6am",
-      "Compendium.vagabond-lite.gear.Item.UxTrEtIZcGkbRZoZ"
+      "Compendium.vagabond-app.gear.Item.AHRBDaSRg8yRq6am",
+      "Compendium.vagabond-app.gear.Item.UxTrEtIZcGkbRZoZ"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -111,7 +111,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1786567444757,
     "modifiedTime": 1787881598007,

@@ -3,7 +3,7 @@
   "name": "Dungeonheart",
   "type": "adversary",
   "_id": "djAK3oNGTw7AshcV",
-  "img": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+  "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
       "current": 45,
@@ -329,7 +329,7 @@
     "height": 3,
     "depth": 3,
     "texture": {
-      "src": "systems/vagabond-lite/assets/icons/ic_adversary.webp",
+      "src": "systems/vagabond-appssets/icons/ic_adversary.webp",
       "anchorX": 0.5,
       "anchorY": 0.5,
       "fit": "contain",
@@ -423,7 +423,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1787794178977,
     "modifiedTime": 1788472650980,

@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { vgLiteLang } from "../../../../utils/lang"
+import { appLang } from "../../../../utils/lang"
 import { CustomDropDown } from "../../../../view/component/Dropdown"
 import { Label } from "../../component/Labels"
 
@@ -11,9 +11,9 @@ export const useFavorHinderSelector = () => {
         <CustomDropDown
             value={favorHinder}
             options={[
-                { value: 'none', label: vgLiteLang.FavorHinder.none },
-                { value: 'favor', label: vgLiteLang.FavorHinder.favor },
-                { value: 'hinder', label: vgLiteLang.FavorHinder.hinder }
+                { value: 'none', label: appLang.FavorHinder.none },
+                { value: 'favor', label: appLang.FavorHinder.favor },
+                { value: 'hinder', label: appLang.FavorHinder.hinder }
             ]}
             onChange={(e) => setFavorHinder(e.target.value)}
             className="text-sm"

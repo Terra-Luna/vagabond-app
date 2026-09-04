@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { appLang } from "../../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../../utils/localeUtils"
 import { DropDown } from "../../../../../component/Dropdown"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
@@ -14,16 +14,16 @@ export const SpellcastingSkillSelector = ({ item }: { item: Item & { system: Cla
     return (
         <div className="flex gap-x-1 items-center">
             {(isEditMode || item.system.castingSkill) && <>
-                <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelSpellSkill}:`} />
+                <ClassSheetLabel text={`${appLang.ClassSheet.labelSpellSkill}:`} />
                 <DropDown
                     value={item.system.castingSkill}
-                    options={createDropdownEntriesFromObj(vgLiteLang.Skills)}
+                    options={createDropdownEntriesFromObj(appLang.Skills)}
                     includeNullOption={true}
                     updateMechanism={{ updatePath: ['castingSkill'] }}
                     parent={item}
                 />
             </>}
-            <ClassSheetText text={vgLiteLang.Stat[item.system.castingSkill ?? '']?.name} />
+            <ClassSheetText text={appLang.Stat[item.system.castingSkill ?? '']?.name} />
         </div>
     )
 }
@@ -32,7 +32,7 @@ export const MaxCastFormulaSelector = ({ item }: { item: Item & { system: ClassD
     return (<>
         {item.system.castingSkill &&
             <div className="flex gap-x-1 items-center">
-                <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelMaxMana}:`} />
+                <ClassSheetLabel text={`${appLang.ClassSheet.labelMaxMana}:`} />
                 <DropDown
                     value={item.system.maxCastFormula}
                     options={[{ value: "half", label: '1 + ⌈Level / 2⌉' }, { value: 'full', label: '2 + Level' }]}
@@ -51,7 +51,7 @@ export const MaxManaPerLevelSelector = ({ item }: { item: Item & { system: Class
         <>
             {(isEditMode || item.system.castingSkill) &&
                 <div className="flex gap-x-1 items-center">
-                    <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelManaLevel}:`} />
+                    <ClassSheetLabel text={`${appLang.ClassSheet.labelManaLevel}:`} />
                     <DropDown
                         value={item.system.manaMultiplier?.toString()}
                         options={[

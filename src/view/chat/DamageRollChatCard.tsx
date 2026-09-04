@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
 
 import { DamageRollResult } from '../../combat/engine/roll/DamageRoll'
-import { vgLiteLang } from '../../utils/lang'
+import { appLang } from '../../utils/lang'
 import { getCanvasToken, getTokenImg } from '../../utils/modelUtil'
 import { BaseChatCardHost } from './component/BaseChatCardHost'
 import { ChatCardBanner } from './component/ChatCardBanner'
@@ -27,7 +27,7 @@ export const DamageRollChatCard = ({ actorId, tokenIds, result }: {
                 tokenId={actor?.getActiveTokens()[0]?.id}
                 portrait={getTokenImg(actor)}
                 title={result.atkName}
-                subtitle={[{ label: "Damage Type", value: vgLiteLang.DamageTypes[result.dmgType] }]}
+                subtitle={[{ label: "Damage Type", value: appLang.DamageTypes[result.dmgType] }]}
             />}
             contents={<>
                 <TargetsDisplay targets={targets} onRemoveTarget={onRemoveTarget} />

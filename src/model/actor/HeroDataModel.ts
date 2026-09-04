@@ -4,7 +4,7 @@ import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsH
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { getId } from "../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
@@ -138,7 +138,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             if (luckUpdate <= this.stats.luck!) {
                 const previousLuck = this.statuses.counters.luck ?? 0
                 if (previousLuck !== luckUpdate) {
-                    const verb = previousLuck < luckUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
+                    const verb = previousLuck < luckUpdate ? appLang.HeroSheet.gained : appLang.HeroSheet.spent;
                     (options as any).resourceTrackerUpdate = { verb: verb, resource: 'luck' }
                 }
             }
@@ -148,7 +148,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         if (studiedUpdate) {
             const previousStudied = this.statuses.counters.studied ?? 0
             if (previousStudied !== studiedUpdate) {
-                const verb = previousStudied < studiedUpdate ? vgLiteLang.HeroSheet.gained : vgLiteLang.HeroSheet.spent;
+                const verb = previousStudied < studiedUpdate ? appLang.HeroSheet.gained : appLang.HeroSheet.spent;
                 (options as any).resourceTrackerUpdate = { verb: verb, resource: 'studied' }
             }
         }

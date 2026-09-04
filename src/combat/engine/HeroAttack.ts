@@ -5,7 +5,7 @@ import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSe
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice } from "../../utils/foundryUtils"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard, sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { SkillCheckChatCard } from "../../view/chat/SkillCheckChatCard"
@@ -46,11 +46,11 @@ export class HeroAttack extends Attack {
     }
 
     private get isSuccessOrCrit(): boolean {
-        return this.skillCheck?.result?.outcome !== vgLiteLang.RollResult.failure
+        return this.skillCheck?.result?.outcome !== appLang.RollResult.failure
     }
 
     private get isCrit(): boolean {
-        return this.skillCheck?.result?.outcome === vgLiteLang.RollResult.crit
+        return this.skillCheck?.result?.outcome === appLang.RollResult.crit
     }
 
     private get isEligibleForDmgRoll(): boolean {
@@ -103,7 +103,7 @@ export class HeroAttack extends Attack {
         }
 
         if (this.isEligibleForDmgRoll && this.isSuccessOrCrit) {
-            await this.rollDamage(this.skillCheck?.result?.outcome === vgLiteLang.RollResult.crit)
+            await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
         }
 
         await this.save(serializeAttack)
@@ -149,7 +149,7 @@ export class HeroAttack extends Attack {
             roll3dDice([this.skillCheck?.result?.rolls[0]])
 
             if (this.skillCheck?.result &&
-                this.skillCheck?.result.outcome !== vgLiteLang.RollResult.failure &&
+                this.skillCheck?.result.outcome !== appLang.RollResult.failure &&
                 this.isEligibleForDmgRoll
             ) {
                 await this.rollDamage()
@@ -186,10 +186,10 @@ export class HeroAttack extends Attack {
                 newResult.d6 = d6.total
                 newResult.total += d6.total
                 newResult.rolls.push(d6)
-                newResult.favorHinder = vgLiteLang.FavorHinder.favor
+                newResult.favorHinder = appLang.FavorHinder.favor
 
                 if (newResult.total >= result.difficulty) {
-                    newResult.outcome = vgLiteLang.RollResult.success
+                    newResult.outcome = appLang.RollResult.success
                 }
 
                 this.skillCheck.result = newResult
@@ -197,7 +197,7 @@ export class HeroAttack extends Attack {
 
                 roll3dDice([d6])
 
-                if (newResult.outcome !== vgLiteLang.RollResult.failure) {
+                if (newResult.outcome !== appLang.RollResult.failure) {
                     await this.damageRoll?.roll()
                     roll3dDice(this.damageRoll?.result?.rolls ?? [])
                 }
@@ -230,13 +230,13 @@ export class HeroAttack extends Attack {
             newResult.d6 = d6.total
             newResult.total -= d6.total
             newResult.rolls.push(d6)
-            newResult.favorHinder = vgLiteLang.FavorHinder.hinder
+            newResult.favorHinder = appLang.FavorHinder.hinder
 
             if (newResult.total >= result.difficulty) {
-                newResult.outcome = vgLiteLang.RollResult.success
+                newResult.outcome = appLang.RollResult.success
             }
             else {
-                newResult.outcome = vgLiteLang.RollResult.failure
+                newResult.outcome = appLang.RollResult.failure
                 this.isResolved = true
             }
 
@@ -260,11 +260,11 @@ export class HeroAttack extends Attack {
             const newResult = { ...result }
             newResult.total += newResult.d6
             newResult.d6 = 0
-            newResult.favorHinder = vgLiteLang.FavorHinder.none
+            newResult.favorHinder = appLang.FavorHinder.none
             newResult.rolls = newResult.rolls.filter(r => getDiceTerms(r).flatMap(t => t.faces).includes(20))
 
             if (newResult.total >= result.difficulty) {
-                newResult.outcome = vgLiteLang.RollResult.success
+                newResult.outcome = appLang.RollResult.success
             }
             else {
                 this.isResolved = true

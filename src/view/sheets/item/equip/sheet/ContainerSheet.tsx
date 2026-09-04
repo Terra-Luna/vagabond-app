@@ -5,7 +5,7 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ContainerDataModel, itemsInContainer } from "../../../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { containerItemContextMenuItems } from "../../../../../utils/heroInventoryUtil"
-import { vgLiteLang as lang, vgLiteLang } from "../../../../../utils/lang"
+import { appLang,appLang as lang } from "../../../../../utils/lang"
 import { SecondaryButton } from "../../../../component/Button"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -41,7 +41,7 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
                     }} />
                 </div>
                 {contents.length === 0
-                    ? <p className="italic">{vgLiteLang.ItemSheet.drag}</p>
+                    ? <p className="italic">{appLang.ItemSheet.drag}</p>
                     : <div className="space-y-2">
                         <InventoryItemsTable
                             actor={owner}

@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
@@ -16,7 +16,7 @@ export const useEquipmentSelection = (
         { g: 3, s: 0, c: 0 }, clazz
     )
 
-    const strings = vgLiteLang.HeroCreation
+    const strings = appLang.HeroCreation
 
     const EquipmentSelection = (
         <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>

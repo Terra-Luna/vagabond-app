@@ -11,7 +11,7 @@ import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataMode
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
@@ -29,7 +29,7 @@ import { RichTextField } from "../../../../component/RichTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { onClickAction, onClickActionCombo } from "./hooksAndUtils"
 
-const locale = vgLiteLang.NpcSheet
+const locale = appLang.NpcSheet
 
 export const ActionMenuHeader = ({ label, onClick }: { label: string, onClick?: () => void }) => {
     const { isEditMode } = useEditMode()
@@ -46,7 +46,7 @@ export const ActionMenuHeader = ({ label, onClick }: { label: string, onClick?: 
 export const AddNewIconButton = ({ onClick }) => {
     return (
         <UtilityButton onClick={onClick}>
-            {`+${vgLiteLang.ButtonActions.add}`}
+            {`+${appLang.ButtonActions.add}`}
         </UtilityButton>
     )
 }
@@ -266,7 +266,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <DropDown
                                 value={newAction?.damage?.type ?? ''}
-                                options={createDropdownEntries(vgLiteLang.DamageTypes)}
+                                options={createDropdownEntries(appLang.DamageTypes)}
                                 updateMechanism={{
                                     onChange: (type) => updateDamage({ type: type ?? '' })
                                 }}
@@ -279,7 +279,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     <div className="flex items-end">
                         <p>Saves:&nbsp;</p>
                         <div className="flex gap-x-3">
-                            {Object.entries(vgLiteLang.Saves).map(([key, save]) => (
+                            {Object.entries(appLang.Saves).map(([key, save]) => (
                                 <div key={key} className="flex items-center gap-1">
                                     <input
                                         type="checkbox"
@@ -298,13 +298,13 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                         <OptionsSelectionMenu
                             options={VagabondActiveEffect.statusEffects.map(effect => ({
                                 key: effect.id,
-                                value: vgLiteLang.StatusConditions[effect.id]?.name ?? effect.id,
+                                value: appLang.StatusConditions[effect.id]?.name ?? effect.id,
                                 isSelected: (newAction?.statuses ?? []).includes(effect.id)
                             }))}
                             onChange={(statuses) => updateAction({ statuses })}
                         />
                         <p className="text-text-secondary italic">
-                            {(newAction?.statuses ?? []).map(id => vgLiteLang.StatusConditions[id]?.name ?? id).join(", ")}
+                            {(newAction?.statuses ?? []).map(id => appLang.StatusConditions[id]?.name ?? id).join(", ")}
                         </p>
                     </div>
 

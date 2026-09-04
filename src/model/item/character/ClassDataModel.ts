@@ -5,9 +5,9 @@ import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 const classSchema = () => {
     return {
         complexity: new fields.NumberField({ ...requiredInteger, min: 1, max: 5, initial: 1}),
-        keyStats: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Stat) }), { initial: [] }),
+        keyStats: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Stat) }), { initial: [] }),
         startingPacks: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
-        castingSkill: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.VGLITE.Skills)], blank: true }),
+        castingSkill: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(lang.APP.Skills)], blank: true }),
         manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         maxCastFormula: new fields.StringField({ ...requiredString, choices: ['', "half", 'full'], blank: true }),
         features: new fields.ArrayField(new fields.SchemaField({

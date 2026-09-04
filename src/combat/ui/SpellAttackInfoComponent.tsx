@@ -3,7 +3,7 @@ import { useMemo } from "react"
 import ReactHtmlParser from 'react-html-parser'
 
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { DamageRollsComponent } from "../../view/chat/component/DamageRollsComponent"
 import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
@@ -16,14 +16,14 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined 
 }) => {
     const subtitle: CardSubHeaderValues[] = []
     if (delivery.damageDice > 0 && spell.system.damageType !== 'none') {
-        subtitle.push({ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[spell.system.damageType] })
+        subtitle.push({ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.system.damageType] })
     }
-    subtitle.push({ label: vgLiteLang.HeroSheet.Magic.labelMana, value: delivery.manaCost })
+    subtitle.push({ label: appLang.HeroSheet.Magic.labelMana, value: delivery.manaCost })
 
     const subheaders = useMemo(() => {
         const subs = [{ label: "Delivery", value: delivery.name }]
         if (delivery.isFocused) {
-            subs.push({ label: vgLiteLang.HeroSheet.Magic.labelFocus, value: <Sparkle size={18} className="text-mana" /> })
+            subs.push({ label: appLang.HeroSheet.Magic.labelFocus, value: <Sparkle size={18} className="text-mana" /> })
         }
         return subs
     }, [])
@@ -43,7 +43,7 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined 
                 </>
             }
             {delivery.applyEffect && <>
-                <SpellcastingLabel text={`${vgLiteLang.HeroSheet.Magic.labelEffect}:`} />
+                <SpellcastingLabel text={`${appLang.HeroSheet.Magic.labelEffect}:`} />
                 <SpellcastingSubtext text={ReactHtmlParser(spell.system.description)} />
             </>}
         </div>

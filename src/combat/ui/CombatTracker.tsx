@@ -6,7 +6,7 @@ import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../model/actor/NpcDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
 import { getCanvasToken } from "../../utils/modelUtil"
 import { CtxMenuItem, useContextMenu } from "../../view/component/ContextMenu"
@@ -97,19 +97,19 @@ export const CombatTracker = ({ combat }) => {
                 <div className="flex flex-col gap-1 overflow-auto" ref={containerRef} onScroll={handleScroll}>
                     {heroes?.length > 0 &&
                         <Group groupName="heroes">
-                            <GroupHeader groupName="heroes" label={vgLiteLang.Combat.heroes} />
+                            <GroupHeader groupName="heroes" label={appLang.Combat.heroes} />
                             <GroupBody>{heroes?.map((hero) => <Hero key={hero.id} hero={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
                     {npcs?.length > 0 &&
                         <Group groupName="npcs">
-                            <GroupHeader groupName="npcs" label={vgLiteLang.Combat.npcs} />
+                            <GroupHeader groupName="npcs" label={appLang.Combat.npcs} />
                             <GroupBody>{npcs?.map(npc => <Adversary key={npc.id} adversary={npc} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
                     {adversaries?.length > 0 &&
                         <Group groupName="adversaries">
-                            <GroupHeader groupName="adversaries" label={vgLiteLang.Combat.adversaries} />
+                            <GroupHeader groupName="adversaries" label={appLang.Combat.adversaries} />
                             <GroupBody>{adversaries?.map(adv => <Adversary key={adv.id} adversary={adv} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants} />)}</GroupBody>
                         </Group>
                     }
@@ -192,7 +192,7 @@ const CombatantHeader = ({ token, combatant, name, children, onClick }) => {
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} onClick={onClick} />
                 <div className="w-full pr-4">
                     <div className={`px-1 font-eskapade text-text-secondary font-bold text-lg`}>
-                        <p className={`hover-glow ${hovered ? "vglite-hovered" : ""} leading-none`}>{name}</p>
+                        <p className={`hover-glow ${hovered ? "app-hovered" : ""} leading-none`}>{name}</p>
                     </div>
                     {children}
                 </div>
@@ -267,7 +267,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 e.keepOpen = true
                 await performAsyncActionOnControlledCombatants(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !controlledCombatantsHaveStatus(statusKey) }))
             }
-            return { label: vgLiteLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: () => controlledCombatantsHaveStatus(statusKey) } as CtxMenuItem
+            return { label: appLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: () => controlledCombatantsHaveStatus(statusKey) } as CtxMenuItem
         }
 
         const makeBurnMenuItem = () => {
@@ -284,7 +284,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 e.keepOpen = true
                 performAsyncActionOnControlledCombatants(async combatant => {
                     await addCountdown(
-                        `${combatant.actor?.name}: ${vgLiteLang.StatusConditions["burning"].name} (${vgLiteLang.DamageTypes[damageType]})`,
+                        `${combatant.actor?.name}: ${appLang.StatusConditions["burning"].name} (${appLang.DamageTypes[damageType]})`,
                         duration, 0.1, y,
                         combatant.actor?.uuid ?? '',
                         combatant.token?.uuid,
@@ -301,10 +301,10 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             }
 
             const subMenuItems = () => {
-                const items = Object.keys(vgLiteLang.DamageTypes)
+                const items = Object.keys(appLang.DamageTypes)
                     .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
                     .map(damageType => ({
-                        label: vgLiteLang.DamageTypes[damageType],
+                        label: appLang.DamageTypes[damageType],
                         subMenuItems: [
                             { label: "Cd4", action: (e) => applyBurn(e, damageType, 4) },
                             { label: "Cd6", action: (e) => applyBurn(e, damageType, 6) },
@@ -326,7 +326,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             }
 
             return {
-                label: vgLiteLang.StatusConditions["burning"].name,
+                label: appLang.StatusConditions["burning"].name,
                 icon: StatusMenuItemIcon,
                 isSelected: getHasStatus,
                 subMenuItems
@@ -337,11 +337,11 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             {
                 icon: Sparkles,
                 label: controlledTokens().size > 1
-                    ? `${vgLiteLang.Combat.applyEff} ${vgLiteLang.Combat.allSelected}`
-                    : vgLiteLang.Combat.applyEff,
+                    ? `${appLang.Combat.applyEff} ${appLang.Combat.allSelected}`
+                    : appLang.Combat.applyEff,
                 subMenuItems: [
                     makeBurnMenuItem(),
-                    ...Object.keys(vgLiteLang.StatusConditions)
+                    ...Object.keys(appLang.StatusConditions)
                         .filter(statusKey => !["burning", "dead", "fatigued"].includes(statusKey))
                         .map(statusKey => makeStatusConditionMenuItem(statusKey))
                 ]
@@ -390,7 +390,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                         onCtxMenu(e, ctxMenuActions())
                     }
                 }}
-                title={vgLiteLang.Combat.keyExplainer}
+                title={appLang.Combat.keyExplainer}
             >
                 <div className="w-full">
                     {children}
@@ -420,14 +420,14 @@ const getStatusIcons = (combatant) => {
     const statuses = getCombatantStatuses(combatant)
     return statuses.map((status) => {
         const img = CONFIG.statusEffects.find(e => e.id === status)?.img
-        const title = vgLiteLang.StatusConditions[status].name
+        const title = appLang.StatusConditions[status].name
         return img ? <img key={status} src={img} height={12} width={12} title={title} /> : <></>
     })
 }
 
 const StatusIcon = ({ status, size, className }: { status: string, size?: number, className?: string }) => {
     const img = CONFIG.statusEffects.find(e => e.id === status)?.img
-    const title = vgLiteLang.StatusConditions[status].name
+    const title = appLang.StatusConditions[status].name
     return img ? <img key={status} src={img} height={size ?? 12} width={size ?? 12} title={title} className={className} /> : <></>
 }
 
@@ -448,8 +448,8 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
         <Combatant ref={combatantComponentRef} token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick}>
                 <div className="w-full" title={heroActorModel.mana.max > 0
-                    ? localizeString(vgLiteLang.Combat.statTooltip, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString(), mana: heroActorModel.mana.current?.toString(), manaMax: heroActorModel.mana.max?.toString() })
-                    : localizeString(vgLiteLang.Combat.statTooltipNoMana, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString() })}>
+                    ? localizeString(appLang.Combat.statTooltip, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString(), mana: heroActorModel.mana.current?.toString(), manaMax: heroActorModel.mana.max?.toString() })
+                    : localizeString(appLang.Combat.statTooltipNoMana, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString() })}>
                     <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
                     <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck/75" size="sm" rounded={false} />
                     {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
@@ -484,10 +484,10 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
     }, [combatant])
 
     if (isCurrentCombatant) {
-        component = <IconOnlyButton title={vgLiteLang.Combat.end} Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
+        component = <IconOnlyButton title={appLang.Combat.end} Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
     }
     else if (hasActivationsLeft) {
-        component = <IconOnlyButton title={vgLiteLang.Combat.activate} Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
+        component = <IconOnlyButton title={appLang.Combat.activate} Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
     }
 
     return component
@@ -501,7 +501,7 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token} onClick={combatantComponentRef.current?.onClick}>
-                <div className="w-full" title={localizeString(vgLiteLang.Combat.hpTooltip, { hp: adversaryModel.health.current?.toString(), hpMax: adversaryModel.health.max?.toString() })}>
+                <div className="w-full" title={localizeString(appLang.Combat.hpTooltip, { hp: adversaryModel.health.current?.toString(), hpMax: adversaryModel.health.max?.toString() })}>
                     <Gauge max={adversaryModel.health.max} value={adversaryModel.health.current} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
                 </div>
                 <div>

@@ -2,7 +2,7 @@ import { Trash, Undo } from 'lucide-react'
 import { useState } from 'react'
 
 import { sys_id } from '../../utils/foundryUtils'
-import { vgLiteLang } from '../../utils/lang'
+import { appLang } from '../../utils/lang'
 import { CtxMenuItem, useContextMenu } from '../../view/component/ContextMenu'
 import { CanvasOverlayObjectWrapper } from '../overlay/component/CanvasOverlayObjectWrapper'
 import { WidgetLabel } from '../overlay/component/WidgetLabel'
@@ -63,7 +63,7 @@ export const ProgressClockAppView = () => {
         return [
             ...(canInteract ? [{ label: "Reduce Progress", icon: Undo, action: async () => await reduceProgress(clock.id) }] : []),
             ...gmMenuItems(clock),
-            ...(canInteract ? [{ label: vgLiteLang.ButtonActions.delete, icon: Trash, action: async () => await deleteClock(clock.id), isDestructive: true }] : [])
+            ...(canInteract ? [{ label: appLang.ButtonActions.delete, icon: Trash, action: async () => await deleteClock(clock.id), isDestructive: true }] : [])
         ]
     }
 

@@ -1,7 +1,7 @@
 import { useEffect,useState } from "react"
 
 import { HeroAttack } from "../../../../combat/engine/HeroAttack"
-import { vgLiteLang } from "../../../../utils/lang"
+import { appLang } from "../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../utils/localeUtils"
 import { CustomDropDown } from "../../../../view/component/Dropdown"
 import { SectionLabel } from "../../component/Labels"
@@ -21,8 +21,8 @@ export const useSkillSelector = (actor, weapon) => {
                 value={skill}
                 options={[
                     { value: null, label: "-" },
-                    ...createDropdownEntriesFromObj(vgLiteLang.Skills),
-                    ...createDropdownEntriesFromObj(vgLiteLang.Saves)
+                    ...createDropdownEntriesFromObj(appLang.Skills),
+                    ...createDropdownEntriesFromObj(appLang.Saves)
                 ]}
                 onChange={(e) => setSkill(e.target.value)}
                 className="text-sm"

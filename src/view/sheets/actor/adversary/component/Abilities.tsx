@@ -4,7 +4,7 @@ import { useCallback,useState } from "react"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { EditableTextField } from "../../../../component/EditableTextField"
@@ -14,7 +14,7 @@ import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ActionMenuHeader, AddMenuButtons } from "./Actions"
 import { onClickAction } from "./hooksAndUtils"
 
-const locale = vgLiteLang.NpcSheet
+const locale = appLang.NpcSheet
 
 export const Abilities = ({ npc, setIsAddMenuOpen, setEditTarget }) => {
     const { isEditMode } = useEditMode()

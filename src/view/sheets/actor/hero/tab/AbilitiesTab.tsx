@@ -4,7 +4,7 @@ import { PerkSelectionApp } from "../../../../../apps/hero-choices/PerkSelection
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
 import { groupBy } from "../../../../../utils/collectionUtil"
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
@@ -15,8 +15,8 @@ import { SkillCard } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    const beingSize = vgLiteLang.Sizes[hero.ancestry?.beingSize ?? '']
-    const beingType = vgLiteLang.BeingTypes[hero.ancestry?.beingType ?? '']
+    const beingSize = appLang.Sizes[hero.ancestry?.beingSize ?? '']
+    const beingType = appLang.BeingTypes[hero.ancestry?.beingType ?? '']
     const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"
 
     const groupedFeatures = groupBy('name', hero.class?.features
@@ -34,7 +34,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         <div className="py-1">
             {
                 !hero.ancestry ? <></> : <>
-                    <Header title={vgLiteLang.HeroSheet.ancestry} />
+                    <Header title={appLang.HeroSheet.ancestry} />
                     <div className="mt-0.5" />
                     <SkillCard
                         title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
@@ -44,7 +44,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 </>
             }
             <div className="my-2">
-                <Header title={vgLiteLang.HeroSheet.class} />
+                <Header title={appLang.HeroSheet.class} />
                 <div className="mt-0.5" />
                 <div className={abilitiesGrid}>
                     {
@@ -67,7 +67,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 </div>
             </div>
             
-            <Header title={vgLiteLang.HeroSheet.perks} />
+            <Header title={appLang.HeroSheet.perks} />
             <div className="mt-0.5" />
             <div className={abilitiesGrid}>
                 {

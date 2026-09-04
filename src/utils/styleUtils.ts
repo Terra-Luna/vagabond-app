@@ -1,17 +1,17 @@
-import styles from "../styles/vagabond-lite.css?inline"
-export let vgLiteStyles: any = styles
+import styles from "../styles/vagabond-app.css?inline"
+export let appStyles: any = styles
 
 if (import.meta.hot) {
     // whenever the css file hot-reloads...
-    import.meta.hot.accept('../styles/vagabond-lite.css?inline', (newModule) => {
+    import.meta.hot.accept('../styles/vagabond-app.css?inline', (newModule) => {
         if (newModule && newModule.default) {
             // replace our exported variable with the new content
-            vgLiteStyles = newModule.default;
+            appStyles = newModule.default;
             console.log('Updating tailwind styles...');
 
             // and let all our scaduRoots know they need to update
             window.dispatchEvent(new CustomEvent('tailwind-styles-updated', {
-                detail: vgLiteStyles
+                detail: appStyles
             }));
         }
     });
@@ -20,7 +20,7 @@ if (import.meta.hot) {
 // Creates a style tag that will listen for any HMR updates
 export const createStyleTag = () => {
     const styleTag = document.createElement('style')
-    styleTag.textContent = vgLiteStyles
+    styleTag.textContent = appStyles
     listenForTailwindUpdates(styleTag)
     return styleTag
 }

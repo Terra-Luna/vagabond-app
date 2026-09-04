@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { PrimaryButton } from "../../../view/component/Button"
 import { ActiveEffectButtons } from "./ActiveEffectButtons"
@@ -33,8 +33,8 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
         <div className="flex flex-col gap-4 p-4 h-full bg-sheet-main-fill text-text-primary font-eskapade font-bold rounded-b-lg">
             {/* Header / Add Button */}
             <div className="flex justify-between items-center">
-                <p className="text-2xl">{vgLiteLang.Effects.title}</p>
-                <PrimaryButton children={vgLiteLang.ButtonActions.addEffect} onClick={onCreate} />
+                <p className="text-2xl">{appLang.Effects.title}</p>
+                <PrimaryButton children={appLang.ButtonActions.addEffect} onClick={onCreate} />
             </div>
 
             {/* 🔥 BURNING NOTIFICATIONS 🔥 */}
@@ -45,9 +45,9 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                     className="flex items-center justify-between bg-context-menu-fill border border-solid border-destructive-action/50 rounded p-2 text-text-primary text-sm"
                 >
                     <span className="flex items-center gap-1.5 text-lg">
-                        <span>🔥</span> {vgLiteLang.Effects.burn}:
+                        <span>🔥</span> {appLang.Effects.burn}:
                         <span className="text-text-header-tertiary italic ml-1 text-sm line-clamp-1">
-                            {`(${vgLiteLang.Effects.by} ${eff.sourceName || vgLiteLang.Effects.env})`}
+                            {`(${appLang.Effects.by} ${eff.sourceName || appLang.Effects.env})`}
                         </span>
                     </span>
                     <div className="flex gap-x-4">

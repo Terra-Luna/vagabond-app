@@ -2,7 +2,7 @@
   "name": "Bard",
   "type": "class",
   "_id": "uxnA299tN8JJA9Ae",
-  "img": "systems/vagabond-lite/assets/class/bard_fps.webp",
+  "img": "systems/vagabond-app/assets/class/bard_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Bard’s are heralds of the awe-inspiring beauty of creation. While the painter and sculptor decorate space, a Bard decorates time.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Bards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Edward Chris von Muir, Final Fantasy IV</span></p><p><span style=\"white-space:pre-wrap\">• Jaskier, The Witcher</span></p><p><span style=\"white-space:pre-wrap\">• Kvothe, The Kingkiller Chronicle</span></p><p><span style=\"white-space:pre-wrap\">• Sylvando, Dragon Quest XI</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Bards</strong></b></p><p><span style=\"white-space:pre-wrap\">The bard is a mid-defense, high-support class with a focus on optimizing your Group’s d20 rolls. It’s recommended that you avoid melee on most Bard builds.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Virtuoso</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Midline/Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Finesse, Influence, Performance</span></p>",
     "rules": [
@@ -64,7 +64,7 @@
       "presence"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.3vDJJSHn1yUcfRT0"
+      "Compendium.vagabond-app.gear.Item.3vDJJSHn1yUcfRT0"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -124,7 +124,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1786554651254,
     "modifiedTime": 1787877837837,

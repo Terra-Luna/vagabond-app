@@ -13,7 +13,7 @@ for (const name of packNames) {
 
     try {
         execSync(
-            `pnpm exec fvtt package unpack --type=System --id=vagabond-lite --out="${outputDirectory}" ${name}`,
+            `pnpm exec fvtt package unpack --type=System --id=vagabond-app --out="${outputDirectory}" ${name}`,
             { stdio: "inherit" }
         );
     } catch (err) {

@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { tableBorderRounded } from "../../view/common/border-styles"
 import { PopOutWidget } from "../../view/component/Widget"
 
@@ -32,7 +32,7 @@ export const CoinAppView = ({ coin, mode, setMode, onUpdateCoins, onSave, onCanc
                                     onUpdateCoins({ ...coin, [denomination]: Math.max(0, Number(e.target.value)) })
                                 }}
                             />
-                            <p className="text-sm text-wealth-denom-label font-bold">{vgLiteLang.HeroSheet.Currency[denomination]}</p>
+                            <p className="text-sm text-wealth-denom-label font-bold">{appLang.HeroSheet.Currency[denomination]}</p>
                         </div>
                     ))
                 }

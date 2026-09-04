@@ -1,11 +1,11 @@
 {
-  "id": "vagabond-lite",
+  "id": "vagabond-app",
   "title": "Vagabond App",
   "description": "A lightweight system for the Vagabond TTRPG.",
-  "version": "v0.0.1",
-  "url": "https://github.com/Terra-Luna/vagabond-lite",
-  "manifest": "https://github.com/Terra-Luna/vagabond-lite/releases/latest/download/system.json",
-  "download": "https://github.com/Terra-Luna/vagabond-lite/releases/download/v0.0.1/vagabond-app-v0.0.1.zip",
+  "version": "v0.0.2",
+  "url": "https://github.com/Terra-Luna/vagabond-app",
+  "manifest": "https://github.com/Terra-Luna/vagabond-app/releases/latest/download/system.json",
+  "download": "https://github.com/Terra-Luna/vagabond-app/releases/download/v0.0.2/vagabond-app-v0.0.2.zip",
   "license": "LICENSE",
   "compatibility": {
     "minimum": "14",
@@ -102,9 +102,9 @@
       "name": "adversaries",
       "label": "Adversaries",
       "type": "Actor",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/adversaries",
-      "banner": "systems/vagabond-lite/assets/compendium/adversaries_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/adversaries_banner.webp",
       "ownership": {
         "PLAYER": "NONE",
         "ASSISTANT": "OWNER"
@@ -114,9 +114,9 @@
       "name": "ancestries",
       "label": "Ancestries",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/ancestries",
-      "banner": "systems/vagabond-lite/assets/compendium/ancestries_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/ancestries_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -126,9 +126,9 @@
       "name": "classes",
       "label": "Classes",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/classes",
-      "banner": "systems/vagabond-lite/assets/compendium/classes_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/classes_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -138,9 +138,9 @@
       "name": "perks",
       "label": "Perks",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/perks",
-      "banner": "systems/vagabond-lite/assets/compendium/perks_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/perks_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -150,9 +150,9 @@
       "name": "spells",
       "label": "Spells",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/spells",
-      "banner": "systems/vagabond-lite/assets/compendium/spells_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/spells_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -162,9 +162,9 @@
       "name": "alchemical",
       "label": "Alchemical Items",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/alchemical",
-      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -174,9 +174,9 @@
       "name": "armor",
       "label": "Armor",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/armor",
-      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -186,9 +186,9 @@
       "name": "weapons",
       "label": "Weapons",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/weapons",
-      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -198,9 +198,9 @@
       "name": "relics",
       "label": "Relics",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/relics",
-      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
       "ownership": {
         "PLAYER": "NONE",
         "ASSISTANT": "OWNER"
@@ -210,9 +210,9 @@
       "name": "gear",
       "label": "Gear",
       "type": "Item",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/gear",
-      "banner": "systems/vagabond-lite/assets/compendium/equipment_banner.webp",
+      "banner": "systems/vagabond-app/assets/compendium/equipment_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -222,9 +222,9 @@
       "name": "active-effects",
       "label": "Active Effects",
       "type": "ActiveEffect",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/active-effects",
-      "banner": "systems/vagabond-lite/assets/compendium/effects.webp",
+      "banner": "systems/vagabond-app/assets/compendium/effects.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -234,9 +234,9 @@
       "name": "macros",
       "label": "Macros",
       "type": "Macro",
-      "system": "vagabond-lite",
+      "system": "vagabond-app",
       "path": "packs/macros",
-      "banner": "systems/vagabond-lite/assets/compendium/macros.webp",
+      "banner": "systems/vagabond-app/assets/compendium/macros.webp",
       "ownership": {
         "PLAYER": "OBSERVER",
         "ASSISTANT": "OWNER"
@@ -244,7 +244,7 @@
     }
   ],
   "esmodules": [
-    "vagabond-lite.js"
+    "vagabond-app.js"
   ],
   "styles": [],
   "languages": [
@@ -265,9 +265,9 @@
   "media": [
     {
       "type": "setup",
-      "url": "systems/vagabond-lite/assets/splash.webp",
-      "thumbnail": "systems/vagabond-lite/assets/splash.webp"
+      "url": "systems/vagabond-app/assets/splash.webp",
+      "thumbnail": "systems/vagabond-app/assets/splash.webp"
     }
   ],
-  "background": "systems/vagabond-lite/assets/splash.webp"
+  "background": "systems/vagabond-app/assets/splash.webp"
 }

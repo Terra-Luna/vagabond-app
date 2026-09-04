@@ -5,7 +5,7 @@ import { coinsAsString } from "../../model/common/CoinValue"
 import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { SecondaryButton } from "../../view/component/Button"
 import { ItemDivider } from "../../view/component/Header"
 
@@ -44,10 +44,10 @@ export const ShopItemsList = ({ items, onAddItemToCart }: {
                                     <p className="font-bold hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</p>
                                             {item.system instanceof WeaponDataModel &&
                                                 <p className="text-text-secondary italic">{`
-                                                ${item.system.skills.map(s => vgLiteLang.WeaponSkills[s]?.name).join(", ")} 
+                                                ${item.system.skills.map(s => appLang.WeaponSkills[s]?.name).join(", ")} 
                                                 | d${item.system.damage.dice.faces} 
-                                                | ${vgLiteLang.Grips[item.system.grip.style]}
-                                                | ${item.system.properties.map(p => vgLiteLang.WeaponProps[p].name).join(", ")}
+                                                | ${appLang.Grips[item.system.grip.style]}
+                                                | ${item.system.properties.map(p => appLang.WeaponProps[p].name).join(", ")}
                                             `}</p>
                                             }
                                         </div>
@@ -59,7 +59,7 @@ export const ShopItemsList = ({ items, onAddItemToCart }: {
                                         }
                                     </div>
                                     <div className="flex gap-x-2">
-                                        <p className="text-text-secondary">{`${vgLiteLang.EquipmentCategories[item.system.category]}`}</p>
+                                        <p className="text-text-secondary">{`${appLang.EquipmentCategories[item.system.category]}`}</p>
                                         <p className="text-text-secondary">•</p>
                                         <p className="text-text-secondary">{`Slots: ${item.system.bulk.totalSlots}`}</p>
                                     </div>

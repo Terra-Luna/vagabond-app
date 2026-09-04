@@ -11,7 +11,7 @@ try {
         if (!fs.existsSync(sourceDir)) continue
         console.info(`Packing: ${sourceDir} >>> ${targetDest}`)
 
-        execSync(`pnpm exec fvtt package pack --type=System --id=vagabond-lite --in="${sourceDir}" --out="${targetDest}" ${pack.name}`, { stdio: "inherit" })
+        execSync(`pnpm exec fvtt package pack --type=System --id=vagabond-app --in="${sourceDir}" --out="${targetDest}" ${pack.name}`, { stdio: "inherit" })
     }
 }
 catch (err) {

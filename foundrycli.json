@@ -1,6 +1,6 @@
 {
   "packageType": "system",
-  "id": "vagabond-lite",
+  "id": "vagabond-app",
   "source": "./src",
   "dist": "./dist"
 }

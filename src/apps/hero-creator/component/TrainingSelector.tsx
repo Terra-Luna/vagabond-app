@@ -1,6 +1,6 @@
 import { Square,SquareCheckBig } from "lucide-react"
 
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { HeroCreationLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 
@@ -21,10 +21,10 @@ export const TrainingSelector = ({ skill, label, isSelected, onSelect }) => {
                             <Square size={18} className="text-text-header-tertiary/40" />
                     }
                     <HeroCreationLabel text={label} />
-                    <HeroCreationSubtext text={`(${vgLiteLang.Skills[skill].stat})`} />
+                    <HeroCreationSubtext text={`(${appLang.Skills[skill].stat})`} />
                 </div>
                 <div className="text-xs text-text-secondary font-paradigm font-normal italic">
-                    {vgLiteLang.Skills[skill].description}
+                    {appLang.Skills[skill].description}
                 </div>
             </div>
         </div>

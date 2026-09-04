@@ -5,7 +5,7 @@ import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
-import { vgLiteLang } from "../../../../../../../utils/lang"
+import { appLang } from "../../../../../../../utils/lang"
 import { tableBorder } from "../../../../../../common/border-styles"
 import { PrimaryButton } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
@@ -227,7 +227,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
                             <div className="ml-auto">
                                 <PrimaryButton
-                                    title={vgLiteLang.HeroSheet.skills_tooltip}
+                                    title={appLang.HeroSheet.skills_tooltip}
                                     onClick={(e) => castSpell(e)}
                                 >
                                     {/* CAST BUTTON */}
@@ -237,7 +237,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                                             {spell.damageType !== 'none' &&
                                                 <DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />
                                             }
-                                            {vgLiteLang.HeroSheet.Magic.btnCast}
+                                            {appLang.HeroSheet.Magic.btnCast}
                                         </div>
                                     </div>
                                 </PrimaryButton>

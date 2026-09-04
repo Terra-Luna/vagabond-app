@@ -2,7 +2,7 @@ import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/uti
 
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { getDiceTerms } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
 
@@ -177,7 +177,7 @@ export class SkillCheck {
         this.result =  {
             skill: this.skill,
             blockDie: this.blockDie,
-            skillName: vgLiteLang.Skills[this.skill]?.name ?? vgLiteLang.Saves[this.skill]?.name ?? '',
+            skillName: appLang.Skills[this.skill]?.name ?? appLang.Saves[this.skill]?.name ?? '',
             difficulty: this.difficulty,
             modifier: this.modifier,
             critThreshold: this.critThreshold,
@@ -187,7 +187,7 @@ export class SkillCheck {
             bonusDice: bonusTerms.map(term => ({ faces: term.faces ?? 0, result: term.results?.reduce((sum, r) => sum + r.result, 0) ?? 0 })),
             d6: isReroll ? (existingD6 ?? 0) : d6Res,
             total: total,
-            outcome: isCrit ? vgLiteLang.RollResult.crit : (isSuccess ? vgLiteLang.RollResult.success : vgLiteLang.RollResult.failure),
+            outcome: isCrit ? appLang.RollResult.crit : (isSuccess ? appLang.RollResult.success : appLang.RollResult.failure),
             rolls: [roll, ...bonusRolls]
         }
 

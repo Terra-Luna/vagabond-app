@@ -2,7 +2,7 @@
   "name": "Magus",
   "type": "class",
   "_id": "yZOEDf1xc8q5dnnH",
-  "img": "systems/vagabond-lite/assets/class/magus_fps.webp",
+  "img": "systems/vagabond-app/assets/class/magus_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Spellblades, gishes, arcane knights, and eldritch tricksters all. Magi are arcane specialists that blend magic and martial prowess.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Magi</strong></b></p><p><span style=\"white-space:pre-wrap\">• Alucard, Castlevania</span></p><p><span style=\"white-space:pre-wrap\">• Elric of Melniboné, Stormbringer</span></p><p><span style=\"white-space:pre-wrap\">• Geralt of Rivia, The Witcher</span></p><p><span style=\"white-space:pre-wrap\">• Twilight Suzuka, Outlaw Star</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Magus</strong></b></p><p><span style=\"white-space:pre-wrap\">The magus may be a bit more challenging for newer players. Their playstyle is more build-dependent than the other classes, allowing for backline blasters, midline harassers, and frontline strikers.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack/Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Arcana, Melee</span></p>",
     "rules": [
@@ -41,7 +41,7 @@
         "key": "GrantItem",
         "label": "Arcanum: Gish",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.1A4MdMdz7EAAoMzI",
+        "uuid": "Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI",
         "type": "perk"
       },
       {
@@ -77,9 +77,9 @@
       "reason"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.3svveHnNn60fHHiX",
-      "Compendium.vagabond-lite.gear.Item.ImIcBC3E6UZcHsK4",
-      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj"
+      "Compendium.vagabond-app.gear.Item.3svveHnNn60fHHiX",
+      "Compendium.vagabond-app.gear.Item.ImIcBC3E6UZcHsK4",
+      "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj"
     ],
     "castingSkill": "arcana",
     "maxCastFormula": "half",
@@ -133,7 +133,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1784995121741,
     "modifiedTime": 1787960720499,

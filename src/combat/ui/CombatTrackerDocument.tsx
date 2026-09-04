@@ -43,7 +43,7 @@ export class VagabondCombatTracker extends foundry.applications.sidebar.tabs.Com
             <EditModeContextProvider>
                 <CombatContext.Provider value={{ activeCombatantId: activeCombatantId, activeGroup: null, combatTracker: this }}>
                     <EmotionCacheContext scaduRoot={this.scaduRoot}>
-                        <div className={`${theme} vglite-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col h-full`}>
+                        <div className={`${theme} app-themed-content bg-sheet-main-fill font-paradigm tracking-wider flex flex-col h-full`}>
                             <CombatTracker combat={combat} />
                         </div>
                     </EmotionCacheContext>

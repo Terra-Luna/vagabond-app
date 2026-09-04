@@ -1,6 +1,6 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { sys_id } from "../../../utils/foundryUtils"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { tableBorder } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { CollapsibleSection } from "../../../view/component/Collapsible"
@@ -35,7 +35,7 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
                 {/* ADD NEW PRESET BUTTON */}
                 <div className="w-full flex justify-end mt-1">
                     <UtilityButton title="Add new preset" onClick={() => new RollBuilderApp(actor).render({ force: true })}>
-                        +{vgLiteLang.ButtonActions.add}
+                        +{appLang.ButtonActions.add}
                     </UtilityButton>
                 </div>
 

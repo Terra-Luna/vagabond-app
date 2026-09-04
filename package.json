@@ -1,5 +1,5 @@
 {
-  "name": "vagabond-lite",
+  "name": "vagabond-app",
   "description": "",
   "scripts": {
     "build": "pnpm vite build",
@@ -15,7 +15,7 @@
     "lint": "eslint src && pnpm circ-deps",
     "lint:fix": "eslint --fix src",
     "clean-dist": "node scripts/cleanDist.ts",
-    "deploy": "pnpm build && node scripts/deploy.ts"
+    "deploy": "pnpm clean-dist && pnpm build && node scripts/deploy.ts"
   },
   "madge": {
     "tsConfig": "tsconfig.json",

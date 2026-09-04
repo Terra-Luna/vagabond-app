@@ -216,16 +216,16 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
         if (item.isEquipped) {
             if (item instanceof WeaponDataModel && item.grip.style === 'V') {
                 menuItems.push({
-                    icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(item)
+                    icon: HandFist, label: lang.APP.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(item)
                 })
             }
             menuItems.push({
-                icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(item, false)
+                icon: Hand, label: lang.APP.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(item, false)
             })
         }
         else {
             menuItems.push({
-                icon: HandFist, label: lang.VGLITE.HeroSheet.Inventory.ctxEquip, action: () => {
+                icon: HandFist, label: lang.APP.HeroSheet.Inventory.ctxEquip, action: () => {
                     item instanceof WeaponDataModel || item instanceof SundryDataModel
                         ? equipWeapon(hero, item)
                         : (item instanceof ArmorDataModel
@@ -260,7 +260,7 @@ export const containerItemContextMenuItems = (
         menuItems.push(useItemContextOption(actor as any, item))
     }
     menuItems.push(viewItemSheetContextOption(item))
-    menuItems.push({ icon: Undo, label: lang.VGLITE.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
+    menuItems.push({ icon: Undo, label: lang.APP.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
     menuItems.push(deleteItemContextOption(actor, item))
     if (item.bulk.isStackable && item.bulk.quantity > 1) {
         menuItems.push(deleteAllItemsContextOption(actor, item))
@@ -269,25 +269,25 @@ export const containerItemContextMenuItems = (
 }
 
 const useItemContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Hand, label: lang.VGLITE.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
+    return { icon: Hand, label: lang.APP.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
 }
 
 const viewItemSheetContextOption = (item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Eye, label: lang.VGLITE.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) }
+    return { icon: Eye, label: lang.APP.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) }
 }
 
 const sendItemToChatContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: MessageSquareText, label: lang.VGLITE.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
+    return { icon: MessageSquareText, label: lang.APP.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
 }
 
 const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Trash, label: lang.VGLITE.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
+    return { icon: Trash, label: lang.APP.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
 }
 
 const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
     return {
         icon: Trash,
-        label: lang.VGLITE.HeroSheet.Inventory.ctxDeleteAll,
+        label: lang.APP.HeroSheet.Inventory.ctxDeleteAll,
         action: async () => {
             await item.parent.update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
             deleteItems(actor, [getId(item)])

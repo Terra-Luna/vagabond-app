@@ -1,5 +1,5 @@
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 
 export interface SpellDeliverySnapshot {
     name: string,
@@ -170,23 +170,23 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
     }
 }
 export class Aura extends AreaOfEffectDelivery {
-    override name = vgLiteLang.SpellDeliveries.aura.name
-    override description = vgLiteLang.SpellDeliveries.aura.description
-    override targetLabel = vgLiteLang.SpellDeliveries.aura.targetLabel
+    override name = appLang.SpellDeliveries.aura.name
+    override description = appLang.SpellDeliveries.aura.description
+    override targetLabel = appLang.SpellDeliveries.aura.targetLabel
     override baseSize: number = 10
     override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.aura ?? 0))
 }
 export class Cone extends AreaOfEffectDelivery {
-    override name = vgLiteLang.SpellDeliveries.cone.name
-    override description = vgLiteLang.SpellDeliveries.cone.description
-    override targetLabel = vgLiteLang.SpellDeliveries.cone.targetLabel
+    override name = appLang.SpellDeliveries.cone.name
+    override description = appLang.SpellDeliveries.cone.description
+    override targetLabel = appLang.SpellDeliveries.cone.targetLabel
     override baseSize: number = 15
     override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.cone ?? 0))
 }
 export class Line extends AreaOfEffectDelivery {
-    override name = vgLiteLang.SpellDeliveries.line.name
-    override description = vgLiteLang.SpellDeliveries.line.description
-    override targetLabel = vgLiteLang.SpellDeliveries.line.targetLabel
+    override name = appLang.SpellDeliveries.line.name
+    override description = appLang.SpellDeliveries.line.description
+    override targetLabel = appLang.SpellDeliveries.line.targetLabel
     override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.line ?? 0))
     baseSize: number = 30
     baseHeight: number = 10
@@ -237,9 +237,9 @@ export class Line extends AreaOfEffectDelivery {
     }
 }
 export class Sphere extends AreaOfEffectDelivery {
-    override name = vgLiteLang.SpellDeliveries.sphere.name
-    override description = vgLiteLang.SpellDeliveries.sphere.description
-    override targetLabel = vgLiteLang.SpellDeliveries.sphere.targetLabel
+    override name = appLang.SpellDeliveries.sphere.name
+    override description = appLang.SpellDeliveries.sphere.description
+    override targetLabel = appLang.SpellDeliveries.sphere.targetLabel
     override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.sphere ?? 0))
     baseSize: number = 5
 }
@@ -285,34 +285,34 @@ export abstract class PerTargetDelivery extends SpellDelivery {
     }
 }
 export class Cube extends PerTargetDelivery {
-    override name = vgLiteLang.SpellDeliveries.cube.name
-    override description = vgLiteLang.SpellDeliveries.cube.description
-    override targetLabel = vgLiteLang.SpellDeliveries.cube.targetLabel
+    override name = appLang.SpellDeliveries.cube.name
+    override description = appLang.SpellDeliveries.cube.description
+    override targetLabel = appLang.SpellDeliveries.cube.targetLabel
     override baseManaCost: number = 1
 }
 export class Imbue extends PerTargetDelivery {
-    override name = vgLiteLang.SpellDeliveries.imbue.name
-    override description = vgLiteLang.SpellDeliveries.imbue.description
-    override targetLabel = vgLiteLang.SpellDeliveries.imbue.targetLabel
+    override name = appLang.SpellDeliveries.imbue.name
+    override description = appLang.SpellDeliveries.imbue.description
+    override targetLabel = appLang.SpellDeliveries.imbue.targetLabel
     override baseManaCost = Math.max(0, 1 - (this.mods.deliveryDiscounts?.imbue ?? 0))
 }
 export class Glyph extends PerTargetDelivery {
-    override name = vgLiteLang.SpellDeliveries.glyph.name
-    override description = vgLiteLang.SpellDeliveries.glyph.description
-    override targetLabel = vgLiteLang.SpellDeliveries.glyph.targetLabel
+    override name = appLang.SpellDeliveries.glyph.name
+    override description = appLang.SpellDeliveries.glyph.description
+    override targetLabel = appLang.SpellDeliveries.glyph.targetLabel
     override baseManaCost: number = 2
     override targetLimit: number = 1
 }
 export class Remote extends PerTargetDelivery {
-    override name = vgLiteLang.SpellDeliveries.remote.name
-    override description = vgLiteLang.SpellDeliveries.remote.description
-    override targetLabel = vgLiteLang.SpellDeliveries.remote.targetLabel
+    override name = appLang.SpellDeliveries.remote.name
+    override description = appLang.SpellDeliveries.remote.description
+    override targetLabel = appLang.SpellDeliveries.remote.targetLabel
     override targetLimit: number = 0
 }
 export class Touch extends PerTargetDelivery {
-    override name = vgLiteLang.SpellDeliveries.touch.name
-    override description = vgLiteLang.SpellDeliveries.touch.description
-    override targetLabel = vgLiteLang.SpellDeliveries.touch.targetLabel
+    override name = appLang.SpellDeliveries.touch.name
+    override description = appLang.SpellDeliveries.touch.description
+    override targetLabel = appLang.SpellDeliveries.touch.targetLabel
     override targetLimit: number = 1
 }
 

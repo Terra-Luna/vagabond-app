@@ -105,9 +105,9 @@ const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> 
 const ArmorCardContents = ({ item }: { item: ArmorDataModel }) => {
     return (
         <ItemCardBody item={item}>
-            <ItemCardProp label={lang.VGLITE.ItemSheet.type} children={lang.VGLITE.ArmorTypes[item.armorType].name} />
-            <ItemCardProp label={lang.VGLITE.ItemSheet.armor} children={item.rating} />
-            <ItemCardProp label={lang.VGLITE.ItemSheet.material} children={lang.VGLITE.Metals[item.material].name} />
+            <ItemCardProp label={lang.APP.ItemSheet.type} children={lang.APP.ArmorTypes[item.armorType].name} />
+            <ItemCardProp label={lang.APP.ItemSheet.armor} children={item.rating} />
+            <ItemCardProp label={lang.APP.ItemSheet.material} children={lang.APP.Metals[item.material].name} />
         </ItemCardBody>
     )
 }
@@ -116,20 +116,20 @@ const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
     return (
         <ItemCardBody item={item}>
             <div className="flex space-x-2">
-                <ItemCardProp label={lang.VGLITE.ItemSheet.dmg} children={
+                <ItemCardProp label={lang.APP.ItemSheet.dmg} children={
                     <ItemCardValue children={new DiceRoll(item.damage.dice as any).toRollFormula()} />
                 } />
                 <DamageTypeIcon dmgType={item.damage.type as string} size={18} />
             </div>
-            <ItemCardProp label={lang.VGLITE.ItemSheet.props} children={
+            <ItemCardProp label={lang.APP.ItemSheet.props} children={
                 <div className="flex gap-x-1">
-                    <p className="italic">{item.skills.map(sk => lang.VGLITE.WeaponSkills[sk].name).join(", ")}</p>
+                    <p className="italic">{item.skills.map(sk => lang.APP.WeaponSkills[sk].name).join(", ")}</p>
                     <p>|</p>
-                    <p className="italic">{item.properties.map(sk => lang.VGLITE.WeaponProps[sk].name).join(", ")}</p>
+                    <p className="italic">{item.properties.map(sk => lang.APP.WeaponProps[sk].name).join(", ")}</p>
                 </div>
             } />
-            <ItemCardProp label={lang.VGLITE.ItemSheet.range} children={lang.VGLITE.Ranges[item.range]} />
-            <ItemCardProp label={lang.VGLITE.ItemSheet.material} children={lang.VGLITE.Metals[item.material].name} />
+            <ItemCardProp label={lang.APP.ItemSheet.range} children={lang.APP.Ranges[item.range]} />
+            <ItemCardProp label={lang.APP.ItemSheet.material} children={lang.APP.Metals[item.material].name} />
         </ItemCardBody>
     )
 }

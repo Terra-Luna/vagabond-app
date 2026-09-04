@@ -1,4 +1,4 @@
-import { lang, vgLiteLang } from "../../../utils/lang"
+import { appLang,lang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
@@ -7,7 +7,7 @@ const alchemicalSchema = () => {
         alchemyCategory: new fields.StringField({
             ...optionalString,
             initial: 'unk',
-            choices: Object.keys(lang.VGLITE.AlchemyCategories)
+            choices: Object.keys(lang.APP.AlchemyCategories)
         }),
         damage: new fields.SchemaField({
             dice: new fields.SchemaField({
@@ -22,7 +22,7 @@ const alchemicalSchema = () => {
             type: new fields.StringField({ ...damageTypeOptions() }),
             appliedEffects: new fields.ArrayField(
                 new fields.SchemaField({
-                    effect: new fields.StringField({ ...requiredString, choices: Object.keys(vgLiteLang.StatusConditions) }),
+                    effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
                     duration: new fields.StringField({ ...optionalString })
                 }),
                 { initial: [] }

@@ -1,5 +1,5 @@
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { appLang } from "../../../../../../utils/lang"
 import { OptionsSelectionMenu } from "../../../../../component/OptionsSelectionMenu"
 import { useEditMode } from "../../../../../context/EditModeContext/Hooks"
 import { ClassSheetLabel, ClassSheetText } from "./ClassSheetText"
@@ -8,9 +8,9 @@ export const KeyStatsSelector = ({ item }: { item: Item & { system: ClassDataMod
     const { isEditMode } = useEditMode()
     return (
         <div className="flex gap-x-1">
-            <ClassSheetLabel text={`${vgLiteLang.ClassSheet.labelKeyStats}:`} />
+            <ClassSheetLabel text={`${appLang.ClassSheet.labelKeyStats}:`} />
             {isEditMode && <StatsSelector item={item} />}
-            <ClassSheetText text={item.system.keyStats.map(it => vgLiteLang.Stat[it].name).join(", ")} />
+            <ClassSheetText text={item.system.keyStats.map(it => appLang.Stat[it].name).join(", ")} />
         </div>
     )
 }
@@ -22,8 +22,8 @@ const StatsSelector = ({ item }: { item: Item & { system: ClassDataModel } }) =>
                 obj={item}
                 path={['keyStats']}
                 options={
-                    Object.keys(vgLiteLang.Stat).map(k => (
-                        { key: k, value: vgLiteLang.Stat[k].name, isSelected: item.system.keyStats.includes(k) }
+                    Object.keys(appLang.Stat).map(k => (
+                        { key: k, value: appLang.Stat[k].name, isSelected: item.system.keyStats.includes(k) }
                     ))
                 }
             />

@@ -9,7 +9,7 @@ export const baseActorSchema = () => {
     return {
         health: new fields.SchemaField({ ...healthSchema() }),
         armor: new fields.SchemaField({ ...armorSchema() }),
-        senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.VGLITE.Senses) })),
+        senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Senses) })),
         statuses: new fields.SchemaField({ ...statusFxSchema() }),
         modifiers: new fields.SchemaField({ ...modifierSchema() })
     }

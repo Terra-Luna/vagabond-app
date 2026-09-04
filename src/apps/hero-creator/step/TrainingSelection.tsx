@@ -4,7 +4,7 @@ import { AncestryDataModel } from "../../../model/item/character/AncestryDataMod
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { ChoiceRule } from "../../../rules/ItemRulesManager"
 import { getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule } from "../../../rules/util/item-rules-util"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
 import { BorderedContent } from "../component/BorderedContent"
@@ -110,14 +110,14 @@ export const useTrainingSelection = (
         <div className="@container bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
             {/* HEADER AND NAVIGATION BUTTONS */}
             <div className="flex-shrink-0 space-y-4">
-                <Header title={vgLiteLang.HeroCreation.traingingsHeader} />
-                <TopNavButtons navButtons={navButtons} subtitle={vgLiteLang.HeroCreation.trainingSubheader} canProceed={canProceed} />
+                <Header title={appLang.HeroCreation.traingingsHeader} />
+                <TopNavButtons navButtons={navButtons} subtitle={appLang.HeroCreation.trainingSubheader} canProceed={canProceed} />
             </div>
 
             <div className="flex-1 overflow-y-auto space-y-4">
                 <div className="items-center justify-center text-center w-full space-y-2">
                 {/* SELECTED STATS W/ BONUSES APPLIED */}
-                    <HeroCreationSubtext text={stats.map(s => `${vgLiteLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")} />
+                    <HeroCreationSubtext text={stats.map(s => `${appLang.Stat[s.stat].abbr}: ${s.value}`).join(" | ")} />
                     <Divider />
                 </div>
 
@@ -125,12 +125,12 @@ export const useTrainingSelection = (
                     <div className="inline-flex flex-col items-stretch space-y-4 @2xl:w-1/2 mx-auto">
                         {/* GRANTED TRAININGS LIST */}
                         <div className="space-y-1">
-                            <HeroCreationLabel text={vgLiteLang.HeroCreation.grantedTraining} />
+                            <HeroCreationLabel text={appLang.HeroCreation.grantedTraining} />
                             {
                                 requiredTrainingRules.map((rule, index) => (
                                     <ItemGrantCard key={index}
-                                        name={vgLiteLang.Skills[rule.skill].name}
-                                        subtext={`(${vgLiteLang.Skills[rule.skill].stat})`}
+                                        name={appLang.Skills[rule.skill].name}
+                                        subtext={`(${appLang.Skills[rule.skill].stat})`}
                                         source={rule.source.name}
                                     />
                                 ))
@@ -140,16 +140,16 @@ export const useTrainingSelection = (
                         {/* TRAINING CHOICE COUNTER */}
                         <div className="justify-center text-center bg-context-menu-fill/25">
                             <BorderedContent className="flex-col gap-y-2 justify-center w-full">
-                                <HeroCreationSubtext text={vgLiteLang.HeroCreation.trainingSlots} />
+                                <HeroCreationSubtext text={appLang.HeroCreation.trainingSlots} />
                                 <p className="text-4xl text-text-header-tertiary font-bold">
-                                    {`${chosenLevel1Skills.length} / ${level1TrainingRule!.maxChoices} ${vgLiteLang.HeroCreation.selected}`}
+                                    {`${chosenLevel1Skills.length} / ${level1TrainingRule!.maxChoices} ${appLang.HeroCreation.selected}`}
                                 </p>
                             </BorderedContent>
                         </div>
 
                         {/* LEVEL 1 TRAINING SELECTIONS */}
                         <div className="space-y-1 mt-2">
-                            <HeroCreationLabel text={vgLiteLang.HeroCreation.electiveTraining.replace("%s", `${level1TrainingRule!.maxChoices}`)} />
+                            <HeroCreationLabel text={appLang.HeroCreation.electiveTraining.replace("%s", `${level1TrainingRule!.maxChoices}`)} />
                             {level1TrainingRules.flatMap(rule => ({ id: rule.id, choices: rule.choices })).map(rule => {
                                 return rule.choices.filter(choice => {
                                     if (chosenLevel1Skills.length === level1TrainingRule.maxChoices) {
@@ -180,7 +180,7 @@ export const useTrainingSelection = (
                             <BonusChoiceContainer>
                                 {ancestryTrainingRules.map((rule, index) => (
                                     <div key={index} className="space-y-1">
-                                        <BonusChoiceTitle text={`${vgLiteLang.HeroCreation.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`} />
+                                        <BonusChoiceTitle text={`${appLang.HeroCreation.bonusTraining.replace("%s1", `${ancestry?.name} ${rule.label}`).replace("%s2", rule.maxChoices.toString())}`} />
                                         {
                                             rule.maxChoices > chosenBonusSkills.length ?
                                                 rule.choices.map(c => ({ value: c.value, label: c.label })).filter(c =>
@@ -202,7 +202,7 @@ export const useTrainingSelection = (
                                                     <TrainingSelector
                                                         key={sk.skill}
                                                         skill={sk.skill}
-                                                        label={vgLiteLang.Skills[sk.skill].name}
+                                                        label={appLang.Skills[sk.skill].name}
                                                         isSelected={true}
                                                         onSelect={() => onSelectBonusSkill(sk.skill, rule.id, false)}
                                                     />

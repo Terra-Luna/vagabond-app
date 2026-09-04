@@ -2,7 +2,7 @@
   "name": "Barbarian",
   "type": "class",
   "_id": "DfGZ3FOXXjRRaxe2",
-  "img": "systems/vagabond-lite/assets/class/barbarian_fps.webp",
+  "img": "systems/vagabond-app/assets/class/barbarian_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Barbarians are primal warriors that fight with the power of unbridled anger. The legends speak of their kills almost as their own unique deeds, using the barbarian’s name as a past-tense verb.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Barbarians</strong></b></p><p><span style=\"white-space:pre-wrap\">• Brock Samson, The Venture Bros.</span></p><p><span style=\"white-space:pre-wrap\">• Conan, Conan the Barbarian</span></p><p><span style=\"white-space:pre-wrap\">• Guts, Berserk</span></p><p><span style=\"white-space:pre-wrap\">• Logen Ninefingers, First Law Trilogy</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Barbarian</strong></b></p><p><span style=\"white-space:pre-wrap\">The barbarian is a mid-high-defense bruiser. Stick to an Enemy, and hit them very hard.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Attack (Melee)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Frontline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Melee, Survival</span></p>",
     "rules": [
@@ -41,7 +41,7 @@
         "key": "GrantItem",
         "label": "Wrath",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.ixtkMiuqHctLr3oB",
+        "uuid": "Compendium.vagabond-app.perks.Item.ixtkMiuqHctLr3oB",
         "type": "perk"
       },
       {
@@ -58,7 +58,7 @@
         "key": "GrantItem",
         "label": "Rage",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
         "type": "ActiveEffect"
       },
       {
@@ -66,7 +66,7 @@
         "key": "GrantItem",
         "label": "Murder Mode",
         "level": "4",
-        "uuid": "Compendium.vagabond-lite.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
+        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
         "type": "ActiveEffect"
       }
     ],
@@ -75,8 +75,8 @@
       "might"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.3svveHnNn60fHHiX",
-      "Compendium.vagabond-lite.gear.Item.hug6ifnaIOy45vvj"
+      "Compendium.vagabond-app.gear.Item.3svveHnNn60fHHiX",
+      "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -191,12 +191,12 @@
       "flags": {},
       "_stats": {
         "coreVersion": "14.361",
-        "systemId": "vagabond-lite",
+        "systemId": "vagabond-app",
         "systemVersion": "0.0.0",
         "createdTime": 1787978691548,
         "modifiedTime": 1787978691548,
         "lastModifiedBy": "LxjckWttmatU52UJ",
-        "compendiumSource": "Compendium.vagabond-lite.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -274,12 +274,12 @@
       "flags": {},
       "_stats": {
         "coreVersion": "14.361",
-        "systemId": "vagabond-lite",
+        "systemId": "vagabond-app",
         "systemVersion": "0.0.0",
         "createdTime": 1788054472297,
         "modifiedTime": 1788054472297,
         "lastModifiedBy": "LxjckWttmatU52UJ",
-        "compendiumSource": "Compendium.vagabond-lite.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
+        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -295,7 +295,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1785901965127,
     "modifiedTime": 1788054482699,

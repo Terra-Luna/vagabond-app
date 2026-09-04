@@ -1,9 +1,8 @@
-import { vgLiteLang } from "../../../utils/lang"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { HeroCreationLabel } from "./HeroCreationTypography"
 
 export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
-    const strings = vgLiteLang.HeroCreation
+    const strings = appLang.HeroCreation
 
     return (
         <div className="space-y-1 mt-2">
@@ -19,7 +18,7 @@ export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
                             img={sp.img}
                             dmgType={sp.dmgType}
                             title={sp.label}
-                            subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
+                            subtitles={[{ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[sp.dmgType] }]}
                             description={sp.description}
                         />
                     )
@@ -39,7 +38,7 @@ export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
                             img={sp.img}
                             dmgType={sp.dmgType}
                             title={sp.label}
-                            subtitles={[{ label: vgLiteLang.HeroSheet.Magic.labelDmgBase, value: vgLiteLang.DamageTypes[sp.dmgType] }]}
+                            subtitles={[{ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[sp.dmgType] }]}
                             description={sp.description}
                         />
                     )

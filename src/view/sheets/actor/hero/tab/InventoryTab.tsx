@@ -17,7 +17,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full min-h-16">
             <div className="flex justify-between gap-1">
-                <CapacityGauge label={lang.VGLITE.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
+                <CapacityGauge label={lang.APP.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
                 <HeroCoinPurse hero={hero} />
             </div>
             <div className={`${tableBorder} mt-1 w-full ${itemShopToggle ? '' : 'mb-28'}`}>

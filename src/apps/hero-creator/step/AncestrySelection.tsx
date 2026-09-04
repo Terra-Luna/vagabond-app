@@ -1,7 +1,7 @@
 import { ReactNode, useCallback, useEffect, useState } from "react"
 
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { CombinedItems, getFullItem, TypedIndexEntry } from "../../../utils/modelUtil"
 import { Checkbox } from "../../../view/component/Checkbox"
 import { Header } from "../../../view/component/Header"
@@ -37,14 +37,14 @@ export const useAncestrySelection = (navButtons: ReactNode[]) => {
     const AncestrySelection = (
         <div className="bg-sheet-main-fill flex flex-col h-full min-h-0 overflow-hidden">
             <div className="flex-shrink-0 space-y-4">
-                <Header title={vgLiteLang.HeroCreation.identity} />
+                <Header title={appLang.HeroCreation.identity} />
                 <TopNavButtons navButtons={navButtons} canProceed={!!ancestryItem} />
             </div>
             <div className="flex-1 overflow-y-auto space-y-4">
                 <div className="flex gap-x-16 items-end">
                     <HeroCreationDropdown
-                        label={vgLiteLang.HeroCreation.selectAncestry}
-                        value={ancestryItem?.id ?? vgLiteLang.HeroCreation.selectAncestry}
+                        label={appLang.HeroCreation.selectAncestry}
+                        value={ancestryItem?.id ?? appLang.HeroCreation.selectAncestry}
                         options={ancestryOptions ?? []}
                         onChange={(val) => onSelectAncestry(val)}
                     />

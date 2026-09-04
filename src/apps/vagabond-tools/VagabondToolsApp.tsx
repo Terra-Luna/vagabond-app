@@ -48,7 +48,7 @@ export class VagabondToolsApp extends VagabondApplication {
         }
 
         root.render(
-            <div className={`${getTheme()} vglite-themed-content flex w-50`}>
+            <div className={`${getTheme()} app-themed-content flex w-50`}>
                 <PrimaryButton onClick={(e) => {
                     e.preventDefault()
                     e.stopPropagation()

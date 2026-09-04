@@ -5,7 +5,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { calculateRecurringRuleEligibility, getItemChoiceRules, getRuleSelectionValues } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { Divider, Header } from "../../view/component/Header"
@@ -74,7 +74,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
     const stats = useMemo(() => {
         setStartingRsn(actor.system.stats.reason ?? 0)
-        const statKeys = Object.keys(vgLiteLang.Stat)
+        const statKeys = Object.keys(appLang.Stat)
         return statKeys.map(k => (
             { stat: k, value: actor.system.stats[k] }
         ))
@@ -104,12 +104,12 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     }, [latestPerk])
 
     const upgradableStatsOptions = () => {
-        const allOptions = [{ value: '', label: '-' }, ...createDropdownEntriesFromObj(vgLiteLang.Stat)]
+        const allOptions = [{ value: '', label: '-' }, ...createDropdownEntriesFromObj(appLang.Stat)]
         return allOptions.filter(it => it.value === '' || (stats?.find(s => s.stat === it.value)?.value ?? 0) < 7)
     }
 
     const untrainedSkills = () => {
-        const allOptions = [{ value: '', label: '-' }, ...createDropdownEntriesFromObj(vgLiteLang.Skills)]
+        const allOptions = [{ value: '', label: '-' }, ...createDropdownEntriesFromObj(appLang.Skills)]
         return allOptions.filter(it => it.value === '' || !trainings?.some(t => t.skill === it.value))
     }
 
@@ -182,7 +182,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
             {/* HEADER WITH SAVE & CANCEL BUTTONS */}
             <div className="flex justify-between my-1 shrink-0">
                 <DestructiveButton onClick={() => onSave({ isComplete: false })}>
-                    {vgLiteLang.ButtonActions.cancel}
+                    {appLang.ButtonActions.cancel}
                 </DestructiveButton>
 
                 <p className="flex gap-x-2 items-center text-2xl text-text-primary font-eskapade font-bold">

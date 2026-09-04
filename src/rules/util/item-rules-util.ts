@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { CombinedItems } from "../../utils/modelUtil"
 import { ItemsCache } from "./ItemsCache"
 
@@ -171,9 +171,9 @@ export function getStatChoiceRules(items: (Item & { system: { rules: any } } | u
 
         return {
             ...rule,
-            choices: Object.keys(vgLiteLang.Stat || {}).map(statKey => ({
+            choices: Object.keys(appLang.Stat || {}).map(statKey => ({
                 value: firstChoiceVal.toLowerCase().includes("system.") ? `system.stats.${statKey}` : `stats.${statKey}`,
-                label: vgLiteLang.Stat[statKey]?.name || statKey
+                label: appLang.Stat[statKey]?.name || statKey
             }))
         }
     })
@@ -253,10 +253,10 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
         if (firstChoiceVal.toLowerCase().includes("skills.*")) {
             return {
                 ...rule,
-                choices: Object.keys(vgLiteLang.Skills || {}).map(skillKey => ({
+                choices: Object.keys(appLang.Skills || {}).map(skillKey => ({
                     // Replaces the wildcard character slot with the individual key
                     value: firstChoiceVal.replace("*", skillKey),
-                    label: vgLiteLang.Skills[skillKey]?.name || skillKey
+                    label: appLang.Skills[skillKey]?.name || skillKey
                 }))
             }
         }

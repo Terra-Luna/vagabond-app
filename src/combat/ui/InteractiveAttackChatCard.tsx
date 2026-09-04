@@ -7,7 +7,7 @@ import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { isEquippedWeapon, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../utils/foundryUtils"
-import { vgLiteLang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTokenImg } from "../../utils/modelUtil"
 import { BaseChatCardHost } from "../../view/chat/component/BaseChatCardHost"
 import { ChatCardBanner } from "../../view/chat/component/ChatCardBanner"
@@ -191,7 +191,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
 }) => {
     const hasPermission = game.user?.isGM || game.user?.id === attack.userId
-    const isFailure = attack.skillCheck?.result?.outcome === vgLiteLang.RollResult.failure
+    const isFailure = attack.skillCheck?.result?.outcome === appLang.RollResult.failure
     const needsResourceUpdates = hasPermission && !attack.isResolved && (
         isFailure || attack.showCritChoices
     )
@@ -547,7 +547,7 @@ const AttackDamageAndSavesSection = ({
                             const result = saveResults[target.id]
                             const canRollSave = !isResolved && !result && (game.user?.isGM || target.token?.actor?.isOwner)
                             const luck = (target.token?.actor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
-                            const canReroll = !isResolved && result?.outcome === vgLiteLang.RollResult.failure &&
+                            const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
                                 !result?.blockDie && !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
                                 (game.user?.isGM || target.token?.actor?.isOwner)
 
@@ -573,7 +573,7 @@ const AttackDamageAndSavesSection = ({
                                                     e?.preventDefault()
                                                     onRollSave(target.id, saveType, undefined, e)
                                                 }}>
-                                                    {`${vgLiteLang.Saves[saveType]?.name ?? saveType}`}
+                                                    {`${appLang.Saves[saveType]?.name ?? saveType}`}
                                                 </UtilityButton>
                                             ))}
                                             {/* BLOCK: a Reflex save using an equipped 'defense' weapon's damage die */}
@@ -605,7 +605,7 @@ const AttackDamageAndSavesSection = ({
 const InteractiveChatCardButton = ({ icon, label, tooltip, fn }: { icon?: ReactNode, label: string, tooltip: string, fn: () => void }) => {
     return (
         <button title={tooltip}
-            className={`flex items-center px-1 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer ${tableBorder}`}
+            className={`flex items-center justify-center px-2 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer ${tableBorder}`}
             onClick={fn}
         >
             {icon}

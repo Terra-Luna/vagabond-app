@@ -2,7 +2,7 @@ import { Save, SquarePen, Trash } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { ClassDataModel } from "../../../../../../model/item/character/ClassDataModel"
-import { vgLiteLang } from "../../../../../../utils/lang"
+import { appLang } from "../../../../../../utils/lang"
 import { tableBorder } from "../../../../../common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../../../../component/Button"
 import { useContextMenu } from "../../../../../component/ContextMenu"
@@ -38,14 +38,14 @@ export const FeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel
         <div className="space-y-1">
             <ClassSheetBannerWrapper>
                 <div className="flex gap-x-1 items-center">
-                    {vgLiteLang.ClassSheet.labelClassFeat}
+                    {appLang.ClassSheet.labelClassFeat}
                     {isEditMode &&
                         <button
                             title={"Add new feature"}
                             onClick={onAddNewFeature}
                             className="text-sm font-paradigm font-normal border border-solid border-sheet-header-tertiary cursor-pointer hover-glow px-2"
                         >
-                            +{vgLiteLang.ButtonActions.add}
+                            +{appLang.ButtonActions.add}
                         </button>
                     }
                 </div>
@@ -62,14 +62,14 @@ export const FeaturesConfig = ({ item }: { item: Item & { system: ClassDataModel
                         onCtxMenu(e, [
                             {
                                 icon: SquarePen,
-                                label: vgLiteLang.ButtonActions.edit,
+                                label: appLang.ButtonActions.edit,
                                 action: () => {
                                     setEditFeatureIndex(index)
                                 }
                             },
                             {
                                 icon: Trash,
-                                label: vgLiteLang.ButtonActions.delete,
+                                label: appLang.ButtonActions.delete,
                                 isDestructive: true,
                                 action: async () => {
                                     await item.update({ 'system.features': sortedFeats.filter(f => f !== feat) } as Record<string, any>)
@@ -94,7 +94,7 @@ const FeatureCard = ({ item, feat }) => {
     return (
         <SkillCard
             title={feat.name}
-            subtitles={[{ label: item.name, value: `${vgLiteLang.ClassSheet.labelLevel} ${feat.level}` }]}
+            subtitles={[{ label: item.name, value: `${appLang.ClassSheet.labelLevel} ${feat.level}` }]}
             description={feat.description}
             startCollapsed={feat.level > 1}
         />
@@ -140,16 +140,16 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
             {/* NAME & LEVEL */}
             <div className="space-y-2">
                 <div className="flex gap-x-1 items-end">
-                    <ClassSheetLabel text={vgLiteLang.ClassSheet.labelName} />
+                    <ClassSheetLabel text={appLang.ClassSheet.labelName} />
                     <EditableTextField
                         boundValue={title ?? null}
                         onSave={updateTitle}
-                        placeholder={vgLiteLang.ClassSheet.placeholder_featurename}
+                        placeholder={appLang.ClassSheet.placeholder_featurename}
                     />
                 </div>
                 <div className="flex gap-x-2">
                     <div className="flex gap-x-1 items-end">
-                        <ClassSheetLabel text={vgLiteLang.ClassSheet.labelLevel} />
+                        <ClassSheetLabel text={appLang.ClassSheet.labelLevel} />
                         <NumericCounterInput
                             value={level}
                             onChange={updateLevel}
@@ -160,13 +160,13 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                             value={scale}
                             onChange={updatescale}
                         />
-                        <ClassSheetLabel text={vgLiteLang.ClassSheet.scale} />
+                        <ClassSheetLabel text={appLang.ClassSheet.scale} />
                     </div>
                 </div>
             </div>
 
             {/* FEATURE DESCRIPTION */}
-            <ClassSheetLabel text={vgLiteLang.ClassSheet.labelDescr} />
+            <ClassSheetLabel text={appLang.ClassSheet.labelDescr} />
             <RichTextField
                 defaultValue={description}
                 onChange={updateDescription}
@@ -194,7 +194,7 @@ const NewFeatureMenu = ({ item, editIndex, setIsNewFeatureOpen }: { item: Item &
                     else setIsNewFeatureOpen(false)
 
                 }}>
-                    {vgLiteLang.ButtonActions.save}
+                    {appLang.ButtonActions.save}
                 </PrimaryButton>
             </div>
         </div>

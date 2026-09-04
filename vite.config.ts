@@ -5,7 +5,7 @@ import svgr from 'vite-plugin-svgr'
 
 export default defineConfig(({ mode }) => {
   return {
-    base: "/systems/vagabond-lite/",
+    base: "/systems/vagabond-app/",
     define: {
       "process.env.NODE_ENV": JSON.stringify(mode),
     },
@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
       port: 30001,
       open: "/",
       proxy: {
-        "^(?!/systems/vagabond-lite)": "http://localhost:30000/",
+        "^(?!/systems/vagabond-app)": "http://localhost:30000/",
         "/socket.io": {
           target: "ws://localhost:30000",
           ws: true,
@@ -35,10 +35,10 @@ export default defineConfig(({ mode }) => {
       cssCodeSplit: false,
       minify: false,
       lib: {
-        name: "vagabond-lite",
-        entry: "src/vagabond-lite.tsx",
+        name: "vagabond-app",
+        entry: "src/vagabond-app.tsx",
         formats: ["es"],
-        fileName: "vagabond-lite"
+        fileName: "vagabond-app"
       },
       rollupOptions: {
         treeshake: false,

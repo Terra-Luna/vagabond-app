@@ -9,7 +9,7 @@ import { EmotionCacheContext } from "../view/context/EmotionCacheContext"
 import { getTheme } from "./foundryUtils"
 import { createStyleTag } from "./styleUtils"
 
-export interface VGLiteApplication {
+export interface VagabondApplication {
     _reactRoot: ReactDom.Root | null
     _scaduRoot: ShadowRoot
     _isCollapsed: boolean
@@ -24,14 +24,14 @@ export interface VGLiteApplication {
     getReactProps: () => any
 }
 
-export const onRenderHTML = (sheet: VGLiteApplication) => {
+export const onRenderHTML = (sheet: appApplication) => {
     if (!sheet._reactRoot) {
         const defaultWindowContent = sheet.element.getElementsByClassName('window-content')?.[0]
         if (defaultWindowContent) sheet.element.removeChild(defaultWindowContent)
 
-        const vgLiteDiv = document.createElement('div')
-        vgLiteDiv.setAttribute("class", "vglite-root")
-        const reactRootElem = sheet.element.appendChild(vgLiteDiv)
+        const appDiv = document.createElement('div')
+        appDiv.setAttribute("class", "app-root")
+        const reactRootElem = sheet.element.appendChild(appDiv)
 
         const resizeHandle = sheet.element.querySelector('.window-resize-handle')
         if (resizeHandle) sheet.element.appendChild(resizeHandle)
@@ -51,14 +51,14 @@ export const onRenderHTML = (sheet: VGLiteApplication) => {
     sheet.renderWithWrappers({ theme: getTheme(), position: sheet.position })
 }
 
-export const onRender = (sheet: VGLiteApplication) => {
+export const onRender = (sheet: VagabondApplication) => {
     queueMicrotask(() => {
         if (!sheet.element) return
         sheet._toolbarHeight = sheet.element.children?.[0]?.getBoundingClientRect()?.height ?? 0
     })
 }
 
-export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {
+export const onUpdatePosition = (sheet: VagabondApplication, position: any) => {
     const minWidth = 380
     const minHeight = 248
     const { width, top, left } = position
@@ -94,7 +94,7 @@ export const onUpdatePosition = (sheet: VGLiteApplication, position: any) => {
     return { ...position, width: realWidth, height }
 }
 
-export const onClose = (sheet: VGLiteApplication) => {
+export const onClose = (sheet: VagabondApplication) => {
     sheet._reactRoot?.unmount()
     sheet._reactRoot = null
 }
@@ -106,7 +106,7 @@ export const onClose = (sheet: VGLiteApplication) => {
  * @param position 
  * @param startInEditMode 
  */
-export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", position: any, startInEditMode: boolean | EditModeOptions = false) => {
+export const onRenderWithWrappers = (sheet: VagabondApplication, theme = "light", position: any, startInEditMode: boolean | EditModeOptions = false) => {
     const { width, top, left } = position
     const rawHeight = position.height
     const toolbarOffset = sheet._toolbarHeight || 0
@@ -131,7 +131,7 @@ export const onRenderWithWrappers = (sheet: VGLiteApplication, theme = "light", 
                 <EditModeContextProvider initialEditMode={(typeof startInEditMode === "boolean") ? (startInEditMode ? EditModeOptions.TRUE : EditModeOptions.FALSE) : startInEditMode}>
                     <EmotionCacheContext scaduRoot={sheet._scaduRoot}>
                         <div className={`
-                            ${theme} vglite-themed-content flex flex-col bg-sheet-main-fill
+                            ${theme} app-themed-content flex flex-col bg-sheet-main-fill
                             font-paradigm tracking-wider rounded-b-lg overflow-hidden
                         `}
                             style={{

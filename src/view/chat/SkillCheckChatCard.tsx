@@ -1,7 +1,7 @@
 import { Minus, Plus } from 'lucide-react'
 
 import { SkillCheckResult } from '../../combat/engine/roll/SkillCheck'
-import { vgLiteLang } from '../../utils/lang'
+import { appLang } from '../../utils/lang'
 import { getTokenImg } from "../../utils/modelUtil"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
@@ -15,7 +15,7 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
             banner={<ChatCardBanner
                 tokenId={actor?.getActiveTokens()[0]?.id}
                 portrait={getTokenImg(actor)}
-                title={`${vgLiteLang.Skills[result.skill]?.name ?? vgLiteLang.Saves[result.skill]?.name} ${result.blockDie > 0 ? '(Defensive) ' : ''}Check`}
+                title={`${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} ${result.blockDie > 0 ? '(Defensive) ' : ''}Check`}
                 subtitle={[
                     { label: "Difficulty", value: result.difficulty.toString() },
                     { label: "Result", value: result.outcome }

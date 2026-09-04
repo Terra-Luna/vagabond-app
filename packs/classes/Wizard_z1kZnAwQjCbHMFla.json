@@ -2,7 +2,7 @@
   "name": "Wizard",
   "type": "class",
   "_id": "z1kZnAwQjCbHMFla",
-  "img": "systems/vagabond-lite/assets/class/wizard_fps.webp",
+  "img": "systems/vagabond-app/assets/class/wizard_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Wizards are students of the arcane arts who research and develop spells as academic pursuit.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Wizards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Harry Dresden, The Dresden Files</span></p><p><span style=\"white-space:pre-wrap\">• Merlyn, Arthurian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sparrowhawk, Earthsea</span></p><p><span style=\"white-space:pre-wrap\">• Sypha Belnades, Castlevania</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Wizard</strong></b></p><p><span style=\"white-space:pre-wrap\">The wizard is a squishy blaster focused on Casting Spells. Stay in safety to Cast your Spells and discover Enemy weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action: </strong></b><span style=\"white-space:pre-wrap\">Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Arcana</span></p>",
     "rules": [
@@ -61,7 +61,7 @@
         "key": "GrantItem",
         "label": "Page Master: Bookworm",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.jvuOodZbzMMANBn6",
+        "uuid": "Compendium.vagabond-app.perks.Item.jvuOodZbzMMANBn6",
         "type": "perk"
       },
       {
@@ -102,8 +102,8 @@
       "reason"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.rGKOD30vhnEC8c6k",
-      "Compendium.vagabond-lite.gear.Item.5y2TEMR983wkMy3s"
+      "Compendium.vagabond-app.gear.Item.rGKOD30vhnEC8c6k",
+      "Compendium.vagabond-app.gear.Item.5y2TEMR983wkMy3s"
     ],
     "castingSkill": "arcana",
     "manaMultiplier": 4,
@@ -145,7 +145,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1786572729833,
     "modifiedTime": 1787883778972,

@@ -6,7 +6,7 @@ import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { normalizeRuleSelections, randomId, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { addItems } from "../../../utils/heroInventoryUtil"
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
 import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
@@ -123,7 +123,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                         <div key={rule.selectionKey} className="flex flex-col items-center gap-y-1">
                             <HeroCreationDropdown
                                 value={reasonTrainingSelections[rule.selectionKey] ?? ''}
-                                options={createDropdownEntriesFromObj(vgLiteLang.Skills).filter(sk =>
+                                options={createDropdownEntriesFromObj(appLang.Skills).filter(sk =>
                                     !requiredTrainingRules.map(t => t.skill).includes(sk.value) &&
                                     !selectedTrainings.includes(sk.value)
                                 )}
@@ -296,7 +296,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
 
         }
         catch (error) {
-            console.error("VGLite | Hero Creator commit error:", error)
+            console.error("Vagabond App | Hero Creator commit error:", error)
             ui.notifications?.error("An error occurred while saving your character, review your sheet for accuracy.")
         }
         finally {

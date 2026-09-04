@@ -227,7 +227,7 @@
 }
 
 @layer utilities {
-  .vglite-hovered {
+  .app-hovered {
     filter: drop-shadow(0 0 5px var(--color-text-glow));
   }
 

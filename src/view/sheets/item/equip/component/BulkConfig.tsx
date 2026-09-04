@@ -1,6 +1,6 @@
 import { useCallback } from "react"
 
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { Checkbox } from "../../../../component/Checkbox"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -15,7 +15,7 @@ export const Bulk = ({ item }) => {
 
     return (
         <div>
-            <ItemSheetProperty label={vgLiteLang.ItemSheet.slots} value={
+            <ItemSheetProperty label={appLang.ItemSheet.slots} value={
                 <EditableTextField
                     boundValue={item.system.bulk?.slots}
                     updateProps={{ object: item, path: ['bulk', 'slots'] }}
@@ -24,7 +24,7 @@ export const Bulk = ({ item }) => {
             } />
 
             {isEditMode &&
-                <ItemSheetProperty label={vgLiteLang.ItemSheet.stackable} value={
+                <ItemSheetProperty label={appLang.ItemSheet.stackable} value={
                     <Checkbox
                         label={''}
                         onCheckedChanged={onCheckStackable}
@@ -34,7 +34,7 @@ export const Bulk = ({ item }) => {
             }
 
             {item.system.bulk?.isStackable && item.system.bulk?.slots === 0 &&
-                <ItemSheetProperty label={vgLiteLang.ItemSheet.stackSize} value={
+                <ItemSheetProperty label={appLang.ItemSheet.stackSize} value={
                     <EditableTextField
                         boundValue={item.system.bulk?.stackSize}
                         updateProps={{ object: item, path: ['bulk', 'stackSize'] }}
@@ -44,7 +44,7 @@ export const Bulk = ({ item }) => {
             }
 
             {(isEditMode || item.system.bulk?.isStackable) &&
-                <ItemSheetProperty label={vgLiteLang.ItemSheet.qty} value={
+                <ItemSheetProperty label={appLang.ItemSheet.qty} value={
                     <EditableTextField
                         boundValue={item.system.bulk?.quantity}
                         updateProps={{ object: item, path: ['bulk', 'quantity'] }}

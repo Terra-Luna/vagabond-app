@@ -1,7 +1,7 @@
 import { Check, Save } from "lucide-react"
 import { useCallback, useMemo,useState } from "react"
 
-import { vgLiteLang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../../view/component/Button"
 import { XpQuestion } from "../../vagabond-tools/usecase/VagabondSettingsHelper"
@@ -49,10 +49,10 @@ export const XpQuestionnairePlayerView = ({ questions, onSave }: {
             </div>
             <div className="flex justify-between">
                 <DestructiveButton onClick={() => onSave(0)}>
-                    {vgLiteLang.ButtonActions.cancel}
+                    {appLang.ButtonActions.cancel}
                 </DestructiveButton>
                 <PrimaryButton type="submit" icon={<Save size={16} />}>
-                    {vgLiteLang.ButtonActions.save}
+                    {appLang.ButtonActions.save}
                 </PrimaryButton>
             </div>
         </form>

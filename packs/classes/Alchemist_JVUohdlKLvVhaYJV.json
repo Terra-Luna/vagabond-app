@@ -2,7 +2,7 @@
   "name": "Alchemist",
   "type": "class",
   "_id": "JVUohdlKLvVhaYJV",
-  "img": "systems/vagabond-lite/assets/class/alchemist_fps.webp",
+  "img": "systems/vagabond-app/assets/class/alchemist_fps.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Often sequestered in a lab, alchemists study the essence of creation. They are as curious as they are resourceful, and always have “just the thing for this.”</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Alchemists</strong></b></p><p><span style=\"white-space:pre-wrap\">• The Colorman, Sacré Bleu</span></p><p><span style=\"white-space:pre-wrap\">• Diablo, Marvel Comics</span></p><p><span style=\"white-space:pre-wrap\">• Dr. Jekyll, Dr. Jekyll and Mr. Hyde</span></p><p><span style=\"white-space:pre-wrap\">• Tessa Cade, Defy the Night</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Alchemist</strong></b></p><p><span style=\"white-space:pre-wrap\">The alchemist is a low-defense, high-damage-and-utility blaster. It’s recommended you stay Far from Enemies to use Alchemical Items.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use (Craft &amp; Attack)</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Arcana, Craft, Medicine</span></p>",
     "rules": [
@@ -25,7 +25,7 @@
         "key": "GrantItem",
         "label": "Catalyze: Deft Hands",
         "level": "1",
-        "uuid": "Compendium.vagabond-lite.perks.Item.TcPtYma4aDbo9npG",
+        "uuid": "Compendium.vagabond-app.perks.Item.TcPtYma4aDbo9npG",
         "type": "perk"
       },
       {
@@ -58,8 +58,8 @@
       "reason"
     ],
     "startingPacks": [
-      "Compendium.vagabond-lite.gear.Item.9ixViHYTPpxYEh9s",
-      "Compendium.vagabond-lite.gear.Item.YD5v9D76fPIczKKy"
+      "Compendium.vagabond-app.gear.Item.9ixViHYTPpxYEh9s",
+      "Compendium.vagabond-app.gear.Item.YD5v9D76fPIczKKy"
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
@@ -113,7 +113,7 @@
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
-    "systemId": "vagabond-lite",
+    "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1785901125159,
     "modifiedTime": 1787877142391,

@@ -1,4 +1,4 @@
-import { vgLiteLang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { ItemSheetProperty } from "./ItemSheetLabelComponent"
 
@@ -6,11 +6,11 @@ export const ItemValue = ({ item }) => {
     return (<>
         {
             item.system.value &&
-                <ItemSheetProperty label={vgLiteLang.ItemSheet.value} value={
+            <ItemSheetProperty label={appLang.ItemSheet.value} value={
                     <div className="flex gap-x-1">
-                        <CoinDisplay item={item} label={vgLiteLang.ItemSheet.g} path={'g'} />
-                        <CoinDisplay item={item} label={vgLiteLang.ItemSheet.s} path={'s'} />
-                        <CoinDisplay item={item} label={vgLiteLang.ItemSheet.c} path={'c'} />
+                    <CoinDisplay item={item} label={appLang.ItemSheet.g} path={'g'} />
+                    <CoinDisplay item={item} label={appLang.ItemSheet.s} path={'s'} />
+                    <CoinDisplay item={item} label={appLang.ItemSheet.c} path={'c'} />
                     </div>
                 } />
         }
