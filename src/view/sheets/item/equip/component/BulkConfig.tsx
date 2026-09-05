@@ -3,6 +3,8 @@ import { useCallback } from "react"
 import { appLang } from "../../../../../utils/lang"
 import { Checkbox } from "../../../../component/Checkbox"
 import { EditableTextField } from "../../../../component/EditableTextField"
+import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetProperty } from "./ItemSheetLabelComponent"
 
@@ -33,6 +35,18 @@ export const Bulk = ({ item }) => {
                 } />
             }
 
+            {(isEditMode || item.system.bulk?.isStackable) &&
+                <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
+                    <ItemSheetProperty label={appLang.ItemSheet.qty} value={
+                        <EditableTextField
+                            boundValue={item.system.bulk?.quantity}
+                            updateProps={{ object: item, path: ['bulk', 'quantity'] }}
+                            placeholder="1"
+                        />
+                    } />
+                </EditModeContextProvider>
+            }
+
             {item.system.bulk?.isStackable && item.system.bulk?.slots === 0 &&
                 <ItemSheetProperty label={appLang.ItemSheet.stackSize} value={
                     <EditableTextField
@@ -43,15 +57,7 @@ export const Bulk = ({ item }) => {
                 } />
             }
 
-            {(isEditMode || item.system.bulk?.isStackable) &&
-                <ItemSheetProperty label={appLang.ItemSheet.qty} value={
-                    <EditableTextField
-                        boundValue={item.system.bulk?.quantity}
-                        updateProps={{ object: item, path: ['bulk', 'quantity'] }}
-                        placeholder="1"
-                    />
-                } />
-            }
+
 
         </div>
     )
