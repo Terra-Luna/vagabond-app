@@ -15,7 +15,7 @@
     "lint": "eslint src && pnpm circ-deps",
     "lint:fix": "eslint --fix src",
     "clean-dist": "node scripts/cleanDist.ts",
-    "deploy": "pnpm clean-dist && pnpm build && pnpm pack:packs && node scripts/deploy.ts"
+    "deploy": "pnpm clean-dist && node scripts/deploy.ts"
   },
   "madge": {
     "tsConfig": "tsconfig.json",

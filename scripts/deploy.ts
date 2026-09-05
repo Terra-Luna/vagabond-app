@@ -26,13 +26,16 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
 manifest.version = version.replace("v", "")
 manifest.download = `https://github.com/Terra-Luna/vagabond-app/releases/download/${version}/${zipName}`
 fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
+console.log("Updated system.json with version and download URL...")
+
+execSync(`pnpm build && pnpm pack:packs`, { stdio: "inherit" })
 
 // Build the ZIP
+console.log("Building release ZIP...")
 const zip = new AdmZip()
 zip.addLocalFolder("./dist")
 zip.addLocalFolder("./lang", "lang")
 zip.writeZip(destination)
-
 console.log(`\nRelease zip created at ${destination}`)
 
 // Release to GitHub
