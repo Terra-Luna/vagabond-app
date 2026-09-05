@@ -2,6 +2,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { Coins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
+import { stackStackables } from "../../utils/heroInventoryUtil"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useItemShopView } from "./ItemShopView"
 
@@ -33,7 +34,7 @@ export class ItemShopApp extends VagabondApplication {
 }
 
 const ItemShopComponent = ({ actor, onClose }) => {
-    const { ItemShop, wallet, cart } = useItemShopView(
+    const { ItemShopView, wallet, cart } = useItemShopView(
         actor.system.inventory.coins,
         actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
     )
@@ -41,8 +42,9 @@ const ItemShopComponent = ({ actor, onClose }) => {
     const onCheckout = async () => {
         await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
         await actor.createEmbeddedDocuments("Item", cart)
+        await stackStackables(actor.system)
         onClose()
     }
 
-    return <ItemShop onCheckout={onCheckout} onCancel={onClose} useCheckout />
+    return <ItemShopView onCheckout={onCheckout} onCancel={onClose} useCheckout />
 }

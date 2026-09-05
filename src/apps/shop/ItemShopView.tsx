@@ -221,5 +221,5 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         )
     }
 
-    return { ItemShop: ItemShopView, wallet, cart, reset, shopCategory, selectedPack }
+    return { ItemShopView, wallet, cart, reset, shopCategory, selectedPack }
 }

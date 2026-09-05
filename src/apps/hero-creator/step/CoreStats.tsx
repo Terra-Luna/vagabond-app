@@ -163,15 +163,15 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
                 {/* STAT ARRAY HEADER */}
                 <HeroCreationLabel text={strings.statArrayPool} />
 
-                {/* HELPER BUTTON FOR DEVELOPMENT TESTING */}
-                {/* <div className="flex w-full justify-center">
+                {/* HELPER BUTTON FOR GM & DEVELOPMENT TESTING */}
+                {game.user?.isGM && <div className="flex w-full justify-center">
                     <SecondaryButton onClick={() => {
                         assignedStats.forEach((s, i) => {
                             s.value = selectedArr?.values[i] ?? 2
                         })
                         setAssignedStats([...assignedStats])
                     }} children={<p>AUTO ASSIGN (TEST ONLY)</p>} />
-                </div> */}
+                </div>}
 
                 <HeroCreationSubtext text={strings.statArrayDrag} />
 

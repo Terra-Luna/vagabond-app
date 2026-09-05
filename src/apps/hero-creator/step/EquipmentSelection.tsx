@@ -12,7 +12,7 @@ export const useEquipmentSelection = (
     clazz: (Item & { system: ClassDataModel }) | undefined,
     navButtons: ReactNode[]
 ) => {
-    const { ItemShop, wallet, cart, selectedPack } = useItemShopView(
+    const { ItemShopView, wallet, cart, selectedPack } = useItemShopView(
         { g: 3, s: 0, c: 0 }, clazz
     )
 
@@ -26,7 +26,7 @@ export const useEquipmentSelection = (
                     <TopNavButtons navButtons={navButtons} subtitle={strings.equipSubheader} canProceed={true} />
                 </div>
                 <div className="flex-1 overflow-y-auto">
-                    <ItemShop includeStartingPacks={true} />
+                    <ItemShopView includeStartingPacks={true} />
                 </div>
             </div>
         </EditModeContextProvider >

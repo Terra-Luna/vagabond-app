@@ -1,4 +1,5 @@
 import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { stackStackables } from "../../../utils/heroInventoryUtil"
 import { Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema,ItemDataModel } from "../ItemDataModel"
@@ -70,6 +71,7 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
         
         if (itemsToCreate.length > 0) {
             await actor.createEmbeddedDocuments("Item", itemsToCreate)
+            await stackStackables(actor.system)
         }
 
         // Remove the starting pack itself
