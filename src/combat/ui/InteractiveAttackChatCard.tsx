@@ -18,7 +18,7 @@ import { tableBorder, tableBorderRounded } from "../../view/common/border-styles
 import { UtilityButton } from "../../view/component/Button"
 import { Checkbox } from "../../view/component/Checkbox"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
-import { Divider, Header } from "../../view/component/Header"
+import { ClearHeader, Divider, Header } from "../../view/component/Header"
 import { CardSubHeader } from "../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
@@ -83,8 +83,10 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
     const source = useMemo<Item | undefined>(() => {
         if (attack instanceof HeroAttack && attack.itemId) {
+            const items = actor?.items as Item[] | undefined
             const item =
-                actor?.items?.contents?.find(it => it.id === attack.itemId) ??
+                items?.find(it => it.id === attack.itemId) ??
+                items?.find(it => it.id === attack.itemId.split(".").pop()) ??
                 ItemsCache.allItems().find(it => it.uuid === attack.itemId)
 
             return item
@@ -126,7 +128,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                         {(game.user?.isGM && !attack.isResolved && !(attack as any).isDefenseCheck) &&
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                 <div className="mt-0.5 text-base font-normal">
-                                    <Header title={"GM Tools"} textLeft={true} />
+                                    <Header title={"GM Tools"} />
                                     <div className="flex items-end justify-between px-1">
                                         <div>
                                             <Checkbox
@@ -271,11 +273,21 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             {/* SKILL CHECK */}
             {attack.showSkillCheck &&
                 <div>
+                    {/* TARGET TOKENS ARRAY */}
+                    {attack.showTargets && !attack.isDefenseCheck &&
+                        <div className="flex">
+                            <div className="flex flex-col w-full">
+                                <TargetsDisplay targets={targets} />
+                            </div>
+                        </div>
+                    }
+
                     <Header title={`${attack.isDefenseCheck ? "Defense" : `${attack.skillCheck!.result!.skillName}`} Check`} textLeft={true} />
                     <CardSubHeader showRightBorder={false} values={[
                         { label: "Difficulty", value: attack.skillCheck?.difficulty?.toString() },
                         { label: "Result", value: attack.skillCheck?.result?.outcome }
                     ]} />
+
                     <div className="flex flex-col justify-center items-center">
                         <SkillCheckDiceComponent
                             d20s={attack.skillCheck?.result?.d20s}
@@ -300,7 +312,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                         }
 
                         {/* SKILL CHECK AUGMENTATION BUTTONS */}
-                        {canUpdateSkillCheck &&
+                        {canUpdateSkillCheck && (luck > 0 || (studied > 0 && getAllowLateLuckStudy())) &&
                             <div className="flex flex-col w-full gap-2">
                                 <Divider />
                                 <div className="flex gap-x-1 items-center justify-center text-base font-normal px-4 mb-2">
@@ -331,22 +343,13 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                 </div>
             }
 
-            {/* TARGET TOKENS ARRAY */}
-            {attack.showTargets && !attack.isDefenseCheck &&
-                <div className="flex">
-                    {source && <ItemPortraitComponent item={source} size={54} className={'m-0 -mt-0.25'} />}
-                    <div className="flex flex-col w-full">
-                        <Header title={`Targets (x ${targets.length})`} textLeft={true} />
-                        <TargetsDisplay targets={targets} />
-                    </div>
-                </div>
-            }
-
             {/* DAMAGE DISPLAY */}
             {attack.showDamage &&
                 <div>
                     {/* HIDE THE DAMAGE HEADER IF IT WAS HEALING OR FRIENDLY FX ONLY */}
-                    {!isFriendlySpell && <Header title={`${attack.isDefenseCheck ? 'Damage Reduction' : 'Damage'}`} textLeft={true} />}
+                    {!isFriendlySpell &&
+                        <ClearHeader title={`${attack.isDefenseCheck ? 'Damage Reduction' : 'Damage'}`} />
+                    }
 
                     {/* SPELL ATTACK INFO */}
                     {attack.isSpellAttack
@@ -354,11 +357,13 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                             spell={source as Item & { system: SpellDataModel }}
                             delivery={attack.spellDelivery}
                             dmgRoll={attack.damageRoll?.result}
+                            img={source && <ItemPortraitComponent item={source} size={32} disableCtxMenu={true} />}
                         />
                         : <div className="w-full">
                             {/* WEAPON ATTACK DAMAGE */}
                             <DamageRollsComponent result={attack.damageRoll!.result!} />
                             <div className="flex items-center justify-center">
+                                {source && <ItemPortraitComponent item={source} size={32} disableCtxMenu={true} />}
                                 <TotalDmgFooter total={
                                     <div className="flex gap-x-1 items-center">
                                         <p>{attack.damageRoll?.result?.total}</p>
@@ -410,7 +415,6 @@ const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAt
             {/* TARGET TOKENS ARRAY */}
             {attack.showTargets &&
                 <div className="flex flex-col w-full">
-                    <Header title={`Targets [ ${targets.length} ]`} textLeft={true} />
                     <TargetsDisplay targets={targets} />
                 </div>
             }
@@ -433,16 +437,14 @@ const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: Advers
     const liveTargetIds = useLiveTargetSync(attack)
 
     const targets = useMemo<TargetDisplayItem[]>(() => {
-        return liveTargetIds
-            .map(id => {
-                const canvasToken = getCanvasToken(id)
-                return {
-                    id: id,
-                    src: getTokenImg(canvasToken),
-                    token: canvasToken
-                }
-            })
-            .filter(it => it.src != null && it.src.length > 0)
+        return liveTargetIds.map(id => {
+            const canvasToken = getCanvasToken(id)
+            return {
+                id: id,
+                src: getTokenImg(canvasToken),
+                token: canvasToken
+            }
+        }).filter(it => it.src != null && it.src.length > 0)
     }, [liveTargetIds])
 
     // Players should only see their own saves.
@@ -465,14 +467,13 @@ const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: Advers
             {/* TARGET TOKENS ARRAY (shared by every action in the combo) */}
             {attack.showTargets &&
                 <div className="flex flex-col w-full">
-                    <Header title={`Targets (x ${targets.length})`} textLeft={true} />
                     <TargetsDisplay targets={targets} />
                 </div>
             }
 
             {/* ONE DAMAGE + SAVES SECTION PER COMBO ACTION */}
             {attack.subAttacks.map((sub, index) => (
-                <div className={`${tableBorderRounded} p-1`} key={index}>
+                <div className={`${tableBorderRounded} bg-context-menu-fill/25`} key={index}>
                     <AttackDamageAndSavesSection
                         title={sub.name}
                         damageRoll={sub.damageRoll}
@@ -507,11 +508,14 @@ const AttackDamageAndSavesSection = ({
     const showDamage = (damageRoll?.result?.total ?? 0) > 0
 
     return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 pb-1">
             {/* DAMAGE DISPLAY */}
             {showDamage &&
                 <div>
-                    <Header title={title ? `${title}` : 'DAMAGE'} textLeft={true} />
+                    {title
+                        ? <Header title={title} textLeft={true} />
+                        : <ClearHeader title="DAMAGE" />
+                    }
                     <DamageRollsComponent result={damageRoll!.result!} />
                     <div className="flex items-center justify-center">
                         <TotalDmgFooter total={
@@ -526,9 +530,9 @@ const AttackDamageAndSavesSection = ({
 
             {/* SAVING THROW BUTTONS */}
             {saveTypes.length > 0 && ownedTargets.length > 0 &&
-                <div>
-                    <Header title={"SAVES"} textLeft={true} />
-                    <div className="flex flex-col gap-1 mt-1 px-2">
+                <div className="px-1">
+                    <ClearHeader title="SAVES" />
+                    <div className="flex flex-col gap-1 mt-1 px-1">
                         {ownedTargets.map(target => {
                             const result = saveResults[target.id]
                             const canRollSave = !isResolved && !result && (game.user?.isGM || target.token?.actor?.isOwner)

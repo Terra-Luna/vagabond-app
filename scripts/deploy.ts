@@ -6,8 +6,8 @@ import path from "path"
 const args = process.argv.slice(2)
 
 if (args.includes("--help") || args.includes("--usage")) {
-    console.log("Usage: pnpm deploy {version number} {destination}")
-    console.log("Version number defaults to v0.0.1, Destination defaults to releases/vagabond-app-${releaseVersion}.zip")
+    console.info("Usage: pnpm deploy {version number} {destination}")
+    console.info("Version number defaults to v0.0.1, Destination defaults to releases/vagabond-app-${releaseVersion}.zip")
     process.exit(0)
 }
 
@@ -26,26 +26,26 @@ const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
 manifest.version = version.replace("v", "")
 manifest.download = `https://github.com/Terra-Luna/vagabond-app/releases/download/${version}/${zipName}`
 fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
-console.log("Updated system.json with version and download URL...")
+console.info("Updated system.json with version and download URL...")
 
 execSync(`pnpm build && pnpm pack:packs`, { stdio: "inherit" })
 
 // Build the ZIP
-console.log("Building release ZIP...")
+console.info("Building release ZIP...")
 const zip = new AdmZip()
 zip.addLocalFolder("./dist")
 zip.addLocalFolder("./lang", "lang")
 zip.writeZip(destination)
-console.log(`\nRelease zip created at ${destination}`)
+console.info(`\nRelease zip created at ${destination}`)
 
 // Release to GitHub
-console.log(`Creating GitHub release for ${version}...`)
+console.info(`Creating GitHub release for ${version}...`)
 try {
     execSync(
         `gh release create ${version} "${destination}" "${manifestPath}" --title "Release ${version}" --notes "Automated release for version ${version}"`,
         { stdio: "inherit" }
     )
-    console.log("GitHub release created, ZIP and system.json uploaded successfully!");
+    console.info("GitHub release created, ZIP and system.json uploaded successfully!");
 }
 catch (error) {
     console.error(`Failed to create GitHub release. Make sure GitHub CLI (gh) is installed and authenticated. ${error}`)

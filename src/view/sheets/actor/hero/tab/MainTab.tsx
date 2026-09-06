@@ -159,7 +159,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                                 {damageString}
                                             </div>
                                             {item instanceof WeaponDataModel && item.properties.includes("defense") &&
-                                                <button title={"Roll defense check"} onClick={(e) => rollDefenseCheck(e)} className="hover-glow cursor-pointer">
+                                                <button title={"Roll defense check"} onClick={(e) => rollDefenseCheck(e)} onMouseDown={(e) => e.preventDefault()} className="hover-glow cursor-pointer">
                                                     <Shield className="text-ic-armor-border fill-ic-armor-fill" size={22} />
                                                 </button>
                                             }

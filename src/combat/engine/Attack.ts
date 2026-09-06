@@ -97,13 +97,8 @@ export abstract class Attack {
         const target = actor?.system
         const armorRating = (target as any)?.armor?.rating ?? 0
         const armorPiercing = this.damageRoll?.armorPiercing ?? 0
-        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + this.getBonusArmor(targetId) - armorPiercing)
+        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
         return Math.max(0, damage - armor)
-    }
-
-    protected getBonusArmor(targetId: string): number {
-        void targetId
-        return 0
     }
 
     protected getActors(targetIds: string[]) {
@@ -114,8 +109,8 @@ export abstract class Attack {
         return target.health.current
     }
 
-    protected updateHP(target, hp) {
-        target?.parent.update({ "system.health.current": hp })
+    protected async updateHP(target, hp) {
+        await target?.parent.update({ "system.health.current": hp })
     }
 
     async save(serialize: (attack: Attack) => AttackSnapshot | undefined) {

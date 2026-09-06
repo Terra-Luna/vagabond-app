@@ -126,12 +126,6 @@ export class AdversaryAttack extends Attack {
         return !result || result.outcome === appLang.RollResult.failure
     }
 
-    // A Block roll counts its weapon damage die as bonus armor.
-    protected override getBonusArmor(targetId: string): number {
-        const result = this.saveResults[targetId]
-        return result.d20s?.reduce((sum, val) => sum + val, 0) ?? 0
-    }
-
     protected override processDamageRoll(args: AttackResolutionArgs) {
         super.processDamageRoll(args)
         this.applyStatusEffects(args)

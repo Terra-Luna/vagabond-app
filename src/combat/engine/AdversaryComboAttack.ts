@@ -52,11 +52,6 @@ export class ComboSubAttack {
         return !result || result.outcome === appLang.RollResult.failure
     }
 
-    getBonusArmor(targetId: string): number {
-        const result = this.saveResults[targetId]
-        return result.d20s?.reduce((sum, val) => sum + val, 0) ?? 0
-    }
-
     calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         let damage = this.damageRoll.result?.total ?? 0
@@ -65,7 +60,7 @@ export class ComboSubAttack {
         const target = actor?.system
         const armorRating = (target as any)?.armor?.rating ?? 0
         const armorPiercing = this.damageRoll.armorPiercing ?? 0
-        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + this.getBonusArmor(targetId) - armorPiercing)
+        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
         return Math.max(0, damage - armor)
     }
 
@@ -213,40 +208,41 @@ export class AdversaryComboAttack extends Attack {
         return new AdversaryComboAttack(actor, args, targetIds)
     }
 
-    // Overridden wholesale since the base implementation only knows about a single damageRoll.
-    protected override processDamageRoll(args: AttackResolutionArgs) {
-        this.subAttacks.forEach(sub => this.processSubAttackDamage(sub, args))
+    protected override async processDamageRoll(args: AttackResolutionArgs) {
+        for (const sub of this.subAttacks) {
+            await this.processSubAttackDamage(sub, args)
+        }
     }
 
-    private processSubAttackDamage(sub: ComboSubAttack, args: AttackResolutionArgs) {
+    private async processSubAttackDamage(sub: ComboSubAttack, args: AttackResolutionArgs) {
         if (!sub.damageRoll.result) return
 
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
-            .filter(id => sub.shouldApplyDamageToTarget(id))
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => sub.shouldApplyDamageToTarget(id))
 
-        targetIds.forEach(id => {
+        for (const id of targetIds) {
             const actor = canvas?.scene?.tokens?.get(id)?.actor
-            if (sub.damageRoll.dmgType === 'healing') {
-                this.updateHP(actor?.system, this.getHP(actor?.system) + (sub.damageRoll.result?.total ?? 0))
-            }
-            else {
-                const adjDamage = sub.calculateAdjustedDamage(id, args)
-                this.updateHP(actor?.system, this.getHP(actor?.system) - adjDamage)
-            }
-        })
+            const hp = this.getHP(actor?.system)
+            const adjDamage = sub.calculateAdjustedDamage(id, args)
+            await this.updateHP(actor?.system, hp - adjDamage)
+        }
 
-        this.applyStatusEffectsForSub(sub, args, targetIds)
+        await this.applyStatusEffectsForSub(sub, args, targetIds)
     }
 
-    private applyStatusEffectsForSub(sub: ComboSubAttack, args: AttackResolutionArgs, eligibleTargetIds: string[]) {
+    private async applyStatusEffectsForSub(sub: ComboSubAttack, args: AttackResolutionArgs, eligibleTargetIds: string[]) {
         if (sub.statuses.length === 0) return
 
-        eligibleTargetIds.forEach(id => {
+        for (const id of eligibleTargetIds) {
             // Skip targets who wouldn't have taken any damage from this sub-attack (e.g. fully mitigated).
             if (sub.calculateAdjustedDamage(id, args) < 1) return
+
             const actor = canvas?.scene?.tokens?.get(id)?.actor
-            sub.statuses.forEach(status => actor?.toggleStatusEffect(status, { active: true }))
-        })
+            for (const status of sub.statuses) {
+                if (!actor?.statuses?.has(status)) {
+                    await actor?.toggleStatusEffect(status, { active: true })
+                }
+            }
+        }
     }
 
     // Toggles on each sub-attack's configured statuses for failed targets without applying damage, then resolves.

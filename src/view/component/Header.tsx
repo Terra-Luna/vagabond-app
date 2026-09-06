@@ -9,5 +9,16 @@ export const Header = ({ title, collapseButton, textLeft = false }: { title: str
     )
 }
 
+export const ClearHeader = ({ title }: { title: string }) => {
+    if (!title) return null
+    return (
+        <div className="flex gap-x-2 items-center px-4">
+            <Divider />
+            {title.toUpperCase()}
+            <Divider />
+        </div>
+    )
+}
+
 export const Divider = () => <div className={"grow h-[2px] bg-section-header-line mx-1"} />
 export const ItemDivider = () => <div className={"grow h-[1px] bg-table-border/50"} />

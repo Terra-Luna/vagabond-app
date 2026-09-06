@@ -2,6 +2,7 @@ import { Trash } from "lucide-react"
 
 import { appLang } from "../../../utils/lang"
 import { useContextMenu } from "../../component/ContextMenu"
+import { ClearHeader } from "../../component/Header"
 
 /**
  * Displays an array of Token icons. Utilize target-sync.tsx to get live token target tracking updates.
@@ -11,9 +12,12 @@ import { useContextMenu } from "../../component/ContextMenu"
 export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], onRemoveTarget?: any }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
-        <div>
+        <div className="pb-2">
+
+            <ClearHeader title={`Targets [${targets.length}]`} />
+
             {targets && targets.length > 0 &&
-                <div className="flex flex-wrap -space-x-4 justify-center items-center px-2 mb-1">
+                <div className="flex flex-wrap -space-x-4 justify-center items-center px-2">
                     {targets.map((target, index) => (
                         <button
                             key={target.id}
@@ -41,7 +45,7 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
                                 <img
                                     src={target.src}
                                     alt={target.token?.name}
-                                    className={`object-contain h-[38px] w-[38px] cursor-pointer`}
+                                    className={`object-contain h-[34px] w-[34px] cursor-pointer`}
                                 />
                             } />
                     ))}

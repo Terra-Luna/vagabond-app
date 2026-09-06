@@ -6,8 +6,8 @@ import { ItemChatCard } from "../../../chat/ItemChatCard"
 import { CtxMenuItem,useContextMenu } from "../../../component/ContextMenu"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 
-export const ItemPortraitComponent = ({ item, size = 56, className }: {
-    item: Item, size?: number, className?: string
+export const ItemPortraitComponent = ({ item, size = 56, className, disableCtxMenu }: {
+    item: Item, size?: number, className?: string, disableCtxMenu?: boolean
 }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const { imageEditCtxMenuItems } = useImageEdit(item)
@@ -34,7 +34,7 @@ export const ItemPortraitComponent = ({ item, size = 56, className }: {
                         alt={''}
                         onContextMenu={(e) => onCtxMenu(e, contextMenuItems)}
                     />
-                    <ContextMenu />
+                    {!disableCtxMenu && <ContextMenu />}
                 </div>
             }
         </div>
