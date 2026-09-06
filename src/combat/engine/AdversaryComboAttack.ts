@@ -14,8 +14,7 @@ import { serializeAttack } from "./util/attack-serializer"
 export interface ComboSubAttackArgs { name: string, dmgType: string, dice: DiceRoll[], saveTypes?: SavingThrowType[], statuses?: string[] }
 
 /**
- * One repetition of an action within an Adversary combo (e.g. one of "2x Claw"). Mirrors AdversaryAttack's
- * save/damage/status handling, but scoped to its own damage roll and save results.
+ * One repetition of an action within an Adversary combo (e.g. one of "2x Claw").
  */
 export class ComboSubAttack {
 
@@ -50,13 +49,11 @@ export class ComboSubAttack {
     // Same rules as AdversaryAttack: a Block meeting/beating its difficulty negates all damage.
     shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
-        if (result?.blockDie) return result.total < result.difficulty
         return !result || result.outcome === appLang.RollResult.failure
     }
 
     getBonusArmor(targetId: string): number {
         const result = this.saveResults[targetId]
-        if (!result?.blockDie) return 0
         return result.d20s?.reduce((sum, val) => sum + val, 0) ?? 0
     }
 
@@ -72,13 +69,13 @@ export class ComboSubAttack {
         return Math.max(0, damage - armor)
     }
 
-    async rollSave(targetId: string, saveType: SavingThrowType, blockDie?: number, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
+    async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
         if (!this.saveTypes.includes(saveType) || this.saveResults[targetId]) return
 
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const skillCheck = new SkillCheck(targetActor.system as HeroDataModel, { type: 'save', skill: saveType, blockDie, clickEvent: clickEvent as any })
+        const skillCheck = new SkillCheck(targetActor.system as HeroDataModel, { type: 'save', skill: saveType, clickEvent: clickEvent as any })
         const result = await skillCheck.roll()
 
         this.saveResults = { ...this.saveResults, [targetId]: result }
@@ -90,9 +87,7 @@ export class ComboSubAttack {
 
     async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
         const existing = this.saveResults[targetId]
-        if (!existing || existing.outcome !== appLang.RollResult.failure) return
-        if (existing.blockDie) return
-        if (this.rerolledSaveTargetIds.includes(targetId)) return
+        if (!existing || existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return
 
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
@@ -109,7 +104,6 @@ export class ComboSubAttack {
         const skillCheck = new SkillCheck(hero, {
             type: 'save',
             skill: existing.skill,
-            blockDie: existing.blockDie,
             favorHinder: existing.favorHinder as 'favor' | 'hinder' | 'none'
         })
         const result = await skillCheck.roll()
@@ -197,11 +191,11 @@ export class AdversaryComboAttack extends Attack {
         )
     }
 
-    async rollSave(subIndex: number, targetId: string, saveType: SavingThrowType, blockDie?: number, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
+    async rollSave(subIndex: number, targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
         const sub = this.subAttacks[subIndex]
         if (!sub) return
 
-        const result = await sub.rollSave(targetId, saveType, blockDie, clickEvent)
+        const result = await sub.rollSave(targetId, saveType, clickEvent)
         if (result) await this.save(serializeAttack)
         return result
     }

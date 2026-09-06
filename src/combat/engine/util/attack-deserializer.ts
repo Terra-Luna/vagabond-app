@@ -39,6 +39,8 @@ function deserializeHeroAttack(
             : undefined
     )
 
+    atk.isDefenseCheck = !!snapshot.isDefenseCheck
+
     atk.damageRoll = DamageRoll.fromJson(
         snapshot.damageRoll
             ? foundry.utils.deepClone(snapshot.damageRoll)

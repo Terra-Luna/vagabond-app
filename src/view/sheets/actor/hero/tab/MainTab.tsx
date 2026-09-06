@@ -2,7 +2,6 @@ import { Shield } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
-import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { getArmor,HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
@@ -11,8 +10,6 @@ import { isEquippedTool, isEquippedWeapon,WeaponDataModel } from "../../../../..
 import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
-import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
-import { SkillCheckChatCard } from "../../../../chat/SkillCheckChatCard"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
@@ -76,8 +73,6 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         return () => { Hooks.off('targetToken', hookId) }
     }, [])
 
-
-
     /**
      * Monitor for Active Effect updates that might alter their
      * equipped weapon attack rolls.
@@ -111,14 +106,14 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                     await attackInstance.initiate(e)
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
                 },
-                rollDefensiveReflexSave: async () => {
-                    const skillCheck = await new SkillCheck(hero, { type: 'save', skill: 'reflex', blockDie: item.damage.dice.faces }).roll()
-                    sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                rollDefenseCheck: async (e: React.MouseEvent) => {
+                    await attackInstance.initiate(e, true)
+                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
                 }
             }
         })
         const toolsData = equippedTools.map(item => {
-            return { item, damageString: "", initiateAttack: () => { }, rollDefensiveReflexSave: () => { } }
+            return { item, damageString: "", initiateAttack: () => { }, rollDefenseCheck: () => { } }
         })
         return [...weaponData, ...toolsData]
     }, [hero.parent, equipDependency, targetIds, effectUpdateKey])
@@ -127,7 +122,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         <div className="w-full">
             <Header title={appLang.HeroSheet.weapons} />
             {
-                equipDisplayData?.map(({ item, damageString, initiateAttack, rollDefensiveReflexSave }, index: number) => {
+                equipDisplayData?.map(({ item, damageString, initiateAttack, rollDefenseCheck }, index: number) => {
                     return (
                         <div
                             key={getId(item)}
@@ -164,7 +159,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                                 {damageString}
                                             </div>
                                             {item instanceof WeaponDataModel && item.properties.includes("defense") &&
-                                                <button title={"Roll to defend"} onClick={() => rollDefensiveReflexSave()} className="hover-glow cursor-pointer">
+                                                <button title={"Roll defense check"} onClick={(e) => rollDefenseCheck(e)} className="hover-glow cursor-pointer">
                                                     <Shield className="text-ic-armor-border fill-ic-armor-fill" size={22} />
                                                 </button>
                                             }

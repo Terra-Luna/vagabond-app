@@ -14,7 +14,7 @@ export const BaseChatCardHost = ({ banner, contents }) => {
     return (
         <div className={chatCardBodyStyle}>
             {banner}
-            <div className="p-2">
+            <div className="p-1">
                 {contents}
             </div>
         </div>

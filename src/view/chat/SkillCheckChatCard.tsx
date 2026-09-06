@@ -15,7 +15,7 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
             banner={<ChatCardBanner
                 tokenId={actor?.getActiveTokens()[0]?.id}
                 portrait={getTokenImg(actor)}
-                title={`${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} ${result.blockDie > 0 ? '(Defensive) ' : ''}Check`}
+                title={`${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} Check`}
                 subtitle={[
                     { label: "Difficulty", value: result.difficulty.toString() },
                     { label: "Result", value: result.outcome }
@@ -27,7 +27,6 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
                     d6={result.d6}
                     modifier={result.modifier}
                     favHinder={result.favorHinder}
-                    blockDie={result.blockDie}
                     bonusDice={result.bonusDice}
                 />
             </>}
@@ -35,12 +34,12 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
     )
 }
 
-export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, blockDie = 0, bonusDice }) => {
+export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, bonusDice }) => {
     return (
         <div className="flex gap-x-1 mt-2 justify-center items-center">
             {/* D20 DICE ARRAY */}
             {d20s.map((d20: number, index: number) => (
-                <DiceRollComponent key={index} faces={blockDie > 0 ? blockDie : 20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
+                <DiceRollComponent key={index} faces={20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
             ))}
             {/* FAVOR/HINDER DICE */}
             {favHinder !== 'none' &&

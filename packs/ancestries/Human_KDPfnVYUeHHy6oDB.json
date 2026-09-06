@@ -4,12 +4,12 @@
   "_id": "KDPfnVYUeHHy6oDB",
   "img": "systems/vagabond-app/assets/ancestry/human_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Humans are social beings that tend to be central in the development of major, diverse melting pot civilizations. Their tendency to develop wide, sprawling empires and a huge pool of cultures makes them extremely adaptable adventurers.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Knack:</strong></b><span style=\"white-space:pre-wrap\"> You gain a Perk and a Training.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Strong Potential:</strong></b><span style=\"white-space:pre-wrap\"> Increase one of your Stats by 1, but no higher than 7.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Humans are social beings that tend to be central in the development of major, diverse melting pot civilizations. Their tendency to develop wide, sprawling empires and a huge pool of cultures makes them extremely adaptable adventurers.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Aptitude:</strong></b><span style=\"white-space:pre-wrap\"> You gain a Perk and a Training.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Strong Potential:</strong></b><span style=\"white-space:pre-wrap\"> Increase one of your Stats by 1, but no higher than 7.</span></p>",
     "rules": [
       {
         "id": "yVbjwZZIl266OGlx",
         "key": "ChoiceSet",
-        "label": "Knack: Perk",
+        "label": "Aptitude: Perk",
         "level": 0,
         "value": 1,
         "maxChoices": 1,
@@ -22,7 +22,7 @@
       {
         "id": "VhzPNDNLzhR4DPBf",
         "key": "ChoiceSet",
-        "label": "Knack: Training",
+        "label": "Aptitude: Training",
         "level": 0,
         "value": 1,
         "maxChoices": 1,
@@ -69,10 +69,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.16",
     "createdTime": 1784494457445,
-    "modifiedTime": 1786171253902,
-    "lastModifiedBy": "OEIcVuCsythiHjRt",
+    "modifiedTime": 1788654518467,
+    "lastModifiedBy": "verUzfB2esLt5vCo",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

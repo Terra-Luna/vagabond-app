@@ -1,4 +1,4 @@
-import { Brain, Cross, Droplets, Flame, FlaskRound, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
+import { Brain, Cross, Droplets, Flame, FlaskRound, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
 import { sys_id } from "../../utils/foundryUtils"
@@ -7,6 +7,11 @@ import { lang } from "../../utils/lang"
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
     size = size ? size : 20
     let element: ReactElement | undefined
+
+    if (dmgType === 'defense') {
+        return <Shield size={size} className='text-ic-armor fill-ic-armor-fill' />
+    }
+
     switch (lang.APP.DamageTypes[dmgType]) {
         case lang.APP.DamageTypes.magical: {
             element = <Wand2 size={size} className='text-magical' />

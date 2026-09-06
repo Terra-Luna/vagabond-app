@@ -28,6 +28,7 @@ export class HeroAttack extends Attack {
     skipSkillCheck: boolean = false
     spellDelivery: SpellDeliverySnapshot | undefined
     skillCheck?: SkillCheck
+    isDefenseCheck: boolean = false
     critChoice?: 'luck' | 'damage' | 'spellFx'
     isRerolled: boolean = false
 
@@ -36,12 +37,14 @@ export class HeroAttack extends Attack {
         actor: Actor & { system: HeroDataModel },
         targetIds?: string[],
         skillCheck?: SkillCheck,
+        isDefenseCheck?: boolean,
         damageRoll?: DamageRoll
     ) {
         super(title)
         this.actor = actor
         this.targetIds = targetIds ? [...targetIds] : []
         this.skillCheck = skillCheck
+        this.isDefenseCheck = !!isDefenseCheck
         this.damageRoll = damageRoll
     }
 
@@ -95,9 +98,11 @@ export class HeroAttack extends Attack {
         return (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets && isDmgOrEffect)
     }
 
-    async initiate(clickEvent?: any) {
+    async initiate(clickEvent?: any, isDefenseCheck?: boolean) {
         this.id = foundry.utils.randomID()
-        if (this.skillCheck && this.hasHostileTargets && !this.skipSkillCheck) {
+        this.isDefenseCheck = !!isDefenseCheck
+
+        if (this.skillCheck && (this.hasHostileTargets || isDefenseCheck) && !this.skipSkillCheck) {
             this.skillCheck.setFavorHinder(clickEvent)
             await this.rollSkillCheck()
         }
@@ -347,7 +352,7 @@ export class HeroAttack extends Attack {
             perDieDmgBonus: (dmgMods.out[weaponSkill]?.perDieBonus ?? 0)
         })
 
-        const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, damageRoll)
+        const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
         attack.itemId = item.uuid
 
         return attack
@@ -415,7 +420,7 @@ export class HeroAttack extends Attack {
             delivery.applyEffect = true
         }
 
-        const attack = new HeroAttack(delivery.spell.name, actor, getTargetIds(), skillCheck, damageRoll)
+        const attack = new HeroAttack(delivery.spell.name, actor, getTargetIds(), skillCheck, false, damageRoll)
         attack.itemId = delivery.spell.uuid
         attack.spellDelivery = delivery.toJson()
         attack.skipSkillCheck = delivery instanceof Imbue
@@ -453,7 +458,7 @@ export class HeroAttack extends Attack {
             const skillCheck = makeSkillCheck('attack')
             const damageRoll = makeDamageRoll(weapon, title)
 
-            const attack = new HeroAttack(title, actor, getTargetIds(), skillCheck, damageRoll)
+            const attack = new HeroAttack(title, actor, getTargetIds(), skillCheck, false, damageRoll)
             attack.itemId = weapon?.id ?? ''
             attack.skipSkillCheck = preset.skill === '-'
             attack.initiate()

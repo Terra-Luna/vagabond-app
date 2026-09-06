@@ -62,13 +62,13 @@ export class AdversaryAttack extends Attack {
         }
     }
 
-    async rollSave(targetId: string, saveType: SavingThrowType, blockDie?: number, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
+    async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
         if (!this.saveTypes.includes(saveType) || this.saveResults[targetId]) return
 
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const skillCheck = new SkillCheck(targetActor.system as HeroDataModel, { type: 'save', skill: saveType, blockDie, clickEvent: clickEvent as any })
+        const skillCheck = new SkillCheck(targetActor.system as HeroDataModel, { type: 'save', skill: saveType, clickEvent: clickEvent as any })
         const result = await skillCheck.roll()
 
         this.saveResults = { ...this.saveResults, [targetId]: result }
@@ -78,13 +78,10 @@ export class AdversaryAttack extends Attack {
         return result
     }
 
-    // Spends a Luck to reroll a failed save with the same skill as the original attempt.
-    // Only one reroll per target is allowed and Block (defense weapon) rolls are not eligible.
+    // Spends a Luck to reroll a failed save with the same skill as the original attempt. Only one reroll per target is allowed.
     async rerollSave(targetId: string): Promise<SkillCheckResult | undefined> {
         const existing = this.saveResults[targetId]
-        if (!existing || existing.outcome !== appLang.RollResult.failure) return
-        if (existing.blockDie) return
-        if (this.rerolledSaveTargetIds.includes(targetId)) return
+        if (!existing || existing.outcome !== appLang.RollResult.failure || this.rerolledSaveTargetIds.includes(targetId)) return
 
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
@@ -102,7 +99,6 @@ export class AdversaryAttack extends Attack {
         const skillCheck = new SkillCheck(hero, {
             type: 'save',
             skill: existing.skill,
-            blockDie: existing.blockDie,
             favorHinder: existing.favorHinder as 'favor' | 'hinder' | 'none'
         })
 
@@ -121,22 +117,18 @@ export class AdversaryAttack extends Attack {
     }
 
     /**
-     * A target who succeeded (or crit) their saving throw takes no damage/healing. A Block roll (die +/-
-     * Favor/Hinder) that meets or beats the Reflex difficulty also negates all damage; otherwise its die
-     * result only grants bonus armor (see getBonusArmor).
+     * A target who succeeded (or crit) their saving throw takes no damage.
      * @param targetId 
      * @returns 
      */ 
     protected override shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
-        if (result?.blockDie) return result.total < result.difficulty
         return !result || result.outcome === appLang.RollResult.failure
     }
 
-    // A Block roll counts its weapon damage die (but not any Favor/Hinder d6) as bonus armor.
+    // A Block roll counts its weapon damage die as bonus armor.
     protected override getBonusArmor(targetId: string): number {
         const result = this.saveResults[targetId]
-        if (!result?.blockDie) return 0
         return result.d20s?.reduce((sum, val) => sum + val, 0) ?? 0
     }
 

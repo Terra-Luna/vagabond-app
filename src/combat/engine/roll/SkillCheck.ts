@@ -13,7 +13,6 @@ export interface SkillCheckArgs {
     skill: string
     d20Count?: number
     bonusDice?: DiceRollSchema[]
-    blockDie?: number
     modifier?: number
     critThreshold?: number
     favorHinder?: 'favor' | 'hinder' | 'none'
@@ -22,7 +21,6 @@ export interface SkillCheckArgs {
 
 export interface SkillCheckResult {
     skill: string
-    blockDie: number
     skillName: string
     difficulty: number
     critThreshold: number
@@ -41,7 +39,6 @@ export class SkillCheck {
     type: SkillCheckType
     skill: string
     difficulty: number
-    blockDie: number
     d20Count: number
     bonusDice?: DiceRoll[]
     modifier: number
@@ -51,7 +48,7 @@ export class SkillCheck {
     result: SkillCheckResult | undefined
 
     constructor(hero: HeroDataModel, args: SkillCheckArgs) {
-        const skillMods = args.blockDie ? undefined : hero.modifiers.skillCheck[args.skill]
+        const skillMods = hero.modifiers.skillCheck[args.skill]
 
         const globalMods = args.type === 'attack'
             ? hero.modifiers.skillCheck.attack
@@ -71,7 +68,6 @@ export class SkillCheck {
 
         this.type = args.type
         this.skill = args.skill
-        this.blockDie = args.blockDie ?? 0
         this.difficulty = hero.skills[args.skill]?.value ?? hero.saves[args.skill]
         this.d20Count = args.d20Count ?? (1 + (skillMods?.extraDice ?? 0) + (globalMods?.extraDice ?? 0))
         this.bonusDice = bonusRolls
@@ -84,7 +80,6 @@ export class SkillCheck {
     toJson() {
         return {
             skill: this.skill,
-            blockDie: this.blockDie,
             difficulty: this.difficulty,
             d20Count: this.d20Count,
             bonusDice: this.bonusDice?.map(d => ({ count: d.count, faces: d.faces })),
@@ -101,7 +96,6 @@ export class SkillCheck {
             const skillCheck = new SkillCheck(actor.system, {
                 type: snapshot.type,
                 skill: snapshot.skill,
-                blockDie: snapshot.blockDie,
                 d20Count: snapshot.d20Count,
                 bonusDice: snapshot.bonusDice?.map(d => ({ count: 1, faces: d.faces })),
                 modifier: snapshot.modifier,
@@ -135,9 +129,9 @@ export class SkillCheck {
          * Build roll formula and evaluate.
          * "kh" = "keep highest"
          */
-        let formula = this.blockDie > 0 ? `d${this.blockDie}` : `${this.d20Count ?? 1}d20kh`
+        let formula = `${this.d20Count ?? 1}d20kh`
 
-        if (this.blockDie === 0 && this.modifier) {
+        if (this.modifier) {
             formula += `+${this.modifier}`
         }
 
@@ -163,7 +157,7 @@ export class SkillCheck {
          * Extract roll results...
          */
         const terms = getDiceTerms(roll)
-        const d20Term = terms.find(it => it.faces === (this.blockDie > 0 ? this.blockDie : 20))
+        const d20Term = terms.find(it => it.faces === 20)
         const d6Term = terms.find(it => it.faces === 6)
         const d20Res = d20Term?.results?.map(r => r.result)?.sort((a, b) => a - b) ?? [0]
         const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
@@ -174,7 +168,6 @@ export class SkillCheck {
 
         this.result =  {
             skill: this.skill,
-            blockDie: this.blockDie,
             skillName: appLang.Skills[this.skill]?.name ?? appLang.Saves[this.skill]?.name ?? '',
             difficulty: this.difficulty,
             modifier: this.modifier,

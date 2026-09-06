@@ -23,6 +23,7 @@ export interface AttackSnapshot {
     targetIds: string[]
     title: string
     skillCheck: SkillCheck | undefined
+    isDefenseCheck: boolean | undefined
     damageRoll: any | undefined
     spellDelivery: SpellDeliverySnapshot | undefined
     critChoice: "luck" | "damage" | "spellFx" | undefined
@@ -42,9 +43,7 @@ export function serializeAttack(atk: Attack): AttackSnapshot | undefined {
     return serializeHeroAttack(atk as HeroAttack)
 }
 
-function serializeCommonFields(
-    atk: Attack
-): Omit<AttackSnapshot, 'skillCheck' | 'itemId' | 'isRerolled' | 'spellDelivery' | 'critChoice'> {
+function serializeCommonFields(atk: Attack): Omit<AttackSnapshot, 'skillCheck' | 'itemId' | 'isRerolled' | 'spellDelivery' | 'critChoice'> {
     /**
      * Need to serialize the damage rolls so they can be sent over Foundry's socket.
      */
@@ -72,7 +71,7 @@ function serializeCommonFields(
         targetIds: atk.targetIds ?? [],
         damageRoll: cleanDamageRoll,
         isResolved: atk.isResolved
-    }
+    } as any
 }
 
 function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
@@ -99,6 +98,7 @@ function serializeHeroAttack(atk: HeroAttack): AttackSnapshot {
         itemId: atk.itemId,
         spellDelivery: atk.spellDelivery,
         skillCheck: cleanSkillCheck,
+        isDefenseCheck: atk.isDefenseCheck,
         critChoice: atk.critChoice,
         isRerolled: atk.isRerolled
     } as AttackSnapshot

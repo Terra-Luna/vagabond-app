@@ -4,7 +4,6 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { getAllowLateLuckStudy, getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
-import { isEquippedWeapon, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
@@ -124,7 +123,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                         }
 
                         {/* GM TOOLS */}
-                        {(game.user?.isGM && !attack.isResolved) &&
+                        {(game.user?.isGM && !attack.isResolved && !(attack as any).isDefenseCheck) &&
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                 <div className="mt-0.5 text-base font-normal">
                                     <Header title={"GM Tools"} textLeft={true} />
@@ -272,7 +271,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             {/* SKILL CHECK */}
             {attack.showSkillCheck &&
                 <div>
-                    <Header title={`${attack.skillCheck!.result!.skillName} Check`} textLeft={true} />
+                    <Header title={`${attack.isDefenseCheck ? "Defense" : `${attack.skillCheck!.result!.skillName}`} Check`} textLeft={true} />
                     <CardSubHeader showRightBorder={false} values={[
                         { label: "Difficulty", value: attack.skillCheck?.difficulty?.toString() },
                         { label: "Result", value: attack.skillCheck?.result?.outcome }
@@ -333,7 +332,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             }
 
             {/* TARGET TOKENS ARRAY */}
-            {attack.showTargets &&
+            {attack.showTargets && !attack.isDefenseCheck &&
                 <div className="flex">
                     {source && <ItemPortraitComponent item={source} size={54} className={'m-0 -mt-0.25'} />}
                     <div className="flex flex-col w-full">
@@ -347,7 +346,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             {attack.showDamage &&
                 <div>
                     {/* HIDE THE DAMAGE HEADER IF IT WAS HEALING OR FRIENDLY FX ONLY */}
-                    {!isFriendlySpell && <Header title={'Damage'} textLeft={true} />}
+                    {!isFriendlySpell && <Header title={`${attack.isDefenseCheck ? 'Damage Reduction' : 'Damage'}`} textLeft={true} />}
 
                     {/* SPELL ATTACK INFO */}
                     {attack.isSpellAttack
@@ -363,7 +362,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                 <TotalDmgFooter total={
                                     <div className="flex gap-x-1 items-center">
                                         <p>{attack.damageRoll?.result?.total}</p>
-                                        <DamageTypeIcon dmgType={attack.damageRoll?.result?.dmgType ?? ''} />
+                                        <DamageTypeIcon dmgType={attack.isDefenseCheck ? 'defense' : attack.damageRoll?.result?.dmgType ?? ''} />
                                     </div>
                                 } />
                             </div>
@@ -373,13 +372,6 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             }
         </div>
     )
-}
-
-const getDefenseWeapon = (actor: Actor | null | undefined): WeaponDataModel | undefined => {
-    const hero = actor?.system as HeroDataModel | undefined
-    return hero?.inventory?.items?.find(it =>
-        isEquippedWeapon(it) && (it as WeaponDataModel).properties?.includes('defense')
-    ) as WeaponDataModel | undefined
 }
 
 const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAttack, setRevision: any }) => {
@@ -398,8 +390,8 @@ const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAt
             .filter(it => it.src != null && it.src.length > 0)
     }, [liveTargetIds])
 
-    const handleSave = useCallback(async (targetId: string, saveType: SavingThrowType, blockDie?: number, clickEvent?: React.MouseEvent) => {
-        await attack.rollSave(targetId, saveType, blockDie, clickEvent)
+    const handleSave = useCallback(async (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => {
+        await attack.rollSave(targetId, saveType, clickEvent)
         setRevision((prev: number) => prev + 1)
     }, [attack])
 
@@ -458,8 +450,8 @@ const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: Advers
         return targets.filter(target => game.user?.isGM || target.token?.actor?.isOwner)
     }, [targets])
 
-    const handleSave = useCallback(async (subIndex: number, targetId: string, saveType: SavingThrowType, blockDie?: number, clickEvent?: React.MouseEvent) => {
-        await attack.rollSave(subIndex, targetId, saveType, blockDie, clickEvent)
+    const handleSave = useCallback(async (subIndex: number, targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => {
+        await attack.rollSave(subIndex, targetId, saveType, clickEvent)
         setRevision((prev: number) => prev + 1)
     }, [attack])
 
@@ -489,7 +481,7 @@ const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: Advers
                         rerolledSaveTargetIds={sub.rerolledSaveTargetIds}
                         isResolved={attack.isResolved}
                         ownedTargets={ownedTargets}
-                        onRollSave={(targetId, saveType, blockDie, clickEvent) => handleSave(index, targetId, saveType, blockDie, clickEvent)}
+                        onRollSave={(targetId, saveType, clickEvent) => handleSave(index, targetId, saveType, clickEvent)}
                         onRerollSave={(targetId) => handleRerollSave(index, targetId)}
                     />
                 </div>
@@ -509,7 +501,7 @@ const AttackDamageAndSavesSection = ({
     rerolledSaveTargetIds: string[]
     isResolved: boolean
     ownedTargets: TargetDisplayItem[]
-    onRollSave: (targetId: string, saveType: SavingThrowType, blockDie?: number, clickEvent?: React.MouseEvent) => void
+        onRollSave: (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => void
     onRerollSave: (targetId: string) => void
 }) => {
     const showDamage = (damageRoll?.result?.total ?? 0) > 0
@@ -542,7 +534,7 @@ const AttackDamageAndSavesSection = ({
                             const canRollSave = !isResolved && !result && (game.user?.isGM || target.token?.actor?.isOwner)
                             const luck = (target.token?.actor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
                             const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
-                                !result?.blockDie && !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
+                                !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
                                 (game.user?.isGM || target.token?.actor?.isOwner)
 
                             return (
@@ -565,21 +557,11 @@ const AttackDamageAndSavesSection = ({
                                                 <UtilityButton key={saveType} title="Roll save ([Shift] Favor, [Ctrl] Hinder)" onClick={(e) => {
                                                     e?.stopPropagation()
                                                     e?.preventDefault()
-                                                    onRollSave(target.id, saveType, undefined, e)
+                                                    onRollSave(target.id, saveType, e)
                                                 }}>
                                                     {`${appLang.Saves[saveType]?.name ?? saveType}`}
                                                 </UtilityButton>
                                             ))}
-                                            {/* BLOCK: a Reflex save using an equipped 'defense' weapon's damage die */}
-                                            {saveTypes.includes('reflex') && getDefenseWeapon(target.token?.actor) &&
-                                                    <UtilityButton title="Roll defense check (Shift = Favor, Ctrl = Hinder)" onClick={(e) => {
-                                                        e?.stopPropagation()
-                                                        e?.preventDefault()
-                                                        onRollSave(target.id, 'reflex', getDefenseWeapon(target.token?.actor)!.damage.dice.faces, e)
-                                                    }}>
-                                                    Block
-                                                </UtilityButton>
-                                            }
                                         </div>
                                     }
                                     <div className="flex items-center gap-2">

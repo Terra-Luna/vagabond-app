@@ -4,7 +4,7 @@
   "_id": "CPQo2wEZWC8QH5ck",
   "img": "icons/magic/water/wave-water-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">This Spell can create and destroy fresh water in the following ways:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Area:</strong></b><span style=\"white-space:pre-wrap\"> The space within is emptied or filled with water. If the Area is occupied by a Being, this requires a Cast Check. You choose if this water remains or dries up after the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Target:</strong></b><span style=\"white-space:pre-wrap\"> This can push an Item that occupies 1 or less Slots, or a Being with Level or HD 1 or lower. You can increase this number by spending additional Mana on the Cast, increasing it by 1 per Mana spent to do so.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Distance:</strong></b><span style=\"white-space:pre-wrap\"> This pushes the Target 5', and you can increase the distance pushed by spending Mana, increasing the distance by 5' per Mana spent to do so.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">This Spell can create and destroy fresh water in the following ways:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Area:</strong></b><span style=\"white-space:pre-wrap\"> The space within is emptied or filled with water. If the Area is occupied by a Being, this requires a Cast Check. You choose if this water remains or dries up after the duration.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Target:</strong></b><span style=\"white-space:pre-wrap\"> This can push an Item that occupies 1 or fewer Slots, or a Being with Level or HD 1 or lower. You can increase this number by spending additional Mana on the Cast, increasing it by 1 per Mana spent to do so.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Distance:</strong></b><span style=\"white-space:pre-wrap\"> This pushes the Target 5', and you can increase the distance pushed by spending Mana, increasing the distance by 5' per Mana spent to do so.</span></p>",
     "rules": [],
     "damageType": "none"
   },
@@ -19,10 +19,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.16",
     "createdTime": 1784702873005,
-    "modifiedTime": 1784702913202,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1788654870352,
+    "lastModifiedBy": "verUzfB2esLt5vCo",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

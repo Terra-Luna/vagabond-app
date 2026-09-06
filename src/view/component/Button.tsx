@@ -51,7 +51,7 @@ export const UtilityButton = ({ type = "button", title = "", children, icon = nu
     type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick: (e?: React.MouseEvent<HTMLButtonElement>) => any
 }) => {
     return (
-        <button type={type} title={title} onClick={onClick}
+        <button type={type} title={title} onClick={onClick} onMouseDown={(e) => e.preventDefault()}
             className={`hover-glow text-sm font-eskapade font-normal ${tableBorder} px-2 ${buttonAnimation}`}
         >
             {icon}

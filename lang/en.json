@@ -153,36 +153,8 @@
       "none": "",
       "hellspawn": "Hellspawn",
       "beyonder": "Beyonder",
-      "divine": "Divine"
-    },
-    "AncestryTypes": {
-      "draken": "Draken",
-      "dwarf": "Dwarf",
-      "elf": "Elf",
-      "gobin": "Goblin",
-      "halfling": "Halfling",
-      "human": "Human",
-      "orc": "Orc"
-    },
-    "ClassTypes": {
-      "alchemist": "Alchemist",
-      "barbarian": "Barbarian",
-      "bard": "Bard",
-      "dancer": "Dancer",
-      "druid": "Druid",
-      "fighter": "Fighter",
-      "gunslinger": "Gunslinger",
-      "hunter": "Hunter",
-      "luminary": "Luminary",
-      "magus": "Magus",
-      "merchant": "Merchant",
-      "pugilist": "Pugilist",
-      "revelator": "Revelator",
-      "rogue": "Rogue",
-      "sorcerer": "Sorcerer",
-      "vanguard": "Vanguard",
-      "witch": "Witch",
-      "wizard": "Wizard"
+      "divine": "Divine",
+      "beast": "Beast"
     },
     "DamageTypes": {
       "none": "-",
