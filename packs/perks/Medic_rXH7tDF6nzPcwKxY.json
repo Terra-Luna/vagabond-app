@@ -4,7 +4,7 @@
   "_id": "rXH7tDF6nzPcwKxY",
   "img": "/icons/magic/nature/leaf-hand-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">As an Action, or during a Breather, you can heal a Close Being for (d6 + AWR or RSN) HP and remove the Blinded or Sickened Status if they have it. Doing so as an Action requires a Medicine or Survival Check to succeed. If they are healed, they can’t be affected by this Ability for the rest of the Shift.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">As an Action, or during a Breather, you can heal a Close Being for [[/r d6+@stats.awareness#Medic]]{(d6 + AWR)} or [[/r d6+@stats.reason#Medic]]{(d6 + RSN)} HP and remove the Blinded or Sickened Status if they have it. Doing so as an Action requires a Medicine or Survival Check to succeed. If they are healed, they can’t be affected by this Ability for the rest of the Shift.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -36,10 +36,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.18",
     "createdTime": 1786725626837,
-    "modifiedTime": 1786725712369,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1788758908246,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

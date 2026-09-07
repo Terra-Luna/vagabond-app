@@ -126,7 +126,7 @@
         "name": "Lay on Hands",
         "level": 2,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d4 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d4+@level.current#Lay on Hands]]{(d4 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Paragon's Aura",
@@ -144,7 +144,7 @@
         "name": "Lay on Hands",
         "level": 6,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d6 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d6+@level.current#Lay on Hands]]{(d6 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Holy Diver",
@@ -156,25 +156,25 @@
         "name": "Lay on Hands",
         "level": 10,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d8 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d8+@level.current#Lay on Hands]]{(d8 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Lay on Hands",
         "level": 14,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d10 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d10+@level.current#Lay on Hands]]{(d10 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Lay on Hands",
         "level": 18,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d12 + your Level) HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d12+@level.current#Lay on Hands]]{(d12 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
       },
       {
         "name": "Lay on Hands",
         "level": 22,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore (d20 + your Level) HP to yourself or a Close Being.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d20+@level.current#Lay on Hands]]{(d20 + your Level)} HP to yourself or a Close Being.</span></p>"
       }
     ]
   },
@@ -189,10 +189,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.18",
     "createdTime": 1786568076634,
-    "modifiedTime": 1788297113627,
-    "lastModifiedBy": "v9goaChjagLBZLpc",
+    "modifiedTime": 1788757631774,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
