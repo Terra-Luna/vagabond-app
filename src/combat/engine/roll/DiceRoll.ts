@@ -32,14 +32,10 @@ export class DiceRoll {
         })
 
         if (this.count > 0) {
-            const formula = `${this.count}d${this.faces}${explode}${mod}${reroll}`
-            console.log(formula)
-            return formula
+            return `${this.count}d${this.faces}${explode}${mod}${reroll}`
         }
         else {
-            const formula = `${this.faces}${explode}${mod}${reroll}`
-            console.log(formula)
-            return formula
+            return `${this.faces}${explode}${mod}${reroll}`
         }
     }
 

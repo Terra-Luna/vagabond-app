@@ -373,6 +373,5 @@ export const inventoryItemDragDropHandler = async (
 
 export const subtractCoinsFromHero = (hero: HeroDataModel, coins: Coins) => {
     const newCoins = subtractCoins(hero.inventory.coins, coins)
-    console.log({newCoins, coins})
     return hero.parent.update({ system: { inventory: { coins: newCoins } } })
 }
