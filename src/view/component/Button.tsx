@@ -9,11 +9,11 @@ const primaryButtonClasses = `text-btn-primary-text font-paradigm bg-btn-primary
 const secondaryButtonClasses = `text-btn-secondary-text font-paradigm ${buttonShaping} ${buttonAnimation} border border-solid btn-secondary-text/80`
 const destructiveButtonClasses = `text-destructive-action font-paradigm ${buttonShaping} ${buttonAnimation} border border-solid border-destructive-action/50`
 
-export const PrimaryButton = ({ type = "button", title = '', children, icon = null, onClick = () => { } }: {
-    type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick?: (e) => any
+export const PrimaryButton = ({ type = "button", title = '', children, icon = null, onClick = () => { }, disabled = false }: {
+    type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick?: (e) => any, disabled?: boolean
 }) => {
     return (
-        <button type={type} title={title} onClick={(e) => onClick(e)} className={primaryButtonClasses}>
+        <button disabled={disabled} type={type} title={title} onClick={(e) => onClick(e)} className={`${primaryButtonClasses} ${disabled ? 'opacity-50' : ''}`}>
             {icon ? icon : undefined}
             <div className="mx-0.5" />
             {children}

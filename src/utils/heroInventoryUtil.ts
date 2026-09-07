@@ -21,6 +21,8 @@ import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { sys_id } from "./foundryUtils"
 import { lang } from "./lang"
 import { getId, getName, getTargetIds } from "./modelUtil"
+import { Coins, subtractCoins } from "../model/common/CoinValue"
+import { HeroDataModel } from "../model/actor/HeroDataModel"
 
 /**
  * Use this function for programatically adding items to Actors. It mimics
@@ -319,7 +321,7 @@ const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | nu
 }
 
 export const deleteItems = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
-    await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: false })
+    return await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: false })
 }
 
 export const deleteItemStack = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
@@ -367,4 +369,10 @@ export const inventoryItemDragDropHandler = async (
             await actor?.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
         }
     }
+}
+
+export const subtractCoinsFromHero = (hero: HeroDataModel, coins: Coins) => {
+    const newCoins = subtractCoins(hero.inventory.coins, coins)
+    console.log({newCoins, coins})
+    return hero.parent.update({ system: { inventory: { coins: newCoins } } })
 }

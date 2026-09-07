@@ -13,3 +13,13 @@ export const roll3dDice = (rolls: any[]) => {
         })
     }
 }
+
+/** Do a setTimeout of 0 an arbitrary number of times. Infinite pain. */
+export const waitForFoundryChanges = () => {
+    let resolve
+    const promise = new Promise((r) => resolve = r)
+    setTimeout(() => {
+        resolve()
+    }, 0)
+    return promise
+}

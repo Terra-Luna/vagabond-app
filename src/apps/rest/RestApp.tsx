@@ -1,4 +1,6 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
+import { subtractCoins } from "../../model/common/CoinValue";
+import { deleteItems, subtractCoinsFromHero } from "../../utils/heroInventoryUtil";
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { LodgingTypes, RestView } from "./RestView";
 
@@ -8,8 +10,8 @@ export class RestApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
-            window: { title: "Rest & Recovery" },
-            position: { width: 400, height: "auto", top: 200, left: 400 },
+            window: { title: "Rest & Recovery", resizable: false },
+            position: { width: 800, height: "auto", top: 200, left: 400 },
             Component: RestView
         } as VagabondAppArgs)
         this.actor = actor
@@ -29,12 +31,19 @@ export class RestApp extends VagabondApplication {
         this.close()
     }
 
-    rest = async (lodging: keyof typeof LodgingTypes) => {
-        this.close()
+    rest = async (lodging?: keyof typeof LodgingTypes, ration?: any) => {
+        if (lodging) {
+            await subtractCoinsFromHero(this.actor.system, { g: 0, c: 0, s: LodgingTypes[lodging] })
+        }
+        if (ration) {
+            await deleteItems(this.actor.system, [ration.id])
+        }
     }
 
-    breather = async () => {
-        this.close()
+    breather = async (ration?: any) => {
+        if (ration) {
+            await deleteItems(this.actor.system, [ration.id])
+        }
     }
 
 }
