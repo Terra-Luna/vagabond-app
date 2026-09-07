@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { Coins } from "../../../model/common/CoinValue"
+import { addCoins, Coins } from "../../../model/common/CoinValue"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { normalizeRuleSelections, randomId, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
@@ -285,7 +285,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             const cartItems = [...cart.map(it => it.uuid)]
             if (selectedPack) cartItems.push(selectedPack.uuid)
             await addItems(actor, cartItems)
-            await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
+
+            const coins = addCoins([actor.system.inventory.coins, wallet])
+            await actor.update({ 'system.inventory.coins': coins } as Record<string, Coins>)
 
             /**
              * Process selections made due to choosing perks:

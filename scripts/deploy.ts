@@ -4,14 +4,24 @@ import fs from "fs"
 import path from "path"
 
 const args = process.argv.slice(2)
+const manifestPath = "./public/system.json"
+const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
+let version = (args[0] || 'v0.0.1')
 
 if (args.includes("--help") || args.includes("--usage")) {
     console.info("Usage: pnpm deploy {version number} {destination}")
     console.info("Version number defaults to v0.0.1, Destination defaults to releases/vagabond-app-${releaseVersion}.zip")
+    console.info("Use 'pnpm deploy patch' to increment the patch.")
     process.exit(0)
 }
 
-const version = (args[0] || 'v0.0.1')
+if (args.includes("patch")) {
+    const currentVersion = manifest.version.split('.')
+    const patch = Number(currentVersion.pop()) + 1
+    version = `v${currentVersion[0]}.${currentVersion[1]}.${patch}`
+    console.info(`Deploying patch: v${version}`)
+}
+
 const zipName = `vagabond-app-${version}.zip`
 const destination = (args[1] || `./releases/${zipName}`)
 
@@ -21,8 +31,6 @@ if (!fs.existsSync(targetDir)) {
 }
 
 // Update the manifest with the correct repository path
-const manifestPath = "./public/system.json"
-const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8"))
 manifest.version = version.replace("v", "")
 manifest.download = `https://github.com/Terra-Luna/vagabond-app/releases/download/${version}/${zipName}`
 fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
