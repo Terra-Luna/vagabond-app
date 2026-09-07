@@ -6,8 +6,8 @@
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "current": 4,
-      "max": 0
+      "max": 0,
+      "value": 4
     },
     "armor": {
       "rating": 0

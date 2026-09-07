@@ -6,8 +6,8 @@
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "current": 1,
-      "max": 0
+      "max": 0,
+      "value": 1
     },
     "armor": {
       "rating": 0
@@ -506,10 +506,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.23",
     "createdTime": 1788236226607,
-    "modifiedTime": 1788473470767,
-    "lastModifiedBy": "v9goaChjagLBZLpc",
+    "modifiedTime": 1788814189862,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
