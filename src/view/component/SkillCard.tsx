@@ -11,8 +11,8 @@ const cardSubheaderValue = "text-base text-text-header-primary font-eskapade fon
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border"
 const cardBodyStyle = "text-text-primary text-sm antialiased text-justify"
 
-export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, description, startCollapsed = true }: {
-    img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues[], description: string, startCollapsed?: boolean
+export const SkillCard = ({ actor, img = '', dmgType = 'none', title, subtitles, description, startCollapsed = true }: {
+    actor?: Actor, img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues[], description: string, startCollapsed?: boolean
 }) => {
     return (
         <Collapsible
@@ -23,7 +23,7 @@ export const SkillCard = ({ img = '', dmgType = 'none', title, subtitles, descri
             Header={CardHeader}
             content={(<>
                 <CardSubHeader values={subtitles} />
-                <CardBody description={description} />
+                <CardBody actor={actor} description={description} />
             </>)}
         />
     )
@@ -70,11 +70,11 @@ export const CardSubHeader = ({ values, showRightBorder = true }: { values: Card
     )
 }
 
-const CardBody = ({ description }: { description: string }) => {
+const CardBody = ({ actor, description }: { actor?: Actor, description: string }) => {
     return (
         <div className={cardBodyLayout}>
             <div className={cardBodyStyle}>
-                <EnrichedContent content={description} />
+                <EnrichedContent actor={actor} content={description} />
             </div>
         </div>
     )

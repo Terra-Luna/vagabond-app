@@ -20,6 +20,9 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
     const onClick = async (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault()
 
+        /**
+         * Inline Roll example: [[/r 2d6#Flavor Text]]{roll 2d6}
+         */
         const inlineRoll = (e.target as HTMLElement).closest('a.inline-roll') as HTMLAnchorElement | null
         if (inlineRoll) {
             const { formula, roll, flavor } = inlineRoll.dataset
@@ -41,8 +44,22 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
 
                 if (roll) {
                     rollInstance = Roll.fromData(JSON.parse(decodeURIComponent(roll)))
-                } else if (formula) {
-                    rollInstance = new Roll(formula)
+                }
+                else if (formula) {
+                    let modifier = 0
+
+                    if (formula?.includes('@') && actor) {
+                        const path = formula.split('@').pop()
+                        modifier = foundry.utils.getProperty(actor, `system.${path}`) as any
+                    }
+
+                    let f = formula.split('@')[0]
+
+                    if (modifier > 0) {
+                        f += `${modifier}`
+                    }
+
+                    rollInstance = new Roll(f)
                 }
 
                 if (rollInstance) {
