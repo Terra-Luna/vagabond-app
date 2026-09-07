@@ -208,10 +208,12 @@ Hooks.on("createItem", async (item, _options, _userId) => {
     const parent = item.parent
     const parentIsActor = parent && parent.documentName === "Actor"
 
-    /**
-     * Deal with some quirks for Foundry item sorting...
-     */
     if (parentIsActor) {
+        if (parent.flags["item-piles"]?.["data"]?.enabled) return
+
+        /**
+         * Set some default sorting values to make drag/drop reordering smoother.
+         */
         if (isInventoryItem(item)) {
             const items = parent.items
             const newSortVal = Math.max(...(items.map(function (i) { return i.sort }))) + 1000
@@ -259,7 +261,9 @@ Hooks.on("updateItem", async (item, changed, options, userId) => {
 })
 
 Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
-    if (item.system.bulk?.isStackable && item.parent) {
+    const deleteStack = (_options as any).deleteVagabondStack ?? true
+
+    if (item.system.bulk?.isStackable && !deleteStack && item.parent) {
         const count = item.system.bulk.quantity
         if (count > 1) {
             item.update({ 'system.bulk.quantity': count - 1 })
@@ -272,15 +276,8 @@ Hooks.on("preDeleteItem", (item: any, _options, _userId) => {
 Hooks.on("deleteItem", async (item, options, userId) => {
     if (game.user?.id !== userId || !item.parent) return
 
-    const childrenToDelete = item.parent.items.filter(
-        (i: any) => i.getFlag(sys_id, "grantedBy") === item.id
-    ).map((i: any) => i.id)
-
-    if (childrenToDelete.length > 0) {
-        await item.parent.deleteEmbeddedDocuments("Item", childrenToDelete)
-    }
-
-    // If an item was deleted off a hero, trigger an update in case something (like their class/ancestry) just adds it back
+    // If an item was deleted off a hero, trigger an update in case
+    // something (like their class/ancestry) just adds it back.
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
 
     if ((item as any).type === "spell" || (item as any).type === "perk") {

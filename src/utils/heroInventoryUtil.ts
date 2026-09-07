@@ -319,14 +319,11 @@ const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | nu
 }
 
 export const deleteItems = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
-    await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds)
+    await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: false })
 }
 
 export const deleteItemStack = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
-    for (const id of itemIds) {
-        await actor?.parent.items.get(id).update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
-    }
-    await deleteItems(actor, itemIds)
+    await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: true })
 }
 
 /**
