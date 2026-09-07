@@ -67,8 +67,17 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
 
             const itemData = sourceItem.toObject()
             if (itemData.system?.bulk) {
-                itemData.system.bulk.quantity = group.length
+                if (itemData.system.bulk.isStackable) {
+                    itemData.system.bulk.quantity = group.length
+                }
+                else {
+                    Array.from({ length: group.length }).forEach(_ => {
+                        itemsToCreate.push(itemData)
+                    })
+                    continue
+                }
             }
+
             itemsToCreate.push(itemData)
         }
 

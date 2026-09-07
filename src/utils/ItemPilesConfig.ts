@@ -31,8 +31,6 @@ export class ItemPilesConfig {
             UNSTACKABLE_ITEM_TYPES: [
                 "weapon",
                 "armor",
-                "alchemical",
-                "sundry",
                 "startingpack"
             ],
 

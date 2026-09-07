@@ -58,7 +58,6 @@ export class WeaponDataModel extends EquipmentDataModel<WeaponSchema> {
         super.prepareBaseData()
         this.isEquippable = true
         this.isConsumable = false
-        this.bulk.isStackable = false
     }
 }
 
