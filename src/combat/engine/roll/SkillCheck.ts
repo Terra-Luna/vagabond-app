@@ -166,7 +166,7 @@ export class SkillCheck {
         const isSuccess = total >= this.difficulty
         const isCrit = d20Res.some(res => res >= this.critThreshold)
 
-        this.result =  {
+        this.result = {
             skill: this.skill,
             skillName: appLang.Skills[this.skill]?.name ?? appLang.Saves[this.skill]?.name ?? '',
             difficulty: this.difficulty,

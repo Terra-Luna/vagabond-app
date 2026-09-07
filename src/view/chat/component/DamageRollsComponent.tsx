@@ -8,7 +8,7 @@ export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) =
         <div className="flex flex-wrap grow gap-x-1 mt-2 justify-center max-h-32 overflow-y-auto">
             {result?.rollSummaries?.map((r, index) => (
                     <div key={index}>
-                    <DiceRollComponent faces={r.faces} result={r.result} textSize={"text-4xl"} exploded={r.exploded} />
+                    <DiceRollComponent faces={r.faces} result={r.result} textSize={"text-4xl"} discarded={r.rerolled} exploded={r.exploded} />
                     </div>
                 ))
             }

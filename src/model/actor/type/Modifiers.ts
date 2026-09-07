@@ -62,6 +62,15 @@ export const modifierSchema = () => {
                 thrown: new fields.SchemaField({ ...critModSchema() }),
                 defense: new fields.SchemaField({ ...critModSchema() }),
                 spell: new fields.SchemaField({ ...critModSchema() })
+            }),
+            reroll: new fields.SchemaField({
+                melee: new fields.SchemaField({ ...rerollModSchema() }),
+                finesse: new fields.SchemaField({ ...rerollModSchema() }),
+                brawl: new fields.SchemaField({ ...rerollModSchema() }),
+                ranged: new fields.SchemaField({ ...rerollModSchema() }),
+                thrown: new fields.SchemaField({ ...rerollModSchema() }),
+                defense: new fields.SchemaField({ ...rerollModSchema() }),
+                spell: new fields.SchemaField({ ...rerollModSchema() })
             })
         }),
 
@@ -119,6 +128,12 @@ const critModSchema = () => {
     return {
         extraDice: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         explodes: new fields.BooleanField({ initial: false })
+    }
+}
+
+const rerollModSchema = () => {
+    return {
+        HH: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
     }
 }
 

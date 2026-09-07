@@ -41,7 +41,7 @@ export class DamageRoll {
     }
 
     toString(): string {
-        return this.dice.map(d => d.toRollFormula()).join('+')
+        return this.dice.map(d => d.toRollFormula().split("rr")[0]).join('+')
     }
 
     toJson() {

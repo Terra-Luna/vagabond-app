@@ -46,6 +46,10 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
         onChange({ explodeOnCritOnly: isChecked })
     }, [])
 
+    const handleRerollChange = useCallback((reroll: number[]) => {
+        onChange({ reroll: reroll })
+    }, [])
+
     const explosionValues = (diceRoll.explodesOn || []).map(Number).filter(n => !isNaN(n))
 
     return (
@@ -74,6 +78,17 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                             />
                         </div>
 
+                        {extendedSettings &&
+                            <div title={`${appLang.ItemSheet.reroll}: e.g.: 1, 2`} className="flex gap-x-0.5 items-end">
+                                <CSVTextInput
+                                    className="w-[6ch]"
+                                    value={diceRoll.reroll ?? []}
+                                    placeholder={appLang.ItemSheet.reroll}
+                                    onChange={(input) => handleRerollChange(input)}
+                                />
+                            </div>
+                        }
+
                         {/* EXPLOSIONS CONFIG */}
                         {!wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
                         <div>{TrashButton}</div>
@@ -83,7 +98,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                     {/* EXPLOSIONS CONFIG */}
                     {wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
 
-                    {/* ON-CRIT SETTINGS */}
+                    {/* ON-CRIT & REROLL SETTINGS */}
                     {extendedSettings &&
                         <div className="flex gap-x-8 justify-between items-center font-normal mt-0.5 pr-6">
                             <div title={"Adds additional damage dice on crit."} className="flex gap-x-1 items-end">
@@ -97,6 +112,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                                 <Checkbox label="" checked={diceRoll.explodeOnCritOnly ?? false} onCheckedChanged={handleExplodeOnCritOnlyChange} />
                                 <p>{appLang.ItemSheet.explodeOnCritOnly}</p>
                             </div>}
+
                         </div>
                     }
 

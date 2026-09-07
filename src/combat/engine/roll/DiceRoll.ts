@@ -8,6 +8,7 @@ export class DiceRoll {
     explodesOn?: number[]
     explodeOnCritOnly?: boolean
     extraDiceOnCrit?: number
+    reroll?: number[]
 
     constructor(args: DiceRollSchema) {
         this.count = args.count
@@ -16,6 +17,7 @@ export class DiceRoll {
         this.explodesOn = args.explodesOn
         this.explodeOnCritOnly = args.explodeOnCritOnly
         this.extraDiceOnCrit = args.extraDiceOnCrit
+        this.reroll = args.reroll
     }
 
     toRollFormula(isCrit?: boolean): string {
@@ -24,11 +26,20 @@ export class DiceRoll {
 
         if (isCrit) this.count += (this.extraDiceOnCrit ?? 0)
 
+        let reroll = ""
+        this.reroll?.forEach(rr => {
+            reroll += `rr${rr}`
+        })
+
         if (this.count > 0) {
-            return `${this.count}d${this.faces}${explode}${mod}`
+            const formula = `${this.count}d${this.faces}${explode}${mod}${reroll}`
+            console.log(formula)
+            return formula
         }
         else {
-            return `${this.faces}${explode}${mod}`
+            const formula = `${this.faces}${explode}${mod}${reroll}`
+            console.log(formula)
+            return formula
         }
     }
 
@@ -58,13 +69,16 @@ export class DiceRoll {
             (isVicious ? 1 : 0) +
             (mods.dice.crit[skill]?.extraDice ?? 0)
 
+        const reroll = mods.dice.reroll[skill]?.[weapon.grip.state] ?? []
+
         return {
             count: weapon.damage.dice.count,
             faces: dieSize,
             modifier: weapon.damage.dice.modifier ?? 0,
             explodesOn: explodesOn ?? [],
             explodeOnCritOnly: explodesOnCrit ?? false,
-            extraDiceOnCrit: extraDiceOnCrit ?? 0
+            extraDiceOnCrit: extraDiceOnCrit ?? 0,
+            reroll: reroll
         }
     }
 

@@ -4,11 +4,13 @@ export class RollSummary {
 
     result: number
     faces: number
+    rerolled: boolean
     exploded: boolean
 
-    constructor(result: number, faces: number, exploded: boolean) {
+    constructor(result: number, faces: number, rerolled: boolean, exploded: boolean) {
         this.result = result
         this.faces = faces
+        this.rerolled = rerolled
         this.exploded = exploded
     }
 
@@ -24,6 +26,7 @@ export class RollSummary {
                 summary.push({
                     result: res.result,
                     faces: term.faces as number,
+                    rerolled: !!res.rerolled,
                     exploded: dice
                         .filter(d => d.faces === term.faces && (d.explodeOnCritOnly && isCrit || !d.explodeOnCritOnly))
                         .some(d => d.explodesOn?.includes(res.result))

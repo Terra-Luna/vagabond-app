@@ -5,4 +5,5 @@ export interface DiceRollSchema {
     explodesOn?: number[]
     explodeOnCritOnly?: boolean
     extraDiceOnCrit?: number
+    reroll?: number[]
 }

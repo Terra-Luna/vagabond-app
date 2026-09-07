@@ -1,5 +1,6 @@
 import { addItems } from "../../utils/heroInventoryUtil"
 import { inventoryItemTypes, isPathOfType } from "../../utils/modelUtil"
+import { removeWhitespace } from "../../utils/stringUtil"
 import { calculateRecurringRuleScale, getRuleSelectionValues, normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
 
@@ -69,20 +70,34 @@ export class HeroBaseDataRulesApplicator {
         }
 
         const applyFlatModifier = (rule) => {
-            const path = rule.selector.replace("system.", "")
-            const currentValue = foundry.utils.getProperty(actor.system, path)
-            const multiplierValue = foundry.utils.getProperty(actor.system, rule.valueMultiplier) as number
-            const scale = rule.scale > 0
-                ? calculateRecurringRuleScale(actor.system.level.current ?? 1, rule.level, rule.scale)
-                : 1
+            const selector = removeWhitespace(rule.selector.replace("system.", ""))
+            const paths = selector.split(",")
 
-            if (typeof currentValue === "number") {
-                foundry.utils.setProperty(actor.system, path, currentValue + Math.ceil(rule.value * (multiplierValue ?? 1)) * scale)
-            }
-            else if (Array.isArray(currentValue)) {
-                const updatedArray = [...currentValue, rule.value]
-                foundry.utils.setProperty(actor.system, path, updatedArray)
-            }
+            paths.forEach(path => {
+                const currentValue = foundry.utils.getProperty(actor.system, path)
+                const multiplierValue = foundry.utils.getProperty(actor.system, rule.valueMultiplier) as number
+                const scale = rule.scale > 0
+                    ? calculateRecurringRuleScale(actor.system.level.current ?? 1, rule.level, rule.scale)
+                    : 1
+
+                if (typeof currentValue === "number") {
+                    foundry.utils.setProperty(actor.system, path, currentValue + Math.ceil(rule.value * (multiplierValue ?? 1)) * scale)
+                }
+                else if (Array.isArray(currentValue)) {
+                    const updatedArray = [...currentValue]
+
+                    if (rule.value?.includes?.(",")) {
+                        rule.value.split(",").forEach((val: any) => {
+                            updatedArray.push(Number(val))
+                        })
+                    }
+                    else {
+                        updatedArray.push(Number(rule.value))
+                    }
+
+                    foundry.utils.setProperty(actor.system, path, updatedArray)
+                }
+            })
         }
 
         const applyChoiceRule = (rule) => {

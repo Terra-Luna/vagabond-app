@@ -33,9 +33,9 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
             />
             <ItemRuleInput
                 label={"Value"}
-                value={rule.value ?? 0}
-                onChange={(e) => onChange({ value: Number(e.target.value) })}
-                type={"number"}
+                value={rule.value ?? '0'}
+                onChange={(e) => onChange({ value: e.target.value })}
+                type={"text"}
             />
             <ItemRuleInput
                 label={"Value Multiplier"}
