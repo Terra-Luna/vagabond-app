@@ -1,5 +1,5 @@
 {
-  "name": "Sawn-off Shotgun",
+  "name": "Sawed-off Shotgun",
   "type": "weapon",
   "_id": "1TyyGV43hZF7s673",
   "img": "/icons/weapons/guns/gun-double-barrel.webp",
@@ -62,8 +62,8 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1785709093948,
-    "modifiedTime": 1785871847637,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1788753796515,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

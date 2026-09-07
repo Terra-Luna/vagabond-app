@@ -23,13 +23,58 @@
         "qty": 1
       },
       {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 10
-      },
-      {
         "id": "FjpvneXkav58tvAe",
         "name": "Hooded Lantern",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
+        "qty": 1
+      },
+      {
+        "id": "d58md1ZTOqcXcz31",
+        "name": "Materials",
         "qty": 1
       }
     ],
@@ -46,10 +91,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.18",
     "createdTime": 1787620889540,
-    "modifiedTime": 1787621916882,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788753962285,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
