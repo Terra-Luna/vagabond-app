@@ -59,7 +59,10 @@ export class CountdownRoll {
         else {
             return this.result.duration === 4
                 ? 0
-                : (this.result.duration - 2)
+                : (this.result.duration === 20
+                    ? 12
+                    : this.result.duration - 2
+                )
         }
     }
 
