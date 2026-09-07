@@ -57,6 +57,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                 }
                             ])}>
                                 <SkillCard
+                                    actor={hero.parent}
                                     title={f.name}
                                     subtitles={[{ label: getName(hero.class), value: `Level ${f.level}` }]}
                                     description={f.description}
@@ -89,6 +90,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             }
                         ])}>
                             <SkillCard
+                                actor={hero.parent}    
                                 img={p.parent.img}
                                 title={p.parent.name}
                                 subtitles={perkPrerequisites(p)}

@@ -43,6 +43,7 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                         ])}>
                             <div onClick={() => onSelectSpell(sp._sourceId)} className="w-full">
                                 <SkillCard
+                                    actor={hero.parent}
                                     img={sp.parent.img}
                                     dmgType={sp.damageType}
                                     title={sp.parent.name}
