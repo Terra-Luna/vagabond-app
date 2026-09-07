@@ -41,7 +41,23 @@ const ItemShopComponent = ({ actor, onClose }) => {
 
     const onCheckout = async () => {
         await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
-        await actor.createEmbeddedDocuments("Item", cart)
+
+        const processedItems: Item[] = []
+
+        for (const item of cart) {
+            if (item.system.bulk.isStackable) {
+                if (!processedItems.map(it => it.name).includes(item.name)) {
+                    const itemToAdd = item.toObject()
+                    itemToAdd.system.bulk.quantity = cart.filter(it => it.name === item.name)?.reduce((sum, it) => sum + it.system.bulk.quantity, 0)
+                    processedItems.push(itemToAdd as any)
+                }
+            }
+            else {
+                processedItems.push(item)
+            }
+        }
+
+        await actor.createEmbeddedDocuments("Item", processedItems)
         await stackStackables(actor.system)
         onClose()
     }

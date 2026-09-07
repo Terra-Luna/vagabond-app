@@ -1,6 +1,7 @@
-import { Eye, Hand, HandFist, MessageSquareText, Sword, Trash, Undo } from "lucide-react"
+import { Eye, Hand, HandFist, MessageSquareText, Split, Sword, Trash, Undo } from "lucide-react"
 import { createElement } from "react"
 
+import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import { DamageRoll } from "../combat/engine/roll/DamageRoll"
 import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
@@ -18,7 +19,7 @@ import { DamageRollChatCard } from "../view/chat/DamageRollChatCard"
 import { ItemChatCard } from "../view/chat/ItemChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
 import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
-import { groupBy } from "./collectionUtil"
+import { sys_id } from "./foundryUtils"
 import { lang } from "./lang"
 import { getId, getName, getTargetIds } from "./modelUtil"
 
@@ -131,15 +132,27 @@ export const getContainers = (hero: any): ContainerDataModel[] => {
 }
 
 export const stackStackables = async (hero: any) => {
-    const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.bulk.isStackable) as Item[]
+    const stackables = hero.parent.items?.filter((it: any) => isInventoryItem(it) && it.system.bulk.isStackable) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     if (stackables?.length > 0) {
-        ((Object.values(groupBy('name', stackables))) as any[][]).filter(it => it.length > 1).forEach(async items => {
-            await items[0].update({ 'system.bulk.quantity': items.reduce((sum, it) => { return sum + it.system.bulk.quantity }, 0) })
-            await deleteItems(
-                hero,
-                items.filter(it => it.system.bulk.quantity === 1).map(it => it._id)
-            )
-        })
+        const stackGroups: { id: string, items: (Item & { system: EquipmentDataModel<EquipmentSchema> })[] }[] = []
+
+        for (const stack of stackables) {
+            const stackId = stack.flags[sys_id]?.["item-stack-id"] ?? stack.name
+            const existing = stackGroups[stackId]
+            if (existing) {
+                existing.items.push(stack)
+            }
+            else {
+                stackGroups.push({ id: stackId, items: [stack] })
+            }
+        }
+
+        for (const group of stackGroups) {
+            if (group.items.length > 1) {
+                await group.items[0].update({ 'system.bulk.quantity': group.items.reduce((sum, it) => { return sum + it.system.bulk.quantity }, 0) } as Record<string, number>)
+                await deleteItems(hero, group.items?.slice(1)?.map(it => it._id!))
+            }
+        }
     }
 }
 
@@ -242,8 +255,14 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
     menuItems.push(
         viewItemSheetContextOption(item),
         sendItemToChatContextOption(hero, item),
-        deleteItemContextOption(hero, item)
     )
+
+    if (item.bulk.isStackable && item.bulk.quantity > 1) {
+        menuItems.push(splitItemsContextOption(hero, item))
+    }
+
+    menuItems.push(deleteItemContextOption(hero, item))
+
     if (item.bulk.isStackable && item.bulk.quantity > 1) {
         menuItems.push(deleteAllItemsContextOption(hero, item))
     }
@@ -278,6 +297,10 @@ const viewItemSheetContextOption = (item: EquipmentDataModel<EquipmentSchema>) =
 
 const sendItemToChatContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
     return { icon: MessageSquareText, label: lang.APP.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
+}
+
+const splitItemsContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
+    return { icon: Split, label: lang.APP.HeroSheet.Inventory.ctxSplit, action: () => new ItemStackSplitApp(hero.parent, item.parent).render({ force: true }) }
 }
 
 const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
@@ -339,7 +362,11 @@ export const inventoryItemDragDropHandler = async (
             return update
         })
 
-        if (targetItem.parent.id !== dragItem.parent.id) {
+        if (dragItem.bulk.isStackable && targetItem.bulk.isStackable && dragItem.parent.name === targetItem.parent.name) {
+            await targetItem.parent.update({ 'system.bulk.quantity': targetItem.bulk.quantity + dragItem.bulk.quantity })
+            await deleteItemStack(actor, [dragItem.parent.id])
+        }
+        else if (targetItem.parent.id !== dragItem.parent.id) {
             await actor?.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
         }
     }

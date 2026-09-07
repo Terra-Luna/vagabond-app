@@ -652,13 +652,15 @@
         "effects": "EFFECTS",
         "ctxUse": "Use",
         "ctxExtract": "Extract",
+        "ctxSplit": "Split",
         "ctxView": "View",
         "ctxChat": "Send to chat",
         "ctxGrip": "Change grip",
         "ctxEquip": "Equip",
         "ctxUnequip": "Unequip",
         "ctxDelete": "Delete",
-        "ctxDeleteAll": "Delete All"
+        "ctxDeleteAll": "Delete All",
+        "splittingStack": "Splitting Stack"
       },
       "Currency": {
         "g": "G",
@@ -933,7 +935,8 @@
       "relic": "Relic Forge",
       "checkout": "Checkout",
       "attack": "Attack",
-      "roll": "Roll"
+      "roll": "Roll",
+      "split": "Split"
     },
     "Effects": {
       "title": "Active Effects",

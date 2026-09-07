@@ -20,7 +20,10 @@ export abstract class VagabondActorSheet extends VagabondSheetMixin(sheets.Actor
          * extracted using their getDragEventData() util function.
          */
         const dragData = foundry.applications.ux.TextEditor.getDragEventData(event)
-        if (!dragData || (dragData as any)?.type as JSONValue !== "Item") return super._onDrop(event)
+
+        if (!dragData || (dragData as any)?.type as JSONValue !== "Item") {
+            return super._onDrop(event)
+        }
 
         const itemId = (dragData as any).id
         if (!itemId) return super._onDrop(event)
