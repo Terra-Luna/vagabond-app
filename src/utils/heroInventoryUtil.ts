@@ -5,7 +5,9 @@ import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
 import { HeroAttack } from "../combat/engine/HeroAttack"
 import { DamageRoll } from "../combat/engine/roll/DamageRoll"
 import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
+import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { isInContainer, isInventoryItem, openItemSheet } from "../model/actor/type/Inventory"
+import { Coins, subtractCoins } from "../model/common/CoinValue"
 import { AlchemicalItemDataModel } from "../model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
@@ -21,8 +23,6 @@ import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { sys_id } from "./foundryUtils"
 import { lang } from "./lang"
 import { getId, getName, getTargetIds } from "./modelUtil"
-import { Coins, subtractCoins } from "../model/common/CoinValue"
-import { HeroDataModel } from "../model/actor/HeroDataModel"
 
 /**
  * Use this function for programatically adding items to Actors. It mimics

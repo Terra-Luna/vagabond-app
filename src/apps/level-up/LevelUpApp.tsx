@@ -77,8 +77,8 @@ export class LevelUpApp extends VagabondApplication {
 
             // Give Hero a "full rest" after level-up to update attributes to new max's.
             await this.actor.update({
-                'system.health.current': this.actor.system.health.max,
-                'system.mana.current': this.actor.system.mana.max,
+                'system.health.value': this.actor.system.health.max,
+                'system.mana.value': this.actor.system.mana.max,
                 'system.statuses.counters.luck': this.actor.system.stats.luck
             } as Record<any, any>,
                 { ['skipTrackerChatCard' as string]: true }

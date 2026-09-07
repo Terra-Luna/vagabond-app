@@ -61,7 +61,12 @@ export const ProgressClockAppView = () => {
     const clockMenuItems = (clock: ProgressClockSchema): CtxMenuItem[] => {
         const canInteract = canInteractWithOverlayObject(clock, checkClockPermission)
         return [
-            ...(canInteract ? [{ label: "Reduce Progress", icon: Undo, action: async () => await reduceProgress(clock.id) }] : []),
+            ...(canInteract ? [{
+                label: "Reduce Progress", icon: Undo, action: async (e) => {
+                    e.keepOpen = true
+                    await reduceProgress(clock.id)
+                }
+            }] : []),
             ...gmMenuItems(clock),
             ...(canInteract ? [{ label: appLang.ButtonActions.delete, icon: Trash, action: async () => await deleteClock(clock.id), isDestructive: true }] : [])
         ]

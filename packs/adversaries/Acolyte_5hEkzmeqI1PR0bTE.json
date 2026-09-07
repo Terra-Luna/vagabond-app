@@ -382,7 +382,7 @@
     "disposition": -1,
     "displayBars": 0,
     "bar1": {
-      "attribute": "health.current"
+      "attribute": "health"
     },
     "bar2": {
       "attribute": null

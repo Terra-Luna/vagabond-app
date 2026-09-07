@@ -82,7 +82,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             'prototypeToken.actorLink': true,
             'prototypeToken.sight.enabled': true,
             'prototypeToken.occludable.radius': 8,
-            'system.health.current': 2
+            'system.health.value': 2
         })
     }
 
@@ -179,8 +179,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 }
 
 export function validateCurrentHP(hero: HeroDataModel) {
-    if (hero.health.current! > hero.health.max!) {
-        hero.health.current = hero.health.max!
+    if (hero.health.value! > hero.health.max!) {
+        hero.health.value = hero.health.max!
     }
 }
 

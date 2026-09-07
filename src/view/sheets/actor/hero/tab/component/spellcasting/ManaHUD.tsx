@@ -10,9 +10,9 @@ import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean }) => {
-    const mana = hero.mana.current
+    const mana = hero.mana.value
     const updateMana = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { mana: { current: (mana ?? 0) + (auxClick ? 1 : -1) } })
+        updateDocument(hero.parent, { mana: { value: (mana ?? 0) + (auxClick ? 1 : -1) } })
     }, [mana])
 
     const { isSpellcastingOpen, setIsSpellcastingOpen, SpellcastingMenu } = useSpellcastingMenuContext()
@@ -27,8 +27,8 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                     </span>
                     <span className="text-mana">
                         <EditableTextField
-                            boundValue={hero.mana.current?.toString() ?? ""}
-                            updateProps={{ object: hero.parent, path: ['mana', 'current'] }}
+                            boundValue={hero.mana.value?.toString() ?? ""}
+                            updateProps={{ object: hero.parent, path: ['mana', 'value'] }}
                             placeholder="0"
                             hideBorderOnEditMode={true}
                         />

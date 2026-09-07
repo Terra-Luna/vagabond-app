@@ -71,8 +71,8 @@ export const importHero = async (hero: HeroDataModel, tagalongUrl: string) => {
                 coins: res.current_wealth
             },
 
-            health: { current: res.current_hp },
-            mana: { current: res.current_mana },
+            health: { value: res.current_hp },
+            mana: { value: res.current_mana },
             statuses: {
                 counters: {
                     luck: res.current_luck,

@@ -1,13 +1,13 @@
+import { XSquareIcon } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
+
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { tableBorder } from "../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
-import { Header } from "../../view/component/Header"
 import { DropDown } from "../../view/component/Dropdown"
+import { Header } from "../../view/component/Header"
+import { LabelledField } from "../../view/component/LabelledField"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { LabelledField } from "../../view/component/LabelledField"
-import { XSquareIcon } from "lucide-react"
 
 export const LodgingTypes = {
     none: 0,

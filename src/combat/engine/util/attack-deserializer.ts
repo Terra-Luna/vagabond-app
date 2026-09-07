@@ -19,7 +19,7 @@ function deserializeHeroAttack(
     snapshot: AttackSnapshot,
     createHeroAttack: (title: string, actor: Actor & { system: HeroDataModel }, targetIds: string[]) => HeroAttack
 ): HeroAttack | undefined {
-    const actor = game.actors?.get(snapshot.actorId) as Actor & { system: HeroDataModel } | undefined
+    const actor = game.actors?.get(snapshot.actorId) as (Actor & { system: HeroDataModel }) | undefined
     if (!actor) return
 
     const atk = createHeroAttack(snapshot.title, actor, [...snapshot.targetIds])

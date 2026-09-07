@@ -181,10 +181,10 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
 
 const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
     const { isEditMode } = useEditMode()
-    const hp = npc.health.current
+    const hp = npc.health.value
 
     const incrementHP = useCallback((auxClick: boolean) => {
-        updateDocument(npc.parent, { health: { current: (hp ?? 0) + (auxClick ? 1 : -1) } })
+        updateDocument(npc.parent, { health: { value: (hp ?? 0) + (auxClick ? 1 : -1) } })
     }, [npc.health])
 
     const inlineRoll = async (formula: string, flavor: string) => {
@@ -220,8 +220,8 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                             <div className="flex gap-x-0.5">
                                 <EditableTextField
-                                    boundValue={npc.health.current?.toString() ?? '1'}
-                                    updateProps={{ object: npc.parent, path: ['health', 'current'] }}
+                                    boundValue={npc.health.value?.toString() ?? '1'}
+                                    updateProps={{ object: npc.parent, path: ['health', 'value'] }}
                                     hideBorderOnEditMode={true}
                                     placeholder="4"
                                 />

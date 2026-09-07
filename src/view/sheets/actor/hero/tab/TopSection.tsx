@@ -21,7 +21,7 @@ import { Divider, Header, ItemDivider } from "../../../../component/Header"
 import { useStatsDrawerStatus } from "./statdrawer/StatsDrawerContext"
 
 interface Health {
-    current: number | null
+    value: number | null
     max: number | null
 }
 
@@ -30,9 +30,9 @@ interface Armor {
 }
 
 export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, armor: Armor, hero: HeroDataModel }) => {
-    const hp = hero.health.current
+    const hp = hero.health.value
     const updateHp = useCallback((auxClick: boolean) => {
-        updateDocument(hero.parent, { health: { current: (hp ?? 0) + (auxClick ? 1 : -1) } })
+        updateDocument(hero.parent, { health: { value: (hp ?? 0) + (auxClick ? 1 : -1) } })
     }, [hp])
     return (
         <div className={`flex grow items-center justify-between mt-1 mx-1`}>
@@ -43,8 +43,8 @@ export const HPArmorFatigueHUD = ({ health, armor, hero }: { health: Health, arm
                 <div className="absolute inset-0 flex items-center justify-center font-eskapade font-bold">
                     <span className={`text-4xl text-text-hp-current hover-glow`}>
                         <EditableTextField
-                            boundValue={health.current?.toString() ?? ""}
-                            updateProps={{ object: hero.parent, path: ['health', 'current'] }}
+                            boundValue={health.value?.toString() ?? ""}
+                            updateProps={{ object: hero.parent, path: ['health', 'value'] }}
                             placeholder="0"
                             hideBorderOnEditMode={true}
                         />

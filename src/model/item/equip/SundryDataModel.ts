@@ -1,5 +1,5 @@
-import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 import { fields } from "../../common/sharedSchemas"
+import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
 /**
  * Random items with no discrete use-case.

@@ -367,12 +367,12 @@ export class HeroAttack extends Attack {
         const hero = actor.system
 
         if (getManaEnforcement() && (
-            delivery.manaCost > hero.mana.current || delivery.manaCost > hero.mana.maxCast
+            delivery.manaCost > hero.mana.value || delivery.manaCost > hero.mana.maxCast
         )) { return null }
 
         const updates: any = {}
         if (delivery.manaCost > 0) {
-            updates['system.mana.current'] = Math.max(0, hero.mana.current - delivery.manaCost)
+            updates['system.mana.value'] = Math.max(0, hero.mana.value - delivery.manaCost)
         }
 
         if (delivery.studyDamageDice > 0) {

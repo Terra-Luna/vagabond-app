@@ -106,11 +106,11 @@ export abstract class Attack {
     }
 
     protected getHP(target) {
-        return target.health.current
+        return target.health.value
     }
 
     protected async updateHP(target, hp) {
-        await target?.parent.update({ "system.health.current": hp })
+        await target?.parent.update({ "system.health.value": hp })
     }
 
     async save(serialize: (attack: Attack) => AttackSnapshot | undefined) {

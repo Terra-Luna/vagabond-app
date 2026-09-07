@@ -25,7 +25,7 @@ export const onUpdateNpc = (npc, changed) => {
     }
     if (changed?.system?.hitDice || changed?.system?.beingSize) {
         npc.parent.update({
-            'system.health.current': calcNpcMaxHP(
+            'system.health.value': calcNpcMaxHP(
                 changed.system.hitDice ?? npc.hitDice!,
                 changed.system.beingSize ?? npc.beingSize
             )

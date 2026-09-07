@@ -22,12 +22,12 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
         const roll = result.rollSummary?.result ?? 0
 
         if (dmgType === 'mana') {
-            const mana = token.actor?.system?.mana?.current ?? 0
-            token?.actor?.update({ "system.mana.current": mana + result } as Record<string, number>)
+            const mana = token.actor?.system?.mana?.value ?? 0
+            token?.actor?.update({ "system.mana.value": mana + result } as Record<string, number>)
         }
         else {
-            const hp = token.actor?.system?.health?.current ?? 0
-            token?.actor?.update({ "system.health.current": hp - roll * (dmgType === 'healing' ? -1 : 1) } as Record<string, number>)
+            const hp = token.actor?.system?.health?.value ?? 0
+            token?.actor?.update({ "system.health.value": hp - roll * (dmgType === 'healing' ? -1 : 1) } as Record<string, number>)
         }
 
         setIsApplied(true)

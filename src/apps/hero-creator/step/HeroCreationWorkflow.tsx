@@ -302,8 +302,8 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         finally {
             // Set the Hero up with max resources.
             await actor.update({
-                'system.health.current': actor.system.health.max,
-                'system.mana.current': actor.system.mana.max,
+                'system.health.value': actor.system.health.max,
+                'system.mana.value': actor.system.mana.max,
                 'system.statuses.counters.luck': actor.system.stats.luck
             } as Record<any, any>,
                 { ['skipTrackerChatCard' as string]: true }

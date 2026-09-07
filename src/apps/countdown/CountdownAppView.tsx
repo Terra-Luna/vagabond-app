@@ -65,7 +65,7 @@ export const CountdownAppView = () => {
     const decreaseSize = useCallback(async (cdId: string) => {
         const target = cdsRef.current.find(cd => cd.id === cdId)
         if (!target) return
-        const duration = target.result.duration === 4
+        const duration = target.result.duration <= 4
             ? 4
             : (target.result.duration === 20
                 ? 12
@@ -120,15 +120,24 @@ export const CountdownAppView = () => {
 
     const countdownMenuItems = (countdown: CountdownSchema): CtxMenuItem[] => {
         const canInteract = canInteractWithOverlayObject(countdown, checkCountdownPermission)
-        return [
-            ...(canInteract ? [
-                { label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) },
-                { label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) }
-            ] : []),
-            ...(countdown.result.actorUuid ? [{ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.result.actorUuid, countdown.result.tokenUuid) }] : []),
-            ...gmMenuItems(countdown),
-            ...(canInteract ? [{ label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true }] : [])
-        ]
+        const options: any[] = []
+
+        if (canInteract && countdown.result.duration > 0) {
+            options.push({ label: "Increase Size", icon: Plus, action: async () => await increaseSize(countdown.id) })
+            options.push({ label: "Decrease Size", icon: Minus, action: async () => await decreaseSize(countdown.id) })
+        }
+
+        if (countdown.result.actorUuid) {
+            options.push({ label: "Open Actor Sheet", icon: User, action: () => openLinkedActorSheet(countdown.result.actorUuid, countdown.result.tokenUuid) })
+        }
+
+        options.push(...gmMenuItems(countdown))
+
+        if (canInteract) {
+            options.push({ label: "Delete", icon: Trash, action: async () => await deleteCountdown(countdown.id), isDestructive: true })
+        }
+
+        return options
     }
 
     return (<>

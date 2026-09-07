@@ -448,11 +448,11 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
         <Combatant ref={combatantComponentRef} token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick}>
                 <div className="w-full" title={heroActorModel.mana.max > 0
-                    ? localizeString(appLang.Combat.statTooltip, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString(), mana: heroActorModel.mana.current?.toString(), manaMax: heroActorModel.mana.max?.toString() })
-                    : localizeString(appLang.Combat.statTooltipNoMana, { hp: heroActorModel.health.current?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString() })}>
-                    <Gauge max={heroActorModel.health.max} value={heroActorModel.health.current} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
+                    ? localizeString(appLang.Combat.statTooltip, { hp: heroActorModel.health.value?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString(), mana: heroActorModel.mana.value?.toString(), manaMax: heroActorModel.mana.max?.toString() })
+                    : localizeString(appLang.Combat.statTooltipNoMana, { hp: heroActorModel.health.value?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString() })}>
+                    <Gauge max={heroActorModel.health.max} value={heroActorModel.health.value} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
                     <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck/75" size="sm" rounded={false} />
-                    {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.current} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
+                    {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.value} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
                 </div>
                 <div>
                     <StatusIcons combatant={hero} />
@@ -501,8 +501,8 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token} onClick={combatantComponentRef.current?.onClick}>
-                <div className="w-full" title={localizeString(appLang.Combat.hpTooltip, { hp: adversaryModel.health.current?.toString(), hpMax: adversaryModel.health.max?.toString() })}>
-                    <Gauge max={adversaryModel.health.max} value={adversaryModel.health.current} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
+                <div className="w-full" title={localizeString(appLang.Combat.hpTooltip, { hp: adversaryModel.health.value?.toString(), hpMax: adversaryModel.health.max?.toString() })}>
+                    <Gauge max={adversaryModel.health.max} value={adversaryModel.health.value} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
                 </div>
                 <div>
                     <StatusIcons combatant={adversary} />

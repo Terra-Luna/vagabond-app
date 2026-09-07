@@ -281,7 +281,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                         </div>
 
                         {/* Insufficient mana error message */}
-                        <SpellcastingErrMsg cost={delivery?.manaCost ?? 0} mana={hero.mana.current} maxCast={hero.mana.maxCast} />
+                        <SpellcastingErrMsg cost={delivery?.manaCost ?? 0} mana={hero.mana.value} maxCast={hero.mana.maxCast} />
 
                         {/* User-help description of the chosen delivery */}
                         <SpellcastingSubtext text={delivery?.description ?? ''} />

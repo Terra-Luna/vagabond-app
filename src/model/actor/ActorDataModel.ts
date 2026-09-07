@@ -31,7 +31,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
          * Mark an actor as Dead when their HP hits zero...
          */
         if (game.user?.isActiveGM) {
-            const hpValue = foundry.utils.getProperty(changes, "system.health.current") as number | undefined
+            const hpValue = foundry.utils.getProperty(changes, "system.health.value") as number | undefined
             if (hpValue !== undefined) {
                 if (hpValue <= 0) {
                     if (!this.statuses.toggles.dead) {

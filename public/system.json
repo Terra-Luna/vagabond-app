@@ -261,7 +261,8 @@
     "units": "ft",
     "diagonals": 0
   },
-  "primaryTokenAttribute": "health.current",
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "mana",
   "media": [
     {
       "type": "setup",

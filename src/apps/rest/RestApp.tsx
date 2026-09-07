@@ -1,5 +1,4 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
-import { subtractCoins } from "../../model/common/CoinValue";
 import { deleteItems, subtractCoinsFromHero } from "../../utils/heroInventoryUtil";
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { LodgingTypes, RestView } from "./RestView";

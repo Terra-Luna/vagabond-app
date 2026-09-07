@@ -16,8 +16,8 @@ export const useAdjustCombatantHP = (combatants: VagabondCombatant[]) => {
         await Promise.all(combatants
             .filter(c => c.token?.actor)
             .map(c => {
-                const currentHp = (c.token?.actor?.system as ActorDataModel<BaseActorSchema>).health.current ?? 0
-                return c.token?.actor?.update({ system: { health: { current: currentHp + (hpAdjustment * (mode === 'add' ? 1 : -1)) } } })
+                const currentHp = (c.token?.actor?.system as ActorDataModel<BaseActorSchema>).health.value ?? 0
+                return c.token?.actor?.update({ system: { health: { value: currentHp + (hpAdjustment * (mode === 'add' ? 1 : -1)) } } })
             }))
     }, [combatants, mode, hpAdjustment])
     
