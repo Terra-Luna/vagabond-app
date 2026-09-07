@@ -6,6 +6,7 @@ import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
+import { groupBy } from "../../utils/collectionUtil"
 import { appLang } from "../../utils/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
@@ -82,7 +83,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         }, [cart, wallet])
 
         const onRemoveFromCart = useCallback((item, index) => {
-            const refund = addCoins([wallet, item.system.totalValue])
+            const refund = addCoins([wallet, cart.find(it => it.name === item.name)?.system?.totalValue ?? { g: 0, s: 0, c: 0 }])
             setWallet(refund)
             setCart(cart.filter((_, idx) => idx !== index))
         }, [cart, wallet])
@@ -101,6 +102,22 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                 return filteredItems
             }
         }, [filteredItems, shopSearch])
+
+        const cartDisplayItems = (): { name: string, qty: number, slots: number, value: Coins }[] => {
+            const displayItems: { name: string, qty: number, slots: number, value: Coins }[] = []
+            const groupedItems = groupBy('name', cart)
+
+            Object.keys(groupedItems).forEach(name => {
+                const group = groupedItems[name]
+                displayItems.push({
+                    name: name, qty: group.length,
+                    slots: group.reduce((sum, it) => sum + it.system.bulk.slots, 0),
+                    value: addCoins(group.map(it => it.system.totalValue))
+                })
+            })
+
+            return displayItems
+        }
 
         return (
             <div className="@container flex flex-col gap-y-2 h-full overflow-hidden">
@@ -194,22 +211,22 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
 
                                 {useCheckout &&
                                     <div className="flex gap-x-1">
-                                        <PrimaryButton onClick={onCheckout}>{appLang.ButtonActions.checkout}</PrimaryButton>
                                         <DestructiveButton onClick={onCancel}>{appLang.ButtonActions.cancel}</DestructiveButton>
+                                        <PrimaryButton onClick={onCheckout}>{appLang.ButtonActions.checkout}</PrimaryButton>
                                     </div>
                                 }
 
                             </div>
                             {/* SHOPPING CART ITEMS LIST */}
                             <ShoppingCart>
-                                {
-                                    cart.map((item, index) => (
-                                        <tr key={index} className="text-center even:bg-table-row-even/50 odd:bg-table-row-odd/50">
-                                            <td className="text-left pl-2 hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</td>
-                                            <td>{item.system.bulk.totalSlots}</td>
-                                            <td>{coinsAsString(item.system.totalValue)}</td>
-                                            <td className="text-sm cursor-pointer ml-auto" onClick={() => onRemoveFromCart(item, index)}>{"❌"}</td>
-                                        </tr>
+                                {cartDisplayItems().map((item, index) => (
+                                    <tr key={index} className="text-center even:bg-table-row-even/50 odd:bg-table-row-odd/50">
+                                        <td className="text-left pl-2 hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</td>
+                                        <td>{item.slots}</td>
+                                        <td>{item.qty}</td>
+                                        <td>{coinsAsString(item.value)}</td>
+                                        <td className="text-sm cursor-pointer ml-auto" onClick={() => onRemoveFromCart(item, index)}>{"❌"}</td>
+                                    </tr>
                                     ))
                                 }
                             </ShoppingCart>

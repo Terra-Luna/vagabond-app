@@ -647,6 +647,7 @@
       "Inventory": {
         "item": "ITEM",
         "slots": "SLOTS",
+        "qty": "QTY",
         "value": "VALUE",
         "equip": "EQUIP",
         "effects": "EFFECTS",

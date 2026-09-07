@@ -11,6 +11,7 @@ export const ShoppingCart = ({ children }: { children: ReactNode }) => {
                     <tr>
                         <th className="text-left pl-2 w-5/9">{appLang.HeroSheet.Inventory.item}</th>
                         <th className="text-center">{appLang.HeroSheet.Inventory.slots}</th>
+                        <th className="text-center">{appLang.HeroSheet.Inventory.qty}</th>
                         <th className="text-center">{appLang.HeroSheet.Inventory.value}</th>
                         <th className="text-center ml-auto" />
                     </tr>
