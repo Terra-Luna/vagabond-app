@@ -12,6 +12,7 @@ for (const name of packNames) {
     console.info(`Unpacking: "${name}" -> ${outputDirectory}/`);
 
     try {
+        execSync(`pnpm exec fvtt configure set dataPath %userprofile%/AppData/Local/FoundryVTT`)
         execSync(
             `pnpm exec fvtt package unpack --type=System --id=vagabond-app --out="${outputDirectory}" ${name}`,
             { stdio: "inherit" }
