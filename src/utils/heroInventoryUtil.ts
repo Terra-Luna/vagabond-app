@@ -10,7 +10,6 @@ import { AlchemicalItemDataModel } from "../model/item/equip/AlchemicalItemDataM
 import { ArmorDataModel } from "../model/item/equip/ArmorDataModel"
 import { addItemToContainer, ContainerDataModel, extractItemFromContainer } from "../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../model/item/equip/EquipmentDataModel"
-import { StartingPackDataModel } from "../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../model/item/equip/SundryDataModel"
 import { isEquippedWeapon, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../rules/util/ItemsCache"
@@ -24,7 +23,7 @@ import { lang } from "./lang"
 import { getId, getName, getTargetIds } from "./modelUtil"
 
 /**
- * Use this funtion for programatically adding items to Actors. It mimics
+ * Use this function for programatically adding items to Actors. It mimics
  * the same kind of behaviour as dragging/dropping an item by setting some
  * important flags.
  * @param actor 
@@ -345,6 +344,7 @@ export const inventoryItemDragDropHandler = async (
     siblings: EquipmentDataModel<EquipmentSchema>[]
 ) => {
     if (actor === undefined) return
+
     if (targetItem.parent.type === 'container' && dragItem.parent.type !== 'container' && !dragItem.isEquipped) {
         addItemToContainer(targetItem as ContainerDataModel, dragItem.parent)
     }
@@ -366,12 +366,8 @@ export const inventoryItemDragDropHandler = async (
             await targetItem.parent.update({ 'system.bulk.quantity': targetItem.bulk.quantity + dragItem.bulk.quantity })
             await deleteItemStack(actor, [dragItem.parent.id])
         }
-        else if (targetItem.parent.id !== dragItem.parent.id) {
+        else if (dragItem.parent.id !== targetItem.parent.id) {
             await actor?.parent?.updateEmbeddedDocuments("Item", sortingUpdate)
         }
     }
-}
-
-export const applyStartingPack = async (hero: any, pack: StartingPackDataModel) => {
-    await hero.parent.createEmbeddedDocuments("Item", [pack.items])
 }

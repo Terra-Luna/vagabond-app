@@ -1,4 +1,5 @@
 import { ItemsCache } from "../../../rules/util/ItemsCache"
+import { groupBy } from "../../../utils/collectionUtil"
 import { stackStackables } from "../../../utils/heroInventoryUtil"
 import { Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
@@ -55,20 +56,22 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
     async unpack(actor: Actor & { system: any }): Promise<void> {
         if (!actor || !actor.isOwner) return
 
+        const equipment = ItemsCache.equipment()
+        const groupedItems = groupBy('name', this.items)
         const itemsToCreate: any[] = []
-        const eqipment = ItemsCache.equipment()
 
-        for (const entry of this.items) {
-            const sourceItem = eqipment.find(eq => eq.id === entry.id)
+        for (const key of Object.keys(groupedItems)) {
+            const group = groupedItems[key]
+            const sourceItem = equipment.find(eq => eq.id === group[0].id)
             if (!sourceItem) continue
 
             const itemData = sourceItem.toObject()
             if (itemData.system?.bulk) {
-                itemData.system.bulk.quantity = entry.qty
+                itemData.system.bulk.quantity = group.length
             }
             itemsToCreate.push(itemData)
         }
-        
+
         if (itemsToCreate.length > 0) {
             await actor.createEmbeddedDocuments("Item", itemsToCreate)
             await stackStackables(actor.system)

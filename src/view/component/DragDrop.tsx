@@ -16,6 +16,13 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
     const [dragItem, setDragItem] = useState<any>(null)
     const [targetItem, setTargetItem] = useState<any>(null)
 
+    const logDragEvent = (eventName, data) => {
+        // eslint-disable-next-line no-constant-condition
+        if (0) {
+            console.info({ event: eventName, data: data })
+        }
+    }
+
     const onDragStart = (e: React.DragEvent<any>, index: number) => {
         e.stopPropagation()
         setDragIndex(index)
@@ -33,6 +40,8 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
     }
 
     const onDragEnter = (e: any, index: number) => {
+        logDragEvent("onDragEnter", { dragging: dragItem, target: targetItem })
+
         if (dragIndex === null || dragIndex === index) return
         e.preventDefault()
         e.stopPropagation()
@@ -42,14 +51,19 @@ export const useDragDrop = (items: EquipmentDataModel<EquipmentSchema>[], onDrop
     }
 
     const onDragLeave = (e: any) => {
+        logDragEvent("onDragLeave", { dragging: dragItem, target: targetItem })
+
         e.preventDefault()
         e.stopPropagation()
         if (!e.currentTarget.contains(e.relatedTarget)) {
             setTargetItem(null)
+            setDragIndex(null)
         }
     }
 
     const onDragEnd = (e: any, index: number) => {
+        logDragEvent("onDragEnd", { dragging: dragItem, target: targetItem })
+
         if (dragIndex === null || dragIndex === index) {
             nullifyAll()
             return
