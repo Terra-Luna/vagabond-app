@@ -759,6 +759,7 @@
       "category": "Category",
       "alchCategory": "Type",
       "consumable": "Consumable",
+      "isRation": "Counts as Ration",
       "equippable": "Equippable",
       "slots": "Slots",
       "stackable": "Stackable",

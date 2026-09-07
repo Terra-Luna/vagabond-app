@@ -11,6 +11,7 @@ import { tableBorderRounded } from "../../../../common/border-styles"
 import { ItemDivider } from "../../../../component/Header"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { MenuListItem } from "./item/MenuListItem"
+import { RestApp } from "../../../../../apps/rest/RestApp"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -88,7 +89,7 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     <MenuListItem text={"TOGGLE STATS"} toggleMenu={toggleMenu} onClick={async () => {
                         toggleClientSetting(`hero-sheet-stats-hide-${hero.parent.id}`)
                     }} />
-                    <MenuListItem text={'REST'} onClick={() => { }} toggleMenu={toggleMenu} />
+                    <MenuListItem text={'REST'} onClick={() => { new RestApp(hero.parent).render({force: true}) }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />
                     <ItemDivider />

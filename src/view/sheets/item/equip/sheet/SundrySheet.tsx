@@ -2,6 +2,7 @@ import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel
 import { ConsumableToggle } from "../component/ConsumableItemToggleComponent"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { EquippableToggle } from "../component/EquippableToggle"
+import { RationToggle } from "../component/RationItemToggleComponent"
 
 export const SundrySheet = ({ item }: { item: Item & { system: SundryDataModel } }) => {
     return (
@@ -9,6 +10,7 @@ export const SundrySheet = ({ item }: { item: Item & { system: SundryDataModel }
             <div>
                 <ConsumableToggle item={item} />
                 <EquippableToggle item={item} />
+                <RationToggle item={item} />
             </div>
         </EquipmentSheetSubtypeBody>
     )
