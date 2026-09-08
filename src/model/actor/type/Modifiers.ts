@@ -95,6 +95,16 @@ export const modifierSchema = () => {
                 sphere: new fields.NumberField({ ...requiredInteger, initial: 0 }),
                 imbue: new fields.NumberField({ ...requiredInteger, initial: 0 })
             })
+        }),
+
+        downtime: new fields.SchemaField({
+            breather: new fields.SchemaField({
+                removeFatigue: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                gainLuck: new fields.NumberField({ ...requiredInteger, initial: 0 })
+            }),
+            rest: new fields.SchemaField({
+                extraLuck: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            })
         })
     }
 }

@@ -1,4 +1,4 @@
-import { XSquareIcon } from "lucide-react"
+import { BottleWine, Soup, XSquareIcon } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
@@ -34,7 +34,7 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
     const [numRations, setNumRations] = useState<any>()
     const [lodging, setLodging] = useState<keyof typeof LodgingTypes>("none")
 
-    const [hasRested, setHasRested] = useState(false)
+    const [downTimeActionTaken, setDownTimeActionTaken] = useState<false | "rest" | "breather">(false)
 
     const updateRationInfo = useCallback(() => {
         const allRations = actor?.items.filter(isRation) ?? []
@@ -50,47 +50,46 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
     }, [updateRationInfo])
 
     const takeABreather = useCallback(async () => {
-        if (!hasRested) {
+        if (!downTimeActionTaken) {
             await breather(rationItem)
             updateRationInfo()
-            setHasRested(true)
+            setDownTimeActionTaken("breather")
         }
-    }, [rationItem, updateRationInfo, hasRested])
+    }, [rationItem, updateRationInfo, downTimeActionTaken])
 
     const takeARest = useCallback(async () => {
-        if (!hasRested) {
+        if (!downTimeActionTaken) {
             await rest(lodging, rationItem)
             updateRationInfo()
-            setHasRested(true)
+            setDownTimeActionTaken("rest")
         }
-    }, [rationItem, updateRationInfo, hasRested, lodging])
+    }, [rationItem, updateRationInfo, downTimeActionTaken, lodging])
 
     return (
-        <div>
-            <div className="flex">
-                <div className="p-2 pr-6">
+        <div className="flex flex-col h-full">
+            <div className="flex gap-2 p-2">
+                <div>
                     <Header title="Breather" />
                     <div className={`text-lg text-center flex flex-col h-full`}>
-                        <span>
+                        <span className="px-2">
                             Once per shift, eat a ration and drink some water to regain HP equal to your Might (<span className="text-ic-luck">{actor.system.stats.might}</span>)
                         </span>
+                        <div className="flex w-full justify-center relative top-2">
+                            <Soup size={64} strokeWidth={1} /><BottleWine size={64} strokeWidth={1} />
+                        </div>
                         <div className="mt-auto">
                             <div className="flex justify-center">
-                                <PrimaryButton onClick={takeABreather} disabled={hasRested}>
-                                    {hasRested ? "Ahhhh..." : "Take a Breather"}
+                                <PrimaryButton onClick={takeABreather} disabled={!!downTimeActionTaken}>
+                                    {downTimeActionTaken === "breather" ? "Phew..." : "Take a Breather"}
                                 </PrimaryButton>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="w-[64px]">
-                    <div className="h-[50%]"></div>
-                    <Ration rationItem={rationItem} numRations={numRations} hasRested={hasRested} />
-                </div>
-                <div className="p-2 pl-6">
+                <div>
                     <Header title="Rest" />
                     <div className={`text-lg text-center flex flex-col h-full`}>
-                        <span>
+                        <span className="px-2">
                             Resting requires lodging and a ration, and recovers all your HP, Mana, and Luck.
                         </span>
                         <div className="pt-2">
@@ -103,15 +102,18 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
                         </div>
                         <div className="mt-auto">
                             <div className="flex justify-center">
-                                <PrimaryButton onClick={takeARest} disabled={hasRested}>
-                                    {hasRested ? "Ahhhh..." : "Take a Rest"}
+                                <PrimaryButton onClick={takeARest} disabled={!!downTimeActionTaken}>
+                                    {downTimeActionTaken === "rest" ? "ZZZzzz..." : "Take a Rest"}
                                 </PrimaryButton>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="p-2 pt-7 ml-auto flex justify-end">
+            <div className="p-2 pt-7 flex justify-between items-end mt-auto">
+                <div>
+                    <Ration rationItem={rationItem} numRations={numRations} hasRested={!!downTimeActionTaken} />
+                </div>
                 <SecondaryButton onClick={onCancel}>Close</SecondaryButton>
             </div>
         </div>

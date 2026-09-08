@@ -11,7 +11,7 @@ export class RestApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
             window: { title: "Rest & Recovery", resizable: false },
-            position: { width: 800, height: 300, top: 200, left: 400 },
+            position: { width: 800, height: 332, top: 200, left: 400 },
             Component: RestView
         } as VagabondAppArgs)
         this.actor = actor
@@ -37,15 +37,16 @@ export class RestApp extends VagabondApplication {
         }
         if (ration) {
             await removeStackableItemFromHero(this.actor.system, ration)
-            await this.actor.system.rest()
         }
+
+        await this.actor.system.rest()
     }
 
     breather = async (ration?: any) => {
         if (ration) {
             await removeStackableItemFromHero(this.actor.system, ration)
-            await this.actor.system.breather()
         }
-    }
 
+        await this.actor.system.breather()
+    }
 }

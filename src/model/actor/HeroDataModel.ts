@@ -193,6 +193,24 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         } as Record<any, any>,
             { ['skipTrackerChatCard' as string]: true }
         )
+
+        const { gainLuck, removeFatigue } = this.modifiers.downtime.breather
+
+        console.log({ gainLuck, removeFatigue })
+
+        if (gainLuck > 0) {
+            await this.parent.update({
+                'system.statuses.counters.luck': this.statuses.counters.luck + gainLuck,
+            } as Record<any, any>,
+                { ['skipTrackerChatCard' as string]: true }
+            )
+        }
+
+        if (removeFatigue > 0 && this.statuses.counters.fatigue > 0) {
+            await this.parent.update({
+                'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue,
+            } as Record<any, any>)
+        }
     }
 }
 
@@ -315,5 +333,5 @@ function setInventoryData(hero: HeroDataModel) {
 }
 
 export const isAlchemist = (hero: HeroDataModel): boolean => {
-    return getItemChoiceRules(hero.level.current!, hero.class.rules).some(rule => rule.pack === "alchemical")
+    return getItemChoiceRules(hero.level.current!, hero.class?.rules)?.some(rule => rule.pack === "alchemical")
 }
