@@ -4,7 +4,7 @@
   "_id": "NEdqGBQxyCd2OIu3",
   "img": "/icons/consumables/potions/bottle-conical-fumes-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Rapidly rusting acid. A hit Target takes d6 damage, plus Burning (Cd6) if made of metal. If the Target is a non-Relic, the acid destroys</span></p><p><span style=\"white-space:pre-wrap\">a 1' circle of it down 1-inch deep, causing the following if it is Armor or a Weapon:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Armor is reduced by 1, breaking at 0.</span></p><p><span style=\"white-space:pre-wrap\">• Weapons reduce their damage die by one size until repaired. If the damage die is a d4 when this happens, it is destroyed.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Rapidly rusting acid. A hit Target takes d6 damage, plus Burning (Cd6) if made of metal. If the Target is a non-Relic, the acid destroys a 1' circle of it down 1-inch deep, causing the following if it is Armor or a Weapon:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Armor is reduced by 1, breaking at 0.</span></p><p><span style=\"white-space:pre-wrap\">• Weapons reduce their damage die by one size until repaired. If the damage die is a d4 when this happens, it is destroyed.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -46,10 +46,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.24",
     "createdTime": 1786819257562,
-    "modifiedTime": 1786819676396,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1788829294070,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

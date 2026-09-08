@@ -51,6 +51,34 @@
         "level": "1",
         "value": true,
         "selector": "skills.medicine.trained"
+      },
+      {
+        "id": "2Z7zbrh4oAn0CElY",
+        "key": "ChoiceSet",
+        "label": "Alchemy: Level 1",
+        "level": "1",
+        "scale": 0,
+        "maxChoices": 4,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "alchemical",
+        "filters": []
+      },
+      {
+        "id": "hvpG6rVuaeY82iSa",
+        "key": "ChoiceSet",
+        "label": "Alchemy",
+        "level": "3",
+        "scale": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "alchemical",
+        "filters": []
       }
     ],
     "complexity": 4,
@@ -114,10 +142,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.24",
     "createdTime": 1785901125159,
-    "modifiedTime": 1787877142391,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1788817477623,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -1,21 +1,23 @@
 {
+  "folder": "fcy8YKJyMEaZwunn",
   "name": "Holy Water",
-  "type": "alchemical",
-  "_id": "jaFzuBqhhuKwo9BO",
+  "type": "sundry",
+  "_id": "e3SDxGNgxcAGVtm3",
   "img": "/icons/consumables/potions/bottle-ornate-bat-teal.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Used in sacred rituals, and is known to be caustic to unholy Beings. Undead and Hellspawn hit with it take d6 damage and are Burning (Cd4).</span></p>",
     "rules": [],
-    "category": "alchemy",
+    "category": "books",
     "value": {
       "g": 0,
       "s": 50,
       "c": 0
     },
+    "copperValue": 0,
     "bulk": {
       "slots": 1,
-      "isStackable": false,
-      "stackSize": 100,
+      "isStackable": true,
+      "stackSize": 10,
       "quantity": 1,
       "totalSlots": 0
     },
@@ -23,36 +25,25 @@
     "isEquipped": false,
     "isConsumable": true,
     "relicPowers": [],
-    "alchemyCategory": "concoction",
-    "damage": {
-      "dice": {
-        "count": 0,
-        "faces": 4,
-        "modifier": 0,
-        "explodesOn": []
-      },
-      "type": "none",
-      "appliedEffects": []
-    }
+    "isRation": false
   },
   "effects": [],
-  "folder": "fcy8YKJyMEaZwunn",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
-    "createdTime": 1787620298021,
-    "modifiedTime": 1787620298026,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
-    "exportSource": null,
+    "systemVersion": "0.0.24",
+    "createdTime": 1788829167948,
+    "modifiedTime": 1788829213832,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "ownership": {
-    "default": 0,
-    "LxjckWttmatU52UJ": 3
-  },
-  "sort": 0,
-  "_key": "!items!jaFzuBqhhuKwo9BO"
+  "_key": "!items!e3SDxGNgxcAGVtm3"
 }
