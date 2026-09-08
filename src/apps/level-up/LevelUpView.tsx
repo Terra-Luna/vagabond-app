@@ -12,8 +12,8 @@ import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { usePerkSelectionView } from "../hero-choices/perks/PerkSelectionView"
-import { useSpellSelectionView } from "../hero-choices/spells/SpellSelectionView"
+import { usePerkSelection } from "../hero-choices/perks/PerkSelectionUseCase"
+import { useSpellSelection } from "../hero-choices/spells/SpellSelectionUseCase"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
 import { useClassSelection } from "../hero-creator/step/ClassSelection"
@@ -56,8 +56,8 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     }
 
     const { ClassSelection, classItem } = useClassSelection([])
-    const { PerkSelection, bonusChoicesByPerk, classPerkSlots } = usePerkSelectionView(actor, true)
-    const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(actor, true)
+    const { PerkSelection, bonusChoicesByPerk, classPerkSlots } = usePerkSelection(actor, true)
+    const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelection(actor, true)
 
     const perks = useMemo(() => { return ItemsCache.perks() }, [])
 

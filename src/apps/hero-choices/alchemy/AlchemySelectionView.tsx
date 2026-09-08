@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { multiplyCoins, toCopper } from "../../../model/common/CoinValue"
+import { Coins, multiplyCoins, toCopper, zeroCoins } from "../../../model/common/CoinValue"
 import { getItemChoiceRules } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
@@ -14,20 +14,21 @@ export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }
     const level = actor.system.level.current! + (isLevelUp ? 1 : 0)
     const clazz = actor.system.class
     const valueLimit = toCopper(multiplyCoins({ g: 0, s: 50, c: 0 }, level))
-    
-    const [alchemyItems, setAlchemyItems] = useState<{ value: string, label: string, img: string, dmgType: string, category: string, description: string }[]>([])
+
+    const [alchemyItems, setAlchemyItems] = useState<{ value: string, label: string, img: string, dmgType: string, category: string, description: string, coinValue: Coins }[]>([])
     const [alchemySlots, setAlchemySlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
 
     useEffect(() => {
         setAlchemyItems([
-            { value: '', label: appLang.HeroCreation.emptySlot, img: "", dmgType: "", category: "", description: "" },
+            { value: '', label: appLang.HeroCreation.emptySlot, img: "", dmgType: "", category: "", description: "", coinValue: zeroCoins },
             ...ItemsCache.alchemical().filter(item => toCopper(item.system.value) <= valueLimit).map(item => ({
                 value: item.uuid,
                 label: item.name,
                 img: item.img ?? "",
                 dmgType: item.system.damage.type ?? "",
                 category: item.system.alchemyCategory,
-                description: item.system.description
+                description: item.system.description,
+                coinValue: item.system.value
             }))
         ])
     }, [])

@@ -74,7 +74,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
      */ 
     override async _preCreate(data: any, options: any, user: any) {
         const result = await super._preCreate(data, options, user)
-        const totalCopper = toCopper(data.system?.value ?? { g: 0, s: 0, c: 0 })
+        const totalCopper = toCopper(data.system?.value ?? zeroCoins)
         this.parent.updateSource({ "system.copperValue": totalCopper })
         return result
     }
@@ -96,7 +96,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
     override prepareDerivedData() {
         super.prepareDerivedData()
         this.bulk.totalSlots = getTotalSlots(this)
-        this.copperValue = toCopper((this as any)?.value ?? { g: 0, s: 0, c: 0 })
+        this.copperValue = toCopper((this as any)?.value ?? zeroCoins)
     }
 
     override async _preUpdate(changes, options, user) {

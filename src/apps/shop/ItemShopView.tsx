@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from "react"
 
 import { openItemSheet } from "../../model/actor/type/Inventory"
-import { addCoins, Coins, coinsAsString, isAffordable, subtractCoins } from "../../model/common/CoinValue"
+import { addCoins, Coins, coinsAsString, isAffordable, subtractCoins, zeroCoins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
@@ -54,7 +54,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
 
         const onSelectPack = useCallback((packId) => {
             const pack = packs.find(it => it.uuid === packId)
-            const refund = addCoins([wallet, selectedPack?.system.cost ?? { g: 0, s: 0, c: 0 }])
+            const refund = addCoins([wallet, selectedPack?.system.cost ?? zeroCoins])
 
             if (!pack) {
                 if (selectedPack) {
@@ -83,7 +83,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         }, [cart, wallet])
 
         const onRemoveFromCart = useCallback((item, index) => {
-            const refund = addCoins([wallet, cart.find(it => it.name === item.name)?.system?.totalValue ?? { g: 0, s: 0, c: 0 }])
+            const refund = addCoins([wallet, cart.find(it => it.name === item.name)?.system?.totalValue ?? zeroCoins])
             setWallet(refund)
             setCart(cart.filter((_, idx) => idx !== index))
         }, [cart, wallet])
@@ -204,7 +204,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                                     Total: {(() => {
                                         const total = cart.reduce((sum, it) => {
                                             return addCoins([sum, it.system.totalValue])
-                                        }, { g: 0, s: 0, c: 0 })
+                                        }, zeroCoins)
                                         return `${coinsAsString(total)}`
                                     })()}
                                 </p>

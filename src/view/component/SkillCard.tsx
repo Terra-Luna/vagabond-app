@@ -59,7 +59,7 @@ export const CardSubHeader = ({ values, showRightBorder = true }: { values: Card
                     const hasBlank = content.label.length === 0 || (content.value?.toString()?.length ?? 0) === 0
                     const gap = hasBlank ? "" : "gap-x-1"
                     return (
-                        <div key={content.label + index} className={`flex ${gap}`}>
+                        <div key={content.label + index} className={`flex ${gap} items-center`}>
                             <div className={cardSubheaderLabel}>{`${content.label}${hasBlank ? '' : ':'}`}</div>
                             <div className={cardSubheaderValue}>{content.value}</div>
                         </div>

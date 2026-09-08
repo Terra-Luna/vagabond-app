@@ -1,3 +1,4 @@
+import { coinsAsString } from "../../../model/common/CoinValue"
 import { appLang } from "../../../utils/lang"
 import { buttonAnimation } from "../../../view/component/Button"
 import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
@@ -20,9 +21,11 @@ export const Recipes = ({ alchemySlots, alchemyItems }) => {
                 const item = alchemyItems.find(it => it.value === slot.value)
                 const subtitles: CardSubHeaderValues[] = [{ label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[item.category].name }]
                 
-                if (item.dmgType !== "none") {
+                /* if (item.dmgType !== "none") {
                     subtitles.push({ label: appLang.HeroSheet.Alchemy.damage, value: appLang.DamageTypes[item.dmgType] })
-                }
+                } */
+
+                subtitles.push({ label: "Value", value: coinsAsString(item.coinValue) })
 
                 if (item) {
                     return (

@@ -7,6 +7,8 @@ export interface Coins {
     c: number
 }
 
+export const zeroCoins = { g: 0, s: 0, c: 0 }
+
 export const coinSchema = () => {
     return {
         g: new fields.NumberField({ ...requiredInteger, initial: 0 }),
@@ -56,7 +58,7 @@ export const consolidateCoins = (coinsIn: Coins): Coins => {
 }
 
 export const addCoins = (coins: Coins[]) => {
-    const total = { g: 0, s: 0, c: 0 }
+    const total = zeroCoins
     coins.forEach(it => total.c += toCopper(it))
     consolidateCoins(total)
     return total

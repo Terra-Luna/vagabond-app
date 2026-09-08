@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react"
 
-import { Coins, consolidateCoins } from "../../model/common/CoinValue"
+import { Coins, consolidateCoins, zeroCoins } from "../../model/common/CoinValue"
 import { CoinAppView } from "./CoinAppView"
 
 /**
@@ -10,11 +10,11 @@ import { CoinAppView } from "./CoinAppView"
  */
 export const useCoinApp = () => {
     const [mode, setMode] = useState<'add' | 'subtr'>('add')
-    const [coin, setCoin] = useState<Coins>({ g: 0, s: 0, c: 0 })
+    const [coin, setCoin] = useState<Coins>(zeroCoins)
 
     const reset = useCallback(() => {
         setMode('add')
-        setCoin({ g: 0, s: 0, c: 0 })
+        setCoin(zeroCoins)
     }, [])
 
     const onUpdateCoins = useCallback((coins) => {

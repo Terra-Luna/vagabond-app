@@ -1,188 +1,126 @@
-import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+import { useEffect, useRef } from "react"
 
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
-import { ItemsCache } from "../../../rules/util/ItemsCache"
-import { appLang } from "../../../utils/lang"
-import { Header } from "../../../view/component/Header"
-import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
-import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
-import { ItemGrantCard } from "../../hero-creator/component/ItemGrantCard"
-import { ItemSelectorGroup } from "../../hero-creator/component/ItemSelectorGroup"
-import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
-import { Grimoire } from "./Grimoire"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
+import { groupBy } from "../../../utils/collectionUtil"
+import { useSpellSelectionView } from "./SpellSelectionView"
 
-export const useSpellSelection = (
-    level: number,
-    ancestry: (Item & { system: AncestryDataModel }) | undefined,
-    clazz: (Item & { system: ClassDataModel }) | undefined,
-    perks: PerkDataModel[] | undefined,
-    navButtons: ReactNode[]
-) => {
-    const strings = appLang.HeroCreation
-    const isCreationMode = navButtons?.length > 0
+export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
 
-    // All spells for selection.
-    const [spellsList, setSpellsList] = useState<{ value: string, label: string, img: string, dmgType: string, description: string }[]>([])
+    const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
+    const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
+    const perks = actor.system.perks as PerkDataModel[]
+    const level = ((actor as any).system.level.current ?? 0) + (isLevelUp ? 1 : 0)
 
-    // Spells automatically granted by chosen Ancestry & Class.
-    const [ancestrySpellGrants, setAncestrySpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
-    const [classSpellGrants, setClassSpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
+    // Used for tracking spell slot loading upon opening the editor.
+    const dataLoaded = useRef(false)
 
-    // Player's spell choices for each slot.
-    const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
-    const [classSpellSlots, setClassSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
-    const [perkSpellSlots, setPerkSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
+    const {
+        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
+        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
+    } = useSpellSelectionView(level, ancestry, clazz, perks, [])
 
-    useEffect(() => {
-        setSpellsList([
-            { value: '', label: strings.emptySlot, img: '', dmgType: '', description: '' },
-            ...ItemsCache.spells().map(spell => ({
-                value: spell.uuid,
-                label: spell.name,
-                img: spell.img ?? '',
-                dmgType: spell.system.damageType ?? 'none',
-                description: spell.system.description
-            }))
-        ])
-    }, [])
+    const getSpellName = (id: string): string => {
+        return spellsList.find(it => it.value === id)?.label ?? 'unk'
+    }
 
-    const loadInitialSlots = useCallback((rules: any[]) => {
-        const slots: any[] = []
-        rules.filter(r => r.pack === 'spell').forEach(rule => {
-            Array.from({ length: rule.maxChoices }).forEach(_ => {
-                slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id })
+    const loadSelections = (rules, setSlots) => {
+        const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.scale)))
+        let sharedIndex = 0
+        rules.forEach(rule => {
+            const ruleSelections = normalizeRuleSelections(rule.selections)
+            ruleSelections.forEach(sel => {
+                if (slots[sharedIndex]) {
+                    slots[sharedIndex] = { value: sel.value, label: getSpellName(sel.value), ruleName: rule.label, ruleId: rule.id }
+                }
+                sharedIndex += 1
             })
         })
-        return slots
-    }, [])
+        setSlots(slots)
+    }
 
-    const perksSignature = JSON.stringify(perks?.map(p => (p as any).id ?? p._sourceId) ?? [])
+    const ancestryId = ancestry?.id ?? ''
+    const classId = clazz?.id ?? ''
+    const perksSignature = JSON.stringify(perks.map(p => (p as any).id ?? p._sourceId))
+    const spellsLoaded = spellsList.length > 1
 
     /**
-     * Initial spell slot allocation.
+     * Loads initial spell selections...
      */
     useEffect(() => {
-        getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
-        getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
+        if (!spellsLoaded) return
 
-        const ancestryRules = getItemChoiceRules(level, ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
-        setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
+        /**
+         * This needs to remain async to prevent their Magical Secret
+         * spells slots from getting blanked-out on render frame 0.
+         */
+        const loadInitialSpellSelections = async () => {
+            if (clazz) {
+                const rules = await getItemChoiceRules(level, clazz.system.rules ?? [])
+                loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
+            }
+            if (ancestry) {
+                const rules = await getItemChoiceRules(level, ancestry.system.rules ?? [])
+                loadSelections(rules.filter(r => r.pack === 'spell'), setAncestrySpellSlots)
+            }
+            if (perks.length > 0) {
+                const rules = await getItemChoiceRules(level, perks.flatMap(p => p.rules))
+                const targetRules = rules.filter(r => r.pack === 'spell')
+                targetRules.forEach(rule => {
+                    rule.selections = normalizeRuleSelections(rule.selections)
+                })
+                loadSelections(targetRules, setPerkSpellSlots)
+            }
 
-        const classRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
-        setClassSpellSlots(loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
+            dataLoaded.current = true
+        }
 
-        const perkRules = getItemChoiceRules(level, perks?.flatMap(p => p.rules?.filter(r => (r as any).level <= 1)) ?? [])
-        setPerkSpellSlots(loadInitialSlots(perkRules.filter(r => r.pack === 'spell')))
-    }, [ancestry, clazz, perksSignature, loadInitialSlots])
+        loadInitialSpellSelections()
+    }, [ancestryId, classId, perksSignature, spellsLoaded])
 
-    const onSelectSpell = useCallback((slotIndex: number, spell: string, spellId: string, setter: any) => {
-        setter(prevSlots =>
-            prevSlots.map((slot, index) =>
-                index === slotIndex ? { ...slot, label: spell, value: spellId } : slot
-            )
-        )
-    }, [])
+    /**
+     * Monitors Class spell choices and makes async background changes on the fly.
+     */
+    useEffect(() => {
+        if (!clazz || !classSpellSlots.length || !dataLoaded.current) return
 
-    const isAllSelected = useMemo(() => {
-        return ![...classSpellSlots, ...ancestrySpellSlots].some(slot => slot.value.length === 0)
-    }, [classSpellSlots, ancestrySpellSlots])
+        const classRules = [...clazz.system.rules] as any[]
+        const classSpellSlotGroups = groupBy("ruleId", classSpellSlots)
 
-    const SpellSelection = <div className="@container p2 h-full min-h-0 flex flex-col overflow-hidden">
-        <div className="sticky top-0 bg-sheet-main-fill space-y-4 text-center items-center pb-4">
-            <Header title={strings.spellsHeader} />
-            <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} canProceed={isAllSelected} />
-        </div>
+        let hasChanges = false
 
-        <div className="flex flex-col flex-1 overflow-y-auto w-full justify-start">
-            <div className="inline-flex flex-col items-stretch space-y-4 w-full @2xl:w-3/5 mx-auto">
-                
-                {/* GRANTED SPELLS (BY CLASS & ANCESTRY) */}
-                {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
-                    <div className="mt-4 space-y-1">
-                        {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
-                            <HeroCreationLabel text={strings.grantedSpells} />
-                        }
-                        {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
-                            <ItemGrantCard
-                                key={`grant-${index}`}
-                                img={spellsList.find(sp => sp.value === grant.uuid)?.img}
-                                name={grant.item}
-                                source={grant.source}
-                            />
-                        ))}
-
-                        {/* ANCESTRY SPELL GRANT SLOT */}
-                        {!isCreationMode && ancestrySpellSlots.length > 0 &&
-                            ancestrySpellSlots.map((slot, idx) => (
-                                <ItemGrantCard
-                                    key={`ancestry-slot-view-${idx}`}
-                                    img={spellsList.find(sp => sp.value === slot.value)?.img}
-                                    name={slot.label}
-                                    source={slot.ruleName}
-                                />
-                            ))
-                        }
-                    </div>
+        Object.keys(classSpellSlotGroups).forEach(ruleId => {
+            const ruleIndex = classRules.findIndex(r => r.id === ruleId)
+            if (ruleIndex !== -1) {
+                const nextValues = classSpellSlotGroups[ruleId]?.map(it => it.value ?? "").filter(Boolean) ?? []
+                const currentSelections = normalizeRuleSelections(classRules[ruleIndex].selections).filter(selection => !selection.subselect)
+                const nextSelections = nextValues.map((value, index) => ({
+                    ...(currentSelections[index] ?? { id: foundry.utils.randomID() }),
+                    value,
+                    subselect: ""
+                }))
+                if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
+                    classRules[ruleIndex].selections = nextSelections
+                    hasChanges = true
                 }
+            }
+        })
 
-                {/* SELECTABLE CLASS SPELL SLOTS (INCLUDES MAGICAL SECRETS) */}
-                {classSpellSlots.length > 0 &&
-                    <div className="mt-2 space-y-2">
-                        <HeroCreationSubtext text={strings.classSpells} />
-                        <ItemSelectorGroup
-                            slotGroup={classSpellSlots}
-                            options={spellsList}
-                            otherSlotGroup={[...ancestrySpellSlots, ...perkSpellSlots]}
-                            grants={[...ancestrySpellGrants, ...classSpellGrants]}
-                            onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
-                        />
-                    </div>
-                }
+        if (hasChanges) {
+            clazz.update({ 'system.rules': classRules } as Record<string, any>)
+        }
+    }, [classSpellSlots])
 
-                {/* SELECTABLE ANCESTRY SPELL SLOTS (HERO CREATION ONLY) */}
-                {(ancestrySpellSlots.length > 0 && isCreationMode) &&
-                    <BonusChoiceContainer>
-                        <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
-                        <ItemSelectorGroup
-                            slotGroup={ancestrySpellSlots}
-                            options={spellsList}
-                            otherSlotGroup={[...classSpellSlots, ...perkSpellSlots]}
-                            grants={[...ancestrySpellGrants, ...classSpellGrants]}
-                            onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setAncestrySpellSlots)}
-                        />
-                    </BonusChoiceContainer>
-                }
+    /**
+     * Monitors Perk spell selections and async background changes on the fly.
+     */
+    useEffect(() => {
+        if (!actor || !perkSpellSlots.length || !dataLoaded.current) return
+        savePerkSelections(actor, perkSpellSlots)
+    }, [actor, perkSpellSlots, perks])
 
-                {/* PERK SPELL SLOTS (MAGICAL SECRETS) */}
-                {(perkSpellSlots.length > 0 && isCreationMode) &&
-                    <BonusChoiceContainer>
-                        <BonusChoiceTitle text={strings.magicalSecrets} />
-                        <ItemSelectorGroup
-                            slotGroup={perkSpellSlots}
-                            options={spellsList}
-                            otherSlotGroup={[...classSpellSlots, ...ancestrySpellSlots]}
-                            grants={[...ancestrySpellGrants, ...classSpellGrants]}
-                            onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setPerkSpellSlots)}
-                        />
-                    </BonusChoiceContainer>
-                }
-
-                {/* YOUR GRIMOIRE */}
-                <Grimoire
-                    spellGrants={[...ancestrySpellGrants, ...classSpellGrants]}
-                    spellSlots={[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots]}
-                    spellsList={spellsList}
-                />
-            </div>
-        </div>
-    </div>
-
-    return {
-        SpellSelection, loadInitialSlots, spellsList,
-        classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
-        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots
-    }
+    return { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants }
 }

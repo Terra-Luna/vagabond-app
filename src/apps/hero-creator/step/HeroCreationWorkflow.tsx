@@ -12,8 +12,8 @@ import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
-import { usePerkSelection } from "../../hero-choices/perks/PerkSelectionUseCase"
-import { useSpellSelection } from "../../hero-choices/spells/SpellSelectionUseCase"
+import { usePerkSelectionView } from "../../hero-choices/perks/PerkSelectionView"
+import { useSpellSelectionView } from "../../hero-choices/spells/SpellSelectionView"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { useAncestrySelection } from "./AncestrySelection"
@@ -68,7 +68,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Spellcasting
      */
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelection(1, ancestryItem, classItem, undefined, [backButton, nextButton])
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(1, ancestryItem, classItem, undefined, [backButton, nextButton])
 
     const selectedSpellNames = useMemo(() => {
         const selectedSpells = [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)
@@ -85,7 +85,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Perks
      */
-    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelection(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton], 1)
+    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelectionView(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton], 1)
 
     const perksWithBonusChoices = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
         const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
