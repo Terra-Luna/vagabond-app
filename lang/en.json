@@ -685,6 +685,12 @@
         "btnCast": "Cast",
         "manaErrMsg": "Insufficient mana",
         "maxErrMsg": "Max/Cast exceeded"
+      },
+      "Alchemy": {
+        "header": "SELECT ALCHEMY RECIPIES",
+        "category": "Type",
+        "damage": "Damage Base",
+        "recipes": "Prepared Recipes"
       }
     },
      "SpellDeliveries": {

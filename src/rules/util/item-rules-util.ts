@@ -1,3 +1,4 @@
+import { multiplyCoins, toCopper } from "../../model/common/CoinValue"
 import { appLang } from "../../utils/lang"
 import { CombinedItems } from "../../utils/modelUtil"
 import { ItemsCache } from "./ItemsCache"
@@ -318,6 +319,10 @@ export function getPerkChoices(): { value: string, label: string }[] {
     return ItemsCache.perks().map(item => ({ value: item.uuid, label: item.name ?? "" }))
 }
 
+export function getAlchemyChoices(): { value: string, label: string, coinValue: number }[] {
+    return ItemsCache.alchemical().map(item => ({ value: item.uuid, label: item.name, coinValue: toCopper(item.system.value) }))
+}
+
 export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] {
     if (!Array.isArray(rulesData)) return []
 
@@ -347,6 +352,10 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
                         return perkTrainingPrereqs?.some(it => trainingFilters.includes(it))
                     })
                 }
+            }
+            else if (rule.pack === "alchemical") {
+                const valueLimit = toCopper(multiplyCoins({ g: 0, s: 50, c: 0 }, level))
+                finalizedChoices = getAlchemyChoices().filter(alch => alch.coinValue <= valueLimit)
             }
         }
 

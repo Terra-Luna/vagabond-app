@@ -19,8 +19,7 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
     const dataLoaded = useRef(false)
 
     const {
-        SpellSelection,
-        classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
+        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
         setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
     } = useSpellSelection(level, ancestry, clazz, perks, [])
 
@@ -92,6 +91,7 @@ export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, 
         const classSpellSlotGroups = groupBy("ruleId", classSpellSlots)
 
         let hasChanges = false
+        
         Object.keys(classSpellSlotGroups).forEach(ruleId => {
             const ruleIndex = classRules.findIndex(r => r.id === ruleId)
             if (ruleIndex !== -1) {

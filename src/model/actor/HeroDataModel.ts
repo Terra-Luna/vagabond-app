@@ -2,6 +2,7 @@ import { createElement } from "react"
 
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
+import { getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
@@ -294,4 +295,8 @@ export function setXpToNextLevel(hero: HeroDataModel) {
 function setInventoryData(hero: HeroDataModel) {
     hero.inventory.items = hero.parent.items.filter((i: any) => isInventoryItem(i)).map((i: any) => i.system)
     hero.inventory.capacity += Number(hero.stats.might) + 8 - hero.statuses.counters.fatigue!
+}
+
+export const isAlchemist = (hero: HeroDataModel): boolean => {
+    return getItemChoiceRules(hero.level.current!, hero.class.rules).some(rule => rule.pack === "alchemical")
 }

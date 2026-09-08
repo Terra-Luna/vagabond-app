@@ -22,9 +22,7 @@ export default defineConfig(({ mode }) => {
         },
       },
       watch: {
-        ignored: [
-          "**/src/rules/util/ItemsCache.ts",
-        ]
+        ignored: []
       }
     },
     publicDir: "public",

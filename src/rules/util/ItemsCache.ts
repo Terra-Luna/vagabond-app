@@ -1,6 +1,7 @@
 import { statsSchema } from "../../model/actor/type/Stats"
 import { isEligibleForPerk, PerkDataModel } from "../../model/item/character/PerkDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
+import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { CombinedItemsMultiType, getFullItem, inventoryItemTypes } from "../../utils/modelUtil"
 
@@ -28,6 +29,13 @@ export class ItemsCache {
             .filter(([_, item]) => item.type === 'perk')).values()]
             .filter(it => it != null)
             .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: PerkDataModel })[]
+    }
+
+    static alchemical = () => {
+        return [...new Map([...this.items.entries()]
+            .filter(([_, item]) => item.type === 'alchemical')).values()]
+            .filter(it => it != null)
+            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: AlchemicalItemDataModel })[]
     }
 
     static eligiblePerks = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[]) => {

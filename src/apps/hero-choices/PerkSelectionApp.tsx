@@ -9,7 +9,7 @@ export class PerkSelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
         super({
-            window: { title: "Grants & Modifiers" },
+            window: { title: "Select Perks" },
             position: { width: 800, height: 900 },
             Component: () => {
                 const { PerkSelection, bonusChoicesByPerk } = usePerkSelectionView(actor, isLevelUp)

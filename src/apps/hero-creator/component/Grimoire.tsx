@@ -1,13 +1,20 @@
 import { appLang } from "../../../utils/lang"
+import { buttonAnimation } from "../../../view/component/Button"
 import { SkillCard } from "../../../view/component/SkillCard"
-import { HeroCreationLabel } from "./HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSubtext } from "./HeroCreationTypography"
 
 export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
     const strings = appLang.HeroCreation
 
     return (
         <div className="space-y-1 mt-2">
-            <HeroCreationLabel text={strings.grimoire} />
+            <div className="flex justify-between">
+                <HeroCreationLabel text={strings.grimoire} />
+                {/* SPELLS COMPENDIUM LINK */}
+                <button onClick={() => game.packs?.get("vagabond-app.spells")?.render(true)} className={`hover-glow cursor-pointer ${buttonAnimation}`}>
+                    <HeroCreationSubtext text={"Browse Compendium"} />
+                </button>
+            </div>
 
             {/* GRANTED SPELLS */}
             {spellGrants.map(g => {

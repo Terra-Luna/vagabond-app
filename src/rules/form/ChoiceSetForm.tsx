@@ -45,7 +45,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
     const handleDragOver = (e: React.DragEvent, index: number) => {
         e.preventDefault()
-        if (rule.channel === "spell" || rule.channel === "perk" || rule.channel === "item") {
+        if (rule.channel === "spell" || rule.channel === "perk" || rule.channel === "alchemical" || rule.channel === "item") {
             setActiveDragIdx(index)
         }
     }
@@ -54,10 +54,11 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
         e.preventDefault()
         setActiveDragIdx(null)
 
-        if (rule.channel !== "item" && rule.channel !== "perk" && rule.channel !== "spell") return
+        if (rule.channel !== "item" && rule.channel !== "perk" && rule.channel !== "spell" && rule.channel !== "alchemical") return
 
         const rawData = e.dataTransfer.getData("text/plain")
         if (!rawData) return
+
         const dropData = JSON.parse(rawData)
         if (dropData.type === "Item" && dropData.uuid) {
             const droppedItem = await fromUuid(dropData.uuid)
@@ -107,7 +108,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     value={rule.channel ?? ''}
                     options={<>
                         <option value="path">Stat/Attribute Modifier</option>
-                        <option value="item">Spells/Perks</option>
+                        <option value="item">Spells/Perks/Alchemy</option>
                     </>}
                     onChange={(e) => {
                         const val = e.target.value
@@ -121,16 +122,17 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                 />
 
                 {/* SELECT CHOICE SET TYPE: DYNAMIC / STATIC */}
-                {(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell") && <ItemRuleSelector
-                    label="Choices Source"
-                    value={rule.sourceMode}
-                    options={<>
-                        <option value="static">Static Manual List</option>
-                        <option value="dynamic">Dynamic Item Pack</option>
-                    </>}
-                    onChange={(e) => {
-                        onChange({ sourceMode: e.target.value, filters: [] })
-                    }}
+                {(rule.channel === "item" || rule.channel === "perk" || rule.channel === "spell" || rule.channel === "alchemical") &&
+                    <ItemRuleSelector
+                        label="Choices Source"
+                        value={rule.sourceMode}
+                        options={<>
+                            <option value="static">Static Manual List</option>
+                            <option value="dynamic">Dynamic Item Pack</option>
+                        </>}
+                        onChange={(e) => {
+                            onChange({ sourceMode: e.target.value, filters: [] })
+                        }}
                 />}
 
                 {/* Conditionally show input field if rule.pack contains a valid string */}
@@ -140,6 +142,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                         options={<>
                             <option value="perk">Perks</option>
                             <option value="spell">Spells</option>
+                            <option value="alchemical">Alchemy</option>
                         </>}
                     onChange={(e) => {
                         onChange({ pack: e.target.value, filters: [] })
@@ -147,7 +150,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                 />}
 
                 {/* Perk Prerequisites Filter Options */}
-                {rule.sourceMode === "dynamic" && rule.pack === "perk" && (
+                {rule.sourceMode === "dynamic" && rule.pack === "perk" &&
                     <div>
                         <div className="flex gap-x-1 items-center">
                             <ItemRulesLabel text={"Prerequisite Filters"} />
@@ -207,7 +210,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                             ))
                         }
                     </div>
-                )}
+                }
 
             </div>
 

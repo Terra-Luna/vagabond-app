@@ -1,12 +1,15 @@
+import { Book, FlaskRound } from "lucide-react"
+
+import { AlchemySelectionApp } from "../../../../../apps/hero-choices/alchemy/AlchemySelectionApp"
 import { ItemShopApp } from "../../../../../apps/shop/ItemShopApp"
 import { getItemShopToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
+import { HeroDataModel, isAlchemist } from "../../../../../model/actor/HeroDataModel"
 import { isInContainer,sortedItems } from "../../../../../model/actor/type/Inventory"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { equipmentContextMenuItems,getContainers, getEncumbranceInfo } from "../../../../../utils/heroInventoryUtil"
 import { lang } from "../../../../../utils/lang"
 import { tableBorder } from "../../../../common/border-styles"
-import { PrimaryButton } from "../../../../component/Button"
+import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
 import { HeroCoinPurse } from "../../../../component/CoinPurse"
 import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
@@ -30,13 +33,32 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                     }
                     contextMenuItems={(item) => equipmentContextMenuItems(hero, item)} />
             </div>
-            {itemShopToggle &&
-                <div className="flex w-fll justify-end mt-1 mb-28">
-                    <PrimaryButton onClick={() => new ItemShopApp(hero.parent).render({ force: true })}>
-                        Item Shop
-                    </PrimaryButton>
+
+            <div className="flex gap-x-2 justify-between mt-1 mb-28">
+                <div className="flex gap-x-1 items-start">
+                    {isAlchemist(hero) && <>
+                        <PrimaryButton onClick={() => new AlchemySelectionApp(hero.parent).render({ force: true })}>
+                            <div className="flex gap-x-1">
+                                <Book size={18} className="self-center" />
+                                Recipies
+                            </div>
+                        </PrimaryButton>
+                        <SecondaryButton onClick={() => { }}>
+                            <div className="flex gap-x-1">
+                                <FlaskRound size={18} className="self-center" />
+                                Mix
+                            </div>
+                        </SecondaryButton>
+                    </>}
                 </div>
-            }
+                {itemShopToggle &&
+                    <div className="flex w-fll justify-end">
+                        <PrimaryButton onClick={() => new ItemShopApp(hero.parent).render({ force: true })}>
+                            Item Shop
+                        </PrimaryButton>
+                    </div>
+                }
+            </div>
         </div>
     )
 }

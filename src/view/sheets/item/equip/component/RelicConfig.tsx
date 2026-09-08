@@ -29,7 +29,7 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
     }
 
     return (<>
-        {isEditMode && <div className="flex flex-col gap-y-2 items-start mt-2">
+        {isEditMode && <div className="flex flex-col gap-y-2 items-start mt-2 mb-16">
             {/* ACTIVE POWERS */}
             <ItemSheetPropLabel label={appLang.ButtonActions.relic} />
             <div className="flex flex-wrap gap-1">
