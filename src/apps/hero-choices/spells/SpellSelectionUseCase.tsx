@@ -7,12 +7,12 @@ import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
-import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
-import { Grimoire } from "../component/Grimoire"
-import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { ItemGrantCard } from "../component/ItemGrantCard"
-import { ItemSelectorGroup } from "../component/ItemSelectorGroup"
-import { TopNavButtons } from "../component/TopNavButtons"
+import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
+import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
+import { ItemGrantCard } from "../../hero-creator/component/ItemGrantCard"
+import { ItemSelectorGroup } from "../../hero-creator/component/ItemSelectorGroup"
+import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
+import { Grimoire } from "./Grimoire"
 
 export const useSpellSelection = (
     level: number,

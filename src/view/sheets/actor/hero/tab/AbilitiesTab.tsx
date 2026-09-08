@@ -1,6 +1,6 @@
 import { MessageSquareText } from "lucide-react"
 
-import { PerkSelectionApp } from "../../../../../apps/hero-choices/PerkSelectionApp"
+import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSelectionApp"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
 import { groupBy } from "../../../../../utils/collectionUtil"

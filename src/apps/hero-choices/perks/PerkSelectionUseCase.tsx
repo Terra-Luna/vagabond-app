@@ -12,8 +12,8 @@ import { Header } from "../../../view/component/Header"
 import { SkillCard } from "../../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
-import { BonusChoiceTitle } from "../component/BonusChoiceContaner"
-import { TopNavButtons } from "../component/TopNavButtons"
+import { BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
+import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
 
 export const usePerkSelection = (
     ancestry: Item & { system: AncestryDataModel } | undefined,

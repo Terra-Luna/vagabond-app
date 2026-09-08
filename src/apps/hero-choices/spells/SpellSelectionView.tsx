@@ -1,12 +1,12 @@
 import { useEffect, useRef } from "react"
 
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { AncestryDataModel } from "../../model/item/character/AncestryDataModel"
-import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, savePerkSelections } from "../../rules/util/item-rules-util"
-import { groupBy } from "../../utils/collectionUtil"
-import { useSpellSelection } from "../hero-creator/step/SpellSelectionUseCase"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
+import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
+import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
+import { groupBy } from "../../../utils/collectionUtil"
+import { useSpellSelection } from "./SpellSelectionUseCase"
 
 export const useSpellSelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
 

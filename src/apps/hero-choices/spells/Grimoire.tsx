@@ -1,7 +1,7 @@
 import { appLang } from "../../../utils/lang"
 import { buttonAnimation } from "../../../view/component/Button"
 import { SkillCard } from "../../../view/component/SkillCard"
-import { HeroCreationLabel, HeroCreationSubtext } from "./HeroCreationTypography"
+import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
 
 export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
     const strings = appLang.HeroCreation

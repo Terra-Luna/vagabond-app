@@ -1,4 +1,4 @@
-import { SpellSelectionApp } from "../../../../../apps/hero-choices/SpellSelectionApp"
+import { SpellSelectionApp } from "../../../../../apps/hero-choices/spells/SpellSelectionApp"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { PrimaryButton } from "../../../../component/Button"
 import { ManaHUD } from "./component/spellcasting/ManaHUD"

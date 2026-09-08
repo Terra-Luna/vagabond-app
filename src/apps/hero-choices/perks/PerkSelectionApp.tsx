@@ -1,5 +1,5 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
 import { usePerkSelectionView } from "./PerkSelectionView"
 
 export class PerkSelectionApp extends VagabondApplication {

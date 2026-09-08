@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect,useMemo } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { addCoins, Coins } from "../../../model/common/CoinValue"
@@ -12,6 +12,8 @@ import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
+import { usePerkSelection } from "../../hero-choices/perks/PerkSelectionUseCase"
+import { useSpellSelection } from "../../hero-choices/spells/SpellSelectionUseCase"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { useAncestrySelection } from "./AncestrySelection"
@@ -19,9 +21,8 @@ import { useClassSelection } from "./ClassSelection"
 import { useCoreStats } from "./CoreStats"
 import { useEquipmentSelection } from "./EquipmentSelection"
 import { usePerkBonusSelection } from "./PerkBonusSelection"
-import { usePerkSelection } from "./PerkSelectionUseCase"
-import { useSpellSelection } from "./SpellSelectionUseCase"
 import { useTrainingSelection } from "./TrainingSelection"
+
 
 export interface HeroCreatorArgs {
     actor: Actor & { system: HeroDataModel }

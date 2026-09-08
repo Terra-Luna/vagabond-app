@@ -1,7 +1,7 @@
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
-import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
+import { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
+import { VagabondAppArgs,VagabondApplication } from "../../VagabondApplication"
 import { useSpellSelectionView } from "./SpellSelectionView"
 
 export class SpellSelectionApp extends VagabondApplication {
