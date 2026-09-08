@@ -2,7 +2,7 @@ import { Brain, Cross, Droplets, Flame, FlaskRound, Shield, Skull, Snowflake, Sp
 import { ReactElement } from "react"
 
 import { sys_id } from "../../utils/foundryUtils"
-import { lang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
     size = size ? size : 20
@@ -12,77 +12,77 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         return <Shield size={size} className='text-ic-armor fill-ic-armor-fill' />
     }
 
-    switch (lang.APP.DamageTypes[dmgType]) {
-        case lang.APP.DamageTypes.magical: {
+    switch (appLang.DamageTypes[dmgType]) {
+        case appLang.DamageTypes.magical: {
             element = <Wand2 size={size} className='text-magical' />
             break
         }
-        case lang.APP.DamageTypes.fire: {
+        case appLang.DamageTypes.fire: {
             element = <Flame size={size} strokeWidth={1} className='text-black fill-fire' />
             break
         }
-        case lang.APP.DamageTypes.cold: {
+        case appLang.DamageTypes.cold: {
             element = <Snowflake size={size} strokeWidth={1} className='text-black fill-cold' />
             break
         }
-        case lang.APP.DamageTypes.shock: {
+        case appLang.DamageTypes.shock: {
             element = <Zap size={size} strokeWidth={1} className='text-black fill-shock' />
             break
         }
-        case lang.APP.DamageTypes.acid: {
+        case appLang.DamageTypes.acid: {
             element = <Droplets size={size} strokeWidth={1} className='text-black fill-acid' />
             break
         }
-        case lang.APP.DamageTypes.poison: {
+        case appLang.DamageTypes.poison: {
             element = <FlaskRound size={size} strokeWidth={1} className='text-black fill-poison' />
             break
         }
-        case lang.APP.DamageTypes.necrotic: {
+        case appLang.DamageTypes.necrotic: {
             element = <Skull size={size} strokeWidth={1} className='text-black fill-necrotic' />
             break
         }
-        case lang.APP.DamageTypes.psychic: {
+        case appLang.DamageTypes.psychic: {
             element = <Brain size={size} className='text-psychic' />
             break
         }
-        case lang.APP.DamageTypes.healing: {
+        case appLang.DamageTypes.healing: {
             element = <Cross size={size} strokeWidth={1} className='text-black fill-healing' />
             break
         }
-        case lang.APP.DamageTypes.mana: {
+        case appLang.DamageTypes.mana: {
             element = <Sparkle size={size} strokeWidth={1} className='text-black fill-mana' />
             break
         }
-        case lang.APP.DamageTypes.silvered: {
+        case appLang.DamageTypes.silvered: {
             element = <Sword size={size} className='text-text-primary fill-ic-armor-fill' />
             break
         }
-        case lang.APP.DamageTypes.coldiron: {
+        case appLang.DamageTypes.coldiron: {
             element = <Sword size={size} className='text-text-primary fill-cold' />
             break
         }
-        case lang.APP.DamageTypes.physical: {
+        case appLang.DamageTypes.physical: {
             element = <Swords size={size - 2} className='text-black fill-ic-armor-fill' />
             break
         }
-        case lang.APP.DamageTypes.blunt: {
+        case appLang.DamageTypes.blunt: {
             element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/blunt.svg`} size={size} />
             break 
         }
-        case lang.APP.DamageTypes.pierce: {
+        case appLang.DamageTypes.pierce: {
             element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/pierce.svg`} size={size} />
             break
         }
-        case lang.APP.DamageTypes.slash: {
+        case appLang.DamageTypes.slash: {
             element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/slash.svg`} size={size} />
             break
         }
     }
     if (element === undefined) {
-        element = <p>{lang.APP.DamageTypes[dmgType]}</p>
+        element = <p>{appLang.DamageTypes[dmgType]}</p>
     }
     return (
-        <div title={lang.APP.DamageTypes[dmgType]}>{element}</div>
+        <div title={appLang.DamageTypes[dmgType]}>{element}</div>
     )
 }
 

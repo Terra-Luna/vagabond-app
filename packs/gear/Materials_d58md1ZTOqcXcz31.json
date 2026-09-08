@@ -22,7 +22,8 @@
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
-    "relicPowers": []
+    "relicPowers": [],
+    "isMaterials": true
   },
   "effects": [],
   "folder": "hqQBaAS4VoQcJflQ",
@@ -30,9 +31,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.18",
+    "systemVersion": "0.0.24",
     "createdTime": 1787620735337,
-    "modifiedTime": 1788742107772,
+    "modifiedTime": 1788832515584,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

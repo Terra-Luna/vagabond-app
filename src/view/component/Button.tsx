@@ -13,7 +13,7 @@ export const PrimaryButton = ({ type = "button", title = '', children, icon = nu
     type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick?: (e) => any, disabled?: boolean
 }) => {
     return (
-        <button disabled={disabled} type={type} title={title} onClick={(e) => onClick(e)} className={`${primaryButtonClasses} ${disabled ? 'opacity-50' : ''}`}>
+        <button disabled={disabled} type={type} title={title} onClick={(e) => onClick(e)} className={`${primaryButtonClasses} ${disabled ? 'opacity-50 scale-95' : ''}`}>
             {icon ? icon : undefined}
             <div className="mx-0.5" />
             {children}
@@ -52,7 +52,7 @@ export const UtilityButton = ({ type = "button", title = "", children, icon = nu
 }) => {
     return (
         <button type={type} title={title} onClick={onClick} onMouseDown={(e) => e.preventDefault()}
-            className={`hover-glow text-sm font-eskapade font-normal ${tableBorder} px-2 ${buttonAnimation}`}
+            className={`hover-glow text-sm font-eskapade font-normal ${tableBorder} px-2 ${buttonAnimation} bg-sheet-main-fill`}
         >
             {icon}
             {children ? <>

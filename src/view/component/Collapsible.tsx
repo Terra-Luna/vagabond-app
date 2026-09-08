@@ -3,7 +3,7 @@ import { ReactNode, useCallback, useState } from "react"
 
 import { fields } from "../../model/common/sharedSchemas"
 import { sys_id } from "../../utils/foundryUtils"
-import { Header } from "./Header"
+import { Header, SkillCardAction } from "./Header"
 
 export interface CollapsibleHeaderProps {
     img?: string
@@ -11,13 +11,22 @@ export interface CollapsibleHeaderProps {
     title: string
     toggleCollapsedButton?: ReactNode
     toggleCollapsed?: () => void
+    actions?: SkillCardAction[]
 }
 interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }
 
-export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className, settingsKey }: {
-    img?: string, dmgType?: string, title: string, Header: CollapsibleHeader, content: ReactNode, startCollapsed?: boolean, className?: string, settingsKey?: string
+export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className, settingsKey, actions }: {
+    img?: string,
+    dmgType?: string,
+    title: string,
+    Header: CollapsibleHeader,
+    content: ReactNode,
+    startCollapsed?: boolean,
+    className?: string,
+    settingsKey?: string,
+    actions?: SkillCardAction[]
 }) => {
     const [isCollapsed, setCollapsed] = useState(startCollapsed)
     const toggleCollapsed = useCallback(() => {
@@ -25,7 +34,7 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     }, [isCollapsed])
     return (
         <div className={className}>
-            <Header img={img} dmgType={dmgType} title={title} toggleCollapsed={toggleCollapsed} toggleCollapsedButton={
+            <Header img={img} dmgType={dmgType} title={title} toggleCollapsed={toggleCollapsed} actions={actions} toggleCollapsedButton={
                 <button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>
             } />
             {isCollapsed ? <></> : content}

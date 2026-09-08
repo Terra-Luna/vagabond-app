@@ -11,7 +11,7 @@ export class ItemStackSplitApp extends VagabondApplication {
     
     constructor(actor: Actor & { system: HeroDataModel }, item: Item & { system: EquipmentDataModel<EquipmentSchema> }) {
         super({
-            window: { title: "Split Item Stack" },
+            window: { title: "Split Item Stack", resizable: false },
             position: { width: 400, height: "auto", top: 200, left: 400 },
             Component: ItemStackSplitView
         } as VagabondAppArgs)

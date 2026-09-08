@@ -1,6 +1,6 @@
 import { AncestryDataModel } from "../../../../../model/item/character/AncestryDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
-import { lang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { DropDown } from "../../../../component/Dropdown"
@@ -37,17 +37,17 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
                             {isEditMode && (
                                 <div className="text-header-text-secondary flex gap-2 mb-2">
                                     <DropDown
-                                        label={lang.APP.ItemSheet.size}
+                                        label={appLang.ItemSheet.size}
                                         variant="alternate"
-                                        options={createDropdownEntries(lang.APP.Sizes)}
+                                        options={createDropdownEntries(appLang.Sizes)}
                                         parent={ancestry.parent}
                                         updateMechanism={{ updatePath: ['beingSize'] }}
                                         value={ancestry.beingSize ?? ''}
                                     />
                                     <DropDown
-                                        label={lang.APP.ItemSheet.type}
+                                        label={appLang.ItemSheet.type}
                                         variant="alternate"
-                                        options={createDropdownEntries(lang.APP.BeingTypes)}
+                                        options={createDropdownEntries(appLang.BeingTypes)}
                                         parent={ancestry.parent}
                                         updateMechanism={{ updatePath: ['beingType'] }}
                                         value={ancestry.beingType}

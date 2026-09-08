@@ -7,7 +7,9 @@ import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
  */
 const sundrySchema = () => {
     return {
-        isRation: new fields.BooleanField({ required: false, initial: false })
+        isRation: new fields.BooleanField({ initial: false }),
+        isMaterials: new fields.BooleanField({ initial: false }),
+        isAlchemyTools: new fields.BooleanField({ initial: false })
     }
 }
 

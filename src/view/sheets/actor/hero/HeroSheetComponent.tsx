@@ -9,7 +9,7 @@ import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnair
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
 import { sys_id } from "../../../../utils/foundryUtils"
-import { lang } from "../../../../utils/lang"
+import { appLang } from "../../../../utils/lang"
 import { localizeString } from "../../../../utils/localeUtils"
 import { getName } from "../../../../utils/modelUtil"
 import { EditableNameField } from "../../../component/EditableTextField"
@@ -25,7 +25,7 @@ import { RollsTab } from "./tab/RollsTab"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { CustomTrackers,Focus, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, Stats, Studied } from "./tab/TopSection"
 
-const locale = lang.APP.HeroSheet
+const locale = appLang.HeroSheet
 
 export const HeroSheetReactComponent = ({ actor, sheet }: { actor: Actor & { system: HeroDataModel }, sheet: VagabondActorSheet }) => {
     const hero = actor.system

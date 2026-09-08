@@ -1,11 +1,11 @@
-import { appLang,lang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { beingSizeOptions, beingTypeOptions, fields, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
 const ancestrySchema = () => {
     return {
-        senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Senses) }), { initial: [] }),
+        senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Senses) }), { initial: [] }),
         beingType: new fields.StringField({ ...beingTypeOptions() }),
         beingSize: new fields.StringField({ ...beingSizeOptions() })
     }

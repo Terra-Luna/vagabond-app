@@ -3,6 +3,7 @@ import { ReactNode } from 'react'
 import { CardHeader } from './CardHeader'
 import { Collapsible } from "./Collapsible"
 import { EnrichedContent } from './EnrichedContent'
+import { SkillCardAction } from './Header'
 
 const cardSubheaderLayout = "flex -mt-0.5"
 const cardSubheaderStyle = "flex gap-x-2 py-1 pl-2 pr-1 items-center bg-section-header-fill"
@@ -11,15 +12,23 @@ const cardSubheaderValue = "text-base text-text-header-primary font-eskapade fon
 const cardBodyLayout = "p-2 border-b-1 border-l-1 border-r-1 border-solid border-table-border"
 const cardBodyStyle = "text-text-primary text-sm antialiased text-justify"
 
-export const SkillCard = ({ actor, img = '', dmgType = 'none', title, subtitles, description, startCollapsed = true }: {
-    actor?: Actor, img?: string, dmgType?: string, title: string, subtitles: CardSubHeaderValues[], description: string, startCollapsed?: boolean
+export const SkillCard = ({ actor, img = '', dmgType = 'none', title, subtitles, description, startCollapsed = true, actions = [] }: {
+    actor?: Actor,
+    img?: string,
+    dmgType?: string,
+    title: string,
+    subtitles: CardSubHeaderValues[],
+    description: string,
+    startCollapsed?: boolean,
+    actions?: SkillCardAction[]
 }) => {
     return (
         <Collapsible
-            startCollapsed={startCollapsed}
             img={img}
-            dmgType={dmgType}
             title={title}
+            dmgType={dmgType}
+            startCollapsed={startCollapsed}
+            actions={actions}
             Header={CardHeader}
             content={(<>
                 <CardSubHeader values={subtitles} />

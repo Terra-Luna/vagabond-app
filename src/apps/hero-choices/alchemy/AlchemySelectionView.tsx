@@ -9,7 +9,7 @@ import { Header } from "../../../view/component/Header"
 import { ItemSelectorGroup } from "../../hero-creator/component/ItemSelectorGroup"
 import { Recipes } from "./Recipes"
 
-export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
+export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, hideCompendiumLink?: boolean) => {
 
     const level = actor.system.level.current! + (isLevelUp ? 1 : 0)
     const clazz = actor.system.class
@@ -76,7 +76,7 @@ export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }
                         />
 
                         {/* SELECTED RECIPIES */}
-                        <Recipes alchemySlots={alchemySlots} alchemyItems={alchemyItems} />
+                        <Recipes alchemySlots={alchemySlots} alchemyItems={alchemyItems} hideCompendiumLink={hideCompendiumLink} />
                     </div>
                 }
             </div>

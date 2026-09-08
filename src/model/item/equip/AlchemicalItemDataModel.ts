@@ -1,4 +1,4 @@
-import { appLang,lang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
@@ -7,7 +7,7 @@ const alchemicalSchema = () => {
         alchemyCategory: new fields.StringField({
             ...optionalString,
             initial: 'unk',
-            choices: Object.keys(lang.APP.AlchemyCategories)
+            choices: Object.keys(appLang.AlchemyCategories)
         }),
         damage: new fields.SchemaField({
             dice: new fields.SchemaField({

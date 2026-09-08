@@ -1,13 +1,13 @@
-import { lang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { damageTypeOptions, fields, movementTypes, optionalString, requiredString, statusEffOptions,zonePreferences } from "../../common/sharedSchemas"
 import { BaseActorSchema } from "../ActorDataModel"
 import { npcActionComboSchema,npcActionSchema } from "./NpcAction"
 
 export const npcSchema = () => {
     return {
-        beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(lang.APP.Sizes) }),
-        beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(lang.APP.BeingTypes) }),
-        beingSubtype: new fields.StringField({ ...optionalString, initial: 'none', choices: Object.keys(lang.APP.BeingSubtypes) }),
+        beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(appLang.Sizes) }),
+        beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(appLang.BeingTypes) }),
+        beingSubtype: new fields.StringField({ ...optionalString, initial: 'none', choices: Object.keys(appLang.BeingSubtypes) }),
         threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
         threatLevelOverride: new fields.NumberField({ integer: false, min: 0, initial: null }),
         description: new fields.HTMLField(),

@@ -1,4 +1,4 @@
-import { lang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { damageTypeOptions, fields, rangeOptions, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel,EquipmentSchema } from "./EquipmentDataModel"
 
@@ -18,23 +18,23 @@ const weaponSchema = () => {
             type: new fields.StringField({ ...damageTypeOptions() })
         }),
         grip: new fields.SchemaField({
-            style: new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Grips), initial: 'H' }),
-            state: new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Grips), initial: 'H' })
+            style: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Grips), initial: 'H' }),
+            state: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Grips), initial: 'H' })
         }),
         skills: new fields.ArrayField(
             new fields.StringField({
-                ...requiredString, choices: [...Object.keys(lang.APP.WeaponSkills)]
+                ...requiredString, choices: [...Object.keys(appLang.WeaponSkills)]
             }),
             { initial: [] }
         ),
         properties: new fields.ArrayField(
             new fields.StringField({
-                ...requiredString, choices: Object.keys(lang.APP.WeaponProps)
+                ...requiredString, choices: Object.keys(appLang.WeaponProps)
             }),
             { initial: [] }
         ),
         material: new fields.StringField({
-            ...requiredString, initial: 'steel', choices: Object.keys(lang.APP.Metals)
+            ...requiredString, initial: 'steel', choices: Object.keys(appLang.Metals)
         })
     }
 }

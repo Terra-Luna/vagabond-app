@@ -1,4 +1,3 @@
-
 import { ActiveEffectsApp } from "../../../../apps/active-effects/ActiveEffectsApp"
 import { AlchemicalItemDataModel } from "../../../../model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "../../../../model/item/equip/ArmorDataModel"

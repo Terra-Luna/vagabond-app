@@ -690,7 +690,11 @@
         "header": "SELECT ALCHEMY RECIPIES",
         "category": "Type",
         "damage": "Damage Base",
-        "recipes": "Prepared Recipes"
+        "recipes": "Prepared Recipes",
+        "recipesbtn": "Recipes",
+        "craftHeader": "Alchemy Tools",
+        "craft": "Craft",
+        "use": "Use"
       }
     },
      "SpellDeliveries": {
@@ -805,7 +809,9 @@
       "stat": "Stat",
       "min": "Min",
       "skills": "Skills",
-      "spell": "Spell"
+      "spell": "Spell",
+      "materials": "Is Materials",
+      "alchtools": "Is Alchemy Tools"
     },
     "ItemShop": {
       "Categories": {

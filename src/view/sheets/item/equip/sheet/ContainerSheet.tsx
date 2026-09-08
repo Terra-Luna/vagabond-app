@@ -5,7 +5,7 @@ import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ContainerDataModel, itemsInContainer } from "../../../../../model/item/equip/ContainerDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { containerItemContextMenuItems } from "../../../../../utils/heroInventoryUtil"
-import { appLang,appLang as lang } from "../../../../../utils/lang"
+import { appLang } from "../../../../../utils/lang"
 import { SecondaryButton } from "../../../../component/Button"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -24,7 +24,7 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
                 <div className="flex gap-x-2 mb-2">
                     {isEditMode &&
                         <ItemSheetProperty
-                            label={lang.ItemSheet.capacity}
+                        label={appLang.ItemSheet.capacity}
                             value={
                                 <EditableTextField
                                     boundValue={item.system.capacity.toString()}
@@ -34,7 +34,7 @@ export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataM
                             }
                     />
                     }
-                    <CapacityGauge label={lang.ItemSheet.capacity} capacityInfo={{
+                    <CapacityGauge label={appLang.ItemSheet.capacity} capacityInfo={{
                         bulk: item.system.capacity - item.system.emptySlots,
                         capacity: item.system.capacity,
                         isOverEncumbered: false

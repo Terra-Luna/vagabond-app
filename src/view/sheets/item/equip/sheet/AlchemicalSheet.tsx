@@ -7,8 +7,8 @@ import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
-import { ConsumableToggle } from "../component/ConsumableItemToggleComponent"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
+import { ItemToggleOption } from "../component/ItemToggleOption"
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
 
@@ -29,7 +29,7 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
                     wrap={true}
                 />
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
-                <ConsumableToggle item={item} />
+                <ItemToggleOption item={item} label={appLang.ItemSheet.consumable} path={"system.isConsumable"} />
                 <AlechemyCategory item={item} />
             </div>
         </EquipmentSheetSubtypeBody>

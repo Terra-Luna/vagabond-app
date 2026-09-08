@@ -1,4 +1,4 @@
-import { appLang,lang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { andOrToSymbol, removeLastComma } from "../../../utils/stringUtil"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { statsSchema } from "../../actor/type/Stats"
@@ -14,18 +14,18 @@ const perkSchema = () => {
 
 const prerequisiteSchema = () => {
     return {
-        type: new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.PrerequisiteTypes) }),
-        stat: new fields.StringField({ ...optionalString, choices: Object.keys(lang.APP.Stat), initial: Object.keys(lang.APP.Stat)[0] }),
+        type: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.PrerequisiteTypes) }),
+        stat: new fields.StringField({ ...optionalString, choices: Object.keys(appLang.Stat), initial: Object.keys(appLang.Stat)[0] }),
         value: new fields.NumberField({ ...standardInteger, initial: 3 }),
         spell: new fields.StringField({ ...optionalString, initial: 'Any' }),
         skills: new fields.ArrayField(
             new fields.SchemaField({
                 skillNames: new fields.ArrayField(
-                    new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Skills) }),
-                    { initial: [Object.keys(lang.APP.Skills)[0]] }
+                    new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Skills) }),
+                    { initial: [Object.keys(appLang.Skills)[0]] }
                 ),
                 andOr: new fields.StringField({ ...optionalString, choices: ['and', 'or'], initial: null })
-            }), { initial: [{ skillNames: [Object.keys(lang.APP.Skills)[0]] }] }
+            }), { initial: [{ skillNames: [Object.keys(appLang.Skills)[0]] }] }
         )
     }
 }
@@ -49,7 +49,7 @@ export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {
         {
             'system.prerequisites': [
                 ...perk.system.prerequisites,
-                { type: Object.keys(lang.APP.PrerequisiteTypes)[0] }
+                { type: Object.keys(appLang.PrerequisiteTypes)[0] }
             ]
         } as Record<string, any[]>)
 }

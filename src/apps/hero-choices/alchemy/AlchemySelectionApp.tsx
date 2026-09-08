@@ -11,7 +11,7 @@ export class AlchemySelectionApp extends VagabondApplication {
 
     constructor(actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) {
         super({
-            window: { title: "Grants & Modifiers" },
+            window: { title: "Select Alchemy Recipes" },
             position: { width: 400 },
             Component: () => {
                 const { AlchemySelectionView } = useAlchemySelection(actor, isLevelUp)

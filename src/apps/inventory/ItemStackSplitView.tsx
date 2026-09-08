@@ -2,6 +2,7 @@ import { useRef, useState } from "react"
 
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { appLang } from "../../utils/lang"
+import { tableBorder, tableBorderRounded } from "../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Divider } from "../../view/component/Header"
 
@@ -15,12 +16,12 @@ export const ItemStackSplitView = ({ item, onCancel, onSave }: {
     const leftPercentage = range > 0 ? (value / range) * 100 : 50
 
     return (
-        <div className="flex flex-col gap-y-4 pt-2 pb-2 text-xl text-center font-eskapade select-none">
+        <div className={`flex flex-col gap-y-4 pt-2 pb-2 text-xl text-center font-eskapade select-none ${tableBorder} border-2`}>
             {appLang.HeroSheet.Inventory.splittingStack}: {item.name}
 
 
             <div className="flex gap-x-4 px-4 text-2xl font-eskapade items-center">
-                <p className="w-12 text-right">{value}</p>
+                <p className={`w-12 text-center ${tableBorderRounded}`}>{value}</p>
 
                 <div
                     ref={barRef}
@@ -36,7 +37,7 @@ export const ItemStackSplitView = ({ item, onCancel, onSave }: {
                     </div>
                 </div>
 
-                <p className="w-12 text-left">{remainder}</p>
+                <p className={`w-12 text-center ${tableBorderRounded}`}>{remainder}</p>
             </div>
 
             {/* BUTTON SET */}

@@ -1,14 +1,14 @@
-import { lang } from "../../../utils/lang"
+import { appLang } from "../../../utils/lang"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel } from "./EquipmentDataModel"
 import { EquipmentSchema } from "./EquipmentDataModel"
 
 const armorSchema = () => {
     return {
-        armorType: new fields.StringField({ reuired: false, initial: 'light', choices: Object.keys(lang.APP.ArmorTypes) }),
+        armorType: new fields.StringField({ reuired: false, initial: 'light', choices: Object.keys(appLang.ArmorTypes) }),
         rating: new fields.NumberField({ integer: true, min: 0, initial: 1 }),
         mightReq: new fields.NumberField({ ...requiredInteger, initial: 3 }),
-        material: new fields.StringField({ ...requiredString, initial: 'steel', choices: Object.keys(lang.APP.Metals) })
+        material: new fields.StringField({ ...requiredString, initial: 'steel', choices: Object.keys(appLang.Metals) })
     }
 }
 

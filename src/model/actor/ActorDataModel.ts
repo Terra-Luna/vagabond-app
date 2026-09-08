@@ -1,4 +1,4 @@
-import { lang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { fields, requiredString } from "../common/sharedSchemas"
 import { armorSchema } from "./type/Armor"
 import { healthSchema } from "./type/Health"
@@ -9,7 +9,7 @@ export const baseActorSchema = () => {
     return {
         health: new fields.SchemaField({ ...healthSchema() }),
         armor: new fields.SchemaField({ ...armorSchema() }),
-        senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(lang.APP.Senses) })),
+        senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Senses) })),
         statuses: new fields.SchemaField({ ...statusFxSchema() }),
         modifiers: new fields.SchemaField({ ...modifierSchema() })
     }

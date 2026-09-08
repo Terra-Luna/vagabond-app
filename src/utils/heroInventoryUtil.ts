@@ -21,7 +21,7 @@ import { ItemChatCard } from "../view/chat/ItemChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
 import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { sys_id } from "./foundryUtils"
-import { lang } from "./lang"
+import { appLang } from "./lang"
 import { getId, getName, getTargetIds } from "./modelUtil"
 
 /**
@@ -230,16 +230,16 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
         if (item.isEquipped) {
             if (item instanceof WeaponDataModel && item.grip.style === 'V') {
                 menuItems.push({
-                    icon: HandFist, label: lang.APP.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(item)
+                    icon: HandFist, label: appLang.HeroSheet.Inventory.ctxGrip, action: () => toggleGripState(item)
                 })
             }
             menuItems.push({
-                icon: Hand, label: lang.APP.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(item, false)
+                icon: Hand, label: appLang.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(item, false)
             })
         }
         else {
             menuItems.push({
-                icon: HandFist, label: lang.APP.HeroSheet.Inventory.ctxEquip, action: () => {
+                icon: HandFist, label: appLang.HeroSheet.Inventory.ctxEquip, action: () => {
                     item instanceof WeaponDataModel || item instanceof SundryDataModel
                         ? equipWeapon(hero, item)
                         : (item instanceof ArmorDataModel
@@ -280,7 +280,7 @@ export const containerItemContextMenuItems = (
         menuItems.push(useItemContextOption(actor as any, item))
     }
     menuItems.push(viewItemSheetContextOption(item))
-    menuItems.push({ icon: Undo, label: lang.APP.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
+    menuItems.push({ icon: Undo, label: appLang.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
     menuItems.push(deleteItemContextOption(actor, item))
     if (item.bulk.isStackable && item.bulk.quantity > 1) {
         menuItems.push(deleteAllItemsContextOption(actor, item))
@@ -289,29 +289,29 @@ export const containerItemContextMenuItems = (
 }
 
 const useItemContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Hand, label: lang.APP.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
+    return { icon: Hand, label: appLang.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
 }
 
 const viewItemSheetContextOption = (item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Eye, label: lang.APP.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) }
+    return { icon: Eye, label: appLang.HeroSheet.Inventory.ctxView, action: () => openItemSheet(item) }
 }
 
 const sendItemToChatContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: MessageSquareText, label: lang.APP.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
+    return { icon: MessageSquareText, label: appLang.HeroSheet.Inventory.ctxChat, action: () => sendItemToChat(hero, item) }
 }
 
 const splitItemsContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Split, label: lang.APP.HeroSheet.Inventory.ctxSplit, action: () => new ItemStackSplitApp(hero.parent, item.parent).render({ force: true }) }
+    return { icon: Split, label: appLang.HeroSheet.Inventory.ctxSplit, action: () => new ItemStackSplitApp(hero.parent, item.parent).render({ force: true }) }
 }
 
 const deleteItemContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
-    return { icon: Trash, label: lang.APP.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
+    return { icon: Trash, label: appLang.HeroSheet.Inventory.ctxDelete, action: () => deleteItems(actor, [getId(item)]), isDestructive: true }
 }
 
 const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | null, item: EquipmentDataModel<EquipmentSchema>) => {
     return {
         icon: Trash,
-        label: lang.APP.HeroSheet.Inventory.ctxDeleteAll,
+        label: appLang.HeroSheet.Inventory.ctxDeleteAll,
         action: async () => {
             await item.parent.update({ 'system.bulk.isStackable': false, 'system.bulk.quantity': 0 })
             deleteItems(actor, [getId(item)])
@@ -320,12 +320,26 @@ const deleteAllItemsContextOption = (actor: ActorDataModel<BaseActorSchema> | nu
     }
 }
 
-export const deleteItems = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
-    return await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: false })
+export const deleteItems = async (actor: any, itemIds: string[]) => {
+    if (!actor) return
+
+    if (actor.parent) {
+        return await actor.parent.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: false })
+    }
+    else {
+        return await actor.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: false })
+    }
 }
 
-export const deleteItemStack = async (actor: ActorDataModel<BaseActorSchema> | null, itemIds: string[]) => {
-    await actor?.parent?.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: true })
+export const deleteItemStack = async (actor: any, itemIds: string[]) => {
+    if (!actor) return
+
+    if (actor.parent) {
+        await actor.parent.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: true })
+    }
+    else {
+        await actor.deleteEmbeddedDocuments("Item", itemIds, { deleteVagabondStack: true })
+    }
 }
 
 /**
@@ -374,4 +388,12 @@ export const inventoryItemDragDropHandler = async (
 export const subtractCoinsFromHero = (hero: HeroDataModel, coins: Coins) => {
     const newCoins = subtractCoins(hero.inventory.coins, coins)
     return hero.parent.update({ system: { inventory: { coins: newCoins } } })
+}
+
+export const getAlchemyMaterials = (actor: Actor & { system: HeroDataModel }): (Item & { system: SundryDataModel })[] => {
+    return actor.items.filter(it => it.system instanceof SundryDataModel && it.system.isMaterials) as (Item & { system: SundryDataModel })[]
+}
+
+export const hasAlchemyToolsEquipped = (actor: HeroDataModel): boolean => {
+    return actor.inventory.items.some(it => it instanceof SundryDataModel && it.isAlchemyTools && it.isEquipped)
 }

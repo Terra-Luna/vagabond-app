@@ -1,7 +1,7 @@
 import { BookMarked, Clover } from "lucide-react"
 import ReactHtmlParser from 'react-html-parser'
 
-import { lang } from "../../utils/lang"
+import { appLang } from "../../utils/lang"
 import { getTokenImg } from "../../utils/modelUtil"
 import { CardSubHeaderValues } from "../component/SkillCard"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
@@ -11,7 +11,7 @@ import { DiceRollComponent } from "./component/DiceRollComponent"
 export const TrackerUpdateChatCard = ({ heroId, verb, resource, roll }: {
     heroId: string, verb: string, resource: string, roll?: number
 }) => {
-    const resources = lang.APP.Resources
+    const resources = appLang.Resources
     const hero = game.actors?.get(heroId) as Actor & {
         system: { statuses: { counters: { luck: string, studied: string, fatigue: string } } }
     }

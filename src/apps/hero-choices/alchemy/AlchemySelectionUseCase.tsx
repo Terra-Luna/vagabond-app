@@ -6,12 +6,12 @@ import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSel
 import { groupBy } from "../../../utils/collectionUtil"
 import { useAlchemySelectionView } from "./AlchemySelectionView"
 
-export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
+export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, hideCompendiumLink?: boolean) => {
 
     const level = actor.system.level.current! + (isLevelUp ? 1 : 0)
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
 
-    const { AlchemySelectionView, loadInitialSlots, alchemyItems, alchemySlots, setAlchemySlots } = useAlchemySelectionView(actor, isLevelUp)
+    const { AlchemySelectionView, loadInitialSlots, alchemyItems, alchemySlots, setAlchemySlots } = useAlchemySelectionView(actor, isLevelUp, hideCompendiumLink)
 
     const getItemName = (id: string): string => {
         return alchemyItems.find(it => it.value === id)?.label ?? 'unk'
@@ -73,5 +73,5 @@ export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, is
 
     }, [alchemySlots])
 
-    return { AlchemySelectionView }
+    return { AlchemySelectionView, alchemyItems, alchemySlots }
 }

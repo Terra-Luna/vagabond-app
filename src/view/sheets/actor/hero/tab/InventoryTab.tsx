@@ -1,13 +1,14 @@
 import { Book, FlaskRound } from "lucide-react"
 
+import { AlchemyCraftingApp } from "../../../../../apps/alchemy/AlchemyCraftingApp"
 import { AlchemySelectionApp } from "../../../../../apps/hero-choices/alchemy/AlchemySelectionApp"
 import { ItemShopApp } from "../../../../../apps/shop/ItemShopApp"
 import { getItemShopToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel, isAlchemist } from "../../../../../model/actor/HeroDataModel"
 import { isInContainer,sortedItems } from "../../../../../model/actor/type/Inventory"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
-import { equipmentContextMenuItems,getContainers, getEncumbranceInfo } from "../../../../../utils/heroInventoryUtil"
-import { lang } from "../../../../../utils/lang"
+import { equipmentContextMenuItems, getContainers, getEncumbranceInfo, hasAlchemyToolsEquipped } from "../../../../../utils/heroInventoryUtil"
+import { appLang } from "../../../../../utils/lang"
 import { tableBorder } from "../../../../common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
 import { HeroCoinPurse } from "../../../../component/CoinPurse"
@@ -15,13 +16,15 @@ import { CapacityGauge } from "../../../shared/CapacityGauge"
 import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
 
 export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
+
     const itemShopToggle = getItemShopToggle()
     const showAlchemy = isAlchemist(hero)
+    const hasAlchToolsEquipped = hasAlchemyToolsEquipped(hero)
 
     return (
         <div className="w-full min-h-16">
             <div className="flex justify-between gap-1">
-                <CapacityGauge label={lang.APP.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
+                <CapacityGauge label={appLang.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
                 <HeroCoinPurse hero={hero} />
             </div>
             <div className={`${tableBorder} mt-1 w-full ${itemShopToggle || showAlchemy ? '' : 'mb-28'}`}>
@@ -38,16 +41,25 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
             <div className="flex gap-x-2 w-fill justify-between mt-1 mb-28">
                 <div className="flex gap-x-1 items-start">
                     {showAlchemy && <>
+                        {/* SELECT ALCHEMY RECIPES */}
                         <PrimaryButton onClick={() => new AlchemySelectionApp(hero.parent).render({ force: true })}>
                             <div className="flex gap-x-1">
                                 <Book size={18} className="self-center" />
-                                Recipies
+                                {appLang.HeroSheet.Alchemy.recipesbtn}
                             </div>
                         </PrimaryButton>
-                        <SecondaryButton onClick={() => { }}>
+                        {/* OPEN ALCHEMY CRAFTING APP (IF TOOLS ARE EQUIPPED) */}
+                        <SecondaryButton onClick={() => {
+                            if (hasAlchToolsEquipped) {
+                                new AlchemyCraftingApp(hero.parent).render({ force: true })
+                            }
+                            else {
+                                ui.notifications?.warn("Equip Alchemy Tools to craft items")
+                            }
+                        }}>
                             <div className="flex gap-x-1">
                                 <FlaskRound size={18} className="self-center" />
-                                Mix
+                                {appLang.HeroSheet.Alchemy.craft}
                             </div>
                         </SecondaryButton>
                     </>}
