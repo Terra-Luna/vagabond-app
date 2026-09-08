@@ -1,5 +1,5 @@
 import { appLang } from "../../../utils/lang"
-import { addCoins as addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
+import { Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
@@ -85,11 +85,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
             const baseValue = this.value
             this.value = multiplyCoins(baseValue, appLang.Metals[(this as any).material].valueMultiplier)
         }
-        if (this.relicPowers.length > 0) {
-            this.value = addCoins(this.relicPowers.flatMap(power => (
-                { g: power.goldValue ?? 0, s: 0, c: 0 }
-            )))
-        }
+
         this.totalValue = multiplyCoins(this.value, Math.max(1, this.bulk.quantity))
     }
 
