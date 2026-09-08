@@ -1,5 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel";
-import { deleteItems, subtractCoinsFromHero } from "../../utils/heroInventoryUtil";
+import { removeStackableItemFromHero, subtractCoinsFromHero } from "../../utils/heroInventoryUtil";
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication";
 import { LodgingTypes, RestView } from "./RestView";
 
@@ -35,13 +35,13 @@ export class RestApp extends VagabondApplication {
             await subtractCoinsFromHero(this.actor.system, { g: 0, c: 0, s: LodgingTypes[lodging] })
         }
         if (ration) {
-            await deleteItems(this.actor.system, [ration.id])
+            await removeStackableItemFromHero(this.actor.system, ration)
         }
     }
 
     breather = async (ration?: any) => {
         if (ration) {
-            await deleteItems(this.actor.system, [ration.id])
+            await removeStackableItemFromHero(this.actor.system, ration)
         }
     }
 

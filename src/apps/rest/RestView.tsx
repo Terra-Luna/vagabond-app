@@ -49,15 +49,12 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
     const [hasRested, setHasRested] = useState(false)
 
     const updateRationInfo = useCallback(() => {
-        setTimeout(() => {
-            const allRations = actor?.items.filter(isRation) ?? []
-            const rationItem = allRations.find(it => it.name.startsWith("Ration")) || allRations[0]
-            const numRations = allRations.reduce((sum, it) => sum + ((it.system as any).bulk?.quantity ?? 1), 0)
+        const allRations = actor?.items.filter(isRation) ?? []
+        const rationItem = allRations.find(it => it.name.startsWith("Ration")) || allRations[0]
+        const numRations = allRations.reduce((sum, it) => sum + ((it.system as any).bulk?.quantity ?? 1), 0)
 
-            setRationItem(rationItem)
-            setNumRations(numRations)
-
-        }, 20)
+        setRationItem(rationItem)
+        setNumRations(numRations)
     }, [actor])
 
     useEffect(() => {

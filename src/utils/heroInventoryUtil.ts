@@ -397,3 +397,12 @@ export const getAlchemyMaterials = (actor: Actor & { system: HeroDataModel }): (
 export const hasAlchemyToolsEquipped = (actor: HeroDataModel): boolean => {
     return actor.inventory.items.some(it => it instanceof SundryDataModel && it.isAlchemyTools && it.isEquipped)
 }
+
+export const removeStackableItemFromHero = (actor: HeroDataModel, stackableItem: any) => {
+    if (stackableItem.system.bulk.quantity > 1) {
+        return stackableItem.update({ "system.bulk.quantity": stackableItem.system.bulk.quantity - 1 })
+    }
+    else {
+        return deleteItems(actor, [stackableItem.id])
+    }
+}
