@@ -6,12 +6,14 @@ import { AlchemicalItemDataModel } from "../../../../../model/item/equip/Alchemi
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../../../utils/localeUtils"
 import { DropDown } from "../../../../component/Dropdown"
+import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemToggleOption } from "../component/ItemToggleOption"
 
 export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
 
+    const { isEditMode } = useEditMode()
     const damageDice = item.system.damage.dice as DiceRoll
 
     const handleDiceChange = useCallback((updatedDice: Partial<DiceRoll>) => {
@@ -28,8 +30,8 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
                     onChange={handleDiceChange}
                     wrap={true}
                 />
-                <DamageTypeSelector item={item} path={'system.damage.type'} />
-                <ItemToggleOption item={item} label={appLang.ItemSheet.consumable} path={"system.isConsumable"} />
+                {isEditMode || item.system.damage.type !== "none" && <DamageTypeSelector item={item} path={'system.damage.type'} />}
+                {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.consumable} path={"system.isConsumable"} />}
                 <AlechemyCategory item={item} />
             </div>
         </EquipmentSheetSubtypeBody>
@@ -38,12 +40,14 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
 
 const AlechemyCategory = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
     return (
-        <DropDown
-            label={appLang.ItemSheet.alchCategory}
-            value={item.system.alchemyCategory}
-            options={createDropdownEntriesFromObj(appLang.AlchemyCategories)}
-            updateMechanism={{ updatePath: ['alchemyCategory'] }}
-            parent={item}
-        />
+        <span className="font-normal">
+            <DropDown
+                label={appLang.ItemSheet.alchCategory}
+                value={item.system.alchemyCategory}
+                options={createDropdownEntriesFromObj(appLang.AlchemyCategories)}
+                updateMechanism={{ updatePath: ['alchemyCategory'] }}
+                parent={item}
+            />
+        </span>
     )
 }

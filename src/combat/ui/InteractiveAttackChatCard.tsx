@@ -4,6 +4,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { getAllowLateLuckStudy, getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
+import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
@@ -18,6 +19,7 @@ import { tableBorder, tableBorderRounded } from "../../view/common/border-styles
 import { UtilityButton } from "../../view/component/Button"
 import { Checkbox } from "../../view/component/Checkbox"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
+import { EnrichedContent } from "../../view/component/EnrichedContent"
 import { ClearHeader, Divider, Header } from "../../view/component/Header"
 import { CardSubHeader } from "../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
@@ -371,6 +373,12 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                     </div>
                                 } />
                             </div>
+
+                            {/* ALCHEMY ITEM DESCRIPTION */}
+                            {source?.system instanceof AlchemicalItemDataModel &&
+                                <EnrichedContent content={source?.system?.description} styleClasses="text-sm text-justify font-paradigm font-normal px-2" />
+                            }
+
                         </div>
                     }
                 </div>

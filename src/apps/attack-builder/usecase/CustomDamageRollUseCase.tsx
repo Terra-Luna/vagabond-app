@@ -24,7 +24,7 @@ export const useCustomDamageRollBuilder = (
     useEffect(() => {
         if (!weapon) return
 
-        const schema = DiceRoll.getWeaponDamageWithHeroMods(actor.system, preset?.skill ?? '', weapon.system)
+        const schema = DiceRoll.getItemDamageWithHeroMods(actor.system, preset?.skill ?? '', weapon.system)
 
         if (damageRolls.length === 0) {
             setDamageRolls([schema])

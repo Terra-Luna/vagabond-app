@@ -10,7 +10,7 @@ export const DamageTypeSelector = ({ item, path }: { item: Item, path: string })
     return (
         <div>
             <ItemSheetPropLabel label={appLang.ItemSheet.damageType} />
-            <div className="flex gap-x-1 items-center">
+            <div className="flex gap-x-1 items-center font-normal">
                 <CustomDropDown
                     value={foundry.utils.getProperty(item, path) as string}
                     options={createDropdownEntries(appLang.DamageTypes)}

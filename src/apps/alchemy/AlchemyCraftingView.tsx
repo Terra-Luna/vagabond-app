@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
-import { deleteItems, getAlchemyMaterials } from "../../utils/heroInventoryUtil"
+import { deleteItems, getAlchemyMaterials, useItem } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
 import { addItemToActor } from "../../utils/modelUtil"
 import { useAlchemySelection } from "../hero-choices/alchemy/AlchemySelectionUseCase"
@@ -24,6 +24,15 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
         return materials.reduce((sum, it) => sum + it.system.bulk.quantity, 0)
     }, [materials, revision])
 
+    const consumeMaterials = async () => {
+        if (materials[0].system.bulk.quantity > 1) {
+            await materials[0].update({ "system.bulk.quantity": materials[0].system.bulk.quantity - 1 } as Record<string, number>)
+        }
+        else {
+            await deleteItems(actor, [materials[0].id!])
+        }
+    }
+
     /**
      * Spend Material and add item to Actor's inventory.
      */
@@ -32,12 +41,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
 
         if (fullItem) {
             if (materials.length > 0 && materials[0].id) {
-                if (materials[0].system.bulk.quantity > 1) {
-                    await materials[0].update({ "system.bulk.quantity": materials[0].system.bulk.quantity - 1 } as Record<string, number>)
-                }
-                else {
-                    await deleteItems(actor, [materials[0].id])
-                }
+                await consumeMaterials()
                 await addItemToActor(actor, fullItem)
                 setRevision(current => current + 1)
             }
@@ -54,7 +58,11 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
      * Spend Material and use item directly without adding it to inventory.
      */
     const craftAndUse = useCallback(async (item) => {
-        /* TODO: Implement me! */
+        const fullItem = getFullItem(item.value)
+        if (fullItem) {
+            await consumeMaterials()
+            await useItem(actor, fullItem, true)
+        }
         setRevision(current => current + 1)
     }, [actor, setRevision, materials])
 
@@ -66,7 +74,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
         <div className="flex flex-col p-1 h-full overflow-hidden">
             {/* STICKY HEADER */}
             <div className="flex justify-between items-center bg-sheet-header-fill rounded-sm p-2 -mx-2 -mt-2">
-                <p className="text-text-header-secondary text-2xl font-eskapade font-bold">{appLang.HeroSheet.Alchemy.craftHeader}</p>
+                <p className="text-text-header-secondary text-2xl font-eskapade font-bold pl-1">{appLang.HeroSheet.Alchemy.craftHeader}</p>
                 <MaterialsCounter amt={materialsCount} />
             </div>
 

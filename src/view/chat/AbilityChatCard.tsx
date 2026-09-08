@@ -36,7 +36,7 @@ export const AbilityChatCard = ({ actorId, img = '', title, subtitle = [], descr
             />}
             contents={
                 <div className="space-x-2 text-base text-text-secondary font-paradigm font-normal">
-                    <TargetsDisplay targets={targets} onRemoveTarget={onRemoveTarget} />
+                    {targets && targets.length > 0 && <TargetsDisplay targets={targets} onRemoveTarget={onRemoveTarget} />}
                     <div>
                         {
                             !img || img === '' ? <></> :

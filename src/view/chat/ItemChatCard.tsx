@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react"
 
-import { DiceRoll } from "../../combat/engine/roll/DiceRoll"
-import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
+import { Coins, coinsAsString } from "../../model/common/CoinValue"
+import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
-import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { ItemsCache } from "../../rules/util/ItemsCache"
 import { appLang } from "../../utils/lang"
-import { CombinedItemsAll, getFullItem, getName, getPortrait } from "../../utils/modelUtil"
-import { DamageTypeIcon } from "../component/DamageTypeIcon"
-import { EnrichedContent } from "../component/EnrichedContent"
-import { ItemValue } from "../sheets/item/equip/component/ItemValueComponent"
+import { CombinedItemsAll, getFullItem, getTokenImg } from "../../utils/modelUtil"
+import { SkillCard } from "../component/SkillCard"
+import { EditModeContextProvider } from "../context/EditModeContext/EditModeContext"
+import { EditModeOptions } from "../context/EditModeContext/EditModeOptions"
+import { EquipmentSheetComponent } from "../sheets/item/equip/EquipmentSheetComponent"
 import { BaseChatCardHost } from "./component/BaseChatCardHost"
 import { ChatCardBanner } from "./component/ChatCardBanner"
 
-export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
-    itemId: string, itemName: string, isConsumable?: boolean
+export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }: {
+    actorId: string, itemId: string, itemName: string, isConsumable?: boolean
 }) => {
-    const actor = game.actors?.find(it => it.items.has(itemId))
-    const item = actor?.items.get(itemId) ?? null
+    const actor = game.actors?.get(actorId)
+    const item = actor?.items.get(itemId) ?? ItemsCache.allItems().find(it => it.id === itemId) ?? null
 
     const [equipment, setEquipment] = useState<EquipmentDataModel<EquipmentSchema> | null>(
         item ? (item.system as EquipmentDataModel<EquipmentSchema>) : null
@@ -61,101 +62,37 @@ export const ItemChatCard = ({ itemId, itemName, isConsumable = false }: {
 
     return (
         <>
-            {!equipment ? (
-                <p className="font-xs font-paradigm font-normal italic">Item removed</p>
-            ) : (
-                    <BaseChatCardHost
-                        banner={
-                            <ChatCardBanner
-                                tokenId={actor?.getActiveTokens()[0]?.id}
-                                portrait={getPortrait(equipment)}
-                                title={`${isConsumable ? 'Used:' : ''} ${getName(equipment)}`}
-                            />
-                        }
-                        contents={
-                            <div className="font-paradigm font-normal text-lg">
-                                <EnrichedContent content={equipment.description} actor={actor} />
-                                <ItemCardContents item={equipment} />
-                            </div>
-                        }
+            {item && equipment &&
+                <BaseChatCardHost
+                    banner={
+                        <ChatCardBanner
+                            tokenId={actor?.getActiveTokens()[0]?.id}
+                        portrait={getTokenImg(actor)}
+                        title={`${isConsumable ? 'Used' : 'Linked'} Item`}
                     />
-            )}
+                }
+                contents={<>
+                    {item &&
+                        <div>
+                            <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                                {equipment instanceof AlchemicalItemDataModel
+                                    ? <span className="font-normal"><SkillCard
+                                        title={item.name}
+                                        subtitles={[
+                                            { label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[(item.system as any).alchemyCategory].name },
+                                            { label: appLang.ItemSheet.value, value: coinsAsString((item.system as any).value as Coins) }
+                                        ]}
+                                        description={(item.system as any).description}
+                                        startCollapsed={false}
+                                    /></span>
+                                    : <EquipmentSheetComponent item={equipment.parent} hideBottomSection={true} />
+                                }
+                            </EditModeContextProvider>
+                        </div>
+                    }
+                    </>}
+                />
+            }
         </>
     )
-}
-
-const ItemCardContents = ({ item }: { item: EquipmentDataModel<EquipmentSchema> | null }) => {
-    if (item instanceof ArmorDataModel) {
-        return <ArmorCardContents item={item} />
-    }
-    else if (item instanceof WeaponDataModel) {
-        return <WeaponCardContents item={item} />
-    }
-    else {
-        return (
-            <ItemCardBody item={item}>
-                <div>
-
-                </div>
-            </ItemCardBody>
-        )
-    }
-}
-
-const ArmorCardContents = ({ item }: { item: ArmorDataModel }) => {
-    return (
-        <ItemCardBody item={item}>
-            <ItemCardProp label={appLang.ItemSheet.type} children={appLang.ArmorTypes[item.armorType].name} />
-            <ItemCardProp label={appLang.ItemSheet.armor} children={item.rating} />
-            <ItemCardProp label={appLang.ItemSheet.material} children={appLang.Metals[item.material].name} />
-        </ItemCardBody>
-    )
-}
-
-const WeaponCardContents = ({ item }: { item: WeaponDataModel }) => {
-    return (
-        <ItemCardBody item={item}>
-            <div className="flex space-x-2">
-                <ItemCardProp label={appLang.ItemSheet.dmg} children={
-                    <ItemCardValue children={new DiceRoll(item.damage.dice as any).toRollFormula()} />
-                } />
-                <DamageTypeIcon dmgType={item.damage.type as string} size={18} />
-            </div>
-            <ItemCardProp label={appLang.ItemSheet.props} children={
-                <div className="flex gap-x-1">
-                    <p className="italic">{item.skills.map(sk => appLang.WeaponSkills[sk].name).join(", ")}</p>
-                    <p>|</p>
-                    <p className="italic">{item.properties.map(sk => appLang.WeaponProps[sk].name).join(", ")}</p>
-                </div>
-            } />
-            <ItemCardProp label={appLang.ItemSheet.range} children={appLang.Ranges[item.range]} />
-            <ItemCardProp label={appLang.ItemSheet.material} children={appLang.Metals[item.material].name} />
-        </ItemCardBody>
-    )
-}
-
-const ItemCardBody = ({ item, children }) => {
-    return (
-        <div className="text-base text-text-primary font-paradigm font-normal">
-            {children}
-            <ItemValue item={item.parent} />
-        </div>
-    )
-}
-
-const ItemCardProp = ({ label, children }) => {
-    return (
-        <div className="flex space-x-2">
-            <ItemCardLabel label={label} />
-            <ItemCardValue children={children} />
-        </div>
-    )
-}
-
-const ItemCardLabel = ({ label }: { label: string }) => {
-    return <p className="text-base text-text-primary font-eskapade font-bold">{`${label}:`}</p>
-}
-
-const ItemCardValue = ({ children }) => {
-    return <div className="text-base text-text-secondary font-paradigm font-normal">{children}</div>
 }

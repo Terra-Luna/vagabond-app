@@ -40,7 +40,7 @@ const Grip = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
             <ItemSheetPropLabel label={appLang.ItemSheet.grip} />
-            <div className="flex gap-x-1 items-start">
+            <div className="flex gap-x-1 items-start font-normal">
             <CustomDropDown
                 value={item.system.grip.style}
                     options={createDropdownEntries(appLang.Grips)}
@@ -55,7 +55,7 @@ const Range = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
     return (
         <div>
             <ItemSheetPropLabel label={appLang.ItemSheet.range} />
-            <div className="flex gap-x-1 items-start">
+            <div className="flex gap-x-1 items-start font-normal">
                 <CustomDropDown
                     value={item.system.range}
                     options={createDropdownEntries(appLang.Ranges)}

@@ -17,7 +17,14 @@ export const ItemPortraitComponent = ({ item, size = 56, className, disableCtxMe
         {
             icon: MessageSquareText,
             label: 'Send to chat',
-            action: () => sendVagabondChatMessage(null, <ItemChatCard itemId={getId(item)} itemName={item.name} />)
+            action: () => sendVagabondChatMessage(
+                item.parent,
+                <ItemChatCard
+                    actorId={item.parent?.id ?? ''}
+                    itemId={getId(item)}
+                    itemName={item.name}
+                />
+            )
         },
         ...imageEditCtxMenuItems
     )

@@ -15,11 +15,11 @@ export const ArmorSheet = ({ item }: { item: Item & { system: ArmorDataModel } }
     return (
         <EquipmentSheetSubtypeBody>
             <div className="space-y-4">
-                <div className="flex gap-x-8 justify-between">
+                <div className="flex gap-x-8 justify-between font-normal">
                     <ArmorType item={item} />
                     <ArmorRating item={item} />
                 </div>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center font-normal">
                     <ItemSheetProperty label={lang.ItemSheet.mitReq} value={item.system.mightReq} />
                     <MaterialSelection item={item} />
                 </div>

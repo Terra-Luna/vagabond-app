@@ -3,6 +3,7 @@ import { createElement } from "react"
 import { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
@@ -341,7 +342,7 @@ export class HeroAttack extends Attack {
         skillCheck.critThreshold -= (isKeen ? 1 : 0)
 
         const damageDice = new DiceRoll(
-            DiceRoll.getWeaponDamageWithHeroMods(hero, weaponSkill, weapon)
+            DiceRoll.getItemDamageWithHeroMods(hero, weaponSkill, weapon)
         )
 
         const damageRoll = new DamageRoll({
@@ -350,6 +351,26 @@ export class HeroAttack extends Attack {
             dice: [damageDice, ...extraDice ?? []],
             flatDmgBonus: (dmgMods.out[weaponSkill]?.flatBonus ?? 0),
             perDieDmgBonus: (dmgMods.out[weaponSkill]?.perDieBonus ?? 0)
+        })
+
+        const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
+        attack.itemId = item.uuid
+
+        return attack
+    }
+
+    static buildAlchemyAttack(
+        actor: Actor & { system: HeroDataModel },
+        item: Item & { system: AlchemicalItemDataModel }
+    ): HeroAttack {
+        const skill = 'craft'
+
+        const skillCheck = new SkillCheck(actor.system, { type: 'attack', skill: skill })
+        const damageDice = new DiceRoll(DiceRoll.getItemDamageWithHeroMods(actor.system, 'craft', item.system))
+        const damageRoll = new DamageRoll({
+            atkName: item.name,
+            dmgType: item.system.damage.type,
+            dice: [damageDice]
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)

@@ -11,7 +11,7 @@ export const MaterialSelection = ({ item }: { item: Item & { system: { material:
             {(isEditMode || item.system.material !== 'none') && (
                 <>
                     <ItemSheetPropLabel label={appLang.ItemSheet.material} />
-                    <div className="flex gap-x-1 items-start">
+                    <div className="flex gap-x-1 items-start font-normal">
                         <CustomDropDown
                             value={item.system.material}
                             options={createDropdownEntriesFromObj(appLang.Metals)}

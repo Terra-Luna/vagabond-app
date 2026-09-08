@@ -31,10 +31,6 @@ export const Recipes = ({ alchemySlots, alchemyItems, hideCompendiumLink, action
                 const item = alchemyItems.find(it => it.value === slot.value)
                 const subtitles: CardSubHeaderValues[] = [{ label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[item.category].name }]
                 const itemActions = actions.map(ska => ({ ...ska, item: item }))
-                
-                /* if (item.dmgType !== "none") {
-                    subtitles.push({ label: appLang.HeroSheet.Alchemy.damage, value: appLang.DamageTypes[item.dmgType] })
-                } */
 
                 subtitles.push({ label: "Value", value: coinsAsString(item.coinValue) })
 

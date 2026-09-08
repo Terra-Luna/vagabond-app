@@ -1,4 +1,5 @@
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
+import { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 
 export class DiceRoll {
@@ -39,15 +40,15 @@ export class DiceRoll {
         }
     }
 
-    static getWeaponDamageWithHeroMods = (hero: { modifiers: any }, skill: string, weapon: WeaponDataModel): DiceRollSchema => {
+    static getItemDamageWithHeroMods = (hero: { modifiers: any }, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
         const mods = hero.modifiers
-        const isVicious = weapon.properties.includes('vicious')
-        const isDefense = weapon.properties.includes('defense')
-        const isThrown = weapon.properties.includes('thrown')
-        const versatileBonus = (weapon.grip.style === 'V' && weapon.grip.state === 'HH') ? 2 : 0
+        const isVicious = item instanceof WeaponDataModel ? item.properties.includes('vicious') : false
+        const isDefense = item instanceof WeaponDataModel ? item.properties.includes('defense') : false
+        const isThrown = item instanceof WeaponDataModel ? item.properties.includes('thrown') : false
+        const versatileBonus = item instanceof WeaponDataModel ? ((item.grip.style === 'V' && item.grip.state === 'HH') ? 2 : 0) : 0
 
         const dieSize =
-            Math.max(mods.dice.size[skill]?.minimum ?? 0, weapon.damage.dice.faces) +
+            Math.max(mods.dice.size[skill]?.minimum ?? 0, item.damage.dice.faces) +
             versatileBonus +
             (mods.dice.size[skill]?.bonus ?? 0) +
             (isDefense ? mods.dice.size['defense']?.bonus : 0) +
@@ -55,7 +56,7 @@ export class DiceRoll {
 
         const explodesOnCrit = mods.dice.crit[skill]?.explodes
         const explodesOn = [
-            ...weapon.damage.dice.explodesOn ?? [],
+            ...item.damage.dice.explodesOn ?? [],
             ...mods.dice.exploding[skill]?.values ?? [],
             ...mods.dice.exploding[skill]?.max ? [dieSize] : [],
             ...explodesOnCrit ? [dieSize] : []
@@ -65,12 +66,12 @@ export class DiceRoll {
             (isVicious ? 1 : 0) +
             (mods.dice.crit[skill]?.extraDice ?? 0)
 
-        const reroll = mods.dice.reroll[skill]?.[weapon.grip.state] ?? []
+        const reroll = item instanceof WeaponDataModel ? mods.dice.reroll[skill]?.[item.grip.state] ?? [] : []
 
         return {
-            count: weapon.damage.dice.count,
+            count: item.damage.dice.count,
             faces: dieSize,
-            modifier: weapon.damage.dice.modifier ?? 0,
+            modifier: item.damage.dice.modifier ?? 0,
             explodesOn: explodesOn ?? [],
             explodeOnCritOnly: explodesOnCrit ?? false,
             extraDiceOnCrit: extraDiceOnCrit ?? 0,

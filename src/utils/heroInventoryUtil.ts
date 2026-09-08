@@ -3,7 +3,6 @@ import { createElement } from "react"
 
 import { ItemStackSplitApp } from "../apps/inventory/ItemStackSplitApp"
 import { HeroAttack } from "../combat/engine/HeroAttack"
-import { DamageRoll } from "../combat/engine/roll/DamageRoll"
 import { ActorDataModel, BaseActorSchema } from "../model/actor/ActorDataModel"
 import { HeroDataModel } from "../model/actor/HeroDataModel"
 import { isInContainer, isInventoryItem, openItemSheet } from "../model/actor/type/Inventory"
@@ -16,13 +15,12 @@ import { SundryDataModel } from "../model/item/equip/SundryDataModel"
 import { isEquippedWeapon, WeaponDataModel } from "../model/item/equip/WeaponDataModel"
 import { ItemsCache } from "../rules/util/ItemsCache"
 import { sendVagabondChatMessage } from "../view/chat/ChatCardSerializer"
-import { DamageRollChatCard } from "../view/chat/DamageRollChatCard"
 import { ItemChatCard } from "../view/chat/ItemChatCard"
 import { CtxMenuItem } from "../view/component/ContextMenu"
 import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
-import { getId, getName, getTargetIds } from "./modelUtil"
+import { getId, getName } from "./modelUtil"
 
 /**
  * Use this function for programatically adding items to Actors. It mimics
@@ -157,27 +155,37 @@ export const stackStackables = async (hero: any) => {
     }
 }
 
-export const useItem = async (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
+export const useItem = async (
+    actor: Actor & { system: HeroDataModel },
+    item: Item & { system: AlchemicalItemDataModel | SundryDataModel },
+    skipDeletion?: boolean
+) => {
+    const sendToChat = () => {
+        sendVagabondChatMessage(actor, createElement(ItemChatCard, {
+            actorId: getId(actor),
+            itemId: getId(item),
+            itemName: getName(item),
+            isConsumable: item.system.isConsumable
+        }))
+    }
+
     if (item) {
-        if (item.isConsumable) {
-            await deleteItems(hero, [getId(item)])
+        if (item.system instanceof AlchemicalItemDataModel) {
+            if (!skipDeletion) await deleteItems(actor, [getId(item)])
+
+            if (item.system.damage.dice.count > 0) {
+                const attack = HeroAttack.buildAlchemyAttack(actor, item as Item & { system: AlchemicalItemDataModel })
+                attack.initiate()
+            }
+            else {
+                sendToChat()
+            }
         }
-        if (item instanceof AlchemicalItemDataModel && item.damage.type !== 'none') {
-            const dmgRoll = await new DamageRoll({
-                atkName: getName(item),
-                dice: [],
-                dmgType: item.damage.type ?? 'none',
-                flatDmgBonus: hero.modifiers.damage.out.attack ?? 0,
-                perDieDmgBonus: hero.modifiers.damage.out.attackPerDie ?? 0
-            }).roll()
-            sendVagabondChatMessage(hero, createElement(DamageRollChatCard, {
-                actorId: getId(hero), tokenIds: getTargetIds(), result: dmgRoll
-            }))
-        }
-        else {
-            sendVagabondChatMessage(hero, createElement(ItemChatCard, {
-                itemId: getId(item), itemName: `Used: ${getName(item)}`, isConsumable: item.isConsumable
-            }))
+        else if (item.system instanceof SundryDataModel) {
+            if (item.system.isConsumable) {
+                if (!skipDeletion) await deleteItems(actor, [getId(item)])
+            }
+            sendToChat()
         }
     }
     else {
@@ -186,7 +194,9 @@ export const useItem = async (hero: any, item: EquipmentDataModel<EquipmentSchem
 }
 
 export const sendItemToChat = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    sendVagabondChatMessage(hero, createElement(ItemChatCard, { itemId: getId(item), itemName: getName(item) }))
+    sendVagabondChatMessage(hero, createElement(ItemChatCard, {
+        actorId: getId(hero), itemId: getId(item), itemName: getName(item)
+    }))
 }
 
 export const equipItem = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
@@ -251,7 +261,7 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
         }
     }
     else if (item.isConsumable) {
-        menuItems.push(useItemContextOption(hero, item))
+        menuItems.push(useItemContextOption(hero.parent, item.parent))
     }
     menuItems.push(
         viewItemSheetContextOption(item),
@@ -277,7 +287,7 @@ export const containerItemContextMenuItems = (
 ): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
     if (item.isConsumable && actor?.parent?.type === 'hero') {
-        menuItems.push(useItemContextOption(actor as any, item))
+        menuItems.push(useItemContextOption(actor.parent, item.parent))
     }
     menuItems.push(viewItemSheetContextOption(item))
     menuItems.push({ icon: Undo, label: appLang.HeroSheet.Inventory.ctxExtract, action: () => extractItemFromContainer(container, item.parent) })
@@ -288,7 +298,7 @@ export const containerItemContextMenuItems = (
     return menuItems
 }
 
-const useItemContextOption = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
+const useItemContextOption = (hero: Actor & { system: HeroDataModel }, item: Item & { system: AlchemicalItemDataModel | SundryDataModel }) => {
     return { icon: Hand, label: appLang.HeroSheet.Inventory.ctxUse, action: () => useItem(hero, item) }
 }
 
