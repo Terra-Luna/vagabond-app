@@ -8,16 +8,7 @@ import { Header } from "../../view/component/Header"
 import { LabelledField } from "../../view/component/LabelledField"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-
-export const LodgingTypes = {
-    none: 0,
-    horrible: 1,
-    poor: 2,
-    modest: 10,
-    comfortable: 20,
-    luxury: 40,
-    opulent: 100,
-} as const
+import { isRation, LodgingTypes } from "./RestUtils"
 
 const getLodgingTypeCost = (lodging: keyof typeof LodgingTypes) => {
     return " (" + LodgingTypes[lodging] + "s)"
@@ -33,8 +24,6 @@ const LodgingOptions = [
     { label: "None" + getLodgingTypeCost('none'), value: 'none' },
 ] as { label: string, value: keyof typeof LodgingTypes }[]
 
-export const isRation = (item) => item.name === "Ration" || item.name === "Rations" || item.system.isRation
-
 export const RestView = ({ onCancel, rest, breather, actor }: {
     onCancel: () => void,
     rest: (lodging: keyof typeof LodgingTypes, ration?: any) => void,
@@ -45,7 +34,6 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
     const [numRations, setNumRations] = useState<any>()
     const [lodging, setLodging] = useState<keyof typeof LodgingTypes>("none")
 
-    const [hasBreathered, setHasBreathered] = useState(false)
     const [hasRested, setHasRested] = useState(false)
 
     const updateRationInfo = useCallback(() => {
@@ -62,85 +50,84 @@ export const RestView = ({ onCancel, rest, breather, actor }: {
     }, [updateRationInfo])
 
     const takeABreather = useCallback(async () => {
-        if (!hasBreathered) {
+        if (!hasRested) {
             await breather(rationItem)
             updateRationInfo()
-            setHasBreathered(true)
+            setHasRested(true)
         }
-    }, [rationItem, updateRationInfo, hasBreathered])
+    }, [rationItem, updateRationInfo, hasRested])
 
     const takeARest = useCallback(async () => {
         if (!hasRested) {
             await rest(lodging, rationItem)
             updateRationInfo()
             setHasRested(true)
-            setHasBreathered(true)
         }
     }, [rationItem, updateRationInfo, hasRested, lodging])
 
     return (
         <div>
-            <div className="grid grid-cols-2">
+            <div className="flex">
                 <div className="p-2 pr-6">
                     <Header title="Breather" />
-                    <div className={`text-lg text-center`}>
-                        Once per shift, eat a ration and drink some water to regain
-                        <span className="text-ic-luck"> {actor.system.stats.might} </span>
-                        (your MIT) HP.
-
-                        <div>
-                            {rationItem ? (
-                                <Ration rationItem={rationItem} numRations={numRations} />
-                            ) : (
-                                <NoRation />
-                            )}
-                        </div>
-                        <div className="flex justify-center py-2">
-                            <PrimaryButton onClick={takeABreather} disabled={hasBreathered}>
-                                {hasBreathered ? "Ahhhh..." : "Take a Breather"}
-                            </PrimaryButton>
+                    <div className={`text-lg text-center flex flex-col h-full`}>
+                        <span>
+                            Once per shift, eat a ration and drink some water to regain HP equal to your Might (<span className="text-ic-luck">{actor.system.stats.might}</span>)
+                        </span>
+                        <div className="mt-auto">
+                            <div className="flex justify-center">
+                                <PrimaryButton onClick={takeABreather} disabled={hasRested}>
+                                    {hasRested ? "Ahhhh..." : "Take a Breather"}
+                                </PrimaryButton>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div className="w-[64px]">
+                    <div className="h-[50%]"></div>
+                    <Ration rationItem={rationItem} numRations={numRations} hasRested={hasRested} />
+                </div>
                 <div className="p-2 pl-6">
                     <Header title="Rest" />
-                    <div className={`text-lg text-center`}>
-                        Resting requires lodging and a ration, and recovers all your HP and Mana.
-                        <div className="flex flex-col gap-2">
+                    <div className={`text-lg text-center flex flex-col h-full`}>
+                        <span>
+                            Resting requires lodging and a ration, and recovers all your HP, Mana, and Luck.
+                        </span>
+                        <div className="pt-2">
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                 <LabelledField label="Lodging Quality">
                                     <DropDown value={lodging} options={LodgingOptions}
                                         updateMechanism={{ onChange: (val) => setLodging(val) }} />
                                 </LabelledField>
                             </EditModeContextProvider>
-                            {rationItem ? (
-                                <Ration rationItem={rationItem} numRations={numRations} />
-                            ) : (
-                                <NoRation />
-                            )}
                         </div>
-                        <div className="flex justify-center py-2">
-                            <PrimaryButton onClick={takeARest} disabled={hasRested}>
-                                {hasRested ? "Ahhhh..." : "Take a Rest"}
-                            </PrimaryButton>
+                        <div className="mt-auto">
+                            <div className="flex justify-center">
+                                <PrimaryButton onClick={takeARest} disabled={hasRested}>
+                                    {hasRested ? "Ahhhh..." : "Take a Rest"}
+                                </PrimaryButton>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="p-2 ml-auto flex justify-end">
+            <div className="p-2 pt-7 ml-auto flex justify-end">
                 <SecondaryButton onClick={onCancel}>Close</SecondaryButton>
             </div>
         </div>
     )
 }
 
-const Ration = ({ rationItem, numRations }) => {
-    return <div className="flex p-3 gap-1 text-4xl justify-center items-center">
+const Ration = ({ rationItem, numRations, hasRested }) => {
+    if (!rationItem) {
+        return <NoRation />
+    }
+    return <div className="flex gap-1 text-4xl justify-center items-center w-[64px] h-[64px]">
         <img className="absolute opacity-33" src={rationItem.img} width={64} height={64} />
-        <div className="">
+        <div className="font-eskapade">
             {numRations}
         </div>
-        <div className="text-ic-hp">-1</div>
+        {!hasRested && <div className="text-ic-hp">-1</div>}
     </div>
 }
 

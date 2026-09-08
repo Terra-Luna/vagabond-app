@@ -54,7 +54,7 @@ const heroSchema = () => {
 
         // Certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
         // this just is a boolean value we flip back and forth to trigger the update lifecycle
-        forceUpdateTrack: new fields.BooleanField({initial: false})
+        forceUpdateTrack: new fields.BooleanField({ initial: false })
     }
 }
 
@@ -73,7 +73,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     /** Force the update lifecycle to happen on a nonsense field */
     async forceUpdate() {
-        this.parent.update({system: {forceUpdateTrack: !this.forceUpdateTrack}})
+        this.parent.update({ system: { forceUpdateTrack: !this.forceUpdateTrack } })
     }
 
     override async _preCreate(data: any, options: any, user: any) {
@@ -177,6 +177,23 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         return itemRules
     }
 
+    async rest() {
+        await this.parent.update({
+            'system.health.value': this.health.max,
+            'system.mana.value': this.mana.max,
+            'system.statuses.counters.luck': this.stats.luck
+        } as Record<any, any>,
+            { ['skipTrackerChatCard' as string]: true }
+        )
+    }
+
+    async breather() {
+        await this.parent.update({
+            'system.health.value': this.health.value + (this.stats.might ?? 0),
+        } as Record<any, any>,
+            { ['skipTrackerChatCard' as string]: true }
+        )
+    }
 }
 
 export function validateCurrentHP(hero: HeroDataModel) {
