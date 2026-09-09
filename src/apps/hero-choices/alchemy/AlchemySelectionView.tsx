@@ -20,7 +20,7 @@ export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }
 
     useEffect(() => {
         setAlchemyItems([
-            { value: '', label: appLang.HeroCreation.emptySlot, img: "", dmgType: "", category: "", description: "", coinValue: zeroCoins },
+            { value: '', label: appLang.HeroCreation.emptySlot, img: "", dmgType: "", category: "", description: "", coinValue: { ...zeroCoins } },
             ...ItemsCache.alchemical().filter(item => toCopper(item.system.value) <= valueLimit).map(item => ({
                 value: item.uuid,
                 label: item.name,

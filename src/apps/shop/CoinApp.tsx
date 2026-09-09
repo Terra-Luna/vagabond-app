@@ -10,11 +10,11 @@ import { CoinAppView } from "./CoinAppView"
  */
 export const useCoinApp = () => {
     const [mode, setMode] = useState<'add' | 'subtr'>('add')
-    const [coin, setCoin] = useState<Coins>(zeroCoins)
+    const [coin, setCoin] = useState<Coins>({ ...zeroCoins })
 
     const reset = useCallback(() => {
         setMode('add')
-        setCoin(zeroCoins)
+        setCoin({ ...zeroCoins })
     }, [])
 
     const onUpdateCoins = useCallback((coins) => {

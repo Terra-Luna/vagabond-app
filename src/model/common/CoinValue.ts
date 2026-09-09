@@ -58,8 +58,13 @@ export const consolidateCoins = (coinsIn: Coins): Coins => {
 }
 
 export const addCoins = (coins: Coins[]) => {
-    const total = zeroCoins
-    coins.forEach(it => total.c += toCopper(it))
+    if (coins.length === 1) return coins[0]
+
+    const total = { ...zeroCoins }
+    coins.forEach(c => {
+        console.log(c, toCopper(c), total)
+        total.c += toCopper(c)
+    })
     consolidateCoins(total)
     return total
 }
@@ -69,7 +74,10 @@ export const subtractCoins = (coinsA: Coins, coinsB: Coins) => {
     const bTotal = toCopper(coinsB)
     const result = { g: 0, s: 0, c: aTotal - bTotal }
     if (result.c < 0) {
-        throw new VagabondAppError({ name: NOT_ENOUGH_COINS_ERROR.name, message: NOT_ENOUGH_COINS_ERROR.message })
+        throw new VagabondAppError({
+            name: NOT_ENOUGH_COINS_ERROR.name,
+            message: NOT_ENOUGH_COINS_ERROR.message
+        })
     }
     consolidateCoins(result)
     return result

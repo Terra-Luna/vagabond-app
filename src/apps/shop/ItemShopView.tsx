@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from "react"
 
 import { openItemSheet } from "../../model/actor/type/Inventory"
-import { addCoins, Coins, coinsAsString, isAffordable, subtractCoins, zeroCoins } from "../../model/common/CoinValue"
+import { addCoins, Coins, coinsAsString, isAffordable, multiplyCoins, subtractCoins, zeroCoins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
@@ -54,7 +54,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
 
         const onSelectPack = useCallback((packId) => {
             const pack = packs.find(it => it.uuid === packId)
-            const refund = addCoins([wallet, selectedPack?.system.cost ?? zeroCoins])
+            const refund = addCoins([wallet, selectedPack?.system.cost ?? { ...zeroCoins }])
 
             if (!pack) {
                 if (selectedPack) {
@@ -72,9 +72,9 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         }, [selectedPack])
 
         const onAddItemToCart = useCallback((item) => {
-            if (isAffordable(wallet, item.system.totalValue)) {
+            if (isAffordable(wallet, item.system.value)) {
                 setCart([...cart, item])
-                const deduction = subtractCoins(wallet, item.system.totalValue)
+                const deduction = subtractCoins(wallet, item.system.value)
                 setWallet(deduction)
             }
             else {
@@ -83,7 +83,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         }, [cart, wallet])
 
         const onRemoveFromCart = useCallback((item, index) => {
-            const refund = addCoins([wallet, cart.find(it => it.name === item.name)?.system?.totalValue ?? zeroCoins])
+            const refund = addCoins([wallet, cart.find(it => it.name === item.name)?.system?.value ?? { ...zeroCoins }])
             setWallet(refund)
             setCart(cart.filter((_, idx) => idx !== index))
         }, [cart, wallet])
@@ -112,11 +112,16 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                 displayItems.push({
                     name: name, qty: group.length,
                     slots: group.reduce((sum, it) => sum + it.system.bulk.slots, 0),
-                    value: addCoins(group.map(it => it.system.totalValue))
+                    value: multiplyCoins(group[0].system.value, group.length)
                 })
             })
 
             return displayItems
+        }
+
+        const cartTotal = (): string => {
+            const total = addCoins([...cartDisplayItems().map(it => it.value)])
+            return coinsAsString(total) ?? ""
         }
 
         return (
@@ -198,15 +203,10 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                         {/* SHOPPING CART */}
                         <div className="flex flex-col min-h-0 h-1/3 px-2 mb-8">
                             <Header title={"CART"} />
-                            {/* TOTAL COST W/ SAVE & CANCEL BUTTONS */}
+                            {/* TOTAL COST W/ CHECKOUT & CANCEL BUTTONS */}
                             <div className="flex w-full gap-x-4 justify-between my-1">
                                 <p className="text-xl text-text-primary font-eskapade font-bold">
-                                    Total: {(() => {
-                                        const total = cart.reduce((sum, it) => {
-                                            return addCoins([sum, it.system.totalValue])
-                                        }, zeroCoins)
-                                        return `${coinsAsString(total)}`
-                                    })()}
+                                    Total: {cartTotal()}
                                 </p>
 
                                 {useCheckout &&

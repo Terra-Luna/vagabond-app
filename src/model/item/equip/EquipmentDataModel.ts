@@ -1,5 +1,5 @@
 import { appLang } from "../../../utils/lang"
-import { Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
+import { addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
 import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import {BaseItemSchema,ItemDataModel } from "../ItemDataModel"
 
@@ -74,25 +74,32 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
      */ 
     override async _preCreate(data: any, options: any, user: any) {
         const result = await super._preCreate(data, options, user)
-        const totalCopper = toCopper(data.system?.value ?? zeroCoins)
+        const totalCopper = toCopper(data.system?.value ?? { ...zeroCoins })
         this.parent.updateSource({ "system.copperValue": totalCopper })
         return result
     }
 
     override prepareBaseData() {
         super.prepareBaseData()
+
         if ((this as any).material) {
             const baseValue = this.value
             this.value = multiplyCoins(baseValue, appLang.Metals[(this as any).material].valueMultiplier)
         }
 
-        this.totalValue = multiplyCoins(this.value, Math.max(1, this.bulk.quantity))
+        let relicValue: Coins | undefined = undefined
+        const relicPowers = this.relicPowers
+        if (relicPowers && relicPowers.length > 0) {
+            relicValue = addCoins(relicPowers.map(p => ({ g: p.goldValue ?? 1, s: 0, c: 0 })))
+        }
+
+        this.totalValue = multiplyCoins(relicValue ? relicValue : this.value, Math.max(1, this.bulk.quantity))
     }
 
     override prepareDerivedData() {
         super.prepareDerivedData()
         this.bulk.totalSlots = getTotalSlots(this)
-        this.copperValue = toCopper((this as any)?.value ?? zeroCoins)
+        this.copperValue = toCopper((this as any)?.value ?? { ...zeroCoins })
     }
 
     override async _preUpdate(changes, options, user) {
