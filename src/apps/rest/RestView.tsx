@@ -9,6 +9,7 @@ import { LabelledField } from "../../view/component/LabelledField"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { isRation, LodgingTypes } from "./RestUtils"
+import { tableBorderRounded } from "../../view/common/border-styles"
 
 const getLodgingTypeCost = (lodging: keyof typeof LodgingTypes) => {
     return " (" + LodgingTypes[lodging] + "s)"
@@ -124,7 +125,7 @@ const Ration = ({ rationItem, numRations, hasRested }) => {
     if (!rationItem) {
         return <NoRation />
     }
-    return <div className="flex gap-1 text-4xl justify-center items-center w-[64px] h-[64px]">
+    return <div className={`flex gap-1 text-4xl justify-center items-center w-[64px] h-[64px] ${tableBorderRounded}`}>
         <img className="absolute opacity-33" src={rationItem.img} width={64} height={64} />
         <div className="font-eskapade">
             {numRations}

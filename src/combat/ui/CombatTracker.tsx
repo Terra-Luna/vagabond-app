@@ -314,6 +314,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                             { label: "Cd20", action: (e) => applyBurn(e, damageType, 20) }
                         ]
                     })) as CtxMenuItem[]
+                
                 if (getHasStatus()) {
                     items.unshift({
                         label: "Clear All", action: async (e) => {
@@ -322,6 +323,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                         }, isSelected: true
                     })
                 }
+                
                 return items
             }
 
