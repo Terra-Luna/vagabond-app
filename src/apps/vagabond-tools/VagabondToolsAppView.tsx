@@ -6,10 +6,12 @@ import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 import { TrashButton } from "../../view/component/TrashButton"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
-import { addCountdown, deleteAllCountdowns, deleteAllProgressClocks, getItemShopToggle, getProgressClocks, ProgressClockSchema, setItemShopToggle, setProgressClocks } from "./usecase/VagabondSettingsHelper"
+import { ConfirmationDialog } from "./dialog/ConfirmationDialog"
+import { addCountdown, deleteAllCountdowns, deleteAllProgressClocks, getCountdowns, getItemShopToggle, getProgressClocks, ProgressClockSchema, setItemShopToggle, setProgressClocks } from "./usecase/VagabondSettingsHelper"
 
 export const VagabondToolsAppView = () => {
     const [shopToggle, setShopToggle] = useState<boolean>(getItemShopToggle())
+    const [deleteConfirmation, setDeleteConfirmation] = useState({ isOpen: false, title: "", message: "", onAccept: () => { } })
 
     const handleShopToggle = useCallback(async (checked: boolean) => {
         setShopToggle(checked)
@@ -56,7 +58,16 @@ export const VagabondToolsAppView = () => {
                             <UtilityButton onClick={() => createNewCountdown("Cd12", 12)}>Cd12</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd20", 20)}>Cd20</UtilityButton>
                             <div className="ml-2">
-                                <TrashButton title={"Delete all countdowns"} onDelete={async () => await deleteAllCountdowns()} />
+                                <TrashButton title={"Delete all countdowns"} onDelete={async () => {
+                                    if (getCountdowns().length > 0) {
+                                        setDeleteConfirmation({
+                                            isOpen: true,
+                                            title: "Delete all Countdowns?",
+                                            message: "Are you sure? This will delete all Countdowns across all scenes and cannot be undone.",
+                                            onAccept: deleteAllCountdowns
+                                        })
+                                    }
+                                }} />
                             </div>
                         </div>
                     </div>
@@ -70,7 +81,16 @@ export const VagabondToolsAppView = () => {
                             <UtilityButton onClick={() => createNewProgressClock("Prog-8", 8)}>Prog-8</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-12", 12)}>Prog-12</UtilityButton>
                             <div className="ml-2">
-                                <TrashButton title={"Delete all clocks"} onDelete={async () => await deleteAllProgressClocks()} />
+                                <TrashButton title={"Delete all clocks"} onDelete={async () => {
+                                    if (getProgressClocks().length > 0) {
+                                        setDeleteConfirmation({
+                                            isOpen: true,
+                                            title: "Delete all Progress Clocks?",
+                                            message: "Are you sure? This will delete all Progress Clocks across all scenes and cannot be undone.",
+                                            onAccept: deleteAllProgressClocks
+                                        })
+                                    }
+                                }} />
                             </div>
                         </div>
                     </div>
@@ -82,6 +102,16 @@ export const VagabondToolsAppView = () => {
                             onCheckedChanged={(checked) => handleShopToggle(checked)}
                         />
                     </div>
+
+                    <ConfirmationDialog
+                        isOpen={deleteConfirmation.isOpen}
+                        onClose={() => { setDeleteConfirmation(state => ({ ...state, isOpen: false })) }}
+                        onConfirm={() => deleteConfirmation.onAccept()}
+                        title={deleteConfirmation.title}
+                        description={deleteConfirmation.message}
+                        confirmText="Yes, Delete All"
+                        variant="destructive"
+                    />
 
                 </div>
             </EditModeContextProvider>
