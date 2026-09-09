@@ -26,13 +26,18 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
         return materials.reduce((sum, it) => sum + it.system.bulk.quantity, 0)
     }, [materials, revision])
 
-    const consumeMaterials = async () => {
+    const consumeMaterials = async (): Promise<boolean> => {
+        if (!materials[0]) {
+            ui.notifications?.warn("Could not find crafting Materials.")
+            return false
+        }
         if (materials[0].system.bulk.quantity > 1) {
             await materials[0].update({ "system.bulk.quantity": materials[0].system.bulk.quantity - 1 } as Record<string, number>)
         }
         else {
             await deleteItems(actor, [materials[0].id!])
         }
+        return true
     }
 
     /**
@@ -40,20 +45,15 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
      */
     const addToInventory = useCallback(async (item) => {
         const fullItem = getFullItem(item.value)
-
         if (fullItem) {
-            if (materials.length > 0 && materials[0].id) {
-                await consumeMaterials()
+            if (await consumeMaterials()) {
                 await addItemToActor(actor, fullItem)
-                setRevision(current => current + 1)
-            }
-            else {
-                ui.notifications?.warn("Could not find crafting Materials.")
             }
         }
         else {
             ui.notifications?.error("Vagabond | Failed to craft Alchemical Item")
         }
+        setRevision(current => current + 1)
     }, [actor, setRevision, materials])
 
     /**
@@ -62,8 +62,9 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
     const craftAndUse = useCallback(async (item) => {
         const fullItem = getFullItem(item.value)
         if (fullItem) {
-            await consumeMaterials()
-            await useItem(actor, fullItem, true)
+            if (await consumeMaterials()) {
+                await useItem(actor, fullItem, true)
+            }
         }
         setRevision(current => current + 1)
     }, [actor, setRevision, materials])

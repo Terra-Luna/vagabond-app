@@ -3,6 +3,7 @@ import { isEligibleForPerk, PerkDataModel } from "../../model/item/character/Per
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
+import { SundryDataModel } from "../../model/item/equip/SundryDataModel"
 import { CombinedItemsMultiType, getFullItem, inventoryItemTypes } from "../../utils/modelUtil"
 
 export class ItemsCache {
@@ -31,16 +32,16 @@ export class ItemsCache {
             .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: PerkDataModel })[]
     }
 
-    static alchemical = () => {
-        return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.type === 'alchemical')).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: AlchemicalItemDataModel })[]
-    }
-
     static eligiblePerks = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[]) => {
         const perks = this.perks()
         return perks.filter(perk => isEligibleForPerk(stats, trainings, spells, perk.system))
+    }
+
+    static alchemical = () => {
+        return [...new Map([...this.items.entries()]
+            .filter(([_, item]) => item.visible && item.type === 'alchemical')).values()]
+            .filter(it => it != null)
+            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: AlchemicalItemDataModel })[]
     }
 
     static equipment = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
@@ -51,9 +52,17 @@ export class ItemsCache {
             .sort((a, b) => a.system.category.localeCompare(b.system.category)) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     }
 
+    static sundries = (): (Item & { system: SundryDataModel })[] => {
+        return [...new Map([...this.items.entries()]
+            .filter(([_, item]) => item.visible && item.type === "sundry")).values()]
+            .filter(it => it != null)
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .sort((a, b) => a.system.category.localeCompare(b.system.category)) as (Item & { system: SundryDataModel })[]
+    }
+
     static packs = (): (Item & { system: any })[] => {
         return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.type === 'startingpack')).values()]
+            .filter(([_, item]) => item.visible && item.type === 'startingpack')).values()]
             .filter(it => it != null)
             .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: any })[]
     }

@@ -18,10 +18,8 @@ export const ChatCardBanner = ({ tokenId = '', portrait, title, subtitle = [] }:
                     <Divider />
                 </div>
             </div>
-            {
-                subtitle.length === 0 ? <></> :
-                    <CardSubHeader values={subtitle} showRightBorder={false} />
-            }
+            {/* SUBHEADER */}
+            {subtitle.length > 0 && <CardSubHeader values={subtitle} showRightBorder={false} />}
         </div>
     )
 }

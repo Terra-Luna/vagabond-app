@@ -67,29 +67,29 @@ export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }
                     banner={
                         <ChatCardBanner
                             tokenId={actor?.getActiveTokens()[0]?.id}
-                        portrait={getTokenImg(actor)}
-                        title={`${isConsumable ? 'Used' : 'Linked'} Item`}
-                    />
-                }
-                contents={<>
-                    {item &&
-                        <div>
-                            <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-                                {equipment instanceof AlchemicalItemDataModel
-                                    ? <span className="font-normal"><SkillCard
-                                        title={item.name}
-                                        subtitles={[
-                                            { label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[(item.system as any).alchemyCategory].name },
-                                            { label: appLang.ItemSheet.value, value: coinsAsString((item.system as any).value as Coins) }
-                                        ]}
-                                        description={(item.system as any).description}
-                                        startCollapsed={false}
-                                    /></span>
-                                    : <EquipmentSheetComponent item={equipment.parent} hideBottomSection={true} />
-                                }
-                            </EditModeContextProvider>
-                        </div>
+                            portrait={getTokenImg(actor)}
+                            title={`${isConsumable ? 'Used' : 'Linked'} Item`}
+                        />
                     }
+                    contents={<>
+                        {item &&
+                            <div>
+                                <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+                                    {equipment instanceof AlchemicalItemDataModel
+                                        ? <span className="font-normal"><SkillCard
+                                            title={item.name}
+                                            subtitles={[
+                                                { label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[(item.system as any).alchemyCategory].name },
+                                                { label: appLang.ItemSheet.value, value: coinsAsString((item.system as any).value as Coins) }
+                                            ]}
+                                            description={(item.system as any).description}
+                                            startCollapsed={false}
+                                        /></span>
+                                        : <EquipmentSheetComponent item={equipment.parent} hideBottomSection={true} />
+                                    }
+                                </EditModeContextProvider>
+                            </div>
+                        }
                     </>}
                 />
             }

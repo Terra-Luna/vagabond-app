@@ -1,6 +1,5 @@
 import { useMemo } from "react"
 
-import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { ItemPortraitComponent } from "../../../view/sheets/item/shared/ItemPortraitComponent"
@@ -8,7 +7,7 @@ import { ItemPortraitComponent } from "../../../view/sheets/item/shared/ItemPort
 export const MaterialsCounter = ({ text }: { text: string | number }) => {
 
     const materialsItem = useMemo(() => {
-        return ItemsCache.allItems().find(it => it.system instanceof SundryDataModel && it.system.isMaterials)
+        return ItemsCache.sundries().find(it => it.system.isMaterials)
     }, [])
 
     return (

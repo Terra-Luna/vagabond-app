@@ -70,7 +70,8 @@ finally {
     version = `${currentVersion[0]}.${currentVersion[1]}.${patch}`
     manifest.version = version
     fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
-    console.info(`Updating working patch version: ${version}`)
+    console.info(`Updating working patch version: ${version}. Rebuilding...`)
+    execSync(`pnpm build`)
 }
 
 process.exit(0)
