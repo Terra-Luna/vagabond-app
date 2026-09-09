@@ -692,9 +692,10 @@
         "damage": "Damage Base",
         "recipes": "Prepared Recipes",
         "recipesbtn": "Recipes",
-        "craftHeader": "Alchemy Tools",
         "craft": "Craft",
-        "use": "Use"
+        "craft_tooltip": "Craft and add to inventory",
+        "use": "Use",
+        "use_tooltip": "Craft and immediately use"
       }
     },
      "SpellDeliveries": {

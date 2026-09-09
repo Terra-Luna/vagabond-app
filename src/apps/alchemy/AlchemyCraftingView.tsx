@@ -8,6 +8,7 @@ import { appLang } from "../../utils/lang"
 import { addItemToActor } from "../../utils/modelUtil"
 import { useAlchemySelection } from "../hero-choices/alchemy/AlchemySelectionUseCase"
 import { Recipes } from "../hero-choices/alchemy/Recipes"
+import { AlchemyToolsPill } from "./component/AlchemyToolsPill"
 import { MaterialsCounter } from "./component/MaterialsCounter"
 
 export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
@@ -15,6 +16,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
     const [revision, setRevision] = useState(0)
     const { alchemySlots, alchemyItems } = useAlchemySelection(actor, false, true)
     const fullAlchemyItems = useMemo(() => { return ItemsCache.alchemical() }, [])
+    const tools = useMemo(() => { return actor.items.find(it => (it.type as string) === 'sundry' && (it.system as any).isAlchemyTools)! }, [])
 
     const materials = useMemo(() => {
         return getAlchemyMaterials(actor).sort((a, b) => a.system.bulk.quantity - b.system.bulk.quantity)
@@ -74,8 +76,8 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
         <div className="flex flex-col p-1 h-full overflow-hidden">
             {/* STICKY HEADER */}
             <div className="flex justify-between items-center bg-sheet-header-fill rounded-sm p-2 -mx-2 -mt-2">
-                <p className="text-text-header-secondary text-2xl font-eskapade font-bold pl-1">{appLang.HeroSheet.Alchemy.craftHeader}</p>
-                <MaterialsCounter amt={materialsCount} />
+                <AlchemyToolsPill item={tools} />
+                <MaterialsCounter text={materialsCount} />
             </div>
 
             <div className="flex-1 overflow-y-auto">
@@ -84,8 +86,8 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
                     alchemyItems={alchemyItems}
                     hideCompendiumLink={true}
                     actions={[
-                        { label: appLang.HeroSheet.Alchemy.craft, item: undefined, action: addToInventory},
-                        { label: appLang.HeroSheet.Alchemy.use, item: undefined, action: craftAndUse}
+                        { label: appLang.HeroSheet.Alchemy.craft, tooltip: appLang.HeroSheet.Alchemy.craft_tooltip, item: undefined, action: addToInventory},
+                        { label: appLang.HeroSheet.Alchemy.use, tooltip: appLang.HeroSheet.Alchemy.use_tooltip, item: undefined, action: craftAndUse}
                     ]}
                 />
             </div>

@@ -20,7 +20,7 @@ export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedB
             {actions && (
                 <div className="flex gap-x-1 mr-1">
                     {actions.map((ska, index) => (
-                        <UtilityButton key={index} onClick={async (e) => {
+                        <UtilityButton key={index} title={ska.tooltip} onClick={async (e) => {
                             e?.stopPropagation()
                             await ska.action(ska.item)
                         }}>
