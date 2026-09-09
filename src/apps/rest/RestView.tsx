@@ -2,6 +2,7 @@ import { BottleWine, Soup, XSquareIcon } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { tableBorderRounded } from "../../view/common/border-styles"
 import { PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { DropDown } from "../../view/component/Dropdown"
 import { Header } from "../../view/component/Header"
@@ -9,7 +10,6 @@ import { LabelledField } from "../../view/component/LabelledField"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { isRation, LodgingTypes } from "./RestUtils"
-import { tableBorderRounded } from "../../view/common/border-styles"
 
 const getLodgingTypeCost = (lodging: keyof typeof LodgingTypes) => {
     return " (" + LodgingTypes[lodging] + "s)"
