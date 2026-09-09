@@ -62,7 +62,6 @@ export const addCoins = (coins: Coins[]) => {
 
     const total = { ...zeroCoins }
     coins.forEach(c => {
-        console.log(c, toCopper(c), total)
         total.c += toCopper(c)
     })
     consolidateCoins(total)

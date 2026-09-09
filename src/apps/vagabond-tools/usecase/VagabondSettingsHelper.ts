@@ -110,11 +110,11 @@ export const getCountdowns = (): CountdownSchema[] => {
     return (game.settings as any)?.get(sys_id, "countdowns") || []
 }
 export const setCountdowns = async (countdowns: CountdownSchema[]) => {
-    await updateSetting("countdowns", countdowns);
-    const combatants = game.combat?.combatants.contents as VagabondCombatant[];
+    await updateSetting("countdowns", countdowns)
+    const combatants = game.combat?.combatants.contents as VagabondCombatant[]
     if (combatants) {
         for (const combatant of combatants) {
-            await combatant.updateBurningStatus();
+            await combatant.updateBurningStatus()
         }
     }
 }

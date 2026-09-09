@@ -323,7 +323,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                         }, isSelected: true
                     })
                 }
-                
+
                 return items
             }
 

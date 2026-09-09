@@ -122,7 +122,11 @@ export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combat
     updateBurningStatus() {
         const actor = this.token?.actor
         if (actor) {
-            const isBurning = !!getCountdowns().find(countdown => countdown.result.actorUuid === actor.uuid && countdown.result.status === "burning" && countdown.result.tokenUuid === this.token?.uuid);
+            const isBurning = !!getCountdowns().find(countdown =>
+                countdown.result.actorUuid === actor.uuid &&
+                countdown.result.status === "burning" &&
+                countdown.result.tokenUuid === this.token?.uuid
+            )
             return actor.toggleStatusEffect("burning", { active: isBurning })
         }
     }

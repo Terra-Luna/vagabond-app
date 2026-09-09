@@ -196,8 +196,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         const { gainLuck, removeFatigue } = this.modifiers.downtime.breather
 
-        console.log({ gainLuck, removeFatigue })
-
         if (gainLuck > 0) {
             await this.parent.update({
                 'system.statuses.counters.luck': this.statuses.counters.luck + gainLuck,
