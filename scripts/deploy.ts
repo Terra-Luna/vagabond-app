@@ -59,5 +59,18 @@ catch (error) {
     console.error(`Failed to create GitHub release. Make sure GitHub CLI (gh) is installed and authenticated. ${error}`)
     process.exit(1)
 }
+finally {
+    /**
+     * The reason for this is to make sure we're always developing in a
+     * future release state which will force Foundry to recognize database
+     * updates and run the migration scripts after a system update.
+     */
+    const currentVersion = manifest.version.split('.')
+    const patch = Number(currentVersion.pop()) + 1
+    version = `${currentVersion[0]}.${currentVersion[1]}.${patch}`
+    manifest.version = version
+    fs.writeFileSync("./public/system.json", JSON.stringify(manifest, null, 2), "utf-8")
+    console.info(`Updating working patch version: ${version}`)
+}
 
 process.exit(0)

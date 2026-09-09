@@ -93,7 +93,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
             relicValue = addCoins(relicPowers.map(p => ({ g: p.goldValue ?? 1, s: 0, c: 0 })))
         }
 
-        this.totalValue = multiplyCoins(relicValue ? relicValue : this.value, Math.max(1, this.bulk.quantity))
+        this.totalValue = multiplyCoins((relicValue ? relicValue : this.value), Math.max(1, this.bulk?.quantity ?? 1))
     }
 
     override prepareDerivedData() {

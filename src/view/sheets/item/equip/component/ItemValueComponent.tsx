@@ -31,7 +31,7 @@ const CoinDisplay = ({ item, label, path }) => {
                         updateProps={{ object: item, path: ['value', path] }}
                         placeholder="0"
                     />
-                    : <p>{item.system.totalValue[path]}</p>
+                    : <p>{item.system.totalValue?.[path] ?? item.system.value?.[path]}</p>
                 }
             </div>
             <div className={"text-wealth-denom-label text-xs content-end"}>{label}</div>
