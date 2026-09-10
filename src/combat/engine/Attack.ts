@@ -61,6 +61,9 @@ export abstract class Attack {
             if (this.damageRoll.dmgType === 'healing') {
                 this.applyHealing(args)
             }
+            else if (this.damageRoll.dmgType === 'fatigue') {
+                this.applyFatigueDamage(args)
+            }
             else {
                 this.applyDamage(args)
             }
@@ -79,9 +82,21 @@ export abstract class Attack {
         })
     }
 
+    private applyFatigueDamage(args: AttackResolutionArgs) {
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        targetIds.forEach(id => {
+            const actor = canvas?.scene?.tokens?.get(id)?.actor
+            const damage = this.damageRoll?.result?.total
+            if (!damage || !actor) return
+            actor.update({
+                'system.statuses.counters.fatigue':
+                    (actor.system as any).statuses.counters.fatigue + damage
+            } as Record<string, number>)
+        })
+    }
+
     private applyDamage(args: AttackResolutionArgs) {
-        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
-            .filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
         targetIds.forEach(id => {
             const actor = canvas?.scene?.tokens?.get(id)?.actor
             const adjDamage = this.calculateAdjustedDamage(id, args)

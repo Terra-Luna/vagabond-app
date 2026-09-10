@@ -66,7 +66,7 @@ export const usePerkSelectionView = (
      * on their perk choice filter rules.
      */
     const classRestrictedPerksLists = useMemo(() => {
-        const perkRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? []).filter(it => it.pack === "perk")
+        const perkRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level < 1) ?? []).filter(it => it.pack === "perk")
         return Object.fromEntries(perkRules.map(rule => [rule.id, [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
             ...ItemsCache.perks()

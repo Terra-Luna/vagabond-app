@@ -257,35 +257,27 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
             <StatBlockRow>
                 {/* ZONE */}
                 <StatBlockField label={locale.zone} content={<>
-                    {isEditMode ?
-                        <DropDown
+                    {isEditMode
+                        ? <DropDown
                             options={createDropdownEntries(appLang.Zones)}
                             parent={npc.parent}
                             updateMechanism={{ updatePath: ['zone'] }}
                             value={npc.zone}
-                        /> : <StatBlockValue value={appLang.Zones[npc.zone]} />
+                        />
+                        : <StatBlockValue value={appLang.Zones[npc.zone]} />
                     }
                 </>} />
                 {/* SPEED */}
                 <StatBlockField label={locale.speed} content={
                     <div className="flex space-x-1">
                         <div className="flex">
-                            <EditableTextField
-                                boundValue={npc.movement?.speed?.toString() ?? '30'}
-                                updateProps={{ object: npc.parent, path: ['movement', 'speed'] }}
-                                placeholder="30"
-                            />
-                            <StatBlockValue value={"'"} />
-                        </div>
-                        <div>
                             {isEditMode
-                                ? <DropDown
-                                    options={createDropdownEntries(appLang.Movement)}
-                                    parent={npc.parent}
-                                    updateMechanism={{ updatePath: ['movement', 'type'] }}
-                                    value={npc.movement.type}
+                                ? <EditableTextField
+                                    boundValue={npc.movement?.speed ?? '30'}
+                                    updateProps={{ object: npc.parent, path: ['movement', 'speed'] }}
+                                    placeholder="30"
                                 />
-                                : <p>{appLang.Movement[npc.movement.type]}</p>
+                                : <StatBlockValue value={npc.movement?.speed} />
                             }
                         </div>
                     </div>

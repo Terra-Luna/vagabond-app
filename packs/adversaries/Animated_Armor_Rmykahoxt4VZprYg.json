@@ -279,7 +279,8 @@
     "hitDice": 2,
     "zone": "front",
     "movement": {
-      "type": "walk"
+      "type": "walk",
+      "speed": "30'"
     },
     "numberAppearing": "1d4",
     "dmgImmunities": [
@@ -433,9 +434,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.23",
+    "systemVersion": "0.0.38",
     "createdTime": 1787708617762,
-    "modifiedTime": 1788814227867,
+    "modifiedTime": 1788995388543,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

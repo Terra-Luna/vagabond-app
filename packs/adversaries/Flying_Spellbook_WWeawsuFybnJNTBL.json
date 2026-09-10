@@ -334,7 +334,8 @@
     "hitDice": 1,
     "zone": "back",
     "movement": {
-      "type": "fly"
+      "type": "fly",
+      "speed": "0' (Fly 30')"
     },
     "numberAppearing": "d6",
     "dmgImmunities": [
@@ -415,8 +416,8 @@
       "anchorX": 0.5,
       "anchorY": 0.5,
       "fit": "contain",
-      "scaleX": 1,
-      "scaleY": 1,
+      "scaleX": 0.55,
+      "scaleY": 0.55,
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
@@ -477,7 +478,7 @@
         "ring": null,
         "background": null
       },
-      "effects": 1,
+      "effects": 0,
       "subject": {
         "scale": 1,
         "texture": null
@@ -506,9 +507,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.23",
+    "systemVersion": "0.0.38",
     "createdTime": 1788236226607,
-    "modifiedTime": 1788814189862,
+    "modifiedTime": 1788995867894,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

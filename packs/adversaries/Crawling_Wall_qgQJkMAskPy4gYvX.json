@@ -280,7 +280,7 @@
     "zone": "front",
     "movement": {
       "type": "walk",
-      "speed": 20
+      "speed": "20'"
     },
     "numberAppearing": "1",
     "dmgImmunities": [
@@ -472,9 +472,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.23",
+    "systemVersion": "0.0.38",
     "createdTime": 1787710168878,
-    "modifiedTime": 1788814180294,
+    "modifiedTime": 1788995401835,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

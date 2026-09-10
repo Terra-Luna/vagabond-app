@@ -10,7 +10,7 @@
         "id": "3Zz32mqq4wp99hru",
         "key": "ChoiceSet",
         "label": "Perks",
-        "level": "3",
+        "level": "1",
         "scale": "2",
         "maxChoices": 1,
         "channel": "item",
@@ -134,10 +134,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.38",
     "createdTime": 1784995121741,
-    "modifiedTime": 1787960720499,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1789002379485,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

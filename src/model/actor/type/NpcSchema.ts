@@ -1,5 +1,5 @@
 import { appLang } from "../../../utils/lang"
-import { damageTypeOptions, fields, movementTypes, optionalString, requiredString, statusEffOptions,zonePreferences } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString, requiredString, statusEffOptions, zonePreferences } from "../../common/sharedSchemas"
 import { BaseActorSchema } from "../ActorDataModel"
 import { npcActionComboSchema,npcActionSchema } from "./NpcAction"
 
@@ -14,8 +14,7 @@ export const npcSchema = () => {
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         zone: new fields.StringField({ ...zonePreferences() }),
         movement: new fields.SchemaField({
-            speed: new fields.NumberField({ integer: true, min: 0 }),
-            type: new fields.StringField({ ...movementTypes() })
+            speed: new fields.StringField({ ...requiredString })
         }),
         morale: new fields.NumberField({ integer: true, min: 2, max: 12 }),
         numberAppearing: new fields.StringField({ initial: '1d4' }),

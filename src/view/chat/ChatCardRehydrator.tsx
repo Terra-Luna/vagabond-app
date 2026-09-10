@@ -90,7 +90,7 @@ const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
         if (localRef.current) {
             observer.observe(localRef.current, {
                 childList: true,
-                subtree: true,
+                subtree: true
             })
         }
 

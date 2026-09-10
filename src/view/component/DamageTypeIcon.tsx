@@ -1,4 +1,4 @@
-import { Brain, Cross, Droplets, Flame, FlaskRound, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
+import { Brain, Cross, Droplets, Flame, FlaskRound, HeartOff, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
 import { sys_id } from "../../utils/foundryUtils"
@@ -65,6 +65,14 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             element = <Swords size={size - 2} className='text-black fill-ic-armor-fill' />
             break
         }
+        case appLang.DamageTypes.adamant: {
+            element = <Swords size={size - 2} className='text-header-text-tertiary fill-black' />
+            break
+        }
+        case appLang.DamageTypes.fatigue: {
+            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-white' />
+            break
+        }   
         case appLang.DamageTypes.blunt: {
             element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/blunt.svg`} size={size} />
             break 

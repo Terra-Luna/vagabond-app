@@ -1,28 +1,31 @@
 {
   "folder": "FLVLlhgM8ePOrzwY",
-  "name": "Dungeonheart",
+  "name": "Golem, Flesh",
   "type": "adversary",
-  "_id": "djAK3oNGTw7AshcV",
+  "_id": "e8G829Hr39y3z2BF",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "max": 0,
-      "value": 45
+      "value": 40,
+      "max": 0
     },
     "armor": {
-      "rating": 1,
-      "as": "Leather"
+      "rating": 0
     },
-    "senses": [],
+    "senses": [
+      "darksight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
         "blinded": false,
+        "burning": false,
         "charmed": false,
         "confused": false,
         "dazed": false,
         "dead": false,
         "frightened": false,
+        "grappling": false,
         "incapacitated": false,
         "invisible": false,
         "paralyzed": false,
@@ -32,12 +35,11 @@
         "suffocating": false,
         "unconscious": false,
         "vulnerable": false,
-        "marked": false,
         "warded": false,
-        "blessed": false
-      },
-      "stacks": {
-        "burning": []
+        "exalted": false,
+        "blessed": false,
+        "marked": false,
+        "hexed": false
       },
       "counters": {
         "luck": 0,
@@ -51,97 +53,154 @@
         "attack": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "cast": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "arcana": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "brawl": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "craft": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "detect": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "finesse": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "influence": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "leadership": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "medicine": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "melee": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "mysticism": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "performance": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "sneak": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "survival": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "ranged": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "reflex": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "endure": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         },
         "will": {
           "modifier": 0,
           "critThreshold": 0,
-          "extraDice": 0
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
         }
       },
       "dice": {
@@ -181,27 +240,35 @@
         },
         "exploding": {
           "melee": {
+            "max": false,
             "values": []
           },
           "finesse": {
+            "max": false,
             "values": []
           },
           "brawl": {
+            "max": false,
             "values": []
           },
           "ranged": {
+            "max": false,
             "values": []
           },
           "thrown": {
+            "max": false,
             "values": []
           },
           "defense": {
+            "max": false,
             "values": []
           },
           "spell": {
+            "max": false,
             "values": []
           },
           "spellHealing": {
+            "max": false,
             "values": []
           }
         },
@@ -234,24 +301,91 @@
             "extraDice": 0,
             "explodes": false
           }
+        },
+        "reroll": {
+          "melee": {
+            "HH": []
+          },
+          "finesse": {
+            "HH": []
+          },
+          "brawl": {
+            "HH": []
+          },
+          "ranged": {
+            "HH": []
+          },
+          "thrown": {
+            "HH": []
+          },
+          "defense": {
+            "HH": []
+          },
+          "spell": {
+            "HH": []
+          }
         }
       },
       "damage": {
         "in": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "melee": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "finesse": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "brawl": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "ranged": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "thrown": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "defense": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "spell": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          }
         },
         "out": {
-          "all": 0,
-          "allPerDie": 0,
-          "attack": 0,
-          "attackPerDie": 0,
-          "spell": 0,
-          "spellPerDie": 0
+          "melee": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "finesse": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "brawl": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "ranged": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "thrown": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "defense": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          },
+          "spell": {
+            "flatBonus": 0,
+            "perDieBonus": 0
+          }
         }
       },
       "healing": {
@@ -266,51 +400,63 @@
           "aura": 0,
           "cone": 0,
           "line": 0,
-          "sphere": 0
+          "sphere": 0,
+          "imbue": 0
+        }
+      },
+      "downtime": {
+        "breather": {
+          "removeFatigue": 0,
+          "gainLuck": 0
+        },
+        "rest": {
+          "extraLuck": 0
         }
       }
     },
-    "beingSize": "huge",
+    "beingSize": "large",
     "beingType": "artificial",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": null,
-    "description": "<p><span style=\"white-space: pre-wrap;\">The creation of a dungeonheart involves opening a summoning portal within a living troll's heart. The troll must survive the initial process to guarantee its regeneration works. Over time, the troll's blood and tissue seeps through the portal, which spits out all manner of bizarre creatures.</span></p>",
-    "hitDice": 10,
+    "threatLevelOverride": 4.7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">A living automoton of stitched-together flesh, given life through electric strikes. Immune to Physical damage from non-Relics.</span></p>",
+    "hitDice": 9,
     "zone": "front",
     "movement": {
-      "type": "walk",
-      "speed": "0'"
+      "speed": "20'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [],
+    "dmgImmunities": [
+      "physical",
+      "cold",
+      "shock",
+      "poison"
+    ],
     "dmgWeaknesses": [
-      "pierce"
+      "fire"
     ],
     "statusImmunities": [
-      "berserk",
       "charmed",
-      "confused",
-      "dazed",
-      "frightened",
-      "incapacitated",
-      "suffocating",
-      "unconscious"
+      "fatigued",
+      "paralyzed",
+      "sickened"
     ],
     "actions": [
       {
-        "name": "Spawn",
-        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of its Turn, roll d4. On a roll of 2 to 4, this Being spawns an Ally Being (d6, roll two and take the highest if this Being is at half HP or lower), which appears in the nearest open space:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">1 Giant Spider</span></p><p><span style=\"white-space: pre-wrap;\">2 Basilisk</span></p><p><span style=\"white-space: pre-wrap;\">3 Owl Bear</span></p><p><span style=\"white-space: pre-wrap;\">4 Rust Monster</span></p><p><span style=\"white-space: pre-wrap;\">5 Warp Beast</span></p><p><span style=\"white-space: pre-wrap;\">6 Gelatinous Cube</span></p>",
+        "name": "Slam",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 9 (2d8 (+2 if this Being is Berserk))</span></p>",
         "damage": {
           "dice": {
-            "count": 0,
-            "faces": 0,
+            "count": 2,
+            "faces": 8,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "physical"
         },
-        "saves": [],
+        "saves": [
+          "reflex"
+        ],
         "statuses": []
       }
     ],
@@ -318,16 +464,29 @@
       "name": "",
       "actions": []
     },
-    "abilities": [],
-    "morale": 12
+    "abilities": [
+      {
+        "name": "Bloodied Rage",
+        "description": "<p><span style=\"white-space: pre-wrap;\">At 20 HP or less, it is Berserk.</span></p>"
+      },
+      {
+        "name": "Flame-Averse",
+        "description": "<p><span style=\"white-space: pre-wrap;\">If it can see fire or takes damage from fire, it is Frightened (Cd4).</span></p>"
+      },
+      {
+        "name": "Shock Absorber",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Shock damage rolls heal it instead.</span></p>"
+      }
+    ],
+    "morale": 10
   },
   "prototypeToken": {
-    "name": "Dungeonheart",
+    "name": "Golem, Flesh",
     "displayName": 0,
     "actorLink": false,
-    "width": 3,
-    "height": 3,
-    "depth": 3,
+    "width": 1,
+    "height": 1,
+    "depth": 1,
     "texture": {
       "src": "systems/vagabond-app/assets/icons/ic_adversary.webp",
       "anchorX": 0.5,
@@ -338,16 +497,16 @@
       "tint": "#ffffff",
       "alphaThreshold": 0.75
     },
-    "lockRotation": true,
+    "lockRotation": false,
     "rotation": 0,
     "alpha": 1,
     "disposition": -1,
-    "displayBars": 0,
+    "displayBars": 30,
     "bar1": {
       "attribute": "health"
     },
     "bar2": {
-      "attribute": null
+      "attribute": "mana"
     },
     "light": {
       "negative": false,
@@ -395,7 +554,7 @@
         "ring": null,
         "background": null
       },
-      "effects": 0,
+      "effects": 1,
       "subject": {
         "scale": 1,
         "texture": null
@@ -418,19 +577,19 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "LxjckWttmatU52UJ": 3
+    "KyorYoEvge7ElSaj": 3
   },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.0.38",
-    "createdTime": 1787794178977,
-    "modifiedTime": 1788995410930,
+    "createdTime": 1788996263098,
+    "modifiedTime": 1788996498658,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!actors!djAK3oNGTw7AshcV"
+  "_key": "!actors!e8G829Hr39y3z2BF"
 }
