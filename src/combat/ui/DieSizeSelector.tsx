@@ -8,6 +8,7 @@ export const DieSizeSelector = ({ value, onChange }: { value: string, onChange: 
                 options={[
                     { value: '', label: "-"},
                     { value: "1", label: "d1" },
+                    { value: "3", label: "d3" },
                     { value: "4", label: "d4" },
                     { value: "6", label: "d6" },
                     { value: "8", label: "d8" },

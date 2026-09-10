@@ -154,7 +154,8 @@
       "hellspawn": "Hellspawn",
       "beyonder": "Beyonder",
       "divine": "Divine",
-      "beast": "Beast"
+      "beast": "Beast",
+      "undead": "Undead"
     },
     "DamageTypes": {
       "none": "-",

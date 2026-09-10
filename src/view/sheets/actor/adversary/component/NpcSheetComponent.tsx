@@ -172,7 +172,7 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                     : <CardSubHeader values={[
                         { label: appLang.Sizes[npc.beingSize], value: "" },
                         { label: appLang.BeingTypes[npc.beingType], value: "" },
-                        { label: appLang.BeingSubtypes[npc.beingSubtype], value: "" }
+                        { label: appLang.BeingSubtypes[npc.beingSubtype].length > 0 ? `(${appLang.BeingSubtypes[npc.beingSubtype]})` : "", value: "" }
                     ]} showRightBorder={false} />
             }
         </div>

@@ -14,10 +14,10 @@ export const npcSchema = () => {
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         zone: new fields.StringField({ ...zonePreferences() }),
         movement: new fields.SchemaField({
-            speed: new fields.StringField({ ...requiredString })
+            speed: new fields.StringField({ ...requiredString, initial: "30'" })
         }),
         morale: new fields.NumberField({ integer: true, min: 2, max: 12 }),
-        numberAppearing: new fields.StringField({ initial: '1d4' }),
+        numberAppearing: new fields.StringField({ initial: 'd4' }),
 
         dmgImmunities: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
         dmgWeaknesses: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
