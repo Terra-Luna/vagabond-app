@@ -66,8 +66,19 @@ export function getEquippedArmor(hero: any): (Item & { system: ArmorDataModel })
 
 export async function equipArmor(hero: any, armor: ArmorDataModel) {
     const equippedArmor = getEquippedArmor(hero)
-    await setEquipState(equippedArmor, false)
-    await setEquipState(armor, true)
+
+    if (equippedArmor) {
+        if (equippedArmor.system.isCursed() && !game.user?.isActiveGM) {
+            ui.notifications?.info(`${hero.parent.name} is unable to remove bound item: ${equippedArmor.name}...`)
+        }
+        else {
+            await setEquipState(hero, equippedArmor, false)
+            await armor.parent.update({ "system.isEquipped": true })
+        }
+    }
+    else {
+        await setEquipState(hero, armor, true)
+    }
 }
 
 export function getEquippedWeapons(actor: Actor & { system: any }) {
@@ -207,7 +218,7 @@ export const equipItem = (hero: any, item: EquipmentDataModel<EquipmentSchema>) 
         equipWeapon(hero, item as WeaponDataModel)
     }
     else if (item.isEquippable) {
-        setEquipState(item, true)
+        setEquipState(hero, item, true)
     }
 }
 
@@ -229,7 +240,7 @@ export const equippedItemContextMenu = (hero: any, item: WeaponDataModel | Sundr
     }
 
     menuItems.push(
-        { icon: Hand, label: 'Unequip', action: () => setEquipState(item, false) }
+        { icon: Hand, label: 'Unequip', action: () => setEquipState(hero, item, false) }
     )
     return menuItems
 }
@@ -244,17 +255,17 @@ export const equipmentContextMenuItems = (hero: any, item: EquipmentDataModel<Eq
                 })
             }
             menuItems.push({
-                icon: Hand, label: appLang.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(item, false)
+                icon: Hand, label: appLang.HeroSheet.Inventory.ctxUnequip, action: () => setEquipState(hero, item, false)
             })
         }
         else {
             menuItems.push({
-                icon: HandFist, label: appLang.HeroSheet.Inventory.ctxEquip, action: () => {
+                icon: HandFist, label: appLang.HeroSheet.Inventory.ctxEquip, action: async () => {
                     item instanceof WeaponDataModel || item instanceof SundryDataModel
                         ? equipWeapon(hero, item)
                         : (item instanceof ArmorDataModel
-                            ? equipArmor(hero, item as ArmorDataModel)
-                            : setEquipState(item, true)
+                            ? await equipArmor(hero, item as ArmorDataModel)
+                            : await setEquipState(hero, item, true)
                         )
                 }
             })

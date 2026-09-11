@@ -40,8 +40,10 @@ export class RelicPowers {
         })
     }
 
-    static get(): RelicPower[] {
-        return (game.settings as any)?.get(sys_id, "relics")
+    static get(itemType: string): RelicPower[] {
+        const relics = (game.settings as any)?.get(sys_id, "relics")
+        console.log(relics)
+        return relics.filter(rel => rel.types.includes(itemType))
     }
 
     static async toggleRelicEffect(item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower) {
@@ -75,6 +77,7 @@ export class RelicPowers {
             id: 'ace-cleave',
             category: { value: 'ace', label: 'Ace' },
             power: { value: 'cleave', label: 'Cleave' },
+            types: ['weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -82,19 +85,15 @@ export class RelicPowers {
             id: 'ace-grapple',
             category: { value: 'ace', label: 'Ace' },
             power: { value: 'grapple', label: 'Grapple' },
+            types: ['weapon'],
             goldValue: 1000,
             description: ''
         },
         {
             id: 'ace-keen',
             category: { value: 'ace', label: 'Ace' },
-            power: {
-                value: 'keen',
-                label: 'Keen',
-                modifiers: [{
-                    path: 'modifiers.skillCheck.*.critThreshold', value: 1
-                }]
-            },
+            power: { value: 'keen', label: 'Keen' },
+            types: ['weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -102,6 +101,7 @@ export class RelicPowers {
             id: 'ace-thrown',
             category: { value: 'ace', label: 'Ace' },
             power: { value: 'thrown', label: 'Thrown' },
+            types: ['weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -110,11 +110,9 @@ export class RelicPowers {
             category: { value: 'ace', label: 'Ace' },
             power: {
                 value: 'vicious',
-                label: 'Vicious',
-                modifiers: [{
-                    path: 'modifiers.dice.crit.*.extraDice', value: 1
-                }]
+                label: 'Vicious'
             },
+            types: ['weapon'],
             goldValue: 2000,
             description: ''
         }
@@ -125,6 +123,7 @@ export class RelicPowers {
             id: 'bane-nice',
             category: { value: 'bane', label: 'Bane' },
             power: { value: 'niche', label: 'Niche' },
+            types: ['weapon'],
             goldValue: 500,
             description: ''
         },
@@ -132,6 +131,7 @@ export class RelicPowers {
             id: 'specific-nice',
             category: { value: 'bane', label: 'Bane' },
             power: { value: 'specific', label: 'Specific' },
+            types: ['weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -139,6 +139,7 @@ export class RelicPowers {
             id: 'bane-general',
             category: { value: 'bane', label: 'Bane' },
             power: { value: 'general', label: 'General' },
+            types: ['weapon'],
             goldValue: 5000,
             description: ''
         }
@@ -155,6 +156,7 @@ export class RelicPowers {
                     path: 'armor.rating', value: 1
                 }]
             },
+            types: ['armor'],
             goldValue: 100,
             description: ''
         },
@@ -168,6 +170,7 @@ export class RelicPowers {
                     path: 'armor.rating', value: 2
                 }]
             },
+            types: ['armor'],
             goldValue: 5000,
             description: ''
         },
@@ -181,6 +184,7 @@ export class RelicPowers {
                     path: 'armor.rating', value: 3
                 }]
             },
+            types: ['armor'],
             goldValue: 50000,
             description: ''
         },
@@ -196,6 +200,7 @@ export class RelicPowers {
                     { path: 'modifiers.skillCheck.will.modifier', value: 1 }
                 ]
             },
+            types: ['armor', 'weapon', 'sundry'],
             goldValue: 1000,
             description: ''
         },
@@ -211,6 +216,7 @@ export class RelicPowers {
                     { path: 'modifiers.skillCheck.will.modifier', value: 2 }
                 ]
             },
+            types: ['armor', 'weapon', 'sundry'],
             goldValue: 10000,
             description: ''
         },
@@ -226,6 +232,7 @@ export class RelicPowers {
                     { path: 'modifiers.skillCheck.will.modifier', value: 3 }
                 ]
             },
+            types: ['armor', 'weapon', 'sundry'],
             goldValue: 100000,
             description: ''
         },
@@ -239,6 +246,7 @@ export class RelicPowers {
                     { path: 'modifiers.damage.out.spell', value: 1 }
                 ]
             },
+            types: ['weapon', 'sundry'],
             goldValue: 200,
             description: ''
         },
@@ -252,6 +260,7 @@ export class RelicPowers {
                     { path: 'modifiers.damage.out.spell', value: 2 }
                 ]
             },
+            types: ['weapon', 'sundry'],
             goldValue: 2500,
             description: ''
         },
@@ -265,6 +274,7 @@ export class RelicPowers {
                     { path: 'modifiers.damage.out.spell', value: 3 }
                 ]
             },
+            types: ['weapon', 'sundry'],
             goldValue: 10000,
             description: ''
         },
@@ -278,6 +288,7 @@ export class RelicPowers {
                     { path: 'modifiers.damage.out.attack', value: 1 }
                 ]
             },
+            types: ['weapon'],
             goldValue: 100,
             description: ''
         },
@@ -291,6 +302,7 @@ export class RelicPowers {
                     { path: 'modifiers.damage.out.attack', value: 2 }
                 ]
             },
+            types: ['weapon'],
             goldValue: 1250,
             description: ''
         },
@@ -304,6 +316,7 @@ export class RelicPowers {
                     { path: 'modifiers.damage.out.attack', value: 3 }
                 ]
             },
+            types: ['weapon'],
             goldValue: 5000,
             description: ''
         },
@@ -314,6 +327,7 @@ export class RelicPowers {
             id: 'cursed-anger',
             category: { value: 'cursed', label: 'Cursed' },
             power: { value: 'anger', label: 'Anger' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -322,6 +336,7 @@ export class RelicPowers {
             id: 'cursed-cowardice',
             category: { value: 'cursed', label: 'Cursed' },
             power: { value: 'cowardice', label: 'Cowardice' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -330,6 +345,7 @@ export class RelicPowers {
             id: 'cursed-doom',
             category: { value: 'cursed', label: 'Cursed' },
             power: { value: 'doom', label: 'Doom' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -338,6 +354,7 @@ export class RelicPowers {
             id: 'cursed-gullibility',
             category: { value: 'cursed', label: 'Cursed' },
             power: { value: 'gullibility', label: 'Gullibility' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -352,6 +369,7 @@ export class RelicPowers {
                     path: 'armor.rating', value: -1
                 }]
             },
+            types: ['armor'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -366,6 +384,7 @@ export class RelicPowers {
                     path: 'armor.rating', value: -2
                 }]
             },
+            types: ['armor'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -380,6 +399,7 @@ export class RelicPowers {
                     path: 'armor.rating', value: -3
                 }]
             },
+            types: ['armor'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -394,6 +414,7 @@ export class RelicPowers {
                     path: 'modifiers.damage.out.attack', value: -1
                 }]
             },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -408,6 +429,7 @@ export class RelicPowers {
                     path: 'modifiers.damage.out.attack', value: -2
                 }]
             },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -422,6 +444,7 @@ export class RelicPowers {
                     path: 'modifiers.damage.out.attack', value: -3
                 }]
             },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
             description: ''
@@ -433,6 +456,7 @@ export class RelicPowers {
             id: 'fabled-benediction',
             category: { value: 'fabled', label: 'Fabled' },
             power: { value: 'benediction', label: 'Benediction' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 50000,
             description: ''
         },
@@ -440,6 +464,7 @@ export class RelicPowers {
             id: 'fabled-blasting',
             category: { value: 'fabled', label: 'Fabled' },
             power: { value: 'blasting', label: 'Blasting' },
+            types: ['weapon'],
             goldValue: 5000,
             description: ''
         },
@@ -447,6 +472,7 @@ export class RelicPowers {
             id: 'fabled-precision',
             category: { value: 'fabled', label: 'Fabled' },
             power: { value: 'precision', label: 'Precision' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
             description: ''
         },
@@ -454,6 +480,7 @@ export class RelicPowers {
             id: 'fabled-soul-eater',
             category: { value: 'fabled', label: 'Fabled' },
             power: { value: 'soul-eater', label: 'Soul Eater' },
+            types: ['weapon'],
             goldValue: 50000,
             description: ''
         },
@@ -461,6 +488,7 @@ export class RelicPowers {
             id: 'fabled-vicious',
             category: { value: 'fabled', label: 'Fabled' },
             power: { value: 'vicious', label: 'Vicious' },
+            types: ['weapon'],
             goldValue: 25000,
             description: ''
         },
@@ -468,6 +496,7 @@ export class RelicPowers {
             id: 'fabled-vorpal',
             category: { value: 'fabled', label: 'Fabled' },
             power: { value: 'vorpal', label: 'Vorpal' },
+            types: ['weapon'],
             goldValue: 50000,
             description: ''
         },
@@ -475,6 +504,7 @@ export class RelicPowers {
             id: 'fabled-wish',
             category: { value: 'fabled', label: 'Fabled' },
             power: { value: 'wish', label: 'Wish-Granting' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000000,
             description: ''
         }
@@ -485,6 +515,7 @@ export class RelicPowers {
             id: 'movement-blinking',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'blinking', label: 'Blinking' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -492,6 +523,7 @@ export class RelicPowers {
             id: 'movement-climbing',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'climbing', label: 'Climbing' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         },
@@ -499,6 +531,7 @@ export class RelicPowers {
             id: 'movement-clinging',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'clinging', label: 'Clinging' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
             description: ''
         },
@@ -506,6 +539,7 @@ export class RelicPowers {
             id: 'movement-displacement',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'displacement', label: 'Displacement' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000,
             description: ''
         },
@@ -513,6 +547,7 @@ export class RelicPowers {
             id: 'movement-flying',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'climbing', label: 'Flying' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
             description: ''
         },
@@ -520,6 +555,7 @@ export class RelicPowers {
             id: 'movement-jumping-1',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'jumping-1', label: 'Jumping I' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         },
@@ -527,6 +563,7 @@ export class RelicPowers {
             id: 'movement-jumping-2',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'jumping-2', label: 'Jumping II' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
             description: ''
         },
@@ -534,6 +571,7 @@ export class RelicPowers {
             id: 'movement-jumping-3',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'jumping-3', label: 'Jumping III' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 12500,
             description: ''
         },
@@ -541,6 +579,7 @@ export class RelicPowers {
             id: 'movement-levitation',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'levitation', label: 'Levitation' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         },
@@ -554,6 +593,7 @@ export class RelicPowers {
                     path: 'speed.turn', value: 5
                 }]
             },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 250,
             description: ''
         },
@@ -567,6 +607,7 @@ export class RelicPowers {
                     path: 'speed.turn', value: 10
                 }]
             },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000,
             description: ''
         },
@@ -580,6 +621,7 @@ export class RelicPowers {
                     path: 'speed.turn', value: 5
                 }]
             },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
             description: ''
         },
@@ -587,6 +629,7 @@ export class RelicPowers {
             id: 'movement-waterwalk',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'waterwalk', label: 'Waterwalk' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         },
@@ -594,6 +637,7 @@ export class RelicPowers {
             id: 'movement-webwalk',
             category: { value: 'movement', label: 'Movement' },
             power: { value: 'webwalk', label: 'Webwalk' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         }
@@ -604,6 +648,7 @@ export class RelicPowers {
             id: 'protection-niche',
             category: { value: 'protection', label: 'Protection' },
             power: { value: 'niche', label: 'Niche' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         },
@@ -611,6 +656,7 @@ export class RelicPowers {
             id: 'protection-specific',
             category: { value: 'protection', label: 'Protection' },
             power: { value: 'specific', label: 'Specific' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -618,6 +664,7 @@ export class RelicPowers {
             id: 'protection-general',
             category: { value: 'protection', label: 'Protection' },
             power: { value: 'general', label: 'General' },
+            types: ['armor', 'weapon', 'sundry'],
             goldValue: 5000,
             description: ''
         },
@@ -628,6 +675,7 @@ export class RelicPowers {
             id: 'resistance-bravery',
             category: { value: 'resistance', label: 'Resistance' },
             power: { value: 'bravery', label: 'Bravery' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 150,
             description: ''
         },
@@ -635,6 +683,7 @@ export class RelicPowers {
             id: 'resistance-clarity',
             category: { value: 'resistance', label: 'Resistance' },
             power: { value: 'clarity', label: 'Clarity' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 150,
             description: ''
         },
@@ -642,6 +691,7 @@ export class RelicPowers {
             id: 'resistance-repulsing',
             category: { value: 'resistance', label: 'Resistance' },
             power: { value: 'repulsing', label: 'Repulsing' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 150,
             description: ''
         },
@@ -649,6 +699,7 @@ export class RelicPowers {
             id: 'resistance-resistance',
             category: { value: 'resistance', label: 'Resistance' },
             power: { value: 'resistance', label: 'Resistance (vs. Damage Type)' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
             description: ''
         }
@@ -659,6 +710,7 @@ export class RelicPowers {
             id: 'senses-detection',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'detection', label: 'Detection' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
             bound: true,
             description: ''
@@ -667,6 +719,7 @@ export class RelicPowers {
             id: 'senses-night',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'night', label: 'Nightvision' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 100,
             description: ''
         },
@@ -674,6 +727,7 @@ export class RelicPowers {
             id: 'senses-echo',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'echo', label: 'Echolocation' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 250,
             description: ''
         },
@@ -681,6 +735,7 @@ export class RelicPowers {
             id: 'senses-life',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'life', label: 'Sense Life' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
             description: ''
         },
@@ -688,6 +743,7 @@ export class RelicPowers {
             id: 'senses-valuables',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'valuables', label: 'Sense Valuables' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
             description: ''
         },
@@ -695,6 +751,7 @@ export class RelicPowers {
             id: 'senses-tremors',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'tremors', label: 'Tremors' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000,
             bound: true,
             description: ''
@@ -703,6 +760,7 @@ export class RelicPowers {
             id: 'senses-telepathy',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'telepathy', label: 'Telepathy' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
             bound: true,
             description: ''
@@ -711,6 +769,7 @@ export class RelicPowers {
             id: 'senses-true',
             category: { value: 'senses', label: 'Senses' },
             power: { value: 'true', label: 'True-Seeing' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 20000,
             bound: true,
             description: ''
@@ -722,6 +781,7 @@ export class RelicPowers {
             id: 'utility-after-im-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'after-im-1', label: 'After-Image I' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             bound: true,
             description: ''
@@ -730,6 +790,7 @@ export class RelicPowers {
             id: 'utility-after-im-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'after-im-2', label: 'After-Image II' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
             bound: true,
             description: ''
@@ -738,6 +799,7 @@ export class RelicPowers {
             id: 'utility-ambassador',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'ambassador', label: 'Ambassador' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 1250,
             description: ''
         },
@@ -745,6 +807,7 @@ export class RelicPowers {
             id: 'utility-aqua',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'aqua', label: 'Aqua Lung' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
             description: ''
         },
@@ -752,6 +815,7 @@ export class RelicPowers {
             id: 'utility-darkness-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'darkness-1', label: 'Darkness I' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         },
@@ -759,6 +823,7 @@ export class RelicPowers {
             id: 'utility-darkness-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'darkness-2', label: 'Darkness II' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 1250,
             description: ''
         },
@@ -766,6 +831,7 @@ export class RelicPowers {
             id: 'utility-darkness-3',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'darkness-3', label: 'Darkness III' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
             description: ''
         },
@@ -773,6 +839,7 @@ export class RelicPowers {
             id: 'utility-burning-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'burning-1', label: 'Burning I' },
+            types: ['weapon'],
             goldValue: 4000,
             description: ''
         },
@@ -780,6 +847,7 @@ export class RelicPowers {
             id: 'utility-burning-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'burning-2', label: 'Burning II' },
+            types: ['weapon'],
             goldValue: 15000,
             description: ''
         },
@@ -787,6 +855,7 @@ export class RelicPowers {
             id: 'utility-burning-3',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'burning-3', label: 'Burning III' },
+            types: ['weapon'],
             goldValue: 64000,
             description: ''
         },
@@ -794,6 +863,7 @@ export class RelicPowers {
             id: 'utility-holding',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'holding', label: 'Holding' },
+            types: ['container'],
             goldValue: 200,
             description: ''
         },
@@ -801,6 +871,7 @@ export class RelicPowers {
             id: 'utility-inf',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'inf', label: 'Infinite' },
+            types: ['sundry', 'weapon'],
             goldValue: 1000,
             description: ''
         },
@@ -808,6 +879,7 @@ export class RelicPowers {
             id: 'utility-invis-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'invis-1', label: 'Invisibility I' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
             description: ''
         },
@@ -815,6 +887,7 @@ export class RelicPowers {
             id: 'utility-invis-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'invis-2', label: 'Invisibiliyy II' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 50000,
             description: ''
         },
@@ -822,6 +895,7 @@ export class RelicPowers {
             id: 'utility-lifesteal-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'lifesteal-1', label: 'Lifesteal I' },
+            types: ['weapon'],
             goldValue: 1000,
             description: ''
         },
@@ -829,6 +903,7 @@ export class RelicPowers {
             id: 'utility-lifesteal-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'lifesteal-2', label: 'Lifesteal II' },
+            types: ['weapon'],
             goldValue: 12500,
             description: ''
         },
@@ -836,6 +911,7 @@ export class RelicPowers {
             id: 'utility-lifesteal-3',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'lifesteal-3', label: 'Lifesteal III' },
+            types: ['weapon'],
             goldValue: 50000,
             description: ''
         },
@@ -843,6 +919,7 @@ export class RelicPowers {
             id: 'utility-loyalty',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'loyalty', label: 'Loyalty' },
+            types: ['weapon'],
             goldValue: 1000,
             bound: true,
             description: ''
@@ -851,6 +928,7 @@ export class RelicPowers {
             id: 'utility-manasteal-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'manasteal-1', label: 'Manasteal I' },
+            types: ['sundry', 'weapon'],
             goldValue: 5000,
             bound: true,
             description: ''
@@ -859,6 +937,7 @@ export class RelicPowers {
             id: 'utility-manasteal-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'manasteal-2', label: 'Manasteal II' },
+            types: ['sundry', 'weapon'],
             goldValue: 20000,
             bound: true,
             description: ''
@@ -867,6 +946,7 @@ export class RelicPowers {
             id: 'utility-manasteal-3',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'manasteal-3', label: 'Manasteal III' },
+            types: ['sundry', 'weapon'],
             goldValue: 50000,
             bound: true,
             description: ''
@@ -875,6 +955,7 @@ export class RelicPowers {
             id: 'utility-moonlit-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'moonlit-1', label: 'Moonlit I' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             description: ''
         },
@@ -882,6 +963,7 @@ export class RelicPowers {
             id: 'utility-moonlit-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'moonlit-2', label: 'Moonlit II' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 1250,
             description: ''
         },
@@ -889,6 +971,7 @@ export class RelicPowers {
             id: 'utility-moonlit-3',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'moonlit-3', label: 'Moonlit III' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 50000,
             description: ''
         },
@@ -896,6 +979,7 @@ export class RelicPowers {
             id: 'utility-piercing-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'piercing-1', label: 'Piercing I' },
+            types: ['weapon'],
             goldValue: 150,
             description: ''
         },
@@ -903,6 +987,7 @@ export class RelicPowers {
             id: 'utility-piercing-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'piercing-2', label: 'Piercing II' },
+            types: ['weapon'],
             goldValue: 1875,
             description: ''
         },
@@ -910,6 +995,7 @@ export class RelicPowers {
             id: 'utility-piercing-3',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'piercing-3', label: 'Piercing III' },
+            types: ['weapon'],
             goldValue: 7500,
             description: ''
         },
@@ -917,6 +1003,7 @@ export class RelicPowers {
             id: 'utility-store-spell',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'store-spell', label: 'Store Spell' },
+            types: ['sundry', 'weapon'],
             goldValue: 0,
             description: ''
         },
@@ -924,6 +1011,7 @@ export class RelicPowers {
             id: 'utility-radiant-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'radiant-1', label: 'Radiant I' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -931,6 +1019,7 @@ export class RelicPowers {
             id: 'utility-radiant-2',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'radiant-2', label: 'Radiant II' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -938,6 +1027,7 @@ export class RelicPowers {
             id: 'utility-radiant-3',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'radiant-3', label: 'Radiant III' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
             description: ''
         },
@@ -945,6 +1035,7 @@ export class RelicPowers {
             id: 'utility-warning',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'warning', label: 'Warning' },
+            types: ['armor', 'sundry', 'weapon'],
             goldValue: 7500,
             bound: true,
             description: ''

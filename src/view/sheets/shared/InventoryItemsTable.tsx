@@ -1,4 +1,4 @@
-import { Hand,HandFist, Shield } from "lucide-react"
+import { Diamond, Hand, HandFist, Shield } from "lucide-react"
 
 import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
@@ -11,7 +11,7 @@ import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { equipArmor, equipWeapon,inventoryItemDragDropHandler } from "../../../utils/heroInventoryUtil"
 import { appLang } from "../../../utils/lang"
 import { getId, getName } from "../../../utils/modelUtil"
-import { tableBorder } from "../../common/border-styles"
+import { tableBorder, tableBorderRounded } from "../../common/border-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 
@@ -43,54 +43,62 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                     </tr>
                 </thead>
                 <tbody className="font-eskapade">{
-                    items.map((item: EquipmentDataModel<EquipmentSchema>, index: number) => (
-                        <tr
-                            key={getId(item)}
-                            className={
-                                index === dragIndex ?
-                                    "bg-text-fatigue-current draggable" :
-                                    `even:bg-table-row-even/50 odd:bg-table-row-odd/50 hover-glow draggable`
-                            }
-                            onContextMenu={(e) => { onCtxMenu(e, contextMenuItems(item)) }}
-                            onDoubleClick={() => openItemSheet(item)}
-                            draggable={true}
-                            onDragStart={(e) => onDragStart(e, index)}
-                            onDragEnter={(e) => onDragEnter(e, index)}
-                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
-                            onDragEnd={(e) => onDragEnd(e, index)}
-                            data-item-id={getId(item)}
-                        >
-                            <td className="px-2 py-1">
-                                <span className="flex">
-                                    <img
-                                        src={item.parent.img}
-                                        alt={getName(item)}
-                                        width="28" height="28"
-                                        className="mr-2 rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
-                                    />
-                                    <p className="items-center line-clamp-1">{itemNameQty(item)}</p>
-                                </span>
-                            </td>
-                            <td className="text-center font-normal">{item.bulk.totalSlots}</td>
-                            <td className="text-center font-normal">{coinsAsString(item.totalValue)}</td>
-                            {
-                                showEquipColumn && (
-                                    item.isEquippable
-                                        ? <td className="items-center">
-                                            <EquipStateIcon
-                                                type={item.parent.type}
-                                                isEquipped={item.isEquipped}
-                                                gripState={(item as any).grip?.state}
-                                                toggleEquipState={
-                                                    async () => await toggleEquipState(actor as HeroDataModel, item)
-                                                }
-                                            />
-                                        </td>
-                                        : <td className="text-center" />
-                                )
-                            }
-                        </tr>
-                    ))
+                    items.map((item: EquipmentDataModel<EquipmentSchema>, index: number) => {
+                        const isEquipped = item.isEquipped
+                        const isBound = item.isBoundRelic()
+                        const isCursed = item.isCursed()
+                        const tooltip = `${isBound && !isCursed
+                            ? `This item must be Bound to be equipped.\nRequires a 10 minute Ritual.\nLimit: 3 Bound items`
+                            : (`${isEquipped && isCursed
+                                ? "Curse must be broken to un-equip!"
+                                : ""}`)
+                            }`
+
+                        return (
+                            <tr
+                                key={getId(item)}
+                                className={
+                                    index === dragIndex ?
+                                        "bg-text-fatigue-current draggable" :
+                                        `even:bg-table-row-even/50 odd:bg-table-row-odd/50 hover-glow draggable`
+                                }
+                                onContextMenu={(e) => { onCtxMenu(e, contextMenuItems(item)) }}
+                                onDoubleClick={() => openItemSheet(item)}
+                                draggable={true}
+                                onDragStart={(e) => onDragStart(e, index)}
+                                onDragEnter={(e) => onDragEnter(e, index)}
+                                onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                                onDragEnd={(e) => onDragEnd(e, index)}
+                                data-item-id={getId(item)}
+                            >
+                                <td className="px-2 py-1">
+                                    <span className="flex">
+                                        <ItemIconImg item={item} tooltip={tooltip} />
+                                        <p className="items-center line-clamp-1">{itemNameQty(item)}</p>
+                                    </span>
+                                </td>
+                                <td className="text-center font-normal">{item.bulk.totalSlots}</td>
+                                <td className="text-center font-normal">{coinsAsString(item.totalValue)}</td>
+                                {
+                                    showEquipColumn && (
+                                        item.isEquippable
+                                            ? <td className="items-center">
+                                                <EquipStateIcon
+                                                    tooltip={tooltip}
+                                                    type={item.parent.type}
+                                                    isEquipped={item.isEquipped}
+                                                    gripState={(item as any).grip?.state}
+                                                    toggleEquipState={
+                                                        async () => await toggleEquipState(actor as HeroDataModel, item)
+                                                    }
+                                                />
+                                            </td>
+                                            : <td className="text-center" />
+                                    )
+                                }
+                            </tr>
+                        )
+                    })
                 }</tbody>
             </table>
             <ContextMenu />
@@ -98,11 +106,49 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
     )
 }
 
-const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { type: string, isEquipped: boolean, gripState: string, toggleEquipState: () => void }) => {
+const ItemIconImg = ({ item, tooltip }) => {
+    const isEquipped = item.isEquipped
+    const isBound = item.isBoundRelic()
+    const isCursed = item.isCursed()
+
+    return (
+        <div className="flex items-center">
+            <div className="relative mr-2 flex items-center justify-center">
+                <img
+                    src={item.parent.img}
+                    alt={getName(item)}
+                    width="28"
+                    height="28"
+                    className="rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
+                    title={tooltip}
+                />
+
+                {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
+                <span title={tooltip}>
+                    {isEquipped && isBound &&
+                        <Diamond
+                            size={12}
+                            className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                        />
+                    }
+                    {!isEquipped && isBound && !isCursed &&
+                        <Diamond
+                            size={12}
+                            className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                            strokeWidth={1}
+                        />
+                    }
+                </span>
+            </div>
+        </div>
+    )
+}
+
+const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState }: { tooltip: string, type: string, isEquipped: boolean, gripState: string, toggleEquipState: () => void }) => {
     const equippedIconStyle = "w-full justify-center text-ic-equipped fill-ic-equipped/80"
     const unEquipedIconStyle = "w-full justify-center text-ic-equipped"
     return (
-        <div onClick={toggleEquipState} title="Toggle equip" onDoubleClick={(e) => { e.stopPropagation() }}>
+        <div onClick={toggleEquipState} title={`Toggle equip\n${tooltip}`} onDoubleClick={(e) => { e.stopPropagation() }}>
             {
                 type === 'armor' &&
                 <div>
@@ -137,7 +183,7 @@ const EquipStateIcon = ({ type, isEquipped, gripState, toggleEquipState }: { typ
 
 async function toggleEquipState(hero: HeroDataModel, item: EquipmentDataModel<EquipmentSchema>) {
     if (item.isEquipped) {
-        await setEquipState(item, false)
+        await setEquipState(hero, item, false)
     }
     else {
         if (item) {

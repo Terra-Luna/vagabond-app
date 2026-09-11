@@ -16,6 +16,7 @@ import { ClassDataModel } from "../item/character/ClassDataModel"
 import { PerkDataModel } from "../item/character/PerkDataModel"
 import { SpellDataModel } from "../item/character/SpellDataModel"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
+import type { EquipmentDataModel, EquipmentSchema } from "../item/equip/EquipmentDataModel"
 import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
 import { inventorySchema, isInventoryItem } from "./type/Inventory"
 import { levelSchema } from "./type/Level"
@@ -209,6 +210,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue,
             } as Record<any, any>)
         }
+    }
+
+    boundRelics = (): EquipmentDataModel<EquipmentSchema>[] => {
+        return (this.inventory.items as any).filter(it => it.isEquipped && it.isBoundRelic())
     }
 }
 

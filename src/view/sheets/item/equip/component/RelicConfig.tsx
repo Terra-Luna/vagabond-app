@@ -13,7 +13,7 @@ import { ItemSheetPropLabel } from "./ItemSheetLabelComponent"
 export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     
     const { isEditMode } = useEditMode()
-    const relics = useMemo(() => RelicPowers.get(), [])
+    const relics = useMemo(() => RelicPowers.get(item.type), [])
     
     const categories = useMemo(() => [
         ...Object.values(
@@ -47,7 +47,7 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
                         <div className="flex flex-wrap gap-1 justify-center mt-1 text-lg text-text-primary font-eskapade font-normal">
                             {/* TOGGLEABLE RELIC INFO CARD */}
                             {filteredRelics(cat.value).map(relic => (
-                                <RelicCard item={item} relic={relic} />
+                                <RelicCard key={relic.id} item={item} relic={relic} />
                             ))}
 
                         </div>
