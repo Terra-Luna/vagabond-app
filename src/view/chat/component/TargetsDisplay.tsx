@@ -51,7 +51,7 @@ export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], on
                     ))}
                 </div>
             }
-            {game.user?.isGM && <ContextMenu />}
+            {game.user?.isActiveGM && <ContextMenu />}
         </div>
     )
 }

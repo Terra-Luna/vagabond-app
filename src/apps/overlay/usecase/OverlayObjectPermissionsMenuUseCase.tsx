@@ -54,7 +54,7 @@ export const useOverlayObjectPermissionsMenu = <T extends PermissionedOverlayObj
         }))
     }
 
-    const gmMenuItems = (item: T): CtxMenuItem[] => (!game.user?.isGM ? [] : [
+    const gmMenuItems = (item: T): CtxMenuItem[] => (!game.user?.isActiveGM ? [] : [
         { label: "Player Visibility", icon: Eye, subMenuItems: () => playerVisibilitySubMenu(item.id) },
         { label: "Player Interaction", icon: Users, subMenuItems: () => playerInteractionSubMenu(item.id) },
         {

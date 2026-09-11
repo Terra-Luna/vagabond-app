@@ -193,9 +193,7 @@ const updateSetting = async (setting: string, update: any) => {
 const checkPermissionLevel = (settingName: string): boolean => {
     const setting = (game.settings as any)?.get(sys_id, settingName) || 'gmOnly'
     return setting === 'everyone' || (
-        setting === 'gmOnly' && (
-            (game.user?.isGM ?? false) || (game.user?.isActiveGM ?? false)
-        )
+        setting === 'gmOnly' && (game.user?.isActiveGM ?? false)
     )
 }
 
@@ -220,7 +218,7 @@ export interface OverlayObjectPermissions {
 }
 
 export const isVisibleToCurrentUser = (obj: OverlayObjectPermissions): boolean => {
-    if (game.user?.isGM) return true
+    if (game.user?.isActiveGM) return true
     return !obj.hiddenFromUserIds?.includes(game.user?.id ?? '')
 }
 
@@ -229,7 +227,7 @@ export const isVisibleInCurrentScene = (obj: OverlayObjectPermissions): boolean 
 }
 
 export const canInteractWithOverlayObject = (obj: OverlayObjectPermissions, globalPermissionCheck: () => boolean): boolean => {
-    if (game.user?.isGM || game.user?.isActiveGM) return true
+    if (game.user?.isActiveGM) return true
     if (obj.interactableUserIds) return obj.interactableUserIds.includes(game.user?.id ?? '')
     return globalPermissionCheck()
 }

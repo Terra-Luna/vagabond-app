@@ -124,7 +124,7 @@ foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any,
 
 Hooks.once("ready", async () => {
     game.socket?.on(`system.${sys_id}`, async (packet: any) => {
-        if (!game.user?.isGM) return
+        if (!game.user?.isActiveGM) return
 
         const activeGM = game.users?.activeGM
         if (activeGM && activeGM.id !== game.user.id) return

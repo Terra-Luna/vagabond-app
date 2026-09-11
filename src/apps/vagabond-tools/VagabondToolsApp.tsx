@@ -18,7 +18,7 @@ export class VagabondToolsApp extends VagabondApplication {
     }
 
     static renderCanvasButton() {
-        if (!game.user?.isGM) return
+        if (!game.user?.isActiveGM) return
 
         const playersElement = document.getElementById("players")
         if (!playersElement) return

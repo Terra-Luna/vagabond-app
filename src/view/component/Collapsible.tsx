@@ -3,7 +3,7 @@ import { ReactNode, useCallback, useState } from "react"
 
 import { fields } from "../../model/common/sharedSchemas"
 import { sys_id } from "../../utils/foundryUtils"
-import { Header, SkillCardAction } from "./Header"
+import { ClearHeader, Header, SkillCardAction } from "./Header"
 
 export interface CollapsibleHeaderProps {
     img?: string
@@ -42,7 +42,9 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     )
 }
 
-export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed = false }: { title: string, content: React.ReactElement, settingsKey?: string, startCollapsed?: boolean }) => {
+export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed = false, useClearHeader = false }: {
+    title: string, content: React.ReactElement, settingsKey?: string, startCollapsed?: boolean, useClearHeader?: boolean
+}) => {
     let initialCollapsedValue = startCollapsed
     const settings = (game.settings! as any)
     if (settingsKey) {
@@ -67,7 +69,10 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
     return (
         <div>
             <div onClick={toggleCollapsed}>
-                <Header title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} />
+                {useClearHeader
+                    ? <ClearHeader title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} />
+                    : <Header title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} />
+                }
             </div>
             {isCollapsed ? <></> : content}
         </div>

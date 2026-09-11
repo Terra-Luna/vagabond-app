@@ -76,7 +76,7 @@ export class HeroAttack extends Attack {
 
     get showCritChoices(): boolean {
         if (!this.isCrit) return false
-        const hasPermission = game.user?.isGM || game.user?.id === this.userId
+        const hasPermission = game.user?.isActiveGM || game.user?.id === this.userId
         return hasPermission && !this.critChoice
     }
 

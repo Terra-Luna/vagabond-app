@@ -55,7 +55,7 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     }
 
     const sharedContent = !hideBottomSection &&
-        <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1 mb-8">
+        <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1 mb-2">
             <div className="space-y-2">
                 <Bulk item={item} />
                 <div className="flex flex-col gap-y-2 items-start">
@@ -80,7 +80,7 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
                 <ItemDivider />
                 {sharedContent}
                 {isEditMode
-                    && game.user?.isGM
+                    && game.user?.isActiveGM
                     && (item.type as string) !== 'alchemical'
                     && (item.type as string) !== 'startingpack'
                     && <RelicConfig item={item} />

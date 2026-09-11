@@ -27,6 +27,6 @@ export const EditModeContext = createContext(DefaultEditModeContextValue)
 
 export const useEditMode = (item?: Item) => {
     const context = useContext(EditModeContext)
-    const canToggleEditMode = game.user?.isGM || item?.isOwner
+    const canToggleEditMode = game.user?.isActiveGM || item?.isOwner
     return { ...context, editModeToggleBtn: canToggleEditMode ? context.editModeToggleBtn : null }
 }

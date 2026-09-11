@@ -27,13 +27,14 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
     )
 }
 
-export const ClearHeader = ({ title }: { title: string }) => {
+export const ClearHeader = ({ title, collapseButton }: { title: string, collapseButton?: React.ReactElement }) => {
     if (!title) return null
     return (
-        <div className="flex gap-x-2 items-center px-4">
+        <div className={`flex gap-x-2 items-center px-4 ${collapseButton ? "cursor-pointer hover-glow" : ""}`}>
             <Divider />
             {title.toUpperCase()}
             <Divider />
+            {collapseButton && <div className="mr-2">{collapseButton}</div>}
         </div>
     )
 }

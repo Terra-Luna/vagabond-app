@@ -127,7 +127,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                         }
 
                         {/* GM TOOLS */}
-                        {(game.user?.isGM && !attack.isResolved && !(attack as any).isDefenseCheck) &&
+                        {(game.user?.isActiveGM && !attack.isResolved && !(attack as any).isDefenseCheck) &&
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                 <div className="mt-0.5 text-base font-normal">
                                     <Header title={"GM Tools"} />
@@ -192,7 +192,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
 }) => {
-    const hasPermission = game.user?.isGM || game.user?.id === attack.userId
+    const hasPermission = game.user?.isActiveGM || game.user?.id === attack.userId
     const isFailure = attack.skillCheck?.result?.outcome === appLang.RollResult.failure
     const needsResourceUpdates = hasPermission && !attack.isResolved && (
         isFailure || attack.showCritChoices
@@ -415,7 +415,7 @@ const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAt
 
     // Players should only see their own saves.
     const ownedTargets = useMemo(() => {
-        return targets.filter(target => game.user?.isGM || target.token?.actor?.isOwner)
+        return targets.filter(target => game.user?.isActiveGM || target.token?.actor?.isOwner)
     }, [targets])
 
     return (
@@ -457,7 +457,7 @@ const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: Advers
 
     // Players should only see their own saves.
     const ownedTargets = useMemo(() => {
-        return targets.filter(target => game.user?.isGM || target.token?.actor?.isOwner)
+        return targets.filter(target => game.user?.isActiveGM || target.token?.actor?.isOwner)
     }, [targets])
 
     const handleSave = useCallback(async (subIndex: number, targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => {
@@ -543,11 +543,11 @@ const AttackDamageAndSavesSection = ({
                     <div className="flex flex-col gap-1 mt-1 px-1">
                         {ownedTargets.map(target => {
                             const result = saveResults[target.id]
-                            const canRollSave = !isResolved && !result && (game.user?.isGM || target.token?.actor?.isOwner)
+                            const canRollSave = !isResolved && !result && (game.user?.isActiveGM || target.token?.actor?.isOwner)
                             const luck = (target.token?.actor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
                             const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
                                 !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
-                                (game.user?.isGM || target.token?.actor?.isOwner)
+                                (game.user?.isActiveGM || target.token?.actor?.isOwner)
 
                             return (
                                 <div key={target.id} className="flex items-center gap-1 font-normal">

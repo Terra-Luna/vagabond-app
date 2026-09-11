@@ -164,7 +164,7 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
                 <HeroCreationLabel text={strings.statArrayPool} />
 
                 {/* HELPER BUTTON FOR GM & DEVELOPMENT TESTING */}
-                {game.user?.isGM && <div className="flex w-full justify-center">
+                {game.user?.isActiveGM && <div className="flex w-full justify-center">
                     <SecondaryButton onClick={() => {
                         assignedStats.forEach((s, i) => {
                             s.value = selectedArr?.values[i] ?? 2

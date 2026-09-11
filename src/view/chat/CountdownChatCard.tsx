@@ -48,7 +48,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
 
                 <p className="font-normal text-lg text-center">{result.message}</p>
 
-                {game.user?.isGM && result.duration > 0 && dmgType && !isApplied &&
+                {game.user?.isActiveGM && result.duration > 0 && dmgType && !isApplied &&
                     <div className="flex flex-col gap-1">
                         <Header title={"GM TOOLS"} />
                         <UtilityButton onClick={() => apply()}>Apply</UtilityButton>

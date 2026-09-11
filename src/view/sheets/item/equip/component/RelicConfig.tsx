@@ -9,7 +9,6 @@ import { tableBorderRounded } from "../../../../common/border-styles"
 import { buttonAnimation } from "../../../../component/Button"
 import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
-import { ItemSheetPropLabel } from "./ItemSheetLabelComponent"
 
 export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     
@@ -30,32 +29,34 @@ export const RelicConfig = ({ item }: { item: Item & { system: EquipmentDataMode
     }
 
     return (<>
-        {isEditMode && <div className="flex flex-col gap-y-2 items-start mt-2 mb-16">
-            {/* ACTIVE POWERS */}
-            <ItemSheetPropLabel label={appLang.ButtonActions.relic} />
-            <div className="flex flex-wrap gap-1">
-                {item.system.relicPowers?.map(relic => (
-                    <RelicCard key={relic.id} item={item} relic={relic} />
-                ))}
-            </div>
+        {isEditMode && <div className="flex flex-col gap-y-1 items-stretch w-full mb-8">
+            <CollapsibleSection title={appLang.ButtonActions.relic} content={
+                <div className="flex flex-col gap-1 w-full">
 
-            {/* LIST OF RELIC POWERS */}
-            {categories.map((cat, index) => (
-                <div key={index} className="flex flex-col gap-y-2 w-full">
-                
-                    {/* RELICS LISTED BY CATEGORY */}
-                    <CollapsibleSection title={cat.label} startCollapsed={true} content={
-                        <div className="flex flex-wrap gap-1 justify-center mt-1 text-lg text-text-primary font-eskapade font-normal">
-                            {/* TOGGLEABLE RELIC INFO CARD */}
-                            {filteredRelics(cat.value).map(relic => (
-                                <RelicCard key={relic.id} item={item} relic={relic} />
-                            ))}
+                    {/* ACTIVE POWERS */}
+                    <div className="flex flex-wrap gap-1 mt-0.5 w-full">
+                        {item.system.relicPowers?.map(relic => (
+                            <RelicCard key={relic.id} item={item} relic={relic} />
+                        ))}
+                    </div>
 
+                    {/* LIST OF RELIC POWERS */}
+                    {categories.map((cat, index) => (
+                        <div key={index} className="flex flex-col gap-y-2 w-full">
+
+                            {/* RELICS LISTED BY CATEGORY */}
+                            <CollapsibleSection title={cat.label} useClearHeader={true} startCollapsed={true} content={
+                                <div className="flex flex-wrap gap-1 justify-center w-full mt-1 text-lg text-text-primary font-eskapade font-normal">
+                                    {/* TOGGLEABLE RELIC INFO CARD */}
+                                    {filteredRelics(cat.value).map(relic => (
+                                        <RelicCard key={relic.id} item={item} relic={relic} />
+                                    ))}
+                                </div>
+                            } />
                         </div>
-                    } />
+                    ))}
                 </div>
-            ))}
-                
+            } />
         </div>}
     </>)
 }
@@ -64,19 +65,17 @@ const RelicCard = ({ item, relic }) => {
     return (
         <button
             key={relic.id}
-            title={relic.description}
+            title={`${relic.description}${relic.bound ? `\n(Bound)` : ""}`}
             className={buttonAnimation}
             onClick={async () => await RelicPowerProcessor.toggleRelicEffect(item, relic)}
         >
             <div className={`
-                flex flex-col justify-center text-center p-2 ${tableBorderRounded} hover-glow
+                flex flex-col justify-center text-center p-1 ${tableBorderRounded} hover-glow
                 ${item.system.relicPowers.some(p => p.id === relic.id) ? 'bg-context-menu-fill' : ''}
             `}>
                 <div className="flex gap-x-1">
-                    <p>{RelicPowerProcessor.getFormattedRelicName(relic)}</p>
-                    {relic.bound &&
-                        <Diamond size={8} className="text-text-header-tertiary fill-text-header-tertiary" />
-                    }
+                    {relic.bound && <Diamond size={8} className="text-text-header-tertiary fill-text-header-tertiary" />}
+                    <p className="text-base">{RelicPowerProcessor.getFormattedRelicName(relic)}</p>
                 </div>
                 <p className="text-xs font-paradigm font-normal italic">{relic.goldValue}g</p>
             </div>

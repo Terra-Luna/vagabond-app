@@ -114,7 +114,7 @@ export const CombatTracker = ({ combat }) => {
                         </Group>
                     }
                 </div>
-                {game.user?.isGM && (
+                {game.user?.isActiveGM && (
                     <footer className="shrink-0 pt-4 mt-auto">
                         <FoundryHotkeyBlocker>
                             <BulkCombatantEditView combatants={controlledCombatants} />
@@ -350,7 +350,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             }
         ] as CtxMenuItem[]
 
-        if (game.user?.isGM) {
+        if (game.user?.isActiveGM) {
             actions.push(
                 {
                     icon: Eye,
@@ -388,7 +388,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                 onDoubleClick={onDoubleClick}
                 onAuxClick={e => onClick(e as any, true)}
                 onContextMenu={e => {
-                    if (game.user?.isGM || combatant.isOwner) {
+                    if (game.user?.isActiveGM || combatant.isOwner) {
                         onCtxMenu(e, ctxMenuActions())
                     }
                 }}
