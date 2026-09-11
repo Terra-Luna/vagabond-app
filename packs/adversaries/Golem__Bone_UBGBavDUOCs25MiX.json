@@ -416,16 +416,16 @@
     },
     "beingSize": "large",
     "beingType": "artificial",
-    "beingSubtype": "none",
+    "beingSubtype": "undead",
     "threatLevel": 1,
     "threatLevelOverride": 4.3,
-    "description": "<p><span style=\"white-space: pre-wrap;\">(Undead) A pile of animated bones, given animus as a configuration of corpses rather than a single entity. They typically serve as guardians to tombs. Immune to physical damage from non-Silvered or non-Relic weapons.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">A pile of animated bones, given animus as a configuration of corpses rather than a single entity. They typically serve as guardians to tombs. Immune to physical damage from non-Silvered or non-Relic weapons.</span></p>",
     "hitDice": 8,
     "zone": "front",
     "movement": {
       "speed": "30'"
     },
-    "numberAppearing": "1d2",
+    "numberAppearing": "d2",
     "dmgImmunities": [
       "physical",
       "poison"
@@ -602,9 +602,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.42",
     "createdTime": 1788995498396,
-    "modifiedTime": 1788996166604,
+    "modifiedTime": 1789004173851,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

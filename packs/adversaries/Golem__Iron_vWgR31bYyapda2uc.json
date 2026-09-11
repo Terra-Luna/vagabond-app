@@ -454,7 +454,7 @@
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "fatigue"
         },
         "saves": [
           "endure"
@@ -603,9 +603,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.42",
     "createdTime": 1788996510015,
-    "modifiedTime": 1788997138224,
+    "modifiedTime": 1789004357437,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

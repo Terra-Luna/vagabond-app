@@ -442,11 +442,11 @@
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 4,
+            "faces": 3,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "physical"
         },
         "saves": [
           "reflex"
@@ -454,14 +454,8 @@
         "statuses": []
       },
       {
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack, Near]:</strong></b><span style=\"white-space: pre-wrap;\"> 2 (d4) and Burning (Cd4).</span></p>",
         "name": "Spit Acid",
-        "saves": [
-          "reflex"
-        ],
-        "statuses": [
-          "burning"
-        ],
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">[Ranged Attack, Near]:</strong></b><span style=\"white-space: pre-wrap;\"> 2 (d4) and Burning (Cd4).</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -469,8 +463,14 @@
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
-        }
+          "type": "acid"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "burning"
+        ]
       }
     ],
     "combo": {
@@ -583,9 +583,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.42",
     "createdTime": 1788997836785,
-    "modifiedTime": 1788998014071,
+    "modifiedTime": 1789004318020,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

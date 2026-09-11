@@ -458,15 +458,15 @@
       },
       {
         "name": "Claw",
-        "description": "<p><b><strong style=\"white-space: pre-wrap;\">Claw [Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 1 (d4)</span></p>",
+        "description": "<p><b><strong style=\"white-space: pre-wrap;\">Claw [Melee Attack]:</strong></b><span style=\"white-space: pre-wrap;\"> 1 (d3)</span></p>",
         "damage": {
-          "type": "physical",
           "dice": {
             "count": 1,
-            "faces": 4,
+            "faces": 3,
             "modifier": 0,
             "explodesOn": []
-          }
+          },
+          "type": "physical"
         },
         "saves": [
           "reflex"
@@ -626,9 +626,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.42",
     "createdTime": 1788994617554,
-    "modifiedTime": 1788995471240,
+    "modifiedTime": 1789004255066,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
