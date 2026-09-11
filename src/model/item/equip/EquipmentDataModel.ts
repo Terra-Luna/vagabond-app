@@ -1,7 +1,7 @@
 import { appLang } from "../../../utils/lang"
 import type { HeroDataModel } from "../../actor/HeroDataModel"
 import { addCoins, Coins, coinSchema, consolidateCoins, multiplyCoins, toCopper, zeroCoins } from "../../common/CoinValue"
-import { fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { fields, optionalString, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 /**
@@ -36,7 +36,7 @@ const baseEquipmentSchema = () => {
                     modifiers: new fields.ArrayField(
                         new fields.SchemaField({
                             path: new fields.StringField({ ...requiredString }),
-                            value: new fields.NumberField({ ...requiredInteger })
+                            value: new fields.NumberField({ ...uncappedInteger })
                         }),
                         { initial: [] }
                     )
@@ -91,7 +91,13 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         let relicValue: Coins | undefined = undefined
         const relicPowers = this.relicPowers
         if (relicPowers && relicPowers.length > 0) {
-            relicValue = addCoins(relicPowers.map(p => ({ g: p.goldValue ?? 1, s: 0, c: 0 })))
+            relicValue = addCoins(relicPowers.map(p => {
+                let value = p.goldValue ?? 1
+                if (this.parent.type === 'container' && p.id === "utility-holding") {
+                    value *= ((this as any).capacity)
+                }
+                return { g: value ?? 1, s: 0, c: 0 }
+            }))
         }
 
         this.totalValue = multiplyCoins((relicValue ? relicValue : this.value), Math.max(1, this.bulk?.quantity ?? 1))

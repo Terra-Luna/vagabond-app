@@ -161,7 +161,7 @@ const damageModifierSchema = () => {
 
 const damageBonusSchema = () => {
     return {
-        flatBonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        perDieBonus: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        flatBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
+        perDieBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 })
     }
 }

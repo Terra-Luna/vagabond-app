@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react"
+import { Minus, Plus } from "lucide-react"
 
 import { DamageRollResult } from "../../../combat/engine/roll/DamageRoll"
 import { DiceRollComponent } from "./DiceRollComponent"
@@ -12,10 +12,15 @@ export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) =
                     </div>
                 ))
             }
-            {result?.bonus > 0 && 
+            {result?.bonus !== 0 && 
                 <div className="flex space-x-2">
-                    <div className="h-full content-center text-text-secondary"><Plus size={20} strokeWidth={2} /></div>
-                    <p className="h-full text-3xl">{result.bonus}</p>
+                    <div className="h-full content-center text-text-secondary">
+                        {result.bonus > 0
+                            ? < Plus size={20} strokeWidth={2} />
+                            : <Minus size={20} strokeWidth={2} />
+                        }
+                    </div>
+                    <p className="h-full text-3xl">{Math.abs(result.bonus)}</p>
                 </div>
             }
         </div>

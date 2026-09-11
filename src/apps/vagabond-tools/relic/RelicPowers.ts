@@ -182,9 +182,9 @@ export class RelicPowers {
                 value: 'prot-1',
                 label: 'Protection +1',
                 modifiers: [
-                    { path: 'skillCheck.reflex.modifier', value: 1 },
-                    { path: 'skillCheck.endure.modifier', value: 1 },
-                    { path: 'skillCheck.will.modifier', value: 1 }
+                    { path: 'system.modifiers.skillCheck.reflex.modifier', value: 1 },
+                    { path: 'system.modifiers.skillCheck.endure.modifier', value: 1 },
+                    { path: 'system.modifiers.skillCheck.will.modifier', value: 1 }
                 ]
             },
             types: ['armor', 'weapon', 'sundry'],
@@ -198,9 +198,9 @@ export class RelicPowers {
                 value: 'prot-2',
                 label: 'Protection +2',
                 modifiers: [
-                    { path: 'skillCheck.reflex.modifier', value: 2 },
-                    { path: 'skillCheck.endure.modifier', value: 2 },
-                    { path: 'skillCheck.will.modifier', value: 2 }
+                    { path: 'system.modifiers.skillCheck.reflex.modifier', value: 2 },
+                    { path: 'system.modifiers.skillCheck.endure.modifier', value: 2 },
+                    { path: 'system.modifiers.skillCheck.will.modifier', value: 2 }
                 ]
             },
             types: ['armor', 'weapon', 'sundry'],
@@ -214,9 +214,9 @@ export class RelicPowers {
                 value: 'prot-3',
                 label: 'Protection +3',
                 modifiers: [
-                    { path: 'skillCheck.reflex.modifier', value: 3 },
-                    { path: 'skillCheck.endure.modifier', value: 3 },
-                    { path: 'skillCheck.will.modifier', value: 3 }
+                    { path: 'system.modifiers.skillCheck.reflex.modifier', value: 3 },
+                    { path: 'system.modifiers.skillCheck.endure.modifier', value: 3 },
+                    { path: 'system.modifiers.skillCheck.will.modifier', value: 3 }
                 ]
             },
             types: ['armor', 'weapon', 'sundry'],
@@ -398,10 +398,10 @@ export class RelicPowers {
                 value: 'weak-1',
                 label: 'Weakness -1',
                 modifiers: [
-                    { path: 'system.modifier.damage.out.melee.flatBonus', value: -1 },
-                    { path: 'system.modifier.damage.out.brawl.flatBonus', value: -1 },
-                    { path: 'system.modifier.damage.out.finesse.flatBonus', value: -1 },
-                    { path: 'system.modifier.damage.out.ranged.flatBonus', value: -1 }
+                    { path: 'system.modifiers.damage.out.melee.flatBonus', value: -1 },
+                    { path: 'system.modifiers.damage.out.brawl.flatBonus', value: -1 },
+                    { path: 'system.modifiers.damage.out.finesse.flatBonus', value: -1 },
+                    { path: 'system.modifiers.damage.out.ranged.flatBonus', value: -1 }
                 ]
             },
             types: ['armor', 'sundry', 'weapon'],
@@ -416,10 +416,10 @@ export class RelicPowers {
                 value: 'weak-2',
                 label: 'Weakness -2',
                 modifiers: [
-                    { path: 'system.modifier.damage.out.melee.flatBonus', value: -2 },
-                    { path: 'system.modifier.damage.out.brawl.flatBonus', value: -2 },
-                    { path: 'system.modifier.damage.out.finesse.flatBonus', value: -2 },
-                    { path: 'system.modifier.damage.out.ranged.flatBonus', value: -2 }
+                    { path: 'system.modifiers.damage.out.melee.flatBonus', value: -2 },
+                    { path: 'system.modifiers.damage.out.brawl.flatBonus', value: -2 },
+                    { path: 'system.modifiers.damage.out.finesse.flatBonus', value: -2 },
+                    { path: 'system.modifiers.damage.out.ranged.flatBonus', value: -2 }
                 ]
             },
             types: ['armor', 'sundry', 'weapon'],
@@ -434,10 +434,10 @@ export class RelicPowers {
                 value: 'weak-3',
                 label: 'Weakness -3',
                 modifiers: [
-                    { path: 'system.modifier.damage.out.melee.flatBonus', value: -3 },
-                    { path: 'system.modifier.damage.out.brawl.flatBonus', value: -3 },
-                    { path: 'system.modifier.damage.out.finesse.flatBonus', value: -3 },
-                    { path: 'system.modifier.damage.out.ranged.flatBonus', value: -3 }
+                    { path: 'system.modifiers.damage.out.melee.flatBonus', value: -3 },
+                    { path: 'system.modifiers.damage.out.brawl.flatBonus', value: -3 },
+                    { path: 'system.modifiers.damage.out.finesse.flatBonus', value: -3 },
+                    { path: 'system.modifiers.damage.out.ranged.flatBonus', value: -3 }
                 ]
             },
             types: ['armor', 'sundry', 'weapon'],
@@ -858,10 +858,10 @@ export class RelicPowers {
         {
             id: 'utility-holding',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'holding', label: 'Holding' },
+            power: { value: 'holding', label: 'of Holding' },
             types: ['container'],
             goldValue: 200,
-            description: "Gives bonus Item Slots."
+            description: "Gives bonus Item Slots. (Value is per extra slot, adjust as needed.)"
         },
         {
             id: 'utility-inf',

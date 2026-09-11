@@ -58,10 +58,6 @@ export class SkillCheck {
             RelicPowerProcessor.applyRelicPowers(args.item.relicPowers as any, heroMods)
         }
 
-        if (args.type === 'save') {
-            RelicPowerProcessor.applySavingModifiers(hero.parent, heroMods)
-        }
-
         const skillMods = heroMods.skillCheck[args.skill]
 
         const globalMods = args.type === 'attack'

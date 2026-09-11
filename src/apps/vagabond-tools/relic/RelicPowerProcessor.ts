@@ -1,6 +1,5 @@
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
-import { inventoryItemTypes } from "../../../utils/modelUtil"
 import { RelicPower } from "./RelicPowers"
 
 export class RelicPowerProcessor {
@@ -14,11 +13,32 @@ export class RelicPowerProcessor {
         }
     }
 
+    /**
+     * Called from Hero's prepareDerivedData - applies relic bonuses in-memory only.
+     * @param actor 
+     * @returns 
+     */
     static applyHeroBonuses = (actor: Actor & { system: HeroDataModel }) => {
         const equippedRelics = actor.system.equippedRelics()
         if (!equippedRelics || equippedRelics.length === 0) return
 
-        console.log("Implement me!", actor.system, equippedRelics)
+        const relics = equippedRelics.flatMap(it => it.system.relicPowers) as RelicPower[]
+
+        const filteredRelics = relics.flatMap(it => ({
+            ...it,
+            power: {
+                modifiers: [
+                    ...it.power.modifiers.filter(mod =>
+                        mod.path.startsWith("system.") &&
+                        foundry.utils.getProperty(actor, mod.path) !== undefined
+                    ).map(mod => {
+                        return { path: mod.path, value: mod.value }
+                    })
+                ]
+            }
+        })).filter(it => it.power.modifiers.length > 0) as RelicPower[]
+
+        RelicPowerProcessor.applyRelicPowers(filteredRelics, actor)
     }
 
     static toggleRelicEffect = async (item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower) => {
@@ -45,16 +65,16 @@ export class RelicPowerProcessor {
     static updateItemProperties = async (item: Item, relic: RelicPower, event: 'add' | 'remove') => {
         for (const mod of relic.power.modifiers) {
             const currentValue = foundry.utils.getProperty(item, mod.path)
-            if (currentValue === undefined) continue
-
-            if (event === 'add') {
-                if (typeof currentValue === 'number') {
-                    await item.update({ [mod.path]: currentValue + mod.value })
+            if (currentValue !== undefined) {
+                if (event === 'add') {
+                    if (typeof currentValue === 'number') {
+                        await item.update({ [mod.path]: currentValue + mod.value })
+                    }
                 }
-            }
-            else {
-                if (typeof currentValue === 'number') {
-                    await item.update({ [mod.path]: currentValue - mod.value })
+                else {
+                    if (typeof currentValue === 'number') {
+                        await item.update({ [mod.path]: currentValue - mod.value })
+                    }
                 }
             }
         }
@@ -75,7 +95,7 @@ export class RelicPowerProcessor {
 
         deduped.forEach(relic => {
             relic.power.modifiers?.forEach(relicMod => {
-                if (relicMod.path && relicMod.value) {
+                if (relicMod.path && relicMod.value !== undefined) {
                     const keys = relicMod.path.split('.')
 
                     let current = heroMods
@@ -100,13 +120,7 @@ export class RelicPowerProcessor {
         })
     }
 
-    static applySavingModifiers = (actor: Actor & { system: HeroDataModel }, heroMods: any) => {
-        const relics = actor.items.filter((it: any) => inventoryItemTypes().includes(it.type) && it.system.isRelic()) as any[]
-        if (!relics || relics.length === 0) return
-        RelicPowerProcessor.applyRelicPowers(relics.flatMap(it => it.system.relicPowers), heroMods)
-    }
-
-    private static dedupePowers = (relics) => {
+    private static dedupePowers = (relics): RelicPower[] => {
         const deduped: RelicPower[] = []
         const sorted = relics.sort((a, b) => b.id.localeCompare(a.id))
         sorted.forEach(relic => {

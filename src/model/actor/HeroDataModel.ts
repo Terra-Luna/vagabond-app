@@ -119,7 +119,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         super.prepareDerivedData()
         if (!this.parent) return
         validateCurrentHP(this)
-        validateCurrentLuck(this)
         validateCurrentFocus(this)
         PerkRulesSelectionsApplicator.apply(this.parent)
         RelicPowerProcessor.applyHeroBonuses(this.parent)
@@ -215,7 +214,11 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     }
 
     equippedRelics = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
-        return this.parent.items.filter((it: any) => inventoryItemTypes().includes(it.type) && it.system.isEquipped && it.system.isRelic())
+        return this.parent.items.filter((it: any) =>
+            inventoryItemTypes().includes(it.type) &&
+            it.system.isEquipped &&
+            it.system.isRelic()
+        )
     }
 
     boundRelics = (): EquipmentDataModel<EquipmentSchema>[] => {
@@ -235,12 +238,6 @@ export function setMaxHP(hero: HeroDataModel) {
     }
     else {
         hero.health.max += hero.stats.might! * (hero.level.current || 1)
-    }
-}
-
-export function validateCurrentLuck(hero: HeroDataModel) {
-    if (hero.statuses.counters.luck! > hero.stats.luck!) {
-        hero.statuses.counters.luck = hero.stats.luck!
     }
 }
 

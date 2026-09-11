@@ -1,7 +1,6 @@
 import { ChevronRight, Eye, EyeOff, Heart, LucideBookMarked, LucideClover, LucideHeartOff, Plus, Shield, SquarePen, Star, ToggleLeft, ToggleRight, Trash, Wand2 } from "lucide-react"
 import { ReactNode, useCallback } from "react"
 
-import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
@@ -225,7 +224,6 @@ const Speed = ({ name, value }: { name: string, value: string }) => (
 
 export const Saves = ({ hero }: { hero: HeroDataModel }) => {
     const mods = foundry.utils.deepClone(hero.modifiers)
-    RelicPowerProcessor.applySavingModifiers(hero.parent, mods)
     const { reflex, endure, will } = mods.skillCheck
     
     return (
