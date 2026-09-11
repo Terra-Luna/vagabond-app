@@ -131,7 +131,7 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
             }
         }
     }
-    
+
     isBoundRelic = (): boolean => {
         return this.relicPowers.some(rel => rel.bound)
     }
@@ -152,7 +152,7 @@ export const setEquipState = async (hero: HeroDataModel, item: any, isEquipped: 
 
     if (gear.isEquippable) {
         if (isEquipped) {
-            if (gear.isBoundRelic() && hero.boundRelics().length >= 3) {
+            if (gear.isBoundRelic() && hero.boundRelics().length >= (hero.boundRelicLimit ?? 3)) {
                 ui.notifications?.warn(`${hero.parent.name} must remove a bound relic before equipping another.`)
             }
             else {

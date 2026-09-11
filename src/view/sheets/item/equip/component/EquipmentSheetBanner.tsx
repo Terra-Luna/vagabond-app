@@ -7,6 +7,9 @@ import { ItemPortraitComponent } from "../../shared/ItemPortraitComponent"
 
 export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const { editModeToggleBtn } = useEditMode(item)
+
+    const relicPowers = item.system.relicPowers?.filter(relic => relic.category.value !== 'cursed')
+
     return (<>
         <div className="flex space-x-1 items-center bg-section-header-fill py-1 px-2 font-eskapade font-bold">
             <ItemPortraitComponent item={item} />
@@ -20,13 +23,21 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
                     <Divider />
                     {editModeToggleBtn}
                 </div>
-                <p className="text-xs text-text-header-secondary font-paradigm font-normal italic">
-                    {item.system.relicPowers
-                        ?.filter(relic => relic.category.value !== 'cursed')
-                        ?.map(relic => RelicPowers.getFormattedRelicName(relic as any))
-                        ?.join(", ")
-                    }
-                </p>
+
+                {relicPowers && relicPowers.length > 0 && (
+                    <div className="flex flex-wrap gap-x-1">
+                        {relicPowers.map((relic: any, index: number) => (
+                            <p
+                                key={relic.id || index}
+                                title={relic.description}
+                                className="text-xs text-text-header-secondary font-paradigm font-normal italic"
+                            >
+                                {RelicPowers.getFormattedRelicName(relic)}
+                                {index < relicPowers.length - 1 && ","}
+                            </p>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     </>)

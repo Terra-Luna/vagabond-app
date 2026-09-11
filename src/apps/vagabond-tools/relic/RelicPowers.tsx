@@ -51,15 +51,11 @@ export class RelicPowers {
 
         if (existingPowers.some(p => p.id === relic.id)) {
             // Remove
-            await item.update({
-                'system.relicPowers': [...existingPowers.filter(p => p.id !== relic.id)]
-            } as Record<string, any>)
+            await item.update({ 'system.relicPowers': [...existingPowers.filter(p => p.id !== relic.id)] } as Record<string, any>)
         }
         else {
             // Add
-            await item.update({
-                'system.relicPowers': [...existingPowers, relic]
-            } as Record<string, any>)
+            await item.update({ 'system.relicPowers': [...existingPowers, relic] } as Record<string, any>)
         }
     }
 
@@ -79,7 +75,7 @@ export class RelicPowers {
             power: { value: 'cleave', label: 'Cleave' },
             types: ['weapon'],
             goldValue: 2000,
-            description: ''
+            description: "The damage die is one size larger when using the Cleave property."
         },
         {
             id: 'ace-grapple',
@@ -87,15 +83,19 @@ export class RelicPowers {
             power: { value: 'grapple', label: 'Grapple' },
             types: ['weapon'],
             goldValue: 1000,
-            description: ''
+            description: "Target is considered Vulnerable for ending the Restrained Status."
         },
         {
             id: 'ace-keen',
             category: { value: 'ace', label: 'Ace' },
-            power: { value: 'keen', label: 'Keen' },
+            power: {
+                value: 'keen',
+                label: 'Keen',
+                modifiers: [{ path: "modifiers.skillCheck.attack.critThreshold", value: 1 }]
+            },
             types: ['weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Crits 2 lower rather than 1 lower from Keen."
         },
         {
             id: 'ace-thrown',
@@ -103,18 +103,24 @@ export class RelicPowers {
             power: { value: 'thrown', label: 'Thrown' },
             types: ['weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Far Thrown attacks with it aren't Hindered."
         },
         {
             id: 'ace-vicious',
             category: { value: 'ace', label: 'Ace' },
             power: {
                 value: 'vicious',
-                label: 'Vicious'
+                label: 'Vicious',
+                modifiers: [
+                    { path: "modifiers.dice.crit.melee.extraDice", value: 2 },
+                    { path: "modifiers.dice.crit.brawl.extraDice", value: 2 },
+                    { path: "modifiers.dice.crit.finesse.extraDice", value: 2 },
+                    { path: "modifiers.dice.crit.ranged.extraDice", value: 2 }
+                ]
             },
             types: ['weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Deals an extra damage die from Vicious."
         }
     ]
 
@@ -125,7 +131,7 @@ export class RelicPowers {
             power: { value: 'niche', label: 'Niche' },
             types: ['weapon'],
             goldValue: 500,
-            description: ''
+            description: "Adds an extra damage die to extremely specific Beings, such as Trolls (not all giants)."
         },
         {
             id: 'specific-nice',
@@ -133,7 +139,7 @@ export class RelicPowers {
             power: { value: 'specific', label: 'Specific' },
             types: ['weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Adds an extra damage die to a Being subtype, such as giants (not all Cryptids)."
         },
         {
             id: 'bane-general',
@@ -141,7 +147,7 @@ export class RelicPowers {
             power: { value: 'general', label: 'General' },
             types: ['weapon'],
             goldValue: 5000,
-            description: ''
+            description: "Adds an extra damage die to an entire Being Type, such as Cryptids (not just giants)."
         }
     ]
 
@@ -153,12 +159,12 @@ export class RelicPowers {
                 value: 'armor-1',
                 label: 'Armor +1',
                 modifiers: [{
-                    path: 'armor.rating', value: 1
+                    path: 'system.rating', value: 1
                 }]
             },
             types: ['armor'],
             goldValue: 100,
-            description: ''
+            description: "+1 bonus to Armor."
         },
         {
             id: 'bonus-armor-2',
@@ -167,12 +173,12 @@ export class RelicPowers {
                 value: 'armor-2',
                 label: 'Armor +2',
                 modifiers: [{
-                    path: 'armor.rating', value: 2
+                    path: 'system.rating', value: 2
                 }]
             },
             types: ['armor'],
             goldValue: 5000,
-            description: ''
+            description: "+2 bonus to Armor."
         },
         {
             id: 'bonus-armor-3',
@@ -181,12 +187,12 @@ export class RelicPowers {
                 value: 'armor-3',
                 label: 'Armor +3',
                 modifiers: [{
-                    path: 'armor.rating', value: 3
+                    path: 'system.rating', value: 3
                 }]
             },
             types: ['armor'],
             goldValue: 50000,
-            description: ''
+            description: "+3 bonus to Armor."
         },
         {
             id: 'bonus-prot-1',
@@ -202,7 +208,7 @@ export class RelicPowers {
             },
             types: ['armor', 'weapon', 'sundry'],
             goldValue: 1000,
-            description: ''
+            description: "+1 bonus to Saves."
         },
         {
             id: 'bonus-prot-2',
@@ -218,7 +224,7 @@ export class RelicPowers {
             },
             types: ['armor', 'weapon', 'sundry'],
             goldValue: 10000,
-            description: ''
+            description: "+2 bonus to Saves."
         },
         {
             id: 'bonus-prot-3',
@@ -234,7 +240,7 @@ export class RelicPowers {
             },
             types: ['armor', 'weapon', 'sundry'],
             goldValue: 100000,
-            description: ''
+            description: "+3 bonus to Saves."
         },
         {
             id: 'bonus-trinket-1',
@@ -248,7 +254,7 @@ export class RelicPowers {
             },
             types: ['weapon', 'sundry'],
             goldValue: 200,
-            description: ''
+            description: "+1 bonus to Spell damage."
         },
         {
             id: 'bonus-trinket-2',
@@ -262,7 +268,7 @@ export class RelicPowers {
             },
             types: ['weapon', 'sundry'],
             goldValue: 2500,
-            description: ''
+            description: "+2 bonus to Spell damage."
         },
         {
             id: 'bonus-trinket-3',
@@ -276,7 +282,7 @@ export class RelicPowers {
             },
             types: ['weapon', 'sundry'],
             goldValue: 10000,
-            description: ''
+            description: "+3 bonus to Spell damage."
         },
         {
             id: 'bonus-weapon-1',
@@ -285,12 +291,12 @@ export class RelicPowers {
                 value: 'weapon-1',
                 label: 'Weapon +1',
                 modifiers: [
-                    { path: 'modifiers.damage.out.attack', value: 1 }
+                    { path: 'system.damage.dice.modifier', value: 1 }
                 ]
             },
             types: ['weapon'],
             goldValue: 100,
-            description: ''
+            description: "+1 bonus to Attack damage."
         },
         {
             id: 'bonus-weapon-2',
@@ -299,12 +305,12 @@ export class RelicPowers {
                 value: 'weapon-2',
                 label: 'Weapon +2',
                 modifiers: [
-                    { path: 'modifiers.damage.out.attack', value: 2 }
+                    { path: 'system.damage.dice.modifier', value: 2 }
                 ]
             },
             types: ['weapon'],
             goldValue: 1250,
-            description: ''
+            description: "+2 bonus to Attack damage."
         },
         {
             id: 'bonus-weapon-3',
@@ -313,12 +319,12 @@ export class RelicPowers {
                 value: 'weapon-3',
                 label: 'Weapon +3',
                 modifiers: [
-                    { path: 'modifiers.damage.out.attack', value: 3 }
+                    { path: 'system.damage.dice.modifier', value: 3 }
                 ]
             },
             types: ['weapon'],
             goldValue: 5000,
-            description: ''
+            description: "+3 bonus to Attack damage."
         },
     ]
 
@@ -330,7 +336,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "Wearer always fails Saves against Berserk."
         },
         {
             id: 'cursed-cowardice',
@@ -339,7 +345,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "Wearer always fails Saves against Frightened."
         },
         {
             id: 'cursed-doom',
@@ -348,7 +354,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "Wearer only regains 1 Hit Point per die used for healing rolls Targeting it."
         },
         {
             id: 'cursed-gullibility',
@@ -357,7 +363,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "Wearer always fails Saves against Charmed."
         },
         {
             id: 'cursed-vuln-1',
@@ -366,13 +372,13 @@ export class RelicPowers {
                 value: 'vuln-1',
                 label: 'Vulnerability -1',
                 modifiers: [{
-                    path: 'armor.rating', value: -1
+                    path: 'system.rating', value: -1
                 }]
             },
             types: ['armor'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "-1 penalty to Armor."
         },
         {
             id: 'cursed-vuln-2',
@@ -381,13 +387,13 @@ export class RelicPowers {
                 value: 'vuln-2',
                 label: 'Vulnerability -2',
                 modifiers: [{
-                    path: 'armor.rating', value: -2
+                    path: 'system.rating', value: -2
                 }]
             },
             types: ['armor'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "-2 penalty to Armor."
         },
         {
             id: 'cursed-vuln-3',
@@ -396,13 +402,13 @@ export class RelicPowers {
                 value: 'vuln-3',
                 label: 'Vulnerability -3',
                 modifiers: [{
-                    path: 'armor.rating', value: -3
+                    path: 'system.rating', value: -3
                 }]
             },
             types: ['armor'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "-3 penalty to Armor."
         },
         {
             id: 'cursed-weak-1',
@@ -417,7 +423,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "-1 penalty to Attack damage."
         },
         {
             id: 'cursed-weak-2',
@@ -432,7 +438,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "-2 penalty to Attack damage."
         },
         {
             id: 'cursed-weak-3',
@@ -447,7 +453,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: ''
+            description: "-3 penalty to Attack damage."
         }
     ]
 
@@ -458,7 +464,7 @@ export class RelicPowers {
             power: { value: 'benediction', label: 'Benediction' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 50000,
-            description: ''
+            description: "Immediately revived upon death by dropping to 0 HP, once per week."
         },
         {
             id: 'fabled-blasting',
@@ -466,7 +472,7 @@ export class RelicPowers {
             power: { value: 'blasting', label: 'Blasting' },
             types: ['weapon'],
             goldValue: 5000,
-            description: ''
+            description: "Can send a beam of magic energy to attack."
         },
         {
             id: 'fabled-precision',
@@ -474,7 +480,7 @@ export class RelicPowers {
             power: { value: 'precision', label: 'Precision' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
-            description: ''
+            description: "Once per day, gain Favor on attacks for 1 Minute, or until you miss."
         },
         {
             id: 'fabled-soul-eater',
@@ -482,7 +488,7 @@ export class RelicPowers {
             power: { value: 'soul-eater', label: 'Soul Eater' },
             types: ['weapon'],
             goldValue: 50000,
-            description: ''
+            description: "Those killed by it can't be resurrected unless a wish is granted to do so."
         },
         {
             id: 'fabled-vicious',
@@ -490,7 +496,7 @@ export class RelicPowers {
             power: { value: 'vicious', label: 'Vicious' },
             types: ['weapon'],
             goldValue: 25000,
-            description: ''
+            description: "On a Crit, the Target takes extra damage equal to twice its HD."
         },
         {
             id: 'fabled-vorpal',
@@ -498,7 +504,7 @@ export class RelicPowers {
             power: { value: 'vorpal', label: 'Vorpal' },
             types: ['weapon'],
             goldValue: 50000,
-            description: ''
+            description: "Behead Target on Crit if the Target takes the damage."
         },
         {
             id: 'fabled-wish',
@@ -506,7 +512,7 @@ export class RelicPowers {
             power: { value: 'wish', label: 'Wish-Granting' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000000,
-            description: ''
+            description: "Grants a wish."
         }
     ]
 
@@ -517,7 +523,7 @@ export class RelicPowers {
             power: { value: 'blinking', label: 'Blinking' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Wearer is under the effects of the Blink Spell."
         },
         {
             id: 'movement-climbing',
@@ -525,7 +531,7 @@ export class RelicPowers {
             power: { value: 'climbing', label: 'Climbing' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Wearer gains Climb."
         },
         {
             id: 'movement-clinging',
@@ -533,7 +539,7 @@ export class RelicPowers {
             power: { value: 'clinging', label: 'Clinging' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
-            description: ''
+            description: "Wearer gains Cling."
         },
         {
             id: 'movement-displacement',
@@ -541,7 +547,7 @@ export class RelicPowers {
             power: { value: 'displacement', label: 'Displacement' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000,
-            description: ''
+            description: "Sight-based attacks against the Wearer are made as if the attacker is Vulnerable."
         },
         {
             id: 'movement-flying',
@@ -549,7 +555,7 @@ export class RelicPowers {
             power: { value: 'climbing', label: 'Flying' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
-            description: ''
+            description: "Wearer gains Fly."
         },
         {
             id: 'movement-jumping-1',
@@ -557,7 +563,7 @@ export class RelicPowers {
             power: { value: 'jumping-1', label: 'Jumping I' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Wearer's horizontal jump distance is multiplied by 2."
         },
         {
             id: 'movement-jumping-2',
@@ -565,7 +571,7 @@ export class RelicPowers {
             power: { value: 'jumping-2', label: 'Jumping II' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
-            description: ''
+            description: "Wearer's horizontal jump distance is multiplied by 3."
         },
         {
             id: 'movement-jumping-3',
@@ -573,7 +579,7 @@ export class RelicPowers {
             power: { value: 'jumping-3', label: 'Jumping III' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 12500,
-            description: ''
+            description: "Wearer's horizontal jump distance is multiplied by 4."
         },
         {
             id: 'movement-levitation',
@@ -581,7 +587,7 @@ export class RelicPowers {
             power: { value: 'levitation', label: 'Levitation' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Wearer is under the effects of the Levitate Spell."
         },
         {
             id: 'movement-swiftness-1',
@@ -595,7 +601,7 @@ export class RelicPowers {
             },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 250,
-            description: ''
+            description: "Wearer gains a bonus + 5' to Speed."
         },
         {
             id: 'movement-swiftness-2',
@@ -609,7 +615,7 @@ export class RelicPowers {
             },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000,
-            description: ''
+            description: "Wearer gains a bonus + 10' to Speed."
         },
         {
             id: 'movement-swiftness-3',
@@ -618,12 +624,12 @@ export class RelicPowers {
                 value: 'swiftness-3',
                 label: 'Swiftness III',
                 modifiers: [{
-                    path: 'speed.turn', value: 5
+                    path: 'speed.turn', value: 15
                 }]
             },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
-            description: ''
+            description: "Wearer gains a bonus + 15' to Speed."
         },
         {
             id: 'movement-waterwalk',
@@ -631,7 +637,7 @@ export class RelicPowers {
             power: { value: 'waterwalk', label: 'Waterwalk' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Wearer can walk on liquids."
         },
         {
             id: 'movement-webwalk',
@@ -639,7 +645,7 @@ export class RelicPowers {
             power: { value: 'webwalk', label: 'Webwalk' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Wearer ignores Difficult Terrain of webs, and can't be Restrained by them."
         }
     ]
 
@@ -650,7 +656,7 @@ export class RelicPowers {
             power: { value: 'niche', label: 'Niche' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Wearer can't be Hindered on Saves against extremely specific Beings, such as Trolls (not all giants)."
         },
         {
             id: 'protection-specific',
@@ -658,7 +664,7 @@ export class RelicPowers {
             power: { value: 'specific', label: 'Specific' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Wearer can't be Hindered on Saves against a Being subtype, such as giants (not all Cryptids)."
         },
         {
             id: 'protection-general',
@@ -666,7 +672,7 @@ export class RelicPowers {
             power: { value: 'general', label: 'General' },
             types: ['armor', 'weapon', 'sundry'],
             goldValue: 5000,
-            description: ''
+            description: "Wearer can't be Hindered on Saves against an entire Being Type, such as Cryptids (not just giants)."
         },
     ]
 
@@ -677,7 +683,7 @@ export class RelicPowers {
             power: { value: 'bravery', label: 'Bravery' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 150,
-            description: ''
+            description: "Grants Favor on Saves against the Frightened Status."
         },
         {
             id: 'resistance-clarity',
@@ -685,7 +691,7 @@ export class RelicPowers {
             power: { value: 'clarity', label: 'Clarity' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 150,
-            description: ''
+            description: "Grants Favor on Saves against the Confused Status."
         },
         {
             id: 'resistance-repulsing',
@@ -693,7 +699,7 @@ export class RelicPowers {
             power: { value: 'repulsing', label: 'Repulsing' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 150,
-            description: ''
+            description: "Grants Favor on Saves against the Charmed Status."
         },
         {
             id: 'resistance-resistance',
@@ -701,7 +707,7 @@ export class RelicPowers {
             power: { value: 'resistance', label: 'Resistance (vs. Damage Type)' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
-            description: ''
+            description: "Favor on Saves and damage reduction against a damage source (such as fire)."
         }
     ]
 
@@ -713,7 +719,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
             bound: true,
-            description: ''
+            description: "Grants Allsight to see a Being Type (Bound)."
         },
         {
             id: 'senses-night',
@@ -721,7 +727,7 @@ export class RelicPowers {
             power: { value: 'night', label: 'Nightvision' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 100,
-            description: ''
+            description: "Grants Darksight."
         },
         {
             id: 'senses-echo',
@@ -729,7 +735,7 @@ export class RelicPowers {
             power: { value: 'echo', label: 'Echolocation' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 250,
-            description: ''
+            description: "Grants Echolocation."
         },
         {
             id: 'senses-life',
@@ -737,7 +743,7 @@ export class RelicPowers {
             power: { value: 'life', label: 'Sense Life' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
-            description: ''
+            description: "Senses Small and larger Beings within Far who aren't Artificials or Undead."
         },
         {
             id: 'senses-valuables',
@@ -745,7 +751,7 @@ export class RelicPowers {
             power: { value: 'valuables', label: 'Sense Valuables' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
-            description: ''
+            description: "Senses gold and gems within Near."
         },
         {
             id: 'senses-tremors',
@@ -754,7 +760,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 1000,
             bound: true,
-            description: ''
+            description: "Grants Seismicsense (Bound)."
         },
         {
             id: 'senses-telepathy',
@@ -763,7 +769,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 10000,
             bound: true,
-            description: ''
+            description: "Grants Telepathy (Bound)."
         },
         {
             id: 'senses-true',
@@ -772,7 +778,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 20000,
             bound: true,
-            description: ''
+            description: "Grants Allsight (Bound)."
         }
     ]
 
@@ -784,7 +790,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
             bound: true,
-            description: ''
+            description: "Wearer can project an illusory duplicate out to Near (Bound)."
         },
         {
             id: 'utility-after-im-2',
@@ -793,7 +799,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2500,
             bound: true,
-            description: ''
+            description: "Wearer can project an illusory duplicate out to Far (Bound)."
         },
         {
             id: 'utility-ambassador',
@@ -801,7 +807,7 @@ export class RelicPowers {
             power: { value: 'ambassador', label: 'Ambassador' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 1250,
-            description: ''
+            description: "Wielder can speak with certain Beings they normally couldn't otherwise."
         },
         {
             id: 'utility-aqua',
@@ -809,7 +815,7 @@ export class RelicPowers {
             power: { value: 'aqua', label: 'Aqua Lung' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
-            description: ''
+            description: "Wearer can breathe water."
         },
         {
             id: 'utility-darkness-1',
@@ -817,7 +823,7 @@ export class RelicPowers {
             power: { value: 'darkness-1', label: 'Darkness I' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Darkens non-magical light within Close while Equipped."
         },
         {
             id: 'utility-darkness-2',
@@ -825,7 +831,7 @@ export class RelicPowers {
             power: { value: 'darkness-2', label: 'Darkness II' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 1250,
-            description: ''
+            description: "Darkens non-magical light within Near while Equipped."
         },
         {
             id: 'utility-darkness-3',
@@ -833,7 +839,7 @@ export class RelicPowers {
             power: { value: 'darkness-3', label: 'Darkness III' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
-            description: ''
+            description: "Darkens non-magical light within Far while Equipped."
         },
         {
             id: 'utility-burning-1',
@@ -841,7 +847,7 @@ export class RelicPowers {
             power: { value: 'burning-1', label: 'Burning I' },
             types: ['weapon'],
             goldValue: 4000,
-            description: ''
+            description: "Burning (Cd4) on a hit."
         },
         {
             id: 'utility-burning-2',
@@ -849,7 +855,7 @@ export class RelicPowers {
             power: { value: 'burning-2', label: 'Burning II' },
             types: ['weapon'],
             goldValue: 15000,
-            description: ''
+            description: "Burning (Cd6) on a hit."
         },
         {
             id: 'utility-burning-3',
@@ -857,7 +863,7 @@ export class RelicPowers {
             power: { value: 'burning-3', label: 'Burning III' },
             types: ['weapon'],
             goldValue: 64000,
-            description: ''
+            description: "Burning (Cd8) on a hit."
         },
         {
             id: 'utility-holding',
@@ -865,7 +871,7 @@ export class RelicPowers {
             power: { value: 'holding', label: 'Holding' },
             types: ['container'],
             goldValue: 200,
-            description: ''
+            description: "Gives bonus Item Slots."
         },
         {
             id: 'utility-inf',
@@ -873,7 +879,7 @@ export class RelicPowers {
             power: { value: 'inf', label: 'Infinite' },
             types: ['sundry', 'weapon'],
             goldValue: 1000,
-            description: ''
+            description: "Provides an endless amount of a detailed Item that disappears in 1 Round."
         },
         {
             id: 'utility-invis-1',
@@ -881,7 +887,7 @@ export class RelicPowers {
             power: { value: 'invis-1', label: 'Invisibility I' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 5000,
-            description: ''
+            description: "Skip Move to become Invisible until after it takes an Action."
         },
         {
             id: 'utility-invis-2',
@@ -889,7 +895,7 @@ export class RelicPowers {
             power: { value: 'invis-2', label: 'Invisibiliyy II' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 50000,
-            description: ''
+            description: "Wearer is Invisible."
         },
         {
             id: 'utility-lifesteal-1',
@@ -897,7 +903,7 @@ export class RelicPowers {
             power: { value: 'lifesteal-1', label: 'Lifesteal I' },
             types: ['weapon'],
             goldValue: 1000,
-            description: ''
+            description: "Killing a foe with it heals the Wielder for d8 HP."
         },
         {
             id: 'utility-lifesteal-2',
@@ -905,7 +911,7 @@ export class RelicPowers {
             power: { value: 'lifesteal-2', label: 'Lifesteal II' },
             types: ['weapon'],
             goldValue: 12500,
-            description: ''
+            description: "Killing a foe with it heals the Wielder for 2d8 HP."
         },
         {
             id: 'utility-lifesteal-3',
@@ -913,7 +919,7 @@ export class RelicPowers {
             power: { value: 'lifesteal-3', label: 'Lifesteal III' },
             types: ['weapon'],
             goldValue: 50000,
-            description: ''
+            description: "Killing a foe with it heals the Wielder for 3d8 HP."
         },
         {
             id: 'utility-loyalty',
@@ -922,7 +928,7 @@ export class RelicPowers {
             types: ['weapon'],
             goldValue: 1000,
             bound: true,
-            description: ''
+            description: "Magically returns to the Being's hand if thrown to attack (Bound)."
         },
         {
             id: 'utility-manasteal-1',
@@ -931,7 +937,7 @@ export class RelicPowers {
             types: ['sundry', 'weapon'],
             goldValue: 5000,
             bound: true,
-            description: ''
+            description: "Killing a foe with it restores d4 Mana to the Bound Wielder."
         },
         {
             id: 'utility-manasteal-2',
@@ -940,7 +946,7 @@ export class RelicPowers {
             types: ['sundry', 'weapon'],
             goldValue: 20000,
             bound: true,
-            description: ''
+            description: "Killing a foe with it restores 2d4 Mana to the Bound Wielder."
         },
         {
             id: 'utility-manasteal-3',
@@ -949,7 +955,7 @@ export class RelicPowers {
             types: ['sundry', 'weapon'],
             goldValue: 50000,
             bound: true,
-            description: ''
+            description: "Killing a foe with it restores 3d4 Mana to the Bound Wielder."
         },
         {
             id: 'utility-moonlit-1',
@@ -957,7 +963,7 @@ export class RelicPowers {
             power: { value: 'moonlit-1', label: 'Moonlit I' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 500,
-            description: ''
+            description: "Sheds Moonlight out to Close while Equipped."
         },
         {
             id: 'utility-moonlit-2',
@@ -965,7 +971,7 @@ export class RelicPowers {
             power: { value: 'moonlit-2', label: 'Moonlit II' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 1250,
-            description: ''
+            description: "Sheds Moonlight out to Near while Equipped."
         },
         {
             id: 'utility-moonlit-3',
@@ -973,7 +979,7 @@ export class RelicPowers {
             power: { value: 'moonlit-3', label: 'Moonlit III' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 50000,
-            description: ''
+            description: "Sheds Moonlight out to Far while Equipped."
         },
         {
             id: 'utility-piercing-1',
@@ -981,7 +987,7 @@ export class RelicPowers {
             power: { value: 'piercing-1', label: 'Piercing I' },
             types: ['weapon'],
             goldValue: 150,
-            description: ''
+            description: "Attacks with it ignore 1 Armor."
         },
         {
             id: 'utility-piercing-2',
@@ -989,7 +995,7 @@ export class RelicPowers {
             power: { value: 'piercing-2', label: 'Piercing II' },
             types: ['weapon'],
             goldValue: 1875,
-            description: ''
+            description: "Attacks with it ignore 2 Armor."
         },
         {
             id: 'utility-piercing-3',
@@ -997,7 +1003,7 @@ export class RelicPowers {
             power: { value: 'piercing-3', label: 'Piercing III' },
             types: ['weapon'],
             goldValue: 7500,
-            description: ''
+            description: "Attacks with it ignore 3 Armor."
         },
         {
             id: 'utility-store-spell',
@@ -1005,7 +1011,7 @@ export class RelicPowers {
             power: { value: 'store-spell', label: 'Store Spell' },
             types: ['sundry', 'weapon'],
             goldValue: 0,
-            description: ''
+            description: "Reduce Caster's Maximum Mana to store a Casting of a Spell."
         },
         {
             id: 'utility-radiant-1',
@@ -1013,7 +1019,7 @@ export class RelicPowers {
             power: { value: 'radiant-1', label: 'Radiant I' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Sheds Sunlight out to Close while Equipped."
         },
         {
             id: 'utility-radiant-2',
@@ -1021,7 +1027,7 @@ export class RelicPowers {
             power: { value: 'radiant-2', label: 'Radiant II' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Sheds Sunlight out to Near while Equipped."
         },
         {
             id: 'utility-radiant-3',
@@ -1029,7 +1035,7 @@ export class RelicPowers {
             power: { value: 'radiant-3', label: 'Radiant III' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 2000,
-            description: ''
+            description: "Sheds Sunlight out to Far while Equipped."
         },
         {
             id: 'utility-warning',
@@ -1038,7 +1044,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 7500,
             bound: true,
-            description: ''
+            description: "Bound Being can't be surprised, and is awoken if foes are Near."
         }
     ]
     
