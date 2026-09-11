@@ -1,13 +1,14 @@
 import { createElement } from "react"
 
 import { RollPreset } from "../../apps/attack-builder/model/RollPreset"
+import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { roll3dDice } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
-import { getTargetIds } from "../../utils/modelUtil"
+import { getTargetIds, inventoryItemTypes } from "../../utils/modelUtil"
 import { sendVagabondChatCard, sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { SkillCheckChatCard } from "../../view/chat/SkillCheckChatCard"
 import { Imbue, SpellDelivery, SpellDeliverySnapshot } from "../spellcasting/SpellDelivery"
@@ -158,7 +159,7 @@ export class HeroAttack extends Attack {
                 this.skillCheck?.result.outcome !== appLang.RollResult.failure &&
                 this.isEligibleForDmgRoll
             ) {
-                await this.rollDamage()
+                await this.rollDamage(this.skillCheck.result.outcome === appLang.RollResult.crit)
                 await this.save(serializeAttack)
             }
             else {
@@ -324,7 +325,7 @@ export class HeroAttack extends Attack {
         const hero = actor.system
         const weapon = item.system
         const isKeen = weapon.properties.includes('keen')
-        const dmgMods = hero.modifiers.damage
+        const dmgMods = foundry.utils.deepClone(hero.modifiers.damage)
 
         let weaponSkill = skill
 
@@ -336,6 +337,7 @@ export class HeroAttack extends Attack {
 
         const skillCheck = new SkillCheck(hero, {
             type: 'attack',
+            item: item.system,
             skill: weaponSkill!
         })
 
@@ -365,7 +367,7 @@ export class HeroAttack extends Attack {
     ): HeroAttack {
         const skill = 'craft'
 
-        const skillCheck = new SkillCheck(actor.system, { type: 'attack', skill: skill })
+        const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: skill })
         const damageDice = new DiceRoll(DiceRoll.getItemDamageWithHeroMods(actor.system, 'craft', item.system))
         const damageRoll = new DamageRoll({
             atkName: item.name,
@@ -409,15 +411,19 @@ export class HeroAttack extends Attack {
         let damageRoll: DamageRoll | undefined = undefined
 
         if (delivery.damageDice > 0 && delivery.spell.damageType !== 'none') {
+            const mods = foundry.utils.deepClone(hero.modifiers)
             const isHealing = delivery.spell.damageType === 'healing'
 
+            const equippedItems = actor.items.filter(it => inventoryItemTypes().includes(it.type) && (it as any).system.isEquipped) as any[]
+            RelicPowerProcessor.applyRelicPowers(equippedItems.flatMap(it => it.system.relicPowers), mods)
+
             const dieSizeMod = isHealing
-                ? hero.modifiers.dice.size.spellHealing.bonus ?? 0
-                : hero.modifiers.dice.size.spell.bonus ?? 0
+                ? mods.dice.size.spellHealing.bonus ?? 0
+                : mods.dice.size.spell.bonus ?? 0
 
             const explosionsMod = isHealing
-                ? hero.modifiers.dice.exploding.spellHealing.values
-                : hero.modifiers.dice.exploding.spell.values
+                ? mods.dice.exploding.spellHealing.values
+                : mods.dice.exploding.spell.values
 
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,
@@ -428,8 +434,10 @@ export class HeroAttack extends Attack {
                     modifier: 0,
                     explodesOn: explosionsMod as number[]
                 })],
-                flatDmgBonus: hero.modifiers.damage.out.spell.flatBonus ?? 0,
-                perDieDmgBonus: hero.modifiers.damage.out.spell.perDieBonus ?? 0
+                flatDmgBonus: isHealing
+                    ? (mods.healing.out.spell.flatBonus ?? 0)
+                    : (mods.damage.out.spell.flatBonus ?? 0),
+                perDieDmgBonus: mods.damage.out.spell.perDieBonus ?? 0
             })
         }
         else {

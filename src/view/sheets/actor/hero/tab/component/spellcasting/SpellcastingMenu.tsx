@@ -208,7 +208,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         const delivery = deliveries[deliveryIndex]
         if (delivery && delivery.spell) {
             onUpdateStudyDamageDice('0')
-            HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e)?.initiate()
+            HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e)?.initiate(e)
         }
     }
 

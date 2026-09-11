@@ -61,6 +61,15 @@ export const getAttackRegistry = () => {
 export const setAttackRegistry = async (attackRegistry) => {
     (game.settings as any)?.set(sys_id, "attackRegistry", attackRegistry)
 }
+export const resolveAllAttacks = async () => {
+    const registry = { ...getAttackRegistry() }
+    Object.keys(registry).forEach(key => {
+        registry[key].forEach(attack => {
+            attack.isResolved = true
+        })
+    })
+    await setAttackRegistry(registry)
+}
 
 /**
  * Item Shop Toggle

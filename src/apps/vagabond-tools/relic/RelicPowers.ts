@@ -1,4 +1,3 @@
-import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { sys_id } from "../../../utils/foundryUtils"
 
 export interface RelicPower {
@@ -42,30 +41,7 @@ export class RelicPowers {
 
     static get(itemType: string): RelicPower[] {
         const relics = (game.settings as any)?.get(sys_id, "relics")
-        console.log(relics)
         return relics.filter(rel => rel.types.includes(itemType))
-    }
-
-    static async toggleRelicEffect(item: Item & { system: EquipmentDataModel<EquipmentSchema> }, relic: RelicPower) {
-        const existingPowers = item.system.relicPowers
-
-        if (existingPowers.some(p => p.id === relic.id)) {
-            // Remove
-            await item.update({ 'system.relicPowers': [...existingPowers.filter(p => p.id !== relic.id)] } as Record<string, any>)
-        }
-        else {
-            // Add
-            await item.update({ 'system.relicPowers': [...existingPowers, relic] } as Record<string, any>)
-        }
-    }
-
-    static getFormattedRelicName(relic: RelicPower): string {
-        if (['ace', 'bane', 'protection'].includes(relic.category.value)) {
-            return `${relic.category.label} - ${relic.power.label}`
-        }
-        else {
-            return relic.power.label
-        }
     }
 
     static ace = [
@@ -91,7 +67,12 @@ export class RelicPowers {
             power: {
                 value: 'keen',
                 label: 'Keen',
-                modifiers: [{ path: "modifiers.skillCheck.attack.critThreshold", value: 1 }]
+                modifiers: [
+                    { path: "skillCheck.melee.critThreshold", value: 1 },
+                    { path: "skillCheck.brawl.critThreshold", value: 1 },
+                    { path: "skillCheck.finesse.critThreshold", value: 1 },
+                    { path: "skillCheck.ranged.critThreshold", value: 1 }
+                ]
             },
             types: ['weapon'],
             goldValue: 2000,
@@ -112,10 +93,10 @@ export class RelicPowers {
                 value: 'vicious',
                 label: 'Vicious',
                 modifiers: [
-                    { path: "modifiers.dice.crit.melee.extraDice", value: 2 },
-                    { path: "modifiers.dice.crit.brawl.extraDice", value: 2 },
-                    { path: "modifiers.dice.crit.finesse.extraDice", value: 2 },
-                    { path: "modifiers.dice.crit.ranged.extraDice", value: 2 }
+                    { path: "dice.crit.melee.extraDice", value: 1 },
+                    { path: "dice.crit.brawl.extraDice", value: 1 },
+                    { path: "dice.crit.finesse.extraDice", value: 1 },
+                    { path: "dice.crit.ranged.extraDice", value: 1 }
                 ]
             },
             types: ['weapon'],
@@ -201,9 +182,9 @@ export class RelicPowers {
                 value: 'prot-1',
                 label: 'Protection +1',
                 modifiers: [
-                    { path: 'modifiers.skillCheck.reflex.modifier', value: 1 },
-                    { path: 'modifiers.skillCheck.endure.modifier', value: 1 },
-                    { path: 'modifiers.skillCheck.will.modifier', value: 1 }
+                    { path: 'skillCheck.reflex.modifier', value: 1 },
+                    { path: 'skillCheck.endure.modifier', value: 1 },
+                    { path: 'skillCheck.will.modifier', value: 1 }
                 ]
             },
             types: ['armor', 'weapon', 'sundry'],
@@ -217,9 +198,9 @@ export class RelicPowers {
                 value: 'prot-2',
                 label: 'Protection +2',
                 modifiers: [
-                    { path: 'modifiers.skillCheck.reflex.modifier', value: 2 },
-                    { path: 'modifiers.skillCheck.endure.modifier', value: 2 },
-                    { path: 'modifiers.skillCheck.will.modifier', value: 2 }
+                    { path: 'skillCheck.reflex.modifier', value: 2 },
+                    { path: 'skillCheck.endure.modifier', value: 2 },
+                    { path: 'skillCheck.will.modifier', value: 2 }
                 ]
             },
             types: ['armor', 'weapon', 'sundry'],
@@ -233,9 +214,9 @@ export class RelicPowers {
                 value: 'prot-3',
                 label: 'Protection +3',
                 modifiers: [
-                    { path: 'modifiers.skillCheck.reflex.modifier', value: 3 },
-                    { path: 'modifiers.skillCheck.endure.modifier', value: 3 },
-                    { path: 'modifiers.skillCheck.will.modifier', value: 3 }
+                    { path: 'skillCheck.reflex.modifier', value: 3 },
+                    { path: 'skillCheck.endure.modifier', value: 3 },
+                    { path: 'skillCheck.will.modifier', value: 3 }
                 ]
             },
             types: ['armor', 'weapon', 'sundry'],
@@ -249,7 +230,7 @@ export class RelicPowers {
                 value: 'trinket-1',
                 label: 'Trinket +1',
                 modifiers: [
-                    { path: 'modifiers.damage.out.spell', value: 1 }
+                    { path: 'damage.out.spell.flatBonus', value: 1 }
                 ]
             },
             types: ['weapon', 'sundry'],
@@ -263,7 +244,7 @@ export class RelicPowers {
                 value: 'trinket-2',
                 label: 'Trinket +2',
                 modifiers: [
-                    { path: 'modifiers.damage.out.spell', value: 2 }
+                    { path: 'damage.out.spell.flatBonus', value: 2 }
                 ]
             },
             types: ['weapon', 'sundry'],
@@ -277,7 +258,7 @@ export class RelicPowers {
                 value: 'trinket-3',
                 label: 'Trinket +3',
                 modifiers: [
-                    { path: 'modifiers.damage.out.spell', value: 3 }
+                    { path: 'damage.out.spell.flatBonus', value: 3 }
                 ]
             },
             types: ['weapon', 'sundry'],
@@ -416,9 +397,12 @@ export class RelicPowers {
             power: {
                 value: 'weak-1',
                 label: 'Weakness -1',
-                modifiers: [{
-                    path: 'modifiers.damage.out.attack', value: -1
-                }]
+                modifiers: [
+                    { path: 'system.modifier.damage.out.melee.flatBonus', value: -1 },
+                    { path: 'system.modifier.damage.out.brawl.flatBonus', value: -1 },
+                    { path: 'system.modifier.damage.out.finesse.flatBonus', value: -1 },
+                    { path: 'system.modifier.damage.out.ranged.flatBonus', value: -1 }
+                ]
             },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
@@ -431,9 +415,12 @@ export class RelicPowers {
             power: {
                 value: 'weak-2',
                 label: 'Weakness -2',
-                modifiers: [{
-                    path: 'modifiers.damage.out.attack', value: -2
-                }]
+                modifiers: [
+                    { path: 'system.modifier.damage.out.melee.flatBonus', value: -2 },
+                    { path: 'system.modifier.damage.out.brawl.flatBonus', value: -2 },
+                    { path: 'system.modifier.damage.out.finesse.flatBonus', value: -2 },
+                    { path: 'system.modifier.damage.out.ranged.flatBonus', value: -2 }
+                ]
             },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
@@ -446,9 +433,12 @@ export class RelicPowers {
             power: {
                 value: 'weak-3',
                 label: 'Weakness -3',
-                modifiers: [{
-                    path: 'modifiers.damage.out.attack', value: -3
-                }]
+                modifiers: [
+                    { path: 'system.modifier.damage.out.melee.flatBonus', value: -3 },
+                    { path: 'system.modifier.damage.out.brawl.flatBonus', value: -3 },
+                    { path: 'system.modifier.damage.out.finesse.flatBonus', value: -3 },
+                    { path: 'system.modifier.damage.out.ranged.flatBonus', value: -3 }
+                ]
             },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
@@ -596,7 +586,7 @@ export class RelicPowers {
                 value: 'swiftness-1',
                 label: 'Swiftness I',
                 modifiers: [{
-                    path: 'speed.turn', value: 5
+                    path: 'system.speed.turn', value: 5
                 }]
             },
             types: ['armor', 'sundry', 'weapon'],
@@ -610,7 +600,7 @@ export class RelicPowers {
                 value: 'swiftness-2',
                 label: 'Swiftness II',
                 modifiers: [{
-                    path: 'speed.turn', value: 10
+                    path: 'system.speed.turn', value: 10
                 }]
             },
             types: ['armor', 'sundry', 'weapon'],
@@ -624,7 +614,7 @@ export class RelicPowers {
                 value: 'swiftness-3',
                 label: 'Swiftness III',
                 modifiers: [{
-                    path: 'speed.turn', value: 15
+                    path: 'system.speed.turn', value: 15
                 }]
             },
             types: ['armor', 'sundry', 'weapon'],

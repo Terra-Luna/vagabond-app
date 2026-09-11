@@ -1,12 +1,13 @@
 import { createElement } from "react"
 
+import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
 import { getItemChoiceRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
-import { getId } from "../../utils/modelUtil"
+import { getId, inventoryItemTypes } from "../../utils/modelUtil"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
@@ -121,6 +122,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         validateCurrentLuck(this)
         validateCurrentFocus(this)
         PerkRulesSelectionsApplicator.apply(this.parent)
+        RelicPowerProcessor.applyHeroBonuses(this.parent)
     }
 
     override async _preUpdate(changes, options, user) {
@@ -210,6 +212,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue,
             } as Record<any, any>)
         }
+    }
+
+    equippedRelics = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
+        return this.parent.items.filter((it: any) => inventoryItemTypes().includes(it.type) && it.system.isEquipped && it.system.isRelic())
     }
 
     boundRelics = (): EquipmentDataModel<EquipmentSchema>[] => {

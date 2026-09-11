@@ -80,8 +80,8 @@ export const modifierSchema = () => {
         }),
 
         healing: new fields.SchemaField({
-            in: new fields.NumberField({ ...uncappedInteger }),
-            out: new fields.NumberField({ ...uncappedInteger })
+            in: new fields.SchemaField({ ...damageModifierSchema() }),
+            out: new fields.SchemaField({ ...damageModifierSchema() })
         }),
 
         casting: new fields.SchemaField({

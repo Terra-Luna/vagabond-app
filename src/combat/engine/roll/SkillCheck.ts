@@ -1,7 +1,10 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
+import { RelicPowerProcessor } from "../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import type { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
+import type { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 import { appLang } from "../../../utils/lang"
 import { getDiceTerms } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
@@ -10,6 +13,7 @@ export type SkillCheckType = 'attack' | 'cast' | 'save' | 'check'
 
 export interface SkillCheckArgs {
     type: SkillCheckType
+    item?: AlchemicalItemDataModel | WeaponDataModel
     skill: string
     d20Count?: number
     bonusDice?: DiceRollSchema[]
@@ -48,12 +52,22 @@ export class SkillCheck {
     result: SkillCheckResult | undefined
 
     constructor(hero: HeroDataModel, args: SkillCheckArgs) {
-        const skillMods = hero.modifiers.skillCheck[args.skill]
+        const heroMods = foundry.utils.deepClone(hero.modifiers)
+
+        if (args.item) {
+            RelicPowerProcessor.applyRelicPowers(args.item.relicPowers as any, heroMods)
+        }
+
+        if (args.type === 'save') {
+            RelicPowerProcessor.applySavingModifiers(hero.parent, heroMods)
+        }
+
+        const skillMods = heroMods.skillCheck[args.skill]
 
         const globalMods = args.type === 'attack'
-            ? hero.modifiers.skillCheck.attack
+            ? foundry.utils.deepClone(hero.modifiers).skillCheck.attack
             : (args.type === 'cast'
-                ? hero.modifiers.skillCheck.cast
+                ? foundry.utils.deepClone(hero.modifiers).skillCheck.cast
                 : undefined
             )
 

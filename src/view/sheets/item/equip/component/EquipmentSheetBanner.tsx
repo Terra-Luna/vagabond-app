@@ -1,4 +1,4 @@
-import { RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
+import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
@@ -32,7 +32,7 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
                                 title={relic.description}
                                 className="text-xs text-text-header-secondary font-paradigm font-normal italic"
                             >
-                                {RelicPowers.getFormattedRelicName(relic)}
+                                {RelicPowerProcessor.getFormattedRelicName(relic)}
                                 {index < relicPowers.length - 1 && ","}
                             </p>
                         ))}

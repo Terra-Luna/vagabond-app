@@ -132,6 +132,10 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
         }
     }
 
+    isRelic = (): boolean => {
+        return this.relicPowers.length > 0
+    }
+
     isBoundRelic = (): boolean => {
         return this.relicPowers.some(rel => rel.bound)
     }

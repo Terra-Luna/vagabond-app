@@ -1,6 +1,7 @@
 import { Diamond } from "lucide-react"
 import { useMemo } from "react"
 
+import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { RelicPower, RelicPowers } from "../../../../../apps/vagabond-tools/relic/RelicPowers"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { appLang } from "../../../../../utils/lang"
@@ -65,14 +66,14 @@ const RelicCard = ({ item, relic }) => {
             key={relic.id}
             title={relic.description}
             className={buttonAnimation}
-            onClick={async () => await RelicPowers.toggleRelicEffect(item, relic)}
+            onClick={async () => await RelicPowerProcessor.toggleRelicEffect(item, relic)}
         >
             <div className={`
                 flex flex-col justify-center text-center p-2 ${tableBorderRounded} hover-glow
                 ${item.system.relicPowers.some(p => p.id === relic.id) ? 'bg-context-menu-fill' : ''}
             `}>
                 <div className="flex gap-x-1">
-                    <p>{RelicPowers.getFormattedRelicName(relic)}</p>
+                    <p>{RelicPowerProcessor.getFormattedRelicName(relic)}</p>
                     {relic.bound &&
                         <Diamond size={8} className="text-text-header-tertiary fill-text-header-tertiary" />
                     }

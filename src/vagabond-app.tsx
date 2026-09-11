@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client"
 
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
+import { resolveAllAttacks } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
 import { VagabondActiveEffect } from './combat/documents/VagabondActiveEffect'
@@ -441,6 +442,10 @@ Hooks.on("deleteChatMessage", (message: any) => {
         try { vagabondChatRoots.get(message.id).unmount(); } catch (e) { /* no-op */ }
         vagabondChatRoots.delete(message.id);
     }
+});
+
+Hooks.on("deleteCombat", (combat: Combat, options: any, userId: string) => {
+    resolveAllAttacks()
 });
 
 Hooks.on("dropCanvasData", (canvas: Canvas, data: Record<string, any>): boolean | void => {

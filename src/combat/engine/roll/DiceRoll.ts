@@ -1,4 +1,6 @@
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
+import { RelicPowerProcessor } from "../../../apps/vagabond-tools/relic/RelicPowerProcessor"
+import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 
@@ -40,12 +42,16 @@ export class DiceRoll {
         }
     }
 
-    static getItemDamageWithHeroMods = (hero: { modifiers: any }, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
-        const mods = hero.modifiers
+    static getItemDamageWithHeroMods = (hero: HeroDataModel, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
+        const mods = foundry.utils.deepClone(hero.modifiers)
         const isVicious = item instanceof WeaponDataModel ? item.properties.includes('vicious') : false
         const isDefense = item instanceof WeaponDataModel ? item.properties.includes('defense') : false
         const isThrown = item instanceof WeaponDataModel ? item.properties.includes('thrown') : false
         const versatileBonus = item instanceof WeaponDataModel ? ((item.grip.style === 'V' && item.grip.state === 'HH') ? 2 : 0) : 0
+
+        if (item instanceof WeaponDataModel) {
+            RelicPowerProcessor.applyRelicPowers(item.relicPowers as any, mods)
+        }
 
         const dieSize =
             Math.max(mods.dice.size[skill]?.minimum ?? 0, item.damage.dice.faces) +
