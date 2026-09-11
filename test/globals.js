@@ -50,7 +50,8 @@ global.foundry = {
     },
     utils: {
         randomID: () => 'test-id',
-        getProperty: (obj, path) => path.split('.').reduce((acc, key) => acc?.[key], obj)
+        getProperty: (obj, path) => path.split('.').reduce((acc, key) => acc?.[key], obj),
+        deepClone: (obj) => JSON.parse(JSON.stringify(obj))
     }
 }
 

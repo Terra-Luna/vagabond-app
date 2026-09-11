@@ -24,6 +24,12 @@ export interface RuleSelection {
 
 export const randomId = () => foundry.utils.randomID()
 
+/**
+ * Returns a normalized object representing a perk with subselections.
+ * { id: "ruleId", value: "perkId", subselect: "spellId or stat path" }
+ * @param selections 
+ * @returns 
+ */
 export const normalizeRuleSelections = (selections: unknown): RuleSelection[] => {
     if (!Array.isArray(selections)) return []
 
@@ -33,6 +39,7 @@ export const normalizeRuleSelections = (selections: unknown): RuleSelection[] =>
         }
 
         if (!selection || typeof selection !== "object" || typeof (selection as any).value !== "string") return []
+
         return [{
             id: typeof (selection as any).id === "string" ? (selection as any).id : randomId(),
             value: (selection as any).value,
@@ -48,53 +55,82 @@ export const getRuleSelectionValues = (selections: unknown, ruleId?: string): st
 
 export async function savePerkSelections(actor: Actor & { system: any }, slots: { ruleId: string, value: string, selectionId?: string }[]) {
     const sourceItems = actor.items.filter(item => ["class", "ancestry"].includes(item.type as string)) as any[]
+    
     const rulesByItem = sourceItems.map(item => ({
         item,
         rules: foundry.utils.deepClone((item.system as any).rules ?? []) as any[]
     }))
+
     const virtualPerkRules = actor.system.perks.flatMap(perk => (perk.rules ?? []).map(rule => ({
         ruleId: rule.id,
         sourceId: perk._sourceId
     })))
 
+    let hasChanges = false
+
     for (const slot of slots.filter(slot => slot.value || slot.selectionId)) {
-        const directRule = rulesByItem.flatMap(source => source.rules).find(rule => rule.id === slot.ruleId)
-        if (directRule) {
-            const selections = normalizeRuleSelections(directRule.selections)
+        const rule = rulesByItem.flatMap(source => source.rules).find(rule => rule.id === slot.ruleId)
+
+        if (rule) {
+            const selections = normalizeRuleSelections(rule.selections)
             const existing = selections.find(selection => slot.selectionId
                 ? selection.id === slot.selectionId
                 : selection.value === slot.value)
             if (slot.value) {
-                if (existing) existing.value = slot.value
-                else selections.push({ id: slot.selectionId ?? randomId(), value: slot.value, subselect: "" })
+                if (existing) {
+                    if (existing.value !== slot.value) {
+                        existing.value = slot.value
+                        hasChanges = true
+                    }
+                }
+                else {
+                    selections.push({ id: slot.selectionId ?? randomId(), value: slot.value, subselect: "" })
+                    hasChanges = true
+                }
             }
             else if (existing) {
-                existing.value = ""
+                if (existing.value !== "") {
+                    existing.value = ""
+                    hasChanges = true
+                }
             }
-            directRule.selections = selections
+            rule.selections = selections
             continue
         }
 
         const virtualRule = virtualPerkRules.find(rule => rule.ruleId === slot.ruleId)
-        const parentSelection = virtualRule && rulesByItem
+        
+        const parentSelection = rulesByItem
             .flatMap(source => source.rules)
             .find(rule => normalizeRuleSelections(rule.selections).some(selection =>
                 slot.selectionId
                     ? selection.id === slot.selectionId
-                    : selection.value === virtualRule.sourceId))
+                    : (virtualRule && selection.value === virtualRule.sourceId)
+            ))
+
         if (!parentSelection) continue
 
         const selections = normalizeRuleSelections(parentSelection.selections)
+
         const existing = selections.find(selection =>
             slot.selectionId
                 ? selection.id === slot.selectionId
-                : selection.value === virtualRule.sourceId)
-        if (existing) existing.subselect = slot.value
+                : (virtualRule && selection.value === virtualRule.sourceId)
+        )
+
+        if (existing) {
+            if (existing.subselect !== slot.value) {
+                existing.subselect = slot.value
+                hasChanges = true
+            }
+        }
         parentSelection.selections = selections
     }
 
-    await Promise.all(rulesByItem.map(({ item, rules }) => item.update({ "system.rules": rules } as Record<string, any>)))
-    await actor.system?.forceUpdate?.()
+    if (hasChanges) {
+        await Promise.all(rulesByItem.map(({ item, rules }) => item.update({ "system.rules": rules } as Record<string, any>)))
+        await actor.system?.forceUpdate?.()
+    }
 }
 
 export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | undefined)[]): { name: string, stat: string, bonus: number }[] {

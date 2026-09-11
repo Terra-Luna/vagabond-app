@@ -58,13 +58,13 @@ export class PerkRulesSelectionsApplicator {
                 if (fullItem.system instanceof PerkDataModel) {
                     const parentSelection = selectionsByPerk.get(fullItem.uuid)?.shift()
                     systemClone.rules.forEach(rule => {
-                        rule.selections = parentSelection?.subselect
-                            ? [{ ...parentSelection, value: parentSelection.subselect, subselect: "" }]
+                        rule.selections = parentSelection
+                            ? [{ ...parentSelection, value: parentSelection.subselect ?? "", subselect: "" }]
                             : []
                     })
 
                     // Compound repeatable perks if the player has selected the same perk multiple times.
-                    const hasOwnChoice = Boolean(parentSelection?.subselect)
+                    const hasOwnChoice = systemClone.rules.some((rule: any) => rule.key === "ChoiceSet")
                     const duplicatePerk = actor.system.perks.find(it => (it as any)._sourceId === fullItem.uuid)
                     if (duplicatePerk && !hasOwnChoice) {
                         if (!systemClone.canTakeMultiple) continue

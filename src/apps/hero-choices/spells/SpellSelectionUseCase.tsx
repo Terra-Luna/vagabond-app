@@ -34,7 +34,14 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
             const ruleSelections = normalizeRuleSelections(rule.selections)
             ruleSelections.forEach(sel => {
                 if (slots[sharedIndex]) {
-                    slots[sharedIndex] = { value: sel.value, label: getSpellName(sel.value), ruleName: rule.label, ruleId: rule.id }
+                    slots[sharedIndex] = {
+                        ...slots[sharedIndex],
+                        selectionId: sel.id,
+                        value: sel.value,
+                        label: getSpellName(sel.value),
+                        ruleName: rule.label,
+                        ruleId: rule.id
+                    }
                 }
                 sharedIndex += 1
             })
@@ -94,14 +101,20 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
 
         Object.keys(classSpellSlotGroups).forEach(ruleId => {
             const ruleIndex = classRules.findIndex(r => r.id === ruleId)
+
             if (ruleIndex !== -1) {
-                const nextValues = classSpellSlotGroups[ruleId]?.map(it => it.value ?? "").filter(Boolean) ?? []
-                const currentSelections = normalizeRuleSelections(classRules[ruleIndex].selections).filter(selection => !selection.subselect)
+                const nextValues = classSpellSlotGroups[ruleId]
+                    ?.map(it => it.value ?? "")
+                    .filter(Boolean) ?? []
+
+                const currentSelections = normalizeRuleSelections(classRules[ruleIndex].selections)
+
                 const nextSelections = nextValues.map((value, index) => ({
                     ...(currentSelections[index] ?? { id: foundry.utils.randomID() }),
                     value,
                     subselect: ""
                 }))
+
                 if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
                     classRules[ruleIndex].selections = nextSelections
                     hasChanges = true
@@ -120,7 +133,7 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
     useEffect(() => {
         if (!actor || !perkSpellSlots.length || !dataLoaded.current) return
         savePerkSelections(actor, perkSpellSlots)
-    }, [actor, perkSpellSlots, perks])
+    }, [actor, perkSpellSlots])
 
     return { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants }
 }

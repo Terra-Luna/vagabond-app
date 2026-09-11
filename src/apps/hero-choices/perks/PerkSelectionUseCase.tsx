@@ -6,7 +6,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, randomId } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { groupBy } from "../../../utils/collectionUtil"
-import { usePerkBonusSelection } from "../../hero-creator/step/PerkBonusSelection"
+import { usePerkBonusSelection } from "./PerkBonusSelection"
 import { usePerkSelectionView } from "./PerkSelectionView"
 
 export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {

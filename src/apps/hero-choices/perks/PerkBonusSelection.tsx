@@ -7,10 +7,10 @@ import { appLang } from "../../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../../utils/localeUtils"
 import { Header } from "../../../view/component/Header"
 import { SkillCard } from "../../../view/component/SkillCard"
-import { BonusChoiceContainer, BonusChoiceTitle } from "../component/BonusChoiceContaner"
-import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
-import { HeroCreationLabel, HeroCreationSubtext } from "../component/HeroCreationTypography"
-import { TopNavButtons } from "../component/TopNavButtons"
+import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
+import { HeroCreationDropdown } from "../../hero-creator/component/HeroCreationDropdown"
+import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
+import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
 
 const expandChoiceRules = (rules: any[]) => rules.flatMap((rule, ruleIndex) =>
     Array.from({ length: Math.max(Number(rule.maxChoices) || 1, 1) }, (_, index) => ({

@@ -12,6 +12,7 @@ import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
+import { usePerkBonusSelection } from "../../hero-choices/perks/PerkBonusSelection"
 import { usePerkSelectionView } from "../../hero-choices/perks/PerkSelectionView"
 import { useSpellSelectionView } from "../../hero-choices/spells/SpellSelectionView"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
@@ -20,9 +21,7 @@ import { useAncestrySelection } from "./AncestrySelection"
 import { useClassSelection } from "./ClassSelection"
 import { useCoreStats } from "./CoreStats"
 import { useEquipmentSelection } from "./EquipmentSelection"
-import { usePerkBonusSelection } from "./PerkBonusSelection"
 import { useTrainingSelection } from "./TrainingSelection"
-
 
 export interface HeroCreatorArgs {
     actor: Actor & { system: HeroDataModel }

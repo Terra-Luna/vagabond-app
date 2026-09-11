@@ -32,9 +32,9 @@ export const useSpellSelectionView = (
     const [classSpellGrants, setClassSpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
 
     // Player's spell choices for each slot.
-    const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
-    const [classSpellSlots, setClassSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
-    const [perkSpellSlots, setPerkSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string }[]>([])
+    const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId?: string }[]>([])
+    const [classSpellSlots, setClassSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId?: string }[]>([])
+    const [perkSpellSlots, setPerkSpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId?: string }[]>([])
 
     useEffect(() => {
         setSpellsList([
@@ -52,8 +52,8 @@ export const useSpellSelectionView = (
     const loadInitialSlots = useCallback((rules: any[]) => {
         const slots: any[] = []
         rules.filter(r => r.pack === 'spell').forEach(rule => {
-            Array.from({ length: rule.maxChoices }).forEach(_ => {
-                slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id })
+            Array.from({ length: rule.maxChoices }).forEach(() => {
+                slots.push({ value: '', label: strings.emptySlot, ruleName: rule.label, ruleId: rule.id, selectionId: foundry.utils.randomID() })
             })
         })
         return slots
@@ -157,7 +157,7 @@ export const useSpellSelectionView = (
                 }
 
                 {/* PERK SPELL SLOTS (MAGICAL SECRETS) */}
-                {(perkSpellSlots.length > 0 && isCreationMode) &&
+                {perkSpellSlots.length > 0 &&
                     <BonusChoiceContainer>
                         <BonusChoiceTitle text={strings.magicalSecrets} />
                         <ItemSelectorGroup

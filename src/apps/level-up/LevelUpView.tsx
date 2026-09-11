@@ -12,12 +12,12 @@ import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
+import { usePerkBonusSelection } from "../hero-choices/perks/PerkBonusSelection"
 import { usePerkSelection } from "../hero-choices/perks/PerkSelectionUseCase"
 import { useSpellSelection } from "../hero-choices/spells/SpellSelectionUseCase"
 import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDropdown"
 import { HeroCreationLabel } from "../hero-creator/component/HeroCreationTypography"
 import { useClassSelection } from "../hero-creator/step/ClassSelection"
-import { usePerkBonusSelection } from "../hero-creator/step/PerkBonusSelection"
 
 export interface PerkBonusSelection {
     value: string
