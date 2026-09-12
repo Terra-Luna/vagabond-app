@@ -272,18 +272,18 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
 
     return (
         <div>
+            {/* TARGET TOKENS ARRAY */}
+            {attack.showTargets && !attack.isDefenseCheck &&
+                <div className="flex">
+                    <div className="flex flex-col w-full">
+                        <TargetsDisplay targets={targets} />
+                    </div>
+                </div>
+            }
+
             {/* SKILL CHECK */}
             {attack.showSkillCheck &&
                 <div>
-                    {/* TARGET TOKENS ARRAY */}
-                    {attack.showTargets && !attack.isDefenseCheck &&
-                        <div className="flex">
-                            <div className="flex flex-col w-full">
-                                <TargetsDisplay targets={targets} />
-                            </div>
-                        </div>
-                    }
-
                     <Header title={`${attack.isDefenseCheck ? "Defense" : `${attack.skillCheck!.result!.skillName}`} Check`} textLeft={true} />
                     <CardSubHeader showRightBorder={false} values={[
                         { label: "Difficulty", value: attack.skillCheck?.difficulty?.toString() },

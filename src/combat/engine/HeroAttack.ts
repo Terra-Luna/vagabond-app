@@ -437,7 +437,9 @@ export class HeroAttack extends Attack {
                 flatDmgBonus: isHealing
                     ? (mods.healing.out.spell.flatBonus ?? 0)
                     : (mods.damage.out.spell.flatBonus ?? 0),
-                perDieDmgBonus: mods.damage.out.spell.perDieBonus ?? 0
+                perDieDmgBonus: isHealing
+                    ? (mods.healing.out.spell.perDieBonus ?? 0)
+                    : (mods.damage.out.spell.perDieBonus ?? 0)
             })
         }
         else {
