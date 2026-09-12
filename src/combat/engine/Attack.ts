@@ -1,6 +1,6 @@
 import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { roll3dDice, sys_id } from "../../utils/foundryUtils"
-import { getTargetIds } from "../../utils/modelUtil"
+import { roll3dDice, showFloatingText, sys_id } from "../../utils/foundryUtils"
+import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
 import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
 
@@ -76,7 +76,7 @@ export abstract class Attack {
     }
 
     private applyHealing(args: AttackResolutionArgs) {
-        const targetIds = (this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
         this.getActors(targetIds).forEach(target => {
             this.updateHP(target?.system, this.getHP(target?.system) + (this.damageRoll?.result?.total ?? 0))
         })
@@ -85,9 +85,11 @@ export abstract class Attack {
     private applyFatigueDamage(args: AttackResolutionArgs) {
         const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
         targetIds.forEach(id => {
-            const actor = canvas?.scene?.tokens?.get(id)?.actor
+            const token = getCanvasToken(id)
+            const actor = token?.actor ?? canvas?.scene?.tokens?.get(id)?.actor
             const damage = this.damageRoll?.result?.total
             if (!damage || !actor) return
+            showFloatingText(token ?? actor, damage, { isHealing: false, color: "#f39c12" })
             actor.update({
                 'system.statuses.counters.fatigue':
                     (actor.system as any).statuses.counters.fatigue + damage
@@ -125,7 +127,16 @@ export abstract class Attack {
     }
 
     protected async updateHP(target, hp) {
-        await target?.parent.update({ "system.health.value": hp })
+        if (target) {
+            const currentHp = this.getHP(target) ?? 0
+            const diff = hp - currentHp
+            if (diff !== 0) {
+                const actor = target.parent
+                const token = actor ? (actor.getActiveTokens()[0] ?? actor) : null
+                showFloatingText(token ?? target, Math.abs(diff), { isHealing: diff > 0 })
+            }
+            await target.parent.update({ "system.health.value": hp })
+        }
     }
 
     async save(serialize: (attack: Attack) => AttackSnapshot | undefined) {

@@ -62,7 +62,8 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
                     }}
                     className={`
                             text-sm text-text-primary text-center font-eskapade font-normal
-                            mt-1 block w-full select-none break-words  ${hoverEffect}`}
+                            bg-sheet-main-fill/25 rounded-sm px-1
+                            mt-1 block w-full select-none break-words ${hoverEffect}`}
                     style={{ maxWidth: 100 }}
                 >
                     {label && label.trim() !== '' ? label : 'Clock'}

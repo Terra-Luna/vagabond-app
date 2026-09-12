@@ -138,8 +138,8 @@ export const ProgressClock: React.FC<ProgressClockProps> = ({
 
     const hoverEffect = "transform transition-transform duration-300 hover:scale-105"
 
-    return (
-        <div className="flex flex-col items-center justify-center p-1 rounded-xl shadow-md w-fit">
+    return (<>
+        <div className="flex flex-col items-center justify-center p-1 rounded-full shadow-md w-fit bg-sheet-main-fill/25">
             <svg
                 width={size}
                 height={size}
@@ -169,9 +169,11 @@ export const ProgressClock: React.FC<ProgressClockProps> = ({
 
             </svg>
 
-            {/* LABEL */}
-            <WidgetLabel label={label ?? 'Clock'} onLabelChange={onLabelChange} permissionCheck={checkClockPermission} />
+
 
         </div>
-    )
+
+        {/* LABEL */}
+        <WidgetLabel label={label ?? 'Clock'} onLabelChange={onLabelChange} permissionCheck={checkClockPermission} />
+    </>)
 }

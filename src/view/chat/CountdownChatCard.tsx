@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import { CountdownResult } from "../../combat/engine/roll/CountdownResult"
+import { showFloatingText } from "../../utils/foundryUtils"
 import { UtilityButton } from "../component/Button"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { Header } from "../component/Header"
@@ -29,6 +30,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
             else {
                 const hp = token.actor?.system?.health?.value ?? 0
                 token?.actor?.update({ "system.health.value": hp - roll * (dmgType === 'healing' ? -1 : 1) } as Record<string, number>)
+                showFloatingText(token, roll * (dmgType === 'healing' ? -1 : 1), { isHealing: dmgType === 'healing' })
             }
         }
 
