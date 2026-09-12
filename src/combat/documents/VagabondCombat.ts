@@ -109,7 +109,6 @@ interface Activations {
 export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combatant.SubType> extends Combatant<ActorDataModel> {
     override prepareBaseData(): void {
         super.prepareBaseData()
-        this.updateBurningStatus()
     }
 
     /**
@@ -125,9 +124,16 @@ export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combat
             const isBurning = !!getCountdowns().find(countdown =>
                 countdown.result.actorUuid === actor.uuid &&
                 countdown.result.status === "burning" &&
-                countdown.result.tokenUuid === this.token?.uuid
+                (countdown.result.tokenUuid ? countdown.result.tokenUuid === this.token?.uuid : true)
             )
-            return actor.toggleStatusEffect("burning", { active: isBurning })
+            const currentBurning =
+                actor.statuses?.has?.("burning") ||
+                (actor.system as any)?.statuses?.toggles?.burning ||
+                actor.effects?.some((e: any) => e.statuses?.has?.("burning") || e._id === "vBurning00000000")
+
+            if (isBurning !== currentBurning) {
+                return actor.toggleStatusEffect("burning", { active: isBurning })
+            }
         }
     }
 

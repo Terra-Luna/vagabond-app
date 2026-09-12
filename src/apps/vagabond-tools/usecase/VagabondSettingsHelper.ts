@@ -133,28 +133,49 @@ export const checkCountdownPermission = (): boolean => {
 export const deleteAllCountdowns = () => {
     return setCountdowns([])
 }
+export const addCountdowns = async (
+    countdownsToAdd: {
+        label: string
+        duration: number
+        x?: number
+        y?: number
+        actorId?: string
+        tokenUuid?: string
+        status?: { id: string, damageType?: string }
+    }[]
+) => {
+    if (!countdownsToAdd.length) return
+    const newCountdowns: CountdownSchema[] = countdownsToAdd.map(item => ({
+        id: foundry.utils.randomID(),
+        x: item.x ?? 0.1,
+        y: item.y ?? 0.2,
+        result: {
+            actorUuid: item.actorId,
+            tokenUuid: item.tokenUuid,
+            name: item.label,
+            duration: item.duration,
+            status: item.status?.id,
+            damageType: item.status?.damageType
+        }
+    }))
+    await setCountdowns([...getCountdowns(), ...newCountdowns])
+}
 export const addCountdown = async (
     label: string,
     duration: number, x = 0.1, y = 0.2,
     actorId?: string, tokenUuid?: string,
     status?: { id: string, damageType?: string }
 ) => {
-    const newCountdown: CountdownSchema = {
-        id: foundry.utils.randomID(), x: x, y: y,
-        result: {
-            actorUuid: actorId,
-            tokenUuid: tokenUuid,
-            name: label,
-            duration: duration,
-            status: status?.id,
-            damageType: status?.damageType
-        }
-    }
-    await setCountdowns([...getCountdowns(), newCountdown])
+    return addCountdowns([{ label, duration, x, y, actorId, tokenUuid, status }])
+}
+export const removeBurns = (actorUuids: (string | null | undefined)[] | Set<string>) => {
+    const uuidSet = new Set(Array.from(actorUuids).filter(Boolean) as string[])
+    if (uuidSet.size === 0) return Promise.resolve(true)
+    return setCountdowns(getCountdowns().filter(countdown => countdown.result.status !== "burning" || !countdown.result.actorUuid || !uuidSet.has(countdown.result.actorUuid)))
 }
 export const removeAllBurns = (actorUuid: string | null | undefined) => {
     if (!actorUuid) return Promise.resolve(true)
-    return setCountdowns(getCountdowns().filter(countdown => countdown.result.status !== "burning" || countdown.result.actorUuid !== actorUuid))
+    return removeBurns([actorUuid])
 }
 
 export const getManaEnforcement = (): boolean => {

@@ -10,7 +10,7 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
     const [isEditing, setIsEditing] = useState(false)
     const [editValue, setEditValue] = useState(label ?? '')
     const inputRef = useRef<HTMLInputElement>(null)
-    
+
     useEffect(() => {
         setEditValue(label ?? '')
     }, [label])
@@ -41,8 +41,8 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
 
     return (
         <FoundryHotkeyBlocker>
-            {isEditing ? (
-                <input
+            {isEditing
+                ? <input
                     ref={inputRef}
                     type="text"
                     value={editValue}
@@ -55,18 +55,19 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
                         mt-2 px-1 text-center focus:outline-none focus:border-destructive-action/33 w-32
                     `}
                 />
-            ) : (
-                <span
-                    title="Double click to edit"
-                        onDoubleClick={() => {
-                            if (!permissionCheck()) return
-                            setIsEditing(true)
-                        }}
-                    className={`mt-2 text-base text-slate-300 font-eskapade font-normal select-none ${hoverEffect}`}
+                : <span title="Double click to edit"
+                    onDoubleClick={() => {
+                        if (!permissionCheck()) return
+                        setIsEditing(true)
+                    }}
+                    className={`
+                            text-sm text-text-primary text-center font-eskapade font-normal
+                            mt-1 block w-full select-none break-words  ${hoverEffect}`}
+                    style={{ maxWidth: 100 }}
                 >
                     {label && label.trim() !== '' ? label : 'Clock'}
                 </span>
-            )}
+            }
         </FoundryHotkeyBlocker>
     )
 }

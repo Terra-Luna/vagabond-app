@@ -13,21 +13,23 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
     const [isApplied, setIsApplied] = useState(false)
     const dmgType = result.damageType
 
-    const apply = async () => {
+    const resolve = async (applyDamage: boolean = false) => {
         if (!result.actorUuid && !result.tokenUuid || !dmgType) return
 
-        const token = game.canvas?.tokens?.get(result.tokenUuid?.split(".").pop() ?? '') as any
-        if (!token) return
+        if (applyDamage) {
+            const token = game.canvas?.tokens?.get(result.tokenUuid?.split(".").pop() ?? '') as any
+            if (!token) return
 
-        const roll = result.rollSummary?.result ?? 0
+            const roll = result.rollSummary?.result ?? 0
 
-        if (dmgType === 'mana') {
-            const mana = token.actor?.system?.mana?.value ?? 0
-            token?.actor?.update({ "system.mana.value": mana + result } as Record<string, number>)
-        }
-        else {
-            const hp = token.actor?.system?.health?.value ?? 0
-            token?.actor?.update({ "system.health.value": hp - roll * (dmgType === 'healing' ? -1 : 1) } as Record<string, number>)
+            if (dmgType === 'mana') {
+                const mana = token.actor?.system?.mana?.value ?? 0
+                token?.actor?.update({ "system.mana.value": mana + result } as Record<string, number>)
+            }
+            else {
+                const hp = token.actor?.system?.health?.value ?? 0
+                token?.actor?.update({ "system.health.value": hp - roll * (dmgType === 'healing' ? -1 : 1) } as Record<string, number>)
+            }
         }
 
         setIsApplied(true)
@@ -36,7 +38,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
     return (
         <BaseChatCardHost
             banner={<ChatCardBanner portrait={''} title={result.name} />}
-            contents={<>
+            contents={<div className={`${isApplied ? 'opacity-90 grayscale-[85%]' : ''}`}>
                 <div className={`flex justify-center w-full`}>
                     <DiceRollComponent faces={result!.rollSummary!.faces} result={result!.rollSummary!.result} />
                     {dmgType &&
@@ -51,10 +53,13 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
                 {game.user?.isActiveGM && result.duration > 0 && dmgType && !isApplied &&
                     <div className="flex flex-col gap-1">
                         <Header title={"GM TOOLS"} />
-                        <UtilityButton onClick={() => apply()}>Apply</UtilityButton>
+                        <div className="flex gap-2">
+                            <UtilityButton onClick={() => resolve(true)}>Apply</UtilityButton>
+                            <UtilityButton onClick={() => resolve()}>Resolve</UtilityButton>
+                        </div>
                     </div>
                 }
-            </>}
+            </div>}
         />
     )
 }

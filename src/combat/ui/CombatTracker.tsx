@@ -1,7 +1,7 @@
 import { Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
 import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react"
 
-import { addCountdown, removeAllBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { addCountdowns, removeBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { NpcDataModel } from "../../model/actor/NpcDataModel"
@@ -16,7 +16,7 @@ import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { HeaderWithClipPath } from "../../view/component/SkillCard"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { useFoundryHook } from "../../view/wrappers/hooks"
-import { getControlledCombatants, getControlledTokens, performAsyncActionOnControlledCombatants } from "../combat-utils"
+import { combineCombatantWithControlledCombatants, getControlledCombatants, getControlledTokens, performAsyncActionOnControlledCombatants } from "../combat-utils"
 import { VagabondCombat, VagabondCombatant } from "../documents/VagabondCombat"
 import { controlledCombatantsHaveStatus, getCombatantStatuses } from "../engine/util/status"
 import { BulkCombatantEditView } from "./BulkCombatantEditView"
@@ -147,7 +147,7 @@ const GroupBody = ({ children }) => {
     )
 }
 
-const CombatantHeader = ({ token, combatant, name, children, onClick }) => {
+const CombatantHeader = ({ token, combatant, name, children, onClick, tooltipDescription }) => {
     const realToken = getCanvasToken(token?.id)
 
     const [hovered, setIsHovered] = useState(false)
@@ -191,7 +191,7 @@ const CombatantHeader = ({ token, combatant, name, children, onClick }) => {
             <div className={`flex w-full ${opacityClass}`}>
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} onClick={onClick} />
                 <div className="w-full pr-4">
-                    <div className={`px-1 font-eskapade text-text-secondary font-bold text-lg`}>
+                    <div title={tooltipDescription} className={`px-1 font-eskapade text-text-secondary font-bold text-lg`}>
                         <p className={`hover-glow ${hovered ? "app-hovered" : ""} leading-none`}>{name}</p>
                     </div>
                     {children}
@@ -265,14 +265,15 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             const StatusMenuItemIcon = () => <StatusIcon status={statusKey} size={24} className="mr-1 bg-sheet-header-fill" />
             const action = async (e) => {
                 e.keepOpen = true
-                await performAsyncActionOnControlledCombatants(combatant => combatant.actor?.toggleStatusEffect(statusKey, { active: !controlledCombatantsHaveStatus(statusKey) }))
+                const shouldBeActive = !controlledCombatantsHaveStatus(statusKey, combatant)
+                await performAsyncActionOnControlledCombatants(comb => comb.actor?.toggleStatusEffect(statusKey, { active: shouldBeActive }), combatant)
             }
-            return { label: appLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: () => controlledCombatantsHaveStatus(statusKey) } as CtxMenuItem
+            return { label: appLang.StatusConditions[statusKey].name, icon: StatusMenuItemIcon, action, isSelected: () => controlledCombatantsHaveStatus(statusKey, combatant) } as CtxMenuItem
         }
 
         const makeBurnMenuItem = () => {
             const StatusMenuItemIcon = () => <StatusIcon status="burning" size={24} className="mr-1 bg-sheet-header-fill" />
-            const getHasStatus = () => controlledCombatantsHaveStatus("burning")
+            const getHasStatus = () => controlledCombatantsHaveStatus("burning", combatant)
 
             const xStart = 0.1
             const yStart = 0.1
@@ -282,14 +283,27 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
 
             const applyBurn = async (e, damageType: string, duration: number) => {
                 e.keepOpen = true
-                performAsyncActionOnControlledCombatants(async combatant => {
-                    await addCountdown(
-                        `${combatant.actor?.name}: ${appLang.StatusConditions["burning"].name} (${appLang.DamageTypes[damageType]})`,
-                        duration, 0.1, y,
-                        combatant.actor?.uuid ?? '',
-                        combatant.token?.uuid,
-                        { id: "burning", damageType }
-                    )
+                const combatants = combineCombatantWithControlledCombatants(combatant)
+                const countdownsToAdd: {
+                    label: string
+                    duration: number
+                    x?: number
+                    y?: number
+                    actorId?: string
+                    tokenUuid?: string
+                    status?: { id: string, damageType?: string }
+                }[] = []
+
+                for (const comb of combatants) {
+                    countdownsToAdd.push({
+                        label: `${comb.actor?.name}: ${appLang.StatusConditions["burning"].name} (${appLang.DamageTypes[damageType]})`,
+                        duration,
+                        x,
+                        y,
+                        actorId: comb.actor?.uuid ?? '',
+                        tokenUuid: comb.token?.uuid,
+                        status: { id: "burning", damageType }
+                    })
 
                     if (y + step < 0.8) {
                         y += step
@@ -297,12 +311,14 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                         x += step
                         y = yStart
                     }
-                })
+                }
+
+                await addCountdowns(countdownsToAdd)
             }
 
             const subMenuItems = () => {
                 const items = Object.keys(appLang.DamageTypes)
-                    .filter(damageType => !(["none", "mana", "silvered", "coldiron"].includes(damageType)))
+                    .filter(damageType => !(["none", "mana", "silvered", "coldiron", "adamant", "fatigue", "slash", "pierce"].includes(damageType)))
                     .map(damageType => ({
                         label: appLang.DamageTypes[damageType],
                         subMenuItems: [
@@ -319,7 +335,9 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                     items.unshift({
                         label: "Clear All", action: async (e) => {
                             e.keepOpen = true
-                            performAsyncActionOnControlledCombatants(comb => removeAllBurns(comb.token?.actor?.uuid))
+                            const combatants = combineCombatantWithControlledCombatants(combatant)
+                            const actorUuids = combatants.map(c => c.token?.actor?.uuid).filter(Boolean) as string[]
+                            await removeBurns(actorUuids)
                         }, isSelected: true
                     })
                 }
@@ -361,7 +379,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                     ().find(token => (token.combatant as VagabondCombatant).activations.value === 0) ? [{
                         icon: RefreshCw,
                         label: "Refresh Activations",
-                        action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations())
+                        action: () => performAsyncActionOnControlledCombatants(comb => comb.resetActivations(), combatant)
                     }] : []),
                 {
                     icon: Trash,
@@ -392,7 +410,6 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
                         onCtxMenu(e, ctxMenuActions())
                     }
                 }}
-                title={appLang.Combat.keyExplainer}
             >
                 <div className="w-full">
                     {children}
@@ -410,6 +427,7 @@ const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHi
 
     return (
         <img
+            title={appLang.Combat.keyExplainer}
             onClick={(e) => { onClick(e, false, true); e.stopPropagation(); }}
             onAuxClick={(e) => { onClick(e, true, true); e.stopPropagation(); }}
             style={{ borderColor }}
@@ -423,14 +441,20 @@ const getStatusIcons = (combatant) => {
     return statuses.map((status) => {
         const img = CONFIG.statusEffects.find(e => e.id === status)?.img
         const title = appLang.StatusConditions[status].name
-        return img ? <img key={status} src={img} height={12} width={12} title={title} /> : <></>
+        const description = appLang.StatusConditions[status].description
+        return img
+            ? <img title={`${title}\n${description}`} src={img} height={12} width={12} />
+            : <></>
     })
 }
 
 const StatusIcon = ({ status, size, className }: { status: string, size?: number, className?: string }) => {
     const img = CONFIG.statusEffects.find(e => e.id === status)?.img
     const title = appLang.StatusConditions[status].name
-    return img ? <img key={status} src={img} height={size ?? 12} width={size ?? 12} title={title} className={className} /> : <></>
+    const description = appLang.StatusConditions[status].description
+    return img
+        ? <img title={`${title}\n${description}`} key={status} src={img} height={size ?? 12} width={size ?? 12} className={className} />
+        : <></>
 }
 
 const StatusIcons = ({ combatant }) => {
@@ -445,16 +469,27 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
     const heroActorModel = hero.actor.system
     const combatantComponentRef = useRef<{ onClick: any }>(null)
+    const hasMana = heroActorModel.mana.max > 0
+    const tooltipDescription = `${hasMana
+        ? localizeString(appLang.Combat.statTooltip, {
+            hp: heroActorModel.health.value?.toString(),
+            hpMax: heroActorModel.health.max?.toString(),
+            luck: heroActorModel.statuses.counters.luck?.toString(),
+            mana: heroActorModel.mana.value?.toString(),
+            manaMax: heroActorModel.mana.max?.toString()
+        })
+        : localizeString(appLang.Combat.statTooltipNoMana, {
+            hp: heroActorModel.health.value?.toString(),
+            hpMax: heroActorModel.health.max?.toString(),
+            luck: heroActorModel.statuses.counters.luck?.toString()
+        })}`
 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
-            <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick}>
-                <div className="w-full" title={heroActorModel.mana.max > 0
-                    ? localizeString(appLang.Combat.statTooltip, { hp: heroActorModel.health.value?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString(), mana: heroActorModel.mana.value?.toString(), manaMax: heroActorModel.mana.max?.toString() })
-                    : localizeString(appLang.Combat.statTooltipNoMana, { hp: heroActorModel.health.value?.toString(), hpMax: heroActorModel.health.max?.toString(), luck: heroActorModel.statuses.counters.luck?.toString(), luckMax: heroActorModel.stats.luck?.toString() })}>
+            <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick} tooltipDescription={tooltipDescription}>
+                <div title={tooltipDescription} className="w-full">
                     <Gauge max={heroActorModel.health.max} value={heroActorModel.health.value} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
-                    <Gauge max={heroActorModel.stats.luck} value={heroActorModel.statuses.counters.luck} fillColorClassName="bg-ic-luck/75" size="sm" rounded={false} />
-                    {(heroActorModel.mana.max > 0) && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.value} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
+                    {hasMana && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.value} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
                 </div>
                 <div>
                     <StatusIcons combatant={hero} />
@@ -499,11 +534,12 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     const token = useMemo(() => canvas?.tokens?.placeables?.find(t => t?.id === adversary?.token?._id) as Token, [adversary])
     const adversaryModel = adversary.actor.system
     const combatantComponentRef = useRef<{ onClick: any }>(null)
+    const tooltipDescription = localizeString(appLang.Combat.hpTooltip, { hp: adversaryModel.health.value?.toString(), hpMax: adversaryModel.health.max?.toString() })
 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
-            <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token} onClick={combatantComponentRef.current?.onClick}>
-                <div className="w-full" title={localizeString(appLang.Combat.hpTooltip, { hp: adversaryModel.health.value?.toString(), hpMax: adversaryModel.health.max?.toString() })}>
+            <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token} onClick={combatantComponentRef.current?.onClick} tooltipDescription={tooltipDescription}>
+                <div className="w-full">
                     <Gauge max={adversaryModel.health.max} value={adversaryModel.health.value} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
                 </div>
                 <div>

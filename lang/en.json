@@ -971,10 +971,11 @@
       "end": "End turn",
       "applyEff": "Apply Effects",
       "allSelected": "(All selected)",
+      "combatTracker": "Combat Tracker",
       "keyExplainer": "[Shift/Ctrl] to multi-select\n[Alt] to ping.\nR-click for menu.",
       "hpTooltip": "HP: {{hp}} / {{hpMax}}",
-      "statTooltip": "HP: {{hp}} / {{hpMax}}\nLuck: {{luck}} / {{luckMax}}\nMana: {{mana}} / {{manaMax}}",
-      "statTooltipNoMana": "HP: {{hp}} / {{hpMax}}\nLuck: {{luck}} / {{luckMax}}"
+      "statTooltip": "HP: {{hp}} / {{hpMax}}\nMana: {{mana}} / {{manaMax}}\nLuck: {{luck}}",
+      "statTooltipNoMana": "HP: {{hp}} / {{hpMax}}\nLuck: {{luck}}"
     }
   }
 }

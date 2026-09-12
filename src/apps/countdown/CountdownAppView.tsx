@@ -165,7 +165,7 @@ export const CountdownAppView = () => {
                             <DiceRollComponent
                                 faces={countdown.result.rollSummary?.faces ?? countdown.result.duration}
                                 result={countdown.result.rollSummary?.result ?? ''}
-                                textSize="text-6xl"
+                                textSize="text-4xl"
                             />
                         </button>
                     </div>
