@@ -1,4 +1,4 @@
-import { Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
+import { Clover, Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "lucide-react"
 import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import { addCountdowns, removeBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
@@ -14,6 +14,7 @@ import { FoundryHotkeyBlocker } from "../../view/component/FoundryHotkeyBlocker"
 import { Gauge } from "../../view/component/Gauge"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { HeaderWithClipPath } from "../../view/component/SkillCard"
+import { Tooltip } from "../../view/component/Tooltip"
 import { CanvasReadyWrapper } from "../../view/wrappers/CanvasReadyWrapper"
 import { useFoundryHook } from "../../view/wrappers/hooks"
 import { combineCombatantWithControlledCombatants, getControlledCombatants, getControlledTokens, performAsyncActionOnControlledCombatants } from "../combat-utils"
@@ -147,7 +148,7 @@ const GroupBody = ({ children }) => {
     )
 }
 
-const CombatantHeader = ({ token, combatant, name, children, onClick, tooltipDescription }) => {
+const CombatantHeader = ({ token, combatant, name, children, onClick, tooltipDescription, luck = undefined }) => {
     const realToken = getCanvasToken(token?.id)
 
     const [hovered, setIsHovered] = useState(false)
@@ -191,14 +192,23 @@ const CombatantHeader = ({ token, combatant, name, children, onClick, tooltipDes
             <div className={`flex w-full ${opacityClass}`}>
                 <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} onClick={onClick} />
                 <div className="w-full pr-4">
-                    <div title={tooltipDescription} className={`px-1 font-eskapade text-text-secondary font-bold text-lg`}>
-                        <p className={`hover-glow ${hovered ? "app-hovered" : ""} leading-none`}>{name}</p>
-                    </div>
+                    <Tooltip title={name} content={tooltipDescription}>
+                        <div className="flex items-center justify-between gap-x-1">
+                            <div className={`px-1 font-eskapade text-text-secondary font-bold text-lg`}>
+                                <p className={`hover-glow ${hovered ? "app-hovered" : ""} leading-none`}>{name}</p>
+                            </div>
+                            {luck &&
+                                <div className={`flex gap-x-1 items-center -mb-1`}>
+                                    <Clover size={14} className="text-ic-luck" />
+                                    <p className="text-lg text-ic-luck font-eskapade">{luck}</p>
+                                </div>
+                            }
+                        </div>
+                    </Tooltip>
                     {children}
                 </div>
             </div>
         </div>
-
     )
 }
 
@@ -399,7 +409,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
     return (
         <>
             <ContextMenu />
-            <div className={`flex w-full justify-between cursor-pointer combatant data-combatant-id=${combatant.id} bg-color-red`}
+            <div className={`flex w-full justify-between items-center cursor-pointer combatant data-combatant-id=${combatant.id} bg-color-red`}
                 onMouseEnter={onMouseEnter}
                 onMouseLeave={onMouseLeave}
                 onClick={e => onClick(e as any)}
@@ -424,15 +434,15 @@ const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHi
     const dispositionColor = isControlled ? CONFIG.Canvas.dispositionColors.CONTROLLED : isHovered ? CONFIG.Canvas.dispositionColors[disposition] : ""
     const borderColor = `#${dispositionColor.toString(16)}`
     const borderStyle = (isHovered || isControlled) ? "border-solid border-2" : "";
-
     return (
-        <img
-            title={appLang.Combat.keyExplainer}
-            onClick={(e) => { onClick(e, false, true); e.stopPropagation(); }}
-            onAuxClick={(e) => { onClick(e, true, true); e.stopPropagation(); }}
-            style={{ borderColor }}
-            className={`object-contain h-[54px] w-[54px] p-0.5 cursor-pointer mr-2 self-center ${borderStyle} transition-opacity duration-1200 ${isHidden ? 'opacity-50' : ''}`} src={src} alt={''}
-        />
+        <Tooltip content={appLang.Combat.keyExplainer}>
+            <img
+                onClick={(e) => { onClick(e, false, true); e.stopPropagation(); }}
+                onAuxClick={(e) => { onClick(e, true, true); e.stopPropagation(); }}
+                style={{ borderColor }}
+                className={`object-contain h-[54px] w-[54px] p-0.5 cursor-pointer mr-2 self-center ${borderStyle} transition-opacity duration-1200 ${isHidden ? 'opacity-50' : ''}`} src={src} alt={''}
+            />
+        </Tooltip>
     )
 }
 
@@ -443,7 +453,9 @@ const getStatusIcons = (combatant) => {
         const title = appLang.StatusConditions[status].name
         const description = appLang.StatusConditions[status].description
         return img
-            ? <img title={`${title}\n${description}`} src={img} height={12} width={12} />
+            ? <Tooltip title={title} content={description}>
+                <img src={img} height={12} width={12} />
+            </Tooltip>
             : <></>
     })
 }
@@ -453,7 +465,9 @@ const StatusIcon = ({ status, size, className }: { status: string, size?: number
     const title = appLang.StatusConditions[status].name
     const description = appLang.StatusConditions[status].description
     return img
-        ? <img title={`${title}\n${description}`} key={status} src={img} height={size ?? 12} width={size ?? 12} className={className} />
+        ? <Tooltip title={title} content={description}>
+            <img key={status} src={img} height={size ?? 12} width={size ?? 12} className={className} />
+        </Tooltip>
         : <></>
 }
 
@@ -469,28 +483,28 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     const token = useMemo(() => canvas?.tokens?.placeables.find(t => t.id === hero.tokenId) as Token, [hero])
     const heroActorModel = hero.actor.system
     const combatantComponentRef = useRef<{ onClick: any }>(null)
+
+    const hp = heroActorModel.health.value?.toString()
+    const hpMax = heroActorModel.health.max?.toString()
+    const mana = heroActorModel.mana.value?.toString()
+    const manaMax = heroActorModel.mana.max?.toString()
     const hasMana = heroActorModel.mana.max > 0
+    const luck = heroActorModel.statuses.counters.luck?.toString()
+
     const tooltipDescription = `${hasMana
-        ? localizeString(appLang.Combat.statTooltip, {
-            hp: heroActorModel.health.value?.toString(),
-            hpMax: heroActorModel.health.max?.toString(),
-            luck: heroActorModel.statuses.counters.luck?.toString(),
-            mana: heroActorModel.mana.value?.toString(),
-            manaMax: heroActorModel.mana.max?.toString()
-        })
-        : localizeString(appLang.Combat.statTooltipNoMana, {
-            hp: heroActorModel.health.value?.toString(),
-            hpMax: heroActorModel.health.max?.toString(),
-            luck: heroActorModel.statuses.counters.luck?.toString()
-        })}`
+        ? localizeString(appLang.Combat.statTooltip, { hp, hpMax, luck, mana, manaMax })
+        : localizeString(appLang.Combat.statTooltipNoMana, { hp, hpMax, luck })
+        }`
 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
-            <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick} tooltipDescription={tooltipDescription}>
-                <div title={tooltipDescription} className="w-full">
-                    <Gauge max={heroActorModel.health.max} value={heroActorModel.health.value} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
-                    {hasMana && <Gauge max={heroActorModel.mana.max} value={heroActorModel.mana.value} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
-                </div>
+            <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick} tooltipDescription={tooltipDescription} luck={luck}>
+                <Tooltip title={hero.name} content={tooltipDescription}>
+                    <div className="w-full">
+                        <Gauge max={hpMax} value={hp} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
+                        {hasMana && <Gauge max={manaMax} value={mana} fillColorClassName="bg-mana/75" size="sm" rounded={false} />}
+                    </div>
+                </Tooltip>
                 <div>
                     <StatusIcons combatant={hero} />
                 </div>
@@ -521,10 +535,24 @@ const ActivateCombatantButton = ({ combatant }: { combatant: VagabondCombatant }
     }, [combatant])
 
     if (isCurrentCombatant) {
-        component = <IconOnlyButton title={appLang.Combat.end} Icon={StopCircle} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={deactivateCombatant} />
+        component = <Tooltip content={appLang.Combat.end}>
+            <IconOnlyButton
+                Icon={StopCircle}
+                className="ml-auto mr-4"
+                colorClassName="text-text-header-tertiary"
+                onClick={deactivateCombatant}
+            />
+        </Tooltip>
     }
     else if (hasActivationsLeft) {
-        component = <IconOnlyButton title={appLang.Combat.activate} Icon={PlayIcon} className="ml-auto mr-4" colorClassName="text-text-header-tertiary" onClick={activateCombatant} />
+        component = <Tooltip content={appLang.Combat.activate}>
+            <IconOnlyButton
+                Icon={PlayIcon}
+                className="ml-auto mr-4"
+                colorClassName="text-text-header-tertiary"
+                onClick={activateCombatant}
+            />
+        </Tooltip>
     }
 
     return component
@@ -539,9 +567,17 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={adversary} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
             <CombatantHeader name={token?.document?.name ?? adversary.name} combatant={adversary} token={token} onClick={combatantComponentRef.current?.onClick} tooltipDescription={tooltipDescription}>
-                <div className="w-full">
-                    <Gauge max={adversaryModel.health.max} value={adversaryModel.health.value} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
-                </div>
+                <Tooltip title={token?.document?.name ?? adversary.name} content={tooltipDescription}>
+                    <div className="w-full">
+                        <Gauge
+                            max={adversaryModel.health.max}
+                            value={adversaryModel.health.value}
+                            fillColorClassName="bg-ic-hp/75"
+                            size="sm"
+                            rounded={false}
+                        />
+                    </div>
+                </Tooltip>
                 <div>
                     <StatusIcons combatant={adversary} />
                 </div>
