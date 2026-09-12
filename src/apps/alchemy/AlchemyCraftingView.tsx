@@ -5,7 +5,7 @@ import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDa
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { deleteItems, getAlchemyMaterials, useItem } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
-import { addItemToActor } from "../../utils/modelUtil"
+import { addItemToActor, getFullItem } from "../../utils/modelUtil"
 import { useAlchemySelection } from "../hero-choices/alchemy/AlchemySelectionUseCase"
 import { Recipes } from "../hero-choices/alchemy/Recipes"
 import { AlchemyToolsPill } from "./component/AlchemyToolsPill"
@@ -44,7 +44,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
      * Spend Material and add item to Actor's inventory.
      */
     const addToInventory = useCallback(async (item) => {
-        const fullItem = getFullItem(item.value)
+        const fullItem = await getFullItem<AlchemicalItemDataModel>(item?.value)
         if (fullItem) {
             if (await consumeMaterials()) {
                 await addItemToActor(actor, fullItem)
@@ -60,7 +60,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
      * Spend Material and use item directly without adding it to inventory.
      */
     const craftAndUse = useCallback(async (item) => {
-        const fullItem = getFullItem(item.value)
+        const fullItem = await getFullItem<AlchemicalItemDataModel>(item?.value)
         if (fullItem) {
             if (await consumeMaterials()) {
                 await useItem(actor, fullItem, true)
@@ -68,10 +68,6 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
         }
         setRevision(current => current + 1)
     }, [actor, setRevision, materials])
-
-    const getFullItem = (id): (Item & { system: AlchemicalItemDataModel }) | undefined => {
-        return fullAlchemyItems.find(it => it.uuid === id)
-    }
 
     return (
         <div className="flex flex-col p-1 h-full overflow-hidden">

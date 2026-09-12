@@ -226,7 +226,7 @@ Hooks.on("createItem", async (item, _options, _userId) => {
         }
     }
 
-    if ((item as any).type === "spell" && (item as any).type === "perk") {
+    if ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack") {
         await ItemsCache.updateItem(item)
     }
 })
@@ -255,7 +255,7 @@ Hooks.on("updateItem", async (item, changed, options, userId) => {
             }
         }
 
-        if ((item as any).type === "spell" || (item as any).type === "perk") {
+        if ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack") {
             await ItemsCache.updateItem(item)
         }
     }
@@ -281,7 +281,7 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     // something (like their class/ancestry) just adds it back.
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
 
-    if ((item as any).type === "spell" || (item as any).type === "perk") {
+    if ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack") {
         await ItemsCache.updateItem(item)
     }
 })
@@ -298,7 +298,7 @@ Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, u
              */
             if (action === "create" || action === "update") {
                 const item = await fromUuid(uuid)
-                if (item && ((item as any).type === "spell" || (item as any).type === "perk")) {
+                if (item && ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack")) {
                     const fullItem = await getFullItem(item as any)
                     if (fullItem) {
                         ItemsCache.items.set(uuid, fullItem)

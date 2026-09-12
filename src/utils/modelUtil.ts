@@ -50,29 +50,63 @@ export interface TypedIndexEntry {
     [key: string]: unknown
 }
 
+export const COMPENDIUM_INDEX_FIELDS = [
+    "type",
+    "img",
+    "system.rules",
+    "system.prerequisites",
+    "system.value",
+    "system.totalValue",
+    "system.category",
+    "system.isMaterials",
+    "system.isAlchemyTools",
+    "system.canTakeMultiple",
+    "system.startingPacks",
+    "system.damage",
+    "system.bulk",
+    "system.alchemyCategory",
+    "system.description",
+    "system.rating",
+    "system.mightReq",
+    "system.cost",
+    "system.items",
+    "system.skills",
+    "system.grip",
+    "system.properties"
+]
+
 /**
- * A utility function which queries all world and compendium items of the given types and returns a combined list.
+ * A utility function which queries all world and compendium items of the given types in a single pass.
  * Best used in conjunction with inventoryItemTypes()
  * @param itemTypes 
  * @returns 
  */
 export const CombinedItemsMultiType = async (itemTypes: string[]): Promise<Array<Item | TypedIndexEntry>> => {
-    let allItems: Array<Item | TypedIndexEntry> = []
-    for (const type of itemTypes) {
-        const items = await CombinedItems(type)
-        allItems = [...allItems, ...items]
+    const typeSet = new Set(itemTypes)
+    const worldItems = Array.from(game.items?.values() ?? []).filter(item => typeSet.has(item?.type)) as Item[]
+    const worldNames = new Set(worldItems.map(item => item.name?.trim().toLowerCase()))
+
+    const packs = game.packs?.filter((pack) => pack.metadata.type === "Item") ?? []
+    await Promise.all(packs.map(pack => pack.getIndex({ fields: COMPENDIUM_INDEX_FIELDS } as unknown as Parameters<typeof pack.getIndex>[0])))
+
+    const compendiumItems: TypedIndexEntry[] = []
+    for (const pack of packs) {
+        const entries = (pack.index?.contents ?? []) as unknown as TypedIndexEntry[]
+        for (const entry of entries) {
+            if (!typeSet.has(entry?.type)) continue
+            const entryName = entry.name?.trim().toLowerCase()
+            if (!worldNames.has(entryName)) {
+                compendiumItems.push(entry)
+            }
+        }
     }
-    return allItems
+
+    return [...worldItems, ...compendiumItems]
 }
 
 export const CombinedItemsAll = async (): Promise<Array<Item | TypedIndexEntry>> => {
-    let allItems: Array<Item | TypedIndexEntry> = []
     const types = ['ancestry', 'class', 'perk', 'spell', ...inventoryItemTypes()]
-    for (const type of types) {
-        const items = await CombinedItems(type)
-        allItems = [...allItems, ...items]
-    }
-    return allItems
+    return CombinedItemsMultiType(types)
 }
 
 /**
@@ -83,42 +117,45 @@ export const CombinedItemsAll = async (): Promise<Array<Item | TypedIndexEntry>>
  * @returns 
  */
 export const CombinedItems = async (itemType: string): Promise<Array<Item | TypedIndexEntry>> => {
-    const worldItems = Array.from(game.items?.values() ?? []).filter(item => item?.type === itemType) as Item[]
-
-    // Track world item names as the unique filter key
-    const worldNames = new Set(worldItems.map(item => item.name?.trim().toLowerCase()));
-
-    const packs = game.packs?.filter((pack) => pack.metadata.type === "Item") ?? []
-    const compendiumItems: TypedIndexEntry[] = []
-
-    for (const pack of packs) {
-        await pack.getIndex({ fields: ["type"] } as unknown as Parameters<typeof pack.getIndex>[0])
-        const entries = pack.index.contents as unknown as TypedIndexEntry[]
-
-        const matches = entries.filter((entry) => {
-            if (entry?.type !== itemType) return false;
-            const entryName = entry.name?.trim().toLowerCase();
-            return !worldNames.has(entryName);
-        })
-
-        compendiumItems.push(...matches)
-    }
-
-    return [...worldItems, ...compendiumItems]
+    return CombinedItemsMultiType([itemType])
 }
 
+const documentPromiseCache = new Map<string, Promise<Item | null>>()
+
 /**
- * A utility function for getting full Item data from a TypedIndexEntry
+ * A utility function for getting full Item data from a TypedIndexEntry, Item, or UUID.
+ * Memoizes async lookups to avoid redundant network roundtrips.
  * @param item 
  * @returns 
  */
-export async function getFullItem<T>(item: Item | TypedIndexEntry | null): Promise<Item & { system: T } | null> {
-    if (!item || item instanceof Item) return item as Item & { system: T }
-    const resolvedDocument = await fromUuid(item.uuid)
-    if (resolvedDocument instanceof Item) {
-        return resolvedDocument as Item & { system: T }
+export async function getFullItem<T = any>(item: Item | TypedIndexEntry | string | null | undefined): Promise<(Item & { system: T }) | null> {
+    if (!item) return null
+    if (item instanceof Item) return item as Item & { system: T }
+
+    const uuid = typeof item === "string" ? item : item.uuid
+    if (!uuid) return null
+
+    const worldItem = game.items?.get(uuid) || game.items?.find(it => it.uuid === uuid)
+    if (worldItem instanceof Item) return worldItem as Item & { system: T }
+
+    if (!documentPromiseCache.has(uuid)) {
+        const promise = (async () => {
+            try {
+                const resolved = await fromUuid(uuid)
+                if (resolved instanceof Item) {
+                    return resolved
+                }
+                return null
+            } catch (err) {
+                console.error(`Failed to resolve document for UUID: ${uuid}`, err)
+                return null
+            }
+        })()
+        documentPromiseCache.set(uuid, promise)
     }
-    return null
+
+    const doc = await documentPromiseCache.get(uuid)
+    return (doc as (Item & { system: T }) | null) ?? null
 }
 
 /**
@@ -128,29 +165,22 @@ export async function getFullItem<T>(item: Item | TypedIndexEntry | null): Promi
  * @param item 
  * @returns 
  */
-export async function addItemToActor(actor: Actor, item: Item | TypedIndexEntry): Promise<Item | undefined> {
+export async function addItemToActor(actor: Actor, item: Item | TypedIndexEntry | string): Promise<Item | undefined> {
     let sourceItemData: Record<string, unknown> | null
 
-    if (isTypedIndexEntry(item)) {
-        // 1. Resolve compendium item via its UUID
-        // fromUuid is asynchronous; it fetches the cold-storage document cleanly from disk
-        const fullCompendiumItem = await fromUuid(item.uuid)
-
-        if (!fullCompendiumItem || !("toObject" in fullCompendiumItem)) {
-            throw new Error(`Failed to resolve full document data for UUID: ${item.uuid}`)
-        }
-
-        // Convert to a plain JavaScript object to cleanly decouple it from the compendium
-        sourceItemData = (fullCompendiumItem as Item).toObject()
-    } else {
-        // 2. Clone active world item data to avoid mutating the original source
+    if (item instanceof Item) {
         sourceItemData = item.toObject()
+    } else {
+        const fullItem = await getFullItem(item)
+        if (!fullItem || !("toObject" in fullItem)) {
+            const targetUuid = typeof item === "string" ? item : item?.uuid
+            throw new Error(`Failed to resolve full document data for UUID: ${targetUuid}`)
+        }
+        sourceItemData = fullItem.toObject()
     }
 
     if (!sourceItemData) return undefined
 
-    // 3. Create the document embedded directly onto the actor
-    // Foundry expects an array of data objects, and returns an array of instantiated documents
     const createdItems = await actor.createEmbeddedDocuments("Item", [sourceItemData] as unknown as any[]);
 
     return createdItems[0] as Item | undefined
@@ -162,7 +192,7 @@ export async function addItemsToActor(actor: Actor, items: (Item | TypedIndexEnt
     }
 }
 
-function isTypedIndexEntry(item: Item | TypedIndexEntry): item is TypedIndexEntry {
+export function isTypedIndexEntry(item: Item | TypedIndexEntry): item is TypedIndexEntry {
     return "uuid" in item && typeof (item as any).img === "string"
 }
 

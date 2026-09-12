@@ -143,7 +143,7 @@ export const CountdownAppView = () => {
     return (<>
         <CanvasOverlayObjectWrapper objects={visibleItems} onMouseDown={handleMouseDown}>
             {(countdown: CountdownSchema) => (
-                <div className={`flex flex-col p-0.5 rounded pointer-events-auto items-center`}
+                <div className={`flex flex-col rounded pointer-events-auto items-center`}
                     onContextMenu={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -155,17 +155,17 @@ export const CountdownAppView = () => {
                     {/* DIE ICON AND BUTTON */}
                     <div className={`
                         relative flex items-center justify-center rounded-full aspect-square border border-solid border-dice
-                        ${countdown.result.duration === 0 ? 'bg-destructive-action/33' : 'bg-sheet-main-fill/15'}
+                        ${countdown.result.duration === 0 ? 'bg-destructive-action/33' : 'bg-sheet-main-fill/40'}
                     `}>
                         <button
                             title={`Click to roll\nR-click for options`}
-                            className="hover-glow transition-transform active:scale-95 focus:outline-none mt-2.5"
+                            className="hover-glow transition-transform active:scale-95 focus:outline-none mt-1.5 -m-1"
                             onClick={() => handleCountdownClick(countdown.id)}
                         >
                             <DiceRollComponent
                                 faces={countdown.result.rollSummary?.faces ?? countdown.result.duration}
                                 result={countdown.result.rollSummary?.result ?? ''}
-                                textSize="text-4xl"
+                                textSize="text-6xl"
                             />
                         </button>
                     </div>

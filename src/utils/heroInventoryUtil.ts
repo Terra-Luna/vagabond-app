@@ -20,7 +20,7 @@ import { CtxMenuItem } from "../view/component/ContextMenu"
 import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
-import { getId, getName } from "./modelUtil"
+import { getId, getFullItem, getName } from "./modelUtil"
 
 /**
  * Use this function for programatically adding items to Actors. It mimics
@@ -34,12 +34,13 @@ export async function addItems(actor: Actor & { system: any }, uuids: string[]) 
     const items: any[] = []
 
     for (const uuid of uuids) {
-        if (!uuid) return
+        if (!uuid) continue
 
-        const item = ItemsCache.allItems().find(it => it.uuid === uuid)
-        if (!item) continue
+        const cachedItem = ItemsCache.items.get(uuid)
+        const fullItem = await getFullItem(cachedItem ?? uuid)
+        if (!fullItem) continue
 
-        const itemData = item.toObject() as any
+        const itemData = fullItem.toObject() as any
         itemData._stats = {
             ...itemData._stats,
             compendiumSource: uuid
@@ -56,7 +57,9 @@ export async function addItems(actor: Actor & { system: any }, uuids: string[]) 
         items.push(itemData)
     }
 
-    await actor.createEmbeddedDocuments("Item", items)
+    if (items.length > 0) {
+        await actor.createEmbeddedDocuments("Item", items)
+    }
 }
 
 export function getEquippedArmor(hero: any): (Item & { system: ArmorDataModel }) | undefined {

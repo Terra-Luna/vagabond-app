@@ -50,9 +50,9 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
                     onBlur={handleSave}
                     onKeyDown={handleKeyDown}
                     className={`
-                        text-sm text-text-header-primary font-eskapade font-normal
-                        bg-sheet-header-fill ${tableBorderRounded}
-                        mt-2 px-1 text-center focus:outline-none focus:border-destructive-action/33 w-32
+                        text-sm text-text-primary font-eskapade font-normal
+                        bg-sheet-main-fill ${tableBorderRounded}
+                        mt-2 px-1 text-center focus:outline-none focus:border-destructive-action/50 w-32
                     `}
                 />
                 : <span title="Double click to edit"
@@ -61,8 +61,8 @@ export const WidgetLabel = ({ label, onLabelChange, permissionCheck }: {
                         setIsEditing(true)
                     }}
                     className={`
-                            text-sm text-text-primary text-center font-eskapade font-normal
-                            bg-sheet-main-fill/25 rounded-sm px-1
+                            text-base text-text-primary text-center leading-4 font-eskapade font-normal
+                            bg-sheet-main-fill/40 rounded-sm px-1 py-0.25
                             mt-1 block w-full select-none break-words ${hoverEffect}`}
                     style={{ maxWidth: 100 }}
                 >

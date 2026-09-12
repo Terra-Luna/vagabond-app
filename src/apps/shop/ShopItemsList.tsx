@@ -3,10 +3,10 @@ import { useLayoutEffect, useRef } from "react"
 import { openItemSheet } from "../../model/actor/type/Inventory"
 import { coinsAsString } from "../../model/common/CoinValue"
 import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
-import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { appLang } from "../../utils/lang"
-import { SecondaryButton } from "../../view/component/Button"
+import { UtilityButton } from "../../view/component/Button"
 import { ItemDivider } from "../../view/component/Header"
 
 let savedScrollTop = 0
@@ -36,37 +36,37 @@ export const ShopItemsList = ({ items, onAddItemToCart }: {
             {
                 items.map(item => (
                     <div key={item.uuid}>
-                        <div className="items-center content-center px-2 py-0.5">
+                        <div className="items-center content-center px-2 py-1">
                             <div className="flex justify-between">
                                 <div className="-space-y-1">
                                     <div className="flex gap-x-1">
                                         <div className="flex gap-x-1">
                                     <p className="font-bold hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</p>
-                                            {item.system instanceof WeaponDataModel &&
+                                            {((item.type as string) === 'weapon' || item.system instanceof WeaponDataModel) && (item.system as any)?.damage &&
                                                 <p className="text-text-secondary italic">{`
-                                                ${item.system.skills.map(s => appLang.WeaponSkills[s]?.name).join(", ")} 
-                                                | d${item.system.damage.dice.faces} 
-                                                | ${appLang.Grips[item.system.grip.style]}
-                                                | ${item.system.properties.map(p => appLang.WeaponProps[p].name).join(", ")}
+                                                ${(item.system as any).skills?.map(s => appLang.WeaponSkills[s]?.name).filter(Boolean).join(", ") ?? ''} 
+                                                | d${(item.system as any).damage?.dice?.faces ?? 6} 
+                                                | ${appLang.Grips[(item.system as any).grip?.style]?.name ?? (item.system as any).grip?.style ?? ''}
+                                                | ${(item.system as any).properties?.map(p => appLang.WeaponProps[p]?.name).filter(Boolean).join(", ") ?? ''}
                                             `}</p>
                                             }
                                         </div>
-                                        {item.system instanceof ArmorDataModel &&
+                                        {((item.type as string) === 'armor' || item.system instanceof ArmorDataModel) &&
                                             <p className="text-text-secondary">{`
-                                                Rating: ${item.system.rating}
-                                                | MIT: ${item.system.mightReq}
+                                                Rating: ${(item.system as any)?.rating ?? 0}
+                                                | MIT: ${(item.system as any)?.mightReq ?? 0}
                                             `}</p>
                                         }
                                     </div>
                                     <div className="flex gap-x-2">
-                                        <p className="text-text-secondary">{`${appLang.EquipmentCategories[item.system.category]}`}</p>
+                                        <p className="text-text-secondary">{`${appLang.EquipmentCategories[item.system?.category] ?? item.system?.category ?? ''}`}</p>
                                         <p className="text-text-secondary">•</p>
-                                        <p className="text-text-secondary">{`Slots: ${item.system.bulk.totalSlots}`}</p>
+                                        <p className="text-text-secondary">{`Slots: ${getTotalSlots(item)}`}</p>
                                     </div>
                                 </div>
                                 <div className="flex gap-x-4 items-center">
-                                    <p>{coinsAsString(item.system.totalValue)}</p>
-                                    <SecondaryButton onClick={() => onAddItemToCart(item)}>Add</SecondaryButton>
+                                    <p>{coinsAsString(item.system?.totalValue ?? item.system?.value)}</p>
+                                    <UtilityButton onClick={() => onAddItemToCart(item)}>{appLang.ButtonActions.add}</UtilityButton>
                                 </div>
                             </div>
                         </div>

@@ -1,6 +1,7 @@
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { groupBy } from "../../../utils/collectionUtil"
 import { stackStackables } from "../../../utils/heroInventoryUtil"
+import { getFullItem } from "../../../utils/modelUtil"
 import { Coins, coinSchema, subtractCoins } from "../../common/CoinValue"
 import { fields, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema,ItemDataModel } from "../ItemDataModel"
@@ -62,10 +63,13 @@ export class StartingPackDataModel extends ItemDataModel<StartingPackSchema> {
 
         for (const key of Object.keys(groupedItems)) {
             const group = groupedItems[key]
-            const sourceItem = equipment.find(eq => eq.id === group[0].id)
+            const sourceItem = equipment.find(eq => eq.id === group[0].id || (eq as any)._id === group[0].id || eq.uuid === group[0].uuid)
             if (!sourceItem) continue
 
-            const itemData = sourceItem.toObject()
+            const fullDoc = await getFullItem(sourceItem)
+            if (!fullDoc) continue
+
+            const itemData = fullDoc.toObject()
             if (itemData.system?.bulk) {
                 if (itemData.system.bulk.isStackable) {
                     itemData.system.bulk.quantity = group.length

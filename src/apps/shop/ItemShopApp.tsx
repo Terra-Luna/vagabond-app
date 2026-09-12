@@ -3,6 +3,7 @@ import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { Coins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
 import { stackStackables } from "../../utils/heroInventoryUtil"
+import { getFullItem } from "../../utils/modelUtil"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { useItemShopView } from "./ItemShopView"
 
@@ -42,18 +43,33 @@ const ItemShopComponent = ({ actor, onClose }) => {
     const onCheckout = async () => {
         await actor.update({ 'system.inventory.coins': wallet } as Record<string, Coins>)
 
-        const processedItems: Item[] = []
+        const processedItems: any[] = []
 
         for (const item of cart) {
-            if (item.system.bulk.isStackable) {
+            const isStackable = item.system?.bulk?.isStackable ?? false
+
+            if (isStackable) {
                 if (!processedItems.map(it => it.name).includes(item.name)) {
-                    const itemToAdd = item.toObject()
-                    itemToAdd.system.bulk.quantity = cart.filter(it => it.name === item.name)?.reduce((sum, it) => sum + it.system.bulk.quantity, 0)
-                    processedItems.push(itemToAdd as any)
+                    let itemToAdd: any
+                    if (typeof (item as any).toObject === "function") {
+                        itemToAdd = (item as any).toObject()
+                    }
+                    else {
+                        const fullDoc = await getFullItem(item)
+                        itemToAdd = fullDoc?.toObject() ?? foundry.utils.deepClone(item)
+                    }
+                    itemToAdd.system.bulk.quantity = cart.filter(it => it.name === item.name)?.reduce((sum, it) => sum + (it.system?.bulk?.quantity ?? 1), 0)
+                    processedItems.push(itemToAdd)
                 }
             }
             else {
-                processedItems.push(item)
+                if (typeof (item as any).toObject === "function") {
+                    processedItems.push((item as any).toObject())
+                }
+                else {
+                    const fullDoc = await getFullItem(item)
+                    processedItems.push(fullDoc ? fullDoc.toObject() : item)
+                }
             }
         }
 

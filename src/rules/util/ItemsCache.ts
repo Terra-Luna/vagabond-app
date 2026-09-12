@@ -12,64 +12,10 @@ export class ItemsCache {
      */
     static items = new Map<string, any>()
 
-    static allItems = () => {
-        return [...new Map([...this.items.entries()]).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name)) as Item[]
-    }
-
-    static spells = () => {
-        return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.type === 'spell')).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: SpellDataModel })[]
-    }
-
-    static perks = () => {
-        return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.type === 'perk')).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: PerkDataModel })[]
-    }
-
-    static eligiblePerks = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[]) => {
-        const perks = this.perks()
-        return perks.filter(perk => isEligibleForPerk(stats, trainings, spells, perk.system))
-    }
-
-    static alchemical = () => {
-        return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.visible && item.type === 'alchemical')).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: AlchemicalItemDataModel })[]
-    }
-
-    static equipment = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
-        return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.visible && inventoryItemTypes().includes(item.type))).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .sort((a, b) => a.system.category.localeCompare(b.system.category)) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
-    }
-
-    static sundries = (): (Item & { system: SundryDataModel })[] => {
-        return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.visible && item.type === "sundry")).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name))
-            .sort((a, b) => a.system.category.localeCompare(b.system.category)) as (Item & { system: SundryDataModel })[]
-    }
-
-    static packs = (): (Item & { system: any })[] => {
-        return [...new Map([...this.items.entries()]
-            .filter(([_, item]) => item.visible && item.type === 'startingpack')).values()]
-            .filter(it => it != null)
-            .sort((a, b) => a.name.localeCompare(b.name)) as (Item & { system: any })[]
-    }
-
     /**
-     * Initialize a cache by pre-fetching rules-eligible items so the Hero's
-     * prepareDerivedData function isn't running async operations.
+     * Initialize the cache by fetching all items at once. Keep performance quick
+     * by pre-fetching the full Items in // batches for rules-bearing Items. This
+     * will keep Heroes prep derived data from being bogged own on app load.
      */
     static async initialize() {
         this.items.clear()
@@ -79,23 +25,90 @@ export class ItemsCache {
         )
 
         for (const item of allItems) {
-            const fullItem = await getFullItem(item)
-            if (fullItem) {
-                this.items.set(fullItem.uuid, fullItem)
+            if (item?.uuid) {
+                this.items.set(item.uuid, item)
+            }
+        }
+
+        const ruleItemEntries = allItems.filter(
+            item => !(item instanceof Item) && (item.type === 'spell' || item.type === 'perk' || item.type === 'startingpack')
+        )
+
+        const BATCH_SIZE = 25
+        for (let i = 0; i < ruleItemEntries.length; i += BATCH_SIZE) {
+            const batch = ruleItemEntries.slice(i, i + BATCH_SIZE)
+            const resolved = await Promise.all(batch.map(entry => getFullItem(entry)))
+            for (const doc of resolved) {
+                if (doc?.uuid) {
+                    this.items.set(doc.uuid, doc)
+                }
             }
         }
 
         Hooks.callAll("onItemsCacheInitialized" as any, ItemsCache)
     }
 
-    static async updateItem(item: any) {
-        const validTypes = ['spell', 'perk']
-        if (!validTypes.includes(item.type)) return
+    static allItems = () => {
+        return Array.from(this.items.values())
+            .filter(it => it != null)
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as Item[]
+    }
 
-        const fullItem = await getFullItem(item)
-        if (fullItem) {
-            this.items.set(fullItem.uuid, fullItem)
-            this.refreshAllActors()
+    static spells = () => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && item.type === 'spell')
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: SpellDataModel })[]
+    }
+
+    static perks = () => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && item.type === 'perk')
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: PerkDataModel })[]
+    }
+
+    static eligiblePerks = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[]) => {
+        const perks = this.perks()
+        return perks.filter(perk => isEligibleForPerk(stats, trainings, spells, perk.system))
+    }
+
+    static alchemical = () => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && (item.visible !== false) && item.type === 'alchemical')
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: AlchemicalItemDataModel })[]
+    }
+
+    static equipment = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
+        const invTypes = inventoryItemTypes()
+        return Array.from(this.items.values())
+            .filter(item => item != null && (item.visible !== false) && invTypes.includes(item.type))
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
+            .sort((a, b) => (a.system?.category ?? "").localeCompare(b.system?.category ?? "")) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
+    }
+
+    static sundries = (): (Item & { system: SundryDataModel })[] => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && (item.visible !== false) && item.type === "sundry")
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
+            .sort((a, b) => (a.system?.category ?? "").localeCompare(b.system?.category ?? "")) as (Item & { system: SundryDataModel })[]
+    }
+
+    static packs = (): (Item & { system: any })[] => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && (item.visible !== false) && item.type === 'startingpack')
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: any })[]
+    }
+
+    static async updateItem(item: any) {
+        if (!item) return
+        const validTypes = ['spell', 'perk', 'startingpack']
+        if (validTypes.includes(item.type)) {
+            const fullItem = await getFullItem(item)
+            if (fullItem) {
+                this.items.set(fullItem.uuid, fullItem)
+                this.refreshAllActors()
+            }
+        } else if (item.uuid) {
+            this.items.set(item.uuid, item)
         }
     }
 
@@ -109,7 +122,7 @@ export class ItemsCache {
     static refreshAllActors() {
         game.actors
             ?.filter(it => (it.type as string) === 'hero')
-            ?.forEach(actor => (actor as any)?.system?.forceUpdate())
+            ?.forEach(actor => (actor as any)?.system?.forceUpdate?.())
     }
 
 }

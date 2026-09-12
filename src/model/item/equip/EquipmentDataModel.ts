@@ -181,16 +181,21 @@ export const setEquipState = async (hero: HeroDataModel, item: any, isEquipped: 
 }
 
 export const getTotalSlots = (item: any): number => {
-    if (item?.bulk?.isStackable) {
+    const bulk = item?.bulk ?? item?.system?.bulk
+    if (!bulk) return 0
+    if (bulk.isStackable) {
         return getStackSlots(item)
     }
     else {
-        return item?.bulk?.slots ?? 0
+        return bulk.slots ?? 0
     }
 }
 
-export const getStackSlots = (stack: EquipmentDataModel<EquipmentSchema>): number => {
-    const slots = stack.bulk.slots ?? 0
-    const qty = stack.bulk.quantity ?? 0
-    return slots > 0 ? qty * slots : Math.floor(qty / stack.bulk.stackSize)
+export const getStackSlots = (stack: any): number => {
+    const bulk = stack?.bulk ?? stack?.system?.bulk
+    if (!bulk) return 0
+    const slots = bulk.slots ?? 0
+    const qty = bulk.quantity ?? 1
+    const stackSize = bulk.stackSize || 10
+    return slots > 0 ? qty * slots : Math.floor(qty / stackSize)
 }

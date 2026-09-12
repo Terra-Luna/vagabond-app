@@ -1,4 +1,4 @@
-import { getName, inventoryItemTypes } from "../../../utils/modelUtil"
+import { getFullItem, getName, inventoryItemTypes } from "../../../utils/modelUtil"
 import { coinSchema } from "../../common/CoinValue"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
 import { ContainerDataModel } from "../../item/equip/ContainerDataModel"
@@ -39,13 +39,23 @@ export const isInventoryItem = (item: Item): boolean => {
     return inventoryItemTypes().includes(item.type)
 }
 
-export const openItemSheet = (item: any) => {
-    if (item) {
-        if (item.parent) {
-            item.parent.sheet.render(true)
-        }
-        else {
-            item.sheet.render(true)
+export const openItemSheet = async (item: any) => {
+    if (!item) {
+        ui.notifications?.warn("Item not found!")
+        return
+    }
+    if (item.sheet?.render) {
+        item.sheet.render(true)
+    }
+    else if (item.parent?.sheet?.render) {
+        item.parent.sheet.render(true)
+    }
+    else if (item.uuid) {
+        const fullDoc = await getFullItem(item.uuid) as any
+        if (fullDoc?.sheet?.render) {
+            fullDoc.sheet.render(true)
+        } else {
+            ui.notifications?.warn("Item not found!")
         }
     }
     else {

@@ -111,7 +111,7 @@ export const ProgressClock: React.FC<ProgressClockProps> = ({
     label,
     segments,
     filled,
-    size = 120,
+    size = 130,
     onClockClick,
     onLabelChange
 }) => {
@@ -139,7 +139,7 @@ export const ProgressClock: React.FC<ProgressClockProps> = ({
     const hoverEffect = "transform transition-transform duration-300 hover:scale-105"
 
     return (<>
-        <div className="flex flex-col items-center justify-center p-1 rounded-full shadow-md w-fit bg-sheet-main-fill/25">
+        <div className="flex flex-col items-center justify-center rounded-full shadow-lg w-fit bg-sheet-main-fill/40">
             <svg
                 width={size}
                 height={size}
@@ -158,19 +158,16 @@ export const ProgressClock: React.FC<ProgressClockProps> = ({
                             key={index}
                             d={getSegmentPath(index)}
                             className={`stroke-sheet-header-fill stroke-[2px]
-                               ${isFilled ? 'fill-destructive-action/66' : 'fill-sheet-header-fill/33'}
+                               ${isFilled ? 'fill-destructive-action/66' : 'fill-sheet-main-fill/15'}
                             `}
                         />
                     )
                 })}
 
                 {/* CIRCLE HOST WITH HUB */}
-                <circle cx={center} cy={center} r={3} className="fill-sheet-header-fill" />
+                <circle cx={center} cy={center} r={2} className="fill-sheet-header-fill" />
 
             </svg>
-
-
-
         </div>
 
         {/* LABEL */}

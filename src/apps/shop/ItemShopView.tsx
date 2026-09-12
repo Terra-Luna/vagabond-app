@@ -3,12 +3,12 @@ import { useCallback, useMemo, useRef, useState } from "react"
 import { openItemSheet } from "../../model/actor/type/Inventory"
 import { addCoins, Coins, coinsAsString, isAffordable, multiplyCoins, subtractCoins, zeroCoins } from "../../model/common/CoinValue"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
+import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../model/item/equip/StartingPackDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { groupBy } from "../../utils/collectionUtil"
 import { appLang } from "../../utils/lang"
-import { tableBorder } from "../../view/common/border-styles"
+import { tableBorder, tableBorderRounded } from "../../view/common/border-styles"
 import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
 import { ReadOnlyCoinPurse } from "../../view/component/CoinPurse"
 import { Divider, Header } from "../../view/component/Header"
@@ -19,6 +19,13 @@ import { HeroCreationDropdown } from "../hero-creator/component/HeroCreationDrop
 import { CategoryButtons } from "./CategoryButtons"
 import { ShopItemsList } from "./ShopItemsList"
 import { ShoppingCart } from "./ShoppingCart"
+
+export const getPackCost = (pack: any): Coins => {
+    if (!pack) return { ...zeroCoins }
+    if (pack.system?.cost) return pack.system.cost
+    const val = pack.system?.value ?? { g: 0, s: 0, c: 0 }
+    return subtractCoins({ g: 3, s: 0, c: 0 }, val)
+}
 
 export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: ClassDataModel }) => {
 
@@ -32,49 +39,53 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
     const equipmentCache = ItemsCache.equipment()
     const shopItems = useMemo(() => {
         return equipmentCache.filter(it =>
-            !(it.system instanceof StartingPackDataModel) && it.name.toUpperCase() !== 'BREATH ATTACK'
+            !(it.system instanceof StartingPackDataModel) && (it.type as string) !== 'startingpack' && it.name.toUpperCase() !== 'BREATH ATTACK'
         ) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
-    }, [])
+    }, [equipmentCache])
 
     const recommendedPacks = useMemo(() => {
         return clazz?.system.startingPacks.map(p => packs.find(s => s.uuid === p))
-    }, [clazz])
+    }, [clazz, packs])
 
     const otherPacks = useMemo(() => {
         return packs.filter(p => !clazz?.system.startingPacks.includes(p.uuid!))
-    }, [clazz])
+    }, [clazz, packs])
 
     const reset = useCallback(() => {
         setShopCategory('all')
         setCart([])
-    }, [shopCategory, cart, wallet])
+    }, [])
 
     const ItemShopView = ({ includeStartingPacks = false, useCheckout = false, onCheckout = () => { }, onCancel = () => { } }) => {
         const [shopSearch, setShopSearch] = useState(() => shopSearchRef.current)
 
         const onSelectPack = useCallback((packId) => {
             const pack = packs.find(it => it.uuid === packId)
-            const refund = addCoins([wallet, selectedPack?.system.cost ?? { ...zeroCoins }])
+            const refund = addCoins([wallet, selectedPack ? getPackCost(selectedPack) : { ...zeroCoins }])
 
             if (!pack) {
                 if (selectedPack) {
                     setWallet(refund)
                 }
-                setSelectedPack(pack)
-            }
-            else if (isAffordable(refund, pack.system.cost)) {
-                setWallet(subtractCoins(refund, pack.system.cost))
-                setSelectedPack(pack)
+                setSelectedPack(undefined)
             }
             else {
-                ui.notifications?.warn("Not enough funds!")
+                const packCost = getPackCost(pack)
+                if (isAffordable(refund, packCost)) {
+                    setWallet(subtractCoins(refund, packCost))
+                    setSelectedPack(pack)
+                }
+                else {
+                    ui.notifications?.warn("Not enough funds!")
+                }
             }
-        }, [selectedPack])
+        }, [selectedPack, wallet, packs])
 
         const onAddItemToCart = useCallback((item) => {
-            if (isAffordable(wallet, item.system.value)) {
+            const itemValue = item.system?.totalValue ?? item.system?.value ?? { ...zeroCoins }
+            if (isAffordable(wallet, itemValue)) {
                 setCart([...cart, item])
-                const deduction = subtractCoins(wallet, item.system.value)
+                const deduction = subtractCoins(wallet, itemValue)
                 setWallet(deduction)
             }
             else {
@@ -83,7 +94,9 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
         }, [cart, wallet])
 
         const onRemoveFromCart = useCallback((item, index) => {
-            const refund = addCoins([wallet, cart.find(it => it.name === item.name)?.system?.value ?? { ...zeroCoins }])
+            const cartItem = cart.find(it => it.name === item.name)
+            const itemValue = cartItem?.system?.totalValue ?? cartItem?.system?.value ?? { ...zeroCoins }
+            const refund = addCoins([wallet, itemValue])
             setWallet(refund)
             setCart(cart.filter((_, idx) => idx !== index))
         }, [cart, wallet])
@@ -109,10 +122,17 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
 
             Object.keys(groupedItems).forEach(name => {
                 const group = groupedItems[name]
+                const first = group[0]
+                const singleItemSlots = getTotalSlots(first)
+                const bulk = first?.bulk ?? first?.system?.bulk
+                const totalSlotsForGroup = bulk?.isStackable
+                    ? (singleItemSlots > 0 ? group.length * singleItemSlots : Math.floor(group.length / (bulk?.stackSize || 10)))
+                    : group.length * singleItemSlots
+                const itemVal = first.system?.totalValue ?? first.system?.value ?? { ...zeroCoins }
                 displayItems.push({
                     name: name, qty: group.length,
-                    slots: group.reduce((sum, it) => sum + it.system.bulk.slots, 0),
-                    value: multiplyCoins(group[0].system.value, group.length)
+                    slots: totalSlotsForGroup,
+                    value: multiplyCoins(itemVal, group.length)
                 })
             })
 
@@ -138,8 +158,8 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                                             value={selectedPack?.uuid ?? ''}
                                             options={[
                                                 { value: '', label: "-" },
-                                                ...recommendedPacks?.map(p => ({ value: p?.uuid, label: `${p?.name} [${coinsAsString(p?.system.cost)}] (Recommended)` })) ?? [],
-                                                ...otherPacks?.map(p => ({ value: p.uuid, label: `${p.name} [${coinsAsString(p?.system.cost)}]` })) ?? []
+                                                ...recommendedPacks?.map(p => ({ value: p?.uuid, label: `${p?.name} [${coinsAsString(getPackCost(p))}] (Recommended)` })) ?? [],
+                                                ...otherPacks?.map(p => ({ value: p.uuid, label: `${p.name} [${coinsAsString(getPackCost(p))}]` })) ?? []
                                             ]}
                                             onChange={(packId) => onSelectPack(packId)}
                                         />
@@ -167,7 +187,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
                                         type="text"
                                         value={shopSearch}
                                         placeholder="Search items..."
-                                        className="w-full text-lg text-text-secondary font-paradigm font-normal italic p-1 pr-8"
+                                        className={`w-full text-lg text-text-secondary font-paradigm font-normal italic px-2 py-1 pr-8 ${tableBorderRounded}`}
                                         onChange={(e) => {
                                             shopSearchRef.current = e.target.value
                                             setShopSearch(e.target.value)
