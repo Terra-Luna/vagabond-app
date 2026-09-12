@@ -21,9 +21,9 @@ import { Skill } from "./TopSection"
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="flex flex-col h-full">
-            <div className="grid @sm:grid-cols-[44%_55%] my-1 gap-x-1 flex-1">
+            <div className="grid @sm:grid-cols-[44%_55%] gap-x-1 flex-1">
                 <Attacks hero={hero} />
-                <div className="space-y-2">
+                <div className="space-y-2 mb-4">
                     <Weapons hero={hero} />
                     <Armor hero={hero} />
                 </div>
@@ -200,31 +200,36 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 const Armor = ({ hero }: { hero: HeroDataModel }) => {
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
     const armor = getArmor(hero) as any as ArmorDataModel
-    const wearables = hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable) as SundryDataModel[]
+    const wearables = hero.inventory.items.filter(it =>
+        it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable
+    ) as SundryDataModel[]
 
     return (
         <div className="w-full -mt-1">
-            <Header title={appLang.HeroSheet.armor} />
-            <div className="flex flex-col gap-1 px-2">
-                {/* ARMOR NAME AND RATING */}
-                <div className="flex items-center justify-between">
-                    <div className="text-lg line-clamp-1">{armor?.parent.name ?? '-'}</div>
-                    <div className="flex justify-end items-center">
-                        <Shield className="mr-1" size={18} />
-                        <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">{armor?.rating ?? '-'}</div>
+            {/* SECTION HEADER */}
+            {armor || wearables.length > 0 ? <Header title={appLang.HeroSheet.armor} /> : null}
+
+            {/* EQUIPPED ARMOR */}
+            {armor &&
+                <div className="flex flex-col px-2">
+                    {/* ARMOR NAME AND RATING */}
+                    <div className="flex items-center justify-between">
+                        <div className="text-lg line-clamp-1">{armor.parent.name ?? '-'}</div>
+                        <div className="flex justify-end items-center">
+                            <Shield className="mr-1" size={18} />
+                            <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">{armor.rating ?? '-'}</div>
+                        </div>
                     </div>
-                </div>
 
-                {/* RELIC INFO */}
-                <RelicEffectList relicPowers={armor.relicPowers ?? []} textColor="text-text-header-tertiary" />
-
-                {/* ARMOR CATEGORY AND MATERIAL */}
-                <div className="flex items-center justify-between">
-                    <div className={propsStyle}>{appLang.ArmorTypes[armor?.armorType].name ?? '-'}</div>
-                    <div className={propsStyle + " text-right mr-1"}>{appLang.Metals[armor?.material]?.name ?? '-'}</div>
+                    {/* ARMOR CATEGORY AND MATERIAL */}
+                    <div className="flex items-center justify-between">
+                        {/* RELIC INFO */}
+                        <RelicEffectList relicPowers={armor.relicPowers ?? []} textColor="text-text-header-tertiary" />
+                        <div className={propsStyle + " text-right mr-1"}>{appLang.Metals[armor.material]?.name ?? '-'}</div>
+                    </div>
+                    <ItemDivider />
                 </div>
-                <ItemDivider />
-            </div>
+            }
 
             {/* WEARABLE ITEMS */}
             {wearables.length > 0 && (

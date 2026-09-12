@@ -19,7 +19,7 @@ export const RollsTab = ({ actor }: { actor: Actor & { system: HeroDataModel } }
             <CollapsibleSection title={"QUICK ROLL"} startCollapsed={false} content={
                 <RollBuilderView actor={actor} preset={customAttack} showHeader={false} />
             } />
-            <div className="mt-8" />
+            <div className="mb-4" />
         </div>
     )
 }

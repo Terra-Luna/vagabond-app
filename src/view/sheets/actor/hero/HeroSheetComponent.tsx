@@ -168,13 +168,13 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     const tabPanelClasses = "min-h-0 overflow-y-auto"
     return <div className="-mt-1 flex flex-col min-h-0 grow">
         <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />
-        <Tabs className="flex flex-col min-h-0 grow text-lg">
+        <Tabs className="flex flex-col min-h-0 grow text-base">
             <TabList>
                 <Tab>{locale["tab-main"]}</Tab>
                 <Tab>{locale["tab-inv"]}</Tab>
                 {hero.spells?.length > 0 && <Tab>{locale["tab-magic"]}</Tab>}
                 <Tab> {locale["tab-abilities"]}</Tab>
-                <Tab title="Roll Presets"><Dices size={32} className="hover-glow" /></Tab>
+                <Tab title="Roll Presets"><Dices size={28} className="hover-glow" /></Tab>
             </TabList>
             <TabPanel className={tabPanelClasses}>
                 <MainTab hero={hero} />

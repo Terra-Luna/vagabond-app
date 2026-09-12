@@ -252,7 +252,7 @@
 .react-tabs__tab-list {
   display: flex;
   justify-content: space-evenly;
-  margin: 0 0 4px;
+  margin-bottom: 4px;
   padding: 0;
 }
 
@@ -261,8 +261,8 @@
   bottom: 4px;
   position: relative;
   list-style: none;
-  padding: 6px 12px;
-  margin-top: 8px;
+  padding: 2px 8px;
+  margin-top: 16px;
   cursor: pointer;
 }
 

@@ -74,11 +74,12 @@ export const useCustomDamageRollBuilder = (
                         </div>
                     ))}
                 </div>
-                <div className="flex w-full justify-end">
-                    <UtilityButton title={"Add additional damage roll"} onClick={addNewRoll}>
-                        +{appLang.ButtonActions.add}
-                    </UtilityButton>
-                </div>
+
+            </div>
+            <div className="flex w-full justify-end">
+                <UtilityButton title={"Add additional damage roll"} onClick={addNewRoll}>
+                    +{appLang.ButtonActions.add}
+                </UtilityButton>
             </div>
         </div>
 

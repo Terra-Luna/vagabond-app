@@ -27,7 +27,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                 <CapacityGauge label={appLang.HeroSheet.encumbrance} capacityInfo={getEncumbranceInfo(hero)} />
                 <HeroCoinPurse hero={hero} />
             </div>
-            <div className={`${tableBorder} mt-1 w-full ${itemShopToggle || showAlchemy ? '' : 'mb-28'}`}>
+            <div className={`${tableBorder} mt-1 w-full ${itemShopToggle || showAlchemy ? '' : 'mb-8'}`}>
                 <InventoryItemsTable
                     actor={hero}
                     items={
@@ -38,7 +38,7 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                     contextMenuItems={(item) => equipmentContextMenuItems(hero, item)} />
             </div>
 
-            <div className="flex gap-x-2 w-fill justify-between mt-1 mb-28">
+            <div className="flex gap-x-2 w-fill justify-between mt-1 mb-8">
                 <div className="flex gap-x-1 items-start">
                     {showAlchemy && <>
                         {/* SELECT ALCHEMY RECIPES */}
