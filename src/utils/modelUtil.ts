@@ -167,5 +167,5 @@ function isTypedIndexEntry(item: Item | TypedIndexEntry): item is TypedIndexEntr
 }
 
 export const inventoryItemTypes = () => {
-    return ['armor', 'weapon', 'tool', 'sundry', 'alchemical', 'container']
+    return ['armor', 'weapon', 'sundry', 'alchemical', 'container']
 }

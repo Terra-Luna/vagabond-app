@@ -155,12 +155,13 @@ export class TagalongItemCreator {
     private async handleToolItem(item: TagalongItem) {
         await this.createAndAddItem({
             name: item.name,
-            type: 'tool',
+            type: 'sundry',
             folder: game.folders?.getName(this.importsFolder)?.id,
             system: {
                 description: item.notes,
                 category: Object.keys(appLang.EquipmentCategories)[item.category?.toLowerCase()] ?? 'other',
                 value: item.value,
+                isEquippable: true,
                 bulk: {
                     slots: item.slots,
                     quantity: 1,

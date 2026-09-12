@@ -1,4 +1,4 @@
-import { Shield } from "lucide-react"
+import { Shield, Shirt } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
@@ -6,7 +6,7 @@ import { getArmor,HeroDataModel } from "../../../../../model/actor/HeroDataModel
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
 import { ArmorDataModel } from "../../../../../model/item/equip/ArmorDataModel"
 import { SundryDataModel } from "../../../../../model/item/equip/SundryDataModel"
-import { isEquippedTool, isEquippedWeapon,WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
+import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../../../model/item/equip/WeaponDataModel"
 import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
@@ -53,8 +53,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
-    const equippedTools = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => isEquippedTool(it)) as SundryDataModel[])
-    const combinedEquipped = [...equippedWeapons, ...equippedTools]
+    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => isEquippedSundry(it)) as SundryDataModel[])
+    const combinedEquipped = [...equippedWeapons, ...equippedSundries]
 
     const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
         combinedEquipped,
@@ -114,10 +114,12 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                 }
             }
         })
-        const toolsData = equippedTools.map(item => {
+
+        const sundriesData = equippedSundries.sort((a, b) => Number(a.isWearable) - Number(b.isWearable)).map(item => {
             return { item, damageString: "", initiateAttack: () => { }, rollDefenseCheck: () => { } }
         })
-        return [...weaponData, ...toolsData]
+
+        return [...weaponData, ...sundriesData]
     }, [hero.parent, equipDependency, targetIds, effectUpdateKey])
 
     return (
@@ -131,42 +133,46 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                             draggable
                             onDragStart={(e) => onDragStart(e, index)}
                             onDragEnter={(e) => onDragEnter(e, index)}
-                            onDragOver={(e) => {
-                                e.preventDefault()
-                                e.stopPropagation()
-                            }}
+                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); }}
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
-                            <div className="flex flex-col gap-y-0.5 my-1">
-                                <div className="flex justify-between items-center px-1">
+                            <div className="flex flex-col gap-y-0.5 my-1 px-2">
+                                <div className="flex justify-between items-center">
                                     <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
                                     <div className="flex justify-end items-center">
-                                        <Tooltip title={"Grip"} disabled={(item as any).grip.style !== 'V'} content={`${(item as any).grip.style === 'V' && (item as any).grip.state === 'HH' ? 'Switch to One-Handed' : 'Switch to Two-Handed'}`}>
-                                            <div
-                                                className={`${gripStyle} mr-2 hover-glow`}
-                                                onClick={() => toggleGripState(item)}
-                                            >
-                                                {appLang.GripsAbbr[
-                                                    item instanceof WeaponDataModel
-                                                        ? item.grip.state
-                                                        : item.bulk.slots > 1 ? 'HH' : 'H'
-                                                ]}
-                                            </div>
-                                        </Tooltip>
+                                        {/* WEAPON GRIP DISPLAY */}
+                                        {item instanceof WeaponDataModel && (
+                                            <Tooltip title={"Grip"} disabled={item.grip.style !== 'V'} content={`${item.grip.style === 'V' && (item as any).grip.state === 'HH' ? 'Switch to One-Handed' : 'Switch to Two-Handed'}`}>
+                                                <div className={`${gripStyle} mr-2 hover-glow`} onClick={() => toggleGripState(item)}>
+                                                    {appLang.GripsAbbr[item.grip.state]}
+                                                </div>
+                                            </Tooltip>
+                                        )}
+
+                                        {/* SUNDRY BULK DISPLAY */}
+                                        {item instanceof SundryDataModel && (<>
+                                            {item.isWearable
+                                                ? <Shirt size={16} className="text-text-header-tertiary" />
+                                                : <p className={gripStyle}>
+                                                    {appLang.GripsAbbr[item.bulk.slots === 0 ? "" : (item.bulk.slots > 1 ? 'HH' : 'H')]}
+                                                </p>
+                                            }
+                                        </>)}
+
                                         <div className="flex content-right items-center gap-x-1">
+                                            {/* CLICKABLE DAMAGE ROLL */}
                                             <Tooltip title={"Attack Action"} content={`Attack with this weapon. Set targets to trigger Skill Check.\n${appLang.HeroSheet.skills_tooltip}`}>
-                                                <div
-                                                    className={`${dmgStyle} hover-glow`}
-                                                    onClick={(e) => initiateAttack(e)}
-                                                >
+                                                <div className={`${dmgStyle} hover-glow`} onClick={(e) => initiateAttack(e)}>
                                                     {damageString}
                                                 </div>
                                             </Tooltip>
+
+                                            {/* DEFENSE ACTION BUTTON */}
                                             {item instanceof WeaponDataModel && item.properties.includes("defense") &&
                                                 <Tooltip title={"Defense Action"} content={"Roll defense check to apply weapon damage as armor"}>
                                                     <button onClick={(e) => rollDefenseCheck(e)} onMouseDown={(e) => e.preventDefault()} className="hover-glow cursor-pointer">
-                                                        <Shield className="text-ic-armor-border fill-ic-armor-fill self-center" size={22} />
+                                                        <Shield className="text-ic-armor-border fill-ic-armor-fill -mb-1.5" size={22} />
                                                     </button>
                                                 </Tooltip>
                                             }
@@ -176,11 +182,12 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
                                 <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary" />
 
-                                <div className="flex justify-between items-center px-1">
+                                <div className="flex justify-between items-center">
                                     <div className={propsStyle}>{(item as any).properties?.map(p => appLang.WeaponProps[p].name).join(", ")}</div>
                                     <div className={propsStyle + " text-right mr-1.5"}>{appLang.Ranges[(item as any).range ?? '']}</div>
                                 </div>
                             </div>
+
                             <ItemDivider />
                         </div>
                     )
@@ -197,11 +204,11 @@ const Armor = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="w-full">
             <Header title={appLang.HeroSheet.armor} />
-            <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1">
+            <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1 px-2">
                 <div className="text-lg line-clamp-1">{armor?.parent.name ?? '-'}</div>
                 <div className="flex justify-end items-center">
                     <Shield className="mr-1" size={18} />
-                    <div className="line-clamp-1 text-lg text-right mr-1">{armor?.rating ?? '-'}</div>
+                    <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">{armor?.rating ?? '-'}</div>
                 </div>
                 <div className={propsStyle}>{appLang.EquipmentCategories[armor?.category] ?? '-'}</div>
                 <div className={propsStyle + " text-right mr-1"}>{appLang.Metals[armor?.material]?.name ?? '-'}</div>

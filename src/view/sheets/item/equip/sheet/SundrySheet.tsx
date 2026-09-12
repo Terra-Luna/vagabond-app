@@ -11,6 +11,9 @@ export const SundrySheet = ({ item }: { item: Item & { system: SundryDataModel }
         <EquipmentSheetSubtypeBody>
             <div>
                 {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.equippable} path={"system.isEquippable"} />}
+                {isEditMode && item.system.isEquippable &&
+                    <ItemToggleOption item={item} label={appLang.ItemSheet.wearable} path={"system.isWearable"} />
+                }
                 {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.consumable} path={"system.isConsumable"} />}
                 {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.isRation} path={"system.isRation"} />}
 

@@ -777,6 +777,7 @@
       "consumable": "Consumable",
       "isRation": "Counts as Ration",
       "equippable": "Equippable",
+      "wearable": "Wearable",
       "slots": "Slots",
       "stackable": "Stackable",
       "qty": "Quantity",

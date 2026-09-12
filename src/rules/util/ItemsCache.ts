@@ -75,7 +75,7 @@ export class ItemsCache {
         this.items.clear()
 
         const allItems = await CombinedItemsMultiType(
-            ['spell', 'perk', 'alchemical', 'weapon', 'armor', 'tool', 'sundry', 'container', 'startingpack']
+            ['spell', 'perk', 'alchemical', 'weapon', 'armor', 'sundry', 'container', 'startingpack']
         )
 
         for (const item of allItems) {

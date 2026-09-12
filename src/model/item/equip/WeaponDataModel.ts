@@ -65,6 +65,6 @@ export const isEquippedWeapon = (item: any): boolean => {
     return item.parent.type === 'weapon' && item.isEquipped
 }
 
-export const isEquippedTool = (item: any): boolean => {
-    return item.parent.type === 'tool' && item.isEquipped
+export const isEquippedSundry = (item: any): boolean => {
+    return item.parent.type === 'sundry' && item.isEquipped
 }

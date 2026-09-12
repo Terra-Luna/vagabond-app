@@ -18,10 +18,11 @@
       "quantity": 1,
       "totalSlots": 0
     },
-    "isEquippable": false,
+    "isEquippable": true,
     "isEquipped": false,
     "isConsumable": false,
-    "relicPowers": []
+    "relicPowers": [],
+    "isWearable": true
   },
   "effects": [],
   "folder": "l5D3vYPFgbH4SAOt",
@@ -29,10 +30,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.62",
     "createdTime": 1787620825000,
-    "modifiedTime": 1787620825003,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1789237836287,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

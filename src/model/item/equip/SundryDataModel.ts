@@ -9,7 +9,8 @@ const sundrySchema = () => {
     return {
         isRation: new fields.BooleanField({ initial: false }),
         isMaterials: new fields.BooleanField({ initial: false }),
-        isAlchemyTools: new fields.BooleanField({ initial: false })
+        isAlchemyTools: new fields.BooleanField({ initial: false }),
+        isWearable: new fields.BooleanField({ initial: false })
     }
 }
 

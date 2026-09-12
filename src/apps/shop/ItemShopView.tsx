@@ -90,7 +90,7 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
 
         const filteredItems = useMemo((): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
             if (shopCategory === 'all') return shopItems
-            if (shopCategory === 'gear') return shopItems.filter(it => ['tool', 'sundry', 'container'].includes(it.type))
+            if (shopCategory === 'gear') return shopItems.filter(it => ['sundry', 'container'].includes(it.type))
             return shopItems.filter(it => (it.type as string) === shopCategory)
         }, [shopCategory, shopItems])
 

@@ -94,11 +94,10 @@ export function getEquippedWeapons(actor: Actor & { system: any }) {
  * @param item 
  */
 export async function equipWeapon(hero: any, item: WeaponDataModel | SundryDataModel) {
-    const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
-    const equippedTools = hero.parent.items.filter((it: any) => it.type === "sundry" && it.system.isEquipped)
-    const equippedSlots = [...equippedWeapons, ...equippedTools].reduce((sum, it) => { return sum + it.system.bulk.totalSlots }, 0)
-
-    if (item.bulk.totalSlots > 0 && equippedSlots + item.bulk.totalSlots > hero.inventory.weaponSlots) {
+    if (item instanceof SundryDataModel && item.isWearable) {
+        item.parent.update({ 'system.isEquipped': true })
+    }
+    else if (item.bulk.totalSlots > 0 && occupiedWeaponSlots(hero) + item.bulk.totalSlots > hero.inventory.weaponSlots) {
         ui.notifications?.warn("Cannot equip any more weapons or tools!")
     }
     else {
@@ -108,6 +107,14 @@ export async function equipWeapon(hero: any, item: WeaponDataModel | SundryDataM
         }
         item.parent.update(updates)
     }
+}
+
+const occupiedWeaponSlots = (hero: any): number => {
+    const equippedWeapons = hero.parent.items.filter((it: any) => it.type === "weapon" && it.system.isEquipped)
+    const equippedSundries = hero.parent.items.filter((it: any) => it.type === "sundry" && it.system.isEquipped && !it.system.isWearable)
+    return [...equippedWeapons, ...equippedSundries].reduce((sum, it) => {
+        return sum + it.system.bulk.totalSlots
+    }, 0)
 }
 
 /**
@@ -208,18 +215,6 @@ export const sendItemToChat = (hero: any, item: EquipmentDataModel<EquipmentSche
     sendVagabondChatMessage(hero, createElement(ItemChatCard, {
         actorId: getId(hero), itemId: getId(item), itemName: getName(item)
     }))
-}
-
-export const equipItem = (hero: any, item: EquipmentDataModel<EquipmentSchema>) => {
-    if (item.parent instanceof ArmorDataModel) {
-        equipArmor(hero, item as ArmorDataModel)
-    }
-    else if (item.parent instanceof WeaponDataModel) {
-        equipWeapon(hero, item as WeaponDataModel)
-    }
-    else if (item.isEquippable) {
-        setEquipState(hero, item, true)
-    }
 }
 
 export const equippedItemContextMenu = (hero: any, item: WeaponDataModel | SundryDataModel): CtxMenuItem[] => {

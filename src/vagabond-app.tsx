@@ -118,7 +118,7 @@ foundry.documents.collections.Items.registerSheet(sys_id, SpellSheet as any, { t
 foundry.documents.collections.Items.registerSheet(sys_id, AncestrySheet as any, { types: ['ancestry'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any, {
     types: [
-        'alchemical', 'armor', 'container', 'startingpack', 'sundry', 'tool', 'weapon'
+        'alchemical', 'armor', 'container', 'startingpack', 'sundry', 'weapon'
     ], makeDefault: true
 });
 

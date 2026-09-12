@@ -110,6 +110,10 @@ export class HeroAttack extends Attack {
         }
 
         if (this.isEligibleForDmgRoll && this.isSuccessOrCrit) {
+            if (this.isDefenseCheck && this.damageRoll) {
+                this.damageRoll.flatDmgBonus = 0
+                this.damageRoll.perDieDmgBonus = 0
+            }
             await this.rollDamage(this.skillCheck?.result?.outcome === appLang.RollResult.crit)
         }
 
