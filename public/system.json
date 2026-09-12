@@ -2,7 +2,7 @@
   "id": "vagabond-app",
   "title": "Vagabond App",
   "description": "A lightweight system for the Vagabond TTRPG.",
-  "version": "0.0.51",
+  "version": "0.0.52",
   "url": "https://github.com/Terra-Luna/vagabond-app",
   "manifest": "https://github.com/Terra-Luna/vagabond-app/releases/latest/download/system.json",
   "download": "https://github.com/Terra-Luna/vagabond-app/releases/download/v0.0.51/vagabond-app-v0.0.51.zip",
