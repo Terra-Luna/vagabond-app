@@ -60,6 +60,7 @@ export const HeaderWithClipPath = ({ children, showRightBorder, fullWidth }: {
  *  ]
  */
 export type CardSubHeaderValues = { label: string, value: string | ReactNode }
+
 export const CardSubHeader = ({ values, showRightBorder = true }: { values: CardSubHeaderValues[], showRightBorder?: boolean }) => {
     return (
         <HeaderWithClipPath showRightBorder={showRightBorder}>

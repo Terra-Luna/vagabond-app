@@ -13,6 +13,7 @@ export interface CollapsibleHeaderProps {
     toggleCollapsed?: () => void
     actions?: SkillCardAction[]
 }
+
 interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }

@@ -14,7 +14,7 @@ export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedB
                 ? <></>
                 : <ImageWithDamageTypeBadge img={img} dmgType={dmgType} size={38} />
             }
-            <span className="ml-2">{title}</span>
+            <span className={`${img ? 'ml-2' : 'ml-1'}`}>{title}</span>
             <Divider />
 
             {actions && (
