@@ -349,7 +349,7 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
             }}>
                 Save
             </PrimaryButton>
-        </div >
+        </div>
     )
 }
 

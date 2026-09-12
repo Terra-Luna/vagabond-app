@@ -2,6 +2,7 @@ import { Trash } from "lucide-react"
 import { ReactNode } from "react"
 
 import { tableBorder } from "../common/border-styles"
+import { Tooltip } from "./Tooltip"
 
 export const buttonAnimation = `pointer-events-auto cursor-pointer transition-transform active:scale-95`
 const buttonShaping = `flex items-center text-base text-center justify-center px-2 py-1 rounded-sm hover-glow`
@@ -13,11 +14,13 @@ export const PrimaryButton = ({ type = "button", title = '', children, icon = nu
     type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick?: (e) => any, disabled?: boolean
 }) => {
     return (
-        <button disabled={disabled} type={type} title={title} onClick={(e) => onClick(e)} className={`${primaryButtonClasses} ${disabled ? 'opacity-50 scale-95' : ''}`}>
-            {icon ? icon : undefined}
-            <div className="mx-0.5" />
-            {children}
-        </button>
+        <Tooltip content={title}>
+            <button disabled={disabled} type={type} onClick={(e) => onClick(e)} className={`${primaryButtonClasses} ${disabled ? 'opacity-50 scale-95' : ''}`}>
+                {icon ? icon : undefined}
+                <div className="mx-0.5" />
+                {children}
+            </button>
+        </Tooltip>
     )
 }
 
@@ -25,11 +28,13 @@ export const SecondaryButton = ({ type = "button", title = '', children, icon = 
     type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick: () => any
 }) => {
     return (
-        <button type={type} title={title} onClick={onClick} className={secondaryButtonClasses}>
-            {icon ? icon : undefined}
-            <div className="mx-0.5" />
-            {children}
-        </button>
+        <Tooltip content={title}>
+            <button type={type} onClick={onClick} className={secondaryButtonClasses}>
+                {icon ? icon : undefined}
+                <div className="mx-0.5" />
+                {children}
+            </button>
+        </Tooltip>
     )
 }
 
@@ -37,13 +42,15 @@ export const DestructiveButton = ({ type = "button", title = '', children, icon 
     type?: any, title?: string, children?: ReactNode, icon?: ReactNode, onClick: () => any
 }) => {
     return (
-        <button type={type} title={title} onClick={onClick} className={destructiveButtonClasses}>
-            {icon}
-            {children ? <>
-                <div className="mx-0.5" />
-                {children}
-            </> : undefined}
-        </button>
+        <Tooltip content={title}>
+            <button type={type} onClick={onClick} className={destructiveButtonClasses}>
+                {icon}
+                {children ? <>
+                    <div className="mx-0.5" />
+                    {children}
+                </> : undefined}
+            </button>
+        </Tooltip>
     )
 }
 
@@ -51,14 +58,16 @@ export const UtilityButton = ({ type = "button", title = "", children, icon = nu
     type?: any, title?: string, children: ReactNode, icon?: ReactNode, onClick: (e?: React.MouseEvent<HTMLButtonElement>) => any
 }) => {
     return (
-        <button type={type} title={title} onClick={onClick} onMouseDown={(e) => e.preventDefault()}
-            className={`hover-glow text-sm font-eskapade font-normal ${tableBorder} px-2 ${buttonAnimation} bg-sheet-main-fill`}
-        >
-            {icon}
-            {children ? <>
-                <div className="mx-0.5" />
-                {children}
-            </> : undefined}
-        </button>
+        <Tooltip content={title}>
+            <button type={type} onClick={onClick} onMouseDown={(e) => e.preventDefault()} className={`hover-glow text-sm font-eskapade font-normal ${tableBorder} px-2 ${buttonAnimation} bg-sheet-main-fill`}>
+                {icon}
+                {children
+                    ? <><div className="mx-0.5" />
+                        {children}
+                    </>
+                    : undefined
+                }
+            </button>
+        </Tooltip>
     )
 }

@@ -41,7 +41,12 @@ export class DamageRoll {
     }
 
     toString(): string {
-        return this.dice.map(d => d.toRollFormula().split("rr")[0]).join('+')
+        return this.dice.map(d => {
+            let formula = `${d.count}d${d.faces}`
+            if (d.explodesOn && d.explodesOn.length > 0) formula += `!`
+            if (d.modifier) formula += `+${d.modifier}`
+            return formula
+        }).join('+')
     }
 
     toJson() {

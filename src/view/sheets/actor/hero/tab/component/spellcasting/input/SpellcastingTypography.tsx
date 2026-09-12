@@ -10,22 +10,22 @@ export const SpellcastingValue = ({ text }: { text: any }) => {
 }
 
 export const SpellcastingMana = ({ text }: { text: any }) => {
-    return <div className="text-2xl text-btn-primary-text font-eskapade font-bold">{text}</div>
+    return <div className="text-4xl text-text-primary font-eskapade font-bold">{text}</div>
 }
 
 export const SpellcastingSubtext = ({ text }: { text: any }) => {
-    return <div className="max-h-[48px] overflow-y-auto">
+    return <div className="max-h-[100px] overflow-y-auto">
         <div className="text-sm text-text-secondary font-eskapade font-normal">{text}</div>
     </div>
 }
 
 export const SpellcastingErrMsg = ({ cost, mana, maxCast }: { cost: number, mana: number, maxCast: number }) => {
     const enforce = getManaEnforcement()
-    return (<div className="flex gap-x-2">
-        {(enforce && cost > mana) && <div className="text-destructive-action text-base">
+    return (<div className="flex gap-x-2 mt-2">
+        {(enforce && cost > mana) && <div className="text-destructive-action text-base font-normal">
             {appLang.HeroSheet.Magic.manaErrMsg}</div>
         }
-        {(enforce && cost > maxCast) && <div className="text-destructive-action text-base">
+        {(enforce && cost > maxCast) && <div className="text-destructive-action text-base font-normal">
             {appLang.HeroSheet.Magic.maxErrMsg}</div>
         }
     </div>)

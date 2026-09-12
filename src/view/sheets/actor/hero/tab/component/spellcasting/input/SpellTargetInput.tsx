@@ -9,7 +9,7 @@ export const SpellTargetInput = ({ delivery, onUpdateTargetCount, readOnly }: {
         <div className="flex text-center min-w-[3ch]">
             <div className="flex flex-col">
                 <SpellcastingLabel text={delivery.targetLabel} />
-                <span className="text-2xl">
+                <span className="text-2xl font-eskapade">
                     {
                         readOnly ?
                             <p>{delivery.targetTokenIds.length}</p> :

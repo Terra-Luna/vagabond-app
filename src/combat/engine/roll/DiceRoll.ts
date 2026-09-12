@@ -35,10 +35,10 @@ export class DiceRoll {
         })
 
         if (this.count > 0) {
-            return `${this.count}d${this.faces}${explode}${mod}${reroll}`
+            return `${this.count}d${this.faces}${reroll}${explode}${mod}`
         }
         else {
-            return `${this.faces}${explode}${mod}${reroll}`
+            return `${this.faces}${reroll}${explode}${mod}`
         }
     }
 

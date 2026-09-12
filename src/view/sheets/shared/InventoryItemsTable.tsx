@@ -14,6 +14,7 @@ import { getId, getName } from "../../../utils/modelUtil"
 import { tableBorder, tableBorderRounded } from "../../common/border-styles"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
+import { Tooltip } from "../../component/Tooltip"
 
 export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipColumn = true }: {
     actor: ActorDataModel<BaseActorSchema> | null,
@@ -114,33 +115,34 @@ const ItemIconImg = ({ item, tooltip }) => {
     const isCursed = item.isCursed()
 
     return (
-        <div className="flex items-center justify-center relative mr-2 shrink-0">
-            <img
-                src={item.parent.img}
-                alt={getName(item)}
-                width="28"
-                height="28"
-                className="rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
-                title={tooltip}
-            />
+        <Tooltip title={appLang.HeroSheet.controls} content={tooltip}>
+            <div className="flex items-center justify-center relative mr-2 shrink-0">
+                <img
+                    src={item.parent.img}
+                    alt={getName(item)}
+                    width="28"
+                    height="28"
+                    className="rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
+                />
 
-            {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
-            <span title={tooltip}>
-                {isEquipped && isBound &&
-                    <Diamond
-                        size={12}
-                        className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                    />
-                }
-                {!isEquipped && isBound && !isCursed &&
-                    <Diamond
-                        size={12}
-                        className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                        strokeWidth={1}
-                    />
-                }
-            </span>
-        </div>
+                {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
+                <span>
+                    {isEquipped && isBound &&
+                        <Diamond
+                            size={12}
+                            className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                        />
+                    }
+                    {!isEquipped && isBound && !isCursed &&
+                        <Diamond
+                            size={12}
+                            className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                            strokeWidth={1}
+                        />
+                    }
+                </span>
+            </div>
+        </Tooltip>
     )
 }
 
@@ -148,7 +150,8 @@ const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState
     const equippedIconStyle = "w-full justify-center text-ic-equipped fill-ic-equipped/80"
     const unEquipedIconStyle = "w-full justify-center text-ic-equipped"
     return (
-        <div onClick={toggleEquipState} title={`Toggle equip\n${tooltip}`} onDoubleClick={(e) => { e.stopPropagation() }}>
+        <Tooltip content={`Toggle equip\n${tooltip}`}>
+            <div onClick={toggleEquipState} onDoubleClick={(e) => { e.stopPropagation() }}>
             {
                 type === 'armor' &&
                 <div>
@@ -177,7 +180,8 @@ const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState
                         }</>}
                     </div>
             }
-        </div>
+            </div>
+        </Tooltip>
     )
 }
 

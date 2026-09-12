@@ -6,8 +6,9 @@ import { updateDocument } from "../../../../../../../utils/documentUtils"
 import { appLang } from "../../../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
-import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
+import { Tooltip } from "../../../../../../component/Tooltip"
 import { SpellcastingLabel } from "./input/SpellcastingTypography"
+import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
 
 export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean }) => {
     const mana = hero.mana.value
@@ -22,9 +23,9 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
             <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
                 <div className="flex gap-x-1 ml-2 items-center">
                     <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} />
-                    <span title={appLang.HeroSheet.counter_tooltip}>
+                    <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={appLang.HeroSheet.counter_tooltip}>
                         <Sparkle className={`text-mana mr-1 hover-glow`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
-                    </span>
+                    </Tooltip>
                     <span className="text-mana">
                         <EditableTextField
                             boundValue={hero.mana.value?.toString() ?? ""}

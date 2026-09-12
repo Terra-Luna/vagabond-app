@@ -8,6 +8,7 @@ import { AbilityChatCard } from "../../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../../chat/ChatCardSerializer"
 import { useContextMenu } from "../../../../../component/ContextMenu"
 import { SkillCard } from "../../../../../component/SkillCard"
+import { Tooltip } from "../../../../../component/Tooltip"
 import { useSpellcastingMenuContext } from "./spellcasting/SpellcastingMenuContext"
 
 export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
@@ -17,7 +18,8 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div>
-            <div className="flex flex-col gap-x-1 gap-y-0.5" title={appLang.HeroSheet.context_tooltip}>
+            <Tooltip title={"Spells"} content={appLang.HeroSheet.context_tooltip}>
+                <div className="flex flex-col gap-x-1 gap-y-0.5">
                 {
                     hero.spells.sort((a, b) => a.parent.name.localeCompare(b.parent.name)).map((sp: any, index: number) => (
                         <div key={index} onContextMenu={(e) => onCtxMenu(e, [
@@ -56,7 +58,8 @@ export const SpellsList = ({ hero }: { hero: HeroDataModel }) => {
                         </div>
                     ))
                 }
-            </div>
+                </div>
+            </Tooltip>
             <ContextMenu />
         </div>
     )

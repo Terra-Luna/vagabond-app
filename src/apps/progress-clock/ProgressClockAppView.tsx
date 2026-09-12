@@ -172,6 +172,6 @@ export const ProgressClock: React.FC<ProgressClockProps> = ({
             {/* LABEL */}
             <WidgetLabel label={label ?? 'Clock'} onLabelChange={onLabelChange} permissionCheck={checkClockPermission} />
 
-        </div >
+        </div>
     )
 }

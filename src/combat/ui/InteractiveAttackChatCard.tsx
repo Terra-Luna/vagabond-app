@@ -349,7 +349,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             {attack.showDamage &&
                 <div>
                     {/* HIDE THE DAMAGE HEADER IF IT WAS HEALING OR FRIENDLY FX ONLY */}
-                    {!isFriendlySpell &&
+                    {!isFriendlySpell && (attack.damageRoll?.result?.total ?? 0) > 0 &&
                         <ClearHeader title={`${attack.isDefenseCheck ? 'Damage Reduction' : 'Damage'}`} />
                     }
 

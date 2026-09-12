@@ -1,9 +1,9 @@
-import { RelicPowerProcessor } from "../../../../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { EquipmentDataModel, EquipmentSchema } from "../../../../../model/item/equip/EquipmentDataModel"
 import { EditableTextField } from "../../../../component/EditableTextField"
 import { Divider } from "../../../../component/Header"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemPortraitComponent } from "../../shared/ItemPortraitComponent"
+import { RelicEffectList } from "./RelicEffectList"
 
 export const EquipmentSheetBanner = ({ item }: { item: Item & { system: EquipmentDataModel<EquipmentSchema> } }) => {
     const { editModeToggleBtn } = useEditMode(item)
@@ -24,20 +24,7 @@ export const EquipmentSheetBanner = ({ item }: { item: Item & { system: Equipmen
                     {editModeToggleBtn}
                 </div>
 
-                {relicPowers && relicPowers.length > 0 && (
-                    <div className="flex flex-wrap gap-x-1">
-                        {relicPowers.map((relic: any, index: number) => (
-                            <p
-                                key={relic.id || index}
-                                title={relic.description}
-                                className="text-xs text-text-header-secondary font-paradigm font-normal italic"
-                            >
-                                {RelicPowerProcessor.getFormattedRelicName(relic)}
-                                {index < relicPowers.length - 1 && ","}
-                            </p>
-                        ))}
-                    </div>
-                )}
+                <RelicEffectList relicPowers={relicPowers} />
             </div>
         </div>
     </>)

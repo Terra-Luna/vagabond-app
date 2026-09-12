@@ -13,6 +13,7 @@ import { appLang } from "../../../../utils/lang"
 import { localizeString } from "../../../../utils/localeUtils"
 import { getName } from "../../../../utils/modelUtil"
 import { EditableNameField } from "../../../component/EditableTextField"
+import { Tooltip } from "../../../component/Tooltip"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { ActorPortrait } from "../component/ActorPortrait"
 import { VagabondActorSheet } from "../VagabondActorSheet"
@@ -83,20 +84,24 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                         <div className="flex gap-x-2 ml-auto">
                             {/* LEVEL-UP BUTTON */}
                             {canLevelUp() &&
-                                <button
+                                <Tooltip
                                     title={`${hero.ancestry && hero.class ? 'LEVEL UP!!' : 'CREATE HERO'}`}
-                                    onClick={async () => {
-                                        if (hero.ancestry) {
-                                            new LevelUpApp(hero.parent).render({ force: true })
-                                        }
-                                        else {
-                                            new HeroCreationApp(hero.parent).render({ force: true })
-                                        }
-                                    }}
-                                    className="hover-glow cursor-pointer ml-auto"
+                                    content={`${hero.ancestry && hero.class ? 'Advance to the next Level...' : 'Launch the Hero Creation app...'}`}
                                 >
-                                    <ArrowsUpFromLine size={24} className="text-text-header-secondary" />
-                                </button>
+                                    <button
+                                        onClick={async () => {
+                                            if (hero.ancestry) {
+                                                new LevelUpApp(hero.parent).render({ force: true })
+                                            }
+                                            else {
+                                                new HeroCreationApp(hero.parent).render({ force: true })
+                                            }
+                                        }}
+                                        className="hover-glow cursor-pointer ml-auto"
+                                    >
+                                        <ArrowsUpFromLine size={24} className="text-text-header-secondary" />
+                                    </button>
+                                </Tooltip>
                             }
 
                             <HeroSheetMenu hero={hero} sheet={sheet} className="ml-auto" />
@@ -116,7 +121,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
 
                         {/* EXPERIENCE POINTS */}
                         {(hero.level.xpToLevel ?? -1) > 0 &&
-                            <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })} >
+                            <div className="ml-auto mr-2 cursor-pointer hover-glow" onClick={() => new XpQuestionnairePlayerApp(hero.parent).render({ force: true })}>
                                 {localizeString(locale.xp, { xp: hero.level.xp?.toString() || '0', nextLevel: hero.level.xpToLevel?.toString() || '0' })}
                             </div>
                         }
@@ -140,7 +145,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <div className="flex w-full space-x-1">
                     <div className="w-full">
                         <Speeds hero={hero} />
-                        <div className="flex w-full justify-between space-x-3 mt-4">
+                        <div className="flex items-center justify-around mt-4">
                             <Luck hero={hero} />
                             <Studied hero={hero} />
                             <Focus hero={hero} />
@@ -189,5 +194,5 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <RollsTab actor={hero.parent} />
             </TabPanel>
         </Tabs>
-    </div >
+    </div>
 }

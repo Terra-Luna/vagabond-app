@@ -1,14 +1,15 @@
-import { BookMarked,Dices } from "lucide-react"
-import { useCallback,useEffect, useMemo, useState } from "react"
+import { BookMarked, Dices } from "lucide-react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
-import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue,Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { appLang } from "../../../../../../../utils/lang"
 import { tableBorder } from "../../../../../../common/border-styles"
 import { buttonAnimation } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
+import { Tooltip } from "../../../../../../component/Tooltip"
 import { DeliverySelector } from "./input/DeliverySelectior"
 import { DiceCountInput } from "./input/DiceCountInput"
 import { LineExpansionInut } from "./input/LineExpansionInput"
@@ -49,7 +50,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                 clone.setTargetTokenIds(tokens.map(t => t.id))
             }
             return clone
-        })        
+        })
         setDeliveries(delivs)
     }, [deliveryIndex, deliveries])
 
@@ -176,7 +177,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         setDeliveries(delivs)
     }, [deliveryIndex, deliveries])
 
-    const renderConfigs = () => {
+    const targetOrAreaInput = () => {
         if (deliveries[deliveryIndex] instanceof AreaOfEffectDelivery) {
             return (<>
                 <SpellRangeInput
@@ -184,13 +185,6 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                     label={deliveries[deliveryIndex].targetLabel}
                     onUpdateAreaSize={onUpdateAreaSize}
                 />
-                {deliveries[deliveryIndex] instanceof Line &&
-                    <LineExpansionInut
-                        delivery={deliveries[deliveryIndex]}
-                        onUpdateHeight={onUpdateLineHeight}
-                        onUpdateWidth={onUpdateLineWidth}
-                    />
-                }
             </>)
         }
         else if (deliveries[deliveryIndex] instanceof PerTargetDelivery) {
@@ -203,6 +197,19 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                 />
             }
         }
+    }
+
+    const renderLineExpansions = () => {
+        if (deliveries[deliveryIndex] instanceof Line) {
+            return (
+                <LineExpansionInut
+                    delivery={deliveries[deliveryIndex]}
+                    onUpdateHeight={onUpdateLineHeight}
+                    onUpdateWidth={onUpdateLineWidth}
+                />
+            )
+        }
+        return null
     }
 
     const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -219,48 +226,81 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         return (<>
             {
                 isSpellcastingOpen && delivery && spell &&
-                <div className={`font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-2 space-y-2 ${tableBorder}`}>
+                <div className={`flex flex-col gap-2font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-1 ${tableBorder}`}>
 
                         {/* SPELLCASTING MENU TOP ROW */}
-                        <div className="flex gap-x-1 items-end bottom text-lg">
+                        <div className="flex gap-x-0.25 items-end bottom text-lg">
                             <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
+                            {/* CAST BUTTON */}
+                            <div className="ml-auto">
+                                <Tooltip title={`Cast: ${delivery?.spell.name} (${delivery?.manaCost ?? 0} Mana)`} content={appLang.HeroSheet.skills_tooltip}>
+                                    <button
+                                        type="button"
+                                        onClick={(e: any) => castSpell(e)}
+                                        className={`
+                                            flex text-base text-btn-primary-text justify-center font-eskapade bg-btn-primary-fill rounded
+                                            min-w-[80px] hover-glow cursor-pointer px-2 py-2 ${buttonAnimation}
+                                    `}>
+                                        <div className="flex gap-x-1 items-center">
+                                            {spell.damageType !== 'none' &&
+                                                <DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />
+                                            }
+                                            {appLang.HeroSheet.Magic.btnCast}
+                                        </div>
+                                    </button>
+                                </Tooltip>
+                            </div>
+
                         </div>
 
                         {/* SECOND ROW, DELIVERY CUSTOMIZATION INPUTS */}
-                        <div className="flex flex-wrap gap-1 items-end mt-4">
-                            {renderConfigs()}
-                            <div className="flex gap-x-2 items-end ml-auto">
+                        <div className="flex flex-wrap gap-2 items-end mt-2">
+                            {/* TARGET COUNT, AREA INPUT, AND LINE EXPANSIONS */}
+                            <div className="flex gap-x-1 items-end">
+                                {targetOrAreaInput()}
+                                {renderLineExpansions()}
+                            </div>
+
+                            <div className="flex gap-x-1 ml-auto items-end font-eskapade">
                                 {spell.damageType !== 'none' &&
                                     <div className="flex gap-x-1">
                                         {/* DAMAGE DICE INPUT */}
                                         <div className="flex flex-col">
-                                            <div className="flex gap-x-1 items-baseline">
+                                            <div className="flex gap-x-1">
                                                 <Dices size={18} className="self-center text-text-header-tertiary" />
-                                                <p className="text-sm text-text-header-tertiary font-normal">d{hero.modifiers.dice.size.spell.bonus + 6}</p>
+                                                <p className="text-sm text-text-header-tertiary font-bold">
+                                                    d{hero.modifiers.dice.size.spell.bonus + 6}
+                                                </p>
                                             </div>
                                             <DiceCountInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />
                                         </div>
+
                                         {/* IF THE CLASS CAN USE STUDIED DICE AS DAMAGE */}
                                         {hero.modifiers.casting.studyDiceDamage &&
                                             <div className="flex flex-col">
-                                                <div className="flex gap-x-1 items-baseline">
+                                                <div className="flex gap-x-1">
                                                     <BookMarked size={18} className="text-ic-studied self-center" />
-                                                    <p className="text-sm text-text-header-tertiary font-normal">d6</p>
+                                                    <p className="text-sm text-text-header-tertiary font-bold">d6</p>
                                                 </div>
                                                 <DiceCountInput dmgDice={delivery?.studyDamageDice} onUpdateDmgDice={onUpdateStudyDamageDice} />
                                             </div>
                                         }
-                                    </div>}
+                                    </div>
+                                }
 
                                 {/* MANA DISCOUNT INPUT */}
                                 <ManaDiscount discount={delivery?.discount} onUpdateDiscount={onUpdateDiscount} />
 
-                                <div className="flex-col">
+                                {/* SPELL EFFECT AND FOCUS TOGGLES */}
+                                <div className="flex-col ml-auto">
                                     <SpellEffectToggle isEffect={delivery?.applyEffect} onSpellEffectToggle={onToggleSpellEffect} />
                                     <SpellFocusToggle isFocused={delivery?.isFocused} onToggleSpellFocus={onToggleSpellFocus} />
                                 </div>
+
+                                <TotalMana cost={delivery?.manaCost ?? 0} />
+
                             </div>
                         </div>
 
@@ -268,28 +308,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                         <SpellcastingErrMsg cost={delivery?.manaCost ?? 0} mana={hero.mana.value} maxCast={hero.mana.maxCast} />
 
                         {/* User-help description of the chosen delivery */}
-                        <div className="flex gap-x-1">
-                            <SpellcastingSubtext text={delivery?.description ?? ''} />
-                            {/* CAST BUTTON */}
-                            <div className="ml-auto">
-                                <button
-                                    type="button"
-                                    title={appLang.HeroSheet.skills_tooltip}
-                                    className={`text-btn-primary-text px-1 py-0.5 bg-btn-primary-fill rounded hover-glow cursor-pointer ${buttonAnimation}`}
-                                    onClick={(e: any) => castSpell(e)}
-                                >
-                                    <div className="flex gap-x-2 text-sm items-center">
-                                        <TotalMana cost={delivery?.manaCost ?? 0} />
-                                        <div className="flex flex-col items-center font-eskapade">
-                                            {spell.damageType !== 'none' &&
-                                                <DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />
-                                            }
-                                            {appLang.HeroSheet.Magic.btnCast}
-                                        </div>
-                                    </div>
-                                </button>
-                            </div>
-                        </div>
+                        <SpellcastingSubtext text={delivery?.description ?? ''} />
                     </div>
             }
         </>)

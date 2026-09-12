@@ -14,6 +14,8 @@ import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
+import { Tooltip } from "../../../../component/Tooltip"
+import { RelicEffectList } from "../../../item/equip/component/RelicEffectList"
 import { Skill } from "./TopSection"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
@@ -136,36 +138,44 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
-                            <div className="flex flex-col gap-y-0.5">
+                            <div className="flex flex-col gap-y-0.5 my-1">
                                 <div className="flex justify-between items-center px-1">
                                     <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
                                     <div className="flex justify-end items-center">
-                                        <div title={"Toggle grip (if applicable)"}
-                                            className={`${gripStyle} mr-2 hover-glow`}
-                                            onClick={() => toggleGripState(item)}
-                                        >
-                                            {appLang.GripsAbbr[
-                                                item instanceof WeaponDataModel
-                                                    ? item.grip.state
-                                                    : item.bulk.slots > 1 ? 'HH' : 'H'
-                                            ]}
-                                        </div>
-                                        <div className="flex content-right items-center gap-x-1">
+                                        <Tooltip title={"Grip"} disabled={(item as any).grip.style !== 'V'} content={`${(item as any).grip.style === 'V' && (item as any).grip.state === 'HH' ? 'Switch to One-Handed' : 'Switch to Two-Handed'}`}>
                                             <div
-                                                title={`Attack Action:\n${appLang.HeroSheet.skills_tooltip}`}
-                                                className={`${dmgStyle} hover-glow`}
-                                                onClick={(e) => initiateAttack(e)}
+                                                className={`${gripStyle} mr-2 hover-glow`}
+                                                onClick={() => toggleGripState(item)}
                                             >
-                                                {damageString}
+                                                {appLang.GripsAbbr[
+                                                    item instanceof WeaponDataModel
+                                                        ? item.grip.state
+                                                        : item.bulk.slots > 1 ? 'HH' : 'H'
+                                                ]}
                                             </div>
+                                        </Tooltip>
+                                        <div className="flex content-right items-center gap-x-1">
+                                            <Tooltip title={"Attack Action"} content={`Attack with this weapon. Set targets to trigger Skill Check.\n${appLang.HeroSheet.skills_tooltip}`}>
+                                                <div
+                                                    className={`${dmgStyle} hover-glow`}
+                                                    onClick={(e) => initiateAttack(e)}
+                                                >
+                                                    {damageString}
+                                                </div>
+                                            </Tooltip>
                                             {item instanceof WeaponDataModel && item.properties.includes("defense") &&
-                                                <button title={"Roll defense check"} onClick={(e) => rollDefenseCheck(e)} onMouseDown={(e) => e.preventDefault()} className="hover-glow cursor-pointer">
-                                                    <Shield className="text-ic-armor-border fill-ic-armor-fill" size={22} />
-                                                </button>
+                                                <Tooltip title={"Defense Action"} content={"Roll defense check to apply weapon damage as armor"}>
+                                                    <button onClick={(e) => rollDefenseCheck(e)} onMouseDown={(e) => e.preventDefault()} className="hover-glow cursor-pointer">
+                                                        <Shield className="text-ic-armor-border fill-ic-armor-fill self-center" size={22} />
+                                                    </button>
+                                                </Tooltip>
                                             }
                                         </div>
                                     </div>
                                 </div>
+
+                                <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary" />
+
                                 <div className="flex justify-between items-center px-1">
                                     <div className={propsStyle}>{(item as any).properties?.map(p => appLang.WeaponProps[p].name).join(", ")}</div>
                                     <div className={propsStyle + " text-right mr-1.5"}>{appLang.Ranges[(item as any).range ?? '']}</div>

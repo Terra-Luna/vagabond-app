@@ -5,6 +5,7 @@ import { tableBorder } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { CollapsibleSection } from "../../../view/component/Collapsible"
 import { EditButton } from "../../../view/component/EditButton"
+import { Tooltip } from "../../../view/component/Tooltip"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { RollPreset } from "../model/RollPreset"
 import { RollBuilderApp } from "../RollBuilderApp"
@@ -34,9 +35,11 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
 
                 {/* ADD NEW PRESET BUTTON */}
                 <div className="w-full flex justify-end mt-1">
-                    <UtilityButton title="Add new preset" onClick={() => new RollBuilderApp(actor).render({ force: true })}>
-                        +{appLang.ButtonActions.add}
-                    </UtilityButton>
+                    <Tooltip title={"Roll Presets"} content={"Add new roll preset"}>
+                        <UtilityButton onClick={() => new RollBuilderApp(actor).render({ force: true })}>
+                            +{appLang.ButtonActions.add}
+                        </UtilityButton>
+                    </Tooltip>
                 </div>
 
             </>} />

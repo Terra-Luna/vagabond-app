@@ -14,6 +14,7 @@ import { EditableNameField, EditableTextField, NumericCounterInput } from "../..
 import { Divider } from "../../../../component/Header"
 import { DamageTypeIconDisplay,OptionsSelectionMenu } from "../../../../component/OptionsSelectionMenu"
 import { CardSubHeader } from "../../../../component/SkillCard"
+import { Tooltip } from "../../../../component/Tooltip"
 import { EditModeContextProvider } from "../../../../context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../../context/EditModeContext/EditModeOptions"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
@@ -210,13 +211,14 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 {/* HIT POINTS */}
                 <StatBlockField label={locale.hp} content={
                     <StatBlockRow>
-                        <button
-                            title={appLang.HeroSheet.counter_tooltip}
-                            className="cursor-pointer hover-glow"
-                            onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}
-                        >
-                            <Heart size={18} className="text-text-hp-current fill-text-hp-current -mr-1" />
-                        </button>
+                        <Tooltip title={appLang.HeroSheet.controls} content={appLang.HeroSheet.counter_tooltip}>
+                            <button
+                                className="cursor-pointer hover-glow"
+                                onClick={() => incrementHP(false)} onAuxClick={() => incrementHP(true)}
+                            >
+                                <Heart size={18} className="text-text-hp-current fill-text-hp-current -mr-1" />
+                            </button>
+                        </Tooltip>
                         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                             <div className="flex gap-x-0.5">
                                 <EditableTextField
@@ -317,7 +319,7 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                 <DamageTypeSelector npc={npc} label={locale.weak} path={['dmgWeaknesses']} localeObj={appLang.DamageTypes} />
                 <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={appLang.StatusConditions} />
             </div>
-        </div >
+        </div>
     )
 }
 

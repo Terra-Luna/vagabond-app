@@ -5,6 +5,7 @@ import { VagabondAppError } from "../../model/common/VagabondAppError"
 import { updateDocumentAtPath } from "../../utils/documentUtils"
 import { tableBorder } from "../common/border-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
+import { Tooltip } from "./Tooltip"
 
 const editModeBorder = `${tableBorder} px-1`
 
@@ -80,13 +81,15 @@ export const EditableTextField = (
         const divStyle = `overflow-hidden whitespace-normal line-clamp-1 ${className}`
         return (<>
             {
-                enabled ?
-                    <button title={'Double-click to Edit'} onDoubleClick={enterEditMode}>
-                        <div className={`hover-glow ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}>
-                            {boundValue}
-                        </div >
-                    </button> :
-                    <div className={divStyle}>{boundValue}</div>
+                enabled
+                    ? <Tooltip content={"Double-click to edit"}>
+                        <button onDoubleClick={enterEditMode}>
+                            <div className={`hover-glow ${hideBorderOnEditMode ? "" : editModeBorder} {divStyle}`}>
+                                {boundValue}
+                            </div>
+                        </button>
+                    </Tooltip>
+                    : <div className={divStyle}>{boundValue}</div>
             }
         </>)
     }
