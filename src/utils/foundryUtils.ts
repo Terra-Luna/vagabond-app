@@ -25,11 +25,7 @@ export interface FloatingTextOptions {
  * @param amount
  * @param options
  */
-export const showFloatingText = (
-    target: any,
-    amount: number | string,
-    options: FloatingTextOptions = {}
-) => {
+export const showFloatingText = (target: any, amount: number | string, options: FloatingTextOptions = {}) => {
     if (amount === undefined || amount === null || amount === 0 || amount === "0") return
 
     const tokens: any[] = []
@@ -85,12 +81,16 @@ export const showFloatingText = (
         text = amount
     }
 
-    const fill = options.color ?? (isHealing ? "text-ic-luck" : "text-destructive-action")
-
+    /**
+     * Our custom colors don't work in this neighborhood...
+     * These are our Luck and Destructive colors.
+     */
+    const fill = options.color ?? (isHealing ? "#00a63e" : "#f72b35")
     const anchorPoints = (game as any).CONST?.TEXT_ANCHOR_POINTS
+
     const scrollOptions = {
         anchor: anchorPoints?.CENTER ?? 1,
-        direction: isHealing ? (anchorPoints?.BOTTOM ?? 1) : (anchorPoints?.TOP ?? 2),
+        direction: isHealing ? (anchorPoints?.BOTTOM ?? 2) : (anchorPoints?.TOP ?? 1),
         duration: 2000,
         jitter: 0.25,
         fill,
