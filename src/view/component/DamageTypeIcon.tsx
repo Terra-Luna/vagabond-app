@@ -1,7 +1,6 @@
-import { Brain, Cross, Droplets, Flame, FlaskRound, HeartOff, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Wand2, Zap } from "lucide-react"
+import { Brain, Cross, Droplets, Flame, FlaskRound, HeartOff, Shell, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Target, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
-import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
@@ -74,15 +73,15 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }   
         case appLang.DamageTypes.blunt: {
-            element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/blunt.svg`} size={size} />
+            element = <Shell size={size - 2} className='text-black fill-ic-armor-fill' />
             break 
         }
         case appLang.DamageTypes.pierce: {
-            element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/pierce.svg`} size={size} />
+            element = <Target size={size - 2} className='text-black fill-ic-armor-fill' />
             break
         }
         case appLang.DamageTypes.slash: {
-            element = <CustomIcon path={`systems/${sys_id}/assets/icons/dmg/slash.svg`} size={size} />
+            element = <Sword size={size - 2} className='text-black fill-ic-armor-fill' />
             break
         }
     }
@@ -113,17 +112,4 @@ export const ImageWithDamageTypeBadge = ({ img = '', dmgType = 'none', size = 42
                 </div>
         }
     </>)
-}
-
-const CustomIcon = ({ path, size }: { path: string, size: number }) => {
-    return (
-        <div className="bg-white rounded-full p-0.5 h-fit">
-            <img
-                src={path}
-                height={`${size-2}px`}
-                width={`${size-2}px`}
-                alt={''}
-            />
-        </div>
-    )
 }

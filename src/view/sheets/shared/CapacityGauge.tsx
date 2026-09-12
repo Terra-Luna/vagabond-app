@@ -10,10 +10,10 @@ export interface CapacityInfo {
 
 export const CapacityGauge = ({ label, capacityInfo }: { label: string, capacityInfo: CapacityInfo }) => {
     return (
-        <div className={infoBoxLayout + " px-2 " + infoBoxText}>
+        <div className={`${infoBoxLayout} px-2 ${infoBoxText}`}>
             <div className="flex justify-between mb-1">
             {label}
-                <span className="text-sm">
+                <span className="text-base font-eskapade">
                 {capacityInfo.bulk} / {capacityInfo.capacity}
                 </span>
             </div>
@@ -23,6 +23,7 @@ export const CapacityGauge = ({ label, capacityInfo }: { label: string, capacity
                     max={capacityInfo.capacity}
                     fillColorClassName="bg-text-encumbrance"
                     maxColorClassName="bg-destructive-action"
+                    size={"sm"}
                 />
             </div>
         </div>

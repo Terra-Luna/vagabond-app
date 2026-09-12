@@ -6,9 +6,9 @@ import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
-import { Header } from "../../../view/component/Header"
+import { ClearHeader, Header } from "../../../view/component/Header"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
-import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
+import { HeroCreationLabel } from "../../hero-creator/component/HeroCreationTypography"
 import { ItemGrantCard } from "../../hero-creator/component/ItemGrantCard"
 import { ItemSelectorGroup } from "../../hero-creator/component/ItemSelectorGroup"
 import { TopNavButtons } from "../../hero-creator/component/TopNavButtons"
@@ -90,18 +90,18 @@ export const useSpellSelectionView = (
         return ![...classSpellSlots, ...ancestrySpellSlots].some(slot => slot.value.length === 0)
     }, [classSpellSlots, ancestrySpellSlots])
 
-    const SpellSelection = <div className="@container p2 h-full min-h-0 flex flex-col overflow-hidden">
-        <div className="sticky top-0 bg-sheet-main-fill space-y-4 text-center items-center pb-4">
+    const SpellSelection = <div className="@container h-full min-h-0 flex flex-col overflow-hidden">
+        <div className="sticky top-0 bg-sheet-main-fill text-center items-center">
             <Header title={strings.spellsHeader} />
             <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} canProceed={isAllSelected} />
         </div>
 
-        <div className="flex flex-col flex-1 overflow-y-auto w-full justify-start">
-            <div className="inline-flex flex-col items-stretch space-y-4 w-full @2xl:w-3/5 mx-auto">
+        <div className="flex flex-col flex-1 overflow-y-auto w-full justify-start p-2">
+            <div className="inline-flex flex-col items-stretch w-full @2xl:w-3/5 mx-auto">
                 
                 {/* GRANTED SPELLS (BY CLASS & ANCESTRY) */}
                 {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
-                    <div className="mt-4 space-y-1">
+                    <div className="space-y-1">
                         {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
                             <HeroCreationLabel text={strings.grantedSpells} />
                         }
@@ -130,8 +130,8 @@ export const useSpellSelectionView = (
 
                 {/* SELECTABLE CLASS SPELL SLOTS (INCLUDES MAGICAL SECRETS) */}
                 {classSpellSlots.length > 0 &&
-                    <div className="mt-2 space-y-2">
-                        <HeroCreationSubtext text={strings.classSpells} />
+                    <div className="mt-4 space-y-2 font-eskapade font-bold">
+                        <ClearHeader title={strings.classSpells} />
                         <ItemSelectorGroup
                             slotGroup={classSpellSlots}
                             options={spellsList}

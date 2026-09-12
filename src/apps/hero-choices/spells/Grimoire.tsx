@@ -7,7 +7,7 @@ export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
     const strings = appLang.HeroCreation
 
     return (
-        <div className="space-y-1 mt-2">
+        <div className="space-y-1 mt-4">
             <div className="flex justify-between">
                 <HeroCreationLabel text={strings.grimoire} />
                 {/* SPELLS COMPENDIUM LINK */}

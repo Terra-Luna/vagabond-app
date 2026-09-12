@@ -12,7 +12,7 @@ export const BonusChoiceContainer = ({ children }: { children: ReactNode }) => {
 
 export const BonusChoiceTitle = ({ text }: { text: string }) => {
     return (
-        <p className="text-xl text-wealth-denom-label font-eskapade font-bold">
+        <p className="text-lg text-wealth-denom-label font-eskapade font-bold">
             {text}
         </p>
     )
