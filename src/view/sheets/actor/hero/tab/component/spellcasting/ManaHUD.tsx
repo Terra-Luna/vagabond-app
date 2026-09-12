@@ -7,7 +7,7 @@ import { appLang } from "../../../../../../../utils/lang"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
 import { EditableTextField } from "../../../../../../component/EditableTextField"
 import { useSpellcastingMenuContext } from "./SpellcastingMenuContext"
-import { SpellcastingLabel } from "./SpellcastingTypography"
+import { SpellcastingLabel } from "./input/SpellcastingTypography"
 
 export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel, isCastMenuOpen?: boolean }) => {
     const mana = hero.mana.value

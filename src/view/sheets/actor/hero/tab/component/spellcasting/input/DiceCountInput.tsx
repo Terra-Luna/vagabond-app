@@ -1,4 +1,4 @@
-import { NumericCounterInput } from "../../../../../../component/EditableTextField"
+import { NumericCounterInput } from "../../../../../../../component/EditableTextField"
 
 export const DiceCountInput = ({ dmgDice, onUpdateDmgDice }) => {
     return (

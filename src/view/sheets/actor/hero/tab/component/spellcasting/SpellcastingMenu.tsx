@@ -1,26 +1,27 @@
-import { BookMarked, Dices } from "lucide-react"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { BookMarked,Dices } from "lucide-react"
+import { useCallback,useEffect, useMemo, useState } from "react"
 
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
-import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
+import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue,Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
 import { appLang } from "../../../../../../../utils/lang"
 import { tableBorder } from "../../../../../../common/border-styles"
-import { PrimaryButton } from "../../../../../../component/Button"
+import { buttonAnimation } from "../../../../../../component/Button"
 import { DamageTypeIcon } from "../../../../../../component/DamageTypeIcon"
-import { DeliverySelector } from "./DeliverySelectior"
-import { DiceCountInput } from "./DiceCountInput"
-import { LineExpansionInut } from "./LineExpansionInput"
-import { ManaDiscount } from "./ManaDiscount"
-import { SkillSelector } from "./SkillSelector"
-import { SpellcastingErrMsg, SpellcastingSubtext } from "./SpellcastingTypography"
-import { SpellEffectToggle } from "./SpellEffectToggle"
-import { SpellFocusToggle } from "./SpellFocusToggle"
-import { SpellRangeInput } from "./SpellRangeInput"
-import { SpellSelector } from "./SpellSelector"
-import { SpellTargetInput } from "./SpellTargetInput"
-import { TotalMana } from "./TotalMana"
+import { DeliverySelector } from "./input/DeliverySelectior"
+import { DiceCountInput } from "./input/DiceCountInput"
+import { LineExpansionInut } from "./input/LineExpansionInput"
+import { ManaDiscount } from "./input/ManaDiscount"
+import { SkillSelector } from "./input/SkillSelector"
+import { SpellcastingErrMsg, SpellcastingSubtext } from "./input/SpellcastingTypography"
+import { SpellEffectToggle } from "./input/SpellEffectToggle"
+import { SpellFocusToggle } from "./input/SpellFocusToggle"
+import { SpellRangeInput } from "./input/SpellRangeInput"
+import { SpellSelector } from "./input/SpellSelector"
+import { SpellTargetInput } from "./input/SpellTargetInput"
+import { TotalMana } from "./input/TotalMana"
+
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system
@@ -225,27 +226,10 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
-                            <div className="ml-auto">
-                                <PrimaryButton
-                                    title={appLang.HeroSheet.skills_tooltip}
-                                    onClick={(e) => castSpell(e)}
-                                >
-                                    {/* CAST BUTTON */}
-                                    <div className="flex gap-x-2 text-sm items-center">
-                                        <TotalMana cost={delivery?.manaCost ?? 0} />
-                                        <div className="flex flex-col items-center">
-                                            {spell.damageType !== 'none' &&
-                                                <DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />
-                                            }
-                                            {appLang.HeroSheet.Magic.btnCast}
-                                        </div>
-                                    </div>
-                                </PrimaryButton>
-                            </div>
                         </div>
 
                         {/* SECOND ROW, DELIVERY CUSTOMIZATION INPUTS */}
-                        <div className="flex gap-x-1 items-end mt-4">
+                        <div className="flex flex-wrap gap-1 items-end mt-4">
                             {renderConfigs()}
                             <div className="flex gap-x-2 items-end ml-auto">
                                 {spell.damageType !== 'none' &&
@@ -284,7 +268,28 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                         <SpellcastingErrMsg cost={delivery?.manaCost ?? 0} mana={hero.mana.value} maxCast={hero.mana.maxCast} />
 
                         {/* User-help description of the chosen delivery */}
-                        <SpellcastingSubtext text={delivery?.description ?? ''} />
+                        <div className="flex gap-x-1">
+                            <SpellcastingSubtext text={delivery?.description ?? ''} />
+                            {/* CAST BUTTON */}
+                            <div className="ml-auto">
+                                <button
+                                    type="button"
+                                    title={appLang.HeroSheet.skills_tooltip}
+                                    className={`text-btn-primary-text px-1 py-0.5 bg-btn-primary-fill rounded hover-glow cursor-pointer ${buttonAnimation}`}
+                                    onClick={(e: any) => castSpell(e)}
+                                >
+                                    <div className="flex gap-x-2 text-sm items-center">
+                                        <TotalMana cost={delivery?.manaCost ?? 0} />
+                                        <div className="flex flex-col items-center font-eskapade">
+                                            {spell.damageType !== 'none' &&
+                                                <DamageTypeIcon dmgType={spell.damageType ?? ''} size={18} />
+                                            }
+                                            {appLang.HeroSheet.Magic.btnCast}
+                                        </div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
                     </div>
             }
         </>)

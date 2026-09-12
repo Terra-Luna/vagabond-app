@@ -1,7 +1,8 @@
-import { getDeliveryDropdownOptions, SpellDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
-import { appLang } from "../../../../../../../utils/lang"
-import { DropDown } from "../../../../../../component/Dropdown"
+import { getDeliveryDropdownOptions, SpellDelivery } from "../../../../../../../../combat/spellcasting/SpellDelivery"
+import { appLang } from "../../../../../../../../utils/lang"
+import { DropDown } from "../../../../../../../component/Dropdown"
 import { SpellcastingLabel } from "./SpellcastingTypography"
+
 
 export const DeliverySelector = ({ deliveries, currentDelivery, onSelect }: {
     deliveries: SpellDelivery[], currentDelivery: SpellDelivery | undefined, onSelect: (index: number) => void

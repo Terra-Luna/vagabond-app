@@ -1,6 +1,6 @@
-import { SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
-import { appLang } from "../../../../../../../utils/lang"
-import { DropDown } from "../../../../../../component/Dropdown"
+import { SpellSnapshot } from "../../../../../../../../combat/spellcasting/SpellDelivery"
+import { appLang } from "../../../../../../../../utils/lang"
+import { DropDown } from "../../../../../../../component/Dropdown"
 
 export const SpellSelector = ({ spell, spells, onSelect }: {
     spell: SpellSnapshot, spells: SpellSnapshot[], onSelect: (uuid: string) => void

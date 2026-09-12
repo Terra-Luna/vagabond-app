@@ -47,12 +47,9 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                         const isEquipped = item.isEquipped
                         const isBound = item.isBoundRelic()
                         const isCursed = item.isCursed()
-                        const tooltip = `${isBound && !isCursed
-                            ? `This item must be Bound to be equipped.\nRequires a 10 minute Ritual.\nLimit: 3 Bound items`
-                            : (`${isEquipped && isCursed
-                                ? "Curse must be broken to un-equip!"
-                                : ""}`)
-                            }`
+                        const tooltip = `${isBound && !isEquipped && !isCursed
+                            ? `This item must be Bound to be equipped.\nRequires a 10 minute Ritual.\nLimit: ${(actor as any).boundItemsLimit ?? 3} Bound items`
+                            : `${isBound && isEquipped ? "This item is Bound to you." : ""}`}`
 
                         return (
                             <tr
@@ -71,29 +68,34 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                 onDragEnd={(e) => onDragEnd(e, index)}
                                 data-item-id={getId(item)}
                             >
-                                <td className="px-2 py-1">
-                                    <span className="flex">
+                                {/* ITEM NAME & ICON */}
+                                <td>
+                                    <div className="flex gap-x-0.5 items-center py-1 min-w-0">
                                         <ItemIconImg item={item} tooltip={tooltip} />
-                                        <p className="items-center line-clamp-1">{itemNameQty(item)}</p>
-                                    </span>
+                                        <p className="items-center truncate">{itemNameQty(item)}</p>
+                                    </div>
                                 </td>
+                                {/* BULK SLOTS */}
                                 <td className="text-center font-normal">{item.bulk.totalSlots}</td>
-                                <td className="text-center font-normal">{coinsAsString(item.totalValue)}</td>
-                                {
-                                    showEquipColumn && (
-                                        item.isEquippable
-                                            ? <td className="items-center">
-                                                <EquipStateIcon
-                                                    tooltip={tooltip}
-                                                    type={item.parent.type}
-                                                    isEquipped={item.isEquipped}
-                                                    gripState={(item as any).grip?.state}
-                                                    toggleEquipState={
-                                                        async () => await toggleEquipState(actor as HeroDataModel, item)
-                                                    }
-                                                />
-                                            </td>
-                                            : <td className="text-center" />
+                                {/* VALUE */}
+                                <td className="text-center font-normal truncate">
+                                    {coinsAsString(item.totalValue)}
+                                </td>
+                                {/* EQUIP STATUS */}
+                                {showEquipColumn && (
+                                    item.isEquippable
+                                        ? <td className="items-center">
+                                            <EquipStateIcon
+                                                tooltip={tooltip}
+                                                type={item.parent.type}
+                                                isEquipped={item.isEquipped}
+                                                gripState={(item as any).grip?.state}
+                                                toggleEquipState={
+                                                    async () => await toggleEquipState(actor as HeroDataModel, item)
+                                                }
+                                            />
+                                        </td>
+                                        : <td className="text-center" />
                                     )
                                 }
                             </tr>
@@ -112,34 +114,32 @@ const ItemIconImg = ({ item, tooltip }) => {
     const isCursed = item.isCursed()
 
     return (
-        <div className="flex items-center">
-            <div className="relative mr-2 flex items-center justify-center">
-                <img
-                    src={item.parent.img}
-                    alt={getName(item)}
-                    width="28"
-                    height="28"
-                    className="rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
-                    title={tooltip}
-                />
+        <div className="flex items-center justify-center relative mr-2 shrink-0">
+            <img
+                src={item.parent.img}
+                alt={getName(item)}
+                width="28"
+                height="28"
+                className="rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
+                title={tooltip}
+            />
 
-                {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
-                <span title={tooltip}>
-                    {isEquipped && isBound &&
-                        <Diamond
-                            size={12}
-                            className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                        />
-                    }
-                    {!isEquipped && isBound && !isCursed &&
-                        <Diamond
-                            size={12}
-                            className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                            strokeWidth={1}
-                        />
-                    }
-                </span>
-            </div>
+            {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
+            <span title={tooltip}>
+                {isEquipped && isBound &&
+                    <Diamond
+                        size={12}
+                        className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                    />
+                }
+                {!isEquipped && isBound && !isCursed &&
+                    <Diamond
+                        size={12}
+                        className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                        strokeWidth={1}
+                    />
+                }
+            </span>
         </div>
     )
 }

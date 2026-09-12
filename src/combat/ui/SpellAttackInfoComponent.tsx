@@ -8,7 +8,7 @@ import { DamageRollsComponent } from "../../view/chat/component/DamageRollsCompo
 import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { CardSubHeader, CardSubHeaderValues } from "../../view/component/SkillCard"
-import { SpellcastingSubtext } from "../../view/sheets/actor/hero/tab/component/spellcasting/SpellcastingTypography"
+import { SpellcastingSubtext } from "../../view/sheets/actor/hero/tab/component/spellcasting/input/SpellcastingTypography"
 import { DamageRollResult } from "../engine/roll/DamageRoll"
 
 export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined, img }: {

@@ -1,5 +1,5 @@
-import { appLang } from "../../../../../../../utils/lang"
-import { Checkbox } from "../../../../../../component/Checkbox"
+import { appLang } from "../../../../../../../../utils/lang"
+import { Checkbox } from "../../../../../../../component/Checkbox"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const SpellEffectToggle = ({ isEffect, onSpellEffectToggle }) => {

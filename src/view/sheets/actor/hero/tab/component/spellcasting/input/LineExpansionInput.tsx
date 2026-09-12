@@ -1,5 +1,5 @@
-import { appLang } from "../../../../../../../utils/lang"
-import { NumericCounterInput } from "../../../../../../component/EditableTextField"
+import { appLang } from "../../../../../../../../utils/lang"
+import { NumericCounterInput } from "../../../../../../../component/EditableTextField"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const LineExpansionInut = ({ delivery, onUpdateHeight, onUpdateWidth }) => {

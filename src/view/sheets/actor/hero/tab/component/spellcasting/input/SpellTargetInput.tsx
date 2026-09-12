@@ -1,5 +1,5 @@
-import { PerTargetDelivery } from "../../../../../../../combat/spellcasting/SpellDelivery"
-import { NumericCounterInput } from "../../../../../../component/EditableTextField"
+import { PerTargetDelivery } from "../../../../../../../../combat/spellcasting/SpellDelivery"
+import { NumericCounterInput } from "../../../../../../../component/EditableTextField"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const SpellTargetInput = ({ delivery, onUpdateTargetCount, readOnly }: {

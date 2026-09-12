@@ -652,7 +652,7 @@
         "slots": "SLOTS",
         "qty": "QTY",
         "value": "VALUE",
-        "equip": "EQUIP",
+        "equip": "EQ",
         "effects": "EFFECTS",
         "ctxUse": "Use",
         "ctxExtract": "Extract",

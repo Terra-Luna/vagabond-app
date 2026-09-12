@@ -1,6 +1,6 @@
-import { appLang } from "../../../../../../../utils/lang"
-import { createDropdownEntriesFromObj } from "../../../../../../../utils/localeUtils"
-import { DropDown } from "../../../../../../component/Dropdown"
+import { appLang } from "../../../../../../../../utils/lang"
+import { createDropdownEntriesFromObj } from "../../../../../../../../utils/localeUtils"
+import { DropDown } from "../../../../../../../component/Dropdown"
 import { SpellcastingLabel } from "./SpellcastingTypography"
 
 export const SkillSelector = ({ skill, onSelectSkill }: { skill: string, onSelectSkill: any }) => {
