@@ -288,23 +288,23 @@
       },
       "warded": {
         "name": "Warded",
-        "description": ""
+        "description": "The Target has +1 Armor. You must spend 1 Mana per Target to Focus on this Spell, even\nfor willing Targets.\n\nUpcast: When the Target takes damage from an attack or Cast, you can upcast this Spell\nto make a Cast Check to reduce the damage taken by 1d6 per Mana spent on the upcast\nif you pass."
       },
       "exalted": {
         "name": "Exalted",
-        "description": ""
+        "description": "Targets gain a +1 bonus to each damage die they deal and to Will Saves against Frightened.\nThis bonus is doubled if a Hellspawn or Undead is the attack's Target or the one forcing the Save."
       },
       "blessed": {
         "name": "Blessed",
-        "description": ""
+        "description": "For the duration, Targeted Objects count as Silvered, and\nTargeted Beings of your choice have a d4 bonus to Saves.\nFurther, if the Target is freestanding water, it permanently\nbecomes holy water."
       },
       "marked": {
         "name": "Marked",
-        "description": ""
+        "description": "A Hunter has marked this target."
       },
       "hexed": {
         "name": "Hexed",
-        "description": ""
+        "description": "A Witch has Hexed this target."
       }
     },
     "Wealth": {

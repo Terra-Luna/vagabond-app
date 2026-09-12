@@ -10,7 +10,7 @@ import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { PrimaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
-import { Header } from "../../../../component/Header"
+import { ClearHeader } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
@@ -32,74 +32,76 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className="py-1">
-            {
-                !hero.ancestry ? <></> : <>
-                    <Header title={appLang.HeroSheet.ancestry} />
+            <span className="font-eskapade font-bold">
+                {
+                    !hero.ancestry ? <></> : <>
+                        <ClearHeader title={appLang.HeroSheet.ancestry} />
+                        <div className="mt-0.5" />
+                        <SkillCard
+                            title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
+                            subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
+                            description={hero.ancestry?.description}
+                        />
+                    </>
+                }
+                <div className="my-2">
+                    <ClearHeader title={appLang.HeroSheet.class} />
                     <div className="mt-0.5" />
-                    <SkillCard
-                        title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
-                        subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
-                        description={hero.ancestry?.description}
-                    />
-                </>
-            }
-            <div className="my-2">
-                <Header title={appLang.HeroSheet.class} />
+                    <div className={abilitiesGrid}>
+                        {
+                            classFeatures.map((f, index) => (
+                                <div key={index} onContextMenu={(e) => onCtxMenu(e, [
+                                    {
+                                        icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
+                                            <AbilityChatCard actorId={getId(hero)} img={''} title={f.name} description={f.description} />
+                                        )
+                                    }
+                                ])}>
+                                    <SkillCard
+                                        actor={hero.parent}
+                                        title={f.name}
+                                        subtitles={[{ label: getName(hero.class), value: `Level ${f.level}` }]}
+                                        description={f.description}
+                                    />
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <ClearHeader title={appLang.HeroSheet.perks} />
                 <div className="mt-0.5" />
                 <div className={abilitiesGrid}>
                     {
-                        classFeatures.map((f, index) => (
-                            <div key={index} onContextMenu={(e) => onCtxMenu(e, [
-                                {
-                                    icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
-                                        <AbilityChatCard actorId={getId(hero)} img={''} title={f.name} description={f.description} />
-                                    )
-                                }
-                            ])}>
-                                <SkillCard
-                                    actor={hero.parent}
-                                    title={f.name}
-                                    subtitles={[{ label: getName(hero.class), value: `Level ${f.level}` }]}
-                                    description={f.description}
-                                />
-                            </div>
-                        ))
-                    }
-                </div>
-            </div>
-            
-            <Header title={appLang.HeroSheet.perks} />
-            <div className="mt-0.5" />
-            <div className={abilitiesGrid}>
-                {
-                    hero.perks
-                        .sort((a, b) => a.parent.name.localeCompare(b.parent.name))
-                        .filter(p => !p.canTakeMultiple)
-                        .map((p: any, index: number) => (
-                        <div key={index} onContextMenu={(e) => onCtxMenu(e, [
-                            {
-                                icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
-                                    <AbilityChatCard
-                                        actorId={getId(hero)}
+                        hero.perks
+                            .sort((a, b) => a.parent.name.localeCompare(b.parent.name))
+                            .filter(p => !p.canTakeMultiple)
+                            .map((p: any, index: number) => (
+                                <div key={index} onContextMenu={(e) => onCtxMenu(e, [
+                                    {
+                                        icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
+                                            <AbilityChatCard
+                                                actorId={getId(hero)}
+                                                img={p.parent.img}
+                                                title={p.parent.name}
+                                                subtitle={perkPrerequisites(p)}
+                                                description={p.description}
+                                            />
+                                        )
+                                    }
+                                ])}>
+                                    <SkillCard
+                                        actor={hero.parent}
                                         img={p.parent.img}
                                         title={p.parent.name}
-                                        subtitle={perkPrerequisites(p)}
+                                        subtitles={perkPrerequisites(p)}
                                         description={p.description}
                                     />
-                                )
-                            }
-                        ])}>
-                            <SkillCard
-                                actor={hero.parent}    
-                                img={p.parent.img}
-                                title={p.parent.name}
-                                subtitles={perkPrerequisites(p)}
-                                description={p.description}
-                            />
-                        </div>
-                    ))
-                }
-            </div>
+                                </div>
+                            ))
+                    }
+                </div>
+            </span>
 
             {/* PERK SELECTIONS - Read-only due to how it uses flags to save choices. */}
             <div className="flex mt-1 w-full justify-end mb-12">

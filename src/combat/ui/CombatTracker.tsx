@@ -448,12 +448,12 @@ const CombatTrackerPortrait = ({ src, isControlled, isHovered, disposition, isHi
 
 const getStatusIcons = (combatant) => {
     const statuses = getCombatantStatuses(combatant)
-    return statuses.map((status) => {
+    return statuses.map((status, index) => {
         const img = CONFIG.statusEffects.find(e => e.id === status)?.img
         const title = appLang.StatusConditions[status].name
         const description = appLang.StatusConditions[status].description
         return img
-            ? <Tooltip title={title} content={description}>
+            ? <Tooltip key={index} title={title} content={description}>
                 <img src={img} height={12} width={12} />
             </Tooltip>
             : <></>
