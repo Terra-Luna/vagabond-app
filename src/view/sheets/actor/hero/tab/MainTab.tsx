@@ -1,4 +1,4 @@
-import { Shield, Shirt } from "lucide-react"
+import { Shield } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
@@ -53,8 +53,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
-    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => isEquippedSundry(it)) as SundryDataModel[])
-    const combinedEquipped = [...equippedWeapons, ...equippedSundries]
+    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) as SundryDataModel[])
+    const combinedEquipped = sortedItems<WeaponDataModel | SundryDataModel>([...equippedWeapons, ...equippedSundries])
 
     const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
         combinedEquipped,
@@ -63,7 +63,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
         )
     )
 
-    const equipDependency = combinedEquipped.map(i => `${i.parent.id}-${(i as any)?.grip?.state ?? i.isEquipped}`).join(',')
+    const equipDependency = combinedEquipped.map(i => i.parent.id).join(',')
     const [targetIds, setTargetIds] = useState("")
 
     useEffect(() => {
@@ -115,11 +115,11 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
             }
         })
 
-        const sundriesData = equippedSundries.sort((a, b) => Number(a.isWearable) - Number(b.isWearable)).map(item => {
+        const sundriesData = equippedSundries.map(item => {
             return { item, damageString: "", initiateAttack: () => { }, rollDefenseCheck: () => { } }
         })
 
-        return [...weaponData, ...sundriesData]
+        return [...weaponData, ...sundriesData].sort((a, b) => a.item.parent.sort - b.item.parent.sort)
     }, [hero.parent, equipDependency, targetIds, effectUpdateKey])
 
     return (
@@ -137,28 +137,25 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
-                            <div className="flex flex-col gap-y-0.5 my-1 px-2">
+                            <div className="flex flex-col gap-y-0.5 px-2 py-0.25">
                                 <div className="flex justify-between items-center">
                                     <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
                                     <div className="flex justify-end items-center">
                                         {/* WEAPON GRIP DISPLAY */}
                                         {item instanceof WeaponDataModel && (
                                             <Tooltip title={"Grip"} disabled={item.grip.style !== 'V'} content={`${item.grip.style === 'V' && (item as any).grip.state === 'HH' ? 'Switch to One-Handed' : 'Switch to Two-Handed'}`}>
-                                                <div className={`${gripStyle} mr-2 hover-glow`} onClick={() => toggleGripState(item)}>
+                                                <div className={`${gripStyle} ${item.grip.style === 'V' ? 'hover-glow' : ''} mr-2`} onClick={() => toggleGripState(item)}>
                                                     {appLang.GripsAbbr[item.grip.state]}
                                                 </div>
                                             </Tooltip>
                                         )}
 
                                         {/* SUNDRY BULK DISPLAY */}
-                                        {item instanceof SundryDataModel && (<>
-                                            {item.isWearable
-                                                ? <Shirt size={16} className="text-text-header-tertiary" />
-                                                : <p className={gripStyle}>
-                                                    {appLang.GripsAbbr[item.bulk.slots === 0 ? "" : (item.bulk.slots > 1 ? 'HH' : 'H')]}
-                                                </p>
-                                            }
-                                        </>)}
+                                        {item instanceof SundryDataModel && (
+                                            <p className={gripStyle}>
+                                                {appLang.GripsAbbr[item.bulk.slots === 0 ? "" : (item.bulk.slots > 1 ? 'HH' : 'H')]}
+                                            </p>
+                                        )}
 
                                         <div className="flex content-right items-center gap-x-1">
                                             {/* CLICKABLE DAMAGE ROLL */}
@@ -180,9 +177,11 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                                     </div>
                                 </div>
 
-                                <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary" />
+                                <div className="flex justify-between items-center -mt-1">
+                                    <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary" />
+                                </div>
 
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center -mt-1 pb-1">
                                     <div className={propsStyle}>{(item as any).properties?.map(p => appLang.WeaponProps[p].name).join(", ")}</div>
                                     <div className={propsStyle + " text-right mr-1.5"}>{appLang.Ranges[(item as any).range ?? '']}</div>
                                 </div>
@@ -199,21 +198,48 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 }
 
 const Armor = ({ hero }: { hero: HeroDataModel }) => {
-    const armor = getArmor(hero) as any as ArmorDataModel
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
+    const armor = getArmor(hero) as any as ArmorDataModel
+    const wearables = hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable) as SundryDataModel[]
+
     return (
-        <div className="w-full">
+        <div className="w-full -mt-1">
             <Header title={appLang.HeroSheet.armor} />
-            <div className="grid grid-cols-[55%_45%] place-content-between -gap-y-1 px-2">
-                <div className="text-lg line-clamp-1">{armor?.parent.name ?? '-'}</div>
-                <div className="flex justify-end items-center">
-                    <Shield className="mr-1" size={18} />
-                    <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">{armor?.rating ?? '-'}</div>
+            <div className="flex flex-col gap-1 px-2">
+                {/* ARMOR NAME AND RATING */}
+                <div className="flex items-center justify-between">
+                    <div className="text-lg line-clamp-1">{armor?.parent.name ?? '-'}</div>
+                    <div className="flex justify-end items-center">
+                        <Shield className="mr-1" size={18} />
+                        <div className="line-clamp-1 text-lg text-right font-eskapade font-bold mr-1">{armor?.rating ?? '-'}</div>
+                    </div>
                 </div>
-                <div className={propsStyle}>{appLang.EquipmentCategories[armor?.category] ?? '-'}</div>
-                <div className={propsStyle + " text-right mr-1"}>{appLang.Metals[armor?.material]?.name ?? '-'}</div>
+
+                {/* RELIC INFO */}
+                <RelicEffectList relicPowers={armor.relicPowers ?? []} textColor="text-text-header-tertiary" />
+
+                {/* ARMOR CATEGORY AND MATERIAL */}
+                <div className="flex items-center justify-between">
+                    <div className={propsStyle}>{appLang.ArmorTypes[armor?.armorType].name ?? '-'}</div>
+                    <div className={propsStyle + " text-right mr-1"}>{appLang.Metals[armor?.material]?.name ?? '-'}</div>
+                </div>
+                <ItemDivider />
             </div>
-            <ItemDivider />
+
+            {/* WEARABLE ITEMS */}
+            {wearables.length > 0 && (
+                <div className="flex flex-col gap-1 px-2">
+                    {wearables.map((item, index) => (
+                        <div key={index} className="flex flex-col gap-0.5">
+                            {/* WEARABLE NAME */}
+                            <p className="text-base line-clamp-1">{item.parent.name}</p>
+                            {/* RELIC INFO */}
+                            <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary" />
+                            <ItemDivider />
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }
