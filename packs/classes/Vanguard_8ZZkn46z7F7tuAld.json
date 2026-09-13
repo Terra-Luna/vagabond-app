@@ -90,7 +90,7 @@
         "name": "Stalwart",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Protector Perk and, when you take the Hold Action, you can use the held Action or Move as late as the end of your next Turn.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.R3Hj2LF94pnsVEkk]{Protector Perk} and, when you take the Hold Action, you can use the held Action or Move as late as the end of your next Turn.</span></p>"
       },
       {
         "name": "Wall",
@@ -129,9 +129,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786571011722,
-    "modifiedTime": 1789002440476,
+    "modifiedTime": 1789326439884,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -95,7 +95,7 @@
         "name": "Fighting Style",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Situational Awareness Perk and another Perk with the Melee or Ranged Training Prerequisite, ignoring prerequisites for this Perk.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.6aUzsiWQ0IpvS0y4]{Situational Awareness Perk} and another Perk with the Melee or Ranged Training Prerequisite, ignoring prerequisites for this Perk.</span></p>"
       },
       {
         "name": "Momentum",
@@ -134,9 +134,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1784497758223,
-    "modifiedTime": 1789002049141,
+    "modifiedTime": 1789326193506,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

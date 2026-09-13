@@ -119,19 +119,19 @@
         "name": "Page Master",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Bookworm Perk, and you can spend a Studied die to learn a Spell for the Shift.</span></p>"
-      },
-      {
-        "name": "Sculpt Spell",
-        "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You pay 1 less Mana for Delivery upcasting.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This discount is increased by 1 every 4 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.jvuOodZbzMMANBn6]{Bookworm Perk}, and you can spend a Studied die to learn a Spell for the Shift.</span></p>"
       },
       {
         "name": "Manifold Mind",
         "level": 2,
         "scale": 4,
         "description": "<p><span style=\"white-space: pre-wrap;\">The number of Spells you can Focus on at the same time increases by 1 now and every 4 Levels hereafter.</span></p>"
+      },
+      {
+        "name": "Sculpt Spell",
+        "level": 4,
+        "scale": 4,
+        "description": "<p><span style=\"white-space: pre-wrap;\">You pay 1 less Mana for Delivery upcasting.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This discount is increased by 1 every 4 Levels hereafter.</span></p>"
       }
     ]
   },
@@ -146,9 +146,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786572729833,
-    "modifiedTime": 1789002456099,
+    "modifiedTime": 1789326480333,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

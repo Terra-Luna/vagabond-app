@@ -61,7 +61,7 @@
         "name": "Fisticuffs",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have the Dusted Knuckle Perk, and your Equipped Brawl Weapons have the Defense and Vicious properties.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you roll any damage dice for a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your subsequent Brawl damage dice one size until the start of your Turn.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You have the @UUID[Compendium.vagabond-app.perks.Item.zqTnJZseG8Q8Pf7Z]{Dusted Knuckle Perk}, and your Equipped Brawl Weapons have the Defense and Vicious properties.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you roll any damage dice for a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your subsequent Brawl damage dice one size until the start of your Turn.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
       },
       {
         "name": "Rope-a-Dope",
@@ -112,9 +112,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786567444757,
-    "modifiedTime": 1789002397943,
+    "modifiedTime": 1789326329908,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

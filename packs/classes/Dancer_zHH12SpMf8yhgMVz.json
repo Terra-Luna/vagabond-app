@@ -75,7 +75,7 @@
         "name": "Footloose",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Fallaway Reverse Perk and, when you make a Reflex Save, roll two d20s and use the higher result.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.EA0tFzBH51SqEfWv]{Fallaway Reverse Perk} and, when you make a Reflex Save, roll two d20s and use the higher result.</span></p>"
       },
       {
         "name": "Evasive",
@@ -120,9 +120,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786555298394,
-    "modifiedTime": 1789002328183,
+    "modifiedTime": 1789326113616,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -73,7 +73,7 @@
         "name": "Deep Pockets",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Deft Hands Perk, and you gain 2 extra Item Slots now and every 3 Levels hereafter.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.TcPtYma4aDbo9npG]{Deft Hands Perk}, and you gain 2 extra Item Slots now and every 3 Levels hereafter.</span></p>"
       },
       {
         "name": "Gold Sink",
@@ -118,9 +118,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786566807612,
-    "modifiedTime": 1789002386375,
+    "modifiedTime": 1789326281355,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

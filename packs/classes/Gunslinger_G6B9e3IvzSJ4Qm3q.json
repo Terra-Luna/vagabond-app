@@ -39,10 +39,19 @@
       {
         "id": "qJRZL1JaHxK75whJ",
         "key": "GrantItem",
-        "label": "Quickdraw",
+        "label": "Shooting Irons",
         "level": "1",
         "uuid": "Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg",
         "type": "perk"
+      },
+      {
+        "id": "XiavpYF8dtGv6S5d",
+        "key": "FlatModifier",
+        "label": "Bad Medicine",
+        "level": 2,
+        "value": "1",
+        "selector": "modifiers.dice.crit.ranged.extraDice",
+        "scale": 4
       },
       {
         "id": "iDjSPeebyKzauYTh",
@@ -72,10 +81,10 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, and can stack up to 3 times. It resets at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>"
       },
       {
-        "name": "Quickdraw",
+        "name": "Shooting Irons",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Quick Draw Perk and, once per Round, you can make a Ranged attack against an attack that would hit. If you pass, reduce the damage dealt by the Target’s attack by your attack’s damage.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg]{Quick Draw Perk} and, once per Round, you can make a Ranged attack against an attack that would hit. If you pass, reduce the damage dealt by the Target’s attack by your attack’s damage.</span></p>"
       },
       {
         "name": "Bad Medicine",
@@ -126,9 +135,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786041519359,
-    "modifiedTime": 1789002354098,
+    "modifiedTime": 1789325849455,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

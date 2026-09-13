@@ -21,6 +21,14 @@
         "filters": []
       },
       {
+        "id": "S0GBuNocdrSDSizg",
+        "key": "ToggleRule",
+        "label": "Training: Arcana",
+        "level": "1",
+        "value": true,
+        "selector": "skills.arcana.trained"
+      },
+      {
         "id": "2i75XyhMtbuFleja",
         "key": "ToggleRule",
         "label": "Training: Influence",
@@ -67,7 +75,7 @@
       {
         "id": "WU8eVWtRaDlhQsdU",
         "key": "FlatModifier",
-        "label": "Spell-Slinger",
+        "label": "Spell-Slinger: Die Size Bonus",
         "level": 4,
         "value": 2,
         "selector": "modifiers.dice.size.spell.bonus"
@@ -75,7 +83,7 @@
       {
         "id": "XohL3cywNVuleWnh",
         "key": "FlatModifier",
-        "label": "Spell-Slinger",
+        "label": "Spell-Slinger: Crit Threshold",
         "level": 4,
         "value": 1,
         "selector": "modifiers.skillCheck.cast.critThreshold",
@@ -105,7 +113,7 @@
         "name": "Tap",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Vehement Magic Perk, and you can spend your HP as Mana, which also reduces your Max HP by the same amount until you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.eDxdbBsCNsDdTsG0]{Vehement Magic Perk}, and you can spend your HP as Mana, which also reduces your Max HP by the same amount until you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p>"
       },
       {
         "name": "Quickening",
@@ -138,9 +146,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786569750999,
-    "modifiedTime": 1789002430032,
+    "modifiedTime": 1789329607360,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

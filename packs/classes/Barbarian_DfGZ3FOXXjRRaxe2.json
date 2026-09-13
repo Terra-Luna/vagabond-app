@@ -92,7 +92,7 @@
         "name": "Wrath",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Interceptor Perk, and can make its attack against an Enemy that takes an Action.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.ixtkMiuqHctLr3oB]{Interceptor Perk}, and can make its attack against an Enemy that takes an Action.</span></p>"
       },
       {
         "name": "Aggressor",
@@ -296,9 +296,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1785901965127,
-    "modifiedTime": 1789002317831,
+    "modifiedTime": 1789326037216,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -93,7 +93,7 @@
         "name": "Feral Shift",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You get the Shapechanger Perk and, when you Cast Polymorph on yourself, you can also take an Action of the Beast.</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You get the @UUID[Compendium.vagabond-app.perks.Item.AoVmeWjebFc7CEss]{Shapechanger Perk} and, when you Cast Polymorph on yourself, you can also take an Action of the Beast.</span></p>"
       },
       {
         "name": "Savagery",
@@ -108,16 +108,16 @@
         "description": "<p><span style=\"white-space: pre-wrap;\">You reduce Cold, Fire, and Shock damage you take by 1 per damage die. This reduction is increased by 1 every 4 Levels hereafter.</span></p>"
       },
       {
-        "name": "Force of Nature",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, if you are reduced to 0 HP, you can polymorph into a Beast and regain HP equal to that shown in its Statblock.</span></p>"
-      },
-      {
         "name": "Beast Mode",
         "level": 6,
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">The attacks you make as Beasts ignore Immune to non-Relic damage.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you are the sole Target of a casting of your polymorph Spell, you can make the duration continual.</span></p>"
+      },
+      {
+        "name": "Force of Nature",
+        "level": 10,
+        "scale": 0,
+        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, if you are reduced to 0 HP, you can polymorph into a Beast and regain HP equal to that shown in its Statblock.</span></p>"
       }
     ]
   },
@@ -132,9 +132,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.84",
     "createdTime": 1786555887806,
-    "modifiedTime": 1789002338633,
+    "modifiedTime": 1789326154362,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
