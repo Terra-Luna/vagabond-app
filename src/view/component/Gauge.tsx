@@ -5,14 +5,11 @@ interface GaugeProps {
     max: number;
     fillColorClassName: string;
     maxColorClassName?: string;
-    negativeSpaceColorClassName?: string;
-    textClassName?: string;
-    showText?: boolean;
     size?: 'sm' | 'md';
     rounded?: boolean;
 }
 
-export const Gauge = ({ value, max, fillColorClassName, maxColorClassName, negativeSpaceColorClassName, textClassName, showText, size = "md", rounded = true }: GaugeProps) => {
+export const Gauge = ({ value, max, fillColorClassName, maxColorClassName, size = "md", rounded = true }: GaugeProps) => {
     const width = Math.min(value / max * 100, 100)
     const fillColor = (value > max) ? (maxColorClassName || fillColorClassName) : fillColorClassName
     const outerHeight = size === "sm" ? "h-[8px]" : "h-[12px]"

@@ -1,4 +1,4 @@
-import { BookMarked, Clover } from "lucide-react"
+import { BookMarked, Check, Clover, Swords, X } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
 import { getAllowLateLuckStudy, getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
@@ -16,12 +16,13 @@ import { TargetsDisplay } from "../../view/chat/component/TargetsDisplay"
 import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
 import { SkillCheckDiceComponent } from "../../view/chat/SkillCheckChatCard"
 import { tableBorder, tableBorderRounded } from "../../view/common/border-styles"
-import { UtilityButton } from "../../view/component/Button"
+import { buttonAnimation, UtilityButton } from "../../view/component/Button"
 import { Checkbox } from "../../view/component/Checkbox"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { EnrichedContent } from "../../view/component/EnrichedContent"
 import { ClearHeader, Divider, Header } from "../../view/component/Header"
 import { CardSubHeader } from "../../view/component/SkillCard"
+import { Tooltip } from "../../view/component/Tooltip"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { ItemPortraitComponent } from "../../view/sheets/item/shared/ItemPortraitComponent"
@@ -33,6 +34,7 @@ import { SkillCheckResult } from "../engine/roll/SkillCheck"
 import { TargetDisplayItem, useLiveTargetSync } from "../engine/usecase/LiveTargetSyncUseCase"
 import { deserializeAttack } from "../engine/util/attack-deserializer"
 import { serializeAttack } from "../engine/util/attack-serializer"
+import { useAdversaryAttack, useAdversaryAttackSaveHandlers, useAdversaryAttackTargets } from "./hooks"
 import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
@@ -57,7 +59,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                     ? JSON.parse(changes.value)
                     : (changes.value || {})
             }
-            catch (err) {
+            catch {
                 updatedData = getAttackRegistry()
             }
 
@@ -153,7 +155,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                         {/* GM TOOL BUTTONS FOR MANAGING OUTCOMES */}
                                         <div className="flex flex-col gap-1 mt-1">
                                             {attack.showDamage &&
-                                                <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits"
+                                                <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
                                                             { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle, halveDamage: halfDamageToggle },
@@ -164,7 +166,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 />}
                                             {((attack instanceof AdversaryAttack && attack.statuses.length > 0) ||
                                                 (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.statuses.length > 0))) &&
-                                                <InteractiveChatCardButton label="Status only" tooltip="Apply statuses only (no damage) & lock attack from edits"
+                                                <InteractiveChatCardButton label="Status only" tooltip="Apply statuses only (no damage) & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)
                                                         setRevision(prev => prev + 1)
@@ -393,45 +395,11 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
 }
 
 const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAttack, setRevision: any }) => {
-    const liveTargetIds = useLiveTargetSync(attack)
-
-    const targets = useMemo<TargetDisplayItem[]>(() => {
-        return liveTargetIds
-            .map(id => {
-                const canvasToken = getCanvasToken(id)
-                return {
-                    id: id,
-                    src: getTokenImg(canvasToken),
-                    token: canvasToken
-                }
-            })
-            .filter(it => it.src != null && it.src.length > 0)
-    }, [liveTargetIds])
-
-    const handleSave = useCallback(async (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => {
-        await attack.rollSave(targetId, saveType, clickEvent)
-        setRevision((prev: number) => prev + 1)
-    }, [attack])
-
-    const handleRerollSave = useCallback(async (targetId: string) => {
-        await attack.rerollSave(targetId)
-        setRevision((prev: number) => prev + 1)
-    }, [attack])
-
-    // Players should only see their own saves.
-    const ownedTargets = useMemo(() => {
-        return targets.filter(target => game.user?.isActiveGM || target.token?.actor?.isOwner)
-    }, [targets])
+    const { targets, ownedTargets, handleSave, handleRerollSave } = useAdversaryAttack(attack, setRevision)
+    const unownedTargets = targets.filter(target => !ownedTargets.some(ownedTarget => ownedTarget.id === target.id))
 
     return (
         <div className="flex flex-col gap-1">
-            {/* TARGET TOKENS ARRAY */}
-            {attack.showTargets &&
-                <div className="flex flex-col w-full">
-                    <TargetsDisplay targets={targets} />
-                </div>
-            }
-
             <AttackDamageAndSavesSection
                 damageRoll={attack.damageRoll}
                 saveTypes={attack.saveTypes}
@@ -439,6 +407,7 @@ const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAt
                 rerolledSaveTargetIds={attack.rerolledSaveTargetIds}
                 isResolved={attack.isResolved}
                 ownedTargets={ownedTargets}
+                unownedTargets={unownedTargets}
                 onRollSave={handleSave}
                 onRerollSave={handleRerollSave}
             />
@@ -447,33 +416,8 @@ const AdversaryAttackComponent = ({ attack, setRevision }: { attack: AdversaryAt
 }
 
 const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: AdversaryComboAttack, setRevision: any }) => {
-    const liveTargetIds = useLiveTargetSync(attack)
-
-    const targets = useMemo<TargetDisplayItem[]>(() => {
-        return liveTargetIds.map(id => {
-            const canvasToken = getCanvasToken(id)
-            return {
-                id: id,
-                src: getTokenImg(canvasToken),
-                token: canvasToken
-            }
-        }).filter(it => it.src != null && it.src.length > 0)
-    }, [liveTargetIds])
-
-    // Players should only see their own saves.
-    const ownedTargets = useMemo(() => {
-        return targets.filter(target => game.user?.isActiveGM || target.token?.actor?.isOwner)
-    }, [targets])
-
-    const handleSave = useCallback(async (subIndex: number, targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => {
-        await attack.rollSave(subIndex, targetId, saveType, clickEvent)
-        setRevision((prev: number) => prev + 1)
-    }, [attack])
-
-    const handleRerollSave = useCallback(async (subIndex: number, targetId: string) => {
-        await attack.rerollSave(subIndex, targetId)
-        setRevision((prev: number) => prev + 1)
-    }, [attack])
+    const { targets, ownedTargets } = useAdversaryAttackTargets(attack)
+    const unownedTargets = targets.filter(target => !ownedTargets.some(ownedTarget => ownedTarget.id === target.id))
 
     return (
         <div className={`flex flex-col gap-2`}>
@@ -486,27 +430,43 @@ const AdversaryComboAttackComponent = ({ attack, setRevision }: { attack: Advers
 
             {/* ONE DAMAGE + SAVES SECTION PER COMBO ACTION */}
             {attack.subAttacks.map((sub, index) => (
-                <div className={`${tableBorderRounded} bg-context-menu-fill/25`} key={index}>
-                    <AttackDamageAndSavesSection
-                        title={sub.name}
-                        damageRoll={sub.damageRoll}
-                        saveTypes={sub.saveTypes}
-                        saveResults={sub.saveResults}
-                        rerolledSaveTargetIds={sub.rerolledSaveTargetIds}
-                        isResolved={attack.isResolved}
-                        ownedTargets={ownedTargets}
-                        onRollSave={(targetId, saveType, clickEvent) => handleSave(index, targetId, saveType, clickEvent)}
-                        onRerollSave={(targetId) => handleRerollSave(index, targetId)}
-                    />
-                </div>
+                <AdversaryComboAttackSection attack={attack} sub={sub} subIndex={index} ownedTargets={ownedTargets} unownedTargets={unownedTargets} setRevision={setRevision} key={index} />
             ))}
         </div>
     )
 }
 
-// Renders one action's damage roll and save/reroll/Block buttons.
+const AdversaryComboAttackSection = ({ attack, sub, subIndex, ownedTargets, unownedTargets, setRevision }: {
+    attack: AdversaryComboAttack
+    sub: AdversaryComboAttack["subAttacks"][number]
+    subIndex: number
+    ownedTargets: TargetDisplayItem[]
+    unownedTargets: TargetDisplayItem[]
+    setRevision: any
+}) => {
+    const { handleSave, handleRerollSave } = useAdversaryAttackSaveHandlers(attack, setRevision, subIndex)
+
+    return (
+        <div className={`${tableBorderRounded} bg-context-menu-fill/25`}>
+            <AttackDamageAndSavesSection
+                title={sub.name}
+                damageRoll={sub.damageRoll}
+                saveTypes={sub.saveTypes}
+                saveResults={sub.saveResults}
+                rerolledSaveTargetIds={sub.rerolledSaveTargetIds}
+                isResolved={attack.isResolved}
+                ownedTargets={ownedTargets}
+                unownedTargets={unownedTargets}
+                onRollSave={handleSave}
+                onRerollSave={handleRerollSave}
+            />
+        </div>
+    )
+}
+
+// Renders one action's damage roll and save/reroll/defend buttons.
 const AttackDamageAndSavesSection = ({
-    title, damageRoll, saveTypes, saveResults, rerolledSaveTargetIds, isResolved, ownedTargets, onRollSave, onRerollSave
+    title, damageRoll, saveTypes, saveResults, rerolledSaveTargetIds, isResolved, ownedTargets, unownedTargets, onRollSave, onRerollSave
 }: {
     title?: string
     damageRoll: DamageRoll | undefined
@@ -515,6 +475,7 @@ const AttackDamageAndSavesSection = ({
     rerolledSaveTargetIds: string[]
     isResolved: boolean
     ownedTargets: TargetDisplayItem[]
+        unownedTargets: TargetDisplayItem[]
         onRollSave: (targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent) => void
     onRerollSave: (targetId: string) => void
 }) => {
@@ -522,6 +483,83 @@ const AttackDamageAndSavesSection = ({
 
     return (
         <div className="flex flex-col gap-1 pb-1">
+
+            {/* SAVING THROW BUTTONS */}
+            {saveTypes.length > 0 && (ownedTargets.length > 0 || unownedTargets.length > 0) &&
+                <div className="px-1">
+                    <ClearHeader title="TARGETS" />
+                    <div className="flex flex-col gap-1 mt-1 px-1">
+                        {/* OWNED TARGETS */}
+                        {ownedTargets.map(target => {
+                            const result = saveResults[target.id]
+                            const canRollSave = !isResolved && !result && (game.user?.isActiveGM || target.token?.actor?.isOwner)
+                            const luck = (target.token?.actor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
+                            const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
+                                !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
+                                (game.user?.isActiveGM || target.token?.actor?.isOwner)
+
+                            return (
+                                <div key={target.id} className="flex min-w-0 items-center gap-1 whitespace-nowrap font-normal">
+                                    {result
+                                        ? <div className="flex shrink-0 items-center gap-1">
+                                            {/* SAVING THROW OUTCOME */}
+                                            <SaveOutcomeIcon result={result} />
+                                            <p>{`(${result.total} vs. ${result.difficulty})`}</p>
+
+                                            {/* REROLL BUTTON */}
+                                            {canReroll &&
+                                                <Tooltip title={"Fluke"} content={"Spend a Luck to reroll"}>
+                                                    <UtilityButton onClick={(e) => {
+                                                        e?.stopPropagation()
+                                                        e?.preventDefault()
+                                                        onRerollSave(target.id)
+                                                    }}>
+                                                        <Clover size={14} className="text-ic-luck" />
+                                                    </UtilityButton>
+                                                </Tooltip>
+                                            }
+                                        </div>
+                                        : canRollSave && <div className="flex gap-1">
+                                            {/* ROLL SAVE BUTTONS */}
+                                            {saveTypes.map(saveType => (
+                                                <Tooltip key={saveType} title={`${appLang.Saves[saveType]?.name} Save`} content={`${appLang.HeroSheet[`${saveType}_tooltip`]}${appLang.HeroSheet.skills_tooltip}`}>
+                                                    <UtilityButton onClick={(e) => {
+                                                        e?.stopPropagation()
+                                                        e?.preventDefault()
+                                                        onRollSave(target.id, saveType, e)
+                                                    }}>
+                                                        {`${appLang.Saves[saveType]?.name ?? saveType}`}
+                                                    </UtilityButton>
+                                                </Tooltip>
+                                            ))}
+                                        </div>
+                                    }
+                                    <div className="flex min-w-0 items-center gap-2">
+                                        <TargetPortrait target={target} />
+                                        <p className="min-w-0 truncate">{target.token?.name}</p>
+                                    </div>
+                                </div>
+                            )
+                        })}
+
+                        {/* UNOWNED TARGETS */}
+                        {ownedTargets.length > 0 && unownedTargets.length > 0 && <Divider />}
+                        <div className="grid grid-cols-2 gap-x-2 gap-y-1">
+                            {unownedTargets.map(target => {
+                                const result = saveResults[target.id]
+
+                                return (
+                                    <div key={target.id} className="flex min-w-0 items-center gap-2 font-normal">
+                                        <TargetPortrait target={target} result={result} />
+                                        <p className="min-w-0 truncate" title={target.token?.name}>{target.token?.name}</p>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                </div>
+            }
+
             {/* DAMAGE DISPLAY */}
             {showDamage &&
                 <div>
@@ -540,69 +578,51 @@ const AttackDamageAndSavesSection = ({
                     </div>
                 </div>
             }
-
-            {/* SAVING THROW BUTTONS */}
-            {saveTypes.length > 0 && ownedTargets.length > 0 &&
-                <div className="px-1">
-                    <ClearHeader title="SAVES" />
-                    <div className="flex flex-col gap-1 mt-1 px-1">
-                        {ownedTargets.map(target => {
-                            const result = saveResults[target.id]
-                            const canRollSave = !isResolved && !result && (game.user?.isActiveGM || target.token?.actor?.isOwner)
-                            const luck = (target.token?.actor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
-                            const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
-                                !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
-                                (game.user?.isActiveGM || target.token?.actor?.isOwner)
-
-                            return (
-                                <div key={target.id} className="flex items-center gap-1 font-normal">
-                                    {result
-                                        ? <div className="flex items-center gap-1">
-                                            <p>{`${result.outcome} (${result.total} vs ${result.difficulty})`}</p>
-                                            {canReroll &&
-                                                <UtilityButton title="Spend a Luck to reroll" onClick={(e) => {
-                                                    e?.stopPropagation()
-                                                    e?.preventDefault()
-                                                    onRerollSave(target.id)
-                                                }}>
-                                                    <Clover size={14} className="text-ic-luck" />
-                                                </UtilityButton>
-                                            }
-                                        </div> : canRollSave &&
-                                        <div className="flex gap-1">
-                                            {saveTypes.map(saveType => (
-                                                <UtilityButton key={saveType} title="Roll save ([Shift] Favor, [Ctrl] Hinder)" onClick={(e) => {
-                                                    e?.stopPropagation()
-                                                    e?.preventDefault()
-                                                    onRollSave(target.id, saveType, e)
-                                                }}>
-                                                    {`${appLang.Saves[saveType]?.name ?? saveType}`}
-                                                </UtilityButton>
-                                            ))}
-                                        </div>
-                                    }
-                                    <div className="flex items-center gap-2">
-                                        <img src={target.src} alt={target.token?.name} className="object-contain h-[28px] w-[28px]" />
-                                        <p>{target.token?.name}</p>
-                                    </div>
-                                </div>
-                            )
-                        })}
-                    </div>
-                </div>
-            }
         </div>
+    )
+}
+
+const TargetPortrait = ({ target, result }: { target: TargetDisplayItem, result?: SkillCheckResult }) => {
+    return (
+        <div className="relative h-[28px] w-[28px] shrink-0">
+            <img src={target.src} alt={target.token?.name} className="object-contain h-[28px] w-[28px]" />
+            <SaveOutcomeIcon result={result} overlay />
+        </div>
+    )
+}
+
+const SaveOutcomeIcon = ({ result, overlay = false }: { result?: SkillCheckResult, overlay?: boolean }) => {
+    if (!result) return null
+
+    const isFailure = result.outcome === appLang.RollResult.failure
+    const isSuccess = result.outcome === appLang.RollResult.success || result.outcome === appLang.RollResult.crit
+    if (!isFailure && !isSuccess) return null
+
+    return (
+        <span className={`${overlay ? "absolute -right-1 top-2 rounded-full bg-context-menu-fill" : "relative"} flex h-4 w-4 shrink-0 items-center justify-center`}>
+            {isFailure
+                ? <Tooltip content={"Failure"}>
+                    <X size={14} strokeWidth={3} className="text-destructive-action" />
+                </Tooltip>
+                : result.outcome === appLang.RollResult.crit
+                    ? <Tooltip title={"Critical Success"} content={appLang.Combat.critSaveTooltip}>
+                        <Swords size={14} strokeWidth={2} className="text-ic-luck" />
+                    </Tooltip>
+                    : <Tooltip content={"Success"}>
+                        <Check size={14} strokeWidth={3} className="text-ic-luck" />
+                    </Tooltip>
+            }
+        </span>
     )
 }
 
 const InteractiveChatCardButton = ({ icon, label, tooltip, fn }: { icon?: ReactNode, label: string, tooltip: string, fn: () => void }) => {
     return (
-        <button title={tooltip}
-            className={`flex items-center justify-center px-2 hover-glow pointer-events-auto transition-transform active:scale-95 cursor-pointer ${tableBorder}`}
-            onClick={fn}
-        >
-            {icon}
-            {label}
-        </button>
+        <Tooltip title={label} content={tooltip}>
+            <button className={`flex items-center justify-center px-2 hover-glow pointer-events-auto ${buttonAnimation} ${tableBorder}`} onClick={fn}>
+                {icon}
+                {label}
+            </button>
+        </Tooltip>
     )
 }

@@ -15,6 +15,7 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined,
     spell: Item & { system: SpellDataModel }, delivery: any, dmgRoll?: DamageRollResult | undefined, img?: ReactNode
 }) => {
     const subtitle: CardSubHeaderValues[] = []
+
     if (delivery.damageDice > 0 && spell.system.damageType !== 'none') {
         subtitle.push({ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[spell.system.damageType] })
     }
@@ -23,10 +24,10 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined,
     const subheaders = useMemo(() => {
         const subs = [{ label: "Delivery", value: delivery.name }]
         if (delivery.isFocused) {
-            subs.push({ label: appLang.HeroSheet.Magic.labelFocus, value: <Sparkle size={18} className="text-mana" /> })
+            subs.push({ label: appLang.HeroSheet.Magic.labelFocus, value: <Sparkle size={14} className="text-mana" /> })
         }
         if (delivery.applyEffect) {
-            subs.push({ label: appLang.HeroSheet.Magic.labelEffect, value: <Sparkles size={18} className="text-mana" /> })
+            subs.push({ label: appLang.HeroSheet.Magic.labelEffect, value: <Sparkles size={14} className="text-mana" /> })
         }
 
         return subs

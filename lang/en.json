@@ -623,20 +623,26 @@
       "Level": "Level {{level}}",
       "xp": "XP: {{xp}} / {{nextLevel}}",
       "trackers": "TRACKERS",
-      "studied": "STUDIED",
-      "focus": "FOCUS",
-      "fatigue": "FATIGUE",
-      "luck": "LUCK",
+      "studied": "Studied",
+      "focus": "Focus",
+      "fatigue": "Fatigue",
+      "luck": "Luck",
       "gained": "Gained a",
       "spent": "Spent a",
       "saves": "SAVES",
       "speeds": "SPEED",
       "skills": "SKILLS",
       "controls": "Controls",
-      "skills_tooltip": "[Shift]: Favored | [Ctrl]: Hindered",
-      "counter_tooltip": "[L-click]: Decrease | [R-click]: Increase",
-      "counter_tooltip_roll": "Shift-click to Roll\n",
+      "skills_tooltip": "</ br>[Shift]: Favored | [Ctrl]: Hindered",
+      "counter_tooltip": "</ br>[L-click]: Decrease | [R-click]: Increase",
+      "counter_tooltip_roll": "</ br>Shift-click to Roll",
       "context_tooltip": "R-click for options",
+      "luck_tooltip": "<b>Advantage:</b> Grant Favor on a d20 roll.</ br><b>Fluke:</b> Reroll an unresolved die you rolled.",
+      "studied_tooltip": "If you Study, you gain a Studied die which is a d6 that you can spend to gain Favor on a d20 roll you make in the next Day.",
+      "focus_tooltip": "A Spell is instantaneous unless you Focus on it when you Cast it. If you do, the Spell remains until your Focus is dropped.",
+      "reflex_tooltip": "Evade physical harm, such as attacks, explosions, quick traps, and dragon's breath.",
+      "endure_tooltip": "Withstand physical harm, such as poisons, extreme heat, restraints, and petrification.",
+      "will_tooltip": "Resist mental harm, such as charms, dreadful terrors, psychic enthrallment, and your resolve.",
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
       "ancestry": "ANCESTRY",
@@ -702,7 +708,7 @@
         "use_tooltip": "Craft and immediately use"
       }
     },
-     "SpellDeliveries": {
+    "SpellDeliveries": {
       "aura": {
         "name": "Aura",
         "targetLabel": "Radius",
@@ -977,7 +983,8 @@
       "keyExplainer": "[Shift/Ctrl] to multi-select\n[Alt] to ping.\nR-click for menu.",
       "hpTooltip": "HP: {{hp}} / {{hpMax}}",
       "statTooltip": "HP: {{hp}} / {{hpMax}}\nMana: {{mana}} / {{manaMax}}\nLuck: {{luck}}",
-      "statTooltipNoMana": "HP: {{hp}} / {{hpMax}}\nLuck: {{luck}}"
+      "statTooltipNoMana": "HP: {{hp}} / {{hpMax}}\nLuck: {{luck}}",
+      "critSaveTooltip": "You aren't affected by what provoked the Save, and can use an Action."
     }
   }
 }

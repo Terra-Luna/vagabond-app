@@ -1,9 +1,12 @@
 import { ControlledMenu } from '@szhsin/react-menu'
 import { createContext, ReactNode, useContext, useEffect, useRef, useState } from 'react'
+import ReactHtmlParser from 'react-html-parser'
 
+import { createStyleTag } from '../../utils/styleUtils'
 import { tableBorderRounded } from '../common/border-styles'
 
 const TOOLTIP_CURSOR_GAP = 8
+const TOOLTIP_ESTIMATED_WIDTH = 240
 export const tooltipContainerStyle = "pointer-events-none z-99"
 export const tooltipContentStyle = ""
 
@@ -68,14 +71,34 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
 
     useEffect(() => {
         const anchor = anchorRef.current
-        const root = anchor?.getRootNode() as Document | ShadowRoot | undefined
-        if (!root) return
-        let container = root.querySelector<HTMLDivElement>(':scope > .tooltip-portal-root')
+        if (!anchor || !document.body) return
+        let portalHost = document.body.querySelector<HTMLDivElement>(':scope > .tooltip-portal-root')
+        if (!portalHost) {
+            portalHost = document.createElement('div')
+            portalHost.className = 'tooltip-portal-root'
+            document.body.appendChild(portalHost)
+        }
+
+        const shadowRoot = portalHost.shadowRoot ?? portalHost.attachShadow({ mode: 'open' })
+        let container = shadowRoot.querySelector<HTMLDivElement>('.tooltip-portal-container')
         if (!container) {
             container = document.createElement('div')
-            container.className = 'tooltip-portal-root'
-            root.appendChild(container)
+            container.className = 'tooltip-portal-container'
+            shadowRoot.appendChild(container)
         }
+
+        if (!shadowRoot.querySelector('style[data-tooltip-styles]')) {
+            const styleTag = createStyleTag()
+            styleTag.dataset.tooltipStyles = 'true'
+            shadowRoot.prepend(styleTag)
+        }
+
+        Object.assign(portalHost.style, {
+            position: 'fixed',
+            inset: '0',
+            zIndex: '9999',
+            pointerEvents: 'none'
+        })
 
         const theme = anchor?.closest('.light, .dark')
         if (theme) {
@@ -91,6 +114,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
     }, [])
 
     const trackPointer = (e: { clientX?: number, clientY?: number }) => {
+        if (disabled || !content) return
         claimHover()
         if (typeof e.clientX === 'number' && typeof e.clientY === 'number') {
             cursorXY.current = { x: e.clientX, y: e.clientY }
@@ -102,8 +126,8 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
     }
 
     const show = (e: { clientX?: number, clientY?: number } = {}) => {
-        trackPointer(e)
         if (disabled || !content) return
+        trackPointer(e)
         clearTimeout(closeTimeout.current)
         openTimeout.current = setTimeout(() => {
             // a deeper nested Tooltip may have claimed hover since this was scheduled - only the
@@ -154,7 +178,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
                 <ControlledMenu
                     state={isOpen ? 'open' : 'closed'}
                     anchorPoint={anchorPoint}
-                    direction={"left"}
+                    direction={anchorPoint.x < TOOLTIP_ESTIMATED_WIDTH ? "right" : "left"}
                     align={"end"}
                     captureFocus={false}
                     unmountOnClose
@@ -168,7 +192,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
                     }}
                 >
                     <div
-                        className={`bg-context-menu-fill ${tableBorderRounded} border-2 px-2 py-0.5 ${interactive ? 'pointer-events-auto' : ''}`}
+                        className={`bg-context-menu-fill ${tableBorderRounded} border-2 px-2 py-0.5 ${typeof content === 'string' ? 'max-w-[min(24rem,calc(100vw-2rem))] whitespace-normal break-words' : ''} ${interactive ? 'pointer-events-auto' : ''}`}
                         onMouseEnter={interactive ? cancelHide : undefined}
                         onMouseLeave={interactive ? hide : undefined}
                     >
@@ -195,11 +219,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
 const renderContent = (content?: ReactNode) => {
     if (!content) return null
     if (typeof content !== 'string') return content
-
-    return content.split('\n').map((line, index) => (
-        <span key={index} className="text-sm text-text-primary font-paradigm font-normal">
-            {index > 0 && <br />}
-            {line}
-        </span>
-    ))
+    return <span className="text-sm text-context-menu-text font-paradigm font-normal whitespace-normal break-words">
+        {ReactHtmlParser(content.replace(`\n`, `<br />`))}
+    </span>
 }

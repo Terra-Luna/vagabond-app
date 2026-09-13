@@ -229,13 +229,13 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                 <div className={`flex flex-col gap-2font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-1 ${tableBorder}`}>
 
                         {/* SPELLCASTING MENU TOP ROW */}
-                        <div className="flex gap-x-0.25 items-end bottom text-lg">
+                        <div className="flex gap-x-1 items-end bottom text-lg">
                             <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
                             {/* CAST BUTTON */}
                             <div className="ml-auto">
-                                <Tooltip title={`Cast: ${delivery?.spell.name} (${delivery?.manaCost ?? 0} Mana)`} content={appLang.HeroSheet.skills_tooltip}>
+                                <Tooltip title={`Cast: ${delivery?.spell.name} (${delivery?.manaCost ?? 0} Mana)`} content={`${delivery?.name ?? ''} | ${delivery?.targetLabel}: ${(delivery as any).targetCount ?? (delivery as any).size ?? ""}${appLang.HeroSheet.skills_tooltip}`}>
                                     <button
                                         type="button"
                                         onClick={(e: any) => castSpell(e)}

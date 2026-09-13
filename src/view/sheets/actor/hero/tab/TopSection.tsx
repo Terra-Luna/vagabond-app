@@ -129,7 +129,8 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
         }
     }, [luck])
     return (
-        <Tracker name={appLang.HeroSheet.luck} title={`${appLang.HeroSheet.counter_tooltip_roll}${appLang.HeroSheet.counter_tooltip}`} onClick={updateLuck}>
+        <Tracker name={appLang.HeroSheet.luck} title={`${appLang.HeroSheet.luck_tooltip}${appLang.HeroSheet.counter_tooltip}${appLang.HeroSheet.counter_tooltip_roll}
+        `} onClick={updateLuck}>
             <div className={`${trackerLayout} text-text-luck-current`}>
                 <LucideClover size={20} strokeWidth={1} />
                 {luck}
@@ -164,7 +165,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
         }
     }, [studied])
     return (
-        <Tracker name={appLang.HeroSheet.studied} title={`${appLang.HeroSheet.counter_tooltip_roll}${appLang.HeroSheet.counter_tooltip}`} onClick={updateStudied}>
+        <Tracker name={appLang.HeroSheet.studied} title={`${appLang.HeroSheet.studied_tooltip}${appLang.HeroSheet.counter_tooltip}${appLang.HeroSheet.counter_tooltip_roll}`} onClick={updateStudied}>
             <div className={`${trackerLayout} text-text-studied-current`}>
                 <LucideBookMarked size={20} strokeWidth={1} />
                 {studied}
@@ -181,7 +182,7 @@ export const Focus = ({ hero }: { hero: HeroDataModel }) => {
         } as Record<string, number>)
     }, [focus])
     return (
-        <Tracker name={appLang.HeroSheet.focus} title={`${appLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
+        <Tracker name={appLang.HeroSheet.focus} title={`${appLang.HeroSheet.focus_tooltip}${appLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
             <div className={`${trackerLayout} text-text-secondary`}>
                 <Eye size={20} strokeWidth={1} />
                 {focus}
@@ -193,7 +194,7 @@ export const Focus = ({ hero }: { hero: HeroDataModel }) => {
 const Tracker = ({ name, title, children, onClick }: { name: string, title: string, children: ReactNode, onClick: (auxClick: boolean, e?: any) => void }) => (
     <Tooltip title={name} content={title}>
         <div className="flex flex-col items-center text-xs text-text-primary font-paradigm hover-glow" onClick={(e) => onClick(false, e)} onAuxClick={() => onClick(true)}>
-            {name}
+            {name.toUpperCase()}
             <span className="font-eskapade font-bold text-4xl -mt-1 mb-1">{children}</span>
         </div>
     </Tooltip>

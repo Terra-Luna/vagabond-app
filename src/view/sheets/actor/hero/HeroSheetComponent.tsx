@@ -145,7 +145,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
                 <div className="flex w-full space-x-1">
                     <div className="w-full">
                         <Speeds hero={hero} />
-                        <div className="flex items-center justify-around mt-4">
+                        <div className="flex items-center justify-around mt-5">
                             <Luck hero={hero} />
                             <Studied hero={hero} />
                             <Focus hero={hero} />

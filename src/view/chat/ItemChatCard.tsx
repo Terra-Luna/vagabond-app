@@ -17,7 +17,8 @@ export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }
     actorId: string, itemId: string, itemName: string, isConsumable?: boolean
 }) => {
     const actor = game.actors?.get(actorId)
-    const item = actor?.items.get(itemId) ?? ItemsCache.allItems().find(it => it.id === itemId) ?? null
+    const item = actor?.items.get(itemId) ?? ItemsCache.allItems().find(it => it.id === itemId || it.uuid === itemId) ?? null
+    const [resolvedItem, setResolvedItem] = useState<Item | null>(item)
 
     const [equipment, setEquipment] = useState<EquipmentDataModel<EquipmentSchema> | null>(
         item ? (item.system as EquipmentDataModel<EquipmentSchema>) : null
@@ -47,6 +48,7 @@ export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }
                 }
 
                 if (isMounted && fullItem) {
+                    setResolvedItem(fullItem)
                     setEquipment(fullItem.system as EquipmentDataModel<EquipmentSchema>)
                 }
             }
@@ -62,7 +64,7 @@ export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }
 
     return (
         <>
-            {item && equipment &&
+            {resolvedItem && equipment &&
                 <BaseChatCardHost
                     banner={
                         <ChatCardBanner
@@ -72,17 +74,17 @@ export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }
                         />
                     }
                     contents={<>
-                        {item &&
+                        {resolvedItem &&
                             <div>
                                 <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
                                     {equipment instanceof AlchemicalItemDataModel
                                         ? <span className="font-normal"><SkillCard
-                                            title={item.name}
+                                            title={resolvedItem.name}
                                             subtitles={[
-                                                { label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[(item.system as any).alchemyCategory].name },
-                                                { label: appLang.ItemSheet.value, value: coinsAsString((item.system as any).value as Coins) }
+                                                { label: appLang.HeroSheet.Alchemy.category, value: appLang.AlchemyCategories[(resolvedItem.system as any).alchemyCategory].name },
+                                                { label: appLang.ItemSheet.value, value: coinsAsString((resolvedItem.system as any).value as Coins) }
                                             ]}
-                                            description={(item.system as any).description}
+                                            description={(resolvedItem.system as any).description}
                                             startCollapsed={false}
                                         /></span>
                                         : <EquipmentSheetComponent item={equipment.parent} hideBottomSection={true} />

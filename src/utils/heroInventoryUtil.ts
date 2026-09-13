@@ -20,7 +20,7 @@ import { CtxMenuItem } from "../view/component/ContextMenu"
 import { CapacityInfo } from "../view/sheets/shared/CapacityGauge"
 import { sys_id } from "./foundryUtils"
 import { appLang } from "./lang"
-import { getId, getFullItem, getName } from "./modelUtil"
+import { getFullItem, getId, getName } from "./modelUtil"
 
 /**
  * Use this function for programatically adding items to Actors. It mimics
