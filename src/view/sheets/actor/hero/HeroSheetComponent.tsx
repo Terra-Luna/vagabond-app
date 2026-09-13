@@ -164,15 +164,18 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
+
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     const tabPanelClasses = "min-h-0 overflow-y-auto"
+    const showMagicTab = hero.spells?.length > 0 || hero.class?.castingSkill.length > 0
+
     return <div className="-mt-1 flex flex-col min-h-0 grow">
         <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />
         <Tabs className="flex flex-col min-h-0 grow text-base">
             <TabList>
                 <Tab>{locale["tab-main"]}</Tab>
                 <Tab>{locale["tab-inv"]}</Tab>
-                {hero.spells?.length > 0 && <Tab>{locale["tab-magic"]}</Tab>}
+                {showMagicTab && <Tab>{locale["tab-magic"]}</Tab>}
                 <Tab> {locale["tab-abilities"]}</Tab>
                 <Tab title="Roll Presets"><Dices size={28} className="hover-glow" /></Tab>
             </TabList>
@@ -182,7 +185,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
             <TabPanel className={tabPanelClasses}>
                 <InventoryTab hero={hero} />
             </TabPanel>
-            {hero.spells?.length > 0 &&
+            {showMagicTab &&
                 <TabPanel className={tabPanelClasses}>
                     <MagicTab hero={hero} />
                 </TabPanel>

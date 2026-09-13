@@ -159,13 +159,13 @@ export const CountdownAppView = () => {
                     `}>
                         <button
                             title={`Click to roll\nR-click for options`}
-                            className="hover-glow transition-transform active:scale-95 focus:outline-none mt-1.5 -m-1"
+                            className="hover-glow transition-transform active:scale-95 focus:outline-none mt-1 -m-1"
                             onClick={() => handleCountdownClick(countdown.id)}
                         >
                             <DiceRollComponent
                                 faces={countdown.result.rollSummary?.faces ?? countdown.result.duration}
                                 result={countdown.result.rollSummary?.result ?? ''}
-                                textSize="text-6xl"
+                                textSize="text-4xl"
                             />
                         </button>
                     </div>

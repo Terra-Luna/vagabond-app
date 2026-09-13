@@ -79,12 +79,17 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
         const contentLink = (e.target as HTMLElement).closest('a.content-link') as HTMLAnchorElement | null
         if (!contentLink) return
 
-        foundry.applications.ux.TextEditor.getContentLink(contentLink.dataset as any).then((uuid) => {
-            if (uuid) {
-                fromUuid(uuid).then((document) => {
+        //E.g., @UUID[Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg]{Quick Draw Perk}
+        foundry.applications.ux.TextEditor.getContentLink(contentLink.dataset as any).then((link) => {
+            if (link) {
+                const uuid = link.match(/\[([^\]]+)\]/)
+                if (!uuid || uuid.length === 0) return
+
+                fromUuid(uuid[1]).then((document) => {
                     if (document && 'sheet' in document && document.sheet) {
                         (document.sheet as any).render(true)
-                    } else {
+                    }
+                    else {
                         console.warn(`Could not render sheet. Document with UUID "${uuid}" is invalid.`)
                     }
                 })
