@@ -182,6 +182,10 @@ export const getManaEnforcement = (): boolean => {
     return (game.settings as any)?.get(sys_id, "enforceMana")
 }
 
+export const getShowTrainingSelectionToggle = (): boolean => {
+    return (game.settings as any)?.get(sys_id, "showTrainingSelection") || false
+}
+
 export const getAllowLateLuckStudy = (): boolean => {
     return (game.settings as any)?.get(sys_id, "allowLateLuckStudy")
 }

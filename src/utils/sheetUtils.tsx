@@ -24,7 +24,7 @@ export interface VagabondApplication {
     getReactProps: () => any
 }
 
-export const onRenderHTML = (sheet: appApplication) => {
+export const onRenderHTML = (sheet: VagabondApplication) => {
     if (!sheet._reactRoot) {
         const defaultWindowContent = sheet.element.getElementsByClassName('window-content')?.[0]
         if (defaultWindowContent) sheet.element.removeChild(defaultWindowContent)

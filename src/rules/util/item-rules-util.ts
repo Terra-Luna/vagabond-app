@@ -22,6 +22,19 @@ export interface RuleSelection {
     subselect: string
 }
 
+export interface ChoiceRule {
+    id: string
+    key: "ChoiceSet"
+    label: string
+    level: number
+    scale: number
+    maxChoices: number
+    channel: "path" | "item"
+    sourceMode: "static" | "dynamic"
+    choices: { value: string, label: string }[]
+    selections: RuleSelection[]
+}
+
 export const randomId = () => foundry.utils.randomID()
 
 /**
@@ -310,6 +323,93 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
 
 export function getSkillNameFromPath(path: string): string {
     return path.split('.').reverse()[1]
+}
+
+export const isElectiveTrainingsRule = (rule: any): boolean => {
+    if (!rule || rule.key !== "ChoiceSet") return false
+    if (rule.label === "Elective Trainings") return true
+    return rule.channel === "path" && Array.isArray(rule.choices) && rule.choices.some((c: any) =>
+        (typeof c === "string" ? c : c?.value || "").includes("skills.")
+    )
+}
+
+export const findElectiveTrainingsRule = (rules: any[] | undefined, ruleId?: string): any => {
+    if (!rules || !Array.isArray(rules)) return undefined
+    if (ruleId) {
+        const matchById = rules.find(r => r.id === ruleId && r.key === "ChoiceSet")
+        if (matchById) return matchById
+    }
+    return rules.find(isElectiveTrainingsRule)
+}
+
+export const createElectiveTrainingsRule = (options: {
+    id?: string
+    reasonValue?: number
+    maxChoices?: number
+    selections?: RuleSelection[]
+} = {}): ChoiceRule => {
+    const maxChoices = options.maxChoices ?? Math.ceil((options.reasonValue ?? 0) / 2)
+    return {
+        id: options.id ? String(options.id) : String(randomId()),
+        key: "ChoiceSet",
+        label: "Elective Trainings",
+        level: 1,
+        scale: 0,
+        channel: "path",
+        sourceMode: "static",
+        maxChoices,
+        choices: [{ value: "skills.*.trained", label: "Skills" }],
+        selections: options.selections ?? []
+    }
+}
+
+export const findOrCreateElectiveTrainingsRule = (
+    itemOrRules: (Item & { system?: { rules?: any[] } }) | any[] | undefined,
+    options: {
+        ruleId?: string
+        reasonValue?: number
+        maxChoices?: number
+        template?: any
+    } = {}
+): { rules: any[], electiveRule: any } => {
+    const sourceRules = Array.isArray(itemOrRules)
+        ? itemOrRules
+        : (itemOrRules?.system?.rules ?? [])
+    const rules = foundry.utils.deepClone(sourceRules) as any[]
+
+    let electiveRule = findElectiveTrainingsRule(rules, options.ruleId)
+    if (!electiveRule) {
+        electiveRule = options.template
+            ? foundry.utils.deepClone(options.template)
+            : createElectiveTrainingsRule({
+                id: options.ruleId,
+                reasonValue: options.reasonValue,
+                maxChoices: options.maxChoices
+            })
+        rules.push(electiveRule)
+    }
+
+    return { rules, electiveRule }
+}
+
+export function getPerkSkillSubselections(items: (Item & { system: { rules: any } } | undefined)[]): string[] {
+    const gatheredSkills: string[] = []
+
+    items.filter(Boolean).forEach(item => {
+        const rules: any[] = item?.system?.rules ?? []
+        rules
+            .filter(r => r.key === "ChoiceSet")
+            .flatMap(r => normalizeRuleSelections(r.selections))
+            .filter(s => Boolean(s.subselect && s.subselect.includes("skills.")))
+            .forEach(s => {
+                const skillName = s.subselect.replace("system.", "").replace("skills.", "").replace(".trained", "")
+                if (skillName && !gatheredSkills.includes(skillName)) {
+                    gatheredSkills.push(skillName)
+                }
+            })
+    })
+
+    return gatheredSkills
 }
 
 /**

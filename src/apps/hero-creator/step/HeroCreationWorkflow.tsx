@@ -15,13 +15,13 @@ import { useNavigation } from "../../../view/context/navigation/NavigationContex
 import { usePerkBonusSelection } from "../../hero-choices/perks/PerkBonusSelection"
 import { usePerkSelectionView } from "../../hero-choices/perks/PerkSelectionView"
 import { useSpellSelectionView } from "../../hero-choices/spells/SpellSelectionView"
+import { useTrainingSelection } from "../../hero-choices/training/TrainingSelection"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { useAncestrySelection } from "./AncestrySelection"
 import { useClassSelection } from "./ClassSelection"
 import { useCoreStats } from "./CoreStats"
 import { useEquipmentSelection } from "./EquipmentSelection"
-import { useTrainingSelection } from "./TrainingSelection"
 
 export interface HeroCreatorArgs {
     actor: Actor & { system: HeroDataModel }
@@ -58,11 +58,11 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Trainings
      */
-    const { TrainingSelection, requiredTrainingRules, chosenLevel1Skills, chosenBonusSkills, setChosenLevel1Skills, setChosenBonusSkills, level1TrainingRules, level1RuleId } = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
+    const { TrainingSelection, requiredTrainingRules, chosenTrainings, chosenBonusSkills, setChosenTrainings, setChosenBonusSkills, electiveTrainingRules, electiveTrainingsRuleId } = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
 
     const selectedTrainings = useMemo(() => {
-        return [...chosenLevel1Skills, ...chosenBonusSkills].map(sk => sk.skill)
-    }, [chosenLevel1Skills, chosenBonusSkills])
+        return [...chosenTrainings, ...chosenBonusSkills].map(sk => sk.skill)
+    }, [chosenTrainings, chosenBonusSkills])
 
     /**
      * Spellcasting
@@ -96,7 +96,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         reasonTrainingRules, reasonTrainingSelections, setReasonTrainingSelections
     } = usePerkBonusSelection(
         perksWithBonusChoices, statsWithBonuses, requiredTrainingRules,
-        [...chosenLevel1Skills, ...chosenBonusSkills],
+        [...chosenTrainings, ...chosenBonusSkills],
         [...ancestrySpellSlots, ...classSpellSlots],
         classSpellGrants, ancestrySpellGrants,
         [backButton, nextButton],
@@ -191,7 +191,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      */
     useEffect(() => {
         resetAssignedStats()
-        setChosenLevel1Skills([])
+        setChosenTrainings([])
         setChosenBonusSkills([])
         resetPerkBonusSelections()
     }, [ancestryItem, classItem])
@@ -233,7 +233,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             const ancestry = createdItems.find(i => (i.type as string) === "ancestry")
             const clazz = createdItems.find(i => (i.type as string) === "class")
             const ancestryRules = ancestry ? foundry.utils.deepClone(ancestry.system.rules || []) : []
-            const classRules = clazz ? foundry.utils.deepClone([...clazz.system.rules, ...level1TrainingRules]) : []
+            const classRules = clazz ? foundry.utils.deepClone([...clazz.system.rules, ...electiveTrainingRules]) : []
 
             const getRuleSet = (id: string) => {
                 return ancestryRules.find((r: any) => r.id === id && r.key === 'ChoiceSet') ??
@@ -245,7 +245,10 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                     if (!Array.isArray(targetRuleSet.selections)) {
                         targetRuleSet.selections = []
                     }
-                    targetRuleSet.selections = [...normalizeRuleSelections(targetRuleSet.selections), { id: selectionId ?? randomId(), value: selection, subselect: "" }]
+                    targetRuleSet.selections = [
+                        ...normalizeRuleSelections(targetRuleSet.selections),
+                        { id: selectionId ?? randomId(), value: selection, subselect: "" }
+                    ]
                 }
                 else {
                     actor.update({ [`system.${selection}`]: true })
@@ -257,11 +260,11 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                 addSelection(getRuleSet(targetRuleId), selection.stat)
             });
 
-            const chosenSkills = [...chosenLevel1Skills, ...chosenBonusSkills]
+            const allTrainings = [...chosenTrainings, ...chosenBonusSkills]
             reasonTrainings.forEach(selection => {
-                chosenSkills.push({ skill: selection.value, ruleId: level1RuleId })
+                allTrainings.push({ skill: selection.value, ruleId: electiveTrainingsRuleId })
             })
-            chosenSkills.forEach(selection => {
+            allTrainings.forEach(selection => {
                 addSelection(getRuleSet(selection.ruleId), `skills.${selection.skill}.trained`)
             });
 
@@ -314,7 +317,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
         }
     }, [
         actor, ancestryItem, classItem, selectedArr, assignedStats,
-        bonusStatSelections, chosenLevel1Skills, chosenBonusSkills,
+        bonusStatSelections, chosenTrainings, chosenBonusSkills,
         ancestrySpellSlots, classSpellSlots, ancestryPerkSlots, classPerkSlots,
         advancement, perkTraining, reasonTraining, advancements, perkTrainings, reasonTrainings, spells,
         wallet, cart, selectedPack, setClosed

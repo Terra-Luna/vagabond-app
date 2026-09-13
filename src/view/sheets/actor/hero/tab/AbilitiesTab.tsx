@@ -1,6 +1,8 @@
 import { MessageSquareText } from "lucide-react"
 
 import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSelectionApp"
+import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/TrainingSelectionApp"
+import { getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
 import { groupBy } from "../../../../../utils/collectionUtil"
@@ -8,7 +10,7 @@ import { appLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
-import { PrimaryButton } from "../../../../component/Button"
+import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { ClearHeader } from "../../../../component/Header"
 import { SkillCard } from "../../../../component/SkillCard"
@@ -29,6 +31,8 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             ?.map(f => groupedFeatures[f]?.reverse()[0])
             ?.sort((a, b) => a.level! - b.level!)
     }
+
+    const showTrainingSelection = game.user?.isActiveGM || (hero.level.current! > 0 && getShowTrainingSelectionToggle())
 
     return (
         <div className="py-1">
@@ -104,7 +108,12 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             </span>
 
             {/* PERK SELECTIONS - Read-only due to how it uses flags to save choices. */}
-            <div className="flex mt-1 w-full justify-end mb-8">
+            <div className={`flex mt-1 w-full mb-8 ${showTrainingSelection ? 'justify-between' : 'justify-end'}`}>
+                {showTrainingSelection &&
+                    <SecondaryButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
+                        Training Selections
+                    </SecondaryButton>
+                }
                 <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
                     Perk Selections
                 </PrimaryButton>

@@ -17,6 +17,7 @@ export class VagabondSettingsRegistry {
         VagabondSettingsRegistry.registerProgressClocks()
         VagabondSettingsRegistry.registerCountdowns()
         VagabondSettingsRegistry.registerManaEnforcement()
+        VagabondSettingsRegistry.registerShowTrainingSelectionToggle()
         VagabondSettingsRegistry.registerAllowLateLuckStudy()
 
         RelicPowers.register()
@@ -185,6 +186,18 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Boolean,
             default: true
+        })
+    }
+
+    private static registerShowTrainingSelectionToggle() {
+        (game.settings as any).register(sys_id, "showTrainingSelection", {
+            name: "Show Training Selection",
+            hint: "Allows players to access training (re)selection via a button on their Abilities tab.",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true,
+            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
         })
     }
 

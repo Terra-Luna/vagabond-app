@@ -1,7 +1,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { savePerkSelections } from "../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, randomId, savePerkSelections } from "../../rules/util/item-rules-util"
 import { sys_id } from "../../utils/foundryUtils"
-import { VagabondAppArgs,VagabondApplication } from "../VagabondApplication"
+import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { LevelUpArgs, LevelUpView } from "./LevelUpView"
 
 export const getBonusSelections = (args: LevelUpArgs) => [
@@ -10,6 +10,28 @@ export const getBonusSelections = (args: LevelUpArgs) => [
     ...(args.spells ?? (args.spell ? [args.spell] : [])),
     ...(args.reasonTrainings ?? (args.reasonTraining ? [args.reasonTraining] : []))
 ].filter((selection): selection is NonNullable<typeof selection> => !!selection && !!selection.value)
+
+export const saveElectiveTraining = async (actor: Actor & { system: HeroDataModel }, skill: string, levelUpStat?: string) => {
+    const targetItem = actor.items.find(i => (i.type as string) === "class") ?? actor.items.find(i => (i.type as string) === "ancestry")
+    if (!targetItem) return
+
+    const { rules, electiveRule } = findOrCreateElectiveTrainingsRule(targetItem, {
+        reasonValue: (actor.system.stats.reason ?? 2) + (levelUpStat === 'reason' ? 1 : 0)
+    })
+
+    const currentSelections = normalizeRuleSelections(electiveRule.selections)
+    const formattedSelection = skill.startsWith("skills.")
+        ? (skill.endsWith(".trained") ? skill : `${skill}.trained`)
+        : `skills.${skill}.trained`
+
+    if (!currentSelections.some(s => s.value === formattedSelection)) {
+        electiveRule.selections = [
+            ...currentSelections,
+            { id: randomId(), value: formattedSelection, subselect: "" }
+        ]
+        await targetItem.update({ "system.rules": rules } as Record<string, any>)
+    }
+}
 
 export class LevelUpApp extends VagabondApplication {
 
@@ -62,7 +84,7 @@ export class LevelUpApp extends VagabondApplication {
             }
 
             if (args.newRsnTraining) {
-                updates[`system.skills.${args.newRsnTraining}.trained`] = true
+                await saveElectiveTraining(this.actor, args.newRsnTraining, args.levelUpStat)
             }
 
             /**

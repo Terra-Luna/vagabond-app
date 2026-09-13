@@ -93,6 +93,7 @@ export const useSpellSelectionView = (
     const SpellSelection = <div className="@container h-full min-h-0 flex flex-col overflow-hidden">
         <div className="sticky top-0 bg-sheet-main-fill text-center items-center">
             <Header title={strings.spellsHeader} />
+            <div className="mb-4" />
             <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} canProceed={isAllSelected} />
         </div>
 
