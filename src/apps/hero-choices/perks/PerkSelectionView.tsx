@@ -26,6 +26,8 @@ export const usePerkSelectionView = (
     lockAncestrySlots: boolean = false
 ) => {
 
+    console.log({ trainings }, { clazz: { rules: [...clazz?.system?.rules ?? []] } })
+
     const allPerks = useMemo(() => {
         return [...ItemsCache.perks()]
     }, [])
@@ -62,8 +64,7 @@ export const usePerkSelectionView = (
     }, [stats, trainings, spells, selectablePerks])
 
     /**
-     * Monitor the selected class and construct a list of filtered perk choices based
-     * on their perk choice filter rules.
+     * Monitor the selected class and construct a list of filtered perk choices based on their perk choice filter rules.
      */
     const classRestrictedPerksLists = useMemo(() => {
         const perkRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level < 1) ?? []).filter(it => it.pack === "perk")

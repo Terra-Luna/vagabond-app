@@ -7,7 +7,7 @@ import { appLang } from "../../../utils/lang"
 import { RollPreset } from "../model/RollPreset"
 import { RollButton } from "./RollButton"
 
-export const RollPresetRow = ({ actor, preset, EditButton, TrashButton }: {
+export const RollPresetCard = ({ actor, preset, EditButton, TrashButton }: {
     actor: Actor & { system: HeroDataModel },
     preset: RollPreset,
     EditButton: ReactNode,
@@ -33,9 +33,13 @@ export const RollPresetRow = ({ actor, preset, EditButton, TrashButton }: {
             </div>
 
             {/* ROLL | EDIT | DELETE BUTTONS */}
-            <div className="flex gap-x-2 items-center content-center ml-auto">
-                <div className="mr-4">
-                    <RollButton onClick={() => HeroAttack.buildCustomRoll(actor, preset)} />
+            <div className="flex gap-x-4 items-center content-center ml-auto">
+                <div className="mr-2">
+                    <RollButton onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        HeroAttack.buildCustomRoll(actor, preset, e)
+                    }} />
                 </div>
                 {EditButton}
                 {TrashButton}

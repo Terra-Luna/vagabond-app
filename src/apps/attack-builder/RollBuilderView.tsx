@@ -7,6 +7,7 @@ import { isEquippedWeapon,WeaponDataModel } from "../../model/item/equip/WeaponD
 import { appLang } from "../../utils/lang"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Header } from "../../view/component/Header"
+import { Tooltip } from "../../view/component/Tooltip"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../view/context/EditModeContext/EditModeOptions"
 import { RollPreset } from "./model/RollPreset"
@@ -92,7 +93,7 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
             favorHinder: favorHinder,
             flatModifier: flatModifier,
             perDieBonus: perDieBonus,
-            skillCheckMod: skillCheckMod,
+            skillCheckMod: skillCheckMod
         }
     }, [
         weapon, description, skill, d20Count, favorHinder, skillCheckMod,
@@ -146,13 +147,14 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
                     {!setClosed && <div className="flex gap-x-1 ml-auto">
                         <SecondaryButton onClick={reset}>{appLang.ButtonActions.reset}</SecondaryButton>
 
-                        <PrimaryButton onClick={async () => {
-                            await saveCustomRoll()
-                            HeroAttack.buildCustomRoll(actor, rollForm)
-                        }}
-                            icon={<Dices size={16} className="text-btn-primary-text" />}>
-                            {appLang.ButtonActions.roll}
-                        </PrimaryButton>
+                        <Tooltip title={appLang.ButtonActions.roll} content={appLang.HeroSheet.skills_tooltip}>
+                            <PrimaryButton onClick={async (e) => {
+                                await saveCustomRoll()
+                                HeroAttack.buildCustomRoll(actor, rollForm, e)
+                            }} icon={<Dices size={16} className="text-btn-primary-text" />}>
+                                {appLang.ButtonActions.roll}
+                            </PrimaryButton>
+                        </Tooltip>
                     </div>}
                 </div>
             </div>

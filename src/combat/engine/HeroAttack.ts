@@ -105,7 +105,9 @@ export class HeroAttack extends Attack {
         this.isDefenseCheck = !!isDefenseCheck
 
         if (this.skillCheck && (this.hasHostileTargets || isDefenseCheck) && !this.skipSkillCheck) {
-            this.skillCheck.setFavorHinder(clickEvent)
+            if (clickEvent?.shiftKey || clickEvent?.ctrlKey) {
+                this.skillCheck.setFavorHinder(clickEvent)
+            }
             await this.rollSkillCheck()
         }
 
@@ -463,7 +465,7 @@ export class HeroAttack extends Attack {
         return attack
     }
 
-    static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset) {
+    static async buildCustomRoll(actor: Actor & { system: HeroDataModel }, preset: RollPreset, clickEvent?: any) {
         const makeSkillCheck = (type: SkillCheckType) => {
             return new SkillCheck(actor.system, {
                 type: type,
@@ -471,7 +473,8 @@ export class HeroAttack extends Attack {
                 d20Count: preset.d20Count,
                 modifier: preset.skillCheckMod,
                 critThreshold: preset.critThreshold,
-                favorHinder: preset.favorHinder
+                favorHinder: preset.favorHinder,
+                clickEvent: clickEvent
             })
         }
 
@@ -496,7 +499,8 @@ export class HeroAttack extends Attack {
             const attack = new HeroAttack(title, actor, getTargetIds(), skillCheck, false, damageRoll)
             attack.itemId = weapon?.id ?? ''
             attack.skipSkillCheck = preset.skill === '-'
-            attack.initiate()
+
+            attack.initiate(clickEvent)
         }
         else if (preset.skill && !preset.damageRolls || preset.damageRolls.length === 0) {
             const result = await makeSkillCheck('check').roll()

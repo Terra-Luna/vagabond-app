@@ -42,7 +42,7 @@ export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, bonusDi
                 <DiceRollComponent key={index} faces={20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
             ))}
             {/* FAVOR/HINDER DICE */}
-            {favHinder !== 'none' &&
+            {favHinder && favHinder !== 'none' &&
                 <div className="flex">
                     <div className="h-full content-center">{
                         favHinder === 'favor'

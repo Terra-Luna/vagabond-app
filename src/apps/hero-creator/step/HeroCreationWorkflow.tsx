@@ -58,16 +58,18 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Trainings
      */
-    const { TrainingSelection, requiredTrainingRules, chosenTrainings, chosenBonusSkills, setChosenTrainings, setChosenBonusSkills, electiveTrainingRules, electiveTrainingsRuleId } = useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
+    const { TrainingSelection, requiredTrainingRules, chosenTrainings, chosenBonusSkills, setChosenTrainings, setChosenBonusSkills, electiveTrainingRules, electiveTrainingsRuleId } =
+        useTrainingSelection(ancestryItem, classItem, statsWithBonuses, [backButton, nextButton])
 
-    const selectedTrainings = useMemo(() => {
-        return [...chosenTrainings, ...chosenBonusSkills].map(sk => sk.skill)
-    }, [chosenTrainings, chosenBonusSkills])
+    const allTrainings = useMemo(() => {
+        return [...chosenTrainings, ...chosenBonusSkills, ...requiredTrainingRules].map(sk => sk.skill)
+    }, [chosenTrainings, chosenBonusSkills, requiredTrainingRules])
 
     /**
      * Spellcasting
      */
-    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelectionView(1, ancestryItem, classItem, undefined, [backButton, nextButton])
+    const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, classSpellGrants, ancestrySpellGrants } =
+        useSpellSelectionView(1, ancestryItem, classItem, undefined, [backButton, nextButton])
 
     const selectedSpellNames = useMemo(() => {
         const selectedSpells = [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)
@@ -84,7 +86,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Perks
      */
-    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelectionView(ancestryItem, classItem, statsAsKeyValue, selectedTrainings, selectedSpellNames, [backButton, nextButton], 1)
+    const { PerkSelection, ancestryPerkSlots, classPerkSlots } = usePerkSelectionView(ancestryItem, classItem, statsAsKeyValue, allTrainings, selectedSpellNames, [backButton, nextButton], 1)
 
     const perksWithBonusChoices = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
         const perk = ItemsCache.perks().find(item => item.uuid === slot.value)
@@ -125,7 +127,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                                 value={reasonTrainingSelections[rule.selectionKey] ?? ''}
                                 options={createDropdownEntriesFromObj(appLang.Skills).filter(sk =>
                                     !requiredTrainingRules.map(t => t.skill).includes(sk.value) &&
-                                    !selectedTrainings.includes(sk.value)
+                                    !allTrainings.includes(sk.value)
                                 )}
                                 onChange={(val) => setReasonTrainingSelections(prev => ({ ...prev, [rule.selectionKey]: val }))}
                             />

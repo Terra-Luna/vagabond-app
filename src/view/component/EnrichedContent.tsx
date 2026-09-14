@@ -147,32 +147,30 @@ const docLinkSytles = `
     [&_.content-link]:font-eskapade
     [&_.content-link]:font-bold
     [&_.content-link]:shadow-xs
-    [&_.content-link_i]:text-current
+    [&_.content-link_i]:text-text-header-tertiary
     hover:[&_.inline-roll]:cursor-pointer
     transition-colors
 
-    /* Actors / NPCs (Blue Theme) */
+    /* Actors / NPCs */
     [&_a[data-type='Actor']]:bg-blue-950/40
     [&_a[data-type='Actor']]:text-blue-400
     [&_a[data-type='Actor']]:border-blue-500/30
-    hover:[&_a[data-type='Actor']]:bg-blue-900/50
+    hover:[&_a[data-type='Actor']]:underline
 
-    /* Items / Equipment (Amber Theme) */
-    [&_a[data-type='Item']]:bg-amber-950/40
-    [&_a[data-type='Item']]:text-amber-400
+    /* Items / Equipment */
+    [&_a[data-type='Item']]:text-text-header-tertiary
     [&_a[data-type='Item']]:border-table-border/30
-    hover:[&_a[data-type='Item']]:bg-amber-900/50
+    hover:[&_a[data-type='Item']]:underline
 
-    /* Journal Entries (Slate Theme) */
-    [&_a[data-type='JournalEntry']]:bg-slate-800
-    [&_a[data-type='JournalEntry']]:text-slate-300
+    /* Journal Entries */
+    [&_a[data-type='JournalEntry']]:text-text-header-tertiary
     [&_a[data-type='JournalEntry']]:border-table-border
-    hover:[&_a[data-type='JournalEntry']]:bg-slate-700
+    hover:[&_a[data-type='JournalEntry']]:underline
 
-    /* Roll Tables (Purple Theme) */
+    /* Roll Tables */
     [&_a[data-type='RollTable']]:bg-purple-950/40
     [&_a[data-type='RollTable']]:text-purple-400
     [&_a[data-type='RollTable']]:border-purple-500/30
-    hover:[&_a[data-type='RollTable']]:bg-purple-900/50
+    hover:[&_a[data-type='RollTable']]:underline
 `
 const linkStyles = [inlineRollStyle, docLinkSytles].join(' ')

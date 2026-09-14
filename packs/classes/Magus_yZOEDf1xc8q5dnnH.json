@@ -89,7 +89,7 @@
         "name": "Arcanum",
         "level": 1,
         "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the Gish Perk and you can Cast Spells using Arcana.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always have a damage base. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (2 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (1 + half your Level, round up).</span></p>"
+        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI]{Gish Perk} and you can Cast Spells using Arcana.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always have a damage base. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (2 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (1 + half your Level, round up).</span></p>"
       },
       {
         "name": "Enspell",

@@ -83,7 +83,7 @@ export class SkillCheck {
         this.bonusDice = bonusRolls
         this.modifier = args.modifier ?? ((skillMods?.modifier ?? 0) + (globalMods?.modifier ?? 0))
         this.critThreshold = args.critThreshold ?? (20 - ((skillMods?.critThreshold ?? 0) + (globalMods?.critThreshold ?? 0)))
-        this.favorHinder = args.favorHinder ?? this.getFavorHinderFromHotkey(args.clickEvent)
+        this.favorHinder = this.getFavorHinderFromHotkey(args.clickEvent) ?? args.favorHinder ?? 'none'
         this.clickEvent = args.clickEvent
     }
 
@@ -200,18 +200,15 @@ export class SkillCheck {
 
     setFavorHinder(e?: React.MouseEvent<HTMLDivElement>) {
         this.clickEvent = e
-        this.favorHinder = this.getFavorHinderFromHotkey(e)
+        this.favorHinder = this.getFavorHinderFromHotkey(e) ?? 'none'
     }
 
-    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): 'favor' | 'hinder' | 'none' {
+    private getFavorHinderFromHotkey(e?: React.MouseEvent<HTMLDivElement>): 'favor' | 'hinder' | undefined {
         if (e?.shiftKey) {
             return 'favor'
         }
         else if (e?.ctrlKey) {
             return 'hinder'
-        }
-        else {
-            return 'none'
         }
     }
 

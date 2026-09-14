@@ -129,7 +129,7 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
         }
     }, [luck])
     return (
-        <Tracker name={appLang.HeroSheet.luck} title={`${appLang.HeroSheet.luck_tooltip}${appLang.HeroSheet.counter_tooltip}${appLang.HeroSheet.counter_tooltip_roll}
+        <Tracker name={appLang.HeroSheet.luck} title={`${appLang.HeroSheet.luck_tooltip}<br>${appLang.HeroSheet.counter_tooltip}<br>${appLang.HeroSheet.counter_tooltip_roll}
         `} onClick={updateLuck}>
             <div className={`${trackerLayout} text-text-luck-current`}>
                 <LucideClover size={20} strokeWidth={1} />
@@ -165,7 +165,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
         }
     }, [studied])
     return (
-        <Tracker name={appLang.HeroSheet.studied} title={`${appLang.HeroSheet.studied_tooltip}${appLang.HeroSheet.counter_tooltip}${appLang.HeroSheet.counter_tooltip_roll}`} onClick={updateStudied}>
+        <Tracker name={appLang.HeroSheet.studied} title={`${appLang.HeroSheet.studied_tooltip}<br>${appLang.HeroSheet.counter_tooltip}<br>${appLang.HeroSheet.counter_tooltip_roll}`} onClick={updateStudied}>
             <div className={`${trackerLayout} text-text-studied-current`}>
                 <LucideBookMarked size={20} strokeWidth={1} />
                 {studied}
@@ -182,7 +182,7 @@ export const Focus = ({ hero }: { hero: HeroDataModel }) => {
         } as Record<string, number>)
     }, [focus])
     return (
-        <Tracker name={appLang.HeroSheet.focus} title={`${appLang.HeroSheet.focus_tooltip}${appLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
+        <Tracker name={appLang.HeroSheet.focus} title={`${appLang.HeroSheet.focus_tooltip}<br>${appLang.HeroSheet.counter_tooltip}`} onClick={updateFocus}>
             <div className={`${trackerLayout} text-text-secondary`}>
                 <Eye size={20} strokeWidth={1} />
                 {focus}
@@ -274,7 +274,7 @@ const Save = ({ hero, save }: {
     }
 }) => {
     return (
-        <Tooltip title={`${save.name} Save ${save.formula}`} content={`${save.description}\n${appLang.HeroSheet.skills_tooltip}`}>
+        <Tooltip title={`${save.name} Save ${save.formula}`} content={`${save.description}<br>${appLang.HeroSheet.skills_tooltip}`}>
             <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()

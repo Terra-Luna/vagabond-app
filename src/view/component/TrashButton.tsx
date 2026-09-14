@@ -6,7 +6,7 @@ export const TrashButton = ({ title = "Delete", className = "", onDelete }: { ti
     return (
         <Tooltip content={title}>
             <button type="button" onClick={onDelete} className={className}>
-                <Trash size={18} className={`hover:text-destructive-action/80 transition-colors hover-glow cursor-pointer`} />
+                <Trash size={18} className={`hover:text-destructive-action/80 transition-colors hover-glow cursor-pointer mt-1`} />
             </button>
         </Tooltip>
     )

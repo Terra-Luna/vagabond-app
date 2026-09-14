@@ -11,12 +11,12 @@ import { RollPreset } from "../model/RollPreset"
 import { RollBuilderApp } from "../RollBuilderApp"
 import { useDeletePreset } from "../usecase/preset/DeletePresetUseCase"
 import { useEditPreset } from "../usecase/preset/EditPresetUseCase"
-import { RollPresetRow } from "./RollPresetRow"
+import { RollPresetCard } from "./RollPresetCard"
 
 export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const presets = actor.getFlag(sys_id, "rollPresets" as any) as RollPreset[] ?? []
     const { editPreset } = useEditPreset(actor)
-    const { deletePreset } = useDeletePreset(actor)
+    const { Confirmation, deletePreset } = useDeletePreset(actor)
 
     return (
         <div className="flex flex-col">
@@ -24,7 +24,7 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
                 <div className={`${tableBorder} border-t-0 rounded-b-sm`}>
                     {presets.map((preset, index) => (
                         <div key={index} className="w-full even:bg-table-row-even/50 odd:bg-table-row-odd/50">
-                            <RollPresetRow
+                            <RollPresetCard
                                 actor={actor} preset={preset}
                                 EditButton={<EditButton onEdit={() => editPreset(preset)} />}
                                 TrashButton={<TrashButton onDelete={() => deletePreset(index)} />}
@@ -43,6 +43,9 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
                 </div>
 
             </>} />
+
+            {/* DELETE PRESET CONFIRMATION DIALOG */}
+            <Confirmation />
 
         </div>
     )

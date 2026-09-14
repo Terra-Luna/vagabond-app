@@ -18,7 +18,7 @@ export const useCustomSkillCheckBuilder = (
     const { SkillCheckCritThresholdInput, critThreshold, setCritThreshold } = useSkillCheckCritThresholdInput()
 
     const CustomSkillCheckBuilder =
-        <div className={`flex flex-wrap gap-x-1 items-end justify-between bg-context-menu-fill/40 p-1 ${tableBorderRounded}`}>
+        <div className={`flex flex-wrap gap-x-1 items-end bg-context-menu-fill/40 p-1 ${tableBorderRounded}`}>
             {SkillSelector}
             {D20CountSelector}
             {FavorHinderSelector}

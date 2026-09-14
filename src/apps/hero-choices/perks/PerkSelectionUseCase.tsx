@@ -34,7 +34,8 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
         ruleId: ""
     })).filter(spell => spell.value), [actor.system.spells])
 
-    const { PerkSelection, allPerks, perksList, classPerkSlots, ancestryPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots } = usePerkSelectionView(ancestry, clazz, stats, trainings, spells, [], level, true)
+    const { PerkSelection, allPerks, perksList, classPerkSlots, ancestryPerkSlots, loadInitialSlots, setAncestryPerkSlots, setClassPerkSlots } =
+        usePerkSelectionView(ancestry, clazz, stats, trainings, spells, [], level, true)
 
     const bonusPerks = useMemo(() => [...ancestryPerkSlots, ...classPerkSlots].flatMap(slot => {
         const perk = ItemsCache.perks().find(item => item.uuid === slot.value)

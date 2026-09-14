@@ -87,6 +87,7 @@ export const useTrainingSelection = (
             const selections = normalizeRuleSelections(rawRule?.selections || rule.selections)
             return selections.map(s => ({ skill: getSkillNameFromPath(s.value), ruleId: String(rule.id) }))
         })
+
         if (existingAncestrySelections.length > 0) {
             setChosenBonusSkills(existingAncestrySelections)
         }

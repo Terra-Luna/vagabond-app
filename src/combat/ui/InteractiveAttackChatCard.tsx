@@ -220,7 +220,6 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     }, [actor.id, needsResourceUpdates, setRevision])
 
     const luck = useMemo<number>(() => actor.system.statuses.counters.luck, [actor.system.statuses.counters.luck, setRevision])
-    const isMaxLuck = useMemo<boolean>(() => luck === actor.system.stats.luck, [luck, setRevision])
     const studied = useMemo<number>(() => actor.system.statuses.counters.studied, [actor.system.statuses.counters.studied, setRevision])
 
     const isFriendlySpell = useMemo<boolean>(() => {
@@ -305,7 +304,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                         {attack.showCritChoices &&
                             <div className="flex wrap gap-1 mb-1 justify-center text-center text-base font-normal content-center">
                                 {/* GAIN A LUCK */}
-                                {!isMaxLuck && <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />}
+                                <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />
                                 {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
                                 <InteractiveChatCardButton label="+Damage" tooltip="Add damage equal to stat used" fn={addCritDamage} />
                                 {/* ADD SPELL'S CRIT FX */}
@@ -522,7 +521,7 @@ const AttackDamageAndSavesSection = ({
                                         : canRollSave && <div className="flex gap-1">
                                             {/* ROLL SAVE BUTTONS */}
                                             {saveTypes.map(saveType => (
-                                                <Tooltip key={saveType} title={`${appLang.Saves[saveType]?.name} Save`} content={`${appLang.HeroSheet[`${saveType}_tooltip`]}${appLang.HeroSheet.skills_tooltip}`}>
+                                                <Tooltip key={saveType} title={`${appLang.Saves[saveType]?.name} Save`} content={`${appLang.HeroSheet[`${saveType}_tooltip`]}<br>${appLang.HeroSheet.skills_tooltip}`}>
                                                     <UtilityButton onClick={(e) => {
                                                         e?.stopPropagation()
                                                         e?.preventDefault()

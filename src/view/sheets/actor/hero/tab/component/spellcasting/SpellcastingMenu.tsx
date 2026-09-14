@@ -235,7 +235,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
                             {/* CAST BUTTON */}
                             <div className="ml-auto">
-                                <Tooltip title={`Cast: ${delivery?.spell.name} (${delivery?.manaCost ?? 0} Mana)`} content={`${delivery?.name ?? ''} | ${delivery?.targetLabel}: ${(delivery as any).targetCount ?? (delivery as any).size ?? ""}${appLang.HeroSheet.skills_tooltip}`}>
+                                <Tooltip title={`Cast: ${delivery?.spell.name} (${delivery?.manaCost ?? 0} Mana)`} content={`${delivery?.name ?? ''} | ${delivery?.targetLabel}: ${(delivery as any).targetCount ?? (delivery as any).size ?? ""}<br>${appLang.HeroSheet.skills_tooltip}`}>
                                     <button
                                         type="button"
                                         onClick={(e: any) => castSpell(e)}

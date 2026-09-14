@@ -28,7 +28,8 @@ export class TrainingSelectionApp extends VagabondApplication {
                         .map(key => ({ stat: key, value: actor.system.stats[key] }))
                 }, [actor.system.stats])
 
-                const { TrainingSelection, chosenTrainings, chosenBonusSkills, electiveTrainingsRuleId, electiveTrainingRules } = useTrainingSelection(ancestry, clazz, stats, [])
+                const { TrainingSelection, chosenTrainings, chosenBonusSkills, electiveTrainingsRuleId, electiveTrainingRules } =
+                    useTrainingSelection(ancestry, clazz, stats, [])
 
                 useEffect(() => {
                     if (!dataLoaded.current) {

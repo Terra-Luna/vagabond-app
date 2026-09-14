@@ -159,7 +159,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
 
                                         <div className="flex content-right items-center gap-x-1">
                                             {/* CLICKABLE DAMAGE ROLL */}
-                                            <Tooltip title={"Attack Action"} content={`Attack with this weapon. Set targets to trigger Skill Check.\n${appLang.HeroSheet.skills_tooltip}`}>
+                                            <Tooltip title={"Attack Action"} content={`Attack with this weapon. Set targets to trigger Skill Check.<br>${appLang.HeroSheet.skills_tooltip}`}>
                                                 <div className={`${dmgStyle} hover-glow`} onClick={(e) => initiateAttack(e)}>
                                                     {damageString}
                                                 </div>
