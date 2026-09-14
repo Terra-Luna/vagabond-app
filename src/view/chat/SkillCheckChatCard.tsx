@@ -17,7 +17,7 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
                 portrait={getTokenImg(actor)}
                 title={`${appLang.Skills[result.skill]?.name ?? appLang.Saves[result.skill]?.name} Check`}
                 subtitle={[
-                    { label: "Difficulty", value: result.difficulty.toString() },
+                    { label: "Difficulty", value: result.difficulty?.toString() },
                     { label: "Result", value: result.outcome }
                 ]}
             />}
