@@ -35,41 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.arcana.trained"
-      },
-      {
-        "id": "Ez2ZZkSPBrWpLSa9",
-        "key": "GrantItem",
-        "label": "Arcanum: Gish",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI",
-        "type": "perk"
-      },
-      {
-        "id": "HL3o3YzxYRMtzqHm",
-        "key": "ChoiceSet",
-        "label": "Arcanum: Level 1 Spells",
-        "level": "1",
-        "value": 1,
-        "maxChoices": 2,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell"
-      },
-      {
-        "id": "wlqMwEJGrKKQQ6gr",
-        "key": "ChoiceSet",
-        "label": "Arcanum: Spells",
-        "level": "4",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "scale": "3"
       }
     ],
     "complexity": 4,
@@ -123,7 +88,12 @@
       }
     ],
     "featureIds": [
-      "Compendium.vagabond-app.features.Item.F5wD4ISfqKnzHnhN"
+      "Compendium.vagabond-app.features.Item.F5wD4ISfqKnzHnhN",
+      "Compendium.vagabond-app.features.Item.bpPvM4VHNalx9h1X",
+      "Compendium.vagabond-app.features.Item.NOfHQxqtgo6hBUBI",
+      "Compendium.vagabond-app.features.Item.JhvFIfTuQyUqKgnI",
+      "Compendium.vagabond-app.features.Item.L1JWbAX1CGR5f2dD",
+      "Compendium.vagabond-app.features.Item.hxZqDGCfabcSoyLl"
     ]
   },
   "effects": [],
@@ -139,7 +109,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.94",
     "createdTime": 1784995121741,
-    "modifiedTime": 1789500321391,
+    "modifiedTime": 1789501066194,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

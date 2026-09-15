@@ -1,0 +1,33 @@
+{
+  "name": "Crowd Control",
+  "type": "feature",
+  "_id": "SQudhGq0Aet6UqER",
+  "img": "icons/equipment/shield/heater-steel-boss-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can try to Shove a Close Target (no Action) when they Move Close to you, or when you roll a Defense Weapon’s damage die.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you can push Targets you Shove ahead of you while you Move during the same Turn. If you push it into an occupied space, it deals your Weapon’s damage to the Target and whatever occupied the space.</span></p>",
+    "rules": [],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2600000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789504381538,
+    "modifiedTime": 1789506088890,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!SQudhGq0Aet6UqER"
+}

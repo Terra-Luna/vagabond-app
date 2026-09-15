@@ -1,0 +1,33 @@
+{
+  "name": "Moxie",
+  "type": "feature",
+  "_id": "zFeovuFXHqzlFU8k",
+  "img": "/icons/magic/lightning/fist-unarmed-strike-blue-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, being at 0 HP doesn’t kill you for [[/r Cd{{feature-value:4:2}}#Moxie]] Rounds. Each time you take damage after triggering this Feature, also roll this countdown die.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">At 10th Level, this starts at Cd6.</span></p>",
+    "rules": [],
+    "level": 4,
+    "scale": 6,
+    "maxLevel": 10
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1500000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789502313276,
+    "modifiedTime": 1789506088889,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!zFeovuFXHqzlFU8k"
+}

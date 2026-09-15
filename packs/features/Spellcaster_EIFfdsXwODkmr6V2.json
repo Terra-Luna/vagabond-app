@@ -1,0 +1,87 @@
+{
+  "name": "Spellcaster",
+  "type": "feature",
+  "img": "icons/magic/symbols/runes-star-pentagon-orange-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can Cast Spells using Arcana.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Spells:</strong></b><span style=\"white-space:pre-wrap\"> You learn 4 Spells. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Mana:</strong></b><span style=\"white-space:pre-wrap\"> Your Max Mana is equal to (4 × your Level), and your Cast Max for Spells is equal to (2 + your Level).</span></p>",
+    "rules": [
+      {
+        "id": "n1iNdZd5kMFc4LlF",
+        "key": "FlatModifier",
+        "label": "Casting Skill",
+        "level": 1,
+        "value": "arcana",
+        "selector": "class.castingSkill"
+      },
+      {
+        "id": "l1Bu9SVGaWlyG7qu",
+        "key": "FlatModifier",
+        "label": "Mana",
+        "level": 1,
+        "value": "4",
+        "selector": "mana.max",
+        "valueMultiplier": "level.current"
+      },
+      {
+        "id": "vDDQ8UuSzWXnA8pH",
+        "key": "FlatModifier",
+        "label": "Max Cast",
+        "level": 1,
+        "value": "full",
+        "selector": "class.maxCastFormula"
+      },
+      {
+        "id": "nZ5NcB3C9mhr12Da",
+        "key": "ChoiceSet",
+        "label": "Level 1 Spells",
+        "level": 1,
+        "scale": 0,
+        "maxChoices": 4,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "3DvPPsnBtjiuetH9",
+        "key": "ChoiceSet",
+        "label": "Spells",
+        "level": "3",
+        "scale": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      }
+    ],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789506088789,
+    "modifiedTime": 1789506088890,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_id": "EIFfdsXwODkmr6V2",
+  "sort": 2200000,
+  "_key": "!items!EIFfdsXwODkmr6V2"
+}

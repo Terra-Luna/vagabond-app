@@ -1,0 +1,43 @@
+{
+  "name": "Sculpt Spell",
+  "type": "feature",
+  "_id": "rRmWj7FxGn9dwF4c",
+  "img": "icons/magic/fire/flame-burning-hand-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You pay {{feature-value:1:1}} less Mana for Delivery upcasting.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">This discount is increased by 1 every 4 Levels hereafter.</span></p>",
+    "rules": [
+      {
+        "id": "9oTPOgDf0mfKLLh2",
+        "key": "FlatModifier",
+        "label": "Upcasting Discount",
+        "level": 4,
+        "value": "1",
+        "selector": "modifiers.casting.deliveryUpcastDiscount",
+        "scale": 4
+      }
+    ],
+    "level": 4,
+    "scale": 4,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789506457502,
+    "modifiedTime": 1789506531748,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!rRmWj7FxGn9dwF4c"
+}

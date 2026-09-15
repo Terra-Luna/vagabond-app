@@ -4,7 +4,7 @@
   "_id": "a5GWCJ8t1ISGvmgU",
   "img": "systems/vagabond-app/assets/class/merchant_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">May they be an appraiser of rare magic items, peddler of illicit substances, or bookkeeper for the court, merchants are masters of exchange.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Merchants</strong></b></p><p><span style=\"white-space:pre-wrap\">• Anna, Fire Emblem</span></p><p><span style=\"white-space:pre-wrap\">• Marco Polo, Venetian merchant</span></p><p><span style=\"white-space:pre-wrap\">• Torneko Taloon, Dragon Quest IV</span></p><p><span style=\"white-space:pre-wrap\">• Tressa Colzione, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Merchant</strong></b></p><p><span style=\"white-space:pre-wrap\">The merchant is a low-defense and damage character, who provides high-support through a wider inventory pool and optimizing your</span></p><p><span style=\"white-space:pre-wrap\">party’s resources. In combat, you should look out for allies in need of assistance and strategize what items to use.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible (skip to Use)</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Craft, Influence</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">May they be an appraiser of rare magic items, peddler of illicit substances, or bookkeeper for the court, merchants are masters of exchange.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Merchants</strong></b></p><p><span style=\"white-space:pre-wrap\">• Anna, Fire Emblem</span></p><p><span style=\"white-space:pre-wrap\">• Marco Polo, Venetian merchant</span></p><p><span style=\"white-space:pre-wrap\">• Torneko Taloon, Dragon Quest IV</span></p><p><span style=\"white-space:pre-wrap\">• Tressa Colzione, Octopath Traveler</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Merchant</strong></b></p><p><span style=\"white-space:pre-wrap\">The merchant is a low-defense and damage character, who provides high-support through a wider inventory pool and optimizing your</span></p><p><span style=\"white-space:pre-wrap\">party’s resources. In combat, you should look out for allies in need of assistance and strategize what items to use.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Use</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Flexible (skip to Use)</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Craft, Finesse, Influence</span></p>",
     "rules": [
       {
         "id": "eCdAhqrTAclxsdaQ",
@@ -37,22 +37,12 @@
         "selector": "skills.influence.trained"
       },
       {
-        "id": "XEFiSSPFSdMD6711",
-        "key": "FlatModifier",
-        "label": "Deep Pockets: Capacity",
-        "level": 1,
-        "value": 2,
-        "selector": "inventory.capacity",
-        "valueMultiplier": "",
-        "scale": 3
-      },
-      {
-        "id": "gMetRnM4MBR1gDJ9",
-        "key": "GrantItem",
-        "label": "Deep Pockets: Deft Hands",
+        "id": "k9uaeJ18BlSyNSAv",
+        "key": "ToggleRule",
+        "label": "Training: Finesse",
         "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.TcPtYma4aDbo9npG",
-        "type": "perk"
+        "value": true,
+        "selector": "skills.finesse.trained"
       }
     ],
     "complexity": 3,
@@ -105,6 +95,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Gold Sink Ability to pull non-Fabled Relics by spending 1 additional Luck per 250g of the Relic’s value, otherwise obeying all the rules for that Ability.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.ELQG4nLLP27bnpKy",
+      "Compendium.vagabond-app.features.Item.vj3XjAvcddA43PBn",
+      "Compendium.vagabond-app.features.Item.i7wJ05eK7Xt8QUHP",
+      "Compendium.vagabond-app.features.Item.z2A8uH15LuS70JTz",
+      "Compendium.vagabond-app.features.Item.K1wmCWhOVIMWpDLc",
+      "Compendium.vagabond-app.features.Item.HTjTh08KEO3kYrUk"
     ]
   },
   "effects": [],
@@ -118,9 +116,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786566807612,
-    "modifiedTime": 1789326281355,
+    "modifiedTime": 1789501884216,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

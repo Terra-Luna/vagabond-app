@@ -9,7 +9,7 @@
       {
         "id": "rRvPbbxYPltXR014",
         "key": "FlatModifier",
-        "label": "Dusted Knuckle",
+        "label": "Brawl: Exploding Dice",
         "level": 0,
         "value": 1,
         "selector": "modifirs.dice.exploding.brawl.values"
@@ -58,10 +58,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.0.94",
     "createdTime": 1787881307891,
-    "modifiedTime": 1787881432404,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1789502793090,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

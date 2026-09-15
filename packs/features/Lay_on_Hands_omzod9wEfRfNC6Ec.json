@@ -1,0 +1,33 @@
+{
+  "name": "Lay on Hands",
+  "type": "feature",
+  "_id": "omzod9wEfRfNC6Ec",
+  "img": "icons/magic/light/orbs-firefly-hand-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d{{feature-value:4:2}}+@level.current#Lay on Hands]]{(d{{feature-value:4:2}} + your Level)} HP to yourself or a Close Being. </span></p><p><br></p><p><span style=\"white-space:pre-wrap\">This die size increases by one size every 4 Levels hereafter.</span></p>",
+    "rules": [],
+    "level": 2,
+    "scale": 4,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1800000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789503167862,
+    "modifiedTime": 1789506088890,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!omzod9wEfRfNC6Ec"
+}

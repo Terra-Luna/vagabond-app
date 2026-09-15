@@ -44,7 +44,7 @@ export const ClassSheetComponent = ({ item, setFeatureDropEnabled }: { item: Ite
                 <div className="w-full @4xl:w-1/3 h-full overflow-y-auto">
                     <BaseItemSheetComponent
                         banner={<ClassSheetBanner item={item} />}
-                        description={<Description item={item} showFullView={true} italic={false} />}
+                        description={<Description item={item} showFullView={true} italic={false} hideBorder={true} />}
                         body={<>
                             <KeyStatsSelector item={item} />
                             <ComplexityRating item={item} />

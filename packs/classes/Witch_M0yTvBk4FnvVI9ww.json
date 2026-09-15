@@ -4,7 +4,7 @@
   "_id": "M0yTvBk4FnvVI9ww",
   "img": "systems/vagabond-app/assets/class/witch_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Witches are mediaries of magical secrets. One may become a witch through the whispers of a familiar or the favor of a being from beyond.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Witches</strong></b></p><p><span style=\"white-space:pre-wrap\">• Dr. Facilier, The Princess and the Frog</span></p><p><span style=\"white-space:pre-wrap\">• Sabrina Spellman, Sabrina the Teenage Witch</span></p><p><span style=\"white-space:pre-wrap\">• The Morrigan, Celtic mythology</span></p><p><span style=\"white-space:pre-wrap\">• Yubaba, Spirited Away</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Witch</strong></b></p><p><span style=\"white-space:pre-wrap\">The witch is a debuffer focused on Casting Spells to stack detriments. Stick to the shadows and pile on Statuses through Hex.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training: </strong></b><span style=\"white-space:pre-wrap\">Mysticism</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Witches are mediaries of magical secrets. One may become a witch through the whispers of a familiar or the favor of a being from beyond.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Witches</strong></b></p><p><span style=\"white-space:pre-wrap\">• Dr. Facilier, The Princess and the Frog</span></p><p><span style=\"white-space:pre-wrap\">• Sabrina Spellman, Sabrina the Teenage Witch</span></p><p><span style=\"white-space:pre-wrap\">• The Morrigan, Celtic mythology</span></p><p><span style=\"white-space:pre-wrap\">• Yubaba, Spirited Away</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Witch</strong></b></p><p><span style=\"white-space:pre-wrap\">The witch is a debuffer focused on Casting Spells to stack detriments. Stick to the shadows and pile on Statuses through Hex.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action:</strong></b><span style=\"white-space:pre-wrap\"> Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Craft, Mysticism</span></p>",
     "rules": [
       {
         "id": "Je7SoewMQHf41lia",
@@ -29,51 +29,12 @@
         "selector": "skills.mysticism.trained"
       },
       {
-        "id": "cez3YXkFDNpICc8t",
-        "key": "ChoiceSet",
-        "label": "Occultist: Level 1 Spells",
+        "id": "XGWgjhEYg5wOf9bt",
+        "key": "ToggleRule",
+        "label": "Training: Craft",
         "level": "1",
-        "scale": 0,
-        "maxChoices": 4,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "pyt2WjJZjSesJ7Ki",
-        "key": "ChoiceSet",
-        "label": "Occultist: Spells",
-        "level": "3",
-        "scale": "2",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "j0Ca0NABaovevGfp",
-        "key": "ChoiceSet",
-        "label": "Occultist: Perk",
-        "level": "0",
-        "scale": 0,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk",
-        "filters": [
-          {
-            "type": "training",
-            "value": "mysticism"
-          }
-        ]
+        "value": true,
+        "selector": "skills.craft.trained"
       }
     ],
     "complexity": 3,
@@ -112,6 +73,12 @@
         "scale": 4,
         "description": "<p><span style=\"white-space: pre-wrap;\">The number of Spells you can cause to be continual on the Target with your Hex Feature increases by 1 now and every 4 Levels hereafter.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, if you hex a new Target while you have an Enemy hexed, the new Target is affected by the previous Spells.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.OpoUpGhXzseOAVUX",
+      "Compendium.vagabond-app.features.Item.9Tn3eWLjA2WeYfT6",
+      "Compendium.vagabond-app.features.Item.cEXiiv4PZFUxJNxu",
+      "Compendium.vagabond-app.features.Item.yIbIJTAeAGTebsbC"
     ]
   },
   "effects": [],
@@ -125,9 +92,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.94",
     "createdTime": 1786571553719,
-    "modifiedTime": 1789002759352,
+    "modifiedTime": 1789505858117,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

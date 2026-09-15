@@ -35,66 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.leadership.trained"
-      },
-      {
-        "id": "hPgNr3TmaVs2efrm",
-        "key": "GrantItem",
-        "label": "Righteous: Gish",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI",
-        "type": "perk"
-      },
-      {
-        "id": "LtPxovgFRQ9AI98j",
-        "key": "ChoiceSet",
-        "label": "Righteous: Level 1 Spells",
-        "level": "1",
-        "scale": 0,
-        "maxChoices": 2,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "CuBuPHodeNZVRLM3",
-        "key": "ChoiceSet",
-        "label": "Righteous: Spells",
-        "level": "4",
-        "scale": "3",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "Reh1gwndjkILqZKW",
-        "key": "FlatModifier",
-        "label": "Paragon's Aura",
-        "level": 4,
-        "value": 2,
-        "selector": "modifiers.casting.deliveryDiscounts.aura"
-      },
-      {
-        "id": "VBGjlHRr4usvfaGs",
-        "key": "ToggleRule",
-        "label": "Holy Diver: Exalt",
-        "level": "10",
-        "value": true,
-        "selector": "statuses.toggles.exalted"
-      },
-      {
-        "id": "OAHAhI06aiy5SZHY",
-        "key": "ToggleRule",
-        "label": "Holy Diver: Bless",
-        "level": "10",
-        "value": true,
-        "selector": "statuses.toggles.blessed"
       }
     ],
     "complexity": 3,
@@ -176,6 +116,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d20+@level.current#Lay on Hands]]{(d20 + your Level)} HP to yourself or a Close Being.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.eM9zshNZKiRbhO8j",
+      "Compendium.vagabond-app.features.Item.bpPvM4VHNalx9h1X",
+      "Compendium.vagabond-app.features.Item.omzod9wEfRfNC6Ec",
+      "Compendium.vagabond-app.features.Item.JTiiACptF2LnprJp",
+      "Compendium.vagabond-app.features.Item.uC2YTM36LkOOtqVP",
+      "Compendium.vagabond-app.features.Item.mmgNfwgE41OPmU7d"
     ]
   },
   "effects": [],
@@ -189,9 +137,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.94",
     "createdTime": 1786568076634,
-    "modifiedTime": 1789002410310,
+    "modifiedTime": 1789503802932,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

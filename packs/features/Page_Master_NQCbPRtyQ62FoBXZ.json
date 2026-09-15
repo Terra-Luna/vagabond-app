@@ -1,0 +1,42 @@
+{
+  "name": "Page Master",
+  "type": "feature",
+  "_id": "NQCbPRtyQ62FoBXZ",
+  "img": "/icons/sundries/books/book-open-turquoise.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.jvuOodZbzMMANBn6]{Bookworm} Perk, and you can spend a Studied die to learn a Spell for the Shift.</span></p>",
+    "rules": [
+      {
+        "id": "4n3zHw4du1jTblwF",
+        "key": "GrantItem",
+        "label": "Bookworm",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.perks.Item.jvuOodZbzMMANBn6",
+        "type": null
+      }
+    ],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789506115020,
+    "modifiedTime": 1789506217080,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!NQCbPRtyQ62FoBXZ"
+}

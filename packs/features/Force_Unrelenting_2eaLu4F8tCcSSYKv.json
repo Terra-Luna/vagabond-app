@@ -1,0 +1,33 @@
+{
+  "name": "Force Unrelenting",
+  "type": "feature",
+  "_id": "2eaLu4F8tCcSSYKv",
+  "img": "icons/magic/defensive/shield-barrier-glowing-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you successfully Shove a Target, you cause them to be Dazed ([[/r Cd4#Force Unrelenting]]{Cd4}) and can choose to launch them up to the distance you Moved during the Turn before the Shove.</span></p>",
+    "rules": [],
+    "level": 10,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789504945281,
+    "modifiedTime": 1789506088890,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!2eaLu4F8tCcSSYKv"
+}

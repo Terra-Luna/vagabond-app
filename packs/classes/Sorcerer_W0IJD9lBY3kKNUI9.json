@@ -35,59 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.influence.trained"
-      },
-      {
-        "id": "4zoWMbiuxCInWKcm",
-        "key": "ChoiceSet",
-        "label": "Glamour: Level 1 Spells",
-        "level": "1",
-        "scale": 0,
-        "maxChoices": 4,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "BONuLnetueZnBzRS",
-        "key": "ChoiceSet",
-        "label": "Glamour: Spells",
-        "level": "3",
-        "scale": "2",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "7KAGSXRgdDbLQ5KC",
-        "key": "GrantItem",
-        "label": "Tap: Vehement Magic",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.eDxdbBsCNsDdTsG0",
-        "type": "perk"
-      },
-      {
-        "id": "WU8eVWtRaDlhQsdU",
-        "key": "FlatModifier",
-        "label": "Spell-Slinger: Die Size Bonus",
-        "level": 4,
-        "value": 2,
-        "selector": "modifiers.dice.size.spell.bonus"
-      },
-      {
-        "id": "XohL3cywNVuleWnh",
-        "key": "FlatModifier",
-        "label": "Spell-Slinger: Crit Threshold",
-        "level": 4,
-        "value": 1,
-        "selector": "modifiers.skillCheck.cast.critThreshold",
-        "scale": 4
       }
     ],
     "complexity": 3,
@@ -133,6 +80,12 @@
         "scale": 4,
         "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Cast Checks and Saves against Casts is reduced by 1, and is reduced by 1 more every 4 Levels hereafter.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.jNfV9RbKiEVo83KW",
+      "Compendium.vagabond-app.features.Item.OWGhXBExZUcpZJ6K",
+      "Compendium.vagabond-app.features.Item.biaXWpacav6Bi1pK",
+      "Compendium.vagabond-app.features.Item.YMgRWYHC0XlXhhrS"
     ]
   },
   "effects": [],
@@ -146,9 +99,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786569750999,
-    "modifiedTime": 1789329607360,
+    "modifiedTime": 1789504347893,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

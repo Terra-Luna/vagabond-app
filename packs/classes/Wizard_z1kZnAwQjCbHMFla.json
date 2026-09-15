@@ -4,7 +4,7 @@
   "_id": "z1kZnAwQjCbHMFla",
   "img": "systems/vagabond-app/assets/class/wizard_fps.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Wizards are students of the arcane arts who research and develop spells as academic pursuit.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Wizards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Harry Dresden, The Dresden Files</span></p><p><span style=\"white-space:pre-wrap\">• Merlyn, Arthurian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sparrowhawk, Earthsea</span></p><p><span style=\"white-space:pre-wrap\">• Sypha Belnades, Castlevania</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Wizard</strong></b></p><p><span style=\"white-space:pre-wrap\">The wizard is a squishy blaster focused on Casting Spells. Stay in safety to Cast your Spells and discover Enemy weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action: </strong></b><span style=\"white-space:pre-wrap\">Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Arcana</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Wizards are students of the arcane arts who research and develop spells as academic pursuit.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Iconic Wizards</strong></b></p><p><span style=\"white-space:pre-wrap\">• Harry Dresden, The Dresden Files</span></p><p><span style=\"white-space:pre-wrap\">• Merlyn, Arthurian legend</span></p><p><span style=\"white-space:pre-wrap\">• Sparrowhawk, Earthsea</span></p><p><span style=\"white-space:pre-wrap\">• Sypha Belnades, Castlevania</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Playing Wizard</strong></b></p><p><span style=\"white-space:pre-wrap\">The wizard is a squishy blaster focused on Casting Spells. Stay in safety to Cast your Spells and discover Enemy weaknesses.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Action: </strong></b><span style=\"white-space:pre-wrap\">Cast</span></p><p><b><strong style=\"white-space:pre-wrap\">Move:</strong></b><span style=\"white-space:pre-wrap\"> Backline</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Training:</strong></b><span style=\"white-space:pre-wrap\"> Arcana, Craft, Mysticism</span></p>",
     "rules": [
       {
         "id": "n3d8EWbu9XuJNJMl",
@@ -29,72 +29,20 @@
         "selector": "skills.arcana.trained"
       },
       {
-        "id": "14oGP1pUTvXH2Vs1",
-        "key": "ChoiceSet",
-        "label": "Spellcaster: Level 1 Spells",
+        "id": "KMQ6r2DHgSkPYqyN",
+        "key": "ToggleRule",
+        "label": "Training: Craft",
         "level": "1",
-        "scale": 0,
-        "maxChoices": 4,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
+        "value": true,
+        "selector": "skills.craft.trained"
       },
       {
-        "id": "VSEtKITBBn1F3v6v",
-        "key": "ChoiceSet",
-        "label": "Spellcaster: Spells",
-        "level": "3",
-        "scale": "2",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "vhmzPNWgon4tjgDJ",
-        "key": "GrantItem",
-        "label": "Page Master: Bookworm",
+        "id": "zDKKTlluK2NP8Nvz",
+        "key": "ToggleRule",
+        "label": "Training: Mysticsim",
         "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.jvuOodZbzMMANBn6",
-        "type": "perk"
-      },
-      {
-        "id": "y4F03I89q89rniq5",
-        "key": "FlatModifier",
-        "label": "Manifold Mind",
-        "level": 2,
-        "value": 1,
-        "selector": "maxFocus",
-        "scale": 4
-      },
-      {
-        "id": "nIOZER6V6TiVVRJQ",
-        "key": "FlatModifier",
-        "label": "Sculpt Spell",
-        "level": 4,
-        "value": 1,
-        "selector": "modifiers.casting.deliveryUpcastDiscount",
-        "scale": 4
-      },
-      {
-        "id": "VbMdj0crhMhBMz4f",
-        "key": "ChoiceSet",
-        "label": "Page Master",
-        "level": "1",
-        "scale": 0,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
+        "value": true,
+        "selector": "skills.mysticism.trained"
       }
     ],
     "complexity": 3,
@@ -133,6 +81,12 @@
         "scale": 4,
         "description": "<p><span style=\"white-space: pre-wrap;\">You pay 1 less Mana for Delivery upcasting.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This discount is increased by 1 every 4 Levels hereafter.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.EIFfdsXwODkmr6V2",
+      "Compendium.vagabond-app.features.Item.NQCbPRtyQ62FoBXZ",
+      "Compendium.vagabond-app.features.Item.dlE8BvsNsSqU5eqn",
+      "Compendium.vagabond-app.features.Item.rRmWj7FxGn9dwF4c"
     ]
   },
   "effects": [],
@@ -146,9 +100,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786572729833,
-    "modifiedTime": 1789326480333,
+    "modifiedTime": 1789506540798,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
