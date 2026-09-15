@@ -121,6 +121,9 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round, when you take the Attack Action, you can also take the Cast Action, and vice versa.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.F5wD4ISfqKnzHnhN"
     ]
   },
   "effects": [],
@@ -134,9 +137,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.94",
     "createdTime": 1784995121741,
-    "modifiedTime": 1789002379485,
+    "modifiedTime": 1789500321391,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -1,0 +1,32 @@
+{
+  "name": "Virtuoso",
+  "type": "feature",
+  "_id": "XCNW2jaYFPTCADwx",
+  "img": "/icons/tools/instruments/lute-gold-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use your Action or skip your Move to choose one of the following benefits and make a Performance Check. If you pass, your Group gains the benefit for that Round:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Inspiration:</strong></b><span style=\"white-space:pre-wrap\"> d6 bonus to Healing rolls.</span></p><p><b><strong style=\"white-space:pre-wrap\">Resolve:</strong></b><span style=\"white-space:pre-wrap\"> Favor on Saves.</span></p><p><b><strong style=\"white-space:pre-wrap\">Valor:</strong></b><span style=\"white-space:pre-wrap\"> Favor on Attack and Cast Checks.</span></p>",
+    "rules": [],
+    "level": 1,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 4100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789491892364,
+    "modifiedTime": 1789499438102,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!XCNW2jaYFPTCADwx"
+}

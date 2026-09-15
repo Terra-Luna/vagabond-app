@@ -21,14 +21,6 @@
         "filters": []
       },
       {
-        "id": "VDpIO6I74XwrR6mP",
-        "key": "GrantItem",
-        "label": "Catalyze: Deft Hands",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.TcPtYma4aDbo9npG",
-        "type": "perk"
-      },
-      {
         "id": "Va5S3We9pq1dh8er",
         "key": "ToggleRule",
         "label": "Training: Arcana",
@@ -51,34 +43,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.medicine.trained"
-      },
-      {
-        "id": "2Z7zbrh4oAn0CElY",
-        "key": "ChoiceSet",
-        "label": "Alchemy: Level 1",
-        "level": "1",
-        "scale": 0,
-        "maxChoices": 4,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "alchemical",
-        "filters": []
-      },
-      {
-        "id": "hvpG6rVuaeY82iSa",
-        "key": "ChoiceSet",
-        "label": "Alchemy",
-        "level": "3",
-        "scale": "2",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "alchemical",
-        "filters": []
       }
     ],
     "complexity": 4,
@@ -129,6 +93,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Day, you can Craft an Alchemical Item with a value as high as 10g without Materials.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.ZdNC4FEzhSmRgXY9",
+      "Compendium.vagabond-app.features.Item.HFw481bZzVX019bG",
+      "Compendium.vagabond-app.features.Item.pIzNE29PLsXxISNX",
+      "Compendium.vagabond-app.features.Item.TvUOW5ZIoxNDIVEs",
+      "Compendium.vagabond-app.features.Item.ao6LFvaAOSQ1VcLO",
+      "Compendium.vagabond-app.features.Item.3fDUaiodxYwNJX08"
     ]
   },
   "effects": [],
@@ -142,9 +114,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1785901125159,
-    "modifiedTime": 1789325954658,
+    "modifiedTime": 1789490856175,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

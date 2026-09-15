@@ -43,20 +43,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.performance.trained"
-      },
-      {
-        "id": "twpml5DDQGe9zKKd",
-        "key": "ChoiceSet",
-        "label": "Well-Versed",
-        "level": "0",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk",
-        "filters": [],
-        "scale": "0"
       }
     ],
     "complexity": 2,
@@ -112,6 +98,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Performance Check or Crit on any Save, you can cause a Being that can hear you to become Berserk, Charmed, Confused, or Frightened for Cd6 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.XCNW2jaYFPTCADwx",
+      "Compendium.vagabond-app.features.Item.ZH5ZL0yL7x9do56e",
+      "Compendium.vagabond-app.features.Item.93SNY39iwN49d0fs",
+      "Compendium.vagabond-app.features.Item.WYoTCmcBhK7mikFG",
+      "Compendium.vagabond-app.features.Item.vLIKBulckKjX9K6s",
+      "Compendium.vagabond-app.features.Item.jk8yOgdkaaLSkO9H"
     ]
   },
   "effects": [],
@@ -125,9 +119,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.94",
     "createdTime": 1786554651254,
-    "modifiedTime": 1789001768737,
+    "modifiedTime": 1789493433099,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

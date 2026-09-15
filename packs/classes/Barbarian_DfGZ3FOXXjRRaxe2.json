@@ -35,39 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.survival.trained"
-      },
-      {
-        "id": "KiBRwag7JSlWA7ur",
-        "key": "GrantItem",
-        "label": "Wrath",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.ixtkMiuqHctLr3oB",
-        "type": "perk"
-      },
-      {
-        "id": "uVgBkVjXOKOJNDHP",
-        "key": "FlatModifier",
-        "label": "Aggressor",
-        "level": 2,
-        "value": 5,
-        "selector": "speed.turn",
-        "scale": 4
-      },
-      {
-        "id": "wkge3yJHrae2obfb",
-        "key": "GrantItem",
-        "label": "Rage",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
-        "type": "ActiveEffect"
-      },
-      {
-        "id": "FBbDE8j0POojVFAh",
-        "key": "GrantItem",
-        "label": "Murder Mode",
-        "level": "4",
-        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
-        "type": "ActiveEffect"
       }
     ],
     "complexity": 2,
@@ -118,6 +85,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, you reduce damage you take by 1 per damage die. This stacks with Rage.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.T3WrjPCsOUipzXIR",
+      "Compendium.vagabond-app.features.Item.q0fVJrUoC8BOjpA9",
+      "Compendium.vagabond-app.features.Item.iAQ84wn6aIlAUc6w",
+      "Compendium.vagabond-app.features.Item.3dPNYwGcLBAfkskz",
+      "Compendium.vagabond-app.features.Item.LtNwS3HqmPPEE4iq",
+      "Compendium.vagabond-app.features.Item.KElPvn9HhoMfPSYE"
     ]
   },
   "effects": [
@@ -296,9 +271,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1785901965127,
-    "modifiedTime": 1789326037216,
+    "modifiedTime": 1789491794256,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

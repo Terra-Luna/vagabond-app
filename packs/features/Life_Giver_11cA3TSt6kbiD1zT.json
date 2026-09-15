@@ -1,0 +1,33 @@
+{
+  "name": "Life-Giver",
+  "type": "feature",
+  "_id": "11cA3TSt6kbiD1zT",
+  "img": "icons/magic/light/explosion-beam-impact-silhouette.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Beings you revive are revived at 4 Fatigue if their Fatigue was previously higher, and don’t gain Fatigue from your Life Spell.</span></p>",
+    "rules": [],
+    "level": 10,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3400000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789499233999,
+    "modifiedTime": 1789499438101,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!11cA3TSt6kbiD1zT"
+}

@@ -35,41 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.survival.trained"
-      },
-      {
-        "id": "0vamvPXOr6mt75xN",
-        "key": "GrantItem",
-        "label": "Primal Mystic: Polymorph",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.spells.Item.qwIbJIeHMzTvMaBK",
-        "type": "spell"
-      },
-      {
-        "id": "Y8xnTWLPrZGjXW4e",
-        "key": "ChoiceSet",
-        "label": "Primal Mystic: Level 1 Spells",
-        "level": "1",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "Mg89MTrJYcB8LBpS",
-        "key": "ChoiceSet",
-        "label": "Primal Mystic: Spells",
-        "level": "4",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": [],
-        "scale": "3"
       }
     ],
     "complexity": 3,
@@ -119,6 +84,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, if you are reduced to 0 HP, you can polymorph into a Beast and regain HP equal to that shown in its Statblock.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.jmh7lkGVhhC7K1M5",
+      "Compendium.vagabond-app.features.Item.rKq5QpxeYFXLcRRt",
+      "Compendium.vagabond-app.features.Item.wLchfAxTkbSco5Ga",
+      "Compendium.vagabond-app.features.Item.Od2eUIVYzZmDax53",
+      "Compendium.vagabond-app.features.Item.LFTkgG9g2nNAOh0g",
+      "Compendium.vagabond-app.features.Item.B4Iw7woBjJCAi3lQ"
     ]
   },
   "effects": [],
@@ -132,9 +105,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786555887806,
-    "modifiedTime": 1789326154362,
+    "modifiedTime": 1789495660210,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

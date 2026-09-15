@@ -1,0 +1,33 @@
+{
+  "name": "Knack",
+  "type": "feature",
+  "_id": "yDHkcqRonc9q7GDM",
+  "img": "/icons/magic/control/buff-luck-fortune-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain {{feature-value:1:1}} Luck during a Breather and when you Crit, in addition to other Crit benefits.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, when you Rest, you gain {{feature-value:1:1}} extra Luck. This extra Luck gained from a Rest increases by 1 every 4 Levels hereafter.</span></p>",
+    "rules": [],
+    "classId": "",
+    "level": 4,
+    "scale": 4
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5700000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789432756704,
+    "modifiedTime": 1789499438103,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yDHkcqRonc9q7GDM"
+}

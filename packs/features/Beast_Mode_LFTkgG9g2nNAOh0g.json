@@ -1,0 +1,33 @@
+{
+  "name": "Beast Mode",
+  "type": "feature",
+  "_id": "LFTkgG9g2nNAOh0g",
+  "img": "icons/magic/nature/wolf-paw-glow-large-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The attacks you make as Beasts ignore Immune to non-Relic damage.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, when you are the sole Target of a casting of your Polymorph Spell, you can make the duration continual.</span></p>",
+    "rules": [],
+    "level": 6,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 600000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789495374434,
+    "modifiedTime": 1789499438099,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LFTkgG9g2nNAOh0g"
+}

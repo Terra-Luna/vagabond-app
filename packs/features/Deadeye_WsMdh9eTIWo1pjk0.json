@@ -1,0 +1,33 @@
+{
+  "name": "Deadeye",
+  "type": "feature",
+  "_id": "WsMdh9eTIWo1pjk0",
+  "img": "/icons/magic/perception/eye-ringed-glow-angry-large-teal.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, and can stack up to 3 times. It resets at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>",
+    "rules": [],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1000000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789496567938,
+    "modifiedTime": 1789499438099,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!WsMdh9eTIWo1pjk0"
+}

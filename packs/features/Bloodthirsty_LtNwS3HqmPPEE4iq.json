@@ -1,0 +1,32 @@
+{
+  "name": "Bloodthirsty",
+  "type": "feature",
+  "_id": "LtNwS3HqmPPEE4iq",
+  "img": "/icons/skills/melee/blade-tip-chipped-blood-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Your attacks against Beings that are missing any HP are Favored, and you can sense them within Far as if by Blindsight.</span></p>",
+    "rules": [],
+    "level": 6,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3800000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789491603718,
+    "modifiedTime": 1789499438102,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LtNwS3HqmPPEE4iq"
+}

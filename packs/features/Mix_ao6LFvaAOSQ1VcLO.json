@@ -1,0 +1,32 @@
+{
+  "name": "Mix",
+  "type": "feature",
+  "_id": "ao6LFvaAOSQ1VcLO",
+  "img": "/icons/tools/cooking/mortar-black.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can combine two Alchemical Items together with the Use Action by spending a Studied die, causing both Items to occur simultaneously when used. The combined Item goes inert at the start of your next Turn.</span></p>",
+    "rules": [],
+    "level": 6,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789490650262,
+    "modifiedTime": 1789499438103,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ao6LFvaAOSQ1VcLO"
+}

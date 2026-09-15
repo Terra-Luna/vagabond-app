@@ -43,14 +43,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.sneak.trained"
-      },
-      {
-        "id": "2JI06SlrJcRVwfmk",
-        "key": "GrantItem",
-        "label": "Infiltrator: Resourceful",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.JEbCKsJglF8zdrPB",
-        "type": "perk"
       }
     ],
     "complexity": 2,
@@ -70,41 +62,61 @@
     "maxCastFormula": "",
     "features": [
       {
-        "name": "Sneak Attack",
-        "level": 1,
-        "scale": 3,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The first time you hit with a Favored attack on a Turn with a Finesse, Keen, or Ranged Weapon, it deals an extra d4 damage and ignores an amount of Armor equal to this number of extra dice. </span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">The number of extra d4s increases by 1 every 3 Levels hereafter.</span></p>"
+        "featureId": "",
+        "level": 1
       },
       {
-        "name": "Infiltrator",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.JEbCKsJglF8zdrPB]{Resourceful Perk}, and you have Favor on Checks and Saves made to ambush and against traps that you are aware of.</span></p>"
+        "featureId": "",
+        "level": 1
       },
       {
-        "name": "Evasive",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This free Speed increases by 5’ every 4 levels hereafter.</span></p>"
+        "featureId": "",
+        "level": 2
       },
       {
-        "name": "Knack",
-        "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain 1 Luck during a Breather and when you Crit, in addition to other Crit benefits.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you Rest, you gain 1 extra Luck.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This extra Luck gained from a Rest increases by 1 every 4 Levels hereafter.</span></p>"
+        "featureId": "",
+        "level": 4
       },
       {
-        "name": "Lethal Weapon",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Your Sneak Attack damage dice can Explode.</span></p>"
+        "featureId": "",
+        "level": 6
       },
       {
-        "name": "Waylay",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy or use your Evasive Ability, you can spend 1 Luck to immediately take an Action. You can’t spend more than 1 Luck on this Ability at a time.</span></p>"
+        "featureId": "",
+        "level": 10
+      },
+      {
+        "featureId": "Compendium.vagabond-app.features.Item.a5lVYRtgKeui2Qvy",
+        "level": 1
+      },
+      {
+        "featureId": "Compendium.vagabond-app.features.Item.iV3XdDhS2No8Ita2",
+        "level": 1
+      },
+      {
+        "featureId": "Compendium.vagabond-app.features.Item.AwRzdfRJsVwkkImI",
+        "level": 2
+      },
+      {
+        "featureId": "Compendium.vagabond-app.features.Item.yDHkcqRonc9q7GDM",
+        "level": 4
+      },
+      {
+        "featureId": "Compendium.vagabond-app.features.Item.AqnjugGJQddt4lu7",
+        "level": 6
+      },
+      {
+        "featureId": "Compendium.vagabond-app.features.Item.GvjrDgTUmVZ0MAuO",
+        "level": 10
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.a5lVYRtgKeui2Qvy",
+      "Compendium.vagabond-app.features.Item.iV3XdDhS2No8Ita2",
+      "Compendium.vagabond-app.features.Item.AwRzdfRJsVwkkImI",
+      "Compendium.vagabond-app.features.Item.yDHkcqRonc9q7GDM",
+      "Compendium.vagabond-app.features.Item.AqnjugGJQddt4lu7",
+      "Compendium.vagabond-app.features.Item.GvjrDgTUmVZ0MAuO"
     ]
   },
   "effects": [],
@@ -118,9 +130,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786568828310,
-    "modifiedTime": 1789326369790,
+    "modifiedTime": 1789437557100,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

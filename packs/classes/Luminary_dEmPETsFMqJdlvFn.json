@@ -35,57 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.influence.trained"
-      },
-      {
-        "id": "SuDob7qulK9ECBI3",
-        "key": "GrantItem",
-        "label": "Theurgy: Life",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.spells.Item.pTpQKxsiYMR2yZ0G",
-        "type": "spell"
-      },
-      {
-        "id": "WaF576Cn9yRMVs5y",
-        "key": "ChoiceSet",
-        "label": "Theurgy: Level 1 Spells",
-        "level": "1",
-        "value": 1,
-        "maxChoices": 3,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell"
-      },
-      {
-        "id": "UrAms3gxI0HbVJDH",
-        "key": "ChoiceSet",
-        "label": "Theurgy: Spells",
-        "level": "3",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": [],
-        "scale": "2"
-      },
-      {
-        "id": "HJtHXsv7lS2i08sx",
-        "key": "GrantItem",
-        "label": "Radiant Healer",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.KXp0umL4on7OoRFF",
-        "type": "perk"
-      },
-      {
-        "id": "LeZlPpq2P7elQoq5",
-        "key": "FlatModifier",
-        "label": "Radiant Healer",
-        "level": 1,
-        "value": 6,
-        "selector": "modifiers.dice.exploding.spellHealing.values"
       }
     ],
     "complexity": 3,
@@ -135,6 +84,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Beings you revive are revived at 4 Fatigue if their Fatigue was previously higher, and don’t gain Fatigue from your Life Spell.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.VAJKhS034yjGN9Ib",
+      "Compendium.vagabond-app.features.Item.dYK4FiuGftqoX3Jg",
+      "Compendium.vagabond-app.features.Item.3byQ7veGwg27EzkP",
+      "Compendium.vagabond-app.features.Item.gwutKEBh0vgG0jeY",
+      "Compendium.vagabond-app.features.Item.wOiC1fDeMZ8s1uCN",
+      "Compendium.vagabond-app.features.Item.11cA3TSt6kbiD1zT"
     ]
   },
   "effects": [],
@@ -148,9 +105,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1784496452535,
-    "modifiedTime": 1789326232911,
+    "modifiedTime": 1789499300945,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

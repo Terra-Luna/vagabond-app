@@ -1,0 +1,33 @@
+{
+  "name": "Waylay",
+  "type": "feature",
+  "_id": "GvjrDgTUmVZ0MAuO",
+  "img": "icons/skills/melee/strike-blade-claw-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you kill an Enemy or use your Evasive Ability, you can spend 1 Luck to immediately take an Action. You can’t spend more than 1 Luck on this Ability at a time.</span></p>",
+    "rules": [],
+    "classId": "",
+    "level": 10,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5900000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789432921408,
+    "modifiedTime": 1789499438104,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!GvjrDgTUmVZ0MAuO"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Wrath",
+  "type": "feature",
+  "_id": "q0fVJrUoC8BOjpA9",
+  "img": "icons/skills/melee/swords-parry-block-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.ixtkMiuqHctLr3oB]{Interceptor} Perk, and can make its attack against an Enemy that takes an Action.</span></p>",
+    "rules": [
+      {
+        "id": "IsiP5l0rMT05gaVv",
+        "key": "GrantItem",
+        "label": "Grant: Interceptor",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.perks.Item.ixtkMiuqHctLr3oB",
+        "type": "perk"
+      }
+    ],
+    "level": 1,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 4400000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789491173588,
+    "modifiedTime": 1789499438102,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!q0fVJrUoC8BOjpA9"
+}

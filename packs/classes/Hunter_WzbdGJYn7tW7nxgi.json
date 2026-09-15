@@ -43,34 +43,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.survival.trained"
-      },
-      {
-        "id": "8SHi5WZRcUFaPlel",
-        "key": "ChoiceSet",
-        "label": "Survivalist: Perk",
-        "level": "0",
-        "scale": 0,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk",
-        "filters": [
-          {
-            "type": "training",
-            "value": "survival"
-          }
-        ]
-      },
-      {
-        "id": "cfrvvBQbzPJQfuvM",
-        "key": "FlatModifier",
-        "label": "Rover",
-        "level": 2,
-        "value": 5,
-        "selector": "speed.turn",
-        "scale": 4
       }
     ],
     "complexity": 2,
@@ -121,6 +93,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">Your Mark is Weak to your attacks.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.BScKQShDFq92Brhk",
+      "Compendium.vagabond-app.features.Item.gN4eOokaPJI11d4y",
+      "Compendium.vagabond-app.features.Item.hnEddBue2NJWPeG9",
+      "Compendium.vagabond-app.features.Item.cszKHPwJzrURzUfG",
+      "Compendium.vagabond-app.features.Item.o4AJKKc9nOKzcSRr",
+      "Compendium.vagabond-app.features.Item.oZzM52yqXRx3iqH5"
     ]
   },
   "effects": [],
@@ -134,9 +114,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.94",
     "createdTime": 1786566364586,
-    "modifiedTime": 1789003032248,
+    "modifiedTime": 1789498340191,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

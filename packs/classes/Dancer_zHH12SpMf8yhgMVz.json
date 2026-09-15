@@ -35,22 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.performance.trained"
-      },
-      {
-        "id": "BwMLDvk0vLuDEqJZ",
-        "key": "GrantItem",
-        "label": "Footloose: Fallaway Reverse",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.EA0tFzBH51SqEfWv",
-        "type": "perk"
-      },
-      {
-        "id": "P8yWc5IulexWxD4a",
-        "key": "FlatModifier",
-        "label": "Footloose",
-        "level": 1,
-        "value": 1,
-        "selector": "modifiers.skillCheck.reflex.extraDice"
       }
     ],
     "complexity": 2,
@@ -107,6 +91,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">You can use Step Up twice per Round, rather than once, and the Beings you use it on can also Move up to 10’ without using their Speed that Turn.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.ngKG6dQ5IucfKYWd",
+      "Compendium.vagabond-app.features.Item.fzcQ6m6UBFAbZ7gD",
+      "Compendium.vagabond-app.features.Item.AwRzdfRJsVwkkImI",
+      "Compendium.vagabond-app.features.Item.f0OdFYSFL8kBurRQ",
+      "Compendium.vagabond-app.features.Item.G0Zv3dVgvkVavxEl",
+      "Compendium.vagabond-app.features.Item.nWYlJYGLFuNoR0aC"
     ]
   },
   "effects": [],
@@ -120,9 +112,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786555298394,
-    "modifiedTime": 1789326113616,
+    "modifiedTime": 1789494450477,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -1,0 +1,103 @@
+{
+  "name": "Rage",
+  "type": "feature",
+  "_id": "T3WrjPCsOUipzXIR",
+  "img": "icons/skills/melee/strike-axe-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">While Berserk, your attack damage dice are one size larger and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>",
+    "rules": [
+      {
+        "id": "GW92mIbmqNHTbOWs",
+        "key": "GrantItem",
+        "label": "Grant: Rage",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "type": null
+      }
+    ],
+    "level": 1,
+    "scale": 0
+  },
+  "effects": [
+    {
+      "name": "Barbarian: Rage",
+      "_id": "KkBbn1qkZaDldn0t",
+      "img": "/icons/skills/melee/strike-axe-red.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.dice.size.melee.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.finesse.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.brawl.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          }
+        ],
+        "requiresEquip": true
+      },
+      "disabled": true,
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "showIcon": 2,
+      "folder": null,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.0.94",
+        "createdTime": 1789491557263,
+        "modifiedTime": 1789491557263,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "sort": 0,
+      "_key": "!items.effects!T3WrjPCsOUipzXIR.KkBbn1qkZaDldn0t"
+    }
+  ],
+  "folder": null,
+  "sort": 3900000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789491073903,
+    "modifiedTime": 1789499438102,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!T3WrjPCsOUipzXIR"
+}

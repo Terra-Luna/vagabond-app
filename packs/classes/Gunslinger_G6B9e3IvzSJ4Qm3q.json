@@ -35,31 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.detect.trained"
-      },
-      {
-        "id": "qJRZL1JaHxK75whJ",
-        "key": "GrantItem",
-        "label": "Shooting Irons",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg",
-        "type": "perk"
-      },
-      {
-        "id": "XiavpYF8dtGv6S5d",
-        "key": "FlatModifier",
-        "label": "Bad Medicine",
-        "level": 2,
-        "value": "1",
-        "selector": "modifiers.dice.crit.ranged.extraDice",
-        "scale": 4
-      },
-      {
-        "id": "iDjSPeebyKzauYTh",
-        "key": "ToggleRule",
-        "label": "Devastator",
-        "level": "6",
-        "value": true,
-        "selector": "modifiers.dice.crit.ranged.explodes"
       }
     ],
     "complexity": 3,
@@ -122,6 +97,14 @@
         "scale": 0,
         "description": "<p><span style=\"white-space: pre-wrap;\">At the start of your Turn, you can remove a Status from yourself from either Blinded, Burning, Confused, Dazed, or Frightened.</span></p>"
       }
+    ],
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.WsMdh9eTIWo1pjk0",
+      "Compendium.vagabond-app.features.Item.nzHf4xBQBcW5Bx17",
+      "Compendium.vagabond-app.features.Item.ZGWaPKBnQULOrgpn",
+      "Compendium.vagabond-app.features.Item.QFKIxspYrIzCysZi",
+      "Compendium.vagabond-app.features.Item.E8PmFq7D7P8XQON9",
+      "Compendium.vagabond-app.features.Item.c3opPdaLW22FbX9M"
     ]
   },
   "effects": [],
@@ -135,9 +118,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786041519359,
-    "modifiedTime": 1789325849455,
+    "modifiedTime": 1789497370342,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

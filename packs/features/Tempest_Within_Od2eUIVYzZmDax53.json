@@ -1,0 +1,33 @@
+{
+  "name": "Tempest Within",
+  "type": "feature",
+  "_id": "Od2eUIVYzZmDax53",
+  "img": "/icons/magic/air/wind-tornado-wall-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You reduce Cold, Fire, and Shock damage you take by {{feature-value:1:1}} per damage die. This reduction is increased by 1 every 4 Levels hereafter.</span></p>",
+    "rules": [],
+    "level": 4,
+    "scale": 4,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 800000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789495282946,
+    "modifiedTime": 1789499438099,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Od2eUIVYzZmDax53"
+}

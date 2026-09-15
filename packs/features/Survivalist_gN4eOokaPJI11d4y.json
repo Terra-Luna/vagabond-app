@@ -1,0 +1,53 @@
+{
+  "name": "Survivalist",
+  "type": "feature",
+  "_id": "gN4eOokaPJI11d4y",
+  "img": "/icons/magic/fire/flame-burning-campfire-smoke.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain a Perk with Survival Training as a Prerequisite, ignoring other prerequisites for it.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you have Favor on Checks to track, navigate, and against extreme temperatures, and you can Forage at a Normal Travel Pace.</span></p>",
+    "rules": [
+      {
+        "id": "xFXR4TrNuE00GU66",
+        "key": "ChoiceSet",
+        "label": "Survival Perk",
+        "level": 1,
+        "scale": 0,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": [
+          {
+            "type": "training",
+            "value": "survival"
+          }
+        ]
+      }
+    ],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2400000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789497767699,
+    "modifiedTime": 1789499438100,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!gN4eOokaPJI11d4y"
+}

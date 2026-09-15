@@ -1,0 +1,33 @@
+{
+  "name": "Lethal Weapon",
+  "type": "feature",
+  "_id": "AqnjugGJQddt4lu7",
+  "img": "/icons/skills/melee/strike-dagger-blood-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Your Sneak Attack dice can Explode.</span></p>",
+    "rules": [],
+    "classId": "",
+    "level": 6,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 5800000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789432890765,
+    "modifiedTime": 1789499438103,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!AqnjugGJQddt4lu7"
+}
