@@ -10,12 +10,7 @@ const classSchema = () => {
         castingSkill: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(appLang.Skills)], blank: true }),
         manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         maxCastFormula: new fields.StringField({ ...requiredString, choices: ['', "half", 'full'], blank: true }),
-        features: new fields.ArrayField(new fields.SchemaField({
-            name: new fields.StringField({ ...requiredString }),
-            level: new fields.NumberField({ ...requiredInteger }),
-            scale: new fields.NumberField({ ...requiredInteger }),
-            description: new fields.HTMLField({ ...requiredString })
-        }))
+        featureIds: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: () => [] })
     }
 }
 

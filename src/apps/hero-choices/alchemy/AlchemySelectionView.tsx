@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { Coins, multiplyCoins, toCopper, zeroCoins } from "../../../model/common/CoinValue"
-import { getItemChoiceRules } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
@@ -44,7 +44,7 @@ export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }
     }, [])
 
     useEffect(() => {
-        const classRules = getItemChoiceRules(level, clazz?.rules ?? [])
+        const classRules = getItemChoiceRules(level, getItemRules(clazz))
         setAlchemySlots(loadInitialSlots(classRules.filter(r => r.pack === "alchemical")))
     }, [loadInitialSlots])
 

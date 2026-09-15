@@ -3,7 +3,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemGrants, getItemRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
 import { ClearHeader, Header } from "../../../view/component/Header"
@@ -71,7 +71,7 @@ export const useSpellSelectionView = (
         const ancestryRules = getItemChoiceRules(level, ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
 
-        const classRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
+        const classRules = getItemChoiceRules(level, getItemRules(clazz).filter(r => (r as any).level <= 1))
         setClassSpellSlots(loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
 
         const perkRules = getItemChoiceRules(level, perks?.flatMap(p => p.rules?.filter(r => (r as any).level <= 1)) ?? [])

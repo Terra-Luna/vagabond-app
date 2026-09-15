@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections } from "../../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { VagabondAppArgs, VagabondApplication } from "../../VagabondApplication"
@@ -59,7 +59,10 @@ export class TrainingSelectionApp extends VagabondApplication {
 
                             if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
                                 electiveRule.selections = nextSelections
-                                await clazz.update({ "system.rules": classRules } as Record<string, any>)
+                                if (!clazz.system.rules.some(rule => rule.id === electiveRule.id)) {
+                                    await clazz.update({ "system.rules": [...clazz.system.rules, { ...electiveRule, selections: [] }] } as Record<string, any>)
+                                }
+                                await saveItemRuleSelections(clazz, { [electiveRule.id]: nextSelections })
                             }
                         }
 

@@ -6,6 +6,11 @@ import { ItemsCache } from "./ItemsCache"
 
 export class HeroBaseDataRulesApplicator {
 
+    /**
+     * Applies active rules from actor items and their referenced Feature Items.
+     * @param actor 
+     * @returns 
+     */
     static apply(actor: Actor & { system: any }) {
         if (!actor || !actor.isOwner) return
 
@@ -82,6 +87,9 @@ export class HeroBaseDataRulesApplicator {
 
                 if (typeof currentValue === "number") {
                     foundry.utils.setProperty(actor.system, path, currentValue + Math.ceil(rule.value * (multiplierValue ?? 1)) * scale)
+                }
+                else if (typeof currentValue === "string") {
+                    foundry.utils.setProperty(actor.system, path, currentValue + String(rule.value))
                 }
                 else if (Array.isArray(currentValue)) {
                     const updatedArray = [...currentValue]

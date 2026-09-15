@@ -20,6 +20,7 @@ import { VagabondCombatModel } from "./model/combat/VagabondCombatant"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { AncestryDataModel } from "./model/item/character/AncestryDataModel"
 import { ClassDataModel } from "./model/item/character/ClassDataModel"
+import { FeatureDataModel } from "./model/item/character/FeatureDataModel"
 import { PerkDataModel } from "./model/item/character/PerkDataModel"
 import { SpellDataModel } from "./model/item/character/SpellDataModel"
 import { AlchemicalItemDataModel } from "./model/item/equip/AlchemicalItemDataModel"
@@ -40,7 +41,7 @@ import { NpcSheet } from "./view/sheets/actor/adversary/NpcSheet"
 import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
 import { AncestrySheet } from "./view/sheets/item/character/ancestry/AncestrySheet"
 import { ClassSheet } from "./view/sheets/item/character/class/ClassSheet"
-import { PerkSheet, SpellSheet } from './view/sheets/item/character/SkillSheets'
+import { FeatureSheet, PerkSheet, SpellSheet } from './view/sheets/item/character/SkillSheets'
 import { EquipmentSheet } from './view/sheets/item/equip/EquipmentSheet'
 
 // Add our fonts
@@ -88,6 +89,7 @@ Hooks.once("init", () => {
         CONFIG.Item.dataModels.armor = ArmorDataModel,
         CONFIG.Item.dataModels.container = ContainerDataModel,
         CONFIG.Item.dataModels.class = ClassDataModel,
+        CONFIG.Item.dataModels.feature = FeatureDataModel,
         CONFIG.Item.dataModels.perk = PerkDataModel,
         CONFIG.Item.dataModels.spell = SpellDataModel,
         CONFIG.Item.dataModels.startingpack = StartingPackDataModel,
@@ -113,6 +115,7 @@ foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, { ty
 foundry.documents.collections.Actors.registerSheet(sys_id, NpcSheet as any, { types: ['adversary'], makeDefault: true });
 foundry.documents.collections.Actors.registerSheet(sys_id, ItemActorSheet as any, { types: ['itemActor'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet(sys_id, ClassSheet as any, { types: ['class'], makeDefault: true });
+foundry.documents.collections.Items.registerSheet(sys_id, FeatureSheet as any, { types: ['feature'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet(sys_id, PerkSheet as any, { types: ['perk'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet(sys_id, SpellSheet as any, { types: ['spell'], makeDefault: true });
 foundry.documents.collections.Items.registerSheet(sys_id, AncestrySheet as any, { types: ['ancestry'], makeDefault: true });
@@ -226,7 +229,7 @@ Hooks.on("createItem", async (item, _options, _userId) => {
         }
     }
 
-    if ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack") {
+    if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
         await ItemsCache.updateItem(item)
     }
 })
@@ -237,12 +240,15 @@ Hooks.on("updateItem", async (item, changed, options, userId) => {
         await ItemsCache.initialize()
     }
 
+    if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
+        await ItemsCache.updateItem(item)
+    }
+
     /**
      * This will cause container sheets to refresh themselves when their
      * underlying items (ref'd by item-ID) are updated.
      */
     const actor = item.actor
-    if (!actor) return
     if (actor) {
         const containers = actor.items?.filter(it => it.system instanceof ContainerDataModel)
         const container = containers.find(c => (c.system as any).itemIds.includes(getId(item)))
@@ -255,9 +261,6 @@ Hooks.on("updateItem", async (item, changed, options, userId) => {
             }
         }
 
-        if ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack") {
-            await ItemsCache.updateItem(item)
-        }
     }
 })
 
@@ -281,8 +284,8 @@ Hooks.on("deleteItem", async (item, options, userId) => {
     // something (like their class/ancestry) just adds it back.
     (item.parent.system as HeroDataModel)?.forceUpdate?.()
 
-    if ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack") {
-        await ItemsCache.updateItem(item)
+    if (['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
+        ItemsCache.removeItem(item.uuid)
     }
 })
 
@@ -298,7 +301,7 @@ Hooks.on("updateCompendium", async (pack: any, documents: any[], options: any, u
              */
             if (action === "create" || action === "update") {
                 const item = await fromUuid(uuid)
-                if (item && ((item as any).type === "spell" || (item as any).type === "perk" || (item as any).type === "startingpack")) {
+                if (item && ['spell', 'perk', 'feature', 'startingpack'].includes((item as any).type)) {
                     const fullItem = await getFullItem(item as any)
                     if (fullItem) {
                         ItemsCache.items.set(uuid, fullItem)

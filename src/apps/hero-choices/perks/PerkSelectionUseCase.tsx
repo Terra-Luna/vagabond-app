@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, randomId } from "../../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, normalizeRuleSelections, randomId, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { groupBy } from "../../../utils/collectionUtil"
 import { usePerkBonusSelection } from "./PerkBonusSelection"
@@ -44,7 +44,7 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
 
     const initialSelections = Object.fromEntries(
         (actor.items.contents as any[]).filter(item => ["class", "ancestry"].includes(item.type)).flatMap(item =>
-            (((item.system as any).rules ?? []) as any[]).flatMap(parentRule => normalizeRuleSelections(parentRule.selections).flatMap(selection => {
+            getItemRules(item).flatMap(parentRule => normalizeRuleSelections(parentRule.selections).flatMap(selection => {
                 const perk = ItemsCache.perks().find(candidate => candidate.uuid === selection.value)
                 return (perk?.system.rules ?? [])
                     .filter(rule => rule.key === "ChoiceSet")
@@ -77,7 +77,7 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
         if (!perksLoaded) return
         const key = `${ancestry?.id ?? ""}:${clazz?.id ?? ""}:${level}`
         if (loadedSelectionKey.current === key) return
-        if (clazz) loadSelections(getItemChoiceRules(level, clazz.system.rules ?? []).filter(rule => rule.pack === "perk"), setClassPerkSlots)
+        if (clazz) loadSelections(getItemChoiceRules(level, getItemRules(clazz)).filter(rule => rule.pack === "perk"), setClassPerkSlots)
         if (ancestry) loadSelections(getItemChoiceRules(level, ancestry.system.rules ?? []).filter(rule => rule.pack === "perk"), setAncestryPerkSlots)
         dataLoaded.current = true
         loadedSelectionKey.current = key
@@ -93,7 +93,8 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
      */
     const persistSlots = (item: any, slots: any[], pendingBonusSelections: { ruleId: string, selectionId?: string, value: string }[] = []) => {
         if (!item || !slots.length || !dataLoaded.current) return
-        const rules = foundry.utils.deepClone(item.system.rules ?? []) as any[]
+        const rules = getItemRules(item)
+        const selectionUpdates: Record<string, any> = {}
 
         const groupedSlots = Object.entries(groupBy("ruleId", slots)) as [string, any[]][]
 
@@ -112,9 +113,10 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
                     subselect: existingValue === slot.value ? preservedSubselect : ""
                 }
             }).filter(selection => selection.value)
+            selectionUpdates[ruleId] = rule.selections
         })
 
-        item.update({ "system.rules": rules } as Record<string, any>)
+        saveItemRuleSelections(item, selectionUpdates)
         actor.system.forceUpdate()
     }
 

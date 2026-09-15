@@ -8,6 +8,7 @@ export class PerkRulesSelectionsApplicator {
 
     /**
      * Reads all the Actor's virtual perk items and applies their rules' choice selections.
+     * Feature Item rules are included by HeroDataModel.getActiveRules().
      */
     static apply(actor: Actor & { system: any }) {
         if (!actor || !actor.isOwner) return

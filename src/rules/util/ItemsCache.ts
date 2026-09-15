@@ -1,9 +1,11 @@
 import { statsSchema } from "../../model/actor/type/Stats"
+import type { ClassDataModel } from "../../model/item/character/ClassDataModel"
+import type { FeatureDataModel } from "../../model/item/character/FeatureDataModel"
 import { isEligibleForPerk, PerkDataModel } from "../../model/item/character/PerkDataModel"
-import { SpellDataModel } from "../../model/item/character/SpellDataModel"
-import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
+import type { SpellDataModel } from "../../model/item/character/SpellDataModel"
+import type { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
-import { SundryDataModel } from "../../model/item/equip/SundryDataModel"
+import type { SundryDataModel } from "../../model/item/equip/SundryDataModel"
 import { CombinedItemsMultiType, getFullItem, inventoryItemTypes } from "../../utils/modelUtil"
 
 export class ItemsCache {
@@ -21,7 +23,7 @@ export class ItemsCache {
         this.items.clear()
 
         const allItems = await CombinedItemsMultiType(
-            ['spell', 'perk', 'alchemical', 'weapon', 'armor', 'sundry', 'container', 'startingpack']
+            ['class', 'spell', 'perk', 'feature', 'alchemical', 'weapon', 'armor', 'sundry', 'container', 'startingpack']
         )
 
         for (const item of allItems) {
@@ -31,7 +33,7 @@ export class ItemsCache {
         }
 
         const ruleItemEntries = allItems.filter(
-            item => !(item instanceof Item) && (item.type === 'spell' || item.type === 'perk' || item.type === 'startingpack')
+            item => !(item instanceof Item) && (item.type === 'spell' || item.type === 'perk' || item.type === 'feature' || item.type === 'startingpack')
         )
 
         const BATCH_SIZE = 25
@@ -64,6 +66,18 @@ export class ItemsCache {
         return Array.from(this.items.values())
             .filter(item => item != null && item.type === 'perk')
             .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: PerkDataModel })[]
+    }
+
+    static features = () => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && item.type === 'feature')
+            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: FeatureDataModel })[]
+    }
+
+    static classes = () => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && item.type === 'class')
+            .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: ClassDataModel })[]
     }
 
     static eligiblePerks = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[]) => {
@@ -100,7 +114,7 @@ export class ItemsCache {
 
     static async updateItem(item: any) {
         if (!item) return
-        const validTypes = ['spell', 'perk', 'startingpack']
+        const validTypes = ['spell', 'perk', 'feature', 'startingpack']
         if (validTypes.includes(item.type)) {
             const fullItem = await getFullItem(item)
             if (fullItem) {

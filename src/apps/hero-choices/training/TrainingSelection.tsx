@@ -2,7 +2,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { ChoiceRule, createElectiveTrainingsRule, findElectiveTrainingsRule, getPerkSkillSubselections, getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule, normalizeRuleSelections, randomId } from "../../../rules/util/item-rules-util"
+import { ChoiceRule, createElectiveTrainingsRule, findElectiveTrainingsRule, getItemRules, getPerkSkillSubselections, getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule, normalizeRuleSelections, randomId } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
@@ -23,7 +23,7 @@ export const useTrainingSelection = (
 
     // Check if class (or ancestry) already has an Elective Trainings rule.
     const existingClassElectiveRule = useMemo(() => {
-        return findElectiveTrainingsRule(clazz?.system?.rules)
+        return findElectiveTrainingsRule(clazz ? getItemRules(clazz) : undefined)
     }, [clazz])
 
     // Generate a rule to save their Training selections. This gets injected into their class document while saving.
@@ -92,7 +92,7 @@ export const useTrainingSelection = (
             setChosenBonusSkills(existingAncestrySelections)
         }
 
-        const existingClassRule = findElectiveTrainingsRule(clazz?.system?.rules, electiveTrainingsRuleId)
+        const existingClassRule = findElectiveTrainingsRule(clazz ? getItemRules(clazz) : undefined, electiveTrainingsRuleId)
         if (existingClassRule) {
             const selections = normalizeRuleSelections(existingClassRule.selections)
             const existingClassSelections = selections.map(s => ({

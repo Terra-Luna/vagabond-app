@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections } from "../../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../utils/collectionUtil"
 import { useAlchemySelectionView } from "./AlchemySelectionView"
 
@@ -35,7 +35,7 @@ export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, is
     useEffect(() => {
         const loadInitialAlchemySelections = async () => {
             if (clazz) {
-                const rules = await getItemChoiceRules(level, clazz.system.rules ?? [])
+                const rules = await getItemChoiceRules(level, getItemRules(clazz))
                 loadSelections(rules.filter(r => r.pack === "alchemical"), setAlchemySlots)
             }
         }
@@ -45,7 +45,8 @@ export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, is
     useEffect(() => {
         if (!clazz || !alchemySlots.length) return
 
-        const rules = [...clazz.system.rules] as any[]
+        const rules = getItemRules(clazz)
+        const selectionUpdates: Record<string, any> = {}
         const classSpellSlotGroups = groupBy("ruleId", alchemySlots)
         
         let hasChanges = false
@@ -62,13 +63,14 @@ export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, is
                 }))
                 if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
                     rules[ruleIndex].selections = nextSelections
+                    selectionUpdates[ruleId] = nextSelections
                     hasChanges = true
                 }
             }
         })
 
         if (hasChanges) {
-            clazz.update({ "system.rules": rules} as Record<string, any>)
+            saveItemRuleSelections(clazz, selectionUpdates)
         }
 
     }, [alchemySlots])

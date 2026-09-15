@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, getRuleSelectionValues } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, getRuleSelectionValues } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { appLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
@@ -47,15 +47,18 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     const [newRsnTraining, setNewRsnTraining] = useState<string | undefined>()
     const nextLevel = actor.system.level.current! + 1
 
-    const classFeature = actor.system.class?.features
-        ?.find(it => it.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, it.level ?? 0, it.scale ?? 0))
+    const actorClassItem = actor.items.find(item => (item.type as string) === 'class') as (Item & { system: ClassDataModel }) | undefined
+    const classFeature = ItemsCache.features()
+        .filter(feature => actor.system.class?.featureIds?.includes(feature.uuid))
+        .map(feature => ({ feature, level: feature.system.level }))
+        .find(({ level, feature }) => level === nextLevel || (feature.system.scale > 0 && calculateRecurringRuleEligibility(nextLevel, level, feature.system.scale)))
 
     const levelUpChoices = () => {
-        return getItemChoiceRules(nextLevel, actor.system.class?.rules)
+        return getItemChoiceRules(nextLevel, getItemRules(actorClassItem))
             .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
     }
 
-    const { ClassSelection, classItem } = useClassSelection([])
+    const { ClassSelection, classItem: selectedClassItem } = useClassSelection([])
     const { PerkSelection, bonusChoicesByPerk, classPerkSlots } = usePerkSelection(actor, true)
     const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelection(actor, true)
 
@@ -123,7 +126,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
      */
     const [actorUpdateTick, setActorUpdateTick] = useState(0)
     useEffect(() => {
-        const hookId = Hooks.on('updateActor', (updatedActor, changes) => {
+        const hookId = Hooks.on('updateActor', (updatedActor) => {
             if (updatedActor.id === actor.id) {
                 setActorUpdateTick(prev => prev + 1)
             }
@@ -141,7 +144,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!selectedClass && !classItem) {
+        if (!selectedClass && !selectedClassItem) {
             ui.notifications?.warn("Select a class to continue...")
             return
         }
@@ -155,9 +158,9 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
         }
         setIsSaving(true)
 
-        if (!selectedClass && classItem) {
-            await actor.createEmbeddedDocuments("Item", [classItem.toObject()])
-            setSelectedClass(classItem)
+        if (!selectedClass && selectedClassItem) {
+            await actor.createEmbeddedDocuments("Item", [selectedClassItem.toObject()])
+            setSelectedClass(selectedClassItem as Item & { system: ClassDataModel })
             setIsSaving(false)
         }
         else {
@@ -225,9 +228,9 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                                     <div className="flex-1 space-y-1">
                                         <Header title={"CLASS FEATURE"} />
                                         <SkillCard
-                                            title={classFeature.name}
+                                            title={classFeature.feature.name}
                                             subtitles={[{ label: "Level", value: classFeature.level }]}
-                                            description={classFeature.description}
+                                            description={classFeature.feature.system.dynamicDescription(nextLevel)}
                                             startCollapsed={false}
                                         />
                                     </div>

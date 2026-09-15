@@ -1,4 +1,5 @@
 import { multiplyCoins, toCopper } from "../../model/common/CoinValue"
+import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { CombinedItems } from "../../utils/modelUtil"
 import { ItemsCache } from "./ItemsCache"
@@ -37,6 +38,37 @@ export interface ChoiceRule {
 
 export const randomId = () => foundry.utils.randomID()
 
+type ItemRuleSource = { item: any, owner: any, rules: any[] }
+
+const getRuleSelectionFlags = (item: any): Record<string, RuleSelection[]> =>
+    item?.flags?.[sys_id]?.ruleSelections ?? {}
+
+export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
+    const system = itemOrSystem?.system ?? itemOrSystem
+    const sourceOwner = itemOrSystem?.system ? itemOrSystem : itemOrSystem
+    const applySavedSelections = (rules: any[], selectionOwner: any) => rules.map(rule => {
+        const savedSelections = getRuleSelectionFlags(selectionOwner)[rule.id]
+        return savedSelections ? { ...rule, selections: foundry.utils.deepClone(savedSelections) } : { ...rule }
+    })
+    const sources: ItemRuleSource[] = [{ item: itemOrSystem, owner: sourceOwner, rules: applySavedSelections(system?.rules ?? [], sourceOwner) }]
+    const featureIds = Array.isArray(system?.featureIds) ? system.featureIds : []
+
+    featureIds.forEach(featureId => {
+        const feature = ItemsCache.items.get(featureId)
+        if (feature) sources.push({
+            item: feature,
+            owner: sourceOwner,
+            rules: applySavedSelections(feature.system?.rules ?? [], sourceOwner)
+        })
+    })
+
+    return sources
+}
+
+export const getItemRules = (itemOrSystem: any): any[] => {
+    return getItemRuleSources(itemOrSystem).flatMap(source => source.rules)
+}
+
 /**
  * Returns a normalized object representing a perk with subselections.
  * { id: "ruleId", value: "perkId", subselect: "spellId or stat path" }
@@ -69,10 +101,11 @@ export const getRuleSelectionValues = (selections: unknown, ruleId?: string): st
 export async function savePerkSelections(actor: Actor & { system: any }, slots: { ruleId: string, value: string, selectionId?: string }[]) {
     const sourceItems = actor.items.filter(item => ["class", "ancestry"].includes(item.type as string)) as any[]
     
-    const rulesByItem = sourceItems.map(item => ({
-        item,
-        rules: foundry.utils.deepClone((item.system as any).rules ?? []) as any[]
-    }))
+    const rulesByItem = sourceItems.flatMap(item => getItemRuleSources(item).map(source => ({
+        owner: source.owner,
+        rules: source.rules
+    })))
+    const selectionUpdates = new Map<any, Record<string, RuleSelection[]>>()
 
     const virtualPerkRules = actor.system.perks.flatMap(perk => (perk.rules ?? []).map(rule => ({
         ruleId: rule.id,
@@ -107,7 +140,10 @@ export async function savePerkSelections(actor: Actor & { system: any }, slots: 
                     hasChanges = true
                 }
             }
-            rule.selections = selections
+            const updates = selectionUpdates.get(rulesByItem.find(source => source.rules.includes(rule))?.owner) ?? {}
+            updates[rule.id] = selections
+            const owner = rulesByItem.find(source => source.rules.includes(rule))?.owner
+            if (owner) selectionUpdates.set(owner, updates)
             continue
         }
 
@@ -137,11 +173,16 @@ export async function savePerkSelections(actor: Actor & { system: any }, slots: 
                 hasChanges = true
             }
         }
-        parentSelection.selections = selections
+        const owner = rulesByItem.find(source => source.rules.includes(parentSelection))?.owner
+        if (owner) {
+            const updates = selectionUpdates.get(owner) ?? {}
+            updates[parentSelection.id] = selections
+            selectionUpdates.set(owner, updates)
+        }
     }
 
     if (hasChanges) {
-        await Promise.all(rulesByItem.map(({ item, rules }) => item.update({ "system.rules": rules } as Record<string, any>)))
+        await Promise.all(Array.from(selectionUpdates.entries()).map(([owner, selections]) => saveItemRuleSelections(owner, selections)))
         await actor.system?.forceUpdate?.()
     }
 }
@@ -150,9 +191,10 @@ export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | u
     const rules: any[] = []
 
     const getFlatStatBonusRules = (item) => {
-        if (!item?.system?.rules) return
+        const itemRules = getItemRules(item)
+        if (itemRules.length === 0) return
         rules.push(
-            ...item.system.rules.filter(r => r.key === 'FlatModifier' && r.value && r.selector.includes('stats.'))
+            ...itemRules.filter(r => r.key === 'FlatModifier' && r.value && r.selector.includes('stats.'))
         )
     }
 
@@ -170,8 +212,8 @@ export function getStatChoiceRules(items: (Item & { system: { rules: any } } | u
     const gatheredRules: any[] = []
 
     const extractStatChoiceRules = (item: any) => {
-        if (!item?.system?.rules) return
-        const rules: any[] = item.system.rules
+        const rules: any[] = getItemRules(item)
+        if (rules.length === 0) return
 
         const statChoices = rules.filter(r => {
             // Ignore any rules without choices - they're probably Item Grants.
@@ -233,8 +275,7 @@ export function getRequiredSkillTrainingRules(items: (Item & { system: { rules: 
     const itemRules: any[] = []
 
     const getRequiredTrainings = (item) => {
-        if (!item?.system?.rules) return
-        const requiredSkillRules = item.system.rules
+        const requiredSkillRules = getItemRules(item)
             .filter(r => r.key === 'ToggleRule' && r.value && r.selector.includes('skills.'))
 
         if (!requiredSkillRules || requiredSkillRules.length === 0) return
@@ -260,8 +301,8 @@ export function getSkillTrainingChoiceRules(items: (Item & { system: { rules: an
     const gatheredRules: any[] = []
 
     const extractSkillRules = (item: Item & { system: { rules: any } } | undefined) => {
-        if (!item?.system?.rules) return
-        const rules: any[] = item.system.rules
+        const rules: any[] = getItemRules(item)
+        if (rules.length === 0) return
 
         const skillChoices = rules.filter(r => {
             // Ignore direct Item Grant choice sets...
@@ -374,7 +415,7 @@ export const findOrCreateElectiveTrainingsRule = (
 ): { rules: any[], electiveRule: any } => {
     const sourceRules = Array.isArray(itemOrRules)
         ? itemOrRules
-        : (itemOrRules?.system?.rules ?? [])
+        : getItemRules(itemOrRules)
     const rules = foundry.utils.deepClone(sourceRules) as any[]
 
     let electiveRule = findElectiveTrainingsRule(rules, options.ruleId)
@@ -396,7 +437,7 @@ export function getPerkSkillSubselections(items: (Item & { system: { rules: any 
     const gatheredSkills: string[] = []
 
     items.filter(Boolean).forEach(item => {
-        const rules: any[] = item?.system?.rules ?? []
+        const rules: any[] = getItemRules(item)
         rules
             .filter(r => r.key === "ChoiceSet")
             .flatMap(r => normalizeRuleSelections(r.selections))
@@ -425,15 +466,16 @@ export async function getItemGrants(type: string, items: (Item & { system: { rul
     const itemIds = new Set(itemsById.map(it => it.uuid))
 
     const grantsPromises = items.map(async (item) => {
-        if (!item?.system?.rules) return []
+        const itemRules = getItemRules(item)
+        if (itemRules.length === 0) return []
 
-        const grants = item.system.rules.filter(r => r.key === "GrantItem" && itemIds.has(r.uuid))
+        const grants = itemRules.filter(r => r.key === "GrantItem" && itemIds.has(r.uuid))
 
         return grants.map(grant => ({
             ...grant,
             item: itemsById.find(it => it.uuid === grant.uuid)?.name ?? '',
             uuid: grant.uuid,
-            source: item.name ?? ''
+            source: item?.name ?? ''
         }))
     })
 
@@ -533,4 +575,11 @@ export const calculateRecurringRuleEligibility = (level: number, ruleLevel: numb
 
 export const calculateRecurringRuleScale = (level: number, ruleLevel: number, scale: number): number => {
     return Math.floor((level - ruleLevel) / scale + 1)
+}
+
+export async function saveItemRuleSelections(item: any, selections: Record<string, RuleSelection[]>) {
+    if (!item || Object.keys(selections).length === 0) return
+    const current = foundry.utils.deepClone(getRuleSelectionFlags(item))
+    Object.assign(current, selections)
+    await item.update({ [`flags.${sys_id}.ruleSelections`]: current } as Record<string, any>)
 }

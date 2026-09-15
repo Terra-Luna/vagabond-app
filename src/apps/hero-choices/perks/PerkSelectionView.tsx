@@ -4,8 +4,7 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { statsSchema } from "../../../model/actor/type/Stats"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { perkPrerequisites } from "../../../model/item/character/PerkDataModel"
-import { getItemChoiceRules, getItemGrants, ItemRule } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemGrants, getItemRules, ItemRule } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
 import { Header } from "../../../view/component/Header"
@@ -25,8 +24,6 @@ export const usePerkSelectionView = (
     level: number,
     lockAncestrySlots: boolean = false
 ) => {
-
-    console.log({ trainings }, { clazz: { rules: [...clazz?.system?.rules ?? []] } })
 
     const allPerks = useMemo(() => {
         return [...ItemsCache.perks()]
@@ -67,7 +64,7 @@ export const usePerkSelectionView = (
      * Monitor the selected class and construct a list of filtered perk choices based on their perk choice filter rules.
      */
     const classRestrictedPerksLists = useMemo(() => {
-        const perkRules = getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level < 1) ?? []).filter(it => it.pack === "perk")
+        const perkRules = getItemChoiceRules(level, getItemRules(clazz).filter(r => (r as any).level < 1)).filter(it => it.pack === "perk")
         return Object.fromEntries(perkRules.map(rule => [rule.id, [
             { value: '', label: strings.emptySlot, img: '', prereqs: [], cardSubheader: [], description: '' },
             ...ItemsCache.perks()
@@ -102,7 +99,7 @@ export const usePerkSelectionView = (
         })
 
         setClassPerkSlots(loadInitialSlots(
-            getItemChoiceRules(level, clazz?.system?.rules?.filter(r => (r as any).level <= level) ?? []).filter(it => it.pack === "perk")
+            getItemChoiceRules(level, getItemRules(clazz).filter(r => (r as any).level <= level)).filter(it => it.pack === "perk")
         ))
     }, [ancestryId, classId])
 
@@ -366,7 +363,7 @@ const toDisplayablePerk = (perk) => {
         img: perk.img ?? '',
         prereqs: (perk.system as any)?.prerequisites,
         multi: perk.system.canTakeMultiple,
-        cardSubheader: perkPrerequisites(perk.system as any),
+        cardSubheader: perk.system.subheader(),
         description: perk.system.description
     }
 }

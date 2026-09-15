@@ -1,8 +1,84 @@
 import { describe, expect, jest, test } from "@jest/globals"
 
-import { createElectiveTrainingsRule, findElectiveTrainingsRule, findOrCreateElectiveTrainingsRule, getPerkSkillSubselections, savePerkSelections } from "../../src/rules/util/item-rules-util"
+import { createElectiveTrainingsRule, findElectiveTrainingsRule, findOrCreateElectiveTrainingsRule, getItemRules, getPerkSkillSubselections, savePerkSelections } from "../../src/rules/util/item-rules-util"
+import { ItemsCache } from "../../src/rules/util/ItemsCache"
+
+describe("getItemRules", () => {
+    test("includes rules from referenced Feature Items", () => {
+        ItemsCache.items.clear()
+        ItemsCache.items.set("feature-uuid", {
+            type: "feature",
+            system: { rules: [{ id: "feature-rule", key: "FlatModifier" }] }
+        })
+
+        expect(getItemRules({
+            system: {
+                rules: [{ id: "class-rule", key: "ChoiceSet" }],
+                featureIds: ["feature-uuid"]
+            }
+        })).toEqual([
+            { id: "class-rule", key: "ChoiceSet" },
+            { id: "feature-rule", key: "FlatModifier" }
+        ])
+    })
+
+    test("overlays class flag selections onto Feature Item rules", () => {
+        ItemsCache.items.set("feature-with-selection", {
+            type: "feature",
+            system: { rules: [{ id: "shared-rule", key: "ChoiceSet", selections: [] }] }
+        })
+
+        expect(getItemRules({
+            flags: {
+                "vagabond-app": {
+                    ruleSelections: {
+                        "shared-rule": [{ id: "selection", value: "hero-choice", subselect: "" }]
+                    }
+                }
+            },
+            system: { rules: [], featureIds: ["feature-with-selection"] }
+        })[0].selections).toEqual([{ id: "selection", value: "hero-choice", subselect: "" }])
+    })
+})
 
 describe("savePerkSelections", () => {
+    test("saves selections for feature rules to the Class Item flags", async () => {
+        const featureRules = [{
+            id: "feature-perk-rule",
+            key: "ChoiceSet",
+            selections: []
+        }]
+        const feature = {
+            uuid: "feature-uuid",
+            type: "feature",
+            system: { rules: featureRules }
+        }
+        ItemsCache.items.set(feature.uuid, feature)
+
+        const classUpdate = jest.fn(async (...args: any[]) => { void args })
+        const actor = {
+            items: [{
+                type: "class",
+                system: { rules: [], featureIds: [feature.uuid] },
+                flags: { "vagabond-app": { ruleSelections: {} } },
+                update: classUpdate
+            }],
+            system: { perks: [], forceUpdate: jest.fn() }
+        }
+
+        await savePerkSelections(actor as any, [{
+            ruleId: "feature-perk-rule",
+            value: "perk-uuid"
+        }])
+
+        expect(featureRules[0].selections).toEqual([])
+        expect(classUpdate).toHaveBeenCalledWith({
+            "flags.vagabond-app.ruleSelections": {
+                "feature-perk-rule": [{ id: "test-id", value: "perk-uuid", subselect: "" }]
+            }
+        })
+    })
+
     test("correctly updates subselects for multiple perk selections without overwriting", async () => {
         const classRules = [
             {
@@ -26,7 +102,7 @@ describe("savePerkSelections", () => {
         ]
 
         const updateMock = jest.fn(async (data: any) => {
-            classRules[0].selections = data["system.rules"][0].selections
+            classRules[0].selections = data["flags.vagabond-app.ruleSelections"]["class-perk-rule"]
         })
 
         const classItem = {

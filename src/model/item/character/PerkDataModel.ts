@@ -42,6 +42,19 @@ export class PerkDataModel extends ItemDataModel<PerkSchema> {
             ...perkSchema()
         }
     }
+
+    subheader = (): CardSubHeaderValues[] => {
+        if (this.prerequisites.length === 0) return [{ label: "Req", value: "None" }]
+        const values: CardSubHeaderValues[] = []
+        const spellReqs = perkSpellRerequisitesAsString(this)
+        const statReqs = perkStatPrerequisitesAsString(this)
+        const trainedReqs = perkTrainingPrerequisitesAsString(this)
+        if (spellReqs !== '') values.push({ label: 'Spell', value: spellReqs })
+        if (statReqs !== '') values.push({ label: 'Stat', value: statReqs })
+        if (trainedReqs !== '') values.push({ label: 'Trained', value: trainedReqs })
+        return values
+    }
+
 }
 
 export function addPerkPrerequisite(perk: Item & { system: PerkDataModel }) {
@@ -60,18 +73,6 @@ export function deletePerkPrerequisite(perk: Item & { system: PerkDataModel }, d
             ...perk.system.prerequisites.filter((_, index) => index !== deleteIndex)
         ]
     } as Record<string, any>)
-}
-
-export const perkPrerequisites = (perk: PerkDataModel): CardSubHeaderValues[] => {
-    if (perk.prerequisites.length === 0) return [{ label: "Req", value: "None" }]
-    const values: CardSubHeaderValues[] = []
-    const spellReqs = perkSpellRerequisitesAsString(perk)
-    const statReqs = perkStatPrerequisitesAsString(perk)
-    const trainedReqs = perkTrainingPrerequisitesAsString(perk)
-    if (spellReqs !== '') values.push({ label: 'Spell', value: spellReqs })
-    if (statReqs !== '') values.push({ label: 'Stat', value: statReqs })
-    if (trainedReqs !== '') values.push({ label: 'Trained', value: trainedReqs })
-    return values
 }
 
 export const perkSpellRerequisitesAsString = (perk: PerkDataModel): string => {

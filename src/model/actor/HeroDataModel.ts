@@ -3,7 +3,7 @@ import { createElement } from "react"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
-import { getItemChoiceRules } from "../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
@@ -173,7 +173,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     getActiveRules() {
         const itemRules = this.parent.items.contents.flatMap((item: any) => {
-            const rules = item.system.rules || []
+            const rules = getItemRules(item)
             return rules.filter((r: any) => (r.level || 0) <= this.parent.system.level.current)
         })
         return itemRules
@@ -339,5 +339,6 @@ function setInventoryData(hero: HeroDataModel) {
 }
 
 export const isAlchemist = (hero: HeroDataModel): boolean => {
-    return getItemChoiceRules(hero.level.current!, hero.class?.rules)?.some(rule => rule.pack === "alchemical")
+    const classItem = hero.parent?.items?.find(item => item.type === "class")
+    return getItemChoiceRules(hero.level.current!, getItemRules(classItem))?.some(rule => rule.pack === "alchemical")
 }

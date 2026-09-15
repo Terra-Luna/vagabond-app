@@ -4,7 +4,8 @@ import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSel
 import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/TrainingSelectionApp"
 import { getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { perkPrerequisites } from "../../../../../model/item/character/PerkDataModel"
+import { PerkDataModel, perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
+import { ItemsCache } from "../../../../../rules/util/ItemsCache"
 import { groupBy } from "../../../../../utils/collectionUtil"
 import { appLang } from "../../../../../utils/lang"
 import { getId, getName } from "../../../../../utils/modelUtil"
@@ -13,7 +14,7 @@ import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { ClearHeader } from "../../../../component/Header"
-import { SkillCard } from "../../../../component/SkillCard"
+import { CardSubHeaderValues, SkillCard } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
@@ -21,8 +22,17 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const beingType = appLang.BeingTypes[hero.ancestry?.beingType ?? '']
     const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"
 
-    const groupedFeatures = groupBy('name', hero.class?.features
-        ?.filter(f => f.level! <= hero.level.current! && f.name.toUpperCase() !== 'PERK')
+    const groupedFeatures = groupBy('name', ItemsCache.features()
+        .filter(feature => hero.class?.featureIds?.includes(feature.uuid))
+        .filter(feature => feature.system.level <= hero.level.current!)
+        .map(feature => ({ feature, level: feature.system.level }))
+        .filter(({ feature }) => feature.name.toUpperCase() !== 'PERK')
+        .map(({ feature, level }) => ({
+            name: feature.name,
+            level,
+            description: feature.system.dynamicDescription(hero.level.current!),
+            img: feature.img
+        }))
     )
 
     let classFeatures: any[] = []
@@ -33,6 +43,20 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     }
 
     const showTrainingSelection = game.user?.isActiveGM || (hero.level.current! > 0 && getShowTrainingSelectionToggle())
+    
+    const getPerkSubheader = (perk: any) => {
+        if (typeof perk.subheader === "function") return perk.subheader()
+        const values: CardSubHeaderValues[] = []
+        const model = perk as PerkDataModel
+        if (!model.prerequisites?.length) return [{ label: "Req", value: "None" }]
+        const spellReqs = perkSpellRerequisitesAsString(model)
+        const statReqs = perkStatPrerequisitesAsString(model)
+        const trainedReqs = perkTrainingPrerequisitesAsString(model)
+        if (spellReqs) values.push({ label: "Spell", value: spellReqs })
+        if (statReqs) values.push({ label: "Stat", value: statReqs })
+        if (trainedReqs) values.push({ label: "Trained", value: trainedReqs })
+        return values
+    }
 
     return (
         <div className="py-1">
@@ -57,12 +81,13 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                 <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                     {
                                         icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
-                                            <AbilityChatCard actorId={getId(hero)} img={''} title={f.name} description={f.description} />
+                                            <AbilityChatCard actorId={getId(hero)} img={f.img ?? ''} title={f.name} description={f.description} />
                                         )
                                     }
                                 ])}>
                                     <SkillCard
                                         actor={hero.parent}
+                                        img={f.img}
                                         title={f.name}
                                         subtitles={[{ label: getName(hero.class), value: `Level ${f.level}` }]}
                                         description={f.description}
@@ -78,8 +103,10 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                 <div className={abilitiesGrid}>
                     {
                         hero.perks
-                            .sort((a, b) => a.parent.name.localeCompare(b.parent.name))
-                            .filter(p => !p.canTakeMultiple)
+                            .sort((a, b) => {
+                                const repeatableOrder = Number(Boolean(a.canTakeMultiple)) - Number(Boolean(b.canTakeMultiple))
+                                return repeatableOrder || a.parent.name.localeCompare(b.parent.name)
+                            })
                             .map((p: any, index: number) => (
                                 <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                     {
@@ -88,7 +115,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                                 actorId={getId(hero)}
                                                 img={p.parent.img}
                                                 title={p.parent.name}
-                                                subtitle={perkPrerequisites(p)}
+                                                subtitle={getPerkSubheader(p)}
                                                 description={p.description}
                                             />
                                         )
@@ -98,7 +125,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                         actor={hero.parent}
                                         img={p.parent.img}
                                         title={p.parent.name}
-                                        subtitles={perkPrerequisites(p)}
+                                        subtitles={getPerkSubheader(p)}
                                         description={p.description}
                                     />
                                 </div>

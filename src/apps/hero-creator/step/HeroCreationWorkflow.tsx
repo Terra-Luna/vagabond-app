@@ -3,7 +3,7 @@ import { useCallback, useEffect,useMemo } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { addCoins, Coins } from "../../../model/common/CoinValue"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { normalizeRuleSelections, randomId, savePerkSelections } from "../../../rules/util/item-rules-util"
+import { getItemRuleSources, normalizeRuleSelections, randomId, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { addItems } from "../../../utils/heroInventoryUtil"
 import { appLang } from "../../../utils/lang"
@@ -235,11 +235,19 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             const ancestry = createdItems.find(i => (i.type as string) === "ancestry")
             const clazz = createdItems.find(i => (i.type as string) === "class")
             const ancestryRules = ancestry ? foundry.utils.deepClone(ancestry.system.rules || []) : []
-            const classRules = clazz ? foundry.utils.deepClone([...clazz.system.rules, ...electiveTrainingRules]) : []
+            const classRules = clazz ? foundry.utils.deepClone([...(clazz.system.rules || []), ...electiveTrainingRules]) : []
+            const baseClassRuleSelections = Object.fromEntries((clazz?.system.rules || []).map((rule: any) => [rule.id, rule.selections]))
+            const featureRuleSources = clazz
+                ? getItemRuleSources(clazz).slice(1).map(source => ({
+                    rules: foundry.utils.deepClone(source.rules)
+                }))
+                : []
 
             const getRuleSet = (id: string) => {
                 return ancestryRules.find((r: any) => r.id === id && r.key === 'ChoiceSet') ??
-                    classRules.find((r: any) => r.id === id && r.key === 'ChoiceSet')
+                    [classRules, ...featureRuleSources.map(source => source.rules)]
+                        .flat()
+                        .find((r: any) => r.id === id && r.key === 'ChoiceSet')
             }
 
             const addSelection = (targetRuleSet: any, selection: string, selectionId?: string) => {
@@ -283,7 +291,20 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                 await ancestry.update({ "system.rules": ancestryRules } as Record<string, any>)
             }
             if (clazz) {
-                await clazz.update({ "system.rules": classRules } as Record<string, any>)
+                const classSelections = Object.fromEntries(classRules
+                    .filter(rule => Array.isArray(rule.selections) && rule.selections.length > 0)
+                    .map(rule => [rule.id, rule.selections]))
+                const classRulesWithoutSelections = classRules.map(rule => ({
+                    ...rule,
+                    selections: baseClassRuleSelections[rule.id] ?? []
+                }))
+                await clazz.update({ "system.rules": classRulesWithoutSelections } as Record<string, any>)
+                await saveItemRuleSelections(clazz, classSelections)
+                const featureSelections = Object.fromEntries(featureRuleSources
+                    .flatMap(source => source.rules)
+                    .filter(rule => Array.isArray(rule.selections) && rule.selections.length > 0)
+                    .map(rule => [rule.id, rule.selections]))
+                await saveItemRuleSelections(clazz, featureSelections)
             }
 
             // Process their shop selections and add their wallet balance to their starting coin.

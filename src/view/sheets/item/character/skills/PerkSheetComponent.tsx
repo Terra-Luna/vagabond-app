@@ -34,6 +34,7 @@ export const PerkSheetComponent = ({ item }: { item: Item & { system: PerkDataMo
                         </div>
                     }
                 </div>
+                
                 {isEditMode && <>
                     <div className="space-y-0.5">
                         {item.system.prerequisites.map((_, index) => (

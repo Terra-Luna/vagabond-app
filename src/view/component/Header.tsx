@@ -6,7 +6,7 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
     return (
         <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-lg">
             {textLeft ? <div className="pl-2" /> : <Divider />}
-            <div>{title.toUpperCase()}</div>
+            <div>{title}</div>
             <Divider />
 
             {actions && (
@@ -32,7 +32,7 @@ export const ClearHeader = ({ title, collapseButton }: { title: string, collapse
     return (
         <div className={`flex gap-x-2 items-center px-4 ${collapseButton ? "cursor-pointer hover-glow" : ""}`}>
             <Divider />
-            {title.toUpperCase()}
+            {title}
             <Divider />
             {collapseButton && <div className="mr-2">{collapseButton}</div>}
         </div>

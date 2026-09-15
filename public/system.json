@@ -65,6 +65,11 @@
           "description"
         ]
       },
+      "feature": {
+        "htmlFields": [
+          "description"
+        ]
+      },
       "container": {
         "htmlFields": [
           "descripton"
@@ -128,6 +133,18 @@
       "type": "Item",
       "system": "vagabond-app",
       "path": "packs/classes",
+      "banner": "systems/vagabond-app/assets/compendium/classes_banner.webp",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    },
+    {
+      "name": "features",
+      "label": "Features",
+      "type": "Item",
+      "system": "vagabond-app",
+      "path": "packs/features",
       "banner": "systems/vagabond-app/assets/compendium/classes_banner.webp",
       "ownership": {
         "PLAYER": "OBSERVER",

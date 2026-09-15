@@ -135,14 +135,13 @@ const inlineRollStyle = `
     hover:[&_.inline-roll]:text-shadow-text-glow
     hover:[&_.inline-roll]:text-shadow-xl
     transition-colors
-
-    /* Rolls flaved as #damage */
-    [&_a[data-flavor='damage']]:text-text-dmg
-
-    /* Rolls flaved as #healing */
-    [&_a[data-flavor='healing']]:text-text-luck-current
 `
 const docLinkSytles = `
+    /* All enriched links */
+    [&_a]:text-[1.05em]
+    hover:[&_a]:cursor-pointer
+    hover:[&_a]:underline
+
     /* Doc Link Defaults */
     [&_.content-link]:font-eskapade
     [&_.content-link]:font-bold

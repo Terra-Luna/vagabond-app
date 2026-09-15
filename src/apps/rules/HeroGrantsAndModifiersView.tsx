@@ -1,6 +1,6 @@
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { ActiveEffectCardRow, EffectCardContainer } from '../../rules/shared/ActiveEffectCardRow'
-import { RuleSelection } from '../../rules/util/item-rules-util'
+import { getItemRuleSources, RuleSelection } from '../../rules/util/item-rules-util'
 import { tableBorder } from '../../view/common/border-styles'
 import { CollapsibleSection } from '../../view/component/Collapsible'
 import { HeroCreationLabel, HeroCreationSubtext } from '../hero-creator/component/HeroCreationTypography'
@@ -24,16 +24,16 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
 
     // Extract and format active rule elements along with their parent details
     const allRules: ActiveRuleDisplay[] = actor.items.contents.flatMap((item: any) => {
-        const itemRules = item.system.rules || []
-        return itemRules.map((rule: any) => ({
+        const sources = getItemRuleSources(item)
+        return sources.flatMap(source => source.rules.map((rule: any) => ({
             ...rule,
             id: rule.id || foundry.utils.randomID(),
             level: rule.level || 1,
             pack: rule.pack,
             selections: rule.selections,
-            sourceName: item.name,
-            sourceImg: item.img,
-        }))
+            sourceName: source.item?.name || item.name,
+            sourceImg: source.item?.img || item.img,
+        })))
     })
 
     actor.system.perks.forEach(item => {

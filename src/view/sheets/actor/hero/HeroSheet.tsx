@@ -27,8 +27,8 @@ export class HeroSheet extends VagabondActorSheet {
          * DO NOT ALLOW drag/drop of Spells and Perks directly onto the Hero
          * sheet. Use the rules engine's choices selectors instead.
          */
-        if (item && ['spell', 'perk'].includes(item.type)) {
-            ui.notifications?.warn('Spells and Perks cannot be dropped here. Please select them via your Class or Ancestry features.')
+        if (item && ['feature', 'spell', 'perk'].includes(item.type)) {
+            ui.notifications?.warn('Features, Spells, and Perks cannot be dropped here. Please add Features to a Class and select Spells or Perks through the rules selectors.')
             return false
         }
 

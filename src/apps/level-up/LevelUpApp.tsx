@@ -1,5 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, randomId, savePerkSelections } from "../../rules/util/item-rules-util"
+import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, randomId, saveItemRuleSelections, savePerkSelections } from "../../rules/util/item-rules-util"
 import { sys_id } from "../../utils/foundryUtils"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { LevelUpArgs, LevelUpView } from "./LevelUpView"
@@ -15,7 +15,7 @@ export const saveElectiveTraining = async (actor: Actor & { system: HeroDataMode
     const targetItem = actor.items.find(i => (i.type as string) === "class") ?? actor.items.find(i => (i.type as string) === "ancestry")
     if (!targetItem) return
 
-    const { rules, electiveRule } = findOrCreateElectiveTrainingsRule(targetItem, {
+    const { electiveRule } = findOrCreateElectiveTrainingsRule(targetItem, {
         reasonValue: (actor.system.stats.reason ?? 2) + (levelUpStat === 'reason' ? 1 : 0)
     })
 
@@ -29,7 +29,11 @@ export const saveElectiveTraining = async (actor: Actor & { system: HeroDataMode
             ...currentSelections,
             { id: randomId(), value: formattedSelection, subselect: "" }
         ]
-        await targetItem.update({ "system.rules": rules } as Record<string, any>)
+        const targetRules = ((targetItem.system as any).rules ?? []) as any[]
+        if (!targetRules.some(rule => rule.id === electiveRule.id)) {
+            await targetItem.update({ "system.rules": [...targetRules, { ...electiveRule, selections: [] }] } as Record<string, any>)
+        }
+        await saveItemRuleSelections(targetItem, { [electiveRule.id]: electiveRule.selections })
     }
 }
 

@@ -29,7 +29,7 @@ export const GrantItemForm = ({ rule, onChange }: FormProps) => {
                 type: item instanceof foundry.abstract.Document && "type" in item
                     ? (item.type === "base" ? "ActiveEffect" : item.type)
                     : null,
-                label: item ? `Grant: ${item.name}` : rule.label
+                label: item ? `${item.name}` : rule.label
             })
         }
     }

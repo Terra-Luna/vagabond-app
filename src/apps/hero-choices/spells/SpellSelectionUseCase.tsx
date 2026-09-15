@@ -4,7 +4,7 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, normalizeRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../utils/collectionUtil"
 import { useSpellSelectionView } from "./SpellSelectionView"
 
@@ -66,7 +66,7 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
          */
         const loadInitialSpellSelections = async () => {
             if (clazz) {
-                const rules = await getItemChoiceRules(level, clazz.system.rules ?? [])
+                const rules = await getItemChoiceRules(level, getItemRules(clazz))
                 loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
             }
             if (ancestry) {
@@ -94,8 +94,9 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
     useEffect(() => {
         if (!clazz || !classSpellSlots.length || !dataLoaded.current) return
 
-        const classRules = [...clazz.system.rules] as any[]
+        const classRules = getItemRules(clazz)
         const classSpellSlotGroups = groupBy("ruleId", classSpellSlots)
+        const selectionUpdates: Record<string, any> = {}
 
         let hasChanges = false
 
@@ -117,13 +118,14 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
 
                 if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
                     classRules[ruleIndex].selections = nextSelections
+                    selectionUpdates[ruleId] = nextSelections
                     hasChanges = true
                 }
             }
         })
 
         if (hasChanges) {
-            clazz.update({ 'system.rules': classRules } as Record<string, any>)
+            saveItemRuleSelections(clazz, selectionUpdates)
         }
     }, [classSpellSlots])
 

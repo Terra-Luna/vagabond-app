@@ -30,7 +30,10 @@ export interface ChoiceRule {
     selections: RuleSelection[]
 }
 
-export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataModel<BaseItemSchema> } }) => {
+export const ItemRulesManager = ({ item, name, level, scale }: {
+    item: Item & { system: ItemDataModel<BaseItemSchema> }, name?: string, level?: number, scale?: number
+}) => {
+
     const { isEditMode } = useEditMode()
 
     const rules: RuleElement[] = item.system.rules as RuleElement[] || []
@@ -44,8 +47,8 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
         const defaultRule: RuleElement = {
             id: foundry.utils.randomID(),
             key: "FlatModifier", // FlatModifer, ItemGrant, ToggleRule, ChoiceSet
-            label: "",
-            level: 0,
+            label: name ?? "",
+            level: level ?? 0,
             value: 0,
             selector: ""
         }
@@ -110,8 +113,8 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "FlatModifier",
                                                             label: rule.label || "",
-                                                            level: 0,
-                                                            scale: 0,
+                                                            level: level ?? 0,
+                                                            scale: scale ?? 0,
                                                             value: 0,
                                                             valueMultiplier: '',
                                                             selector: rule.selector || ""
@@ -122,7 +125,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "ToggleRule",
                                                             label: rule.label || "",
-                                                            level: 0,
+                                                            level: level ?? 0,
                                                             value: true,
                                                             selector: rule.selector || ""
                                                         }
@@ -132,7 +135,7 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "GrantItem",
                                                             label: rule.label || "",
-                                                            level: 0,
+                                                            level: level ?? 0,
                                                             uuid: ""
                                                         }
                                                     }
@@ -141,8 +144,8 @@ export const ItemRulesManager = ({ item }: { item: Item & { system: ItemDataMode
                                                             id: (e.target.id == null || e.target.id.length === 0) ? foundry.utils.randomID() : e.target.id,
                                                             key: "ChoiceSet",
                                                             label: rule.label || "",
-                                                            level: 0,
-                                                            scale: 0,
+                                                            level: level ?? 0,
+                                                            scale: scale ?? 0,
                                                             maxChoices: 1,
                                                             channel: "path", // "path" or "item"
                                                             sourceMode: "static", // "static" or "dynamic"

@@ -1,7 +1,8 @@
 import { MessageSquareText } from "lucide-react"
 
 import { AncestryDataModel, ancestrySizeAndType } from "../../../../model/item/character/AncestryDataModel"
-import { PerkDataModel, perkPrerequisites } from "../../../../model/item/character/PerkDataModel"
+import { FeatureDataModel } from "../../../../model/item/character/FeatureDataModel"
+import { PerkDataModel } from "../../../../model/item/character/PerkDataModel"
 import { spellDamageBase,SpellDataModel } from "../../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../../utils/lang"
 import { AbilityChatCard } from "../../../chat/AbilityChatCard"
@@ -13,7 +14,10 @@ import { CardSubHeader, CardSubHeaderValues } from "../../../component/SkillCard
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { useImageEdit } from "../../shared/ImageEditUseCase"
 
-export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: any }, hideImage?: boolean }) => {
+export const ItemSheetBanner = ({ item, hideImage, className }: {
+    item: Item & { system: any }, hideImage?: boolean, className?: string
+}) => {
+
     const { editModeToggleBtn } = useEditMode()
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const { imageEditCtxMenuItems } = useImageEdit(item)
@@ -40,7 +44,8 @@ export const ItemSheetBanner = ({ item, hideImage }: { item: Item & { system: an
     let subheaderContent: CardSubHeaderValues[] = []
     if (item.system instanceof AncestryDataModel) subheaderContent = ancestrySizeAndType(item.system)
     if (item.system instanceof SpellDataModel) subheaderContent = spellDamageBase(item.system)
-    if (item.system instanceof PerkDataModel) subheaderContent = perkPrerequisites(item.system)
+    if (item.system instanceof PerkDataModel) subheaderContent = item.system.subheader()
+    if (item.system instanceof FeatureDataModel) subheaderContent = item.system.subheader(className)
 
     return (
         <div>
