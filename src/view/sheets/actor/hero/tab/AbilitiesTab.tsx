@@ -22,11 +22,12 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const beingType = appLang.BeingTypes[hero.ancestry?.beingType ?? '']
     const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"
 
-    const groupedFeatures = groupBy('name', ItemsCache.features()
-        .filter(feature => hero.class?.featureIds?.includes(feature.uuid))
+    const groupedFeatures = groupBy('name', (hero.class?.featureIds ?? [])
+        .map(featureId => ItemsCache.items.get(featureId))
+        .filter(feature => feature?.type === 'feature')
+        .sort((a, b) => a.system.level - b.system.level)
         .filter(feature => feature.system.level <= hero.level.current!)
         .map(feature => ({ feature, level: feature.system.level }))
-        .filter(({ feature }) => feature.name.toUpperCase() !== 'PERK')
         .map(({ feature, level }) => ({
             name: feature.name,
             level,
@@ -36,10 +37,9 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     )
 
     let classFeatures: any[] = []
+
     if (groupedFeatures) {
-        classFeatures = Object.keys(groupedFeatures)
-            ?.map(f => groupedFeatures[f]?.reverse()[0])
-            ?.sort((a, b) => a.level! - b.level!)
+        classFeatures = Object.keys(groupedFeatures)?.map(f => groupedFeatures[f]?.[0])
     }
 
     const showTrainingSelection = game.user?.isActiveGM || (hero.level.current! > 0 && getShowTrainingSelectionToggle())
@@ -61,17 +61,18 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     return (
         <div className="py-1">
             <span className="font-eskapade font-bold">
-                {
-                    !hero.ancestry ? <></> : <>
-                        <ClearHeader title={appLang.HeroSheet.ancestry} />
-                        <div className="mt-0.5" />
-                        <SkillCard
-                            title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
-                            subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
-                            description={hero.ancestry?.description}
-                        />
-                    </>
-                }
+                {/* ANDCESTRY TRAITS */}
+                {hero.ancestry && <>
+                    <ClearHeader title={appLang.HeroSheet.ancestry} />
+                    <div className="mt-0.5" />
+                    <SkillCard
+                        title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
+                        subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
+                        description={hero.ancestry?.description}
+                    />
+                </>}
+
+                {/* CLASS FEATURES */}
                 <div className="my-2">
                     <ClearHeader title={appLang.HeroSheet.class} />
                     <div className="mt-0.5" />
@@ -80,8 +81,10 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                             classFeatures.map((f, index) => (
                                 <div key={index} onContextMenu={(e) => onCtxMenu(e, [
                                     {
-                                        icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
-                                            <AbilityChatCard actorId={getId(hero)} img={f.img ?? ''} title={f.name} description={f.description} />
+                                        icon: MessageSquareText,
+                                        label: 'Send to chat',
+                                        action: () => sendVagabondChatMessage(
+                                            hero, <AbilityChatCard actorId={getId(hero)} img={f.img ?? ''} title={f.name} description={f.description} />
                                         )
                                     }
                                 ])}>
@@ -98,6 +101,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                     </div>
                 </div>
 
+                {/* PERKS */}
                 <ClearHeader title={appLang.HeroSheet.perks} />
                 <div className="mt-0.5" />
                 <div className={abilitiesGrid}>

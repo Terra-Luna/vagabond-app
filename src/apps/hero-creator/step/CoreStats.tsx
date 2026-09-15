@@ -1,7 +1,6 @@
 import { Dices, Undo } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
-import { calculateManaValues } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { getFlatStatBonuses, getStatChoiceRules } from "../../../rules/util/item-rules-util"
@@ -333,21 +332,8 @@ export const useCoreStats = (ancestry: (Item & { system: AncestryDataModel }) | 
                                 {`${((assignedStats.find(s => s.stat === 'might')?.value ?? 0) + getFlatBonusByStat('might') + getSelectedBonusByStat('might')) * 2}`}
                             </p>
                         </div>
-                        <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
-                            <HeroCreationSubtext text={strings.maxmana} />
-                            <p className="text-4xl text-mana font-bold">{`
-                            ${calculateManaValues(1, (clazz?.system?.manaMultiplier ?? 0), clazz?.system?.maxCastFormula ?? '').max}
-                        `}</p>
-                        </div>
-                        <div className="bg-mana/20 rounded-md border border-solid border-mana p-2">
-                            <HeroCreationSubtext text={strings.maxcast} />
-                            <p className="text-4xl text-mana font-bold">{`
-                            ${calculateManaValues(1, (clazz?.system?.manaMultiplier ?? 0), clazz?.system?.maxCastFormula ?? '').maxCast}
-                        `}</p>
-                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     )

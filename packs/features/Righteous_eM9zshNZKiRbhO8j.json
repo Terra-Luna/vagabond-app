@@ -23,6 +23,15 @@
         "selector": "class.castingSkill"
       },
       {
+        "id": "Xo2J1x45OlAPBEqd",
+        "key": "FlatModifier",
+        "label": "Mana",
+        "level": 1,
+        "value": "2",
+        "selector": "mana.max",
+        "valueMultiplier": "level.current"
+      },
+      {
         "id": "3C5z8oWQWmtco2jm",
         "key": "FlatModifier",
         "label": "Caster Type",

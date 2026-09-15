@@ -89,7 +89,8 @@ export class HeroBaseDataRulesApplicator {
                     foundry.utils.setProperty(actor.system, path, currentValue + Math.ceil(rule.value * (multiplierValue ?? 1)) * scale)
                 }
                 else if (typeof currentValue === "string") {
-                    foundry.utils.setProperty(actor.system, path, currentValue + String(rule.value))
+                    console.log("path", path, "rule.value", rule.value)
+                    foundry.utils.setProperty(actor.system, path, String(rule.value))
                 }
                 else if (Array.isArray(currentValue)) {
                     const updatedArray = [...currentValue]
