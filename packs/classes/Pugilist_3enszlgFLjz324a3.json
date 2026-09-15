@@ -48,50 +48,6 @@
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
-    "features": [
-      {
-        "name": "Fisticuffs",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have the @UUID[Compendium.vagabond-app.perks.Item.zqTnJZseG8Q8Pf7Z]{Dusted Knuckle Perk}, and your Equipped Brawl Weapons have the Defense and Vicious properties.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you roll any damage dice for a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Increase your subsequent Brawl damage dice one size until the start of your Turn.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">• Grapple or Shove them if you viably could.</span></p>"
-      },
-      {
-        "name": "Rope-a-Dope",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you reduce damage from a Close Enemy’s attack to 0 with the Defense property of a Brawl Weapon, you can immediately make one attack or Move 5’ without using Speed.</span></p>"
-      },
-      {
-        "name": "Haymaker",
-        "level": 2,
-        "scale": 6,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If the result of your Brawl Check for an attack exceeds your Difficulty by 10, the Target is Dazed until the start of your Turn. </span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">The number needed to exceed is reduced by 1 every 6 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Moxie",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, being at 0 HP doesn’t kill you for Cd4 Rounds. Each time you take damage during this time, also roll this countdown die.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">At 10th Level, this starts at Cd6.</span></p>"
-      },
-      {
-        "name": "TItle Holder",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You use a d6 for the damage dice of your Brawl Weapons, and they Explode on a roll of 1 or 2.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">At 10th Level, this increases to a d8.</span></p>"
-      },
-      {
-        "name": "Moxie",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have Favor on Saves against being Dazed, Frightened, Grappled, or Restrained.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, being at 0 HP doesn’t kill you for Cd6 Rounds. Each time you take damage during this time, also roll this countdown die.</span></p>"
-      },
-      {
-        "name": "Title Holder",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You use a d8 for the damage dice of your Brawl Weapons, and they Explode on a roll of 1 or 2.</span></p>"
-      }
-    ],
     "featureIds": [
       "Compendium.vagabond-app.features.Item.oi6ipGLWAAjzweQI",
       "Compendium.vagabond-app.features.Item.IzfWKzGq0RYTvfQi",

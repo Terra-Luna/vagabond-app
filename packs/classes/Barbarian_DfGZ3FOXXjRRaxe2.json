@@ -48,44 +48,6 @@
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
-    "features": [
-      {
-        "name": "Rage",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice are one size larger and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>"
-      },
-      {
-        "name": "Wrath",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.ixtkMiuqHctLr3oB]{Interceptor Perk}, and can make its attack against an Enemy that takes an Action.</span></p>"
-      },
-      {
-        "name": "Aggressor",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have a 5’ bonus to Speed, which increases by 5’ every 4 Levels hereafter. During the first Round of Combat, this bonus is doubled.</span></p>"
-      },
-      {
-        "name": "Murder Mode",
-        "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, your attack damage dice can Explode and they each have a +1 bonus. This increases by 1 every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Bloodthirsty",
-        "level": 8,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Your attacks against Beings that are missing any HP are Favored, and you can sense them within Far as if by Blindsight.</span></p>"
-      },
-      {
-        "name": "Rip and Tear",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">While Berserk, you reduce damage you take by 1 per damage die. This stacks with Rage.</span></p>"
-      }
-    ],
     "featureIds": [
       "Compendium.vagabond-app.features.Item.T3WrjPCsOUipzXIR",
       "Compendium.vagabond-app.features.Item.q0fVJrUoC8BOjpA9",

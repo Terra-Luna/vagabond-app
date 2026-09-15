@@ -48,56 +48,6 @@
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
-    "features": [
-      {
-        "name": "Deadeye",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, and can stack up to 3 times. It resets at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>"
-      },
-      {
-        "name": "Shooting Irons",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.0KPyLXzTcPTQ3wFg]{Quick Draw Perk} and, once per Round, you can make a Ranged attack against an attack that would hit. If you pass, reduce the damage dealt by the Target’s attack by your attack’s damage.</span></p>"
-      },
-      {
-        "name": "Bad Medicine",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You deal an extra die of damage when you Crit with a Ranged Check. The number of extra dice increases by 1 every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Grit",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of your Turn, you can increase your Deadeye by 3 to remove a Status from yourself from either Blinded, Burning, Confused, Dazed, or Frightened.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">The increase is reduced by 1 every 4 Levels hereafter (minimum 0).</span></p>"
-      },
-      {
-        "name": "Devastator",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you Crit with a Ranged Check, the damage dice can Explode.</span></p>"
-      },
-      {
-        "name": "Grit",
-        "level": 8,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of your Turn, you can increase your Deadeye by 2 to remove a Status from yourself from either Blinded, Burning, Confused, Dazed, or Frightened.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">The increase is reduced by 1 every 4 Levels hereafter (minimum 0)</span></p>"
-      },
-      {
-        "name": "High Noon",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you kill an Enemy, your Deadeye is immediately set to 17.</span></p>"
-      },
-      {
-        "name": "Grit",
-        "level": 12,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">At the start of your Turn, you can remove a Status from yourself from either Blinded, Burning, Confused, Dazed, or Frightened.</span></p>"
-      }
-    ],
     "featureIds": [
       "Compendium.vagabond-app.features.Item.WsMdh9eTIWo1pjk0",
       "Compendium.vagabond-app.features.Item.nzHf4xBQBcW5Bx17",

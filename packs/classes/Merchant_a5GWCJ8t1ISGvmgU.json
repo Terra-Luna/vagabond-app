@@ -58,44 +58,6 @@
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
-    "features": [
-      {
-        "name": "Deep Pockets",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.TcPtYma4aDbo9npG]{Deft Hands Perk}, and you gain 2 extra Item Slots now and every 3 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Gold Sink",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can take the Use Action to place non-Relic Items into a container, close it, then spend 1 Luck to choose an Item with a value no more than the original valuables’. The chosen Item replaces the valuables.</span></p>"
-      },
-      {
-        "name": "Line Goes Up",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain 1 Luck during a Breather and when you spend a Shift to Craft or Travel.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you Rest, you gain 1 extra Luck. This extra Luck gained from a Rest increases by 1 every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Diamond Hands",
-        "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Items count as Relics with a compatible +1 Bonus Relic Power while you have them Equipped. This Bonus stacks with any other Bonus the Item may have. The Bonus Relic Power is increased by 1 every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Opportunist",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can immediately take the Use Action.</span></p>"
-      },
-      {
-        "name": "Top Shelf",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can use your Gold Sink Ability to pull non-Fabled Relics by spending 1 additional Luck per 250g of the Relic’s value, otherwise obeying all the rules for that Ability.</span></p>"
-      }
-    ],
     "featureIds": [
       "Compendium.vagabond-app.features.Item.ELQG4nLLP27bnpKy",
       "Compendium.vagabond-app.features.Item.vj3XjAvcddA43PBn",

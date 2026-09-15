@@ -50,38 +50,6 @@
     ],
     "castingSkill": "",
     "manaMultiplier": 0,
-    "features": [
-      {
-        "name": "Fighting Style",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.6aUzsiWQ0IpvS0y4]{Situational Awareness Perk} and another Perk with the Melee or Ranged Training Prerequisite, ignoring prerequisites for this Perk.</span></p>"
-      },
-      {
-        "name": "Momentum",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an Enemy’s attack or reduce its damage to 0, your next attack before the end of your Turn is Favored</span></p>"
-      },
-      {
-        "name": "Valor",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more at 4th Level and every 4 Levels thereafter.</span></p>"
-      },
-      {
-        "name": "Muster for Battle",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have two Actions on your first Turn.</span></p>"
-      },
-      {
-        "name": "Harrying",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you take the Attack Action, you can make one extra attack.</span></p>"
-      }
-    ],
     "featureIds": [
       "Compendium.vagabond-app.features.Item.YmGYqSe9wKYgtXBu",
       "Compendium.vagabond-app.features.Item.2h9SS6gNRSspabmD",

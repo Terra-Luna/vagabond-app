@@ -46,41 +46,9 @@
       "Compendium.vagabond-app.gear.Item.5y2TEMR983wkMy3s",
       "Compendium.vagabond-app.gear.Item.E71U6Aoc2sOmDE5V"
     ],
-    "castingSkill": "influence",
-    "manaMultiplier": 4,
-    "maxCastFormula": "full",
-    "features": [
-      {
-        "name": "Glamour",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Influence.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells: </strong></b><span style=\"white-space: pre-wrap;\">You learn 4 Spells. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (4 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (2 + your Level).</span></p>"
-      },
-      {
-        "name": "Tap",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.eDxdbBsCNsDdTsG0]{Vehement Magic Perk}, and you can spend your HP as Mana, which also reduces your Max HP by the same amount until you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p>"
-      },
-      {
-        "name": "Quickening",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can skip your Move to Cast a Spell.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">You can spend 0 Mana to upcast this Spell, but the amount of Mana you can spend to upcast it increases by 1 every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Spell Slinger",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The damage die of your Spells is one size larger.</span></p>"
-      },
-      {
-        "name": "Spell Slinger",
-        "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Cast Checks and Saves against Casts is reduced by 1, and is reduced by 1 more every 4 Levels hereafter.</span></p>"
-      }
-    ],
+    "castingSkill": "",
+    "manaMultiplier": 0,
+    "maxCastFormula": "",
     "featureIds": [
       "Compendium.vagabond-app.features.Item.jNfV9RbKiEVo83KW",
       "Compendium.vagabond-app.features.Item.OWGhXBExZUcpZJ6K",

@@ -60,56 +60,6 @@
     "castingSkill": "",
     "manaMultiplier": 0,
     "maxCastFormula": "",
-    "features": [
-      {
-        "featureId": "",
-        "level": 1
-      },
-      {
-        "featureId": "",
-        "level": 1
-      },
-      {
-        "featureId": "",
-        "level": 2
-      },
-      {
-        "featureId": "",
-        "level": 4
-      },
-      {
-        "featureId": "",
-        "level": 6
-      },
-      {
-        "featureId": "",
-        "level": 10
-      },
-      {
-        "featureId": "Compendium.vagabond-app.features.Item.a5lVYRtgKeui2Qvy",
-        "level": 1
-      },
-      {
-        "featureId": "Compendium.vagabond-app.features.Item.iV3XdDhS2No8Ita2",
-        "level": 1
-      },
-      {
-        "featureId": "Compendium.vagabond-app.features.Item.AwRzdfRJsVwkkImI",
-        "level": 2
-      },
-      {
-        "featureId": "Compendium.vagabond-app.features.Item.yDHkcqRonc9q7GDM",
-        "level": 4
-      },
-      {
-        "featureId": "Compendium.vagabond-app.features.Item.AqnjugGJQddt4lu7",
-        "level": 6
-      },
-      {
-        "featureId": "Compendium.vagabond-app.features.Item.GvjrDgTUmVZ0MAuO",
-        "level": 10
-      }
-    ],
     "featureIds": [
       "Compendium.vagabond-app.features.Item.a5lVYRtgKeui2Qvy",
       "Compendium.vagabond-app.features.Item.iV3XdDhS2No8Ita2",
