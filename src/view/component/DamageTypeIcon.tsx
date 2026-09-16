@@ -1,4 +1,4 @@
-import { Brain, Cross, Droplets, Flame, FlaskRound, HeartOff, Shell, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Target, Wand2, Zap } from "lucide-react"
+import { Brain, Cross, Droplets, Flame, FlaskRound, HeartOff, Shield, Skull, Snowflake, Sparkle, Sword, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
 import { appLang } from "../../utils/lang"
@@ -61,11 +61,13 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case appLang.DamageTypes.physical: {
-            element = <Swords size={size - 2} className='text-black fill-ic-armor-fill' />
+            element = <div className="flex text-text-primary font-eskapade">
+                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+            </div>
             break
         }
         case appLang.DamageTypes.adamant: {
-            element = <Swords size={size - 2} className='text-header-text-tertiary fill-black' />
+            element = <Sword size={size - 2} className='text-header-text-tertiary fill-black' />
             break
         }
         case appLang.DamageTypes.fatigue: {
@@ -73,15 +75,24 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }   
         case appLang.DamageTypes.blunt: {
-            element = <Shell size={size - 2} className='text-black fill-ic-armor-fill' />
-            break 
+            element = <div className="flex text-text-primary font-eskapade">
+                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+                <p>B</p>
+            </div>
+            break
         }
         case appLang.DamageTypes.pierce: {
-            element = <Target size={size - 2} className='text-black fill-ic-armor-fill' />
+            element = <div className="flex text-text-primary font-eskapade">
+                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+                <p>P</p>
+            </div>
             break
         }
         case appLang.DamageTypes.slash: {
-            element = <Sword size={size - 2} className='text-black fill-ic-armor-fill' />
+            element = <div className="flex text-text-primary font-eskapade">
+                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+                <p>S</p>
+            </div>
             break
         }
     }
