@@ -138,12 +138,10 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
         const luckUpdate = foundry.utils.getProperty(changes, "system.statuses.counters.luck") as number | undefined
         if (luckUpdate) {
-            if (luckUpdate <= this.stats.luck!) {
-                const previousLuck = this.statuses.counters.luck ?? 0
-                if (previousLuck !== luckUpdate) {
-                    const verb = previousLuck < luckUpdate ? appLang.HeroSheet.gained : appLang.HeroSheet.spent;
-                    (options as any).resourceTrackerUpdate = { verb: verb, resource: 'luck' }
-                }
+            const previousLuck = this.statuses.counters.luck ?? 0
+            if (previousLuck !== luckUpdate) {
+                const verb = previousLuck < luckUpdate ? appLang.HeroSheet.gained : appLang.HeroSheet.spent;
+                (options as any).resourceTrackerUpdate = { verb: verb, resource: 'luck' }
             }
         }
 

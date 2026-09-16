@@ -200,7 +200,6 @@ export class HeroBaseDataRulesApplicator {
         for (const rule of choiceRules) { applyChoiceRule(rule) }
         for (const rule of itemGrantRules) { applyInventoryItems(rule) }
         for (const rule of activeEffectGrantRules) { applyActiveEffectGrants(rule) }
-
     }
 
 }

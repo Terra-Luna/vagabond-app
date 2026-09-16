@@ -965,7 +965,9 @@
       "checkout": "Checkout",
       "attack": "Attack",
       "roll": "Roll",
-      "split": "Split"
+      "split": "Split",
+      "apply": "Apply",
+      "resolve": "Resolve"
     },
     "Effects": {
       "title": "Active Effects",

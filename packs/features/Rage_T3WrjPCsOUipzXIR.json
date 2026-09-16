@@ -9,10 +9,10 @@
       {
         "id": "GW92mIbmqNHTbOWs",
         "key": "GrantItem",
-        "label": "Grant: Rage",
+        "label": "Barbarian: Rage",
         "level": 1,
         "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
-        "type": null
+        "type": "ActiveEffect"
       }
     ],
     "level": 1,
@@ -79,6 +79,250 @@
       },
       "sort": 0,
       "_key": "!items.effects!T3WrjPCsOUipzXIR.KkBbn1qkZaDldn0t"
+    },
+    {
+      "name": "Barbarian: Rage",
+      "_id": "wIzKRBzEKZ2erVUJ",
+      "img": "/icons/skills/melee/strike-axe-red.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.dice.size.melee.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.finesse.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.brawl.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          }
+        ],
+        "requiresEquip": true
+      },
+      "disabled": true,
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "showIcon": 2,
+      "folder": null,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.0.94",
+        "createdTime": 1789592397890,
+        "modifiedTime": 1789592397890,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "sort": 0,
+      "_key": "!items.effects!T3WrjPCsOUipzXIR.wIzKRBzEKZ2erVUJ"
+    },
+    {
+      "name": "Barbarian: Rage",
+      "_id": "zU8tEN4NnWTTcrtN",
+      "img": "/icons/skills/melee/strike-axe-red.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.dice.size.melee.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.finesse.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.brawl.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          }
+        ],
+        "requiresEquip": true
+      },
+      "disabled": true,
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "showIcon": 2,
+      "folder": null,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.0.94",
+        "createdTime": 1789592431680,
+        "modifiedTime": 1789592431680,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "sort": 0,
+      "_key": "!items.effects!T3WrjPCsOUipzXIR.zU8tEN4NnWTTcrtN"
+    },
+    {
+      "name": "Barbarian: Rage",
+      "_id": "YL2SdYk5PYM1EVop",
+      "img": "/icons/skills/melee/strike-axe-red.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.dice.size.melee.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.finesse.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.brawl.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          }
+        ],
+        "requiresEquip": true
+      },
+      "disabled": true,
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "showIcon": 2,
+      "folder": null,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.0.94",
+        "createdTime": 1789592475311,
+        "modifiedTime": 1789592475311,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "sort": 0,
+      "_key": "!items.effects!T3WrjPCsOUipzXIR.YL2SdYk5PYM1EVop"
+    },
+    {
+      "name": "Barbarian: Rage",
+      "_id": "24TtSztHGw0TtS5v",
+      "img": "/icons/skills/melee/strike-axe-red.webp",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.modifiers.dice.size.melee.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.finesse.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          },
+          {
+            "key": "system.modifiers.dice.size.brawl.bonus",
+            "type": "add",
+            "value": 2,
+            "phase": "initial",
+            "priority": null
+          }
+        ],
+        "requiresEquip": true
+      },
+      "disabled": true,
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "transfer": false,
+      "statuses": [],
+      "showIcon": 2,
+      "folder": null,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.0.94",
+        "createdTime": 1789592532431,
+        "modifiedTime": 1789592532431,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "sort": 0,
+      "_key": "!items.effects!T3WrjPCsOUipzXIR.24TtSztHGw0TtS5v"
     }
   ],
   "folder": "gTZb8RMguzVhnz2T",
@@ -93,7 +337,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.94",
     "createdTime": 1789491073903,
-    "modifiedTime": 1789523180971,
+    "modifiedTime": 1789592431684,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

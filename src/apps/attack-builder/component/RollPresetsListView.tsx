@@ -11,19 +11,30 @@ import { RollPreset } from "../model/RollPreset"
 import { RollBuilderApp } from "../RollBuilderApp"
 import { useDeletePreset } from "../usecase/preset/DeletePresetUseCase"
 import { useEditPreset } from "../usecase/preset/EditPresetUseCase"
+import { useReorderPreset } from "../usecase/preset/ReorderPresetUseCase"
 import { RollPresetCard } from "./RollPresetCard"
 
 export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const presets = actor.getFlag(sys_id, "rollPresets" as any) as RollPreset[] ?? []
     const { editPreset } = useEditPreset(actor)
     const { Confirmation, deletePreset } = useDeletePreset(actor)
+    const { dragIndex, onDragStart, onDragEnter, onDrop, onDragEnd } = useReorderPreset(actor)
 
     return (
         <div className="flex flex-col">
             <CollapsibleSection title={"PRESETS"} content={<>
                 <div className={`${tableBorder} border-t-0 rounded-b-sm`}>
                     {presets.map((preset, index) => (
-                        <div key={index} className="w-full even:bg-table-row-even/50 odd:bg-table-row-odd/50">
+                        <div
+                            key={index}
+                            className={`w-full ${index === dragIndex ? "opacity-40" : "even:bg-table-row-even/50 odd:bg-table-row-odd/50"}`}
+                            draggable={true}
+                            onDragStart={(e) => onDragStart(e, index)}
+                            onDragEnter={(e) => onDragEnter(e, index)}
+                            onDragOver={(e) => { e.preventDefault(); e.stopPropagation() }}
+                            onDrop={(e) => onDrop(e, index)}
+                            onDragEnd={(e) => onDragEnd(e)}
+                        >
                             <RollPresetCard
                                 actor={actor} preset={preset}
                                 EditButton={<EditButton onEdit={() => editPreset(preset)} />}

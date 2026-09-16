@@ -1,5 +1,5 @@
 {
-  "name": "Barbarian: Murder Mode",
+  "name": "Murder Mode",
   "_id": "qEWCYWZL4e4FDdBw",
   "img": "/icons/skills/melee/strike-axe-blood-red.webp",
   "type": "base",
@@ -64,16 +64,16 @@
   "transfer": false,
   "statuses": [],
   "showIcon": 2,
-  "folder": null,
-  "sort": 0,
+  "folder": "ODbeQ89YFxR2exhu",
+  "sort": 100000,
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1788051979669,
-    "modifiedTime": 1788056082395,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1789592873906,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

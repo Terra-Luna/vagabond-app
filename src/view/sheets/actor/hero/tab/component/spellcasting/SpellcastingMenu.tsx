@@ -5,6 +5,7 @@ import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
 import { ItemsCache } from "../../../../../../../rules/util/ItemsCache"
+import { sys_id } from "../../../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../../../utils/lang"
 import { tableBorder } from "../../../../../../common/border-styles"
 import { buttonAnimation } from "../../../../../../component/Button"
@@ -23,6 +24,20 @@ import { SpellSelector } from "./input/SpellSelector"
 import { SpellTargetInput } from "./input/SpellTargetInput"
 import { TotalMana } from "./input/TotalMana"
 
+interface SpellcastingMenuState {
+    skill: string
+    spellUuid: string
+    deliveryName: string
+    damageDice: number
+    studyDamageDice: number
+    applyEffect: boolean
+    isFocused: boolean
+    discount: number
+    size?: number
+    height?: number
+    width?: number
+    targetCount?: number
+}
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system
@@ -39,7 +54,34 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     }, [actor, JSON.stringify(actor.system.class?.rules ?? [])])
 
     useEffect(() => {
-        const deliveryOptions = getNewDeliveryOptions(spells[0], { ...actor.system.modifiers.casting })
+        const savedState = actor.getFlag(sys_id, "spellcastingMenuState" as any) as SpellcastingMenuState | undefined
+        const spell = spells.find(sp => sp.uuid === savedState?.spellUuid) ?? spells[0]
+        const deliveryOptions = getNewDeliveryOptions(spell, { ...actor.system.modifiers.casting })
+
+        if (savedState) {
+            const index = deliveryOptions.findIndex(d => d.name === savedState.deliveryName)
+            if (index !== -1) {
+                const delivery = deliveryOptions[index]
+                delivery.setDamageDice(savedState.damageDice)
+                delivery.setStudyDamageDice(savedState.studyDamageDice)
+                delivery.setApplyEffect(savedState.applyEffect)
+                delivery.setIsFocused(savedState.isFocused)
+                delivery.setDiscount(savedState.discount)
+                if (delivery instanceof AreaOfEffectDelivery && savedState.size !== undefined) {
+                    delivery.setSize(savedState.size)
+                }
+                if (delivery instanceof Line && savedState.height !== undefined && savedState.width !== undefined) {
+                    delivery.setHeight(savedState.height)
+                    delivery.setWidth(savedState.width)
+                }
+                if (delivery instanceof PerTargetDelivery && savedState.targetCount !== undefined) {
+                    delivery.setTargetCount(savedState.targetCount)
+                }
+                setDeliveryIndex(index)
+            }
+            setSkill(savedState.skill)
+        }
+
         setDeliveries(deliveryOptions)
     }, [])
 
@@ -212,10 +254,29 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         return null
     }
 
+    const saveSpellcastingMenuState = useCallback(async (delivery: SpellDelivery) => {
+        const state: SpellcastingMenuState = {
+            skill,
+            spellUuid: delivery.spell.uuid,
+            deliveryName: delivery.name,
+            damageDice: delivery.damageDice,
+            studyDamageDice: delivery.studyDamageDice,
+            applyEffect: delivery.applyEffect,
+            isFocused: delivery.isFocused,
+            discount: delivery.discount,
+            size: delivery instanceof AreaOfEffectDelivery ? delivery.size : undefined,
+            height: delivery instanceof Line ? delivery.height : undefined,
+            width: delivery instanceof Line ? delivery.width : undefined,
+            targetCount: delivery instanceof PerTargetDelivery ? delivery.targetCount : undefined
+        }
+        await actor.setFlag(sys_id, "spellcastingMenuState" as any, state)
+    }, [actor, skill])
+
     const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
         const delivery = deliveries[deliveryIndex]
         if (delivery && delivery.spell) {
             onUpdateStudyDamageDice('0')
+            await saveSpellcastingMenuState(delivery)
             HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e)?.initiate(e)
         }
     }

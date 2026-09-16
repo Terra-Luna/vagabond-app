@@ -1,5 +1,5 @@
 {
-  "name": "Barbarian: Rage",
+  "name": "Rage",
   "_id": "I2Hm7uFBM25rcVEU",
   "img": "/icons/skills/melee/strike-axe-red.webp",
   "type": "base",
@@ -43,19 +43,19 @@
   "transfer": false,
   "statuses": [],
   "showIcon": 2,
-  "folder": null,
+  "folder": "ODbeQ89YFxR2exhu",
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1787977235075,
-    "modifiedTime": 1788052259288,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1789592877983,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "sort": 0,
+  "sort": 200000,
   "_key": "!effects!I2Hm7uFBM25rcVEU"
 }

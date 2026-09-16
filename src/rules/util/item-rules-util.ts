@@ -48,10 +48,12 @@ const getRuleSelectionFlags = (item: any): Record<string, RuleSelection[]> =>
 export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
     const system = itemOrSystem?.system ?? itemOrSystem
     const sourceOwner = itemOrSystem?.system ? itemOrSystem : itemOrSystem
+
     const applySavedSelections = (rules: any[], selectionOwner: any) => rules.map(rule => {
         const savedSelections = getRuleSelectionFlags(selectionOwner)[rule.id]
         return savedSelections ? { ...rule, selections: foundry.utils.deepClone(savedSelections) } : { ...rule }
     })
+    
     const sources: ItemRuleSource[] = [{ item: itemOrSystem, owner: sourceOwner, rules: applySavedSelections(system?.rules ?? [], sourceOwner) }]
     const featureIds = Array.isArray(system?.featureIds) ? system.featureIds : []
 

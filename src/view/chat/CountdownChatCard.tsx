@@ -2,6 +2,7 @@ import { useState } from "react"
 
 import { CountdownResult } from "../../combat/engine/roll/CountdownResult"
 import { showFloatingText } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
 import { UtilityButton } from "../component/Button"
 import { DamageTypeIcon } from "../component/DamageTypeIcon"
 import { Header } from "../component/Header"
@@ -52,12 +53,12 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
 
                 <p className="font-normal text-lg text-center">{result.message}</p>
 
-                {game.user?.isActiveGM && result.duration > 0 && dmgType && !isApplied &&
+                {game.user?.isActiveGM && dmgType && !isApplied &&
                     <div className="flex flex-col gap-1">
                         <Header title={"GM TOOLS"} />
                         <div className="flex gap-2">
-                            <UtilityButton onClick={() => resolve(true)}>Apply</UtilityButton>
-                            <UtilityButton onClick={() => resolve()}>Resolve</UtilityButton>
+                            <UtilityButton onClick={() => resolve(true)}>{appLang.ButtonActions.apply}</UtilityButton>
+                            <UtilityButton onClick={() => resolve()}>{appLang.ButtonActions.resolve}</UtilityButton>
                         </div>
                     </div>
                 }

@@ -102,7 +102,7 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
                                                 options={<>
                                                     <option value="FlatModifier">Flat Modifier (Stats/Attributes)</option>
                                                     <option value="ToggleRule">Toggle Rule (Trainings, etc...)</option>
-                                                    <option value="GrantItem">Grants (Spells, Perks, Gear, Active Effects, Macros)</option>
+                                                    <option value="GrantItem">Grants (Spells, Perks, Gear, Active Effects)</option>
                                                     <option value="ChoiceSet">Choice Set</option>
                                                 </>}
                                                 onChange={(e) => {

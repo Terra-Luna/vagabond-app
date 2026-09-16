@@ -11,7 +11,7 @@
         "key": "FlatModifier",
         "label": "Speed Bonus",
         "level": 2,
-        "value": "4",
+        "value": "5",
         "selector": "speed.turn",
         "scale": 4
       }
@@ -32,7 +32,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.94",
     "createdTime": 1789491269971,
-    "modifiedTime": 1789521656627,
+    "modifiedTime": 1789591565406,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
