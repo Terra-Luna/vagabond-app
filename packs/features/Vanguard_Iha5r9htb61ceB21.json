@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Vanguard",
+  "color": null,
+  "sorting": "a",
+  "_id": "Iha5r9htb61ceB21",
+  "description": "",
+  "sort": 600000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789521647517,
+    "modifiedTime": 1789526481742,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!Iha5r9htb61ceB21"
+}

@@ -35,38 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.brawl.trained"
-      },
-      {
-        "id": "syYXsFtRjdhXX8SQ",
-        "key": "GrantItem",
-        "label": "Stalwart: Protector",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.R3Hj2LF94pnsVEkk",
-        "type": null
-      },
-      {
-        "id": "LRdCn7BTGx486uX8",
-        "key": "FlatModifier",
-        "label": "Wall: Level 2",
-        "level": 2,
-        "value": 2,
-        "selector": "modifiers.dice.size.defense"
-      },
-      {
-        "id": "7sLGD3zNPaWMNQEP",
-        "key": "FlatModifier",
-        "label": "Wall: Level 6",
-        "level": 6,
-        "value": 2,
-        "selector": "modifiers.dice.size.defense"
-      },
-      {
-        "id": "ybROWhsYj6WchIBs",
-        "key": "FlatModifier",
-        "label": "Wall: Level 10",
-        "level": 10,
-        "value": 2,
-        "selector": "modifiers.dice.size.defense"
       }
     ],
     "complexity": 3,
@@ -77,45 +45,14 @@
       "Compendium.vagabond-app.gear.Item.89DHDbGM3hZwfo1Y"
     ],
     "castingSkill": "",
-    "manaMultiplier": 0,
     "maxCastFormula": "",
-    "features": [
-      {
-        "name": "Crowd Control",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can try to Shove a Close Target (no Action) when they Move Close to you, or when you roll a Defense Weapon’s damage die.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can push Targets you Shove ahead of you while you Move during the same Turn. If you push it into an occupied space, it deals your Weapon’s damage to the Target and whatever occupied the space.</span></p>"
-      },
-      {
-        "name": "Stalwart",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.R3Hj2LF94pnsVEkk]{Protector Perk} and, when you take the Hold Action, you can use the held Action or Move as late as the end of your next Turn.</span></p>"
-      },
-      {
-        "name": "Wall",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You are considered one size larger for Shoves and the damage dice of Defense Weapons are one size larger while you have them Equipped. Both of these sizes increase by another size every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Indestructible",
-        "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you aren’t Incapacitated and are wearing Armor, you have a +1 bonus to the damage die of Defense Weapons.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This bonus increases by 1 every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Armored Titan",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain a +1 bonus to Checks made to Shove a Target if you count as larger than them. This bonus increases by 1 for each size larger you are.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, you can equip 2H Shields as 1H Shields, and Versatile Shields use the higher damage die when held as 1H.</span></p>"
-      },
-      {
-        "name": "Force Unrelenting",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you successfully Shove a Target, you cause them to be Dazed (Cd4) and can choose to launch them up to the distance you Moved during the Turn before the Shove.</span></p>"
-      }
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.SQudhGq0Aet6UqER",
+      "Compendium.vagabond-app.features.Item.rDgMQjafaxc82V2r",
+      "Compendium.vagabond-app.features.Item.v5fOjJqgjrtmKt7g",
+      "Compendium.vagabond-app.features.Item.wZZXkBT2nwxp6bhW",
+      "Compendium.vagabond-app.features.Item.rvlKjbZuqiQxTBq3",
+      "Compendium.vagabond-app.features.Item.2eaLu4F8tCcSSYKv"
     ]
   },
   "effects": [],
@@ -129,9 +66,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786571011722,
-    "modifiedTime": 1789326439884,
+    "modifiedTime": 1789505056332,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -3,17 +3,17 @@ import { useEffect, useMemo, useRef } from "react"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, normalizeRuleSelections, randomId, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules, normalizeRuleSelections, randomId, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { groupBy } from "../../../utils/collectionUtil"
 import { usePerkBonusSelection } from "./PerkBonusSelection"
 import { usePerkSelectionView } from "./PerkSelectionView"
 
-export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
+export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, pendingClassItem?: Item & { system: ClassDataModel }) => {
     const dataLoaded = useRef(false)
     const loadedSelectionKey = useRef("")
     const ancestry = actor.items.find(item => (item.type as string) === "ancestry") as Item & { system: AncestryDataModel }
-    const clazz = actor.items.find(item => (item.type as string) === "class") as Item & { system: ClassDataModel }
+    const clazz = pendingClassItem ?? (actor.items.find(item => (item.type as string) === "class") as Item & { system: ClassDataModel })
     const level = (actor.system.level.current ?? 0) + (isLevelUp ? 1 : 0)
     const stats = actor.system.stats as any
     const trainings = useMemo(() => Object.keys(actor.system.skills).filter(skill => actor.system.skills[skill].trained), [actor.system.skills])
@@ -57,12 +57,16 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
     const getPerkName = (id: string) => allPerks.find(item => item.uuid === id)?.name ?? "unk"
 
     const loadSelections = (rules: any[], setSlots: any) => {
-        const slots = loadInitialSlots(rules.filter(rule => rule.level <= level || calculateRecurringRuleEligibility(level, rule.level, rule.scale)))
-        let sharedIndex = 0
-        rules.forEach(rule => normalizeRuleSelections(rule.selections).forEach(selection => {
-            if (slots[sharedIndex]) slots[sharedIndex] = { ...slots[sharedIndex], selectionId: selection.id, value: selection.value, label: getPerkName(selection.value), ruleName: rule.label, ruleId: rule.id }
-            sharedIndex += 1
-        }))
+        const slots = loadInitialSlots(rules)
+        let offset = 0
+        rules.forEach(rule => {
+            const count = Number(rule.maxChoices) || 0
+            normalizeRuleSelections(rule.selections).forEach((selection, i) => {
+                const slotIndex = offset + i
+                if (i < count && slots[slotIndex]) slots[slotIndex] = { ...slots[slotIndex], selectionId: selection.id, value: selection.value, label: getPerkName(selection.value), ruleName: rule.label, ruleId: rule.id }
+            })
+            offset += count
+        })
         setSlots(slots)
     }
 
@@ -93,6 +97,7 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
      */
     const persistSlots = (item: any, slots: any[], pendingBonusSelections: { ruleId: string, selectionId?: string, value: string }[] = []) => {
         if (!item || !slots.length || !dataLoaded.current) return
+        if (item.parent !== actor) return // Not yet embedded on the Actor; nothing to persist to.
         const rules = getItemRules(item)
         const selectionUpdates: Record<string, any> = {}
 

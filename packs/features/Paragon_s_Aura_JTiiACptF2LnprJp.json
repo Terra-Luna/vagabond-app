@@ -1,0 +1,42 @@
+{
+  "name": "Paragon's Aura",
+  "type": "feature",
+  "_id": "JTiiACptF2LnprJp",
+  "img": "icons/magic/light/explosion-star-glow-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You have a 2 Mana discount on the Aura Delivery.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target with a {{feature-value:1:1}} Mana discount. </span></p><p><br></p><p><span style=\"white-space:pre-wrap\">This discount increases every 4 Levels hereafter.</span></p>",
+    "rules": [
+      {
+        "id": "L1gA4wbV37viJIHE",
+        "key": "FlatModifier",
+        "label": "Aura Discount",
+        "level": 4,
+        "value": "2",
+        "selector": "modifiers.casting.deliveryDiscounts.aura"
+      }
+    ],
+    "level": 4,
+    "scale": 4,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "SywtkJSRaraGSF3q",
+  "sort": 75000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789503415891,
+    "modifiedTime": 1789574542275,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!JTiiACptF2LnprJp"
+}

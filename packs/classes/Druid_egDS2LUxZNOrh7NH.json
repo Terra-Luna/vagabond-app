@@ -35,41 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.survival.trained"
-      },
-      {
-        "id": "0vamvPXOr6mt75xN",
-        "key": "GrantItem",
-        "label": "Primal Mystic: Polymorph",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.spells.Item.qwIbJIeHMzTvMaBK",
-        "type": "spell"
-      },
-      {
-        "id": "Y8xnTWLPrZGjXW4e",
-        "key": "ChoiceSet",
-        "label": "Primal Mystic: Level 1 Spells",
-        "level": "1",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "Mg89MTrJYcB8LBpS",
-        "key": "ChoiceSet",
-        "label": "Primal Mystic: Spells",
-        "level": "4",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": [],
-        "scale": "3"
       }
     ],
     "complexity": 3,
@@ -79,46 +44,16 @@
     "startingPacks": [
       "Compendium.vagabond-app.gear.Item.j05Zi3ASkGB2J19f"
     ],
-    "castingSkill": "survival",
+    "castingSkill": "",
     "manaMultiplier": 2,
-    "maxCastFormula": "half",
-    "features": [
-      {
-        "name": "Primal Mystic",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can Cast Spells using Survival.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always be Polymorph. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana: </strong></b><span style=\"white-space: pre-wrap;\">Your Max Mana is equal to (2 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (1 + half your Level, round up).</span></p>"
-      },
-      {
-        "name": "Feral Shift",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You get the @UUID[Compendium.vagabond-app.perks.Item.AoVmeWjebFc7CEss]{Shapechanger Perk} and, when you Cast Polymorph on yourself, you can also take an Action of the Beast.</span></p>"
-      },
-      {
-        "name": "Savagery",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The damage you deal with the attacks of Beasts and your effective Level for the purposes of the Polymorph Spell are both increased by 1 now and every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Tempest Within",
-        "level": 4,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You reduce Cold, Fire, and Shock damage you take by 1 per damage die. This reduction is increased by 1 every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Beast Mode",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The attacks you make as Beasts ignore Immune to non-Relic damage.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, when you are the sole Target of a casting of your polymorph Spell, you can make the duration continual.</span></p>"
-      },
-      {
-        "name": "Force of Nature",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Shift, if you are reduced to 0 HP, you can polymorph into a Beast and regain HP equal to that shown in its Statblock.</span></p>"
-      }
+    "maxCastFormula": "",
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.jmh7lkGVhhC7K1M5",
+      "Compendium.vagabond-app.features.Item.rKq5QpxeYFXLcRRt",
+      "Compendium.vagabond-app.features.Item.wLchfAxTkbSco5Ga",
+      "Compendium.vagabond-app.features.Item.Od2eUIVYzZmDax53",
+      "Compendium.vagabond-app.features.Item.LFTkgG9g2nNAOh0g",
+      "Compendium.vagabond-app.features.Item.B4Iw7woBjJCAi3lQ"
     ]
   },
   "effects": [],
@@ -132,9 +67,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786555887806,
-    "modifiedTime": 1789326154362,
+    "modifiedTime": 1789495660210,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

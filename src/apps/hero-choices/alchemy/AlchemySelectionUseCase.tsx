@@ -2,7 +2,7 @@ import { useEffect } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../utils/collectionUtil"
 import { useAlchemySelectionView } from "./AlchemySelectionView"
 
@@ -18,16 +18,17 @@ export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, is
     }
 
     const loadSelections = (rules, setSlots) => {
-        const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.scale)))
-        let sharedIndex = 0
+        const slots = loadInitialSlots(rules)
+        let offset = 0
         rules.forEach(rule => {
-            const ruleSelections = normalizeRuleSelections(rule.selections)
-            ruleSelections.forEach(sel => {
-                if (slots[sharedIndex]) {
-                    slots[sharedIndex] = { value: sel.value, label: getItemName(sel.value), ruleName: rule.label, ruleId: rule.id }
+            const count = Number(rule.maxChoices) || 0
+            normalizeRuleSelections(rule.selections).forEach((sel, i) => {
+                const slotIndex = offset + i
+                if (i < count && slots[slotIndex]) {
+                    slots[slotIndex] = { value: sel.value, label: getItemName(sel.value), ruleName: rule.label, ruleId: rule.id }
                 }
-                sharedIndex += 1
             })
+            offset += count
         })
         setSlots(slots)
     }

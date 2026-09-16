@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Alchemist",
+  "color": null,
+  "sorting": "a",
+  "_id": "zeWLKaF9PfKUsXGv",
+  "description": "",
+  "sort": 1900000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789521357880,
+    "modifiedTime": 1789525101363,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!zeWLKaF9PfKUsXGv"
+}

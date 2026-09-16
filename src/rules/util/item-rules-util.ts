@@ -14,7 +14,9 @@ export interface ItemRule {
     value: number,
     pack: string,
     choices: { value: string, label: string }[],
-    selections: RuleSelection[]
+    selections: RuleSelection[],
+    ignoreStats?: boolean,
+    ignoreTrainings?: boolean
 }
 
 export interface RuleSelection {
@@ -114,11 +116,15 @@ export async function savePerkSelections(actor: Actor & { system: any }, slots: 
 
     let hasChanges = false
 
+    const getPendingSelections = (owner: any, rule: any): RuleSelection[] =>
+        selectionUpdates.get(owner)?.[rule.id] ?? normalizeRuleSelections(rule.selections)
+
     for (const slot of slots.filter(slot => slot.value || slot.selectionId)) {
         const rule = rulesByItem.flatMap(source => source.rules).find(rule => rule.id === slot.ruleId)
 
         if (rule) {
-            const selections = normalizeRuleSelections(rule.selections)
+            const owner = rulesByItem.find(source => source.rules.includes(rule))?.owner
+            const selections = owner ? getPendingSelections(owner, rule) : normalizeRuleSelections(rule.selections)
             const existing = selections.find(selection => slot.selectionId
                 ? selection.id === slot.selectionId
                 : selection.value === slot.value)
@@ -140,9 +146,8 @@ export async function savePerkSelections(actor: Actor & { system: any }, slots: 
                     hasChanges = true
                 }
             }
-            const updates = selectionUpdates.get(rulesByItem.find(source => source.rules.includes(rule))?.owner) ?? {}
+            const updates = selectionUpdates.get(owner) ?? {}
             updates[rule.id] = selections
-            const owner = rulesByItem.find(source => source.rules.includes(rule))?.owner
             if (owner) selectionUpdates.set(owner, updates)
             continue
         }
@@ -159,7 +164,10 @@ export async function savePerkSelections(actor: Actor & { system: any }, slots: 
 
         if (!parentSelection) continue
 
-        const selections = normalizeRuleSelections(parentSelection.selections)
+        const owner = rulesByItem.find(source => source.rules.includes(parentSelection))?.owner
+        const selections = owner
+            ? getPendingSelections(owner, parentSelection)
+            : normalizeRuleSelections(parentSelection.selections)
 
         const existing = selections.find(selection =>
             slot.selectionId
@@ -173,7 +181,6 @@ export async function savePerkSelections(actor: Actor & { system: any }, slots: 
                 hasChanges = true
             }
         }
-        const owner = rulesByItem.find(source => source.rules.includes(parentSelection))?.owner
         if (owner) {
             const updates = selectionUpdates.get(owner) ?? {}
             updates[parentSelection.id] = selections
@@ -553,7 +560,9 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
             value: Number(rule.value ?? 1),
             pack: rule.pack,
             choices: finalizedChoices,
-            selections: rule.selections
+            selections: rule.selections,
+            ignoreStats: rule.ignoreStats,
+            ignoreTrainings: rule.ignoreTrainings
         }
     })
 

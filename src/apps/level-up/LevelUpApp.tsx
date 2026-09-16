@@ -44,8 +44,8 @@ export class LevelUpApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         const appArgs: VagabondAppArgs = {
             position: {
-                width: 1533,
-                height: 980,
+                width: actor.system.class ? 800 : 1166,
+                height: 900,
                 top: 20,
                 left: 60
             },

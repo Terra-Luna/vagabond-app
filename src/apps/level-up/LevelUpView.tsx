@@ -1,13 +1,14 @@
-import { ArrowsUpFromLine } from "lucide-react"
+import { ArrowsUpFromLine, MoveLeft, MoveRight } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { ClassDataModel } from "../../model/item/character/ClassDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, getRuleSelectionValues } from "../../rules/util/item-rules-util"
+import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, getRuleSelectionValues, randomId, saveItemRuleSelections } from "../../rules/util/item-rules-util"
 import { ItemsCache } from "../../rules/util/ItemsCache"
+import { groupBy } from "../../utils/collectionUtil"
 import { appLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
-import { DestructiveButton, PrimaryButton } from "../../view/component/Button"
+import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Divider, Header } from "../../view/component/Header"
 import { SkillCard } from "../../view/component/SkillCard"
 import { EditModeContextProvider } from "../../view/context/EditModeContext/EditModeContext"
@@ -25,6 +26,8 @@ export interface PerkBonusSelection {
     selectionId?: string
 }
 
+type LevelUpStep = 'class-selection' | 'feats' | 'spells' | 'perks'
+
 export interface LevelUpArgs {
     levelUpStat?: string
     newRsnTraining?: string
@@ -41,7 +44,6 @@ export interface LevelUpArgs {
 
 export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDataModel }, onSave: (args: LevelUpArgs) => void }) => {
 
-    const [selectedClass, setSelectedClass] = useState<(Item & { system: ClassDataModel }) | undefined>(actor.items.find(it => (it.type as string) === 'class') as any)
     const [levelUpStat, setLevelUpStat] = useState<string | undefined>()
     const [startingRsn, setStartingRsn] = useState<number>(actor.system.stats.reason ?? 2)
     const [newRsnTraining, setNewRsnTraining] = useState<string | undefined>()
@@ -53,14 +55,18 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
         .map(feature => ({ feature, level: feature.system.level }))
         .find(({ level, feature }) => level === nextLevel || (feature.system.scale > 0 && calculateRecurringRuleEligibility(nextLevel, level, feature.system.scale)))
 
+    const { ClassSelection, classItem: selectedClassItem } = useClassSelection([])
+
+    /**
+     * Falls back to the pending (not-yet-embedded) class selection so the
+     * spell/perk steps can be determined before the class item is saved.
+     */
     const levelUpChoices = () => {
-        return getItemChoiceRules(nextLevel, getItemRules(actorClassItem))
+        return getItemChoiceRules(nextLevel, getItemRules(actorClassItem ?? selectedClassItem))
             .filter(r => r.level === nextLevel || calculateRecurringRuleEligibility(nextLevel, r.level, r.scale))
     }
-
-    const { ClassSelection, classItem: selectedClassItem } = useClassSelection([])
-    const { PerkSelection, bonusChoicesByPerk, classPerkSlots } = usePerkSelection(actor, true)
-    const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelection(actor, true)
+    const { PerkSelection, bonusChoicesByPerk, classPerkSlots } = usePerkSelection(actor, true, actorClassItem ? undefined : selectedClassItem)
+    const { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants } = useSpellSelection(actor, true, actorClassItem ? undefined : selectedClassItem)
 
     const perks = useMemo(() => { return ItemsCache.perks() }, [])
 
@@ -97,10 +103,8 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
     )
 
     const latestPerk = selectedPerks[selectedPerks.length - 1]
-    const showPerkSelection = useMemo(() => { return levelUpChoices().some(ch => ch.pack === 'perk') }, [selectedClass])
-    const showSpellSelection = useMemo(() => { return levelUpChoices().some(ch => ch.pack === 'spell') }, [selectedClass])
-
-
+    const showPerkSelection = useMemo(() => { return levelUpChoices().some(ch => ch.pack === 'perk') }, [selectedClassItem])
+    const showSpellSelection = useMemo(() => { return levelUpChoices().some(ch => ch.pack === 'spell') }, [selectedClassItem])
 
     useEffect(() => {
         resetPerkBonusSelections()
@@ -142,9 +146,78 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
     const [isSaving, setIsSaving] = useState<boolean>(false)
 
+    /**
+     * Level-up workflow steps, filtered down to only those with content to show.
+     */
+    const stepOrder: LevelUpStep[] = ['class-selection', 'feats', 'spells', 'perks']
+    const showFeatsSelection = Boolean(classFeature) || nextLevel % 2 === 0 || isRsnTrainingOptionAvailable
+    const stepVisibility: Record<LevelUpStep, boolean> = {
+        'class-selection': !actorClassItem,
+        'feats': showFeatsSelection,
+        'spells': showSpellSelection,
+        'perks': showPerkSelection
+    }
+    const visibleSteps = stepOrder.filter(step => stepVisibility[step])
+
+    const [stepIndex, setStepIndex] = useState(0)
+    useEffect(() => {
+        setStepIndex(prev => Math.min(prev, Math.max(visibleSteps.length - 1, 0)))
+    }, [visibleSteps.length])
+
+    const currentStep = visibleSteps[stepIndex]
+    const isLastStep = stepIndex >= visibleSteps.length - 1
+
+    const goToNextStep = async () => {
+        if (currentStep === 'class-selection') {
+            if (!selectedClassItem) {
+                ui.notifications?.warn("Select a class to continue...")
+                return
+            }
+        }
+        if (currentStep === 'feats') {
+            if (isStatBoostOptionAvailable() && !levelUpStat) {
+                ui.notifications?.warn("Select a Stat to increase before saving...")
+                return
+            }
+            if (isRsnTrainingOptionAvailable && !newRsnTraining) {
+                ui.notifications?.warn("Select a new Skill Training before saving...")
+                return
+            }
+        }
+        setStepIndex(prev => Math.min(prev + 1, visibleSteps.length - 1))
+    }
+
+    const goToPreviousStep = () => {
+        setStepIndex(prev => Math.max(prev - 1, 0))
+    }
+
+    /**
+     * The class/perk/spell selection hooks skip persistence while the class isn't
+     * embedded yet, so once it's created we need to save the selections.
+     */
+    const persistPendingClassSelections = async (classItem: Item & { system: ClassDataModel }, slots: { value: string, ruleId: string, selectionId?: string }[]) => {
+        const chosenSlots = slots.filter(slot => slot.value)
+        if (!chosenSlots.length) return
+        const rules = getItemRules(classItem)
+        const selectionUpdates = Object.fromEntries(
+            Object.entries(groupBy("ruleId", chosenSlots))
+                .filter(([ruleId]) => rules.some(rule => rule.id === ruleId))
+                .map(([ruleId, grouped]) => [ruleId, (grouped as typeof chosenSlots).map(slot => ({
+                    id: slot.selectionId ?? randomId(),
+                    value: slot.value,
+                    subselect: ""
+                }))])
+        )
+        await saveItemRuleSelections(classItem, selectionUpdates)
+    }
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!selectedClass && !selectedClassItem) {
+        if (!isLastStep) {
+            await goToNextStep()
+            return
+        }
+        if (!actorClassItem && !selectedClassItem) {
             ui.notifications?.warn("Select a class to continue...")
             return
         }
@@ -158,46 +231,79 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
         }
         setIsSaving(true)
 
-        if (!selectedClass && selectedClassItem) {
-            await actor.createEmbeddedDocuments("Item", [selectedClassItem.toObject()])
-            setSelectedClass(selectedClassItem as Item & { system: ClassDataModel })
-            setIsSaving(false)
+        // The chosen class is only embedded on the actor once the whole workflow is confirmed.
+        if (!actorClassItem && selectedClassItem) {
+            const [createdClassItem] = await actor.createEmbeddedDocuments("Item", [selectedClassItem.toObject()]) as (Item & { system: ClassDataModel })[]
+            await persistPendingClassSelections(createdClassItem, [...classPerkSlots, ...classSpellSlots])
         }
-        else {
-            onSave({
-                levelUpStat: levelUpStat,
-                newRsnTraining: newRsnTraining,
-                advancement: advancement,
-                spell: spell,
-                perkTraining: perkTraining,
-                reasonTraining: reasonTraining,
-                advancements,
-                spells,
-                perkTrainings,
-                reasonTrainings,
-                isComplete: true
-            })
-        }
+
+        onSave({
+            levelUpStat: levelUpStat,
+            newRsnTraining: newRsnTraining,
+            advancement: advancement,
+            spell: spell,
+            perkTraining: perkTraining,
+            reasonTraining: reasonTraining,
+            advancements,
+            spells,
+            perkTrainings,
+            reasonTrainings,
+            isComplete: true
+        })
     }
+
+    /**
+     * Reason-Training dropdown, shown on the 'feats' step and again above
+     * Perks so it stays visible regardless of where the user ends up.
+     */
+    const NewTrainingBlock = isRsnTrainingOptionAvailable && (
+        <div className="flex flex-col justify-center items-center mb-2">
+            <Header title={"NEW TRAINING"} />
+            <p className="flex justify-center m-4 text-base text-text-primary text-justify font-eskapade font-normal shrink-0">
+                Your increased Reason has granted you another Training selection...
+            </p>
+            <HeroCreationDropdown
+                value={newRsnTraining ?? ''}
+                options={untrainedSkills()}
+                onChange={(selection: string) => setNewRsnTraining(selection)}
+            />
+        </div>
+    )
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col h-full bg-sheet-main-fill p-2 overflow-hidden">
-            {/* HEADER WITH SAVE & CANCEL BUTTONS */}
-            <div className="flex justify-between my-1 shrink-0">
-                <DestructiveButton onClick={() => onSave({ isComplete: false })}>
-                    {appLang.ButtonActions.cancel}
-                </DestructiveButton>
+            {/* HEADER WITH CANCEL/BACK & NEXT/SAVE BUTTONS */}
+            {!isSaving && <div className="grid grid-cols-3 items-center my-1 shrink-0">
+                {/* Left Column: Buttons */}
+                <div className="flex gap-x-2 justify-self-start">
+                    <DestructiveButton onClick={() => onSave({ isComplete: false })}>
+                        {appLang.ButtonActions.cancel}
+                    </DestructiveButton>
 
-                <p className="flex gap-x-2 items-center text-2xl text-text-primary font-eskapade font-bold">
+                    {stepIndex > 0 &&
+                        <SecondaryButton onClick={goToPreviousStep}>
+                            <div className="flex items-center gap-x-2">
+                                <MoveLeft size={14} />
+                                {appLang.ButtonActions.back}
+                            </div>
+                        </SecondaryButton>
+                    }
+                </div>
+
+                {/* Center Column: Level Up (Dead-Center) */}
+                <p className="flex gap-x-2 items-center text-2xl text-text-primary font-eskapade font-bold justify-self-center">
                     <ArrowsUpFromLine size={24} className="text-wealth-denom-label" />
                     LEVEL UP
                     <ArrowsUpFromLine size={24} className="text-wealth-denom-label" />
                 </p>
 
-                <PrimaryButton type="submit" icon={<ArrowsUpFromLine size={16} />}>
-                    {`${!selectedClass ? 'Save & Continue' : 'Save & Finish'}`}
-                </PrimaryButton>
-            </div>
+                {/* Right Column: Submit Button */}
+                <div className="justify-self-end">
+                    <PrimaryButton type="submit" icon={isLastStep ? <ArrowsUpFromLine size={16} /> : <MoveRight size={16} />}>
+                        {isLastStep ? 'Save & Finish' : appLang.ButtonActions.next}
+                    </PrimaryButton>
+                </div>
+            </div>}
 
             <div className="my-1 shrink-0">
                 <Divider />
@@ -206,89 +312,76 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
             {!isSaving &&
                 <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                     <div className="@container flex-1 min-h-0 flex flex-col gap-y-2 overflow-y-auto">
-                        {/* LEVEL 1 CLASS SELECTION */}
-                        {!selectedClass &&
-                            <div>
-                                {ClassSelection}
-                            </div>
-                        }
-
                         {/* NO SELECTIONS REQUIRED */}
-                        {levelUpChoices.length === 0 && upgradableStatsOptions().length === 1 &&
+                        {visibleSteps.length === 0 &&
                             <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal shrink-0">
                                 No selections required.
                             </p>
                         }
 
-                        {/* CLASS FEATURE CARD */}
-                        {(classFeature || nextLevel % 2 === 0) &&
-                            <div className="flex gap-x-2 shrink-0">
-                                {/* LATEST/UPGRADED CLASS FEATURE CARDS */}
-                                {classFeature &&
-                                    <div className="flex-1 space-y-1">
-                                        <Header title={"CLASS FEATURE"} />
-                                        <SkillCard
-                                            title={classFeature.feature.name}
-                                            subtitles={[{ label: "Level", value: classFeature.level }]}
-                                            description={classFeature.feature.system.dynamicDescription(nextLevel)}
-                                            startCollapsed={false}
-                                        />
-                                    </div>
-                                }
+                        {/* LEVEL 1 CLASS SELECTION */}
+                        {currentStep === 'class-selection' &&
+                            <div>
+                                {ClassSelection}
+                            </div>
+                        }
 
-                                {/* LEVEL-UP STAT BOOST (EVEN LEVELS) */}
-                                {isStatBoostOptionAvailable() &&
-                                    <div className="flex-1 space-y-1 text-center">
-                                        <Header title="STAT INCREASE" />
-                                        <HeroCreationLabel text={"Select a stat (Max: 7)"} />
-                                        <div className="flex w-full justify-center">
-                                            <HeroCreationDropdown
-                                                value={levelUpStat ?? ''}
-                                                options={upgradableStatsOptions()}
-                                                onChange={(selection: string) => setLevelUpStat(selection)}
-                                            />
+                        {/* FEATS STEP: CLASS FEATURE, STAT BOOST & RSN TRAINING */}
+                        {currentStep === 'feats' &&
+                            <>
+                                {(classFeature || nextLevel % 2 === 0) &&
+                                    <div className="flex gap-x-2 shrink-0">
+                                        {/* LATEST/UPGRADED CLASS FEATURE CARDS */}
+                                        {classFeature &&
+                                            <div className="flex-1 space-y-1">
+                                                <Header title={"CLASS FEATURE"} />
+                                                <SkillCard
+                                                    title={classFeature.feature.name}
+                                                    subtitles={[{ label: "Level", value: classFeature.level }]}
+                                                    description={classFeature.feature.system.dynamicDescription(nextLevel)}
+                                                    startCollapsed={false}
+                                                />
+                                            </div>
+                                        }
+
+                                    {/* LEVEL-UP STAT BOOST (EVEN LEVELS) */}
+                                    {isStatBoostOptionAvailable() &&
+                                        <div className="flex-1 space-y-1 text-center">
+                                            <Header title="STAT INCREASE" />
+                                            <HeroCreationLabel text={"Select a stat (Max: 7)"} />
+                                            <div className="flex w-full justify-center">
+                                                <HeroCreationDropdown
+                                                    value={levelUpStat ?? ''}
+                                                    options={upgradableStatsOptions()}
+                                                    onChange={(selection: string) => setLevelUpStat(selection)}
+                                                />
+                                            </div>
                                         </div>
-                                    </div>
-                                }
+                                    }
 
-                            </div>
-                        }
-
-                        {/* NEW TRAINING ON INCREASED RSN STAT */}
-                        {isRsnTrainingOptionAvailable &&
-                            <div className="flex flex-col justify-center items-center mb-2">
-                                <Header title={"NEW TRAINING"} />
-                                <p className="flex justify-center m-4 text-xl text-text-primary text-justify font-eskapade font-normal shrink-0">
-                                    Your increased Reason has granted you another Training selection...
-                                </p>
-                                <HeroCreationDropdown
-                                    value={newRsnTraining ?? ''}
-                                    options={untrainedSkills()}
-                                    onChange={(selection: string) => setNewRsnTraining(selection)}
-                                />
-                            </div>
-                        }
-
-                        {/* SELECTIONS GRID SECTION */}
-                        <div className={`
-                            grid gap-4 w-full flex-1 min-h-0
-                            ${showPerkSelection && showSpellSelection
-                                ? "grid-cols-2"
-                                : "max-w-3xl mx-auto grid-cols-1"
+                                </div>
                             }
-                        `}>
-                            {showPerkSelection && (
-                                <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full">
-                                    <PerkSelection bonusChoices={bonusChoicesByPerk} />
-                                </div>
-                            )}
 
-                            {showSpellSelection && (
-                                <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full">
-                                    {SpellSelection}
-                                </div>
-                            )}
-                        </div>
+                            {/* NEW TRAINING ON INCREASED RSN STAT */}
+                                {NewTrainingBlock}
+                            </>
+                        }
+
+                        {/* SPELLS STEP */}
+                        {currentStep === 'spells' &&
+                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full w-full max-w-3xl mx-auto">
+                                {SpellSelection}
+                            </div>
+                        }
+
+                        {/* PERKS STEP */}
+                        {currentStep === 'perks' &&
+                            <div className="flex flex-col gap-y-1 overflow-y-auto pr-1 h-full w-full max-w-3xl mx-auto">
+                                {/* Also shown here in case Reason was increased after leaving the 'feats' step */}
+                                {NewTrainingBlock}
+                                <PerkSelection bonusChoices={bonusChoicesByPerk} />
+                            </div>
+                        }
                     </div>
                 </EditModeContextProvider>
             }

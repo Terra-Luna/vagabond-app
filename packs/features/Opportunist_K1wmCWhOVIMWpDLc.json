@@ -1,0 +1,33 @@
+{
+  "name": "Opportunist",
+  "type": "feature",
+  "_id": "K1wmCWhOVIMWpDLc",
+  "img": "icons/magic/air/air-smoke-casting.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Round after another Being uses an Action or Move, you can immediately take the Use Action.</span></p>",
+    "rules": [],
+    "level": 6,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "vnsuUhcrqsaCoiYP",
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789501662469,
+    "modifiedTime": 1789521900422,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!K1wmCWhOVIMWpDLc"
+}

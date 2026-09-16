@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import { appLang } from "../../utils/lang"
 import { createDropdownEntriesFromObj } from "../../utils/localeUtils"
 import { tableBorder } from "../../view/common/border-styles"
+import { Checkbox } from "../../view/component/Checkbox"
 import { IconOnlyButton } from "../../view/component/IconOnlyButton"
 import { ChoiceOption } from "../shared/ChoiceOption"
 import { FormProps } from "../shared/FormProps"
@@ -149,7 +150,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     }}
                 />}
 
-                {/* Perk Prerequisites Filter Options */}
+                {/* Perk Prerequisites Filter & Exception Options */}
                 {rule.sourceMode === "dynamic" && rule.pack === "perk" &&
                     <div>
                         <div className="flex gap-x-1 items-center">
@@ -171,7 +172,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         size={16}
                                         className="text-destructive-action cursor-pointer"
                                         onClick={() => {
-                                            const updatedFilters = rule.filters.filter((_, i) => i !== index);
+                                            const updatedFilters = rule.filters.filter((_, i) => i !== index)
                                             onChange({ ...rule, filters: updatedFilters })
                                         }}
                                     />
@@ -209,6 +210,24 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                 </div>
                             ))
                         }
+
+                        <div className="flex flex-col gap-1">
+                            <ItemRulesLabel text={"Exceptions"} />
+                            <Checkbox
+                                label="Stats"
+                                checked={rule.ignoreStats || false}
+                                onCheckedChanged={(checked) => {
+                                    onChange({ ...rule, ignoreStats: checked })
+                                }}
+                            />
+                            <Checkbox
+                                label="Trainings"
+                                checked={rule.ignoreTrainings || false}
+                                onCheckedChanged={(checked) => {
+                                    onChange({ ...rule, ignoreTrainings: checked })
+                                }}
+                            />
+                        </div>
                     </div>
                 }
 

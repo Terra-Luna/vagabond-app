@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Fighter",
+  "color": null,
+  "sorting": "a",
+  "_id": "HwkvOvCXq07sSyrM",
+  "description": "",
+  "sort": 1800000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789521605594,
+    "modifiedTime": 1789526481742,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!HwkvOvCXq07sSyrM"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Double Time",
+  "type": "feature",
+  "_id": "nWYlJYGLFuNoR0aC",
+  "img": "/icons/magic/time/clock-spinning-gold-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use Step Up twice per Round, rather than once, and the Beings you use it on can also Move up to 10’ without using their Speed that Turn.</span></p>",
+    "rules": [],
+    "level": 10,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "mBrHNLwUdUwU8Url",
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789494405497,
+    "modifiedTime": 1789521724390,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!nWYlJYGLFuNoR0aC"
+}

@@ -8,7 +8,6 @@ const classSchema = () => {
         keyStats: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Stat) }), { initial: [] }),
         startingPacks: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
         castingSkill: new fields.StringField({ ...requiredString, choices: ['', ...Object.keys(appLang.Skills)], blank: true }),
-        manaMultiplier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         maxCastFormula: new fields.StringField({ ...requiredString, choices: ['', "half", 'full'], blank: true }),
         featureIds: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: () => [] })
     }

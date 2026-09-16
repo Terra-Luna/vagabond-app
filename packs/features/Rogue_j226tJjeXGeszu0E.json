@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Rogue",
+  "color": null,
+  "sorting": "m",
+  "_id": "j226tJjeXGeszu0E",
+  "description": "",
+  "sort": 1300000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789521639445,
+    "modifiedTime": 1789526481742,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!j226tJjeXGeszu0E"
+}

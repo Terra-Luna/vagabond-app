@@ -25,12 +25,6 @@ export abstract class VagabondActorSheet extends VagabondSheetMixin(sheets.Actor
             return super._onDrop(event)
         }
 
-        const droppedDocument = await (Item.implementation as any).fromDropData(dragData) as Item | undefined
-        if (droppedDocument?.type === "feature") {
-            ui.notifications?.warn("Features cannot be dropped directly onto an Actor sheet. Add them to a Class instead.")
-            return false
-        }
-
         const itemId = (dragData as any).id
         if (!itemId) return super._onDrop(event)
 

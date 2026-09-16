@@ -116,18 +116,27 @@ export const perkTrainingPrerequisitesAsString = (perk: PerkDataModel): string =
  * @param trainings 
  * @param spells 
  * @param perk 
+ * @param options
  * @returns 
  */
-export const isEligibleForPerk = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[], perk: PerkDataModel): boolean => {
+export const isEligibleForPerk = (
+    stats: ReturnType<typeof statsSchema>,
+    trainings: string[],
+    spells: string[],
+    perk: PerkDataModel,
+    options?: { ignoreStats?: boolean, ignoreTrainings?: boolean }
+): boolean => {
     let isEligible = true
 
     for (const pre of perk.prerequisites) {
         if (!isEligible) continue
 
         if (pre.type === 'stat') {
+            if (options?.ignoreStats) continue
             isEligible = stats[pre.stat] >= (pre.value ?? 2)
         }
         else if (pre.type === 'trained') {
+            if (options?.ignoreTrainings) continue
             for (const skill of pre.skills) {
                 if (!isEligible) continue
 

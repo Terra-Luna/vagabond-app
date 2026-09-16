@@ -1,0 +1,43 @@
+{
+  "name": "Manifold Mind",
+  "type": "feature",
+  "_id": "dlE8BvsNsSqU5eqn",
+  "img": "icons/magic/perception/orb-crystal-ball-scrying-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The number of Spells you can Focus on at the same time increases by {{feature-value:1:1}} now and every 4 Levels hereafter.</span></p>",
+    "rules": [
+      {
+        "id": "58pRXxWAmbPKT14E",
+        "key": "FlatModifier",
+        "label": "Increased Focus",
+        "level": 2,
+        "value": "1",
+        "selector": "maxFocus",
+        "scale": 4
+      }
+    ],
+    "level": 2,
+    "scale": 4,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "kf8KdAzFYpkX0Xlj",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789506228566,
+    "modifiedTime": 1789521864559,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!dlE8BvsNsSqU5eqn"
+}

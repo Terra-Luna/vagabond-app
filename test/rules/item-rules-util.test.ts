@@ -1,6 +1,7 @@
 import { describe, expect, jest, test } from "@jest/globals"
 
-import { createElectiveTrainingsRule, findElectiveTrainingsRule, findOrCreateElectiveTrainingsRule, getItemRules, getPerkSkillSubselections, savePerkSelections } from "../../src/rules/util/item-rules-util"
+import { isEligibleForPerk } from "../../src/model/item/character/PerkDataModel"
+import { createElectiveTrainingsRule, findElectiveTrainingsRule, findOrCreateElectiveTrainingsRule, getItemChoiceRules, getItemRules, getPerkSkillSubselections, savePerkSelections } from "../../src/rules/util/item-rules-util"
 import { ItemsCache } from "../../src/rules/util/ItemsCache"
 
 describe("getItemRules", () => {
@@ -342,5 +343,69 @@ describe("elective trainings rule helpers", () => {
         expect(createdResult.electiveRule.id).toBe("new-id")
         expect(createdResult.electiveRule.maxChoices).toBe(2)
         expect(createdResult.rules).toHaveLength(1)
+    })
+})
+
+describe("getItemChoiceRules with perk options and exceptions", () => {
+    test("preserves ignoreStats and ignoreTrainings on choice rules", () => {
+        const rules = [
+            {
+                id: "perk-rule-1",
+                key: "ChoiceSet",
+                channel: "item",
+                pack: "perk",
+                level: 1,
+                ignoreStats: true,
+                ignoreTrainings: true,
+                choices: [{ value: "perk-uuid-1", label: "Perk 1" }]
+            }
+        ]
+
+        const parsed = getItemChoiceRules(1, rules)
+        expect(parsed[0].ignoreStats).toBe(true)
+        expect(parsed[0].ignoreTrainings).toBe(true)
+    })
+})
+
+describe("isEligibleForPerk with exceptions", () => {
+    const stats: any = { might: 1, agility: 1, reason: 1, intuition: 1, presence: 1 }
+    const trainings: string[] = []
+    const spells: string[] = []
+
+    test("checks stat prereq normally and respects ignoreStats option", () => {
+        const perk: any = {
+            prerequisites: [
+                { type: "stat", stat: "might", value: 3 }
+            ]
+        }
+
+        expect(isEligibleForPerk(stats, trainings, spells, perk)).toBe(false)
+        expect(isEligibleForPerk(stats, trainings, spells, perk, { ignoreStats: true })).toBe(true)
+        expect(isEligibleForPerk(stats, trainings, spells, perk, { ignoreStats: false })).toBe(false)
+    })
+
+    test("checks training prereq normally and respects ignoreTrainings option", () => {
+        const perk: any = {
+            prerequisites: [
+                { type: "trained", skills: [{ skillNames: ["melee"], andOr: null }] }
+            ]
+        }
+
+        expect(isEligibleForPerk(stats, trainings, spells, perk)).toBe(false)
+        expect(isEligibleForPerk(stats, trainings, spells, perk, { ignoreTrainings: true })).toBe(true)
+        expect(isEligibleForPerk(stats, trainings, spells, perk, { ignoreTrainings: false })).toBe(false)
+    })
+
+    test("checks combined prereqs with both ignore options", () => {
+        const perk: any = {
+            prerequisites: [
+                { type: "stat", stat: "might", value: 3 },
+                { type: "trained", skills: [{ skillNames: ["melee"], andOr: null }] }
+            ]
+        }
+
+        expect(isEligibleForPerk(stats, trainings, spells, perk, { ignoreStats: true, ignoreTrainings: false })).toBe(false)
+        expect(isEligibleForPerk(stats, trainings, spells, perk, { ignoreStats: false, ignoreTrainings: true })).toBe(false)
+        expect(isEligibleForPerk(stats, trainings, spells, perk, { ignoreStats: true, ignoreTrainings: true })).toBe(true)
     })
 })

@@ -13,7 +13,7 @@ export const EffectCardContainer = ({ children }) => {
     )
 }
 
-export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
+export const ActiveEffectCardRow = ({ actor, rule, isActive = true }) => {
 
     const items = ItemsCache.items
 
@@ -37,6 +37,11 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
         .filter(Boolean)
         .map(cleanSelectionName)
         .filter(Boolean)
+
+    const modValue = () => {
+        const val = String(foundry.utils.getProperty(actor, `system.${rule.selector.replace("system.", "")}`)).toUpperCase()
+        return val === "0" ? "" : val
+    }
 
     return (
         <div key={rule.id} className={`
@@ -67,8 +72,8 @@ export const ActiveEffectCardRow = ({ rule, isActive = true }) => {
                     </span>
                 }
                 {rule.key === "FlatModifier" &&
-                    <span className="text-xl text-text-primary font-eskapade font-bold">
-                        {(rule.value ?? 0) >= 0 ? `+${rule.value}` : rule.value}
+                    <span className="text-base text-text-primary font-eskapade font-bold">
+                        {modValue()}
                     </span>
                 }
             </div>

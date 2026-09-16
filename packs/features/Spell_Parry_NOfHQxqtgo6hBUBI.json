@@ -1,0 +1,33 @@
+{
+  "name": "Spell Parry",
+  "type": "feature",
+  "_id": "NOfHQxqtgo6hBUBI",
+  "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If the result of your Save against a Cast Action exceeds your Difficulty by {{feature-value:10:-1}}, you can choose a different Target for it, ignoring Immunity.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">The number needed to exceed is reduced by 1 every 4 Levels hereafter.</span></p>",
+    "rules": [],
+    "level": 2,
+    "scale": 4,
+    "maxLevel": 40
+  },
+  "effects": [],
+  "folder": "LZAVWKtn3fuTeOtg",
+  "sort": 250000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789500748810,
+    "modifiedTime": 1789574243054,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!NOfHQxqtgo6hBUBI"
+}

@@ -80,9 +80,14 @@ export class ItemsCache {
             .sort((a, b) => (a.name ?? '').localeCompare(b.name ?? '')) as (Item & { system: ClassDataModel })[]
     }
 
-    static eligiblePerks = (stats: ReturnType<typeof statsSchema>, trainings: string[], spells: string[]) => {
+    static eligiblePerks = (
+        stats: ReturnType<typeof statsSchema>,
+        trainings: string[],
+        spells: string[],
+        options?: { ignoreStats?: boolean, ignoreTrainings?: boolean }
+    ) => {
         const perks = this.perks()
-        return perks.filter(perk => isEligibleForPerk(stats, trainings, spells, perk.system))
+        return perks.filter(perk => isEligibleForPerk(stats, trainings, spells, perk.system, options))
     }
 
     static alchemical = () => {

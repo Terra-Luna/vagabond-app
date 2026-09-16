@@ -35,22 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.performance.trained"
-      },
-      {
-        "id": "BwMLDvk0vLuDEqJZ",
-        "key": "GrantItem",
-        "label": "Footloose: Fallaway Reverse",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.EA0tFzBH51SqEfWv",
-        "type": "perk"
-      },
-      {
-        "id": "P8yWc5IulexWxD4a",
-        "key": "FlatModifier",
-        "label": "Footloose",
-        "level": 1,
-        "value": 1,
-        "selector": "modifiers.skillCheck.reflex.extraDice"
       }
     ],
     "complexity": 2,
@@ -62,51 +46,14 @@
       "Compendium.vagabond-app.gear.Item.3vDJJSHn1yUcfRT0"
     ],
     "castingSkill": "",
-    "manaMultiplier": 0,
     "maxCastFormula": "",
-    "features": [
-      {
-        "name": "Step Up",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round when you Move, you can make a Finesse Check. On a pass, one Being of your choice other than yourself that sees you can immediately take an extra Action.</span></p>"
-      },
-      {
-        "name": "Footloose",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.EA0tFzBH51SqEfWv]{Fallaway Reverse Perk} and, when you make a Reflex Save, roll two d20s and use the higher result.</span></p>"
-      },
-      {
-        "name": "Evasive",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Once per Round after another Being uses an Action or Move, you can Move 10’ without using Speed and can continue moving using your remaining Speed. This free Speed increases by 5’ every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Captivator",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Finesse Check or Crit on any Save, you can cause a Being that can see you to become Berserk, Charmed, Confused, or Frightened for Cd4 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This countdown die increases to a Cd6 at 8th Level.</span></p>"
-      },
-      {
-        "name": "Don't Stop Me Now",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Difficult Terrain doesn’t impede your walking Speed, and you have Favor on Saves against being Paralyzed, Restrained, grappled, or moved.</span></p>"
-      },
-      {
-        "name": "Captivator",
-        "level": 8,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you pass a Finesse Check or Crit on any Save, you can cause a Being that can see you to become Berserk, Charmed, Confused, or Frightened for Cd6 Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p>"
-      },
-      {
-        "name": "Double Time",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can use Step Up twice per Round, rather than once, and the Beings you use it on can also Move up to 10’ without using their Speed that Turn.</span></p>"
-      }
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.ngKG6dQ5IucfKYWd",
+      "Compendium.vagabond-app.features.Item.fzcQ6m6UBFAbZ7gD",
+      "Compendium.vagabond-app.features.Item.AwRzdfRJsVwkkImI",
+      "Compendium.vagabond-app.features.Item.f0OdFYSFL8kBurRQ",
+      "Compendium.vagabond-app.features.Item.G0Zv3dVgvkVavxEl",
+      "Compendium.vagabond-app.features.Item.nWYlJYGLFuNoR0aC"
     ]
   },
   "effects": [],
@@ -120,9 +67,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1786555298394,
-    "modifiedTime": 1789326113616,
+    "modifiedTime": 1789494450477,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

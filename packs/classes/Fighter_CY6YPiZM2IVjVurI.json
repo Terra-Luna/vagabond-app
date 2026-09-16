@@ -35,46 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.ranged.trained"
-      },
-      {
-        "id": "VQWJJrXPuJra5YFp",
-        "key": "GrantItem",
-        "label": "Fighting Style",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.6aUzsiWQ0IpvS0y4",
-        "type": "perk"
-      },
-      {
-        "id": "fRWwkbsmQ8zKQcWz",
-        "key": "ChoiceSet",
-        "label": "Fighting Style",
-        "level": "0",
-        "value": 1,
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "perk",
-        "filters": [
-          {
-            "type": "training",
-            "value": "melee"
-          },
-          {
-            "type": "training",
-            "value": "ranged"
-          }
-        ]
-      },
-      {
-        "id": "XpvDpGdc4H2ByW6v",
-        "key": "FlatModifier",
-        "label": "Valor",
-        "level": 2,
-        "value": 1,
-        "selector": "modifiers.skillCheck.attack.critThreshold",
-        "scale": 4
       }
     ],
     "complexity": 1,
@@ -89,38 +49,12 @@
       "Compendium.vagabond-app.gear.Item.skbkscLdu2nlcgHW"
     ],
     "castingSkill": "",
-    "manaMultiplier": 0,
-    "features": [
-      {
-        "name": "Fighting Style",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.6aUzsiWQ0IpvS0y4]{Situational Awareness Perk} and another Perk with the Melee or Ranged Training Prerequisite, ignoring prerequisites for this Perk.</span></p>"
-      },
-      {
-        "name": "Momentum",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">If you pass a Save against an Enemy’s attack or reduce its damage to 0, your next attack before the end of your Turn is Favored</span></p>"
-      },
-      {
-        "name": "Valor",
-        "level": 2,
-        "scale": 4,
-        "description": "<p><span style=\"white-space: pre-wrap;\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more at 4th Level and every 4 Levels thereafter.</span></p>"
-      },
-      {
-        "name": "Muster for Battle",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You have two Actions on your first Turn.</span></p>"
-      },
-      {
-        "name": "Harrying",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">When you take the Attack Action, you can make one extra attack.</span></p>"
-      }
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.YmGYqSe9wKYgtXBu",
+      "Compendium.vagabond-app.features.Item.2h9SS6gNRSspabmD",
+      "Compendium.vagabond-app.features.Item.pvpkPkA54QQFkz3v",
+      "Compendium.vagabond-app.features.Item.NdajIcq3Qdwpx9lu",
+      "Compendium.vagabond-app.features.Item.fgiBBVNowMdlVoHv"
     ]
   },
   "effects": [],
@@ -134,9 +68,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.84",
+    "systemVersion": "0.0.94",
     "createdTime": 1784497758223,
-    "modifiedTime": 1789326193506,
+    "modifiedTime": 1789496535294,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

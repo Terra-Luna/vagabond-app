@@ -21,7 +21,7 @@ describe("level up selections", () => {
     })
 
     test("slots new elective training selection into class elective training rule", async () => {
-        const updateMock = jest.fn()
+        const updateMock = jest.fn(async (_update: Record<string, unknown>) => undefined)
         const classItem = {
             type: "class",
             system: {
@@ -51,9 +51,12 @@ describe("level up selections", () => {
         await saveElectiveTraining(actor as any, "detect")
 
         expect(updateMock).toHaveBeenCalledTimes(1)
-        const updatedRules = updateMock.mock.calls[0][0]["system.rules"]
-        expect(updatedRules[0].selections).toHaveLength(2)
-        expect(updatedRules[0].selections[1].value).toBe("skills.detect.trained")
+        const update = updateMock.mock.calls[0][0] as Record<string, any>
+        expect(update["flags.vagabond-app.ruleSelections"]["elective-rule-id"])
+            .toEqual([
+                { id: "sel-1", value: "skills.arcana.trained", subselect: "" },
+                { id: "test-id", value: "skills.detect.trained", subselect: "" }
+            ])
     })
 
     test("does not duplicate selection if already selected", async () => {

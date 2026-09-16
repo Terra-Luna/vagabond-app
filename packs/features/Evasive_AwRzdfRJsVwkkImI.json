@@ -1,0 +1,33 @@
+{
+  "name": "Evasive",
+  "type": "feature",
+  "_id": "AwRzdfRJsVwkkImI",
+  "img": "icons/skills/movement/feet-winged-boots-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Round after another Being uses an Action or Move, you can Move {{feature-value:10:5}}’ without using Speed and can continue moving using your remaining Speed. This free Speed increases by 5’ every 4 Levels hereafter.</span></p>",
+    "rules": [],
+    "classId": "",
+    "level": 2,
+    "scale": 4
+  },
+  "effects": [],
+  "folder": "18jwiQpzHlbuO55B",
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789432630680,
+    "modifiedTime": 1789521749231,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!AwRzdfRJsVwkkImI"
+}

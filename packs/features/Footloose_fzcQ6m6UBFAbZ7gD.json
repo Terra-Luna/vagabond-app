@@ -1,0 +1,50 @@
+{
+  "name": "Footloose",
+  "type": "feature",
+  "_id": "fzcQ6m6UBFAbZ7gD",
+  "img": "/icons/magic/control/silhouette-fall-slip-prone.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.EA0tFzBH51SqEfWv]{Fallaway Reverse} Perk and, when you make a Reflex Save, roll two d20s and use the higher result.</span></p>",
+    "rules": [
+      {
+        "id": "yhKKgWNHxTun99au",
+        "key": "FlatModifier",
+        "label": "Reflex Bonus Die",
+        "level": 1,
+        "value": "1",
+        "selector": "modifiers.skillCheck.reflex.extraDice"
+      },
+      {
+        "id": "5UosVDZ7nwMNU1oz",
+        "key": "GrantItem",
+        "label": "Grant: Fallaway Reverse",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.perks.Item.EA0tFzBH51SqEfWv",
+        "type": "perk"
+      }
+    ],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "mBrHNLwUdUwU8Url",
+  "sort": 400000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789493906088,
+    "modifiedTime": 1789521768840,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!fzcQ6m6UBFAbZ7gD"
+}

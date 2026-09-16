@@ -1,0 +1,33 @@
+{
+  "name": "Grudge Bearer",
+  "type": "feature",
+  "_id": "yIbIJTAeAGTebsbC",
+  "img": "icons/magic/unholy/silhouette-robe-evil-glow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The number of Spells you can cause to be continual on the Target with your Hex Feature increases by {{feature-value:1:1}} now and every 4 Levels hereafter.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, if you hex a new Target while you have an Enemy hexed, the new Target is affected by the previous Spells.</span></p>",
+    "rules": [],
+    "level": 4,
+    "scale": 4,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "2yctexWHVMue7l3p",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789505783603,
+    "modifiedTime": 1789521794697,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yIbIJTAeAGTebsbC"
+}

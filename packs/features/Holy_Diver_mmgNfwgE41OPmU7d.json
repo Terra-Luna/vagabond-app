@@ -1,0 +1,50 @@
+{
+  "name": "Holy Diver",
+  "type": "feature",
+  "_id": "mmgNfwgE41OPmU7d",
+  "img": "icons/magic/fire/dagger-rune-enchant-flame-strong-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You and Weapons you wield are permanently under the effects of the Bless and Exalt Spells.</span></p>",
+    "rules": [
+      {
+        "id": "jphD1RQdnUWgcSZw",
+        "key": "ToggleRule",
+        "label": "Exalted",
+        "level": "10",
+        "value": true,
+        "selector": "statuses.toggles.exalted"
+      },
+      {
+        "id": "VvpwyeGMFnGHlJ5j",
+        "key": "ToggleRule",
+        "label": "Blessed",
+        "level": 1,
+        "value": true,
+        "selector": "statuses.toggles.blessed"
+      }
+    ],
+    "level": 10,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "SywtkJSRaraGSF3q",
+  "sort": 400000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789503595065,
+    "modifiedTime": 1789523098500,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!mmgNfwgE41OPmU7d"
+}

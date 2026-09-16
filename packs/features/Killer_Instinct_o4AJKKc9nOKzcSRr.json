@@ -1,0 +1,33 @@
+{
+  "name": "Killer Instinct",
+  "type": "feature",
+  "_id": "o4AJKKc9nOKzcSRr",
+  "img": "/icons/magic/perception/eye-ringed-glow-angry-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can sense Beings within Far as if by Blindsight if they are missing any HP or are your Mark.</span></p>",
+    "rules": [],
+    "level": 6,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "Bm3LH84CSNNEiKQR",
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789498159872,
+    "modifiedTime": 1789521830573,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!o4AJKKc9nOKzcSRr"
+}

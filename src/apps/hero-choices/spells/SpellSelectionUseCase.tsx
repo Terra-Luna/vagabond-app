@@ -4,14 +4,14 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { calculateRecurringRuleEligibility, getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../utils/collectionUtil"
 import { useSpellSelectionView } from "./SpellSelectionView"
 
-export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean) => {
+export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, pendingClassItem?: Item & { system: ClassDataModel }) => {
 
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
-    const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
+    const clazz = pendingClassItem ?? (actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel })
     const perks = actor.system.perks as PerkDataModel[]
     const level = ((actor as any).system.level.current ?? 0) + (isLevelUp ? 1 : 0)
 
@@ -28,14 +28,15 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
     }
 
     const loadSelections = (rules, setSlots) => {
-        const slots = loadInitialSlots(rules.filter(r => r.level <= level || calculateRecurringRuleEligibility(level, r.level, r.scale)))
-        let sharedIndex = 0
+        const slots = loadInitialSlots(rules)
+        let offset = 0
         rules.forEach(rule => {
-            const ruleSelections = normalizeRuleSelections(rule.selections)
-            ruleSelections.forEach(sel => {
-                if (slots[sharedIndex]) {
-                    slots[sharedIndex] = {
-                        ...slots[sharedIndex],
+            const count = Number(rule.maxChoices) || 0
+            normalizeRuleSelections(rule.selections).forEach((sel, i) => {
+                const slotIndex = offset + i
+                if (i < count && slots[slotIndex]) {
+                    slots[slotIndex] = {
+                        ...slots[slotIndex],
                         selectionId: sel.id,
                         value: sel.value,
                         label: getSpellName(sel.value),
@@ -43,8 +44,8 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
                         ruleId: rule.id
                     }
                 }
-                sharedIndex += 1
             })
+            offset += count
         })
         setSlots(slots)
     }
@@ -93,6 +94,7 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
      */
     useEffect(() => {
         if (!clazz || !classSpellSlots.length || !dataLoaded.current) return
+        if (clazz.parent !== actor) return // Not yet embedded on the Actor; nothing to persist to.
 
         const classRules = getItemRules(clazz)
         const classSpellSlotGroups = groupBy("ruleId", classSpellSlots)
@@ -128,6 +130,49 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
             saveItemRuleSelections(clazz, selectionUpdates)
         }
     }, [classSpellSlots])
+
+    /**
+     * Monitors Ancestry spell choices and makes async background changes on the fly.
+     * This lets a player pick a new ancestral spell after a GM swaps their Ancestry.
+     */
+    useEffect(() => {
+        if (!ancestry || !ancestrySpellSlots.length || !dataLoaded.current) return
+        if (ancestry.parent !== actor) return // Not yet embedded on the Actor; nothing to persist to.
+
+        const ancestryRules = getItemRules(ancestry)
+        const ancestrySpellSlotGroups = groupBy("ruleId", ancestrySpellSlots)
+        const selectionUpdates: Record<string, any> = {}
+
+        let hasChanges = false
+
+        Object.keys(ancestrySpellSlotGroups).forEach(ruleId => {
+            const ruleIndex = ancestryRules.findIndex(r => r.id === ruleId)
+
+            if (ruleIndex !== -1) {
+                const nextValues = ancestrySpellSlotGroups[ruleId]
+                    ?.map(it => it.value ?? "")
+                    .filter(Boolean) ?? []
+
+                const currentSelections = normalizeRuleSelections(ancestryRules[ruleIndex].selections)
+
+                const nextSelections = nextValues.map((value, index) => ({
+                    ...(currentSelections[index] ?? { id: foundry.utils.randomID() }),
+                    value,
+                    subselect: ""
+                }))
+
+                if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
+                    ancestryRules[ruleIndex].selections = nextSelections
+                    selectionUpdates[ruleId] = nextSelections
+                    hasChanges = true
+                }
+            }
+        })
+
+        if (hasChanges) {
+            saveItemRuleSelections(ancestry, selectionUpdates)
+        }
+    }, [ancestrySpellSlots])
 
     /**
      * Monitors Perk spell selections and async background changes on the fly.

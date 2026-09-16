@@ -97,12 +97,12 @@ export const useSpellSelectionView = (
             <TopNavButtons navButtons={navButtons} subtitle={strings.spellsSubheader} canProceed={isAllSelected} />
         </div>
 
-        <div className="flex flex-col flex-1 overflow-y-auto w-full justify-start p-2">
+        <div className="flex flex-col flex-1 overflow-y-auto w-full justify-start px-2">
             <div className="inline-flex flex-col items-stretch w-full @2xl:w-3/5 mx-auto">
                 
                 {/* GRANTED SPELLS (BY CLASS & ANCESTRY) */}
                 {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
-                    <div className="space-y-1">
+                    <div className="space-y-1 mb-4">
                         {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
                             <HeroCreationLabel text={strings.grantedSpells} />
                         }
@@ -131,7 +131,7 @@ export const useSpellSelectionView = (
 
                 {/* SELECTABLE CLASS SPELL SLOTS (INCLUDES MAGICAL SECRETS) */}
                 {classSpellSlots.length > 0 &&
-                    <div className="mt-4 space-y-2 font-eskapade font-bold">
+                    <div className="space-y-2 font-eskapade font-bold">
                         <ClearHeader title={strings.classSpells} />
                         <ItemSelectorGroup
                             slotGroup={classSpellSlots}
@@ -144,7 +144,7 @@ export const useSpellSelectionView = (
                 }
 
                 {/* SELECTABLE ANCESTRY SPELL SLOTS (HERO CREATION ONLY) */}
-                {(ancestrySpellSlots.length > 0 && isCreationMode) &&
+                {(ancestrySpellSlots.length > 0 && (isCreationMode || ancestrySpellSlots.some(slot => slot.value.length === 0))) &&
                     <BonusChoiceContainer>
                         <BonusChoiceTitle text={`${strings.ancestrySpells} (${ancestry?.name ?? ''}: ${ancestrySpellSlots[0].ruleName})`} />
                         <ItemSelectorGroup

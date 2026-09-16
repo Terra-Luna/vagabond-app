@@ -1,0 +1,42 @@
+{
+  "name": "Stalwart",
+  "type": "feature",
+  "_id": "rDgMQjafaxc82V2r",
+  "img": "icons/skills/melee/shield-block-gray-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.R3Hj2LF94pnsVEkk]{Protector Perk} and, when you take the Hold Action, you can use the held Action or Move as late as the end of your next Turn.</span></p>",
+    "rules": [
+      {
+        "id": "eYtjf3UEQNjM290i",
+        "key": "GrantItem",
+        "label": "Protector",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.perks.Item.R3Hj2LF94pnsVEkk",
+        "type": null
+      }
+    ],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "Iha5r9htb61ceB21",
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789504472124,
+    "modifiedTime": 1789521981625,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!rDgMQjafaxc82V2r"
+}

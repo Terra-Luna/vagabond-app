@@ -21,12 +21,9 @@ export const SpellcastingSubtext = ({ text }: { text: any }) => {
 
 export const SpellcastingErrMsg = ({ cost, mana, maxCast }: { cost: number, mana: number, maxCast: number }) => {
     const enforce = getManaEnforcement()
-    return (<div className="flex gap-x-2 mt-2">
-        {(enforce && cost > mana) && <div className="text-destructive-action text-base font-normal">
-            {appLang.HeroSheet.Magic.manaErrMsg}</div>
-        }
-        {(enforce && cost > maxCast) && <div className="text-destructive-action text-base font-normal">
-            {appLang.HeroSheet.Magic.maxErrMsg}</div>
-        }
+    return (<div className="flex gap-x-1 mt-2 text-destructive-action text-base font-normal">
+        {(enforce && cost > mana) && <p>{appLang.HeroSheet.Magic.manaErrMsg}</p>}
+        {(enforce && cost > mana && cost > maxCast) && <p className="">&</p>}
+        {(enforce && cost > maxCast) && <p>{appLang.HeroSheet.Magic.maxErrMsg}</p>}
     </div>)
 }

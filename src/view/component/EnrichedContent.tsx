@@ -59,6 +59,10 @@ export const EnrichedContent = ({ content, styleClasses = '', actor }: { content
                         f += `${modifier}`
                     }
 
+                    if (f.endsWith('+') || f.endsWith('-')) {
+                        f = f.slice(0, -1)
+                    }
+
                     rollInstance = new Roll(f)
                 }
 

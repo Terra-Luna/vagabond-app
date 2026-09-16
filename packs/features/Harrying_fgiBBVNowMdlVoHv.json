@@ -1,0 +1,33 @@
+{
+  "name": "Harrying",
+  "type": "feature",
+  "_id": "fgiBBVNowMdlVoHv",
+  "img": "icons/skills/melee/spear-tips-three-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you take the Attack Action, you can make one extra attack.</span></p>",
+    "rules": [],
+    "level": 10,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "HwkvOvCXq07sSyrM",
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789496490057,
+    "modifiedTime": 1789521797579,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!fgiBBVNowMdlVoHv"
+}

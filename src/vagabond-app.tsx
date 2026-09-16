@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client"
 
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
+import { showConfirmationDialog } from "./apps/vagabond-tools/dialog/showConfirmationDialog"
 import { resolveAllAttacks } from "./apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { VagabondSettingsRegistry } from "./apps/vagabond-tools/VagabondSettingsRegistry"
 import { VagabondToolsApp } from "./apps/vagabond-tools/VagabondToolsApp"
@@ -189,21 +190,30 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
     }
 
     /**
-     * GMs can replace ancestries and classes, normal users can't add multiple ancestries / classes
+     * GMs can replace ancestries and classes, player users cannot.
+     * Doing so will prompt the GM to confirm the replacement, since
+     * it will reset the Hero's selected trainings, spells, & perks.
      */
     const uniqueItemTypes = ['ancestry', 'class']
     if (uniqueItemTypes.includes(item.type)) {
         const preExistingUniqueItem = actor.items.find(i => i.type === item.type)
         if (preExistingUniqueItem) {
             if (game.user?.isActiveGM) {
-                preExistingUniqueItem.update({ name: item.name, system: item.system })
-                actor.system.forceUpdate?.()
+                showConfirmationDialog({
+                    title: `Replace ${item.type === 'ancestry' ? 'Ancestry' : 'Class'}?`,
+                    description: `${actor.name} already has the ${item.type} "${preExistingUniqueItem.name}". Replace it with "${item.name}"?\n\nThis will reset the Hero's existing choices of: Trainings, Spells, & Perks but their level and base stats will remain unchanged.`,
+                    confirmText: "Replace",
+                    variant: "primary"
+                }).then((confirmed) => {
+                    if (!confirmed) return
+                    preExistingUniqueItem.update({ name: item.name, system: item.system })
+                    actor.system.forceUpdate?.()
+                })
             }
             return false
         }
         return true
     }
-
 })
 
 Hooks.on("createItem", async (item, _options, _userId) => {

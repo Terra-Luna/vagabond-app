@@ -1,0 +1,42 @@
+{
+  "name": "Aggressor",
+  "type": "feature",
+  "_id": "iAQ84wn6aIlAUc6w",
+  "img": "icons/skills/melee/strike-slashes-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You have a {{feature-value:5:5}}’ bonus to Speed, which increases by 5’ every 4 Levels hereafter. During the first Round of Combat, this bonus is doubled.</span></p>",
+    "rules": [
+      {
+        "id": "umP6XADsMKwBQl4x",
+        "key": "FlatModifier",
+        "label": "Speed Bonus",
+        "level": 2,
+        "value": "4",
+        "selector": "speed.turn",
+        "scale": 4
+      }
+    ],
+    "level": 2,
+    "scale": 4
+  },
+  "effects": [],
+  "folder": "gTZb8RMguzVhnz2T",
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789491269971,
+    "modifiedTime": 1789521656627,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!iAQ84wn6aIlAUc6w"
+}

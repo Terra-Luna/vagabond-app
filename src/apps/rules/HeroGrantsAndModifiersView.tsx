@@ -14,6 +14,7 @@ interface ActiveRuleDisplay {
     uuid?: string
     level: number
     pack: string
+    valueMultiplier?: number
     selections: RuleSelection[] | null
     sourceName: string
     sourceImg: string
@@ -72,7 +73,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             <CollapsibleSection title={`Active (${activeRules.length})`} settingsKey={'rules-active-features'} content={
                 <EffectCardContainer>
                     {activeRules.length > 0
-                        ? activeRules.map(rule => (<ActiveEffectCardRow key={rule.id} rule={rule} />))
+                        ? activeRules.map(rule => (<ActiveEffectCardRow key={rule.id} actor={actor} rule={rule} />))
                         : <HeroCreationSubtext text={"No active rules are adjusting data values."} />
                     }
                 </EffectCardContainer>
@@ -83,7 +84,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                 <CollapsibleSection title={`Locked Grants & Modifiers (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
                     <EffectCardContainer>
                         {lockedRules.map(rule => (
-                            <ActiveEffectCardRow key={rule.id} rule={rule} isActive={false} />
+                            <ActiveEffectCardRow key={rule.id} actor={actor} rule={rule} isActive={false} />
                         ))}
                     </EffectCardContainer>
                 } />
@@ -97,6 +98,8 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                             {flatModifiers.map(mod => {
                                 // Extract a clean readable path suffix (e.g., system.attributes.hp.max -> hp.max)
                                 const cleanPath = mod.selector?.replace("system.", "") || "stat"
+                                const modValue = String(foundry.utils.getProperty(actor, `system.${cleanPath}`)).toUpperCase()
+
                                 return (
                                     <div
                                         key={mod.id}
@@ -106,13 +109,11 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                                         </span>
                                         {/* BONUS VALUE PILL */}
                                         <span className={`
-                                                text-base font-eskapade font-bold px-1.5
-                                                ${tableBorder}/50 rounded-sm
-                                                ${(mod.value ?? 0) >= 0 ?
-                                                'text-text-primary bg-sheet-main-fill' :
-                                                'text-destructive-action bg-destructive-action/10'}`
-                                        }>
-                                            {(mod.value ?? 0) >= 0 ? `+${mod.value}` : mod.value}
+                                            text-sm font-eskapade font-bold px-1.5
+                                            ${tableBorder}/50 rounded-sm
+                                            text-text-primary bg-sheet-main-fill
+                                        }`}>
+                                            {modValue === "0" ? "" : modValue}
                                         </span>
                                     </div>
                                 )

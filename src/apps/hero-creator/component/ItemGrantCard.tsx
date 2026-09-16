@@ -3,7 +3,7 @@ import { HeroCreationSubLabel, HeroCreationSubtext } from "./HeroCreationTypogra
 
 export const ItemGrantCard = ({ img, name, subtext, source }: { img?: string, name: string, subtext?: string | undefined, source: string }) => {
     return (
-        <div className={`flex gap-x-2 justify-between items-center px-2 py-1 bg-context-menu-fill/25 ${tableBorderRounded}`}>
+        <div className={`flex gap-x-2 justify-between items-center p-2 bg-context-menu-fill/25 ${tableBorderRounded}`}>
             <div className="flex gap-x-2 items-center">
                 {img && <img src={img} height={32} width={32} className="border border-solid border-text-primary rounded-sm" />}
                 <HeroCreationSubLabel text={name} />

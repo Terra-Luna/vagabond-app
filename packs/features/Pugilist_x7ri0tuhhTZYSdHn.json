@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Pugilist",
+  "color": null,
+  "sorting": "m",
+  "_id": "x7ri0tuhhTZYSdHn",
+  "description": "",
+  "sort": 1700000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789521631893,
+    "modifiedTime": 1789526481742,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!x7ri0tuhhTZYSdHn"
+}

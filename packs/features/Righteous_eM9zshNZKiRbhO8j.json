@@ -1,0 +1,95 @@
+{
+  "name": "Righteous",
+  "type": "feature",
+  "_id": "eM9zshNZKiRbhO8j",
+  "img": "icons/magic/symbols/runes-star-pentagon-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI]{Gish} Perk, and can Cast Spells using Leadership.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Spells:</strong></b><span style=\"white-space:pre-wrap\"> You learn 2 Spells, one of which must always have a damage base. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Mana:</strong></b><span style=\"white-space:pre-wrap\"> Your Max Mana is equal to (2 × your Level), and your Cast Max for Spells is equal to (1 + half your Level, round up).</span></p>",
+    "rules": [
+      {
+        "id": "pgS1kWunfY4hwuVL",
+        "key": "GrantItem",
+        "label": "Gish",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI",
+        "type": "perk"
+      },
+      {
+        "id": "Zav21JBfLkgtlHdA",
+        "key": "FlatModifier",
+        "label": "Casting Skill",
+        "level": 1,
+        "value": "leadership",
+        "selector": "class.castingSkill"
+      },
+      {
+        "id": "Xo2J1x45OlAPBEqd",
+        "key": "FlatModifier",
+        "label": "Mana",
+        "level": 1,
+        "value": "2",
+        "selector": "mana.max",
+        "valueMultiplier": "level.current"
+      },
+      {
+        "id": "3C5z8oWQWmtco2jm",
+        "key": "FlatModifier",
+        "label": "Caster Type",
+        "level": 1,
+        "value": "half",
+        "selector": "class.maxCastFormula"
+      },
+      {
+        "id": "ldr4ehdx04MgJyhL",
+        "key": "ChoiceSet",
+        "label": "Level 1 Spells",
+        "level": 1,
+        "scale": 0,
+        "maxChoices": 2,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "8fEfIYlrxFt7lnGG",
+        "key": "ChoiceSet",
+        "label": "Spells",
+        "level": "4",
+        "scale": "3",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      }
+    ],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "SywtkJSRaraGSF3q",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789502887772,
+    "modifiedTime": 1789526723006,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!eM9zshNZKiRbhO8j"
+}

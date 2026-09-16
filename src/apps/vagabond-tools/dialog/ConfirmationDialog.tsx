@@ -51,10 +51,10 @@ export const ConfirmationDialog = ({
                 rounded-xl bg-sheet-main-fill p-6 text-left align-middle shadow-xl 
                 transition-all ${tableBorderRounded}    
             `}>
-                <p className="text-text-primary text-lg font-bold">
+                <p className="text-text-primary text-lg font-eskapade font-bold">
                     {title}
                 </p>
-                <p className="mt-2 text-base text-text-primary font-normal">
+                <p className="mt-2 text-base text-text-primary font-paradigm font-normal">
                     {description}
                 </p>
 

@@ -1,0 +1,61 @@
+{
+  "name": "Alchemy",
+  "type": "feature",
+  "_id": "ZdNC4FEzhSmRgXY9",
+  "img": "/icons/consumables/potions/potion-flash-open-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Choose 4 Alchemical Items with a value no higher than (your Level × 50s). You only need 5s of @UUID[Compendium.vagabond-app.gear.Item.d58md1ZTOqcXcz31]{Materials} and @UUID[Compendium.vagabond-app.gear.Item.qDdEzxtfDOmBLtJW]{Alchemy Tools} equipped to Craft them.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">You learn to Craft 1 other Alchemical Item this way every 3 Levels hereafter.</span></p>",
+    "rules": [
+      {
+        "id": "3Yod8laTo9mPvMcN",
+        "key": "ChoiceSet",
+        "label": "Alchemy: Level 1",
+        "level": 1,
+        "scale": 0,
+        "maxChoices": 4,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "alchemical",
+        "filters": []
+      },
+      {
+        "id": "9MRvHlWZtjK8BVbH",
+        "key": "ChoiceSet",
+        "label": "Alchemy",
+        "level": "3",
+        "scale": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "alchemical",
+        "filters": []
+      }
+    ],
+    "level": 1,
+    "scale": 2
+  },
+  "effects": [],
+  "folder": "zeWLKaF9PfKUsXGv",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789489352220,
+    "modifiedTime": 1789521365868,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ZdNC4FEzhSmRgXY9"
+}

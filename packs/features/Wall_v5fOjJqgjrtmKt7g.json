@@ -1,0 +1,43 @@
+{
+  "name": "Wall",
+  "type": "feature",
+  "_id": "v5fOjJqgjrtmKt7g",
+  "img": "/icons/equipment/shield/heater-wooden-boss-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You are considered one size larger for Shoves and the damage dice of Defense Weapons are one size larger while you have them Equipped. Both of these sizes increase by another size every 4 Levels hereafter.</span></p>",
+    "rules": [
+      {
+        "id": "7sW9ZdZftgyy4Mq9",
+        "key": "FlatModifier",
+        "label": "Defense Die Size Bonus",
+        "level": 2,
+        "value": "2",
+        "selector": "modifiers.dice.size.defense",
+        "scale": 4
+      }
+    ],
+    "level": 2,
+    "scale": 4,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "Iha5r9htb61ceB21",
+  "sort": 600000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789504539264,
+    "modifiedTime": 1789522024042,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!v5fOjJqgjrtmKt7g"
+}

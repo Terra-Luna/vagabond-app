@@ -1,0 +1,48 @@
+{
+  "name": "Well-Versed",
+  "type": "feature",
+  "_id": "ZH5ZL0yL7x9do56e",
+  "img": "icons/magic/symbols/chevron-elipse-circle-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You ignore Stat minimum Prerequisites for Perks, and gain a Perk of your choice.</span></p>",
+    "rules": [
+      {
+        "id": "IbJSjuPkgQrKeR83",
+        "key": "ChoiceSet",
+        "label": "Well-Versed",
+        "level": 1,
+        "scale": 0,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "perk",
+        "filters": [],
+        "ignoreStats": true
+      }
+    ],
+    "level": 1,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": "hs0FocbmD1E3VzFM",
+  "sort": 50000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789492214980,
+    "modifiedTime": 1789523162044,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ZH5ZL0yL7x9do56e"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Apex Predator",
+  "type": "feature",
+  "_id": "oZzM52yqXRx3iqH5",
+  "img": "/icons/magic/fire/projectile-arrow-fire-gem-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Your Mark is Weak to your attacks.</span></p>",
+    "rules": [],
+    "level": 10,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "Bm3LH84CSNNEiKQR",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789498250346,
+    "modifiedTime": 1789521661995,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!oZzM52yqXRx3iqH5"
+}

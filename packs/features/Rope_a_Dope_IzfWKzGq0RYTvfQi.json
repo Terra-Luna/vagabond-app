@@ -1,0 +1,33 @@
+{
+  "name": "Rope-a-Dope",
+  "type": "feature",
+  "_id": "IzfWKzGq0RYTvfQi",
+  "img": "/icons/magic/earth/strike-fist-stone-gray.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If you reduce damage from a Close Enemy’s attack to 0 with the Defense property of a Brawl Weapon, you can immediately make one attack or Move 5’ without using Speed.</span></p>",
+    "rules": [],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "x7ri0tuhhTZYSdHn",
+  "sort": 150000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789502135940,
+    "modifiedTime": 1789523133061,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!IzfWKzGq0RYTvfQi"
+}

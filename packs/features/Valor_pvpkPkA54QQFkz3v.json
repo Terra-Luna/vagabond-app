@@ -1,0 +1,43 @@
+{
+  "name": "Valor",
+  "type": "feature",
+  "_id": "pvpkPkA54QQFkz3v",
+  "img": "/icons/sundries/flags/banner-sword-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">The roll required for you to Crit on Attack Checks and Saves against attacks is reduced by 1, and is reduced by 1 more at 4th Level and every 4 Levels hereafter.</span></p>",
+    "rules": [
+      {
+        "id": "wd0w112FdV3scFI3",
+        "key": "FlatModifier",
+        "label": "Crit Threshold Reduction",
+        "level": 4,
+        "value": "1",
+        "selector": "modifiers.skillCheck.attack.critThreshold",
+        "scale": 4
+      }
+    ],
+    "level": 4,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "HwkvOvCXq07sSyrM",
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789496268133,
+    "modifiedTime": 1789522019676,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!pvpkPkA54QQFkz3v"
+}

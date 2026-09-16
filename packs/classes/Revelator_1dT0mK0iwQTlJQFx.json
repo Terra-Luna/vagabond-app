@@ -35,66 +35,6 @@
         "level": "1",
         "value": true,
         "selector": "skills.leadership.trained"
-      },
-      {
-        "id": "hPgNr3TmaVs2efrm",
-        "key": "GrantItem",
-        "label": "Righteous: Gish",
-        "level": "1",
-        "uuid": "Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI",
-        "type": "perk"
-      },
-      {
-        "id": "LtPxovgFRQ9AI98j",
-        "key": "ChoiceSet",
-        "label": "Righteous: Level 1 Spells",
-        "level": "1",
-        "scale": 0,
-        "maxChoices": 2,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "CuBuPHodeNZVRLM3",
-        "key": "ChoiceSet",
-        "label": "Righteous: Spells",
-        "level": "4",
-        "scale": "3",
-        "maxChoices": 1,
-        "channel": "item",
-        "sourceMode": "dynamic",
-        "choices": [],
-        "selections": [],
-        "pack": "spell",
-        "filters": []
-      },
-      {
-        "id": "Reh1gwndjkILqZKW",
-        "key": "FlatModifier",
-        "label": "Paragon's Aura",
-        "level": 4,
-        "value": 2,
-        "selector": "modifiers.casting.deliveryDiscounts.aura"
-      },
-      {
-        "id": "VBGjlHRr4usvfaGs",
-        "key": "ToggleRule",
-        "label": "Holy Diver: Exalt",
-        "level": "10",
-        "value": true,
-        "selector": "statuses.toggles.exalted"
-      },
-      {
-        "id": "OAHAhI06aiy5SZHY",
-        "key": "ToggleRule",
-        "label": "Holy Diver: Bless",
-        "level": "10",
-        "value": true,
-        "selector": "statuses.toggles.blessed"
       }
     ],
     "complexity": 3,
@@ -106,76 +46,15 @@
       "Compendium.vagabond-app.gear.Item.ImIcBC3E6UZcHsK4",
       "Compendium.vagabond-app.gear.Item.hug6ifnaIOy45vvj"
     ],
-    "castingSkill": "leadership",
-    "manaMultiplier": 2,
-    "maxCastFormula": "half",
-    "features": [
-      {
-        "name": "Righteous",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You gain the @UUID[Compendium.vagabond-app.perks.Item.1A4MdMdz7EAAoMzI]{Gish Perk}, can Cast Spells using Leadership.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Spells:</strong></b><span style=\"white-space: pre-wrap;\"> You learn 2 Spells, one of which must always have a damage base. You learn 1 other Spell every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space: pre-wrap;\">Mana:</strong></b><span style=\"white-space: pre-wrap;\"> Your Max Mana is equal to (2 × your Level), and the highest amount of Mana you can spend to Cast a Spell is equal to (1 + half</span></p><p><span style=\"white-space: pre-wrap;\">your Level, round up).</span></p>"
-      },
-      {
-        "name": "Enspell",
-        "level": 1,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can have one Imbue Casting as continual duration on your Weapon, and can skip your Move to change the Spell.</span></p>"
-      },
-      {
-        "name": "Lay on Hands",
-        "level": 2,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d4+@level.current#Lay on Hands]]{(d4 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Paragon's Aura",
-        "level": 4,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">Casting a Spell with an Aura Delivery is free for you, but you must spend Mana on Focus and upcast costs.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target for no Mana.</span></p>"
-      },
-      {
-        "name": "Divine Resolve",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can’t be Blinded, Paralyzed, or Sickened, and Targets of your Lay on Hands Ability are cured of these Statuses.</span></p>"
-      },
-      {
-        "name": "Lay on Hands",
-        "level": 6,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d6+@level.current#Lay on Hands]]{(d6 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Holy Diver",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You and Weapons you wield are permanently under the effects of the Bless and Exalt Spells.</span></p>"
-      },
-      {
-        "name": "Lay on Hands",
-        "level": 10,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d8+@level.current#Lay on Hands]]{(d8 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Lay on Hands",
-        "level": 14,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d10+@level.current#Lay on Hands]]{(d10 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Lay on Hands",
-        "level": 18,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d12+@level.current#Lay on Hands]]{(d12 + your Level)} HP to yourself or a Close Being.</span></p><p><br></p><p><span style=\"white-space: pre-wrap;\">This die size increases by one size every 4 Levels hereafter.</span></p>"
-      },
-      {
-        "name": "Lay on Hands",
-        "level": 22,
-        "scale": 0,
-        "description": "<p><span style=\"white-space: pre-wrap;\">You can spend 1 Mana and use your Action or skip your Move to restore [[/r d20+@level.current#Lay on Hands]]{(d20 + your Level)} HP to yourself or a Close Being.</span></p>"
-      }
+    "castingSkill": "",
+    "maxCastFormula": "",
+    "featureIds": [
+      "Compendium.vagabond-app.features.Item.eM9zshNZKiRbhO8j",
+      "Compendium.vagabond-app.features.Item.bpPvM4VHNalx9h1X",
+      "Compendium.vagabond-app.features.Item.omzod9wEfRfNC6Ec",
+      "Compendium.vagabond-app.features.Item.JTiiACptF2LnprJp",
+      "Compendium.vagabond-app.features.Item.uC2YTM36LkOOtqVP",
+      "Compendium.vagabond-app.features.Item.mmgNfwgE41OPmU7d"
     ]
   },
   "effects": [],
@@ -189,9 +68,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.0.94",
     "createdTime": 1786568076634,
-    "modifiedTime": 1789002410310,
+    "modifiedTime": 1789503802932,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

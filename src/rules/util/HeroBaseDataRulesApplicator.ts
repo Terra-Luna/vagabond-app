@@ -89,7 +89,7 @@ export class HeroBaseDataRulesApplicator {
                     foundry.utils.setProperty(actor.system, path, currentValue + Math.ceil(rule.value * (multiplierValue ?? 1)) * scale)
                 }
                 else if (typeof currentValue === "string") {
-                    foundry.utils.setProperty(actor.system, path, currentValue + String(rule.value))
+                    foundry.utils.setProperty(actor.system, path, String(rule.value))
                 }
                 else if (Array.isArray(currentValue)) {
                     const updatedArray = [...currentValue]
@@ -124,9 +124,31 @@ export class HeroBaseDataRulesApplicator {
         }
 
         const applyInventoryItems = async (rule) => {
+            const actorId = actor.id
+            if (!actorId) return
+
             const actorItemUuids = actor.items.map(it => it.getFlag("core", "sourceId" as any))
             if (actorItemUuids.includes(rule.uuid)) return
-            await addItems(actor, [rule.uuid])
+
+            /**
+             * Guards against adding the same granted item twice.
+             */
+            if (!globalInFlightItemGrants.has(actorId)) {
+                globalInFlightItemGrants.set(actorId, new Set())
+            }
+            const queue = globalInFlightItemGrants.get(actorId)!
+            if (queue.has(rule.uuid)) return
+
+            queue.add(rule.uuid)
+
+            try {
+                await addItems(actor, [rule.uuid])
+            }
+            finally {
+                setTimeout(() => {
+                    queue.delete(rule.uuid)
+                }, 500)
+            }
         }
 
         const applyActiveEffectGrants = async (rule: any) => {
@@ -183,4 +205,10 @@ export class HeroBaseDataRulesApplicator {
 
 }
 
+/**
+ * Added these to monitor what's in the process of being granted since they're
+ * happening async behind the scenes. They're referenced in the functions above
+ * to prevent adding duplicate items/active effects...
+ */
 const globalInFlightGrants = new Map<string, Set<string>>()
+const globalInFlightItemGrants = new Map<string, Set<string>>()

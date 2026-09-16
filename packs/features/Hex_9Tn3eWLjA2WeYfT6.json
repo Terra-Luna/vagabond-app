@@ -1,0 +1,33 @@
+{
+  "name": "Hex",
+  "type": "feature",
+  "_id": "9Tn3eWLjA2WeYfT6",
+  "img": "icons/magic/unholy/hand-marked-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you affect Enemies with the effect of a Spell, you can hex one of the Targeted Enemies. Doing so causes the effect to be continual until you hex a new Target.</span></p>",
+    "rules": [],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "2yctexWHVMue7l3p",
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789505402527,
+    "modifiedTime": 1789521802913,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!9Tn3eWLjA2WeYfT6"
+}

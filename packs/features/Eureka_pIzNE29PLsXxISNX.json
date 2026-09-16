@@ -1,0 +1,32 @@
+{
+  "name": "Eureka",
+  "type": "feature",
+  "_id": "pIzNE29PLsXxISNX",
+  "img": "/icons/skills/trades/academics-book-study-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you pass a Craft Check by {{feature-value:10:-1}} or more, you gain a Studied die. The roll required to do so is decreased by 1 every 4 Levels hereafter.</span></p>",
+    "rules": [],
+    "level": 2,
+    "scale": 4
+  },
+  "effects": [],
+  "folder": "zeWLKaF9PfKUsXGv",
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789490206147,
+    "modifiedTime": 1789521410401,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!pIzNE29PLsXxISNX"
+}

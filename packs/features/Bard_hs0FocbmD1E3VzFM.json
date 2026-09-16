@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Bard",
+  "color": null,
+  "sorting": "m",
+  "_id": "hs0FocbmD1E3VzFM",
+  "description": "",
+  "sort": 1200000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789521510773,
+    "modifiedTime": 1789526481742,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!hs0FocbmD1E3VzFM"
+}

@@ -47,15 +47,16 @@ export class FeatureDataModel extends ItemDataModel<FeatureSchema> {
 
     /**
      * Example usage of this featureValuePattern to generate a scaling roll:
-     *      [[/r {{feature-value:1:1}}d4#Sneak Attack]]{{{feature-value:1:1}}d4}
-     * @param heroLevel 
-     * @returns 
+     *      [[/r {{feature-value:1:1}}d4#Sneak Attack]]
+     * @param heroLevel
+     * @returns
      */
     dynamicDescription = (heroLevel?: number): string => {
         if (!this.description) return ""
-        if (!this.description.includes("{{feature-value:")) return this.description
+        if (!this.description.includes("{{feature-value:") || this.scale <= 0) return this.description
 
-        const level = ((heroLevel ?? 0) > this.maxLevel ? this.maxLevel : heroLevel) ?? this.level
+        const level = this.maxLevel > 0 ? Math.min(heroLevel ?? 1, this.maxLevel) : (heroLevel ?? 1)
+
         const increases = this.scale > 0 && level >= this.level
             ? Math.floor((level - this.level) / this.scale)
             : 0

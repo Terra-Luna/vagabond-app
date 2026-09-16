@@ -1,0 +1,95 @@
+{
+  "name": "Theurgy",
+  "type": "feature",
+  "_id": "VAJKhS034yjGN9Ib",
+  "img": "icons/magic/light/hand-sparks-glow-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can Cast Spells using Mysticism.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Spells:</strong></b><span style=\"white-space:pre-wrap\"> You learn 4 Spells, one of which must always be @UUID[Compendium.vagabond-app.spells.Item.pTpQKxsiYMR2yZ0G]{Life}. You learn 1 other Spell every 2 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Mana:</strong></b><span style=\"white-space:pre-wrap\"> Your Max Mana is equal to (4 × your Level), and your Cast Max for Spells is equal to (2 + your Level).</span></p>",
+    "rules": [
+      {
+        "id": "m38ZmwhwSTMdYgrT",
+        "key": "GrantItem",
+        "label": "Life",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.spells.Item.pTpQKxsiYMR2yZ0G",
+        "type": null
+      },
+      {
+        "id": "wK94x496VmF8OMiQ",
+        "key": "ChoiceSet",
+        "label": "Spells: Level 1",
+        "level": 1,
+        "scale": 0,
+        "maxChoices": 3,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "DiakdQFfVrSULbve",
+        "key": "ChoiceSet",
+        "label": "Spells",
+        "level": "3",
+        "scale": "2",
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": []
+      },
+      {
+        "id": "iLSUhUu6pUVwWizB",
+        "key": "FlatModifier",
+        "label": "Casting Skill",
+        "level": 1,
+        "value": "mysticism",
+        "selector": "class.castingSkill"
+      },
+      {
+        "id": "c22OGqbmbLSsFThh",
+        "key": "FlatModifier",
+        "label": "Mana",
+        "level": 1,
+        "value": "4",
+        "selector": "mana.max",
+        "valueMultiplier": "level.current"
+      },
+      {
+        "id": "cy9DQ1kRuKOBWTqh",
+        "key": "FlatModifier",
+        "label": "Caster Type",
+        "level": 1,
+        "value": "full",
+        "selector": "class.maxCastFormula"
+      }
+    ],
+    "level": 1,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "dTLSBlyoiWPiRjpg",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789498383168,
+    "modifiedTime": 1789524288215,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!VAJKhS034yjGN9Ib"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Esoteric Flow",
+  "type": "feature",
+  "_id": "L1JWbAX1CGR5f2dD",
+  "img": "icons/magic/movement/trail-streak-zigzag-yellow.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You can cause the damage of your attack to use the damage base of your Imbued Spell.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you are permanently under the effects of the @UUID[Compendium.vagabond-app.spells.Item.K4EUMBlZjmc4HWfr]{Blink} Spell.</span></p>",
+    "rules": [],
+    "level": 6,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "LZAVWKtn3fuTeOtg",
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789500880653,
+    "modifiedTime": 1789521745887,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!L1JWbAX1CGR5f2dD"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Catalyze",
+  "type": "feature",
+  "_id": "HFw481bZzVX019bG",
+  "img": "/icons/magic/air/air-smoke-casting.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.TcPtYma4aDbo9npG]{Deft Hands} Perk, and can Craft Alchemical Items with the Use Action.</span></p>",
+    "rules": [
+      {
+        "id": "AZj2rg1pM33FZkK6",
+        "key": "GrantItem",
+        "label": "Deft Hands",
+        "level": 1,
+        "uuid": "Compendium.vagabond-app.perks.Item.TcPtYma4aDbo9npG",
+        "type": "perk"
+      }
+    ],
+    "level": 1,
+    "scale": 0
+  },
+  "effects": [],
+  "folder": "zeWLKaF9PfKUsXGv",
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789490090014,
+    "modifiedTime": 1789525220999,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!HFw481bZzVX019bG"
+}

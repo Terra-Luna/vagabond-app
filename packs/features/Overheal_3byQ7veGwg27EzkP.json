@@ -1,0 +1,33 @@
+{
+  "name": "Overheal",
+  "type": "feature",
+  "_id": "3byQ7veGwg27EzkP",
+  "img": "icons/magic/life/cross-beam-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you restore HP, you add half your Level to the total HP restored and, if you restore HP that exceeds the Being’s Max HP, you can give the excess to yourself or a Being you can see.</span></p>",
+    "rules": [],
+    "level": 2,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "folder": "dTLSBlyoiWPiRjpg",
+  "sort": 75000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.0.94",
+    "createdTime": 1789498925331,
+    "modifiedTime": 1789524294381,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!3byQ7veGwg27EzkP"
+}
