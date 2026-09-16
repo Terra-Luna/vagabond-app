@@ -334,7 +334,7 @@ export const usePerkSelectionView = (
 
                     {/* RIGHT-SIDE PANEL: PERK SLOTS */}
                     <div className="flex flex-col h-full min-h-0 overflow-y-auto">
-                        <div className="space-y-1">
+                        <div className="space-y-1 pb-4">
                             {/* GRANTED PERKS */}
                             <div className="mb-4">
                                 {[...ancestryPerkGrants, ...classPerkGrants].length > 0 &&
