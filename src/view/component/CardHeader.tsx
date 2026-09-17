@@ -2,6 +2,7 @@ import { UtilityButton } from "./Button"
 import { CollapsibleHeaderProps } from "./Collapsible"
 import { ImageWithDamageTypeBadge } from "./DamageTypeIcon"
 import { Divider } from "./Header"
+import { Tooltip } from "./Tooltip"
 
 export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedButton, toggleCollapsed, actions = [] }: CollapsibleHeaderProps) => {
     const cardHeaderLayout = "flex items-center py-1 px-1 bg-section-header-fill"
@@ -17,20 +18,22 @@ export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedB
             <span className={`${img ? 'ml-2' : 'ml-1'}`}>{title}</span>
             <Divider />
 
+            {toggleCollapsedButton}
+
             {actions && (
-                <div className="flex gap-x-1 mr-1">
+                <div className="flex gap-x-1 ml-1">
                     {actions.map((ska, index) => (
-                        <UtilityButton key={index} title={ska.tooltip} onClick={async (e) => {
-                            e?.stopPropagation()
-                            await ska.action(e, ska.item)
-                        }}>
-                            <p className="text-text-primary">{ska.label}</p>
-                        </UtilityButton>
+                        <Tooltip title={ska.tooltip.title} content={ska.tooltip.content}>
+                            <UtilityButton key={index} onClick={async (e) => {
+                                e?.stopPropagation()
+                                await ska.action(e, ska.item)
+                            }}>
+                                <p className="text-text-primary">{ska.label}</p>
+                            </UtilityButton>
+                        </Tooltip>
                     ))}
                 </div>
             )}
-
-            {toggleCollapsedButton}
         </div>
     )
 }

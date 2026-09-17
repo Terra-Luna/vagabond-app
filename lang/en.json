@@ -704,9 +704,9 @@
         "recipes": "Prepared Recipes",
         "recipesbtn": "Recipes",
         "craft": "Craft",
-        "craft_tooltip": "Craft and add to inventory",
+        "craft_tooltip": "Add item to inventory",
         "use": "Use",
-        "use_tooltip": "Craft and immediately use"
+        "use_tooltip": "Craft & immediately use item"
       }
     },
     "SpellDeliveries": {

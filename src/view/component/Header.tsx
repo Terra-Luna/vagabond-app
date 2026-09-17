@@ -1,4 +1,5 @@
 import { UtilityButton } from "./Button"
+import { Tooltip } from "./Tooltip"
 
 export const Header = ({ title, collapseButton, textLeft = false, actions = [] }: {
     title: string, collapseButton?: React.ReactElement, textLeft?: boolean, actions?: SkillCardAction[]
@@ -9,20 +10,22 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
             <div>{title}</div>
             <Divider />
 
+            {collapseButton && <div className="mr-2">{collapseButton}</div>}
+
             {actions && (
-                <div className="flex gap-x-1 mr-1">
+                <div className="flex gap-x-1 ml-1">
                     {actions.map((ska, index) => (
-                        <UtilityButton key={index} title={ska.tooltip} onClick={async (e) => {
-                            e?.stopPropagation()
-                            await ska.action(e, ska.item)
-                        }}>
-                            <p className="text-text-primary">{ska.label}</p>
-                        </UtilityButton>
+                        <Tooltip title={ska.tooltip.title} content={ska.tooltip.content}>
+                            <UtilityButton key={index} onClick={async (e) => {
+                                e?.stopPropagation()
+                                await ska.action(e, ska.item)
+                            }}>
+                                <p className="text-text-primary">{ska.label}</p>
+                            </UtilityButton>
+                        </Tooltip>
                     ))}
                 </div>
             )}
-
-            {collapseButton && <div className="mr-2">{collapseButton}</div>}
         </div>
     )
 }
@@ -43,5 +46,5 @@ export const Divider = () => <div className={"grow h-[2px] bg-section-header-lin
 export const ItemDivider = () => <div className={"grow h-[1px] bg-table-border/50"} />
 
 export interface SkillCardAction {
-    label: string, tooltip: string, item: any, action: (e, item) => Promise<void>
+    label: string, tooltip: { title: string, content: string }, item: any, action: (e, item) => Promise<void>
 }

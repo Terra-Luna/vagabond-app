@@ -18,6 +18,12 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
     const fullAlchemyItems = useMemo(() => { return ItemsCache.alchemical() }, [])
     const tools = useMemo(() => { return actor.items.find(it => (it.type as string) === 'sundry' && (it.system as any).isAlchemyTools)! }, [])
 
+    const getAlchemyItem = useCallback((item) => {
+        return getFullItem<AlchemicalItemDataModel>(
+            fullAlchemyItems.find(cachedItem => cachedItem.uuid === item?.value) ?? item
+        )
+    }, [fullAlchemyItems])
+
     const materials = useMemo(() => {
         return getAlchemyMaterials(actor).sort((a, b) => a.system.bulk.quantity - b.system.bulk.quantity)
     }, [revision])
@@ -43,8 +49,9 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
     /**
      * Spend Material and add item to Actor's inventory.
      */
-    const addToInventory = useCallback(async (item) => {
-        const fullItem = await getFullItem<AlchemicalItemDataModel>(item?.value)
+    const addToInventory = useCallback(async (e, item) => {
+        console.log(item)
+        const fullItem = await getAlchemyItem(item)
         if (fullItem) {
             if (await consumeMaterials()) {
                 await addItemToActor(actor, fullItem)
@@ -54,20 +61,20 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
             ui.notifications?.error("Vagabond | Failed to craft Alchemical Item")
         }
         setRevision(current => current + 1)
-    }, [actor, setRevision, materials])
+    }, [actor, materials, getAlchemyItem])
 
     /**
      * Spend Material and use item directly without adding it to inventory.
      */
     const craftAndUse = useCallback(async (e, item) => {
-        const fullItem = await getFullItem<AlchemicalItemDataModel>(item?.value)
+        const fullItem = await getAlchemyItem(item)
         if (fullItem) {
             if (await consumeMaterials()) {
                 await useItem(actor, fullItem, true, e)
             }
         }
         setRevision(current => current + 1)
-    }, [actor, setRevision, materials])
+    }, [actor, materials, getAlchemyItem])
 
     return (
         <div className="flex flex-col p-1 h-full overflow-hidden">
@@ -83,8 +90,8 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
                     alchemyItems={alchemyItems}
                     hideCompendiumLink={true}
                     actions={[
-                        { label: appLang.HeroSheet.Alchemy.craft, tooltip: appLang.HeroSheet.Alchemy.craft_tooltip, item: undefined, action: addToInventory},
-                        { label: appLang.HeroSheet.Alchemy.use, tooltip: appLang.HeroSheet.Alchemy.use_tooltip, item: undefined, action: (e, item) => craftAndUse(e, item)}
+                        { label: appLang.HeroSheet.Alchemy.craft, tooltip: { title: "Craft", content: appLang.HeroSheet.Alchemy.craft_tooltip }, item: undefined, action: addToInventory},
+                        { label: appLang.HeroSheet.Alchemy.use, tooltip: { title: "Use", content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}` }, item: undefined, action: (e, item) => craftAndUse(e, item) }
                     ]}
                 />
             </div>
