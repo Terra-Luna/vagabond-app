@@ -2,7 +2,7 @@ import { appLang } from "../../../utils/lang"
 import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { EquipmentDataModel, EquipmentSchema } from "./EquipmentDataModel"
 
-const alchemicalSchema = () => {
+const alchemySchema = () => {
     return {
         alchemyCategory: new fields.StringField({
             ...optionalString,
@@ -19,25 +19,26 @@ const alchemicalSchema = () => {
                     { initial: [] }
                 )
             }, { initial: {} }),
-            type: new fields.StringField({ ...damageTypeOptions() }),
-            appliedEffects: new fields.ArrayField(
-                new fields.SchemaField({
-                    effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
-                    duration: new fields.StringField({ ...optionalString })
-                }),
-                { initial: [] }
-            )
-        })
+            type: new fields.StringField({ ...damageTypeOptions() })
+        }),
+        appliedEffects: new fields.ArrayField(
+            new fields.SchemaField({
+                effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
+                duration: new fields.StringField({ ...optionalString }),
+                critDuration: new fields.StringField({ ...optionalString })
+            }),
+            { initial: [] }
+        )
     }
 }
 
-export type AlchemicalSchema = ReturnType<typeof alchemicalSchema> & EquipmentSchema
+export type AlchemicalSchema = ReturnType<typeof alchemySchema> & EquipmentSchema
 
 export class AlchemicalItemDataModel extends EquipmentDataModel<AlchemicalSchema> {
     static defineSchema() {
         return {
             ...super.defineSchema(),
-            ...alchemicalSchema()
+            ...alchemySchema()
         }
     }
 

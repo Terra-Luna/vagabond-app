@@ -1,6 +1,7 @@
 import { useCallback } from "react"
 
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
+import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AlchemicalItemDataModel } from "../../../../../model/item/equip/AlchemicalItemDataModel"
 import { appLang } from "../../../../../utils/lang"
@@ -23,16 +24,20 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
 
     return (
         <EquipmentSheetSubtypeBody>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-4 items-start">
+            <div className="flex flex-col gap-2 items-start">
                 <DiceRollInputComponent
                     label={appLang.ItemSheet.damage}
                     diceRoll={damageDice}
                     onChange={handleDiceChange}
-                    wrap={true}
                 />
-                {isEditMode || item.system.damage.type !== "none" && <DamageTypeSelector item={item} path={'system.damage.type'} />}
+                <AppliedEffectInput item={item} />
+
+                <div className="flex justify-between w-full">
+                    {(isEditMode || item.system.damage.type !== "none") && <DamageTypeSelector item={item} path={'system.damage.type'} />}
+                    <AlechemyCategory item={item} />
+                </div>
+
                 {isEditMode && <ItemToggleOption item={item} label={appLang.ItemSheet.consumable} path={"system.isConsumable"} />}
-                <AlechemyCategory item={item} />
             </div>
         </EquipmentSheetSubtypeBody>
     )
@@ -40,7 +45,7 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
 
 const AlechemyCategory = ({ item }: { item: Item & { system: AlchemicalItemDataModel } }) => {
     return (
-        <span className="font-normal">
+        <span className="text-text-header-tertiary font-normal">
             <DropDown
                 label={appLang.ItemSheet.alchCategory}
                 value={item.system.alchemyCategory}

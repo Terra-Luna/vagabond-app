@@ -308,6 +308,17 @@
         "description": "A Witch has Hexed this target."
       }
     },
+    "Duration": [
+      { "value": "Cd4", "label": "Cd4" },
+      { "value": "Cd6", "label": "Cd6" },
+      { "value": "Cd8", "label": "Cd8" },
+      { "value": "Cd10", "label": "Cd10" },
+      { "value": "Cd12", "label": "Cd12" },
+      { "value": "Cd20", "label": "Cd20" },
+      { "value": "continual", "label": "Continual" },
+      { "value": "round", "label": "Round" },
+      { "value": "shift", "label": "Shift" }
+    ],
     "Wealth": {
       "g": "g",
       "s": "s",

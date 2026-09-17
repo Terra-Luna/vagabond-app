@@ -1,10 +1,10 @@
+import { AppliedEffectInput } from "../../../../../combat/ui/AppliedEffectInput"
 import { SpellDataModel } from "../../../../../model/item/character/SpellDataModel"
 import { appLang } from "../../../../../utils/lang"
 import { tableBorder } from "../../../../common/border-styles"
 import { Checkbox } from "../../../../component/Checkbox"
 import { useEditMode } from "../../../../context/EditModeContext/Hooks"
 import { ItemSheetPropLabel } from "../../equip/component/ItemSheetLabelComponent"
-import { AppliedEffectsManager } from "../../shared/AppliedEffectsManager"
 import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { BaseSkillSheetComponent } from "./shared/BaseSkillSheetComponent"
 
@@ -27,12 +27,14 @@ export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellData
                                 />
                             </div>
                         </div>
+
+                        <AppliedEffectInput item={item} />
+
                         <Checkbox
                             label={appLang.ItemSheet.ignoreEffCost}
                             checked={item.system.ignoreEffectCost}
                             onCheckedChanged={(isChecked) => item.update({ 'system.ignoreEffectCost': isChecked } as Record<string, boolean>)}
                         />
-                        <AppliedEffectsManager item={item} />
                     </div>
                 }
             </div>

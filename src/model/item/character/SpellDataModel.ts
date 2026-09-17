@@ -1,6 +1,6 @@
 import { appLang } from "../../../utils/lang"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
-import { damageTypeOptions, fields, optionalInteger,requiredInteger, requiredString } from "../../common/sharedSchemas"
+import { damageTypeOptions, fields, optionalString, requiredInteger, requiredString } from "../../common/sharedSchemas"
 import { BaseItemSchema, ItemDataModel } from "../ItemDataModel"
 
 const spellSchema = () => {
@@ -11,8 +11,8 @@ const spellSchema = () => {
         appliedEffects: new fields.ArrayField(
             new fields.SchemaField({
                 effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
-                duration: new fields.NumberField({ ...optionalInteger }),
-                critDuration: new fields.NumberField({ ...optionalInteger })
+                duration: new fields.StringField({ ...optionalString }),
+                critDuration: new fields.StringField({ ...optionalString })
             }),
             { initial: [] }
         )
