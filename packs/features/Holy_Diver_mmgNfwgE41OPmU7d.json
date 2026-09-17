@@ -18,7 +18,7 @@
         "id": "VvpwyeGMFnGHlJ5j",
         "key": "ToggleRule",
         "label": "Blessed",
-        "level": 1,
+        "level": "10",
         "value": true,
         "selector": "statuses.toggles.blessed"
       }
