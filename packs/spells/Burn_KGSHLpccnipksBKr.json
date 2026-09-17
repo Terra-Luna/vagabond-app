@@ -10,8 +10,8 @@
     "appliedEffects": [
       {
         "effect": "burning",
-        "duration": 4,
-        "critDuration": 6
+        "duration": "4",
+        "critDuration": "Cd6"
       }
     ],
     "ignoreEffectCost": false
@@ -27,10 +27,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1784763177817,
-    "modifiedTime": 1786495589183,
-    "lastModifiedBy": "0NuYBUWrk1hGd5lF",
+    "modifiedTime": 1789609532849,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

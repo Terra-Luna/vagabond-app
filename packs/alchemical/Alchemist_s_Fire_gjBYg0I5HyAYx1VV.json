@@ -34,7 +34,14 @@
     "isEquipped": false,
     "isConsumable": true,
     "relicEffects": [],
-    "alchemyCategory": "explosive"
+    "alchemyCategory": "explosive",
+    "appliedEffects": [
+      {
+        "effect": "burning",
+        "duration": "Cd6",
+        "critDuration": "Cd6"
+      }
+    ]
   },
   "_id": "gjBYg0I5HyAYx1VV",
   "img": "icons/consumables/potions/bottle-metal-yellow-gray.webp",
@@ -47,10 +54,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1785020461700,
-    "modifiedTime": 1785020600520,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1789609346004,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
