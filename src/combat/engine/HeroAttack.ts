@@ -369,11 +369,12 @@ export class HeroAttack extends Attack {
 
     static buildAlchemyAttack(
         actor: Actor & { system: HeroDataModel },
-        item: Item & { system: AlchemicalItemDataModel }
+        item: Item & { system: AlchemicalItemDataModel },
+        e?: any
     ): HeroAttack {
         const skill = 'craft'
 
-        const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: skill })
+        const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: skill, clickEvent: e })
         const damageDice = new DiceRoll(DiceRoll.getItemDamageWithHeroMods(actor.system, 'craft', item.system))
         const damageRoll = new DamageRoll({
             atkName: item.name,

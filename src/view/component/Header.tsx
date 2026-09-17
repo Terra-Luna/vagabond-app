@@ -14,7 +14,7 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
                     {actions.map((ska, index) => (
                         <UtilityButton key={index} title={ska.tooltip} onClick={async (e) => {
                             e?.stopPropagation()
-                            await ska.action(ska.item)
+                            await ska.action(e, ska.item)
                         }}>
                             <p className="text-text-primary">{ska.label}</p>
                         </UtilityButton>
@@ -43,5 +43,5 @@ export const Divider = () => <div className={"grow h-[2px] bg-section-header-lin
 export const ItemDivider = () => <div className={"grow h-[1px] bg-table-border/50"} />
 
 export interface SkillCardAction {
-    label: string, tooltip: string, item: any, action: (item) => Promise<void>
+    label: string, tooltip: string, item: any, action: (e, item) => Promise<void>
 }

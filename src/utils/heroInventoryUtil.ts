@@ -179,7 +179,8 @@ export const stackStackables = async (hero: any) => {
 export const useItem = async (
     actor: Actor & { system: HeroDataModel },
     item: Item & { system: AlchemicalItemDataModel | SundryDataModel },
-    skipDeletion?: boolean
+    skipDeletion?: boolean,
+    e?: any
 ) => {
     const sendToChat = () => {
         sendVagabondChatMessage(actor, createElement(ItemChatCard, {
@@ -195,7 +196,7 @@ export const useItem = async (
             if (!skipDeletion) await deleteItems(actor, [getId(item)])
 
             if (item.system.damage.dice.count > 0) {
-                const attack = HeroAttack.buildAlchemyAttack(actor, item as Item & { system: AlchemicalItemDataModel })
+                const attack = HeroAttack.buildAlchemyAttack(actor, item as Item & { system: AlchemicalItemDataModel }, e)
                 attack.initiate()
             }
             else {

@@ -59,11 +59,11 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
     /**
      * Spend Material and use item directly without adding it to inventory.
      */
-    const craftAndUse = useCallback(async (item) => {
+    const craftAndUse = useCallback(async (e, item) => {
         const fullItem = await getFullItem<AlchemicalItemDataModel>(item?.value)
         if (fullItem) {
             if (await consumeMaterials()) {
-                await useItem(actor, fullItem, true)
+                await useItem(actor, fullItem, true, e)
             }
         }
         setRevision(current => current + 1)
@@ -84,7 +84,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
                     hideCompendiumLink={true}
                     actions={[
                         { label: appLang.HeroSheet.Alchemy.craft, tooltip: appLang.HeroSheet.Alchemy.craft_tooltip, item: undefined, action: addToInventory},
-                        { label: appLang.HeroSheet.Alchemy.use, tooltip: appLang.HeroSheet.Alchemy.use_tooltip, item: undefined, action: craftAndUse}
+                        { label: appLang.HeroSheet.Alchemy.use, tooltip: appLang.HeroSheet.Alchemy.use_tooltip, item: undefined, action: (e, item) => craftAndUse(e, item)}
                     ]}
                 />
             </div>

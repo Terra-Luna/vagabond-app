@@ -22,7 +22,7 @@ export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedB
                     {actions.map((ska, index) => (
                         <UtilityButton key={index} title={ska.tooltip} onClick={async (e) => {
                             e?.stopPropagation()
-                            await ska.action(ska.item)
+                            await ska.action(e, ska.item)
                         }}>
                             <p className="text-text-primary">{ska.label}</p>
                         </UtilityButton>
