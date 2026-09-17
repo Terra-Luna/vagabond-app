@@ -31,8 +31,7 @@
         "modifier": 1,
         "explodesOn": []
       },
-      "type": "healing",
-      "appliedEffects": []
+      "type": "healing"
     }
   },
   "effects": [],

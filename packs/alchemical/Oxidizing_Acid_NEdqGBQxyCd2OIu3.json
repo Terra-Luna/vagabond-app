@@ -31,8 +31,7 @@
         "modifier": 0,
         "explodesOn": []
       },
-      "type": "acid",
-      "appliedEffects": []
+      "type": "acid"
     },
     "appliedEffects": [
       {

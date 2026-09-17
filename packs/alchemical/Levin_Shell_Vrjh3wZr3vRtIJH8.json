@@ -31,8 +31,7 @@
         "modifier": 0,
         "explodesOn": []
       },
-      "type": "shock",
-      "appliedEffects": []
+      "type": "shock"
     },
     "appliedEffects": [
       {

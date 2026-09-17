@@ -31,8 +31,7 @@
         "modifier": 1,
         "explodesOn": []
       },
-      "type": "mana",
-      "appliedEffects": []
+      "type": "mana"
     }
   },
   "effects": [],
