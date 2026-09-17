@@ -309,14 +309,17 @@
       }
     },
     "Duration": [
+      { "value": "-", "label": "-" },
       { "value": "Cd4", "label": "Cd4" },
       { "value": "Cd6", "label": "Cd6" },
       { "value": "Cd8", "label": "Cd8" },
       { "value": "Cd10", "label": "Cd10" },
       { "value": "Cd12", "label": "Cd12" },
       { "value": "Cd20", "label": "Cd20" },
+      { "value": "focus", "label": "Focused"},
       { "value": "continual", "label": "Continual" },
       { "value": "round", "label": "Round" },
+      { "value": "scene", "label": "Scene" },
       { "value": "shift", "label": "Shift" }
     ],
     "Wealth": {
@@ -703,6 +706,7 @@
         "labelFocus": "Focus",
         "labelDiscount": "Discount",
         "labelDmgDice": "Damage Dice",
+        "upcast": "Upcast",
         "labelCost": "Cost",
         "btnCast": "Cast",
         "manaErrMsg": "Insufficient mana",
@@ -815,6 +819,7 @@
       "effects": "Applied Effects",
       "duration": "Duration",
       "ignoreEffCost": "Ignore Effect Cost",
+      "upcastableEffect": "Upcastable Effect",
       "baseManaCost": "Base Mana Cost",
       "explodingDice": "Exploding Dice",
       "canExplode": "Exploding Dice",

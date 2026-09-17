@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { Coins, multiplyCoins, toCopper, zeroCoins } from "../../../model/common/CoinValue"
+import { Coins, coinsAsString, multiplyCoins, toCopper, zeroCoins } from "../../../model/common/CoinValue"
 import { getItemChoiceRules, getItemRules } from "../../../rules/util/item-rules-util"
 import { ItemsCache } from "../../../rules/util/ItemsCache"
 import { appLang } from "../../../utils/lang"
@@ -21,9 +21,9 @@ export const useAlchemySelectionView = (actor: Actor & { system: HeroDataModel }
     useEffect(() => {
         setAlchemyItems([
             { value: '', label: appLang.HeroCreation.emptySlot, img: "", dmgType: "", category: "", description: "", coinValue: { ...zeroCoins } },
-            ...ItemsCache.alchemical().filter(item => toCopper(item.system.value) <= valueLimit).map(item => ({
+            ...ItemsCache.alchemical().filter(item => toCopper(item.system.value) <= valueLimit).sort((a, b) => toCopper(a.system.value) - toCopper(b.system.value)).map(item => ({
                 value: item.uuid,
-                label: item.name,
+                label: item.name + ` (${coinsAsString(item.system.value)})`,
                 img: item.img ?? "",
                 dmgType: item.system.damage.type ?? "",
                 category: item.system.alchemyCategory,

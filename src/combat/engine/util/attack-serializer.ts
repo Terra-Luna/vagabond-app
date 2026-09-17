@@ -25,6 +25,7 @@ export interface AttackSnapshot {
     skillCheck: SkillCheck | undefined
     isDefenseCheck: boolean | undefined
     damageRoll: any | undefined
+    appliedEffects: { effect: string, duration?: string, critDuration?: string }[]
     spellDelivery: SpellDeliverySnapshot | undefined
     critChoice: "luck" | "damage" | "spellFx" | undefined
     isRerolled: boolean
@@ -70,6 +71,7 @@ function serializeCommonFields(atk: Attack): Omit<AttackSnapshot, 'skillCheck' |
         actorId: atk.actor.id ?? '',
         targetIds: atk.targetIds ?? [],
         damageRoll: cleanDamageRoll,
+        appliedEffects: atk.appliedEffects ?? [],
         isResolved: atk.isResolved
     } as any
 }

@@ -58,6 +58,11 @@ export class HeroAttack extends Attack {
         return this.skillCheck?.result?.outcome === appLang.RollResult.crit
     }
 
+    // Inherited from Attack.
+    protected override get isCriticalHit(): boolean {
+        return this.isCrit
+    }
+
     private get isEligibleForDmgRoll(): boolean {
         if (!this.damageRoll || !this.damageRoll.dice) return false
         const dice = this.damageRoll.dice.flatMap(d => d.count)
@@ -169,7 +174,6 @@ export class HeroAttack extends Attack {
                 await this.save(serializeAttack)
             }
             else {
-                this.isResolved = true
                 await this.save(serializeAttack)
             }
         }
@@ -319,6 +323,15 @@ export class HeroAttack extends Attack {
 
     async addCritSpellFx() {
         this.critChoice = 'spellFx'
+        if (this.spellDelivery) {
+            this.spellDelivery.applyEffect = true
+            this.spellDelivery.spell.appliedEffects.forEach(eff => {
+                this.appliedEffects.push({
+                    ...eff,
+                    damageType: this.spellDelivery?.spell.damageType
+                })
+            })
+        }
         await this.save(serializeAttack)
     }
 
@@ -373,7 +386,6 @@ export class HeroAttack extends Attack {
         e?: any
     ): HeroAttack {
         const skill = 'craft'
-
         const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: skill, clickEvent: e })
         const damageDice = new DiceRoll(DiceRoll.getItemDamageWithHeroMods(actor.system, 'craft', item.system))
         const damageRoll = new DamageRoll({
@@ -384,6 +396,7 @@ export class HeroAttack extends Attack {
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
         attack.itemId = item.uuid
+        attack.appliedEffects = item.system.appliedEffects?.map(eff => ({ ...eff, damageType: item.system.damage.type })) ?? []
 
         return attack
     }
@@ -461,6 +474,7 @@ export class HeroAttack extends Attack {
         const attack = new HeroAttack(delivery.spell.name, actor, getTargetIds(), skillCheck, false, damageRoll)
         attack.itemId = delivery.spell.uuid
         attack.spellDelivery = delivery.toJson()
+        attack.appliedEffects = delivery.applyEffect ? delivery.spell.appliedEffects?.map(eff => ({ ...eff, damageType: delivery.spell.damageType })) ?? [] : []
         attack.skipSkillCheck = delivery instanceof Imbue
 
         return attack

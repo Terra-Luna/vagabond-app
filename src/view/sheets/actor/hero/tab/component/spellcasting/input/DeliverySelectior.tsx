@@ -8,15 +8,13 @@ export const DeliverySelector = ({ deliveries, currentDelivery, onSelect }: {
     deliveries: SpellDelivery[], currentDelivery: SpellDelivery | undefined, onSelect: (index: number) => void
 }) => {
     return (
-        <div className="flex gap-x-2">
-            <div>
-                <SpellcastingLabel text={appLang.HeroSheet.Magic.labelDelivery} />
-                <DropDown
-                    value={deliveries.findIndex(d => d.name === currentDelivery?.name).toString()}
-                    options={getDeliveryDropdownOptions(deliveries)}
-                    updateMechanism={{ onChange: onSelect }}
-                />
-            </div>
+        <div>
+            <SpellcastingLabel text={appLang.HeroSheet.Magic.labelDelivery} />
+            <DropDown
+                value={deliveries.findIndex(d => d.name === currentDelivery?.name).toString()}
+                options={getDeliveryDropdownOptions(deliveries)}
+                updateMechanism={{ onChange: onSelect }}
+            />
         </div>
     )
 }

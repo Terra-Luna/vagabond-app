@@ -22,12 +22,12 @@ export const SpellAttackInfoComponent = ({ spell, delivery, dmgRoll = undefined,
     subtitle.push({ label: appLang.HeroSheet.Magic.labelMana, value: delivery.manaCost })
 
     const subheaders = useMemo(() => {
-        const subs = [{ label: "Delivery", value: delivery.name }]
+        const subs = [{ label: "Dlv.", value: delivery.name }]
         if (delivery.isFocused) {
             subs.push({ label: appLang.HeroSheet.Magic.labelFocus, value: <Sparkle size={14} className="text-mana" /> })
         }
         if (delivery.applyEffect) {
-            subs.push({ label: appLang.HeroSheet.Magic.labelEffect, value: <Sparkles size={14} className="text-mana" /> })
+            subs.push({ label: "Eff.", value: <Sparkles size={14} className="text-mana" /> })
         }
 
         return subs

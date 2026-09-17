@@ -73,7 +73,7 @@ export const CustomDropDown = ({ value, options, className, onChange }: {
                 className={`
                     flex px-1 pb-0.5 pt-0.5
                     outline-none focus:outline-none focus:ring-0
-                    ${tableBorder}/50
+                    ${tableBorder}/50 rounded-xs
                     ${className}
                 `}>
                 {options.map(opt => (<Option key={opt.value} value={opt.value}>{opt.label}</Option>))}
@@ -90,7 +90,7 @@ export const Select = (props: React.DetailedHTMLProps<React.SelectHTMLAttributes
         font-eskapade
         text-text-primary
         bg-sheet-main-fill
-        border border-solid border-text-primary/50
+        border border-solid border-text-primary/50 rounded-xs
         py-0.5 text-sm shadow-sm
         ${props.className}
     `} {...props} />

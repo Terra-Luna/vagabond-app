@@ -154,7 +154,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
                                         {/* GM TOOL BUTTONS FOR MANAGING OUTCOMES */}
                                         <div className="flex flex-col gap-1 mt-1">
-                                            {attack.showDamage &&
+                                            {(attack.showDamage || attack.appliedEffects.length > 0) &&
                                                 <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
@@ -164,6 +164,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                         setRevision(prev => prev + 1)
                                                     }}
                                                 />}
+
                                             {((attack instanceof AdversaryAttack && attack.statuses.length > 0) ||
                                                 (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.statuses.length > 0))) &&
                                                 <InteractiveChatCardButton label="Status only" tooltip="Apply statuses only (no damage) & lock attack from edits."
@@ -172,6 +173,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                         setRevision(prev => prev + 1)
                                                     }}
                                                 />}
+
                                             <InteractiveChatCardButton
                                                 label="Resolve" tooltip="Resolve with no updates"
                                                 fn={async () => {
@@ -306,9 +308,11 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                 {/* GAIN A LUCK */}
                                 <InteractiveChatCardButton label="+1 Luck" tooltip="Gain a Luck" fn={addCritLuck} />
                                 {/* ADD DAMAGE EQUAL TO SKILL'S STAT */}
-                                <InteractiveChatCardButton label="+Damage" tooltip="Add damage equal to stat used" fn={addCritDamage} />
+                                {!attack.isEffectOnlySpellAttack &&
+                                    <InteractiveChatCardButton label="+Damage" tooltip="Add damage equal to stat used" fn={addCritDamage} />
+                                }
                                 {/* ADD SPELL'S CRIT FX */}
-                                {source?.system instanceof SpellDataModel &&
+                                {source?.system instanceof SpellDataModel && !attack.isEffectOnlySpellAttack &&
                                     <InteractiveChatCardButton label="Spell Effect" tooltip="Apply Spell on-crit effect" fn={addSpellFx} />
                                 }
                             </div>

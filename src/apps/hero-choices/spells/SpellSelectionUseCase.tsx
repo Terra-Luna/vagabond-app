@@ -6,6 +6,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
 import { getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../utils/collectionUtil"
+import { sys_id } from "../../../utils/foundryUtils"
 import { useSpellSelectionView } from "./SpellSelectionView"
 
 export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, pendingClassItem?: Item & { system: ClassDataModel }) => {
@@ -128,6 +129,7 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
 
         if (hasChanges) {
             saveItemRuleSelections(clazz, selectionUpdates)
+            actor.setFlag(sys_id, "spellcastingMenuState", {})
         }
     }, [classSpellSlots])
 

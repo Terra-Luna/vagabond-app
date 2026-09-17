@@ -33,22 +33,22 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
     let sheet: React.ReactElement
 
     if (item.system instanceof AlchemicalItemDataModel) {
-        sheet = <AlchemicalSheet item={item as any} />
+        sheet = <AlchemicalSheet key={item.uuid} item={item as any} />
     }
     else if (item.system instanceof ArmorDataModel) {
-        sheet = <ArmorSheet item={item as any} />
+        sheet = <ArmorSheet key={item.uuid} item={item as any} />
     }
     else if (item.system instanceof ContainerDataModel) {
-        sheet = <ContainerSheet item={item as any} />
+        sheet = <ContainerSheet key={item.uuid} item={item as any} />
     }
     else if (item.system instanceof StartingPackDataModel) {
-        sheet = <StartingPackSheet item={item as any} />
+        sheet = <StartingPackSheet key={item.uuid} item={item as any} />
     }
     else if (item.system instanceof SundryDataModel) {
-        sheet = <SundrySheet item={item as any} />
+        sheet = <SundrySheet key={item.uuid} item={item as any} />
     }
     else if (item.system instanceof WeaponDataModel) {
-        sheet = <WeaponSheet item={item as any} />
+        sheet = <WeaponSheet key={item.uuid} item={item as any} />
     }
     else {
         sheet = <></>

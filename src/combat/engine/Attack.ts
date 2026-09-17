@@ -1,5 +1,6 @@
-import { getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { roll3dDice, showFloatingText, sys_id } from "../../utils/foundryUtils"
+import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
 import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
@@ -8,6 +9,13 @@ export interface AttackResolutionArgs {
     bypassArmor?: boolean
     gmTargetsOnly?: boolean
     halveDamage?: boolean
+}
+
+export interface AppliedFx {
+    effect: string
+    duration?: string
+    critDuration?: string
+    damageType?: string
 }
 
 export abstract class Attack {
@@ -24,6 +32,7 @@ export abstract class Attack {
     title: string = "Attack"
     damageRoll?: DamageRoll
     isResolved: boolean = false
+    appliedEffects: AppliedFx[] = []
 
     constructor(title) {
         this.id = foundry.utils.randomID()
@@ -48,6 +57,7 @@ export abstract class Attack {
     async applyDamageAndResolve(args: AttackResolutionArgs, serialize: (attack: Attack) => AttackSnapshot | undefined) {
         if (this.isResolved) return
         this.processDamageRoll(args)
+        await this.processStatusFx(args)
         await this.resolve(serialize)
     }
 
@@ -68,11 +78,6 @@ export abstract class Attack {
                 this.applyDamage(args)
             }
         }
-    }
-
-    protected shouldApplyDamageToTarget(targetId: string): boolean {
-        void targetId
-        return true
     }
 
     private applyHealing(args: AttackResolutionArgs) {
@@ -106,6 +111,11 @@ export abstract class Attack {
         })
     }
 
+    protected shouldApplyDamageToTarget(targetId: string): boolean {
+        void targetId
+        return true
+    }
+
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         let damage = this.damageRoll?.result?.total ?? 0
@@ -116,6 +126,47 @@ export abstract class Attack {
         const armorPiercing = this.damageRoll?.armorPiercing ?? 0
         const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
         return Math.max(0, damage - armor)
+    }
+
+    protected get isCriticalHit(): boolean { return false }
+
+    private async processStatusFx(args: AttackResolutionArgs) {
+        if (this.appliedEffects.length === 0) return
+
+        const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? []).filter(id => this.shouldApplyDamageToTarget(id))
+
+        for (const id of targetIds) {
+            const token = getCanvasToken(id)
+            const actor = token?.actor ?? canvas?.scene?.tokens?.get(id)?.actor
+            if (!actor) continue
+
+            for (const eff of this.appliedEffects) {
+                const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
+
+                console.log({ duration })
+
+                await this.applyEffects(actor, token, eff.effect, duration, eff.damageType)
+            }
+        }
+    }
+
+    // Countdown durations (e.g. "Cd6") additionally spawn a Countdown die to track it; the status is always toggled on immediately.
+    private async applyEffects(actor: Actor, token: Token | undefined, status: string, duration?: string, damageType?: string) {
+        if (!duration || duration === "-") return
+
+        await actor.toggleStatusEffect(status, { active: true })
+
+        const countdownFaces = duration?.match(/^Cd(\d+)$/)?.[1]
+        if (countdownFaces) {
+            await addCountdown(
+                appLang.StatusConditions[status]?.name ?? status,
+                Number(countdownFaces),
+                undefined, undefined,
+                actor.uuid,
+                token?.document?.uuid,
+                { id: status, damageType: damageType }
+            )
+        }
     }
 
     protected getActors(targetIds: string[]) {

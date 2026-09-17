@@ -71,28 +71,19 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case appLang.DamageTypes.fatigue: {
-            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-white' />
+            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-ic-armor-fill' />
             break
         }   
         case appLang.DamageTypes.blunt: {
-            element = <div className="flex text-text-primary font-eskapade">
-                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
-                <p>B</p>
-            </div>
+            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             break
         }
         case appLang.DamageTypes.pierce: {
-            element = <div className="flex text-text-primary font-eskapade">
-                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
-                <p>P</p>
-            </div>
+            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             break
         }
         case appLang.DamageTypes.slash: {
-            element = <div className="flex text-text-primary font-eskapade">
-                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
-                <p>S</p>
-            </div>
+            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             break
         }
     }

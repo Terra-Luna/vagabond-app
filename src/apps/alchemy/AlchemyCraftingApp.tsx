@@ -12,7 +12,7 @@ export class AlchemyCraftingApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
             window: { title: "Alchemy Crafting" },
-            position: { width: 400 },
+            position: { width: 433 },
             Component: AlchemyCraftingView
         } as VagabondAppArgs)
         

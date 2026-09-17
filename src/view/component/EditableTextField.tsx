@@ -7,7 +7,7 @@ import { tableBorder } from "../common/border-styles"
 import { useEditMode } from "../context/EditModeContext/Hooks"
 import { Tooltip } from "./Tooltip"
 
-const editModeBorder = `${tableBorder} px-1`
+const editModeBorder = `${tableBorder} rounded-xs px-1`
 
 export const EditableTextField = (
     { boundValue, onSave, updateProps, placeholder = "Enter text...", hideBorderOnEditMode = false, className = '' }: {
@@ -60,7 +60,7 @@ export const EditableTextField = (
 
     if (isInEditMode || boundValue === '' || boundValue == null) {
         const inputStyle = (editModeValue === '' || editModeValue == null)
-            ? `field-sizing-content ${tableBorder} px-1 ${className}`
+            ? `field-sizing-content ${tableBorder} rounded-xs px-1 ${className}`
             : `w-auto field-sizing-content ${className}`
         return <div className="overflow-hidden">
             <form onSubmit={(e) => {
@@ -126,7 +126,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
 
     return (<>
         {isEditMode ?
-            <div className={`flex items-center justify-center ${hideBorder ? '' : `${tableBorder}/50`}`}>
+            <div className={`flex items-center justify-center ${hideBorder ? '' : `${tableBorder}/50 rounded-xs`}`}>
                 <form onSubmit={(e) => {
                     e.stopPropagation()
                     e.preventDefault()

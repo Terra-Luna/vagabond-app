@@ -13,7 +13,7 @@ import { DiceRollComponent } from "./component/DiceRollComponent"
 export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) => {
 
     const [isApplied, setIsApplied] = useState(false)
-    const dmgType = result.damageType
+    const dmgType = result.damageType === "none" ? false : result.damageType
 
     const resolve = async (applyDamage: boolean = false) => {
         if (!result.actorUuid && !result.tokenUuid || !dmgType) return
@@ -26,7 +26,7 @@ export const CountdownRollChatCard = ({ result }: { result: CountdownResult }) =
 
             if (dmgType === 'mana') {
                 const mana = token.actor?.system?.mana?.value ?? 0
-                token?.actor?.update({ "system.mana.value": mana + result } as Record<string, number>)
+                token?.actor?.update({ "system.mana.value": mana + (result.rollSummary?.result ?? 0) } as Record<string, number>)
             }
             else {
                 const hp = token.actor?.system?.health?.value ?? 0

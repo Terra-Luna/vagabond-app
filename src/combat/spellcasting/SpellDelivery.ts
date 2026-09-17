@@ -5,6 +5,7 @@ export interface SpellDeliverySnapshot {
     name: string,
     applyEffect: boolean,
     isFocused: boolean,
+    upcast: number,
     discount: number,
     _manaCost: number,
     spell: SpellSnapshot,
@@ -17,7 +18,8 @@ export interface SpellSnapshot {
     damageType: string,
     baseManaCost: number,
     ignoreEffectCost: boolean,
-    appliedEffects: { effect: string, duration: string | unknown, critDuration: string | unknown }[]
+    upcastableEffect: boolean,
+    appliedEffects: { effect: string, duration: string, critDuration: string }[]
 }
 
 export interface DeliveryMods {
@@ -33,8 +35,7 @@ export interface DeliveryMods {
 }
 
 /**
- * Use the available update functions for each delivery type
- * to have manaCost automatically updated.
+ * Use the available update functions for each delivery type to have manaCost automatically updated.
  */
 export abstract class SpellDelivery {
 
@@ -46,6 +47,7 @@ export abstract class SpellDelivery {
     applyEffect = false
     isFocused = false
     damageDice = 1
+    upcast = 0
     studyDamageDice = 0
     discount = 0
 
@@ -93,6 +95,11 @@ export abstract class SpellDelivery {
         }
     }
 
+    setUpcast(upcast: number) {
+        this.upcast = upcast
+        this.calculateManaCost()
+    }
+
     setApplyEffect(isApplied: boolean) {
         this.applyEffect = isApplied
         this.calculateManaCost()
@@ -107,6 +114,7 @@ export abstract class SpellDelivery {
     }
 
     applyEffectManaCost() {
+        this._manaCost += this.upcast
         this._manaCost += this.applyEffect && this.damageDice > 0 && !this.spell?.ignoreEffectCost
             ? 1
             : 0
@@ -117,6 +125,7 @@ export abstract class SpellDelivery {
             name: this.name,
             applyEffect: this.applyEffect,
             isFocused: this.isFocused,
+            upcast: this.upcast,
             discount: this.discount,
             _manaCost: this._manaCost,
             spell: this.spell,
@@ -131,7 +140,8 @@ export abstract class SpellDelivery {
             damageType: spell.system.damageType,
             baseManaCost: spell.system.baseManaCost,
             ignoreEffectCost: spell.system.ignoreEffectCost,
-            appliedEffects: spell.system.appliedEffects
+            appliedEffects: spell.system.appliedEffects as any[],
+            upcastableEffect: spell.system.upcastableEffect
         }
     }
 }

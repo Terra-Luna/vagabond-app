@@ -23,6 +23,7 @@ import { SpellRangeInput } from "./input/SpellRangeInput"
 import { SpellSelector } from "./input/SpellSelector"
 import { SpellTargetInput } from "./input/SpellTargetInput"
 import { TotalMana } from "./input/TotalMana"
+import { UpcastingInput } from "./input/UpcastingInput"
 
 interface SpellcastingMenuState {
     skill: string
@@ -51,7 +52,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         return ItemsCache.spells()
             .filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid))
             .map(sp => SpellDelivery.getSpellSnapshot(sp))
-    }, [actor, JSON.stringify(actor.system.class?.rules ?? [])])
+    }, [actor, JSON.stringify(actor.system.class?.rules ?? []), JSON.stringify(hero.spells.map(sp => sp._sourceId))])
 
     useEffect(() => {
         const savedState = actor.getFlag(sys_id, "spellcastingMenuState" as any) as SpellcastingMenuState | undefined
@@ -183,6 +184,15 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         }))
     }, [deliveryIndex, deliveries])
 
+    const onUpdateUpcast = useCallback(async (input: string | null) => {
+        const upcast = Math.max(0, Number(input) || 0)
+        setDeliveries(deliveries.map(d => {
+            const clone = d.clone()
+            clone.setUpcast(upcast)
+            return clone
+        }))
+    }, [deliveryIndex, deliveries])
+
     const onToggleSpellEffect = useCallback((isChecked: boolean) => {
         setDeliveries(deliveries.map(d => {
             const clone = d.clone()
@@ -290,10 +300,11 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                 <div className={`flex flex-col gap-2font-eskapade font-bold bg-context-menu-fill -mt-1 mb-1 p-1 ${tableBorder}`}>
 
                         {/* SPELLCASTING MENU TOP ROW */}
-                        <div className="flex gap-x-1 items-end bottom text-lg">
+                        <div className="flex gap-x-0.5 items-end text-lg">
                             <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
                             <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
                             <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
+
                             {/* CAST BUTTON */}
                             <div className="ml-auto">
                                 <Tooltip title={`Cast: ${delivery?.spell.name} (${delivery?.manaCost ?? 0} Mana)`} content={`${delivery?.name ?? ''} | ${delivery?.targetLabel}: ${(delivery as any).targetCount ?? (delivery as any).size ?? ""}<br>${appLang.HeroSheet.skills_tooltip}`}>
@@ -350,6 +361,8 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                                         }
                                     </div>
                                 }
+
+                                {spell.upcastableEffect && <UpcastingInput upcast={delivery?.upcast} onUpdateUpcast={onUpdateUpcast} />}
 
                                 {/* MANA DISCOUNT INPUT */}
                                 <ManaDiscount discount={delivery?.discount} onUpdateDiscount={onUpdateDiscount} />

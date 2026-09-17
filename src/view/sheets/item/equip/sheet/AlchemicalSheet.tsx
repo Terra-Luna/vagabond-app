@@ -30,6 +30,7 @@ export const AlchemicalSheet = ({ item }: { item: Item & { system: AlchemicalIte
                     diceRoll={damageDice}
                     onChange={handleDiceChange}
                 />
+                
                 <AppliedEffectInput item={item} />
 
                 <div className="flex justify-between w-full">

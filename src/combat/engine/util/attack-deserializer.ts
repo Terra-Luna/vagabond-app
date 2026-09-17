@@ -31,6 +31,7 @@ function deserializeHeroAttack(
     atk.critChoice = snapshot.critChoice
     atk.isRerolled = snapshot.isRerolled
     atk.isResolved = snapshot.isResolved
+    atk.appliedEffects = snapshot.appliedEffects ?? []
 
     atk.skillCheck = SkillCheck.fromJson(
         actor,
@@ -73,6 +74,7 @@ function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack |
     atk.userId = snapshot.userId
     atk.isResolved = snapshot.isResolved
     atk.damageRoll = damageRoll
+    atk.appliedEffects = snapshot.appliedEffects ?? []
     atk.saveResults = snapshot.saveResults
         ? foundry.utils.deepClone(snapshot.saveResults)
         : {}
@@ -92,6 +94,7 @@ function deserializeComboAttack(snapshot: AttackSnapshot): AdversaryComboAttack 
     atk.id = snapshot.id
     atk.userId = snapshot.userId
     atk.isResolved = snapshot.isResolved
+    atk.appliedEffects = snapshot.appliedEffects ?? []
     atk.subAttacks = (snapshot.subAttacks ?? []).map(sub => ComboSubAttack.fromJson(sub))
 
     return atk
