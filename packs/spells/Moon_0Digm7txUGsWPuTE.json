@@ -9,12 +9,7 @@
     "baseManaCost": 0,
     "ignoreEffectCost": false,
     "damageType": "cold",
-    "appliedEffects": [
-      {
-        "effect": "burning",
-        "duration": 0
-      }
-    ]
+    "appliedEffects": []
   },
   "effects": [],
   "folder": null,
@@ -27,10 +22,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786721944536,
-    "modifiedTime": 1786722000696,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789663360043,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

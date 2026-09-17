@@ -26,14 +26,21 @@
     "alchemyCategory": "explosive",
     "damage": {
       "dice": {
-        "count": 0,
-        "faces": 4,
+        "count": 1,
+        "faces": 6,
         "modifier": 0,
         "explodesOn": []
       },
       "type": "shock",
       "appliedEffects": []
-    }
+    },
+    "appliedEffects": [
+      {
+        "effect": "dazed",
+        "duration": "round",
+        "critDuration": "round"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -46,10 +53,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786821492397,
-    "modifiedTime": 1786826382603,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789665682931,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

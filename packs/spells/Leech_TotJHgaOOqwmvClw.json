@@ -11,7 +11,9 @@
     "damageType": "poison",
     "appliedEffects": [
       {
-        "effect": "sickened"
+        "effect": "sickened",
+        "duration": "focus",
+        "critDuration": "focus"
       }
     ]
   },
@@ -26,10 +28,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786721455047,
-    "modifiedTime": 1786721556599,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789663161516,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

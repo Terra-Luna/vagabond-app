@@ -9,7 +9,12 @@
     "baseManaCost": 0,
     "ignoreEffectCost": false,
     "damageType": "blunt",
-    "appliedEffects": []
+    "appliedEffects": [
+      {
+        "effect": "restrained",
+        "critDuration": "focus"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -22,10 +27,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786723240462,
-    "modifiedTime": 1786723303695,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789663612090,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

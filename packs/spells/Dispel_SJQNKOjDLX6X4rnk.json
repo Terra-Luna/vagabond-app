@@ -4,7 +4,7 @@
   "_id": "SJQNKOjDLX6X4rnk",
   "img": "/icons/magic/air/fog-gas-smoke-swirling-pink.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You suspend a magic effect for the duration, treating it as an unwilling Target (p. 91).</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The effect is completely dispelled if it is not a Relic's Power.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You suspend a magic effect for the duration, treating it as an unwilling Target.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> The effect is completely dispelled if it is not a Relic's Power.</span></p>",
     "rules": [],
     "baseManaCost": 0,
     "ignoreEffectCost": false,
@@ -22,10 +22,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786718925896,
-    "modifiedTime": 1786719003512,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789661837225,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

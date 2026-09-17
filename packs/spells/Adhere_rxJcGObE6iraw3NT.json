@@ -4,10 +4,16 @@
   "_id": "rxJcGObE6iraw3NT",
   "img": "icons/magic/acid/dissolve-pool-bubbles.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">The Target is covered in sticky slime for the duration, causing the Area out to Close around it to be Difficult Terrain. Targeted Beings are  considered Vulnerable for the purpose of ending the Restrained Status.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Targeted Objects are secured to whatever they are in contact with or the next thing it contacts in the duration. A Being with Might or HD equal to or lower than your Level can't move the Object. You can increase your effective Level for the casting by spending additional Mana, increasing it by 1 per Mana spent to do so.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is covered in sticky slime for the duration, causing the Area out to Close around it to be Difficult Terrain. Targeted Beings are considered Vulnerable for the purpose of ending the Restrained Status.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Targeted Objects are secured to whatever they are in contact with or the next thing it contacts in the duration. A Being with Might or HD equal to or lower than your Level can't move the Object. You can increase your effective Level for the casting by spending additional Mana, increasing it by 1 per Mana spent to do so.</span></p>",
     "rules": [],
     "damageType": "acid",
-    "appliedEffects": []
+    "appliedEffects": [
+      {
+        "effect": "vulnerable",
+        "duration": "focus",
+        "critDuration": "focus"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -20,10 +26,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1784497124303,
-    "modifiedTime": 1786813473141,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789659558008,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

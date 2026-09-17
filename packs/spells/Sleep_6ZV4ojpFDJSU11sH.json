@@ -7,13 +7,16 @@
     "description": "<p><span style=\"white-space:pre-wrap\">If the Targets have a cumulative HD total equal to (1 + your Level) or lower, they are knocked Unconscious for the duration, ending early if they take damage or are shaken awake. You can spend Mana to increase your effective Level for the Casting by 1 per Mana spent to do.</span></p>",
     "rules": [],
     "baseManaCost": 0,
-    "ignoreEffectCost": false,
+    "ignoreEffectCost": true,
     "damageType": "none",
     "appliedEffects": [
       {
-        "effect": "unconscious"
+        "effect": "unconscious",
+        "duration": "focus",
+        "critDuration": "focus"
       }
-    ]
+    ],
+    "upcastableEffect": true
   },
   "effects": [],
   "folder": null,
@@ -26,10 +29,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786722786055,
-    "modifiedTime": 1786722824288,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789663458092,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

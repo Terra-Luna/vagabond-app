@@ -9,9 +9,12 @@
     "damageType": "none",
     "appliedEffects": [
       {
-        "effect": "confused"
+        "effect": "confused",
+        "duration": "Cd4",
+        "critDuration": "continual"
       }
-    ]
+    ],
+    "ignoreEffectCost": true
   },
   "effects": [],
   "folder": null,
@@ -24,10 +27,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1784763799427,
-    "modifiedTime": 1785611055933,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1789659667881,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -6,7 +6,14 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">For the duration, Targeted Objects count as Silvered, and Targeted Beings of your choice have a d4 bonus to Saves.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, if the Target is freestanding water, it permanently becomes holy water.</span></p>",
     "rules": [],
-    "damageType": "none"
+    "damageType": "none",
+    "appliedEffects": [
+      {
+        "effect": "blessed",
+        "duration": "focus",
+        "critDuration": "focus"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -19,10 +26,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1784762523229,
-    "modifiedTime": 1784762551943,
-    "lastModifiedBy": "KkUM0xdZFWx39xs4",
+    "modifiedTime": 1789659638664,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -9,9 +9,12 @@
     "damageType": "none",
     "appliedEffects": [
       {
-        "effect": "charmed"
+        "effect": "charmed",
+        "duration": "focus",
+        "critDuration": "focus"
       }
-    ]
+    ],
+    "upcastableEffect": true
   },
   "effects": [],
   "folder": null,
@@ -24,10 +27,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1784764296356,
-    "modifiedTime": 1785611079225,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1789663077832,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

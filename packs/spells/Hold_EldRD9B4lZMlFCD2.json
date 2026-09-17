@@ -4,12 +4,19 @@
   "_id": "EldRD9B4lZMlFCD2",
   "img": "/icons/magic/control/debuff-energy-hold-yellow.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Paralyzed for the duration if its HD or Level is equal to or lower than your Level. You can spend Mana to increase your Level for the purposes of this casting by 1 per Mana spent to do so. If the Target is an Object, it becomes secured and effectively locked if it is a door, chest, or other means of preventing entry. You must pass a Cast Check any time an attempt is made to manipulate the secured Object to maintain the Focus.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is 1 minute (no Focus required).</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The Target is Paralyzed for the duration if its HD or Level is equal to or lower than your Level. You can spend Mana to increase your Level for the purposes of this casting by 1 per Mana spent to do so.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">If the Target is an Object, it becomes secured and effectively locked if it is a door, chest, or other means of preventing entry. You must pass a Cast Check any time an attempt is made to manipulate the secured Object to maintain the Focus.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crit:</strong></b><span style=\"white-space:pre-wrap\"> Duration is 1 minute (no Focus required).</span></p>",
     "rules": [],
     "baseManaCost": 0,
     "ignoreEffectCost": false,
     "damageType": "none",
-    "appliedEffects": []
+    "appliedEffects": [
+      {
+        "effect": "paralyzed",
+        "duration": "focus",
+        "critDuration": "scene"
+      }
+    ],
+    "upcastableEffect": true
   },
   "effects": [],
   "folder": null,
@@ -22,10 +29,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786720727342,
-    "modifiedTime": 1786720778771,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789663027254,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

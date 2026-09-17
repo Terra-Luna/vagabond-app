@@ -10,6 +10,7 @@
     "appliedEffects": [
       {
         "effect": "blinded",
+        "duration": "-",
         "critDuration": "Cd4"
       }
     ]
@@ -25,10 +26,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1784496870877,
-    "modifiedTime": 1785611152522,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1789663249696,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

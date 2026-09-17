@@ -9,7 +9,8 @@
     "baseManaCost": 0,
     "ignoreEffectCost": false,
     "damageType": "blunt",
-    "appliedEffects": []
+    "appliedEffects": [],
+    "upcastableEffect": true
   },
   "effects": [],
   "folder": null,
@@ -22,10 +23,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786720987697,
-    "modifiedTime": 1786721109289,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789663101874,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

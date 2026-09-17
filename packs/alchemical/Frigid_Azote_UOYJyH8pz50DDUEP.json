@@ -33,7 +33,8 @@
       },
       "type": "cold",
       "appliedEffects": []
-    }
+    },
+    "appliedEffects": []
   },
   "effects": [],
   "folder": null,
@@ -46,9 +47,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.24",
+    "systemVersion": "0.1.1",
     "createdTime": 1786820930370,
-    "modifiedTime": 1788900363898,
+    "modifiedTime": 1789665455622,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

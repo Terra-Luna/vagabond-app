@@ -33,7 +33,14 @@
       },
       "type": "none",
       "appliedEffects": []
-    }
+    },
+    "appliedEffects": [
+      {
+        "effect": "invisible",
+        "duration": "scene",
+        "critDuration": "scene"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -46,10 +53,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786823179369,
-    "modifiedTime": 1786826134144,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789665629474,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

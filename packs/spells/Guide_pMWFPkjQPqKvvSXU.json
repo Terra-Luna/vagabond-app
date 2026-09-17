@@ -9,7 +9,13 @@
     "baseManaCost": 0,
     "ignoreEffectCost": false,
     "damageType": "none",
-    "appliedEffects": []
+    "appliedEffects": [
+      {
+        "effect": "vulnerable",
+        "duration": "focus",
+        "critDuration": "scene"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -22,10 +28,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1786720516121,
-    "modifiedTime": 1786720576347,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789662260547,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

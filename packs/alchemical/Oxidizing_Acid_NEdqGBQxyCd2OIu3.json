@@ -33,7 +33,14 @@
       },
       "type": "acid",
       "appliedEffects": []
-    }
+    },
+    "appliedEffects": [
+      {
+        "effect": "burning",
+        "duration": "Cd6",
+        "critDuration": "Cd6"
+      }
+    ]
   },
   "effects": [],
   "folder": null,
@@ -46,9 +53,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.24",
+    "systemVersion": "0.1.1",
     "createdTime": 1786819257562,
-    "modifiedTime": 1788829294070,
+    "modifiedTime": 1789666134812,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

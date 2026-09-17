@@ -10,7 +10,8 @@
     "appliedEffects": [
       {
         "effect": "berserk",
-        "duration": ""
+        "duration": "focus",
+        "critDuration": "continual"
       }
     ]
   },
@@ -25,10 +26,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.1",
     "createdTime": 1784497306345,
-    "modifiedTime": 1785610835087,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1789659606736,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
