@@ -83,7 +83,7 @@ test/      Jest tests organized by application area
 dist/      Generated build output (not checked in)
 ```
 
-## Validation Before Changes Are Shared
+## Contribution
 
 Run the full local checks before opening a pull request:
 
