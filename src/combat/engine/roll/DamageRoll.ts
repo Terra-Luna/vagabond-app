@@ -82,19 +82,27 @@ export class DamageRoll {
     }
 
     async roll(isCrit?: boolean): Promise<DamageRollResult> {
-        const damageRoll = await new Roll(`${this.dice.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
+        const straightRolls = this.dice.filter(d => !d.explodesOn || d.explodesOn.length === 0)
+        const explodableRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0)
+
+        const damageRoll = await new Roll(`${straightRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
+
+        let initialExplodableRoll: Roll.Evaluated<Roll<EmptyObject>> = await new Roll(`0`).evaluate()
+        let initialExplodableTerms: foundry.dice.terms.DiceTerm[] = []
+
+        if (explodableRolls && explodableRolls.length > 0) {
+            initialExplodableRoll = await new Roll(`${explodableRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}`).evaluate()
+            initialExplodableTerms = getDiceTerms(initialExplodableRoll)
+        }
+
         const explosions: Roll.Evaluated<Roll<EmptyObject>>[] = []
 
         let canExplode = false
         for (const d of this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0 && (isCrit && d.explodeOnCritOnly || !d.explodeOnCritOnly))) {
             if (this.isSafeToExplode(d.faces, d.explodesOn!)) {
                 canExplode = true
-                await this.processExplosions(
-                    damageRollTerms.filter(t => t.faces === d.faces),
-                    explosions,
-                    d.explodesOn ?? []
-                )
+                await this.processExplosions(initialExplodableTerms, explosions, d.explodesOn ?? [])
             }
         }
 
@@ -107,9 +115,9 @@ export class DamageRoll {
         const result = {
             atkName: this.atkName,
             dmgType: this.dmgType,
-            total: damageRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
+            total: damageRoll.total + initialExplodableRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
             bonus: totalBonus,
-            rollSummaries: RollSummary.buildRollSummaries(damageRollTerms, explosionTerms, this.dice, isCrit),
+            rollSummaries: RollSummary.buildRollSummaries(damageRollTerms, initialExplodableTerms, explosionTerms, this.dice),
             rolls: [damageRoll]
         } as DamageRollResult
 

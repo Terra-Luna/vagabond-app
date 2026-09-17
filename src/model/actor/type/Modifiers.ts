@@ -155,13 +155,25 @@ const damageModifierSchema = () => {
         ranged: new fields.SchemaField({ ...damageBonusSchema() }),
         thrown: new fields.SchemaField({ ...damageBonusSchema() }),
         defense: new fields.SchemaField({ ...damageBonusSchema() }),
-        spell: new fields.SchemaField({ ...damageBonusSchema() })
+        spell: new fields.SchemaField({ ...damageBonusSchema() }),
+        special: new fields.SchemaField({
+            sneakAttack: new fields.SchemaField({
+                ...damageBonusSchema(),
+                active: new fields.BooleanField({ initial: false })
+            })
+        })
     }
 }
 
 const damageBonusSchema = () => {
     return {
         flatBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
-        perDieBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 })
+        perDieBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
+        extraDice: new fields.SchemaField({
+            count: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            faces: new fields.NumberField({ ...requiredInteger, initial: 4 }),
+            modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            explodesOn: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
+        })
     }
 }

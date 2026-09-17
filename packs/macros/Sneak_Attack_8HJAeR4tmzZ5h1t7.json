@@ -1,0 +1,28 @@
+{
+  "name": "Sneak Attack",
+  "type": "script",
+  "_id": "8HJAeR4tmzZ5h1t7",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "icons/skills/melee/strike-slashes-red.webp",
+  "scope": "global",
+  "command": "let hero = game.user.character;\n\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.effects.some(fx => fx.name.toUpperCase() === \"SNEAK ATTACK\"))?.actor;\n}\n\nif (!hero) {\n  ui.notifications.warn(`No valid Hero found for \"Sneak Attack\".`);\n}\nelse {\n  const sneak = hero.effects.find(fx => fx.name.toUpperCase() === \"SNEAK ATTACK\");\n  \n  if (sneak) {\n    const state = sneak.disabled\n    await sneak.update({ disabled: !state });\n  }\n}",
+  "folder": "iGjky4Uew8S0aT8t",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.3",
+    "createdTime": 1789678280764,
+    "modifiedTime": 1789678413220,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!8HJAeR4tmzZ5h1t7"
+}

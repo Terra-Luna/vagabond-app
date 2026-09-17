@@ -366,12 +366,32 @@ export class HeroAttack extends Attack {
             DiceRoll.getItemDamageWithHeroMods(hero, weaponSkill, weapon)
         )
 
+        if (!extraDice || extraDice.length === 0) {
+            if (dmgMods.out[weaponSkill]?.extraDice?.count > 0) {
+                const extra = dmgMods.out[weaponSkill].extraDice
+                extraDice = [new DiceRoll(extra), ...extraDice ?? []]
+            }
+        }
+
+        const specialMods: any[] = []
+
+        Object.keys(dmgMods.out.special ?? {}).filter(key => dmgMods.out.special[key]?.active).forEach(key => {
+            const sm = dmgMods.out.special[key]
+            specialMods.push({
+                key: key,
+                flatDmgBonus: sm.flatBonus ?? 0,
+                perDieDmgBonus: sm.perDieBonus ?? 0,
+                extraDice: new DiceRoll(sm.extraDice ?? {})
+            })
+
+        })
+
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
-            dice: [damageDice, ...extraDice ?? []],
-            flatDmgBonus: (dmgMods.out[weaponSkill]?.flatBonus ?? 0),
-            perDieDmgBonus: (dmgMods.out[weaponSkill]?.perDieBonus ?? 0)
+            dice: [damageDice, ...extraDice ?? [], ...specialMods.flatMap(sm => sm.extraDice ?? [])],
+            flatDmgBonus: (dmgMods.out[weaponSkill]?.flatBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.flatDmgBonus ?? 0), 0) ?? 0),
+            perDieDmgBonus: (dmgMods.out[weaponSkill]?.perDieBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.perDieDmgBonus ?? 0), 0) ?? 0)
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)

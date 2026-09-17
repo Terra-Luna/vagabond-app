@@ -26,7 +26,7 @@ export class CountdownRoll {
             tokenUuid: this.result.tokenUuid,
             damageType: this.result.damageType,
             status: this.result.status,
-            rollSummary: { ...RollSummary.buildRollSummaries(getDiceTerms(roll), null, [])[0] },
+            rollSummary: { ...RollSummary.buildRollSummaries(getDiceTerms(roll), [], null, [])[0] },
             rolls: [roll],
             message: nextDuration === 0
                 ? 'Countdown has expired'

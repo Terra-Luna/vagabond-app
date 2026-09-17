@@ -16,19 +16,19 @@ export class RollSummary {
 
     static buildRollSummaries(
         damageRollTerms: foundry.dice.terms.DiceTerm[],
+        initialExplodableTerms: foundry.dice.terms.DiceTerm[],
         explosionTerms: foundry.dice.terms.DiceTerm[] | null,
-        dice: DiceRoll[],
-        isCrit?: boolean
+        dice: DiceRoll[]
     ) {
         const summary: RollSummary[] = []
-        damageRollTerms.concat(explosionTerms ?? []).forEach(term => {
+        damageRollTerms.concat(initialExplodableTerms ?? []).concat(explosionTerms ?? []).forEach(term => {
             term.results.forEach(res => {
                 summary.push({
                     result: res.result,
                     faces: term.faces as number,
                     rerolled: !!res.rerolled,
                     exploded: dice
-                        .filter(d => d.faces === term.faces && (d.explodeOnCritOnly && isCrit || !d.explodeOnCritOnly))
+                        .filter(d => initialExplodableTerms.includes(term) || explosionTerms?.includes(term))
                         .some(d => d.explodesOn?.includes(res.result))
                 })
             })
