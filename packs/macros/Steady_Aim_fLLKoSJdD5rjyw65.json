@@ -1,0 +1,28 @@
+{
+  "folder": "u4y2RKBI8ILTtpHZ",
+  "name": "Steady Aim",
+  "type": "script",
+  "_id": "fLLKoSJdD5rjyw65",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "/icons/skills/targeting/crosshair-pointed-orange.webp",
+  "scope": "global",
+  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(\"vagabond-app\", \"steadyaim\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"steadyaim\")) return;\n\nconst steadyaim = hero.effects.find(fx => fx.name.toUpperCase() === \"STEADY AIM\");\n\nif (!steadyaim){\n    const effectData = {\n      name: `Steady Aim`,\n      img: \"/icons/skills/targeting/crosshair-pointed-orange.webp\",\n      showIcon: 2,\n      changes: [\n        {\n          key: \"system.modifiers.damage.out.ranged.flatBonus\",\n          type: \"add\",\n          mode: 2,\n          value: 2,\n          priority: 20\n        }\n      ]\n    };\n  \n    await token.actor.createEmbeddedDocuments(\"ActiveEffect\", [effectData]);\n}\nelse {\n  token.actor.deleteEmbeddedDocuments(\"ActiveEffect\", [steadyaim.id]);\n}",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.17",
+    "createdTime": 1789767678414,
+    "modifiedTime": 1789768424445,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!fLLKoSJdD5rjyw65"
+}

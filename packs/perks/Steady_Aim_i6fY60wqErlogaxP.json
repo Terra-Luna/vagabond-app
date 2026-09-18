@@ -5,7 +5,16 @@
   "img": "/icons/skills/targeting/crosshair-pointed-orange.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You have a +2 bonus to damage with Ranged attacks against Targets who haven’t Moved since the end of your last Turn.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "Rs2LyFFCAJxuXAso",
+        "key": "ToggleRule",
+        "label": "Steady Aim",
+        "level": "0",
+        "value": true,
+        "selector": "flags.steadyaim"
+      }
+    ],
     "prerequisites": [
       {
         "type": "trained",
@@ -36,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.17",
     "createdTime": 1786728488939,
-    "modifiedTime": 1786728519002,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1789767949635,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

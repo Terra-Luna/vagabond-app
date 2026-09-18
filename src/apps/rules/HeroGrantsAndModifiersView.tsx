@@ -54,7 +54,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
     })
 
     // Separate rules into Active and Upcoming (Locked) categories
-    const activeRules = allRules.filter(r => r.level <= currentLevel)
+    const activeRules = allRules.filter(r => r.level <= currentLevel && !r.selector?.startsWith("flags."))
     const lockedRules = allRules.filter(r => r.level > currentLevel).sort((a, b) => { return a.level - b.level })
     const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
 

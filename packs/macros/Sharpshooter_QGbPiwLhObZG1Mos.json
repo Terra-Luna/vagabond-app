@@ -6,7 +6,7 @@
   "author": "kZQZopB3JnMoHkMo",
   "img": "/icons/skills/targeting/crosshair-scope-sniper-green.webp",
   "scope": "global",
-  "command": "const hero = game.user.character;\nconst name = hero.system.parent.name;\n\nif (!hero || !hero.system.perks.find(perk => perk.parent.name === \"Sharpshooter\")) {\n  ui.notifications.warn(\"This macro is only available to heroes with the Sharpshooter perk.\");\n  return;\n}\n\nconst sharpshooter = hero.effects.find(fx => fx.name.toUpperCase() === \"SHARPSHOOTER\");\n\nif (!sharpshooter){\n    const effectData = {\n      name: `Sharpshooter`,\n      img: \"/icons/skills/targeting/crosshair-scope-sniper-green.webp\",\n      showIcon: 2,\n      changes: [\n        {\n          key: \"system.modifiers.skillCheck.ranged.critThreshold\",\n          type: \"add\",\n          mode: 2,\n          value: 1,\n          priority: 20\n        }\n      ]\n    };\n  \n    await token.actor.createEmbeddedDocuments(\"ActiveEffect\", [effectData]);\n} else {\n  token.actor.deleteEmbeddedDocuments(\"ActiveEffect\", [sharpshooter.id]);\n}",
+  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(\"vagabond-app\", \"sharpshooter\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"sharpshooter\")) return;\n\nconst sharpshooter = hero.effects.find(fx => fx.name.toUpperCase() === \"SHARPSHOOTER\");\n\nif (!sharpshooter){\n    const effectData = {\n      name: `Sharpshooter`,\n      img: \"/icons/skills/targeting/crosshair-scope-sniper-green.webp\",\n      showIcon: 2,\n      changes: [\n        {\n          key: \"system.modifiers.skillCheck.ranged.critThreshold\",\n          type: \"add\",\n          mode: 2,\n          value: 1,\n          priority: 20\n        }\n      ]\n    };\n  \n    await token.actor.createEmbeddedDocuments(\"ActiveEffect\", [effectData]);\n}\nelse {\n  token.actor.deleteEmbeddedDocuments(\"ActiveEffect\", [sharpshooter.id]);\n}",
   "sort": 0,
   "ownership": {
     "default": 0,
@@ -18,8 +18,8 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.9",
     "createdTime": 1789749701422,
-    "modifiedTime": 1789749959373,
-    "lastModifiedBy": "kZQZopB3JnMoHkMo",
+    "modifiedTime": 1789768421396,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

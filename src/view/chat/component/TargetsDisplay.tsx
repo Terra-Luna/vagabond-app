@@ -12,7 +12,7 @@ import { ClearHeader } from "../../component/Header"
 export const TargetsDisplay = ({ targets, onRemoveTarget }: { targets: any[], onRemoveTarget?: any }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     return (
-        <div className="pb-2">
+        <div className="-mt-1 pb-2">
 
             <ClearHeader title={`Targets [${targets.length}]`} />
 
