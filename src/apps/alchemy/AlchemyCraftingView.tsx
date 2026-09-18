@@ -50,7 +50,6 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
      * Spend Material and add item to Actor's inventory.
      */
     const addToInventory = useCallback(async (e, item) => {
-        console.log(item)
         const fullItem = await getAlchemyItem(item)
         if (fullItem) {
             if (await consumeMaterials()) {

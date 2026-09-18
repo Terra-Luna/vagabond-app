@@ -4,7 +4,6 @@ import { useCallback,useState } from "react"
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
 import { VagabondActiveEffect } from "../../../../../combat/documents/VagabondActiveEffect"
 import { SavingThrowType } from "../../../../../combat/engine/AdversaryAttack"
-import { DamageRoll } from "../../../../../combat/engine/roll/DamageRoll"
 import { DiceRoll } from "../../../../../combat/engine/roll/DiceRoll"
 import { DiceRollInputComponent } from "../../../../../combat/ui/DiceRollInputComponent"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
@@ -13,9 +12,6 @@ import { getDamageAverage } from "../../../../../model/actor/type/NpcAction"
 import { updateDocumentAtPath } from "../../../../../utils/documentUtils"
 import { appLang } from "../../../../../utils/lang"
 import { createDropdownEntries } from "../../../../../utils/localeUtils"
-import { getId, getTargetIds } from "../../../../../utils/modelUtil"
-import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
-import { DamageRollChatCard } from "../../../../chat/DamageRollChatCard"
 import { subMenuLayout,tableBorderRounded } from "../../../../common/border-styles"
 import { damageRoll } from "../../../../common/text-styles"
 import { DestructiveButton, PrimaryButton, UtilityButton } from "../../../../component/Button"
@@ -98,25 +94,7 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                                 <p className="text-text-secondary leading-none">Dmg:</p>
                                                 <p className={`${damageRoll} leading-none`}>{new DiceRoll(act.damage.dice as any).toRollFormula()}</p>
                                                 <p className="leading-none text-text-secondary">|</p>
-                                                <span className={`${damageRoll} leading-none cursor-pointer`} onClick={async (e) => {
-                                                    e.stopPropagation()
-                                                    const avgDamage = getDamageAverage(act.damage.dice as DiceRollSchema)
-                                                    const result = await new DamageRoll({
-                                                        atkName: act.name,
-                                                        dice: [new DiceRoll({ count: avgDamage, faces: 1 })],
-                                                        dmgType: act.damage.type
-                                                    }).roll()
-                                                    sendVagabondChatMessage(
-                                                        npc,
-                                                        <DamageRollChatCard
-                                                            actorId={getId(npc)}
-                                                            tokenIds={getTargetIds()}
-                                                            result={result}
-                                                        />, result.rolls
-                                                    )
-                                                }}>
-                                                    {getDamageAverage(act.damage.dice as DiceRollSchema)}
-                                                </span>
+                                                <p className="leading-none text-text-secondary">{getDamageAverage(act.damage.dice as DiceRollSchema)}</p>
                                             </div>
                                         }
                                         {/* RECHARGE ROLL */}

@@ -8,10 +8,11 @@ import { ArmorDataModel } from "../../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
 import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
-import { equipArmor, equipWeapon,inventoryItemDragDropHandler } from "../../../utils/heroInventoryUtil"
+import { equipArmor, equipWeapon, inventoryItemDragDropHandler, useItem } from "../../../utils/heroInventoryUtil"
 import { appLang } from "../../../utils/lang"
 import { getId, getName } from "../../../utils/modelUtil"
 import { tableBorder, tableBorderRounded } from "../../common/border-styles"
+import { UtilityButton } from "../../component/Button"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 import { Tooltip } from "../../component/Tooltip"
@@ -96,7 +97,16 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                                 }
                                             />
                                         </td>
-                                        : <td className="text-center" />
+                                        : (item.isConsumable
+                                            ? <td className="flex flex-col mt-1.5 items-center">
+                                                <Tooltip title={appLang.HeroSheet.Inventory.ctxUse} content={appLang.HeroSheet.skills_tooltip}>
+                                                    <UtilityButton onClick={async (e) => useItem((actor as any).parent, item.parent, false, e)}>
+                                                        {appLang.HeroSheet.Inventory.ctxUse}
+                                                    </UtilityButton>
+                                                </Tooltip>
+                                            </td>
+                                            : <td />
+                                        )
                                     )
                                 }
                             </tr>

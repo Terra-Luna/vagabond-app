@@ -92,7 +92,11 @@ export class DamageRoll {
         let initialExplodableTerms: foundry.dice.terms.DiceTerm[] = []
 
         if (explodableRolls && explodableRolls.length > 0) {
-            initialExplodableRoll = await new Roll(`${explodableRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}`).evaluate()
+            let formula = `${explodableRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}`
+            if (straightRolls.length === 0) {
+                formula += `+${this.flatDmgBonus ?? 0}`
+            }
+            initialExplodableRoll = await new Roll(formula).evaluate()
             initialExplodableTerms = getDiceTerms(initialExplodableRoll)
         }
 
@@ -110,7 +114,7 @@ export class DamageRoll {
         const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
         const totalDice = getResults(damageRoll)?.length + (canExplode ? (getResults(combinedExplosions!)?.length ?? 0) : 0)
         const perDieBonus = totalDice * (this.perDieDmgBonus ?? 0)
-        const totalBonus = perDieBonus + this.getFlatDamageBonus(damageRoll)
+        const totalBonus = perDieBonus + this.getFlatDamageBonus(damageRoll, initialExplodableRoll)
 
         const result = {
             atkName: this.atkName,
@@ -189,47 +193,31 @@ export class DamageRoll {
     }
 
     /**
-     * This is complicated, yet the most reliable way to get the flat damage bonus.
-     * On a formula such as: 1d20+5-1d4, simply subtracting the total from the dice
-     * total won't account for the d4 subtraction. Alternatively, if a negative bonus
-     * would take the roll's total below 0, other bugs occur.
+     * Helper function to extract the sum total of flat bonuses applied to a roll.
      * @param roll
      * @returns 
      */
-    private getFlatDamageBonus(roll: Roll.Evaluated<Roll<EmptyObject>>): number {
+    private getFlatDamageBonus(roll: Roll.Evaluated<Roll<EmptyObject>>, initialExplodableRoll: Roll.Evaluated<Roll<EmptyObject>>): number {
+        const terms = Array.from([roll, initialExplodableRoll]).flatMap(it => it.terms).filter(it => this.isNumericTerm(it) || this.isOperatorTerm(it))
         let bonus = 0
-        roll.terms.forEach((term, i) => {
-            if (i === 0 && this.isNumericTerm(term)) {
-                const nextTerm = roll.terms[i + 1]
-                if (this.isOperatorTerm(nextTerm)) {
-                    bonus += this.performOperatorCalc(this.asOperator(nextTerm), this.asNumeric(term))
-                }
-            }
-            else if (this.isNumericTerm(term) && this.isOperatorTerm(roll.terms[i - 1])) {
-                bonus += this.performOperatorCalc(this.asOperator(roll.terms[i - 1]), this.asNumeric(term))
+
+        terms.forEach((term, i) => {
+            if (i > 0 && this.isNumericTerm(term) && this.isOperatorTerm(terms[i - 1])) {
+                const operator = (terms[i - 1] as any).operator
+                const value = (term as any).number
+                bonus += operator === '+' ? value : operator === '-' ? -value : 0
             }
         })
-        return bonus
-    }
 
-    private performOperatorCalc(operator: foundry.dice.terms.OperatorTerm, numericTerm: foundry.dice.terms.NumericTerm): number {
-        return (operator.operator === '+') ? numericTerm.number : -numericTerm.number
+        return bonus
     }
     
     private isNumericTerm = (term: any): boolean => {
         return term instanceof foundry.dice.terms.NumericTerm
     }
-    
-    private asNumeric = (term: any): foundry.dice.terms.NumericTerm => {
-        return term as foundry.dice.terms.NumericTerm
-    }
-    
+
     private isOperatorTerm = (term: any): boolean => {
         return term instanceof foundry.dice.terms.OperatorTerm
-    }
-    
-    private asOperator = (term: any): foundry.dice.terms.OperatorTerm => {
-        return term as foundry.dice.terms.OperatorTerm
     }
 
 }

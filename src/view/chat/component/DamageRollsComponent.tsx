@@ -16,7 +16,7 @@ export const DamageRollsComponent = ({ result }: { result: DamageRollResult }) =
                 <div className="flex space-x-2">
                     <div className="h-full content-center text-text-secondary">
                         {result.bonus > 0
-                            ? < Plus size={20} strokeWidth={2} />
+                            ? <Plus size={20} strokeWidth={2} />
                             : <Minus size={20} strokeWidth={2} />
                         }
                     </div>

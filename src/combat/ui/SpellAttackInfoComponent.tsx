@@ -5,7 +5,7 @@ import ReactHtmlParser from 'react-html-parser'
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import { appLang } from "../../utils/lang"
 import { DamageRollsComponent } from "../../view/chat/component/DamageRollsComponent"
-import { TotalDmgFooter } from "../../view/chat/DamageRollChatCard"
+import { TotalDmgFooter } from "../../view/chat/TotalDamageFooter"
 import { DamageTypeIcon } from "../../view/component/DamageTypeIcon"
 import { CardSubHeader, CardSubHeaderValues } from "../../view/component/SkillCard"
 import { SpellcastingSubtext } from "../../view/sheets/actor/hero/tab/component/spellcasting/input/SpellcastingTypography"

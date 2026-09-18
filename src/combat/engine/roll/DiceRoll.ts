@@ -48,6 +48,7 @@ export class DiceRoll {
         const isDefense = item instanceof WeaponDataModel ? item.properties.includes('defense') : false
         const isThrown = item instanceof WeaponDataModel ? item.properties.includes('thrown') : false
         const versatileBonus = item instanceof WeaponDataModel ? ((item.grip.style === 'V' && item.grip.state === 'HH') ? 2 : 0) : 0
+        let flatBonus = 0
 
         if (item instanceof WeaponDataModel) {
             RelicPowerProcessor.applyRelicPowers(item.relicPowers as any, mods)
@@ -74,10 +75,18 @@ export class DiceRoll {
 
         const reroll = item instanceof WeaponDataModel ? mods.dice.reroll[skill]?.[item.grip.state] ?? [] : []
 
+        if (item instanceof AlchemicalItemDataModel) {
+            flatBonus += (mods.alchemy.flatBonus ?? 0)
+            explodesOn.push(...mods.alchemy.exploding?.values ?? [])
+            if (mods.alchemy.exploding?.max && !explodesOn.includes(dieSize)) {
+                explodesOn.push(dieSize)
+            }
+        }
+
         return {
             count: item.damage.dice.count,
             faces: dieSize,
-            modifier: item.damage.dice.modifier ?? 0,
+            modifier: (item.damage.dice.modifier ?? 0) + flatBonus,
             explodesOn: explodesOn ?? [],
             explodeOnCritOnly: explodesOnCrit ?? false,
             extraDiceOnCrit: extraDiceOnCrit ?? 0,

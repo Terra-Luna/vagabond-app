@@ -142,9 +142,6 @@ export abstract class Attack {
 
             for (const eff of this.appliedEffects) {
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
-
-                console.log({ duration })
-
                 await this.applyEffects(actor, token, eff.effect, duration, eff.damageType)
             }
         }

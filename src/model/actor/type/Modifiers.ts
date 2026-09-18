@@ -97,6 +97,8 @@ export const modifierSchema = () => {
             })
         }),
 
+        alchemy: new fields.SchemaField({ ...damageBonusSchema() }),
+
         downtime: new fields.SchemaField({
             breather: new fields.SchemaField({
                 removeFatigue: new fields.NumberField({ ...requiredInteger, initial: 0 }),
@@ -169,6 +171,7 @@ const damageBonusSchema = () => {
     return {
         flatBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
         perDieBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
+        exploding: new fields.SchemaField({ ...explodingModSchema() }),
         extraDice: new fields.SchemaField({
             count: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             faces: new fields.NumberField({ ...requiredInteger, initial: 4 }),
