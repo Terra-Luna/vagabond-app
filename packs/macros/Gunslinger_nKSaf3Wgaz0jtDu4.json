@@ -1,0 +1,23 @@
+{
+  "type": "Macro",
+  "folder": null,
+  "name": "Gunslinger",
+  "color": null,
+  "sorting": "a",
+  "_id": "nKSaf3Wgaz0jtDu4",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.9",
+    "createdTime": 1789748499641,
+    "modifiedTime": 1789748499641,
+    "lastModifiedBy": "kZQZopB3JnMoHkMo",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!nKSaf3Wgaz0jtDu4"
+}

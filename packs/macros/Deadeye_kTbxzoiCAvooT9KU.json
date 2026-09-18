@@ -1,0 +1,28 @@
+{
+  "folder": "nKSaf3Wgaz0jtDu4",
+  "name": "Deadeye",
+  "type": "script",
+  "_id": "kTbxzoiCAvooT9KU",
+  "author": "kZQZopB3JnMoHkMo",
+  "img": "icons/magic/perception/eye-ringed-glow-angry-large-teal.webp",
+  "scope": "global",
+  "command": "const hero = game.user.character;\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"deadeye\")) {\n  ui.notifications.warn(\"This macro is only available to Gunslingers.\")\n  return;\n}\n\nconst name = hero.system.parent.name;\nconst deadeye1 = hero.effects.find(fx => fx.name.toUpperCase() === \"DEADEYE 1\");\nconst deadeye2 = hero.effects.find(fx => fx.name.toUpperCase() === \"DEADEYE 2\");\nconst deadeye3 = hero.effects.find(fx => fx.name.toUpperCase() === \"DEADEYE 3\");\n\nlet makeDeadeye1, makeDeadeye2, makeDeadeye3;\n\nif (event.ctrlKey || event.shiftKey || deadeye3) {\n  token.actor.deleteEmbeddedDocuments(\"ActiveEffect\", [\n    ...(deadeye1 ? [deadeye1.id] : []),\n    ...(deadeye2 ? [deadeye2.id] : []),\n    ...(deadeye3 ? [deadeye3.id] : [])]);\n} else if (deadeye2) {\n  makeDeadeye3 = true;\n} else if (deadeye1) {\n  makeDeadeye2 = true;\n} else {\n  makeDeadeye1 = true;\n}\n\nasync function makeDeadeye(deadeyeNumber) {\n    const effectData = {\n    name: `Deadeye ${deadeyeNumber}`,\n    img: \"icons/magic/perception/eye-ringed-glow-angry-large-teal.webp\",\n    showIcon: 2,\n    changes: [\n      {\n        key: \"system.modifiers.skillCheck.ranged.critThreshold\",\n        type: \"add\",\n        mode: 2,\n        value: 1,\n        priority: 20\n      }\n    ]\n  }\n  \n  await token.actor.createEmbeddedDocuments(\"ActiveEffect\", [effectData]);\n};\n\nif (makeDeadeye1) {\n  await makeDeadeye(1);\n}\n\nif (makeDeadeye2) {\n  await makeDeadeye(2);\n}\n\nif (makeDeadeye3) {\n  await makeDeadeye(3);\n}",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "kZQZopB3JnMoHkMo": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.9",
+    "createdTime": 1789748506917,
+    "modifiedTime": 1789749129623,
+    "lastModifiedBy": "kZQZopB3JnMoHkMo",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!kTbxzoiCAvooT9KU"
+}
