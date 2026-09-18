@@ -495,7 +495,7 @@ const AttackDamageAndSavesSection = ({
                         {/* OWNED TARGETS */}
                         {ownedTargets.map(target => {
                             const result = saveResults[target.id]
-                            const canRollSave = !isResolved && !result && (game.user?.isActiveGM || target.token?.actor?.isOwner)
+                            const canRollSave = target.token?.actor?.system instanceof HeroDataModel && !isResolved && !result && (game.user?.isActiveGM || target.token?.actor?.isOwner)
                             const luck = (target.token?.actor?.system as HeroDataModel | undefined)?.statuses?.counters?.luck ?? 0
                             const canReroll = !isResolved && result?.outcome === appLang.RollResult.failure &&
                                 !rerolledSaveTargetIds.includes(target.id) && luck > 0 &&
