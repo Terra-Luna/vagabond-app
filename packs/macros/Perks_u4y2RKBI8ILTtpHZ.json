@@ -1,0 +1,23 @@
+{
+  "type": "Macro",
+  "folder": null,
+  "name": "Perks",
+  "color": null,
+  "sorting": "a",
+  "_id": "u4y2RKBI8ILTtpHZ",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.9",
+    "createdTime": 1789749693724,
+    "modifiedTime": 1789749693724,
+    "lastModifiedBy": "kZQZopB3JnMoHkMo",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!u4y2RKBI8ILTtpHZ"
+}
