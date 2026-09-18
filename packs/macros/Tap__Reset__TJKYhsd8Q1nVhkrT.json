@@ -4,7 +4,7 @@
   "_id": "TJKYhsd8Q1nVhkrT",
   "img": "/icons/magic/life/heart-red-blue.webp",
   "scope": "global",
-  "command": "const hero = game.user.character;\nconst name = hero.system.parent.name;\nconst tap = hero.effects.find(fx => fx.name.toUpperCase() === \"TAP\");\nif (!tap) return\n\n// Reset HP\nawait tap.update({ \"changes\": [] })\nawait hero.update({\n  \"system.health.value\": hero.system.health.max,\n  \"system.mana.value\": hero.system.mana.max\n})\n\nChatMessage.create({\n  user: game.user._id,\n  speaker: ChatMessage.getSpeaker({ token: hero }),\n  content: `${name}: (Tap) Resetting max HP / Mana`\n});",
+  "command": "let hero = game.user.character;\n\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled?.find(t => t.actor?.system?.class?.parent?.name?.toUpperCase() === \"SORCERER\")?.actor;\n}\n\nif (!hero) {\n  ui.notifications.warn(`No Hero selected.`);\n  return\n}\n\nconst name = hero.system.parent.name;\nconst tap = hero.effects.find(fx => fx.name.toUpperCase() === \"TAP\");\nif (!tap) return\n\n// Reset HP\nawait tap.update({ \"changes\": [], \"disabled\": true })\nawait hero.update({\n  \"system.health.value\": hero.system.health.max,\n  \"system.mana.value\": hero.system.mana.max\n});\n\nChatMessage.create({\n  user: game.user._id,\n  speaker: ChatMessage.getSpeaker({ token: hero }),\n  content: `${name}: (Tap) Resetting max HP / Mana`\n});",
   "folder": "flbIxqfFBXYj3CXN",
   "flags": {},
   "_stats": {
@@ -12,7 +12,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1787977244211,
-    "modifiedTime": 1789592762573,
+    "modifiedTime": 1789745864750,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

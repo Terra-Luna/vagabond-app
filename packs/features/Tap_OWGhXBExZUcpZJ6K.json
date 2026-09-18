@@ -13,6 +13,14 @@
         "level": 1,
         "uuid": "Compendium.vagabond-app.perks.Item.eDxdbBsCNsDdTsG0",
         "type": null
+      },
+      {
+        "id": "hv38stNbVp7nrbKt",
+        "key": "ToggleRule",
+        "label": "Ability: Tap",
+        "level": 1,
+        "value": true,
+        "selector": "flags.tap"
       }
     ],
     "level": 1,
@@ -30,9 +38,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.9",
     "createdTime": 1789504047009,
-    "modifiedTime": 1789605587823,
+    "modifiedTime": 1789743622265,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

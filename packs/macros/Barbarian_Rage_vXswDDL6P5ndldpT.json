@@ -6,7 +6,7 @@
   "author": "KyorYoEvge7ElSaj",
   "img": "/icons/skills/melee/strike-axe-red.webp",
   "scope": "global",
-  "command": "let hero = game.user.character;\n\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.effects.some(fx => fx.name.toUpperCase() === \"RAGE\"))?.actor;\n}\n\nif (!hero) {\n  ui.notifications.warn(`No valid Hero found for \"Barbarian Rage\".`);\n}\nelse {\n  let berserk = hero.effects.find(fx => fx.name.toUpperCase() === \"BERSERK\");\n  let rage = hero.effects.find(fx => fx.name.toUpperCase() === \"RAGE\");\n  let murder = hero.effects.find(fx => fx.name.toUpperCase() === \"MURDER MODE\");\n\n  if (!berserk) {\n    // Toggle on the system status effect (forces active: true)\n    await hero.toggleStatusEffect(\"berserk\", { active: true });\n\n    // Activate Rage and Murder (disabled: false)\n    if (rage) await rage.update({ disabled: false });\n    if (murder) await murder.update({ disabled: false });\n    \n    ui.notifications.info(`${hero.name} flies into a Barbarian Rage!`);\n  }\n  else {\n    // Toggle off the system status effect (forces active: false)\n    await hero.toggleStatusEffect(\"berserk\", { active: false });\n\n    // Deactivate Rage and Murder (disabled: true)\n    if (rage) await rage.update({ disabled: true });\n    if (murder) await murder.update({ disabled: true });\n  }\n}",
+  "command": "let hero = game.user.character;\n\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.effects.some(fx => fx.name.toUpperCase() === \"RAGE\"))?.actor;\n}\n\nif (!hero) {\n  ui.notifications.warn(`No valid Hero found for \"Barbarian Rage\".`);\n}\nelse {\n  let berserk = hero.effects.find(fx => fx.name.toUpperCase() === \"BERSERK\");\n  let rage = hero.effects.find(fx => fx.name.toUpperCase() === \"RAGE\");\n  let murder = hero.effects.find(fx => fx.name.toUpperCase() === \"MURDER MODE\");\n\n  if (!berserk) {\n    // Toggle on the system status effect (forces active: true)\n    await hero.toggleStatusEffect(\"berserk\", { active: true });\n\n    // Activate Rage and Murder (disabled: false)\n    if (rage) await rage.update({ disabled: false });\n    if (murder) await murder.update({ disabled: false });\n  }\n  else {\n    // Toggle off the system status effect (forces active: false)\n    await hero.toggleStatusEffect(\"berserk\", { active: false });\n\n    // Deactivate Rage and Murder (disabled: true)\n    if (rage) await rage.update({ disabled: true });\n    if (murder) await murder.update({ disabled: true });\n  }\n}",
   "sort": 0,
   "ownership": {
     "default": 0,
@@ -18,7 +18,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.94",
     "createdTime": 1789592807708,
-    "modifiedTime": 1789595215660,
+    "modifiedTime": 1789742521075,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
