@@ -1,3 +1,4 @@
+import { sys_id } from "../../utils/foundryUtils"
 import { addItems } from "../../utils/heroInventoryUtil"
 import { inventoryItemTypes, isPathOfType } from "../../utils/modelUtil"
 import { removeWhitespace } from "../../utils/stringUtil"
@@ -68,6 +69,9 @@ export class HeroBaseDataRulesApplicator {
             const booleanValue = rule.value === true || rule.value === "true" || rule.value === "enabled"
             if (path.startsWith("statuses.toggles")) {
                 actor.toggleStatusEffect(path.split(".").pop(), { active: booleanValue })
+            }
+            else if (path.startsWith("flags.")) {
+                actor.setFlag(sys_id, path.replace("flags.", ""), booleanValue)
             }
             else {
                 foundry.utils.setProperty(actor.system, path, booleanValue)
