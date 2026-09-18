@@ -6,15 +6,15 @@
   "sorting": "a",
   "_id": "u4y2RKBI8ILTtpHZ",
   "description": "",
-  "sort": 0,
+  "sort": 1300000,
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.1.9",
     "createdTime": 1789749693724,
-    "modifiedTime": 1789749693724,
-    "lastModifiedBy": "kZQZopB3JnMoHkMo",
+    "modifiedTime": 1789750855644,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
