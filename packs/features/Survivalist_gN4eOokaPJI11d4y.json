@@ -23,7 +23,9 @@
             "type": "training",
             "value": "survival"
           }
-        ]
+        ],
+        "ignoreStats": true,
+        "ignoreTrainings": true
       }
     ],
     "level": 1,
@@ -41,9 +43,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.13",
     "createdTime": 1789497767699,
-    "modifiedTime": 1789605331896,
+    "modifiedTime": 1789762332347,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
