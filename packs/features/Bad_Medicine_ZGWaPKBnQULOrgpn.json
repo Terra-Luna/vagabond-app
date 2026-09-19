@@ -4,7 +4,7 @@
   "_id": "ZGWaPKBnQULOrgpn",
   "img": "/icons/skills/ranged/bullets-triple-ball-yellow.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You deal an extra die of damage when you Crit with a Ranged Check. The number of extra dice increases by 1 every 4 Levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You deal {{feature-value:1:1}} extra damage {{feature-value:die:dice}} when you Crit with a Ranged Check.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">The number of extra dice increases by 1 every 4 Levels hereafter.</span></p>",
     "rules": [
       {
         "id": "Odu7UohwHHjp2cRM",
@@ -31,9 +31,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.19",
     "createdTime": 1789496824495,
-    "modifiedTime": 1789521683550,
+    "modifiedTime": 1789841440024,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

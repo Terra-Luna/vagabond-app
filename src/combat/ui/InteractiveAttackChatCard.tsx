@@ -129,7 +129,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                         }
 
                         {/* GM TOOLS */}
-                        {(game.user?.isActiveGM && !attack.isResolved && !(attack as any).isDefenseCheck) &&
+                        {(game.user?.isActiveGM && !attack.isResolved && !(attack as any).showCritChoices && !(attack as any).isDefenseCheck) &&
                             <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
                                 <div className="mt-0.5 text-base font-normal">
                                     <Header title={"GM Tools"} />

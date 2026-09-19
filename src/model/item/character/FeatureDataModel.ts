@@ -63,11 +63,16 @@ export class FeatureDataModel extends ItemDataModel<FeatureSchema> {
             ? Math.floor((level - this.level) / this.scale)
             : 0
 
-        const featureValuePattern = /\{\{feature-value:([-+]?\d+(?:\.\d+)?):([-+]?\d+(?:\.\d+)?)\}\}/g
+        const featureValuePattern = /\{\{feature-value:([^:}]+):([^:}]+)\}\}/g
 
-        return this.description.replace(featureValuePattern, (_token, base, step) =>
-            String(Number(base) + (Number(step) * increases))
-        )
+        return this.description.replace(featureValuePattern, (_token, base, step) => {
+            const baseNum = Number(base)
+            const stepNum = Number(step)
+            if (base.trim() !== "" && step.trim() !== "" && !isNaN(baseNum) && !isNaN(stepNum)) {
+                return String(baseNum + (stepNum * increases))
+            }
+            return increases > 0 ? step : base
+        })
     }
 
 }
