@@ -4,7 +4,7 @@
   "_id": "TJKYhsd8Q1nVhkrT",
   "img": "/icons/magic/life/heart-red-blue.webp",
   "scope": "global",
-  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled?.find(t => t.actor?.getFlag(\"vagabond-app\", \"tap\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"tap\")) return;\n\nconst name = hero.system.parent.name;\nconst tap = hero.effects.find(fx => fx.name.toUpperCase() === \"TAP\");\nif (!tap) return\n\n// Reset HP\nawait tap.update({ \"changes\": [], \"disabled\": true })\nawait hero.update({\n  \"system.health.value\": hero.system.health.max,\n  \"system.mana.value\": hero.system.mana.max\n});\n\nChatMessage.create({\n  user: game.user._id,\n  speaker: ChatMessage.getSpeaker({ token: hero }),\n  content: `${name}: (Tap) Resetting max HP / Mana`\n});",
+  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled?.find(t => t.actor?.getFlag(\"vagabond-app\", \"tap\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"tap\")) return;\n\nconst name = hero.system.parent.name;\nconst tap = hero.effects.find(fx => fx.name.toUpperCase() === \"TAP\");\nif (!tap) return\n\n// Reset HP\nawait tap.update({ \"changes\": [], \"disabled\": true })\n\nChatMessage.create({\n  user: game.user._id,\n  speaker: ChatMessage.getSpeaker({ token: hero }),\n  content: `${name}: (Tap) Resetting max HP`\n});",
   "folder": "flbIxqfFBXYj3CXN",
   "flags": {},
   "_stats": {
@@ -12,7 +12,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.0.0",
     "createdTime": 1787977244211,
-    "modifiedTime": 1789768871316,
+    "modifiedTime": 1789829322145,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

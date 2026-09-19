@@ -62,6 +62,7 @@ export const setAttackRegistry = async (attackRegistry) => {
     (game.settings as any)?.set(sys_id, "attackRegistry", attackRegistry)
 }
 export const resolveAllAttacks = async () => {
+    if (!game.user?.isActiveGM) return
     const registry = { ...getAttackRegistry() }
     Object.keys(registry).forEach(key => {
         registry[key].forEach(attack => {
@@ -199,7 +200,7 @@ export const getAllowLateLuckStudy = (): boolean => {
 const updateSetting = async (setting: string, update: any) => {
     if (!game.user) return
 
-    if (game.user.isGM || game.user.isActiveGM) {
+    if (game.user.isActiveGM) {
         await (game.settings as any)?.set(sys_id, setting, update)
     }
     else {

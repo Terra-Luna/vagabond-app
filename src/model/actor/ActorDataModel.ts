@@ -38,7 +38,7 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
                         await this.parent.toggleStatusEffect("dead", { active: true, overlay: true })
                     }
                 }
-                else {
+                else if (this.health.max > 0) {
                     if (this.statuses.toggles.dead) {
                         await this.parent.toggleStatusEffect("dead", { active: false, overlay: false })
                     }
