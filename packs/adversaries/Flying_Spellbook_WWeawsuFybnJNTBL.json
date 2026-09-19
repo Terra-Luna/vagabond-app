@@ -496,7 +496,74 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Antimagic Vulnerability",
+      "type": "feature",
+      "_id": "yjPqiCdDcwuK4nES",
+      "img": "icons/magic/symbols/rune-sigil-rough-white-teal.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is [[/r Cd4#Dazed]]{Dazed for Cd4} if affected by the Dispel Spell or other antimagic.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789832937361,
+        "modifiedTime": 1789832937361,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.yjPqiCdDcwuK4nES",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!WWeawsuFybnJNTBL.yjPqiCdDcwuK4nES"
+    },
+    {
+      "name": "Nimble",
+      "type": "feature",
+      "_id": "JO3IeYNyk5XxFT8i",
+      "img": "icons/skills/movement/feet-winged-boots-brown.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Attacks against it can't be Favored if it can Move.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833101156,
+        "modifiedTime": 1789833101156,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.JO3IeYNyk5XxFT8i",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!WWeawsuFybnJNTBL.JO3IeYNyk5XxFT8i"
+    }
+  ],
   "effects": [],
   "sort": 0,
   "ownership": {

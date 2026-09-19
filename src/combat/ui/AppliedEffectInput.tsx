@@ -79,7 +79,7 @@ export const AppliedEffectInput = ({ item }: { item: Item & { system: Alchemical
                                         onChange={(e) => handleFieldChange(index, 'critDuration', e.target.value)}
                                     />
                                 </div>
-                                <TrashButton title="Remove effect" onDelete={() => handleRemoveEffect(index)} />
+                                <TrashButton title="Remove effect" onClick={() => handleRemoveEffect(index)} />
                             </>}
                         </div>
                     ))}

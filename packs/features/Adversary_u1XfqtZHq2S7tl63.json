@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Adversary",
+  "color": null,
+  "sorting": "a",
+  "_id": "u1XfqtZHq2S7tl63",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.19",
+    "createdTime": 1789830825699,
+    "modifiedTime": 1789830825699,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!u1XfqtZHq2S7tl63"
+}

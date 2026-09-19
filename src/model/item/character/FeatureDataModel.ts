@@ -22,6 +22,8 @@ export class FeatureDataModel extends ItemDataModel<FeatureSchema> {
     }
 
     subheader = (className?: string): CardSubHeaderValues[] => {
+        if (this.level === 0) return []
+
         const levels: number[] = []
         if (this.scale > 0) {
             for (let i = 0; i < 3; i++) {

@@ -778,7 +778,6 @@
       "armor": "Armor",
       "zone": "Zone",
       "senses": "Senses",
-      "as": "as",
       "immune": "Immune",
       "weak": "Weak",
       "status_immunities": "Status Immune",

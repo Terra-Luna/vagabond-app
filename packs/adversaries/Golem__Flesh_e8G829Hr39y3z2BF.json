@@ -572,7 +572,107 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Bloodied Rage",
+      "type": "feature",
+      "_id": "JdfSouB9btsACqIa",
+      "img": "/icons/magic/earth/strike-stone-stalactite-blood-red.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">At 20 HP or less, it is Berserk.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833542662,
+        "modifiedTime": 1789833542662,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.JdfSouB9btsACqIa",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!e8G829Hr39y3z2BF.JdfSouB9btsACqIa"
+    },
+    {
+      "name": "Flame-Averse",
+      "type": "feature",
+      "_id": "kDTHvkXqAxfkB10s",
+      "img": "/icons/magic/fire/explosion-embers-evade-silhouette.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">If it can see fire or takes damage from fire, it is [[/r Cd4#Frightened]]{Frightened (Cd4)}.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833629395,
+        "modifiedTime": 1789833629395,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.kDTHvkXqAxfkB10s",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!e8G829Hr39y3z2BF.kDTHvkXqAxfkB10s"
+    },
+    {
+      "name": "Shock Absorber",
+      "type": "feature",
+      "_id": "a9JlTBdaManBYGdj",
+      "img": "/icons/magic/sonic/explosion-shock-wave-teal.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Shock damage rolls heal it instead.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833665342,
+        "modifiedTime": 1789833665342,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.a9JlTBdaManBYGdj",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!e8G829Hr39y3z2BF.a9JlTBdaManBYGdj"
+    }
+  ],
   "effects": [],
   "sort": 0,
   "ownership": {

@@ -71,7 +71,7 @@ export const setThreatLevel = (npc: AdversaryDataModel | NpcDataModel): number =
 
     c = c / 6
 
-    return Number(((a + b) / 4 + (c ?? 0)).toFixed(2))
+    return Math.ceil(((a + b) / 4 + (c ?? 0)) * 10) / 10
 }
 
 /**

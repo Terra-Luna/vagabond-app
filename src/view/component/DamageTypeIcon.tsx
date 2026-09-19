@@ -1,4 +1,4 @@
-import { Brain, Cross, Droplets, Flame, FlaskRound, HeartOff, Shield, Skull, Snowflake, Sparkle, Sword, Wand2, Zap } from "lucide-react"
+import { Anvil, Brain, Cross, Droplets, Flame, FlaskRound, Hammer, HeartOff, Section, Shield, Skull, Snowflake, Sparkle, Sword, Swords, Target, Wand2, Zap } from "lucide-react"
 import { ReactElement } from "react"
 
 import { appLang } from "../../utils/lang"
@@ -52,38 +52,38 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             element = <Sparkle size={size} strokeWidth={1} className='text-black fill-mana' />
             break
         }
-        case appLang.DamageTypes.silvered: {
-            element = <Sword size={size} className='text-text-primary fill-ic-armor-fill' />
-            break
-        }
-        case appLang.DamageTypes.coldiron: {
-            element = <Sword size={size} className='text-text-primary fill-cold' />
-            break
-        }
         case appLang.DamageTypes.physical: {
             element = <div className="flex text-text-primary font-eskapade">
-                <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+                <Swords size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             </div>
             break
         }
-        case appLang.DamageTypes.adamant: {
-            element = <Sword size={size - 2} className='text-header-text-tertiary fill-black' />
-            break
-        }
-        case appLang.DamageTypes.fatigue: {
-            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-ic-armor-fill' />
-            break
-        }   
         case appLang.DamageTypes.blunt: {
-            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
-            break
-        }
-        case appLang.DamageTypes.pierce: {
-            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+            element = <Hammer size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             break
         }
         case appLang.DamageTypes.slash: {
             element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+            break
+        }
+        case appLang.DamageTypes.pierce: {
+            element = <Target size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+            break
+        }
+        case appLang.DamageTypes.silvered: {
+            element = <Section size={size} strokeWidth={1} className='text-text-primary' />
+            break
+        }
+        case appLang.DamageTypes.coldiron: {
+            element = <Swords size={size} strokeWidth={1} className='text-text-primary fill-cold' />
+            break
+        }
+        case appLang.DamageTypes.adamant: {
+            element = <Anvil size={size - 2} strokeWidth={1} className='text-header-text-tertiary fill-ic-armor-fill' />
+            break
+        }
+        case appLang.DamageTypes.fatigue: {
+            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-ic-armor-fill' />
             break
         }
     }

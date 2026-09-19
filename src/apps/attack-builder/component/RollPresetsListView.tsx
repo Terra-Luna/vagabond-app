@@ -38,7 +38,7 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
                             <RollPresetCard
                                 actor={actor} preset={preset}
                                 EditButton={<EditButton onEdit={() => editPreset(preset)} />}
-                                TrashButton={<TrashButton onDelete={() => deletePreset(index)} />}
+                                TrashButton={<TrashButton onClick={() => deletePreset(index)} />}
                             />
                         </div>
                     ))}

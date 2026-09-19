@@ -34,7 +34,7 @@ export const npcActionSchema = () => {
 }
 
 export const getDamageAverage = (dice: DiceRollSchema): number => {
-    return Math.ceil((dice.faces + 1) * dice.count / 2) + (dice.modifier ?? 0)
+    return Math.floor((dice.faces + 1) * dice.count / 2) + (dice.modifier ?? 0)
 }
 
 /**

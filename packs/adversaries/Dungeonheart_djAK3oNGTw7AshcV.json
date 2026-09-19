@@ -10,8 +10,7 @@
       "value": 45
     },
     "armor": {
-      "rating": 1,
-      "as": "Leather"
+      "rating": 1
     },
     "senses": [],
     "statuses": {

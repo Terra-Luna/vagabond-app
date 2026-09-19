@@ -8,8 +8,8 @@ export const npcSchema = () => {
         beingSize: new fields.StringField({ ...requiredString, initial: 'medium', choices: Object.keys(appLang.Sizes) }),
         beingType: new fields.StringField({ ...requiredString, initial: 'humanlike', choices: Object.keys(appLang.BeingTypes) }),
         beingSubtype: new fields.StringField({ ...optionalString, initial: 'none', choices: Object.keys(appLang.BeingSubtypes) }),
-        threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.00 }),
-        threatLevelOverride: new fields.NumberField({ integer: false, min: 0, initial: null }),
+        threatLevel: new fields.NumberField({ integer: false, min: 0, initial: 1.0, decimal: true }),
+        threatLevelOverride: new fields.NumberField({ integer: false, min: 0, initial: null, decimal: true }),
         description: new fields.HTMLField(),
         hitDice: new fields.NumberField({ required: true, integer: true, min: 1, initial: 1 }),
         zone: new fields.StringField({ ...zonePreferences() }),
@@ -24,13 +24,7 @@ export const npcSchema = () => {
         statusImmunities: new fields.ArrayField(new fields.StringField({ ...statusEffOptions() })),
 
         actions: new fields.ArrayField(new fields.SchemaField({ ...npcActionSchema() }), { initial: [] }),
-        combo: new fields.SchemaField({ ...npcActionComboSchema() }),
-        abilities: new fields.ArrayField(
-            new fields.SchemaField({
-                name: new fields.StringField({ required: true, initial: '' }),
-                description: new fields.HTMLField({ required: true, initital: '' })
-            })
-        )
+        combo: new fields.SchemaField({ ...npcActionComboSchema() })
     }
 }
 

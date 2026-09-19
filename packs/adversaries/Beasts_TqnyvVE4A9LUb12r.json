@@ -1,0 +1,23 @@
+{
+  "type": "Actor",
+  "folder": null,
+  "name": "Beasts",
+  "color": null,
+  "sorting": "a",
+  "_id": "TqnyvVE4A9LUb12r",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.19",
+    "createdTime": 1789840001018,
+    "modifiedTime": 1789840001018,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!TqnyvVE4A9LUb12r"
+}

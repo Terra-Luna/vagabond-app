@@ -10,12 +10,6 @@ import { getId, getTargetIds } from "../../../../../utils/modelUtil"
 import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 
-export const useAddAbilityMenu = () => {
-    const [isAddAbilityOpen, setIsAddAbilityOpen] = useState(false)
-    const [editAbilityTarget, setEditAbilityTarget] = useState(null)
-    return { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget }
-}
-
 export const useAddActionMenu = () => {
     const [isAddActionOpen, setIsAddActionOpen] = useState(false)
     const [editActionTarget, setEditActionTarget] = useState(null)

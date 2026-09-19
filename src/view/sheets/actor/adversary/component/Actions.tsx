@@ -31,7 +31,7 @@ export const ActionMenuHeader = ({ label, onClick }: { label: string, onClick?: 
     const { isEditMode } = useEditMode()
     return (
         <div className="flex items-center gap-x-2">
-            <p className="font-eskapade font-bold text-text-header-tertiary text-xl">{label}</p>
+            <p className="font-eskapade font-bold text-text-header-tertiary text-base">{label}</p>
             {isEditMode && onClick &&
                 <AddNewIconButton onClick={onClick} />
             }
@@ -54,7 +54,9 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
     return (
         <div className="mx-2 mt-2">
             {/* HEADER W/ ADD BUTTON */}
-            <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
+            {(isEditMode || npc.actions.length > 0) &&
+                <ActionMenuHeader label={locale.actions} onClick={() => setIsAddMenuOpen(true)} />
+            }
 
             {/* DISPLAY COMBO FIRST */}
             <div
@@ -82,25 +84,41 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                 <div className="flex flex-col">
 
                                     {/* ACTION NAME */}
-                                    <p className="font-bold">{act.name}</p>
+                                    <p className="font-bold hover-glow cursor-pointer" onClick={() =>
+                                        onClickAction(
+                                            npc,
+                                            act.name,
+                                            act.description,
+                                            act.damage.type,
+                                            act.damage.dice as DiceRollSchema,
+                                            act.saves as SavingThrowType[],
+                                            act.statuses as string[]
+                                        )
+                                    }>{act.name}</p>
 
                                     {/* ACTION TRAITS... */}
                                     <div>
                                         {/* ATTACK DESCRIPTION */}
                                         <EnrichedContent content={act.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
+
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
                                         {act.damage.dice.count > 0 &&
-                                            <div className="flex items-center gap-2 hover-glow" onClick={() => onClickAction(npc, act.name, act.description, act.damage.type, act.damage.dice as DiceRollSchema, act.saves as SavingThrowType[], act.statuses as string[])}>
+                                            <div className="flex items-center gap-2">
                                                 <p className="text-text-secondary leading-none">Dmg:</p>
                                                 <p className={`${damageRoll} leading-none`}>{new DiceRoll(act.damage.dice as any).toRollFormula()}</p>
                                                 <p className="leading-none text-text-secondary">|</p>
-                                                <p className="leading-none text-text-secondary">{getDamageAverage(act.damage.dice as DiceRollSchema)}</p>
+                                                <p className={`${damageRoll} leading-none`}>{getDamageAverage(act.damage.dice as DiceRollSchema)}</p>
                                             </div>
                                         }
+
                                         {/* RECHARGE ROLL */}
                                         {act.recharge != null && act.recharge != '' &&
                                             <div className="flex gap-x-2 text-text-secondary">
-                                                {'Recharge:'}<EnrichedContent content={`[[/r ${act.recharge}#Recharge: ${act.name}]]{${act.recharge}}`} actor={npc.parent} />
+                                                {'Recharge:'}
+                                                <EnrichedContent
+                                                    actor={npc.parent}
+                                                    content={`[[/r ${act.recharge}#Recharge: ${act.name}]]{${act.recharge}}`}
+                                                />
                                             </div>
                                         }
                                     </div>

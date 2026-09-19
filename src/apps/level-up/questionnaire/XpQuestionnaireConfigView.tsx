@@ -72,7 +72,7 @@ export const XpQuestionnaireConfigView: React.FC<XpQuestionnaireProps> = ({ init
                         <p className="text-sm text-text-secondary mr-2">XP</p>
 
                         {/* DELETE BUTTON */}
-                        <TrashButton onDelete={() => deleteQuestion(q.id)} />
+                        <TrashButton onClick={() => deleteQuestion(q.id)} />
                     </div>
                 ))}
             </div>

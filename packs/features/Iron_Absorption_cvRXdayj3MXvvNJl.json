@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Iron Absorption",
+  "type": "feature",
+  "_id": "cvRXdayj3MXvvNJl",
+  "img": "/icons/commodities/metal/armor-plate-reticulated.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When hit with a metal Weapon that isn't a Relic, the attacker must pass [Will] or the Weapon becomes stuck in this Being's body, and can only be removed if this Being is killed.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.19",
+    "createdTime": 1789838020258,
+    "modifiedTime": 1789838087976,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cvRXdayj3MXvvNJl"
+}

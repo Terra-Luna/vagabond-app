@@ -69,7 +69,7 @@ export const useCustomDamageRollBuilder = (
                                 diceRoll={roll}
                                 onChange={(updated) => handleDiceChange(updated, index)}
                                 extendedSettings={true}
-                                TrashButton={<TrashButton onDelete={() => removeRoll(index)} />}
+                                TrashButton={<TrashButton onClick={() => removeRoll(index)} />}
                             />
                         </div>
                     ))}

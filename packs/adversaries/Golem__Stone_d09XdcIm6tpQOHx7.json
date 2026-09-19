@@ -10,8 +10,7 @@
       "max": 0
     },
     "armor": {
-      "rating": 3,
-      "as": "+1 Chain"
+      "rating": 3
     },
     "senses": [
       "darksight"
@@ -607,7 +606,74 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Immutable",
+      "type": "feature",
+      "_id": "4ZDUR51kR8RMVKUe",
+      "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833772975,
+        "modifiedTime": 1789833772975,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.4ZDUR51kR8RMVKUe",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!d09XdcIm6tpQOHx7.4ZDUR51kR8RMVKUe"
+    },
+    {
+      "name": "Magic Ward I",
+      "type": "feature",
+      "_id": "frn2B3ZASEBXohXv",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833776238,
+        "modifiedTime": 1789833776238,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.frn2B3ZASEBXohXv",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!d09XdcIm6tpQOHx7.frn2B3ZASEBXohXv"
+    }
+  ],
   "effects": [],
   "sort": 0,
   "ownership": {

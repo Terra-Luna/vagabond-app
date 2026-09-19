@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Flame-Averse",
+  "type": "feature",
+  "_id": "kDTHvkXqAxfkB10s",
+  "img": "/icons/magic/fire/explosion-embers-evade-silhouette.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If it can see fire or takes damage from fire, it is [[/r Cd4#Frightened]]{Frightened (Cd4)}.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.19",
+    "createdTime": 1789833553675,
+    "modifiedTime": 1789833613999,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!kDTHvkXqAxfkB10s"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Hold Breath",
+  "type": "feature",
+  "_id": "IuODACdj68KlkqTc",
+  "img": "/icons/consumables/meat/fish-whole-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Can hold its breath for 1 hour.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.19",
+    "createdTime": 1789840074633,
+    "modifiedTime": 1789840087561,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!IuODACdj68KlkqTc"
+}

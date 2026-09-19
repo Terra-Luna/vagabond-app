@@ -145,7 +145,7 @@ const Prerequisite = ({ perk, prereqIndex }: { perk: Item & { system: PerkDataMo
     return (
         <div className="flex flex-wrap gap-1 items-end">
             {isEditMode &&
-                <TrashButton onDelete={() => deletePerkPrerequisite(perk, prereqIndex)} className="mb-1" />
+                <TrashButton onClick={() => deletePerkPrerequisite(perk, prereqIndex)} className="mb-1" />
             }
             {(isEditMode || prereq.type !== 'stat') &&
                 <div className="flex items-end">

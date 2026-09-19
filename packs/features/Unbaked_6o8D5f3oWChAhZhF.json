@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Unbaked",
+  "type": "feature",
+  "_id": "6o8D5f3oWChAhZhF",
+  "img": "/icons/commodities/stone/clay-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If it takes 5 or more Fire damage at once, it is [[/r Cd4#Dazed]]{Dazed (Cd4)}.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.19",
+    "createdTime": 1789833350509,
+    "modifiedTime": 1789833406030,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!6o8D5f3oWChAhZhF"
+}

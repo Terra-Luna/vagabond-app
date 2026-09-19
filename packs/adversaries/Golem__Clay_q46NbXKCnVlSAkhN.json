@@ -418,7 +418,7 @@
     "beingType": "artificial",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": null,
+    "threatLevelOverride": 4.4,
     "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relic weapons.</span></p>",
     "hitDice": 12,
     "zone": "front",
@@ -593,7 +593,140 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Immutable",
+      "type": "feature",
+      "_id": "4ZDUR51kR8RMVKUe",
+      "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833420812,
+        "modifiedTime": 1789833420812,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.4ZDUR51kR8RMVKUe",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!q46NbXKCnVlSAkhN.4ZDUR51kR8RMVKUe"
+    },
+    {
+      "name": "Magic Ward I",
+      "type": "feature",
+      "_id": "frn2B3ZASEBXohXv",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833422042,
+        "modifiedTime": 1789833422042,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.frn2B3ZASEBXohXv",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!q46NbXKCnVlSAkhN.frn2B3ZASEBXohXv"
+    },
+    {
+      "name": "Unbaked",
+      "type": "feature",
+      "_id": "6o8D5f3oWChAhZhF",
+      "img": "/icons/commodities/stone/clay-orange.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">If it takes 5 or more Fire damage at once, it is [[/r Cd4#Dazed]]{Dazed (Cd4)}.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833423133,
+        "modifiedTime": 1789833423133,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.6o8D5f3oWChAhZhF",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!q46NbXKCnVlSAkhN.6o8D5f3oWChAhZhF"
+    },
+    {
+      "name": "Acid Bather",
+      "type": "feature",
+      "_id": "kffwRSA1nhZDr1B7",
+      "img": "/icons/magic/defensive/shield-barrier-flaming-diamond-acid.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Acid damage rolls affect it as healing rolls.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833461951,
+        "modifiedTime": 1789833461951,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.kffwRSA1nhZDr1B7",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!q46NbXKCnVlSAkhN.kffwRSA1nhZDr1B7"
+    }
+  ],
   "effects": [],
   "sort": 0,
   "ownership": {
@@ -604,9 +737,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.1.19",
     "createdTime": 1788995892506,
-    "modifiedTime": 1788997184042,
+    "modifiedTime": 1789833480294,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -591,7 +591,107 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Immutable",
+      "type": "feature",
+      "_id": "4ZDUR51kR8RMVKUe",
+      "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833166737,
+        "modifiedTime": 1789833166737,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.4ZDUR51kR8RMVKUe",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!UBGBavDUOCs25MiX.4ZDUR51kR8RMVKUe"
+    },
+    {
+      "name": "Magic Ward I",
+      "type": "feature",
+      "_id": "frn2B3ZASEBXohXv",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833172279,
+        "modifiedTime": 1789833172279,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.frn2B3ZASEBXohXv",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!UBGBavDUOCs25MiX.frn2B3ZASEBXohXv"
+    },
+    {
+      "name": "Limbs",
+      "type": "feature",
+      "_id": "5PzBHN53iq1BroBr",
+      "img": "/icons/commodities/biological/tentacle-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is encountered with 5 ([[/r d6+2]]) limbs, and loses a limb each time it takes at least 4 damage.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789833293001,
+        "modifiedTime": 1789833293001,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.5PzBHN53iq1BroBr",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!UBGBavDUOCs25MiX.5PzBHN53iq1BroBr"
+    }
+  ],
   "effects": [],
   "sort": 0,
   "ownership": {
@@ -602,9 +702,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.42",
+    "systemVersion": "0.1.19",
     "createdTime": 1788995498396,
-    "modifiedTime": 1789004173851,
+    "modifiedTime": 1789837512154,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

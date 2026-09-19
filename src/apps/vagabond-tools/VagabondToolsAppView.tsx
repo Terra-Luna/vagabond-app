@@ -58,7 +58,7 @@ export const VagabondToolsAppView = () => {
                             <UtilityButton onClick={() => createNewCountdown("Cd12", 12)}>Cd12</UtilityButton>
                             <UtilityButton onClick={() => createNewCountdown("Cd20", 20)}>Cd20</UtilityButton>
                             <div className="ml-2">
-                                <TrashButton title={"Delete all countdowns"} onDelete={async () => {
+                                <TrashButton title={"Delete all countdowns"} onClick={async () => {
                                     if (getCountdowns().length > 0) {
                                         setDeleteConfirmation({
                                             isOpen: true,
@@ -81,7 +81,7 @@ export const VagabondToolsAppView = () => {
                             <UtilityButton onClick={() => createNewProgressClock("Prog-8", 8)}>Prog-8</UtilityButton>
                             <UtilityButton onClick={() => createNewProgressClock("Prog-12", 12)}>Prog-12</UtilityButton>
                             <div className="ml-2">
-                                <TrashButton title={"Delete all clocks"} onDelete={async () => {
+                                <TrashButton title={"Delete all clocks"} onClick={async () => {
                                     if (getProgressClocks().length > 0) {
                                         setDeleteConfirmation({
                                             isOpen: true,

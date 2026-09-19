@@ -22,9 +22,9 @@ import { useFoundryHook } from "../../../../wrappers/hooks"
 import { Description } from "../../../shared/Description"
 import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
 import { ActorPortrait } from "../../component/ActorPortrait"
-import { Abilities, NewAbilityWindow } from "./Abilities"
+import { Abilities } from "./Abilities"
 import { ActionMenuHeader, Actions, NewActionWindow } from "./Actions"
-import { useAddAbilityMenu, useAddActionMenu } from "./hooksAndUtils"
+import { useAddActionMenu } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
 
@@ -59,15 +59,13 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
     const npc = actor.system
     const { isEditMode } = useEditMode()
     const { isAddActionOpen, setIsAddActionOpen, editActionTarget, setEditActionTarget } = useAddActionMenu()
-    const { isAddAbilityOpen, setIsAddAbilityOpen, editAbilityTarget, setEditAbilityTarget } = useAddAbilityMenu()
     const { isPortraitOpen, setIsPortraitOpen } = usePortraitOpenFlag(actor)
 
     useEffect(() => {
         if (!isEditMode) {
             setIsAddActionOpen(false)
-            setIsAddAbilityOpen(false)
         }
-    }, [isEditMode, setIsAddActionOpen, setIsAddAbilityOpen])
+    }, [isEditMode, setIsAddActionOpen])
 
     return (
         <div className="@container flex grow overflow-y-hidden">
@@ -90,14 +88,14 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
                         <NewActionWindow npc={npc} setIsAddMenuOpen={setIsAddActionOpen} editTarget={editActionTarget} setEditTarget={setEditActionTarget} />
                     }
 
-                    <Abilities npc={npc} setIsAddMenuOpen={setIsAddAbilityOpen} setEditTarget={setEditAbilityTarget} />
-                    {isAddAbilityOpen &&
-                        <NewAbilityWindow npc={npc} setIsAddMenuOpen={setIsAddAbilityOpen} editTarget={editAbilityTarget} setEditTarget={setEditAbilityTarget} />
-                    }
+                    <Abilities actor={actor} />
 
-                    <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })} className="ml-2 hover-glow cursor-pointer mb-4" title="Click to open active effects">
+                    <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })}
+                        className="ml-2 hover-glow cursor-pointer mb-4" title="Click to open active effects"
+                    >
                         <ActionMenuHeader label={appLang.ButtonActions.effects} />
                     </button>
+
                 </div>
             </div>
         </div>
@@ -120,9 +118,11 @@ const NpcSheetHeader = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                         <span className="flex gap-x-1 text-text-header-primary font-eskapade font-normal text-base mr-1">
                             <p>{appLang.NpcSheet.tl}:</p>
                             <EditableTextField
-                                boundValue={npc.threatLevelOverride?.toString() ?? npc.threatLevel?.toString() ?? ''}
+                                boundValue={((npc.threatLevelOverride ?? 0) > 0 && npc.threatLevelOverride !== null
+                                    ? Number(npc.threatLevelOverride).toFixed(1)
+                                    : undefined) ?? Number(npc.threatLevel)?.toFixed(1)?.toString() ?? ''}
                                 updateProps={{ object: npc.parent, path: ['threatLevelOverride'] }}
-                                placeholder={npc.threatLevel?.toString() ?? '1.00'}
+                                placeholder={npc.threatLevel?.toString() ?? '1.0'}
                             />
                         </span>
                     }
@@ -208,6 +208,8 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                         placeholder="1"
                     />
                 } />
+
+                <div className="flex gap-x-4 items-center">
                 {/* HIT POINTS */}
                 <StatBlockField label={locale.hp} content={
                     <StatBlockRow>
@@ -239,20 +241,14 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
                         <div className="absolute inset-0 flex items-center justify-center">
                             <div className={`text-xl text-text-armor font-eskapade font-bold`}>
                                 <EditableTextField
-                                    boundValue={npc.armor.rating?.toString() ?? ''}
+                                        boundValue={npc.armor?.rating?.toString() ?? ''}
                                     updateProps={{ object: npc.parent, path: ['armor', 'rating'] }}
                                     placeholder="0"
                                 />
                             </div>
                         </div>
                     </div>
-                    <StatBlockField label={appLang.NpcSheet.as} content={
-                        <EditableTextField
-                            boundValue={npc.armor.as ?? 'Unarmored'}
-                            updateProps={{ object: npc.parent, path: ['armor', 'as'] }}
-                            placeholder="Unarmored"
-                        />}
-                    />
+                    </div>
                 </div>
             </StatBlockRow>
 

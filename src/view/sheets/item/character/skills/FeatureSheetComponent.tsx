@@ -16,8 +16,8 @@ export const FeatureSheetComponent = ({ item, className }: { item: Item & { syst
     const [maxLevel, setMaxLevel] = useState(item.system.maxLevel ?? 0)
 
     const updateLevel = useCallback(async (level: string | null) => {
-        setLevel(Number(level) || 1)
-        await item.update({ "system.level": Number(level) || 1 } as Record<string, number>)
+        setLevel(Number(level) || 0)
+        await item.update({ "system.level": Number(level) || 0 } as Record<string, number>)
         return true
     }, [item])
     

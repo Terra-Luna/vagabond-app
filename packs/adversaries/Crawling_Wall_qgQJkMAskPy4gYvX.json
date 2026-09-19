@@ -10,8 +10,7 @@
       "value": 58
     },
     "armor": {
-      "rating": 3,
-      "as": "Plate"
+      "rating": 3
     },
     "senses": [],
     "statuses": {
@@ -461,7 +460,41 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Immutable",
+      "type": "feature",
+      "_id": "4ZDUR51kR8RMVKUe",
+      "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.19",
+        "createdTime": 1789832890792,
+        "modifiedTime": 1789832890792,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.4ZDUR51kR8RMVKUe",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!qgQJkMAskPy4gYvX.4ZDUR51kR8RMVKUe"
+    }
+  ],
   "effects": [],
   "sort": 0,
   "ownership": {
