@@ -81,8 +81,20 @@ export const usePerkSelection = (actor: Actor & { system: HeroDataModel }, isLev
         if (!perksLoaded) return
         const key = `${ancestry?.id ?? ""}:${clazz?.id ?? ""}:${level}`
         if (loadedSelectionKey.current === key) return
-        if (clazz) loadSelections(getItemChoiceRules(level, getItemRules(clazz)).filter(rule => rule.pack === "perk"), setClassPerkSlots)
-        if (ancestry) loadSelections(getItemChoiceRules(level, ancestry.system.rules ?? []).filter(rule => rule.pack === "perk"), setAncestryPerkSlots)
+
+        if (clazz) loadSelections(
+            getItemChoiceRules(level, getItemRules(clazz))
+                .filter(rule => rule.pack === "perk")
+                .sort((a, b) => (a as any).level - (b as any).level)
+                .sort((a, b) => (a as any).label.localeCompare((b as any).label)),
+            setClassPerkSlots
+        )
+
+        if (ancestry) loadSelections(getItemChoiceRules(level, ancestry.system.rules ?? [])
+            .filter(rule => rule.pack === "perk"),
+            setAncestryPerkSlots
+        )
+
         dataLoaded.current = true
         loadedSelectionKey.current = key
     }, [ancestry?.id, clazz?.id, level, perksLoaded])

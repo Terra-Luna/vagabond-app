@@ -65,7 +65,12 @@ export const usePerkSelectionView = (
      */
     const perkChoiceRules = useMemo(() => {
         const ancestryRules = ancestry?.system?.rules?.filter(r => (r as any).level <= level) ?? []
-        const classRules = clazz ? getItemRules(clazz).filter(r => (r as any).level <= level) : []
+        const classRules = clazz
+            ? getItemRules(clazz)
+                .filter(r => (r as any).level <= level)
+                .sort((a, b) => (a as any).level - (b as any).level)
+                .sort((a, b) => (a as any).label.localeCompare((b as any).label))
+            : []
         return getItemChoiceRules(level, [...ancestryRules, ...classRules]).filter(it => it.pack === "perk")
     }, [ancestry, clazz, level])
 
