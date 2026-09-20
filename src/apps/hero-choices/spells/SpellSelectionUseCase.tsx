@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
@@ -19,10 +19,12 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
     // Used for tracking spell slot loading upon opening the editor.
     const dataLoaded = useRef(false)
 
+    const [selectionsLoaded, setSelectionsLoaded] = useState(false)
+
     const {
         SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
         setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
-    } = useSpellSelectionView(level, ancestry, clazz, perks, [])
+    } = useSpellSelectionView(level, ancestry, clazz, perks, [], selectionsLoaded)
 
     const getSpellName = (id: string): string => {
         return spellsList.find(it => it.value === id)?.label ?? 'unk'
@@ -68,11 +70,12 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
          */
         const loadInitialSpellSelections = async () => {
             if (clazz) {
-                const rules = await getItemChoiceRules(level, getItemRules(clazz))
+                const rules = (await getItemChoiceRules(level, getItemRules(clazz)))
+                    .sort((a: any, b: any) => Number(Boolean(a.skipAtHeroCreation)) - Number(Boolean(b.skipAtHeroCreation)))
                 loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
             }
             if (ancestry) {
-                const rules = await getItemChoiceRules(level, ancestry.system.rules ?? [])
+                const rules = await getItemChoiceRules(level, getItemRules(ancestry))
                 loadSelections(rules.filter(r => r.pack === 'spell'), setAncestrySpellSlots)
             }
             if (perks.length > 0) {
@@ -85,6 +88,7 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
             }
 
             dataLoaded.current = true
+            setSelectionsLoaded(true)
         }
 
         loadInitialSpellSelections()

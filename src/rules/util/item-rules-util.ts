@@ -16,7 +16,8 @@ export interface ItemRule {
     choices: { value: string, label: string }[],
     selections: RuleSelection[],
     ignoreStats?: boolean,
-    ignoreTrainings?: boolean
+    ignoreTrainings?: boolean,
+    skipAtHeroCreation?: boolean
 }
 
 export interface RuleSelection {
@@ -42,8 +43,7 @@ export const randomId = () => foundry.utils.randomID()
 
 type ItemRuleSource = { item: any, owner: any, rules: any[] }
 
-const getRuleSelectionFlags = (item: any): Record<string, RuleSelection[]> =>
-    item?.flags?.[sys_id]?.ruleSelections ?? {}
+const getRuleSelectionFlags = (item: any): Record<string, RuleSelection[]> => item?.flags?.[sys_id]?.ruleSelections ?? {}
 
 export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
     const system = itemOrSystem?.system ?? itemOrSystem
@@ -564,7 +564,8 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
             choices: finalizedChoices,
             selections: rule.selections,
             ignoreStats: rule.ignoreStats,
-            ignoreTrainings: rule.ignoreTrainings
+            ignoreTrainings: rule.ignoreTrainings,
+            skipAtHeroCreation: rule.skipAtHeroCreation
         }
     })
 

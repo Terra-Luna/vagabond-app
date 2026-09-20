@@ -181,7 +181,6 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                                         value={filter.type}
                                         options={<>
                                             <option value="training">Training</option>
-                                            {/* <option value="spell">Spell</option> */}
                                         </>}
                                         onChange={(e) => {
                                             const updatedFilters = [...rule.filters]
@@ -298,6 +297,15 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
                     </div>
                 </div>
             )}
+
+            <Checkbox
+                label="Skip at Hero Creation"
+                checked={rule.skipAtHeroCreation || false}
+                onCheckedChanged={(checked) => {
+                    onChange({ ...rule, skipAtHeroCreation: checked })
+                }}
+            />
+
         </div>
     )
 }

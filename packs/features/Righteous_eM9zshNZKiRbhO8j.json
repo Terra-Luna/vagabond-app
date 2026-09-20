@@ -42,7 +42,7 @@
       {
         "id": "ldr4ehdx04MgJyhL",
         "key": "ChoiceSet",
-        "label": "Level 1 Spells",
+        "label": "Righteous Spells",
         "level": 1,
         "scale": 0,
         "maxChoices": 2,
@@ -56,7 +56,7 @@
       {
         "id": "8fEfIYlrxFt7lnGG",
         "key": "ChoiceSet",
-        "label": "Spells",
+        "label": "Righteous Spells",
         "level": "4",
         "scale": "3",
         "maxChoices": 1,

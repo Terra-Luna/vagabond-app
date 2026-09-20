@@ -13,6 +13,21 @@
         "level": 1,
         "uuid": "Compendium.vagabond-app.perks.Item.jvuOodZbzMMANBn6",
         "type": "perk"
+      },
+      {
+        "id": "y7vmJTHsGVbm0iXd",
+        "key": "ChoiceSet",
+        "label": "Bookworm Spell",
+        "level": 1,
+        "scale": 0,
+        "maxChoices": 1,
+        "channel": "item",
+        "sourceMode": "dynamic",
+        "choices": [],
+        "selections": [],
+        "pack": "spell",
+        "filters": [],
+        "skipAtHeroCreation": true
       }
     ],
     "level": 1,
@@ -30,9 +45,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.23",
     "createdTime": 1789506115020,
-    "modifiedTime": 1789605485627,
+    "modifiedTime": 1789918130346,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

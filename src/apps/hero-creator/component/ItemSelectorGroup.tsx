@@ -38,24 +38,30 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
         return ItemsCache.perks().filter(it => it.system.canTakeMultiple).map(it => it.uuid)
     }, [])
 
-    //let groupLabel: string | undefined = undefined
+    let groupLabel: string | undefined = undefined
 
     return (
         <div className="@container w-full">
             <div className="grid grid-cols-1 @xs:grid-cols-2 gap-2 mt-2 w-full">
                 {
                     slotGroup.map((slot, index) => {
-                        //const ruleName = (slot as any).ruleName
-                        //groupLabel = ruleName //=== groupLabel ? undefined : ruleName
+                        const ruleName = (slot as any).ruleName
+                        groupLabel = ruleName
+                        const showLabel = index === 0 || groupLabel !== (slotGroup[index - 1] as any).ruleName
 
                         const otherSelectedIds = getOtherSelectedIds(index)
                         const filteredOptions = options.filter(opt =>
-                            opt.value === slot.value || stackablePerkIds.includes(opt.value) || !otherSelectedIds.includes(opt.value)
+                            opt.value === slot.value ||
+                            stackablePerkIds.includes(opt.value) ||
+                            !otherSelectedIds.includes(opt.value)
                         )
 
                         return (
-                            <div key={`item-slot-selector-${index}`} className="w-full min-w-0">
-                                {/* <p className="text-xs font-eskapade font-nomral">{groupLabel}</p> */}
+                            <div
+                                key={`item-slot-selector-${index}`}
+                                className={`flex flex-wrap w-full items-end ${showLabel && index > 0 ? '@xs:col-start-1' : ''}`}
+                            >
+                                {showLabel && <p className="text-xs font-eskapade font-normal">{groupLabel}</p>}
                                 <CustomDropDown
                                     value={slot.value}
                                     options={filteredOptions}

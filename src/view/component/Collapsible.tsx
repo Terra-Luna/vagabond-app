@@ -18,7 +18,7 @@ interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }
 
-export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className, settingsKey, actions }: {
+export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className, actions }: {
     img?: string,
     dmgType?: string,
     title: string,
@@ -26,7 +26,6 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     content: ReactNode,
     startCollapsed?: boolean,
     className?: string,
-    settingsKey?: string,
     actions?: SkillCardAction[]
 }) => {
     const [isCollapsed, setCollapsed] = useState(startCollapsed)

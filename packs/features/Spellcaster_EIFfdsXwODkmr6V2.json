@@ -33,7 +33,7 @@
       {
         "id": "nZ5NcB3C9mhr12Da",
         "key": "ChoiceSet",
-        "label": "Level 1 Spells",
+        "label": "Spellcaster Spells",
         "level": 1,
         "scale": 0,
         "maxChoices": 4,
@@ -47,7 +47,7 @@
       {
         "id": "3DvPPsnBtjiuetH9",
         "key": "ChoiceSet",
-        "label": "Spells",
+        "label": "Spellcaster Spells",
         "level": "3",
         "scale": "2",
         "maxChoices": 1,

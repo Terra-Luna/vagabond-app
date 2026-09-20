@@ -19,7 +19,8 @@ export const useSpellSelectionView = (
     ancestry: (Item & { system: AncestryDataModel }) | undefined,
     clazz: (Item & { system: ClassDataModel }) | undefined,
     perks: PerkDataModel[] | undefined,
-    navButtons: ReactNode[]
+    navButtons: ReactNode[],
+    selectionsLoaded: boolean = true
 ) => {
     const strings = appLang.HeroCreation
     const isCreationMode = navButtons?.length > 0
@@ -71,7 +72,9 @@ export const useSpellSelectionView = (
         const ancestryRules = getItemChoiceRules(level, ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
 
-        const classRules = getItemChoiceRules(level, getItemRules(clazz).filter(r => (r as any).level <= 1))
+        const classRuleCandidates = getItemRules(clazz).filter((r: any) => r.level <= 1 && (!isCreationMode || !r.skipAtHeroCreation))
+        const classRules = getItemChoiceRules(level, classRuleCandidates).sort((a: any, b: any) => Number(Boolean(a.skipAtHeroCreation)) - Number(Boolean(b.skipAtHeroCreation)))
+
         setClassSpellSlots(loadInitialSlots(classRules.filter(r => r.pack === 'spell')))
 
         const perkRules = getItemChoiceRules(level, perks?.flatMap(p => p.rules?.filter(r => (r as any).level <= 1)) ?? [])
@@ -99,7 +102,7 @@ export const useSpellSelectionView = (
 
         <div className="flex flex-col flex-1 overflow-y-auto w-full justify-start px-2">
             <div className="inline-flex flex-col items-stretch w-full @2xl:w-3/5 mx-auto">
-                
+                {selectionsLoaded && <>
                 {/* GRANTED SPELLS (BY CLASS & ANCESTRY) */}
                 {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
                     <div className="space-y-1 mb-4">
@@ -129,7 +132,7 @@ export const useSpellSelectionView = (
                     </div>
                 }
 
-                {/* SELECTABLE CLASS SPELL SLOTS (INCLUDES MAGICAL SECRETS) */}
+                {/* SELECTABLE CLASS SPELL SLOTS */}
                 {classSpellSlots.length > 0 &&
                     <div className="space-y-2 font-eskapade font-bold">
                         <ClearHeader title={strings.classSpells} />
@@ -177,6 +180,7 @@ export const useSpellSelectionView = (
                     spellSlots={[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots]}
                     spellsList={spellsList}
                 />
+                </>}
             </div>
         </div>
     </div>

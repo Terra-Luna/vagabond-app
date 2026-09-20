@@ -53,7 +53,7 @@
       {
         "id": "Ty9aRM0smESgP74o",
         "key": "ChoiceSet",
-        "label": "Level 1 Spells",
+        "label": "Occultist Spells",
         "level": 1,
         "scale": 0,
         "maxChoices": 4,
@@ -67,7 +67,7 @@
       {
         "id": "Z3RMzGa8qIWVeRic",
         "key": "ChoiceSet",
-        "label": "Spells",
+        "label": "Occultist Spells",
         "level": "3",
         "scale": "2",
         "maxChoices": 1,
