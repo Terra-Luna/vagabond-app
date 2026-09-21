@@ -100,7 +100,10 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
             }))
         }
 
-        this.totalValue = multiplyCoins((relicValue ? relicValue : this.value), Math.max(1, this.bulk?.quantity ?? 1))
+        this.totalValue = multiplyCoins((relicValue && toCopper(relicValue) > toCopper(this.value)
+            ? relicValue
+            : this.value
+        ), Math.max(1, this.bulk?.quantity ?? 1))
     }
 
     override prepareDerivedData() {

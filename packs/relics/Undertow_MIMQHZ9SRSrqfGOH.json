@@ -1,0 +1,136 @@
+{
+  "name": "Undertow",
+  "type": "weapon",
+  "img": "/icons/weapons/polearms/trident-silver-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Trident that must be Bound to to access its Powers, which are as follows:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Fish Command: (3 charges) You can Target a Beast with a Swim Speed and spend 1 charge to attempt to cause it to be Charmed for 1 Minute, giving you control of it.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Marine Ambassador: They can speak with Beasts with a Swim Speed.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Safe Space: Create an impenetrable barrier out to Close. This barrier has 36 HP, which is regained each day. The barrier ignores the results of damage rolls, and instead only takes 1 damage per die used for the damage. While the barrier has HP, the area within is safe, comfortable, nothing can enter or exit the barrier, and nothing within can be affected by any attacks or magic from outside it. Action to activate or deactivate.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Vicious: On a Crit Attack, the Target takes extra damage equal to (2 × its HD).</span></p><p><br></p>",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 0,
+      "s": 20,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "range": "close",
+    "damage": {
+      "type": "physical",
+      "dice": {
+        "count": 1,
+        "faces": 6,
+        "modifier": 3,
+        "explodesOn": []
+      }
+    },
+    "grip": {
+      "style": "H",
+      "state": "H"
+    },
+    "properties": [
+      "thrown"
+    ],
+    "material": "steel",
+    "skills": [
+      "melee"
+    ],
+    "copperValue": 2000,
+    "relicPowers": [
+      {
+        "id": "utility-other-fabled-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "fabled-other",
+          "label": "Fabled Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Fabled Bound relic of miscellaneous nature."
+      },
+      {
+        "id": "bonus-weapon-3",
+        "category": {
+          "value": "bonus",
+          "label": "Bonus"
+        },
+        "power": {
+          "value": "weapon-3",
+          "label": "Weapon +3",
+          "modifiers": [
+            {
+              "path": "system.damage.dice.modifier",
+              "value": 3
+            }
+          ]
+        },
+        "goldValue": 5000,
+        "bound": false,
+        "description": "+3 bonus to Attack damage."
+      },
+      {
+        "id": "utility-aqua",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "aqua",
+          "label": "Aqua Lung",
+          "modifiers": []
+        },
+        "goldValue": 5000,
+        "bound": false,
+        "description": "Wearer can breathe water."
+      },
+      {
+        "id": "utility-warning",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "warning",
+          "label": "Warning",
+          "modifiers": []
+        },
+        "goldValue": 7500,
+        "bound": true,
+        "description": "Bound Being can't be surprised, and is awoken if foes are Near."
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790023477459,
+    "modifiedTime": 1790023665385,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_id": "MIMQHZ9SRSrqfGOH",
+  "sort": 0,
+  "_key": "!items!MIMQHZ9SRSrqfGOH"
+}

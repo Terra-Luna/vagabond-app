@@ -1,0 +1,68 @@
+{
+  "name": "Deck of Many Things",
+  "type": "sundry",
+  "_id": "HgYIT9NqksRnt8TA",
+  "img": "/icons/sundries/gaming/playing-cards-black.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Deck of 22 cards in a box. Each card depicts an esoteric image and is decorated with filigree of magical glyphs. A Being can draw up to 4 cards from the deck, and is affected by the magic effects of the card. Afterward, those cards return to the deck.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">You can use a deck of Tarot cards to represent the Deck, using only the Major Arcana to represent it. Those cards are indicated in parenthesis.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Balance (Justice): Any three Relics of their choice with a bonus increase the bonus by 1.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Comet (The World): By themselves, they must defeat the next Enemy they encounter to gain a Level.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Donjon (The Empress): They drop their inventory, forget how to Cast any Spells, and are teleported to a prison. The deck then disappears and no cards can be drawn.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Fates (The Lovers): They can choose to avoid one situation or the outcome of a situation at one point in the future.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Flames (The Devil): A powerful Hellspawn takes a dedicated interest in them. It is now their Enemy, and will seek to ruin their life.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Fool (The Fool): They lose 1 Level and draw another card. The Fool disappears forever.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Gem (The Wheel of Fortune): (d66) gems worth 100g each and (d66) pieces of jewelry worth 200g each appear around them.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Idiot (Temperance): Their Reason decreases by d6. If reduced to 0, they die. They can draw another card.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Jester (The Hierophant): They gain 1 Level or draw two cards. The Jester disappears from the deck forever.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Key (The High Priestess): A Fabled Relic of their choice that isn't the Deck of Many Things appears in their hand.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Knight (Strength): You gain the service of an Ally champion, which obeys your commands as a companion.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Medusa (The Magician): They are cursed, causing a -2 penalty to all Saves.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Moon (The Moon): They gain three wishes, which must be made within 10 Minutes.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Rogue (The Hanged Man): A friend to them now permanently hates them. This hatred is only revealed at the worst possible time.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Ruin (The Tower): They lose all of their land, possessions, and wealth.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Skull (Death): A grim reaper appears and attacks them. If any other Being attempts to help them, another grim reaper appears and attacks that Being.</span></p>",
+    "rules": [],
+    "category": "games",
+    "value": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "utility-other-fabled-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "fabled-other",
+          "label": "Fabled Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Fabled Bound relic of miscellaneous nature."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2700000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790012999780,
+    "modifiedTime": 1790023201617,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!HgYIT9NqksRnt8TA"
+}

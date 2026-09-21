@@ -140,10 +140,10 @@ export class RelicPowers {
                 value: 'armor-1',
                 label: 'Armor +1',
                 modifiers: [{
-                    path: 'system.rating', value: 1
+                    path: 'system.armor.rating', value: 1
                 }]
             },
-            types: ['armor'],
+            types: ['armor', 'weapon'],
             goldValue: 100,
             description: "+1 bonus to Armor."
         },
@@ -154,10 +154,10 @@ export class RelicPowers {
                 value: 'armor-2',
                 label: 'Armor +2',
                 modifiers: [{
-                    path: 'system.rating', value: 2
+                    path: 'system.armor.rating', value: 2
                 }]
             },
-            types: ['armor'],
+            types: ['armor', 'weapon'],
             goldValue: 5000,
             description: "+2 bonus to Armor."
         },
@@ -168,10 +168,10 @@ export class RelicPowers {
                 value: 'armor-3',
                 label: 'Armor +3',
                 modifiers: [{
-                    path: 'system.rating', value: 3
+                    path: 'system.armor.rating', value: 3
                 }]
             },
-            types: ['armor'],
+            types: ['armor', 'weapon'],
             goldValue: 50000,
             description: "+3 bonus to Armor."
         },
@@ -858,7 +858,7 @@ export class RelicPowers {
         {
             id: 'utility-holding',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'holding', label: 'of Holding' },
+            power: { value: 'holding', label: 'Holding' },
             types: ['container'],
             goldValue: 200,
             description: "Gives bonus Item Slots. (Value is per extra slot, adjust as needed.)"
@@ -910,6 +910,14 @@ export class RelicPowers {
             types: ['weapon'],
             goldValue: 50000,
             description: "Killing a foe with it heals the Wielder for 3d8 HP."
+        },
+        {
+            id: 'utility-lifesteal-4',
+            category: { value: 'utility', label: 'Utility' },
+            power: { value: 'lifesteal-4', label: 'Lifesteal IV' },
+            types: ['weapon'],
+            goldValue: 50000,
+            description: "Killing a foe with it heals the Wielder for 4d8 HP."
         },
         {
             id: 'utility-loyalty',
@@ -972,6 +980,14 @@ export class RelicPowers {
             description: "Sheds Moonlight out to Far while Equipped."
         },
         {
+            id: 'utility-personality',
+            category: { value: 'utility', label: 'Utility' },
+            power: { value: 'personality', label: 'Personality' },
+            types: ['weapon'],
+            goldValue: 0,
+            description: "Can only be used against hostile foes."
+        },
+        {
             id: 'utility-piercing-1',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'piercing-1', label: 'Piercing I' },
@@ -1028,6 +1044,14 @@ export class RelicPowers {
             description: "Sheds Sunlight out to Far while Equipped."
         },
         {
+            id: 'utility-silvering',
+            category: { value: 'utility', label: 'Utility' },
+            power: { value: 'silvering', label: 'Silvering' },
+            types: ['weapon'],
+            goldValue: 0,
+            description: "Attacks with it count as Silvered."
+        },
+        {
             id: 'utility-warning',
             category: { value: 'utility', label: 'Utility' },
             power: { value: 'warning', label: 'Warning' },
@@ -1035,6 +1059,42 @@ export class RelicPowers {
             goldValue: 7500,
             bound: true,
             description: "Bound Being can't be surprised, and is awoken if foes are Near."
+        },
+        {
+            id: 'utility-trinket',
+            category: { value: 'utility', label: 'Utility' },
+            power: { value: 'other', label: 'Trinket' },
+            types: ['armor', 'sundry', 'weapon'],
+            goldValue: 0,
+            bound: false,
+            description: "A relic Trinket."
+        },
+        {
+            id: 'utility-other',
+            category: { value: 'utility', label: 'Utility' },
+            power: { value: 'other', label: 'Relic (Bound)' },
+            types: ['armor', 'sundry', 'weapon'],
+            goldValue: 0,
+            bound: true,
+            description: "Unbound relic of miscellaneous nature."
+        },
+        {
+            id: 'utility-other-bound',
+            category: { value: 'utility', label: 'Utility' },
+            power: { value: 'other', label: 'Relic' },
+            types: ['armor', 'sundry', 'weapon'],
+            goldValue: 0,
+            bound: true,
+            description: "Bound relic of miscellaneous nature."
+        },
+        {
+            id: 'utility-other-fabled-bound',
+            category: { value: 'utility', label: 'Utility' },
+            power: { value: 'fabled-other', label: 'Fabled Relic' },
+            types: ['armor', 'sundry', 'weapon'],
+            goldValue: 0,
+            bound: true,
+            description: "Fabled Bound relic of miscellaneous nature."
         }
     ]
     

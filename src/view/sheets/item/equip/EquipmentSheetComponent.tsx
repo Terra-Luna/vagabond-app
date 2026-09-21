@@ -6,6 +6,7 @@ import { EquipmentDataModel, EquipmentSchema } from "../../../../model/item/equi
 import { StartingPackDataModel } from "../../../../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
+import { ItemRulesManager } from "../../../../rules/ItemRulesManager"
 import { appLang } from "../../../../utils/lang"
 import { ItemDivider } from "../../../component/Header"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
@@ -83,7 +84,10 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
                     && game.user?.isActiveGM
                     && (item.type as string) !== 'alchemical'
                     && (item.type as string) !== 'startingpack'
-                    && <RelicConfig item={item} />
+                    && <div className="flex flex-col gap-2 mb-4">
+                        <RelicConfig item={item} />
+                        <ItemRulesManager item={item} />
+                    </div>
                 }
             </>}
         />

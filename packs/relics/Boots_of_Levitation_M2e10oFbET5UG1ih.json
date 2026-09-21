@@ -1,0 +1,69 @@
+{
+  "name": "Boots of Levitation",
+  "type": "sundry",
+  "_id": "M2e10oFbET5UG1ih",
+  "img": "/icons/equipment/feet/boots-folded-leather-brown.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "clothing",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "movement-levitation",
+        "category": {
+          "value": "movement",
+          "label": "Movement"
+        },
+        "power": {
+          "value": "levitation",
+          "label": "Levitation",
+          "modifiers": []
+        },
+        "goldValue": 500,
+        "description": "Wearer is under the effects of the Levitate Spell.",
+        "bound": false
+      }
+    ],
+    "isWearable": true,
+    "copperValue": 1000,
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790012173291,
+    "modifiedTime": 1790023201617,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "sort": 2800000,
+  "_key": "!items!M2e10oFbET5UG1ih"
+}

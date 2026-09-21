@@ -1,0 +1,68 @@
+{
+  "name": "Enchantment Scroll",
+  "type": "sundry",
+  "_id": "7KEPfRkpfts6PZyR",
+  "img": "/icons/sundries/scrolls/scroll-plain-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Can be read to grant one Item of the reader's choice that they are touching the Relic Power on the Scroll. The Scroll then vaporizes.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Value: equal to the Value of the Relic Power.</span></p>",
+    "rules": [],
+    "category": "books",
+    "value": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [
+      {
+        "id": "utility-other-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Bound relic of miscellaneous nature."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790022112407,
+    "modifiedTime": 1790023201615,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!7KEPfRkpfts6PZyR"
+}

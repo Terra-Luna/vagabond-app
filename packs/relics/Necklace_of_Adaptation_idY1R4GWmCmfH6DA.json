@@ -1,0 +1,68 @@
+{
+  "name": "Necklace of Adaptation",
+  "type": "sundry",
+  "_id": "idY1R4GWmCmfH6DA",
+  "img": "/icons/equipment/neck/choker-chain-thick-silver.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Necklace of heavy chain which grants the wearer the following Powers:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Eternal Breath: They don't need to breathe.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Extremes Innured: They are not affected by extreme pressure or vacuums.</span></p>",
+    "rules": [],
+    "category": "valuables",
+    "value": {
+      "g": 10000,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "utility-other-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Bound relic of miscellaneous nature."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1000000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790015242835,
+    "modifiedTime": 1790023201615,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!idY1R4GWmCmfH6DA"
+}

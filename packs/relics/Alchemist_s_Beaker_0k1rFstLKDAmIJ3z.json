@@ -1,0 +1,68 @@
+{
+  "name": "Alchemist's Beaker",
+  "type": "sundry",
+  "_id": "0k1rFstLKDAmIJ3z",
+  "img": "/icons/consumables/potions/round-decorated-snake-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A beaker with three separate layers, each with the following Power:</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">• Prima Materia:</strong></b><span style=\"white-space:pre-wrap\"> When the Ritual to Bond with it is performed, the Being can provide up to three alchemical items and assign them to a layer. The beaker can be used to provide a use of that alchemical item, which replenishes automatically after 1 Day.</span></p>",
+    "rules": [],
+    "category": "alchemy",
+    "value": {
+      "g": 3000,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "utility-other",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic (Bound)",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Unbound relic of miscellaneous nature."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 3200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790010745794,
+    "modifiedTime": 1790023201617,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!0k1rFstLKDAmIJ3z"
+}

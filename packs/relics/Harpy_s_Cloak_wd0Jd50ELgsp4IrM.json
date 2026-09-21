@@ -1,0 +1,68 @@
+{
+  "name": "Harpy's Cloak",
+  "type": "armor",
+  "_id": "wd0Jd50ELgsp4IrM",
+  "img": "/icons/commodities/materials/material-feathers-violet.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A cloak of harpy's feathers. It acts as Light Armor and the feathers can be used as Daggers.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• (+1) Armor: Grants a +1 bonus to Armor.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Infinite ((+1) Dagger): The feathers it creates attack as (+1) Daggers. They become mundane feathers after the attack is made, and the feather grows back instantly.</span></p>",
+    "rules": [],
+    "category": "armor",
+    "value": {
+      "g": 1150,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "utility-other-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Bound relic of miscellaneous nature."
+      }
+    ],
+    "armorType": "light",
+    "rating": 2,
+    "mightReq": 3,
+    "material": "steel"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1800000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790013732657,
+    "modifiedTime": 1790023201616,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!wd0Jd50ELgsp4IrM"
+}

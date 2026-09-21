@@ -1,0 +1,68 @@
+{
+  "name": "Golden Needle",
+  "type": "sundry",
+  "_id": "JuQgxnJ6IDBHsIzF",
+  "img": "/icons/commodities/tech/pipe-copper-loop-gold.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If the tip of the needle is pressed into a petrified Being, the needle melts into the stone and the curse of petrification ends. The needle is irretrievable after use.</span></p>",
+    "rules": [],
+    "category": "books",
+    "value": {
+      "g": 50,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": true,
+    "relicPowers": [
+      {
+        "id": "utility-other-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Bound relic of miscellaneous nature."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790013586823,
+    "modifiedTime": 1790023201616,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!JuQgxnJ6IDBHsIzF"
+}

@@ -693,7 +693,7 @@
     }
   ],
   "effects": [],
-  "sort": 0,
+  "sort": 1200000,
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -704,7 +704,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.19",
     "createdTime": 1788995498396,
-    "modifiedTime": 1789837512154,
+    "modifiedTime": 1790022045787,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

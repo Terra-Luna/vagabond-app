@@ -1,0 +1,84 @@
+{
+  "name": "Boots of the Spider",
+  "type": "sundry",
+  "img": "/icons/equipment/feet/boots-folded-leather-brown.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "clothing",
+    "value": {
+      "g": 0,
+      "s": 10,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "movement-clinging",
+        "category": {
+          "value": "movement",
+          "label": "Movement"
+        },
+        "power": {
+          "value": "clinging",
+          "label": "Clinging",
+          "modifiers": []
+        },
+        "goldValue": 2500,
+        "bound": false,
+        "description": "Wearer gains Cling."
+      },
+      {
+        "id": "movement-webwalk",
+        "category": {
+          "value": "movement",
+          "label": "Movement"
+        },
+        "power": {
+          "value": "webwalk",
+          "label": "Webwalk",
+          "modifiers": []
+        },
+        "goldValue": 500,
+        "description": "Wearer ignores Difficult Terrain of webs, and can't be Restrained by them.",
+        "bound": false
+      }
+    ],
+    "isWearable": true,
+    "copperValue": 1000,
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false
+  },
+  "effects": [],
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790012313525,
+    "modifiedTime": 1790023201617,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "LxjckWttmatU52UJ": 3,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "_id": "HQlUguz3DQnrXmLB",
+  "sort": 3000000,
+  "_key": "!items!HQlUguz3DQnrXmLB"
+}

@@ -40,7 +40,9 @@ export class PerkRulesSelectionsApplicator {
             .filter(r => r.key === "ChoiceSet" && r.channel === "item")
             .flatMap(r => normalizeRuleSelections(r.selections))
             .filter(selection => ItemsCache.perks().some(perk => perk.uuid === selection.value))
+        
         const selectionsByPerk = new Map<string, any[]>()
+        
         selectedPerkSelections.forEach(selection => {
             const selections = selectionsByPerk.get(selection.value) ?? []
             selections.push(selection)

@@ -69,7 +69,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      * Spellcasting
      */
     const { SpellSelection, ancestrySpellSlots, classSpellSlots, perkSpellSlots, classSpellGrants, ancestrySpellGrants } =
-        useSpellSelectionView(1, ancestryItem, classItem, undefined, [backButton, nextButton])
+        useSpellSelectionView(1, ancestryItem, classItem, undefined, [], [backButton, nextButton])
 
     const selectedSpellNames = useMemo(() => {
         const selectedSpells = [...ancestrySpellSlots, ...classSpellSlots].map(slot => slot.label)

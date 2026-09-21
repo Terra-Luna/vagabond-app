@@ -1,0 +1,83 @@
+{
+  "name": "Cube of Force",
+  "type": "sundry",
+  "_id": "IdQ7urkCkOFzwqAh",
+  "img": "/icons/commodities/metal/ingot-steel-cube.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Handheld cube of various magical materials. The cube has 36 Charges, which are refreshed each Day.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Each of the sides can be pressed to activate or deactivate a barrier out to Close from the holder, which has a function that moves with them. When activated, it spends a number of charges based on the side, as shown on the following table, which are also spent each Round while the barrier is active:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Side 1 (1 charge): Blocks gasses and wind.</span></p><p><span style=\"white-space:pre-wrap\">Side 2 (2 charges): Blocks nonliving matter.</span></p><p><span style=\"white-space:pre-wrap\">Side 3 (3 charges): Blocks Beings.</span></p><p><span style=\"white-space:pre-wrap\">Side 4 (4 charges): Blocks magic effects.</span></p><p><span style=\"white-space:pre-wrap\">Side 5 (6 charges): Blocks everything.</span></p><p><span style=\"white-space:pre-wrap\">Side 6 (0 charges): Deactivate the barrier.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">The barrier can block other effects by spending 1 Charge per damage die of the effect.</span></p>",
+    "rules": [],
+    "category": "books",
+    "value": {
+      "g": 2000,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "utility-other-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Bound relic of miscellaneous nature."
+      },
+      {
+        "id": "utility-trinket",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Trinket",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": false,
+        "description": "A relic Trinket."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 2200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790012579556,
+    "modifiedTime": 1790023201616,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!IdQ7urkCkOFzwqAh"
+}

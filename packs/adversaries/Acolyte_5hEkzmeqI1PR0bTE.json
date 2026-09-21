@@ -273,7 +273,7 @@
     "beingType": "humanlike",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": null,
+    "threatLevelOverride": 1.3,
     "description": "",
     "hitDice": 1,
     "zone": "back",
@@ -462,10 +462,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.25",
     "createdTime": 1787785846565,
-    "modifiedTime": 1788472883231,
-    "lastModifiedBy": "v9goaChjagLBZLpc",
+    "modifiedTime": 1790010236567,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

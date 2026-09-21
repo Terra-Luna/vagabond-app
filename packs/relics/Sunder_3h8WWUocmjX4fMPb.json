@@ -1,0 +1,136 @@
+{
+  "name": "Sunder",
+  "type": "weapon",
+  "_id": "3h8WWUocmjX4fMPb",
+  "img": "/icons/weapons/hammers/hammer-double-engraved-gold.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Warhammer that must be Bound to to access its Powers, which are as follows:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• (+3) Bonus: Deals an extra +3 damage.</span></p><p><span style=\"white-space:pre-wrap\">• Giants Bane: Deals an extra damage die to giants.</span></p><p><span style=\"white-space:pre-wrap\">• Earth Shaker: (1/Day) Strike the earth to cause all Near foes to be Dazed (d4 Rounds).</span></p><p><span style=\"white-space:pre-wrap\">• Loyalty: Can be thrown to attack. It then magically returns to the Wielder's hand after the attack.</span></p><p><span style=\"white-space:pre-wrap\">• Sense Valuables: Senses gold and gems within Near.</span></p><p><span style=\"white-space:pre-wrap\">• Thrown Ace: Deals an extra damage die with thrown attacks.</span></p>",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 13000,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "range": "close",
+    "damage": {
+      "type": "physical",
+      "dice": {
+        "count": 1,
+        "faces": 8,
+        "modifier": 3,
+        "explodesOn": []
+      }
+    },
+    "grip": {
+      "style": "V",
+      "state": "H"
+    },
+    "properties": [
+      "vicious"
+    ],
+    "material": "steel",
+    "skills": [
+      "melee"
+    ],
+    "copperValue": 8000,
+    "relicPowers": [
+      {
+        "id": "utility-other-fabled-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "fabled-other",
+          "label": "Fabled Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Fabled Bound relic of miscellaneous nature."
+      },
+      {
+        "id": "bonus-weapon-3",
+        "category": {
+          "value": "bonus",
+          "label": "Bonus"
+        },
+        "power": {
+          "value": "weapon-3",
+          "label": "Weapon +3",
+          "modifiers": [
+            {
+              "path": "system.damage.dice.modifier",
+              "value": 3
+            }
+          ]
+        },
+        "goldValue": 5000,
+        "bound": false,
+        "description": "+3 bonus to Attack damage."
+      },
+      {
+        "id": "utility-loyalty",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "loyalty",
+          "label": "Loyalty",
+          "modifiers": []
+        },
+        "goldValue": 1000,
+        "bound": true,
+        "description": "Magically returns to the Being's hand if thrown to attack (Bound)."
+      },
+      {
+        "id": "ace-thrown",
+        "category": {
+          "value": "ace",
+          "label": "Ace"
+        },
+        "power": {
+          "value": "thrown",
+          "label": "Thrown",
+          "modifiers": []
+        },
+        "goldValue": 2000,
+        "description": "Far Thrown attacks with it aren't Hindered.",
+        "bound": false
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790023201584,
+    "modifiedTime": 1790023308268,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 1100000,
+  "_key": "!items!3h8WWUocmjX4fMPb"
+}

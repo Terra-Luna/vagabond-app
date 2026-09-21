@@ -1,0 +1,68 @@
+{
+  "name": "Helm of Telepathy",
+  "type": "sundry",
+  "_id": "B3NyCBRoXk0OGmDP",
+  "img": "/icons/equipment/head/helm-spangen-engraved-brown.webp",
+  "system": {
+    "description": "",
+    "rules": [],
+    "category": "other",
+    "value": {
+      "g": 0,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "senses-telepathy",
+        "category": {
+          "value": "senses",
+          "label": "Senses"
+        },
+        "power": {
+          "value": "telepathy",
+          "label": "Telepathy",
+          "modifiers": []
+        },
+        "goldValue": 10000,
+        "bound": true,
+        "description": "Grants Telepathy (Bound)."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1900000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790013934016,
+    "modifiedTime": 1790023201616,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!B3NyCBRoXk0OGmDP"
+}

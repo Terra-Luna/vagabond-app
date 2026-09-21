@@ -1,0 +1,133 @@
+{
+  "name": "Magistaff",
+  "type": "weapon",
+  "_id": "rLK8nU5PMhP7PUta",
+  "img": "icons/weapons/staves/staff-simple-spiral-brown.webp",
+  "system": {
+    "description": "<p><i><em style=\"white-space:pre-wrap\">(Adjust this item's Active Effect as needed to reduce max Mana.)</em></i></p><p><br></p><p><span style=\"white-space:pre-wrap\">A 10 Minute Ritual can be conducted while it is held by a willing Being that knows a Spell. During the Ritual, that Being chooses a Spell and chooses how they would Cast it. Their Maximum Mana is reduced by the cost it would take to Cast it, which is only restored if the Bond to the magistaff ends.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">After the Ritual, the Bound wielder can spend a charge from the staff to Cast that Spell as it was Cast during the Ritual, using a Skill of their choice. The number of Charges corresponds to the rarity of the magistaff, as shown below, and its Countdown die resets at dawn.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Common: Cd4 Charges</span></p><p><span style=\"white-space:pre-wrap\">Rare: Cd6 Charges</span></p><p><span style=\"white-space:pre-wrap\">Legendary: Cd8 Charges</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Value: Common (5000g), Rare (15000g), Legendary (50000g)</span></p>",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 5000,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "range": "close",
+    "damage": {
+      "type": "physical",
+      "dice": {
+        "count": 1,
+        "faces": 4,
+        "modifier": 0,
+        "explodesOn": []
+      }
+    },
+    "grip": {
+      "style": "V",
+      "state": "H"
+    },
+    "properties": [],
+    "material": "steel",
+    "skills": [
+      "finesse",
+      "melee"
+    ],
+    "copperValue": 1000,
+    "relicPowers": [
+      {
+        "id": "utility-other",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic (Bound)",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Unbound relic of miscellaneous nature."
+      }
+    ]
+  },
+  "effects": [
+    {
+      "name": "Magistaff: Max Mana Reduction",
+      "img": "/icons/weapons/staves/staff-simple-spiral-brown.webp",
+      "origin": "Compendium.vagabond-app.relics.Item.rLK8nU5PMhP7PUta",
+      "disabled": false,
+      "_id": "8Mx0RhSwM2HBxMC4",
+      "type": "base",
+      "system": {
+        "changes": [
+          {
+            "key": "system.mana.max",
+            "type": "subtract",
+            "value": 0,
+            "phase": "initial",
+            "priority": 20
+          }
+        ],
+        "requiresEquip": true
+      },
+      "start": null,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "showIcon": 2,
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.25",
+        "createdTime": 1790014596379,
+        "modifiedTime": 1790014706495,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!rLK8nU5PMhP7PUta.8Mx0RhSwM2HBxMC4"
+    }
+  ],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790014413721,
+    "modifiedTime": 1790023201616,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 1500000,
+  "_key": "!items!rLK8nU5PMhP7PUta"
+}

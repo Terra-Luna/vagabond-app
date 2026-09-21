@@ -1,0 +1,128 @@
+{
+  "name": "Orb of Many Energies",
+  "type": "sundry",
+  "_id": "u6DrSdXacUPleN67",
+  "img": "/icons/commodities/gems/pearl-fire.webp",
+  "system": {
+    "description": "<p><i><em style=\"white-space:pre-wrap\">(Select the randomly chosen spell(s) in the owner's Spell Selection menu.)</em></i></p><p><br></p><p><span style=\"white-space:pre-wrap\">[[/r d8]]{Roll a d8} to determine its starting color. Each color corresponds to a Spell, which the Bound Being can Cast as long as the orb is that color by spending a Charge.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Whenever you Cast a Spell that corresponds to the orb's current color, roll a d8 to determine its new color.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">1: Red (Burn)</span></p><p><span style=\"white-space:pre-wrap\">2: Orange (Amplify)</span></p><p><span style=\"white-space:pre-wrap\">3. Yellow (Zap)</span></p><p><span style=\"white-space:pre-wrap\">4: Green (Sprout)</span></p><p><span style=\"white-space:pre-wrap\">5: Blue (Freeze)</span></p><p><span style=\"white-space:pre-wrap\">6: Indigo (Ward)</span></p><p><span style=\"white-space:pre-wrap\">7: Violet (Color)</span></p><p><span style=\"white-space:pre-wrap\">8: The orb becomes two colors at once. [[/r 2d8rr8]]{Roll twice, rerolling 8s}. When you Cast a Spell corresponding to either of these colors, you may Cast the Spell corresponding to the other color as a part of the same Action.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">The orb has [[/r Cd6#Orb Charges]]{Cd6} Charges. When it runs out of Charges, it dims to a grayish color and can't be used until the next dawn.</span></p>",
+    "rules": [
+      {
+        "id": "YhrXjFP5qp4wIuIA",
+        "key": "ChoiceSet",
+        "label": "Orb of Many Energies",
+        "level": 0,
+        "scale": 0,
+        "maxChoices": 2,
+        "channel": "item",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "Compendium.vagabond-app.spells.Item.KGSHLpccnipksBKr",
+            "label": "Burn"
+          },
+          {
+            "value": "Compendium.vagabond-app.spells.Item.VdVSCYxPSdRAdhMO",
+            "label": "Amplify"
+          },
+          {
+            "value": "Compendium.vagabond-app.spells.Item.KC4JVbVqUCF4eaZm",
+            "label": "Zap"
+          },
+          {
+            "value": "Compendium.vagabond-app.spells.Item.twBrc1gqct9fKmhx",
+            "label": "Sprout"
+          },
+          {
+            "value": "Compendium.vagabond-app.spells.Item.PQvjxnxcuXvUaOD1",
+            "label": "Freeze"
+          },
+          {
+            "value": "Compendium.vagabond-app.spells.Item.6iTqEpQQeK3MmAr3",
+            "label": "Ward"
+          },
+          {
+            "value": "Compendium.vagabond-app.spells.Item.wD345vHU7U58XtDd",
+            "label": "Color"
+          }
+        ],
+        "selections": [],
+        "pack": "spell",
+        "filters": [],
+        "skipAtHeroCreation": true
+      }
+    ],
+    "category": "books",
+    "value": {
+      "g": 2500,
+      "s": 0,
+      "c": 0
+    },
+    "copperValue": 0,
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 10,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": true,
+    "isEquipped": false,
+    "isConsumable": false,
+    "relicPowers": [
+      {
+        "id": "utility-other",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic (Bound)",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Unbound relic of miscellaneous nature."
+      },
+      {
+        "id": "utility-trinket",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Trinket",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": false,
+        "description": "A relic Trinket."
+      }
+    ],
+    "isRation": false,
+    "isMaterials": false,
+    "isAlchemyTools": false,
+    "isWearable": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 1600000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790015339738,
+    "modifiedTime": 1790023201616,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!u6DrSdXacUPleN67"
+}

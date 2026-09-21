@@ -17,7 +17,8 @@ export interface ItemRule {
     selections: RuleSelection[],
     ignoreStats?: boolean,
     ignoreTrainings?: boolean,
-    skipAtHeroCreation?: boolean
+    skipAtHeroCreation?: boolean,
+    sourceItemId?: string
 }
 
 export interface RuleSelection {
@@ -565,7 +566,8 @@ export function getItemChoiceRules(level: number, rulesData: any[]): ItemRule[] 
             selections: rule.selections,
             ignoreStats: rule.ignoreStats,
             ignoreTrainings: rule.ignoreTrainings,
-            skipAtHeroCreation: rule.skipAtHeroCreation
+            skipAtHeroCreation: rule.skipAtHeroCreation,
+            sourceItemId: rule.sourceItemId
         }
     })
 

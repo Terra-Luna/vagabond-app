@@ -1,0 +1,136 @@
+{
+  "name": "Peacemaker",
+  "type": "weapon",
+  "_id": "7Jn4QInDDD0wJT2M",
+  "img": "/icons/weapons/guns/gun-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Revolver which silvers all bullets fired from it.</span></p>",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 5000,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 1,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "range": "far",
+    "damage": {
+      "dice": {
+        "count": 1,
+        "faces": 4,
+        "modifier": 2,
+        "explodesOn": []
+      },
+      "type": "pierce"
+    },
+    "grip": {
+      "style": "H",
+      "state": "H"
+    },
+    "properties": [
+      "keen"
+    ],
+    "material": "steel",
+    "skills": [
+      "ranged"
+    ],
+    "copperValue": 4000,
+    "relicPowers": [
+      {
+        "id": "utility-other-fabled-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "fabled-other",
+          "label": "Fabled Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Fabled Bound relic of miscellaneous nature."
+      },
+      {
+        "id": "bonus-weapon-2",
+        "category": {
+          "value": "bonus",
+          "label": "Bonus"
+        },
+        "power": {
+          "value": "weapon-2",
+          "label": "Weapon +2",
+          "modifiers": [
+            {
+              "path": "system.damage.dice.modifier",
+              "value": 2
+            }
+          ]
+        },
+        "goldValue": 1250,
+        "bound": false,
+        "description": "+2 bonus to Attack damage."
+      },
+      {
+        "id": "utility-silvering",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "silvering",
+          "label": "Silvering",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": false,
+        "description": "Attacks with it count as Silvered."
+      },
+      {
+        "id": "utility-personality",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "personality",
+          "label": "Personality",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "description": "Can only be used against hostile foes.",
+        "bound": false
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790019500083,
+    "modifiedTime": 1790023201615,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 200000,
+  "_key": "!items!7Jn4QInDDD0wJT2M"
+}

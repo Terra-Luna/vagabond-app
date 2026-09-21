@@ -615,6 +615,7 @@
       "grantedSpells": "Granted Spells",
       "emptySlot": " -- Empty Slot -- ",
       "classSpells": "CLASS SPELL SLOTS",
+      "itemSpells": "ITEM SPELL SLOTS",
       "ancestrySpells": "Ancestry Spell Choices",
       "magicalSecrets": "Magical Secrets",
       "selected": "Selected",

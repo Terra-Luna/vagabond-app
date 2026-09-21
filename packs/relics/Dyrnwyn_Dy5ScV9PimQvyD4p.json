@@ -1,0 +1,131 @@
+{
+  "name": "Dyrnwyn",
+  "type": "weapon",
+  "_id": "Dy5ScV9PimQvyD4p",
+  "img": "/icons/weapons/swords/greatsword-guard-jewel-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Longsword with a pure white blade and jewel-studded hilt.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Evil's Bane: Deals an extra damage die to Hellspawn and Undead.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Smite I: Targets that take damage from it are also Burning (Cd4) with holy flame that ignores Immune.</span></p>",
+    "rules": [],
+    "category": "weapons",
+    "value": {
+      "g": 25000,
+      "s": 0,
+      "c": 0
+    },
+    "bulk": {
+      "slots": 2,
+      "isStackable": false,
+      "stackSize": 100,
+      "quantity": 1,
+      "totalSlots": 0
+    },
+    "isEquippable": false,
+    "isEquipped": false,
+    "isConsumable": false,
+    "range": "close",
+    "damage": {
+      "type": "physical",
+      "dice": {
+        "count": 1,
+        "faces": 8,
+        "modifier": 2,
+        "explodesOn": []
+      }
+    },
+    "grip": {
+      "style": "V",
+      "state": "H"
+    },
+    "properties": [
+      "keen"
+    ],
+    "material": "steel",
+    "skills": [
+      "melee"
+    ],
+    "copperValue": 4000,
+    "relicPowers": [
+      {
+        "id": "utility-other-fabled-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "fabled-other",
+          "label": "Fabled Relic",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Fabled Bound relic of miscellaneous nature."
+      },
+      {
+        "id": "utility-silvering",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "silvering",
+          "label": "Silvering",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": false,
+        "description": "Attacks with it count as Silvered."
+      },
+      {
+        "id": "utility-burning-1",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "burning-1",
+          "label": "Burning I",
+          "modifiers": []
+        },
+        "goldValue": 4000,
+        "bound": false,
+        "description": "Burning (Cd4) on a hit."
+      },
+      {
+        "id": "bane-general",
+        "category": {
+          "value": "bane",
+          "label": "Bane"
+        },
+        "power": {
+          "value": "general",
+          "label": "General",
+          "modifiers": []
+        },
+        "goldValue": 5000,
+        "description": "Adds an extra damage die to an entire Being Type, such as Cryptids (not just giants).",
+        "bound": false
+      }
+    ]
+  },
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "KkUM0xdZFWx39xs4": 3,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790013191890,
+    "modifiedTime": 1790023201616,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 2300000,
+  "_key": "!items!Dy5ScV9PimQvyD4p"
+}

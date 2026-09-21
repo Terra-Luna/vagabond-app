@@ -8,3 +8,4 @@ dist
 public/styles/*.css.map
 jest-results.json
 releases/
+test_output.txt

@@ -8,10 +8,11 @@ import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
 import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
+import { getItemChoiceRules, getItemRules } from "../../../../rules/util/item-rules-util"
 import { sys_id } from "../../../../utils/foundryUtils"
 import { appLang } from "../../../../utils/lang"
 import { localizeString } from "../../../../utils/localeUtils"
-import { getName } from "../../../../utils/modelUtil"
+import { getName, inventoryItemTypes } from "../../../../utils/modelUtil"
 import { EditableNameField } from "../../../component/EditableTextField"
 import { Tooltip } from "../../../component/Tooltip"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
@@ -167,7 +168,19 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     const tabPanelClasses = "min-h-0 overflow-y-auto"
-    const showMagicTab = hero.spells?.length > 0 || hero.class?.castingSkill.length > 0
+
+    const classItem = hero.parent.items.find(item => item.type === "class")
+    const ancestryItem = hero.parent.items.find(item => item.type === "ancestry")
+    const inventoryItems = hero.parent.items.filter(item => inventoryItemTypes().includes(item.type))
+    const spellRules = [
+        ...getItemRules(classItem),
+        ...getItemRules(ancestryItem),
+        ...hero.perks.flatMap(perk => (perk as any).rules ?? []),
+        ...inventoryItems.flatMap(item => getItemRules(item))
+    ]
+
+    const showMagicTab = getItemChoiceRules(hero.level.current ?? 0, spellRules).some(rule => rule.pack === "spell" && rule.maxChoices > 0)
+        || spellRules.some(rule => rule.key === "GrantItem" && rule.type === "spell")
 
     return <div className="-mt-1 flex flex-col min-h-0 grow">
         <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />

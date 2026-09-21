@@ -4,9 +4,10 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AncestryDataModel } from "../../../model/item/character/AncestryDataModel"
 import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { PerkDataModel } from "../../../model/item/character/PerkDataModel"
-import { getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
+import { getItemChoiceRules, getItemRules, getItemRuleSources, normalizeRuleSelections, saveItemRuleSelections, savePerkSelections } from "../../../rules/util/item-rules-util"
 import { groupBy } from "../../../utils/collectionUtil"
 import { sys_id } from "../../../utils/foundryUtils"
+import { inventoryItemTypes } from "../../../utils/modelUtil"
 import { useSpellSelectionView } from "./SpellSelectionView"
 
 export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, pendingClassItem?: Item & { system: ClassDataModel }) => {
@@ -14,6 +15,7 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
     const ancestry = actor.items.find(it => (it.type as string) === 'ancestry') as Item & { system: AncestryDataModel }
     const clazz = pendingClassItem ?? (actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel })
     const perks = actor.system.perks as PerkDataModel[]
+    const items = actor.items.filter(it => inventoryItemTypes().includes(it.type)) as any[] ?? []
     const level = ((actor as any).system.level.current ?? 0) + (isLevelUp ? 1 : 0)
 
     // Used for tracking spell slot loading upon opening the editor.
@@ -22,9 +24,9 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
     const [selectionsLoaded, setSelectionsLoaded] = useState(false)
 
     const {
-        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants,
-        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, loadInitialSlots, spellsList
-    } = useSpellSelectionView(level, ancestry, clazz, perks, [], selectionsLoaded)
+        SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, itemSpellSlots, classSpellGrants, ancestrySpellGrants,
+        setAncestrySpellSlots, setClassSpellSlots, setPerkSpellSlots, setItemSpellSlots, loadInitialSlots, spellsList
+    } = useSpellSelectionView(level, ancestry, clazz, perks, items, [], selectionsLoaded)
 
     const getSpellName = (id: string): string => {
         return spellsList.find(it => it.value === id)?.label ?? 'unk'
@@ -85,6 +87,13 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
                     rule.selections = normalizeRuleSelections(rule.selections)
                 })
                 loadSelections(targetRules, setPerkSpellSlots)
+            }
+            if (items.length > 0) {
+                const itemRuleData = items.flatMap(item => getItemRuleSources(item).flatMap(source =>
+                    source.rules.filter((r: any) => r.level <= 1).map((r: any) => ({ ...r, sourceItemId: source.owner.id }))
+                ))
+                const rules = await getItemChoiceRules(level, itemRuleData)
+                loadSelections(rules.filter(r => r.pack === 'spell'), setItemSpellSlots)
             }
 
             dataLoaded.current = true
@@ -187,6 +196,46 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
         if (!actor || !perkSpellSlots.length || !dataLoaded.current) return
         savePerkSelections(actor, perkSpellSlots)
     }, [actor, perkSpellSlots])
+
+    /**
+     * Monitors Item (e.g. relic) spell choices and persists them back to each slot's owning item.
+     */
+    useEffect(() => {
+        if (!itemSpellSlots.length || !dataLoaded.current) return
+
+        const itemSpellSlotGroups = groupBy("ruleId", itemSpellSlots)
+        const updatesByItemId = new Map<string, Record<string, any>>()
+
+        Object.keys(itemSpellSlotGroups).forEach(ruleId => {
+            const slotsForRule = itemSpellSlotGroups[ruleId]
+            const sourceItemId = slotsForRule?.[0]?.sourceItemId
+            const sourceItem = sourceItemId ? actor.items.get(sourceItemId) : undefined
+            if (!sourceItem || sourceItem.parent !== actor) return // Not yet embedded on the Actor; nothing to persist to.
+
+            const rule = getItemRules(sourceItem).find(r => r.id === ruleId)
+            if (!rule) return
+
+            const nextValues = slotsForRule?.map(it => it.value ?? "").filter(Boolean) ?? []
+            const currentSelections = normalizeRuleSelections(rule.selections)
+
+            const nextSelections = nextValues.map((value, index) => ({
+                ...(currentSelections[index] ?? { id: foundry.utils.randomID() }),
+                value,
+                subselect: ""
+            }))
+
+            if (JSON.stringify(currentSelections) !== JSON.stringify(nextSelections)) {
+                const updates = updatesByItemId.get(sourceItemId!) ?? {}
+                updates[ruleId] = nextSelections
+                updatesByItemId.set(sourceItemId!, updates)
+            }
+        })
+
+        updatesByItemId.forEach((updates, itemId) => {
+            const item = actor.items.get(itemId)
+            if (item) saveItemRuleSelections(item, updates)
+        })
+    }, [itemSpellSlots])
 
     return { SpellSelection, classSpellSlots, perkSpellSlots, ancestrySpellSlots, classSpellGrants, ancestrySpellGrants }
 }

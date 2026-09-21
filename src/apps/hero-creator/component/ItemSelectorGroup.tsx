@@ -12,7 +12,7 @@ import { CustomDropDown } from "../../../view/component/Dropdown"
  * @returns 
  */
 export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, onSelect }: {
-    slotGroup: { value: string, label: string }[],
+    slotGroup: { value: string, label: string, allowedValues?: string[] }[],
     options: { value: string, label: string }[],
     otherSlotGroup: any[],
     grants: any[],
@@ -50,10 +50,12 @@ export const ItemSelectorGroup = ({ slotGroup, options, otherSlotGroup, grants, 
                         const showLabel = index === 0 || groupLabel !== (slotGroup[index - 1] as any).ruleName
 
                         const otherSelectedIds = getOtherSelectedIds(index)
+                        const allowedValues = (slot as any).allowedValues as string[] | undefined
                         const filteredOptions = options.filter(opt =>
-                            opt.value === slot.value ||
-                            stackablePerkIds.includes(opt.value) ||
-                            !otherSelectedIds.includes(opt.value)
+                            (opt.value === '' || !allowedValues || allowedValues.includes(opt.value)) &&
+                            (opt.value === slot.value ||
+                                stackablePerkIds.includes(opt.value) ||
+                                !otherSelectedIds.includes(opt.value))
                         )
 
                         return (
