@@ -105,11 +105,11 @@ export class HeroAttack extends Attack {
         return (isSuccess && isDmgOrEffect) || (!this.hasHostileTargets && isDmgOrEffect)
     }
 
-    async initiate(clickEvent?: any, isDefenseCheck?: boolean) {
+    async initiate(clickEvent?: any, options?: { isDefenseCheck?: boolean }) {
         this.id = foundry.utils.randomID()
-        this.isDefenseCheck = !!isDefenseCheck
+        this.isDefenseCheck = !!options?.isDefenseCheck
 
-        if (this.skillCheck && (this.hasHostileTargets || isDefenseCheck) && !this.skipSkillCheck) {
+        if (this.skillCheck && (this.hasHostileTargets || options?.isDefenseCheck) && !this.skipSkillCheck) {
             if (clickEvent?.shiftKey || clickEvent?.ctrlKey) {
                 this.skillCheck.setFavorHinder(clickEvent)
             }

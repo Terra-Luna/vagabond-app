@@ -6,6 +6,7 @@ import type { SpellDataModel } from "../../model/item/character/SpellDataModel"
 import type { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../model/item/equip/EquipmentDataModel"
 import type { SundryDataModel } from "../../model/item/equip/SundryDataModel"
+import type { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { CombinedItemsMultiType, getFullItem, inventoryItemTypes } from "../../utils/modelUtil"
 
 export class ItemsCache {
@@ -33,7 +34,12 @@ export class ItemsCache {
         }
 
         const ruleItemEntries = allItems.filter(
-            item => !(item instanceof Item) && (item.type === 'spell' || item.type === 'perk' || item.type === 'feature' || item.type === 'startingpack')
+            item => !(item instanceof Item) && (
+                item.type === 'spell' ||
+                item.type === 'perk' ||
+                item.type === 'feature' ||
+                item.type === 'startingpack'
+            )
         )
 
         const BATCH_SIZE = 25
@@ -54,6 +60,12 @@ export class ItemsCache {
         return Array.from(this.items.values())
             .filter(it => it != null)
             .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as Item[]
+    }
+
+    static weapons = () => {
+        return Array.from(this.items.values())
+            .filter(item => item != null && item.type === 'weapon')
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")) as (Item & { system: WeaponDataModel })[]
     }
 
     static spells = () => {

@@ -5,6 +5,7 @@ import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffec
 import { HeroCreationApp } from "../../../../../apps/hero-creator/HeroCreationApp"
 import { RestApp } from "../../../../../apps/rest/RestApp"
 import { HeroGrantsAndModifiersApp } from "../../../../../apps/rules/HeroGrantsAndModifiersApp"
+import { TravelApp } from "../../../../../apps/travel/TravelApp"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sys_id } from "../../../../../utils/foundryUtils"
@@ -12,7 +13,6 @@ import { tableBorderRounded } from "../../../../common/border-styles"
 import { ItemDivider } from "../../../../component/Header"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
 import { MenuListItem } from "./item/MenuListItem"
-import { TravelApp } from "../../../../../apps/travel/TravelApp"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -79,8 +79,11 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                     {!hero.ancestry &&
                         <MenuListItem text={"CREATE"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
-                    {game.user?.isActiveGM && hero.level.xpToLevel === -1 &&
+                    {game.user?.isActiveGM && hero.level.xpToLevel === -1 && !hero.parent.getFlag(sys_id, "destiny") &&
                         <MenuListItem text={'GRANT LEVEL UP'} onClick={() => hero.parent.setFlag(sys_id, "destiny", true)} toggleMenu={toggleMenu} />
+                    }
+                    {game.user?.isActiveGM && hero.parent.getFlag(sys_id, "destiny") &&
+                        <MenuListItem text={'REVOKE LEVEL UP'} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
                     }
                     <MenuListItem text={'ACTIVE EFFECTS'} onClick={() => new ActiveEffectsApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     <MenuListItem text={'GRANTS & MODIFIERS'} onClick={() => new HeroGrantsAndModifiersApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />

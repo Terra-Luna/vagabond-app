@@ -109,7 +109,7 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
                 },
                 rollDefenseCheck: async (e: React.MouseEvent) => {
-                    await attackInstance.initiate(e, true)
+                    await attackInstance.initiate(e, { isDefenseCheck: true })
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
                 }
             }

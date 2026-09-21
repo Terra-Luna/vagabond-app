@@ -227,8 +227,8 @@ export const equippedItemContextMenu = (hero: any, item: WeaponDataModel | Sundr
         menuItems.push({
             icon: Sword,
             label: 'Attack',
-            action: () => {
-                HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate()
+            action: (e) => {
+                HeroAttack.buildWeaponAttack(hero.parent, item.parent).initiate(e)
             }
         })
         if (item.grip.style === 'V') {
