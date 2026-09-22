@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Nightwalker",
+  "type": "feature",
+  "_id": "qnMFKnHgCmmPRn8L",
+  "img": "/icons/environment/wilderness/terrain-forest-gray.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Can't Move or Target over lines of salt or in areas illuminated by Sunlight. It is Incapacitated and Burning (d8) while in Sunlight.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.27",
+    "createdTime": 1790088528050,
+    "modifiedTime": 1790088569194,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!qnMFKnHgCmmPRn8L"
+}

@@ -1,16 +1,18 @@
 {
-  "name": "Agropelter",
+  "name": "Lich",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 49,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 0
     },
-    "senses": [],
+    "senses": [
+      "allsight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -719,52 +721,151 @@
       }
     },
     "beingSize": "medium",
-    "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingType": "undead",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 8.5,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Undead wizards who give themselves over to necromancy and study the arcane for eternity. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 11,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "20' (Fly 60')"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "physical",
+      "poison"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "berserk",
+      "charmed",
+      "confused",
+      "fatigued",
+      "frightened",
+      "paralyzed",
+      "sickened",
+      "suffocating",
+      "unconscious"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Dominator",
+        "description": "<p><span style=\"white-space: pre-wrap;\">2 Actions as below ([[r /d6]] to determine)</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "physical"
+          "type": "none"
+        },
+        "saves": [],
+        "statuses": []
+      },
+      {
+        "name": "Anti-Life Drain",
+        "description": "<p><span style=\"white-space: pre-wrap;\">1. [Cast, Remote | Endure]: 10 (3d6) and this Being is healed equal to the damage</span></p>",
+        "damage": {
+          "dice": {
+            "count": 3,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "necrotic"
         },
         "saves": [
-          "reflex"
+          "endure"
         ],
         "statuses": []
       },
       {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "name": "Disintegrate",
+        "description": "<p><span style=\"white-space: pre-wrap;\">2. [Cast, Remote | Endure]: 21 (6d6) and disintegrated if killed this way</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 4,
+            "count": 6,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
           "type": "physical"
         },
         "saves": [
-          "reflex"
+          "endure"
+        ],
+        "statuses": [],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Raise",
+        "description": "<p><span style=\"white-space: pre-wrap;\">3. [Cast, a corpse in Far]: Raised as a Zombie under this Being's control</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [],
+        "statuses": []
+      },
+      {
+        "name": "Death Touch",
+        "description": "<p><span style=\"white-space: pre-wrap;\">4. [Cast, Remote | Endure]: 5 (d10) and Paralyzed (Cd6)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 10,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "endure"
+        ],
+        "statuses": [
+          "paralyzed"
+        ]
+      },
+      {
+        "name": "Fear",
+        "description": "<p><span style=\"white-space: pre-wrap;\">5. [Cast, Aura Far | Will]: Frightened (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "frightened"
+        ]
+      },
+      {
+        "name": "Life Disruption",
+        "description": "<p><span style=\"white-space: pre-wrap;\">6. [Cast, Aura Near | Endure]: 10 (3d6, half on pass) and +1 Fatigue</span></p>",
+        "damage": {
+          "dice": {
+            "count": 3,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "endure"
         ],
         "statuses": []
       }
@@ -773,10 +874,10 @@
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 8
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Lich",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,9 +968,175 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Fear Aura",
+      "type": "feature",
+      "_id": "ubk3LskyhSQFoMLb",
+      "img": "/icons/magic/control/fear-fright-monster-purple-blue.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">[Aura Near | Will]: Frightened until they pass this Check on a subsequent Turn, or Cd6 after.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790091305739,
+        "modifiedTime": 1790091305739,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.ubk3LskyhSQFoMLb",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!laz5FoYgi8IiOpcR.ubk3LskyhSQFoMLb"
+    },
+    {
+      "name": "Immutable",
+      "type": "feature",
+      "_id": "4ZDUR51kR8RMVKUe",
+      "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790091321475,
+        "modifiedTime": 1790091321475,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.4ZDUR51kR8RMVKUe",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!laz5FoYgi8IiOpcR.4ZDUR51kR8RMVKUe"
+    },
+    {
+      "name": "Grim Harvester",
+      "type": "feature",
+      "_id": "YqXhyb4plDnFUSHd",
+      "img": "/icons/weapons/sickles/sickle-hooked-purple.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Whenever a Being dies within Far, this Being regains HP equal to that Being's HD or Level.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790091361112,
+        "modifiedTime": 1790091361112,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.YqXhyb4plDnFUSHd",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!laz5FoYgi8IiOpcR.YqXhyb4plDnFUSHd"
+    },
+    {
+      "name": "Magic Ward V",
+      "type": "feature",
+      "_id": "rPTr68IlStXJe9kH",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 5 or more.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790091409530,
+        "modifiedTime": 1790091409530,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.rPTr68IlStXJe9kH",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!laz5FoYgi8IiOpcR.rPTr68IlStXJe9kH"
+    },
+    {
+      "name": "Soul Jar",
+      "type": "feature",
+      "_id": "ojhaoomEMTlfbsoq",
+      "img": "/icons/consumables/drinks/clay-jar-glowing-orange-blue.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't die if it has a Soul Jar intact.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790091439844,
+        "modifiedTime": 1790091439844,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.ojhaoomEMTlfbsoq",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!laz5FoYgi8IiOpcR.ojhaoomEMTlfbsoq"
+    }
+  ],
   "effects": [],
-  "folder": "CaU2w0aKu0SQJXYd",
+  "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -878,15 +1145,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790040650959,
+    "systemVersion": "0.1.27",
+    "createdTime": 1790090776408,
+    "modifiedTime": 1790091848415,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 100000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "laz5FoYgi8IiOpcR",
+  "sort": 0,
+  "_key": "!actors!laz5FoYgi8IiOpcR"
 }

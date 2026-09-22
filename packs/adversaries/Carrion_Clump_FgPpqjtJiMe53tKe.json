@@ -1,5 +1,5 @@
 {
-  "name": "Agropelter",
+  "name": "Carrion Clump",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
@@ -10,7 +10,9 @@
     "armor": {
       "rating": 1
     },
-    "senses": [],
+    "senses": [
+      "blindsight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -719,28 +721,37 @@
       }
     },
     "beingSize": "medium",
-    "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingType": "undead",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
+    "threatLevelOverride": 0.9,
+    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
     "hitDice": 2,
-    "zone": "back",
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "10'"
     },
     "numberAppearing": "d6",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "dmgImmunities": [
+      "poison"
+    ],
+    "dmgWeaknesses": [
+      "acid"
+    ],
+    "statusImmunities": [
+      "charmed",
+      "fatigued",
+      "sickened",
+      "suffocating"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Viscera Sling",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -752,31 +763,33 @@
         "statuses": []
       },
       {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "name": "Sickness",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 4,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "physical"
+          "type": "none"
         },
         "saves": [
-          "reflex"
+          "endure"
         ],
-        "statuses": []
+        "statuses": [
+          "sickened"
+        ]
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Carrion Clump",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -869,7 +882,7 @@
   },
   "items": [],
   "effects": [],
-  "folder": "CaU2w0aKu0SQJXYd",
+  "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -878,15 +891,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790040650959,
+    "systemVersion": "0.1.27",
+    "createdTime": 1790088899819,
+    "modifiedTime": 1790089181844,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 100000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "FgPpqjtJiMe53tKe",
+  "sort": 0,
+  "_key": "!actors!FgPpqjtJiMe53tKe"
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Agropelter",
+  "name": "Ghoul",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
@@ -10,7 +10,9 @@
     "armor": {
       "rating": 1
     },
-    "senses": [],
+    "senses": [
+      "darksight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -719,41 +721,32 @@
       }
     },
     "beingSize": "medium",
-    "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingType": "undead",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
+    "threatLevelOverride": 2,
+    "description": "<p><span style=\"white-space: pre-wrap;\">A frenzied zombie with hate for all things living.</span></p>",
     "hitDice": 2,
-    "zone": "back",
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "30'"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
+    "numberAppearing": "2d6",
+    "dmgImmunities": [
+      "poison"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "charmed",
+      "fatigued",
+      "frightened",
+      "sickened",
+      "suffocating"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "physical"
-        },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": []
-      },
-      {
         "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and pass [Endure] or be Paralyzed (Cd4)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -767,16 +760,90 @@
           "reflex"
         ],
         "statuses": []
+      },
+      {
+        "name": "BIte",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and pass [Endure] or be Paralyzed (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 4,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Paralyze",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "reflex",
+          "endure"
+        ],
+        "statuses": [
+          "paralyzed"
+        ]
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw & 1x BIte",
+      "actions": [
+        {
+          "name": "Claw",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and pass [Endure] or be Paralyzed (Cd4)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "BIte",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4) and pass [Endure] or be Paralyzed (Cd4)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 5
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Ghoul",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,9 +934,43 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Zombie",
+      "type": "feature",
+      "_id": "8fIBmbehU7Ai6VXn",
+      "img": "/icons/magic/death/hand-dirt-undead-zombie.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP unless damaged by a Crit, damage it is Weak to, or while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790090751224,
+        "modifiedTime": 1790090751224,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.8fIBmbehU7Ai6VXn",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!2fOgFkanVxp3mmms.8fIBmbehU7Ai6VXn"
+    }
+  ],
   "effects": [],
-  "folder": "CaU2w0aKu0SQJXYd",
+  "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -878,15 +979,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790040650959,
+    "systemVersion": "0.1.27",
+    "createdTime": 1790090529287,
+    "modifiedTime": 1790090758877,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 100000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "2fOgFkanVxp3mmms",
+  "sort": 0,
+  "_key": "!actors!2fOgFkanVxp3mmms"
 }

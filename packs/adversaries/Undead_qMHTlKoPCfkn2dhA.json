@@ -1,0 +1,23 @@
+{
+  "type": "Actor",
+  "folder": null,
+  "name": "Undead",
+  "color": null,
+  "sorting": "a",
+  "_id": "qMHTlKoPCfkn2dhA",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.27",
+    "createdTime": 1790040713727,
+    "modifiedTime": 1790040713727,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!qMHTlKoPCfkn2dhA"
+}

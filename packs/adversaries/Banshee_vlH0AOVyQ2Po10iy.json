@@ -1,16 +1,20 @@
 {
-  "name": "Agropelter",
+  "folder": "qMHTlKoPCfkn2dhA",
+  "name": "Banshee",
   "type": "adversary",
+  "_id": "vlH0AOVyQ2Po10iy",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 31,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 4
     },
-    "senses": [],
+    "senses": [
+      "allsight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -719,24 +723,57 @@
       }
     },
     "beingSize": "medium",
-    "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingType": "undead",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 3.6,
+    "description": "<p><span style=\"white-space: pre-wrap;\">The feminine spirit of an evil elf, known to kill with its scream. Often has a sort of guardianship over fae creatures. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 7,
+    "zone": "mid",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "Fly 40', Phase"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "cold",
+      "physical",
+      "poison",
+      "shock"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "charmed",
+      "fatigued",
+      "frightened",
+      "paralyzed",
+      "prone",
+      "restrained",
+      "sickened",
+      "suffocating"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Wail",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Action while in darkness, all Near who hear it | Will] (1/Day): Frightened (Cd4) or immediate death if failed by 5 or more</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "frightened"
+        ]
+      },
+      {
+        "name": "Chill Touch",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -744,24 +781,7 @@
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "physical"
-        },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": []
-      },
-      {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 4,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "physical"
+          "type": "cold"
         },
         "saves": [
           "reflex"
@@ -773,10 +793,10 @@
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Banshee",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,9 +887,76 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Nightwalker",
+      "type": "feature",
+      "_id": "qnMFKnHgCmmPRn8L",
+      "img": "/icons/environment/wilderness/terrain-forest-gray.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Can't Move or Target over lines of salt or in areas illuminated by Sunlight. It is Incapacitated and Burning (d8) while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790088574636,
+        "modifiedTime": 1790088574636,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qnMFKnHgCmmPRn8L",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!vlH0AOVyQ2Po10iy.qnMFKnHgCmmPRn8L"
+    },
+    {
+      "name": "Terror II",
+      "type": "feature",
+      "_id": "2rWmjWgktgSNypGQ",
+      "img": "/icons/magic/control/fear-fright-monster-grin-red-orange.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">[Enemies' first time seeing it and on their Turns | Will]: Frightened until they pass this Check on a subsequent Turn, or for Cd6 after.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790088636848,
+        "modifiedTime": 1790088636848,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.2rWmjWgktgSNypGQ",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!vlH0AOVyQ2Po10iy.2rWmjWgktgSNypGQ"
+    }
+  ],
   "effects": [],
-  "folder": "CaU2w0aKu0SQJXYd",
+  "sort": 0,
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -878,15 +965,13 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790040650959,
+    "systemVersion": "0.1.27",
+    "createdTime": 1790088157601,
+    "modifiedTime": 1790088963431,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
-    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 100000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_key": "!actors!vlH0AOVyQ2Po10iy"
 }

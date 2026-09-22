@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Fear Aura",
+  "type": "feature",
+  "_id": "ubk3LskyhSQFoMLb",
+  "img": "/icons/magic/control/fear-fright-monster-purple-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">[Aura Near | Will]: Frightened until they pass this Check on a subsequent Turn, or Cd6 after.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.27",
+    "createdTime": 1790089984686,
+    "modifiedTime": 1790090029929,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ubk3LskyhSQFoMLb"
+}

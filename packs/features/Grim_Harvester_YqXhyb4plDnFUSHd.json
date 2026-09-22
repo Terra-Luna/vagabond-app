@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Grim Harvester",
+  "type": "feature",
+  "_id": "YqXhyb4plDnFUSHd",
+  "img": "/icons/weapons/sickles/sickle-hooked-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Whenever a Being dies within Far, this Being regains HP equal to that Being's HD or Level.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.27",
+    "createdTime": 1790091338352,
+    "modifiedTime": 1790091356057,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!YqXhyb4plDnFUSHd"
+}

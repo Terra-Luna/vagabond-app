@@ -282,8 +282,14 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     {/* EFFECT DESCRIPTION */}
                     <div className="flex items-end">
                         <p>Effect:&nbsp;</p>
-                        <div className={`font-eskapade font-bold hover-glow`}>
-                            <RichTextField defaultValue={newAction?.description ?? ''} onChange={(description) => updateAction({ description })} className="text-xs font-paradigm font-normal" />
+                        <div className={`w-full font-eskapade font-bold hover-glow`}>
+                            <EnrichedContent content={
+                                <RichTextField
+                                    defaultValue={newAction?.description ?? ''}
+                                    onChange={(description) => updateAction({ description })}
+                                    className="text-xs font-paradigm font-normal"
+                                />
+                            } />
                         </div>
                     </div>
 

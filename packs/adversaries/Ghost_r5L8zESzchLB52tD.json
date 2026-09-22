@@ -1,16 +1,18 @@
 {
-  "name": "Agropelter",
+  "name": "Ghost",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 45,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 4
     },
-    "senses": [],
+    "senses": [
+      "darksight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -719,64 +721,80 @@
       }
     },
     "beingSize": "medium",
-    "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingType": "undead",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 3.8,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 10,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "Fly 40', Phase"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "acid",
+      "cold",
+      "fire",
+      "physical",
+      "poison",
+      "shock"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "charmed",
+      "fatigued",
+      "paralyzed",
+      "prone",
+      "restrained",
+      "sickened",
+      "suffocating"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Chill Touch",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Endure]: 3 (d6) and +1 Fatigue</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "physical"
+          "type": "cold"
         },
         "saves": [
-          "reflex"
+          "endure"
         ],
         "statuses": []
       },
       {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "name": "Posession",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Will]: This Being gains control of the Target while it is alive, unless forced out by an effect that turns Undead or dispels magic</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 4,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
           "type": "physical"
         },
         "saves": [
-          "reflex"
+          "will"
         ],
-        "statuses": []
+        "statuses": [],
+        "recharge": "Cd6"
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Ghost",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,9 +885,76 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Aging Terror II",
+      "type": "feature",
+      "_id": "Dculbz0wDo1XnK2s",
+      "img": "/icons/commodities/treasure/mask-bone-white.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">[Enemies' first time seeing it and on their Turns | Will]: Frightened (Cd6) and aged 10 (d20) years.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790090493898,
+        "modifiedTime": 1790090493898,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.Dculbz0wDo1XnK2s",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!r5L8zESzchLB52tD.Dculbz0wDo1XnK2s"
+    },
+    {
+      "name": "Nightwalker",
+      "type": "feature",
+      "_id": "qnMFKnHgCmmPRn8L",
+      "img": "/icons/environment/wilderness/terrain-forest-gray.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Can't Move or Target over lines of salt or in areas illuminated by Sunlight. It is Incapacitated and Burning (d8) while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.27",
+        "createdTime": 1790090502327,
+        "modifiedTime": 1790090502327,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qnMFKnHgCmmPRn8L",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!r5L8zESzchLB52tD.qnMFKnHgCmmPRn8L"
+    }
+  ],
   "effects": [],
-  "folder": "CaU2w0aKu0SQJXYd",
+  "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -878,15 +963,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790040650959,
+    "systemVersion": "0.1.27",
+    "createdTime": 1790090188136,
+    "modifiedTime": 1790090591497,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 100000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "r5L8zESzchLB52tD",
+  "sort": 0,
+  "_key": "!actors!r5L8zESzchLB52tD"
 }
