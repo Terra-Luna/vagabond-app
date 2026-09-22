@@ -43,6 +43,7 @@ export const getDamageAverage = (dice: DiceRollSchema): number => {
 export const npcActionComboSchema = () => {
     return {
         name: new fields.StringField({ ...requiredString }),
+        description: new fields.StringField({ ...optionalString }),
         actions: new fields.ArrayField(
             new fields.SchemaField({
                 ...npcActionSchema(),

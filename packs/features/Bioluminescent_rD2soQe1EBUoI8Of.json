@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Bioluminescent",
+  "type": "feature",
+  "_id": "rD2soQe1EBUoI8Of",
+  "img": "icons/magic/light/orbs-smoke-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Sheds light out to Near.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790030524778,
+    "modifiedTime": 1790030578687,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!rD2soQe1EBUoI8Of"
+}

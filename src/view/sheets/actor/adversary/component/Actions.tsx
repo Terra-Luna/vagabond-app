@@ -1,5 +1,5 @@
 import { PenSquare, Save,Trash } from "lucide-react"
-import { useCallback,useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 
 import { DiceRollSchema } from "../../../../../apps/attack-builder/model/DieRollSchema"
 import { VagabondActiveEffect } from "../../../../../combat/documents/VagabondActiveEffect"
@@ -67,7 +67,10 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                 {npc.combo.name !== '' &&
                     <div className={`flex w-full gap-x-2 p-2 mb-1 ${tableBorderRounded}`}>
                         <p className="font-paradigm font-bold">{locale.combo}:</p>
-                        <p className="text-text-secondary">{npc.combo.name}</p>
+                        <div>
+                            <p className="text-text-secondary">{npc.combo.name}</p>
+                            <p className="text-xs text-text-secondary italic">{npc.combo.description}</p>
+                        </div>
                     </div>
                 }
             </div>
@@ -99,7 +102,9 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                     {/* ACTION TRAITS... */}
                                     <div>
                                         {/* ATTACK DESCRIPTION */}
-                                        <EnrichedContent content={act.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
+                                        {act.description && act.description.length > 0 &&
+                                            <EnrichedContent content={act.description} styleClasses="text-text-secondary italic" actor={npc.parent} />
+                                        }
 
                                         {/* ATTACK DAMAGE AND COUNTDOWN INFO */}
                                         {act.damage.dice.count > 0 &&
@@ -143,12 +148,26 @@ const deleteAction = (npc: AdversaryDataModel | NpcDataModel, action: any) => {
 }
 
 export interface NpcAction {
-    name: string, description: string, damage: { dice: DiceRollSchema, type: string }, saves: string[], statuses: string[], recharge: string, comboCount: number
+    name: string,
+    description: string,
+    damage: { dice: DiceRollSchema, type: string },
+    saves: string[],
+    statuses: string[],
+    recharge: string,
+    comboCount: number
 }
 
 export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setEditTarget }) => {
     const editTargetIndex = npc.actions.indexOf(editTarget as any)
-    const [newAction, setNewAction] = useState<Partial<NpcAction>>(editTarget ?? {})
+    const [newAction, setNewAction] = useState<Partial<NpcAction>>(editTarget ?? {
+        name: "",
+        description: "",
+        damage: { dice: { count: 1, faces: 4 }, type: "physical" },
+        saves: ['reflex'],
+        statuses: [],
+        recharge: "",
+        comboCount: 0
+    })
 
     const updateAction = useCallback(async (patch: Partial<NpcAction>) => {
         setNewAction(prev => ({ ...prev, ...patch }))
@@ -156,7 +175,13 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
     }, [])
 
     const updateDamage = useCallback(async (patch: Partial<NpcAction["damage"]>) => {
-        setNewAction(prev => ({ ...prev, damage: { ...prev.damage, ...patch } as NpcAction["damage"] }))
+        setNewAction(prev => ({
+            ...prev,
+            damage: {
+                ...prev.damage,
+                ...patch
+            } as NpcAction["damage"]
+        }))
         return true
     }, [])
 
@@ -165,12 +190,15 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
             const saves = prev.saves ?? []
             return {
                 ...prev,
-                saves: saves.includes(save) ? saves.filter(it => it !== save) : [...saves, save]
+                saves: saves.includes(save)
+                    ? saves.filter(it => it !== save)
+                    : [...saves, save]
             }
         })
     }, [])
 
     const [comboName, setComboName] = useState<string | null>(null)
+    const [comboDescr, setComboDescr] = useState<string | null>(null)
     const [isCombo, setIsCombo] = useState(false)
     const [comboSelections, setComboSelections] = useState<{ action: NpcAction, comboCount: number }[]>([])
 
@@ -186,6 +214,17 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
         setComboSelections(prev => prev.map(it => it.action.name === action.name ? { ...it, comboCount } : it))
     }
 
+    useEffect(() => {
+        if (isCombo) {
+            const name = comboSelections.map(it => {
+                if (it.comboCount > 0) {
+                    return it.comboCount + "x " + it.action.name
+                }
+            })
+            setComboName(name.join(" & "))
+        }
+    }, [isCombo, comboSelections])
+
     /**
      * VIEW
      */
@@ -195,11 +234,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                 <p className="text-xl font-eskapade font-bold mb-1">{editTarget ? "Edit Action" : "New Action"}</p>
                 {editTarget == null && npc.actions.length > 0 &&
                     <div className="flex space-x-2">
-                        <input
-                            type="checkbox"
-                            checked={isCombo}
-                            onChange={() => setIsCombo(!isCombo)}
-                        />
+                        <input type="checkbox" checked={isCombo} onChange={() => setIsCombo(!isCombo)} />
                         <p>Action Combo</p>
                     </div>
                 }
@@ -210,6 +245,10 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     <div className="flex space-x-2">
                         <p>Combo Name:</p>
                         <EditableTextField boundValue={comboName} onSave={async (name) => { setComboName(name); return true }} placeholder='Enter name...' />
+                    </div>
+                    <div className="flex space-x-2">
+                        <p>Notes:</p>
+                        <EditableTextField boundValue={comboDescr} onSave={async (descr) => { setComboDescr(descr); return true }} placeholder='Description...' />
                     </div>
                     {
                         npc.actions.map((act) => {
@@ -321,7 +360,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
 
             {/* SAVE & CANCEL BUTTONS*/}
             <AddMenuButtons
-                onSave={() => saveNewAction(npc, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex)}
+                onSave={() => saveNewAction(npc, isCombo, comboSelections, comboName, comboDescr, newAction, editTarget, editTargetIndex)}
                 setEditTarget={setEditTarget}
                 setIsAddMenuOpen={setIsAddMenuOpen}
             />
@@ -349,13 +388,13 @@ export const AddMenuButtons = ({ setEditTarget, setIsAddMenuOpen, onSave }) => {
     )
 }
 
-const saveNewAction = (npc, isCombo, comboSelections, comboName, newAction, editTarget, editTargetIndex) => {
+const saveNewAction = (npc, isCombo, comboSelections, comboName, comboDescription, newAction, editTarget, editTargetIndex) => {
     if (isCombo) {
         if (comboName && comboSelections.length > 0 && comboSelections.every(it => it.comboCount > 0)) {
             const comboActions = comboSelections.map(cs => ({
                 ...npc.actions.find(it => it.name === cs.action.name), comboCount: cs.comboCount
             }))
-            updateDocumentAtPath(npc.parent, ['combo'], { name: comboName, actions: comboActions })
+            updateDocumentAtPath(npc.parent, ['combo'], { name: comboName, description: comboDescription, actions: comboActions })
         }
         else {
             ui.notifications?.error("Error: [Name] and [Count] are required fields and at least 1 action must be selected.")

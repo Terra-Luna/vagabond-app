@@ -1,12 +1,10 @@
 {
-  "folder": "TqnyvVE4A9LUb12r",
-  "name": "Alligator/Crocodile, Giant",
+  "name": "Mastodon",
   "type": "adversary",
-  "_id": "nJfQTDq0ZlikiPce",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 67,
+      "value": 58,
       "max": 0
     },
     "armor": {
@@ -326,121 +324,9 @@
       },
       "damage": {
         "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "special": {
-            "sneakAttack": {
-              "flatBonus": 0,
-              "perDieBonus": 0,
-              "exploding": {
-                "max": false,
-                "values": []
-              },
-              "extraDice": {
-                "count": 0,
-                "faces": 4,
-                "modifier": 0,
-                "explodesOn": []
-              },
-              "active": false
-            }
-          }
+          "flatReduction": 0,
+          "perDieReduction": 0,
+          "resistances": []
         },
         "out": {
           "melee": {
@@ -832,50 +718,103 @@
         }
       }
     },
-    "beingSize": "huge",
+    "beingSize": "medium",
     "beingType": "beast",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": null,
-    "description": "",
-    "hitDice": 15,
+    "threatLevelOverride": 8.3,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Both the woolly and imperial mammoths roam arctic and sub-tropic lands.</span></p>",
+    "hitDice": 13,
     "zone": "front",
     "movement": {
-      "speed": "30' (Swim)"
+      "speed": "40'"
     },
-    "numberAppearing": "1",
+    "numberAppearing": "d4",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 13 (3d8) and Restrained if the Target is its size or smaller. This attack always hits a Target Restrained by this attack.</span></p>",
+        "name": "Stomp",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 18 (4d8)</span></p>",
         "damage": {
-          "type": "physical",
           "dice": {
+            "count": 4,
             "faces": 8,
-            "count": 3,
             "modifier": 0,
             "explodesOn": []
-          }
+          },
+          "type": "physical"
         },
         "saves": [
           "reflex"
         ],
-        "statuses": [
-          "restrained"
-        ]
+        "statuses": []
+      },
+      {
+        "name": "Tusk",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 2,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "1x Stomp & 1x Tusk",
+      "actions": [
+        {
+          "name": "Stomp",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 18 (4d8)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 4,
+              "faces": 8,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        },
+        {
+          "name": "Tusk",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 9
+    "morale": 4
   },
   "prototypeToken": {
-    "name": "Alligator/Crocodile, Giant",
+    "name": "Mastodon",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -968,12 +907,12 @@
   },
   "items": [
     {
-      "name": "Hold Breath",
+      "name": "Charger",
       "type": "feature",
-      "_id": "IuODACdj68KlkqTc",
-      "img": "/icons/consumables/meat/fish-whole-blue.webp",
+      "_id": "QRKbdjpB54u1P5ed",
+      "img": "/icons/creatures/abilities/bull-head-horns-glowing.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can hold its breath for 1 hour.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">If it Moves at least 20' in a straight line before making a Tusk Attack, the damage is doubled.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -984,11 +923,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.19",
-        "createdTime": 1789840302800,
-        "modifiedTime": 1789840302800,
+        "systemVersion": "0.1.25",
+        "createdTime": 1790034255032,
+        "modifiedTime": 1790034255032,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.IuODACdj68KlkqTc",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.QRKbdjpB54u1P5ed",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -998,11 +937,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!nJfQTDq0ZlikiPce.IuODACdj68KlkqTc"
+      "_key": "!actors.items!FIfqS3X7PlseILVI.QRKbdjpB54u1P5ed"
     }
   ],
   "effects": [],
-  "sort": 2600000,
+  "folder": "TqnyvVE4A9LUb12r",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -1011,13 +950,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
-    "createdTime": 1789840240080,
-    "modifiedTime": 1790033493279,
+    "systemVersion": "0.1.25",
+    "createdTime": 1790034152898,
+    "modifiedTime": 1790034276155,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": null
+    "duplicateSource": null
   },
-  "_key": "!actors!nJfQTDq0ZlikiPce"
+  "_id": "FIfqS3X7PlseILVI",
+  "sort": -700000,
+  "_key": "!actors!FIfqS3X7PlseILVI"
 }

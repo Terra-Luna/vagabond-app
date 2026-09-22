@@ -1,16 +1,14 @@
 {
-  "folder": "TqnyvVE4A9LUb12r",
-  "name": "Alligator/Crocodile, Giant",
+  "name": "Beetle, Giant Fire",
   "type": "adversary",
-  "_id": "nJfQTDq0ZlikiPce",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 67,
+      "value": 2,
       "max": 0
     },
     "armor": {
-      "rating": 3
+      "rating": 1
     },
     "senses": [],
     "statuses": {
@@ -326,121 +324,9 @@
       },
       "damage": {
         "in": {
-          "melee": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "finesse": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "brawl": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "ranged": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "thrown": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "defense": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "spell": {
-            "flatBonus": 0,
-            "perDieBonus": 0,
-            "exploding": {
-              "max": false,
-              "values": []
-            },
-            "extraDice": {
-              "count": 0,
-              "faces": 4,
-              "modifier": 0,
-              "explodesOn": []
-            }
-          },
-          "special": {
-            "sneakAttack": {
-              "flatBonus": 0,
-              "perDieBonus": 0,
-              "exploding": {
-                "max": false,
-                "values": []
-              },
-              "extraDice": {
-                "count": 0,
-                "faces": 4,
-                "modifier": 0,
-                "explodesOn": []
-              },
-              "active": false
-            }
-          }
+          "flatReduction": 0,
+          "perDieReduction": 0,
+          "resistances": []
         },
         "out": {
           "melee": {
@@ -832,50 +718,48 @@
         }
       }
     },
-    "beingSize": "huge",
+    "beingSize": "small",
     "beingType": "beast",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": null,
-    "description": "",
-    "hitDice": 15,
+    "threatLevelOverride": 1.7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Cat-sized beetles that illuminate dark, cavernous areas with the glowing glands across their bodies.</span></p>",
+    "hitDice": 2,
     "zone": "front",
     "movement": {
-      "speed": "30' (Swim)"
+      "speed": "40'"
     },
-    "numberAppearing": "1",
+    "numberAppearing": "2d6",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
         "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 13 (3d8) and Restrained if the Target is its size or smaller. This attack always hits a Target Restrained by this attack.</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (2d4)</span></p>",
         "damage": {
-          "type": "physical",
           "dice": {
-            "faces": 8,
-            "count": 3,
+            "count": 2,
+            "faces": 4,
             "modifier": 0,
             "explodesOn": []
-          }
+          },
+          "type": "physical"
         },
         "saves": [
           "reflex"
         ],
-        "statuses": [
-          "restrained"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 9
+    "morale": 3
   },
   "prototypeToken": {
-    "name": "Alligator/Crocodile, Giant",
+    "name": "Beetle, Giant Fire",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -968,12 +852,12 @@
   },
   "items": [
     {
-      "name": "Hold Breath",
+      "name": "Bioluminescent",
       "type": "feature",
-      "_id": "IuODACdj68KlkqTc",
-      "img": "/icons/consumables/meat/fish-whole-blue.webp",
+      "_id": "rD2soQe1EBUoI8Of",
+      "img": "icons/magic/light/orbs-smoke-pink.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can hold its breath for 1 hour.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Sheds light out to Near.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -984,11 +868,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.19",
-        "createdTime": 1789840302800,
-        "modifiedTime": 1789840302800,
+        "systemVersion": "0.1.25",
+        "createdTime": 1790030583699,
+        "modifiedTime": 1790030583699,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.IuODACdj68KlkqTc",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.rD2soQe1EBUoI8Of",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -998,11 +882,44 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!nJfQTDq0ZlikiPce.IuODACdj68KlkqTc"
+      "_key": "!actors.items!0S7IjCcPstKToHbO.rD2soQe1EBUoI8Of"
+    },
+    {
+      "name": "Soft Underbelly",
+      "type": "feature",
+      "_id": "vJdV8qU7QYi3SOUC",
+      "img": "/icons/environment/creatures/bug-beetle-gold-green.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Its Armor is 0 while Prone.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.25",
+        "createdTime": 1790030638128,
+        "modifiedTime": 1790030638128,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.vJdV8qU7QYi3SOUC",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!0S7IjCcPstKToHbO.vJdV8qU7QYi3SOUC"
     }
   ],
   "effects": [],
-  "sort": 2600000,
+  "folder": "TqnyvVE4A9LUb12r",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -1011,13 +928,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.19",
-    "createdTime": 1789840240080,
-    "modifiedTime": 1790033493279,
+    "systemVersion": "0.1.25",
+    "createdTime": 1790030257442,
+    "modifiedTime": 1790033493276,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null,
-    "exportSource": null
+    "duplicateSource": null
   },
-  "_key": "!actors!nJfQTDq0ZlikiPce"
+  "_id": "0S7IjCcPstKToHbO",
+  "sort": 1700000,
+  "_key": "!actors!0S7IjCcPstKToHbO"
 }

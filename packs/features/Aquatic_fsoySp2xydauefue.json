@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Aquatic",
+  "type": "feature",
+  "_id": "fsoySp2xydauefue",
+  "img": "/icons/creatures/fish/fish-pirahna-tan.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Can only breathe water.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790032842876,
+    "modifiedTime": 1790032867274,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!fsoySp2xydauefue"
+}

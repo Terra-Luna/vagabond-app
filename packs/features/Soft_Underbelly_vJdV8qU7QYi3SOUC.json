@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Soft Underbelly",
+  "type": "feature",
+  "_id": "vJdV8qU7QYi3SOUC",
+  "img": "/icons/environment/creatures/bug-beetle-gold-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Its Armor is 0 while Prone.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790030599330,
+    "modifiedTime": 1790030632593,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!vJdV8qU7QYi3SOUC"
+}

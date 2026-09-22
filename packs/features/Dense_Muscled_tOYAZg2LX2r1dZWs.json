@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Dense Muscled",
+  "type": "feature",
+  "_id": "tOYAZg2LX2r1dZWs",
+  "img": "/icons/magic/control/buff-strength-muscle-damage-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Grapples and Shoves as Large.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790031237941,
+    "modifiedTime": 1790031270248,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!tOYAZg2LX2r1dZWs"
+}

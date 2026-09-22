@@ -1,0 +1,23 @@
+{
+  "type": "Actor",
+  "folder": null,
+  "name": "Cryptids",
+  "color": null,
+  "sorting": "a",
+  "_id": "CaU2w0aKu0SQJXYd",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.25",
+    "createdTime": 1790039292685,
+    "modifiedTime": 1790039292685,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!CaU2w0aKu0SQJXYd"
+}

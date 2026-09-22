@@ -121,10 +121,10 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
         header.appendChild(bar)
     }
 
-    private _onFilterChange(el: HTMLInputElement | HTMLSelectElement) {
-        const key = el.dataset.filter as keyof AdversaryFilterState
+    private _onFilterChange(element: HTMLInputElement | HTMLSelectElement) {
+        const key = element.dataset.filter as keyof AdversaryFilterState
         const isNumeric = NUMERIC_FILTER_KEYS.has(key)
-        const raw = el.value
+        const raw = element.value
         ;(this._adversaryFilters as any)[key] = raw === "" ? (isNumeric ? null : "") : (isNumeric ? Number(raw) : raw)
         this._reapplySearch()
     }
@@ -154,7 +154,8 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
         })
 
         root.querySelectorAll<HTMLElement>("[data-folder-id]").forEach(f => {
-            const hasVisibleEntry = Array.from(f.querySelectorAll<HTMLElement>("[data-entry-id]")).some(it => it.style.display !== "none")
+            const arr = Array.from(f.querySelectorAll<HTMLElement>("[data-entry-id]"))
+            const hasVisibleEntry = arr.length === 0 || arr.some(it => it.style.display !== "none")
             f.style.display = hasVisibleEntry ? "" : "none"
         })
     }
