@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Stench",
+  "type": "feature",
+  "_id": "2jX98U1BnHJmiie9",
+  "img": "/icons/magic/air/fog-gas-smoke-dense-green.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Non-like Beings that have to breathe are Sickened (Hinder on all Checks) while Near it.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790104363916,
+    "modifiedTime": 1790104387547,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!2jX98U1BnHJmiie9"
+}

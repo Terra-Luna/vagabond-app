@@ -1,16 +1,18 @@
 {
-  "name": "Agropelter",
+  "name": "Dragon Turtle",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 135,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 2
     },
-    "senses": [],
+    "senses": [
+      "darksight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -718,28 +720,50 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "colossal",
     "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingSubtype": "wyrm",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 10.6,
+    "description": "<p><br></p>",
+    "hitDice": 30,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "10' (Swim 30')"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "fire"
+    ],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Steam Breath",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Attack; Far Cone | Endure or Reflex]: 28 (8d6), and Burning (Cd6) if failed</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 8,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "fire"
+        },
+        "saves": [
+          "reflex",
+          "endure"
+        ],
+        "statuses": [
+          "burning"
+        ],
+        "recharge": "Cd6"
+      },
+      {
+        "name": "Bite",
+        "damage": {
+          "dice": {
+            "count": 4,
             "faces": 8,
             "modifier": 0,
             "explodesOn": []
@@ -753,11 +777,10 @@
       },
       {
         "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 4,
+            "count": 2,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -770,13 +793,49 @@
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw & 1x Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 10,
+              "modifier": 1,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 12,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 5
+    "morale": 10
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Dragon Turtle",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -870,23 +929,23 @@
   "items": [],
   "effects": [],
   "folder": "CaU2w0aKu0SQJXYd",
-  "ownership": {
-    "default": 0,
-    "KyorYoEvge7ElSaj": 3
-  },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790107793132,
+    "modifiedTime": 1790108005401,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "_id": "D5ORhO31UuSTRlDP",
+  "sort": 100000,
+  "_key": "!actors!D5ORhO31UuSTRlDP"
 }

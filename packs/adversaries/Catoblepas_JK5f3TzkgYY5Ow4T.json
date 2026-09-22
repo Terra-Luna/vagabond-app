@@ -1,10 +1,10 @@
 {
-  "name": "Agropelter",
+  "name": "Catoblepas",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 31,
       "max": 0
     },
     "armor": {
@@ -718,29 +718,47 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "large",
     "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 5.7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">The loathsome bog cow. It is a disgusting smelling, bovine-like wanderer of the bog capable of shooting lasers from its eyes and loosing a noxious gas from its gullet.</span></p>",
+    "hitDice": 7,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "20'"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "d3",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Death Ray",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure]: 24 (8d6) and +1 Fatigue</span></p>",
+        "damage": {
+          "dice": {
+            "count": 8,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "endure"
+        ],
+        "statuses": [],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Tail",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) and pass an [Endure] Save or knocked Prone and be Dazed for 1 Round.</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -752,31 +770,34 @@
         "statuses": []
       },
       {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "name": "Knock-down",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or knocked Prone and Dazed for 1 Round.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 4,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "physical"
+          "type": "none"
         },
         "saves": [
-          "reflex"
+          "endure"
         ],
-        "statuses": []
+        "statuses": [
+          "dazed",
+          "prone"
+        ]
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 8
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Catoblepas",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,7 +888,41 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Stench",
+      "type": "feature",
+      "_id": "2jX98U1BnHJmiie9",
+      "img": "/icons/magic/air/fog-gas-smoke-dense-green.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Non-like Beings that have to breathe are Sickened (Hinder on all Checks) while Near it.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790104390241,
+        "modifiedTime": 1790104390241,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.2jX98U1BnHJmiie9",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!JK5f3TzkgYY5Ow4T.2jX98U1BnHJmiie9"
+    }
+  ],
   "effects": [],
   "folder": "CaU2w0aKu0SQJXYd",
   "ownership": {
@@ -878,15 +933,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790104195097,
+    "modifiedTime": 1790108005408,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "JK5f3TzkgYY5Ow4T",
+  "sort": 2200000,
+  "_key": "!actors!JK5f3TzkgYY5Ow4T"
 }

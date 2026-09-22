@@ -155,25 +155,19 @@ const docLinkSytles = `
     transition-colors
 
     /* Actors / NPCs */
-    [&_a[data-type='Actor']]:bg-blue-950/40
-    [&_a[data-type='Actor']]:text-blue-400
-    [&_a[data-type='Actor']]:border-blue-500/30
+    [&_a[data-type='Actor']]:text-text-header-tertiary
     hover:[&_a[data-type='Actor']]:underline
 
     /* Items / Equipment */
     [&_a[data-type='Item']]:text-text-header-tertiary
-    [&_a[data-type='Item']]:border-table-border/30
     hover:[&_a[data-type='Item']]:underline
 
     /* Journal Entries */
     [&_a[data-type='JournalEntry']]:text-text-header-tertiary
-    [&_a[data-type='JournalEntry']]:border-table-border
     hover:[&_a[data-type='JournalEntry']]:underline
 
     /* Roll Tables */
-    [&_a[data-type='RollTable']]:bg-purple-950/40
-    [&_a[data-type='RollTable']]:text-purple-400
-    [&_a[data-type='RollTable']]:border-purple-500/30
+    [&_a[data-type='RollTable']]:text-orange-800
     hover:[&_a[data-type='RollTable']]:underline
 `
 const linkStyles = [inlineRollStyle, docLinkSytles].join(' ')

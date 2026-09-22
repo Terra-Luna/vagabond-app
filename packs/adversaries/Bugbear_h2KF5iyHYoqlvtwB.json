@@ -1,16 +1,18 @@
 {
-  "name": "Agropelter",
+  "name": "Bugbear",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 13,
       "max": 0
     },
     "armor": {
       "rating": 1
     },
-    "senses": [],
+    "senses": [
+      "darksight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -720,14 +722,14 @@
     },
     "beingSize": "medium",
     "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 1.6,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Long-limbed, tall goblinoids with bear-like fur.</span></p>",
+    "hitDice": 3,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "30'"
     },
     "numberAppearing": "d6",
     "dmgImmunities": [],
@@ -735,29 +737,12 @@
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Morningstar",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, 10']: 4 (d8)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
             "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "physical"
-        },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": []
-      },
-      {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 4,
             "modifier": 0,
             "explodesOn": []
           },
@@ -773,10 +758,10 @@
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 9
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Bugbear",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,7 +852,41 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Ambusher",
+      "type": "feature",
+      "_id": "FZpzE6yLVJ9wkIb7",
+      "img": "/icons/magic/nature/stealth-hide-eyes-green.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">If it attacks a Being that has not acted in the Combat, it deals an extra die of damage.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790103755066,
+        "modifiedTime": 1790103755066,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.FZpzE6yLVJ9wkIb7",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!h2KF5iyHYoqlvtwB.FZpzE6yLVJ9wkIb7"
+    }
+  ],
   "effects": [],
   "folder": "CaU2w0aKu0SQJXYd",
   "ownership": {
@@ -878,15 +897,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790103660022,
+    "modifiedTime": 1790108005406,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "h2KF5iyHYoqlvtwB",
+  "sort": 1700000,
+  "_key": "!actors!h2KF5iyHYoqlvtwB"
 }

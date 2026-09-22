@@ -1,16 +1,18 @@
 {
-  "name": "Agropelter",
+  "name": "Young White Dragon",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 45,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
-    "senses": [],
+    "senses": [
+      "blindsight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -718,28 +720,55 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "large",
     "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingSubtype": "wyrm",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 5.3,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 10,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "40' (Fly 80')"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "cold",
+      "physical"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "berserk",
+      "charmed",
+      "confused",
+      "frightened"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Breath Attack",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Near Cone]: 10 (3d6), and Dazed (Cd4, Speed reduced by 15') if failed [1/2 dmg on pass]</span></p><p><span style=\"white-space: pre-wrap;\">&gt;Begins this Attack, which occurs on its next Turn.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 3,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "cold"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "dazed"
+        ],
+        "recharge": "Cd6"
+      },
+      {
+        "name": "Bite",
+        "damage": {
+          "dice": {
+            "count": 2,
             "faces": 8,
             "modifier": 0,
             "explodesOn": []
@@ -753,11 +782,10 @@
       },
       {
         "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 4,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -767,16 +795,71 @@
           "reflex"
         ],
         "statuses": []
+      },
+      {
+        "name": "Tail",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack 10']: 6 (d8) and shoved 10' away and Prone</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 8,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "prone"
+        ]
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw & 1x Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 10,
+              "modifier": 1,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 12,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 5
+    "morale": 11
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Young White Dragon",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,26 +950,92 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Immutable",
+      "type": "feature",
+      "_id": "4ZDUR51kR8RMVKUe",
+      "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790106876077,
+        "modifiedTime": 1790106876077,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!uxvr7lTAGVwwXI02.4ZDUR51kR8RMVKUe"
+    },
+    {
+      "name": "Magic Ward II",
+      "type": "feature",
+      "_id": "qStS1lvSWeKCdAR6",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 2 or more.</span></p>",
+        "rules": [],
+        "level": 1,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790106876077,
+        "modifiedTime": 1790106876077,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!uxvr7lTAGVwwXI02.qStS1lvSWeKCdAR6"
+    }
+  ],
   "effects": [],
   "folder": "CaU2w0aKu0SQJXYd",
-  "ownership": {
-    "default": 0,
-    "KyorYoEvge7ElSaj": 3
-  },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790106876077,
+    "modifiedTime": 1790108005403,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "_id": "uxvr7lTAGVwwXI02",
+  "sort": 700000,
+  "_key": "!actors!uxvr7lTAGVwwXI02"
 }

@@ -1,14 +1,14 @@
 {
-  "name": "Agropelter",
+  "name": "Chimera",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 40,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
     "senses": [],
     "statuses": {
@@ -718,25 +718,56 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "large",
     "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">The arcane fusion of a lion, goat, and dragon.</span></p>",
+    "hitDice": 9,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "10' (Fly 30')"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "d2",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Claw",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Horn",
+        "damage": {
+          "dice": {
+            "count": 2,
+            "faces": 4,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Lion's Bite",
         "damage": {
           "dice": {
             "count": 1,
@@ -752,11 +783,28 @@
         "statuses": []
       },
       {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "name": "Breath",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 10'×60' Line]: 10 (3d6)</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 3,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "fire"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [],
+        "recharge": "Cd6"
+      },
+      {
+        "name": "Dragon's Bite",
+        "damage": {
+          "dice": {
+            "count": 3,
             "faces": 4,
             "modifier": 0,
             "explodesOn": []
@@ -770,13 +818,83 @@
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw & 1x Horn & 1x Lion's Bite & 1x Dragon's Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Horn",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        },
+        {
+          "name": "Lion's Bite",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 8,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        },
+        {
+          "name": "Dragon's Bite",
+          "damage": {
+            "dice": {
+              "count": 3,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 5
+    "morale": 9
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Chimera",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -878,15 +996,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790104688758,
+    "modifiedTime": 1790108005409,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "GJgliW4exzCAKTDh",
+  "sort": 2400000,
+  "_key": "!actors!GJgliW4exzCAKTDh"
 }

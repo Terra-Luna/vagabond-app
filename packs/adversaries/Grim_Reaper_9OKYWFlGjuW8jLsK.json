@@ -1,16 +1,21 @@
 {
-  "name": "Agropelter",
+  "folder": "qMHTlKoPCfkn2dhA",
+  "name": "Grim Reaper",
   "type": "adversary",
+  "_id": "9OKYWFlGjuW8jLsK",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 4,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 8
     },
-    "senses": [],
+    "senses": [
+      "allsight",
+      "darksight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -719,53 +724,47 @@
       }
     },
     "beingSize": "medium",
-    "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingType": "humanlike",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": null,
+    "description": "<p><span style=\"white-space: pre-wrap;\">As summoned by the @UUID[Compendium.vagabond-app.relics.Item.HgYIT9NqksRnt8TA]{Deck of Many Things}</span></p><p><span style=\"white-space: pre-wrap;\">HP: 1/2 the summoner's.</span></p>",
+    "hitDice": 1,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "Speed: 60' (Fly, Phase)"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "cold",
+      "fire",
+      "poison",
+      "shock"
+    ],
+    "dmgWeaknesses": [
+      "silvered"
+    ],
+    "statusImmunities": [
+      "charmed",
+      "confused",
+      "frightened",
+      "paralyzed",
+      "restrained",
+      "sickened"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Scythe",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 2,
             "faces": 8,
             "modifier": 0,
             "explodesOn": []
           },
           "type": "physical"
         },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": []
-      },
-      {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 4,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "physical"
-        },
-        "saves": [
-          "reflex"
-        ],
+        "saves": [],
         "statuses": []
       }
     ],
@@ -773,10 +772,10 @@
       "name": "",
       "actions": []
     },
-    "morale": 5
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Grim Reaper",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,9 +866,43 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Inevitable",
+      "type": "feature",
+      "_id": "BAFfWEMkh380e4w6",
+      "img": "/icons/magic/death/skull-pile-glowing-pink.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It's attacks always hit.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790100761582,
+        "modifiedTime": 1790100761582,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.BAFfWEMkh380e4w6",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!9OKYWFlGjuW8jLsK.BAFfWEMkh380e4w6"
+    }
+  ],
   "effects": [],
-  "folder": "CaU2w0aKu0SQJXYd",
+  "sort": 0,
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -878,15 +911,13 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790100587958,
+    "modifiedTime": 1790101530994,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
-    "exportSource": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_key": "!actors!9OKYWFlGjuW8jLsK"
 }

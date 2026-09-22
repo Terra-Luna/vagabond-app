@@ -747,7 +747,7 @@
     "actions": [
       {
         "name": "Hurl Fire",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Bolt | Reflex]: 3 (d6) and Burning (Cd4)</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Reflex]: 3 (d6) and Burning (Cd4)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -925,7 +925,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.29",
     "createdTime": 1790098054793,
-    "modifiedTime": 1790098556303,
+    "modifiedTime": 1790102609937,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

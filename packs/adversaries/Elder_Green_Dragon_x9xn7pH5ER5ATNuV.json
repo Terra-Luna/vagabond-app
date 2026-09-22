@@ -1,16 +1,18 @@
 {
-  "name": "Agropelter",
+  "name": "Elder Green Dragon",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 90,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 5
     },
-    "senses": [],
+    "senses": [
+      "blindsight"
+    ],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -718,25 +720,68 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "huge",
     "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingSubtype": "wyrm",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": 8.7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 20,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "40' (Fly 80')"
     },
-    "numberAppearing": "d6",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "physical",
+      "poison"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "berserk",
+      "charmed",
+      "confused",
+      "frightened"
+    ],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Breath Attack",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Near Aura]: 14 (4d6), and Sickened (Cd4 dmg) if failed [1/2 dmg on pass]</span></p><p><span style=\"white-space: pre-wrap;\">&gt;Begins this Attack, which occurs on its next Turn.</span></p>",
+        "damage": {
+          "dice": {
+            "count": 4,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "poison"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "sickened"
+        ],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Bite",
+        "damage": {
+          "dice": {
+            "count": 2,
+            "faces": 10,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Claw",
         "damage": {
           "dice": {
             "count": 1,
@@ -752,12 +797,12 @@
         "statuses": []
       },
       {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "name": "Tail",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack 10']: 6 (d10) and shoved 20' away and Prone</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 4,
+            "faces": 10,
             "modifier": 0,
             "explodesOn": []
           },
@@ -766,17 +811,55 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
+        "statuses": [
+          "prone"
+        ]
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw & 1x Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 10,
+              "modifier": 1,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 12,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 5
+    "morale": 11
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Elder Green Dragon",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -867,26 +950,123 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Immutable",
+      "type": "feature",
+      "_id": "4ZDUR51kR8RMVKUe",
+      "img": "/icons/commodities/treasure/token-engraved-blue-glowing.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be transformed.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790106416804,
+        "modifiedTime": 1790106416804,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!x9xn7pH5ER5ATNuV.4ZDUR51kR8RMVKUe"
+    },
+    {
+      "name": "Magic Ward III",
+      "type": "feature",
+      "_id": "IDakwsT1J1hnqiEB",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 3 or more.</span></p>",
+        "rules": [],
+        "level": 1,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790106416804,
+        "modifiedTime": 1790106416804,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!x9xn7pH5ER5ATNuV.IDakwsT1J1hnqiEB"
+    },
+    {
+      "name": "Terror I",
+      "type": "feature",
+      "_id": "CuIpDxjjkXtIn4b9",
+      "img": "/icons/magic/control/fear-fright-monster-grin-red-orange.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">[Enemies' first time seeing it and on their Turns | Will]: Frightened until they pass this Check on a subsequent Turn, or for Cd4 after.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790106416804,
+        "modifiedTime": 1790106416804,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!x9xn7pH5ER5ATNuV.CuIpDxjjkXtIn4b9"
+    }
+  ],
   "effects": [],
   "folder": "CaU2w0aKu0SQJXYd",
-  "ownership": {
-    "default": 0,
-    "KyorYoEvge7ElSaj": 3
-  },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790106416804,
+    "modifiedTime": 1790108005401,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "_id": "x9xn7pH5ER5ATNuV",
+  "sort": 200000,
+  "_key": "!actors!x9xn7pH5ER5ATNuV"
 }

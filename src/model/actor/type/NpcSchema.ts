@@ -16,7 +16,7 @@ export const npcSchema = () => {
         movement: new fields.SchemaField({
             speed: new fields.StringField({ ...requiredString, initial: "30'" })
         }),
-        morale: new fields.NumberField({ integer: true, min: 2, max: 12 }),
+        morale: new fields.NumberField({ integer: true, min: 1, max: 12 }),
         numberAppearing: new fields.StringField({ initial: 'd4' }),
 
         dmgImmunities: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),

@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Filament",
+  "type": "feature",
+  "_id": "7t3rXzcAYkC7eolk",
+  "img": "/icons/creatures/webs/web-spider-moving-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">A rope with 1 HD (4 HP)</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790104545834,
+    "modifiedTime": 1790104604235,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!7t3rXzcAYkC7eolk"
+}

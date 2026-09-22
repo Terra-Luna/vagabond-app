@@ -1,14 +1,14 @@
 {
-  "name": "Agropelter",
+  "name": "Dobar-Chú",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 27,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 2
     },
     "senses": [],
     "statuses": {
@@ -718,29 +718,30 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "large",
     "beingType": "cryptid",
-    "beingSubtype": "beast",
+    "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 1.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A spindly, rubbery-limbed primate, known to attack from treetops. They have a particular distaste of woodcutters and, as the stories go, if you find a dead lumberjack with a log nearby, beware of agropelters in the area.</span></p>",
-    "hitDice": 2,
-    "zone": "back",
+    "threatLevelOverride": null,
+    "description": "<p><span style=\"white-space: pre-wrap;\">The \"water devil\" is a semi-aquatic mammal that appears to be a huge otter</span></p>",
+    "hitDice": 6,
+    "zone": "front",
     "movement": {
-      "speed": "30' (Climb)"
+      "speed": "30' (Swim 40')"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "d3",
     "dmgImmunities": [],
-    "dmgWeaknesses": [],
+    "dmgWeaknesses": [
+      "shock"
+    ],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Log Throw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack, Near]: 4 (d8)</span></p>",
+        "name": "Claw",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 2,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -752,12 +753,11 @@
         "statuses": []
       },
       {
-        "name": "Claw",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 2 (d4)</span></p>",
+        "name": "Bite",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 4,
+            "count": 3,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -770,13 +770,49 @@
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw & 1x Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "damage": {
+            "dice": {
+              "count": 3,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 5
+    "morale": 9
   },
   "prototypeToken": {
-    "name": "Agropelter",
+    "name": "Dobar-Chú",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -878,15 +914,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790040122846,
-    "modifiedTime": 1790108005414,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790105225410,
+    "modifiedTime": 1790108005410,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "8dbm0NvMeRAI4wgk",
-  "sort": 3900000,
-  "_key": "!actors!8dbm0NvMeRAI4wgk"
+  "_id": "PzWvEP9t0hsfCgNL",
+  "sort": 2800000,
+  "_key": "!actors!PzWvEP9t0hsfCgNL"
 }
