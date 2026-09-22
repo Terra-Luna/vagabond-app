@@ -12,7 +12,7 @@ export class HeroCreationApp extends VagabondApplication {
                 title: "Create your Hero"
             },
             position: {
-                height: 860, width: 1115, top: 60, left: 200
+                height: 966, width: 1115, top: 60, left: 200
             },
             Component: HeroCreationNavHostView
         } as VagabondAppArgs)
