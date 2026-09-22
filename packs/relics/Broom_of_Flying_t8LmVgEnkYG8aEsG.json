@@ -20,7 +20,7 @@
       "quantity": 1,
       "totalSlots": 0
     },
-    "isEquippable": false,
+    "isEquippable": true,
     "isEquipped": false,
     "isConsumable": false,
     "relicPowers": [
@@ -43,7 +43,7 @@
     "isRation": false,
     "isMaterials": false,
     "isAlchemyTools": false,
-    "isWearable": false
+    "isWearable": true
   },
   "effects": [],
   "folder": null,
@@ -56,9 +56,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.29",
     "createdTime": 1790012361897,
-    "modifiedTime": 1790023201617,
+    "modifiedTime": 1790096006850,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

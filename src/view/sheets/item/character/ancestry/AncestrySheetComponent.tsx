@@ -47,7 +47,7 @@ export const AncestryReactComponent = ({ item }: { item: Item & { system: Ancest
                                     <DropDown
                                         label={appLang.ItemSheet.type}
                                         variant="alternate"
-                                        options={createDropdownEntries(appLang.BeingTypes)}
+                                        options={createDropdownEntries(appLang.BeingTypes, true)}
                                         parent={ancestry.parent}
                                         updateMechanism={{ updatePath: ['beingType'] }}
                                         value={ancestry.beingType}

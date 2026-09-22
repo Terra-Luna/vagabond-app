@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Flame Aura",
+  "type": "feature",
+  "_id": "yw6L7M8q1TcM7Owg",
+  "img": "icons/magic/fire/flame-burning-skull-orange.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Close Beings are Burning (Cd6).</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790098242397,
+    "modifiedTime": 1790098291166,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!yw6L7M8q1TcM7Owg"
+}

@@ -1,17 +1,18 @@
 {
-  "name": "Carrion Clump",
+  "name": "Vampire",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 36,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 4
     },
     "senses": [
-      "blindsight"
+      "darksight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -722,35 +723,72 @@
     },
     "beingSize": "medium",
     "beingType": "undead",
-    "beingSubtype": "none",
+    "beingSubtype": "shape",
     "threatLevel": 1,
-    "threatLevelOverride": 0.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
-    "hitDice": 2,
-    "zone": "front",
+    "threatLevelOverride": 6.7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Blood-sucking, intelligent undead who bear the curse of vampirism. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 8,
+    "zone": "mid",
     "movement": {
-      "speed": "10'"
+      "speed": "35' (Fly 30')"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "d4",
     "dmgImmunities": [
+      "cold",
+      "physical",
       "poison"
     ],
-    "dmgWeaknesses": [
-      "acid"
-    ],
+    "dmgWeaknesses": [],
     "statusImmunities": [
       "charmed",
       "fatigued",
+      "paralyzed",
       "sickened",
       "suffocating"
     ],
     "actions": [
       {
-        "name": "Viscera Sling",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "name": "Enthrall",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, all Beings that can see it | Will] (Recharge Cd6): Target is Charmed (Cd6) and must do all it can to defend this Being. A Target that passes the Save is immune to this for 1 Day.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "charmed"
+        ]
+      },
+      {
+        "name": "Claw",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (3d4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 3,
+            "faces": 4,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Bite",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and this Being is healed for the damage dealt. A Being that takes damage from this attack must pass [Endure] or be Cursed with Vampirism.</span></p>",
+        "damage": {
+          "dice": {
+            "count": 2,
             "faces": 6,
             "modifier": 0,
             "explodesOn": []
@@ -763,8 +801,8 @@
         "statuses": []
       },
       {
-        "name": "Sickness",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
+        "name": "Vampire's Curse",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or cursed with Vampirism.</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -772,24 +810,60 @@
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "physical"
         },
         "saves": [
           "endure"
         ],
-        "statuses": [
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw & 1x Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (3d4)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 3,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 7 (2d6) and this Being is healed for the damage dealt. A Being that takes damage from this attack must pass [Endure] or be Cursed with Vampirism.</span></p>",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
     "morale": 12
   },
   "prototypeToken": {
-    "name": "Carrion Clump",
+    "name": "Vampire",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -880,7 +954,140 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Magic Ward II",
+      "type": "feature",
+      "_id": "qStS1lvSWeKCdAR6",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 2 or more.</span></p>",
+        "rules": [],
+        "level": 1,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790098912515,
+        "modifiedTime": 1790098912515,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qStS1lvSWeKCdAR6",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bQyccI9ROvg2DQ0m.qStS1lvSWeKCdAR6"
+    },
+    {
+      "name": "Shapeshift",
+      "type": "feature",
+      "_id": "muX2nnAIhkeot4g8",
+      "img": "/icons/creatures/mammals/bats-movement-flying-black.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can use its Action to change into a bat, owl, rat, or wolf. It typically does so to retreat.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790098970008,
+        "modifiedTime": 1790098970008,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.muX2nnAIhkeot4g8",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bQyccI9ROvg2DQ0m.muX2nnAIhkeot4g8"
+    },
+    {
+      "name": "Sunlight Hypersensitivity",
+      "type": "feature",
+      "_id": "V4LtrAD0URqaYys8",
+      "img": "/icons/magic/light/explosion-star-glow-orange.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is Burning (d8) while illuminated by Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790099048162,
+        "modifiedTime": 1790099048162,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.V4LtrAD0URqaYys8",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bQyccI9ROvg2DQ0m.V4LtrAD0URqaYys8"
+    },
+    {
+      "name": "Vampiric",
+      "type": "feature",
+      "_id": "TXJPxsfRBONMb3kC",
+      "img": "/icons/sundries/books/book-symbol-bat-red.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It regenerates 3 HP at the start of its Turn unless it is in Sunlight. If it is killed, it reforms in its resting place after 1 Day unless either:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">◆A wooden stake is stabbed through its heart.</span></p><p><span style=\"white-space:pre-wrap\">◆It dies in Sunlight or while doused in holy water.</span></p><p><span style=\"white-space:pre-wrap\">◆It consumes garlic.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790099108785,
+        "modifiedTime": 1790099108785,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.TXJPxsfRBONMb3kC",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bQyccI9ROvg2DQ0m.TXJPxsfRBONMb3kC"
+    }
+  ],
   "effects": [],
   "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
@@ -891,15 +1098,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
-    "createdTime": 1790088899819,
-    "modifiedTime": 1790098556304,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790098556205,
+    "modifiedTime": 1790099217314,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "FgPpqjtJiMe53tKe",
-  "sort": 800000,
-  "_key": "!actors!FgPpqjtJiMe53tKe"
+  "_id": "bQyccI9ROvg2DQ0m",
+  "sort": 400000,
+  "_key": "!actors!bQyccI9ROvg2DQ0m"
 }

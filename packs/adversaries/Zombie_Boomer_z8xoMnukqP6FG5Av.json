@@ -1,17 +1,17 @@
 {
-  "name": "Carrion Clump",
+  "name": "Zombie Boomer",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 13,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 0
     },
     "senses": [
-      "blindsight"
+      "darksight"
     ],
     "statuses": {
       "toggles": {
@@ -724,33 +724,34 @@
     "beingType": "undead",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 0.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
-    "hitDice": 2,
+    "threatLevelOverride": 2,
+    "description": "",
+    "hitDice": 3,
     "zone": "front",
     "movement": {
-      "speed": "10'"
+      "speed": "20'"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "3d8",
     "dmgImmunities": [
       "poison"
     ],
-    "dmgWeaknesses": [
-      "acid"
-    ],
+    "dmgWeaknesses": [],
     "statusImmunities": [
+      "berserk",
       "charmed",
+      "confused",
       "fatigued",
+      "frightened",
       "sickened",
       "suffocating"
     ],
     "actions": [
       {
-        "name": "Viscera Sling",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "name": "Boom!",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Aura Near | Reflex]: 7 (2d6) and pass</span></p><p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened (Cd4 damage). This Being dies.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 2,
             "faces": 6,
             "modifier": 0,
             "explodesOn": []
@@ -763,8 +764,8 @@
         "statuses": []
       },
       {
-        "name": "Sickness",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
+        "name": "Sicken",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened (Cd4 damage).</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -789,7 +790,7 @@
     "morale": 12
   },
   "prototypeToken": {
-    "name": "Carrion Clump",
+    "name": "Zombie Boomer",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -880,26 +881,91 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Nightwalker",
+      "type": "feature",
+      "_id": "qnMFKnHgCmmPRn8L",
+      "img": "/icons/environment/wilderness/terrain-forest-gray.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Can't Move or Target over lines of salt or in areas illuminated by Sunlight. It is Incapacitated and Burning (d8) while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790099763192,
+        "modifiedTime": 1790099763192,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!z8xoMnukqP6FG5Av.qnMFKnHgCmmPRn8L"
+    },
+    {
+      "name": "Zombie",
+      "type": "feature",
+      "_id": "8fIBmbehU7Ai6VXn",
+      "img": "/icons/magic/death/hand-dirt-undead-zombie.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP unless damaged by a Crit, damage it is Weak to, or while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790099763192,
+        "modifiedTime": 1790099763192,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!z8xoMnukqP6FG5Av.8fIBmbehU7Ai6VXn"
+    }
+  ],
   "effects": [],
   "folder": "qMHTlKoPCfkn2dhA",
-  "ownership": {
-    "default": 0,
-    "KyorYoEvge7ElSaj": 3
-  },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
-    "createdTime": 1790088899819,
-    "modifiedTime": 1790098556304,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790099763192,
+    "modifiedTime": 1790100399665,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "FgPpqjtJiMe53tKe",
-  "sort": 800000,
-  "_key": "!actors!FgPpqjtJiMe53tKe"
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "_id": "z8xoMnukqP6FG5Av",
+  "sort": 0,
+  "_key": "!actors!z8xoMnukqP6FG5Av"
 }

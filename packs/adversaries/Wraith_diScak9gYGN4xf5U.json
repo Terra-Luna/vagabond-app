@@ -1,17 +1,17 @@
 {
-  "name": "Carrion Clump",
+  "name": "Wraith",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 22,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
     "senses": [
-      "blindsight"
+      "darksight"
     ],
     "statuses": {
       "toggles": {
@@ -724,30 +724,32 @@
     "beingType": "undead",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 0.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
-    "hitDice": 2,
+    "threatLevelOverride": 2.7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Wispy shades of pure malice and anti-life. Where it moves, blight follows.</span></p>",
+    "hitDice": 5,
     "zone": "front",
     "movement": {
-      "speed": "10'"
+      "speed": "30' (Phase)"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "2d6",
     "dmgImmunities": [
-      "poison"
+      "physical"
     ],
-    "dmgWeaknesses": [
-      "acid"
-    ],
+    "dmgWeaknesses": [],
     "statusImmunities": [
       "charmed",
       "fatigued",
+      "frightened",
+      "paralyzed",
+      "prone",
+      "restrained",
       "sickened",
       "suffocating"
     ],
     "actions": [
       {
-        "name": "Viscera Sling",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "name": "Energy Drain",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch]: 3 (d6), which also reduces its Maximum HP until it spends 1 Shift in Sunlight</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -761,25 +763,6 @@
           "reflex"
         ],
         "statuses": []
-      },
-      {
-        "name": "Sickness",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 0,
-            "faces": 0,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "none"
-        },
-        "saves": [
-          "endure"
-        ],
-        "statuses": [
-          "sickened"
-        ]
       }
     ],
     "combo": {
@@ -789,7 +772,7 @@
     "morale": 12
   },
   "prototypeToken": {
-    "name": "Carrion Clump",
+    "name": "Wraith",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -880,7 +863,74 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Shadow Stealth",
+      "type": "feature",
+      "_id": "HllGFTTrj7vizHqZ",
+      "img": "icons/magic/death/hand-withered-gray.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is Invisible in the Dark.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790099639273,
+        "modifiedTime": 1790099639273,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.HllGFTTrj7vizHqZ",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!diScak9gYGN4xf5U.HllGFTTrj7vizHqZ"
+    },
+    {
+      "name": "Nightwalker",
+      "type": "feature",
+      "_id": "qnMFKnHgCmmPRn8L",
+      "img": "/icons/environment/wilderness/terrain-forest-gray.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Can't Move or Target over lines of salt or in areas illuminated by Sunlight. It is Incapacitated and Burning (d8) while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790099652947,
+        "modifiedTime": 1790099652947,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qnMFKnHgCmmPRn8L",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!diScak9gYGN4xf5U.qnMFKnHgCmmPRn8L"
+    }
+  ],
   "effects": [],
   "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
@@ -891,15 +941,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
-    "createdTime": 1790088899819,
-    "modifiedTime": 1790098556304,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790099540052,
+    "modifiedTime": 1790099664992,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "FgPpqjtJiMe53tKe",
-  "sort": 800000,
-  "_key": "!actors!FgPpqjtJiMe53tKe"
+  "_id": "diScak9gYGN4xf5U",
+  "sort": 0,
+  "_key": "!actors!diScak9gYGN4xf5U"
 }

@@ -1,14 +1,14 @@
 {
-  "name": "Carrion Clump",
+  "name": "Zombie Dragon",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 112,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
     "senses": [
       "blindsight"
@@ -720,39 +720,62 @@
         }
       }
     },
-    "beingSize": "medium",
+    "beingSize": "giant",
     "beingType": "undead",
-    "beingSubtype": "none",
+    "beingSubtype": "wyrm",
     "threatLevel": 1,
-    "threatLevelOverride": 0.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
-    "hitDice": 2,
+    "threatLevelOverride": 9.1,
+    "description": "<p><span style=\"white-space: pre-wrap;\">The animated husk of a living myth, dripping with rot and misery. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 25,
     "zone": "front",
     "movement": {
-      "speed": "10'"
+      "speed": "30' (Fly 60')"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "1",
     "dmgImmunities": [
+      "cold",
+      "physical",
       "poison"
     ],
-    "dmgWeaknesses": [
-      "acid"
-    ],
+    "dmgWeaknesses": [],
     "statusImmunities": [
+      "berserk",
       "charmed",
+      "confused",
       "fatigued",
+      "frightened",
       "sickened",
       "suffocating"
     ],
     "actions": [
       {
-        "name": "Viscera Sling",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "name": "Gore Spray",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Attack, Far Cone]: 7 (2d6) and Sickened (Cd6)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 2,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "sickened"
+        ],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Claw",
+        "description": "<p><span style=\"white-space: pre-wrap;\">Claw [Melee Attack]: 4 (d6+1)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
             "faces": 6,
-            "modifier": 0,
+            "modifier": 1,
             "explodesOn": []
           },
           "type": "physical"
@@ -763,33 +786,90 @@
         "statuses": []
       },
       {
-        "name": "Sickness",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
+        "name": "Bite",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
         "damage": {
           "dice": {
-            "count": 0,
-            "faces": 0,
+            "count": 2,
+            "faces": 8,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "physical"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
-        "statuses": [
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "1x Gore Spray & 2x Claw & 1x Bite",
+      "actions": [
+        {
+          "name": "Gore Spray",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Attack, Far Cone]: 7 (2d6) and Sickened (Cd6)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [
+            "sickened"
+          ],
+          "recharge": "Cd4",
+          "comboCount": 1
+        },
+        {
+          "name": "Claw",
+          "description": "<p><span style=\"white-space: pre-wrap;\">Claw [Melee Attack]: 4 (d6+1)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 1,
+              "faces": 6,
+              "modifier": 1,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 9 (2d8)</span></p>",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 8,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
     "morale": 12
   },
   "prototypeToken": {
-    "name": "Carrion Clump",
+    "name": "Zombie Dragon",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -880,7 +960,107 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Grim Harvester",
+      "type": "feature",
+      "_id": "YqXhyb4plDnFUSHd",
+      "img": "/icons/weapons/sickles/sickle-hooked-purple.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Whenever a Being dies within Far, this Being regains HP equal to that Being's HD or Level.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790100272997,
+        "modifiedTime": 1790100272997,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.YqXhyb4plDnFUSHd",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!VLFAR6QFMZqylIB2.YqXhyb4plDnFUSHd"
+    },
+    {
+      "name": "Terror III",
+      "type": "feature",
+      "_id": "bOadV8ITUq6TLrBC",
+      "img": "/icons/magic/control/fear-fright-monster-grin-red-orange.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">[Enemies' first time seeing it and on their Turns | Will]: Frightened until they pass this Save on a subsequent Turn, or for Cd8 after.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790100320776,
+        "modifiedTime": 1790100320776,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.bOadV8ITUq6TLrBC",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!VLFAR6QFMZqylIB2.bOadV8ITUq6TLrBC"
+    },
+    {
+      "name": "Zombie",
+      "type": "feature",
+      "_id": "8fIBmbehU7Ai6VXn",
+      "img": "/icons/magic/death/hand-dirt-undead-zombie.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP unless damaged by a Crit, damage it is Weak to, or while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790100323601,
+        "modifiedTime": 1790100323601,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.8fIBmbehU7Ai6VXn",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!VLFAR6QFMZqylIB2.8fIBmbehU7Ai6VXn"
+    }
+  ],
   "effects": [],
   "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
@@ -891,15 +1071,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
-    "createdTime": 1790088899819,
-    "modifiedTime": 1790098556304,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790099960352,
+    "modifiedTime": 1790100339417,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "FgPpqjtJiMe53tKe",
-  "sort": 800000,
-  "_key": "!actors!FgPpqjtJiMe53tKe"
+  "_id": "VLFAR6QFMZqylIB2",
+  "sort": 0,
+  "_key": "!actors!VLFAR6QFMZqylIB2"
 }

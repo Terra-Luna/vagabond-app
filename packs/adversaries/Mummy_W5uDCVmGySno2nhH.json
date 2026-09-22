@@ -1,17 +1,17 @@
 {
-  "name": "Carrion Clump",
+  "name": "Mummy",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 27,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
     "senses": [
-      "blindsight"
+      "darksight"
     ],
     "statuses": {
       "toggles": {
@@ -724,30 +724,55 @@
     "beingType": "undead",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 0.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
-    "hitDice": 2,
-    "zone": "front",
+    "threatLevelOverride": 2.8,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Undead humanoid wrapped in enchanted bandages. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 6,
+    "zone": "mid",
     "movement": {
-      "speed": "10'"
+      "speed": "25'"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "2d4",
     "dmgImmunities": [
+      "physical",
       "poison"
     ],
     "dmgWeaknesses": [
-      "acid"
+      "fire"
     ],
     "statusImmunities": [
+      "berserk",
       "charmed",
+      "confused",
       "fatigued",
+      "frightened",
       "sickened",
       "suffocating"
     ],
     "actions": [
       {
-        "name": "Viscera Sling",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "name": "Glare",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will]: Frightened (Cd4, Paralyzed)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "frightened",
+          "paralyzed"
+        ],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Cursed Touch",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) and pass an [Endure] Save or be Cursed (can't regain HP or remove Fatigue, and it loses 3 (d6) HP every day)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -763,8 +788,7 @@
         "statuses": []
       },
       {
-        "name": "Sickness",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
+        "name": "Mummy's Curse",
         "damage": {
           "dice": {
             "count": 0,
@@ -778,7 +802,7 @@
           "endure"
         ],
         "statuses": [
-          "sickened"
+          "hexed"
         ]
       }
     ],
@@ -789,7 +813,7 @@
     "morale": 12
   },
   "prototypeToken": {
-    "name": "Carrion Clump",
+    "name": "Mummy",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -880,7 +904,107 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Magic Ward I",
+      "type": "feature",
+      "_id": "frn2B3ZASEBXohXv",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790097110933,
+        "modifiedTime": 1790097110933,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.frn2B3ZASEBXohXv",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!W5uDCVmGySno2nhH.frn2B3ZASEBXohXv"
+    },
+    {
+      "name": "Zombie",
+      "type": "feature",
+      "_id": "8fIBmbehU7Ai6VXn",
+      "img": "/icons/magic/death/hand-dirt-undead-zombie.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP unless damaged by a Crit, damage it is Weak to, or while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790097123848,
+        "modifiedTime": 1790097123848,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.8fIBmbehU7Ai6VXn",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!W5uDCVmGySno2nhH.8fIBmbehU7Ai6VXn"
+    },
+    {
+      "name": "Doom Magnet",
+      "type": "feature",
+      "_id": "HEsegebLLWl4xthR",
+      "img": "icons/magic/death/skull-horned-worn-fire-blue.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Near Enemies can't gain Favor.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790097187400,
+        "modifiedTime": 1790097187400,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.HEsegebLLWl4xthR",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!W5uDCVmGySno2nhH.HEsegebLLWl4xthR"
+    }
+  ],
   "effects": [],
   "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
@@ -891,15 +1015,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
-    "createdTime": 1790088899819,
-    "modifiedTime": 1790098556304,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790096608777,
+    "modifiedTime": 1790098556305,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "FgPpqjtJiMe53tKe",
-  "sort": 800000,
-  "_key": "!actors!FgPpqjtJiMe53tKe"
+  "_id": "W5uDCVmGySno2nhH",
+  "sort": 1200000,
+  "_key": "!actors!W5uDCVmGySno2nhH"
 }

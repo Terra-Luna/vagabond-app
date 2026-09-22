@@ -1,5 +1,5 @@
 {
-  "name": "Carrion Clump",
+  "name": "Zombie",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
@@ -8,10 +8,10 @@
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 0
     },
     "senses": [
-      "blindsight"
+      "darksight"
     ],
     "statuses": {
       "toggles": {
@@ -725,29 +725,32 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 0.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Corpses are at risk of becoming drowners if they are tossed to the sea, being reanimated by some unknown forces that lurk in the depths.</span></p>",
     "hitDice": 2,
     "zone": "front",
     "movement": {
-      "speed": "10'"
+      "speed": "20' (Swim)"
     },
-    "numberAppearing": "d6",
+    "numberAppearing": "3d8",
     "dmgImmunities": [
       "poison"
     ],
     "dmgWeaknesses": [
-      "acid"
+      "shock"
     ],
     "statusImmunities": [
+      "berserk",
       "charmed",
+      "confused",
       "fatigued",
+      "frightened",
       "sickened",
       "suffocating"
     ],
     "actions": [
       {
-        "name": "Viscera Sling",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "name": "Bite",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, a Restrained Being]: 3 (d6)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -763,8 +766,8 @@
         "statuses": []
       },
       {
-        "name": "Sickness",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
+        "name": "Grasp",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: Restrained</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -775,10 +778,10 @@
           "type": "none"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
         "statuses": [
-          "sickened"
+          "restrained"
         ]
       }
     ],
@@ -789,7 +792,7 @@
     "morale": 12
   },
   "prototypeToken": {
-    "name": "Carrion Clump",
+    "name": "Zombie",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -880,26 +883,59 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Zombie",
+      "type": "feature",
+      "_id": "8fIBmbehU7Ai6VXn",
+      "img": "/icons/magic/death/hand-dirt-undead-zombie.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP unless damaged by a Crit, damage it is Weak to, or while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790099858199,
+        "modifiedTime": 1790099858199,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "exportSource": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "_key": "!actors.items!MyXkhftWyNs0dvmz.8fIBmbehU7Ai6VXn"
+    }
+  ],
   "effects": [],
   "folder": "qMHTlKoPCfkn2dhA",
-  "ownership": {
-    "default": 0,
-    "KyorYoEvge7ElSaj": 3
-  },
   "flags": {},
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
-    "createdTime": 1790088899819,
-    "modifiedTime": 1790098556304,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790099858199,
+    "modifiedTime": 1790099943205,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "FgPpqjtJiMe53tKe",
-  "sort": 800000,
-  "_key": "!actors!FgPpqjtJiMe53tKe"
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "_id": "MyXkhftWyNs0dvmz",
+  "sort": 0,
+  "_key": "!actors!MyXkhftWyNs0dvmz"
 }

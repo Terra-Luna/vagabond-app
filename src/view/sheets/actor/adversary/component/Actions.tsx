@@ -283,13 +283,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     <div className="flex items-end">
                         <p>Effect:&nbsp;</p>
                         <div className={`w-full font-eskapade font-bold hover-glow`}>
-                            <EnrichedContent content={
-                                <RichTextField
-                                    defaultValue={newAction?.description ?? ''}
-                                    onChange={(description) => updateAction({ description })}
-                                    className="text-xs font-paradigm font-normal"
-                                />
-                            } />
+                            <RichTextField defaultValue={newAction?.description ?? ''} onChange={(description) => updateAction({ description })} className="text-xs font-paradigm font-normal" />
                         </div>
                     </div>
 
@@ -307,7 +301,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                         <div className={`font-eskapade font-bold hover-glow`}>
                             <DropDown
                                 value={newAction?.damage?.type ?? ''}
-                                options={createDropdownEntries(appLang.DamageTypes)}
+                                options={createDropdownEntries(appLang.DamageTypes, true)}
                                 updateMechanism={{
                                     onChange: (type) => updateDamage({ type: type ?? '' })
                                 }}

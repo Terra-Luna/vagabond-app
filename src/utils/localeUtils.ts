@@ -26,10 +26,13 @@ export const localizeString = (localeString: string, args: Record<string, string
     return localizedString
 }
 
-export const createDropdownEntries = (localeObj) => {
-    return Object.entries(localeObj).map(([value, label]) => (
+export const createDropdownEntries = (localeObj, sort: boolean = false) => {
+    const entries = Object.entries(localeObj).map(([value, label]) => (
         { value, label } as { value: any, label: string }
     ))
+    return sort
+        ? entries.sort((a, b) => a.label.localeCompare(b.label))
+        : entries
 }
 
 export const createDropdownEntriesFromObj = (localObj) => {

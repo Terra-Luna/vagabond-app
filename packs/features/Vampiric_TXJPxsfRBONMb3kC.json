@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Vampiric",
+  "type": "feature",
+  "_id": "TXJPxsfRBONMb3kC",
+  "img": "/icons/sundries/books/book-symbol-bat-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">It regenerates 3 HP at the start of its Turn unless it is in Sunlight. If it is killed, it reforms in its resting place after 1 Day unless either:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">◆A wooden stake is stabbed through its heart.</span></p><p><span style=\"white-space:pre-wrap\">◆It dies in Sunlight or while doused in holy water.</span></p><p><span style=\"white-space:pre-wrap\">◆It consumes garlic.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790099065523,
+    "modifiedTime": 1790099099087,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!TXJPxsfRBONMb3kC"
+}

@@ -13,7 +13,7 @@ export const DamageTypeSelector = ({ item, path }: { item: Item, path: string })
             <div className="flex gap-x-1 items-center font-normal">
                 <CustomDropDown
                     value={foundry.utils.getProperty(item, path) as string}
-                    options={createDropdownEntries(appLang.DamageTypes)}
+                    options={createDropdownEntries(appLang.DamageTypes, true)}
                     onChange={(e) => item.update({ [path]: e.target.value } as Record<string, string>)}
                 />
                 {!isEditMode && <DamageTypeIcon dmgType={foundry.utils.getProperty(item, path) as string} />}

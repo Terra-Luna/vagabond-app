@@ -1043,13 +1043,13 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.27",
     "createdTime": 1790089188242,
-    "modifiedTime": 1790089473751,
+    "modifiedTime": 1790098556306,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
   "_id": "askeeZol7Qo0U6kY",
-  "sort": 100000,
+  "sort": 1500000,
   "_key": "!actors!askeeZol7Qo0U6kY"
 }

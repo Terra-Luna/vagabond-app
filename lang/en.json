@@ -156,7 +156,9 @@
       "beyonder": "Beyonder",
       "divine": "Divine",
       "beast": "Beast",
-      "undead": "Undead"
+      "undead": "Undead",
+      "shape": "Shapechanger",
+      "wyrm": "Wyrm"
     },
     "DamageTypes": {
       "none": "-",

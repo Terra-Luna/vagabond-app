@@ -158,13 +158,13 @@ const TraitSelectors = ({ npc, isPortraitOpen, setIsPortraitOpen }) => {
                         value={npc.beingSize}
                     />
                     <DropDown
-                        options={createDropdownEntries(appLang.BeingTypes)}
+                        options={createDropdownEntries(appLang.BeingTypes, true)}
                         parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingType'] }}
                         value={npc.beingType}
                     />
                     <DropDown
-                        options={createDropdownEntries(appLang.BeingSubtypes)}
+                        options={createDropdownEntries(appLang.BeingSubtypes, true)}
                         parent={npc.parent}
                         updateMechanism={{ updatePath: ['beingSubtype'] }}
                         value={npc.beingSubtype}

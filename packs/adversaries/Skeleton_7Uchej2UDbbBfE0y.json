@@ -1,18 +1,16 @@
 {
-  "name": "Carrion Clump",
+  "name": "Skeleton",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 9,
+      "value": 4,
       "max": 0
     },
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "blindsight"
-    ],
+    "senses": [],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -724,30 +722,32 @@
     "beingType": "undead",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 0.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A writhing mass of fetid bones, tissue, and viscera.</span></p>",
-    "hitDice": 2,
+    "threatLevelOverride": 1.2,
+    "description": "",
+    "hitDice": 1,
     "zone": "front",
     "movement": {
-      "speed": "10'"
+      "speed": "30'"
     },
     "numberAppearing": "d6",
     "dmgImmunities": [
-      "poison"
+      "pierce",
+      "poison",
+      "slash"
     ],
     "dmgWeaknesses": [
-      "acid"
+      "blunt"
     ],
     "statusImmunities": [
-      "charmed",
       "fatigued",
       "sickened",
-      "suffocating"
+      "suffocating",
+      "unconscious"
     ],
     "actions": [
       {
-        "name": "Viscera Sling",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: 3 (d6) and pass [Endure] or become Sickened (Cd6, stinks and can't speak from retching).</span></p>",
+        "name": "Rusty Sword",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) or (by Weapon)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
@@ -761,25 +761,6 @@
           "reflex"
         ],
         "statuses": []
-      },
-      {
-        "name": "Sickness",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or become Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 0,
-            "faces": 0,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "none"
-        },
-        "saves": [
-          "endure"
-        ],
-        "statuses": [
-          "sickened"
-        ]
       }
     ],
     "combo": {
@@ -789,7 +770,7 @@
     "morale": 12
   },
   "prototypeToken": {
-    "name": "Carrion Clump",
+    "name": "Skeleton",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -880,7 +861,41 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [],
+  "items": [
+    {
+      "name": "Nightwalker",
+      "type": "feature",
+      "_id": "qnMFKnHgCmmPRn8L",
+      "img": "/icons/environment/wilderness/terrain-forest-gray.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Can't Move or Target over lines of salt or in areas illuminated by Sunlight. It is Incapacitated and Burning (d8) while in Sunlight.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.29",
+        "createdTime": 1790098032506,
+        "modifiedTime": 1790098032506,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qnMFKnHgCmmPRn8L",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!7Uchej2UDbbBfE0y.qnMFKnHgCmmPRn8L"
+    }
+  ],
   "effects": [],
   "folder": "qMHTlKoPCfkn2dhA",
   "ownership": {
@@ -891,15 +906,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
-    "createdTime": 1790088899819,
-    "modifiedTime": 1790098556304,
+    "systemVersion": "0.1.29",
+    "createdTime": 1790097915340,
+    "modifiedTime": 1790098556300,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "FgPpqjtJiMe53tKe",
-  "sort": 800000,
-  "_key": "!actors!FgPpqjtJiMe53tKe"
+  "_id": "7Uchej2UDbbBfE0y",
+  "sort": 100000,
+  "_key": "!actors!7Uchej2UDbbBfE0y"
 }
