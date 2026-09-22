@@ -1,7 +1,7 @@
 {
   "name": "Magistaff",
   "type": "weapon",
-  "_id": "rLK8nU5PMhP7PUta",
+  "_id": "rLK8nU5PMhP7PUtz",
   "img": "icons/weapons/staves/staff-simple-spiral-brown.webp",
   "system": {
     "description": "<p><i><em style=\"white-space:pre-wrap\">(Adjust this item's Active Effect as needed to reduce max Mana.)</em></i></p><p><br></p><p><span style=\"white-space:pre-wrap\">A 10 Minute Ritual can be conducted while it is held by a willing Being that knows a Spell. During the Ritual, that Being chooses a Spell and chooses how they would Cast it. Their Maximum Mana is reduced by the cost it would take to Cast it, which is only restored if the Bond to the magistaff ends.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">After the Ritual, the Bound wielder can spend a charge from the staff to Cast that Spell as it was Cast during the Ritual, using a Skill of their choice. The number of Charges corresponds to the rarity of the magistaff, as shown below, and its Countdown die resets at dawn.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Common: Cd4 Charges</span></p><p><span style=\"white-space:pre-wrap\">Rare: Cd6 Charges</span></p><p><span style=\"white-space:pre-wrap\">Legendary: Cd8 Charges</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Value: Common (5000g), Rare (15000g), Legendary (50000g)</span></p>",
@@ -65,7 +65,7 @@
     {
       "name": "Magistaff: Max Mana Reduction",
       "img": "/icons/weapons/staves/staff-simple-spiral-brown.webp",
-      "origin": "Compendium.vagabond-app.relics.Item.rLK8nU5PMhP7PUta",
+      "origin": "Compendium.vagabond-app.relics.Item.rLK8nU5PMhP7PUtz",
       "disabled": false,
       "_id": "8Mx0RhSwM2HBxMC4",
       "type": "base",
@@ -107,7 +107,7 @@
         "duplicateSource": null,
         "exportSource": null
       },
-      "_key": "!items.effects!rLK8nU5PMhP7PUta.8Mx0RhSwM2HBxMC4"
+      "_key": "!items.effects!rLK8nU5PMhP7PUtz.8Mx0RhSwM2HBxMC4"
     }
   ],
   "folder": null,
@@ -129,5 +129,5 @@
     "duplicateSource": null
   },
   "sort": 1500000,
-  "_key": "!items!rLK8nU5PMhP7PUta"
+  "_key": "!items!rLK8nU5PMhP7PUtz"
 }

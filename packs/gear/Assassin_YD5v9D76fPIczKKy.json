@@ -13,11 +13,6 @@
         "qty": 1
       },
       {
-        "id": "SvvXqnsb8plJdOU5",
-        "name": "Dagger",
-        "qty": 2
-      },
-      {
         "id": "CNgpBbHg5dRh0YDP",
         "name": "Basic Poison",
         "qty": 1
@@ -30,101 +25,16 @@
       {
         "id": "d58md1ZTOqcXcz31",
         "name": "Materials",
+        "qty": 20
+      },
+      {
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
         "qty": 1
       },
       {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
-        "qty": 1
-      },
-      {
-        "id": "d58md1ZTOqcXcz31",
-        "name": "Materials",
+        "id": "SvvXqnsb8plJdOU5",
+        "name": "Dagger",
         "qty": 1
       }
     ],
@@ -141,9 +51,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.28",
+    "systemVersion": "0.1.27",
     "createdTime": 1787620889538,
-    "modifiedTime": 1788923527816,
+    "modifiedTime": 1790094466067,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

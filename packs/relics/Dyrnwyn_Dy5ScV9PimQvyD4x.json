@@ -1,19 +1,19 @@
 {
-  "name": "Peacemaker",
+  "name": "Dyrnwyn",
   "type": "weapon",
-  "_id": "7Jn4QInDDD0wJT2M",
-  "img": "/icons/weapons/guns/gun-red.webp",
+  "_id": "Dy5ScV9PimQvyD4x",
+  "img": "/icons/weapons/swords/greatsword-guard-jewel-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Revolver which silvers all bullets fired from it.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Longsword with a pure white blade and jewel-studded hilt.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Evil's Bane: Deals an extra damage die to Hellspawn and Undead.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Smite I: Targets that take damage from it are also Burning (Cd4) with holy flame that ignores Immune.</span></p>",
     "rules": [],
     "category": "weapons",
     "value": {
-      "g": 5000,
+      "g": 25000,
       "s": 0,
       "c": 0
     },
     "bulk": {
-      "slots": 1,
+      "slots": 2,
       "isStackable": false,
       "stackSize": 100,
       "quantity": 1,
@@ -22,18 +22,18 @@
     "isEquippable": false,
     "isEquipped": false,
     "isConsumable": false,
-    "range": "far",
+    "range": "close",
     "damage": {
+      "type": "physical",
       "dice": {
         "count": 1,
-        "faces": 4,
+        "faces": 8,
         "modifier": 2,
         "explodesOn": []
-      },
-      "type": "pierce"
+      }
     },
     "grip": {
-      "style": "H",
+      "style": "V",
       "state": "H"
     },
     "properties": [
@@ -41,7 +41,7 @@
     ],
     "material": "steel",
     "skills": [
-      "ranged"
+      "melee"
     ],
     "copperValue": 4000,
     "relicPowers": [
@@ -61,26 +61,6 @@
         "description": "Fabled Bound relic of miscellaneous nature."
       },
       {
-        "id": "bonus-weapon-2",
-        "category": {
-          "value": "bonus",
-          "label": "Bonus"
-        },
-        "power": {
-          "value": "weapon-2",
-          "label": "Weapon +2",
-          "modifiers": [
-            {
-              "path": "system.damage.dice.modifier",
-              "value": 2
-            }
-          ]
-        },
-        "goldValue": 1250,
-        "bound": false,
-        "description": "+2 bonus to Attack damage."
-      },
-      {
         "id": "utility-silvering",
         "category": {
           "value": "utility",
@@ -96,18 +76,33 @@
         "description": "Attacks with it count as Silvered."
       },
       {
-        "id": "utility-personality",
+        "id": "utility-burning-1",
         "category": {
           "value": "utility",
           "label": "Utility"
         },
         "power": {
-          "value": "personality",
-          "label": "Personality",
+          "value": "burning-1",
+          "label": "Burning I",
           "modifiers": []
         },
-        "goldValue": 0,
-        "description": "Can only be used against hostile foes.",
+        "goldValue": 4000,
+        "bound": false,
+        "description": "Burning (Cd4) on a hit."
+      },
+      {
+        "id": "bane-general",
+        "category": {
+          "value": "bane",
+          "label": "Bane"
+        },
+        "power": {
+          "value": "general",
+          "label": "General",
+          "modifiers": []
+        },
+        "goldValue": 5000,
+        "description": "Adds an extra damage die to an entire Being Type, such as Cryptids (not just giants).",
         "bound": false
       }
     ]
@@ -124,13 +119,13 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.1.25",
-    "createdTime": 1790019500083,
-    "modifiedTime": 1790023201615,
+    "createdTime": 1790013191890,
+    "modifiedTime": 1790023201616,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "sort": 200000,
-  "_key": "!items!7Jn4QInDDD0wJT2M"
+  "sort": 2300000,
+  "_key": "!items!Dy5ScV9PimQvyD4x"
 }

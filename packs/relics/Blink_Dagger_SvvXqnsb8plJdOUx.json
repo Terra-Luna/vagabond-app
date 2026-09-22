@@ -1,7 +1,7 @@
 {
   "name": "Blink Dagger",
   "type": "weapon",
-  "_id": "SvvXqnsb8plJdOU5",
+  "_id": "SvvXqnsb8plJdOUx",
   "img": "icons/weapons/daggers/dagger-serrated-purple.webp",
   "system": {
     "description": "",
@@ -99,5 +99,5 @@
     "duplicateSource": null
   },
   "sort": 3300000,
-  "_key": "!items!SvvXqnsb8plJdOU5"
+  "_key": "!items!SvvXqnsb8plJdOUx"
 }

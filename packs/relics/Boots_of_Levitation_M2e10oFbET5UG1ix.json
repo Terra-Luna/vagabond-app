@@ -1,15 +1,15 @@
 {
-  "name": "Cloak of Displacement",
+  "name": "Boots of Levitation",
   "type": "sundry",
-  "_id": "ltpmK1RIKUw30Lx7",
-  "img": "/icons/equipment/back/cloak-collared-blue-gold.webp",
+  "_id": "M2e10oFbET5UG1ix",
+  "img": "/icons/equipment/feet/boots-folded-leather-brown.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Coat made of the fur of an omlarcat.</span></p>",
+    "description": "",
     "rules": [],
     "category": "clothing",
     "value": {
       "g": 0,
-      "s": 5,
+      "s": 10,
       "c": 0
     },
     "bulk": {
@@ -24,23 +24,23 @@
     "isConsumable": false,
     "relicPowers": [
       {
-        "id": "movement-displacement",
+        "id": "movement-levitation",
         "category": {
           "value": "movement",
           "label": "Movement"
         },
         "power": {
-          "value": "displacement",
-          "label": "Displacement",
+          "value": "levitation",
+          "label": "Levitation",
           "modifiers": []
         },
-        "goldValue": 1000,
-        "description": "Sight-based attacks against the Wearer are made as if the attacker is Vulnerable.",
+        "goldValue": 500,
+        "description": "Wearer is under the effects of the Levitate Spell.",
         "bound": false
       }
     ],
     "isWearable": true,
-    "copperValue": 500,
+    "copperValue": 1000,
     "isRation": false,
     "isMaterials": false,
     "isAlchemyTools": false
@@ -52,7 +52,7 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.1.25",
-    "createdTime": 1790012427332,
+    "createdTime": 1790012173291,
     "modifiedTime": 1790023201617,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
@@ -64,6 +64,6 @@
     "LxjckWttmatU52UJ": 3,
     "KyorYoEvge7ElSaj": 3
   },
-  "sort": 2500000,
-  "_key": "!items!ltpmK1RIKUw30Lx7"
+  "sort": 2800000,
+  "_key": "!items!M2e10oFbET5UG1ix"
 }

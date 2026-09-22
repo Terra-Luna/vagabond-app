@@ -1,7 +1,7 @@
 {
   "name": "Sunder",
   "type": "weapon",
-  "_id": "3h8WWUocmjX4fMPb",
+  "_id": "3h8WWUocmjX4fMPx",
   "img": "/icons/weapons/hammers/hammer-double-engraved-gold.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Warhammer that must be Bound to to access its Powers, which are as follows:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• (+3) Bonus: Deals an extra +3 damage.</span></p><p><span style=\"white-space:pre-wrap\">• Giants Bane: Deals an extra damage die to giants.</span></p><p><span style=\"white-space:pre-wrap\">• Earth Shaker: (1/Day) Strike the earth to cause all Near foes to be Dazed (d4 Rounds).</span></p><p><span style=\"white-space:pre-wrap\">• Loyalty: Can be thrown to attack. It then magically returns to the Wielder's hand after the attack.</span></p><p><span style=\"white-space:pre-wrap\">• Sense Valuables: Senses gold and gems within Near.</span></p><p><span style=\"white-space:pre-wrap\">• Thrown Ace: Deals an extra damage die with thrown attacks.</span></p>",
@@ -132,5 +132,5 @@
     "duplicateSource": null
   },
   "sort": 1100000,
-  "_key": "!items!3h8WWUocmjX4fMPb"
+  "_key": "!items!3h8WWUocmjX4fMPx"
 }

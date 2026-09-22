@@ -1,7 +1,7 @@
 {
   "name": "Skyhowl",
   "type": "weapon",
-  "_id": "agap6ueUeq6meR45",
+  "_id": "agap6ueUeq6meR4x",
   "img": "/icons/skills/melee/strike-chain-whip-blue.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Chain Whip that crackles with arcs of lightning as it swings.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Crack the Sky:</strong></b><span style=\"white-space:pre-wrap\"> (1/Day) Strike the air, causing all Near foes who aren't Immune to Shock to become Dazed (d4 Rounds).</span></p>",
@@ -84,5 +84,5 @@
     "duplicateSource": null
   },
   "sort": 700000,
-  "_key": "!items!agap6ueUeq6meR45"
+  "_key": "!items!agap6ueUeq6meR4x"
 }

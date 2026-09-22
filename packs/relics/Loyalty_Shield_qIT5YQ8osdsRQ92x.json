@@ -1,15 +1,15 @@
 {
-  "name": "Standard of the Herald",
+  "name": "Loyalty Shield",
   "type": "weapon",
-  "_id": "akWt8oaiss50U2dE",
-  "img": "/icons/sundries/flags/banner-standard-blue.webp",
+  "_id": "qIT5YQ8osdsRQ92x",
+  "img": "icons/equipment/shield/heater-steel-spiral.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Spear with a banneret's standard capable of instilling bravery.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Warlord's Resolve: While planted in the ground, Allies within Near have a +1 bonus to Armor, and Favor on Saves against Frightened.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Loyalty: Can be thrown to attack. It then magically returns to the Wielder's hand after the attack.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Glamour: The standard can change to a design of the Bound Being's choice. It never gets dirty.</span></p>",
+    "description": "",
     "rules": [],
     "category": "weapons",
     "value": {
       "g": 0,
-      "s": 20,
+      "s": 75,
       "c": 0
     },
     "bulk": {
@@ -24,26 +24,26 @@
     "isConsumable": false,
     "range": "close",
     "damage": {
-      "type": "physical",
       "dice": {
         "count": 1,
-        "faces": 6,
+        "faces": 4,
         "modifier": 0,
         "explodesOn": []
-      }
+      },
+      "type": "physical"
     },
     "grip": {
       "style": "H",
       "state": "H"
     },
     "properties": [
-      "thrown"
+      "defense"
     ],
     "material": "steel",
     "skills": [
       "melee"
     ],
-    "copperValue": 2000,
+    "copperValue": 7500,
     "relicPowers": [
       {
         "id": "utility-loyalty",
@@ -59,6 +59,26 @@
         "goldValue": 1000,
         "bound": true,
         "description": "Magically returns to the Being's hand if thrown to attack (Bound)."
+      },
+      {
+        "id": "bonus-armor-1",
+        "category": {
+          "value": "bonus",
+          "label": "Bonus"
+        },
+        "power": {
+          "value": "armor-1",
+          "label": "Armor +1",
+          "modifiers": [
+            {
+              "path": "system.armor.rating",
+              "value": 1
+            }
+          ]
+        },
+        "goldValue": 100,
+        "description": "+1 bonus to Armor.",
+        "bound": false
       }
     ]
   },
@@ -74,13 +94,13 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.1.25",
-    "createdTime": 1790023028141,
+    "createdTime": 1790014128621,
     "modifiedTime": 1790023201616,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "sort": 1700000,
-  "_key": "!items!akWt8oaiss50U2dE"
+  "sort": 1300000,
+  "_key": "!items!qIT5YQ8osdsRQ92x"
 }
