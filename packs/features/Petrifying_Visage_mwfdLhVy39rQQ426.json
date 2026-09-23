@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Petrifying Visage",
+  "type": "feature",
+  "_id": "mwfdLhVy39rQQ426",
+  "img": "/icons/commodities/treasure/bust-carved-stone.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Beings that look at it for the first time on their Turns must pass [Endure] against Sickened or take 1 Fatigue. A Being with 3 or more Fatigue that gains another Fatigue this way is cursed (Continual,. turned to stone).</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 7200000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790112859483,
+    "modifiedTime": 1790116688503,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!mwfdLhVy39rQQ426"
+}

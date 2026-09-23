@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Tactical",
+  "type": "feature",
+  "_id": "uzpUZAyJErJL8J7y",
+  "img": "/icons/sundries/documents/document-torn-diagram-tan.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Targets Save against its attacks as if Vulnerable if at least one of this Being's Allies are within 5' of the Target.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 6600000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790111250508,
+    "modifiedTime": 1790116688502,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!uzpUZAyJErJL8J7y"
+}

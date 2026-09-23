@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Booze Hound",
+  "type": "feature",
+  "_id": "ZaeYiCU3UIGvz55l",
+  "img": "/icons/consumables/drinks/alcohol-beer-stein-wooden-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">It takes half damage from poison-based damage and can sense alcohol within 1 mile as if by Allsight. It doesn't flee if it is sensing alcohol, except by its Divine-Averse Ability.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790119275355,
+    "modifiedTime": 1790119329744,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!ZaeYiCU3UIGvz55l"
+}

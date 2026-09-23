@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Reflective Carapace",
+  "type": "feature",
+  "_id": "Zn96xklNi7v6wVbD",
+  "img": "/icons/commodities/biological/shell-conch-gray.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When Targeted with a Spell, roll [[/r d6#Reflective Carapace]].</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">1. Spell is reflected back at its source.</span></p><p><span style=\"white-space:pre-wrap\">2-3. Spell is dispelled.</span></p><p><span style=\"white-space:pre-wrap\">4-6. Spell works as normal.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 3900000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790108532961,
+    "modifiedTime": 1790119882651,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Zn96xklNi7v6wVbD"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Multi-Headed",
+  "type": "feature",
+  "_id": "2j61uBVZjxqCmR5B",
+  "img": "/icons/magic/death/skeleton-snake-skull-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">It starts with 8 (d8+4) Heads. Targeting an area that could behead it causes a -3 penalty to the Check, but severs it if at least 10 damage is dealt in a single damage instance.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 6900000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790111698618,
+    "modifiedTime": 1790116688503,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!2j61uBVZjxqCmR5B"
+}

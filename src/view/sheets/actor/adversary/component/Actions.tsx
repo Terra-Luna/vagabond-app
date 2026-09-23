@@ -221,7 +221,7 @@ export const NewActionWindow = ({ npc, setIsAddMenuOpen, editTarget = null, setE
                     return it.comboCount + "x " + it.action.name
                 }
             })
-            setComboName(name.join(" & "))
+            setComboName(name.join(", "))
         }
     }, [isCombo, comboSelections])
 

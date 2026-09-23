@@ -158,7 +158,8 @@
       "beast": "Beast",
       "undead": "Undead",
       "shape": "Shapechanger",
-      "wyrm": "Wyrm"
+      "wyrm": "Wyrm",
+      "fae": "Fae"
     },
     "DamageTypes": {
       "none": "-",

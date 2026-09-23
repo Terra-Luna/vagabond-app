@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Effectively Immune",
+  "type": "feature",
+  "_id": "YCQgBxTyq2fRqNsx",
+  "img": "/icons/commodities/leather/scales-white.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Damage only kills it if it is Weak to the damage.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790121414907,
+    "modifiedTime": 1790121427064,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!YCQgBxTyq2fRqNsx"
+}

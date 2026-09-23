@@ -5,14 +5,14 @@
   "_id": "QRKbdjpB54u1P5ed",
   "img": "/icons/creatures/abilities/bull-head-horns-glowing.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If it Moves at least 20' in a straight line before making a Tusk Attack, the damage is doubled.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If it Moves at least 30' in a straight line before making a Tusk or Horn Attack, the damage is doubled.</span></p>",
     "rules": [],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
   },
   "effects": [],
-  "sort": 0,
+  "sort": 3100000,
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.29",
     "createdTime": 1790033055813,
-    "modifiedTime": 1790033091661,
+    "modifiedTime": 1790119752690,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

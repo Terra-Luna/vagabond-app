@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Magic Resistance I",
+  "type": "feature",
+  "_id": "vOZfe4KYTxtn7xv3",
+  "img": "icons/magic/defensive/shield-hex-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If Targeted with Magic, roll a d4. On a roll of 1, it ignores the effect.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 6500000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790110273678,
+    "modifiedTime": 1790116688502,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!vOZfe4KYTxtn7xv3"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Flails",
+  "type": "feature",
+  "_id": "1omKWo4zAYxM8WIk",
+  "img": "/icons/skills/melee/strike-flail-spiked-red.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Starts with 5 Flails. Targetting a Flail causes a -4</span></p><p><span style=\"white-space:pre-wrap\">penalty to the Attack Check, but severs it if at least 4</span></p><p><span style=\"white-space:pre-wrap\">damage is dealt with the attack.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790108504284,
+    "modifiedTime": 1790116688499,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!1omKWo4zAYxM8WIk"
+}

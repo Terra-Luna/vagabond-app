@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Dive Bomb",
+  "type": "feature",
+  "_id": "nnyhXmr6Hx4MBijP",
+  "img": "/icons/creatures/birds/raptor-hawk-flying.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">If it flies at least 20' toward a Target before making an attack, the attack deals an extra die of damage.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 7600000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.29",
+    "createdTime": 1790113905268,
+    "modifiedTime": 1790116688503,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!nnyhXmr6Hx4MBijP"
+}
