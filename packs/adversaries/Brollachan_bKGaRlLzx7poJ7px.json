@@ -1,0 +1,983 @@
+{
+  "folder": "FBqcZVMx8Wd89pD2",
+  "name": "Brollachan",
+  "type": "adversary",
+  "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
+  "system": {
+    "health": {
+      "value": 27,
+      "max": 0
+    },
+    "armor": {
+      "rating": 4
+    },
+    "senses": [],
+    "statuses": {
+      "toggles": {
+        "berserk": false,
+        "blinded": false,
+        "burning": false,
+        "charmed": false,
+        "confused": false,
+        "dazed": false,
+        "dead": false,
+        "frightened": false,
+        "grappling": false,
+        "incapacitated": false,
+        "invisible": false,
+        "paralyzed": false,
+        "prone": false,
+        "restrained": false,
+        "sickened": false,
+        "suffocating": false,
+        "unconscious": false,
+        "vulnerable": false,
+        "warded": false,
+        "exalted": false,
+        "blessed": false,
+        "marked": false,
+        "hexed": false
+      },
+      "counters": {
+        "luck": 0,
+        "studied": 0,
+        "focus": 0,
+        "fatigue": 0
+      }
+    },
+    "modifiers": {
+      "skillCheck": {
+        "attack": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "cast": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "arcana": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "brawl": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "craft": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "detect": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "finesse": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "influence": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "leadership": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "medicine": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "melee": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "mysticism": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "performance": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "sneak": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "survival": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "ranged": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "reflex": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "endure": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        },
+        "will": {
+          "modifier": 0,
+          "critThreshold": 0,
+          "extraDice": 0,
+          "d4": false,
+          "d6": false,
+          "d8": false
+        }
+      },
+      "dice": {
+        "size": {
+          "melee": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "finesse": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "brawl": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "ranged": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "thrown": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "defense": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "spell": {
+            "minimum": 0,
+            "bonus": 0
+          },
+          "spellHealing": {
+            "minimum": 0,
+            "bonus": 0
+          }
+        },
+        "exploding": {
+          "melee": {
+            "max": false,
+            "values": []
+          },
+          "finesse": {
+            "max": false,
+            "values": []
+          },
+          "brawl": {
+            "max": false,
+            "values": []
+          },
+          "ranged": {
+            "max": false,
+            "values": []
+          },
+          "thrown": {
+            "max": false,
+            "values": []
+          },
+          "defense": {
+            "max": false,
+            "values": []
+          },
+          "spell": {
+            "max": false,
+            "values": []
+          },
+          "spellHealing": {
+            "max": false,
+            "values": []
+          }
+        },
+        "crit": {
+          "melee": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "finesse": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "brawl": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "ranged": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "thrown": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "defense": {
+            "extraDice": 0,
+            "explodes": false
+          },
+          "spell": {
+            "extraDice": 0,
+            "explodes": false
+          }
+        },
+        "reroll": {
+          "melee": {
+            "HH": []
+          },
+          "finesse": {
+            "HH": []
+          },
+          "brawl": {
+            "HH": []
+          },
+          "ranged": {
+            "HH": []
+          },
+          "thrown": {
+            "HH": []
+          },
+          "defense": {
+            "HH": []
+          },
+          "spell": {
+            "HH": []
+          }
+        }
+      },
+      "damage": {
+        "in": {
+          "flatReduction": 0,
+          "perDieReduction": 0,
+          "resistances": []
+        },
+        "out": {
+          "melee": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "finesse": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "brawl": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "ranged": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "thrown": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "defense": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "spell": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "special": {
+            "sneakAttack": {
+              "flatBonus": 0,
+              "perDieBonus": 0,
+              "exploding": {
+                "max": false,
+                "values": []
+              },
+              "extraDice": {
+                "count": 0,
+                "faces": 4,
+                "modifier": 0,
+                "explodesOn": []
+              },
+              "active": false
+            }
+          }
+        }
+      },
+      "healing": {
+        "in": {
+          "melee": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "finesse": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "brawl": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "ranged": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "thrown": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "defense": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "spell": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "special": {
+            "sneakAttack": {
+              "flatBonus": 0,
+              "perDieBonus": 0,
+              "exploding": {
+                "max": false,
+                "values": []
+              },
+              "extraDice": {
+                "count": 0,
+                "faces": 4,
+                "modifier": 0,
+                "explodesOn": []
+              },
+              "active": false
+            }
+          }
+        },
+        "out": {
+          "melee": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "finesse": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "brawl": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "ranged": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "thrown": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "defense": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "spell": {
+            "flatBonus": 0,
+            "perDieBonus": 0,
+            "exploding": {
+              "max": false,
+              "values": []
+            },
+            "extraDice": {
+              "count": 0,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            }
+          },
+          "special": {
+            "sneakAttack": {
+              "flatBonus": 0,
+              "perDieBonus": 0,
+              "exploding": {
+                "max": false,
+                "values": []
+              },
+              "extraDice": {
+                "count": 0,
+                "faces": 4,
+                "modifier": 0,
+                "explodesOn": []
+              },
+              "active": false
+            }
+          }
+        }
+      },
+      "casting": {
+        "damageUpcastDiscount": 0,
+        "deliveryUpcastDiscount": 0,
+        "studyDiceDamage": false,
+        "deliveryDiscounts": {
+          "aura": 0,
+          "cone": 0,
+          "line": 0,
+          "sphere": 0,
+          "imbue": 0
+        }
+      },
+      "alchemy": {
+        "flatBonus": 0,
+        "perDieBonus": 0,
+        "exploding": {
+          "max": false,
+          "values": []
+        },
+        "extraDice": {
+          "count": 0,
+          "faces": 4,
+          "modifier": 0,
+          "explodesOn": []
+        }
+      },
+      "downtime": {
+        "breather": {
+          "removeFatigue": 0,
+          "gainLuck": 0
+        },
+        "rest": {
+          "extraLuck": 0
+        }
+      }
+    },
+    "beingSize": "large",
+    "beingType": "fae",
+    "beingSubtype": "none",
+    "threatLevel": 1,
+    "threatLevelOverride": 2.2,
+    "description": "<p><span style=\"white-space: pre-wrap;\">A formless, writhing mass of dark black smoke. Its only distinguishing characteristic is a pair of bright red eyes in the center of the mass.</span></p>",
+    "hitDice": 6,
+    "zone": "front",
+    "movement": {
+      "speed": "20' (Fly)"
+    },
+    "numberAppearing": "1",
+    "dmgImmunities": [],
+    "dmgWeaknesses": [],
+    "statusImmunities": [
+      "berserk",
+      "blinded",
+      "charmed",
+      "confused",
+      "frightened",
+      "prone",
+      "restrained"
+    ],
+    "actions": [
+      {
+        "name": "Tendril",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]</span></p>",
+        "damage": {
+          "dice": {
+            "count": 2,
+            "faces": 8,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
+      }
+    ],
+    "combo": {
+      "name": "",
+      "actions": []
+    },
+    "morale": 10
+  },
+  "prototypeToken": {
+    "name": "Brollachan",
+    "displayName": 0,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "depth": 1,
+    "texture": {
+      "src": "systems/vagabond-app/assets/icons/ic_adversary.webp",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": -1,
+    "displayBars": 30,
+    "bar1": {
+      "attribute": "health"
+    },
+    "bar2": {
+      "attribute": "mana"
+    },
+    "light": {
+      "negative": false,
+      "priority": 0,
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": true,
+      "range": 500,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": {},
+    "occludable": {
+      "radius": 8
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "turnMarker": {
+      "mode": 1,
+      "animation": null,
+      "src": null,
+      "disposition": false
+    },
+    "movementAction": null,
+    "flags": {},
+    "randomImg": false,
+    "appendNumber": false,
+    "prependAdjective": false
+  },
+  "items": [
+    {
+      "name": "Engulfer",
+      "type": "feature",
+      "_id": "HgaRYCqk9a94dQ8H",
+      "img": "/icons/creatures/slimes/slime-bubble-green.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Beings that share its space are Burning ([[/r 2d6#Engulfed]]).</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790201510916,
+        "modifiedTime": 1790201519361,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.HgaRYCqk9a94dQ8H",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bKGaRlLzx7poJ7px.HgaRYCqk9a94dQ8H"
+    },
+    {
+      "name": "Maddening I",
+      "type": "feature",
+      "_id": "7NHuETBGM0geC7CA",
+      "img": "/icons/creatures/unholy/demon-fire-horned-mask.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Enemies that can hear it for the first time and at the start of their Turns must pass [Will] or be Confused (Cd4).</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790201530044,
+        "modifiedTime": 1790201530044,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.7NHuETBGM0geC7CA",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bKGaRlLzx7poJ7px.7NHuETBGM0geC7CA"
+    },
+    {
+      "name": "Amorphous",
+      "type": "feature",
+      "_id": "DTl7WxGM0RYbKsa3",
+      "img": "/icons/commodities/materials/slime-thick-blue.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It can enter the space of other Beings and openings as small as 1 inch without squeezing.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790201546339,
+        "modifiedTime": 1790201546339,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.DTl7WxGM0RYbKsa3",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bKGaRlLzx7poJ7px.DTl7WxGM0RYbKsa3"
+    }
+  ],
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.31",
+    "createdTime": 1790200928397,
+    "modifiedTime": 1790201574706,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "_id": "bKGaRlLzx7poJ7px",
+  "sort": 600000,
+  "_key": "!actors!bKGaRlLzx7poJ7px"
+}

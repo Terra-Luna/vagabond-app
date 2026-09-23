@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Pixie Dust",
+  "type": "feature",
+  "_id": "DLnc7Un9Gk0IW3mN",
+  "img": "/icons/consumables/food/salt-seasoning-spice-pink.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">It can produce one dose of @UUID[Compendium.vagabond-app.relics.Item.j4rKuljLnup73R01]{Pixie Dust} once per Day, which gives a Medium or smaller Being Fly for 1 Hour.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.31",
+    "createdTime": 1790203711417,
+    "modifiedTime": 1790203766294,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!DLnc7Un9Gk0IW3mN"
+}
