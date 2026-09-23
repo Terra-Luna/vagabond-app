@@ -1,17 +1,18 @@
 {
-  "name": "Spider, Giant",
+  "name": "Stolas Demon",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 121,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 7
     },
     "senses": [
-      "darksight"
+      "darksight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -720,49 +721,52 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "giant",
+    "beingType": "outer",
+    "beingSubtype": "hellspawn",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": 11.2,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Stolas demons are the astronomers of hell, appearing as massive owls whose eyes scintillate with a cosmic sprawl. They are  created from the deceased souls of philosophers who valued reason and pragmatism over humanity and ethics, and Stolas are extreme utilitarians in their slaughter. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 27,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "40' (Cling; Fly 160')"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "fire",
+      "physical",
+      "poison"
+    ],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Peer Beyond",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 30' Cone | Will]: and Dazed (Cd6 Rounds)</span></p>",
         "damage": {
           "dice": {
-            "count": 0,
-            "faces": 0,
+            "count": 6,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "psychic"
         },
         "saves": [
-          "reflex"
+          "will"
         ],
         "statuses": [
-          "restrained"
+          "dazed"
         ],
         "recharge": "Cd4"
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Beak",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 4,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -774,34 +778,67 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Claw",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Restrained if failed by 5 or more.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 3,
             "faces": 8,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "physical"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "1x Beak, 2x Claw",
+      "actions": [
+        {
+          "name": "Beak",
+          "damage": {
+            "dice": {
+              "count": 4,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        },
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 3,
+              "faces": 8,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        }
+      ],
+      "description": null
     },
-    "morale": 8
+    "morale": 11
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Stolas Demon",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +931,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Magic Ward IV",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "YqlErUKCbumAsN4g",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 4 or more.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +947,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790191287592,
+        "modifiedTime": 1790191287592,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.YqlErUKCbumAsN4g",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +961,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!rGfapJIWFutGzbPo.YqlErUKCbumAsN4g"
     },
     {
-      "name": "Webs",
+      "name": "Regenerate III",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "Vk7VZpFsrZCN254u",
+      "img": "icons/magic/life/crosses-trio-red.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Regains 13 ([[/r 3d8#Regenerate]]) HP on its Turns.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +980,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790191291996,
+        "modifiedTime": 1790191291996,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.Vk7VZpFsrZCN254u",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +994,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!rGfapJIWFutGzbPo.Vk7VZpFsrZCN254u"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +1007,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790188354113,
+    "modifiedTime": 1790191301019,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "rGfapJIWFutGzbPo",
+  "sort": 500000,
+  "_key": "!actors!rGfapJIWFutGzbPo"
 }

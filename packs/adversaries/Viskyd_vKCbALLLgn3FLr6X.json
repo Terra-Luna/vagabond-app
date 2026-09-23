@@ -1,14 +1,14 @@
 {
-  "name": "Spider, Giant",
+  "name": "Viskyd",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 1,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 0
     },
     "senses": [
       "darksight"
@@ -720,49 +720,57 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "small",
+    "beingType": "outer",
+    "beingSubtype": "hellspawn",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
+    "threatLevelOverride": 1.2,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Lesser demons known to be extremely sticky, flammable, and disposable.</span></p>",
     "hitDice": 1,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "10' (Fly 20')"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "numberAppearing": "3d8",
+    "dmgImmunities": [
+      "fire",
+      "poison"
+    ],
+    "dmgWeaknesses": [
+      "cold"
+    ],
+    "statusImmunities": [
+      "berserk",
+      "charmed",
+      "fatigued",
+      "sickened"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Pop!",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Action (Cd4 after having a Being Restrained), Aura Near | Reflex]: 3 (d6). Further, all Close Viskyd Allies also Pop</span></p>",
         "damage": {
           "dice": {
-            "count": 0,
-            "faces": 0,
+            "count": 1,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "physical"
         },
         "saves": [
           "reflex"
         ],
-        "statuses": [
-          "restrained"
-        ],
+        "statuses": [],
         "recharge": "Cd4"
       },
       {
         "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Restrained if Medium or smaller</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 4,
             "modifier": 0,
             "explodesOn": []
           },
@@ -772,36 +780,16 @@
           "reflex"
         ],
         "statuses": []
-      },
-      {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "poison"
-        },
-        "saves": [
-          "endure"
-        ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Viskyd",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +882,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Amorphous",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "DTl7WxGM0RYbKsa3",
+      "img": "/icons/commodities/materials/slime-thick-blue.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It can enter the space of other Beings and openings as small as 1 inch without squeezing.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +898,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790192554770,
+        "modifiedTime": 1790192554770,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.DTl7WxGM0RYbKsa3",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +912,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!vKCbALLLgn3FLr6X.DTl7WxGM0RYbKsa3"
     },
     {
-      "name": "Webs",
+      "name": "Magic Ward I",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "frn2B3ZASEBXohXv",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 1 or more.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +931,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790192561815,
+        "modifiedTime": 1790192561815,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.frn2B3ZASEBXohXv",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +945,44 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!vKCbALLLgn3FLr6X.frn2B3ZASEBXohXv"
+    },
+    {
+      "name": "Sticky",
+      "type": "feature",
+      "_id": "5jtKRJOivbeec0Yp",
+      "img": "/icons/creatures/slimes/slime-movement-dripping-pseudopods-green.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Hinders attempts to end being Restrained by it. Beings that make physical contact with it must pass [Endure] or be Restrained.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790192606379,
+        "modifiedTime": 1790192606379,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.5jtKRJOivbeec0Yp",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!vKCbALLLgn3FLr6X.5jtKRJOivbeec0Yp"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +991,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790192372791,
+    "modifiedTime": 1790192624347,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
+  "_id": "vKCbALLLgn3FLr6X",
   "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_key": "!actors!vKCbALLLgn3FLr6X"
 }

@@ -1,14 +1,14 @@
 {
-  "name": "Spider, Giant",
+  "name": "False Hydra",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 27,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
     "senses": [
       "darksight"
@@ -720,49 +720,32 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "medium",
+    "beingType": "outer",
+    "beingSubtype": "beyonder",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": 3.1,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Multi-headed, anti-memetic horrors of flesh.</span></p>",
+    "hitDice": 6,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "25'"
     },
-    "numberAppearing": "d3",
+    "numberAppearing": "1",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "charmed",
+      "confused"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 0,
-            "faces": 0,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "none"
-        },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
-      },
-      {
         "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Near]</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 10,
             "modifier": 0,
             "explodesOn": []
           },
@@ -774,34 +757,31 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Song of Discord",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Action, 5-mile Aura (only those who can hear it) | Will] (Focus): Charmed until the song ends, and acts as if it can't see or hear this Being and creates false memories of illogical events.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "none"
         },
         "saves": [
-          "endure"
+          "will"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 4
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "False Hydra",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +874,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Tunneler",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "LdD3B36zhCl0QwMb",
+      "img": "icons/magic/earth/barrier-stone-brown-green.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Can Move through solid rock and earth, leaving a 3-foot tunnel in its path.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +890,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790186014477,
+        "modifiedTime": 1790186014477,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.LdD3B36zhCl0QwMb",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +904,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!AodHhhfukNN3LWv6.LdD3B36zhCl0QwMb"
     },
     {
-      "name": "Webs",
+      "name": "Multi-Headed",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "2j61uBVZjxqCmR5B",
+      "img": "/icons/magic/death/skeleton-snake-skull-pink.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It starts with one head, but grows another as it consumes humanoid Beings. Each time it grows a new head, it gains 3 HD (13 HP), and its stats change as shown below:</span></p><p><b><strong style=\"white-space:pre-wrap\"># Consumed  Heads       Size     TL</strong></b></p><p><span style=\"white-space:pre-wrap\">3                     2              Med     4.1</span></p><p><span style=\"white-space:pre-wrap\">6                     3              Lg        5.6</span></p><p><span style=\"white-space:pre-wrap\">9                     4              Lg        6.9</span></p><p><span style=\"white-space:pre-wrap\">15                    5              Hg       8.2</span></p><p><span style=\"white-space:pre-wrap\">24                   6              Hg       9.4</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +923,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790186293696,
+        "modifiedTime": 1790186293696,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.2j61uBVZjxqCmR5B",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +937,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!AodHhhfukNN3LWv6.2j61uBVZjxqCmR5B"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +950,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181836058,
+    "modifiedTime": 1790188359296,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "AodHhhfukNN3LWv6",
+  "sort": 1300000,
+  "_key": "!actors!AodHhhfukNN3LWv6"
 }

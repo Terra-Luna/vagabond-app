@@ -1,17 +1,18 @@
 {
-  "name": "Spider, Giant",
+  "name": "Angel",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 54,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 6
     },
     "senses": [
-      "darksight"
+      "allsight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -720,25 +721,81 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "huge",
+    "beingType": "outer",
+    "beingSubtype": "divine",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
-    "zone": "front",
+    "threatLevelOverride": 10.5,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics and Relics weaker than +2.</span></p>",
+    "hitDice": 12,
+    "zone": "mid",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "40' (Fly 80')"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "physical",
+      "poison"
+    ],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Dominator",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[2 Actions as below ([[/r d6]] to determine)]</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [],
+        "statuses": []
+      },
+      {
+        "name": "Flaming Sword",
+        "description": "<p><span style=\"white-space: pre-wrap;\">1. [Melee Attack]: 17 (4d6+3) and Burning (Cd6)</span><br><span style=\"white-space: pre-wrap;\">(+3 Silvered Greatsword w/ Loyalty)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 4,
+            "faces": 6,
+            "modifier": 3,
+            "explodesOn": []
+          },
+          "type": "fire"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "burning"
+        ]
+      },
+      {
+        "name": "Burning Slash",
+        "description": "<p><span style=\"white-space: pre-wrap;\">2. [Melee Attack, Near Cone | Half damage on a pass]: 13 (3d6+3) and Burning (Cd6)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 3,
+            "faces": 6,
+            "modifier": 3,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "burning"
+        ]
+      },
+      {
+        "name": "Banish",
+        "description": "<p><span style=\"white-space: pre-wrap;\">3. [Remote | Will]: It is returned to its normal realm of existence, or ends another Being's possession of the Target.</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,24 +806,21 @@
           "type": "none"
         },
         "saves": [
-          "reflex"
+          "will"
         ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
+        "statuses": []
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Command",
+        "description": "<p><span style=\"white-space: pre-wrap;\">4. [Cast, Far Aura]: 4 (d6+1) or obey the command issued by this Being.</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
-            "modifier": 0,
+            "faces": 6,
+            "modifier": 1,
             "explodesOn": []
           },
-          "type": "physical"
+          "type": "psychic"
         },
         "saves": [
           "reflex"
@@ -774,34 +828,44 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Heal",
+        "description": "<p><span style=\"white-space: pre-wrap;\">5. [Cast, Touch]: If it is a mortal Being, its HP is restored to maximum, and is cured of the Blinded, Paralyzed, or Sickened Status.</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "none"
         },
-        "saves": [
-          "endure"
-        ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "saves": [],
+        "statuses": []
+      },
+      {
+        "name": "Radiance",
+        "description": "<p><span style=\"white-space: pre-wrap;\">6. [Cast, Far Aura]: The area within the Aura is Sunlight, which moves with this Being.</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [],
+        "statuses": []
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 11
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Angel",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +958,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Fall from Grace",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "OvIWjZYuvt1HBE3f",
+      "img": "/icons/magic/holy/angel-winged-humanoid-blue.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">If it ever acts against divine ordainment, it loses Grace, Fly Speed, Allsight, Immune, and Status Immunities.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +974,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790182649253,
+        "modifiedTime": 1790182649253,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.OvIWjZYuvt1HBE3f",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +988,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!Zh09FCuhPki8GaY8.OvIWjZYuvt1HBE3f"
     },
     {
-      "name": "Webs",
+      "name": "Grace",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "c9E0ZL5ZH1e0Wscg",
+      "img": "/icons/magic/holy/angel-wings-gray.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It can't be reduced below 1 HP. If its body is destroyed, it immediately appears in its plane of origin at full HP.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +1007,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790182680175,
+        "modifiedTime": 1790182680175,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.c9E0ZL5ZH1e0Wscg",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +1021,77 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!Zh09FCuhPki8GaY8.c9E0ZL5ZH1e0Wscg"
+    },
+    {
+      "name": "Illuminator",
+      "type": "feature",
+      "_id": "sfprKHipeqCvpjJg",
+      "img": "icons/magic/light/explosion-beam-impact-silhouette.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Sheds Sunlight in Near.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790182716320,
+        "modifiedTime": 1790182716320,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.sfprKHipeqCvpjJg",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!Zh09FCuhPki8GaY8.sfprKHipeqCvpjJg"
+    },
+    {
+      "name": "Magic Ward III",
+      "type": "feature",
+      "_id": "IDakwsT1J1hnqiEB",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 3 or more.</span></p>",
+        "rules": [],
+        "level": 1,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790182720835,
+        "modifiedTime": 1790182720835,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.IDakwsT1J1hnqiEB",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!Zh09FCuhPki8GaY8.IDakwsT1J1hnqiEB"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +1100,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181823734,
+    "modifiedTime": 1790188359295,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "Zh09FCuhPki8GaY8",
+  "sort": 1000000,
+  "_key": "!actors!Zh09FCuhPki8GaY8"
 }

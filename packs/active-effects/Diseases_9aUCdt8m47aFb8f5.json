@@ -1,0 +1,23 @@
+{
+  "type": "ActiveEffect",
+  "folder": null,
+  "name": "Diseases",
+  "color": null,
+  "sorting": "a",
+  "_id": "9aUCdt8m47aFb8f5",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.31",
+    "createdTime": 1790188585964,
+    "modifiedTime": 1790188585964,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!9aUCdt8m47aFb8f5"
+}

@@ -1,17 +1,19 @@
 {
-  "name": "Spider, Giant",
+  "name": "Pit Fiend",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 58,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 5
     },
     "senses": [
-      "darksight"
+      "allsight",
+      "darksight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -721,24 +723,122 @@
       }
     },
     "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingType": "outer",
+    "beingSubtype": "hellspawn",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": 7.9,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics and</span></p><p><span style=\"white-space: pre-wrap;\">Relic Weapons weaker than (+2)</span></p>",
+    "hitDice": 13,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "30' (Fly 60')"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "fire",
+      "physical",
+      "poison"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "sickened"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Symbol of Pain",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Aura Far | Will] (1/Day): Cursed ([[/r Cd6#Symbol of Pain]] Rounds, -4 penalty to Attack Checks and a -2 to [Reflex] Saves)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Fireball",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 20' Sphere | Reflex]: and Burning (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 6,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "fire"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "burning"
+        ],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Bite",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and pass [Endure] with a -1 penalty or become Sickened (Cd6 damage)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 3,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Mace",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and Burning (Cd6)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 6,
+            "modifier": 2,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "burning"
+        ]
+      },
+      {
+        "name": "Wall of Fire",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Line | Reflex] (3/Day, Focus): Burning (2d6)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 4,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "fire"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": [
+          "burning"
+        ]
+      },
+      {
+        "name": "Hold",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure]: Paralyzed (Cd4)</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -752,17 +852,17 @@
           "reflex"
         ],
         "statuses": [
-          "restrained"
+          "paralyzed"
         ],
         "recharge": "Cd4"
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Tail",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (2d4) and Restrained, taking</span></p><p><span style=\"white-space: pre-wrap;\">5 (2d4) at the start of this Being's Turns while</span></p><p><span style=\"white-space: pre-wrap;\">Restrained this way</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 2,
+            "faces": 4,
             "modifier": 0,
             "explodesOn": []
           },
@@ -771,26 +871,8 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
-      },
-      {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "poison"
-        },
-        "saves": [
-          "endure"
-        ],
         "statuses": [
-          "paralyzed",
-          "sickened"
+          "restrained"
         ]
       }
     ],
@@ -798,10 +880,10 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Pit Fiend",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +976,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Regenerate III",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "Vk7VZpFsrZCN254u",
+      "img": "icons/magic/life/crosses-trio-red.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Regains 13 ([[/r 3d8#Regenerate]]) HP on its Turns.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +992,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790189943320,
+        "modifiedTime": 1790189943320,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.Vk7VZpFsrZCN254u",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +1006,48 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!bdXxY5I7qZcmvmOz.Vk7VZpFsrZCN254u"
     },
     {
-      "name": "Webs",
+      "name": "Magic Ward III",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "IDakwsT1J1hnqiEB",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 3 or more.</span></p>",
+        "rules": [],
+        "level": 1,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790189951533,
+        "modifiedTime": 1790189951533,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.IDakwsT1J1hnqiEB",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!bdXxY5I7qZcmvmOz.IDakwsT1J1hnqiEB"
+    },
+    {
+      "name": "Terror II",
+      "type": "feature",
+      "_id": "2rWmjWgktgSNypGQ",
+      "img": "/icons/magic/control/fear-fright-monster-grin-red-orange.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">[Enemies' first time seeing it and on their Turns | Will]: Frightened until they pass this Check on a subsequent Turn, or for Cd6 after.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +1058,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790189957089,
+        "modifiedTime": 1790189957089,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.2rWmjWgktgSNypGQ",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +1072,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!bdXxY5I7qZcmvmOz.2rWmjWgktgSNypGQ"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +1085,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790188349847,
+    "modifiedTime": 1790189970376,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "bdXxY5I7qZcmvmOz",
+  "sort": 100000,
+  "_key": "!actors!bdXxY5I7qZcmvmOz"
 }

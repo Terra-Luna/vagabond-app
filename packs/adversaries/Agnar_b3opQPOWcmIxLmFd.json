@@ -1,18 +1,16 @@
 {
-  "name": "Spider, Giant",
+  "name": "Agnar",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 45,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 2
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": [],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -720,49 +718,48 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "huge",
+    "beingType": "outer",
+    "beingSubtype": "beyonder",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": null,
+    "description": "<p><span style=\"white-space: pre-wrap;\">A jungle-dwelling monstrosity with a spherical torso and maw that surrounds its entire body. This sphere of horror is mounted atop four elephant-like legs, Its teeth enclose a donut-shaped gullet that forces any prey-paste through its abominable form.</span></p>",
+    "hitDice": 10,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "30'"
     },
-    "numberAppearing": "d3",
+    "numberAppearing": "1",
     "dmgImmunities": [],
-    "dmgWeaknesses": [],
+    "dmgWeaknesses": [
+      "fire"
+    ],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Spin-Thrash",
+        "description": "<p><span style=\"white-space: pre-wrap;\">(Only while at or below half HP) [Cast, Aura Near | Endure] (3/Day): 9 (2d8), deals half on a pass and heals this Being for the damage roll.</span></p>",
         "damage": {
           "dice": {
-            "count": 0,
-            "faces": 0,
+            "count": 2,
+            "faces": 8,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "physical"
         },
         "saves": [
-          "reflex"
+          "endure"
         ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
+        "statuses": []
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Chomp",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Cleave]: and Restrained</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 3,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -771,26 +768,8 @@
         "saves": [
           "reflex"
         ],
-        "statuses": []
-      },
-      {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "poison"
-        },
-        "saves": [
-          "endure"
-        ],
         "statuses": [
-          "paralyzed",
-          "sickened"
+          "restrained"
         ]
       }
     ],
@@ -798,10 +777,10 @@
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 10
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Agnar",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +873,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Flame Anger",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "RkKeqmy8MUfchXjH",
+      "img": "icons/magic/fire/elemental-fire-humanoid.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">If it takes Fire damage or sees open flame, it goes Berserk (Cd4).</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +889,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790182046435,
+        "modifiedTime": 1790182046435,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.RkKeqmy8MUfchXjH",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +903,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!b3opQPOWcmIxLmFd.RkKeqmy8MUfchXjH"
     },
     {
-      "name": "Webs",
+      "name": "Lockjaw",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "cIu1ShdQDeVbB0zo",
+      "img": "/icons/commodities/bones/bone-jaw-teeth-white.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Hinders Checks to end being Restrained by it.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +922,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790182084079,
+        "modifiedTime": 1790182084079,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.cIu1ShdQDeVbB0zo",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +936,44 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!b3opQPOWcmIxLmFd.cIu1ShdQDeVbB0zo"
+    },
+    {
+      "name": "Leap",
+      "type": "feature",
+      "_id": "0r5tzSpdV1gHnxz2",
+      "img": "/icons/commodities/bones/fossil-tooth.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">If it uses its Move to Jump, any Being within 5' when it lands must pass a [Reflex] Save or take 10 ([[/r 3d6#Leap]]]) and be shoved Prone.</span></p>",
+        "rules": [],
+        "level": 0,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790182143433,
+        "modifiedTime": 1790182143433,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.0r5tzSpdV1gHnxz2",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!b3opQPOWcmIxLmFd.0r5tzSpdV1gHnxz2"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +982,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181821296,
+    "modifiedTime": 1790188359294,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "b3opQPOWcmIxLmFd",
+  "sort": 900000,
+  "_key": "!actors!b3opQPOWcmIxLmFd"
 }

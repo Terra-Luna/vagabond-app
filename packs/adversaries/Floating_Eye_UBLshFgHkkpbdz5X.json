@@ -1,17 +1,18 @@
 {
-  "name": "Spider, Giant",
+  "name": "Floating Eye",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 1,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 0
     },
     "senses": [
-      "darksight"
+      "darksight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -720,25 +721,30 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
+    "beingSize": "small",
+    "beingType": "outer",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
+    "threatLevelOverride": null,
+    "description": "",
     "hitDice": 1,
-    "zone": "front",
+    "zone": "back",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "(Fly 30')"
     },
-    "numberAppearing": "d3",
+    "numberAppearing": "2d6",
     "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "dmgWeaknesses": [
+      "acid",
+      "pierce"
+    ],
+    "statusImmunities": [
+      "prone"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Glare",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Endure] (1/Day): Transformed into a stone statue (Cd4)</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,59 +755,61 @@
           "type": "none"
         },
         "saves": [
-          "reflex"
+          "endure"
         ],
         "statuses": [
-          "restrained"
+          "paralyzed"
+        ]
+      },
+      {
+        "name": "Muddle",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 30-foot Cone | Will]: Confused (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "confused"
         ],
         "recharge": "Cd4"
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Enrage",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, 30-foot Cone | Will]: Berserk (Cd4)</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "physical"
+          "type": "none"
         },
         "saves": [
-          "reflex"
-        ],
-        "statuses": []
-      },
-      {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "poison"
-        },
-        "saves": [
-          "endure"
+          "will"
         ],
         "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+          "berserk"
+        ],
+        "recharge": "Cd4"
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 7
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Floating Eye",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +902,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Antimagical Cone I",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "1iM2rMrHz6X6FJqt",
+      "img": "icons/magic/symbols/chevron-elipse-circle-blue.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Cast Checks in a Near Cone from it the direction it's facing always fail, and any magic effect in the Cone is suspended while in the Cone.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +918,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790186545803,
+        "modifiedTime": 1790186545803,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.1iM2rMrHz6X6FJqt",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +932,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!UBLshFgHkkpbdz5X.1iM2rMrHz6X6FJqt"
     },
     {
-      "name": "Webs",
+      "name": "Occular",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "Or8IetiQoux3SZLY",
+      "img": "/icons/commodities/biological/eye-blue.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Checks to make it Blinded are Favored.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +951,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790186581136,
+        "modifiedTime": 1790186581136,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.Or8IetiQoux3SZLY",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +965,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!UBLshFgHkkpbdz5X.Or8IetiQoux3SZLY"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +978,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181837444,
+    "modifiedTime": 1790188359296,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "UBLshFgHkkpbdz5X",
+  "sort": 1400000,
+  "_key": "!actors!UBLshFgHkkpbdz5X"
 }

@@ -1,17 +1,18 @@
 {
-  "name": "Spider, Giant",
+  "name": "Thulhan",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 36,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
     "senses": [
-      "darksight"
+      "darksight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -720,49 +721,64 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "medium",
+    "beingType": "outer",
+    "beingSubtype": "beyonder",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
-    "zone": "front",
+    "threatLevelOverride": 3.8,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Humanoid aliens with cephalopod-like heads. Their tentacled faces hide a skull-piercing mouth that bores a hole into its victim's skull and drains its brain.</span></p>",
+    "hitDice": 8,
+    "zone": "mid",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "30'"
     },
-    "numberAppearing": "d3",
+    "numberAppearing": "d4",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 0,
-            "faces": 0,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "none"
-        },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
-      },
-      {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Flay",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Paralyzed Target]: 5 (d8+1) Fatigue. If it dies to Fatigue this way, its brain is extracted.</span></p>",
         "damage": {
           "dice": {
             "count": 1,
             "faces": 8,
+            "modifier": 1,
+            "explodesOn": []
+          },
+          "type": "fatigue"
+        },
+        "saves": [],
+        "statuses": []
+      },
+      {
+        "name": "Mind Blast",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Cone Far | Will]: and Paralyzed (1 Round)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 3,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "psychic"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "paralyzed"
+        ],
+        "recharge": "Cd4"
+      },
+      {
+        "name": "Tentacle",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack, Paralyzed Target]: and Restrained if Medium or smaller</span></p>",
+        "damage": {
+          "dice": {
+            "count": 1,
+            "faces": 4,
             "modifier": 0,
             "explodesOn": []
           },
@@ -772,36 +788,16 @@
           "reflex"
         ],
         "statuses": []
-      },
-      {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "poison"
-        },
-        "saves": [
-          "endure"
-        ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 4
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Thulhan",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,14 +890,14 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Magic Ward II",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "qStS1lvSWeKCdAR6",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 2 or more.</span></p>",
         "rules": [],
-        "level": 0,
+        "level": 1,
         "scale": 0,
         "maxLevel": 0
       },
@@ -910,11 +906,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790191826488,
+        "modifiedTime": 1790191826488,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qStS1lvSWeKCdAR6",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +920,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!XE4SU9ZyVgxBORVg.qStS1lvSWeKCdAR6"
     },
     {
-      "name": "Webs",
+      "name": "Levitation",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "0zpnia9i6qXdHRpW",
+      "img": "/icons/magic/control/debuff-energy-hold-levitate-blue-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">(Focus): It has Fly.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +939,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790191860384,
+        "modifiedTime": 1790191860384,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.0zpnia9i6qXdHRpW",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +953,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!XE4SU9ZyVgxBORVg.0zpnia9i6qXdHRpW"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +966,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790188356687,
+    "modifiedTime": 1790191866912,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "XE4SU9ZyVgxBORVg",
+  "sort": 700000,
+  "_key": "!actors!XE4SU9ZyVgxBORVg"
 }

@@ -1,18 +1,18 @@
 {
   "folder": "u1XfqtZHq2S7tl63",
-  "name": "Tentacles IV",
+  "name": "Antimagical Cone II",
   "type": "feature",
-  "_id": "fQwGTzVQoDeDBZI6",
-  "img": "/icons/commodities/biological/tentacle-purple-white.webp",
+  "_id": "G0vavXebywLPIbeG",
+  "img": "icons/magic/symbols/chevron-elipse-circle-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Starts with 4. Targeting a Tentacle causes a -1 penalty to the Attack Check, but severs it if at least 2 damage is dealt with the attack.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Cast Checks in a Far Cone from its central eye always fail, and any magic effect in the Cone is suspended while in the Cone.</span></p>",
     "rules": [],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
   },
   "effects": [],
-  "sort": 4500000,
+  "sort": 0,
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -22,12 +22,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.1.31",
-    "createdTime": 1790109314446,
-    "modifiedTime": 1790191459436,
+    "createdTime": 1790187875474,
+    "modifiedTime": 1790187897099,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQwGTzVQoDeDBZI6"
+  "_key": "!items!G0vavXebywLPIbeG"
 }

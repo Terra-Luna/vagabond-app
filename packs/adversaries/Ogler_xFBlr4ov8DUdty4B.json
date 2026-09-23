@@ -1,17 +1,18 @@
 {
-  "name": "Spider, Giant",
+  "name": "Ogler",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 54,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 4
     },
     "senses": [
-      "darksight"
+      "darksight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -721,24 +722,58 @@
       }
     },
     "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingType": "outer",
+    "beingSubtype": "beyonder",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
-    "zone": "front",
+    "threatLevelOverride": 11.2,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Greedy, pompous creatures out-of-touch with reality by nature. They are always driven insane by arrogance and the insatiable desire to rule over all. They are known to claim the works of their subjects as their own, enforce overreaching taxes, and trick others into outrageous deals.</span></p>",
+    "hitDice": 12,
+    "zone": "back",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "0' (Fly 20')"
     },
-    "numberAppearing": "d3",
+    "numberAppearing": "1",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Eyebeam",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote]: Roll [[/r d8]] for each...</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [],
+        "statuses": []
+      },
+      {
+        "name": "Charm",
+        "description": "<p><span style=\"white-space: pre-wrap;\">1 Charm [Will]: Charmed (Cd4, or until damaged)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "physical"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "charmed"
+        ]
+      },
+      {
+        "name": "Sleep",
+        "description": "<p><span style=\"white-space: pre-wrap;\">2 Sleep [Will]: Unconscious (Cd6, or woken up)</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,20 +784,128 @@
           "type": "none"
         },
         "saves": [
-          "reflex"
+          "will"
+        ],
+        "statuses": [
+          "unconscious"
+        ]
+      },
+      {
+        "name": "Kinesis",
+        "description": "<p><span style=\"white-space: pre-wrap;\">3 Kinesis [Endure]: Restrained (1 Round)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "endure"
         ],
         "statuses": [
           "restrained"
+        ]
+      },
+      {
+        "name": "Petrify",
+        "description": "<p><span style=\"white-space: pre-wrap;\">4 Petrify [Will]: Transformed into a stone statue</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
         ],
-        "recharge": "Cd4"
+        "statuses": [
+          "paralyzed"
+        ]
+      },
+      {
+        "name": "Death",
+        "description": "<p><span style=\"white-space: pre-wrap;\">5 Death [Near Only | Endure]: 14 (4d6)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 4,
+            "faces": 6,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "necrotic"
+        },
+        "saves": [
+          "endure"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Fear",
+        "description": "<p><span style=\"white-space: pre-wrap;\">6 Fear [Will]: Frightened (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": [
+          "frightened"
+        ]
+      },
+      {
+        "name": "Slow",
+        "description": "<p><span style=\"white-space: pre-wrap;\">7 Slow [Will]: Speed reduced to 10' for (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "will"
+        ],
+        "statuses": []
+      },
+      {
+        "name": "Paralysis",
+        "description": "<p><span style=\"white-space: pre-wrap;\">8 Paralysis [Endure]: Paralyzed (Cd4)</span></p>",
+        "damage": {
+          "dice": {
+            "count": 0,
+            "faces": 0,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "none"
+        },
+        "saves": [
+          "endure"
+        ],
+        "statuses": [
+          "paralyzed"
+        ]
       },
       {
         "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 2,
+            "faces": 4,
             "modifier": 0,
             "explodesOn": []
           },
@@ -772,36 +915,51 @@
           "reflex"
         ],
         "statuses": []
-      },
-      {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "poison"
-        },
-        "saves": [
-          "endure"
-        ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "3x Eyebeam, 1x Bite",
+      "actions": [
+        {
+          "name": "Eyebeam",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote]: Roll d8 for each...</span></p>",
+          "damage": {
+            "dice": {
+              "count": 0,
+              "faces": 0,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "none"
+          },
+          "saves": [],
+          "statuses": [],
+          "comboCount": 3
+        },
+        {
+          "name": "Bite",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 4,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 8
+    "morale": 12
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Ogler",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +1052,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Antimagical Cone II",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "G0vavXebywLPIbeG",
+      "img": "icons/magic/symbols/chevron-elipse-circle-blue.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Cast Checks in a Far Cone from its central eye always fail, and any magic effect in the Cone is suspended while in the Cone.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +1068,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790187906607,
+        "modifiedTime": 1790187906607,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.G0vavXebywLPIbeG",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +1082,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!xFBlr4ov8DUdty4B.G0vavXebywLPIbeG"
     },
     {
-      "name": "Webs",
+      "name": "Mind of Madness",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "COFk3u5OGVxlg4u1",
+      "img": "icons/magic/fire/projectile-flaming-eyeball-red.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It can Cast while Berserk.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +1101,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790187969870,
+        "modifiedTime": 1790187969870,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.COFk3u5OGVxlg4u1",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +1115,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!xFBlr4ov8DUdty4B.COFk3u5OGVxlg4u1"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +1128,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181845145,
+    "modifiedTime": 1790188359299,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "xFBlr4ov8DUdty4B",
+  "sort": 1900000,
+  "_key": "!actors!xFBlr4ov8DUdty4B"
 }

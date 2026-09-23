@@ -5,7 +5,7 @@
   "_id": "2j61uBVZjxqCmR5B",
   "img": "/icons/magic/death/skeleton-snake-skull-pink.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">It starts with 8 (d8+4) Heads. Targeting an area that could behead it causes a -3 penalty to the Check, but severs it if at least 10 damage is dealt in a single damage instance.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">It starts with one head, but grows another as it consumes humanoid Beings. Each time it grows a new head, it gains 3 HD (13 HP), and its stats change as shown below:</span></p><p><b><strong style=\"white-space:pre-wrap\"># Consumed  Heads       Size     TL</strong></b></p><p><span style=\"white-space:pre-wrap\">3                     2              Med     4.1</span></p><p><span style=\"white-space:pre-wrap\">6                     3              Lg        5.6</span></p><p><span style=\"white-space:pre-wrap\">9                     4              Lg        6.9</span></p><p><span style=\"white-space:pre-wrap\">15                    5              Hg       8.2</span></p><p><span style=\"white-space:pre-wrap\">24                   6              Hg       9.4</span></p>",
     "rules": [],
     "level": 0,
     "scale": 0,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.1.31",
     "createdTime": 1790111698618,
-    "modifiedTime": 1790116688503,
+    "modifiedTime": 1790186282803,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

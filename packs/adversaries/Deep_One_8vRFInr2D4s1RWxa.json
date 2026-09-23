@@ -1,14 +1,14 @@
 {
-  "name": "Spider, Giant",
+  "name": "Deep One",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 13,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 2
     },
     "senses": [
       "darksight"
@@ -720,49 +720,34 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "medium",
+    "beingType": "outer",
+    "beingSubtype": "beyonder",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
-    "zone": "front",
+    "threatLevelOverride": 2.5,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Fish-like zealot humanoids.</span></p>",
+    "hitDice": 3,
+    "zone": "mid",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "30' (Swim)"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "2d12",
+    "dmgImmunities": [
+      "poison"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "charmed",
+      "paralyzed",
+      "unconscious"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 0,
-            "faces": 0,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "none"
-        },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
-      },
-      {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Claw",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -774,24 +759,20 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Weapon",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "physical"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
@@ -801,7 +782,7 @@
     "morale": 8
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Deep One",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +875,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Amphibious",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "8AdBXnADdJydbAe6",
+      "img": "/icons/creatures/amphibians/treefrog-underneath-teal.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It can breathe air and water.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +891,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790183748137,
+        "modifiedTime": 1790183748137,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.8AdBXnADdJydbAe6",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +905,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!8vRFInr2D4s1RWxa.8AdBXnADdJydbAe6"
     },
     {
-      "name": "Webs",
+      "name": "Sunblinded",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "02pbMVe76rPn8rW2",
+      "img": "/icons/magic/light/explosion-star-glow-orange.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Blinded by Sunlight.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +924,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790185378078,
+        "modifiedTime": 1790185378078,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.02pbMVe76rPn8rW2",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +938,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!8vRFInr2D4s1RWxa.02pbMVe76rPn8rW2"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +951,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181832135,
+    "modifiedTime": 1790188359301,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "8vRFInr2D4s1RWxa",
+  "sort": 2400000,
+  "_key": "!actors!8vRFInr2D4s1RWxa"
 }

@@ -1,14 +1,14 @@
 {
-  "name": "Spider, Giant",
+  "name": "Nightmare",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 27,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 5
     },
     "senses": [
       "darksight"
@@ -720,49 +720,31 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "medium",
+    "beingType": "outer",
+    "beingSubtype": "hellspawn",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": 5.6,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Black, semi-skeletal hell horses with manes of fire.</span></p>",
+    "hitDice": 6,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "50' (Fly)"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "fire",
+      "poison"
+    ],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 0,
-            "faces": 0,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "none"
-        },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
-      },
-      {
         "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 2,
+            "faces": 4,
             "modifier": 0,
             "explodesOn": []
           },
@@ -774,34 +756,31 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Stomp",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 3 (d6) plus 3 ([[/r d6]] if Prone)) and Burning (Cd4)</span></p>",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "physical"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 7
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Nightmare",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +873,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Illuminating",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "tleGbFgH5BOz2643",
+      "img": "icons/magic/light/explosion-star-glow-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Sheds light out to Near.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +889,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790187425865,
+        "modifiedTime": 1790187425865,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.tleGbFgH5BOz2643",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +903,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!H5dSxcCpr3LlYsIc.tleGbFgH5BOz2643"
     },
     {
-      "name": "Webs",
+      "name": "Fire Rider",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "HXega2EGl2q4Y0mj",
+      "img": "/icons/magic/fire/elemental-creature-horse.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Allies mounted on it are Immune to Fire.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +922,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790187484974,
+        "modifiedTime": 1790187484974,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.HXega2EGl2q4Y0mj",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +936,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!H5dSxcCpr3LlYsIc.HXega2EGl2q4Y0mj"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +949,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181843473,
+    "modifiedTime": 1790188359298,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "H5dSxcCpr3LlYsIc",
+  "sort": 1800000,
+  "_key": "!actors!H5dSxcCpr3LlYsIc"
 }

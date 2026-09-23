@@ -892,7 +892,7 @@
       "_id": "Vg4aW4j5KFUWoqRJ",
       "img": "/icons/creatures/invertebrates/spider-web-red.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">t can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,

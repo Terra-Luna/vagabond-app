@@ -1,17 +1,18 @@
 {
-  "name": "Spider, Giant",
+  "name": "Dimension Ripper",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 45,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 3
     },
     "senses": [
-      "darksight"
+      "darksight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -721,24 +722,30 @@
       }
     },
     "beingSize": "large",
-    "beingType": "beast",
+    "beingType": "outer",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": null,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Boogies capable of dimensional travel at-will, dimension rippers are many-mouthed, pale horrors who were cheats and double-talkers in life.</span></p>",
+    "hitDice": 10,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "35'"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "cold",
+      "fire",
+      "physical"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "sickened"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Temporal Lock",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Sight | Will]: Paralyzed (Cd4)</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,21 +756,20 @@
           "type": "none"
         },
         "saves": [
-          "reflex"
+          "will"
         ],
         "statuses": [
-          "restrained"
+          "paralyzed"
         ],
         "recharge": "Cd4"
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Claw",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
+            "count": 2,
+            "faces": 6,
+            "modifier": 1,
             "explodesOn": []
           },
           "type": "physical"
@@ -774,34 +780,66 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Bite",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
+            "count": 2,
+            "faces": 6,
+            "modifier": 1,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "physical"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw, 1x Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 1,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 1,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 8
+    "morale": 5
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Dimension Ripper",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +932,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Maddening I",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "7NHuETBGM0geC7CA",
+      "img": "/icons/creatures/unholy/demon-fire-horned-mask.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Enemies that can hear it for the first time and at the start of their Turns must pass [Will] or be Confused (Cd4).</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +948,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790185826075,
+        "modifiedTime": 1790185826075,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.7NHuETBGM0geC7CA",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +962,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!2yJnnkw4QmOGdPR1.7NHuETBGM0geC7CA"
     },
     {
-      "name": "Webs",
+      "name": "Terror I",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "CuIpDxjjkXtIn4b9",
+      "img": "/icons/magic/control/fear-fright-monster-grin-red-orange.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">[Enemies' first time seeing it and on their Turns | Will]: Frightened until they pass this Check on a subsequent Turn, or for Cd4 after.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +981,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790185860584,
+        "modifiedTime": 1790185860584,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.CuIpDxjjkXtIn4b9",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +995,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!2yJnnkw4QmOGdPR1.CuIpDxjjkXtIn4b9"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +1008,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790181834570,
+    "modifiedTime": 1790188359296,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "2yJnnkw4QmOGdPR1",
+  "sort": 1200000,
+  "_key": "!actors!2yJnnkw4QmOGdPR1"
 }

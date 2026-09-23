@@ -1,17 +1,18 @@
 {
-  "name": "Spider, Giant",
+  "name": "Sphinx",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 54,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 4
     },
     "senses": [
-      "darksight"
+      "allsight",
+      "telepath"
     ],
     "statuses": {
       "toggles": {
@@ -721,24 +722,32 @@
       }
     },
     "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingType": "outer",
+    "beingSubtype": "beyonder",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": 5.7,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Monsters with human faces, lion bodies, and the wings of eagles. Known to trade in knowledge and poetry, making riddles a valuable commodity to these creatures. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 12,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "60' (Fly 120')"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "physical"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "berserk",
+      "charmed",
+      "confused",
+      "frightened",
+      "suffocating"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Roar",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Action, all Beings who hear it | Will] (2/Day): Frightened (Cd4, and Dazed if within Near)</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,20 +758,19 @@
           "type": "none"
         },
         "saves": [
-          "reflex"
+          "will"
         ],
         "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
+          "dazed",
+          "frightened"
+        ]
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Claw",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 2,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -774,34 +782,31 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Dispel Magic",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Remote | Will] (2/Day): A magic effect of its choice is dispelled or suspended for [[/r 2d6#Dispel Magic]] hours if it is a Curse or Relic Power</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 0,
+            "faces": 0,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "none"
         },
         "saves": [
-          "endure"
+          "will"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
       "name": "",
       "actions": []
     },
-    "morale": 8
+    "morale": 10
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Sphinx",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +899,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Future Sight",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "fbciX1HnqZK2nkCV",
+      "img": "/icons/commodities/biological/eye-lizard-green.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Hinders Saves against its Attacks.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +915,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790190352105,
+        "modifiedTime": 1790190352105,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.fbciX1HnqZK2nkCV",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,17 +929,17 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!g9OSEXNfs7fivWfZ.fbciX1HnqZK2nkCV"
     },
     {
-      "name": "Webs",
+      "name": "Magic Ward II",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "qStS1lvSWeKCdAR6",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 2 or more.</span></p>",
         "rules": [],
-        "level": 0,
+        "level": 1,
         "scale": 0,
         "maxLevel": 0
       },
@@ -943,11 +948,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790190358548,
+        "modifiedTime": 1790190358548,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qStS1lvSWeKCdAR6",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +962,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!g9OSEXNfs7fivWfZ.qStS1lvSWeKCdAR6"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +975,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790188351369,
+    "modifiedTime": 1790191334291,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "g9OSEXNfs7fivWfZ",
+  "sort": 200000,
+  "_key": "!actors!g9OSEXNfs7fivWfZ"
 }

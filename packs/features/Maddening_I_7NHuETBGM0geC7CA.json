@@ -1,18 +1,18 @@
 {
   "folder": "u1XfqtZHq2S7tl63",
-  "name": "Tentacles IV",
+  "name": "Maddening I",
   "type": "feature",
-  "_id": "fQwGTzVQoDeDBZI6",
-  "img": "/icons/commodities/biological/tentacle-purple-white.webp",
+  "_id": "7NHuETBGM0geC7CA",
+  "img": "/icons/creatures/unholy/demon-fire-horned-mask.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Starts with 4. Targeting a Tentacle causes a -1 penalty to the Attack Check, but severs it if at least 2 damage is dealt with the attack.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Enemies that can hear it for the first time and at the start of their Turns must pass [Will] or be Confused (Cd4).</span></p>",
     "rules": [],
     "level": 0,
     "scale": 0,
     "maxLevel": 0
   },
   "effects": [],
-  "sort": 4500000,
+  "sort": 0,
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -22,12 +22,12 @@
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
     "systemVersion": "0.1.31",
-    "createdTime": 1790109314446,
-    "modifiedTime": 1790191459436,
+    "createdTime": 1790185793152,
+    "modifiedTime": 1790185818916,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
   },
-  "_key": "!items!fQwGTzVQoDeDBZI6"
+  "_key": "!items!7NHuETBGM0geC7CA"
 }

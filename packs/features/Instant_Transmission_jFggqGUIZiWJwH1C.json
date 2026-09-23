@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Instant Transmission",
+  "type": "feature",
+  "_id": "jFggqGUIZiWJwH1C",
+  "img": "/icons/magic/light/beam-rays-teal.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">(Recharge Cd10 days): If it is in space, it can use its Action to teleport itself and any Beings in physical contact with it at lightspeed to anywhere within the nearby star system.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.31",
+    "createdTime": 1790182993432,
+    "modifiedTime": 1790183015610,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!jFggqGUIZiWJwH1C"
+}

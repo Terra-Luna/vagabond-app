@@ -1,17 +1,17 @@
 {
-  "name": "Spider, Giant",
+  "name": "Zotz Demon",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 63,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 4
     },
     "senses": [
-      "darksight"
+      "echolocation"
     ],
     "statuses": {
       "toggles": {
@@ -720,25 +720,31 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "huge",
+    "beingType": "outer",
+    "beingSubtype": "hellspawn",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
+    "threatLevelOverride": 9.2,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Massive bats out of hell. Immune to physical damage from non-Relics.</span></p>",
+    "hitDice": 14,
     "zone": "front",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "20' (Fly 80')"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "d4",
+    "dmgImmunities": [
+      "physical",
+      "poison"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "fatigued",
+      "frightened"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Shriek",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Action, Far Aura | Will]: Frightened (Cd6, it can't hear)</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -749,21 +755,20 @@
           "type": "none"
         },
         "saves": [
-          "reflex"
+          "will"
         ],
         "statuses": [
-          "restrained"
+          "frightened"
         ],
         "recharge": "Cd4"
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Claw",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
+            "count": 2,
+            "faces": 6,
+            "modifier": 2,
             "explodesOn": []
           },
           "type": "physical"
@@ -774,34 +779,68 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Bite",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and this Being is healed for the damage dealt</span></p>",
         "damage": {
           "dice": {
-            "count": 1,
+            "count": 3,
             "faces": 8,
-            "modifier": 0,
+            "modifier": 2,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "physical"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Claw, 1x Bite",
+      "actions": [
+        {
+          "name": "Claw",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 2,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Bite",
+          "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: and this Being is healed for the damage dealt</span></p>",
+          "damage": {
+            "dice": {
+              "count": 3,
+              "faces": 8,
+              "modifier": 2,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 8
+    "morale": 11
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Zotz Demon",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +933,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Avatar of Death",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "HTIIquD97edrsAOh",
+      "img": "/icons/magic/death/skull-energy-light-white.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">No Being within Near can be revived.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +949,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790193032994,
+        "modifiedTime": 1790193032994,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.HTIIquD97edrsAOh",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +963,48 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!6YJsZT9HY8bCUIuV.HTIIquD97edrsAOh"
     },
     {
-      "name": "Webs",
+      "name": "Magic Ward II",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "qStS1lvSWeKCdAR6",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 2 or more.</span></p>",
+        "rules": [],
+        "level": 1,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790193037791,
+        "modifiedTime": 1790193037791,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qStS1lvSWeKCdAR6",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!6YJsZT9HY8bCUIuV.qStS1lvSWeKCdAR6"
+    },
+    {
+      "name": "Nimble",
+      "type": "feature",
+      "_id": "JO3IeYNyk5XxFT8i",
+      "img": "icons/skills/movement/feet-winged-boots-brown.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">Attacks against it can't be Favored if it can Move.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +1015,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790193048049,
+        "modifiedTime": 1790193048049,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.JO3IeYNyk5XxFT8i",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +1029,11 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!6YJsZT9HY8bCUIuV.JO3IeYNyk5XxFT8i"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +1042,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790192376110,
+    "modifiedTime": 1790193075203,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "6YJsZT9HY8bCUIuV",
+  "sort": 50000,
+  "_key": "!actors!6YJsZT9HY8bCUIuV"
 }

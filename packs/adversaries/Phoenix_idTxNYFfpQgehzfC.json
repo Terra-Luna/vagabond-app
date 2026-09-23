@@ -1,17 +1,17 @@
 {
-  "name": "Spider, Giant",
+  "name": "Phoenix",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 4,
+      "value": 90,
       "max": 0
     },
     "armor": {
-      "rating": 1
+      "rating": 5
     },
     "senses": [
-      "darksight"
+      "allsight"
     ],
     "statuses": {
       "toggles": {
@@ -720,49 +720,53 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
-    "beingSubtype": "none",
+    "beingSize": "medium",
+    "beingType": "outer",
+    "beingSubtype": "divine",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
-    "hitDice": 1,
-    "zone": "front",
+    "threatLevelOverride": 10.5,
+    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics.</span></p><p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.relics.Item.Ax8nTfHlBaJSe9vr]{Phoenix Down}</span></p>",
+    "hitDice": 20,
+    "zone": "back",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "50' (Fly 150')"
     },
-    "numberAppearing": "d3",
-    "dmgImmunities": [],
+    "numberAppearing": "1",
+    "dmgImmunities": [
+      "fire",
+      "physical"
+    ],
     "dmgWeaknesses": [],
-    "statusImmunities": [],
+    "statusImmunities": [
+      "charmed",
+      "confused",
+      "paralyzed",
+      "restrained",
+      "sickened",
+      "suffocating"
+    ],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Resurrect",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, the corpse of an Ally it is Touching] (1/Day): Revived at Full HP with 0 Fatigue</span></p>",
         "damage": {
           "dice": {
-            "count": 0,
-            "faces": 0,
+            "count": 20,
+            "faces": 20,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "healing"
         },
-        "saves": [
-          "reflex"
-        ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
+        "saves": [],
+        "statuses": []
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Talon",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 2,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -774,34 +778,83 @@
         "statuses": []
       },
       {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
+        "name": "Beak",
         "damage": {
           "dice": {
-            "count": 1,
-            "faces": 8,
+            "count": 4,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "poison"
+          "type": "physical"
         },
         "saves": [
-          "endure"
+          "reflex"
         ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
+        "statuses": []
+      },
+      {
+        "name": "Fiery Revival",
+        "description": "<p><span style=\"white-space: pre-wrap;\">(1/Day): If it dies, a ball of fire erupts out from it as a Near Aura. All within must pass a [Reflex] Save or take 55 (d10×10) and be Burning (Cd6). This fire is divine, and ignores Immune to Fire. This Being is than revived in 1 Round at full HP. It will always try to flee until this Ability refreshes.</span></p>",
+        "damage": {
+          "dice": {
+            "count": 10,
+            "faces": 10,
+            "modifier": 0,
+            "explodesOn": []
+          },
+          "type": "fire"
+        },
+        "saves": [
+          "reflex"
+        ],
+        "statuses": []
       }
     ],
     "combo": {
-      "name": "",
-      "actions": []
+      "name": "2x Talon, 1x Beak",
+      "actions": [
+        {
+          "name": "Talon",
+          "damage": {
+            "dice": {
+              "count": 2,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 2
+        },
+        {
+          "name": "Beak",
+          "damage": {
+            "dice": {
+              "count": 4,
+              "faces": 6,
+              "modifier": 0,
+              "explodesOn": []
+            },
+            "type": "physical"
+          },
+          "saves": [
+            "reflex"
+          ],
+          "statuses": [],
+          "comboCount": 1
+        }
+      ],
+      "description": null
     },
-    "morale": 8
+    "morale": 10
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Phoenix",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -894,12 +947,12 @@
   },
   "items": [
     {
-      "name": "Web Walker",
+      "name": "Illuminator",
       "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
+      "_id": "sfprKHipeqCvpjJg",
+      "img": "icons/magic/light/explosion-beam-impact-silhouette.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Sheds Sunlight in Near.</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -910,11 +963,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790189276485,
+        "modifiedTime": 1790189276485,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.sfprKHipeqCvpjJg",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -924,15 +977,15 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
+      "_key": "!actors.items!idTxNYFfpQgehzfC.sfprKHipeqCvpjJg"
     },
     {
-      "name": "Webs",
+      "name": "Living Fire",
       "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
+      "_id": "CkCznp7OoY39xYqo",
+      "img": "/icons/magic/fire/elemental-fire-flying.webp",
       "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
+        "description": "<p><span style=\"white-space:pre-wrap\">Close Beings are Burning ([[/r 2d6#Living Fire]])</span></p>",
         "rules": [],
         "level": 0,
         "scale": 0,
@@ -943,11 +996,11 @@
       "_stats": {
         "coreVersion": "14.361",
         "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
+        "systemVersion": "0.1.31",
+        "createdTime": 1790189360997,
+        "modifiedTime": 1790189360997,
         "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.CkCznp7OoY39xYqo",
         "duplicateSource": null,
         "exportSource": null
       },
@@ -957,11 +1010,44 @@
       },
       "folder": null,
       "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
+      "_key": "!actors.items!idTxNYFfpQgehzfC.CkCznp7OoY39xYqo"
+    },
+    {
+      "name": "Magic Ward II",
+      "type": "feature",
+      "_id": "qStS1lvSWeKCdAR6",
+      "img": "icons/magic/defensive/shield-barrier-glowing-triangle-blue-yellow.webp",
+      "system": {
+        "description": "<p><span style=\"white-space:pre-wrap\">It is not affected by Casts it is unwillingly subjected to unless the Caster's Check exceeds their difficulty by 2 or more.</span></p>",
+        "rules": [],
+        "level": 1,
+        "scale": 0,
+        "maxLevel": 0
+      },
+      "effects": [],
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.361",
+        "systemId": "vagabond-app",
+        "systemVersion": "0.1.31",
+        "createdTime": 1790189365262,
+        "modifiedTime": 1790189365262,
+        "lastModifiedBy": "KyorYoEvge7ElSaj",
+        "compendiumSource": "Compendium.vagabond-app.features.Item.qStS1lvSWeKCdAR6",
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "KyorYoEvge7ElSaj": 3
+      },
+      "folder": null,
+      "sort": 0,
+      "_key": "!actors.items!idTxNYFfpQgehzfC.qStS1lvSWeKCdAR6"
     }
   ],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "blpOYfDz3dXMeEUx",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +1056,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790188348491,
+    "modifiedTime": 1790189441634,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
-  "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_id": "idTxNYFfpQgehzfC",
+  "sort": 1100000,
+  "_key": "!actors!idTxNYFfpQgehzfC"
 }

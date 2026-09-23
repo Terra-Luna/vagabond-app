@@ -1,5 +1,5 @@
 {
-  "name": "Spider, Giant",
+  "name": "Thug",
   "type": "adversary",
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
@@ -10,9 +10,7 @@
     "armor": {
       "rating": 1
     },
-    "senses": [
-      "darksight"
-    ],
+    "senses": [],
     "statuses": {
       "toggles": {
         "berserk": false,
@@ -720,49 +718,44 @@
         }
       }
     },
-    "beingSize": "large",
-    "beingType": "beast",
+    "beingSize": "medium",
+    "beingType": "humanlike",
     "beingSubtype": "none",
     "threatLevel": 1,
-    "threatLevelOverride": 2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Oversized arachnids that can spin and shoot webs.</span></p>",
+    "threatLevelOverride": 1.5,
+    "description": "",
     "hitDice": 1,
-    "zone": "front",
+    "zone": "back",
     "movement": {
-      "speed": "35' (Climb, Cling)"
+      "speed": "30'"
     },
-    "numberAppearing": "d3",
+    "numberAppearing": "d4",
     "dmgImmunities": [],
     "dmgWeaknesses": [],
     "statusImmunities": [],
     "actions": [
       {
-        "name": "Web Shot",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Ranged Attack]: Restrained by Webs.</span></p>",
+        "name": "Arbalest",
         "damage": {
           "dice": {
-            "count": 0,
-            "faces": 0,
+            "count": 1,
+            "faces": 10,
             "modifier": 0,
             "explodesOn": []
           },
-          "type": "none"
+          "type": "pierce"
         },
         "saves": [
           "reflex"
         ],
-        "statuses": [
-          "restrained"
-        ],
-        "recharge": "Cd4"
+        "statuses": []
       },
       {
-        "name": "Bite",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] against Sickened or take another 4 (d8) damage and be Sickened (Cd8, Paralyzed).</span></p>",
+        "name": "Weapon",
         "damage": {
           "dice": {
             "count": 1,
-            "faces": 8,
+            "faces": 6,
             "modifier": 0,
             "explodesOn": []
           },
@@ -772,26 +765,6 @@
           "reflex"
         ],
         "statuses": []
-      },
-      {
-        "name": "Bite Effect",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Endure] or Sickened as described above.</span></p>",
-        "damage": {
-          "dice": {
-            "count": 1,
-            "faces": 8,
-            "modifier": 0,
-            "explodesOn": []
-          },
-          "type": "poison"
-        },
-        "saves": [
-          "endure"
-        ],
-        "statuses": [
-          "paralyzed",
-          "sickened"
-        ]
       }
     ],
     "combo": {
@@ -801,7 +774,7 @@
     "morale": 8
   },
   "prototypeToken": {
-    "name": "Spider, Giant",
+    "name": "Thug",
     "displayName": 0,
     "actorLink": false,
     "width": 1,
@@ -892,76 +865,9 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [
-    {
-      "name": "Web Walker",
-      "type": "feature",
-      "_id": "Vg4aW4j5KFUWoqRJ",
-      "img": "/icons/creatures/invertebrates/spider-web-red.webp",
-      "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can sense any Being on the same web as it as if by Blindsight, and is not impeded by web as Difficult Terrain.</span></p>",
-        "rules": [],
-        "level": 0,
-        "scale": 0,
-        "maxLevel": 0
-      },
-      "effects": [],
-      "flags": {},
-      "_stats": {
-        "coreVersion": "14.361",
-        "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037607407,
-        "modifiedTime": 1790037607407,
-        "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.Vg4aW4j5KFUWoqRJ",
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "ownership": {
-        "default": 0,
-        "KyorYoEvge7ElSaj": 3
-      },
-      "folder": null,
-      "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.Vg4aW4j5KFUWoqRJ"
-    },
-    {
-      "name": "Webs",
-      "type": "feature",
-      "_id": "i0MbLVGOYWDmeJ7j",
-      "img": "/icons/creatures/webs/web-spider-glowing-purple.webp",
-      "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Its web is an Object with 4 HP and Armor: 5.</span></p>",
-        "rules": [],
-        "level": 0,
-        "scale": 0,
-        "maxLevel": 0
-      },
-      "effects": [],
-      "flags": {},
-      "_stats": {
-        "coreVersion": "14.361",
-        "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790037608114,
-        "modifiedTime": 1790037608114,
-        "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.i0MbLVGOYWDmeJ7j",
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "ownership": {
-        "default": 0,
-        "KyorYoEvge7ElSaj": 3
-      },
-      "folder": null,
-      "sort": 0,
-      "_key": "!actors.items!9zEVSiSGQKjkyWKN.i0MbLVGOYWDmeJ7j"
-    }
-  ],
+  "items": [],
   "effects": [],
-  "folder": "TqnyvVE4A9LUb12r",
+  "folder": "QKf9Kfy4zVpf06sn",
   "ownership": {
     "default": 0,
     "KyorYoEvge7ElSaj": 3
@@ -970,15 +876,15 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
-    "createdTime": 1790037435629,
-    "modifiedTime": 1790037649871,
+    "systemVersion": "0.1.31",
+    "createdTime": 1790180642290,
+    "modifiedTime": 1790181387226,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null
   },
-  "_id": "9zEVSiSGQKjkyWKN",
+  "_id": "uoempdlxZgaykNAZ",
   "sort": 0,
-  "_key": "!actors!9zEVSiSGQKjkyWKN"
+  "_key": "!actors!uoempdlxZgaykNAZ"
 }
