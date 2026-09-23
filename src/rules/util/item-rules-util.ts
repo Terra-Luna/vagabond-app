@@ -55,8 +55,15 @@ export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
         return savedSelections ? { ...rule, selections: foundry.utils.deepClone(savedSelections) } : { ...rule }
     })
     
-    const sources: ItemRuleSource[] = [{ item: itemOrSystem, owner: sourceOwner, rules: applySavedSelections(system?.rules ?? [], sourceOwner) }]
-    const featureIds = Array.isArray(system?.featureIds) ? system.featureIds : []
+    const sources: ItemRuleSource[] = [{
+        item: itemOrSystem,
+        owner: sourceOwner,
+        rules: applySavedSelections(system?.rules ?? [], sourceOwner)
+    }]
+
+    const featureIds = Array.isArray(system?.featureIds)
+        ? system.featureIds
+        : []
 
     featureIds.forEach(featureId => {
         const feature = ItemsCache.items.get(featureId)
@@ -67,11 +74,11 @@ export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
         })
     })
 
-    return sources
+    return sources.filter(s => s.item?.system?.isEquipped !== false)
 }
 
-export const getItemRules = (itemOrSystem: any): any[] => {
-    return getItemRuleSources(itemOrSystem).flatMap(source => source.rules)
+export const getItemRules = (item: any): any[] => {
+    return getItemRuleSources(item).flatMap(source => source.rules)
 }
 
 /**

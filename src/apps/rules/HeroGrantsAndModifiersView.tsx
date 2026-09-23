@@ -33,7 +33,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             pack: rule.pack,
             selections: rule.selections,
             sourceName: source.item?.name || item.name,
-            sourceImg: source.item?.img || item.img,
+            sourceImg: source.item?.img || item.img
         })))
     })
 
@@ -46,11 +46,10 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             pack: rule.pack,
             selections: rule.selections,
             sourceName: item.parent.name,
-            sourceImg: item.parent.img,
+            sourceImg: item.parent.img
         })) as ActiveRuleDisplay[]
-        rules.forEach(rule => {
-            allRules.push(rule)
-        })
+
+        rules.forEach(rule => { allRules.push(rule) })
     })
 
     // Separate rules into Active and Upcoming (Locked) categories

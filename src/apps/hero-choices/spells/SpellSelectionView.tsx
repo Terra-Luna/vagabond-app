@@ -33,6 +33,7 @@ export const useSpellSelectionView = (
     // Spells automatically granted by chosen Ancestry & Class.
     const [ancestrySpellGrants, setAncestrySpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
     const [classSpellGrants, setClassSpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
+    const [gearSpellGrants, setGearSpellGrants] = useState<(ItemRule & { item: string, uuid: string, source: string })[]>([])
 
     // Player's spell choices for each slot.
     const [ancestrySpellSlots, setAncestrySpellSlots] = useState<{ value: string, label: string, ruleName: string, ruleId: string, selectionId?: string, allowedValues?: string[] }[]>([])
@@ -75,6 +76,7 @@ export const useSpellSelectionView = (
     useEffect(() => {
         getItemGrants('spell', [ancestry]).then(grants => setAncestrySpellGrants(grants))
         getItemGrants('spell', [clazz]).then(grants => setClassSpellGrants(grants))
+        getItemGrants('spell', items).then(grants => setGearSpellGrants(grants))
 
         const ancestryRules = getItemChoiceRules(level, ancestry?.system?.rules?.filter(r => (r as any).level <= 1) ?? [])
         setAncestrySpellSlots(loadInitialSlots(ancestryRules.filter(r => r.pack === 'spell')))
@@ -116,12 +118,12 @@ export const useSpellSelectionView = (
             <div className="inline-flex flex-col items-stretch w-full @2xl:w-3/5 mx-auto">
                 {selectionsLoaded && <>
                     {/* GRANTED SPELLS (BY CLASS & ANCESTRY) */}
-                    {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots].length > 0 &&
+                    {[...ancestrySpellGrants, ...classSpellGrants, ...ancestrySpellSlots, ...gearSpellGrants].length > 0 &&
                         <div className="space-y-1 mb-4">
-                            {[...ancestrySpellGrants, ...classSpellGrants].length > 0 &&
+                            {[...ancestrySpellGrants, ...classSpellGrants, ...gearSpellGrants].length > 0 &&
                                 <HeroCreationLabel text={strings.grantedSpells} />
                             }
-                            {[...ancestrySpellGrants, ...classSpellGrants].map((grant, index) => (
+                            {[...ancestrySpellGrants, ...classSpellGrants, ...gearSpellGrants].map((grant, index) => (
                                 <ItemGrantCard
                                     key={`grant-${index}`}
                                     img={spellsList.find(sp => sp.value === grant.uuid)?.img}
@@ -152,7 +154,7 @@ export const useSpellSelectionView = (
                                 slotGroup={classSpellSlots}
                                 options={spellsList}
                                 otherSlotGroup={[...ancestrySpellSlots, ...perkSpellSlots, ...itemSpellSlots]}
-                                grants={[...ancestrySpellGrants, ...classSpellGrants]}
+                                grants={[...ancestrySpellGrants, ...classSpellGrants, ...gearSpellGrants]}
                                 onSelect={(index, label, selectedId) => onSelectSpell(index, label, selectedId, setClassSpellSlots)}
                             />
                         </div>
