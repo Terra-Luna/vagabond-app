@@ -74,45 +74,54 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
         
         const bar = document.createElement("div")
         bar.className = "vagabond-adversary-filters"
+
+        const STYLE_FLEX_CONTAINER = "display: flex !important; flex-direction: row !important; gap: 8px; width: 100%;";
+        const STYLE_FLEX_LABEL = "flex: 1 !important; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 1 !important; margin: 0 !important; line-height: 1.2;";
+        const STYLE_INPUT_BOX = "width: 100%; box-sizing: border-box; margin-top: -2px !important;";
+
         bar.innerHTML = `
-            <label>Size
-                <select data-filter="beingSize">
-                    <option value="">Any</option>
-                    ${beingSizeOptions}
-                </select>
-            </label>
-            <label>Being Type
-                <select data-filter="beingType">
-                    <option value="">Any</option>
-                    ${beingTypeOptions}
-                </select>
-            </label>
-            <label>Subtype
-                <select data-filter="beingSubtype">
-                    <option value="">Any</option>
-                    ${beingSubtypeOptions}
-                </select>
-            </label>
-            <div style="display: flex !important; flex-direction: row !important; gap: 8px; width: 100%;">
-                <label style="flex: 1 !important; min-width: 0; display: flex; flex-direction: column;">
-                    HD Min
-                    <style>input[data-filter] { width: 100%; box-sizing: border-box; }</style>
-                    <input type="number" min="0" step="1" data-filter="hitDiceMin" style="width: 100%; box-sizing: border-box;" />
+            <div style="${STYLE_FLEX_CONTAINER} margin-bottom: 8px;">
+                <label style="${STYLE_FLEX_LABEL}">Size
+                    <select data-filter="beingSize" style="${STYLE_INPUT_BOX}">
+                        <option value="">Any</option>
+                        ${beingSizeOptions}
+                    </select>
                 </label>
-                <label style="flex: 1 !important; min-width: 0; display: flex; flex-direction: column;">
-                    HD Max
-                    <input type="number" min="0" step="1" data-filter="hitDiceMax" style="width: 100%; box-sizing: border-box;" />
+                <label style="${STYLE_FLEX_LABEL}">Being Type
+                    <select data-filter="beingType" style="${STYLE_INPUT_BOX}">
+                        <option value="">Any</option>
+                        ${beingTypeOptions}
+                    </select>
                 </label>
-                <label style="flex: 1 !important; min-width: 0; display: flex; flex-direction: column;">
-                    TL Min
-                    <input type="number" min="0" step="0.5" data-filter="threatLevelMin" style="width: 100%; box-sizing: border-box;" />
-                </label>
-                <label style="flex: 1 !important; min-width: 0; display: flex; flex-direction: column;">
-                    TL Max
-                    <input type="number" min="0" step="0.5" data-filter="threatLevelMax" style="width: 100%; box-sizing: border-box;" />
+                <label style="${STYLE_FLEX_LABEL}">Subtype
+                    <select data-filter="beingSubtype" style="${STYLE_INPUT_BOX}">
+                        <option value="">Any</option>
+                        ${beingSubtypeOptions}
+                    </select>
                 </label>
             </div>
-        `
+            
+            <div style="${STYLE_FLEX_CONTAINER}">
+                <label style="${STYLE_FLEX_LABEL}">
+                    HD Min
+                    <style>input[data-filter], select[data-filter] { ${STYLE_INPUT_BOX} }</style>
+                    <input type="number" min="0" step="1" data-filter="hitDiceMin" style="${STYLE_INPUT_BOX}" />
+                </label>
+                <label style="${STYLE_FLEX_LABEL}">
+                    HD Max
+                    <input type="number" min="0" step="1" data-filter="hitDiceMax" style="${STYLE_INPUT_BOX}" />
+                </label>
+                <label style="${STYLE_FLEX_LABEL}">
+                    TL Min
+                    <input type="number" min="0" step="0.5" data-filter="threatLevelMin" style="${STYLE_INPUT_BOX}" />
+                </label>
+                <label style="${STYLE_FLEX_LABEL}">
+                    TL Max
+                    <input type="number" min="0" step="0.5" data-filter="threatLevelMax" style="${STYLE_INPUT_BOX}" />
+                </label>
+            </div>
+        `;
+
 
         bar.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-filter]").forEach(el => {
             el.addEventListener("change", () => this._onFilterChange(el))

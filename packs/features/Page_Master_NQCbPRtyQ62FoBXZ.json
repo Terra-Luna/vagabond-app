@@ -17,7 +17,7 @@
       {
         "id": "y7vmJTHsGVbm0iXd",
         "key": "ChoiceSet",
-        "label": "Bookworm Spell",
+        "label": "Page Master Spell",
         "level": 1,
         "scale": 0,
         "maxChoices": 1,
@@ -45,9 +45,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.23",
+    "systemVersion": "0.1.31",
     "createdTime": 1789506115020,
-    "modifiedTime": 1789918130346,
+    "modifiedTime": 1790205754739,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
