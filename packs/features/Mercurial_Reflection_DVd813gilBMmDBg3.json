@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Mercurial Reflection",
+  "type": "feature",
+  "_id": "DVd813gilBMmDBg3",
+  "img": "/icons/sundries/survival/mirror-plain.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Spells that Target it are reflected at a different randomly-determined Target.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.31",
+    "createdTime": 1790198953329,
+    "modifiedTime": 1790198992727,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!DVd813gilBMmDBg3"
+}

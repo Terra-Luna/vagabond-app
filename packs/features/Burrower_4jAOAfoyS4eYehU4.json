@@ -1,0 +1,33 @@
+{
+  "folder": "u1XfqtZHq2S7tl63",
+  "name": "Burrower",
+  "type": "feature",
+  "_id": "4jAOAfoyS4eYehU4",
+  "img": "/icons/commodities/wood/logs-pile-rough-brown.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">It ignores Difficult Terrain of sand, stone, and earth, and it can Move by quickly burrowing in them. However, it can't cross water deeper than its height.</span></p>",
+    "rules": [],
+    "level": 0,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.31",
+    "createdTime": 1790195710985,
+    "modifiedTime": 1790195748336,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!4jAOAfoyS4eYehU4"
+}

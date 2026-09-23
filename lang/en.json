@@ -159,7 +159,10 @@
       "undead": "Undead",
       "shape": "Shapechanger",
       "wyrm": "Wyrm",
-      "fae": "Fae"
+      "fae": "Fae",
+      "slime": "Slime",
+      "plant": "Plant",
+      "djinn": "Djinn"
     },
     "DamageTypes": {
       "none": "-",

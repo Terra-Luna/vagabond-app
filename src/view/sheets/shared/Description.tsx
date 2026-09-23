@@ -29,7 +29,7 @@ export const Description = ({ item, descriptionOverride, showFullView = false, i
                                     onChange={onDescriptionChange}
                                 />
                             </div> :
-                            <div className={`${showFullView ? 'h-fit' : ''} px-2 text-justify text-sm font-paradigm font-normal leading-5.5 ${italic ? 'italic' : ''} overflow-hidden`}>
+                            <div className={`${showFullView ? 'h-fit' : ''} px-2 text-sm font-paradigm font-normal leading-5.5 ${italic ? 'italic' : ''} overflow-hidden`}>
                                 {stripHtml(description).length > 0 &&
                                     <div className={`${showFullView ? 'h-fit' : 'max-h-54 overflow-hidden'}`}>
                                         <EnrichedContent content={description} actor={item.actor} />
