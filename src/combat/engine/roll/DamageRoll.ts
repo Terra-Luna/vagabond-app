@@ -110,7 +110,7 @@ export class DamageRoll {
             }
         }
 
-        const combinedExplosions = canExplode ? this.mergeExplosions(explosions) : null
+        const combinedExplosions = canExplode ? this.mergeExplosions([...explosions]) : null
         const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
         const totalDice = getResults(damageRoll)?.length + (canExplode ? (getResults(combinedExplosions!)?.length ?? 0) : 0)
         const perDieBonus = totalDice * (this.perDieDmgBonus ?? 0)
@@ -145,15 +145,10 @@ export class DamageRoll {
         explosions: Roll.Evaluated<Roll>[],
         explodesOn: number[]
     ) {
-        let count = 0
-
-        damageRollTerms.forEach(term => {
-            term.results.forEach(r => {
-                if (explodesOn.includes(r.result)) {
-                    count += 1
-                }
-            })
-        })
+        const count = damageRollTerms
+            .flatMap(it => it.results)
+            .filter(it => explodesOn.includes(it.result))
+            .length
     
         if (count > 0) {
             const explosionRoll = await new Roll(`${count}d${damageRollTerms[0].faces}`).evaluate()

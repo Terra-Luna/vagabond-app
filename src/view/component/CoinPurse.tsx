@@ -32,7 +32,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
     }, [coinAppCoin, mode, reset, hero.inventory.coins])
 
     return (
-        <div className={`relative flex pl-2 content-center bg-wealth-fill/50 ${tableBorder} w-full py-1`}>
+        <div className={`relative z-100 flex pl-2 content-center bg-wealth-fill/50 ${tableBorder} w-full py-1`}>
             <button title={"Click to add/subtract coins"} onClick={() => {
                 reset()
                 setIsCoinAppOpen(true)
@@ -65,7 +65,7 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
     return (
         <div className={`flex pl-2 content-center bg-wealth-fill/50 ${tableBorder} w-full py-1`}>
             <div className="content-center">
-                <p className="text-2xl text-wealth-denom-label font-eskapade font-bold">FUNDS</p>
+                <p className="text-xl text-wealth-denom-label font-eskapade font-bold">FUNDS</p>
             </div>
             <div className="flex content-center justify-end w-full">
                 <CoinValue value={coins.g ?? 0} label={appLang.HeroSheet.Currency.g} path='g' />
@@ -79,7 +79,7 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
 const CoinValue = ({ hero, value, label, path }: { hero?: HeroDataModel, value: number, label: string, path: string }) => {
     return (
         <div className="flex pr-2">
-            <div className={`text-text-primary text-3xl font-eskapade cursor-pointer min-w-[2ch] text-right hover-glow`}>
+            <div className={`text-text-primary text-2xl font-eskapade cursor-pointer min-w-[2ch] text-right hover-glow`}>
                 {hero ?
                     <EditableTextField
                         boundValue={value.toString() ?? ""}

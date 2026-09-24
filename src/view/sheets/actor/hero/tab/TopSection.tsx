@@ -195,7 +195,7 @@ const Tracker = ({ name, title, children, onClick }: { name: string, title: stri
     <Tooltip title={name} content={title}>
         <div className="flex flex-col items-center text-xs text-text-primary font-paradigm hover-glow" onClick={(e) => onClick(false, e)} onAuxClick={() => onClick(true)}>
             {name.toUpperCase()}
-            <span className="font-eskapade font-bold text-4xl -mt-1 mb-1">{children}</span>
+            <span className="font-eskapade font-bold text-3xl -mt-1 mb-1">{children}</span>
         </div>
     </Tooltip>
 )
@@ -220,9 +220,9 @@ export const Speeds = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 const Speed = ({ name, value }: { name: string, value: string }) => (
-    <div className="flex flex-col items-center">
-        <div className="font-eskapade text-2xl font-bold text-text-primary">{value}</div>
-        <div className="text-text-aux font-bold -mt-1">{name}</div>
+    <div className="flex flex-col items-center font-normal">
+        <div className="font-eskapade text-xl text-text-primary">{value}</div>
+        <div className="text-sm text-text-aux -mt-1">{name}</div>
     </div>
 )
 
@@ -284,19 +284,19 @@ const Save = ({ hero, save }: {
                 <div className="mx-1 w-full line-clamp-1">
                     <div className="flex justify-between items-center">
                         {/* SAVING THROW (REFLEX / ENDURE / WILL) */}
-                        <span className="text-xl font-bold">{save.name}</span>
+                        <span className="text-lg font-bold">{save.name}</span>
                         {/* SAVING THROW MODIFIER */}
                         <span className="text-sm text-text-tertiary font-normal">
                             {`(${1 + save.d20s}d20${save.bonusDice?.map(d => `+d${d}`)?.join('') ?? ''}${save.mod !== 0 ? `${save.mod > 0 ? '+' : ''}${save.mod}` : ''})`}
                         </span>
                     </div>
                     {/* SAVE DESCRIPTION */}
-                    <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1">
+                    <span className="text-xs text-text-secondary font-paradigm italic line-clamp-1 -mt-2">
                         {save.description}
                     </span>
                 </div>
                 {/* SAVING THROW DIFFICULTY */}
-                <div className="flex w-1/4 py-1 items-center justify-center text-3xl text-text-section-header font-bold bg-section-header-fill">
+                <div className="flex w-1/4 py-0.5 items-center justify-center text-2xl text-text-section-header font-bold bg-section-header-fill">
                     {save.value}
                 </div>
             </div>
@@ -305,53 +305,53 @@ const Save = ({ hero, save }: {
 }
 
 export const Skills = ({ hero }: { hero: HeroDataModel }) => {
-    const skills = Object.keys(appLang.Skills)
+    const skills = Object.keys(appLang.Skills).sort((a, b) => appLang.Skills[a].name.localeCompare(appLang.Skills[b].name))
     const castingSkill = hero.class?.castingSkill
     return (
         <div>
             <CollapsibleSection settingsKey={`hero-sheet-collapsed-${(hero as any)._id}`} title={appLang.HeroSheet.skills} content={
                 <div className="grid grid-cols-[repeat(auto-fit,minmax(10rem,1fr))] gap-x-2">
-                    {
-                        skills.map(sk => (
-                            <Skill key={sk} hero={hero} skillKey={sk} name={appLang.Skills[sk].name} value={hero.skills[sk].value} trained={hero.skills[sk].trained} isAttack={false} isCastSkill={sk === castingSkill} />
-                        ))
-                    }
+                    {skills.map(sk => (
+                        <Skill key={sk}
+                            hero={hero}
+                            skillKey={sk}
+                            name={appLang.Skills[sk].name}
+                            value={hero.skills[sk].value}
+                            trained={hero.skills[sk].trained}
+                            isCastSkill={sk === castingSkill}
+                        />
+                    ))}
                 </div>
             } />
         </div>
     )
 }
 
-export const Skill = ({ hero, trained, skillKey, name, value, isAttack, isCastSkill }: {
-    hero: HeroDataModel, trained: boolean, skillKey: string, name: string, value: number, isAttack: boolean, isCastSkill?: boolean
+export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
+    hero: HeroDataModel, trained: boolean, skillKey: string, name: string, value: number, isCastSkill?: boolean
 }) => {
     return (
         <Tooltip title={`${name} Check`} content={appLang.HeroSheet.skills_tooltip}>
-            <div className="w-full">
-                <div className="flex items-center ml-1">
-                    <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
-                    <div className={`flex justify-between ml-2 mt-1 w-full text-lg font-eskapade font-bold align-middle hover-glow`} onClick={
-                        async (e: React.MouseEvent<HTMLDivElement>) => {
-                            const skillCheck = await new SkillCheck(hero, { type: isAttack ? 'attack' : 'check', skill: skillKey, clickEvent: e }).roll()
-                            sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+            <div className="flex items-center ml-1 -my-0.5">
+                <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
+                <div className={`flex justify-between ml-2 mt-1 w-full text-base font-eskapade font-bold align-middle hover-glow`} onClick={
+                    async (e: React.MouseEvent<HTMLDivElement>) => {
+                        const skillCheck = await new SkillCheck(hero, { type: 'check', skill: skillKey, clickEvent: e }).roll()
+                        sendVagabondChatMessage(hero, <SkillCheckChatCard actorId={getId(hero)} result={skillCheck} />, skillCheck.rolls)
+                    }
+                }>
+                    <div className="flex gap-x-2 items-center">
+                        {name}
+                        {isCastSkill &&
+                            <Wand2 size={16} className="text-ic-skill-trained" />
                         }
-                    }>
-                        <div className="flex gap-x-2 items-center">
-                            {name}
-                            {isCastSkill &&
-                                <Wand2 size={16} className="text-ic-skill-trained" />
-                            }
-                        </div>
-                        <div className={(isAttack ?
-                            'bg-section-header-fill font-bold text-xl text-text-section-header w-1/5 text-center flex items-center justify-center' :
-                            'text-xl mr-2'
-                        )}>
-                            {value}
-                        </div>
+                    </div>
+                    <div className={"text-xl mr-2"}>
+                        {value}
                     </div>
                 </div>
-                <ItemDivider />
             </div>
+            <ItemDivider />
         </Tooltip>
     )
 }

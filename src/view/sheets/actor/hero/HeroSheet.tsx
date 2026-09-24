@@ -5,8 +5,8 @@ export class HeroSheet extends VagabondActorSheet {
     Component = HeroSheetReactComponent
     static DEFAULT_OPTIONS = {
         position: {
-            width: 416,
-            height: "auto",
+            width: 360,
+            height: 815 as any,
             top: 60,
             left: 333
         },

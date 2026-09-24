@@ -1,4 +1,5 @@
 import { coinsAsString } from "../../../model/common/CoinValue"
+import { sys_id } from "../../../utils/foundryUtils"
 import { appLang } from "../../../utils/lang"
 import { buttonAnimation } from "../../../view/component/Button"
 import { SkillCardAction } from "../../../view/component/Header"
@@ -18,7 +19,7 @@ export const Recipes = ({ alchemySlots, alchemyItems, hideCompendiumLink, action
                 {/* ALCHEMY COMPENDIUM LINK */}
                 {!hideCompendiumLink &&
                     <button
-                        onClick={() => game.packs?.get("vagabond-app.alchemical")?.render(true)}
+                        onClick={() => game.packs?.get(`${sys_id}.alchemical`)?.render(true)}
                         className={`hover-glow cursor-pointer ${buttonAnimation}`}
                     >
                         <HeroCreationSubtext text={"Browse Compendium"} />
@@ -39,7 +40,7 @@ export const Recipes = ({ alchemySlots, alchemyItems, hideCompendiumLink, action
                         <SkillCard
                             key={item.value}
                             img={item.img}
-                            title={item.label}
+                            title={item.label.split("(")[0].trim()}
                             subtitles={subtitles}
                             description={item.description}
                             actions={itemActions}

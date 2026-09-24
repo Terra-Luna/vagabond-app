@@ -6,14 +6,14 @@ import { Tooltip } from "./Tooltip"
 
 export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedButton, toggleCollapsed, actions = [] }: CollapsibleHeaderProps) => {
     const cardHeaderLayout = "flex items-center py-1 px-1 bg-section-header-fill"
-    const cardHeaderStyle = "text-text-section-header text-xl font-eskapade font-bold"
+    const cardHeaderStyle = "text-text-section-header text-lg font-eskapade font-bold"
     return (
         <div onClick={toggleCollapsed} className={
             `${cardHeaderLayout} ${cardHeaderStyle} cursor-pointer`
         }>
             {!img || img === ''
                 ? <></>
-                : <ImageWithDamageTypeBadge img={img} dmgType={dmgType} size={38} />
+                : <ImageWithDamageTypeBadge img={img} dmgType={dmgType} size={28} />
             }
             <span className={`${img ? 'ml-2' : 'ml-1'}`}>{title}</span>
             <Divider />

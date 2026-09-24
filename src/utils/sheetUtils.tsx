@@ -59,7 +59,7 @@ export const onRender = (sheet: VagabondApplication) => {
 }
 
 export const onUpdatePosition = (sheet: VagabondApplication, position: any) => {
-    const minWidth = 380
+    const minWidth = 360
     const minHeight = 248
     const { width, top, left } = position
     /**

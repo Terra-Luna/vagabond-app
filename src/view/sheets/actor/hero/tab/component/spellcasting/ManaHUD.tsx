@@ -20,7 +20,7 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
 
     return (
         <div>
-            <div className="flex gap-x-6 text-2xl font-eskapade font-bold mt-1 mb-2 justify-evenly">
+            <div className="flex gap-x-4 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">
                 <div className="flex gap-x-1 ml-2 items-center">
                     <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} />
                     <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={appLang.HeroSheet.counter_tooltip}>
@@ -46,7 +46,7 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                 {/* SPELLCASTING TAB */}
                 {!isCastMenuOpen &&
                     <div className={`
-                            flex items-center gap-x-1 ml-auto -mb-1 pl-6 pr-2 
+                            flex items-center gap-x-1 -mb-1 pl-6 pr-2 
                             bg-context-menu-fill hover-glow
                             [clip-path:polygon(100%_0,100%_100%,0_100%,30%_0)]
                         `}

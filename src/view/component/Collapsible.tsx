@@ -8,7 +8,7 @@ import { ClearHeader, Header, SkillCardAction } from "./Header"
 export interface CollapsibleHeaderProps {
     img?: string
     dmgType?: string
-    title: string
+    title: string | ReactNode
     toggleCollapsedButton?: ReactNode
     toggleCollapsed?: () => void
     actions?: SkillCardAction[]
@@ -21,7 +21,7 @@ interface CollapsibleHeader {
 export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className, actions }: {
     img?: string,
     dmgType?: string,
-    title: string,
+    title: string | ReactNode,
     Header: CollapsibleHeader,
     content: ReactNode,
     startCollapsed?: boolean,

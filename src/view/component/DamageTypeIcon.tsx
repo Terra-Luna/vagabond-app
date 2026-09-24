@@ -107,8 +107,8 @@ export const ImageWithDamageTypeBadge = ({ img = '', dmgType = 'none', size = 42
                     }
                     {
                         !dmgType || dmgType === 'none' ? <></> :
-                            <div className="absolute w-8 h-8 z-10 -bottom-2 -right-3">
-                                <DamageTypeIcon dmgType={dmgType} size={28} />
+                            <div className="absolute w-8 h-8 z-10 -bottom-4 -right-4">
+                                <DamageTypeIcon dmgType={dmgType} size={18} />
                             </div>
                     }
                 </div>

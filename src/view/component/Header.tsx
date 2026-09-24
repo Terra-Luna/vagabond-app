@@ -1,31 +1,59 @@
+import { ReactNode } from "react"
+
 import { UtilityButton } from "./Button"
 import { Tooltip } from "./Tooltip"
 
 export const Header = ({ title, collapseButton, textLeft = false, actions = [] }: {
-    title: string, collapseButton?: React.ReactElement, textLeft?: boolean, actions?: SkillCardAction[]
+    title: string | ReactNode, collapseButton?: React.ReactElement, textLeft?: boolean, actions?: SkillCardAction[]
 }) => {
     return (
-        <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-lg">
-            {textLeft ? <div className="pl-2" /> : <Divider />}
-            <div>{title}</div>
-            <Divider />
+        <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-lg relative min-h-[2rem]">
+            {textLeft ? (
+                // LEFT-ALIGNED LAYOUT
+                <>
+                    <div className="pl-2" />
+                    <div>{title}</div>
+                    <Divider />
+                </>
+            ) : (
+                // DEAD-CENTERED LAYOUT
+                <>
+                    {/* Background Dividers: Splitting down the middle to leave a visual gap for the text */}
+                    <div className="absolute inset-0 flex items-center pointer-events-none w-full">
+                        <div className="flex-1"><Divider /></div>
+                        {/* Invisible spacer matching the exact text size to keep dividers from overlapping it */}
+                        <div className="px-2 opacity-0 select-none">{title}</div>
+                        <div className="flex-1"><Divider /></div>
+                    </div>
 
-            {collapseButton && <div className="mr-2">{collapseButton}</div>}
-
-            {actions && (
-                <div className="flex gap-x-1 ml-1">
-                    {actions.map((ska, index) => (
-                        <Tooltip title={ska.tooltip.title} content={ska.tooltip.content}>
-                            <UtilityButton key={index} onClick={async (e) => {
-                                e?.stopPropagation()
-                                await ska.action(e, ska.item)
-                            }}>
-                                <p className="text-text-primary">{ska.label}</p>
-                            </UtilityButton>
-                        </Tooltip>
-                    ))}
-                </div>
+                    {/* Title Text Layer: Centered over the container */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        <div className="bg-section-header-fill px-2 pointer-events-auto">
+                            {title}
+                        </div>
+                    </div>
+                </>
             )}
+
+            {/* ACTIONS & COLLAPSE BUTTON: Floating elements aligned to the right side */}
+            <div className="ml-auto flex items-center z-10">
+                {collapseButton && <div className="mr-2">{collapseButton}</div>}
+
+                {actions && (
+                    <div className="flex gap-x-1 ml-1">
+                        {actions.map((ska, index) => (
+                            <Tooltip key={index} title={ska.tooltip.title} content={ska.tooltip.content}>
+                                <UtilityButton onClick={async (e) => {
+                                    e?.stopPropagation()
+                                    await ska.action(e, ska.item)
+                                }}>
+                                    <p className="text-text-primary">{ska.label}</p>
+                                </UtilityButton>
+                            </Tooltip>
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

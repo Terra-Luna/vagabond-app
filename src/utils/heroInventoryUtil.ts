@@ -197,7 +197,7 @@ export const useItem = async (
 
             if (item.system.damage.dice.count > 0 || item.system.appliedEffects.length > 0) {
                 const attack = HeroAttack.buildAlchemyAttack(actor, item as Item & { system: AlchemicalItemDataModel }, e)
-                attack.initiate()
+                attack.initiate(e)
             }
             else {
                 sendToChat()

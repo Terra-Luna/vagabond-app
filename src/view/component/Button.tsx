@@ -4,7 +4,7 @@ import { ReactNode } from "react"
 import { tableBorder } from "../common/border-styles"
 import { Tooltip } from "./Tooltip"
 
-export const buttonAnimation = `pointer-events-auto cursor-pointer transition-transform active:scale-95`
+export const buttonAnimation = `pointer-events-auto hover-glow cursor-pointer transition-transform active:scale-95`
 const buttonShaping = `flex items-center text-base text-center justify-center px-2 py-1 rounded-sm hover-glow`
 const primaryButtonClasses = `text-btn-primary-text font-paradigm bg-btn-primary-fill ${buttonShaping} ${buttonAnimation} border border-solid border-stat-block-fill`
 const secondaryButtonClasses = `text-btn-secondary-text font-paradigm ${buttonShaping} ${buttonAnimation} border border-solid btn-secondary-text/80`

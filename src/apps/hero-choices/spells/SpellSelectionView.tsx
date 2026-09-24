@@ -203,7 +203,7 @@ export const useSpellSelectionView = (
 
                     {/* YOUR GRIMOIRE */}
                     <Grimoire
-                        spellGrants={[...ancestrySpellGrants, ...classSpellGrants]}
+                        spellGrants={[...ancestrySpellGrants, ...classSpellGrants, ...gearSpellGrants]}
                         spellSlots={[...ancestrySpellSlots, ...classSpellSlots, ...perkSpellSlots, ...itemSpellSlots]}
                         spellsList={spellsList}
                     />

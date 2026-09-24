@@ -5,7 +5,25 @@
   "img": "/icons/consumables/potions/flask-corked-purple-glow.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You have a +{{feature-value:1:1}} bonus to each of the damage and healing dice of your Alchemical Items, and they can Explode. This bonus increases by 1 every 4 Levels hereafter.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "LkpNQZFM8aKjmVUg",
+        "key": "FlatModifier",
+        "label": "Alchemy per-die bonus",
+        "level": 4,
+        "value": "1",
+        "selector": "modifiers.alchemy.perDieBonus",
+        "scale": 4
+      },
+      {
+        "id": "QGwNiwfzxWTkk43J",
+        "key": "ToggleRule",
+        "label": "Alchemy exploding dice",
+        "level": 4,
+        "value": true,
+        "selector": "modifiers.alchemy.exploding.max"
+      }
+    ],
     "level": 4,
     "scale": 4
   },
@@ -20,9 +38,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.43",
     "createdTime": 1789490553855,
-    "modifiedTime": 1789605360047,
+    "modifiedTime": 1790267462563,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

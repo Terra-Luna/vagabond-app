@@ -46,8 +46,8 @@ export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, bonusDi
                 <div className="flex">
                     <div className="h-full content-center">{
                         favHinder === 'favor'
-                            ? <Plus size={24} strokeWidth={2} />
-                            : <Minus size={24} strokeWidth={2} />
+                            ? <Plus size={24} strokeWidth={2} className="mt-2" />
+                            : <Minus size={24} strokeWidth={2} className="mt-2" />
                     }</div>
                     <div className="h-full content-center">
                         <DiceRollComponent faces={6} result={d6} textSize="text-4xl" />
@@ -58,18 +58,18 @@ export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, bonusDi
             {/* BONUS DICE */}
             {bonusDice?.map((bonusDie, index) => (
                 <div className="flex items-center" key={index}>
-                    <Plus size={24} strokeWidth={2} />
+                    <Plus size={24} strokeWidth={2} className="mt-2" />
                     <DiceRollComponent key={index} faces={bonusDie.faces} result={bonusDie.result} textSize="text-4xl" />
                 </div>
             ))}
 
             {/* MODIFIER */}
             {modifier !== 0 &&
-                <div className="flex items-center">
+                <div className="flex items-center -mt-3">
                     <div className="h-full content-center">{
                         modifier > 0
-                            ? <Plus size={22} strokeWidth={2} />
-                            : <Minus size={22} strokeWidth={2} />
+                            ? <Plus size={22} strokeWidth={2} className="mt-2" />
+                            : <Minus size={22} strokeWidth={2} className="mt-2" />
                     }</div>
                     <p className="text-3xl">{Math.abs(modifier)}</p>
                 </div>

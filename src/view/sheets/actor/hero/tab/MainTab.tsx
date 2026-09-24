@@ -10,50 +10,44 @@ import { isEquippedSundry, isEquippedWeapon, WeaponDataModel } from "../../../..
 import { equippedItemContextMenu, inventoryItemDragDropHandler, toggleGripState } from "../../../../../utils/heroInventoryUtil"
 import { appLang } from "../../../../../utils/lang"
 import { getId } from "../../../../../utils/modelUtil"
-import { CollapsibleSection } from "../../../../component/Collapsible"
 import { useContextMenu } from "../../../../component/ContextMenu"
 import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Tooltip } from "../../../../component/Tooltip"
 import { RelicEffectList } from "../../../item/equip/component/RelicEffectList"
-import { Skill } from "./TopSection"
 
 export const MainTab = ({ hero }: { hero: HeroDataModel }) => {
+    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
+    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) as SundryDataModel[])
+    const armor = getArmor(hero) as any as ArmorDataModel
+    const wearables = hero.inventory.items.filter(it =>
+        it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable
+    ) as SundryDataModel[]
+
+    const hasEquippedWeapons = [...equippedWeapons, ...equippedSundries, ...wearables].length > 0
+    const hasEquippedArmor = !!armor || wearables.length > 0
+
     return (
         <div className="flex flex-col h-full">
-            <div className="grid @sm:grid-cols-[44%_55%] gap-x-1 flex-1">
-                <Attacks hero={hero} />
-                <div className="space-y-2 mb-4">
-                    <Weapons hero={hero} />
-                    <Armor hero={hero} />
+            {(!hasEquippedWeapons && !hasEquippedArmor)
+                ? <div className="text-text-aux text-center italic mt-4 mb-8">
+                    {appLang.HeroSheet.noEquipment}
                 </div>
-            </div>
+                : <div className="space-y-2 mb-4">
+                    {hasEquippedWeapons && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} />}
+                    {hasEquippedArmor && <Armor armor={armor} wearables={wearables} />}
+                </div>
+            }
         </div>
     )
 }
 
-const Attacks = ({ hero }: { hero: HeroDataModel }) => {
-    const { melee, brawl, finesse, ranged } = hero.skills
-    return (
-        <div className="w-full mb-2">
-            <CollapsibleSection title={appLang.HeroSheet.attacks} settingsKey={`hero-sheet-attacks-${(hero as any)._id}`} content={<>
-                <Skill hero={hero} name={appLang.Attacks.melee} skillKey="melee" value={melee.value!} trained={melee.trained} isAttack={true} />
-                <Skill hero={hero} name={appLang.Attacks.brawl} skillKey="brawl" value={brawl.value!} trained={brawl.trained} isAttack={true} />
-                <Skill hero={hero} name={appLang.Attacks.finesse} skillKey="finesse" value={finesse.value!} trained={finesse.trained} isAttack={true} />
-                <Skill hero={hero} name={appLang.Attacks.ranged} skillKey="ranged" value={ranged.value!} trained={ranged.trained} isAttack={true} />
-            </>} />
-        </div>
-    )
-}
-
-const Weapons = ({ hero }: { hero: HeroDataModel }) => {
+const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataModel, equippedWeapons: WeaponDataModel[], equippedSundries: SundryDataModel[] }) => {
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
-    const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
-    const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) as SundryDataModel[])
     const combinedEquipped = sortedItems<WeaponDataModel | SundryDataModel>([...equippedWeapons, ...equippedSundries])
 
     const { dragItem, targetItem, onDragStart, onDragEnter, onDragEnd } = useDragDrop(
@@ -197,12 +191,8 @@ const Weapons = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const Armor = ({ hero }: { hero: HeroDataModel }) => {
+const Armor = ({ armor, wearables }: { armor: ArmorDataModel, wearables: SundryDataModel[] }) => {
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
-    const armor = getArmor(hero) as any as ArmorDataModel
-    const wearables = hero.inventory.items.filter(it =>
-        it instanceof SundryDataModel && isEquippedSundry(it) && it.isWearable
-    ) as SundryDataModel[]
 
     return (
         <div className="w-full -mt-1">
