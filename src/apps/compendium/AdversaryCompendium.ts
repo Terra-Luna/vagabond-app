@@ -6,7 +6,8 @@ export const ADVERSARY_FILTER_FIELDS = [
     "system.beingType",
     "system.beingSubtype",
     "system.hitDice",
-    "system.threatLevel"
+    "system.threatLevel",
+    "system.threatLevelOverride"
 ]
 
 interface AdversaryFilterState {
@@ -175,14 +176,17 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
         if (!entry) return true
 
         const f = this._adversaryFilters
-        const system = entry.system ?? {}
-        if (f.beingSize && system.beingSize !== f.beingSize) return false
-        if (f.beingType && system.beingType !== f.beingType) return false
-        if (f.beingSubtype && system.beingSubtype !== f.beingSubtype) return false
-        if (f.hitDiceMin != null && (system.hitDice ?? 0) < f.hitDiceMin) return false
-        if (f.hitDiceMax != null && (system.hitDice ?? 0) > f.hitDiceMax) return false
-        if (f.threatLevelMin != null && (system.threatLevel ?? 0) < f.threatLevelMin) return false
-        if (f.threatLevelMax != null && (system.threatLevel ?? 0) > f.threatLevelMax) return false
+        const sys = entry.system ?? {}
+        if (f.beingSize && sys.beingSize !== f.beingSize) return false
+        if (f.beingType && sys.beingType !== f.beingType) return false
+        if (f.beingSubtype && sys.beingSubtype !== f.beingSubtype) return false
+        if (f.hitDiceMin != null && (sys.hitDice ?? 0) < f.hitDiceMin) return false
+        if (f.hitDiceMax != null && (sys.hitDice ?? 0) > f.hitDiceMax) return false
+
+        console.log(entry)
+
+        if (f.threatLevelMin != null && (sys.threatLevelOverride ?? sys.threatLevel ?? 0) < f.threatLevelMin) return false
+        if (f.threatLevelMax != null && (sys.threatLevelOverride ?? sys.threatLevel ?? 0) > f.threatLevelMax) return false
 
         return true
     }
