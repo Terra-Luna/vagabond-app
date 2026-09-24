@@ -13,8 +13,8 @@ export function stripHtml(html) {
     return tmp.textContent || tmp.innerText || ""
 }
 
-export function removeWhitespace(s: string): string {
-    return s.replace(/\s/g, "")
+export function removeWhitespace(s?: string): string {
+    return s?.replace(/\s/g, "") ?? ""
 }
 
 export function andOrToSymbol(andOr: string): string {

@@ -9,7 +9,7 @@
       {
         "id": "viV9xPVM66XLb6aE",
         "key": "FlatModifier",
-        "label": "Spell Damage Die Size",
+        "label": "Spell Damage Die Face Bonus",
         "level": 4,
         "value": "2",
         "selector": "modifiers.dice.size.spell.bonus"
@@ -39,9 +39,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.41",
     "createdTime": 1789504210954,
-    "modifiedTime": 1789521974147,
+    "modifiedTime": 1790219671625,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

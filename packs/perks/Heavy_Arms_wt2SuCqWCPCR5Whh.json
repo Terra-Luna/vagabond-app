@@ -9,7 +9,7 @@
       {
         "id": "FT07s42fb9bTrw7b",
         "key": "FlatModifier",
-        "label": "Heavy Arms",
+        "label": "2H Weapon Rerolls",
         "level": 0,
         "value": "1,2",
         "selector": "modifiers.dice.reroll.melee.HH, modifiers.dice.reroll.finesse.HH, modifiers.dice.reroll.brawl.HH"

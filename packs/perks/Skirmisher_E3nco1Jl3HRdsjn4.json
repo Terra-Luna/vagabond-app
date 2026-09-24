@@ -9,7 +9,7 @@
       {
         "id": "qGXsiqBFwLoJhWoC",
         "key": "FlatModifier",
-        "label": "Skirmisher",
+        "label": "Speed Bonus",
         "level": 0,
         "value": 5,
         "selector": "speed.turn"
@@ -58,10 +58,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.41",
     "createdTime": 1786728336654,
-    "modifiedTime": 1786728407016,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790217751082,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

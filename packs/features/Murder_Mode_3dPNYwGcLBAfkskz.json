@@ -9,7 +9,7 @@
       {
         "id": "uKfGveDwyjqrdfVA",
         "key": "GrantItem",
-        "label": "Barbarian: Murder Mode",
+        "label": "Active Effect: Murder Mode",
         "level": 4,
         "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
         "type": "ActiveEffect"
@@ -276,9 +276,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.41",
     "createdTime": 1789491420521,
-    "modifiedTime": 1789592599777,
+    "modifiedTime": 1790217971298,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

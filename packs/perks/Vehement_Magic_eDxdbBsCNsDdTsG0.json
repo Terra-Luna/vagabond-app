@@ -9,7 +9,7 @@
       {
         "id": "p9rdiGqmdblO4boC",
         "key": "FlatModifier",
-        "label": "Vehement Magic",
+        "label": "Exploding Spell Damage Values",
         "level": 0,
         "value": 1,
         "selector": "modifiers.dice.exploding.spell.values"
@@ -44,10 +44,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.41",
     "createdTime": 1786570220284,
-    "modifiedTime": 1786570331512,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790219355224,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

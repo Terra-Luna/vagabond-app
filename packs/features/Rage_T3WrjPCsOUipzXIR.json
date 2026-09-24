@@ -9,7 +9,7 @@
       {
         "id": "GW92mIbmqNHTbOWs",
         "key": "GrantItem",
-        "label": "Barbarian: Rage",
+        "label": "Active Effect: Rage",
         "level": 1,
         "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.I2Hm7uFBM25rcVEU",
         "type": "ActiveEffect"
@@ -335,9 +335,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.41",
     "createdTime": 1789491073903,
-    "modifiedTime": 1789592431684,
+    "modifiedTime": 1790217960379,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

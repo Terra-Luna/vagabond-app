@@ -1,6 +1,6 @@
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
-import { ActiveEffectCardRow, EffectCardContainer } from '../../rules/shared/ActiveEffectCardRow'
-import { getItemRuleSources, RuleSelection } from '../../rules/util/item-rules-util'
+import { EffectCardContainer,GrantsAndModifiersCard } from '../../rules/shared/GrantsAndModifiersCard'
+import { calculateRecurringRuleScale, getItemRuleSources, RuleSelection } from '../../rules/util/item-rules-util'
 import { tableBorder } from '../../view/common/border-styles'
 import { CollapsibleSection } from '../../view/component/Collapsible'
 import { HeroCreationLabel, HeroCreationSubtext } from '../hero-creator/component/HeroCreationTypography'
@@ -13,6 +13,7 @@ interface ActiveRuleDisplay {
     value?: number
     uuid?: string
     level: number
+    scale: number
     pack: string
     valueMultiplier?: number
     selections: RuleSelection[] | null
@@ -33,7 +34,15 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             pack: rule.pack,
             selections: rule.selections,
             sourceName: source.item?.name || item.name,
-            sourceImg: source.item?.img || item.img
+            sourceImg: source.item?.img || item.img,
+            value: rule.selector?.includes("class.maxCastFormula")
+                ? actor.system.mana.maxCast
+                : (Number.isNaN(Number(rule.value))
+                    ? String(rule.value).toUpperCase()
+                    : (Number(rule.level) > 0 && Number(rule.scale) > 0)
+                        ? calculateRecurringRuleScale(currentLevel, rule.level, rule.scale ?? 0) * Number(rule.value)
+                        : Number(rule.value) * Number(foundry.utils.getProperty(actor, `system.${rule.valueMultiplier}`) ?? 1)
+                )
         })))
     })
 
@@ -72,7 +81,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             <CollapsibleSection title={`Active (${activeRules.length})`} settingsKey={'rules-active-features'} content={
                 <EffectCardContainer>
                     {activeRules.length > 0
-                        ? activeRules.map(rule => (<ActiveEffectCardRow key={rule.id} actor={actor} rule={rule} />))
+                        ? activeRules.map(rule => (<GrantsAndModifiersCard key={rule.id} actor={actor} rule={rule} />))
                         : <HeroCreationSubtext text={"No active rules are adjusting data values."} />
                     }
                 </EffectCardContainer>
@@ -83,7 +92,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                 <CollapsibleSection title={`Locked Grants & Modifiers (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
                     <EffectCardContainer>
                         {lockedRules.map(rule => (
-                            <ActiveEffectCardRow key={rule.id} actor={actor} rule={rule} isActive={false} />
+                            <GrantsAndModifiersCard key={rule.id} actor={actor} rule={rule} isActive={false} />
                         ))}
                     </EffectCardContainer>
                 } />
@@ -95,16 +104,13 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                     <EffectCardContainer>
                         <div className="flex flex-col gap-1">
                             {flatModifiers.map(mod => {
-                                // Extract a clean readable path suffix (e.g., system.attributes.hp.max -> hp.max)
-                                const cleanPath = mod.selector?.replace("system.", "") || "stat"
-                                const modValue = String(foundry.utils.getProperty(actor, `system.${cleanPath}`)).toUpperCase()
-
+                                const fullPath = mod.selector?.replace("system.", "") || "stat"
                                 return (
                                     <div
                                         key={mod.id}
                                         className={`flex justify-between items-center text-xs bg-sheet-main-fill px-2 py-1.5 ${tableBorder}/50 rounded`}>
                                         <span className="text-text-primary line-clamp-1">
-                                            {mod.label || "Modifier"} <span className="text-text-primary">({cleanPath})</span>
+                                            {mod.label || "Modifier"} <span className="text-text-primary">({fullPath})</span>
                                         </span>
                                         {/* BONUS VALUE PILL */}
                                         <span className={`
@@ -112,7 +118,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                                             ${tableBorder}/50 rounded-sm
                                             text-text-primary bg-sheet-main-fill
                                         }`}>
-                                            {modValue === "0" ? "" : modValue}
+                                            {mod.value}
                                         </span>
                                     </div>
                                 )
