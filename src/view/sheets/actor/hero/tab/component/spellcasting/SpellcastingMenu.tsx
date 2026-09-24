@@ -44,7 +44,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     const hero = actor.system
 
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
-    const [skill, setSkill] = useState(hero.class?.castingSkill ?? '')
+    const [skill, setSkill] = useState(hero.class?.castingSkill ?? 'arcana')
     const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
     const [deliveryIndex, setDeliveryIndex] = useState<number>(6)
 
@@ -287,7 +287,8 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         if (delivery && delivery.spell) {
             onUpdateStudyDamageDice('0')
             await saveSpellcastingMenuState(delivery)
-            HeroAttack.buildSpellAttack(hero.parent, skill, delivery, e)?.initiate(e)
+            const sk = skill && skill.length > 0 ? skill : 'arcana'
+            HeroAttack.buildSpellAttack(hero.parent, sk, delivery, e)?.initiate(e)
         }
     }
 
