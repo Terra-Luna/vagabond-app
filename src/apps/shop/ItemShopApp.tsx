@@ -14,7 +14,7 @@ export class ItemShopApp extends VagabondApplication {
     constructor(actor: Actor & { system: HeroDataModel }) {
         super({
             window: { title: "Item Shop" },
-            position: { height: 800, width: 600 },
+            position: { height: 900, width: 460 },
             Component: ItemShopComponent
         } as VagabondAppArgs)
         

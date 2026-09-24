@@ -7,8 +7,8 @@
     "rules": [],
     "category": "weapons",
     "value": {
-      "g": 0,
-      "s": 10,
+      "g": 55000,
+      "s": 0,
       "c": 0
     },
     "bulk": {
@@ -109,9 +109,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.35",
     "createdTime": 1790024008898,
-    "modifiedTime": 1790024065379,
+    "modifiedTime": 1790216070305,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
