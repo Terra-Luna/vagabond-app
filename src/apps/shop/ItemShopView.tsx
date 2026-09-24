@@ -39,7 +39,9 @@ export const useItemShopView = (startingFunds: Coins, clazz?: Item & { system: C
     const equipmentCache = ItemsCache.equipment()
     const shopItems = useMemo(() => {
         return equipmentCache.filter(it =>
-            !(it.system instanceof StartingPackDataModel) && (it.type as string) !== 'startingpack' && it.name.toUpperCase() !== 'BREATH ATTACK'
+            !(it.system instanceof StartingPackDataModel) && (it.type as string) !== 'startingpack' &&
+            it.name.toUpperCase() !== 'BREATH ATTACK' &&
+            it.system.relicPowers.length === 0
         ) as (Item & { system: EquipmentDataModel<EquipmentSchema> })[]
     }, [equipmentCache])
 
