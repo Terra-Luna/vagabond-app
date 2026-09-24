@@ -58,7 +58,7 @@ export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, bonusDi
             {/* BONUS DICE */}
             {bonusDice?.map((bonusDie, index) => (
                 <div className="flex items-center" key={index}>
-                    <Plus size={24} strokeWidth={2} className="mt-2" />
+                    <Plus size={24} strokeWidth={2} className="-mt-1" />
                     <DiceRollComponent key={index} faces={bonusDie.faces} result={bonusDie.result} textSize="text-4xl" />
                 </div>
             ))}

@@ -176,6 +176,12 @@ export abstract class AreaOfEffectDelivery extends SpellDelivery {
         if (this.size > this.baseSize) {
             this.discount += Math.min(this.deliveryUpcastCost, this.mods.deliveryUpcastDiscount)
         }
+        if (this.damageDice > 1) {
+            this.discount += Math.min(this.deliveryUpcastCost, this.mods.damageUpcastDiscount)
+        }
+
+        this.discount += this.mods.deliveryDiscounts?.[this.constructor.name.toLowerCase()] ?? 0
+
         super.applyEffectManaCost()
     }
 }
@@ -184,20 +190,20 @@ export class Aura extends AreaOfEffectDelivery {
     override description = appLang.SpellDeliveries.aura.description
     override targetLabel = appLang.SpellDeliveries.aura.targetLabel
     override baseSize: number = 10
-    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.aura ?? 0))
+    override baseManaCost: number = 2
 }
 export class Cone extends AreaOfEffectDelivery {
     override name = appLang.SpellDeliveries.cone.name
     override description = appLang.SpellDeliveries.cone.description
     override targetLabel = appLang.SpellDeliveries.cone.targetLabel
     override baseSize: number = 15
-    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.cone ?? 0))
+    override baseManaCost: number = 2
 }
 export class Line extends AreaOfEffectDelivery {
     override name = appLang.SpellDeliveries.line.name
     override description = appLang.SpellDeliveries.line.description
     override targetLabel = appLang.SpellDeliveries.line.targetLabel
-    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.line ?? 0))
+    override baseManaCost: number = 2
     baseSize: number = 30
     baseHeight: number = 10
     baseWidth: number = 5
@@ -250,7 +256,7 @@ export class Sphere extends AreaOfEffectDelivery {
     override name = appLang.SpellDeliveries.sphere.name
     override description = appLang.SpellDeliveries.sphere.description
     override targetLabel = appLang.SpellDeliveries.sphere.targetLabel
-    override baseManaCost: number = Math.max(0, 2 - (this.mods.deliveryDiscounts?.sphere ?? 0))
+    override baseManaCost: number = 2
     baseSize: number = 5
 }
 
@@ -284,7 +290,11 @@ export abstract class PerTargetDelivery extends SpellDelivery {
             targets = Math.max(1, this.targetCount)
         }
 
-        this.discount += Math.min(targets, this.mods.deliveryUpcastDiscount)
+        if (targets > 1) {
+            this.discount += Math.min(targets, this.mods.deliveryUpcastDiscount)
+        }
+
+        this.discount += this.mods.deliveryDiscounts?.[this.constructor.name.toLowerCase()] ?? 0
 
         this._manaCost = ((Math.max(0, targets - 1)) * this.extraTargetMultiplier)
             + this.baseManaCost
@@ -304,7 +314,7 @@ export class Imbue extends PerTargetDelivery {
     override name = appLang.SpellDeliveries.imbue.name
     override description = appLang.SpellDeliveries.imbue.description
     override targetLabel = appLang.SpellDeliveries.imbue.targetLabel
-    override baseManaCost = Math.max(0, 1 - (this.mods.deliveryDiscounts?.imbue ?? 0))
+    override baseManaCost = 1
 }
 export class Glyph extends PerTargetDelivery {
     override name = appLang.SpellDeliveries.glyph.name

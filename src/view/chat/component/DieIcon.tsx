@@ -1,3 +1,5 @@
+import { RefreshCcw } from "lucide-react"
+
 import D4 from "../../../icons/dice/d4.svg?react"
 import D6 from "../../../icons/dice/d6.svg?react"
 import D8 from "../../../icons/dice/d8.svg?react"
@@ -31,11 +33,9 @@ export const DieIcon = ({ faces, exploded, discarded }: { faces: number, explode
             )}
 
             {discarded && (
-                <div className={`
-                    absolute inset-0
-                    bg-destructive-action
-                    [clip-path:polygon(0_0,0_0,33%_50%,0_100%,0_100%,50%_60%,100%_100%,100%_100%,66%_50%,100%_0,100%_0,50%_33%)]
-                `} />
+                <div className={`absolute inset-0`}>
+                    <RefreshCcw className={`${wh} text-ic-luck`} fill={color} />
+                </div>
             )}
 
             {/* Foreground Icon */}

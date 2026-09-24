@@ -97,6 +97,8 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
         }
     }, [attack])
 
+    const showGMApplyButton = attack instanceof HeroAttack
+
     return (
         <div className={`${attack?.isResolved ? 'opacity-90 grayscale-[85%]' : ''}`}>
             {actor && attack && <BaseChatCardHost
@@ -154,7 +156,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
                                         {/* GM TOOL BUTTONS FOR MANAGING OUTCOMES */}
                                         <div className="flex flex-col gap-1 mt-1">
-                                            {(attack.showDamage || attack.appliedEffects.length > 0) &&
+                                            {showGMApplyButton && (attack.showDamage || attack.appliedEffects.length > 0) &&
                                                 <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
@@ -167,7 +169,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
                                             {((attack instanceof AdversaryAttack && attack.statuses.length > 0) ||
                                                 (attack instanceof AdversaryComboAttack && attack.subAttacks.some(sub => sub.statuses.length > 0))) &&
-                                                <InteractiveChatCardButton label="Status only" tooltip="Apply statuses only (no damage) & lock attack from edits."
+                                                <InteractiveChatCardButton label="Statuses" tooltip="Apply statuses only (no damage) & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyStatusesAndResolve({ gmTargetsOnly: targetsToggle }, serializeAttack)
                                                         setRevision(prev => prev + 1)
@@ -354,12 +356,12 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
             {attack.showDamage &&
                 <div>
                     {/* HEALING HEADER */}
-                    {isFriendlySpell && (attack.damageRoll?.result?.total ?? 0) > 0 &&
+                    {isFriendlySpell && attack.damageRoll?.dmgType === "healing" && (attack.damageRoll?.result?.total ?? 0) > 0 &&
                         <ClearHeader title={"Healing"} />
                     }
 
                     {/* DAMAGE OR DEFENSE HEADER */}
-                    {!isFriendlySpell && (attack.damageRoll?.result?.total ?? 0) > 0 &&
+                    {attack.damageRoll?.dmgType !== "healing" && attack.damageRoll?.dmgType !== "none" && (attack.damageRoll?.result?.total ?? 0) > 0 &&
                         <ClearHeader title={`${attack.isDefenseCheck ? 'Damage Reduction' : 'Damage'}`} />
                     }
 

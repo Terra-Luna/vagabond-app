@@ -46,8 +46,8 @@ export class LevelUpApp extends VagabondApplication {
             position: {
                 width: actor.system.class ? 800 : 1166,
                 height: 900,
-                top: 20,
-                left: 60
+                top: 60,
+                left: 400
             },
             window: {
                 title: "Level Up!",

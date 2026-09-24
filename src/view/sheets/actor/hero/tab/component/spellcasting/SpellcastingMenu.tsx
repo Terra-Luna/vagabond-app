@@ -59,7 +59,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         const spell = spells.find(sp => sp.uuid === savedState?.spellUuid) ?? spells[0]
         const deliveryOptions = getNewDeliveryOptions(spell, { ...actor.system.modifiers.casting })
 
-        if (savedState) {
+        if (savedState && Object.keys(savedState).length > 0) {
             const index = deliveryOptions.findIndex(d => d.name === savedState.deliveryName)
             if (index !== -1) {
                 const delivery = deliveryOptions[index]

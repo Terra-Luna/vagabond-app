@@ -196,7 +196,8 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
                 { key: "system.modifiers.damage.out.ranged.perDieBonus", mode: "ADD", value: "1" },
                 { key: "system.modifiers.damage.out.thrown.perDieBonus", mode: "ADD", value: "1" },
                 { key: "system.modifiers.damage.out.defense.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.spell.perDieBonus", mode: "ADD", value: "1" }
+                { key: "system.modifiers.damage.out.spell.perDieBonus", mode: "ADD", value: "1" },
+                { key: "system.modifiers.alchemy.perDieBonus", mode: "ADD", value: "1" }
             ]
         },
         {

@@ -20,8 +20,10 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
 
     return (
         <div>
-            <div className="flex gap-x-4 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">
-                <div className="flex gap-x-1 ml-2 items-center">
+            <div className="flex gap-x-2 text-2xl font-eskapade font-bold mt-1 mb-2 justify-between">
+
+                {/* CURRENT MANA */}
+                <div className="flex gap-x-1 items-center">
                     <SpellcastingLabel text={appLang.HeroSheet.Magic.labelMana} />
                     <Tooltip title={appLang.HeroSheet.Magic.labelMana} content={appLang.HeroSheet.counter_tooltip}>
                         <Sparkle className={`text-mana mr-1 hover-glow`} size={20} onClick={() => updateMana(false)} onAuxClick={() => updateMana(true)} />
@@ -37,6 +39,8 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                     <p>/</p>
                     <p>{hero.mana.max}</p>
                 </div>
+
+                {/* MAX MANA / CAST */}
                 <div className="flex gap-x-1 items-center">
                     <SpellcastingLabel text={appLang.HeroSheet.Magic.labelCastMax} />
                     <Sparkles size={20} className="text-mana" />

@@ -5,6 +5,7 @@ import { ClassDataModel } from "../../../model/item/character/ClassDataModel"
 import { ChoiceRule, createElectiveTrainingsRule, findElectiveTrainingsRule, getItemRules, getPerkSkillSubselections, getRequiredSkillTrainingRules, getSkillNameFromPath, getSkillTrainingChoiceRules, ItemRule, normalizeRuleSelections, randomId } from "../../../rules/util/item-rules-util"
 import { appLang } from "../../../utils/lang"
 import { Divider, Header } from "../../../view/component/Header"
+import { Tooltip } from "../../../view/component/Tooltip"
 import { BonusChoiceContainer, BonusChoiceTitle } from "../../hero-creator/component/BonusChoiceContaner"
 import { BorderedContent } from "../../hero-creator/component/BorderedContent"
 import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
@@ -188,7 +189,9 @@ export const useTrainingSelection = (
 
                         {/* LEVEL 1 TRAINING SELECTIONS */}
                         <div className="space-y-1 mt-2">
-                            <HeroCreationLabel text={appLang.HeroCreation.electiveTraining.replace("%s", `${electiveTrainingsRule!.maxChoices}`)} />
+                            <Tooltip title="Elective Trainings Formula" content={appLang.HeroCreation.electiveFormula}>
+                                <HeroCreationLabel text={appLang.HeroCreation.electiveTraining.replace("%s", `${electiveTrainingsRule!.maxChoices}`)} />
+                            </Tooltip>
                             {electiveTrainingRules.flatMap(rule => ({ id: rule.id, choices: rule.choices })).map(rule => {
                                 return rule.choices.filter(choice => {
                                     const skill = getSkillNameFromPath(choice.value)

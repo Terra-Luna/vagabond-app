@@ -107,7 +107,7 @@ export class HeroAttack extends Attack {
 
     async initiate(clickEvent?: any, options?: { isDefenseCheck?: boolean }) {
         this.id = foundry.utils.randomID()
-        this.skipSkillCheck = clickEvent?.altKey
+        this.skipSkillCheck = this.skipSkillCheck || clickEvent?.altKey
         this.isDefenseCheck = !!options?.isDefenseCheck
 
         if (this.skillCheck && (this.hasHostileTargets || options?.isDefenseCheck) && !this.skipSkillCheck) {
@@ -409,12 +409,12 @@ export class HeroAttack extends Attack {
         const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: "craft", clickEvent: e })
         const damageDice = new DiceRoll(DiceRoll.getItemDamageWithHeroMods(actor.system, 'craft', item.system))
 
-        const mods = (actor as any).system.modifiers.alchemy
+        const mods = foundry.utils.deepClone((actor as any).system.modifiers)
         const dieSize = item.system.damage.dice.faces
-        const flatBonus = mods.flatBonus ?? 0
-        const perDieBonus = mods.perDieBonus ?? 0
-        const explodesOn = [...mods.exploding?.values ?? []]
-        if (mods.exploding?.max && !explodesOn.includes(dieSize)) {
+        const flatBonus = mods.alchemy.flatBonus ?? 0
+        const perDieBonus = mods.alchemy.perDieBonus ?? 0
+        const explodesOn = [...mods.alchemy.exploding?.values ?? []]
+        if (mods.alchemy.exploding?.max && !explodesOn.includes(dieSize)) {
             explodesOn.push(dieSize)
         }
         damageDice.explodesOn = explodesOn

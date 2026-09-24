@@ -1,6 +1,6 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
-import { getDiceTerms, getResults } from "../util/dice-utils"
+import { getDiceTerms } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
 import { RollSummary } from "./RollSummary"
 
@@ -104,15 +104,16 @@ export class DamageRoll {
 
         let canExplode = false
         for (const d of this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0 && (isCrit && d.explodeOnCritOnly || !d.explodeOnCritOnly))) {
-            if (this.isSafeToExplode(d.faces, d.explodesOn!)) {
+            if (this.isSafeToExplode(d.faces, d.explodesOn!, d.reroll ?? [])) {
                 canExplode = true
-                await this.processExplosions(initialExplodableTerms, explosions, d.explodesOn ?? [])
+                await this.processExplosions(initialExplodableTerms, explosions, d.explodesOn ?? [], d.reroll ?? [])
             }
         }
 
         const combinedExplosions = canExplode ? this.mergeExplosions([...explosions]) : null
         const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
-        const totalDice = getResults(damageRoll)?.length + (canExplode ? (getResults(combinedExplosions!)?.length ?? 0) : 0)
+        const summaries = RollSummary.buildRollSummaries(damageRollTerms, initialExplodableTerms, explosionTerms, this.dice)
+        const totalDice = summaries.filter(it => !it.rerolled).length
         const perDieBonus = totalDice * (this.perDieDmgBonus ?? 0)
         const totalBonus = perDieBonus + this.getFlatDamageBonus(damageRoll, initialExplodableRoll)
 
@@ -121,7 +122,7 @@ export class DamageRoll {
             dmgType: this.dmgType,
             total: damageRoll.total + initialExplodableRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
             bonus: totalBonus,
-            rollSummaries: RollSummary.buildRollSummaries(damageRollTerms, initialExplodableTerms, explosionTerms, this.dice),
+            rollSummaries: summaries,
             rolls: [damageRoll]
         } as DamageRollResult
 
@@ -143,7 +144,8 @@ export class DamageRoll {
     private async processExplosions(
         damageRollTerms: foundry.dice.terms.DiceTerm[],
         explosions: Roll.Evaluated<Roll>[],
-        explodesOn: number[]
+        explodesOn: number[],
+        reroll: number[]
     ) {
         const count = damageRollTerms
             .flatMap(it => it.results)
@@ -151,9 +153,13 @@ export class DamageRoll {
             .length
     
         if (count > 0) {
-            const explosionRoll = await new Roll(`${count}d${damageRollTerms[0].faces}`).evaluate()
+            let formula = `${count}d${damageRollTerms[0].faces}`
+            if (reroll.length > 0) {
+                formula += `rr${reroll.join('rr')}`
+            }
+            const explosionRoll = await new Roll(formula).evaluate()
             explosions.push(explosionRoll)
-            await this.processExplosions(getDiceTerms(explosionRoll), explosions, explodesOn)
+            await this.processExplosions(getDiceTerms(explosionRoll), explosions, explodesOn, reroll)
         }
     }
     
@@ -174,16 +180,15 @@ export class DamageRoll {
     
     /**
      * Used to prevent infinitely exploding dice.
-     * @param formula 
-     * @param explodesOn 
-     * @returns 
      */
-    private isSafeToExplode(faces: number | undefined, explodesOn: number[]): boolean {
+    private isSafeToExplode(faces: number | undefined, explodesOn: number[], reroll: number[]): boolean {
+        if (explodesOn.length === 0) return false
         for (let i = 1; i <= (faces ?? 0); i++) {
-            if (explodesOn.indexOf(i) === -1) {
+            if (explodesOn.indexOf(i) === -1 && reroll.indexOf(i) === -1) {
                 return true
             }
         }
+        ui.notifications?.warn("Invalid exploding dice config detected (infinite recursion). Please check your exploding dice and reroll settings.")
         return false
     }
 
