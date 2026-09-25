@@ -24,6 +24,21 @@
     "isConsumable": false,
     "relicPowers": [
       {
+        "id": "utility-other-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic (Bound)",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Bound relic."
+      },
+      {
         "id": "movement-displacement",
         "category": {
           "value": "movement",
@@ -51,9 +66,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.55",
     "createdTime": 1790012427332,
-    "modifiedTime": 1790023201617,
+    "modifiedTime": 1790371007040,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

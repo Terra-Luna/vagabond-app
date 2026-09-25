@@ -4,6 +4,8 @@ import ReactHtmlParser from 'react-html-parser'
 
 import { createStyleTag } from '../../utils/styleUtils'
 import { tableBorderRounded } from '../common/border-styles'
+import { EditModeContextProvider } from '../context/EditModeContext/EditModeContext'
+import { EditModeOptions } from '../context/EditModeContext/EditModeOptions'
 
 const TOOLTIP_CURSOR_GAP = 8
 const TOOLTIP_ESTIMATED_WIDTH = 240
@@ -218,8 +220,16 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
  */
 const renderContent = (content?: ReactNode) => {
     if (!content) return null
-    if (typeof content !== 'string') return content
-    return <span className="text-sm text-context-menu-text font-paradigm font-normal whitespace-normal break-words">
-        {ReactHtmlParser(content.replace(`\n`, `<br />`))}
-    </span>
+    if (typeof content !== 'string') {
+        return <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
+            <div className="max-w-[360px]">
+                {content}
+            </div>
+        </EditModeContextProvider>
+    }
+    else {
+        return <span className="text-sm text-context-menu-text font-paradigm font-normal whitespace-normal break-words">
+            {ReactHtmlParser(content.replace(`\n`, `<br />`))}
+        </span>
+    }
 }

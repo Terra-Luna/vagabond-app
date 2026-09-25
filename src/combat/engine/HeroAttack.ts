@@ -90,7 +90,7 @@ export class HeroAttack extends Attack {
     }
 
     get isEffectOnlySpellAttack(): boolean {
-        return this.spellDelivery?.applyEffect ?? false
+        return (this.spellDelivery?.applyEffect ?? false) && (!this.damageRoll || this.damageRoll?.result?.total === 0)
     }
 
     /**

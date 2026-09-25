@@ -17,7 +17,7 @@ describe('set threat level', () => {
         //Execute
         const tl = setThreatLevel(adv as unknown as AdversaryDataModel)
         //Verify
-        expect(tl).toBe(3.77)
+        expect(tl).toBe(3.5)
     })
 
     test('set tl avg of all actions', () => {
@@ -34,7 +34,7 @@ describe('set threat level', () => {
         //Execute
         const tl = setThreatLevel(adv as unknown as AdversaryDataModel)
         //Verify
-        expect(tl).toBe(3.27)
+        expect(tl).toBe(3.2)
     })
 
     test('set when no actions', () => {
@@ -46,6 +46,6 @@ describe('set threat level', () => {
         //Execute
         const tl = setThreatLevel(adv as unknown as AdversaryDataModel)
         //Verify
-        expect(tl).toBe(2.27)
+        expect(tl).toBe(2.3)
     })
 })

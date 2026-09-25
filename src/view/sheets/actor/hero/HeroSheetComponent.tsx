@@ -20,9 +20,9 @@ import { ActorPortrait } from "../component/ActorPortrait"
 import { VagabondActorSheet } from "../VagabondActorSheet"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
+import { GearTab } from "./tab/GearTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
-import { MainTab } from "./tab/MainTab"
 import { RollsTab } from "./tab/RollsTab"
 import { StatsDrawerContextProvider } from "./tab/statdrawer/StatsDrawerContextProvider"
 import { CustomTrackers,Focus, HPArmorFatigueHUD, Luck, Saves, Skills, Speeds, Stats, Studied } from "./tab/TopSection"
@@ -98,9 +98,9 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                                                 new HeroCreationApp(hero.parent).render({ force: true })
                                             }
                                         }}
-                                        className="hover-glow cursor-pointer ml-auto"
+                                        className="flex items-center hover-glow cursor-pointer ml-auto"
                                     >
-                                        <ArrowsUpFromLine size={24} className="text-text-header-secondary" />
+                                        <ArrowsUpFromLine size={32} className="text-text-header-secondary animate-pulse mt-2 [filter:drop-shadow(0_0_16px_var(--text-header-secondary))]" />
                                     </button>
                                 </Tooltip>
                             }
@@ -193,7 +193,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
                 <Tab title="Roll Presets"><Dices size={28} className="hover-glow" /></Tab>
             </TabList>
             <TabPanel className={tabPanelClasses}>
-                <MainTab hero={hero} />
+                <GearTab hero={hero} />
             </TabPanel>
             <TabPanel className={tabPanelClasses}>
                 <InventoryTab hero={hero} />

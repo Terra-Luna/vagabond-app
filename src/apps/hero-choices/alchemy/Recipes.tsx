@@ -6,16 +6,17 @@ import { SkillCardAction } from "../../../view/component/Header"
 import { CardSubHeaderValues, SkillCard } from "../../../view/component/SkillCard"
 import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
 
-export const Recipes = ({ alchemySlots, alchemyItems, hideCompendiumLink, actions = [] }: {
+export const Recipes = ({ alchemySlots, alchemyItems, hideHeaderLabel, hideCompendiumLink, actions = [] }: {
     alchemySlots: any[],
     alchemyItems: any[],
+    hideHeaderLabel?: boolean,
     hideCompendiumLink?: boolean,
     actions?: SkillCardAction[]
 }) => {
     return (
-        <div className="flex flex-col gap-1 mt-2 bg-sheet-main-fill rounded-md p-1">
+        <div className={`flex flex-col gap-1 bg-sheet-main-fill rounded-md p-1 ${hideHeaderLabel ? "" : "mt-4"}`}>
             <div className="flex justify-between">
-                <HeroCreationLabel text={appLang.HeroSheet.Alchemy.recipes} />
+                {!hideHeaderLabel && <HeroCreationLabel text={appLang.HeroSheet.Alchemy.recipes} />}
                 {/* ALCHEMY COMPENDIUM LINK */}
                 {!hideCompendiumLink &&
                     <button

@@ -4,7 +4,7 @@
   "_id": "tXe0qg9DWqNFRdNL",
   "img": "/icons/consumables/potions/round-decorated-snake-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">The consumer is transformed as per the Polymorph Spell (p. 97) for 1 Hour. If the consumer isn't aware they are drinking the potion or does not choose a form, roll d66 and refer to p. 88.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The consumer is transformed as per the @UUID[Compendium.vagabond-app.spells.Item.qwIbJIeHMzTvMaBK]{Polymorph} Spell for 1 Hour. If the consumer isn't aware they are drinking the potion or does not choose a form, roll d66 and refer to p. 88.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -45,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.55",
     "createdTime": 1786823652608,
-    "modifiedTime": 1786826108520,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790350196190,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

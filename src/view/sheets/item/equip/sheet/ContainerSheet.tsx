@@ -14,48 +14,49 @@ import { InventoryItemsTable } from "../../../shared/InventoryItemsTable"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetProperty } from "../component/ItemSheetLabelComponent"
 
-export const ContainerSheet = ({ item }: { item: Item & { system: ContainerDataModel } }) => {
+export const ContainerSheet = ({ item, hideButtons }: { item: Item & { system: ContainerDataModel }, hideButtons?: boolean }) => {
     const { isEditMode } = useEditMode()
     const owner = item?.actor?.system as ActorDataModel<BaseActorSchema> | null
     const contents = sortedItems<EquipmentDataModel<EquipmentSchema>>(itemsInContainer(item.system).map(it => it?.system))
+
     return (
         <EquipmentSheetSubtypeBody>
-            <div className="mb-4">
+            <div className="mb-2">
                 <div className="flex gap-x-2 mb-2">
-                    {isEditMode &&
-                        <ItemSheetProperty
+                    {isEditMode && <ItemSheetProperty
                         label={appLang.ItemSheet.capacity}
-                            value={
-                                <EditableTextField
-                                    boundValue={item.system.capacity.toString()}
-                                    updateProps={{ object: item, path: ['capacity'] }}
-                                    placeholder={"2"}
-                                />
-                            }
-                    />
-                    }
+                        value={<EditableTextField
+                            boundValue={item.system.capacity.toString()}
+                            updateProps={{ object: item, path: ['capacity'] }}
+                            placeholder={"2"}
+                        />}
+                    />}
+
                     <CapacityGauge label={appLang.ItemSheet.capacity} capacityInfo={{
                         bulk: item.system.capacity - item.system.emptySlots,
                         capacity: item.system.capacity,
                         isOverEncumbered: false
                     }} />
+
                 </div>
                 {contents.length === 0
-                    ? <p className="italic">{appLang.ItemSheet.drag}</p>
-                    : <div className="space-y-2">
+                    ? <p className="text-text-tertiary italic">{appLang.ItemSheet.drag}</p>
+                    : <div className="space-y-2 text-text-primary font-normal">
                         <InventoryItemsTable
                             actor={owner}
                             items={contents}
                             contextMenuItems={(targetItem) => containerItemContextMenuItems(owner, targetItem, item.system)}
                             showEquipColumn={false}
                         />
-                        <div className="w-full mb-12">
+
+                        {/* EXTRACT ALL BUTTON */}
+                        {!hideButtons && <div className="w-full mb-12">
                             <div className="float-right">
                                 <SecondaryButton onClick={() => item.update({ 'system.itemIds': [] } as Record<string, string[]>)}>
                                     <div className="flex gap-x-2 items-center">{<Undo />}{"Extract all"}</div>
                                 </SecondaryButton>
                             </div>
-                        </div>
+                        </div>}
                     </div>
                 }
             </div>

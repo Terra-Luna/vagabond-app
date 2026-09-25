@@ -4,7 +4,7 @@
   "_id": "SIABvjRn1GmcXTk2",
   "img": "/icons/creatures/magical/spirit-earth-stone-magma-yellow.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">This soup creates a homunculus (p. 120) under the alchemist's control, and it uses their Craft Skill for any Checks it makes. If another homunculus is created from the same alchemist's blood, the oldest homunculus dies.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">This soup creates a @UUID[Compendium.vagabond-app.adversaries.Actor.ShSYkGvDuoHRKeX0]{Homunculus} under the alchemist's control, and it uses their Craft Skill for any Checks it makes. If another Homunculus is created from the same alchemist's blood, the oldest Homunculus dies.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -45,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.55",
     "createdTime": 1786821153232,
-    "modifiedTime": 1786826428838,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790350140235,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -20,19 +20,7 @@ export abstract class VagabondItemSheet extends VagabondSheetMixin(sheets.ItemSh
          * util function.
          */
         if (this.item.system instanceof ContainerDataModel) {
-            const dragData = foundry.applications.ux.TextEditor.getDragEventData(event)
-            if (!dragData || (dragData as any)?.type as JSONValue !== "Item") return super._onDrop(event)
-
-            const itemId = (dragData as any).id
-            if (!itemId) return super._onDrop(event)
-
-            const droppedItem = this.item.actor.items.get(itemId)
-            if (!droppedItem) return super._onDrop(event)
-
-            /**
-             * If the function got this far, add the item to this container.
-             */
-            return addItemToContainer(this.item.system, droppedItem)
+            return VagabondItemSheet.handleContainerItemDrop(event, this.item)
         }
         else if (this.item.system instanceof StartingPackDataModel) {
             const dragData = foundry.applications.ux.TextEditor.getDragEventData(event)
@@ -56,6 +44,22 @@ export abstract class VagabondItemSheet extends VagabondSheetMixin(sheets.ItemSh
         }
 
         return super._onDrop(event)
+    }
+
+    static handleContainerItemDrop(event, item) {
+        const dragData = foundry.applications.ux.TextEditor.getDragEventData(event)
+        if (!dragData || (dragData as any)?.type as JSONValue !== "Item") return super._onDrop(event)
+
+        const itemId = (dragData as any).id
+        if (!itemId) return super._onDrop(event)
+
+        const droppedItem = item.actor.items.get(itemId)
+        if (!droppedItem) return super._onDrop(event)
+
+        /**
+         * If the function got this far, add the item to this container.
+         */
+        return addItemToContainer(item.system, droppedItem)
     }
     
 }

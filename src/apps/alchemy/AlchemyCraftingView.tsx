@@ -80,6 +80,12 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
             {/* STICKY HEADER */}
             <div className="flex justify-between items-center bg-sheet-header-fill rounded-sm p-2 -mx-2 -mt-2">
                 <AlchemyToolsPill item={tools} />
+                {/* <span className="flex justify-between gap-x-2 text-text-aux">
+                    <FlaskConical />
+                    <FlaskRound />
+                    <Beaker />
+                    <TestTubeDiagonal />
+                </span> */}
                 <MaterialsCounter text={materialsCount} />
             </div>
 
@@ -87,6 +93,7 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
                 <Recipes
                     alchemySlots={alchemySlots}
                     alchemyItems={alchemyItems}
+                    hideHeaderLabel={true}
                     hideCompendiumLink={true}
                     actions={[
                         { label: appLang.HeroSheet.Alchemy.craft, tooltip: { title: "Craft", content: appLang.HeroSheet.Alchemy.craft_tooltip }, item: undefined, action: addToInventory},

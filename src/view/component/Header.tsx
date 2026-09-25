@@ -7,7 +7,7 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
     title: string | ReactNode, collapseButton?: React.ReactElement, textLeft?: boolean, actions?: SkillCardAction[]
 }) => {
     return (
-        <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-lg relative min-h-[2rem]">
+        <div className="bg-section-header-fill text-text-section-header font-eskapade font-bold w-full flex items-center text-base relative min-h-[1.5rem]">
             {textLeft ? (
                 // LEFT-ALIGNED LAYOUT
                 <>
@@ -15,13 +15,11 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
                     <div>{title}</div>
                     <Divider />
                 </>
-            ) : (
-                // DEAD-CENTERED LAYOUT
-                <>
-                    {/* Background Dividers: Splitting down the middle to leave a visual gap for the text */}
+            ) : (<>
+                {/* Background Dividers */}
                     <div className="absolute inset-0 flex items-center pointer-events-none w-full">
                         <div className="flex-1"><Divider /></div>
-                        {/* Invisible spacer matching the exact text size to keep dividers from overlapping it */}
+                        {/* Invisible spacer  */}
                         <div className="px-2 opacity-0 select-none">{title}</div>
                         <div className="flex-1"><Divider /></div>
                     </div>

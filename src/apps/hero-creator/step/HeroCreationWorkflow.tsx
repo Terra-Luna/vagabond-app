@@ -12,10 +12,12 @@ import { Header } from "../../../view/component/Header"
 import { EditModeContextProvider } from "../../../view/context/EditModeContext/EditModeContext"
 import { EditModeOptions } from "../../../view/context/EditModeContext/EditModeOptions"
 import { useNavigation } from "../../../view/context/navigation/NavigationContext"
+import { AlchemySelectionApp } from "../../hero-choices/alchemy/AlchemySelectionApp"
 import { usePerkBonusSelection } from "../../hero-choices/perks/PerkBonusSelection"
 import { usePerkSelectionView } from "../../hero-choices/perks/PerkSelectionView"
 import { useSpellSelectionView } from "../../hero-choices/spells/SpellSelectionView"
 import { useTrainingSelection } from "../../hero-choices/training/TrainingSelection"
+import { showConfirmationDialog } from "../../vagabond-tools/dialog/showConfirmationDialog"
 import { HeroCreationDropdown } from "../component/HeroCreationDropdown"
 import { TopNavButtons } from "../component/TopNavButtons"
 import { useAncestrySelection } from "./AncestrySelection"
@@ -337,6 +339,20 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                 { ['skipTrackerChatCard' as string]: true }
             )
             setClosed()
+
+            const features = ItemsCache.features()
+            const classFeats = actor.system.class.featureIds.map(id => features.find(f => f.uuid === id))
+
+            if (classFeats.filter(f => f?.system?.rules.some(rule => rule.key === "ChoiceSet" && rule.pack === "alchemical")).length > 0) {
+                showConfirmationDialog({
+                    title: "Alchemy Recipes",
+                    description: "You'll now be directed to select your prepared alchemy recipes. This menu can be accessed at any time from your Hero Record's Inventory tab.",
+                    confirmText: "Let's go",
+                    variant: "info"
+                }).then(() => {
+                    new AlchemySelectionApp(actor).render({ force: true })
+                })
+            }
         }
     }, [
         actor, ancestryItem, classItem, selectedArr, assignedStats,

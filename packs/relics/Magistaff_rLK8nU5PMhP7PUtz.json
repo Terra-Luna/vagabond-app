@@ -45,7 +45,7 @@
     "copperValue": 1000,
     "relicPowers": [
       {
-        "id": "utility-other",
+        "id": "utility-other-bound",
         "category": {
           "value": "utility",
           "label": "Utility"
@@ -57,7 +57,7 @@
         },
         "goldValue": 0,
         "bound": true,
-        "description": "Unbound relic of miscellaneous nature."
+        "description": "Bound relic."
       }
     ]
   },
@@ -120,9 +120,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.55",
     "createdTime": 1790014413721,
-    "modifiedTime": 1790023201616,
+    "modifiedTime": 1790370857909,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

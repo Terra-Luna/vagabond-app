@@ -1072,20 +1072,20 @@ export class RelicPowers {
         {
             id: 'utility-other',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'other', label: 'Relic (Bound)' },
+            power: { value: 'other', label: 'Relic' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
-            bound: true,
-            description: "Unbound relic of miscellaneous nature."
+            bound: false,
+            description: "Unbound relic."
         },
         {
             id: 'utility-other-bound',
             category: { value: 'utility', label: 'Utility' },
-            power: { value: 'other', label: 'Relic' },
+            power: { value: 'other', label: 'Relic (Bound)' },
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: "Bound relic of miscellaneous nature."
+            description: "Bound relic."
         },
         {
             id: 'utility-other-fabled-bound',
@@ -1094,7 +1094,7 @@ export class RelicPowers {
             types: ['armor', 'sundry', 'weapon'],
             goldValue: 0,
             bound: true,
-            description: "Fabled Bound relic of miscellaneous nature."
+            description: "Fabled Bound relic."
         }
     ]
     

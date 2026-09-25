@@ -180,6 +180,8 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
      * the existing matching item (by name) and increase its quantity.
      */
     if (actor && isInventoryItem(item)) {
+        console.log(item)
+        item.updateSource({ 'system.isEquipped': false })
         if (item.system.bulk.isStackable && !item.flags[sys_id]?.["item-stack-id"]) {
             const stack = actor.items.find((it: any) => it.name === item.name)
 

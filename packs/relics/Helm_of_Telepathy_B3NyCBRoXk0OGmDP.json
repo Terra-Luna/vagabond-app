@@ -25,6 +25,21 @@
     "isConsumable": false,
     "relicPowers": [
       {
+        "id": "utility-other-bound",
+        "category": {
+          "value": "utility",
+          "label": "Utility"
+        },
+        "power": {
+          "value": "other",
+          "label": "Relic (Bound)",
+          "modifiers": []
+        },
+        "goldValue": 0,
+        "bound": true,
+        "description": "Bound relic."
+      },
+      {
         "id": "senses-telepathy",
         "category": {
           "value": "senses",
@@ -56,9 +71,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.55",
     "createdTime": 1790013934016,
-    "modifiedTime": 1790023201616,
+    "modifiedTime": 1790370888518,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

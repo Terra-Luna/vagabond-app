@@ -2,7 +2,7 @@ import { Diamond, Hand, HandFist, Shield } from "lucide-react"
 
 import { ActorDataModel, BaseActorSchema } from "../../../model/actor/ActorDataModel"
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
-import { itemNameQty,openItemSheet } from "../../../model/actor/type/Inventory"
+import { itemNameQty, openItemSheet } from "../../../model/actor/type/Inventory"
 import { coinsAsString } from "../../../model/common/CoinValue"
 import { ArmorDataModel } from "../../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema, setEquipState } from "../../../model/item/equip/EquipmentDataModel"
@@ -16,6 +16,7 @@ import { UtilityButton } from "../../component/Button"
 import { CtxMenuItem, useContextMenu } from "../../component/ContextMenu"
 import { useDragDrop } from "../../component/DragDrop"
 import { Tooltip } from "../../component/Tooltip"
+import { EquipmentSheetComponent } from "../item/equip/EquipmentSheetComponent"
 
 export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipColumn = true }: {
     actor: ActorDataModel<BaseActorSchema> | null,
@@ -57,9 +58,9 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                             <tr
                                 key={getId(item)}
                                 className={
-                                    index === dragIndex ?
-                                        "bg-text-fatigue-current draggable" :
-                                        `even:bg-table-row-even/50 odd:bg-table-row-odd/50 hover-glow draggable`
+                                    index === dragIndex
+                                        ? "bg-text-fatigue-current draggable"
+                                        : `even:bg-table-row-even/50 odd:bg-table-row-odd/50 hover-glow draggable`
                                 }
                                 onContextMenu={(e) => { onCtxMenu(e, contextMenuItems(item)) }}
                                 onDoubleClick={() => openItemSheet(item)}
@@ -73,7 +74,9 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                 {/* ITEM NAME & ICON */}
                                 <td>
                                     <div className="flex gap-x-0.5 items-center py-1 min-w-0">
-                                        <ItemIconImg item={item} tooltip={tooltip} />
+                                        <Tooltip title={item.parent.name} content={<EquipmentSheetComponent item={item.parent} />}>
+                                            <ItemIconImg item={item} />
+                                        </Tooltip>
                                         <p className="items-center truncate">{itemNameQty(item)}</p>
                                     </div>
                                 </td>
@@ -107,7 +110,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                             </td>
                                             : <td />
                                         )
-                                    )
+                                )
                                 }
                             </tr>
                         )
@@ -119,40 +122,38 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
     )
 }
 
-const ItemIconImg = ({ item, tooltip }) => {
+export const ItemIconImg = ({ item }) => {
     const isEquipped = item.isEquipped
-    const isBound = item.isBoundRelic()
-    const isCursed = item.isCursed()
+    const isBound = item.isBoundRelic?.()
+    const isCursed = item.isCursed?.()
 
     return (
-        <Tooltip title={appLang.HeroSheet.controls} content={tooltip}>
-            <div className="flex items-center justify-center relative mr-2 shrink-0">
-                <img
-                    src={item.parent.img}
-                    alt={getName(item)}
-                    width="28"
-                    height="28"
-                    className="rounded-sm border border-solid border-section-header-fill/60 cursor-grab"
-                />
+        <div className="flex items-center justify-center relative mr-2 shrink-0">
+            <img
+                src={item.parent.img}
+                alt={getName(item)}
+                width="28"
+                height="28"
+                className={`rounded-sm border border-solid border-section-header-fill/60 cursor-pointer`}
+            />
 
-                {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
-                <span>
-                    {isEquipped && isBound &&
-                        <Diamond
-                            size={12}
-                            className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                        />
-                    }
-                    {!isEquipped && isBound && !isCursed &&
-                        <Diamond
-                            size={12}
-                            className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
-                            strokeWidth={1}
-                        />
-                    }
-                </span>
-            </div>
-        </Tooltip>
+            {/* DO NOT SHOW DIAMOND IF CURSED AND UNEQUIPPED */}
+            <span>
+                {isEquipped && isBound &&
+                    <Diamond
+                        size={12}
+                        className={`absolute bottom-0 right-0 text-text-header-tertiary fill-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                    />
+                }
+                {!isEquipped && isBound && !isCursed &&
+                    <Diamond
+                        size={12}
+                        className={`absolute bottom-0 right-0 text-text-header-tertiary bg-sheet-main-fill ${tableBorderRounded}`}
+                        strokeWidth={1}
+                    />
+                }
+            </span>
+        </div>
     )
 }
 
@@ -162,34 +163,34 @@ const EquipStateIcon = ({ tooltip, type, isEquipped, gripState, toggleEquipState
     return (
         <Tooltip content={`Toggle equip\n${tooltip}`}>
             <div onClick={toggleEquipState} onDoubleClick={(e) => { e.stopPropagation() }}>
-            {
-                type === 'armor' &&
-                <div>
-                    {isEquipped
-                        ? <Shield size={18} className={equippedIconStyle} />
-                        : <Shield size={18} className={unEquipedIconStyle} />
-                    }
-                </div>
-            }
-            {
-                type === 'weapon'
-                    ? <div>
+                {
+                    type === 'armor' &&
+                    <div>
                         {isEquipped
-                            ? <div className="flex items-center justify-end -space-x-4 font-eskapade text-text-secondary">
-                                <p>{appLang.GripsAbbr[gripState]}</p>
-                                <HandFist size={18} className={equippedIconStyle} />
-                            </div>
-                            : <Hand size={18} className={unEquipedIconStyle} />
+                            ? <Shield size={18} className={equippedIconStyle} />
+                            : <Shield size={18} className={unEquipedIconStyle} />
                         }
                     </div>
-                    : <div>
-                        {type !== 'armor' && type !== 'weapon' && <>{
-                            isEquipped
-                                ? <HandFist size={18} className={equippedIconStyle} />
+                }
+                {
+                    type === 'weapon'
+                        ? <div>
+                            {isEquipped
+                                ? <div className="flex items-center justify-end -space-x-4 font-eskapade text-text-secondary">
+                                    <p>{appLang.GripsAbbr[gripState]}</p>
+                                    <HandFist size={18} className={equippedIconStyle} />
+                                </div>
                                 : <Hand size={18} className={unEquipedIconStyle} />
-                        }</>}
-                    </div>
-            }
+                            }
+                        </div>
+                        : <div>
+                            {type !== 'armor' && type !== 'weapon' && <>{
+                                isEquipped
+                                    ? <HandFist size={18} className={equippedIconStyle} />
+                                    : <Hand size={18} className={unEquipedIconStyle} />
+                            }</>}
+                        </div>
+                }
             </div>
         </Tooltip>
     )

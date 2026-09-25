@@ -11,6 +11,7 @@ export class HeroSheet extends VagabondActorSheet {
             left: 333
         },
         window: {
+            title: "x",
             resizable: true
         },
         dragDrop: []

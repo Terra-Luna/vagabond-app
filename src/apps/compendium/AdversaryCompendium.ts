@@ -182,9 +182,6 @@ export class AdversaryCompendium extends (foundry.applications.sidebar.apps.Comp
         if (f.beingSubtype && sys.beingSubtype !== f.beingSubtype) return false
         if (f.hitDiceMin != null && (sys.hitDice ?? 0) < f.hitDiceMin) return false
         if (f.hitDiceMax != null && (sys.hitDice ?? 0) > f.hitDiceMax) return false
-
-        console.log(entry)
-
         if (f.threatLevelMin != null && (sys.threatLevelOverride ?? sys.threatLevel ?? 0) < f.threatLevelMin) return false
         if (f.threatLevelMax != null && (sys.threatLevelOverride ?? sys.threatLevel ?? 0) > f.threatLevelMax) return false
 

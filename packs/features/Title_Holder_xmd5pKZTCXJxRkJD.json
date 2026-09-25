@@ -16,8 +16,8 @@
       }
     ],
     "level": 6,
-    "scale": 0,
-    "maxLevel": 0
+    "scale": 4,
+    "maxLevel": 10
   },
   "effects": [],
   "folder": "x7ri0tuhhTZYSdHn",
@@ -30,9 +30,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.55",
     "createdTime": 1789502604114,
-    "modifiedTime": 1789522007841,
+    "modifiedTime": 1790347071408,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

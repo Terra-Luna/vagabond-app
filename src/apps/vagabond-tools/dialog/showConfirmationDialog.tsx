@@ -9,7 +9,7 @@ interface ConfirmDialogOptions {
     description?: string
     confirmText?: string
     cancelText?: string
-    variant?: "destructive" | "primary"
+    variant?: "destructive" | "primary" | "info"
 }
 
 export const showConfirmationDialog = (options: ConfirmDialogOptions): Promise<boolean> => {

@@ -514,8 +514,8 @@
         "valueMultiplier": 1
       },
       "steel": {
-        "name": "Steel",
-        "description": "Steel",
+        "name": "Standard",
+        "description": "Standard materials with no additional properties.",
         "valueMultiplier": 1
       },
       "bronze": {

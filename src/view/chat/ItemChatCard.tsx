@@ -19,13 +19,12 @@ export const ItemChatCard = ({ actorId, itemId, itemName, isConsumable = false }
     const actor = game.actors?.get(actorId)
     const item = actor?.items.get(itemId) ?? ItemsCache.allItems().find(it => it.id === itemId || it.uuid === itemId) ?? null
     const [resolvedItem, setResolvedItem] = useState<Item | null>(item)
-
     const [equipment, setEquipment] = useState<EquipmentDataModel<EquipmentSchema> | null>(
         item ? (item.system as EquipmentDataModel<EquipmentSchema>) : null
     )
 
     /**
-     * If the actor ditched the item since it was link, try to find a matching game item...
+     * If the actor ditched the item since it was linked, try to find a matching game item...
      * Don't convert this ItemChatCard component to async or else the chat card rehydrator
      * won't be able to render it.
      */

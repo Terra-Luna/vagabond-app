@@ -19,7 +19,10 @@ export const Description = ({ item, descriptionOverride, showFullView = false, i
     return (<>
         {
             stripHtml(description).length === 0 && !isEditMode ? <></> :
-                <div className={`${showFullView ? 'h-fit' : ''} py-1 ${hideBorder ? "" : "border border-dotted border-transparent border-b-table-border"} overflow-hidden`}>
+                <div className={`py-1 overflow-hidden text-text-primary bg-sheet-main-fill
+                    ${showFullView ? 'h-fit' : ''} 
+                    ${hideBorder ? "" : "border border-dotted border-transparent border-b-table-border"}`
+                }>
                     {
                         isEditMode ?
                             <div className={`${showFullView ? 'h-fit' : 'h-[54px]'} p-0.5 overflow-hidden'}`}>

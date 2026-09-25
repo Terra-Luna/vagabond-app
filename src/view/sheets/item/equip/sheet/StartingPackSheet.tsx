@@ -36,6 +36,7 @@ export const StartingPackSheet = ({ item }: { item: Item & { system: StartingPac
                 ))}
                 
                 <ContextMenu />
+
             </div>
         </EquipmentSheetSubtypeBody>
     )

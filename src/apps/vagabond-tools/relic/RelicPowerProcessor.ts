@@ -63,6 +63,8 @@ export class RelicPowerProcessor {
      * @param event 
      */
     static updateItemProperties = async (item: Item, relic: RelicPower, event: 'add' | 'remove') => {
+        if (!relic.power.modifiers || relic.power.modifiers.length === 0) return
+
         for (const mod of relic.power.modifiers) {
             const currentValue = foundry.utils.getProperty(item, mod.path)
             if (currentValue !== undefined) {

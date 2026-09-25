@@ -11,7 +11,7 @@ interface ConfirmModalProps {
     description?: string
     confirmText?: string
     cancelText?: string
-    variant?: "destructive" | "primary"
+    variant?: "destructive" | "primary" | "info"
 }
 
 export const ConfirmationDialog = ({
@@ -60,7 +60,7 @@ export const ConfirmationDialog = ({
 
                 {/* BUTTONS */}
                 <div className="mt-6 flex justify-end gap-3 text-text-primary">
-                    <SecondaryButton onClick={onClose}>{cancelText}</SecondaryButton>
+                    {variant !== "info" && <SecondaryButton onClick={onClose}>{cancelText}</SecondaryButton>}
 
                     {variant === "destructive"
                         ? <DestructiveButton onClick={handleConfirm}>{isLoading ? "Processing..." : confirmText}</DestructiveButton>

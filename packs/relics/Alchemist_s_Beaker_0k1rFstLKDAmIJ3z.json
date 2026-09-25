@@ -25,7 +25,7 @@
     "isConsumable": false,
     "relicPowers": [
       {
-        "id": "utility-other",
+        "id": "utility-other-bound",
         "category": {
           "value": "utility",
           "label": "Utility"
@@ -37,7 +37,7 @@
         },
         "goldValue": 0,
         "bound": true,
-        "description": "Unbound relic of miscellaneous nature."
+        "description": "Bound relic."
       }
     ],
     "isRation": false,
@@ -56,9 +56,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.55",
     "createdTime": 1790010745794,
-    "modifiedTime": 1790023201617,
+    "modifiedTime": 1790371076134,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -4,7 +4,7 @@
   "_id": "spNQe474vDyEHpvj",
   "img": "/icons/creatures/slimes/slime-movement-pseudopods-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Contains a green slime (p. 173).</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Contains a @UUID[Compendium.vagabond-app.adversaries.Actor.1CPQu6M355JkTUY4]{Green Slime}.</span></p>",
     "rules": [],
     "category": "alchemy",
     "value": {
@@ -45,10 +45,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.55",
     "createdTime": 1786819118149,
-    "modifiedTime": 1786820349311,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790350078781,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
