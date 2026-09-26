@@ -33,7 +33,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
 
     return (
         <div className={`relative z-100 flex pl-2 content-center bg-wealth-fill/50 ${tableBorder} w-full py-1`}>
-            <button title={"Click to add/subtract coins"} onClick={() => {
+            <button title={"Click to add/subtract coins"} className="mr-1" onClick={() => {
                 reset()
                 setIsCoinAppOpen(true)
             }}>
@@ -41,6 +41,7 @@ export const HeroCoinPurse = ({ hero }: { hero: HeroDataModel }) => {
                     <p className="text-lg text-wealth-denom-label font-eskapade font-bold">COIN</p>
                 </div>
             </button>
+
             <div className="flex content-center justify-end w-full">
                 <CoinValue hero={hero} value={hero.inventory.coins.g ?? 0} label={appLang.HeroSheet.Currency.g} path='g' />
                 <CoinValue hero={hero} value={hero.inventory.coins.s ?? 0} label={appLang.HeroSheet.Currency.s} path='s' />
@@ -78,8 +79,9 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
 
 const CoinValue = ({ hero, value, label, path }: { hero?: HeroDataModel, value: number, label: string, path: string }) => {
     return (
-        <div className="flex pr-2">
-            <div className={`text-text-primary text-2xl font-eskapade cursor-pointer min-w-[2ch] text-right hover-glow`}>
+        <div className="flex pr-2 items-center gap-x-1">
+            <div className="flex">
+                <div className={`text-text-primary font-eskapade cursor-pointer min-w-[2ch] text-right hover-glow`}>
                 {hero ?
                     <EditableTextField
                         boundValue={value.toString() ?? ""}
@@ -93,7 +95,10 @@ const CoinValue = ({ hero, value, label, path }: { hero?: HeroDataModel, value: 
                     <p>{value}</p>
                 }
             </div>
-            <div className={"text-wealth-denom-label text-sm content-end"}>{label}</div>
+                <div className={"text-wealth-denom-label text-xs content-end"}>
+                    {label}
+                </div>
+            </div>
         </div>
     )
 }

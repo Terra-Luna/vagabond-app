@@ -19,7 +19,7 @@
       "quantity": 1,
       "totalSlots": 0
     },
-    "isEquippable": false,
+    "isEquippable": true,
     "isEquipped": false,
     "isConsumable": false,
     "relicPowers": []
@@ -30,10 +30,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.71",
     "createdTime": 1787620788187,
-    "modifiedTime": 1787620788189,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1790449596173,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
     "duplicateSource": null

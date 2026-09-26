@@ -11,7 +11,7 @@ export interface CapacityInfo {
 export const CapacityGauge = ({ label, capacityInfo }: { label: string, capacityInfo: CapacityInfo }) => {
     return (
         <div className={`${infoBoxLayout} px-2 ${infoBoxText}`}>
-            <div className="flex justify-between items-center mb-1">
+            <div className="flex flex-wrap justify-between items-center mb-1">
                 <span className="text-xs">
                     {label}
                 </span>

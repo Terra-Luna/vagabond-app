@@ -10,7 +10,7 @@
         "id": "UjGOLarDXzbZVOU8",
         "key": "ToggleRule",
         "label": "Exploding Crit Dice",
-        "level": 8,
+        "level": "6",
         "value": true,
         "selector": "modifiers.dice.crit.ranged.explodes"
       }
@@ -30,9 +30,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.17",
+    "systemVersion": "0.1.71",
     "createdTime": 1789497134799,
-    "modifiedTime": 1789769983254,
+    "modifiedTime": 1790454379298,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

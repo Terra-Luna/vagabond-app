@@ -345,7 +345,7 @@ export class HeroAttack extends Attack {
         const hero = actor.system
         const weapon = item.system
         const isKeen = weapon.properties.includes('keen')
-        const dmgMods = foundry.utils.deepClone(hero.modifiers.damage)
+        const dmgMods = foundry.utils.deepClone(hero.modifiers.damage.out)
 
         let weaponSkill = skill
 
@@ -368,31 +368,32 @@ export class HeroAttack extends Attack {
         )
 
         if (!extraDice || extraDice.length === 0) {
-            if (dmgMods.out[weaponSkill]?.extraDice?.count > 0) {
-                const extra = dmgMods.out[weaponSkill].extraDice
+            if (dmgMods[weaponSkill]?.extraDice?.count > 0) {
+                const extra = dmgMods[weaponSkill].extraDice
                 extraDice = [new DiceRoll(extra), ...extraDice ?? []]
             }
         }
 
         const specialMods: any[] = []
 
-        Object.keys(dmgMods.out.special ?? {}).filter(key => dmgMods.out.special[key]?.active).forEach(key => {
-            const sm = dmgMods.out.special[key]
+        Object.keys(dmgMods.special ?? {}).filter(key => dmgMods.special[key]?.active).forEach(key => {
+            const sm = dmgMods.special[key]
             specialMods.push({
                 key: key,
                 flatDmgBonus: sm.flatBonus ?? 0,
                 perDieDmgBonus: sm.perDieBonus ?? 0,
                 extraDice: new DiceRoll(sm.extraDice ?? {})
             })
-
         })
+
+        console.log(dmgMods[weaponSkill]?.flatBonus)
 
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? [], ...specialMods.flatMap(sm => sm.extraDice ?? [])],
-            flatDmgBonus: (dmgMods.out[weaponSkill]?.flatBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.flatDmgBonus ?? 0), 0) ?? 0),
-            perDieDmgBonus: (dmgMods.out[weaponSkill]?.perDieBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.perDieDmgBonus ?? 0), 0) ?? 0)
+            flatDmgBonus: (dmgMods[weaponSkill]?.flatBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.flatDmgBonus ?? 0), 0) ?? 0),
+            perDieDmgBonus: (dmgMods[weaponSkill]?.perDieBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.perDieDmgBonus ?? 0), 0) ?? 0)
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)

@@ -83,19 +83,17 @@ export class DamageRoll {
 
     async roll(isCrit?: boolean): Promise<DamageRollResult> {
         const straightRolls = this.dice.filter(d => !d.explodesOn || d.explodesOn.length === 0)
-        const explodableRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0)
+        const explodingRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0)
 
-        const damageRoll = await new Roll(`${straightRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}+${this.flatDmgBonus ?? 0}`).evaluate()
+        const straightForumla = `${straightRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}`
+        const damageRoll = await new Roll(straightForumla.length > 0 ? straightForumla : `0`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
 
         let initialExplodableRoll: Roll.Evaluated<Roll<EmptyObject>> = await new Roll(`0`).evaluate()
         let initialExplodableTerms: foundry.dice.terms.DiceTerm[] = []
 
-        if (explodableRolls && explodableRolls.length > 0) {
-            let formula = `${explodableRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}`
-            if (straightRolls.length === 0) {
-                formula += `+${this.flatDmgBonus ?? 0}`
-            }
+        if (explodingRolls && explodingRolls.length > 0) {
+            const formula = `${explodingRolls.map(d => new DiceRoll(d).toRollFormula(isCrit).replace("!", "").replace("*", "")).join("+")}`
             initialExplodableRoll = await new Roll(formula).evaluate()
             initialExplodableTerms = getDiceTerms(initialExplodableRoll)
         }
@@ -112,10 +110,10 @@ export class DamageRoll {
 
         const combinedExplosions = canExplode ? this.mergeExplosions([...explosions]) : null
         const explosionTerms = canExplode ? getDiceTerms(combinedExplosions!) : []
-        const summaries = RollSummary.buildRollSummaries(damageRollTerms, initialExplodableTerms, explosionTerms, this.dice)
+        const summaries = RollSummary.buildRollSummaries(damageRollTerms, initialExplodableTerms, explosionTerms, this.dice, isCrit)
         const totalDice = summaries.filter(it => !it.rerolled).length
         const perDieBonus = totalDice * (this.perDieDmgBonus ?? 0)
-        const totalBonus = perDieBonus + this.getFlatDamageBonus(damageRoll, initialExplodableRoll)
+        const totalBonus = perDieBonus + (this.flatDmgBonus ?? 0)
 
         const result = {
             atkName: this.atkName,
@@ -135,11 +133,7 @@ export class DamageRoll {
     }
 
     /**
-     * Recursive function to compound exploding dice into
-     * the given 'explosions' parameter.
-     * @param damageRollTerms
-     * @param explosions 
-     * @param explodesOn 
+     * Recursive function to compound exploding dice into the given 'explosions' parameter.
      */
     private async processExplosions(
         damageRollTerms: foundry.dice.terms.DiceTerm[],
@@ -190,34 +184,6 @@ export class DamageRoll {
         }
         ui.notifications?.warn("Invalid exploding dice config detected (infinite recursion). Please check your exploding dice and reroll settings.")
         return false
-    }
-
-    /**
-     * Helper function to extract the sum total of flat bonuses applied to a roll.
-     * @param roll
-     * @returns 
-     */
-    private getFlatDamageBonus(roll: Roll.Evaluated<Roll<EmptyObject>>, initialExplodableRoll: Roll.Evaluated<Roll<EmptyObject>>): number {
-        const terms = Array.from([roll, initialExplodableRoll]).flatMap(it => it.terms).filter(it => this.isNumericTerm(it) || this.isOperatorTerm(it))
-        let bonus = 0
-
-        terms.forEach((term, i) => {
-            if (i > 0 && this.isNumericTerm(term) && this.isOperatorTerm(terms[i - 1])) {
-                const operator = (terms[i - 1] as any).operator
-                const value = (term as any).number
-                bonus += operator === '+' ? value : operator === '-' ? -value : 0
-            }
-        })
-
-        return bonus
-    }
-    
-    private isNumericTerm = (term: any): boolean => {
-        return term instanceof foundry.dice.terms.NumericTerm
-    }
-
-    private isOperatorTerm = (term: any): boolean => {
-        return term instanceof foundry.dice.terms.OperatorTerm
     }
 
 }

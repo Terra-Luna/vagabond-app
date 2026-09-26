@@ -86,7 +86,6 @@ export const InventoryTab = ({ hero }: { hero: HeroDataModel }) => {
                 }
             </div>
 
-            <div className="mb-8" />
         </div>
     )
 }
