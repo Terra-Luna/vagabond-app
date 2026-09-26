@@ -1,10 +1,8 @@
-import { HeroDataModel } from "../actor/HeroDataModel";
 import fields = foundry.data.fields;
-import { AdversaryDataModel } from "../actor/AdversaryDataModel";
 
 type VagabondCombatantModelSchema = ReturnType<typeof defineSchema>;
 
-export type VagabondCombatantInstance = InstanceType<typeof VagabondCombatModel>
+export type VagabondCombatantInstance = InstanceType<typeof VagabondCombatantModel>
 export const COMBAT_GROUPS = ['heroes', 'adversaries', 'npcs'] as const
 export type CombatGroup = typeof COMBAT_GROUPS[number]
 
@@ -18,7 +16,7 @@ const defineSchema = () => {
     };
 };
 
-export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
+export class VagabondCombatantModel extends foundry.abstract.TypeDataModel<
     VagabondCombatantModelSchema,
     Combatant.Implementation
 > {
@@ -33,15 +31,13 @@ export class VagabondCombatModel extends foundry.abstract.TypeDataModel<
         this.activations.max ??= activations ?? 1;
         this.activations.value ??= this.parent.combat?.started ? this.activations.max : 0;
         if (game.actors && this.parent.actorId) {
-            const parentActor = game.actors.get(this.parent.actorId)
-            if (parentActor) {
-                if (parentActor.system instanceof HeroDataModel) {
-                    this.combatGroup = "heroes"
-                } else if (parentActor.system instanceof AdversaryDataModel) {
-                    this.combatGroup = "adversaries"
-                } else {
-                    this.combatGroup = "npcs"
-                }
+            const disposition = this.parent.token?.disposition
+            if (disposition === 1) {
+                this.combatGroup = "heroes"
+            } else if (disposition === -1) {
+                this.combatGroup = "adversaries"
+            } else {
+                this.combatGroup = "npcs"
             }
         }
     }

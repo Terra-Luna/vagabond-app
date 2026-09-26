@@ -2,9 +2,6 @@ import { Clover, Eye, PlayIcon, RefreshCw, Sparkles, StopCircle, Trash } from "l
 import { forwardRef, ReactNode, useCallback, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from "react"
 
 import { addCountdowns, removeBurns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
-import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { NpcDataModel } from "../../model/actor/NpcDataModel"
 import { CombatGroup } from "../../model/combat/VagabondCombatant"
 import { appLang } from "../../utils/lang"
 import { localizeString } from "../../utils/localeUtils"
@@ -486,10 +483,11 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
 
     const hp = heroActorModel.health.value?.toString()
     const hpMax = heroActorModel.health.max?.toString()
-    const mana = heroActorModel.mana.value?.toString()
-    const manaMax = heroActorModel.mana.max?.toString()
-    const hasMana = heroActorModel.mana.max > 0
+    const mana = heroActorModel.mana?.value?.toString()
+    const manaMax = heroActorModel.mana?.max?.toString()
+    const hasMana = heroActorModel.mana?.max > 0
     const luck = heroActorModel.statuses.counters.luck?.toString()
+    const hasLuck = heroActorModel.stats?.luck
 
     const tooltipDescription = `${hasMana
         ? localizeString(appLang.Combat.statTooltip, { hp, hpMax, luck, mana, manaMax })
@@ -498,7 +496,7 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
 
     return (
         <Combatant ref={combatantComponentRef} token={token} combatant={hero} lastClickedCombatants={lastClickedCombatants} setlastClickedCombatants={setlastClickedCombatants}>
-            <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick} tooltipDescription={tooltipDescription} luck={luck}>
+            <CombatantHeader name={hero.name} token={token} combatant={hero} onClick={combatantComponentRef.current?.onClick} tooltipDescription={tooltipDescription} luck={hasLuck ? luck : undefined}>
                 <Tooltip title={hero.name} content={tooltipDescription}>
                     <div className="w-full">
                         <Gauge max={hpMax} value={hp} fillColorClassName="bg-ic-hp/75" size="sm" rounded={false} />
@@ -587,7 +585,6 @@ const Adversary = ({ adversary, lastClickedCombatants, setlastClickedCombatants 
     )
 }
 
-const getCombatantSystem = (combatant) => combatant?.actor?.system
-const getHeroes = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof HeroDataModel)
-const getAdversaries = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof AdversaryDataModel)
-const getNpcs = (combatants) => combatants?.filter(c => getCombatantSystem(c) instanceof NpcDataModel)
+const getHeroes = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.combatGroup === "heroes")
+const getAdversaries = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.combatGroup === "adversaries")
+const getNpcs = (combatants: VagabondCombatant[]) => combatants?.filter(c => c.combatGroup === "npcs")

@@ -18,7 +18,7 @@ import { NpcDataModel } from "./model/actor/NpcDataModel"
 import { isInventoryItem } from "./model/actor/type/Inventory"
 import { enforceSingletonPlaceholder } from "./model/actor/util/NpcDataModelUtil"
 import { VagabondActor } from "./model/actor/VagabondActor"
-import { VagabondCombatModel } from "./model/combat/VagabondCombatant"
+import { VagabondCombatantModel } from "./model/combat/VagabondCombatant"
 import { ActiveEffectDataModel } from "./model/effect/ActiveEffectDataModel"
 import { AncestryDataModel } from "./model/item/character/AncestryDataModel"
 import { ClassDataModel } from "./model/item/character/ClassDataModel"
@@ -100,7 +100,7 @@ Hooks.once("init", () => {
         // Combat
         CONFIG.Combat.documentClass = VagabondCombat,
         CONFIG.Combatant.documentClass = VagabondCombatant,
-        CONFIG.Combatant.dataModels.base = VagabondCombatModel,
+        CONFIG.Combatant.dataModels.base = VagabondCombatantModel,
         CONFIG.ActiveEffect.documentClass = VagabondActiveEffect,
         CONFIG.statusEffects = VagabondActiveEffect.statusEffects as any,
         CONFIG.ActiveEffect.dataModels = { base: ActiveEffectDataModel as any },

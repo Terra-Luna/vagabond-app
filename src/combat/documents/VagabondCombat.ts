@@ -1,4 +1,5 @@
 import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper";
+import { CombatGroup } from "../../model/combat/VagabondCombatant";
 import { sys_id } from "../../utils/foundryUtils";
 
 export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
@@ -106,7 +107,7 @@ interface Activations {
 /**
  * Vagabond combatant
  */
-export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combatant.SubType> extends Combatant<ActorDataModel> {
+export class VagabondCombatant<T extends Combatant.SubType = "base"> extends Combatant<T> {
     override prepareBaseData(): void {
         super.prepareBaseData()
     }
@@ -116,6 +117,10 @@ export class VagabondCombatant<ActorDataModel extends Combatant.SubType = Combat
      */
     get activations(): Activations {
         return (this.system as any).activations;
+    }
+
+    get combatGroup(): CombatGroup {
+        return (this.system as any).combatGroup;
     }
 
     updateBurningStatus() {
