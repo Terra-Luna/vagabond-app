@@ -11,6 +11,7 @@ import { DamageTypeSelector } from "../../shared/DamageTypeSelector"
 import { EquipmentSheetSubtypeBody } from "../component/EquipmentSheetSubtypeBody"
 import { ItemSheetPropLabel } from "../component/ItemSheetLabelComponent"
 import { MaterialSelection } from "../component/MaterialSelectionComponent"
+import { WeaponPropsList } from "../component/WeaponPropsList"
 
 export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
 
@@ -74,7 +75,7 @@ const WeaponSkills = ({ item }: { item: Item & { system: WeaponDataModel } }) =>
                 <OptionsSelectionMenu obj={item} label={''} path={['skills']} options={weaponSkillOptions(item)} />
             </div>
             <div className="flex gap-x-1 items-start">
-                <StringOptionsDisplay options={item.system.skills.map(it => appLang.WeaponSkills[it].name)} />
+                <StringOptionsDisplay options={item.system.skills.map(it => appLang.WeaponSkills[it].name)} textStyles="text-xl text-base text-text-secondary font-eskapade font-normal" />
             </div>
         </div>
     )
@@ -88,13 +89,7 @@ const Properties = ({ item }: { item: Item & { system: WeaponDataModel } }) => {
                 <OptionsSelectionMenu obj={item} label={''} path={['properties']} options={weaponProps(item)} />
             </div>
             <div className="flex gap-x-1 items-start">
-                <div className="flex flex-wrap gap-x-1 text-text-secondary font-paradigm font-normal italic">
-                    {item.system.properties.map((it, index) => (
-                        <p key={index} title={appLang.WeaponProps[it].description}>
-                            {`${appLang.WeaponProps[it].name}${index > item.system.properties.length - 2 ? '' : ','}`}
-                        </p>
-                    ))}
-                </div>
+                <WeaponPropsList weaponProps={item.system.properties ?? []} textStyles="text-xl text-base text-text-secondary font-eskapade font-normal" />
             </div>
         </div>
     )

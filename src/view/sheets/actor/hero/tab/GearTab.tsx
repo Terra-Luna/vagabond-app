@@ -16,7 +16,7 @@ import { useDragDrop } from "../../../../component/DragDrop"
 import { Header, ItemDivider } from "../../../../component/Header"
 import { Tooltip } from "../../../../component/Tooltip"
 import { RelicEffectList } from "../../../item/equip/component/RelicEffectList"
-import { EquipmentSheetComponent } from "../../../item/equip/EquipmentSheetComponent"
+import { WeaponPropsList } from "../../../item/equip/component/WeaponPropsList"
 import { ItemIconImg } from "../../../shared/InventoryItemsTable"
 
 export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
@@ -38,7 +38,7 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
                 </div>
                 : <div className="space-y-2 mb-4">
                     {hasEquippedWeapons && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} />}
-                    {hasEquippedArmor && <Armor armor={armor} wearables={wearables} />}
+                    {hasEquippedArmor && <Armor hero={hero} armor={armor} wearables={wearables} />}
                 </div>
             }
         </div>
@@ -134,17 +134,23 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
-                            <div className="flex items-center">
+                            <div className="flex items-center my-0.5">
                                 <ItemImage item={item} />
 
-                                <div className="flex flex-col w-full gap-y-0.5 px-2 py-0.25">
+                                <div className="flex flex-col w-full px-2">
                                     <div className="flex justify-between items-center">
                                         <div className={`text-lg line-clamp-1`}>{item.parent.name}</div>
                                         <div className="flex justify-end items-center">
                                             {/* WEAPON GRIP DISPLAY */}
                                             {item instanceof WeaponDataModel && (
-                                                <Tooltip title={"Grip"} disabled={item.grip.style !== 'V'} content={`${item.grip.style === 'V' && (item as any).grip.state === 'HH' ? 'Switch to One-Handed' : 'Switch to Two-Handed'}`}>
-                                                    <div className={`${gripStyle} ${item.grip.style === 'V' ? 'hover-glow' : ''} mr-2`} onClick={() => toggleGripState(item)}>
+                                                <Tooltip
+                                                    title={"Grip"}
+                                                    disabled={item.grip.style !== 'V'}
+                                                    content={`${item.grip.style === 'V' && (item as any).grip.state === 'HH'
+                                                        ? 'Switch to One-Handed'
+                                                        : 'Switch to Two-Handed'}
+                                                `}>
+                                                    <div className={`mr-2 ${gripStyle} ${item.grip.style === 'V' ? 'hover-glow' : ''}`} onClick={() => toggleGripState(item)}>
                                                         {appLang.GripsAbbr[item.grip.state]}
                                                     </div>
                                                 </Tooltip>
@@ -177,13 +183,15 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
                                         </div>
                                     </div>
 
+                                    {/* WEAPON RELIC LISTS */}
                                     <div className="flex justify-between items-center -mt-1">
                                         <RelicEffectList relicPowers={item.relicPowers ?? []} textColor="text-text-header-tertiary" />
                                     </div>
 
-                                    <div className="flex justify-between items-center -mt-1 pb-1">
-                                        <div className={propsStyle}>{(item as any).properties?.map(p => appLang.WeaponProps[p].name).join(", ")}</div>
-                                        <div className={propsStyle + " text-right mr-1.5"}>{appLang.Ranges[(item as any).range ?? '']}</div>
+                                    {/* WEAPON PROPERTIES AND RANGE */}
+                                    <div className="flex justify-between items-center pb-1">
+                                        <WeaponPropsList weaponProps={(item as any).properties ?? []} />
+                                        <div className={propsStyle + " text-right"}>{appLang.Ranges[(item as any).range ?? '']}</div>
                                     </div>
                                 </div>
                             </div>
@@ -198,17 +206,16 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
     )
 }
 
-const Armor = ({ armor, wearables }: { armor: ArmorDataModel, wearables: SundryDataModel[] }) => {
-    const propsStyle = "text-text-aux text-sm italic line-clamp-1"
+const Armor = ({ hero, armor, wearables }: { hero: any, armor: ArmorDataModel, wearables: SundryDataModel[] }) => {
+    const { onCtxMenu, ContextMenu } = useContextMenu()
 
     return (
         <div className="w-full -mt-1">
-            {/* SECTION HEADER */}
-            {armor || wearables.length > 0 ? <Header title={appLang.HeroSheet.armor} /> : null}
 
             {/* EQUIPPED ARMOR */}
             {armor &&
-                <div>
+                <div onContextMenu={(e) => onCtxMenu(e, equippedItemContextMenu(hero, armor))}>
+                    <Header title={appLang.HeroSheet.armor} />
                     <div className="flex items-center">
                         <ItemImage item={armor} />
                         <div className="flex flex-col w-full px-2">
@@ -222,10 +229,10 @@ const Armor = ({ armor, wearables }: { armor: ArmorDataModel, wearables: SundryD
                             </div>
 
                             {/* ARMOR CATEGORY AND MATERIAL */}
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between -mt-1">
                                 {/* RELIC INFO */}
                                 <RelicEffectList relicPowers={armor.relicPowers ?? []} textColor="text-text-header-tertiary" />
-                                <div className={propsStyle + " text-right mr-1"}>{appLang.Metals[armor.material]?.name ?? '-'}</div>
+                                <div className={"text-text-aux text-sm italic line-clamp-1 text-right mr-1"}>{appLang.Metals[armor.material]?.name ?? '-'}</div>
                             </div>
 
                         </div>
@@ -236,10 +243,11 @@ const Armor = ({ armor, wearables }: { armor: ArmorDataModel, wearables: SundryD
 
             {/* WEARABLE ITEMS */}
             {wearables.length > 0 && (
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1 mt-1">
+                    <Header title={"MISC"} />
                     {wearables.map((item, index) => (
                         <div key={index}>
-                            <div className="flex items-center">
+                            <div className="flex items-center" onContextMenu={(e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}>
                                 <ItemImage item={item} />
                                 <div className="flex flex-col gap-0.5 pl-2">
                                     {/* WEARABLE NAME */}
@@ -253,19 +261,18 @@ const Armor = ({ armor, wearables }: { armor: ArmorDataModel, wearables: SundryD
                     ))}
                 </div>
             )}
+
+            <ContextMenu />
         </div>
     )
 }
 
 const ItemImage = ({ item }) => {
-    return (
-        <Tooltip title={item.parent.name} content={<EquipmentSheetComponent item={item.parent} hideBottomSection={true} />}>
-            <button
-                className={`flex items-center pl-2 py-1 -mr-1 hover-glow cursor-pointer shrink-0 ${buttonAnimation}`}
-                onClick={() => item.parent?.sheet?.render(true)}
-            >
-                <ItemIconImg item={item} />
-            </button>
-        </Tooltip>
-    )
+    return <button
+        className={`flex items-center mx-1 -mr-3 my-0.5 shrink-0
+            hover-glow cursor-pointer ${buttonAnimation}`}
+        onClick={() => item.parent?.sheet?.render(true)}
+    >
+        <ItemIconImg item={item} size={34} />
+    </button>
 }

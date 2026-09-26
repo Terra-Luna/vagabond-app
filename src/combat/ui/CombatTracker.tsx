@@ -187,7 +187,21 @@ const CombatantHeader = ({ token, combatant, name, children, onClick, tooltipDes
     return (
         <div className="flex w-full">
             <div className={`flex w-full ${opacityClass}`}>
-                <CombatTrackerPortrait src={token?.document.texture.src} disposition={disposition === -1 ? "HOSTILE" : "FRIENDLY"} isControlled={controlled} isHovered={hovered} isHidden={isHidden} onClick={onClick} />
+                <CombatTrackerPortrait
+                    src={token?.document.texture.src}
+                    isControlled={controlled}
+                    isHovered={hovered}
+                    isHidden={isHidden}
+                    onClick={onClick}
+                    disposition={disposition === -1
+                        ? "HOSTILE"
+                        : (disposition === 0
+                            ? "NEUTRAL"
+                            : "FRIENDLY"
+                        )
+                    }
+                />
+
                 <div className="w-full pr-4">
                     <Tooltip title={name} content={tooltipDescription}>
                         <div className="flex items-center justify-between gap-x-1">
@@ -229,7 +243,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             // control all tokens between the first token clicked and this one
             const previousCombatant = getCombatantById(lastClickedCombatants[lastClickedCombatants.length - 1])
             if (previousCombatant) {
-                getCombatantsBetweenIndices(getIndexOfCombatant(previousCombatant), getIndexOfCombatant(combatant)).forEach(comb => canvas?.tokens?.placeables.find(t => t.id === comb.token._id)?.control({ releaseOthers: false }))
+                getCombatantsBetweenIndices(getIndexOfCombatant(previousCombatant), getIndexOfCombatant(combatant)).forEach(comb => canvas?.tokens?.placeables.find(t => t.id === comb.token?._id)?.control({ releaseOthers: false }))
             }
         } else if (e.ctrlKey) {
             token.control({ releaseOthers: (!e.shiftKey && !e.ctrlKey) });
@@ -490,7 +504,7 @@ const Hero = ({ hero, lastClickedCombatants, setlastClickedCombatants }) => {
     const hasLuck = heroActorModel.stats?.luck
 
     const tooltipDescription = `${hasMana
-        ? localizeString(appLang.Combat.statTooltip, { hp, hpMax, luck, mana, manaMax })
+        ? localizeString(appLang.Combat.statTooltip, { hp, hpMax, mana, manaMax, luck })
         : localizeString(appLang.Combat.statTooltipNoMana, { hp, hpMax, luck })
         }`
 

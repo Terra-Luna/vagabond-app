@@ -221,7 +221,7 @@ export const sendItemToChat = (hero: any, item: EquipmentDataModel<EquipmentSche
     }))
 }
 
-export const equippedItemContextMenu = (hero: any, item: WeaponDataModel | SundryDataModel): CtxMenuItem[] => {
+export const equippedItemContextMenu = (hero: any, item: ArmorDataModel | WeaponDataModel | SundryDataModel): CtxMenuItem[] => {
     const menuItems: CtxMenuItem[] = []
     if (item instanceof WeaponDataModel) {
         menuItems.push({

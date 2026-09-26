@@ -187,10 +187,16 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
                     portal={{ target: portalTarget }}
                     menuClassName={tooltipContainerStyle}
                     onClose={() => setIsOpen(false)}
-                    onClick={() => {
-                        if (interactive) return
-                        hide()
-                        setIsOpen(false)
+                    onClick={(e) => {
+                        if (interactive) {
+                            e.stopPropagation()
+                            e.preventDefault()
+                            return
+                        }
+                        else {
+                            hide()
+                            setIsOpen(false)
+                        }
                     }}
                 >
                     <div
@@ -229,7 +235,7 @@ const renderContent = (content?: ReactNode) => {
     }
     else {
         return <span className="text-sm text-context-menu-text font-paradigm font-normal whitespace-normal break-words">
-            {ReactHtmlParser(content.replace(`\n`, `<br />`))}
+            {ReactHtmlParser(content.replace(/\n/g, `<br />`))}
         </span>
     }
 }

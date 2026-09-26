@@ -19,7 +19,7 @@ if (args.includes("patch")) {
     const currentVersion = manifest.version.split('.')
     const patch = Number(currentVersion.pop()) + 1
     version = `v${currentVersion[0]}.${currentVersion[1]}.${patch}`
-    console.info(`Deploying patch: v${version}`)
+    console.info(`Deploying patch: ${version}`)
 }
 
 const zipName = `vagabond-app-${version}.zip`
