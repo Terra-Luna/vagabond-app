@@ -42,6 +42,11 @@ export class ItemsCache {
             )
         )
 
+        /**
+         * Runs in batches to massively speed up the process on system start-up.
+         * Without this, local/dev works fine but live environments totally bomb out.
+         * Alter with caution - do a live server test.
+         */
         const BATCH_SIZE = 25
         for (let i = 0; i < ruleItemEntries.length; i += BATCH_SIZE) {
             const batch = ruleItemEntries.slice(i, i + BATCH_SIZE)

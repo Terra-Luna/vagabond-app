@@ -72,7 +72,8 @@ export const COMPENDIUM_INDEX_FIELDS = [
     "system.items",
     "system.skills",
     "system.grip",
-    "system.properties"
+    "system.properties",
+    "system.relicPowers"
 ]
 
 /**
