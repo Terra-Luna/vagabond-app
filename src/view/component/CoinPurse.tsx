@@ -69,19 +69,19 @@ export const ReadOnlyCoinPurse = ({ coins }: { coins: Coins }) => {
                 <p className="text-xl text-wealth-denom-label font-eskapade font-bold">FUNDS</p>
             </div>
             <div className="flex content-center justify-end w-full">
-                <CoinValue value={coins.g ?? 0} label={appLang.HeroSheet.Currency.g} path='g' />
-                <CoinValue value={coins.s ?? 0} label={appLang.HeroSheet.Currency.s} path='s' />
-                <CoinValue value={coins.c ?? 0} label={appLang.HeroSheet.Currency.c} path='c' />
+                <CoinValue value={coins.g ?? 0} label={appLang.HeroSheet.Currency.g} path='g' fontSize="text-3xl" />
+                <CoinValue value={coins.s ?? 0} label={appLang.HeroSheet.Currency.s} path='s' fontSize="text-3xl" />
+                <CoinValue value={coins.c ?? 0} label={appLang.HeroSheet.Currency.c} path='c' fontSize="text-3xl" />
             </div>
         </div>
     )
 }
 
-const CoinValue = ({ hero, value, label, path }: { hero?: HeroDataModel, value: number, label: string, path: string }) => {
+const CoinValue = ({ hero, value, label, path, fontSize }: { hero?: HeroDataModel, value: number, label: string, path: string, fontSize?: string }) => {
     return (
         <div className="flex pr-2 items-center gap-x-1">
             <div className="flex">
-                <div className={`text-text-primary font-eskapade cursor-pointer min-w-[2ch] text-right hover-glow`}>
+                <div className={`text-text-primary font-eskapade cursor-pointer min-w-[2ch] text-right hover-glow ${fontSize ?? "text-lg"}`}>
                 {hero ?
                     <EditableTextField
                         boundValue={value.toString() ?? ""}

@@ -81,18 +81,18 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
             document.body.appendChild(portalHost)
         }
 
-        const shadowRoot = portalHost.shadowRoot ?? portalHost.attachShadow({ mode: 'open' })
-        let container = shadowRoot.querySelector<HTMLDivElement>('.tooltip-portal-container')
+        const scaduRoot = portalHost.shadowRoot ?? portalHost.attachShadow({ mode: 'open' })
+        let container = scaduRoot.querySelector<HTMLDivElement>('.tooltip-portal-container')
         if (!container) {
             container = document.createElement('div')
             container.className = 'tooltip-portal-container'
-            shadowRoot.appendChild(container)
+            scaduRoot.appendChild(container)
         }
 
-        if (!shadowRoot.querySelector('style[data-tooltip-styles]')) {
+        if (!scaduRoot.querySelector('style[data-tooltip-styles]')) {
             const styleTag = createStyleTag()
             styleTag.dataset.tooltipStyles = 'true'
-            shadowRoot.prepend(styleTag)
+            scaduRoot.prepend(styleTag)
         }
 
         Object.assign(portalHost.style, {
