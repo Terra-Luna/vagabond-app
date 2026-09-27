@@ -1,4 +1,5 @@
 import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { roll3dDice, showFloatingText, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
@@ -112,7 +113,11 @@ export abstract class Attack {
     }
 
     protected shouldApplyDamageToTarget(targetId: string): boolean {
-        void targetId
+        const actor = canvas?.scene?.tokens?.get(targetId)?.actor
+        if (actor?.system instanceof AdversaryDataModel) {
+            const immunities = actor.system.dmgImmunities ?? []
+            if (immunities.includes(this.damageRoll?.dmgType ?? '')) return false
+        }
         return true
     }
 
@@ -141,6 +146,10 @@ export abstract class Attack {
             if (!actor) continue
 
             for (const eff of this.appliedEffects) {
+                if (actor?.system instanceof AdversaryDataModel) {
+                    const immunities = actor.system.statusImmunities ?? []
+                    if (immunities.includes(eff.effect ?? '')) continue
+                }
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
                 await this.applyEffects(actor, token, eff.effect, duration, eff.damageType)
             }
