@@ -33,7 +33,7 @@ const getCombatantById = (id: string) => {
     return combatants.find(c => c.id === id || c._id === id)
 }
 
-const getSortedCombatants = (combatants) => [...getHeroes(combatants), ...getAdversaries(combatants), ...getNpcs(combatants)]
+const getSortedCombatants = (combatants) => [...getHeroes(combatants), ...getNpcs(combatants), ...getAdversaries(combatants)]
 
 const getIndexOfCombatant = (combatant) => {
     const combatants = getCombat()?.combatants?.contents
