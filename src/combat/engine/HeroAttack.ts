@@ -386,8 +386,6 @@ export class HeroAttack extends Attack {
             })
         })
 
-        console.log(dmgMods[weaponSkill]?.flatBonus)
-
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,

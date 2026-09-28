@@ -49,11 +49,13 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
 
     const parentNest = useContext(TooltipNestContext)
     const nestRef = useRef<TooltipNestState>(undefined)
+
     if (!nestRef.current) {
         nestRef.current = parentNest
             ? { depth: parentNest.depth + 1, activeDepth: parentNest.activeDepth, closers: parentNest.closers }
             : { depth: 1, activeDepth: { current: 0 }, closers: new Map() }
     }
+
     const nest = nestRef.current
 
     useEffect(() => {
@@ -67,6 +69,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
         }
         nest.activeDepth.current = Math.max(nest.activeDepth.current, nest.depth)
     }
+
     const releaseHover = () => {
         if (nest.activeDepth.current === nest.depth) nest.activeDepth.current = nest.depth - 1
     }
@@ -75,6 +78,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
         const anchor = anchorRef.current
         if (!anchor || !document.body) return
         let portalHost = document.body.querySelector<HTMLDivElement>(':scope > .tooltip-portal-root')
+
         if (!portalHost) {
             portalHost = document.createElement('div')
             portalHost.className = 'tooltip-portal-root'
@@ -83,6 +87,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
 
         const scaduRoot = portalHost.shadowRoot ?? portalHost.attachShadow({ mode: 'open' })
         let container = scaduRoot.querySelector<HTMLDivElement>('.tooltip-portal-container')
+
         if (!container) {
             container = document.createElement('div')
             container.className = 'tooltip-portal-container'
@@ -103,10 +108,12 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
         })
 
         const theme = anchor?.closest('.light, .dark')
+
         if (theme) {
             container.classList.remove('light', 'dark')
             container.classList.add(theme.classList.contains('dark') ? 'dark' : 'light')
         }
+
         setPortalTarget(container)
     }, [])
 

@@ -11,7 +11,10 @@ export const baseActorSchema = () => {
         armor: new fields.SchemaField({ ...armorSchema() }),
         senses: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(appLang.Senses) })),
         statuses: new fields.SchemaField({ ...statusFxSchema() }),
-        modifiers: new fields.SchemaField({ ...modifierSchema() })
+        modifiers: new fields.SchemaField({ ...modifierSchema() }),
+
+        // Used to force updates on the actor's UI when certain changes occur.
+        forceUpdateTrack: new fields.BooleanField({ initial: false })
     }
 }
 
@@ -22,6 +25,14 @@ export abstract class ActorDataModel<T extends BaseActorSchema> extends foundry.
         return {
             ...baseActorSchema()
         }
+    }
+
+    /**
+     * Required by a few edge cases, this forces the actor to update its UI by
+     * toggling the forceUpdateTrack field.
+     */
+    async forceUpdate() {
+        this.parent.update({ system: { forceUpdateTrack: !this.forceUpdateTrack } })
     }
 
     override async _onUpdate(changes, options, userId) {

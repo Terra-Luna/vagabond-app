@@ -39,7 +39,8 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                 applications: curTheme === "dark" ? "light" : "dark"
             }
         })
-        sheet._renderHTML()
+        sheet._renderHTML() // Ensures a smooth visual transition
+        VagabondSettingsRegistry.refreshActorSheets() // Propagates the theme change to all owned actors' sheets
     }, [sheet, isDarkMode])
 
     const toggleClientSetting = useCallback(async (settingKey) => {

@@ -52,11 +52,7 @@ const heroSchema = () => {
                 value: new fields.NumberField({ ...requiredInteger }),
                 sort: new fields.NumberField({ ...requiredInteger, initial: 1000 })
             }), { initial: [] }
-        ),
-
-        // Certain things cause us to call forceUpdate() to make sure the UI "catches up" to any document changes
-        // this just is a boolean value we flip back and forth to trigger the update lifecycle
-        forceUpdateTrack: new fields.BooleanField({ initial: false })
+        )
     }
 }
 
@@ -72,11 +68,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     declare perks: PerkDataModel[]
     declare spells: SpellDataModel[]
-
-    /** Force the update lifecycle to happen on a nonsense field */
-    async forceUpdate() {
-        this.parent.update({ system: { forceUpdateTrack: !this.forceUpdateTrack } })
-    }
 
     override async _preCreate(data: any, options: any, user: any) {
         await super._preCreate(data, options, user)

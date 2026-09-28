@@ -58,7 +58,7 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Number,
             default: 10,
-            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
+            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
     }
 
@@ -77,7 +77,7 @@ export class VagabondSettingsRegistry {
                 "saga": "Saga: 10x next Level (2+ year campaign)",
                 "destiny": "Destiny: Grant level-ups from Hero sheet menu."
             },
-            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
+            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
     }
 
@@ -96,7 +96,7 @@ export class VagabondSettingsRegistry {
                 { id: "q5", text: "Did you make a discovery?", xp: 1 },
                 { id: "q6", text: "Did you loot at least 50g of treasure?", xp: 1 }
             ] as any,
-            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
+            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
         game.settings?.registerMenu(sys_id, "xpQuestionnaireConfig", {
             name: "XP Questionnaire Editor",
@@ -127,7 +127,7 @@ export class VagabondSettingsRegistry {
             config: false,
             type: Boolean,
             default: true,
-            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
+            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
     }
 
@@ -197,7 +197,7 @@ export class VagabondSettingsRegistry {
             config: true,
             type: Boolean,
             default: true,
-            onChange: () => { VagabondSettingsRegistry.refreshHeroSheets() }
+            onChange: () => { VagabondSettingsRegistry.refreshActorSheets() }
         })
     }
 
@@ -212,12 +212,12 @@ export class VagabondSettingsRegistry {
         })
     }
 
-    private static async refreshHeroSheets() {
-        const heroes = game.actors?.contents.filter(it => (it.type as string) === 'hero')
-        if (!heroes) return
-        for (const hero of heroes) {
-            if (hero.isOwner) {
-                (hero?.system as any)?.forceUpdate()
+    static async refreshActorSheets() {
+        const actors = game.actors?.contents?.filter(it => it.isOwner)
+        if (!actors) return
+        for (const actor of actors) {
+            if (actor.isOwner) {
+                (actor?.system as any)?.forceUpdate()
             }
         }
     }
