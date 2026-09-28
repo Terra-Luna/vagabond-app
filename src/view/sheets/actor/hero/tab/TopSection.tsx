@@ -118,14 +118,11 @@ export const Luck = ({ hero }: { hero: HeroDataModel }) => {
             )
             hero.parent.update(
                 { 'system.statuses.counters.luck': luck - 1 } as Record<string, number>,
-                //{ ['skipTrackerChatCard' as string]: true }
+                { ['skipTrackerChatCard' as string]: true }
             )
         }
         else {
-            hero.parent.update(
-                { 'system.statuses.counters.luck': luck + (auxClick ? 1 : -1) } as Record<string, number>,
-                //{ ['skipTrackerChatCard' as string]: true }
-            )
+            hero.parent.update({ 'system.statuses.counters.luck': luck + (auxClick ? 1 : -1) } as Record<string, number>)
         }
     }, [luck])
     return (
@@ -159,9 +156,7 @@ export const Studied = ({ hero }: { hero: HeroDataModel }) => {
             )
         }
         else {
-            await hero.parent.update({
-                'system.statuses.counters.studied': studied + (auxClick ? 1 : -1)
-            } as Record<string, number>)
+            await hero.parent.update({ 'system.statuses.counters.studied': studied + (auxClick ? 1 : -1) } as Record<string, number>)
         }
     }, [studied])
     return (
