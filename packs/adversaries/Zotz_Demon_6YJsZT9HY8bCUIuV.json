@@ -725,7 +725,7 @@
     "beingSubtype": "hellspawn",
     "threatLevel": 1,
     "threatLevelOverride": 9.2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Massive bats out of hell. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Massive bats out of hell.</span></p>",
     "hitDice": 14,
     "zone": "front",
     "movement": {
@@ -733,7 +733,7 @@
     },
     "numberAppearing": "d4",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

@@ -3,6 +3,7 @@ import { createElement } from "react"
 import { RollPreset } from "../../apps/attack-builder/model/RollPreset"
 import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerProcessor"
 import { getManaEnforcement } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import type { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
@@ -386,12 +387,21 @@ export class HeroAttack extends Attack {
             })
         })
 
+        let relicLevel = -1
+        if (weapon.relicPowers.length > 0) {
+            relicLevel = 0
+            if (weapon.relicPowers.some(it => it.id.includes('bonus-weapon'))) {
+                relicLevel = weapon.damage.dice.modifier
+            }
+        }
+
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? [], ...specialMods.flatMap(sm => sm.extraDice ?? [])],
             flatDmgBonus: (dmgMods[weaponSkill]?.flatBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.flatDmgBonus ?? 0), 0) ?? 0),
-            perDieDmgBonus: (dmgMods[weaponSkill]?.perDieBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.perDieDmgBonus ?? 0), 0) ?? 0)
+            perDieDmgBonus: (dmgMods[weaponSkill]?.perDieBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.perDieDmgBonus ?? 0), 0) ?? 0),
+            relicLevel: relicLevel
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
@@ -566,6 +576,26 @@ export class HeroAttack extends Attack {
             .map(k => ({ skill: k, value: hero.skills[k]?.value ?? hero.saves[k] ?? 0 }))
             .sort((a, b) => a.value - b.value)[0]
         return defaultSkill
+    }
+
+    override shouldApplyDamageToTarget(targetId: string): boolean {
+        const actor = canvas?.scene?.tokens?.get(targetId)?.actor
+
+        if (actor?.system instanceof AdversaryDataModel) {
+            const immunities = actor.system.dmgImmunities ?? []
+
+            if (!this.isSpellAttack && ["physical", "blunt", "slash", "pierce"].includes(this.damageRoll?.dmgType ?? "")) {
+                if (immunities.some(i => i.includes("physical_lt"))) {
+                    const threshold = Number(immunities.find(i => i.includes("physical_lt"))?.split("physical_lt")[1] ?? "1")
+                    const atkRelicPow = this.damageRoll?.relicLevel ?? -1
+
+                    return super.shouldApplyDamageToTarget(targetId) && (atkRelicPow >= threshold)
+                }
+            }
+        }
+
+        return super.shouldApplyDamageToTarget(targetId)
+
     }
 
 }

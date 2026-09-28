@@ -725,7 +725,7 @@
     "beingSubtype": "wyrm",
     "threatLevel": 1,
     "threatLevelOverride": 9.1,
-    "description": "<p><span style=\"white-space: pre-wrap;\">The animated husk of a living myth, dripping with rot and misery. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">The animated husk of a living myth, dripping with rot and misery.</span></p>",
     "hitDice": 25,
     "zone": "front",
     "movement": {
@@ -734,7 +734,7 @@
     "numberAppearing": "1",
     "dmgImmunities": [
       "cold",
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

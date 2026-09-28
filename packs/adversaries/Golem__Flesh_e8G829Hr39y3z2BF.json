@@ -419,7 +419,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 4.7,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A living automoton of stitched-together flesh, given life through electric strikes. Immune to Physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">A living automoton of stitched-together flesh, given life through electric strikes.</span></p>",
     "hitDice": 9,
     "zone": "front",
     "movement": {
@@ -427,7 +427,7 @@
     },
     "numberAppearing": "1",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "cold",
       "shock",
       "poison"

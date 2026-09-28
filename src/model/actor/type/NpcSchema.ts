@@ -1,5 +1,5 @@
 import { appLang } from "../../../utils/lang"
-import { damageTypeOptions, fields, optionalString, requiredString, statusEffOptions, zonePreferences } from "../../common/sharedSchemas"
+import { damageImmunityTypeOptions, damageTypeOptions, fields, optionalString, requiredString, statusEffOptions, zonePreferences } from "../../common/sharedSchemas"
 import { BaseActorSchema } from "../ActorDataModel"
 import { npcActionComboSchema,npcActionSchema } from "./NpcAction"
 
@@ -19,7 +19,7 @@ export const npcSchema = () => {
         morale: new fields.NumberField({ integer: true, min: 1, max: 12 }),
         numberAppearing: new fields.StringField({ initial: 'd4' }),
 
-        dmgImmunities: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
+        dmgImmunities: new fields.ArrayField(new fields.StringField({ ...damageImmunityTypeOptions() })),
         dmgWeaknesses: new fields.ArrayField(new fields.StringField({ ...damageTypeOptions() })),
         statusImmunities: new fields.ArrayField(new fields.StringField({ ...statusEffOptions() })),
 

@@ -725,7 +725,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 2.2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Life-draining spirits in the body of a dead humanoid. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Life-draining spirits in the body of a dead humanoid.</span></p>",
     "hitDice": 4,
     "zone": "front",
     "movement": {
@@ -733,7 +733,7 @@
     },
     "numberAppearing": "2d8",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

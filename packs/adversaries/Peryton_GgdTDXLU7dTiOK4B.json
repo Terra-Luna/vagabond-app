@@ -723,7 +723,7 @@
     "beingSubtype": "beast",
     "threatLevel": 1,
     "threatLevelOverride": 3.2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Flying elks with the souls of killers. Upon their creation, the peryton casts the shadow of a man. Only after murdering a human and devouring its heart does this shadow take its expected shape. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Flying elks with the souls of killers. Upon their creation, the peryton casts the shadow of a man. Only after murdering a human and devouring its heart does this shadow take its expected shape.</span></p>",
     "hitDice": 4,
     "zone": "front",
     "movement": {
@@ -731,7 +731,7 @@
     },
     "numberAppearing": "2d4",
     "dmgImmunities": [
-      "physical"
+      "physical_lt0"
     ],
     "dmgWeaknesses": [],
     "statusImmunities": [],

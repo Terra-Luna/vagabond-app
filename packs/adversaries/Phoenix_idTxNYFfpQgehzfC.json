@@ -725,7 +725,7 @@
     "beingSubtype": "divine",
     "threatLevel": 1,
     "threatLevelOverride": 10.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics.</span></p><p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.relics.Item.Ax8nTfHlBaJSe9vr]{Phoenix Down}</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">@UUID[Compendium.vagabond-app.relics.Item.Ax8nTfHlBaJSe9vr]{Phoenix Down}</span></p>",
     "hitDice": 20,
     "zone": "back",
     "movement": {
@@ -734,7 +734,7 @@
     "numberAppearing": "1",
     "dmgImmunities": [
       "fire",
-      "physical"
+      "physical_lt0"
     ],
     "dmgWeaknesses": [],
     "statusImmunities": [

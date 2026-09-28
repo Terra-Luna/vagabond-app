@@ -726,7 +726,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 3.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics.</span></p>",
+    "description": "physical_lt0",
     "hitDice": 8,
     "zone": "mid",
     "movement": {

@@ -726,7 +726,7 @@
     "beingSubtype": "hellspawn",
     "threatLevel": 1,
     "threatLevelOverride": 11.2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Stolas demons are the astronomers of hell, appearing as massive owls whose eyes scintillate with a cosmic sprawl. They are  created from the deceased souls of philosophers who valued reason and pragmatism over humanity and ethics, and Stolas are extreme utilitarians in their slaughter. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Stolas demons are the astronomers of hell, appearing as massive owls whose eyes scintillate with a cosmic sprawl. They are  created from the deceased souls of philosophers who valued reason and pragmatism over humanity and ethics, and Stolas are extreme utilitarians in their slaughter.</span></p>",
     "hitDice": 27,
     "zone": "front",
     "movement": {
@@ -735,7 +735,7 @@
     "numberAppearing": "1",
     "dmgImmunities": [
       "fire",
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

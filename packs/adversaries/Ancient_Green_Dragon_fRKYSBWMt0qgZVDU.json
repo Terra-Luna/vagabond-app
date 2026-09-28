@@ -725,7 +725,7 @@
     "beingSubtype": "wyrm",
     "threatLevel": 1,
     "threatLevelOverride": 12.2,
-    "description": "<p><span style=\"white-space: pre-wrap;\">The awesome, flying, scaled terrors of myth. Immune to Physical from non-Relics and Relic Weapons weaker than (+2)</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">The awesome, flying, scaled terrors of myth.</span></p>",
     "hitDice": 30,
     "zone": "front",
     "movement": {
@@ -733,7 +733,7 @@
     },
     "numberAppearing": "1",
     "dmgImmunities": [
-      "physical",
+      "physical_lt2",
       "poison"
     ],
     "dmgWeaknesses": [],
@@ -1054,9 +1054,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.29",
+    "systemVersion": "0.1.79",
     "createdTime": 1790105810869,
-    "modifiedTime": 1790112956969,
+    "modifiedTime": 1790635180188,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

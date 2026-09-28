@@ -726,7 +726,7 @@
     "beingSubtype": "divine",
     "threatLevel": 1,
     "threatLevelOverride": 10.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics and Relics weaker than +2.</span></p>",
+    "description": "",
     "hitDice": 12,
     "zone": "mid",
     "movement": {
@@ -734,7 +734,7 @@
     },
     "numberAppearing": "1",
     "dmgImmunities": [
-      "physical",
+      "physical_lt2",
       "poison"
     ],
     "dmgWeaknesses": [],

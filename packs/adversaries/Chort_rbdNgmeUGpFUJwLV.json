@@ -726,7 +726,7 @@
     "beingSubtype": "hellspawn",
     "threatLevel": 1,
     "threatLevelOverride": 5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Goat-like bipedal demons, and sons of Chernobog. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Goat-like bipedal demons, and sons of Chernobog.</span></p>",
     "hitDice": 7,
     "zone": "front",
     "movement": {
@@ -735,7 +735,7 @@
     "numberAppearing": "d4",
     "dmgImmunities": [
       "fire",
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

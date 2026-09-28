@@ -726,7 +726,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 7.3,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics.</span></p>",
+    "description": "",
     "hitDice": 16,
     "zone": "mid",
     "movement": {
@@ -734,7 +734,7 @@
     },
     "numberAppearing": "1",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "poison",
       "shock"
     ],

@@ -725,7 +725,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 24.7,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A four-legged reptile of gargantuan proportions. It slumbers for centuries, then awakes to eat for weeks before returning to its sleep. During this time, it leaves destruction in its wake. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">A four-legged reptile of gargantuan proportions. It slumbers for centuries, then awakes to eat for weeks before returning to its sleep. During this time, it leaves destruction in its wake.</span></p>",
     "hitDice": 36,
     "zone": "front",
     "movement": {
@@ -735,7 +735,7 @@
     "dmgImmunities": [
       "cold",
       "fire",
-      "physical",
+      "physical_lt0",
       "shock"
     ],
     "dmgWeaknesses": [],

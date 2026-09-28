@@ -59,6 +59,18 @@ export const damageTypeOptions = () => {
     }
 }
 
+export const damageImmunityTypeOptions = () => {
+    const damageTypes = [...Object.keys(locale.APP.DamageTypes)]
+    damageTypes.push("physical_lt1", "physical_lt2", "physical_lt3")
+    return {
+        required: false,
+        nullable: true,
+        blank: false,
+        choices: damageTypes,
+        initial: 'none'
+    }
+}
+
 export const statusEffOptions = () => {
     const statusFx = Object.keys(locale.APP.StatusConditions)
     return {

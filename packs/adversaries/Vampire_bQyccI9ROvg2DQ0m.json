@@ -726,7 +726,7 @@
     "beingSubtype": "shape",
     "threatLevel": 1,
     "threatLevelOverride": 6.7,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Blood-sucking, intelligent undead who bear the curse of vampirism. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Blood-sucking, intelligent undead who bear the curse of vampirism.</span></p>",
     "hitDice": 8,
     "zone": "mid",
     "movement": {
@@ -735,7 +735,7 @@
     "numberAppearing": "d4",
     "dmgImmunities": [
       "cold",
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

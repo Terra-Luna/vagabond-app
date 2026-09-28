@@ -11,6 +11,7 @@ export interface DamageRollArgs {
     flatDmgBonus?: number
     perDieDmgBonus?: number
     armorPiercing?: number
+    relicLevel?: number
 }
 
 export interface DamageRollResult {
@@ -29,6 +30,7 @@ export class DamageRoll {
     flatDmgBonus: number
     perDieDmgBonus: number
     armorPiercing: number
+    relicLevel: number
     result: DamageRollResult | undefined
 
     constructor(args: DamageRollArgs) {
@@ -38,6 +40,7 @@ export class DamageRoll {
         this.flatDmgBonus = args.flatDmgBonus ?? 0
         this.perDieDmgBonus = args.perDieDmgBonus ?? 0
         this.armorPiercing = args.armorPiercing ?? 0
+        this.relicLevel = args.relicLevel ?? -1
     }
 
     toString(): string {
@@ -57,6 +60,7 @@ export class DamageRoll {
             flatDmgBonus: this.flatDmgBonus,
             perDieDmgBonus: this.perDieDmgBonus,
             armorPiercing: this.armorPiercing,
+            relicLevel: this.relicLevel,
             result: this.result
         }
     }
@@ -70,7 +74,8 @@ export class DamageRoll {
                 dmgType: json.dmgType,
                 flatDmgBonus: json.flatDmgBonus,
                 perDieDmgBonus: json.perDieDmgBonus,
-                armorPiercing: json.armorPiercing
+                armorPiercing: json.armorPiercing,
+                relicLevel: json.relicLevel
             })
             roll.result = json.result
             return roll
@@ -82,10 +87,10 @@ export class DamageRoll {
     }
 
     async roll(isCrit?: boolean): Promise<DamageRollResult> {
-        const straightRolls = this.dice.filter(d => !d.explodesOn || d.explodesOn.length === 0)
-        const explodingRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0)
+        const straightRolls = this.dice.filter(d => !d.explodesOn || d.explodesOn.length === 0).map(d => new DiceRoll(d))
+        const explodingRolls = this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0).map(d => new DiceRoll(d))
 
-        const straightForumla = `${straightRolls.map(d => new DiceRoll(d).toRollFormula(isCrit)).join("+")}`
+        const straightForumla = `${straightRolls.map(it => it.toRollFormula(isCrit)).join("+")}`
         const damageRoll = await new Roll(straightForumla.length > 0 ? straightForumla : `0`).evaluate()
         const damageRollTerms = getDiceTerms(damageRoll)
 
@@ -93,7 +98,7 @@ export class DamageRoll {
         let initialExplodableTerms: foundry.dice.terms.DiceTerm[] = []
 
         if (explodingRolls && explodingRolls.length > 0) {
-            const formula = `${explodingRolls.map(d => new DiceRoll(d).toRollFormula(isCrit).replace("!", "").replace("*", "")).join("+")}`
+            const formula = `${explodingRolls.map(it => it.toRollFormula(isCrit).replace("!", "").replace("*", "")).join("+")}`
             initialExplodableRoll = await new Roll(formula).evaluate()
             initialExplodableTerms = getDiceTerms(initialExplodableRoll)
         }
@@ -113,7 +118,10 @@ export class DamageRoll {
         const summaries = RollSummary.buildRollSummaries(damageRollTerms, initialExplodableTerms, explosionTerms, this.dice, isCrit)
         const totalDice = summaries.filter(it => !it.rerolled).length
         const perDieBonus = totalDice * (this.perDieDmgBonus ?? 0)
-        const totalBonus = perDieBonus + (this.flatDmgBonus ?? 0)
+        const totalBonus = perDieBonus
+            + (this.flatDmgBonus ?? 0)
+            + (straightRolls.reduce((acc, roll) => acc + (roll.modifier ?? 0), 0))
+            + (explodingRolls.reduce((acc, roll) => acc + (roll.modifier ?? 0), 0))
 
         const result = {
             atkName: this.atkName,

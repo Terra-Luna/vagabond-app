@@ -725,7 +725,7 @@
     "beingSubtype": "fae",
     "threatLevel": 1,
     "threatLevelOverride": 0.5,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Tiny, goblinoid fae that are associated with sudden misfortunes and calamity. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Tiny, goblinoid fae that are associated with sudden misfortunes and calamity.</span></p>",
     "hitDice": 1,
     "zone": "mid",
     "movement": {
@@ -733,7 +733,7 @@
     },
     "numberAppearing": "d6",
     "dmgImmunities": [
-      "physical"
+      "physical_lt0"
     ],
     "dmgWeaknesses": [],
     "statusImmunities": [],

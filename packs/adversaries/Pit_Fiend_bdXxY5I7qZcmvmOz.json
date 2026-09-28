@@ -727,7 +727,7 @@
     "beingSubtype": "hellspawn",
     "threatLevel": 1,
     "threatLevelOverride": 7.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Immune to physical damage from non-Relics and</span></p><p><span style=\"white-space: pre-wrap;\">Relic Weapons weaker than (+2)</span></p>",
+    "description": "",
     "hitDice": 13,
     "zone": "front",
     "movement": {
@@ -736,7 +736,7 @@
     "numberAppearing": "1",
     "dmgImmunities": [
       "fire",
-      "physical",
+      "physical_lt2",
       "poison"
     ],
     "dmgWeaknesses": [],

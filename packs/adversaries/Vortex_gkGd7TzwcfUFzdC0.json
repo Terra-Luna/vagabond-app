@@ -726,7 +726,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 2.9,
-    "description": "<p><span style=\"white-space: pre-wrap;\">A living whirlwind. Its true body is a small sphere that flutters in the center of the whirlwind. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">A living whirlwind. Its true body is a small sphere that flutters in the center of the whirlwind.</span></p>",
     "hitDice": 2,
     "zone": "front",
     "movement": {
@@ -734,7 +734,7 @@
     },
     "numberAppearing": "d8",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "poison",
       "shock"
     ],

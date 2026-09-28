@@ -725,7 +725,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 2.8,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Undead humanoid wrapped in enchanted bandages. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Undead humanoid wrapped in enchanted bandages.</span></p>",
     "hitDice": 6,
     "zone": "mid",
     "movement": {
@@ -733,7 +733,7 @@
     },
     "numberAppearing": "2d4",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [

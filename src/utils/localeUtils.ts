@@ -1,4 +1,5 @@
 import { VagabondAppError } from "../model/common/VagabondAppError"
+import { appLang } from "./lang"
 import { CombinedItems } from "./modelUtil"
 
 export const localizeString = (localeString: string, args: Record<string, string>) => {
@@ -52,4 +53,15 @@ export const createDropdownEntriesForItems = async (itemType: string, includeAny
         items.push({ value: it.name, label: it.name })
     ))
     return items
+}
+
+export const damageTypesWithPhysicalThresholds = () => {
+    const types = Object.assign({}, appLang.DamageTypes, {
+        "physical_lt0": "Physical (non-Relic)",
+        "physical_lt1": "Physical (non-Relic < +1)",
+        "physical_lt2": "Physical (non-Relic < +2)",
+        "physical_lt3": "Physical (non-Relic < +3)"
+    })
+    const sortedKeys = Object.keys(types).sort((a, b) => types[a].localeCompare(types[b]))
+    return Object.fromEntries(sortedKeys.map(key => [key, types[key]]))
 }

@@ -726,7 +726,7 @@
     "beingSubtype": "beyonder",
     "threatLevel": 1,
     "threatLevelOverride": 5.7,
-    "description": "<p><span style=\"white-space: pre-wrap;\">Monsters with human faces, lion bodies, and the wings of eagles. Known to trade in knowledge and poetry, making riddles a valuable commodity to these creatures. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">Monsters with human faces, lion bodies, and the wings of eagles. Known to trade in knowledge and poetry, making riddles a valuable commodity to these creatures.</span></p>",
     "hitDice": 12,
     "zone": "front",
     "movement": {
@@ -734,7 +734,7 @@
     },
     "numberAppearing": "1",
     "dmgImmunities": [
-      "physical"
+      "physical_lt0"
     ],
     "dmgWeaknesses": [],
     "statusImmunities": [

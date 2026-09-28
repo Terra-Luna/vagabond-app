@@ -726,7 +726,7 @@
     "beingSubtype": "slime",
     "threatLevel": 1,
     "threatLevelOverride": null,
-    "description": "<p><span style=\"white-space: pre-wrap;\">(Undead) Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">(Undead)</span></p>",
     "hitDice": 5,
     "zone": "front",
     "movement": {
@@ -736,7 +736,7 @@
     "dmgImmunities": [
       "acid",
       "cold",
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

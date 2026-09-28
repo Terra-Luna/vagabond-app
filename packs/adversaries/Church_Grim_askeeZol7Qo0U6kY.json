@@ -725,7 +725,7 @@
     "beingSubtype": "beast",
     "threatLevel": 1,
     "threatLevelOverride": 4.6,
-    "description": "<p><span style=\"white-space: pre-wrap;\">An animal buried in the walls of a church, and brought back to life as a guardian of the building. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">An animal buried in the walls of a church, and brought back to life as a guardian of the building.</span></p>",
     "hitDice": 4,
     "zone": "front",
     "movement": {
@@ -733,7 +733,7 @@
     },
     "numberAppearing": "1",
     "dmgImmunities": [
-      "physical"
+      "physical_lt0"
     ],
     "dmgWeaknesses": [],
     "statusImmunities": [

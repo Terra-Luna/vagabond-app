@@ -7,7 +7,7 @@ import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
 import { sys_id } from "../../../../../utils/foundryUtils"
 import { appLang } from "../../../../../utils/lang"
-import { createDropdownEntries } from "../../../../../utils/localeUtils"
+import { createDropdownEntries, damageTypesWithPhysicalThresholds } from "../../../../../utils/localeUtils"
 import { tableBorder } from "../../../../common/border-styles"
 import { DropDown } from "../../../../component/Dropdown"
 import { EditableNameField, EditableTextField, NumericCounterInput } from "../../../../component/EditableTextField"
@@ -311,7 +311,7 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
             {/* SENSES, IMMUNITIES, & WEAKNESSES */}
             <div className="w-full space-y-2 text-base text-text-header-tertiary font-normal">
                 <SelectableTextOptions obj={npc.parent} label={locale.senses} path={['senses']} localeObj={appLang.Senses} />
-                <DamageTypeSelector npc={npc} label={locale.immune} path={['dmgImmunities']} localeObj={appLang.DamageTypes} />
+                <DamageTypeSelector npc={npc} label={locale.immune} path={['dmgImmunities']} localeObj={damageTypesWithPhysicalThresholds()} />
                 <DamageTypeSelector npc={npc} label={locale.weak} path={['dmgWeaknesses']} localeObj={appLang.DamageTypes} />
                 <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={appLang.StatusConditions} />
             </div>
@@ -351,9 +351,10 @@ const StatBlockValue = ({ value }) => {
 const DamageTypeSelector = ({ npc, label, path, localeObj }: { npc: AdversaryDataModel | NpcDataModel, label: string, path: string[], localeObj: any }) => {
     const { isEditMode } = useEditMode()
     const field = getDocumentAtPath(npc.parent, path)
-    const damageTypes = Object.keys(localeObj).filter(k => k != 'none').map(k => (
+    const damageTypes = Object.keys(localeObj).filter(k => k !== 'none').map(k => (
         { key: k, value: localeObj[k], isSelected: field.indexOf(k) > -1 }
     ))
+
     return (<>
         {!isEditMode && field.length === 0
             ? <></>

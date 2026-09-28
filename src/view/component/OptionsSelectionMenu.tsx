@@ -23,26 +23,27 @@ export const OptionsSelectionMenu = ({ obj, label, path, options, onChange }: {
                 {isEditMode &&
                     <Menu menuButton={<SquarePen size={16} className={menuOptionText} />}>
                         <div className={menuOptionContainer}>
-                            {
-                                options.map(opt => (
-                                    <MenuItem
-                                        key={opt.key}
-                                        onClick={(e) => {
-                                            e.keepOpen = true
-                                            options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
-                                            const selectedKeys = options.filter(it => it.isSelected).map(it => it.key)
-                                            if (onChange) onChange(selectedKeys)
-                                            else if (obj && path) updateDocumentAtPath(obj, path, selectedKeys)
-                                        }}
-                                    >
-                                        {
-                                            opt.isSelected ?
-                                                <p className={menuOptionTextSelected}>{opt.value}</p> :
-                                                <p className={menuOptionTextDefault}>{opt.value}</p>
+                            {options.map(opt => (
+                                <MenuItem
+                                    key={opt.key}
+                                    onClick={(e) => {
+                                        e.keepOpen = true
+                                        options.find(it => it.key === opt.key)!.isSelected = !opt.isSelected
+                                        const selectedKeys = options.filter(it => it.isSelected).map(it => it.key)
+                                        if (onChange) {
+                                            onChange(selectedKeys)
                                         }
-                                    </MenuItem>
-                                ))
-                            }
+                                        else if (obj && path) {
+                                            updateDocumentAtPath(obj, path, selectedKeys)
+                                        }
+                                    }}
+                                >
+                                    {opt.isSelected
+                                        ? <p className={menuOptionTextSelected}>{opt.value}</p>
+                                        : <p className={menuOptionTextDefault}>{opt.value}</p>
+                                    }
+                                </MenuItem>
+                            ))}
                         </div>
                     </Menu>
                 }
@@ -54,13 +55,11 @@ export const OptionsSelectionMenu = ({ obj, label, path, options, onChange }: {
 export const DamageTypeIconDisplay = ({ dmgTypes }: { dmgTypes: any[] }) => {
     return (
         <div className="flex flex-wrap w-full">
-            {
-                dmgTypes.map((dmgType: any) => (
-                    <div key={dmgType} className="content-center">
-                        <DamageTypeIcon dmgType={dmgType} />
-                    </div>
-                ))
-            }
+            {dmgTypes.map((dmgType: any) => (
+                <div key={dmgType} className="content-center">
+                    <DamageTypeIcon dmgType={dmgType} />
+                </div>
+            ))}
         </div>
     )
 }

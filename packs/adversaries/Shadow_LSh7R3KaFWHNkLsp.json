@@ -725,7 +725,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 1.6,
-    "description": "<p><span style=\"white-space: pre-wrap;\">An animus of pure vomit darkness and anti-life. Immune to physical damage from non-Relics.</span></p>",
+    "description": "<p><span style=\"white-space: pre-wrap;\">An animus of pure vomit darkness and anti-life.</span></p>",
     "hitDice": 2,
     "zone": "front",
     "movement": {
@@ -733,7 +733,7 @@
     },
     "numberAppearing": "2d6",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "poison"
     ],
     "dmgWeaknesses": [],

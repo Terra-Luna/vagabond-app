@@ -2,6 +2,7 @@ import { Anvil, Brain, Cross, Droplets, Flame, FlaskRound, Hammer, HeartOff, Sec
 import { ReactElement } from "react"
 
 import { appLang } from "../../utils/lang"
+import { damageTypesWithPhysicalThresholds } from "../../utils/localeUtils"
 
 export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: number }) => {
     size = size ? size : 20
@@ -11,79 +12,84 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         return <Shield size={size} className='text-ic-armor fill-ic-armor-fill' />
     }
 
-    switch (appLang.DamageTypes[dmgType]) {
-        case appLang.DamageTypes.magical: {
-            element = <Wand2 size={size} className='text-magical' />
-            break
-        }
-        case appLang.DamageTypes.fire: {
-            element = <Flame size={size} strokeWidth={1} className='text-black fill-fire' />
-            break
-        }
-        case appLang.DamageTypes.cold: {
-            element = <Snowflake size={size} strokeWidth={1} className='text-black fill-cold' />
-            break
-        }
-        case appLang.DamageTypes.shock: {
-            element = <Zap size={size} strokeWidth={1} className='text-black fill-shock' />
-            break
-        }
-        case appLang.DamageTypes.acid: {
+    const allTypes = damageTypesWithPhysicalThresholds()
+
+    switch (dmgType) {
+        case "acid": {
             element = <Droplets size={size} strokeWidth={1} className='text-black fill-acid' />
             break
         }
-        case appLang.DamageTypes.poison: {
-            element = <FlaskRound size={size} strokeWidth={1} className='text-black fill-poison' />
+        case "adamant": {
+            element = <Anvil size={size - 2} strokeWidth={1} className='text-header-text-tertiary fill-ic-armor-fill' />
             break
         }
-        case appLang.DamageTypes.necrotic: {
-            element = <Skull size={size} strokeWidth={1} className='text-black fill-necrotic' />
+        case "blunt": {
+            element = <Hammer size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             break
         }
-        case appLang.DamageTypes.psychic: {
-            element = <Brain size={size} className='text-psychic' />
+        case "cold": {
+            element = <Snowflake size={size} strokeWidth={1} className='text-black fill-cold' />
             break
         }
-        case appLang.DamageTypes.healing: {
+        case "coldiron": {
+            element = <Swords size={size} strokeWidth={1} className='text-text-primary fill-cold' />
+            break
+        }
+        case "fatigue": {
+            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-ic-armor-fill' />
+            break
+        }
+        case "fire": {
+            element = <Flame size={size} strokeWidth={1} className='text-black fill-fire' />
+            break
+        }
+        case "healing": {
             element = <Cross size={size} strokeWidth={1} className='text-black fill-healing' />
             break
         }
-        case appLang.DamageTypes.mana: {
+        case "magical": {
+            element = <Wand2 size={size} className='text-magical' />
+            break
+        }
+        case "mana": {
             element = <Sparkle size={size} strokeWidth={1} className='text-black fill-mana' />
             break
         }
-        case appLang.DamageTypes.physical: {
+        case "necrotic": {
+            element = <Skull size={size} strokeWidth={1} className='text-black fill-necrotic' />
+            break
+        }
+        case "physical":
+        case "physical_lt1":
+        case "physical_lt2":
+        case "physical_lt3": {
             element = <div className="flex text-text-primary font-eskapade">
                 <Swords size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             </div>
             break
         }
-        case appLang.DamageTypes.blunt: {
-            element = <Hammer size={size - 2} className='text-text-primary fill-ic-armor-fill' />
-            break
-        }
-        case appLang.DamageTypes.slash: {
-            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
-            break
-        }
-        case appLang.DamageTypes.pierce: {
+        case "pierce": {
             element = <Target size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             break
         }
-        case appLang.DamageTypes.silvered: {
+        case "poison": {
+            element = <FlaskRound size={size} strokeWidth={1} className='text-black fill-poison' />
+            break
+        }
+        case "psychic": {
+            element = <Brain size={size} className='text-psychic' />
+            break
+        }
+        case "shock": {
+            element = <Zap size={size} strokeWidth={1} className='text-black fill-shock' />
+            break
+        }
+        case "silvered": {
             element = <Section size={size} strokeWidth={1} className='text-text-primary' />
             break
         }
-        case appLang.DamageTypes.coldiron: {
-            element = <Swords size={size} strokeWidth={1} className='text-text-primary fill-cold' />
-            break
-        }
-        case appLang.DamageTypes.adamant: {
-            element = <Anvil size={size - 2} strokeWidth={1} className='text-header-text-tertiary fill-ic-armor-fill' />
-            break
-        }
-        case appLang.DamageTypes.fatigue: {
-            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-ic-armor-fill' />
+        case "slash": {
+            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
             break
         }
     }
@@ -91,7 +97,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         element = <p>{appLang.DamageTypes[dmgType]}</p>
     }
     return (
-        <div title={appLang.DamageTypes[dmgType]}>{element}</div>
+        <div title={allTypes[dmgType] ?? appLang.DamageTypes[dmgType]}>{element}</div>
     )
 }
 
