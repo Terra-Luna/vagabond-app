@@ -4,7 +4,7 @@
   "_id": "WYoTCmcBhK7mikFG",
   "img": "/icons/tools/instruments/drum-standing-glowing-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">When you pass a Performance Check or Crit on any Save, you can cause a Being that can hear you to become Berserk, Charmed, Confused, or Frightened for [[/r Cd{{feature-value:4:2}}]] Rounds. Once this ends, they are immune to this Ability for the Shift.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">This countdown die increases to a Cd6 at 8th Level.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When you pass a Performance Check or Crit on any Save, you can cause a Being that can hear you to become Berserk, Charmed, Confused, or Frightened for [[/r Cd{{feature-value:4:2}}]] Rounds. Once this ends, they are immune to this Ability for the Shift. {{feature-value:This countdown die increases to a Cd6 at 8th Level.: }}</span></p>",
     "rules": [],
     "level": 4,
     "scale": 4,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.89",
     "createdTime": 1789492527914,
-    "modifiedTime": 1789521680967,
+    "modifiedTime": 1790714156992,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -13,7 +13,7 @@ export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedB
         }>
             {!img || img === ''
                 ? <></>
-                : <ImageWithDamageTypeBadge img={img} dmgType={dmgType} size={28} />
+                : <ImageWithDamageTypeBadge img={img} dmgType={dmgType} size={32} />
             }
             <span className={`${img ? 'ml-2' : 'ml-1'}`}>{title}</span>
             <Divider />

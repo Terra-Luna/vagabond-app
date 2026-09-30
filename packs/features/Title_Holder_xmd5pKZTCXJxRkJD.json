@@ -4,7 +4,7 @@
   "_id": "xmd5pKZTCXJxRkJD",
   "img": "/icons/equipment/waist/sash-cloth-gold-purple.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You use a d{{feature-value:6:2}} for the damage dice of your Brawl Weapons, and they Explode on a roll of 1 or 2.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">At 10th Level, this increases to a d8.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You use a d{{feature-value:6:2}} for the damage dice of your Brawl Weapons, and they Explode on a roll of 1 or 2. {{feature-value:At 10th Level, this increases to a d8.: }}</span></p>",
     "rules": [
       {
         "id": "s8xjVFIZZv6172FU",
@@ -13,6 +13,25 @@
         "level": 6,
         "value": "2",
         "selector": "modifiers.dice.exploding.brawl.values"
+      },
+      {
+        "id": "El9kb3OS4TUhVGMd",
+        "key": "FlatModifier",
+        "label": "Brawl: Die Size Min.",
+        "level": 6,
+        "value": "6",
+        "selector": "modifiers.dice.size.brawl.minimum",
+        "scale": 0,
+        "toggleableEffect": true
+      },
+      {
+        "id": "WIXRWZZLCe7EKuU1",
+        "key": "FlatModifier",
+        "label": "Brawl: Die Size Bonus",
+        "level": 10,
+        "value": "2",
+        "selector": "modifiers.dice.size.brawl.minimum",
+        "toggleableEffect": true
       }
     ],
     "level": 6,
@@ -30,9 +49,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.55",
+    "systemVersion": "0.1.89",
     "createdTime": 1789502604114,
-    "modifiedTime": 1790347071408,
+    "modifiedTime": 1790738673069,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

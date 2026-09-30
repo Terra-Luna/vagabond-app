@@ -1,3 +1,4 @@
+import { getFeatureToggleState } from "../../model/item/character/FeatureDataModel"
 import { sys_id } from "../../utils/foundryUtils"
 import { addItems } from "../../utils/heroInventoryUtil"
 import { inventoryItemTypes, isPathOfType } from "../../utils/modelUtil"
@@ -79,6 +80,9 @@ export class HeroBaseDataRulesApplicator {
         }
 
         const applyFlatModifier = (rule) => {
+            const toggleState = !rule.toggleableEffect || getFeatureToggleState(actor, rule.parentId)
+            if (!toggleState) return
+
             const selector = removeWhitespace(rule.selector.replace("system.", ""))
             const paths = selector.split(",")
 
@@ -99,8 +103,13 @@ export class HeroBaseDataRulesApplicator {
                     const updatedArray = [...currentValue]
 
                     if (rule.value?.includes?.(",")) {
-                        rule.value.split(",").forEach((val: any) => {
-                            updatedArray.push(Number(val))
+                        removeWhitespace(rule.value).split(",").forEach((val: any) => {
+                            if (Number(val)) {
+                                updatedArray.push(Number(val))
+                            }
+                            else {
+                                updatedArray.push(String(val))
+                            }
                         })
                     }
                     else {

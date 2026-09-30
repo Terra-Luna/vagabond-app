@@ -1,6 +1,6 @@
 import { DiceRollSchema } from "../../../apps/attack-builder/model/DieRollSchema"
 import { RelicPowerProcessor } from "../../../apps/vagabond-tools/relic/RelicPowerProcessor"
-import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
+import { getArmor, type HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
 import { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
 
@@ -44,21 +44,40 @@ export class DiceRoll {
 
     static getItemDamageWithHeroMods = (hero: HeroDataModel, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
         const mods = foundry.utils.deepClone(hero.modifiers)
-        const isVicious = item instanceof WeaponDataModel ? item.properties.includes('vicious') : false
-        const isDefense = item instanceof WeaponDataModel ? item.properties.includes('defense') : false
-        const isThrown = item instanceof WeaponDataModel ? item.properties.includes('thrown') : false
-        const versatileBonus = item instanceof WeaponDataModel ? ((item.grip.style === 'V' && item.grip.state === 'HH') ? 2 : 0) : 0
+        const isVicious = item instanceof WeaponDataModel ? (item.properties.includes('vicious') || mods.damage.out[skill]?.weaponProps?.includes('vicious')) : false
+        const isDefense = item instanceof WeaponDataModel ? (item.properties.includes('defense') || mods.damage.out[skill]?.weaponProps?.includes('defense')) : false
+        const isThrown = item instanceof WeaponDataModel ? (item.properties.includes('thrown') || mods.damage.out[skill]?.weaponProps?.includes('thrown')) : false
+        const isOneHandVersBonus = mods.dice.size[skill]?.oneHandVersatile || isDefense && mods.dice.size.defense.oneHandVersatile
+
+        const versatileBonus = item instanceof WeaponDataModel
+            ? ((item.grip.style === 'V' && (item.grip.state === 'HH' || (item.grip.state === 'H' && isOneHandVersBonus))) ? 2 : 0)
+            : 0
 
         if (item instanceof WeaponDataModel) {
             RelicPowerProcessor.applyRelicPowers(item.relicPowers as any, mods)
         }
 
-        const dieSize =
-            Math.max(mods.dice.size[skill]?.minimum ?? 0, item.damage.dice.faces) +
-            versatileBonus +
-            (mods.dice.size[skill]?.bonus ?? 0) +
-            (isDefense ? mods.dice.size['defense']?.bonus : 0) +
-            (isThrown ? mods.dice.size['thrown']?.bonus : 0)
+        let flatBonus = item.damage.dice.modifier ?? 0
+        flatBonus += mods.damage?.out[skill]?.flatBonus ?? 0
+
+        if (getArmor(hero)) {
+            const armoredMods = mods.damage?.out?.conditional?.armored
+            flatBonus += armoredMods[skill]?.flatBonus ?? 0
+            flatBonus += isDefense ? armoredMods?.defense?.flatBonus ?? 0 : 0
+        }
+
+        let dieSize = 
+            Math.max(mods.dice.size[skill]?.minimum ?? 0, item.damage.dice.faces)
+            + versatileBonus
+            + (mods.dice.size[skill]?.bonus ?? 0)
+            + (isDefense ? mods.dice.size['defense']?.bonus : 0)
+            + (isThrown ? mods.dice.size['thrown']?.bonus : 0)
+
+        if (dieSize > 12) {
+            const diff = dieSize - 12
+            dieSize = 12
+            flatBonus += diff / 2
+        }
 
         const explodesOnCrit = mods.dice.crit[skill]?.explodes
         const explodesOn = [
@@ -69,15 +88,15 @@ export class DiceRoll {
         ]
 
         const extraDiceOnCrit =
-            (isVicious ? 1 : 0) +
-            (mods.dice.crit[skill]?.extraDice ?? 0)
+            (isVicious ? 1 : 0)
+            + (mods.dice.crit[skill]?.extraDice ?? 0)
 
         const reroll = item instanceof WeaponDataModel ? mods.dice.reroll[skill]?.[item.grip.state] ?? [] : []
 
         return {
             count: item.damage.dice.count,
             faces: dieSize,
-            modifier: (item.damage.dice.modifier ?? 0),
+            modifier: flatBonus,
             explodesOn: explodesOn ?? [],
             explodeOnCritOnly: explodesOnCrit ?? false,
             extraDiceOnCrit: extraDiceOnCrit ?? 0,

@@ -1,4 +1,5 @@
 import { lang as locale } from "../../utils/lang"
+import { damageTypesWithPhysicalThresholds } from "../../utils/localeUtils"
 export const fields = foundry.data.fields
 
 export const optionalString = { required: false, nullable: true, blank: false }
@@ -60,8 +61,7 @@ export const damageTypeOptions = () => {
 }
 
 export const damageImmunityTypeOptions = () => {
-    const damageTypes = [...Object.keys(locale.APP.DamageTypes)]
-    damageTypes.push("physical_lt1", "physical_lt2", "physical_lt3")
+    const damageTypes = Object.keys(damageTypesWithPhysicalThresholds())
     return {
         required: false,
         nullable: true,

@@ -34,9 +34,18 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     }, [isCollapsed])
     return (
         <div className={className}>
-            <Header img={img} dmgType={dmgType} title={title} toggleCollapsed={toggleCollapsed} actions={actions} toggleCollapsedButton={
-                <button onClick={toggleCollapsed}><ToggleCollapseIcon isCollapsed={isCollapsed} /></button>
-            } />
+            <Header
+                img={img}
+                dmgType={dmgType}
+                title={title}
+                toggleCollapsed={toggleCollapsed}
+                actions={actions}
+                toggleCollapsedButton={
+                    <button onClick={toggleCollapsed}>
+                        <ToggleCollapseIcon isCollapsed={isCollapsed} />
+                    </button>
+                }
+            />
             {isCollapsed ? <></> : content}
         </div>
     )

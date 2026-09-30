@@ -1,7 +1,7 @@
 import { multiplyCoins, toCopper } from "../../model/common/CoinValue"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
-import { CombinedItems } from "../../utils/modelUtil"
+import { CombinedItems, getId } from "../../utils/modelUtil"
 import { ItemsCache } from "./ItemsCache"
 
 export interface ItemRule {
@@ -58,7 +58,7 @@ export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
     const sources: ItemRuleSource[] = [{
         item: itemOrSystem,
         owner: sourceOwner,
-        rules: applySavedSelections(system?.rules ?? [], sourceOwner)
+        rules: applySavedSelections(system?.rules ?? [], sourceOwner).map(rule => ({ ...rule, parentId: getId(itemOrSystem) }))
     }]
 
     const featureIds = Array.isArray(system?.featureIds)
@@ -70,7 +70,7 @@ export const getItemRuleSources = (itemOrSystem: any): ItemRuleSource[] => {
         if (feature) sources.push({
             item: feature,
             owner: sourceOwner,
-            rules: applySavedSelections(feature.system?.rules ?? [], sourceOwner)
+            rules: applySavedSelections(feature.system?.rules ?? [], sourceOwner).map(rule => ({ ...rule, parentId: feature._id }))
         })
     })
 

@@ -1,0 +1,23 @@
+{
+  "type": "Macro",
+  "folder": null,
+  "name": "Pugilist",
+  "color": null,
+  "sorting": "a",
+  "_id": "n5RaERV1c0QCSkSi",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.89",
+    "createdTime": 1790719651443,
+    "modifiedTime": 1790719651443,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!n5RaERV1c0QCSkSi"
+}

@@ -76,8 +76,20 @@ export const modifierSchema = () => {
         }),
 
         damage: new fields.SchemaField({
-            in: new fields.SchemaField({ ...damageReductionSchema() }),
-            out: new fields.SchemaField({ ...damageModifierSchema() })
+            in: new fields.SchemaField({
+                ...damageReductionSchema(),
+                conditional: new fields.SchemaField({
+                    armored: new fields.SchemaField({ ...damageReductionSchema() }),
+                    berserk: new fields.SchemaField({ ...damageReductionSchema() })
+                })
+            }),
+            out: new fields.SchemaField({
+                ...damageModifierSchema(),
+                conditional: new fields.SchemaField({
+                    armored: new fields.SchemaField({ ...damageModifierSchema() }),
+                    berserk: new fields.SchemaField({ ...damageModifierSchema() })
+                })
+            })
         }),
 
         healing: new fields.SchemaField({
@@ -123,10 +135,12 @@ const skillModifierSchema = () => {
     }
 }
 
+// modifiers.dice.size.*.
 const dieSizeModifierSchema = () => {
     return {
         minimum: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-        bonus: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        bonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        oneHandVersatile: new fields.BooleanField({ initial: false })
     }
 }
 
@@ -168,6 +182,7 @@ const damageModifierSchema = () => {
     }
 }
 
+// modifiers.damage.out.*.
 const damageBonusSchema = () => {
     return {
         flatBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
@@ -178,7 +193,8 @@ const damageBonusSchema = () => {
             faces: new fields.NumberField({ ...requiredInteger, initial: 4 }),
             modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
             explodesOn: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
-        })
+        }),
+        weaponProps: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] })
     }
 }
 

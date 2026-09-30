@@ -108,8 +108,7 @@ export const InventoryItemsTable = ({ actor, items, contextMenuItems, showEquipC
                                             </td>
                                             : <td />
                                         )
-                                )
-                                }
+                                )}
                             </tr>
                         )
                     })
@@ -127,7 +126,7 @@ export const ItemIconImg = ({ item, size = 28 }) => {
 
     return (
         <div className="flex items-center justify-center relative mr-2 shrink-0">
-            <Tooltip title={item.parent.name} interactive={true} content={<EquipmentSheetComponent item={item.parent} />}>
+            <Tooltip interactive={true} content={<EquipmentSheetComponent item={item.parent} />}>
                 <img
                     src={item.parent.img}
                     alt={getName(item)}

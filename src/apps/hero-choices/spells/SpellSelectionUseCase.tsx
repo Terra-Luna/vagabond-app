@@ -72,8 +72,7 @@ export const useSpellSelection = (actor: Actor & { system: HeroDataModel }, isLe
          */
         const loadInitialSpellSelections = async () => {
             if (clazz) {
-                const rules = (await getItemChoiceRules(level, getItemRules(clazz)))
-                    .sort((a: any, b: any) => Number(Boolean(a.skipAtHeroCreation)) - Number(Boolean(b.skipAtHeroCreation)))
+                const rules = (await getItemChoiceRules(level, getItemRules(clazz))).sort((a: any, b: any) => Number(Boolean(a.skipAtHeroCreation)) - Number(Boolean(b.skipAtHeroCreation)))
                 loadSelections(rules.filter(r => r.pack === 'spell'), setClassSpellSlots)
             }
             if (ancestry) {

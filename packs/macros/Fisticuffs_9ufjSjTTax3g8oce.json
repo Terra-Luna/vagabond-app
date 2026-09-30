@@ -1,0 +1,28 @@
+{
+  "name": "Fisticuffs",
+  "type": "script",
+  "_id": "9ufjSjTTax3g8oce",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "/icons/skills/melee/unarmed-punch-fist-yellow-red.webp",
+  "scope": "global",
+  "command": "/**\n * CLICK MACRO TO INCREASE DIE SIZE.\n * SHIFT + CLICK TO RESET BACK TO BASE.\n */\nlet hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(\"vagabond-app\", \"fisticuffs\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"fisticuffs\")) return;\n\nconst name = hero.system.parent.name;\nconst fisticuffs = hero.effects.find(fx => fx.name.toUpperCase() === \"FISTICUFFS\");\nconst brawlBonus = {\n  key: \"system.modifiers.dice.size.brawl.bonus\",\n  type: \"add\",\n  mode: 2,\n  value: 2,\n  priority: 20\n}\n\nif (event.shiftKey) {\n  token.actor.deleteEmbeddedDocuments(\"ActiveEffect\", [fisticuffs.id]);\n}\nelse if (!fisticuffs) {\n  const effectData = {\n    name: \"Fisticuffs\",\n    img: \"/icons/skills/melee/unarmed-punch-fist-yellow-red.webp\",\n    showIcon: 2,\n    changes: [{...brawlBonus}]\n  }\n  await token.actor.createEmbeddedDocuments(\"ActiveEffect\", [effectData]);\n}\nelse {\n  await fisticuffs.update({ changes: [...fisticuffs.changes, {...brawlBonus}]})\n}",
+  "folder": "n5RaERV1c0QCSkSi",
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.89",
+    "createdTime": 1790717081028,
+    "modifiedTime": 1790721431884,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!9ufjSjTTax3g8oce"
+}

@@ -1,3 +1,4 @@
+import { Checkbox } from "../../view/component/Checkbox"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput } from "../shared/ItemRuleInput"
 
@@ -42,6 +43,13 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
                 value={rule.valueMultiplier ?? ''}
                 placeholder={"e.g., level.current"}
                 onChange={(e) => onChange({ valueMultiplier: e.target.value })}
+            />
+            <Checkbox
+                label="Toggleable Effect"
+                checked={rule.toggleableEffect || false}
+                onCheckedChanged={(checked) => {
+                    onChange({ ...rule, toggleableEffect: checked })
+                }}
             />
         </div>
     )

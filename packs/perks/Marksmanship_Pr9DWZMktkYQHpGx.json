@@ -9,7 +9,7 @@
       {
         "id": "Bfe2ov8XFAnQc9cg",
         "key": "FlatModifier",
-        "label": "Marksmanship",
+        "label": "Ranged Damage Bonus",
         "level": 0,
         "value": 2,
         "selector": "modifiers.dice.size.ranged.bonus"

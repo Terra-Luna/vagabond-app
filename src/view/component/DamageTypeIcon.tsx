@@ -60,6 +60,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case "physical":
+        case "physical_lt0":
         case "physical_lt1":
         case "physical_lt2":
         case "physical_lt3": {

@@ -726,7 +726,7 @@
     "beingSubtype": "none",
     "threatLevel": 1,
     "threatLevelOverride": 3.9,
-    "description": "physical_lt0",
+    "description": "",
     "hitDice": 8,
     "zone": "mid",
     "movement": {
@@ -734,7 +734,7 @@
     },
     "numberAppearing": "1",
     "dmgImmunities": [
-      "physical",
+      "physical_lt0",
       "poison",
       "shock"
     ],

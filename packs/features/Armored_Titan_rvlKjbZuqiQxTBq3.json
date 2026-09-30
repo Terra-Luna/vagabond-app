@@ -5,7 +5,16 @@
   "img": "icons/equipment/chest/breastplate-helmet-metal.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You gain a +1 bonus to Checks made to Shove a Target if you count as larger than them. This bonus increases by 1 for each size larger you are.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you can equip 2H Shields as 1H Shields, and Versatile Shields use the higher damage die when held as 1H.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "Eda1BBF3pFWKPSN2",
+        "key": "ToggleRule",
+        "label": "Versatile Shields - 1H",
+        "level": 6,
+        "value": true,
+        "selector": "modifiers.dice.size.defense.oneHandVersatile"
+      }
+    ],
     "level": 6,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +30,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.87",
     "createdTime": 1789504856872,
-    "modifiedTime": 1789521678408,
+    "modifiedTime": 1790655824240,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

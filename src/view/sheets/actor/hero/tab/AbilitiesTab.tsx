@@ -1,9 +1,11 @@
-import { MessageSquareText } from "lucide-react"
+import { MessageSquareText, ToggleLeft, ToggleRight } from "lucide-react"
+import { useCallback } from "react"
 
 import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSelectionApp"
 import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/TrainingSelectionApp"
 import { getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
+import { getFeatureToggleState, toggleClassFeatureState } from "../../../../../model/item/character/FeatureDataModel"
 import { PerkDataModel, perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
 import { groupBy } from "../../../../../utils/collectionUtil"
@@ -29,10 +31,12 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         .filter(feature => feature.system.level <= hero.level.current!)
         .map(feature => ({ feature, level: feature.system.level }))
         .map(({ feature, level }) => ({
+            id: getId(feature),
             level,
             name: feature.name,
             subheader: feature.system.subheader((hero.class as any)?.parent?.name ?? ""),
             description: feature.system.dynamicDescription(hero.level.current!),
+            rules: [...feature.system.rules],
             img: feature.img
         }))
     )
@@ -44,7 +48,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     }
 
     const showTrainingSelection = game.user?.isActiveGM || (hero.level.current! > 0 && getShowTrainingSelectionToggle())
-    
+
     const getPerkSubheader = (perk: any) => {
         if (typeof perk.subheader === "function") return perk.subheader()
         const values: CardSubHeaderValues[] = []
@@ -58,6 +62,10 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         if (trainedReqs) values.push({ label: "Trained", value: trainedReqs })
         return values
     }
+
+    const toggleFeature = useCallback((featureId: string) => {
+        toggleClassFeatureState(hero.parent, featureId)
+    }, [hero.parent.flags])
 
     return (
         <div className="py-1">
@@ -92,10 +100,34 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                     <SkillCard
                                         actor={hero.parent}
                                         img={f.img}
-                                        title={f.name}
+                                        title={
+                                            <div className="flex gap-x-2 items-center">
+                                                <p>{f.name}</p>
+                                                {f.rules?.some((rule: any) => rule.toggleableEffect) && (
+                                                    <div className={`flex gap-x-1`}>
+                                                        <button
+                                                            type="button"
+                                                            title={`Toggle:\n${f.rules?.filter(r => r.toggleableEffect).map(r => r.label).join('\n')}`}
+                                                            className="flex cursor-pointer hover-glow ml-auto mr-2"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation()
+                                                                e.preventDefault()
+                                                                toggleFeature(f.id)
+                                                            }}
+                                                        >
+                                                            {getFeatureToggleState(hero.parent, f.id)
+                                                                ? <ToggleRight className="text-text-primary" />
+                                                                : <ToggleLeft className="text-text-tertiary" />
+                                                            }
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        }
                                         subtitles={f.subheader}
                                         description={f.description}
                                     />
+
                                 </div>
                             ))
                         }

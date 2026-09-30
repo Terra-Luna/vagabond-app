@@ -23,7 +23,7 @@
       {
         "id": "sHDdlkNX4yj8vmKE",
         "key": "ToggleRule",
-        "label": "Training: Melee",
+        "label": "Training: Brawl",
         "level": "1",
         "value": true,
         "selector": "skills.brawl.trained"
@@ -31,10 +31,10 @@
       {
         "id": "Iwf5JhVdJzaS8sdF",
         "key": "ToggleRule",
-        "label": "Training: Brawl",
+        "label": "Training: Melee",
         "level": "1",
         "value": true,
-        "selector": "skills.brawl.trained"
+        "selector": "skills.melee.trained"
       }
     ],
     "complexity": 3,

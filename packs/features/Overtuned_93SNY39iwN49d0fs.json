@@ -7,7 +7,7 @@
     "description": "<p><span style=\"white-space:pre-wrap\">If a d6 bonus you grant causes a d20 result to be {{feature-value:21:-1}} or higher, you gain 1 Luck. The result needed is reduced by 1 every 4 Levels hereafter.</span></p>",
     "rules": [],
     "level": 2,
-    "scale": 0
+    "scale": 4
   },
   "effects": [],
   "folder": "hs0FocbmD1E3VzFM",
@@ -20,9 +20,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.89",
     "createdTime": 1789492430967,
-    "modifiedTime": 1789523164502,
+    "modifiedTime": 1790714204675,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

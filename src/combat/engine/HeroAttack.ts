@@ -345,8 +345,6 @@ export class HeroAttack extends Attack {
     ): HeroAttack {
         const hero = actor.system
         const weapon = item.system
-        const isKeen = weapon.properties.includes('keen')
-        const dmgMods = foundry.utils.deepClone(hero.modifiers.damage.out)
 
         let weaponSkill = skill
 
@@ -361,6 +359,9 @@ export class HeroAttack extends Attack {
             item: item.system,
             skill: weaponSkill!
         })
+
+        const isKeen = weapon.properties.includes('keen') || hero.modifiers.damage.out[weaponSkill]?.weaponProps?.includes('keen')
+        const dmgMods = foundry.utils.deepClone(hero.modifiers.damage.out)
 
         skillCheck.critThreshold -= (isKeen ? 1 : 0)
 
@@ -391,7 +392,16 @@ export class HeroAttack extends Attack {
         if (weapon.relicPowers.length > 0) {
             relicLevel = 0
             if (weapon.relicPowers.some(it => it.id.includes('bonus-weapon'))) {
-                relicLevel = weapon.damage.dice.modifier
+                const weaponPowers = weapon.relicPowers.filter(it => it.id.includes('bonus-weapon'))
+                relicLevel = weaponPowers.some(it => it.id === 'bonus-weapon-3')
+                    ? 3
+                    : (weaponPowers.some(it => it.id === 'bonus-weapon-2')
+                        ? 2
+                        : (weaponPowers.some(it => it.id === 'bonus-weapon-1')
+                            ? 1
+                            : 0
+                        )
+                    )
             }
         }
 

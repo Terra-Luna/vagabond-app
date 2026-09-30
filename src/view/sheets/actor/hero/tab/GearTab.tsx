@@ -101,6 +101,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
             return {
                 item,
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
+                skill: attackInstance?.skillCheck?.skill ?? '',
                 initiateAttack: async (e: React.MouseEvent) => {
                     await attackInstance.initiate(e)
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
@@ -113,17 +114,21 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
         })
 
         const sundriesData = equippedSundries.map(item => {
-            return { item, damageString: "", initiateAttack: () => { }, rollDefenseCheck: () => { } }
+            return { item, damageString: "", skill: "", initiateAttack: () => { }, rollDefenseCheck: () => { } }
         })
 
         return [...weaponData, ...sundriesData].sort((a, b) => a.item.parent.sort - b.item.parent.sort)
-    }, [hero.parent, equipDependency, targetIds, effectUpdateKey])
+    }, [hero.parent, equipDependency, targetIds, effectUpdateKey, hero.modifiers])
 
     return (
         <div className="w-full">
             <Header title={appLang.HeroSheet.weapons} />
             {
-                equipDisplayData?.map(({ item, damageString, initiateAttack, rollDefenseCheck }, index: number) => {
+                equipDisplayData?.map(({ item, damageString, skill, initiateAttack, rollDefenseCheck }, index: number) => {
+                    const isDefense = item instanceof WeaponDataModel
+                        ? (item.properties.includes('defense') || hero.modifiers.damage.out[skill]?.weaponProps?.includes('defense'))
+                        : false
+
                     return (
                         <div
                             key={getId(item)}
@@ -134,7 +139,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
                             onDragEnd={(e) => onDragEnd(e, index)}
                             onContextMenu={async (e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}
                         >
-                            <div className="flex items-center my-0.5">
+                            <div className="flex items-center my-0.5 gap-x-1">
                                 <ItemImage item={item} />
 
                                 <div className="flex flex-col w-full px-2">
@@ -172,7 +177,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
                                                 </Tooltip>
 
                                                 {/* DEFENSE ACTION BUTTON */}
-                                                {item instanceof WeaponDataModel && item.properties.includes("defense") &&
+                                                {isDefense &&
                                                     <Tooltip title={"Defense Action"} content={"Roll defense check to apply weapon damage as armor"}>
                                                         <button onClick={(e) => rollDefenseCheck(e)} onMouseDown={(e) => e.preventDefault()} className="hover-glow cursor-pointer">
                                                             <Shield className="text-ic-armor-border fill-ic-armor-fill -mb-1.5" size={22} />
@@ -216,7 +221,7 @@ const Armor = ({ hero, armor, wearables }: { hero: any, armor: ArmorDataModel, w
             {armor &&
                 <div onContextMenu={(e) => onCtxMenu(e, equippedItemContextMenu(hero, armor))}>
                     <Header title={appLang.HeroSheet.armor} />
-                    <div className="flex items-center">
+                    <div className="flex items-center  gap-x-1">
                         <ItemImage item={armor} />
                         <div className="flex flex-col w-full px-2">
                             {/* ARMOR NAME AND RATING */}
@@ -247,7 +252,7 @@ const Armor = ({ hero, armor, wearables }: { hero: any, armor: ArmorDataModel, w
                     <Header title={"MISC"} />
                     {wearables.map((item, index) => (
                         <div key={index}>
-                            <div className="flex items-center" onContextMenu={(e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}>
+                            <div className="flex items-center gap-x-1" onContextMenu={(e) => onCtxMenu(e, equippedItemContextMenu(hero, item))}>
                                 <ItemImage item={item} />
                                 <div className="flex flex-col gap-0.5 pl-2">
                                     {/* WEARABLE NAME */}
