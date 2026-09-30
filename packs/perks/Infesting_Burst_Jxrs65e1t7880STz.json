@@ -4,7 +4,7 @@
   "_id": "Jxrs65e1t7880STz",
   "img": "icons/magic/unholy/strike-beam-blood-large-red-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">When you create an Undead with Raise, you can choose to raise them up as a Boomer (p. 181).</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When you create an Undead with Raise, you can choose to raise them up as a @UUID[Compendium.vagabond-app.adversaries.Actor.z8xoMnukqP6FG5Av]{Boomer}.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -35,10 +35,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.89",
     "createdTime": 1786724774566,
-    "modifiedTime": 1786724828529,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790745025386,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

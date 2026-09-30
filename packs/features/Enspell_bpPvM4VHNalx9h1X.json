@@ -5,7 +5,16 @@
   "img": "/icons/magic/fire/dagger-rune-enchant-flame-strong-blue-yellow.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You can have one Imbue Casting as continual duration on your Weapon, and can skip your Move to change the Spell.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "eecmQCb138HEi0In",
+        "key": "ToggleRule",
+        "label": "Enspell",
+        "level": 1,
+        "value": true,
+        "selector": "flags.enpell"
+      }
+    ],
     "level": 1,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +30,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.89",
     "createdTime": 1789499569187,
-    "modifiedTime": 1789521742742,
+    "modifiedTime": 1790746414983,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -5,7 +5,17 @@
   "img": "/icons/magic/unholy/hand-weapon-glow-black-green.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">When you damage a Focusing Being, the damage rolls can Explode, and if the result of your d20 roll on the Check is 10 or higher than your Difficulty, the Focus ends.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "NrJcN86uu63C8gO4",
+        "key": "ToggleRule",
+        "label": "Exploding Damage",
+        "level": 0,
+        "value": true,
+        "selector": "modifiers.dice.exploding.global.max",
+        "toggleableEffect": true
+      }
+    ],
     "prerequisites": [
       {
         "type": "trained",
@@ -36,10 +46,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.89",
     "createdTime": 1786725267252,
-    "modifiedTime": 1786725363064,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790745187654,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

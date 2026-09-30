@@ -5,6 +5,7 @@ import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsH
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
 import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
+import { sys_id } from "../../utils/foundryUtils"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
 import { getId, inventoryItemTypes } from "../../utils/modelUtil"
@@ -214,6 +215,14 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
 
     boundRelics = (): EquipmentDataModel<EquipmentSchema>[] => {
         return (this.inventory.items as any).filter(it => it.isEquipped && it.isBoundRelic())
+    }
+
+    getRuleToggleState = (itemId: string) => {
+        return this.parent.getFlag(sys_id, `ruleToggle_${itemId}`)
+    }
+
+    toggleItemRule = (itemId: string) => {
+        this.parent.setFlag(sys_id, `ruleToggle_${itemId}`, !this.getRuleToggleState(itemId))
     }
 }
 

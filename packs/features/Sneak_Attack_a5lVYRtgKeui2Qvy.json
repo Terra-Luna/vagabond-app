@@ -4,7 +4,7 @@
   "_id": "a5lVYRtgKeui2Qvy",
   "img": "icons/skills/melee/strike-slashes-red.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">The first time you hit with a Favored attack on a Turn with a Finesse, Keen, or Ranged Weapon, it deals an extra [[/r {{feature-value:1:1}}d4#Sneak Attack]]{{{feature-value:1:1}}d4} damage and ignores an amount of Armor equal to this number of extra dice. The number of extra d4s increases by 1 every 3 Levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The first time you hit with a Favored attack on a Turn with a Finesse, Keen, or Ranged Weapon, it deals an extra [[/r {{feature-value:1:1}}d4#Sneak Attack]]{{{feature-value:1:1}}d4} damage and ignores an amount of Armor equal to this number of extra dice. The number of extra d4s increases by 1 every 3 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.8HJAeR4tmzZ5h1t7]{Sneak Attack}</span></p>",
     "rules": [
       {
         "id": "L2X6dbvNzhxreTmT",
@@ -37,9 +37,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.3",
+    "systemVersion": "0.1.89",
     "createdTime": 1789432269492,
-    "modifiedTime": 1789675175292,
+    "modifiedTime": 1790746827080,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

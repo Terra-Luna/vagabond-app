@@ -32,6 +32,14 @@
         "value": "2",
         "selector": "modifiers.dice.size.brawl.minimum",
         "toggleableEffect": true
+      },
+      {
+        "id": "95zEHymuf0Vm5Qja",
+        "key": "ToggleRule",
+        "label": "Title Holder Flag",
+        "level": 6,
+        "value": true,
+        "selector": "flags.ruleToggle_xmd5pKZTCXJxRkJD"
       }
     ],
     "level": 6,
@@ -51,7 +59,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.89",
     "createdTime": 1789502604114,
-    "modifiedTime": 1790738673069,
+    "modifiedTime": 1790744495087,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

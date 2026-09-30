@@ -4,7 +4,7 @@
   "_id": "OWGhXBExZUcpZJ6K",
   "img": "/icons/magic/symbols/circle-ouroboros.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.eDxdbBsCNsDdTsG0]{Vehement Magic} Perk, and you can spend your HP as Mana, which also reduces your Max HP by the same amount until you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You gain the @UUID[Compendium.vagabond-app.perks.Item.eDxdbBsCNsDdTsG0]{Vehement Magic} Perk, and you can spend your HP as Mana, which also reduces your Max HP by the same amount until you Rest. If you die from this reduction, the Cast still resolves and your body is vaporized.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macros: </strong></b><span style=\"white-space:pre-wrap\">@UUID[Compendium.vagabond-app.macros.Macro.cjOcRvDubeSKTSEg]{Tap} &amp; @UUID[Compendium.vagabond-app.macros.Macro.TJKYhsd8Q1nVhkrT]{Tap (Reset)}</span></p>",
     "rules": [
       {
         "id": "QrgqdVA5h2UShVFJ",
@@ -38,9 +38,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.9",
+    "systemVersion": "0.1.89",
     "createdTime": 1789504047009,
-    "modifiedTime": 1789743622265,
+    "modifiedTime": 1790746786454,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

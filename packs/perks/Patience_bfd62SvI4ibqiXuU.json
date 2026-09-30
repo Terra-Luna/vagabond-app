@@ -5,7 +5,17 @@
   "img": "icons/skills/melee/hand-grip-sword-red.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">When you Hold with a Melee Weapon Equipped, it has the Defend property until your next Turn or until you roll its damage die.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "lwq0XX1VA1dYaE35",
+        "key": "FlatModifier",
+        "label": "Patient Defense",
+        "level": 0,
+        "value": "defense",
+        "selector": "modifiers.damage.out.melee.weaponProps",
+        "toggleableEffect": true
+      }
+    ],
     "prerequisites": [
       {
         "type": "stat",
@@ -49,10 +59,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.89",
     "createdTime": 1786726395245,
-    "modifiedTime": 1786726577360,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1790745265161,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

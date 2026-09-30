@@ -4,7 +4,7 @@
   "_id": "T3WrjPCsOUipzXIR",
   "img": "icons/skills/melee/strike-axe-red.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">While Berserk, your attack damage dice are one size larger and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">While Berserk, your attack damage dice are one size larger and you reduce damage you take by 1 per damage die if you are wearing Light or no Armor.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, you can go Berserk when you take damage or attack an Enemy. You remain Berserk this way for 1 minute, or until you end your Turn without attacking an Enemy or taking damage since your last Turn.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.vXswDDL6P5ndldpT]{Barbarian Rage &amp; Murder Mode}</span></p>",
     "rules": [
       {
         "id": "GW92mIbmqNHTbOWs",
@@ -335,9 +335,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.41",
+    "systemVersion": "0.1.89",
     "createdTime": 1789491073903,
-    "modifiedTime": 1790217960379,
+    "modifiedTime": 1790746942383,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

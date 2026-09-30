@@ -1,4 +1,3 @@
-import { getFeatureToggleState } from "../../model/item/character/FeatureDataModel"
 import { sys_id } from "../../utils/foundryUtils"
 import { addItems } from "../../utils/heroInventoryUtil"
 import { inventoryItemTypes, isPathOfType } from "../../utils/modelUtil"
@@ -75,12 +74,12 @@ export class HeroBaseDataRulesApplicator {
                 actor.setFlag(sys_id, path.replace("flags.", ""), booleanValue)
             }
             else {
-                foundry.utils.setProperty(actor.system, path, booleanValue)
+                foundry.utils.setProperty(actor.system, path, booleanValue && (!rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId)))
             }
         }
 
         const applyFlatModifier = (rule) => {
-            const toggleState = !rule.toggleableEffect || getFeatureToggleState(actor, rule.parentId)
+            const toggleState = !rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId)
             if (!toggleState) return
 
             const selector = removeWhitespace(rule.selector.replace("system.", ""))
@@ -102,7 +101,7 @@ export class HeroBaseDataRulesApplicator {
                 else if (Array.isArray(currentValue)) {
                     const updatedArray = [...currentValue]
 
-                    if (rule.value?.includes?.(",")) {
+                    if (rule.value?.includes?.(",") || !Number(rule.value)) {
                         removeWhitespace(rule.value).split(",").forEach((val: any) => {
                             if (Number(val)) {
                                 updatedArray.push(Number(val))

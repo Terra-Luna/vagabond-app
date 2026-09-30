@@ -1,4 +1,3 @@
-import { sys_id } from "../../../utils/foundryUtils"
 import { getOrdinalSuffix } from "../../../utils/stringUtil"
 import { CardSubHeaderValues } from "../../../view/component/SkillCard"
 import { fields, requiredInteger } from "../../common/sharedSchemas"
@@ -76,13 +75,4 @@ export class FeatureDataModel extends ItemDataModel<FeatureSchema> {
         })
     }
 
-}
-
-export const getFeatureToggleState = (actor: Actor, featureId: string) => {
-    return actor.getFlag(sys_id, `classFeatureToggle_${featureId}`)
-}
-
-export const toggleClassFeatureState = (actor: Actor, featureId: string) => {
-    const state = getFeatureToggleState(actor, featureId)
-    actor.setFlag(sys_id, `classFeatureToggle_${featureId}`, !state)
 }

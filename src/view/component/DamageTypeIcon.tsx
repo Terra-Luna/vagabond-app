@@ -20,11 +20,11 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case "adamant": {
-            element = <Anvil size={size - 2} strokeWidth={1} className='text-header-text-tertiary fill-ic-armor-fill' />
+            element = <Anvil size={size} strokeWidth={1} className='text-header-text-tertiary fill-ic-armor-fill' />
             break
         }
         case "blunt": {
-            element = <Hammer size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+            element = <Hammer size={size} className='text-text-primary fill-ic-armor-fill' />
             break
         }
         case "cold": {
@@ -36,7 +36,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case "fatigue": {
-            element = <HeartOff size={size - 2} className='text-ic-fatigue fill-ic-armor-fill' />
+            element = <HeartOff size={size} className='text-ic-fatigue fill-ic-armor-fill' />
             break
         }
         case "fire": {
@@ -65,12 +65,12 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
         case "physical_lt2":
         case "physical_lt3": {
             element = <div className="flex text-text-primary font-eskapade">
-                <Swords size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+                <Swords size={size} className='text-text-primary fill-ic-armor-fill' />
             </div>
             break
         }
         case "pierce": {
-            element = <Target size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+            element = <Target size={size} className='text-text-primary fill-ic-armor-fill' />
             break
         }
         case "poison": {
@@ -90,7 +90,7 @@ export const DamageTypeIcon = ({ dmgType, size }: { dmgType: string, size?: numb
             break
         }
         case "slash": {
-            element = <Sword size={size - 2} className='text-text-primary fill-ic-armor-fill' />
+            element = <Sword size={size} className='text-text-primary fill-ic-armor-fill' />
             break
         }
     }

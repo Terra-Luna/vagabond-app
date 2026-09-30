@@ -5,7 +5,17 @@
   "img": "/icons/magic/life/cross-beam-green.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Once per Shift, you can use your Action or skip your Move to regain [[/r d6+@stats.might#Second Wind]]{(d6 + MIT)} HP.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "nTz09akFBtrcL2XO",
+        "key": "ToggleRule",
+        "label": "Used this Shift",
+        "level": 0,
+        "value": false,
+        "selector": "flags.ruleToggle_vUJFHredgEC697DS",
+        "toggleableEffect": true
+      }
+    ],
     "prerequisites": [
       {
         "type": "stat",
@@ -49,9 +59,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.18",
+    "systemVersion": "0.1.89",
     "createdTime": 1786727506333,
-    "modifiedTime": 1788758943461,
+    "modifiedTime": 1790744803266,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

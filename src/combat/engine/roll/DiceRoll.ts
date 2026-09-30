@@ -44,9 +44,9 @@ export class DiceRoll {
 
     static getItemDamageWithHeroMods = (hero: HeroDataModel, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
         const mods = foundry.utils.deepClone(hero.modifiers)
-        const isVicious = item instanceof WeaponDataModel ? (item.properties.includes('vicious') || mods.damage.out[skill]?.weaponProps?.includes('vicious')) : false
-        const isDefense = item instanceof WeaponDataModel ? (item.properties.includes('defense') || mods.damage.out[skill]?.weaponProps?.includes('defense')) : false
-        const isThrown = item instanceof WeaponDataModel ? (item.properties.includes('thrown') || mods.damage.out[skill]?.weaponProps?.includes('thrown')) : false
+        const isVicious = item instanceof WeaponDataModel ? (item.properties.includes('vicious') || item.skills.some(sk => mods.damage.out[sk]?.weaponProps?.includes('vicious'))) : false
+        const isDefense = item instanceof WeaponDataModel ? (item.properties.includes('defense') || item.skills.some(sk => mods.damage.out[sk]?.weaponProps?.includes('defense'))) : false
+        const isThrown = item instanceof WeaponDataModel ? (item.properties.includes('thrown') || item.skills.some(sk => mods.damage.out[sk]?.weaponProps?.includes('thrown'))) : false
         const isOneHandVersBonus = mods.dice.size[skill]?.oneHandVersatile || isDefense && mods.dice.size.defense.oneHandVersatile
 
         const versatileBonus = item instanceof WeaponDataModel
@@ -80,11 +80,12 @@ export class DiceRoll {
         }
 
         const explodesOnCrit = mods.dice.crit[skill]?.explodes
+        const globalMaxExplode = mods.dice.exploding.global.max
         const explodesOn = [
             ...item.damage.dice.explodesOn ?? [],
             ...mods.dice.exploding[skill]?.values ?? [],
             ...mods.dice.exploding[skill]?.max ? [dieSize] : [],
-            ...explodesOnCrit ? [dieSize] : []
+            ...explodesOnCrit || globalMaxExplode ? [dieSize] : []
         ]
 
         const extraDiceOnCrit =

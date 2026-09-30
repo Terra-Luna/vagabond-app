@@ -21,7 +21,16 @@
         "level": 4,
         "value": "1",
         "selector": "modifiers.casting.deliveryDiscounts.imbue",
-        "scale": 4
+        "scale": 4,
+        "toggleableEffect": true
+      },
+      {
+        "id": "r25ddfMl3d5DTrCZ",
+        "key": "ToggleRule",
+        "label": "Paragon's Aura Flag",
+        "level": 4,
+        "value": true,
+        "selector": "flags.ruleToggle_JTiiACptF2LnprJp"
       }
     ],
     "level": 4,
@@ -39,9 +48,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.49",
+    "systemVersion": "0.1.89",
     "createdTime": 1789503415891,
-    "modifiedTime": 1790285722189,
+    "modifiedTime": 1790746591025,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

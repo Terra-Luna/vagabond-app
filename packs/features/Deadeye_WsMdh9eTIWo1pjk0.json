@@ -4,7 +4,7 @@
   "_id": "WsMdh9eTIWo1pjk0",
   "img": "/icons/magic/perception/eye-ringed-glow-angry-large-teal.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, and can stack up to 3 times. It resets at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">After you make a Ranged attack, you Crit on subsequent Ranged attacks on a d20 roll 1 lower, and can stack up to 3 times. It resets at the end of your Turn if you didn’t hit a Ranged attack since the start of your last Turn.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.kTbxzoiCAvooT9KU]{Deadeye}</span></p>",
     "rules": [
       {
         "id": "d7MOPAt3s6Mn5n6j",
@@ -30,9 +30,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.71",
+    "systemVersion": "0.1.89",
     "createdTime": 1789496567938,
-    "modifiedTime": 1790455738239,
+    "modifiedTime": 1790746902702,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -5,7 +5,6 @@ import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSel
 import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/TrainingSelectionApp"
 import { getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
-import { getFeatureToggleState, toggleClassFeatureState } from "../../../../../model/item/character/FeatureDataModel"
 import { PerkDataModel, perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
 import { groupBy } from "../../../../../utils/collectionUtil"
@@ -63,10 +62,6 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
         return values
     }
 
-    const toggleFeature = useCallback((featureId: string) => {
-        toggleClassFeatureState(hero.parent, featureId)
-    }, [hero.parent.flags])
-
     return (
         <div className="py-1">
             <span className="font-eskapade font-bold">
@@ -103,25 +98,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                         title={
                                             <div className="flex gap-x-2 items-center">
                                                 <p>{f.name}</p>
-                                                {f.rules?.some((rule: any) => rule.toggleableEffect) && (
-                                                    <div className={`flex gap-x-1`}>
-                                                        <button
-                                                            type="button"
-                                                            title={`Toggle:\n${f.rules?.filter(r => r.toggleableEffect).map(r => r.label).join('\n')}`}
-                                                            className="flex cursor-pointer hover-glow ml-auto mr-2"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                e.preventDefault()
-                                                                toggleFeature(f.id)
-                                                            }}
-                                                        >
-                                                            {getFeatureToggleState(hero.parent, f.id)
-                                                                ? <ToggleRight className="text-text-primary" />
-                                                                : <ToggleLeft className="text-text-tertiary" />
-                                                            }
-                                                        </button>
-                                                    </div>
-                                                )}
+                                                {f.rules?.some((rule: any) => rule.toggleableEffect) && <FeatureToggleSwitch actor={hero} item={f} />}
                                             </div>
                                         }
                                         subtitles={f.subheader}
@@ -161,7 +138,12 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
                                     <SkillCard
                                         actor={hero.parent}
                                         img={p.parent.img}
-                                        title={p.parent.name}
+                                        title={
+                                            <div className="flex gap-x-2 items-center">
+                                                <p>{p.parent.name}</p>
+                                                {p.rules?.some((rule: any) => rule.toggleableEffect) && <FeatureToggleSwitch actor={hero} item={p} />}
+                                            </div>
+                                        }
                                         subtitles={getPerkSubheader(p)}
                                         description={p.description}
                                     />
@@ -184,6 +166,32 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
             </div>
 
             <ContextMenu />
+        </div>
+    )
+}
+
+const FeatureToggleSwitch = ({ actor, item }) => {
+    const toggleFeature = useCallback((itemId: string) => {
+        actor.toggleItemRule(itemId)
+    }, [actor.flags])
+
+    return (
+        <div className={`flex gap-x-1`}>
+            <button
+                type="button"
+                title={`Toggle:\n${item.rules?.filter(r => r.toggleableEffect).map(r => r.label).join('\n')}`}
+                className="flex cursor-pointer hover-glow ml-auto mr-2"
+                onClick={(e) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    toggleFeature(item.id)
+                }}
+            >
+                {actor.getRuleToggleState(item.id)
+                    ? <ToggleRight className="text-text-primary" />
+                    : <ToggleLeft className="text-text-tertiary" />
+                }
+            </button>
         </div>
     )
 }

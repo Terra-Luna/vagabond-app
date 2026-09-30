@@ -4,7 +4,7 @@
   "_id": "oi6ipGLWAAjzweQI",
   "img": "/icons/skills/melee/unarmed-punch-fist-yellow-red.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have the @UUID[Compendium.vagabond-app.perks.Item.zqTnJZseG8Q8Pf7Z]{Dusted Knuckle} Perk, and your Equipped Brawl Weapons have the Defense and Vicious properties.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, when you roll any damage dice for a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Increase your subsequent Brawl damage dice one size until the start of your Turn.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Grapple or Shove them if you viably could. </span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You have the @UUID[Compendium.vagabond-app.perks.Item.zqTnJZseG8Q8Pf7Z]{Dusted Knuckle} Perk, and your Equipped Brawl Weapons have the Defense and Vicious properties.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, when you roll any damage dice for a Brawl Weapon, you can either:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Increase your subsequent Brawl damage dice one size until the start of your Turn.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Grapple or Shove them if you viably could. </span><br><br><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.9ufjSjTTax3g8oce]{Fisticuffs}</span></p>",
     "rules": [
       {
         "id": "WbqW8rJwUC15zK2s",
@@ -96,7 +96,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.89",
     "createdTime": 1789501990110,
-    "modifiedTime": 1790719737696,
+    "modifiedTime": 1790746865699,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

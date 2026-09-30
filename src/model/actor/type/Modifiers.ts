@@ -46,6 +46,7 @@ export const modifierSchema = () => {
                 spellHealing: new fields.SchemaField({ ...dieSizeModifierSchema() })
             }),
             exploding: new fields.SchemaField({
+                global: new fields.SchemaField({ ...explodingModSchema() }),
                 melee: new fields.SchemaField({ ...explodingModSchema() }),
                 finesse: new fields.SchemaField({ ...explodingModSchema() }),
                 brawl: new fields.SchemaField({ ...explodingModSchema() }),

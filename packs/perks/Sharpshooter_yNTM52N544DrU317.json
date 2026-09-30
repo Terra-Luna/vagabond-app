@@ -4,7 +4,7 @@
   "_id": "yNTM52N544DrU317",
   "img": "/icons/skills/targeting/crosshair-scope-sniper-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can skip your Move and begin Focusing on this Ability to reduce the roll you need to Crit on Ranged attacks by 1 until you Move.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can skip your Move and begin Focusing on this Ability to reduce the roll you need to Crit on Ranged attacks by 1 until you Move.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro: </strong></b><span style=\"white-space:pre-wrap\">@UUID[Compendium.vagabond-app.macros.Macro.QGbPiwLhObZG1Mos]{Sharpshooter}</span></p>",
     "rules": [
       {
         "id": "0DWUPkhniM6aR1C9",
@@ -58,9 +58,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.17",
+    "systemVersion": "0.1.89",
     "createdTime": 1786728004603,
-    "modifiedTime": 1789767746793,
+    "modifiedTime": 1790746999886,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

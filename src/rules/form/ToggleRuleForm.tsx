@@ -1,3 +1,4 @@
+import { Checkbox } from "../../view/component/Checkbox"
 import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
 
 export const ToggleRuleForm = ({ rule, onChange }) => {
@@ -32,6 +33,13 @@ export const ToggleRuleForm = ({ rule, onChange }) => {
                     <option value="false">Disabled</option>
                 </>}
                 onChange={(e) => onChange({ value: e.target.value === "true" })}
+            />
+            <Checkbox
+                label="Toggleable Effect"
+                checked={rule.toggleableEffect || false}
+                onCheckedChanged={(checked) => {
+                    onChange({ ...rule, toggleableEffect: checked })
+                }}
             />
         </div>
     )
