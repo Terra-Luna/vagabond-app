@@ -1,6 +1,6 @@
 import { appLang } from "../../../utils/lang"
 import { buttonAnimation } from "../../../view/component/Button"
-import { SkillCard } from "../../../view/component/SkillCard"
+import { SkillCard, SkillCardTitle } from "../../../view/component/SkillCard"
 import { HeroCreationLabel, HeroCreationSubtext } from "../../hero-creator/component/HeroCreationTypography"
 
 export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
@@ -25,7 +25,7 @@ export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
                             key={g.uuid}
                             img={sp.img}
                             dmgType={sp.dmgType}
-                            title={sp.label}
+                            title={<SkillCardTitle text={sp.label} />}
                             subtitles={[{ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[sp.dmgType] }]}
                             description={sp.description}
                         />
@@ -45,7 +45,7 @@ export const Grimoire = ({ spellGrants, spellSlots, spellsList }) => {
                             key={sp.value}
                             img={sp.img}
                             dmgType={sp.dmgType}
-                            title={sp.label}
+                            title={<SkillCardTitle text={sp.label} />}
                             subtitles={[{ label: appLang.HeroSheet.Magic.labelDmgBase, value: appLang.DamageTypes[sp.dmgType] }]}
                             description={sp.description}
                         />

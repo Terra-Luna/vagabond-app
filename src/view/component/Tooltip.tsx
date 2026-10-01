@@ -235,7 +235,7 @@ const renderContent = (content?: ReactNode) => {
     if (!content) return null
     if (typeof content !== 'string') {
         return <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-            <div className="max-w-[360px]">
+            <div className="max-w-[300px] pt-1 pb-1">
                 {content}
             </div>
         </EditModeContextProvider>

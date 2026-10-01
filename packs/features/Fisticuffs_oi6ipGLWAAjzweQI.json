@@ -25,7 +25,7 @@
       {
         "id": "SNX8iFZKVZjbqdJv",
         "key": "ToggleRule",
-        "label": "Ability: Fisticuffs",
+        "label": "Flag",
         "level": 1,
         "value": true,
         "selector": "flags.fisticuffs"
@@ -94,9 +94,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.89",
+    "systemVersion": "0.1.91",
     "createdTime": 1789501990110,
-    "modifiedTime": 1790746865699,
+    "modifiedTime": 1790833782873,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

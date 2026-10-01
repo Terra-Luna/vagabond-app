@@ -1,4 +1,4 @@
-import { Menu, Moon, Sun, ToggleLeft, ToggleRight, X } from "lucide-react"
+import { Menu, Moon, Sun, X } from "lucide-react"
 import { useCallback, useState } from "react"
 
 import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
@@ -12,6 +12,7 @@ import { sys_id } from "../../../../../utils/foundryUtils"
 import { tableBorderRounded } from "../../../../common/border-styles"
 import { ItemDivider } from "../../../../component/Header"
 import { VagabondActorSheet } from "../../VagabondActorSheet"
+import { AppMenuToggleSwitch } from "./item/AppMenuToggleSwitch"
 import { MenuListItem } from "./item/MenuListItem"
 
 export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel, sheet: VagabondActorSheet, className: string }) => {
@@ -43,20 +44,6 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
         VagabondSettingsRegistry.refreshActorSheets() // Propagates the theme change to all owned actors' sheets
     }, [sheet, isDarkMode])
 
-    const toggleClientSetting = useCallback(async (settingKey) => {
-        VagabondSettingsRegistry.registerClientSetting(settingKey)
-        VagabondSettingsRegistry.toggleClientSetting(settingKey, hero.parent.id)
-    }, [])
-
-    const getToggleState = (settingKey: string): boolean => {
-        try {
-            return (game.settings as any).get(sys_id, settingKey)
-        }
-        catch {
-            return false
-        }
-    }
-
     return (<>
         <div className={`relative ${className}`}>
             {/* MENU BUTTON */}
@@ -87,41 +74,18 @@ export const HeroSheetMenu = ({ hero, sheet, className }: { hero: HeroDataModel,
                         <MenuListItem text={"IMPORT"} onClick={() => importFromVgbndApp(hero)} />
                     } */}
                     {!hero.ancestry &&
-                        <MenuListItem text={"CREATE"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
+                        <MenuListItem text={"CREATE HERO"} onClick={() => new HeroCreationApp(hero.parent).render({ force: true })} toggleMenu={toggleMenu} />
                     }
                     {game.user?.isActiveGM && hero.level.xpToLevel === -1 && !hero.parent.getFlag(sys_id, "destiny") &&
                         <MenuListItem text={'[GM] GRANT LEVEL UP!!'} onClick={() => hero.parent.setFlag(sys_id, "destiny", true)} toggleMenu={toggleMenu} />
                     }
                     {game.user?.isActiveGM && hero.parent.getFlag(sys_id, "destiny") &&
-                        <MenuListItem text={'REVOKE LEVEL UP'} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
+                        <MenuListItem text={'[GM] REVOKE LEVEL UP'} onClick={() => hero.parent.setFlag(sys_id, "destiny", false)} toggleMenu={toggleMenu} />
                     }
 
-                    <ItemDivider />
-                    <div className="flex items-center justify-between">
-                        <p>STATS</p>
-                        {getToggleState(`hero-sheet-stats-hide-${hero.parent.id}`)
-                            ? <ToggleLeft className="cursor-pointer hover-glow self-center" onClick={async () => {
-                                toggleClientSetting(`hero-sheet-stats-hide-${hero.parent.id}`)
-                            }} />
-                            : <ToggleRight className="cursor-pointer hover-glow self-center" onClick={async () => {
-                                toggleClientSetting(`hero-sheet-stats-hide-${hero.parent.id}`)
-                            }} />
-                        }
-                    </div>
-
-                    <ItemDivider />
-                    <div className="flex items-center justify-between">
-                        <p>TRACKERS</p>
-                        {getToggleState(`hero-sheet-trackers-hide-${hero.parent.id}`)
-                            ? <ToggleLeft className="cursor-pointer hover-glow self-center" onClick={async () => {
-                                toggleClientSetting(`hero-sheet-trackers-hide-${hero.parent.id}`)
-                            }} />
-                            : <ToggleRight className="cursor-pointer hover-glow self-center" onClick={async () => {
-                                toggleClientSetting(`hero-sheet-trackers-hide-${hero.parent.id}`)
-                            }} />
-                        }
-                    </div>
-
+                    <AppMenuToggleSwitch label="STATS" hero={hero} toggleKey="hero-sheet-stats-hide" />
+                    <AppMenuToggleSwitch label="TRACKERS" hero={hero} toggleKey="hero-sheet-trackers-hide" />
+                    <AppMenuToggleSwitch label={`MINI CARDS`} hero={hero} toggleKey="hero-sheet-mini-cards" />
                     <MenuListItem text={'REST'} onClick={() => { new RestApp(hero.parent).render({force: true}) }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'TRAVEL'} onClick={() => { new TravelApp(hero.parent).render({force: true}) }} toggleMenu={toggleMenu} />
                     <MenuListItem text={'DOWNTIME'} onClick={() => { }} toggleMenu={toggleMenu} />

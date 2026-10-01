@@ -223,7 +223,10 @@ export abstract class Attack {
     static async handleIncomingAttackSnapshot(payload: { actorId: string, snapshot: AttackSnapshot }) {
         const { actorId, snapshot } = payload
         const registryRaw = getAttackRegistry()
-        const attackRegistry = typeof registryRaw === "string" ? JSON.parse(registryRaw) : (registryRaw || {})
+        const attackRegistry =
+            typeof registryRaw === "string"
+                ? JSON.parse(registryRaw)
+                : (registryRaw || {})
 
         if (!attackRegistry[actorId]) {
             attackRegistry[actorId] = []
@@ -231,17 +234,17 @@ export abstract class Attack {
 
         const currentAttacks: AttackSnapshot[] = attackRegistry[actorId]
         const exists = currentAttacks.some(it => it.id === snapshot.id)
-        let updatedAttacks: AttackSnapshot[]
 
-        if (exists) {
-            updatedAttacks = currentAttacks.map(it => it.id === snapshot.id ? snapshot : it)
-        }
-        else {
-            // Keeps only 50 attacks by actor count in the database. Adjust as needed.
-            updatedAttacks = [...currentAttacks, snapshot]
-        }
+        const updatedAttacks = exists
+            ? currentAttacks.map(it => it.id === snapshot.id
+                ? snapshot
+                : it
+            )
+            : [...currentAttacks, snapshot]
 
-        attackRegistry[actorId] = updatedAttacks
+        // Keep only the last 50 attacks for each actor.
+        attackRegistry[actorId] = updatedAttacks.slice(-50)
+
         await setAttackRegistry(attackRegistry)
     }
 

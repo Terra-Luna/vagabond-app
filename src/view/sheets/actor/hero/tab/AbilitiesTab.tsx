@@ -1,9 +1,8 @@
-import { MessageSquareText, ToggleLeft, ToggleRight } from "lucide-react"
-import { useCallback } from "react"
+import { MessageSquareText } from "lucide-react"
 
 import { PerkSelectionApp } from "../../../../../apps/hero-choices/perks/PerkSelectionApp"
 import { TrainingSelectionApp } from "../../../../../apps/hero-choices/training/TrainingSelectionApp"
-import { getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { getMiniCardsPref, getShowTrainingSelectionToggle } from "../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { PerkDataModel, perkSpellRerequisitesAsString, perkStatPrerequisitesAsString, perkTrainingPrerequisitesAsString } from "../../../../../model/item/character/PerkDataModel"
 import { ItemsCache } from "../../../../../rules/util/ItemsCache"
@@ -14,14 +13,15 @@ import { AbilityChatCard } from "../../../../chat/AbilityChatCard"
 import { sendVagabondChatMessage } from "../../../../chat/ChatCardSerializer"
 import { PrimaryButton, SecondaryButton } from "../../../../component/Button"
 import { useContextMenu } from "../../../../component/ContextMenu"
+import { DynamicGrid } from "../../../../component/DynamicGrid"
 import { ClearHeader } from "../../../../component/Header"
-import { CardSubHeaderValues, SkillCard } from "../../../../component/SkillCard"
+import { CardSubHeaderValues, ItemRuleToggleSwitch, SkillCard, SkillCardTitle } from "../../../../component/SkillCard"
 
 export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const beingSize = appLang.Sizes[hero.ancestry?.beingSize ?? '']
     const beingType = appLang.BeingTypes[hero.ancestry?.beingType ?? '']
-    const abilitiesGrid = "grid @md:grid-cols-1 @lg:grid-cols-2 gap-x-1 gap-y-0.5"
+    const useMiniCards = getMiniCardsPref(hero.parent.id)
 
     const groupedFeatures = groupBy('name', (hero.class?.featureIds ?? [])
         .map(featureId => ItemsCache.items.get(featureId))
@@ -63,135 +63,111 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
     }
 
     return (
-        <div className="py-1">
+        <div className="@container py-1">
             <span className="font-eskapade font-bold">
-                {/* ANDCESTRY TRAITS */}
-                {hero.ancestry && <>
-                    <ClearHeader title={appLang.HeroSheet.ancestry} />
-                    <div className="mt-0.5" />
-                    <SkillCard
-                        title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
-                        subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
-                        description={hero.ancestry?.description}
-                    />
-                </>}
 
                 {/* CLASS FEATURES */}
-                <div className="my-2">
+                {hero.class && <div className="mb-2">
                     <ClearHeader title={appLang.HeroSheet.class} />
                     <div className="mt-0.5" />
-                    <div className={abilitiesGrid}>
-                        {
-                            classFeatures.map((f, index) => (
-                                <div key={index} onContextMenu={(e) => onCtxMenu(e, [
-                                    {
-                                        icon: MessageSquareText,
-                                        label: 'Send to chat',
-                                        action: () => sendVagabondChatMessage(
-                                            hero, <AbilityChatCard actorId={getId(hero)} img={f.img ?? ''} title={f.name} description={f.description} />
-                                        )
+                    <DynamicGrid wideMode={!useMiniCards}>
+                        {classFeatures.map((f, index) => (
+                            <div key={index} onContextMenu={(e) => onCtxMenu(e, [
+                                {
+                                    icon: MessageSquareText,
+                                    label: 'Send to chat',
+                                    action: () => sendVagabondChatMessage(
+                                        hero, <AbilityChatCard actorId={getId(hero)} img={f.img ?? ''} title={f.name} description={f.description} />
+                                    )
+                                }
+                            ])}>
+                                <SkillCard
+                                    actor={hero.parent}
+                                    img={f.img}
+                                    title={
+                                        <SkillCardTitle text={f.name}>
+                                            {f.rules?.some((rule: any) => rule.toggleableEffect) && <ItemRuleToggleSwitch actor={hero} item={f} />}
+                                        </SkillCardTitle>
                                     }
-                                ])}>
-                                    <SkillCard
-                                        actor={hero.parent}
-                                        img={f.img}
-                                        title={
-                                            <div className="flex gap-x-2 items-center">
-                                                <p>{f.name}</p>
-                                                {f.rules?.some((rule: any) => rule.toggleableEffect) && <FeatureToggleSwitch actor={hero} item={f} />}
-                                            </div>
-                                        }
-                                        subtitles={f.subheader}
-                                        description={f.description}
-                                    />
+                                    subtitles={f.subheader}
+                                    description={f.description}
+                                    mini={useMiniCards}
+                                />
 
-                                </div>
-                            ))
-                        }
-                    </div>
-                </div>
+                            </div>
+                        ))}
+                    </DynamicGrid>
+                </div>}
 
                 {/* PERKS */}
-                <ClearHeader title={appLang.HeroSheet.perks} />
-                <div className="mt-0.5" />
-                <div className={abilitiesGrid}>
-                    {
-                        hero.perks
-                            .sort((a, b) => {
+                {hero.perks && hero.perks.length > 0 && <>
+                    <ClearHeader title={appLang.HeroSheet.perks} />
+                    <div className="mt-0.5" />
+                    <DynamicGrid wideMode={!useMiniCards}>
+                        {hero.perks.sort((a, b) => {
                                 const repeatableOrder = Number(Boolean(a.canTakeMultiple)) - Number(Boolean(b.canTakeMultiple))
                                 return repeatableOrder || a.parent.name.localeCompare(b.parent.name)
-                            })
-                            .map((p: any, index: number) => (
-                                <div key={index} onContextMenu={(e) => onCtxMenu(e, [
-                                    {
-                                        icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
-                                            <AbilityChatCard
-                                                actorId={getId(hero)}
-                                                img={p.parent.img}
-                                                title={p.parent.name}
-                                                subtitle={getPerkSubheader(p)}
-                                                description={p.description}
-                                            />
-                                        )
+                        }).map((p: any, index: number) => (
+                            <div key={index} onContextMenu={(e) => onCtxMenu(e, [
+                                {
+                                    icon: MessageSquareText, label: 'Send to chat', action: () => sendVagabondChatMessage(hero,
+                                        <AbilityChatCard
+                                            actorId={getId(hero)}
+                                            img={p.parent.img}
+                                            title={p.parent.name}
+                                            subtitle={getPerkSubheader(p)}
+                                            description={p.description}
+                                        />
+                                    )
+                                }
+                            ])}>
+                                <SkillCard
+                                    actor={hero.parent}
+                                    img={p.parent.img}
+                                    title={
+                                        <SkillCardTitle text={p.parent.name}>
+                                            {p.rules?.some((rule: any) => rule.toggleableEffect) &&
+                                                <ItemRuleToggleSwitch actor={hero} item={p} />
+                                            }
+                                        </SkillCardTitle>
                                     }
-                                ])}>
-                                    <SkillCard
-                                        actor={hero.parent}
-                                        img={p.parent.img}
-                                        title={
-                                            <div className="flex gap-x-2 items-center">
-                                                <p>{p.parent.name}</p>
-                                                {p.rules?.some((rule: any) => rule.toggleableEffect) && <FeatureToggleSwitch actor={hero} item={p} />}
-                                            </div>
-                                        }
-                                        subtitles={getPerkSubheader(p)}
-                                        description={p.description}
-                                    />
-                                </div>
-                            ))
-                    }
-                </div>
+                                    subtitles={getPerkSubheader(p)}
+                                    description={p.description}
+                                    mini={useMiniCards}
+                                />
+                            </div>
+                        ))}
+                    </DynamicGrid>
+                </>}
+
+                {/* ANDCESTRY TRAITS */}
+                {hero.ancestry &&
+                    <div className="mt-2">
+                        <ClearHeader title={appLang.HeroSheet.ancestry} />
+                        <div className="mt-0.5" />
+                        <SkillCard
+                            title={`${hero.ancestry !== undefined ? getName(hero.ancestry) + " Traits" : ''}`}
+                            subtitles={[{ label: 'Size', value: beingSize }, { label: 'Type', value: beingType }]}
+                            description={hero.ancestry?.description}
+                        />
+                    </div>}
             </span>
 
             {/* PERK AND TRAINING SELECTION BUTTONS */}
-            <div className={`flex mt-2 w-full mb-8 ${showTrainingSelection ? 'justify-between' : 'justify-end'}`}>
-                {showTrainingSelection &&
-                    <SecondaryButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
-                        Training Selections
-                    </SecondaryButton>
-                }
-                <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
-                    Perk Selections
-                </PrimaryButton>
-            </div>
+            {hero.class && <>
+                <div className={`flex gap-x-1 mt-2 w-full mb-8 justify-end`}>
+                    {showTrainingSelection &&
+                        <SecondaryButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
+                            Training Selections
+                        </SecondaryButton>
+                    }
+                    <PrimaryButton onClick={() => new PerkSelectionApp(hero.parent).render({ force: true })}>
+                        Perk Selections
+                    </PrimaryButton>
+                </div>
+            </>}
 
             <ContextMenu />
-        </div>
-    )
-}
-
-const FeatureToggleSwitch = ({ actor, item }) => {
-    const toggleFeature = useCallback((itemId: string) => {
-        actor.toggleItemRule(itemId)
-    }, [actor.flags])
-
-    return (
-        <div className={`flex gap-x-1`}>
-            <button
-                type="button"
-                title={`Toggle:\n${item.rules?.filter(r => r.toggleableEffect).map(r => r.label).join('\n')}`}
-                className="flex cursor-pointer hover-glow ml-auto mr-2"
-                onClick={(e) => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    toggleFeature(item.id)
-                }}
-            >
-                {actor.getRuleToggleState(item.id)
-                    ? <ToggleRight className="text-text-primary" />
-                    : <ToggleLeft className="text-text-tertiary" />
-                }
-            </button>
         </div>
     )
 }

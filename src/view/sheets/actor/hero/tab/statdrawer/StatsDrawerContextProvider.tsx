@@ -8,13 +8,19 @@ export const StatsDrawerContextProvider = ({ id, children }) => {
 
     const settingKey = `hero-sheet-stats-hide-${id}` as any
 
-    VagabondSettingsRegistry.registerClientSetting(settingKey)
+    VagabondSettingsRegistry.registerClientSetting(settingKey, true)
 
     const toggleStatsDrawer = useCallback(async () => {
         VagabondSettingsRegistry.toggleClientSetting(settingKey, id)
     }, [])
 
-    const isStatsDrawerOpen = !game.settings?.get(sys_id, settingKey)
+    let isStatsDrawerOpen: boolean
+    try {
+        const raw = game.settings?.get(sys_id, settingKey)
+        isStatsDrawerOpen = raw !== undefined && raw !== null ? Boolean(raw) : true
+    } catch {
+        isStatsDrawerOpen = true
+    }
 
     return (
         <StatsDrawerContext.Provider value={{

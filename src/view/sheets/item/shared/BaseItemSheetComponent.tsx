@@ -2,7 +2,7 @@ export const BaseItemSheetComponent = ({ banner, description, body, bodyClassNam
     banner: React.ReactElement, description: React.ReactElement, body: React.ReactElement, bodyClassName?: string
 }) => {
     return (
-        <div className="flex flex-col grow overflow-hidden">
+        <div className="flex flex-col grow overflow-hidden bg-sheet-main-fill">
             {banner}
             <div className="flex-1 overflow-y-auto rounded-b-md">
                 {description}

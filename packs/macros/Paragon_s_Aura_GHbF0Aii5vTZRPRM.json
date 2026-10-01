@@ -1,0 +1,28 @@
+{
+  "folder": "r3at59nOfIopTyqx",
+  "name": "Paragon's Aura",
+  "type": "script",
+  "_id": "GHbF0Aii5vTZRPRM",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "icons/magic/light/explosion-star-glow-orange.webp",
+  "scope": "global",
+  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(\"vagabond-app\", \"paragonsaura\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"paragonsaura\")) return;\n\ngame.system.api.rules.toggleEffect(hero, \"Compendium.vagabond-app.features.Item.JTiiACptF2LnprJp\");",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.91",
+    "createdTime": 1790834173745,
+    "modifiedTime": 1790834215463,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!GHbF0Aii5vTZRPRM"
+}

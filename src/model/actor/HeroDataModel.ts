@@ -9,6 +9,7 @@ import { sys_id } from "../../utils/foundryUtils"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
 import { getId, inventoryItemTypes } from "../../utils/modelUtil"
+import { removeWhitespace } from "../../utils/stringUtil"
 import { sendVagabondChatMessage } from "../../view/chat/ChatCardSerializer"
 import { TrackerUpdateChatCard } from "../../view/chat/TrackerUpdateChatCard"
 import { consolidateCoins } from "../common/CoinValue"
@@ -161,16 +162,6 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
     }
 
-    getActiveRules() {
-        const itemRules = this.parent.items.contents.flatMap((item: any) => {
-            if (item.system.isEquippable && !item.system.isEquipped) return []
-
-            const rules = getItemRules(item)
-            return rules.filter((r: any) => (r.level || 0) <= this.parent.system.level.current)
-        })
-        return itemRules
-    }
-
     async rest() {
         await this.parent.update({
             'system.health.value': this.health.max,
@@ -217,12 +208,55 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         return (this.inventory.items as any).filter(it => it.isEquipped && it.isBoundRelic())
     }
 
-    getRuleToggleState = (itemId: string) => {
-        return this.parent.getFlag(sys_id, `ruleToggle_${itemId}`)
+    getActiveRules() {
+        const itemRules = this.parent.items.contents.flatMap((item: any) => {
+            if (item.system.isEquippable && !item.system.isEquipped) return []
+
+            const rules = getItemRules(item)
+            return rules.filter((r: any) => (r.level || 0) <= this.parent.system.level.current)
+        })
+        return itemRules
     }
 
-    toggleItemRule = (itemId: string) => {
-        this.parent.setFlag(sys_id, `ruleToggle_${itemId}`, !this.getRuleToggleState(itemId))
+    getRuleToggleState = (itemId: string) => {
+        const state = this.parent.getFlag(sys_id, `ruleToggle_${itemId}`)
+        return state
+    }
+
+    toggleItemRule = async (item: any) => {
+        const itemId = item.id?.split('.').pop() || item._sourceId?.split('.').pop() || undefined
+        if (!itemId) return
+
+        const activeEffectFlag = removeWhitespace(`${item.name ?? item.parent.name}_${itemId}`)
+        const state = this.getRuleToggleState(itemId)
+
+        if (state) {
+            try {
+                const effects = this.parent.effects.filter(it => it.flags?.[sys_id]?.[activeEffectFlag])
+                if (effects.length > 0) {
+                    this.parent.deleteEmbeddedDocuments('ActiveEffect', effects.map(it => it.id))
+                }
+            }
+            catch {
+                console.warn(`Failed to delete ActiveEffect for item: ${activeEffectFlag}`)
+            }
+        }
+        else {
+            const rules = item.rules ?? item.system.rules ?? []
+            const buffs = rules.filter(rule => rule.toggleableEffect && !rule.selector.includes("flags."))
+
+            if (buffs.length > 0) {
+                const data = {
+                    name: item.name ?? item.parent.name,
+                    img: item.img ?? item.parent.img,
+                    showIcon: 2,
+                    flags: { [sys_id]: { [activeEffectFlag]: true } },
+                    changes: [/* Intentionally left blank - this merely serves as a buff icon while the rules engine applies effects */]
+                }
+                await this.parent.createEmbeddedDocuments('ActiveEffect', [data])
+            }
+        }
+        await this.parent.setFlag(sys_id, `ruleToggle_${itemId}`, !state)
     }
 }
 

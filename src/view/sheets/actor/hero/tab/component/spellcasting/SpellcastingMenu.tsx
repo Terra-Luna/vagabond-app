@@ -1,6 +1,7 @@
 import { BookMarked, Dices } from "lucide-react"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
+import { getMiniCardsPref } from "../../../../../../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroAttack } from "../../../../../../../combat/engine/HeroAttack"
 import { AreaOfEffectDelivery, getNewDeliveryOptions, Imbue, Line, PerTargetDelivery, Remote, SpellDelivery, SpellSnapshot } from "../../../../../../../combat/spellcasting/SpellDelivery"
 import { HeroDataModel } from "../../../../../../../model/actor/HeroDataModel"
@@ -42,8 +43,10 @@ interface SpellcastingMenuState {
 
 export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
     const hero = actor.system
+    const useMiniCards = getMiniCardsPref(actor.id!)
 
     const [isSpellcastingOpen, setIsSpellcastingOpen] = useState(false)
+    const [selectedSpellId, setSelectedSpellId] = useState<string | null>(null)
     const [skill, setSkill] = useState(hero.class?.castingSkill ?? 'arcana')
     const [deliveries, setDeliveries] = useState<SpellDelivery[]>([])
     const [deliveryIndex, setDeliveryIndex] = useState<number>(6)
@@ -80,6 +83,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                 }
                 setDeliveryIndex(index)
             }
+            setSelectedSpellId(savedState.spellUuid ?? null)
             setSkill(savedState.skill)
         }
 
@@ -111,6 +115,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     }, [onUpdateTargetTokens])
 
     const onSelectSpell = useCallback((uuid: string) => {
+        setSelectedSpellId(uuid)
         const sp = spells.find(it => it.uuid === uuid)
         if (!sp) return
         setDeliveries(prev =>
@@ -301,7 +306,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
 
                     {/* SPELLCASTING MENU TOP ROW */}
                     <div className="flex gap-x-0.5 items-end text-lg w-full min-w-0 overflow-hidden">
-                        <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />
+                        {!useMiniCards && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
                         <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
                         <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
                         {/* CAST BUTTON */}
@@ -390,5 +395,5 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
         </>)
     }
 
-    return { isSpellcastingOpen, setIsSpellcastingOpen, onSelectSpell, SpellcastingMenu }
+    return { isSpellcastingOpen, setIsSpellcastingOpen, onSelectSpell, selectedSpellId, SpellcastingMenu }
 }

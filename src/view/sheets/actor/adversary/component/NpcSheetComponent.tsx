@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight, Heart, Shield } from "lucide-react"
 import { useCallback, useEffect, useState } from "react"
 
-import { ActiveEffectsApp } from "../../../../../apps/active-effects/ActiveEffectsApp"
+import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
 import { AdversaryDataModel } from "../../../../../model/actor/AdversaryDataModel"
 import { NpcDataModel } from "../../../../../model/actor/NpcDataModel"
 import { getDocumentAtPath, updateDocument } from "../../../../../utils/documentUtils"
@@ -23,7 +23,7 @@ import { Description } from "../../../shared/Description"
 import { SelectableTextOptions } from "../../../shared/SelectableTextOptions"
 import { ActorPortrait } from "../../component/ActorPortrait"
 import { Abilities } from "./Abilities"
-import { ActionMenuHeader, Actions, NewActionWindow } from "./Actions"
+import { Actions, NewActionWindow } from "./Actions"
 import { useAddActionMenu } from "./hooksAndUtils"
 
 const locale = appLang.NpcSheet
@@ -90,12 +90,9 @@ export const NpcSheetComponent = ({ actor }: { actor: Actor & { system: Adversar
 
                     <Abilities actor={actor} />
 
-                    <button onClick={() => new ActiveEffectsApp(actor).render({ force: true })}
-                        className="ml-2 hover-glow cursor-pointer mb-4" title="Click to open active effects"
-                    >
-                        <ActionMenuHeader label={appLang.ButtonActions.effects} />
-                    </button>
-
+                    <div className="px-2">
+                        <ActiveEffectsView initialDocument={actor} />
+                    </div>
                 </div>
             </div>
         </div>

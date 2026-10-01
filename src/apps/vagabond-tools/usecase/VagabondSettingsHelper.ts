@@ -272,3 +272,13 @@ export const togglePlayerInteraction = (obj: OverlayObjectPermissions, userId: s
 export const toggleSceneLink = (obj: OverlayObjectPermissions): string | null => {
     return obj.sceneId ? null : (canvas?.scene?.id ?? null)
 }
+
+export const getMiniCardsPref = (actorId: string): boolean => {
+    try {
+        const state = (game.settings as any).get(sys_id, `hero-sheet-mini-cards-${actorId}`)
+        return state !== undefined && state !== null ? Boolean(state) : true
+    }
+    catch {
+        return true
+    }
+}

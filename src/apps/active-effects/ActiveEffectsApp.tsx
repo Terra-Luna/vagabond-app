@@ -10,7 +10,7 @@ export class ActiveEffectsApp extends VagabondApplication {
             id: `active-effects-${document.id}`,
             window: { title: "Active Effects" },
             position: { width: 400 },
-            Component: ActiveEffectsView,
+            Component: AEAppView,
         } as VagabondAppArgs)
         this.document = document
     }
@@ -22,4 +22,13 @@ export class ActiveEffectsApp extends VagabondApplication {
         }
     }
 
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+const AEAppView = ({ document }) => {
+    return (
+        <div className="p-2">
+            <ActiveEffectsView initialDocument={document} />
+        </div>
+    )
 }

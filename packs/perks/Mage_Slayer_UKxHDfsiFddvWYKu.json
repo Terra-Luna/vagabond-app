@@ -14,6 +14,15 @@
         "value": true,
         "selector": "modifiers.dice.exploding.global.max",
         "toggleableEffect": true
+      },
+      {
+        "id": "6KQJJMWMiocNGouP",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 0,
+        "value": true,
+        "selector": "flags.mageslayer",
+        "toggleableEffect": false
       }
     ],
     "prerequisites": [
@@ -46,9 +55,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.89",
+    "systemVersion": "0.1.91",
     "createdTime": 1786725267252,
-    "modifiedTime": 1790745187654,
+    "modifiedTime": 1790833925454,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

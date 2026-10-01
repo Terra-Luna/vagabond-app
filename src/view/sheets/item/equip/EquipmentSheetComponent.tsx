@@ -1,4 +1,4 @@
-import { ActiveEffectsApp } from "../../../../apps/active-effects/ActiveEffectsApp"
+import { ActiveEffectsView } from "../../../../apps/active-effects/ActiveEffectsView"
 import { AlchemicalItemDataModel } from "../../../../model/item/equip/AlchemicalItemDataModel"
 import { ArmorDataModel } from "../../../../model/item/equip/ArmorDataModel"
 import { ContainerDataModel } from "../../../../model/item/equip/ContainerDataModel"
@@ -7,15 +7,13 @@ import { StartingPackDataModel } from "../../../../model/item/equip/StartingPack
 import { SundryDataModel } from "../../../../model/item/equip/SundryDataModel"
 import { WeaponDataModel } from "../../../../model/item/equip/WeaponDataModel"
 import { ItemRulesManager } from "../../../../rules/ItemRulesManager"
-import { appLang } from "../../../../utils/lang"
-import { ItemDivider } from "../../../component/Header"
+import { Divider } from "../../../component/Header"
 import { useEditMode } from "../../../context/EditModeContext/Hooks"
 import { Description } from "../../shared/Description"
 import { BaseItemSheetComponent } from "../shared/BaseItemSheetComponent"
 import { Bulk } from "./component/BulkConfig"
 import { EquipmentSheetBanner } from "./component/EquipmentSheetBanner"
 import { CategorySelection } from "./component/ItemCategorySelectionComponent"
-import { ItemSheetPropLabel } from "./component/ItemSheetLabelComponent"
 import { ItemValue } from "./component/ItemValueComponent"
 import { RelicConfig } from "./component/RelicConfig"
 import { AlchemicalSheet } from "./sheet/AlchemicalSheet"
@@ -57,17 +55,16 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
 
     const sharedContent = !hideBottomSection &&
         <div className="flex flex-wrap justify-between gap-x-8 gap-y-6 w-full mt-1 mb-2">
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
                 <Bulk item={item} />
-                <div className="flex flex-col gap-y-2 items-start">
-                    <button title={appLang.ButtonActions.effects} onClick={() => new ActiveEffectsApp(item).render({ force: true })} className={"hover-glow"}>
-                        <ItemSheetPropLabel label={appLang.ButtonActions.effects} />
-                    </button>
-                </div>
             </div>
             <div className="space-y-2">
                 <ItemValue item={item} />
                 <CategorySelection item={item} />
+            </div>
+            <div className="flex flex-col gap-1 w-full -mt-4">
+                <Divider />
+                <ActiveEffectsView initialDocument={item} />
             </div>
         </div>
 
@@ -78,13 +75,12 @@ export const EquipmentSheetComponent = ({ item, hideBottomSection = false }: {
             bodyClassName="text-text-primary bg-sheet-main-fill rounded-b-md px-4 w-full"
             body={<>
                 {sheet}
-                <ItemDivider />
                 {sharedContent}
                 {isEditMode
                     && game.user?.isActiveGM
                     && (item.type as string) !== 'alchemical'
                     && (item.type as string) !== 'startingpack'
-                    && <div className="flex flex-col gap-2 mb-4">
+                    && <div className="flex flex-col mb-4">
                         <RelicConfig item={item} />
                         <ItemRulesManager item={item} />
                     </div>

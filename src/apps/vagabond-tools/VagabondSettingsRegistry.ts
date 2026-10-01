@@ -23,21 +23,39 @@ export class VagabondSettingsRegistry {
         RelicPowers.register()
     }
 
-    static registerClientSetting(settingKey: any) {
+    static registerClientSetting(settingKey: any, value?: boolean | undefined) {
         game.settings?.register(sys_id, settingKey, {
             name: `Custom client setting`,
             hint: `${settingKey}`,
             scope: "client",
             type: new fields.BooleanField(),
-            default: false
+            default: value ?? true
         })
     }
 
-    static async toggleClientSetting(settingKey: any, actorId?: string | undefined | null) {
-        const state = game.settings?.get(sys_id, settingKey)
+    static async toggleClientSetting(settingKey: any, actorId?: string | undefined | null, value?: boolean | undefined) {
+        let currentState: boolean
+        try {
+            const existing = game.settings?.get(sys_id, settingKey)
+            currentState = existing !== undefined && existing !== null ? Boolean(existing) : true
+        } catch {
+            currentState = true
+        }
+        const state = value === undefined ? currentState : value
         await game.settings?.set(sys_id, settingKey, !state)
         if (actorId) {
-            game.actors?.get(actorId)?.render()
+            const actor = game.actors?.get(actorId)
+            if (actor) {
+                actor.sheet?.render() ?? actor.render()
+            }
+            if ((foundry as any)?.applications?.instances) {
+                for (const app of (foundry as any).applications.instances.values()) {
+                    const docApp = app as any
+                    if (docApp.document?.id === actorId || docApp.actor?.id === actorId) {
+                        docApp.render()
+                    }
+                }
+            }
         }
     }
 
@@ -217,6 +235,9 @@ export class VagabondSettingsRegistry {
         if (!actors) return
         for (const actor of actors) {
             if (actor.isOwner) {
+                for (const item of actor.items) {
+                    item.sheet?.render()
+                }
                 (actor?.system as any)?.forceUpdate()
             }
         }

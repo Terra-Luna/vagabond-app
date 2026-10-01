@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client"
 
+import { api } from "./apps/api/VagabondAPI"
 import { registerAdversaryCompendiumFilters } from "./apps/compendium/AdversaryCompendium"
 import { CountdownApp } from "./apps/countdown/CountdownApp"
 import { ProgressClockApp } from "./apps/progress-clock/ProgressClockApp"
@@ -110,6 +111,12 @@ Hooks.once("init", () => {
     foundry.applications.sidebar.tabs.CombatTracker.PARTS.tracker.template = `systems/${sys_id}/react-placeholder.hbs`
 
     VagabondSettingsRegistry.register()
+
+    /**
+     * Register the Vagabond API on the game system object!
+     */
+    const system = game.system as typeof game.system & { api: typeof api }
+    system.api = api
 })
 
 foundry.documents.collections.Actors.registerSheet(sys_id, HeroSheet as any, { types: ['hero'], makeDefault: true });

@@ -4,7 +4,7 @@
   "_id": "bfd62SvI4ibqiXuU",
   "img": "icons/skills/melee/hand-grip-sword-red.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">When you Hold with a Melee Weapon Equipped, it has the Defend property until your next Turn or until you roll its damage die.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When you Hold with a Melee Weapon Equipped, it has the Defend property until your next Turn or until you roll its damage die.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.6T1dJlhyAZDZsQ6n]{Patience}</span></p>",
     "rules": [
       {
         "id": "lwq0XX1VA1dYaE35",
@@ -14,6 +14,14 @@
         "value": "defense",
         "selector": "modifiers.damage.out.melee.weaponProps",
         "toggleableEffect": true
+      },
+      {
+        "id": "RGQDAcbkEgi9Uukm",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 0,
+        "value": true,
+        "selector": "flags.patience"
       }
     ],
     "prerequisites": [
@@ -59,9 +67,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.89",
+    "systemVersion": "0.1.91",
     "createdTime": 1786726395245,
-    "modifiedTime": 1790745265161,
+    "modifiedTime": 1790833676313,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

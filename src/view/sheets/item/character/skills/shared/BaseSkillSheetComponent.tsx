@@ -5,12 +5,12 @@ export const BaseSkillSheetComponent = ({ item, content, description, className 
     item: Item & { system: any }, content: React.ReactNode, description?: string, className?: string
 }) => {
     return (
-        <div className="flex flex-col grow overflow-hidden">
+        <div className="flex flex-col grow overflow-hidden bg-sheet-main-fill">
             <ItemSheetBanner item={item} className={className} />
             <div className={`
-                    flex-1 
+                    flex-1
                     -mt-8 pt-8
-                    overflow-y-auto 
+                    overflow-y-auto
                     border-3 border-solid border-stat-block-fill/80 
                     border-t-transparent 
                     rounded-b-md

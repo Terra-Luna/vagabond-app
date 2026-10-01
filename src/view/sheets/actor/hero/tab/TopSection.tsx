@@ -402,8 +402,14 @@ const Stat = ({ actor, stat }: { actor: Actor & { system: any }, stat: string })
 export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
     const { ContextMenu, onCtxMenu } = useContextMenu()
     const settingKey = `hero-sheet-trackers-hide-${actor.id}` as any
-    VagabondSettingsRegistry.registerClientSetting(settingKey)
-    const isHidden = game.settings?.get(sys_id, settingKey)
+    VagabondSettingsRegistry.registerClientSetting(settingKey, true)
+    let isShown: boolean
+    try {
+        const raw = game.settings?.get(sys_id, settingKey)
+        isShown = raw !== undefined && raw !== null ? Boolean(raw) : true
+    } catch {
+        isShown = true
+    }
 
     const addTracker = useCallback(async () => {
         const trackers = actor.system.trackers
@@ -414,7 +420,7 @@ export const CustomTrackers = ({ actor }: { actor: Actor & { system: HeroDataMod
         } as Record<string, any>)
     }, [actor.system.trackers])
 
-    if (isHidden) return
+    if (!isShown) return
     else return (
         <Tooltip content={appLang.HeroSheet.context_tooltip}>
             <div onContextMenu={(e) => onCtxMenu(e, [

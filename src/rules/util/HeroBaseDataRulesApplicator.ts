@@ -71,7 +71,10 @@ export class HeroBaseDataRulesApplicator {
                 actor.toggleStatusEffect(path.split(".").pop(), { active: booleanValue })
             }
             else if (path.startsWith("flags.")) {
-                actor.setFlag(sys_id, path.replace("flags.", ""), booleanValue)
+                const state = actor.getFlag(sys_id, path.replace("flags.", ""))
+                if (state === undefined) {
+                    actor.setFlag(sys_id, path.replace("flags.", ""), booleanValue)
+                }
             }
             else {
                 foundry.utils.setProperty(actor.system, path, booleanValue && (!rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId)))

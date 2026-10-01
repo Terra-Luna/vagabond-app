@@ -18,13 +18,14 @@ interface CollapsibleHeader {
     ({ toggleCollapsedButton, title }: CollapsibleHeaderProps): ReactNode
 }
 
-export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, className, actions }: {
+export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content, startCollapsed = false, hideCollapseButton, className, actions }: {
     img?: string,
     dmgType?: string,
     title: string | ReactNode,
     Header: CollapsibleHeader,
     content: ReactNode,
     startCollapsed?: boolean,
+    hideCollapseButton?: boolean,
     className?: string,
     actions?: SkillCardAction[]
 }) => {
@@ -38,12 +39,14 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
                 img={img}
                 dmgType={dmgType}
                 title={title}
-                toggleCollapsed={toggleCollapsed}
+                toggleCollapsed={hideCollapseButton ? undefined : toggleCollapsed}
                 actions={actions}
                 toggleCollapsedButton={
-                    <button onClick={toggleCollapsed}>
-                        <ToggleCollapseIcon isCollapsed={isCollapsed} />
-                    </button>
+                    hideCollapseButton
+                        ? null
+                        : <button onClick={toggleCollapsed}>
+                            <ToggleCollapseIcon isCollapsed={isCollapsed} />
+                        </button>
                 }
             />
             {isCollapsed ? <></> : content}

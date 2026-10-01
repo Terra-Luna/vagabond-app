@@ -1,0 +1,23 @@
+{
+  "type": "Macro",
+  "folder": null,
+  "name": "Magus",
+  "color": null,
+  "sorting": "a",
+  "_id": "GjhLwXOSidWUvqKv",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.91",
+    "createdTime": 1790833951920,
+    "modifiedTime": 1790833951920,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!GjhLwXOSidWUvqKv"
+}

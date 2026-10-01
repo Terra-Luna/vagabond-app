@@ -4,7 +4,7 @@
   "_id": "JTiiACptF2LnprJp",
   "img": "icons/magic/light/explosion-star-glow-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You have a 2 Mana discount on the Aura Delivery.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target with a {{feature-value:1:1}} Mana discount. This discount increases every 4 Levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You have a 2 Mana discount on the Aura Delivery.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, once per Round when you deliver a Spell with an Imbued Weapon, you can do so against one Target with a {{feature-value:1:1}} Mana discount. This discount increases every 4 Levels hereafter.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.GHbF0Aii5vTZRPRM]{Paragon's Aura}</span></p>",
     "rules": [
       {
         "id": "L1gA4wbV37viJIHE",
@@ -25,12 +25,12 @@
         "toggleableEffect": true
       },
       {
-        "id": "r25ddfMl3d5DTrCZ",
+        "id": "2dnDhG9ZWe32ou36",
         "key": "ToggleRule",
-        "label": "Paragon's Aura Flag",
+        "label": "Flag",
         "level": 4,
         "value": true,
-        "selector": "flags.ruleToggle_JTiiACptF2LnprJp"
+        "selector": "flags.paragonsaura"
       }
     ],
     "level": 4,
@@ -48,9 +48,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.89",
+    "systemVersion": "0.1.91",
     "createdTime": 1789503415891,
-    "modifiedTime": 1790746591025,
+    "modifiedTime": 1790834245963,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

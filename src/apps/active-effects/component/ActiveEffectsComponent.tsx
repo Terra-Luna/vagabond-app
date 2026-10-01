@@ -4,6 +4,7 @@ import { appLang } from "../../../utils/lang"
 import { tableBorderRounded } from "../../../view/common/border-styles"
 import { UtilityButton } from "../../../view/component/Button"
 import { useContextMenu } from "../../../view/component/ContextMenu"
+import { DynamicGrid } from "../../../view/component/DynamicGrid"
 import { ActiveEffectButtons } from "./ActiveEffectButtons"
 
 export interface Effect {
@@ -36,7 +37,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
     const { ContextMenu, onCtxMenu } = useContextMenu()
 
     return (
-        <div className={`flex flex-col gap-1 px-1 pt-1 h-full bg-sheet-main-fill text-text-primary font-eskapade font-bold rounded-sm`}>
+        <div className={`flex flex-col gap-1 h-full text-text-primary font-eskapade font-bold rounded-sm`}>
             {/* Header / Add Button */}
             <div className="flex justify-between items-center">
                 <p className="text-lg">{appLang.Effects.title}</p>
@@ -69,7 +70,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
             ))}
 
             {/* EFFECTS LIST */}
-            <ul className="flex flex-col gap-1 overflow-y-auto pr-1">
+            <DynamicGrid>
                 {effects.filter(eff => !eff.name.includes("burning")).map((eff) => (
                     <li
                         key={eff.id}
@@ -101,7 +102,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                         <ActiveEffectButtons effect={eff} onToggle={() => onToggle(eff.id)} />
                     </li>
                 ))}
-            </ul>
+            </DynamicGrid>
 
             <ContextMenu />
 

@@ -183,7 +183,7 @@ const damageModifierSchema = () => {
     }
 }
 
-// modifiers.damage.out.*.
+// modifiers.damage.out.ranged.flatBonus
 const damageBonusSchema = () => {
     return {
         flatBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),

@@ -9,7 +9,7 @@ export const CardHeader = ({ img = '', dmgType = 'none', title, toggleCollapsedB
     const cardHeaderStyle = "text-text-section-header text-lg font-eskapade font-bold"
     return (
         <div onClick={toggleCollapsed} className={
-            `${cardHeaderLayout} ${cardHeaderStyle} cursor-pointer`
+            `${cardHeaderLayout} ${cardHeaderStyle} ${toggleCollapsed ? 'cursor-pointer' : ''}`
         }>
             {!img || img === ''
                 ? <></>
