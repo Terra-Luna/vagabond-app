@@ -8,9 +8,10 @@ interface CheckboxProps {
     checked: boolean,
     onCheckedChanged: (checked: boolean) => void
     inverted?: boolean,
+    color?: string,
 }
 
-export const Checkbox = ({ label, checked, onCheckedChanged, inverted = false }: CheckboxProps) => {
+export const Checkbox = ({ label, checked, onCheckedChanged, inverted = false, color = "text-text-header-tertiary" }: CheckboxProps) => {
     const { isEditMode } = useEditMode()
     return (
         <label
@@ -22,23 +23,23 @@ export const Checkbox = ({ label, checked, onCheckedChanged, inverted = false }:
             }}
         >{
                 inverted ? <>
-                    <span>{label}</span>
-                    <Box checked={checked} />
+                    <span className={color}>{label}</span>
+                    <Box checked={checked} textColor={color} />
                 </> : <>
-                    <Box checked={checked} />
-                    <span>{label}</span>
+                        <Box checked={checked} textColor={color} />
+                        <span className={color}>{label}</span>
                 </>
             }
         </label>
     );
 }
 
-const Box = ({ checked }) => {
+const Box = ({ checked, textColor }: { checked: boolean, textColor?: string }) => {
     return (
         <span aria-hidden="true">
             {checked ?
-                <LucideCheckSquare className="text-text-header-tertiary fill-sheet-main-fill" size={18} /> :
-                <LucideSquare className="text-text-header-tertiary fill-sheet-main-fill" size={18} />
+                <LucideCheckSquare className={`${textColor} fill-sheet-main-fill`} size={18} /> :
+                <LucideSquare className={`${textColor} fill-sheet-main-fill`} size={18} />
             }
         </span>
     )

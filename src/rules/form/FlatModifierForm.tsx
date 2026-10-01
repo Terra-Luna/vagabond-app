@@ -47,6 +47,7 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
             <Checkbox
                 label="Toggleable Effect"
                 checked={rule.toggleableEffect || false}
+                color="text-text-primary"
                 onCheckedChanged={(checked) => {
                     onChange({ ...rule, toggleableEffect: checked })
                 }}

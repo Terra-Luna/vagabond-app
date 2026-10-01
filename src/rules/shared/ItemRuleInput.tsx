@@ -1,18 +1,40 @@
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useRef, useState } from "react"
 
-import { tableBorder, tableBorderRounded } from "../../view/common/border-styles"
+import { tableBorderRounded } from "../../view/common/border-styles"
 import { ItemRulesLabel } from "./ItemRulesTypography"
 
 export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type = 'text' }) => {
     const [localValue, setLocalValue] = useState(value)
+    const pendingChange = useRef<ChangeEvent<HTMLInputElement> | null>(null)
+    const saveTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+    const onChangeRef = useRef(onChange)
+    onChangeRef.current = onChange
+
+    const flushPendingChange = () => {
+        if (saveTimeout.current !== null) {
+            clearTimeout(saveTimeout.current)
+            saveTimeout.current = null
+        }
+        if (pendingChange.current !== null) {
+            onChangeRef.current(pendingChange.current)
+            pendingChange.current = null
+        }
+    }
 
     useEffect(() => {
         setLocalValue(value)
     }, [value])
 
+    useEffect(() => () => {
+        if (saveTimeout.current !== null) clearTimeout(saveTimeout.current)
+        if (pendingChange.current !== null) onChangeRef.current(pendingChange.current)
+    }, [])
+
     const handleInputChange = (e) => {
         setLocalValue(e.target.value)
-        onChange(e)
+        pendingChange.current = e
+        if (saveTimeout.current !== null) clearTimeout(saveTimeout.current)
+        saveTimeout.current = setTimeout(flushPendingChange, 300)
     }
 
     return (<>
@@ -23,6 +45,8 @@ export const ItemRuleInput = ({ label, value, placeholder = '', onChange, type =
                     type={type}
                     value={localValue}
                     onChange={handleInputChange}
+                    onBlur={flushPendingChange}
+                    style={type === 'number' ? { maxWidth: '8ch' } : undefined}
                     className={`
                         ${tableBorderRounded}
                         px-2 py-1 -mt-2
@@ -44,7 +68,7 @@ export const ItemRuleSelector = ({ label, value, options, onChange }) => {
             <select
                 value={value}
                 onChange={(e) => onChange(e)}
-                className={`${tableBorder} text-text-primary bg-sheet-main-fill p-1`}
+                className={`${tableBorderRounded} text-text-primary bg-sheet-main-fill p-1`}
             >
                 {options}
             </select>
