@@ -8,7 +8,7 @@ interface CheckboxProps {
     checked: boolean,
     onCheckedChanged: (checked: boolean) => void
     inverted?: boolean,
-    color?: string,
+    color?: string
 }
 
 export const Checkbox = ({ label, checked, onCheckedChanged, inverted = false, color = "text-text-header-tertiary" }: CheckboxProps) => {
@@ -31,7 +31,7 @@ export const Checkbox = ({ label, checked, onCheckedChanged, inverted = false, c
                 </>
             }
         </label>
-    );
+    )
 }
 
 const Box = ({ checked, textColor }: { checked: boolean, textColor?: string }) => {

@@ -300,6 +300,7 @@ export const ChoiceSetForm = ({ rule, onChange }: FormProps) => {
 
             <Checkbox
                 label="Skip at Hero Creation"
+                color="text-text-primary"
                 checked={rule.skipAtHeroCreation || false}
                 onCheckedChanged={(checked) => {
                     onChange({ ...rule, skipAtHeroCreation: checked })

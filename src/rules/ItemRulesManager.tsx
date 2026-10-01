@@ -1,13 +1,14 @@
-import { Plus, Trash } from "lucide-react"
+import { Trash } from "lucide-react"
 import { useCallback } from "react"
 
 import { HeroCreationLabel } from "../apps/hero-creator/component/HeroCreationTypography"
 import { BaseItemSchema, ItemDataModel } from "../model/item/ItemDataModel"
 import { appLang } from "../utils/lang"
 import { tableBorder } from "../view/common/border-styles"
-import { PrimaryButton } from "../view/component/Button"
+import { UtilityButton } from "../view/component/Button"
 import { CollapsibleSection } from "../view/component/Collapsible"
 import { FoundryHotkeyBlocker } from "../view/component/FoundryHotkeyBlocker"
+import { ItemDivider } from "../view/component/Header"
 import { useEditMode } from "../view/context/EditModeContext/Hooks"
 import { ChoiceSetForm } from "./form/ChoiceSetForm"
 import { FlatModifierForm } from "./form/FlatModifierForm"
@@ -79,15 +80,17 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
     else return (
         <FoundryHotkeyBlocker>
             <CollapsibleSection title={"GRANTS & MODIFIERS"} content={
-                <div className={`p-2 bg-sheet-main-fill mb-24 ${tableBorder}`}>
-                    <div className="flex justify-between items-center mb-4 border-b border-solid border-table-border pb-2">
+                <div className={`p-2 bg-sheet-main-fill mb-8 ${tableBorder}`}>
+                    <div className="flex justify-between items-center pb-2">
                         <HeroCreationLabel text={'Item Grants & Modifiers'} />
-                        <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
-                            <p>{appLang.ButtonActions.add}</p>
-                        </PrimaryButton>
+                        <UtilityButton onClick={handleAddRule}>
+                            <p>+ {appLang.ButtonActions.add}</p>
+                        </UtilityButton>
                     </div>
 
-                    <div className="space-y-2">
+                    <ItemDivider />
+
+                    <div className="space-y-2 pt-2">
                         {rules.length === 0 ? (
                             <p className="text-text-primary text-sm italic">Click +Add to get started...</p>
                         ) : (
@@ -172,13 +175,6 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
                                 } />
                             ))
                         )}
-                    </div>
-                    <div className="flex w-full mt-2">
-                        <div className="ml-auto">
-                            <PrimaryButton onClick={handleAddRule} icon={<Plus size={20} />}>
-                                <p>{appLang.ButtonActions.add}</p>
-                            </PrimaryButton>
-                        </div>
                     </div>
                 </div>
             } />
