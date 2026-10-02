@@ -1,4 +1,4 @@
-import { ArrowsUpFromLine, Dices } from "lucide-react"
+import { ArrowBigUpDash, BookText, Dices, FlaskConical, Handbag, Swords, WandSparkles } from "lucide-react"
 import { useEffect } from "react"
 import { Tab, TabList, TabPanel,Tabs } from "react-tabs"
 
@@ -6,7 +6,7 @@ import { HeroCreationApp } from "../../../../apps/hero-creator/HeroCreationApp"
 import { importHero } from "../../../../apps/importer/TagalongImporter"
 import { LevelUpApp } from "../../../../apps/level-up/LevelUpApp"
 import { XpQuestionnairePlayerApp } from "../../../../apps/level-up/questionnaire/XpQuestionnairePlayerApp"
-import { HeroDataModel } from "../../../../model/actor/HeroDataModel"
+import { HeroDataModel, isAlchemist } from "../../../../model/actor/HeroDataModel"
 import { openItemSheet } from "../../../../model/actor/type/Inventory"
 import { getItemChoiceRules, getItemRules } from "../../../../rules/util/item-rules-util"
 import { sys_id } from "../../../../utils/foundryUtils"
@@ -20,6 +20,7 @@ import { ActorPortrait } from "../component/ActorPortrait"
 import { VagabondActorSheet } from "../VagabondActorSheet"
 import { HeroSheetMenu } from "./menu/HeroSheetMenu"
 import { AbilitiesTab } from "./tab/AbilitiesTab"
+import { AlchemyTab } from "./tab/AlchemyTab"
 import { GearTab } from "./tab/GearTab"
 import { InventoryTab } from "./tab/InventoryTab"
 import { MagicTab } from "./tab/MagicTab"
@@ -100,7 +101,7 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                                         }}
                                         className="flex items-center hover-glow cursor-pointer ml-auto"
                                     >
-                                        <ArrowsUpFromLine size={32} className="text-text-header-secondary animate-pulse mt-2 [filter:drop-shadow(0_0_16px_var(--text-header-secondary))]" />
+                                        <ArrowBigUpDash size={32} className="text-text-header-secondary animate-pulse mt-1 [filter:drop-shadow(0_0_16px_var(--text-header-secondary))]" />
                                     </button>
                                 </Tooltip>
                             }
@@ -179,6 +180,7 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
         ...inventoryItems.flatMap(item => getItemRules(item))
     ]
 
+    const showAlchemyTab = isAlchemist(hero)
     const showMagicTab = getItemChoiceRules(hero.level.current ?? 0, spellRules).some(rule => rule.pack === "spell" && rule.maxChoices > 0)
         || spellRules.some(rule => rule.key === "GrantItem" && rule.type === "spell")
 
@@ -186,26 +188,43 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
         <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />
         <Tabs className="flex flex-col min-h-0 grow text-base">
             <TabList>
-                <Tab>{locale["tab-main"]}</Tab>
-                <Tab>{locale["tab-inv"]}</Tab>
-                {showMagicTab && <Tab>{locale["tab-magic"]}</Tab>}
-                <Tab> {locale["tab-abilities"]}</Tab>
-                <Tab title="Roll Presets"><Dices size={28} className="hover-glow" /></Tab>
+                <Tab title={locale["tab-inv"]}><Handbag size={24} className="hover-glow" /></Tab>
+                <Tab title={locale["tab-main"]}><Swords size={24} className="hover-glow" /></Tab>
+                {showAlchemyTab &&
+                    <Tab title="Alchemy"><FlaskConical size={24} className="hover-glow" /></Tab>
+                }
+                {showMagicTab &&
+                    <Tab title={locale["tab-magic"]}><WandSparkles size={24} className="hover-glow" /></Tab>
+                }
+                <Tab title={locale["tab-abilities"]}><BookText size={24} className="hover-glow" /></Tab>
+                <Tab title="Roll Presets"><Dices size={24} className="hover-glow" /></Tab>
             </TabList>
-            <TabPanel className={tabPanelClasses}>
-                <GearTab hero={hero} />
-            </TabPanel>
+
+            {/* TAB PANELS */}
             <TabPanel className={tabPanelClasses}>
                 <InventoryTab hero={hero} />
             </TabPanel>
+
+            <TabPanel className={tabPanelClasses}>
+                <GearTab hero={hero} />
+            </TabPanel>
+
+            {showAlchemyTab &&
+                <TabPanel className={tabPanelClasses}>
+                    <AlchemyTab actor={hero.parent} />
+                </TabPanel>
+            }
+
             {showMagicTab &&
                 <TabPanel className={tabPanelClasses}>
                     <MagicTab hero={hero} />
                 </TabPanel>
             }
+
             <TabPanel className={tabPanelClasses}>
                 <AbilitiesTab hero={hero} />
             </TabPanel>
+
             <TabPanel className={tabPanelClasses}>
                 <RollsTab actor={hero.parent} />
             </TabPanel>

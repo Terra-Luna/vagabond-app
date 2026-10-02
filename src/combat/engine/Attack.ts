@@ -9,7 +9,6 @@ import type { AttackSnapshot } from "./util/attack-serializer"
 export interface AttackResolutionArgs {
     bypassArmor?: boolean
     gmTargetsOnly?: boolean
-    halveDamage?: boolean
 }
 
 export interface AppliedFx {
@@ -123,9 +122,7 @@ export abstract class Attack {
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        let damage = this.damageRoll?.result?.total ?? 0
-        damage = args.halveDamage ? Math.ceil(damage / 2) : damage
-
+        const damage = this.damageRoll?.result?.total ?? 0
         const target = actor?.system
         const armorRating = (target as any)?.armor?.rating ?? 0
         const armorPiercing = this.damageRoll?.result?.armorPiercing ?? 0

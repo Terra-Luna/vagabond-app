@@ -414,8 +414,8 @@ export const getAlchemyMaterials = (actor: Actor & { system: HeroDataModel }): (
     return actor.items.filter(it => it.system instanceof SundryDataModel && it.system.isMaterials) as (Item & { system: SundryDataModel })[]
 }
 
-export const hasAlchemyToolsEquipped = (actor: HeroDataModel): boolean => {
-    return actor.inventory.items.some(it => it instanceof SundryDataModel && it.isAlchemyTools && it.isEquipped)
+export const hasAlchemyToolsEquipped = (hero: HeroDataModel): boolean => {
+    return hero.inventory.items.some(it => it instanceof SundryDataModel && it.isAlchemyTools && it.isEquipped)
 }
 
 export const removeStackableItemFromHero = (actor: HeroDataModel, stackableItem: any) => {

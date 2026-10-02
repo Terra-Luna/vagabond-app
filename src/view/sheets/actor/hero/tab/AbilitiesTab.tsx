@@ -155,7 +155,7 @@ export const AbilitiesTab = ({ hero }: { hero: HeroDataModel }) => {
 
             {/* PERK AND TRAINING SELECTION BUTTONS */}
             {hero.class && <>
-                <div className={`flex gap-x-1 mt-2 w-full mb-8 justify-end`}>
+                <div className={`flex gap-x-1 mt-1 w-full justify-between`}>
                     {showTrainingSelection &&
                         <SecondaryButton onClick={() => new TrainingSelectionApp(hero.parent).render({ force: true })}>
                             Training Selections

@@ -1,4 +1,4 @@
-import { ArrowsUpFromLine, MoveLeft, MoveRight } from "lucide-react"
+import { ArrowBigUpDash, MoveLeft, MoveRight } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
@@ -292,14 +292,14 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
 
                 {/* Center Column: Level Up (Dead-Center) */}
                 <p className="flex gap-x-2 items-center text-2xl text-text-primary font-eskapade font-bold justify-self-center">
-                    <ArrowsUpFromLine size={24} className="text-wealth-denom-label" />
+                    <ArrowBigUpDash size={24} className="text-wealth-denom-label" />
                     LEVEL UP
-                    <ArrowsUpFromLine size={24} className="text-wealth-denom-label" />
+                    <ArrowBigUpDash size={24} className="text-wealth-denom-label" />
                 </p>
 
                 {/* Right Column: Submit Button */}
                 <div className="justify-self-end">
-                    <PrimaryButton type="submit" icon={isLastStep ? <ArrowsUpFromLine size={16} /> : <MoveRight size={16} />}>
+                    <PrimaryButton type="submit" icon={isLastStep ? <ArrowBigUpDash size={16} /> : <MoveRight size={16} />}>
                         {isLastStep ? 'Save & Finish' : appLang.ButtonActions.next}
                     </PrimaryButton>
                 </div>

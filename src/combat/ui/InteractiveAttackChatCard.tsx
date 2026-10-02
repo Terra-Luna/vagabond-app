@@ -4,7 +4,6 @@ import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { getAllowLateLuckStudy, getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
-import { AlchemicalItemDataModel } from "../../model/item/equip/AlchemicalItemDataModel"
 import { ItemsCache } from "../../rules/util/ItemsCache"
 import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
@@ -41,7 +40,6 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     const [revision, setRevision] = useState(0)
     const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
     const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
-    const [halfDamageToggle, setHalfDamageToggle] = useState<boolean>(false)
 
     /**
      * This side-effect is responsible for responsive UI elements
@@ -147,11 +145,6 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 checked={armorBypassToggle}
                                                 onCheckedChanged={(e) => { setArmorBypassToggle(e) }}
                                             />
-                                            <Checkbox
-                                                label={"Halve Damage"}
-                                                checked={halfDamageToggle}
-                                                onCheckedChanged={(e) => { setHalfDamageToggle(e) }}
-                                            />
                                         </div>
 
                                         {/* GM TOOL BUTTONS FOR MANAGING OUTCOMES */}
@@ -160,7 +153,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
-                                                            { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle, halveDamage: halfDamageToggle },
+                                                            { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
                                                             serializeAttack
                                                         )
                                                         setRevision(prev => prev + 1)
@@ -385,14 +378,15 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                                     </div>
                                 } />
                             </div>
-
-                            {/* ALCHEMY ITEM DESCRIPTION */}
-                            {source?.system instanceof AlchemicalItemDataModel &&
-                                <EnrichedContent content={source?.system?.description} styleClasses="text-sm text-justify font-paradigm font-normal px-2" />
-                            }
-
                         </div>
                     }
+                </div>
+            }
+
+            {/* ALCHEMY ITEM DESCRIPTION */}
+            {(source?.type as any) === 'alchemical' && (source as any)?.system?.description &&
+                <div>
+                    <EnrichedContent content={(source as any).system.description} styleClasses="text-sm text-justify font-paradigm font-normal px-2" />
                 </div>
             }
         </div>

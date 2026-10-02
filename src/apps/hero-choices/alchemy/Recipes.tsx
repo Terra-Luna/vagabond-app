@@ -14,7 +14,7 @@ export const Recipes = ({ alchemySlots, alchemyItems, hideHeaderLabel, hideCompe
     actions?: SkillCardAction[]
 }) => {
     return (
-        <div className={`flex flex-col gap-1 bg-sheet-main-fill rounded-md p-1 ${hideHeaderLabel ? "" : "mt-4"}`}>
+        <div className={`flex flex-col gap-1 bg-sheet-main-fill rounded-md ${hideHeaderLabel ? "" : "mt-4"}`}>
             <div className="flex justify-between">
                 {!hideHeaderLabel && <HeroCreationLabel text={appLang.HeroSheet.Alchemy.recipes} />}
                 {/* ALCHEMY COMPENDIUM LINK */}

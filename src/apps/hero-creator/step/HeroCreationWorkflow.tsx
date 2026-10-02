@@ -346,8 +346,8 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             if (classFeats.filter(f => f?.system?.rules.some(rule => rule.key === "ChoiceSet" && rule.pack === "alchemical")).length > 0) {
                 showConfirmationDialog({
                     title: "Alchemy Recipes",
-                    description: "You'll now be directed to select your prepared alchemy recipes. This menu can be accessed at any time from your Hero Record's Inventory tab.",
-                    confirmText: "Let's go",
+                    description: "You can now select your prepared Alchemy Recipes. This menu can be accessed at any time from your Hero Record's Alchemy tab.",
+                    confirmText: "Let's cook",
                     variant: "info"
                 }).then(() => {
                     new AlchemySelectionApp(actor).render({ force: true })

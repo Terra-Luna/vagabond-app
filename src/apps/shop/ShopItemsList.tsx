@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef } from "react"
 
 import { openItemSheet } from "../../model/actor/type/Inventory"
-import { coinsAsString } from "../../model/common/CoinValue"
+import { coinsAsString, toCopper, zeroCoins } from "../../model/common/CoinValue"
 import { ArmorDataModel } from "../../model/item/equip/ArmorDataModel"
 import { EquipmentDataModel, EquipmentSchema, getTotalSlots } from "../../model/item/equip/EquipmentDataModel"
 import { WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
@@ -34,45 +34,49 @@ export const ShopItemsList = ({ items, onAddItemToCart }: {
     return (
         <div ref={scrollContainerRef} className="h-full overflow-auto">
             {
-                items.map(item => (
-                    <div key={item.uuid}>
-                        <div className="items-center content-center px-2 py-1">
-                            <div className="flex justify-between">
-                                <div className="-space-y-1">
-                                    <div className="flex gap-x-1">
+                items.map(item => {
+                    const value = toCopper(item.system?.totalValue ?? { ...zeroCoins }) > 0
+                        ? coinsAsString(item.system?.totalValue ?? { ...zeroCoins })
+                        : coinsAsString(item.system?.value ?? zeroCoins)
+                    return (
+                        <div key={item.uuid}>
+                            <div className="items-center content-center px-2 py-1">
+                                <div className="flex justify-between">
+                                    <div className="-space-y-1">
                                         <div className="flex gap-x-1">
-                                    <p className="font-bold hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</p>
-                                            {((item.type as string) === 'weapon' || item.system instanceof WeaponDataModel) && (item.system as any)?.damage &&
-                                                <p className="text-text-secondary italic">{`
+                                            <div className="flex gap-x-1">
+                                                <p className="font-bold hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</p>
+                                                {((item.type as string) === 'weapon' || item.system instanceof WeaponDataModel) && (item.system as any)?.damage &&
+                                                    <p className="text-text-secondary italic">{`
                                                 ${(item.system as any).skills?.map(s => appLang.WeaponSkills[s]?.name).filter(Boolean).join(", ") ?? ''} 
                                                 | d${(item.system as any).damage?.dice?.faces ?? 6} 
                                                 | ${appLang.Grips[(item.system as any).grip?.style]?.name ?? (item.system as any).grip?.style ?? ''}
                                                 | ${(item.system as any).properties?.map(p => appLang.WeaponProps[p]?.name).filter(Boolean).join(", ") ?? ''}
-                                            `}</p>
-                                            }
-                                        </div>
-                                        {((item.type as string) === 'armor' || item.system instanceof ArmorDataModel) &&
-                                            <p className="text-text-secondary">{`
+                                            `}</p>}
+                                            </div>
+                                            {((item.type as string) === 'armor' || item.system instanceof ArmorDataModel) &&
+                                                <p className="text-text-secondary">{`
                                                 Rating: ${(item.system as any)?.rating ?? 0}
                                                 | MIT: ${(item.system as any)?.mightReq ?? 0}
                                             `}</p>
-                                        }
+                                            }
+                                        </div>
+                                        <div className="flex gap-x-2">
+                                            <p className="text-text-secondary">{`${appLang.EquipmentCategories[item.system?.category] ?? item.system?.category ?? ''}`}</p>
+                                            <p className="text-text-secondary">•</p>
+                                            <p className="text-text-secondary">{`Slots: ${getTotalSlots(item)}`}</p>
+                                        </div>
                                     </div>
-                                    <div className="flex gap-x-2">
-                                        <p className="text-text-secondary">{`${appLang.EquipmentCategories[item.system?.category] ?? item.system?.category ?? ''}`}</p>
-                                        <p className="text-text-secondary">•</p>
-                                        <p className="text-text-secondary">{`Slots: ${getTotalSlots(item)}`}</p>
+                                    <div className="flex gap-x-4 items-center">
+                                        <p>{value}</p>
+                                        <UtilityButton onClick={() => onAddItemToCart(item)}>{appLang.ButtonActions.add}</UtilityButton>
                                     </div>
-                                </div>
-                                <div className="flex gap-x-4 items-center">
-                                    <p>{coinsAsString(item.system?.totalValue ?? item.system?.value)}</p>
-                                    <UtilityButton onClick={() => onAddItemToCart(item)}>{appLang.ButtonActions.add}</UtilityButton>
                                 </div>
                             </div>
+                            <ItemDivider />
                         </div>
-                        <ItemDivider />
-                    </div>
-                ))
+                    )
+                })
             }
         </div>
     )

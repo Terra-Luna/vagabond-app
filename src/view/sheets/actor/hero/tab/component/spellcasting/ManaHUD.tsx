@@ -58,11 +58,11 @@ export const ManaHUD = ({ hero, isCastMenuOpen = false }: { hero: HeroDataModel,
                     >
                         {!isSpellcastingOpen ?
                             <>
-                                <DamageTypeIcon dmgType="magical" />
-                                <p className="text-lg">{appLang.HeroSheet.Magic.btnCast}</p></> :
+                                <DamageTypeIcon dmgType="magical" size={16} />
+                                <p className="text-base">{appLang.HeroSheet.Magic.btnCast}</p></> :
                             <>
                                 <X size={14} />
-                                <p className="text-lg">{appLang.ButtonActions.close}</p>
+                                <p className="text-base">{appLang.ButtonActions.close}</p>
                             </>
                         }
                 </div>}

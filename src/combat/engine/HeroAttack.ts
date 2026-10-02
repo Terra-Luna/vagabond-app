@@ -428,15 +428,15 @@ export class HeroAttack extends Attack {
         const skillCheck = new SkillCheck(actor.system, { type: 'attack', item: item.system, skill: "craft", clickEvent: e })
         const damageDice = new DiceRoll(DiceRoll.getItemDamageWithHeroMods(actor.system, 'craft', item.system))
 
-        const mods = foundry.utils.deepClone((actor as any).system.modifiers)
+        const mods = foundry.utils.deepClone((actor as any).system.modifiers.damage.out.alchemy)
         const dieSize = item.system.damage.dice.faces
-        const flatBonus = mods.alchemy.bonus?.flat ?? 0
-        const perDieBonus = mods.alchemy.bonus?.perDie ?? 0
-        const explodesOn = [...mods.alchemy.exploding?.values ?? []]
-        if (mods.alchemy.exploding?.max && !explodesOn.includes(dieSize)) {
+        const flatBonus = mods.bonus?.flat ?? 0
+        const perDieBonus = mods.bonus?.perDie ?? 0
+        const explodesOn = [...mods.exploding?.values ?? []]
+        if (mods.exploding?.max && !explodesOn.includes(dieSize)) {
             explodesOn.push(dieSize)
         }
-        if (mods.alchemy.exploding?.subMax && !explodesOn.includes(dieSize - 1)) {
+        if (mods.exploding?.subMax && !explodesOn.includes(dieSize - 1)) {
             explodesOn.push(dieSize - 1)
         }
         damageDice.explodesOn = explodesOn

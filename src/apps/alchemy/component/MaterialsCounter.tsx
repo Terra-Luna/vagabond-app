@@ -11,10 +11,10 @@ export const MaterialsCounter = ({ text }: { text: string | number }) => {
     }, [])
 
     return (
-        <div className={`flex items-end gap-x-1 w-fit pr-2 ${tableBorderRounded} bg-context-menu-fill`}>
-            {materialsItem && <ItemPortraitComponent item={materialsItem} size={36} className="flex" disableCtxMenu={true} />}
+        <div className={`flex w-fit pr-2 items-end gap-x-1 ${tableBorderRounded} bg-context-menu-fill`}>
+            {materialsItem && <ItemPortraitComponent item={materialsItem} size={28} className="flex" disableCtxMenu={true} />}
             <p className="font-paradigm">x</p>
-            <p className="text-text-primary text-2xl text-center font-eskapade font-bold">{text}</p>
+            <p className="text-text-primary text-center font-eskapade font-bold">{text}</p>
         </div>
     )
 }

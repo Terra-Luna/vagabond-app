@@ -76,30 +76,25 @@ export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDa
     }, [actor, materials, getAlchemyItem])
 
     return (
-        <div className="flex flex-col p-1 h-full overflow-hidden">
-            {/* STICKY HEADER */}
-            <div className="flex justify-between items-center bg-sheet-header-fill rounded-sm p-2 -mx-2 -mt-2">
+        <div className="@container">
+            <div className="flex w-full justify-between">
                 <AlchemyToolsPill item={tools} />
-                {/* <span className="flex justify-between gap-x-2 text-text-aux">
-                    <FlaskConical />
-                    <FlaskRound />
-                    <Beaker />
-                    <TestTubeDiagonal />
-                </span> */}
                 <MaterialsCounter text={materialsCount} />
             </div>
 
-            <div className="flex-1 overflow-y-auto">
-                <Recipes
-                    alchemySlots={alchemySlots}
-                    alchemyItems={alchemyItems}
-                    hideHeaderLabel={true}
-                    hideCompendiumLink={true}
-                    actions={[
-                        { label: appLang.HeroSheet.Alchemy.craft, tooltip: { title: "Craft", content: appLang.HeroSheet.Alchemy.craft_tooltip }, item: undefined, action: addToInventory},
-                        { label: appLang.HeroSheet.Alchemy.use, tooltip: { title: "Use", content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}` }, item: undefined, action: (e, item) => craftAndUse(e, item) }
-                    ]}
-                />
+            <div className="flex flex-col h-full overflow-hidden">
+                <div className="flex-1 overflow-y-auto">
+                    <Recipes
+                        alchemySlots={alchemySlots}
+                        alchemyItems={alchemyItems}
+                        hideHeaderLabel={true}
+                        hideCompendiumLink={true}
+                        actions={[
+                            { label: appLang.HeroSheet.Alchemy.craft, tooltip: { title: "Craft", content: appLang.HeroSheet.Alchemy.craft_tooltip }, item: undefined, action: addToInventory },
+                            { label: appLang.HeroSheet.Alchemy.use, tooltip: { title: "Use", content: `${appLang.HeroSheet.Alchemy.use_tooltip}\n${appLang.HeroSheet.skills_tooltip}` }, item: undefined, action: (e, item) => craftAndUse(e, item) }
+                        ]}
+                    />
+                </div>
             </div>
 
         </div>
