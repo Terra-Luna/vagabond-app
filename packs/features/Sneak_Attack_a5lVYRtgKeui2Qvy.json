@@ -35,6 +35,14 @@
         "value": "4",
         "selector": "modifiers.damage.out.finesse.dice.extra.explodesOn, modifiers.damage.out.ranged.dice.extra.explodesOn, modifiers.damage.out.keen.dice.extra.explodesOn",
         "toggleableEffect": true
+      },
+      {
+        "id": "GL5LyB6p1YlEFXnw",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 1,
+        "value": true,
+        "selector": "flags.sneakattack"
       }
     ],
     "classId": "6TmIRB6wIVRxMZxv",
@@ -50,9 +58,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.93",
+    "systemVersion": "0.1.95",
     "createdTime": 1789432269492,
-    "modifiedTime": 1790922125758,
+    "modifiedTime": 1790929405790,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,
