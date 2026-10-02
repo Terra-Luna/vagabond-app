@@ -12,7 +12,7 @@
         "label": "2H Weapon Rerolls",
         "level": 0,
         "value": "1,2",
-        "selector": "modifiers.dice.reroll.melee.HH, modifiers.dice.reroll.finesse.HH, modifiers.dice.reroll.brawl.HH"
+        "selector": "modifiers.damage.out.melee.dice.reroll.HH, modifiers.damage.out.finesse.dice.reroll.HH, modifiers.damage.out.brawl.dice.reroll.HH"
       }
     ],
     "prerequisites": [

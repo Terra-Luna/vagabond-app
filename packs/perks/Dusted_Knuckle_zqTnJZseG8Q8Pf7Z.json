@@ -12,7 +12,7 @@
         "label": "Brawl: Exploding Dice",
         "level": 0,
         "value": 1,
-        "selector": "modifirs.dice.exploding.brawl.values"
+        "selector": "modifiers.damage.out.brawl.dice.exploding.values"
       }
     ],
     "prerequisites": [

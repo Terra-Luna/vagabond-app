@@ -20,7 +20,7 @@
         "label": "Healing: Explode on Max",
         "level": 1,
         "value": "6",
-        "selector": "modifiers.dice.exploding.spellHealing.values"
+        "selector": "modifiers.healing.out.spell.dice.exploding.values"
       }
     ],
     "level": 1,

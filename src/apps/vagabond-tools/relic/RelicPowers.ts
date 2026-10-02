@@ -93,10 +93,10 @@ export class RelicPowers {
                 value: 'vicious',
                 label: 'Vicious',
                 modifiers: [
-                    { path: "dice.crit.melee.extraDice", value: 1 },
-                    { path: "dice.crit.brawl.extraDice", value: 1 },
-                    { path: "dice.crit.finesse.extraDice", value: 1 },
-                    { path: "dice.crit.ranged.extraDice", value: 1 }
+                    { path: "damage.out.melee.dice.crit.extraDice", value: 1 },
+                    { path: "damage.out.brawl.dice.crit.extraDice", value: 1 },
+                    { path: "damage.out.finesse.dice.crit.extraDice", value: 1 },
+                    { path: "damage.out.ranged.dice.crit.extraDice", value: 1 }
                 ]
             },
             types: ['weapon'],
@@ -230,7 +230,7 @@ export class RelicPowers {
                 value: 'trinket-1',
                 label: 'Trinket +1',
                 modifiers: [
-                    { path: 'damage.out.spell.flatBonus', value: 1 }
+                    { path: 'damage.out.spell.bonus.flat', value: 1 }
                 ]
             },
             types: ['weapon', 'sundry'],
@@ -244,7 +244,7 @@ export class RelicPowers {
                 value: 'trinket-2',
                 label: 'Trinket +2',
                 modifiers: [
-                    { path: 'damage.out.spell.flatBonus', value: 2 }
+                    { path: 'damage.out.spell.bonus.flat', value: 2 }
                 ]
             },
             types: ['weapon', 'sundry'],
@@ -258,7 +258,7 @@ export class RelicPowers {
                 value: 'trinket-3',
                 label: 'Trinket +3',
                 modifiers: [
-                    { path: 'damage.out.spell.flatBonus', value: 3 }
+                    { path: 'damage.out.spell.bonus.flat', value: 3 }
                 ]
             },
             types: ['weapon', 'sundry'],
@@ -398,10 +398,10 @@ export class RelicPowers {
                 value: 'weak-1',
                 label: 'Weakness -1',
                 modifiers: [
-                    { path: 'system.modifiers.damage.out.melee.flatBonus', value: -1 },
-                    { path: 'system.modifiers.damage.out.brawl.flatBonus', value: -1 },
-                    { path: 'system.modifiers.damage.out.finesse.flatBonus', value: -1 },
-                    { path: 'system.modifiers.damage.out.ranged.flatBonus', value: -1 }
+                    { path: 'system.modifiers.damage.out.melee.bonus.flat', value: -1 },
+                    { path: 'system.modifiers.damage.out.brawl.bonus.flat', value: -1 },
+                    { path: 'system.modifiers.damage.out.finesse.bonus.flat', value: -1 },
+                    { path: 'system.modifiers.damage.out.ranged.bonus.flat', value: -1 }
                 ]
             },
             types: ['armor', 'sundry', 'weapon'],
@@ -416,10 +416,10 @@ export class RelicPowers {
                 value: 'weak-2',
                 label: 'Weakness -2',
                 modifiers: [
-                    { path: 'system.modifiers.damage.out.melee.flatBonus', value: -2 },
-                    { path: 'system.modifiers.damage.out.brawl.flatBonus', value: -2 },
-                    { path: 'system.modifiers.damage.out.finesse.flatBonus', value: -2 },
-                    { path: 'system.modifiers.damage.out.ranged.flatBonus', value: -2 }
+                    { path: 'system.modifiers.damage.out.melee.bonus.flat', value: -2 },
+                    { path: 'system.modifiers.damage.out.brawl.bonus.flat', value: -2 },
+                    { path: 'system.modifiers.damage.out.finesse.bonus.flat', value: -2 },
+                    { path: 'system.modifiers.damage.out.ranged.bonus.flat', value: -2 }
                 ]
             },
             types: ['armor', 'sundry', 'weapon'],
@@ -434,10 +434,10 @@ export class RelicPowers {
                 value: 'weak-3',
                 label: 'Weakness -3',
                 modifiers: [
-                    { path: 'system.modifiers.damage.out.melee.flatBonus', value: -3 },
-                    { path: 'system.modifiers.damage.out.brawl.flatBonus', value: -3 },
-                    { path: 'system.modifiers.damage.out.finesse.flatBonus', value: -3 },
-                    { path: 'system.modifiers.damage.out.ranged.flatBonus', value: -3 }
+                    { path: 'system.modifiers.damage.out.melee.bonus.flat', value: -3 },
+                    { path: 'system.modifiers.damage.out.brawl.bonus.flat', value: -3 },
+                    { path: 'system.modifiers.damage.out.finesse.bonus.flat', value: -3 },
+                    { path: 'system.modifiers.damage.out.ranged.bonus.flat', value: -3 }
                 ]
             },
             types: ['armor', 'sundry', 'weapon'],

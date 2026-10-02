@@ -20,7 +20,7 @@
         "label": "Ranged Dmg Bonus",
         "level": 0,
         "value": "2",
-        "selector": "modifiers.damage.out.ranged.flatBonus",
+        "selector": "modifiers.damage.out.ranged.bonus.flat",
         "toggleableEffect": true
       }
     ],

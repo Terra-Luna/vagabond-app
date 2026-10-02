@@ -128,7 +128,7 @@ export abstract class Attack {
 
         const target = actor?.system
         const armorRating = (target as any)?.armor?.rating ?? 0
-        const armorPiercing = this.damageRoll?.armorPiercing ?? 0
+        const armorPiercing = this.damageRoll?.result?.armorPiercing ?? 0
         const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
         return Math.max(0, damage - armor)
     }

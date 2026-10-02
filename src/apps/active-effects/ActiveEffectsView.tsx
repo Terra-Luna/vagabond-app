@@ -76,7 +76,8 @@ export const ActiveEffectsView = ({ initialDocument }: { initialDocument: Actor 
                 name: effect.name,
                 img: effect.img,
                 disabled: effect.disabled,
-                isTransfer: effect.transfer
+                isTransfer: effect.transfer,
+                changes: effect.changes || []
             }
         })
     }

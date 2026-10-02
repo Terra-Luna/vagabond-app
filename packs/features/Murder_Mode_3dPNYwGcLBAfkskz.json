@@ -7,265 +7,37 @@
     "description": "<p><span style=\"white-space:pre-wrap\">You can’t be Charmed, Confused, Frightened, or compelled to act against your will.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, while Berserk, your attack damage dice can Explode and they each have a +{{feature-value:1:1}} bonus. This increases by 1 every 4 Levels hereafter.</span></p>",
     "rules": [
       {
-        "id": "uKfGveDwyjqrdfVA",
-        "key": "GrantItem",
-        "label": "Active Effect: Murder Mode",
+        "id": "3lsDNhMtEC0cZKrr",
+        "key": "ToggleRule",
+        "label": "Exploding Dice",
         "level": 4,
-        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
-        "type": "ActiveEffect"
+        "value": true,
+        "selector": "modifiers.damage.out.melee.dice.exploding.max, modifiers.damage.out.brawl.dice.exploding.max, modifiers.damage.out.finesse.dice.exploding.max",
+        "toggleableEffect": true
+      },
+      {
+        "id": "nA1BIoQoLAamvI2Y",
+        "key": "FlatModifier",
+        "label": "Damage Bonus (Per Die)",
+        "level": 4,
+        "value": "1",
+        "selector": "modifiers.damage.out.melee.bonus.perDie, modifiers.damage.out.brawl.bonus.perDie, modifiers.damage.out.finesse.bonus.perDie",
+        "scale": 4,
+        "toggleableEffect": true
+      },
+      {
+        "id": "jWhA3Q2pfuzCK5Er",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 4,
+        "value": true,
+        "selector": "flags.murdermode"
       }
     ],
     "level": 4,
     "scale": 4
   },
-  "effects": [
-    {
-      "name": "Barbarian: Murder Mode",
-      "_id": "ldVDH4UQDQh0KJY2",
-      "img": "/icons/skills/melee/strike-axe-blood-red.webp",
-      "type": "base",
-      "system": {
-        "changes": [
-          {
-            "key": "system.modifiers.dice.exploding.melee.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.dice.exploding.finesse.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.dice.exploding.brawl.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.melee.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.finesse.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.brawl.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          }
-        ],
-        "requiresEquip": true
-      },
-      "disabled": true,
-      "start": null,
-      "duration": {
-        "value": null,
-        "units": "seconds",
-        "expiry": null,
-        "expired": false
-      },
-      "description": "",
-      "origin": null,
-      "tint": "#ffffff",
-      "transfer": false,
-      "statuses": [],
-      "showIcon": 2,
-      "folder": null,
-      "sort": 0,
-      "flags": {},
-      "_stats": {
-        "coreVersion": "14.361",
-        "systemId": "vagabond-app",
-        "systemVersion": "0.0.94",
-        "createdTime": 1789491501726,
-        "modifiedTime": 1789491501726,
-        "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_key": "!items.effects!3dPNYwGcLBAfkskz.ldVDH4UQDQh0KJY2"
-    },
-    {
-      "name": "Barbarian: Murder Mode",
-      "_id": "KvW4yZPyboz1amhP",
-      "img": "/icons/skills/melee/strike-axe-blood-red.webp",
-      "type": "base",
-      "system": {
-        "changes": [
-          {
-            "key": "system.modifiers.dice.exploding.melee.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.dice.exploding.finesse.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.dice.exploding.brawl.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.melee.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.finesse.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.brawl.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          }
-        ],
-        "requiresEquip": true
-      },
-      "disabled": true,
-      "start": null,
-      "duration": {
-        "value": null,
-        "units": "seconds",
-        "expiry": null,
-        "expired": false
-      },
-      "description": "",
-      "origin": null,
-      "tint": "#ffffff",
-      "transfer": false,
-      "statuses": [],
-      "showIcon": 2,
-      "folder": null,
-      "sort": 0,
-      "flags": {},
-      "_stats": {
-        "coreVersion": "14.361",
-        "systemId": "vagabond-app",
-        "systemVersion": "0.0.94",
-        "createdTime": 1789592546744,
-        "modifiedTime": 1789592546744,
-        "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_key": "!items.effects!3dPNYwGcLBAfkskz.KvW4yZPyboz1amhP"
-    },
-    {
-      "name": "Barbarian: Murder Mode",
-      "_id": "Pv2PADKGcmM1dx3J",
-      "img": "/icons/skills/melee/strike-axe-blood-red.webp",
-      "type": "base",
-      "system": {
-        "changes": [
-          {
-            "key": "system.modifiers.dice.exploding.melee.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.dice.exploding.finesse.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.dice.exploding.brawl.max",
-            "type": "override",
-            "value": true,
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.melee.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.finesse.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          },
-          {
-            "key": "system.modifiers.damage.out.brawl.perDieBonus",
-            "type": "add",
-            "value": "floor(@level.current / 4)",
-            "phase": "initial",
-            "priority": null
-          }
-        ],
-        "requiresEquip": true
-      },
-      "disabled": true,
-      "start": null,
-      "duration": {
-        "value": null,
-        "units": "seconds",
-        "expiry": null,
-        "expired": false
-      },
-      "description": "",
-      "origin": null,
-      "tint": "#ffffff",
-      "transfer": false,
-      "statuses": [],
-      "showIcon": 2,
-      "folder": null,
-      "sort": 0,
-      "flags": {},
-      "_stats": {
-        "coreVersion": "14.361",
-        "systemId": "vagabond-app",
-        "systemVersion": "0.0.94",
-        "createdTime": 1789592599773,
-        "modifiedTime": 1789592599773,
-        "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.active-effects.ActiveEffect.qEWCYWZL4e4FDdBw",
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "_key": "!items.effects!3dPNYwGcLBAfkskz.Pv2PADKGcmM1dx3J"
-    }
-  ],
+  "effects": [],
   "folder": "gTZb8RMguzVhnz2T",
   "sort": 250000,
   "ownership": {
@@ -276,9 +48,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.41",
+    "systemVersion": "0.1.93",
     "createdTime": 1789491420521,
-    "modifiedTime": 1790217971298,
+    "modifiedTime": 1790916153867,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

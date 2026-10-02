@@ -9,19 +9,32 @@
       {
         "id": "L2X6dbvNzhxreTmT",
         "key": "FlatModifier",
-        "label": "Sneak Attack: Dice",
+        "label": "Bonus Dice",
         "level": 1,
         "value": "1",
-        "selector": "modifiers.damage.out.special.sneakAttack.extraDice.count",
-        "scale": 3
+        "selector": "modifiers.damage.out.finesse.dice.extra.count, modifiers.damage.out.ranged.dice.extra.count, modifiers.damage.out.keen.dice.extra.count",
+        "scale": 3,
+        "toggleableEffect": true
       },
       {
-        "id": "9sZ7iRCW3VkcPawz",
-        "key": "GrantItem",
-        "label": "Active Effect: Sneak Attack",
+        "id": "EWhvwjBUVE9qpkGC",
+        "key": "FlatModifier",
+        "label": "Armor Piercing",
         "level": 1,
-        "uuid": "Compendium.vagabond-app.active-effects.ActiveEffect.8Y9XG141pXRzZy11",
-        "type": "ActiveEffect"
+        "scale": 0,
+        "value": "1",
+        "valueMultiplier": "",
+        "selector": "modifiers.damage.out.finesse.armorPiercing.perExtraDie, modifiers.damage.out.ranged.armorPiercing.perExtraDie, modifiers.damage.out.keen.armorPiercing.perExtraDie",
+        "toggleableEffect": true
+      },
+      {
+        "id": "LaKrPa2Hl6Buq9Zz",
+        "key": "FlatModifier",
+        "label": "Exploding Dice",
+        "level": 6,
+        "value": "4",
+        "selector": "modifiers.damage.out.finesse.dice.extra.explodesOn, modifiers.damage.out.ranged.dice.extra.explodesOn, modifiers.damage.out.keen.dice.extra.explodesOn",
+        "toggleableEffect": true
       }
     ],
     "classId": "6TmIRB6wIVRxMZxv",
@@ -37,9 +50,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.89",
+    "systemVersion": "0.1.93",
     "createdTime": 1789432269492,
-    "modifiedTime": 1790746827080,
+    "modifiedTime": 1790922125758,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

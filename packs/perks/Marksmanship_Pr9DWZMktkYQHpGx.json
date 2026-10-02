@@ -12,7 +12,7 @@
         "label": "Ranged Damage Bonus",
         "level": 0,
         "value": 2,
-        "selector": "modifiers.dice.size.ranged.bonus"
+        "selector": "modifiers.damage.out.ranged.dice.size.bonus"
       }
     ],
     "prerequisites": [

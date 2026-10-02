@@ -348,7 +348,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
                                         <div className="flex gap-x-1">
                                             <Dices size={18} className="self-center text-text-header-tertiary" />
                                             <p className="text-sm text-text-header-tertiary font-bold">
-                                                d{hero.modifiers.dice.size.spell.bonus + 6}
+                                                d{hero.modifiers.damage.out.spell.dice.size.bonus + 6}
                                             </p>
                                         </div>
                                         <DiceCountInput dmgDice={delivery?.damageDice} onUpdateDmgDice={onUpdateDamageDice} />

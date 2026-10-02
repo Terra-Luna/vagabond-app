@@ -12,7 +12,8 @@
         "label": "Exalted",
         "level": "10",
         "value": true,
-        "selector": "statuses.toggles.exalted"
+        "selector": "statuses.toggles.exalted",
+        "toggleableEffect": false
       },
       {
         "id": "VvpwyeGMFnGHlJ5j",
@@ -20,7 +21,8 @@
         "label": "Blessed",
         "level": "10",
         "value": true,
-        "selector": "statuses.toggles.blessed"
+        "selector": "statuses.toggles.blessed",
+        "toggleableEffect": false
       }
     ],
     "level": 10,
@@ -38,9 +40,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.93",
     "createdTime": 1789503595065,
-    "modifiedTime": 1789523098500,
+    "modifiedTime": 1790919805109,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

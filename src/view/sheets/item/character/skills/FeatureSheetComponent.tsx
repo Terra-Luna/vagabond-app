@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 
+import { ActiveEffectsView } from "../../../../../apps/active-effects/ActiveEffectsView"
 import { FeatureDataModel } from "../../../../../model/item/character/FeatureDataModel"
 import { ItemRulesManager } from "../../../../../rules/ItemRulesManager"
 import { appLang } from "../../../../../utils/lang"
@@ -68,6 +69,8 @@ export const FeatureSheetComponent = ({ item, className }: { item: Item & { syst
                         level={item.system.level}
                         scale={item.system.scale}
                     />
+
+                    <ActiveEffectsView initialDocument={item} />
 
                 </div>}
             </div>

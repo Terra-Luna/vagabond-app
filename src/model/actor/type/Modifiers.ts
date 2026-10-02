@@ -34,68 +34,30 @@ export const modifierSchema = () => {
             will: new fields.SchemaField({ ...skillModifierSchema() })
         }),
 
-        dice: new fields.SchemaField({
-            size: new fields.SchemaField({
-                melee: new fields.SchemaField({ ...dieSizeModifierSchema() }),
-                finesse: new fields.SchemaField({ ...dieSizeModifierSchema() }),
-                brawl: new fields.SchemaField({ ...dieSizeModifierSchema() }),
-                ranged: new fields.SchemaField({ ...dieSizeModifierSchema() }),
-                thrown: new fields.SchemaField({ ...dieSizeModifierSchema() }),
-                defense: new fields.SchemaField({ ...dieSizeModifierSchema() }),
-                spell: new fields.SchemaField({ ...dieSizeModifierSchema() }),
-                spellHealing: new fields.SchemaField({ ...dieSizeModifierSchema() })
-            }),
-            exploding: new fields.SchemaField({
-                global: new fields.SchemaField({ ...explodingModSchema() }),
-                melee: new fields.SchemaField({ ...explodingModSchema() }),
-                finesse: new fields.SchemaField({ ...explodingModSchema() }),
-                brawl: new fields.SchemaField({ ...explodingModSchema() }),
-                ranged: new fields.SchemaField({ ...explodingModSchema() }),
-                thrown: new fields.SchemaField({ ...explodingModSchema() }),
-                defense: new fields.SchemaField({ ...explodingModSchema() }),
-                spell: new fields.SchemaField({ ...explodingModSchema() }),
-                spellHealing: new fields.SchemaField({ ...explodingModSchema() })
-            }),
-            crit: new fields.SchemaField({
-                melee: new fields.SchemaField({ ...critModSchema() }),
-                finesse: new fields.SchemaField({ ...critModSchema() }),
-                brawl: new fields.SchemaField({ ...critModSchema() }),
-                ranged: new fields.SchemaField({ ...critModSchema() }),
-                thrown: new fields.SchemaField({ ...critModSchema() }),
-                defense: new fields.SchemaField({ ...critModSchema() }),
-                spell: new fields.SchemaField({ ...critModSchema() })
-            }),
-            reroll: new fields.SchemaField({
-                melee: new fields.SchemaField({ ...rerollModSchema() }),
-                finesse: new fields.SchemaField({ ...rerollModSchema() }),
-                brawl: new fields.SchemaField({ ...rerollModSchema() }),
-                ranged: new fields.SchemaField({ ...rerollModSchema() }),
-                thrown: new fields.SchemaField({ ...rerollModSchema() }),
-                defense: new fields.SchemaField({ ...rerollModSchema() }),
-                spell: new fields.SchemaField({ ...rerollModSchema() })
-            })
-        }),
-
         damage: new fields.SchemaField({
-            in: new fields.SchemaField({
-                ...damageReductionSchema(),
-                conditional: new fields.SchemaField({
-                    armored: new fields.SchemaField({ ...damageReductionSchema() }),
-                    berserk: new fields.SchemaField({ ...damageReductionSchema() })
-                })
-            }),
+            in: new fields.SchemaField({ ...damageReductionSchema() }),
             out: new fields.SchemaField({
-                ...damageModifierSchema(),
-                conditional: new fields.SchemaField({
-                    armored: new fields.SchemaField({ ...damageModifierSchema() }),
-                    berserk: new fields.SchemaField({ ...damageModifierSchema() })
-                })
+                global: new fields.SchemaField({ ...damageOutSchema() }),
+                melee: new fields.SchemaField({ ...damageOutSchema() }),
+                brawl: new fields.SchemaField({ ...damageOutSchema() }),
+                finesse: new fields.SchemaField({ ...damageOutSchema() }),
+                ranged: new fields.SchemaField({ ...damageOutSchema() }),
+                keen: new fields.SchemaField({ ...damageOutSchema() }),
+                thrown: new fields.SchemaField({ ...damageOutSchema() }),
+                defense: new fields.SchemaField({ ...damageOutSchema() }),
+                alchemy: new fields.SchemaField({ ...damageOutSchema() }),
+                spell: new fields.SchemaField({ ...damageOutSchema() })
             })
         }),
 
         healing: new fields.SchemaField({
-            in: new fields.SchemaField({ ...damageModifierSchema() }),
-            out: new fields.SchemaField({ ...damageModifierSchema() })
+            in: new fields.SchemaField({
+                modifier: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+            }),
+            out: new fields.SchemaField({
+                alchemy: new fields.SchemaField({ ...damageOutSchema() }),
+                spell: new fields.SchemaField({ ...damageOutSchema() })
+            })
         }),
 
         casting: new fields.SchemaField({
@@ -111,15 +73,13 @@ export const modifierSchema = () => {
             })
         }),
 
-        alchemy: new fields.SchemaField({ ...damageBonusSchema() }),
-
         downtime: new fields.SchemaField({
             breather: new fields.SchemaField({
                 removeFatigue: new fields.NumberField({ ...requiredInteger, initial: 0 }),
                 gainLuck: new fields.NumberField({ ...requiredInteger, initial: 0 })
             }),
             rest: new fields.SchemaField({
-                extraLuck: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+                extraLuck: new fields.NumberField({ ...requiredInteger, initial: 0 })
             })
         })
     }
@@ -136,10 +96,43 @@ const skillModifierSchema = () => {
     }
 }
 
-// modifiers.dice.size.*.
+// modifiers.damage.out[skill]...
+const damageOutSchema = () => {
+    return {
+        ...baseDamageOutSchema(),
+        weaponProps: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
+        conditional: new fields.SchemaField({
+            armored: new fields.SchemaField({
+                ...baseDamageOutSchema()
+            })
+        })
+    }
+}
+
+const baseDamageOutSchema = () => {
+    return {
+        dice: new fields.SchemaField({
+            size: new fields.SchemaField({ ...dieSizeModifierSchema() }),
+            exploding: new fields.SchemaField({ ...explodingModSchema() }),
+            crit: new fields.SchemaField({ ...critModSchema() }),
+            reroll: new fields.SchemaField({ ...rerollModSchema() }),
+            extra: new fields.SchemaField({ ...extraDiceModSchema() })
+        }),
+        bonus: new fields.SchemaField({
+            flat: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+            perDie: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+        }),
+        armorPiercing: new fields.SchemaField({
+            flat: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            perDie: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+            perExtraDie: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        })
+    }
+}
+
 const dieSizeModifierSchema = () => {
     return {
-        minimum: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        min: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         bonus: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         oneHandVersatile: new fields.BooleanField({ initial: false })
     }
@@ -147,7 +140,9 @@ const dieSizeModifierSchema = () => {
 
 const explodingModSchema = () => {
     return {
+        min: new fields.BooleanField({ initial: false }),
         max: new fields.BooleanField({ initial: false }),
+        subMax: new fields.BooleanField({ initial: false }),
         values: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
     }
 }
@@ -165,37 +160,12 @@ const rerollModSchema = () => {
     }
 }
 
-const damageModifierSchema = () => {
+const extraDiceModSchema = () => {
     return {
-        melee: new fields.SchemaField({ ...damageBonusSchema() }),
-        finesse: new fields.SchemaField({ ...damageBonusSchema() }),
-        brawl: new fields.SchemaField({ ...damageBonusSchema() }),
-        ranged: new fields.SchemaField({ ...damageBonusSchema() }),
-        thrown: new fields.SchemaField({ ...damageBonusSchema() }),
-        defense: new fields.SchemaField({ ...damageBonusSchema() }),
-        spell: new fields.SchemaField({ ...damageBonusSchema() }),
-        special: new fields.SchemaField({
-            sneakAttack: new fields.SchemaField({
-                ...damageBonusSchema(),
-                active: new fields.BooleanField({ initial: false })
-            })
-        })
-    }
-}
-
-// modifiers.damage.out.ranged.flatBonus
-const damageBonusSchema = () => {
-    return {
-        flatBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
-        perDieBonus: new fields.NumberField({ ...uncappedInteger, min: -3, initial: 0 }),
-        exploding: new fields.SchemaField({ ...explodingModSchema() }),
-        extraDice: new fields.SchemaField({
-            count: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-            faces: new fields.NumberField({ ...requiredInteger, initial: 4 }),
-            modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
-            explodesOn: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
-        }),
-        weaponProps: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] })
+        count: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        faces: new fields.NumberField({ ...requiredInteger, initial: 4 }),
+        modifier: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        explodesOn: new fields.ArrayField(new fields.NumberField({ ...requiredInteger }), { initial: [] })
     }
 }
 

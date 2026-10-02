@@ -32,8 +32,8 @@ export class HeroBaseDataRulesApplicator {
                 const perkRules = perk?.system.rules
                 if (perkRules && perkRules.length > 0) {
                     perkRules.forEach(rule => {
-                        if (rule.key === "ToggleRule") toggleRules.push(rule)
-                        if (rule.key === "FlatModifier") flatModifiers.push(rule)
+                        if (rule.key === "ToggleRule") toggleRules.push({ ...rule, parentId: perk?.id })
+                        if (rule.key === "FlatModifier") flatModifiers.push({ ...rule, parentId: perk?.id })
                     })
                 }
             })
@@ -46,8 +46,8 @@ export class HeroBaseDataRulesApplicator {
                     const perk = perks.find(it => it.uuid === selection.value)
                     const perkRules = perk?.system.rules
                     perkRules?.forEach(rule => {
-                        if (rule.key === "ToggleRule") toggleRules.push(rule)
-                        if (rule.key === "FlatModifier") flatModifiers.push(rule)
+                        if (rule.key === "ToggleRule") toggleRules.push({ ...rule, parentId: perk?.id })
+                        if (rule.key === "FlatModifier") flatModifiers.push({ ...rule, parentId: perk?.id })
                     })
                 })
 
@@ -64,20 +64,55 @@ export class HeroBaseDataRulesApplicator {
             })
         }
 
-        const applyToggleRule = (rule) => {
-            const path = rule.selector.replace("system.", "")
-            const booleanValue = rule.value === true || rule.value === "true" || rule.value === "enabled"
-            if (path.startsWith("statuses.toggles")) {
-                actor.toggleStatusEffect(path.split(".").pop(), { active: booleanValue })
-            }
-            else if (path.startsWith("flags.")) {
-                const state = actor.getFlag(sys_id, path.replace("flags.", ""))
-                if (state === undefined) {
-                    actor.setFlag(sys_id, path.replace("flags.", ""), booleanValue)
+        const applyToggleRule = async (rule) => {
+            const value = (rule.value === true || rule.value === "true" || rule.value === "enabled") && (!rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId))
+            const selector = removeWhitespace(rule.selector)
+            const paths = selector.split(",").map(it => it.replace("system.", ""))
+
+            for (const path of paths) {
+                if (path.startsWith("statuses.toggles.")) {
+                    const effectName = path?.split(".")?.pop()
+                    if (!effectName) continue
+
+                    const actorId = actor.id
+                    const lockKey = `${actorId}:${effectName}`
+
+                    if (globalInFlightStatusToggles.has(lockKey)) {
+                        continue
+                    }
+                    else {
+                        globalInFlightStatusToggles.add(lockKey)
+                    }
+
+                    try {
+                        if (value) {
+                            if (!actor.statuses.has(effectName)) {
+                                const effect = await actor.toggleStatusEffect(effectName, { active: value })
+                                if (effect && effect instanceof ActiveEffect) {
+                                    effect.setFlag(sys_id, "appliedByRule", rule.id)
+                                }
+                            }
+                        }
+                        else {
+                            const effect = actor.effects.contents.find(it => it.getFlag(sys_id, "appliedByRule") === rule.id)
+                            if (effect) {
+                                await actor.deleteEmbeddedDocuments("ActiveEffect", [effect.id ?? ""])
+                            }
+                        }
+                    }
+                    finally {
+                        globalInFlightStatusToggles.delete(lockKey)
+                    }
                 }
-            }
-            else {
-                foundry.utils.setProperty(actor.system, path, booleanValue && (!rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId)))
+                else if (path.startsWith("flags.")) {
+                    const state = actor.getFlag(sys_id, path.replace("flags.", ""))
+                    if (state === undefined) {
+                        actor.setFlag(sys_id, path.replace("flags.", ""), value)
+                    }
+                }
+                else {
+                    foundry.utils.setProperty(actor.system, path, value)
+                }
             }
         }
 
@@ -226,3 +261,4 @@ export class HeroBaseDataRulesApplicator {
  */
 const globalInFlightGrants = new Map<string, Set<string>>()
 const globalInFlightItemGrants = new Map<string, Set<string>>()
+const globalInFlightStatusToggles = new Set<string>()

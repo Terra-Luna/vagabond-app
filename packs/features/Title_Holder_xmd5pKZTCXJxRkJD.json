@@ -12,7 +12,7 @@
         "label": "Brawl: Exploding Dice",
         "level": 6,
         "value": "2",
-        "selector": "modifiers.dice.exploding.brawl.values"
+        "selector": "modifiers.damage.out.brawl.dice.exploding.values"
       },
       {
         "id": "El9kb3OS4TUhVGMd",
@@ -20,7 +20,7 @@
         "label": "Brawl: Die Size Min.",
         "level": 6,
         "value": "6",
-        "selector": "modifiers.dice.size.brawl.minimum",
+        "selector": "modifiers.damage.out.brawl.dice.size.min",
         "scale": 0,
         "toggleableEffect": true
       },
@@ -30,7 +30,7 @@
         "label": "Brawl: Die Size Bonus",
         "level": 10,
         "value": "2",
-        "selector": "modifiers.dice.size.brawl.minimum",
+        "selector": "modifiers.damage.out.brawl.dice.size.min",
         "toggleableEffect": true
       },
       {

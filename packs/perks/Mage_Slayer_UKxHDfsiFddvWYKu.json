@@ -4,7 +4,7 @@
   "_id": "UKxHDfsiFddvWYKu",
   "img": "/icons/magic/unholy/hand-weapon-glow-black-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">When you damage a Focusing Being, the damage rolls can Explode, and if the result of your d20 roll on the Check is 10 or higher than your Difficulty, the Focus ends.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When you damage a Focusing Being, the damage rolls can Explode, and if the result of your d20 roll on the Check is 10 or higher than your Difficulty, the Focus ends.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.BRoZ6lMhVjD8AN7E]{Mage Slayer}</span></p>",
     "rules": [
       {
         "id": "NrJcN86uu63C8gO4",
@@ -12,7 +12,7 @@
         "label": "Exploding Damage",
         "level": 0,
         "value": true,
-        "selector": "modifiers.dice.exploding.global.max",
+        "selector": "modifiers.damage.out.global.dice.exploding.max",
         "toggleableEffect": true
       },
       {
@@ -55,9 +55,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.91",
+    "systemVersion": "0.1.93",
     "createdTime": 1786725267252,
-    "modifiedTime": 1790833925454,
+    "modifiedTime": 1790919958046,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

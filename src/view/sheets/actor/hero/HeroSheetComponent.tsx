@@ -108,11 +108,11 @@ const HeroSheetHeader = ({ hero, sheet }: { hero: HeroDataModel, sheet: Vagabond
                             <HeroSheetMenu hero={hero} sheet={sheet} className="ml-auto" />
                         </div>
                     </div>
-                    <div className="flex text-text-header-secondary ml-2 pb-1">
+                    <div className="flex text-text-header-secondary ml-2 pb-1 truncate">
                         {/* ANCESTRY & CLASS LABELS */}
                         <span>{localizeString(locale.Level, { level: hero.level.current?.toString() ?? "0" })}</span>
                         <span>&nbsp;•&nbsp;</span>
-                        <div className="flex gap-x-1 cursor-pointer">
+                        <div className="flex gap-x-1 cursor-pointer mr-2">
                             <p onClick={() => openItemSheet(hero.ancestry)}>{getName(hero.ancestry) ?? ''}</p>
                             {hero.class
                                 ? <p onClick={() => openItemSheet(hero.class)}>{getName(hero.class)}</p>

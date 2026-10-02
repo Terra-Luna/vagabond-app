@@ -12,7 +12,7 @@
         "label": "Full Swing",
         "level": 0,
         "value": 1,
-        "selector": "modifiers.dice.exploding.brawl.values"
+        "selector": "modifiers.damage.out.brawl.dice.exploding.values"
       }
     ],
     "prerequisites": [

@@ -12,7 +12,7 @@
         "label": "Assured Healer",
         "level": 0,
         "value": 1,
-        "selector": "modifiers.dice.exploding.spellHealing.values"
+        "selector": "modifiers.healing.out.spell.dice.exploding.values"
       }
     ],
     "prerequisites": [

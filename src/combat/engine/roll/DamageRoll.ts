@@ -11,6 +11,8 @@ export interface DamageRollArgs {
     flatDmgBonus?: number
     perDieDmgBonus?: number
     armorPiercing?: number
+    armorPiercingPerDie?: number
+    armorPiercingPerExtraDie?: number
     relicLevel?: number
 }
 
@@ -19,6 +21,7 @@ export interface DamageRollResult {
     dmgType: string
     bonus: number
     total: number
+    armorPiercing: number
     rollSummaries: RollSummary[]
     rolls: Roll.Evaluated<Roll<EmptyObject>>[]
 }
@@ -30,6 +33,8 @@ export class DamageRoll {
     flatDmgBonus: number
     perDieDmgBonus: number
     armorPiercing: number
+    armorPiercingPerDie: number
+    armorPiercingPerExtraDie: number
     relicLevel: number
     result: DamageRollResult | undefined
 
@@ -40,6 +45,8 @@ export class DamageRoll {
         this.flatDmgBonus = args.flatDmgBonus ?? 0
         this.perDieDmgBonus = args.perDieDmgBonus ?? 0
         this.armorPiercing = args.armorPiercing ?? 0
+        this.armorPiercingPerDie = args.armorPiercingPerDie ?? 0
+        this.armorPiercingPerExtraDie = args.armorPiercingPerExtraDie ?? 0
         this.relicLevel = args.relicLevel ?? -1
     }
 
@@ -60,6 +67,8 @@ export class DamageRoll {
             flatDmgBonus: this.flatDmgBonus,
             perDieDmgBonus: this.perDieDmgBonus,
             armorPiercing: this.armorPiercing,
+            armorPiercingPerDie: this.armorPiercingPerDie,
+            armorPiercingPerExtraDie: this.armorPiercingPerExtraDie,
             relicLevel: this.relicLevel,
             result: this.result
         }
@@ -75,6 +84,8 @@ export class DamageRoll {
                 flatDmgBonus: json.flatDmgBonus,
                 perDieDmgBonus: json.perDieDmgBonus,
                 armorPiercing: json.armorPiercing,
+                armorPiercingPerDie: json.armorPiercingPerDie,
+                armorPiercingPerExtraDie: json.armorPiercingPerExtraDie,
                 relicLevel: json.relicLevel
             })
             roll.result = json.result
@@ -118,6 +129,9 @@ export class DamageRoll {
         const summaries = RollSummary.buildRollSummaries(damageRollTerms, initialExplodableTerms, explosionTerms, this.dice, isCrit)
         const totalDice = summaries.filter(it => !it.rerolled).length
         const perDieBonus = totalDice * (this.perDieDmgBonus ?? 0)
+        const perDieArmorPiercing = totalDice * (this.armorPiercingPerDie ?? 0)
+        const perExtraDieArmorPiercing = (totalDice - 1) * (this.armorPiercingPerExtraDie ?? 0)
+
         const totalBonus = perDieBonus
             + (this.flatDmgBonus ?? 0)
             + (straightRolls.reduce((acc, roll) => acc + (roll.modifier ?? 0), 0))
@@ -128,11 +142,10 @@ export class DamageRoll {
             dmgType: this.dmgType,
             total: damageRoll.total + initialExplodableRoll.total + (combinedExplosions?.total ?? 0) + perDieBonus,
             bonus: totalBonus,
+            armorPiercing: (this.armorPiercing ?? 0) + perDieArmorPiercing + perExtraDieArmorPiercing,
             rollSummaries: summaries,
-            rolls: [damageRoll]
+            rolls: [damageRoll, ...(explodingRolls.length > 0 ? [initialExplodableRoll] : [])]
         } as DamageRollResult
-
-        result.rolls = [damageRoll]
 
         if (canExplode && combinedExplosions) result.rolls.push(combinedExplosions)
 

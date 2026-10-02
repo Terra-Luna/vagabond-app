@@ -12,7 +12,7 @@
         "label": "Versatile Shields - 1H",
         "level": 6,
         "value": true,
-        "selector": "modifiers.dice.size.defense.oneHandVersatile"
+        "selector": "modifiers.damage.out.defense.dice.size.oneHandVersatile"
       }
     ],
     "level": 6,

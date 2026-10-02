@@ -16,6 +16,7 @@ export interface Effect {
     isTransfer: boolean // is from equipped gear
     duration?: number // (Cd4, etc...)
     sourceName?: string
+    changes?: any[] // list of changes applied by this effect
 }
 
 interface EffectsTabProps {
@@ -99,7 +100,7 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                         </div>
 
                         {/* TOGGLE SWITCH */}
-                        <ActiveEffectButtons effect={eff} onToggle={() => onToggle(eff.id)} />
+                        {eff.changes && eff.changes.length > 0 && <ActiveEffectButtons effect={eff} onToggle={() => onToggle(eff.id)} />}
                     </li>
                 ))}
             </DynamicGrid>

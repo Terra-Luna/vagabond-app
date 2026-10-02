@@ -12,7 +12,7 @@
         "label": "Spell Damage Die Face Bonus",
         "level": 4,
         "value": "2",
-        "selector": "modifiers.dice.size.spell.bonus"
+        "selector": "modifiers.damage.out.spell.dice.size.bonus"
       },
       {
         "id": "EKKiRzzzChI3W050",

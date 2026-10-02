@@ -68,7 +68,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             img: "icons/svg/terror.svg",
             changes: [
                 { key: "system.statuses.toggles.frightened", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.damage.out.all", mode: "ADD", value: "-2" }
+                { key: "system.modifiers.damage.out.global.bonus.flat", mode: "ADD", value: "-2" }
             ]
         },
         {
@@ -133,7 +133,7 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             img: "/icons/svg/degen.svg",
             changes: [
                 { key: "system.statuses.toggles.sickened", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.healing.in", mode: "ADD", value: "-2" }
+                { key: "system.modifiers.healing.in.modifier", mode: "ADD", value: "-2" }
             ]
         },
         {
@@ -190,14 +190,14 @@ export class VagabondActiveEffect<SubType extends ActiveEffect.SubType = ActiveE
             img: "/icons/svg/paralysis.svg",
             changes: [
                 { key: "system.statuses.toggles.exalted", mode: "OVERRIDE", value: "true" },
-                { key: "system.modifiers.damage.out.melee.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.brawl.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.finesse.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.ranged.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.thrown.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.defense.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.damage.out.spell.perDieBonus", mode: "ADD", value: "1" },
-                { key: "system.modifiers.alchemy.perDieBonus", mode: "ADD", value: "1" }
+                { key: "system.modifiers.damage.out.melee.bonus.perDie", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.brawl.bonus.perDie", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.finesse.bonus.perDie", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.ranged.bonus.perDie", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.thrown.bonus.perDie", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.defense.bonus.perDie", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.spell.bonus.perDie", mode: "ADD", value: "1" },
+                { key: "system.modifiers.damage.out.alchemy.bonus.perDie", mode: "ADD", value: "1" }
             ]
         },
         {

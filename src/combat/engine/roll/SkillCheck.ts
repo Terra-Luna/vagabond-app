@@ -172,7 +172,10 @@ export class SkillCheck {
         const d20Res = d20Term?.results?.map(r => r.result)?.sort((a, b) => a - b) ?? [0]
         const d6Res = d6Term?.results?.find(r => r.active)?.result ?? 0
         const bonusTerms = bonusRolls.flatMap(b => getDiceTerms(b))
-        const total = roll.total + bonusTerms.reduce((acc, term) => acc + term.results.reduce((sum, r) => sum + r.result, 0), 0)
+        const rerolledD6Bonus = isReroll
+            ? (favorHinder === 'favor' ? existingD6 ?? 0 : favorHinder === 'hinder' ? -(existingD6 ?? 0) : 0)
+            : 0
+        const total = roll.total + rerolledD6Bonus + bonusTerms.reduce((acc, term) => acc + term.results.reduce((sum, r) => sum + r.result, 0), 0)
         const isSuccess = total >= this.difficulty
         const isCrit = d20Res.some(res => res >= this.critThreshold)
 

@@ -12,7 +12,7 @@
         "label": "Defense Weapon Dmg Bonus",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.damage.out.conditional.armored.defense.flatBonus",
+        "selector": "modifiers.damage.out.defense.conditional.armored.bonus.flat",
         "scale": 4
       }
     ],

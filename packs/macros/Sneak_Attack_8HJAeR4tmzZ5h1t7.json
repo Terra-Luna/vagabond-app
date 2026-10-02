@@ -5,7 +5,7 @@
   "author": "KyorYoEvge7ElSaj",
   "img": "icons/skills/melee/strike-slashes-red.webp",
   "scope": "global",
-  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.effects.some(fx => fx.name.toUpperCase() === \"SNEAK ATTACK\"))?.actor;\n}\n\nif (!hero) return;\n\nconst sneak = hero.effects.find(fx => fx.name.toUpperCase() === \"SNEAK ATTACK\");\n\nif (sneak) {\n  const state = sneak.disabled\n  await sneak.update({ disabled: !state });\n}",
+  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(\"vagabond-app\", \"sneakattack\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"sneakattack\")) return;\n\ngame.system.api.rules.toggleEffect(hero, \"Compendium.vagabond-app.features.Item.a5lVYRtgKeui2Qvy\");",
   "folder": "iGjky4Uew8S0aT8t",
   "sort": 100000,
   "ownership": {
@@ -18,7 +18,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.3",
     "createdTime": 1789678280764,
-    "modifiedTime": 1789768749132,
+    "modifiedTime": 1790909906357,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

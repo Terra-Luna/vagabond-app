@@ -8,18 +8,20 @@ describe("getItemRules", () => {
     test("includes rules from referenced Feature Items", () => {
         ItemsCache.items.clear()
         ItemsCache.items.set("feature-uuid", {
+            _id: "feature-id",
             type: "feature",
             system: { rules: [{ id: "feature-rule", key: "FlatModifier" }] }
         })
 
         expect(getItemRules({
+            id: "class-item-id",
             system: {
                 rules: [{ id: "class-rule", key: "ChoiceSet" }],
                 featureIds: ["feature-uuid"]
             }
         })).toEqual([
-            { id: "class-rule", key: "ChoiceSet" },
-            { id: "feature-rule", key: "FlatModifier" }
+            { id: "class-rule", key: "ChoiceSet", parentId: "class-item-id" },
+            { id: "feature-rule", key: "FlatModifier", parentId: "feature-id" }
         ])
     })
 

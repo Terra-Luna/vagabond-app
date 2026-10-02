@@ -370,23 +370,20 @@ export class HeroAttack extends Attack {
         )
 
         if (!extraDice || extraDice.length === 0) {
-            if (dmgMods[weaponSkill]?.extraDice?.count > 0) {
-                const extra = dmgMods[weaponSkill].extraDice
-                extraDice = [new DiceRoll(extra), ...extraDice ?? []]
+            if (dmgMods[weaponSkill]?.dice?.extra?.count > 0 || (isKeen && dmgMods.keen.dice.extra.count > 0)) {
+                const extras = dmgMods[weaponSkill]?.dice?.extra.count > 0
+                    ? dmgMods[weaponSkill]?.dice?.extra
+                    : (isKeen && dmgMods.keen.dice.extra.count > 0 ? dmgMods.keen.dice.extra : 0)
+
+                if (extras.count > 0) {
+                    const count = extras.count
+                    const faces = extras.faces
+                    const modifier = extras.modifier
+                    const explodesOn = extras.explodesOn
+                    extraDice = [new DiceRoll({ count, faces, modifier, explodesOn }), ...extraDice ?? []]
+                }
             }
         }
-
-        const specialMods: any[] = []
-
-        Object.keys(dmgMods.special ?? {}).filter(key => dmgMods.special[key]?.active).forEach(key => {
-            const sm = dmgMods.special[key]
-            specialMods.push({
-                key: key,
-                flatDmgBonus: sm.flatBonus ?? 0,
-                perDieDmgBonus: sm.perDieBonus ?? 0,
-                extraDice: new DiceRoll(sm.extraDice ?? {})
-            })
-        })
 
         let relicLevel = -1
         if (weapon.relicPowers.length > 0) {
@@ -408,9 +405,12 @@ export class HeroAttack extends Attack {
         const damageRoll = new DamageRoll({
             atkName: item.name,
             dmgType: weapon.damage.type,
-            dice: [damageDice, ...extraDice ?? [], ...specialMods.flatMap(sm => sm.extraDice ?? [])],
-            flatDmgBonus: (dmgMods[weaponSkill]?.flatBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.flatDmgBonus ?? 0), 0) ?? 0),
-            perDieDmgBonus: (dmgMods[weaponSkill]?.perDieBonus ?? 0) + (specialMods.reduce((sum, b) => sum + (b.perDieDmgBonus ?? 0), 0) ?? 0),
+            dice: [damageDice, ...extraDice ?? []],
+            flatDmgBonus: (dmgMods[weaponSkill]?.bonus?.flat ?? 0),
+            perDieDmgBonus: (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
+            armorPiercing: dmgMods[weaponSkill]?.armorPiercing?.flat ?? (isKeen ? dmgMods.keen.armorPiercing.flat ?? 0 : 0),
+            armorPiercingPerDie: dmgMods[weaponSkill]?.armorPiercing?.perDie ?? (isKeen ? dmgMods.keen.armorPiercing.perDie ?? 0 : 0),
+            armorPiercingPerExtraDie: dmgMods[weaponSkill]?.armorPiercing?.perExtraDie ?? (isKeen ? dmgMods.keen.armorPiercing.perExtraDie ?? 0 : 0),
             relicLevel: relicLevel
         })
 
@@ -430,11 +430,14 @@ export class HeroAttack extends Attack {
 
         const mods = foundry.utils.deepClone((actor as any).system.modifiers)
         const dieSize = item.system.damage.dice.faces
-        const flatBonus = mods.alchemy.flatBonus ?? 0
-        const perDieBonus = mods.alchemy.perDieBonus ?? 0
+        const flatBonus = mods.alchemy.bonus?.flat ?? 0
+        const perDieBonus = mods.alchemy.bonus?.perDie ?? 0
         const explodesOn = [...mods.alchemy.exploding?.values ?? []]
         if (mods.alchemy.exploding?.max && !explodesOn.includes(dieSize)) {
             explodesOn.push(dieSize)
+        }
+        if (mods.alchemy.exploding?.subMax && !explodesOn.includes(dieSize - 1)) {
+            explodesOn.push(dieSize - 1)
         }
         damageDice.explodesOn = explodesOn
 
@@ -443,7 +446,7 @@ export class HeroAttack extends Attack {
             dmgType: item.system.damage.type,
             flatDmgBonus: flatBonus,
             perDieDmgBonus: perDieBonus,
-            dice: [damageDice],
+            dice: [damageDice]
         })
 
         const attack = new HeroAttack(item.name, actor, getTargetIds(), skillCheck, false, damageRoll)
@@ -490,12 +493,12 @@ export class HeroAttack extends Attack {
             RelicPowerProcessor.applyRelicPowers(equippedItems.flatMap(it => it.system.relicPowers), mods)
 
             const dieSizeMod = isHealing
-                ? mods.dice.size.spellHealing.bonus ?? 0
-                : mods.dice.size.spell.bonus ?? 0
+                ? mods.healing.out.spell.bonus.flat ?? 0
+                : mods.damage.out.spell.bonus.flat ?? 0
 
             const explosionsMod = isHealing
-                ? mods.dice.exploding.spellHealing.values
-                : mods.dice.exploding.spell.values
+                ? mods.healing.out.spell.dice.exploding.values
+                : mods.damage.out.spell.dice.exploding.values
 
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,
@@ -507,11 +510,11 @@ export class HeroAttack extends Attack {
                     explodesOn: explosionsMod as number[]
                 })],
                 flatDmgBonus: isHealing
-                    ? (mods.healing.out.spell.flatBonus ?? 0)
-                    : (mods.damage.out.spell.flatBonus ?? 0),
+                    ? (mods.healing.out.spell.bonus.flat ?? 0)
+                    : (mods.damage.out.spell.bonus.flat ?? 0),
                 perDieDmgBonus: isHealing
-                    ? (mods.healing.out.spell.perDieBonus ?? 0)
-                    : (mods.damage.out.spell.perDieBonus ?? 0)
+                    ? (mods.healing.out.spell.bonus.perDie ?? 0)
+                    : (mods.damage.out.spell.bonus.perDie ?? 0)
             })
         }
         else {
