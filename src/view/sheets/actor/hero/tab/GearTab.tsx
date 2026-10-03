@@ -1,6 +1,8 @@
 import { Shield } from "lucide-react"
 import { useEffect, useMemo, useState } from "react"
 
+import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
+import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { HeroAttack } from "../../../../../combat/engine/HeroAttack"
 import { getArmor, HeroDataModel } from "../../../../../model/actor/HeroDataModel"
 import { sortedItems } from "../../../../../model/actor/type/Inventory"
@@ -49,6 +51,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
+    const [refreshWeaponAtk, setRefreshWeaponAtk] = useState(false)
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const combinedEquipped = sortedItems<WeaponDataModel | SundryDataModel>([...equippedWeapons, ...equippedSundries])
@@ -78,6 +81,8 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
      */
     const [effectUpdateKey, setEffectUpdateKey] = useState(0)
 
+    console.log(effectUpdateKey)
+
     useEffect(() => {
         const triggerUpdate = (effect: any) => {
             if (effect.parent?.id === hero.parent?.id) {
@@ -102,6 +107,20 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
                 item,
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
                 skill: attackInstance?.skillCheck?.skill ?? '',
+                preset: {
+                    title: item.parent.name,
+                    description: '',
+                    weaponId: item.parent.id,
+                    skill: attackInstance?.skillCheck?.skill ?? '',
+                    d20Count: attackInstance?.skillCheck?.d20Count ?? 1,
+                    skillCheckMod: attackInstance?.skillCheck?.modifier ?? 0,
+                    critThreshold: attackInstance?.skillCheck?.critThreshold ?? 20,
+                    favorHinder: attackInstance?.skillCheck?.favorHinder ?? 'none',
+                    damageRolls: attackInstance?.damageRoll?.dice ?? [],
+                    flatModifier: attackInstance?.damageRoll?.flatDmgBonus ?? 0,
+                    perDieBonus: attackInstance?.damageRoll?.perDieDmgBonus ?? 0,
+                    armorPiercing: attackInstance?.damageRoll?.armorPiercing ?? 0
+                } as RollPreset,
                 initiateAttack: async (e: React.MouseEvent) => {
                     await attackInstance.initiate(e)
                     attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
@@ -114,7 +133,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
         })
 
         const sundriesData = equippedSundries.map(item => {
-            return { item, damageString: "", skill: "", initiateAttack: () => { }, rollDefenseCheck: () => { } }
+            return { item, damageString: "", skill: "", preset: undefined as RollPreset | undefined, initiateAttack: () => { }, rollDefenseCheck: () => { } }
         })
 
         return [...weaponData, ...sundriesData].sort((a, b) => a.item.parent.sort - b.item.parent.sort)
@@ -124,7 +143,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
         <div className="w-full">
             <Header title={appLang.HeroSheet.weapons} />
             {
-                equipDisplayData?.map(({ item, damageString, skill, initiateAttack, rollDefenseCheck }, index: number) => {
+                equipDisplayData?.map(({ item, damageString, skill, preset, initiateAttack, rollDefenseCheck }, index: number) => {
                     const isDefense = item instanceof WeaponDataModel
                         ? (item.properties.includes('defense') || hero.modifiers.damage.out[skill]?.weaponProps?.includes('defense'))
                         : false
@@ -170,8 +189,14 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
 
                                             <div className="flex content-right items-center gap-x-1">
                                                 {/* CLICKABLE DAMAGE ROLL */}
-                                                <Tooltip title={"Attack Action"} content={`Attack with this weapon. Set targets to trigger Skill Check.<br>${appLang.HeroSheet.skills_tooltip}`}>
-                                                    <div className={`${dmgStyle} hover-glow`} onClick={(e) => initiateAttack(e)}>
+                                                <Tooltip content={<RollBuilderView actor={hero.parent} showHeader={true} preset={preset} lockWeaponSelection={true} saveOnRoll={false} />} interactive={true}>
+                                                    <div
+                                                        className={`${dmgStyle} hover-glow`}
+                                                        onClick={(e) => initiateAttack(e)}
+                                                        onMouseEnter={() => {
+                                                            setEffectUpdateKey(prev => prev + 1)
+                                                        }}
+                                                    >
                                                         {damageString}
                                                     </div>
                                                 </Tooltip>

@@ -74,6 +74,12 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
         if (nest.activeDepth.current === nest.depth) nest.activeDepth.current = nest.depth - 1
     }
 
+    const syncPortalTheme = (container: HTMLElement) => {
+        const theme = anchorRef.current?.closest('.light, .dark')
+        container.classList.remove('light', 'dark')
+        if (theme) container.classList.add(theme.classList.contains('dark') ? 'dark' : 'light')
+    }
+
     useEffect(() => {
         const anchor = anchorRef.current
         if (!anchor || !document.body) return
@@ -86,13 +92,10 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
         }
 
         const scaduRoot = portalHost.shadowRoot ?? portalHost.attachShadow({ mode: 'open' })
-        let container = scaduRoot.querySelector<HTMLDivElement>('.tooltip-portal-container')
-
-        if (!container) {
-            container = document.createElement('div')
-            container.className = 'tooltip-portal-container'
-            scaduRoot.appendChild(container)
-        }
+        const container = document.createElement('div')
+        container.className = 'tooltip-portal-container'
+        syncPortalTheme(container)
+        scaduRoot.appendChild(container)
 
         if (!scaduRoot.querySelector('style[data-tooltip-styles]')) {
             const styleTag = createStyleTag()
@@ -107,14 +110,8 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
             pointerEvents: 'none'
         })
 
-        const theme = anchor?.closest('.light, .dark')
-
-        if (theme) {
-            container.classList.remove('light', 'dark')
-            container.classList.add(theme.classList.contains('dark') ? 'dark' : 'light')
-        }
-
         setPortalTarget(container)
+        return () => container.remove()
     }, [])
 
     useEffect(() => () => {
@@ -124,6 +121,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
 
     const trackPointer = (e: { clientX?: number, clientY?: number }) => {
         if (disabled || !content) return
+        if (portalTarget) syncPortalTheme(portalTarget)
         claimHover()
         if (typeof e.clientX === 'number' && typeof e.clientY === 'number') {
             cursorXY.current = { x: e.clientX, y: e.clientY }

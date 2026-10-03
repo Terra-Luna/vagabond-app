@@ -106,8 +106,8 @@ export const EditableNameField = ({ actor }: { actor: Actor }) => {
     return <EditableTextField boundValue={(actor as any).name} onSave={updateName} hideBorderOnEditMode={true} />
 }
 
-export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, hideBorder }: {
-    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, hideBorder?: boolean
+export const NumericCounterInput = ({ value, valueAppend = '', onChange, incrementBy = 1, hideBorder, width }: {
+    value: number, valueAppend?: string, onChange: (input) => void, incrementBy?: number, hideBorder?: boolean, width?: string
 }) => {
     const { isEditMode } = useEditMode()
     const inputRef = useRef<HTMLInputElement>(null)
@@ -139,7 +139,7 @@ export const NumericCounterInput = ({ value, valueAppend = '', onChange, increme
                         onBlur={handleSave}
                         onKeyDown={(e) => { if (e.key === 'Enter') handleSave() }}
                         className={`
-                            min-w-4 max-w-[3ch] text-center
+                            min-w-4 ${width ?? 'max-w-[3ch]'} text-end mr-1
                             outline-none focus:outline-none focus:ring-0
                             [appearance:textfield]
                             [&::-webkit-outer-spin-button]:appearance-none

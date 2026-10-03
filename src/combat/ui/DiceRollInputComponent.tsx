@@ -1,8 +1,6 @@
-import { Plus } from "lucide-react"
 import { ReactNode, useCallback } from "react"
 
 import { DiceRollSchema } from "../../apps/attack-builder/model/DieRollSchema"
-import { appLang } from "../../utils/lang"
 import { Checkbox } from "../../view/component/Checkbox"
 import { CSVTextInput } from "../../view/component/CSVTextInput"
 import { NumericCounterInput } from "../../view/component/EditableTextField"
@@ -54,70 +52,59 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
 
     return (
         <div className="flex text-base font-eskapade font-bold">
-            {isEditMode &&
-                <div>
-                    {label && <ItemSheetPropLabel label={label} />}
+            {isEditMode && <div>
+                <ItemSheetPropLabel label={label} />
+                <div className="flex flex-wrap items-end gap-0.5">
+                    {/* DICE COUNT */}
+                    <div title={"Dice count"}>
+                        {!label && <p className="text-sm">Roll</p>}
+                        <DiceCountInput dmgDice={diceRoll.count} onUpdateDmgDice={updateDmgDice} width="max-w-[2ch]" />
+                    </div>
 
-                    <div className="flex gap-x-1 items-end">
+                    {/* DIE SIZE */}
+                    <DieSizeSelector value={diceRoll?.faces?.toString() ?? ''} onChange={updateFaces} />
 
-                        {/* DICE COUNT */}
-                        <div title={"Dice count"}>
-                            {!label && <p className="text-sm">Roll</p>}
-                            <DiceCountInput dmgDice={diceRoll.count} onUpdateDmgDice={updateDmgDice} />
-                        </div>
+                    {/* MODIFIER (FLAT BONUS) */}
+                    <div title={"Flat modifier (can be negative)"} className="flex items-start text-lg">
+                        <p>+</p>
+                        <NumericCounterInput value={diceRoll.modifier || 0} onChange={(input) => updateModifier(input)} width="max-w-[2ch]" />
+                    </div>
 
-                        {/* DIE SIZE */}
-                        <DieSizeSelector value={diceRoll?.faces?.toString() ?? ''} onChange={updateFaces} />
+                    {/* ON-CRIT & REROLL SETTINGS */}
+                    {extendedSettings && <>
+                        {/* EXPLOSIONS */}
+                        <span title="Exploding dice values">
+                            <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={(values) => onChange({ explodesOn: values })} />
+                        </span>
+                        <span className="text-sm font-normal max-w-[8ch] leading-3" title="Only explode on a Critical hit">
+                            <Checkbox label="Crit only" checked={diceRoll.explodeOnCritOnly ?? false} onCheckedChanged={handleExplodeOnCritOnlyChange} />
+                        </span>
 
-                        {/* MODIFIER (FLAT BONUS) */}
-                        <div title={"Flat modifier (can be negative)"} className="flex items-center text-xl">
-                            <Plus size={16} className="text-text-secondary" />
-                            <NumericCounterInput
-                                value={diceRoll.modifier || 0}
-                                onChange={(input) => updateModifier(input)}
+                        {/* EXTRA DICE ON CRIT */}
+                        <div className="relative flex items-end" title="Extra dice on a Critical hit">
+                            <span className="font-normal pointer-events-none absolute left-1 bottom-0.5 text-sm leading-3 max-w-[4ch]">Crit dice</span>
+                            <DiceCountInput
+                                dmgDice={diceRoll.extraDiceOnCrit ?? 0}
+                                onUpdateDmgDice={(input) => handleExtraDiceOnCritChange(input)}
+                                width="max-w-[4.5ch]"
                             />
                         </div>
 
-                        {extendedSettings &&
-                            <div title={`${appLang.ItemSheet.reroll}: e.g.: 1, 2`} className="flex gap-x-0.5 items-end">
-                                <CSVTextInput
-                                    className="w-[6ch]"
-                                    value={diceRoll.reroll ?? []}
-                                    placeholder={appLang.ItemSheet.reroll}
-                                    onChange={(input) => handleRerollChange(input)}
-                                />
-                            </div>
-                        }
-
-                        {/* EXPLOSIONS CONFIG */}
-                        {!wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
-                        <div>{TrashButton}</div>
-
-                    </div>
-
-                    {/* EXPLOSIONS CONFIG */}
-                    {wrap && <ExplosionsInput explosionValues={explosionValues} handleExplosionChange={handleExplosionChange} />}
-
-                    {/* ON-CRIT & REROLL SETTINGS */}
-                    {extendedSettings &&
-                        <div className="flex gap-x-8 justify-between items-center font-normal mt-0.5 pr-6">
-                            <div title={"Adds additional damage dice on crit."} className="flex gap-x-1 items-end">
-                                <span className="font-bold">
-                                    <DiceCountInput dmgDice={diceRoll.extraDiceOnCrit ?? 0} onUpdateDmgDice={(input) => handleExtraDiceOnCritChange(input)} />
-                                </span>
-                                <p className="text-sm">{appLang.ItemSheet.extraDieOnCrit}</p>
-                            </div>
-
-                            {explosionValues.length > 0 && <div title={"Dice explode on crit only"} className="flex gap-x-1">
-                                <Checkbox label="" checked={diceRoll.explodeOnCritOnly ?? false} onCheckedChanged={handleExplodeOnCritOnlyChange} />
-                                <p>{appLang.ItemSheet.explodeOnCritOnly}</p>
-                            </div>}
-
+                        {/* REROLLS */}
+                        <div className="relative flex items-end" title="Reroll on these values">
+                            <span className="font-normal pointer-events-none absolute left-1 bottom-0.5 text-sm">RR</span>
+                            <CSVTextInput
+                                className="w-[12ch] pl-8"
+                                value={diceRoll.reroll ?? []}
+                                placeholder="E.g., 1, 2"
+                                onChange={(input) => handleRerollChange(input)}
+                            />
                         </div>
-                    }
+                    </>}
 
+                    <div className="ml-auto">{TrashButton}</div>
                 </div>
-            }
+            </div>}
 
             {/* DISPLAY MODE */}
             {!isEditMode &&
@@ -129,7 +116,7 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                             <p>d</p>
                             <p>{diceRoll.faces}</p>
                             {(diceRoll.modifier ?? 0) > 0 &&
-                                <p> +{diceRoll.modifier}</p>
+                                <p>+{diceRoll.modifier}</p>
                             }
                             {diceRoll.explodesOn && diceRoll.explodesOn.length > 0 &&
                                 <p className="ml-1">![{diceRoll.explodesOn.sort((a, b) => a - b).join(',')}]</p>
@@ -139,19 +126,19 @@ export const DiceRollInputComponent = ({ label, diceRoll, onChange, wrap = false
                 </div>
             }
         </div>
-            
+
     )
 }
 
 const ExplosionsInput = ({ explosionValues, handleExplosionChange }) => {
     return (
-        <div title={"Explodes on..."} className="flex items-center mt-0.5">
-            <p className="text-sm font-normal">❗</p>
+        <div title={`Explodes on: ${explosionValues.join(', ')}`} className="relative flex items-center mt-0.5">
+            <span className="pointer-events-none absolute left-1 text-sm font-normal">❗</span>
             <CSVTextInput
                 value={explosionValues}
                 onChange={handleExplosionChange}
-                placeholder={"E.g., 6, 10"}
-                className="w-20"
+                placeholder="E.g., 6, 10"
+                className="max-w-[10ch] pl-3"
             />
         </div>
     )

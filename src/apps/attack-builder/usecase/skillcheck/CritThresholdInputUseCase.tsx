@@ -6,8 +6,8 @@ import { Label } from "../../component/Labels"
 export const useSkillCheckCritThresholdInput = () => {
     const [critThreshold, setCritThreshold] = useState<number>(20)
     const SkillCheckCritThresholdInput = <div>
-        <Label text={"Crit"} />
-        <span className="text-sm">
+        <Label text={"Crit"} className="-mb-1" />
+        <span>
             <NumericCounterInput
                 value={critThreshold}
                 onChange={(val) => setCritThreshold(val)}

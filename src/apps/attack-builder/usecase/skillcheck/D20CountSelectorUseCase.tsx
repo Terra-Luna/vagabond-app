@@ -6,7 +6,7 @@ import { Label } from "../../component/Labels"
 export const useD20CountSelector = () => {
     const [d20Count, setD20Count] = useState<number>(1)
     const D20CountSelector = <div>
-        <Label text={"D20"} />
+        <Label text={"D20"} className="-mb-1" />
         <CustomDropDown
             value={d20Count.toString()}
             options={[

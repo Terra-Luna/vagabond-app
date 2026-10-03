@@ -64,7 +64,7 @@ export const useCustomDamageRollBuilder = (
             <div className="flex items-end w-full">
                 <div className="flex flex-col gap-y-2 items-end">
                     {damageRolls.length > 0 && damageRolls.map((roll, index) => (
-                        < div key={index} className="flex gap-x-1 items-center" >
+                        < div key={index} className="flex gap-x-1 items-center">
                             <DiceRollInputComponent
                                 diceRoll={roll}
                                 onChange={(updated) => handleDiceChange(updated, index)}

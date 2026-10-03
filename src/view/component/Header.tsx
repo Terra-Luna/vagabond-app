@@ -56,7 +56,7 @@ export const Header = ({ title, collapseButton, textLeft = false, actions = [] }
     )
 }
 
-export const ClearHeader = ({ title, collapseButton }: { title: string, collapseButton?: React.ReactElement }) => {
+export const ClearHeader = ({ title, collapseButton }: { title: string | ReactNode, collapseButton?: React.ReactElement }) => {
     if (!title) return null
     return (
         <div className={`flex gap-x-2 items-center px-4 ${collapseButton ? "cursor-pointer hover-glow" : ""}`}>
@@ -72,5 +72,5 @@ export const Divider = () => <div className={"grow h-[2px] bg-section-header-lin
 export const ItemDivider = () => <div className={"grow h-[1px] bg-table-border/50"} />
 
 export interface SkillCardAction {
-    label: string, tooltip: { title: string, content: string }, item: any, action: (e, item) => Promise<void>
+    label: string, tooltip: { title: string, content: string }, item?: any, action: (e, item) => Promise<void>
 }

@@ -2,10 +2,8 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { sys_id } from "../../../utils/foundryUtils"
 import { appLang } from "../../../utils/lang"
 import { tableBorder } from "../../../view/common/border-styles"
-import { UtilityButton } from "../../../view/component/Button"
 import { CollapsibleSection } from "../../../view/component/Collapsible"
 import { EditButton } from "../../../view/component/EditButton"
-import { Tooltip } from "../../../view/component/Tooltip"
 import { TrashButton } from "../../../view/component/TrashButton"
 import { RollPreset } from "../model/RollPreset"
 import { RollBuilderApp } from "../RollBuilderApp"
@@ -22,7 +20,14 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
 
     return (
         <div className="flex flex-col">
-            <CollapsibleSection title={"PRESETS"} content={<>
+            <CollapsibleSection
+                title={"PRESETS"}
+                actions={[{
+                    label: `+${appLang.ButtonActions.add}`,
+                    tooltip: { title: "Roll Presets", content: "Add new custom roll preset." },
+                    action: async (e) => { e.stopPropagation(); new RollBuilderApp(actor).render({ force: true }); }
+                }]}
+                content={<>
                 <div className={`${tableBorder} border-t-0 rounded-b-sm`}>
                     {presets.map((preset, index) => (
                         <div
@@ -42,15 +47,6 @@ export const RollPresetsListView = ({ actor }: { actor: Actor & { system: HeroDa
                             />
                         </div>
                     ))}
-                </div>
-
-                {/* ADD NEW PRESET BUTTON */}
-                <div className="w-full flex justify-end mt-1">
-                    <Tooltip title={"Roll Presets"} content={"Add new roll preset"}>
-                        <UtilityButton onClick={() => new RollBuilderApp(actor).render({ force: true })}>
-                            +{appLang.ButtonActions.add}
-                        </UtilityButton>
-                    </Tooltip>
                 </div>
 
             </>} />

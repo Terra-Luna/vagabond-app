@@ -17,28 +17,28 @@ import { useCustomSkillCheckBuilder } from "./usecase/CustomSkillCheckUseCase"
 import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
 import { useWeaponSelector } from "./usecase/WeaponSelectorUseCase"
 
-export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }: {
+export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSelection, saveOnRoll = true, setClosed }: {
     actor: Actor & { system: HeroDataModel },
     preset?: RollPreset,
     showHeader?: boolean,
+    lockWeaponSelection?: boolean,
+    saveOnRoll?: boolean,
     setClosed?: () => void
 }) => {
 
+    const initialPreset = preset
     const loadedPresetRef = useRef<string | null>(null)
 
     const weapons = useMemo((): (Item & { system: WeaponDataModel })[] => {
         return actor.items.filter(i => (i.type as string) === 'weapon' && isEquippedWeapon(i.system)) as any
     }, [actor])
 
-    const { WeaponSelector, weapon, description, setWeapon, setDescription } = useWeaponSelector(weapons)
+    const { WeaponSelector, weapon, description, setWeapon, setDescription } = useWeaponSelector(weapons, lockWeaponSelection)
     const { CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold, setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold } = useCustomSkillCheckBuilder(actor, weapon)
     const { CustomDamageRollBuilder, damageRolls, setDamageRolls } = useCustomDamageRollBuilder(actor, weapon, preset)
     const { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing, setFlatModifier, setPerDieBonus, setArmorPiercing } = useCustomDamageModifiersBuilder()
 
-    /**
-     * Load initial preset values.
-     */
-    useEffect(() => {
+    const loadPreset = () => {
         const presetSignature = preset ? `${preset.weaponId}-${preset.title}` : null
 
         if (preset && loadedPresetRef.current !== presetSignature) {
@@ -55,7 +55,12 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
             setPerDieBonus(preset.perDieBonus)
             setArmorPiercing(preset.armorPiercing)
         }
-    }, [preset, weapons])
+    }
+
+    /**
+     * Load initial preset values.
+     */
+    useEffect(() => { loadPreset() }, [preset, weapons])
 
     /**
      * When a new weapon is selected, preload some defaults.
@@ -101,27 +106,51 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
     ])
 
     const reset = useCallback(() => {
-        setDamageRolls([])
-        setDescription('')
-        setSkill("")
-        setD20Count(1)
-        setFavorHinder('none')
-        setSkillCheckMod(0)
-        setCritThreshold(20)
-        setFlatModifier(0)
-        setPerDieBonus(0)
-        setArmorPiercing(0)
-        setWeapon(undefined)
-        loadedPresetRef.current = null
-    }, [])
+        if (lockWeaponSelection) {
+            if (!initialPreset) return
+
+            setDescription(initialPreset.description)
+            setSkill(initialPreset.skill)
+            setD20Count(initialPreset.d20Count)
+            setFavorHinder(initialPreset.favorHinder)
+            setSkillCheckMod(initialPreset.skillCheckMod)
+            setCritThreshold(initialPreset.critThreshold)
+            setDamageRolls(initialPreset.damageRolls.map(roll => ({
+                ...roll,
+                explodesOn: roll.explodesOn ? [...roll.explodesOn] : undefined,
+                reroll: roll.reroll ? [...roll.reroll] : undefined
+            })))
+            setFlatModifier(initialPreset.flatModifier)
+            setPerDieBonus(initialPreset.perDieBonus)
+            setArmorPiercing(initialPreset.armorPiercing)
+        }
+        else {
+            setDamageRolls([])
+            setDescription('')
+            setSkill("")
+            setD20Count(1)
+            setFavorHinder('none')
+            setSkillCheckMod(0)
+            setCritThreshold(20)
+            setFlatModifier(0)
+            setPerDieBonus(0)
+            setArmorPiercing(0)
+            setWeapon(undefined)
+            loadedPresetRef.current = null
+        }
+    }, [
+        initialPreset, lockWeaponSelection, setDescription, setSkill, setD20Count,
+        setFavorHinder, setSkillCheckMod, setCritThreshold, setDamageRolls,
+        setFlatModifier, setPerDieBonus, setArmorPiercing, setWeapon
+    ])
 
     const { savePreset, saveCustomRoll } = useSavePreset(actor, rollForm)
 
     return (
         <EditModeContextProvider initialEditMode={EditModeOptions.TRUE}>
-            {showHeader && <Header title={"BUILD ROLL PRESET"} />}
+            {showHeader && <Header title={"ROLL BUILDER"} />}
 
-            <div className="flex flex-col gap-y-1 p-1 border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
+            <div className="flex flex-col gap-y-1 p-1 text-text-primary font-eskapade border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
                 {/* EACH ATTACK CATEGORY BY USE-CASE */}
                 {WeaponSelector}
                 {CustomSkillCheckBuilder}
@@ -149,7 +178,9 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, setClosed }:
 
                         <Tooltip title={appLang.ButtonActions.roll} content={appLang.HeroSheet.skills_tooltip}>
                             <PrimaryButton onClick={async (e) => {
-                                await saveCustomRoll()
+                                if (saveOnRoll) {
+                                    await saveCustomRoll()
+                                }
                                 HeroAttack.buildCustomRoll(actor, rollForm, e)
                             }} icon={<Dices size={16} className="text-btn-primary-text" />}>
                                 {appLang.ButtonActions.roll}

@@ -235,9 +235,6 @@ export class VagabondSettingsRegistry {
         if (!actors) return
         for (const actor of actors) {
             if (actor.isOwner) {
-                for (const item of actor.items) {
-                    item.sheet?.render()
-                }
                 (actor?.system as any)?.forceUpdate()
             }
         }

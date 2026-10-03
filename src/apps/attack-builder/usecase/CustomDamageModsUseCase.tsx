@@ -12,7 +12,7 @@ export const useCustomDamageModifiersBuilder = () => {
     const CustomDamageModifiersBuilder =
         <div className={`flex flex-col ${tableBorderRounded} bg-context-menu-fill/40 p-1`}>
             <SectionLabel text={"Bonuses"} />
-            <div className="flex gap-x-4 items-end">
+            <div className="flex gap-x-1 items-end">
                 {FlatModifierInput}
                 {PerDieBonusInput}
                 {ArmorPiercingInput}

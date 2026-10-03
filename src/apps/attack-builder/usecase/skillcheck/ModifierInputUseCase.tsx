@@ -6,8 +6,8 @@ import { Label } from "../../component/Labels"
 export const useSkillCheckModifierInput = () => {
     const [skillCheckMod, setSkillCheckMod] = useState<number>(0)
     const SkillCheckModifierInput = <div>
-        <Label text={"Bonus"} />
-        <span className="text-sm">
+        <Label text={"+/-"} className="-mb-1" />
+        <span className="">
             <NumericCounterInput
                 value={skillCheckMod}
                 onChange={(val) => setSkillCheckMod(val)}

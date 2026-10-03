@@ -15,7 +15,12 @@ export const useSkillSelector = (actor, weapon) => {
     }, [weapon])
 
     const SkillSelector = <div>
-        <SectionLabel text={"Skill Check"} />
+        <div className="flex gap-x-0.5">
+            <SectionLabel text={"Skill Check"} />
+            {(actor.system.skills[skill] || actor.system.saves[skill]) && <p className="text-sm italic">{`
+                [${actor.system.skills[skill]?.value ?? actor.system.saves[skill] ?? 20}]
+            `}</p>}
+        </div>
         <div className="flex gap-x-0.5 items-end">
             <CustomDropDown
                 value={skill}
@@ -27,9 +32,7 @@ export const useSkillSelector = (actor, weapon) => {
                 onChange={(e) => setSkill(e.target.value)}
                 className="text-sm"
             />
-            {(actor.system.skills[skill] || actor.system.saves[skill]) && <p className="text-sm italic">{`
-                [${actor.system.skills[skill]?.value ?? actor.system.saves[skill] ?? 20}]
-            `}</p>}
+
         </div>
     </div>
     return { SkillSelector, skill, setSkill }

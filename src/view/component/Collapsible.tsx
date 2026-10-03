@@ -54,8 +54,8 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
     )
 }
 
-export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed = false, useClearHeader = false }: {
-    title: string, content: React.ReactElement, settingsKey?: string, startCollapsed?: boolean, useClearHeader?: boolean
+export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed = false, useClearHeader = false, actions }: {
+    title: string | ReactNode, content: React.ReactElement, settingsKey?: string, startCollapsed?: boolean, useClearHeader?: boolean, actions?: SkillCardAction[]
 }) => {
     let initialCollapsedValue = startCollapsed
     const settings = (game.settings! as any)
@@ -83,7 +83,7 @@ export const CollapsibleSection = ({ title, content, settingsKey, startCollapsed
             <div onClick={toggleCollapsed}>
                 {useClearHeader
                     ? <ClearHeader title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} />
-                    : <Header title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} />
+                    : <Header title={title} collapseButton={<ToggleCollapseIcon isCollapsed={isCollapsed} />} actions={actions} />
                 }
             </div>
             {isCollapsed ? <></> : content}

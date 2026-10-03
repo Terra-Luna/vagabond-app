@@ -169,6 +169,7 @@ const HeroSheetUpperSection = ({ hero }: { hero: HeroDataModel }) => {
 
 const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
     const tabPanelClasses = "min-h-0 overflow-y-auto"
+    const iconSize = 22
 
     const classItem = hero.parent.items.find(item => item.type === "class")
     const ancestryItem = hero.parent.items.find(item => item.type === "ancestry")
@@ -188,25 +189,25 @@ const HeroSheetTabbedSection = ({ hero }: { hero: HeroDataModel }) => {
         <div className="h-px bg-sheet-main-fill w-full mt-1 align-top" />
         <Tabs className="flex flex-col min-h-0 grow text-base">
             <TabList>
-                <Tab title={locale["tab-inv"]}><Handbag size={24} className="hover-glow" /></Tab>
-                <Tab title={locale["tab-main"]}><Swords size={24} className="hover-glow" /></Tab>
+                <Tab title={locale["tab-main"]}><Swords size={iconSize} className="hover-glow" /></Tab>
+                <Tab title={locale["tab-inv"]}><Handbag size={iconSize} className="hover-glow" /></Tab>
                 {showAlchemyTab &&
-                    <Tab title="Alchemy"><FlaskConical size={24} className="hover-glow" /></Tab>
+                    <Tab title="Alchemy"><FlaskConical size={iconSize} className="hover-glow" /></Tab>
                 }
                 {showMagicTab &&
-                    <Tab title={locale["tab-magic"]}><WandSparkles size={24} className="hover-glow" /></Tab>
+                    <Tab title={locale["tab-magic"]}><WandSparkles size={iconSize} className="hover-glow" /></Tab>
                 }
-                <Tab title={locale["tab-abilities"]}><BookText size={24} className="hover-glow" /></Tab>
-                <Tab title="Roll Presets"><Dices size={24} className="hover-glow" /></Tab>
+                <Tab title={locale["tab-abilities"]}><BookText size={iconSize} className="hover-glow" /></Tab>
+                <Tab title="Roll Presets"><Dices size={iconSize} className="hover-glow" /></Tab>
             </TabList>
 
             {/* TAB PANELS */}
             <TabPanel className={tabPanelClasses}>
-                <InventoryTab hero={hero} />
+                <GearTab hero={hero} />
             </TabPanel>
 
             <TabPanel className={tabPanelClasses}>
-                <GearTab hero={hero} />
+                <InventoryTab hero={hero} />
             </TabPanel>
 
             {showAlchemyTab &&

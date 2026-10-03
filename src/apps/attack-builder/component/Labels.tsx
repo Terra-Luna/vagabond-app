@@ -4,8 +4,8 @@ export const SectionLabel = ({ text }) => {
     )
 }
 
-export const Label = ({ text }) => {
+export const Label = ({ text, className }: { text: string, className?: string }) => {
     return (
-        <div className="text-base text-text-primary font-eskapade font-normal">{text}</div>
+        <div className={`text-base text-text-primary font-eskapade font-normal ${className ?? ''}`}>{text}</div>
     )
 }

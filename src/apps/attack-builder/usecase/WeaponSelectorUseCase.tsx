@@ -6,7 +6,7 @@ import { CustomDropDown } from "../../../view/component/Dropdown"
 import { SectionLabel } from "../component/Labels"
 import { TextInput } from "../component/TextInput"
 
-export const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[]) => {
+export const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[], lock?: boolean) => {
     const [weapon, setWeapon] = useState<Item & { system: WeaponDataModel }>()
     const [description, setDescription] = useState<string>("")
 
@@ -18,17 +18,20 @@ export const useWeaponSelector = (weapons: (Item & { system: WeaponDataModel })[
 
             {/* WEAPON SELECTION DROPDOWN & DESCRIPTION */}
             <div className="flex gap-x-0.5 items-end">
-                <CustomDropDown
-                    value={weapon?.uuid ?? ''}
-                    options={[
-                        { value: '', label: "-" },
-                        ...weapons?.map(w => ({ value: w.uuid, label: w.name })) ?? []
-                    ]}
-                    onChange={(e) => setWeapon(weapons.find(w => w.uuid === e.target.value))}
-                    className="text-sm"
-                />
+                {lock
+                    ? <div className="mr-1 text-base">{weapon?.name}</div>
+                    : <CustomDropDown
+                        value={weapon?.uuid ?? ''}
+                        options={[
+                            { value: '', label: "-" },
+                            ...weapons?.map(w => ({ value: w.uuid, label: w.name })) ?? []
+                        ]}
+                        onChange={(e) => setWeapon(weapons.find(w => w.uuid === e.target.value))}
+                        className="text-sm"
+                    />
+                }
                 
-                <TextInput value={description} placeholder={"Description..."} onChange={setDescription} />
+                <TextInput value={description} placeholder={"Description..."} onChange={setDescription} textSize="text-base" />
                 
             </div>
         </div>
