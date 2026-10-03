@@ -9,7 +9,7 @@
       {
         "id": "3Yod8laTo9mPvMcN",
         "key": "ChoiceSet",
-        "label": "Alchemy: Level 1",
+        "label": "Alchemy",
         "level": 1,
         "scale": 0,
         "maxChoices": 4,
@@ -49,9 +49,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.97",
     "createdTime": 1789489352220,
-    "modifiedTime": 1789605377156,
+    "modifiedTime": 1790965371602,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
