@@ -493,8 +493,8 @@ export class HeroAttack extends Attack {
             RelicPowerProcessor.applyRelicPowers(equippedItems.flatMap(it => it.system.relicPowers), mods)
 
             const dieSizeMod = isHealing
-                ? mods.healing.out.spell.bonus.flat ?? 0
-                : mods.damage.out.spell.bonus.flat ?? 0
+                ? mods.healing.out.spell.dice.size.bonus ?? 0
+                : mods.damage.out.spell.dice.size.bonus ?? 0
 
             const explosionsMod = isHealing
                 ? mods.healing.out.spell.dice.exploding.values

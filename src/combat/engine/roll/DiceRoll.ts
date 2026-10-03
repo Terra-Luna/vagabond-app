@@ -95,7 +95,9 @@ export class DiceRoll {
             (isVicious ? 1 : 0)
             + (mods[skill]?.dice.crit.extraDice ?? 0)
 
-        const reroll = item instanceof WeaponDataModel ? mods[skill]?.dice.reroll?.[item.grip.state] ?? [] : []
+        const reroll = item instanceof WeaponDataModel
+            ? mods[skill]?.dice.reroll?.[item.grip.state] ?? []
+            : []
 
         return {
             count: item.damage.dice.count,

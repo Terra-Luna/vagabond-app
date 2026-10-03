@@ -333,7 +333,7 @@ export const LevelUpView = ({ actor, onSave }: { actor: Actor & { system: HeroDa
                                     <div className="flex gap-x-2 shrink-0">
                                         {/* LATEST/UPGRADED CLASS FEATURE CARDS */}
                                         {classFeature &&
-                                            <div className="flex-1 space-y-1">
+                                        <div className="flex-1 space-y-1 max-w-[25rem]">
                                                 <Header title={"CLASS FEATURE"} />
                                                 <SkillCard
                                                     title={classFeature.feature.name}

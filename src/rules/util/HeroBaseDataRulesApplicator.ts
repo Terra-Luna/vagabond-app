@@ -73,6 +73,7 @@ export class HeroBaseDataRulesApplicator {
                 if (path.startsWith("statuses.toggles.")) {
                     const effectName = path?.split(".")?.pop()
                     if (!effectName) continue
+                    if (rule.toggleableEffect) continue
 
                     const actorId = actor.id
                     const lockKey = `${actorId}:${effectName}`

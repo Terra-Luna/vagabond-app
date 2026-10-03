@@ -157,7 +157,7 @@ export class ItemsCache {
 
     static refreshAllActors() {
         game.actors
-            ?.filter(it => (it.type as string) === 'hero')
+            ?.filter(it => (it.type as string) === 'hero' && it.isOwner)
             ?.forEach(actor => (actor as any)?.system?.forceUpdate?.())
     }
 

@@ -31,7 +31,7 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
 
     const weapons = useMemo((): (Item & { system: WeaponDataModel })[] => {
         return actor.items.filter(i => (i.type as string) === 'weapon' && isEquippedWeapon(i.system)) as any
-    }, [actor])
+    }, [actor, preset])
 
     const { WeaponSelector, weapon, description, setWeapon, setDescription } = useWeaponSelector(weapons, lockWeaponSelection)
     const { CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold, setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold } = useCustomSkillCheckBuilder(actor, weapon)
@@ -39,7 +39,7 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
     const { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing, setFlatModifier, setPerDieBonus, setArmorPiercing } = useCustomDamageModifiersBuilder()
 
     const loadPreset = () => {
-        const presetSignature = preset ? `${preset.weaponId}-${preset.title}` : null
+        const presetSignature = preset ? JSON.stringify(preset) : null
 
         if (preset && loadedPresetRef.current !== presetSignature) {
             loadedPresetRef.current = presetSignature

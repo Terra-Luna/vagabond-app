@@ -44,7 +44,10 @@ export const Collapsible = ({ img = '', dmgType = 'none', title, Header, content
                 toggleCollapsedButton={
                     hideCollapseButton
                         ? null
-                        : <button onClick={toggleCollapsed}>
+                        : <button type="button" onClick={(e) => {
+                            e.stopPropagation()
+                            toggleCollapsed()
+                        }}>
                             <ToggleCollapseIcon isCollapsed={isCollapsed} />
                         </button>
                 }

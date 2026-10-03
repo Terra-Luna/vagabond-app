@@ -22,6 +22,32 @@ import { WeaponPropsList } from "../../../item/equip/component/WeaponPropsList"
 import { ItemIconImg } from "../../../shared/InventoryItemsTable"
 
 export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
+    const [documentUpdateKey, setDocumentUpdateKey] = useState(0)
+
+    useEffect(() => {
+        const handleActorUpdate = (updatedActor: Actor) => {
+            if (updatedActor.id === hero.parent.id) {
+                setDocumentUpdateKey(prev => prev + 1)
+            }
+        }
+        const handleItemUpdate = (item: Item) => {
+            if ((item.parent as Actor | null)?.id === hero.parent.id) {
+                setDocumentUpdateKey(prev => prev + 1)
+            }
+        }
+
+        Hooks.on("updateActor", handleActorUpdate)
+        Hooks.on("createItem", handleItemUpdate)
+        Hooks.on("updateItem", handleItemUpdate)
+        Hooks.on("deleteItem", handleItemUpdate)
+        return () => {
+            Hooks.off("updateActor", handleActorUpdate)
+            Hooks.off("createItem", handleItemUpdate)
+            Hooks.off("updateItem", handleItemUpdate)
+            Hooks.off("deleteItem", handleItemUpdate)
+        }
+    }, [hero.parent.id])
+
     const equippedWeapons = sortedItems<WeaponDataModel>(hero.inventory.items.filter(it => isEquippedWeapon(it)) as WeaponDataModel[])
     const equippedSundries = sortedItems<SundryDataModel>(hero.inventory.items.filter(it => it instanceof SundryDataModel && isEquippedSundry(it) && !it.isWearable) as SundryDataModel[])
     const armor = getArmor(hero) as any as ArmorDataModel
@@ -39,7 +65,7 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
                     {appLang.HeroSheet.noEquipment}
                 </div>
                 : <div className="space-y-2 mb-4">
-                    {hasEquippedWeapons && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} />}
+                    {hasEquippedWeapons && <Weapons hero={hero} equippedWeapons={equippedWeapons} equippedSundries={equippedSundries} documentUpdateKey={documentUpdateKey} />}
                     {hasEquippedArmor && <Armor hero={hero} armor={armor} wearables={wearables} />}
                 </div>
             }
@@ -47,11 +73,10 @@ export const GearTab = ({ hero }: { hero: HeroDataModel }) => {
     )
 }
 
-const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataModel, equippedWeapons: WeaponDataModel[], equippedSundries: SundryDataModel[] }) => {
+const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }: { hero: HeroDataModel, equippedWeapons: WeaponDataModel[], equippedSundries: SundryDataModel[], documentUpdateKey: number }) => {
     const gripStyle = "text-text-aux text-lg text-center font-eskapade"
     const dmgStyle = "text-text-dmg font-eskapade font-bold text-xl text-right line-clamp-1 cursor-pointer"
     const propsStyle = "text-text-aux text-sm italic line-clamp-1"
-    const [refreshWeaponAtk, setRefreshWeaponAtk] = useState(false)
 
     const { onCtxMenu, ContextMenu } = useContextMenu()
     const combinedEquipped = sortedItems<WeaponDataModel | SundryDataModel>([...equippedWeapons, ...equippedSundries])
@@ -80,8 +105,6 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
      * equipped weapon attack rolls.
      */
     const [effectUpdateKey, setEffectUpdateKey] = useState(0)
-
-    console.log(effectUpdateKey)
 
     useEffect(() => {
         const triggerUpdate = (effect: any) => {
@@ -137,7 +160,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
         })
 
         return [...weaponData, ...sundriesData].sort((a, b) => a.item.parent.sort - b.item.parent.sort)
-    }, [hero.parent, equipDependency, targetIds, effectUpdateKey, hero.modifiers])
+    }, [hero.parent, equipDependency, targetIds, effectUpdateKey, documentUpdateKey, hero.modifiers])
 
     return (
         <div className="w-full">
@@ -172,9 +195,11 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
                                                     disabled={item.grip.style !== 'V'}
                                                     content={`${item.grip.style === 'V' && (item as any).grip.state === 'HH'
                                                         ? 'Switch to One-Handed'
-                                                        : 'Switch to Two-Handed'}
-                                                `}>
-                                                    <div className={`mr-2 ${gripStyle} ${item.grip.style === 'V' ? 'hover-glow' : ''}`} onClick={() => toggleGripState(item)}>
+                                                        : 'Switch to Two-Handed'}`}
+                                                >
+                                                    <div
+                                                        className={`mr-2 ${gripStyle} ${item.grip.style === 'V' ? 'hover-glow' : ''}`}
+                                                        onClick={() => toggleGripState(item)}>
                                                         {appLang.GripsAbbr[item.grip.state]}
                                                     </div>
                                                 </Tooltip>
@@ -190,13 +215,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries }: { hero: HeroDataMo
                                             <div className="flex content-right items-center gap-x-1">
                                                 {/* CLICKABLE DAMAGE ROLL */}
                                                 <Tooltip content={<RollBuilderView actor={hero.parent} showHeader={true} preset={preset} lockWeaponSelection={true} saveOnRoll={false} />} interactive={true}>
-                                                    <div
-                                                        className={`${dmgStyle} hover-glow`}
-                                                        onClick={(e) => initiateAttack(e)}
-                                                        onMouseEnter={() => {
-                                                            setEffectUpdateKey(prev => prev + 1)
-                                                        }}
-                                                    >
+                                                    <div className={`${dmgStyle} hover-glow`} onClick={(e) => initiateAttack(e)}>
                                                         {damageString}
                                                     </div>
                                                 </Tooltip>

@@ -51,6 +51,7 @@ export class PerkRulesSelectionsApplicator {
 
         for (const fullItem of spellPerkItems) {
             if (fullItem.type === 'spell' || fullItem.type === 'perk') {
+                if (typeof fullItem.system?.toObject !== 'function') continue
 
                 if (fullItem.system instanceof SpellDataModel) {
                     if (actor.system.spells.some(sp => (sp as any)._sourceId === fullItem.uuid)) continue

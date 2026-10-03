@@ -4,7 +4,7 @@ import { RelicPowerProcessor } from "../../apps/vagabond-tools/relic/RelicPowerP
 import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
 import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-util"
-import { PerkRulesSelectionsApplicator } from "../../rules/util/ItemChoiceRulesApplicator"
+import { PerkRulesSelectionsApplicator } from "../../rules/util/PerkRulesSelectionsApplicator"
 import { sys_id } from "../../utils/foundryUtils"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
@@ -257,6 +257,40 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             }
         }
         await this.parent.setFlag(sys_id, `ruleToggle_${itemId}`, !state)
+        await this.syncToggledStatusEffects(item, !state)
+    }
+
+    private syncToggledStatusEffects = async (item: any, active: boolean) => {
+        const actor = this.parent
+        const rules = item.rules ?? item.system.rules ?? []
+
+        for (const rule of rules) {
+            if (rule.key !== "ToggleRule" || !rule.toggleableEffect) continue
+
+            const statusNames = removeWhitespace(rule.selector ?? "")
+                .split(",")
+                .map((it: string) => it.replace("system.", ""))
+                .filter((it: string) => it.startsWith("statuses.toggles."))
+                .map((it: string) => it.split(".").pop() as string)
+
+            for (const statusName of statusNames) {
+                try {
+                    const existing = actor.effects.find(fx => fx.statuses?.has(statusName))
+                    if (active && !existing) {
+                        const effect = await actor.toggleStatusEffect(statusName, { active: true })
+                        if (effect && effect instanceof ActiveEffect) {
+                            await effect.setFlag(sys_id, "appliedByRule", rule.id)
+                        }
+                    }
+                    else if (!active && existing?.id && existing.getFlag(sys_id, "appliedByRule") === rule.id) {
+                        await actor.deleteEmbeddedDocuments("ActiveEffect", [existing.id])
+                    }
+                }
+                catch (e) {
+                    console.warn(`Failed to sync status effect ${statusName}`, e)
+                }
+            }
+        }
     }
 }
 

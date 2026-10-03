@@ -252,7 +252,7 @@ const Combatant = forwardRef(({ token, children, combatant, lastClickedCombatant
             canvas?.ping(token.center)
         } else {
             token.control({ releaseOthers: !rightClick || !(getControlledTokens().length > 1) })
-            if (tokenWasClicked) {
+            if (tokenWasClicked && token.isVisible) {
                 game.canvas?.animatePan({ x: token.x, y: token.y });
             }
         }

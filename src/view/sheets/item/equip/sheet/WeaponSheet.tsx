@@ -29,7 +29,7 @@ export const WeaponSheet = ({ item }: { item: Item & { system: WeaponDataModel }
                 <Properties item={item} />
                 <Range item={item} />
                 <Grip item={item} />
-                <DiceRollInputComponent label={appLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} wrap={true} />
+                <DiceRollInputComponent label={appLang.ItemSheet.damage} diceRoll={damageDice} onChange={handleDiceChange} />
                 <DamageTypeSelector item={item} path={'system.damage.type'} />
                 <MaterialSelection item={item} />
             </div>
