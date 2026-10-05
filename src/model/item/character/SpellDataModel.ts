@@ -9,6 +9,7 @@ const spellSchema = () => {
         ignoreEffectCost: new fields.BooleanField({ initial: false }),
         damageType: new fields.StringField({ ...damageTypeOptions() }),
         upcastableEffect: new fields.BooleanField({ initial: false }),
+        upcastableEffectDieRoll: new fields.BooleanField({ initial: false }),
         appliedEffects: new fields.ArrayField(
             new fields.SchemaField({
                 effect: new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),

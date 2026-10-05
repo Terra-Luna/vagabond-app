@@ -1,6 +1,7 @@
 import { BookMarked, Check, Clover, Swords, X } from "lucide-react"
 import { ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
+import { SpellcastingApp } from "../../apps/spellcasting/SpellcastingApp"
 import { getAllowLateLuckStudy, getAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { SpellDataModel } from "../../model/item/character/SpellDataModel"
@@ -188,9 +189,25 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
     )
 }
 
+const hasOffensiveSpell = (actor: any): boolean =>
+    !!actor?.system?.spells?.some(sp => sp.damageType !== 'none' && sp.damageType !== 'healing')
+
+/**
+ * The user's character if it has an offensive spell, otherwise (for the active GM)
+ * the first controlled token's actor that does.
+ */
+const getImbueActor = (): (Actor & { system: HeroDataModel }) | undefined => {
+    const character = game.user?.character
+    if (hasOffensiveSpell(character)) return character as any
+    if (!game.user?.isActiveGM) return undefined
+    const controlled: any[] = game.canvas?.tokens?.controlled ?? []
+    return controlled.map(token => token.actor).find(hasOffensiveSpell)
+}
+
 const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
     actor: Actor & { system: HeroDataModel }, attack: HeroAttack, source: Item | undefined, setRevision: any
 }) => {
+    const canImbue = !!getImbueActor()
     const hasPermission = game.user?.isActiveGM || game.user?.id === attack.userId
     const isFailure = attack.skillCheck?.result?.outcome === appLang.RollResult.failure
     const needsResourceUpdates = hasPermission && !attack.isResolved && (
@@ -291,7 +308,7 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                     <div className="flex flex-col justify-center items-center">
                         <SkillCheckDiceComponent
                             d20s={attack.skillCheck?.result?.d20s}
-                            d6={attack.skillCheck?.result?.d6}
+                            d6s={attack.skillCheck?.result?.d6s}
                             modifier={attack.skillCheck?.modifier}
                             favHinder={attack.skillCheck?.favorHinder}
                             bonusDice={[]}
@@ -369,6 +386,16 @@ const HeroAttackComponent = ({ actor, attack, source, setRevision }: {
                         : <div className="w-full">
                             {/* WEAPON ATTACK DAMAGE */}
                             <DamageRollsComponent result={attack.damageRoll!.result!} />
+                            {/* IMBUE BUTTON FOR WEAPON ATTACKS */}
+                            {!attack.isResolved && !attack.isDefenseCheck && canImbue &&
+                                <div className="flex items-center justify-center mb-1">
+                                    <UtilityButton title="Imbue this attack" onClick={() =>
+                                        new SpellcastingApp(getImbueActor(), true).render({ force: true })
+                                    }>
+                                        Imbue
+                                    </UtilityButton>
+                                </div>
+                            }
                             <div className="flex items-center justify-center">
                                 {source && <ItemPortraitComponent item={source} size={32} disableCtxMenu={true} />}
                                 <TotalDmgFooter total={

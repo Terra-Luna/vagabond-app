@@ -38,7 +38,8 @@ import { stackStackables } from "./utils/heroInventoryUtil"
 import { ItemPilesConfig } from "./utils/ItemPilesConfig"
 import { getFullItem, getId } from "./utils/modelUtil"
 import { createStyleTag } from "./utils/styleUtils"
-import { RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
+import { installChatScrollGuard, RehydratedChatCard } from "./view/chat/ChatCardRehydrator"
+import { renderInlineRoll, unmountRawRollMessage } from "./view/chat/InlineRollChatCard"
 import { ItemActorSheet } from "./view/sheets/actor/adversary/ItemActorSheet"
 import { NpcSheet } from "./view/sheets/actor/adversary/NpcSheet"
 import { HeroSheet } from "./view/sheets/actor/hero/HeroSheet"
@@ -135,6 +136,7 @@ foundry.documents.collections.Items.registerSheet(sys_id, EquipmentSheet as any,
 });
 
 Hooks.once("ready", async () => {
+    installChatScrollGuard()
     registerAdversaryCompendiumFilters()
 
     game.socket?.on(`system.${sys_id}`, async (packet: any) => {
@@ -401,9 +403,12 @@ Hooks.on("renderActiveEffectConfig", (app: any, html: HTMLElement, context: any)
     }
 })
 
-const vagabondChatRoots = new Map<string, any>()
+const vagabondChatRoots = new Map<string, Set<any>>()
+const vagabondElementRoots = new WeakMap<HTMLElement, any>()
 
 Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html: HTMLElement) => {
+    renderInlineRoll(message, html)
+
     const renderVagabondChatMessages = () => {
         const rootElement = html.querySelector('.vagabond-react-chat-root') as HTMLElement
         if (!rootElement) return
@@ -419,10 +424,11 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
         if (!blueprint) return
 
         let scaduRoot = rootElement.shadowRoot
-        let root = vagabondChatRoots.get(message?.id ?? '')
+        let root = vagabondElementRoots.get(rootElement)
 
-        if (!scaduRoot) {
-            scaduRoot = rootElement.attachShadow({ mode: 'open' })
+        if (!scaduRoot || !root) {
+            scaduRoot = rootElement.shadowRoot ?? rootElement.attachShadow({ mode: 'open' })
+            scaduRoot.replaceChildren()
 
             scaduRoot.appendChild(createStyleTag())
 
@@ -430,7 +436,10 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
             scaduRoot.appendChild(reactContainer)
 
             root = createRoot(reactContainer)
-            vagabondChatRoots.set(message?.id ?? '', root)
+            vagabondElementRoots.set(rootElement, root)
+            const roots = vagabondChatRoots.get(message?.id ?? '') ?? new Set()
+            roots.add(root)
+            vagabondChatRoots.set(message?.id ?? '', roots)
         }
 
         const appThemeClass = (game.settings as any).get("core", "uiConfig")?.colorScheme?.applications ?? 'theme-dark'
@@ -462,8 +471,9 @@ Hooks.on("renderChatMessageHTML", (message: foundry.documents.ChatMessage, html:
 })
 
 Hooks.on("deleteChatMessage", (message: any) => {
+    unmountRawRollMessage(message.id)
     if (vagabondChatRoots.has(message.id)) {
-        try { vagabondChatRoots.get(message.id).unmount(); } catch (e) { /* no-op */ }
+        vagabondChatRoots.get(message.id)?.forEach(r => { try { r.unmount() } catch (e) { /* no-op */ } })
         vagabondChatRoots.delete(message.id);
     }
 });

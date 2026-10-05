@@ -24,7 +24,7 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
             contents={<>
                 <SkillCheckDiceComponent
                     d20s={result.d20s}
-                    d6={result.d6}
+                    d6s={result.d6s}
                     modifier={result.modifier}
                     favHinder={result.favorHinder}
                     bonusDice={result.bonusDice}
@@ -34,9 +34,13 @@ export const SkillCheckChatCard = ({ actorId, result }: { actorId: string, resul
     )
 }
 
-export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, bonusDice }) => {
+export const SkillCheckDiceComponent = ({ d20s, d6s, modifier, favHinder, bonusDice }: { d20s?: number[], d6s?: number[], modifier?: number, favHinder?: string, bonusDice?: { faces: number, result: number }[] }) => {
+    const favorHinderDice: number[] = d6s ?? []
+    d20s = d20s ?? []
+    modifier = modifier ?? 0
+
     return (
-        <div className="flex gap-x-1 mt-2 justify-center items-center">
+        <div className="flex flex-wrap px-1 gap-x-1 mt-2 justify-center items-center">
             {/* D20 DICE ARRAY */}
             {d20s.map((d20: number, index: number) => (
                 <DiceRollComponent key={index} faces={20} result={d20} discarded={index < d20s.length - 1} textSize="text-5xl" />
@@ -49,9 +53,14 @@ export const SkillCheckDiceComponent = ({ d20s, d6, modifier, favHinder, bonusDi
                             ? <Plus size={24} strokeWidth={2} className="mt-2" />
                             : <Minus size={24} strokeWidth={2} className="mt-2" />
                     }</div>
-                    <div className="h-full content-center">
-                        <DiceRollComponent faces={6} result={d6} textSize="text-4xl" />
-                    </div>
+                    {favorHinderDice.map((res, index) => (
+                        <div key={index} className="h-full content-center">
+                            <DiceRollComponent
+                                faces={6} result={res} textSize="text-4xl"
+                                exploded={favorHinderDice.length > 1 && index < favorHinderDice.length - 1 && res === 6}
+                            />
+                        </div>
+                    ))}
                 </div>
             }
 

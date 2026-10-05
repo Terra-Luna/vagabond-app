@@ -41,7 +41,7 @@ interface SpellcastingMenuState {
     targetCount?: number
 }
 
-export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) => {
+export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }, imbueMode?: boolean, onCast?: () => void) => {
     const hero = actor.system
     const useMiniCards = getMiniCardsPref(actor.id!)
 
@@ -52,15 +52,22 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
     const [deliveryIndex, setDeliveryIndex] = useState<number>(6)
 
     const spells = useMemo((): SpellSnapshot[] => {
-        return ItemsCache.spells()
+        const allSpells = ItemsCache.spells()
             .filter(it => hero.spells.map(sp => sp._sourceId).includes(it.uuid))
             .map(sp => SpellDelivery.getSpellSnapshot(sp))
+        return imbueMode
+            ? allSpells.filter(sp => sp.damageType !== 'none' && sp.damageType !== 'healing')
+            : allSpells
     }, [actor, JSON.stringify(actor.system.class?.rules ?? []), JSON.stringify(hero.spells.map(sp => sp._sourceId))])
 
     useEffect(() => {
-        const savedState = actor.getFlag(sys_id, "spellcastingMenuState" as any) as SpellcastingMenuState | undefined
+        const savedState = actor.getFlag(sys_id, `spellcastingMenuState${imbueMode ? '_imbue' : ''}` as any) as SpellcastingMenuState | undefined
         const spell = spells.find(sp => sp.uuid === savedState?.spellUuid) ?? spells[0]
-        const deliveryOptions = getNewDeliveryOptions(spell, { ...actor.system.modifiers.casting })
+        const allDeliveryOptions = getNewDeliveryOptions(spell, { ...actor.system.modifiers.casting })
+        const deliveryOptions = imbueMode
+            ? allDeliveryOptions.filter(d => d.name === appLang.SpellDeliveries.imbue.name)
+            : allDeliveryOptions
+        if (imbueMode) setDeliveryIndex(0)
 
         if (savedState && Object.keys(savedState).length > 0) {
             const index = deliveryOptions.findIndex(d => d.name === savedState.deliveryName)
@@ -284,7 +291,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
             width: delivery instanceof Line ? delivery.width : undefined,
             targetCount: delivery instanceof PerTargetDelivery ? delivery.targetCount : undefined
         }
-        await actor.setFlag(sys_id, "spellcastingMenuState" as any, state)
+        await actor.setFlag(sys_id, `spellcastingMenuState${imbueMode ? '_imbue' : ''}` as any, state)
     }, [actor, skill])
 
     const castSpell = async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -294,6 +301,7 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
             await saveSpellcastingMenuState(delivery)
             const sk = skill && skill.length > 0 ? skill : 'arcana'
             HeroAttack.buildSpellAttack(hero.parent, sk, delivery, e)?.initiate(e)
+            onCast?.()
         }
     }
 
@@ -306,9 +314,11 @@ export const useSpellCastingMenu = (actor: Actor & { system: HeroDataModel }) =>
 
                     {/* SPELLCASTING MENU TOP ROW */}
                     <div className="flex gap-x-0.5 items-end text-lg w-full min-w-0 overflow-hidden">
-                        {!useMiniCards && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
-                        <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />
+                        {/* SELECTORS */}
+                        {(!useMiniCards || imbueMode) && <SpellSelector spell={delivery.spell} spells={spells} onSelect={onSelectSpell} />}
+                        {!imbueMode && <DeliverySelector deliveries={deliveries} currentDelivery={delivery} onSelect={onSelectDelivery} />}
                         <SkillSelector skill={skill} onSelectSkill={onSelectSkill} />
+
                         {/* CAST BUTTON */}
                         <div className="@container ml-auto flex-shrink min-w-0 max-w-[100px] w-full">
                             <Tooltip title={`Cast: ${delivery?.spell.name} (${delivery?.manaCost ?? 0} Mana)`} content={`${delivery?.name ?? ''} | ${delivery?.targetLabel}: ${(delivery as any).targetCount ?? (delivery as any).size ?? ""}<br>${appLang.HeroSheet.skills_tooltip}`}>

@@ -24,16 +24,12 @@ export const useDragOverlayComponent = (
         const targetElement = e.currentTarget as HTMLElement
         const rect = targetElement.getBoundingClientRect()
 
-        // Translate positional percentages to pixel coords.
-        const initialPixelX = (object.x || 0) * window.innerWidth
-        const initialPixelY = (object.y || 0) * window.innerHeight
-
         dragInfo.current = {
             id: object.id,
             startX: e.clientX,
             startY: e.clientY,
-            initialPixelX,
-            initialPixelY,
+            initialPixelX: rect.left,
+            initialPixelY: rect.top,
             hasMoved: false,
             width: rect.width,
             height: rect.height
@@ -71,7 +67,8 @@ export const useDragOverlayComponent = (
                     return {
                         ...c,
                         x: relativeX,
-                        y: relativeY
+                        y: relativeY,
+                        centered: false
                     }
                 }
                 return c
@@ -79,7 +76,7 @@ export const useDragOverlayComponent = (
         }
     }
 
-    const handleMouseUp = async (e: MouseEvent) => {
+    const handleMouseUp = async () => {
         if (!dragInfo.current) return
 
         const info = dragInfo.current

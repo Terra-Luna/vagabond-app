@@ -58,6 +58,24 @@ export const onRender = (sheet: VagabondApplication) => {
     })
 }
 
+/**
+ * Centers the window horizontally (and raised vertically) on its first completed render only.
+ */
+export const centerOnFirstRender = (sheet: any) => {
+    if (sheet._centeredOnFirstRender) return
+    sheet._centeredOnFirstRender = true
+
+    requestAnimationFrame(() => {
+        const bounds = sheet.element?.getBoundingClientRect()
+        if (!bounds) return
+
+        sheet.setPosition({
+            left: Math.round((window.innerWidth - bounds.width) / 2),
+            top: Math.max(0, Math.round((window.innerHeight - bounds.height) / 2) - 500)
+        })
+    })
+}
+
 export const onUpdatePosition = (sheet: VagabondApplication, position: any) => {
     const minWidth = 360
     const minHeight = 248

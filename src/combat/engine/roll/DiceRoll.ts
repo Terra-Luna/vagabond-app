@@ -44,10 +44,11 @@ export class DiceRoll {
 
     static getItemDamageWithHeroMods = (hero: HeroDataModel, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
         const mods = foundry.utils.deepClone(hero.modifiers).damage.out
-        const isVicious = item instanceof WeaponDataModel ? (item.properties.includes('vicious') || item.skills.some(sk => mods[sk]?.weaponProps?.includes('vicious'))) : false
-        const isDefense = item instanceof WeaponDataModel ? (item.properties.includes('defense') || item.skills.some(sk => mods[sk]?.weaponProps?.includes('defense'))) : false
-        const isThrown = item instanceof WeaponDataModel ? (item.properties.includes('thrown') || item.skills.some(sk => mods[sk]?.weaponProps?.includes('thrown'))) : false
-        const isOneHandVersBonus = mods[skill]?.dice?.size?.oneHandVersatile || isDefense && mods.defense.dice.size.oneHandVersatile
+        const isTrained = hero.skills[skill]?.trained ?? false
+        const isVicious = isTrained && item instanceof WeaponDataModel ? (item.properties.includes('vicious') || item.skills.some(sk => mods[sk]?.weaponProps?.includes('vicious'))) : false
+        const isDefense = isTrained && item instanceof WeaponDataModel ? (item.properties.includes('defense') || item.skills.some(sk => mods[sk]?.weaponProps?.includes('defense'))) : false
+        const isThrown = isTrained && item instanceof WeaponDataModel ? (item.properties.includes('thrown') || item.skills.some(sk => mods[sk]?.weaponProps?.includes('thrown'))) : false
+        const isOneHandVersBonus = isTrained && (mods[skill]?.dice?.size?.oneHandVersatile || isDefense && mods.defense.dice.size.oneHandVersatile)
 
         const versatileBonus = item instanceof WeaponDataModel
             ? ((item.grip.style === 'V' && (item.grip.state === 'HH' || (item.grip.state === 'H' && isOneHandVersBonus))) ? 2 : 0)

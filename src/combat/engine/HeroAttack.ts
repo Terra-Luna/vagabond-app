@@ -111,7 +111,13 @@ export class HeroAttack extends Attack {
         this.skipSkillCheck = this.skipSkillCheck || clickEvent?.altKey
         this.isDefenseCheck = !!options?.isDefenseCheck
 
-        if (this.skillCheck && (this.hasHostileTargets || options?.isDefenseCheck) && !this.skipSkillCheck) {
+        if (this.skillCheck && (
+            this.hasHostileTargets ||
+            options?.isDefenseCheck || (
+                this.isSpellAttack && (this.spellDelivery?.upcast ?? 0) > 0 &&
+                this.spellDelivery?.spell?.upcastableEffectDieRoll
+            )
+        ) && !this.skipSkillCheck) {
             if (clickEvent?.shiftKey || clickEvent?.ctrlKey) {
                 this.skillCheck.setFavorHinder(clickEvent)
             }
@@ -200,9 +206,9 @@ export class HeroAttack extends Attack {
             const result = this.skillCheck.result
             const newResult = { ...result }
 
-            if (this.skillCheck.result.d6 === 0) {
+            if (!this.skillCheck.result.d6s?.length) {
                 const d6 = await new Roll("1d6").evaluate()
-                newResult.d6 = d6.total
+                newResult.d6s = [d6.total]
                 newResult.total += d6.total
                 newResult.rolls.push(d6)
                 newResult.favorHinder = appLang.FavorHinder.favor
@@ -242,11 +248,11 @@ export class HeroAttack extends Attack {
      * @returns 
      */
     async addLateHinder() {
-        if (this.skillCheck && this.skillCheck.result && this.skillCheck.result.d6 === 0) {
+        if (this.skillCheck && this.skillCheck.result && !this.skillCheck.result.d6s?.length) {
             const result = this.skillCheck.result
             const newResult = { ...result }
             const d6 = await new Roll("1d6").evaluate()
-            newResult.d6 = d6.total
+            newResult.d6s = [d6.total]
             newResult.total -= d6.total
             newResult.rolls.push(d6)
             newResult.favorHinder = appLang.FavorHinder.hinder
@@ -274,11 +280,11 @@ export class HeroAttack extends Attack {
     }
 
     async removeHinderFromSkillCheck() {
-        if (this.skillCheck && this.skillCheck.isHindered && this.skillCheck.result && this.skillCheck.result.d6 > 0) {
+        if (this.skillCheck && this.skillCheck.isHindered && this.skillCheck.result && this.skillCheck.result.d6s?.length) {
             const result = this.skillCheck.result
             const newResult = { ...result }
-            newResult.total += newResult.d6
-            newResult.d6 = 0
+            newResult.total += newResult.d6s.reduce((a, b) => a + b, 0)
+            newResult.d6s = []
             newResult.favorHinder = appLang.FavorHinder.none
             newResult.rolls = newResult.rolls.filter(r => getDiceTerms(r).flatMap(t => t.faces).includes(20))
 
@@ -360,7 +366,11 @@ export class HeroAttack extends Attack {
             skill: weaponSkill!
         })
 
-        const isKeen = weapon.properties.includes('keen') || hero.modifiers.damage.out[weaponSkill]?.weaponProps?.includes('keen')
+        const isKeen = hero.skills[weaponSkill]?.trained && (
+            weapon.properties.includes('keen') ||
+            hero.modifiers.damage.out[weaponSkill]?.weaponProps?.includes('keen')
+        )
+        
         const dmgMods = foundry.utils.deepClone(hero.modifiers.damage.out)
 
         skillCheck.critThreshold -= (isKeen ? 1 : 0)
@@ -524,6 +534,16 @@ export class HeroAttack extends Attack {
              * printed out in the chat card.
              */
             delivery.applyEffect = true
+            if (delivery.spell.upcastableEffectDieRoll && delivery.upcast > 0) {
+                damageRoll = new DamageRoll({
+                    atkName: delivery.spell.name,
+                    dmgType: 'none',
+                    dice: [new DiceRoll({
+                        count: delivery.upcast,
+                        faces: HeroAttack.SPELL_DIE_SIZE
+                    })]
+                })
+            }
         }
 
         const attack = new HeroAttack(delivery.spell.name, actor, getTargetIds(), skillCheck, false, damageRoll)
@@ -543,6 +563,8 @@ export class HeroAttack extends Attack {
                 d20Count: preset.d20Count,
                 modifier: preset.skillCheckMod,
                 critThreshold: preset.critThreshold,
+                critSum: preset.critSum,
+                explodeFavor: preset.explodeFavor,
                 favorHinder: preset.favorHinder,
                 clickEvent: clickEvent
             })
@@ -608,7 +630,6 @@ export class HeroAttack extends Attack {
         }
 
         return super.shouldApplyDamageToTarget(targetId)
-
     }
 
 }

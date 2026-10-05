@@ -26,8 +26,8 @@ export const Checkbox = ({ label, checked, onCheckedChanged, inverted = false, c
                     <span className={color}>{label}</span>
                     <Box checked={checked} textColor={color} />
                 </> : <>
-                        <Box checked={checked} textColor={color} />
-                        <span className={color}>{label}</span>
+                    <Box checked={checked} textColor={color} />
+                    <span className={color}>{label}</span>
                 </>
             }
         </label>

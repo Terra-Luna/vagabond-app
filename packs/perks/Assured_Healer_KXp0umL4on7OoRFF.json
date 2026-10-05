@@ -9,7 +9,7 @@
       {
         "id": "Kh4eUakqPCI6fdZ0",
         "key": "FlatModifier",
-        "label": "Assured Healer",
+        "label": "Healing: Explode on Min",
         "level": 0,
         "value": 1,
         "selector": "modifiers.healing.out.spell.dice.exploding.values"
@@ -43,10 +43,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.103",
     "createdTime": 1784496991809,
-    "modifiedTime": 1785020904962,
-    "lastModifiedBy": "ywhHfYnWZQBq7W9u",
+    "modifiedTime": 1791167428465,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

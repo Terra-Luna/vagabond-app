@@ -828,6 +828,7 @@
       "duration": "Duration",
       "ignoreEffCost": "Ignore Effect Cost",
       "upcastableEffect": "Upcastable Effect",
+      "upcastableEffectDieRoll": "Upcastable Effect rolls Dice",
       "baseManaCost": "Base Mana Cost",
       "explodingDice": "Exploding Dice",
       "canExplode": "Exploding Dice",

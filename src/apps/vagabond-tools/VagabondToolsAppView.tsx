@@ -18,24 +18,17 @@ export const VagabondToolsAppView = () => {
         await setItemShopToggle(checked)
     }, [])
 
-    const spawnPoint = useCallback(() => {
-        const x = 0.1
-        const y = 0.2
-        return { x: x, y: y }
-    }, [])
-
     const createNewCountdown = useCallback(async (label: string, duration: number) => {
-        const { x, y } = spawnPoint()
-        await addCountdown(label, duration, x, y)
+        await addCountdown(label, duration)
     }, [])
 
     const createNewProgressClock = useCallback(async (clockName = "Clock", duration = 4) => {
-        const { x, y } = spawnPoint()
         const existingClocks = getProgressClocks()
 
         const newClock = {
             id: foundry.utils.randomID(),
-            x: x, y: y,
+            x: 0.5, y: 0.5,
+            centered: true,
             label: clockName,
             segments: duration,
             filled: 0

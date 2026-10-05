@@ -1,6 +1,8 @@
 import { ChevronRight, Eye, EyeOff, Heart, LucideBookMarked, LucideClover, LucideHeartOff, Plus, Shield, SquarePen, Star, ToggleLeft, ToggleRight, Trash, Wand2 } from "lucide-react"
 import { ReactNode, useCallback } from "react"
 
+import { RollPreset } from "../../../../../apps/attack-builder/model/RollPreset"
+import { RollBuilderView } from "../../../../../apps/attack-builder/RollBuilderView"
 import { VagabondSettingsRegistry } from "../../../../../apps/vagabond-tools/VagabondSettingsRegistry"
 import { SkillCheck } from "../../../../../combat/engine/roll/SkillCheck"
 import { HeroDataModel } from "../../../../../model/actor/HeroDataModel"
@@ -269,7 +271,27 @@ const Save = ({ hero, save }: {
     }
 }) => {
     return (
-        <Tooltip title={`${save.name} Save ${save.formula}`} content={`${save.description}<br>${appLang.HeroSheet.skills_tooltip}`}>
+        <Tooltip
+            interactive={true}
+            maxWidth="max-w-[24rem]"
+            content={
+                <RollBuilderView
+                    actor={hero.parent}
+                    skillCheckLabel="Save Check"
+                    lockSkill={true}
+                    showDamageRolls={false}
+                    saveOnRoll={false}
+                    preset={{
+                        skill: save.key,
+                        d20Count: (save.d20s ?? 0) + 1,
+                        skillCheckMod: save.mod ?? 0,
+                        favorHinder: 'none',
+                        bonusSkillCheckDice: save.bonusDice,
+                        critThreshold: 20
+                    } as RollPreset}
+                />
+            }
+        >
             <div className={`flex items-center font-eskapade hover-glow ${tableBorder}/50`} onClick={
                 async (e: React.MouseEvent<HTMLDivElement>) => {
                     const skillCheck = await new SkillCheck(hero, { type: 'save', skill: save.key, clickEvent: e }).roll()
@@ -326,7 +348,19 @@ export const Skill = ({ hero, trained, skillKey, name, value, isCastSkill }: {
     hero: HeroDataModel, trained: boolean, skillKey: string, name: string, value: number, isCastSkill?: boolean
 }) => {
     return (
-        <Tooltip title={`${name} Check`} content={appLang.HeroSheet.skills_tooltip}>
+        <Tooltip
+            interactive={true}
+            maxWidth="max-w-[24rem]"
+            content={
+                <RollBuilderView
+                    actor={hero.parent}
+                    lockSkill={true}
+                    showDamageRolls={false}
+                    saveOnRoll={false}
+                    preset={{ skill: skillKey, d20Count: 1, critThreshold: 20, skillCheckMod: 0 } as RollPreset}
+                />
+            }
+        >
             <div className="flex items-center ml-1 -my-0.5">
                 <Star className={(trained ? 'text-ic-skill-trained fill-ic-skill-trained' : 'text-ic-skill-untrained')} size={18} />
                 <div className={`flex justify-between ml-2 mt-1 w-full text-base font-eskapade font-bold align-middle hover-glow`} onClick={

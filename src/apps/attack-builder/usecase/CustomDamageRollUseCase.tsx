@@ -26,7 +26,7 @@ export const useCustomDamageRollBuilder = (
 
         const schema = DiceRoll.getItemDamageWithHeroMods(actor.system, preset?.skill ?? '', weapon.system)
 
-        if (damageRolls.length === 0) {
+        if (damageRolls?.length === 0) {
             setDamageRolls([schema])
         }
         else {
@@ -63,8 +63,8 @@ export const useCustomDamageRollBuilder = (
             <SectionLabel text={"Damage Rolls"} />
             <div className="flex items-end w-full">
                 <div className="flex flex-col gap-y-2 items-end">
-                    {damageRolls.length > 0 && damageRolls.map((roll, index) => (
-                        < div key={index} className="flex gap-x-1 items-center">
+                    {damageRolls?.length > 0 && damageRolls?.map((roll, index) => (
+                        <div key={index} className="flex gap-x-1 items-center">
                             <DiceRollInputComponent
                                 diceRoll={roll}
                                 onChange={(updated) => handleDiceChange(updated, index)}
@@ -74,9 +74,10 @@ export const useCustomDamageRollBuilder = (
                         </div>
                     ))}
                 </div>
-
             </div>
-            <div className="flex w-full justify-end">
+
+            {/* ADD ADDITIONAL DAMAGE ROLL */}
+            <div className="flex w-full justify-start mt-2">
                 <UtilityButton title={"Add additional damage roll"} onClick={addNewRoll}>
                     +{appLang.ButtonActions.add}
                 </UtilityButton>

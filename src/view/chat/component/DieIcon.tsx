@@ -1,4 +1,4 @@
-import { RefreshCcw } from "lucide-react"
+import { RefreshCcw, X } from "lucide-react"
 
 import D4 from "../../../icons/dice/d4.svg?react"
 import D6 from "../../../icons/dice/d6.svg?react"
@@ -7,18 +7,17 @@ import D10 from "../../../icons/dice/d10.svg?react"
 import D12 from "../../../icons/dice/d12.svg?react"
 import D20 from "../../../icons/dice/d20.svg?react"
 
-export const DieIcon = ({ faces, exploded, discarded }: { faces: number, exploded: boolean, discarded: boolean }) => {
+export const DieIcon = ({ faces, exploded, discarded, rerolled }: { faces: number, exploded: boolean, discarded?: boolean, rerolled?: boolean }) => {
     const wh = `w-[1em] h-[1em]`
     const color = `var(--color-dice)`
 
     const getDieSizeIcon = () => {
         if (faces === 20) return <D20 className={wh} fill={color} />
         else if (faces === 12) return <D12 className={wh} fill={color} />
-        else if (faces === 10) return <D10 className={wh} fill={color} />
+        else if (faces === 10 || faces === 5 || faces === 100) return <D10 className={wh} fill={color} />
         else if (faces === 8) return <D8 className={wh} fill={color} />
-        else if (faces === 6) return <D6 className={wh} fill={color} />
-        else if (faces === 4) return <D4 className={wh} fill={color} />
-        else return <></>
+        else if (faces === 4 || faces === 2) return <D4 className={wh} fill={color} />
+        else return <D6 className={wh} fill={color} />
     }
 
     return (
@@ -34,9 +33,17 @@ export const DieIcon = ({ faces, exploded, discarded }: { faces: number, explode
 
             {discarded && (
                 <div className={`absolute inset-0`}>
+                    <X strokeWidth={3} className={`${wh} text-destructive-action`} fill={color} />
+                </div>
+            )}
+
+            {rerolled && (
+                <div className={`absolute inset-0`}>
                     <RefreshCcw className={`${wh} text-ic-luck`} fill={color} />
                 </div>
             )}
+
+
 
             {/* Foreground Icon */}
             {getDieSizeIcon()}

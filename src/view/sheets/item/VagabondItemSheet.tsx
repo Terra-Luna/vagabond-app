@@ -5,11 +5,17 @@ import { addItemToContainer,ContainerDataModel } from "../../../model/item/equip
 import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { StartingPackDataModel } from "../../../model/item/equip/StartingPackDataModel"
 import { SundryDataModel } from "../../../model/item/equip/SundryDataModel"
+import { centerOnFirstRender } from "../../../utils/sheetUtils"
 import { VagabondSheetMixin } from "../VagabondSheetMixin"
 
 export abstract class VagabondItemSheet extends VagabondSheetMixin(sheets.ItemSheetV2) {
     getReactProps() { return { ...super.getReactProps(), item: this.item } }
     abstract Component: React.ComponentType<any>
+
+    override async _onRender(context, options) {
+        await super._onRender(context, options)
+        centerOnFirstRender(this)
+    }
 
     protected async _onDrop(event: DragEvent): Promise<boolean | void> {
         event.preventDefault()

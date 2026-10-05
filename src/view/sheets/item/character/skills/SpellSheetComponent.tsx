@@ -40,6 +40,13 @@ export const SpellSheetComponent = ({ item }: { item: Item & { system: SpellData
                             checked={item.system.upcastableEffect}
                             onCheckedChanged={(isChecked) => item.update({ 'system.upcastableEffect': isChecked } as Record<string, boolean>)}
                         />
+                        {item.system.upcastableEffect &&
+                            <Checkbox
+                                label={appLang.ItemSheet.upcastableEffectDieRoll}
+                                checked={item.system.upcastableEffectDieRoll}
+                                onCheckedChanged={(isChecked) => item.update({ 'system.upcastableEffectDieRoll': isChecked } as Record<string, boolean>)}
+                            />
+                        }
                     </div>
                 }
             </div>

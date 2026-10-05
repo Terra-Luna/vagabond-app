@@ -18,6 +18,7 @@ export interface TooltipProps {
     children: ReactNode
     interactive?: boolean
     disabled?: boolean
+    maxWidth?: string
 }
 
 /**
@@ -37,7 +38,7 @@ const TooltipNestContext = createContext<TooltipNestState | null>(null)
  * @param param0
  * @returns
  */
-export const Tooltip = ({ title, content, children, interactive, disabled }: TooltipProps) => {
+export const Tooltip = ({ title, content, children, interactive, disabled, maxWidth }: TooltipProps) => {
 
     const anchorRef = useRef<HTMLSpanElement>(null)
     const cursorXY = useRef({ x: 0, y: 0 })
@@ -216,7 +217,7 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
                             </div>
                         }
                         {/* CONTENT (REQUIRED) */}
-                        {renderContent(content)}
+                        {renderContent(content, maxWidth)}
                     </div>
                 </ControlledMenu>
             }
@@ -229,11 +230,11 @@ export const Tooltip = ({ title, content, children, interactive, disabled }: Too
  * @param content 
  * @returns 
  */
-const renderContent = (content?: ReactNode) => {
+const renderContent = (content?: ReactNode, maxWidth?: string) => {
     if (!content) return null
     if (typeof content !== 'string') {
         return <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
-            <div className="max-w-[300px] pt-1 pb-1">
+            <div className={`pt-1 pb-1 ${maxWidth ?? 'max-w-[20rem]'}`}>
                 {content}
             </div>
         </EditModeContextProvider>

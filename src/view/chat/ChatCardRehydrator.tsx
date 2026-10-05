@@ -67,16 +67,68 @@ export function rehydrateElement(blueprint: any, isRoot = true): React.ReactNode
  * @param param0 
  * @returns 
  */
-const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
+let chatPinnedToBottom = true
+
+let guardInstalled = false
+
+/**
+ * Tracks whether the user is at the bottom of the chat log and makes Foundry's own
+ * scrollBottom a no-op while they've scrolled up, so new messages don't yank the view.
+ */
+export function installChatScrollGuard() {
+    if (guardInstalled) return
+    const chat = ui?.chat as any
+    if (!chat) return
+    guardInstalled = true
+
+    const proto = Object.getPrototypeOf(chat)
+    const original = proto.scrollBottom
+    if (typeof original === 'function') {
+        proto.scrollBottom = function (...args: any[]) {
+            if (!chatPinnedToBottom) return
+            return original.apply(this, args)
+        }
+    }
+
+    let lastInput = 0
+    let pointerDown = false
+    const markInput = () => { lastInput = performance.now() }
+    const isChatLog = (t: EventTarget | null): t is HTMLElement =>
+        t instanceof HTMLElement && !!t.closest('#chat, .chat-sidebar, .chat-popout, .chat-log')
+
+    document.addEventListener('wheel', e => { if (isChatLog(e.target)) markInput() }, { capture: true, passive: true })
+    document.addEventListener('touchmove', e => { if (isChatLog(e.target)) markInput() }, { capture: true, passive: true })
+    document.addEventListener('keydown', e => {
+        if (!isChatLog(e.target)) return
+        if (e.target.closest('textarea, input, [contenteditable="true"]')) return
+        markInput()
+    }, true)
+    document.addEventListener('pointerdown', e => {
+        if (isChatLog(e.target)) { pointerDown = true; markInput() }
+    }, true)
+    window.addEventListener('pointerup', () => { pointerDown = false }, true)
+    document.addEventListener('click', e => {
+        if (e.target instanceof Element && e.target.closest('[data-action="jumpToBottom"]')) chatPinnedToBottom = true
+    }, true)
+    document.addEventListener('scroll', e => {
+        const el = e.target
+        if (!isChatLog(el) || el.scrollHeight <= el.clientHeight) return
+        if (!pointerDown && performance.now() - lastInput > 300) return
+        chatPinnedToBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40
+    }, { capture: true, passive: true })
+}
+export const SmartScrollWrapper = ({ children }: { children: ReactNode }) => {
     const localRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         let frameId: number | undefined
 
         const scrollToBottom = () => {
+            if (!chatPinnedToBottom) return
             if (frameId !== undefined) cancelAnimationFrame(frameId)
             frameId = requestAnimationFrame(() => {
                 frameId = undefined
+                if (!chatPinnedToBottom) return
                 if (ui?.chat) {
                     (ui.chat as any).scrollBottom({ popout: true })
                 }

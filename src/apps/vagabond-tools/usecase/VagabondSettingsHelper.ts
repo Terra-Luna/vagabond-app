@@ -148,8 +148,9 @@ export const addCountdowns = async (
     if (!countdownsToAdd.length) return
     const newCountdowns: CountdownSchema[] = countdownsToAdd.map(item => ({
         id: foundry.utils.randomID(),
-        x: item.x ?? 0.1,
-        y: item.y ?? 0.2,
+        x: item.x ?? 0.5,
+        y: item.y ?? 0.5,
+        centered: item.x === undefined && item.y === undefined,
         result: {
             actorUuid: item.actorId,
             tokenUuid: item.tokenUuid,
@@ -163,7 +164,7 @@ export const addCountdowns = async (
 }
 export const addCountdown = async (
     label: string,
-    duration: number, x = 0.1, y = 0.2,
+    duration: number, x?: number, y?: number,
     actorId?: string, tokenUuid?: string,
     status?: { id: string, damageType?: string }
 ) => {
@@ -241,6 +242,7 @@ export interface OverlayObjectPermissions {
     hiddenFromUserIds?: string[]
     interactableUserIds?: string[]
     sceneId?: string | null
+    centered?: boolean
 }
 
 export const isVisibleToCurrentUser = (obj: OverlayObjectPermissions): boolean => {

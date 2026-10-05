@@ -1,6 +1,6 @@
 import { EmptyObject } from "@league-of-foundry-developers/foundry-vtt-types/utils"
 
-import { getDiceTerms } from "../util/dice-utils"
+import { getDiceTerms, rollExplosions } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
 import { RollSummary } from "./RollSummary"
 
@@ -120,7 +120,7 @@ export class DamageRoll {
         for (const d of this.dice.filter(d => d.explodesOn && d.explodesOn.length > 0 && (isCrit && d.explodeOnCritOnly || !d.explodeOnCritOnly))) {
             if (this.isSafeToExplode(d.faces, d.explodesOn!, d.reroll ?? [])) {
                 canExplode = true
-                await this.processExplosions(initialExplodableTerms, explosions, d.explodesOn ?? [], d.reroll ?? [])
+                explosions.push(...await rollExplosions(initialExplodableTerms, d.explodesOn ?? [], d.reroll ?? []))
             }
         }
 
@@ -153,31 +153,6 @@ export class DamageRoll {
         return result
     }
 
-    /**
-     * Recursive function to compound exploding dice into the given 'explosions' parameter.
-     */
-    private async processExplosions(
-        damageRollTerms: foundry.dice.terms.DiceTerm[],
-        explosions: Roll.Evaluated<Roll>[],
-        explodesOn: number[],
-        reroll: number[]
-    ) {
-        const count = damageRollTerms
-            .flatMap(it => it.results)
-            .filter(it => explodesOn.includes(it.result))
-            .length
-    
-        if (count > 0) {
-            let formula = `${count}d${damageRollTerms[0].faces}`
-            if (reroll.length > 0) {
-                formula += `rr${reroll.join('rr')}`
-            }
-            const explosionRoll = await new Roll(formula).evaluate()
-            explosions.push(explosionRoll)
-            await this.processExplosions(getDiceTerms(explosionRoll), explosions, explodesOn, reroll)
-        }
-    }
-    
     private mergeExplosions(explosions: Roll.Evaluated<Roll<EmptyObject>>[]): Roll.Evaluated<Roll> | null {
         const combinedExplosionTerms = explosions.reduce<foundry.dice.terms.RollTerm[]>((sum, current, index) => {
             if (index > 0) {

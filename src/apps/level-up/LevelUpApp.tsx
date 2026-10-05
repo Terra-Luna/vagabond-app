@@ -1,6 +1,7 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
 import { findOrCreateElectiveTrainingsRule, normalizeRuleSelections, randomId, saveItemRuleSelections, savePerkSelections } from "../../rules/util/item-rules-util"
 import { sys_id } from "../../utils/foundryUtils"
+import { centerOnFirstRender } from "../../utils/sheetUtils"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { LevelUpArgs, LevelUpView } from "./LevelUpView"
 
@@ -57,6 +58,11 @@ export class LevelUpApp extends VagabondApplication {
         }
         super(appArgs)
         this.actor = actor
+    }
+
+    override async _onRender(context, options) {
+        await super._onRender(context, options)
+        centerOnFirstRender(this)
     }
 
     override getReactProps() {

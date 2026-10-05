@@ -138,6 +138,8 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                     d20Count: attackInstance?.skillCheck?.d20Count ?? 1,
                     skillCheckMod: attackInstance?.skillCheck?.modifier ?? 0,
                     critThreshold: attackInstance?.skillCheck?.critThreshold ?? 20,
+                    critSum: false,
+                    explodeFavor: false,
                     favorHinder: attackInstance?.skillCheck?.favorHinder ?? 'none',
                     damageRolls: attackInstance?.damageRoll?.dice ?? [],
                     flatModifier: attackInstance?.damageRoll?.flatDmgBonus ?? 0,
@@ -167,7 +169,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
             <Header title={appLang.HeroSheet.weapons} />
             {
                 equipDisplayData?.map(({ item, damageString, skill, preset, initiateAttack, rollDefenseCheck }, index: number) => {
-                    const isDefense = item instanceof WeaponDataModel
+                    const isDefense = hero.skills[skill]?.trained && item instanceof WeaponDataModel
                         ? (item.properties.includes('defense') || hero.modifiers.damage.out[skill]?.weaponProps?.includes('defense'))
                         : false
 

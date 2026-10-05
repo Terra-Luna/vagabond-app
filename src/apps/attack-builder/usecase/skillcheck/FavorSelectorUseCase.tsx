@@ -6,7 +6,7 @@ import { Label } from "../../component/Labels"
 export const useFavorHinderSelector = () => {
     const [favorHinder, setFavorHinder] = useState<'none' | 'favor' | 'hinder'>('none')
     const FavorHinderSelector = <div>
-        <Label text={"d6"} className="-mb-1" />
+        <Label text={"Fav."} className="-mb-1" />
         <CustomDropDown
             value={favorHinder}
             options={[

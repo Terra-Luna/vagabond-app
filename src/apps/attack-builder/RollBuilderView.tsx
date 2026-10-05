@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react"
 
 import { HeroAttack } from "../../combat/engine/HeroAttack"
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
-import { isEquippedWeapon,WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
+import { isEquippedWeapon, WeaponDataModel } from "../../model/item/equip/WeaponDataModel"
 import { appLang } from "../../utils/lang"
 import { DestructiveButton, PrimaryButton, SecondaryButton } from "../../view/component/Button"
 import { Header } from "../../view/component/Header"
@@ -17,10 +17,25 @@ import { useCustomSkillCheckBuilder } from "./usecase/CustomSkillCheckUseCase"
 import { useSavePreset } from "./usecase/preset/SavePresetUseCase"
 import { useWeaponSelector } from "./usecase/WeaponSelectorUseCase"
 
-export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSelection, saveOnRoll = true, setClosed }: {
+export const RollBuilderView = ({
+    actor,
+    preset,
+    showHeader = true,
+    skillCheckLabel,
+    lockSkill = false,
+    showSkillCheck = true,
+    showDamageRolls = true,
+    lockWeaponSelection,
+    saveOnRoll = true,
+    setClosed
+}: {
     actor: Actor & { system: HeroDataModel },
     preset?: RollPreset,
     showHeader?: boolean,
+        skillCheckLabel?: string,
+        lockSkill?: boolean,
+        showSkillCheck?: boolean,
+        showDamageRolls?: boolean,
     lockWeaponSelection?: boolean,
     saveOnRoll?: boolean,
     setClosed?: () => void
@@ -34,7 +49,9 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
     }, [actor, preset])
 
     const { WeaponSelector, weapon, description, setWeapon, setDescription } = useWeaponSelector(weapons, lockWeaponSelection)
-    const { CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold, setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold } = useCustomSkillCheckBuilder(actor, weapon)
+    const { CustomSkillCheckBuilder, skill, d20Count, favorHinder, skillCheckMod, critThreshold, critSum, explodeFavor,
+        setSkill, setD20Count, setFavorHinder, setSkillCheckMod, setCritThreshold, setCritSum, setExplodeFavor
+    } = useCustomSkillCheckBuilder(actor, preset?.d20Count, preset?.bonusSkillCheckDice, preset?.critSum, preset?.explodeFavor, weapon, skillCheckLabel, lockSkill)
     const { CustomDamageRollBuilder, damageRolls, setDamageRolls } = useCustomDamageRollBuilder(actor, weapon, preset)
     const { CustomDamageModifiersBuilder, flatModifier, perDieBonus, armorPiercing, setFlatModifier, setPerDieBonus, setArmorPiercing } = useCustomDamageModifiersBuilder()
 
@@ -50,6 +67,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
             setFavorHinder(preset.favorHinder)
             setSkillCheckMod(preset.skillCheckMod)
             setCritThreshold(preset.critThreshold)
+            setCritSum(preset.critSum)
+            setExplodeFavor(preset.explodeFavor)
             setDamageRolls(preset.damageRolls)
             setFlatModifier(preset.flatModifier)
             setPerDieBonus(preset.perDieBonus)
@@ -80,9 +99,12 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
         setFavorHinder(skChk.favorHinder)
         setSkillCheckMod(skChk.modifier)
         setCritThreshold(skChk.critThreshold)
+        setCritSum(skChk.critSum)
+        setExplodeFavor(skChk.explodeFavor)
         setDamageRolls(dmgRoll.dice.map(d => ({ ...d })))
         setFlatModifier(dmgRoll.flatDmgBonus)
         setPerDieBonus(dmgRoll.perDieDmgBonus)
+        setArmorPiercing(dmgRoll.armorPiercing)
     }, [weapon, skill, preset])
 
     const rollForm = useMemo((): RollPreset => {
@@ -94,6 +116,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
             armorPiercing: armorPiercing,
             critThreshold: critThreshold,
             d20Count: d20Count,
+            critSum: critSum,
+            explodeFavor: explodeFavor,
             damageRolls: damageRolls,
             favorHinder: favorHinder,
             flatModifier: flatModifier,
@@ -102,11 +126,11 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
         }
     }, [
         weapon, description, skill, d20Count, favorHinder, skillCheckMod,
-        critThreshold, damageRolls, flatModifier, perDieBonus, armorPiercing
+        critThreshold, critSum, explodeFavor, damageRolls, flatModifier, perDieBonus, armorPiercing
     ])
 
     const reset = useCallback(() => {
-        if (lockWeaponSelection) {
+        if (lockSkill || lockWeaponSelection) {
             if (!initialPreset) return
 
             setDescription(initialPreset.description)
@@ -115,7 +139,9 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
             setFavorHinder(initialPreset.favorHinder)
             setSkillCheckMod(initialPreset.skillCheckMod)
             setCritThreshold(initialPreset.critThreshold)
-            setDamageRolls(initialPreset.damageRolls.map(roll => ({
+            setCritSum(initialPreset.critSum)
+            setExplodeFavor(initialPreset.explodeFavor)
+            setDamageRolls(initialPreset.damageRolls?.map(roll => ({
                 ...roll,
                 explodesOn: roll.explodesOn ? [...roll.explodesOn] : undefined,
                 reroll: roll.reroll ? [...roll.reroll] : undefined
@@ -132,6 +158,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
             setFavorHinder('none')
             setSkillCheckMod(0)
             setCritThreshold(20)
+            setCritSum(false)
+            setExplodeFavor(false)
             setFlatModifier(0)
             setPerDieBonus(0)
             setArmorPiercing(0)
@@ -140,8 +168,8 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
         }
     }, [
         initialPreset, lockWeaponSelection, setDescription, setSkill, setD20Count,
-        setFavorHinder, setSkillCheckMod, setCritThreshold, setDamageRolls,
-        setFlatModifier, setPerDieBonus, setArmorPiercing, setWeapon
+        setSkillCheckMod, setCritThreshold, setCritSum, setExplodeFavor, setDamageRolls,
+        setFlatModifier, setPerDieBonus, setArmorPiercing, setCritSum, setExplodeFavor, setWeapon
     ])
 
     const { savePreset, saveCustomRoll } = useSavePreset(actor, rollForm)
@@ -152,10 +180,11 @@ export const RollBuilderView = ({ actor, preset, showHeader = true, lockWeaponSe
 
             <div className="flex flex-col gap-y-1 p-1 text-text-primary font-eskapade border-2 border-solid border-t-0 border-table-border bg-sheet-main-fill rounded-b-sm">
                 {/* EACH ATTACK CATEGORY BY USE-CASE */}
-                {WeaponSelector}
-                {CustomSkillCheckBuilder}
-                {CustomDamageRollBuilder}
-                {CustomDamageModifiersBuilder}
+                {showDamageRolls && <>{WeaponSelector}</>}
+                {showSkillCheck && <>{CustomSkillCheckBuilder}</>}
+                {showSkillCheck && !showDamageRolls && <div className="my-4" />}
+                {showDamageRolls && <>{CustomDamageRollBuilder}</>}
+                {showDamageRolls && <>{CustomDamageModifiersBuilder}</>}
 
                 <div className="flex w-full justify-between">
                     {/* SAVE & CANCEL */}

@@ -19,6 +19,7 @@ export interface SpellSnapshot {
     baseManaCost: number,
     ignoreEffectCost: boolean,
     upcastableEffect: boolean,
+    upcastableEffectDieRoll: boolean,
     appliedEffects: { effect: string, duration: string, critDuration: string }[]
 }
 
@@ -141,7 +142,8 @@ export abstract class SpellDelivery {
             baseManaCost: spell.system.baseManaCost,
             ignoreEffectCost: spell.system.ignoreEffectCost,
             appliedEffects: spell.system.appliedEffects as any[],
-            upcastableEffect: spell.system.upcastableEffect
+            upcastableEffect: spell.system.upcastableEffect,
+            upcastableEffectDieRoll: spell.system.upcastableEffectDieRoll
         }
     }
 }

@@ -3,8 +3,8 @@ import { useState } from "react"
 import { CustomDropDown } from "../../../../view/component/Dropdown"
 import { Label } from "../../component/Labels"
 
-export const useD20CountSelector = () => {
-    const [d20Count, setD20Count] = useState<number>(1)
+export const useD20CountSelector = ({ initialD20Count }: { initialD20Count?: number }) => {
+    const [d20Count, setD20Count] = useState<number>(initialD20Count ?? 1)
     const D20CountSelector = <div>
         <Label text={"D20"} className="-mb-1" />
         <CustomDropDown

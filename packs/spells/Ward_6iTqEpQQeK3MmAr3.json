@@ -6,7 +6,16 @@
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">The Target has +1 Armor. You must spend 1 Mana per Target to Focus on this Spell, even for willing Targets.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Upcast:</strong></b><span style=\"white-space:pre-wrap\"> When the Target takes damage from an attack or Cast, you can upcast this Spell to make a Cast Check to reduce the damage taken by 1d6 per Mana spent on the upcast if you pass.</span></p>",
     "rules": [],
-    "damageType": "none"
+    "damageType": "none",
+    "appliedEffects": [
+      {
+        "effect": "warded",
+        "duration": "focus",
+        "critDuration": "focus"
+      }
+    ],
+    "upcastableEffect": true,
+    "upcastableEffectDieRoll": true
   },
   "effects": [],
   "folder": null,
@@ -19,10 +28,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.16",
+    "systemVersion": "0.1.103",
     "createdTime": 1784497366772,
-    "modifiedTime": 1788660684913,
-    "lastModifiedBy": "verUzfB2esLt5vCo",
+    "modifiedTime": 1791181004931,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

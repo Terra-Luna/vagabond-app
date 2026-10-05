@@ -1,4 +1,5 @@
 import { HeroDataModel } from "../../model/actor/HeroDataModel"
+import { centerOnFirstRender } from "../../utils/sheetUtils"
 import { VagabondAppArgs, VagabondApplication } from "../VagabondApplication"
 import { HeroCreationNavHostView } from "./HeroCreationNavHostView"
 
@@ -17,6 +18,11 @@ export class HeroCreationApp extends VagabondApplication {
             Component: HeroCreationNavHostView
         } as VagabondAppArgs)
         this.actor = actor
+    }
+
+    override async _onRender(context, options) {
+        await super._onRender(context, options)
+        centerOnFirstRender(this)
     }
 
     override getReactProps() {

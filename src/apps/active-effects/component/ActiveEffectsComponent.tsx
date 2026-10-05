@@ -45,31 +45,6 @@ export const ActiveEffectsComponent: React.FC<EffectsTabProps> = ({
                 <UtilityButton children={appLang.ButtonActions.addEffect} onClick={onCreate} />
             </div>
 
-            {/* 🔥 BURNING NOTIFICATIONS 🔥 */}
-            {effects.filter(eff => eff.name.includes("burning")).map((eff) => (
-                <div
-                    key={eff.id}
-                    onClick={() => onEdit(eff.id)}
-                    className="flex items-center justify-between bg-context-menu-fill border border-solid border-destructive-action/50 rounded p-2 text-text-primary text-sm"
-                >
-                    <span className="flex items-center gap-1.5 text-lg">
-                        <span>🔥</span> {appLang.Effects.burn}:
-                        <span className="text-text-header-tertiary italic ml-1 text-sm line-clamp-1">
-                            {`(${appLang.Effects.by} ${eff.sourceName || appLang.Effects.env})`}
-                        </span>
-                    </span>
-                    <div className="flex gap-x-4">
-                        <ActiveEffectButtons
-                            effect={eff}
-                            onToggle={() => onToggle(eff.id)}
-                        />
-                        <span className="bg-sheet-main-fill px-2 py-0.5 rounded-sm border border-solid border-destructive-action/50 text-text-secondary text-lg">
-                            Cd{eff.duration?.toString()}
-                        </span>
-                    </div>
-                </div>
-            ))}
-
             {/* EFFECTS LIST */}
             <DynamicGrid>
                 {effects.filter(eff => !eff.name.includes("burning")).map((eff) => (
