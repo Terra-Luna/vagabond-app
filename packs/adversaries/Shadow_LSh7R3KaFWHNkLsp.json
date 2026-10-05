@@ -328,7 +328,20 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical_lt0", "poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "frightened",
+            "paralyzed",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -732,22 +745,6 @@
       "speed": "30' (Phase)"
     },
     "numberAppearing": "2d6",
-    "dmgImmunities": [
-      "physical_lt0",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "frightened",
-      "paralyzed",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Life Drain",

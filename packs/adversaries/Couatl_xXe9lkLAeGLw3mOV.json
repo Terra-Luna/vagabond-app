@@ -329,7 +329,19 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": [
+            "berserk",
+            "blinded",
+            "confused",
+            "fatigued",
+            "frightened",
+            "paralyzed",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,18 +745,6 @@
       "speed": "20' (Fly 60')"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "berserk",
-      "blinded",
-      "confused",
-      "fatigued",
-      "frightened",
-      "paralyzed",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Bite",

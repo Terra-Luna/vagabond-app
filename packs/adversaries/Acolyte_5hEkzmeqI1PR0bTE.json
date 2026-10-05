@@ -242,7 +242,10 @@
           "attack": 0,
           "attackPerDie": 0,
           "spell": 0,
-          "spellPerDie": 0
+          "spellPerDie": 0,
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "all": 0,
@@ -281,9 +284,6 @@
       "type": "walk"
     },
     "numberAppearing": "1d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Cure Wounds",

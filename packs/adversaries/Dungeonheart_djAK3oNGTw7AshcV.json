@@ -242,7 +242,21 @@
           "attack": 0,
           "attackPerDie": 0,
           "spell": 0,
-          "spellPerDie": 0
+          "spellPerDie": 0,
+          "immunities": [],
+          "weaknesses": [
+            "pierce"
+          ],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "dazed",
+            "frightened",
+            "incapacitated",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "all": 0,
@@ -282,20 +296,6 @@
       "speed": "0'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "pierce"
-    ],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "dazed",
-      "frightened",
-      "incapacitated",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Spawn",

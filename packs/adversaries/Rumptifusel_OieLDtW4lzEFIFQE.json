@@ -328,7 +328,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "poison"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,11 +737,6 @@
       "speed": "15' (Climb)"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "poison"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Drain",

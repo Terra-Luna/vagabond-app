@@ -328,7 +328,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,9 +735,6 @@
       "speed": "35' (Climb, Cling)"
     },
     "numberAppearing": "d3",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Web Shot",

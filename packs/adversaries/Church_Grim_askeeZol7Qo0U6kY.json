@@ -328,7 +328,15 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical_lt0"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,16 +740,6 @@
       "speed": "40'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "physical_lt0"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Bite",

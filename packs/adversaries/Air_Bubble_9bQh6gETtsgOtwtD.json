@@ -330,7 +330,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid", "blunt", "slash"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "blinded",
+            "charmed",
+            "fatigued",
+            "prone",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -734,19 +743,6 @@
       "speed": "0' (Fly 20')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "acid",
-      "blunt",
-      "slash"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "blinded",
-      "charmed",
-      "fatigued",
-      "prone",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Engulf",

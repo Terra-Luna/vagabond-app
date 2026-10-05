@@ -328,7 +328,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "physical", "poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -732,15 +737,6 @@
       "speed": "5' (Fly 30')"
     },
     "numberAppearing": "2d6",
-    "dmgImmunities": [
-      "fire",
-      "physical",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Kiss",

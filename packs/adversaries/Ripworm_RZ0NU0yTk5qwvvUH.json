@@ -442,7 +442,14 @@
               },
               "active": false
             }
-          }
+          },
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "fatigued",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -846,15 +853,6 @@
       "speed": "20'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "fatigued",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Ripsaw",

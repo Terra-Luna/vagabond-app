@@ -355,7 +355,15 @@
           "spell": {
             "flatBonus": 0,
             "perDieBonus": 0
-          }
+          },
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "frightened",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -427,16 +435,6 @@
       "speed": "0' (Fly 50')"
     },
     "numberAppearing": "1d4",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "frightened",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Slash",

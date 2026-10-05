@@ -328,7 +328,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,11 +737,6 @@
       "speed": "5'"
     },
     "numberAppearing": "5d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Flesh Burrow",

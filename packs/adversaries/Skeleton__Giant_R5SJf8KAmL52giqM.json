@@ -326,7 +326,17 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["pierce", "poison", "slash"],
+          "weaknesses": [
+            "blunt"
+          ],
+          "statusImmunities": [
+            "fatigued",
+            "sickened",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -730,20 +740,6 @@
       "speed": "30'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "pierce",
-      "poison",
-      "slash"
-    ],
-    "dmgWeaknesses": [
-      "blunt"
-    ],
-    "statusImmunities": [
-      "fatigued",
-      "sickened",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Colossal Sword",

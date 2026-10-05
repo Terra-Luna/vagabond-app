@@ -328,7 +328,15 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,16 +740,6 @@
       "speed": "25'"
     },
     "numberAppearing": "d20",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Claw",

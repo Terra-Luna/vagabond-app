@@ -329,7 +329,18 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid", "poison"],
+          "weaknesses": [
+            "cold",
+            "fire"
+          ],
+          "statusImmunities": [
+            "blinded",
+            "fatigued",
+            "prone",
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -733,20 +744,6 @@
       "speed": "0' (Cling)"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "acid",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "cold",
-      "fire"
-    ],
-    "statusImmunities": [
-      "blinded",
-      "fatigued",
-      "prone",
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Consume",

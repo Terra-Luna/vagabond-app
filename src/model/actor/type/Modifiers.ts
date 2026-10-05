@@ -1,5 +1,5 @@
 import { appLang } from "../../../utils/lang"
-import { fields, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
+import { damageImmunityTypeOptions, fields, requiredInteger, requiredString, uncappedInteger } from "../../common/sharedSchemas"
 
 export const modifierSchema = () => {
     return {
@@ -173,8 +173,20 @@ const damageReductionSchema = () => {
     return {
         flatReduction: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
         perDieReduction: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        immunities: new fields.ArrayField(
+            new fields.StringField({ ...damageImmunityTypeOptions() }),
+            { initial: [] }
+        ),
+        weaknesses: new fields.ArrayField(
+            new fields.StringField({ ...requiredString, choices: Object.keys(appLang.DamageTypes) }),
+            { initial: [] }
+        ),
         resistances: new fields.ArrayField(
             new fields.StringField({ ...requiredString, choices: Object.keys(appLang.DamageTypes) }),
+            { initial: [] }
+        ),
+        statusImmunities: new fields.ArrayField(
+            new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
             { initial: [] }
         )
     }

@@ -328,7 +328,14 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "berserk",
+            "frightened",
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -732,15 +739,6 @@
       "speed": "30' (Climb, Cling)"
     },
     "numberAppearing": "d2",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "berserk",
-      "frightened",
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Web",

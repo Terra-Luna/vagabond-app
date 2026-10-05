@@ -442,7 +442,16 @@
               },
               "active": false
             }
-          }
+          },
+          "immunities": ["poison"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": [
+            "blinded",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -846,17 +855,6 @@
       "speed": "30'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [
-      "blinded",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Scream",

@@ -330,7 +330,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "physical_lt2", "poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -734,15 +739,6 @@
       "speed": "30' (Fly 60')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "fire",
-      "physical_lt2",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Symbol of Pain",

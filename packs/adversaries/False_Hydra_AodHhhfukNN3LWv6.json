@@ -328,7 +328,13 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "confused"
+          ]
         },
         "out": {
           "melee": {
@@ -732,12 +738,6 @@
       "speed": "25'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "confused"
-    ],
     "actions": [
       {
         "name": "Bite",

@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "physical_lt0", "poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "paralyzed",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,19 +742,6 @@
       "speed": "35' (Fly 30')"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "cold",
-      "physical_lt0",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "paralyzed",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Enthrall",

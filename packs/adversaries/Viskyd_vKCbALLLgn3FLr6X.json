@@ -328,7 +328,17 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "poison"],
+          "weaknesses": [
+            "cold"
+          ],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "fatigued",
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -732,19 +742,6 @@
       "speed": "10' (Fly 20')"
     },
     "numberAppearing": "3d8",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "cold"
-    ],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "fatigued",
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Pop!",

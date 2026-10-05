@@ -329,7 +329,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "fire", "physical"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -733,15 +738,6 @@
       "speed": "35'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "cold",
-      "fire",
-      "physical"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Temporal Lock",

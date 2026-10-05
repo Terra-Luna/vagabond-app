@@ -440,7 +440,10 @@
               },
               "active": false
             }
-          }
+          },
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -844,9 +847,6 @@
       "speed": "30' (Swim)"
     },
     "numberAppearing": "d8",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Bite",

@@ -21,6 +21,36 @@
         "level": 0,
         "uuid": "Compendium.vagabond-app.weapons.Item.8GBET4KVXsa4HDeb",
         "type": "weapon"
+      },
+      {
+        "id": "GShEcKKTnWFlp20k",
+        "key": "ChoiceSet",
+        "label": "Draconic Resilience",
+        "level": 0,
+        "scale": 0,
+        "maxChoices": 1,
+        "channel": "path",
+        "sourceMode": "static",
+        "choices": [
+          {
+            "value": "modifiers.damage.in.resistances.acid",
+            "label": "Acid"
+          },
+          {
+            "value": "modifiers.damage.in.resistances.cold",
+            "label": "Cold"
+          },
+          {
+            "value": "modifiers.damage.in.resistances.fire",
+            "label": "Fire"
+          },
+          {
+            "value": "modifiers.damage.in.resistances.shock",
+            "label": "Shock"
+          }
+        ],
+        "selections": [],
+        "skipAtHeroCreation": false
       }
     ],
     "senses": [],
@@ -38,10 +68,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.103",
     "createdTime": 1784922704373,
-    "modifiedTime": 1786564114876,
-    "lastModifiedBy": "PDLxeQclz2rj9enO",
+    "modifiedTime": 1791228744337,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

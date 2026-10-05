@@ -5,7 +5,25 @@
   "img": "/icons/creatures/abilities/tail-strike-bone-orange.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">While Berserk, you reduce damage you take by 1 per damage die. This stacks with Rage.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "GEuuLtC9Fu1zqWpY",
+        "key": "FlatModifier",
+        "label": "Per-die Mitigation",
+        "level": 10,
+        "value": "1",
+        "selector": "modifiers.damage.in.perDieReduction",
+        "toggleableEffect": true
+      },
+      {
+        "id": "H1aCcH9fxpRcLBoq",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 10,
+        "value": true,
+        "selector": "flags.riptear"
+      }
+    ],
     "level": 10,
     "scale": 0
   },
@@ -20,9 +38,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789491705041,
-    "modifiedTime": 1789521945258,
+    "modifiedTime": 1791235205193,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

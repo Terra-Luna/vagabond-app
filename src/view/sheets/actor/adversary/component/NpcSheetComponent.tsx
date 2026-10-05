@@ -308,9 +308,9 @@ const StatBlock = ({ npc }: { npc: AdversaryDataModel | NpcDataModel }) => {
             {/* SENSES, IMMUNITIES, & WEAKNESSES */}
             <div className="w-full space-y-2 text-base text-text-header-tertiary font-normal">
                 <SelectableTextOptions obj={npc.parent} label={locale.senses} path={['senses']} localeObj={appLang.Senses} />
-                <DamageTypeSelector npc={npc} label={locale.immune} path={['dmgImmunities']} localeObj={damageTypesWithPhysicalThresholds()} />
-                <DamageTypeSelector npc={npc} label={locale.weak} path={['dmgWeaknesses']} localeObj={appLang.DamageTypes} />
-                <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['statusImmunities']} localeObj={appLang.StatusConditions} />
+                <DamageTypeSelector npc={npc} label={locale.immune} path={['modifiers', 'damage', 'in', 'immunities']} localeObj={damageTypesWithPhysicalThresholds()} />
+                <DamageTypeSelector npc={npc} label={locale.weak} path={['modifiers', 'damage', 'in', 'weaknesses']} localeObj={appLang.DamageTypes} />
+                <SelectableTextOptions obj={npc.parent} label={locale.status_immunities} path={['modifiers', 'damage', 'in', 'statusImmunities']} localeObj={appLang.StatusConditions} />
             </div>
         </div>
     )

@@ -329,7 +329,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": [
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,11 +738,6 @@
       "speed": "60' (Fly 180')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Claw",

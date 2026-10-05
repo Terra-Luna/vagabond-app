@@ -327,7 +327,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "shock"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -731,11 +736,6 @@
       "speed": "30' (Swim)"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "shock"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Death Glare",

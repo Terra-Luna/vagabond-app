@@ -328,7 +328,15 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical_lt0", "shock"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "frightened"
+          ]
         },
         "out": {
           "melee": {
@@ -732,17 +740,6 @@
       "speed": "40' (Fly 80')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "physical_lt0",
-      "shock"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "frightened"
-    ],
     "actions": [
       {
         "name": "Breath Attack",

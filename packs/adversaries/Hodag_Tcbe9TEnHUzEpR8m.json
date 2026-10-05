@@ -326,7 +326,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "poison"],
+          "weaknesses": [
+            "acid"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -730,14 +735,6 @@
       "speed": "30' (Climb)"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "acid"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Fire Breath",

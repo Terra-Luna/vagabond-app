@@ -329,7 +329,15 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "acid",
+            "pierce"
+          ],
+          "statusImmunities": [
+            "prone"
+          ]
         },
         "out": {
           "melee": {
@@ -733,14 +741,6 @@
       "speed": "(Fly 30')"
     },
     "numberAppearing": "2d6",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "acid",
-      "pierce"
-    ],
-    "statusImmunities": [
-      "prone"
-    ],
     "actions": [
       {
         "name": "Glare",

@@ -328,7 +328,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -732,13 +737,6 @@
       "speed": "30'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Bite",

@@ -328,7 +328,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,9 +735,6 @@
       "speed": "40' (Cling)"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 4 (d8) and pass [Endure] with a +2 bonus or become Sickened (Cd4, +1 Fatigue each Round).</span></p>",

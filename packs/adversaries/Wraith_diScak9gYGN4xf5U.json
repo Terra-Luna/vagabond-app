@@ -328,7 +328,19 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "frightened",
+            "paralyzed",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,20 +744,6 @@
       "speed": "30' (Phase)"
     },
     "numberAppearing": "2d6",
-    "dmgImmunities": [
-      "physical"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "frightened",
-      "paralyzed",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Energy Drain",

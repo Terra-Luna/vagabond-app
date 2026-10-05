@@ -327,7 +327,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire"],
+          "weaknesses": [
+            "cold"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -731,13 +736,6 @@
       "speed": "10'"
     },
     "numberAppearing": "d2",
-    "dmgImmunities": [
-      "fire"
-    ],
-    "dmgWeaknesses": [
-      "cold"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Slam",

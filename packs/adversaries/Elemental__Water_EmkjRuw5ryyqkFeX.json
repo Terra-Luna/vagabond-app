@@ -329,7 +329,18 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid", "physical_lt0", "poison"],
+          "weaknesses": [
+            "shock"
+          ],
+          "statusImmunities": [
+            "fatigued",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,21 +744,6 @@
       "speed": "0' (Swim 40')"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "acid",
-      "physical_lt0",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "shock"
-    ],
-    "statusImmunities": [
-      "fatigued",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Strike",

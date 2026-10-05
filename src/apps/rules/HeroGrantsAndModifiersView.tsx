@@ -30,7 +30,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
         return sources.flatMap(source => source.rules.map((rule: any) => ({
             ...rule,
             id: rule.id || foundry.utils.randomID(),
-            level: rule.level || 1,
+            level: Number(rule.level ?? 1),
             pack: rule.pack,
             selections: rule.selections,
             sourceName: source.item?.name || item.name,
@@ -51,7 +51,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
         const rules = itemRules.map((rule: any) => ({
             ...rule,
             id: rule.id || foundry.utils.randomID(),
-            level: rule.level || 1,
+            level: Number(rule.level ?? 1),
             pack: rule.pack,
             selections: rule.selections,
             sourceName: item.parent.name,
@@ -81,7 +81,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             <CollapsibleSection title={`Active (${activeRules.length})`} settingsKey={'rules-active-features'} content={
                 <EffectCardContainer>
                     {activeRules.length > 0
-                        ? activeRules.map(rule => (<GrantsAndModifiersCard key={rule.id} actor={actor} rule={rule} />))
+                        ? activeRules.map(rule => (<GrantsAndModifiersCard key={rule.id} rule={rule} />))
                         : <HeroCreationSubtext text={"No active rules are adjusting data values."} />
                     }
                 </EffectCardContainer>
@@ -92,7 +92,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                 <CollapsibleSection title={`Locked Grants & Modifiers (${lockedRules.length})`} settingsKey={'rules-locked-features'} content={
                     <EffectCardContainer>
                         {lockedRules.map(rule => (
-                            <GrantsAndModifiersCard key={rule.id} actor={actor} rule={rule} isActive={false} />
+                            <GrantsAndModifiersCard key={rule.id} rule={rule} isActive={false} />
                         ))}
                     </EffectCardContainer>
                 } />

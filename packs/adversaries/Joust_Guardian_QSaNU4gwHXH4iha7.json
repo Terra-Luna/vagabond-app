@@ -353,7 +353,19 @@
           "spell": {
             "flatBonus": 0,
             "perDieBonus": 0
-          }
+          },
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "fatigued",
+            "frightened",
+            "sickened",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -425,20 +437,6 @@
       "speed": "30'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "fatigued",
-      "frightened",
-      "sickened",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Lance",

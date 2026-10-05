@@ -36,7 +36,7 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
     /**
      * Ancestry & Class
      */
-    const { AncestrySelection, ancestryItem, levelZero } = useAncestrySelection([backButton, nextButton])
+    const { AncestrySelection, ancestryItem, levelZero, selectedAncestryMiscChoices, setSelectedAncestryMiscChoices } = useAncestrySelection([backButton, nextButton])
     const { ClassSelection, classItem, setClassItem } = useClassSelection([backButton, nextButton])
 
     /**
@@ -194,6 +194,10 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
      * Clear out selections when key updates are made.
      */
     useEffect(() => {
+        setSelectedAncestryMiscChoices({})
+    }, [ancestryItem])
+
+    useEffect(() => {
         resetAssignedStats()
         setChosenTrainings([])
         setChosenBonusSkills([])
@@ -266,6 +270,10 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
                     actor.update({ [`system.${selection}`]: true })
                 }
             }
+
+            Object.entries(selectedAncestryMiscChoices).forEach(([ruleId, choiceValue]) => {
+                addSelection(getRuleSet(ruleId), choiceValue)
+            })
 
             bonusStatSelections.forEach(selection => {
                 const targetRuleId = selection.id_index.split('_slot_')[0]
@@ -341,9 +349,9 @@ export const HeroCreationWorkflow = ({ actor, setClosed }: HeroCreatorArgs) => {
             setClosed()
 
             const features = ItemsCache.features()
-            const classFeats = actor.system.class.featureIds.map(id => features.find(f => f.uuid === id))
+            const classFeats = actor.system.class?.featureIds?.map(id => features.find(f => f.uuid === id))
 
-            if (classFeats.filter(f => f?.system?.rules.some(rule => rule.key === "ChoiceSet" && rule.pack === "alchemical")).length > 0) {
+            if (classFeats?.filter(f => f?.system?.rules.some(rule => rule.key === "ChoiceSet" && rule.pack === "alchemical")).length > 0) {
                 showConfirmationDialog({
                     title: "Alchemy Recipes",
                     description: "You can now select your prepared Alchemy Recipes. This menu can be accessed at any time from your Hero Record's Alchemy tab.",

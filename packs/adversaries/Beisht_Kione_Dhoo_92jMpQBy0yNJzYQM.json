@@ -329,7 +329,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -733,11 +736,6 @@
       "speed": "5' (Swim 50')"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "cold"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Bite",

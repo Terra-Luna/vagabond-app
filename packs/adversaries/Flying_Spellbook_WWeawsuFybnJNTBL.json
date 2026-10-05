@@ -275,7 +275,15 @@
           "spell": {
             "flatBonus": 0,
             "perDieBonus": 0
-          }
+          },
+          "immunities": ["poison"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": [
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -338,16 +346,6 @@
       "speed": "0' (Fly 30')"
     },
     "numberAppearing": "d6",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Freeze",

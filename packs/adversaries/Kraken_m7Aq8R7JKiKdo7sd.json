@@ -326,7 +326,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "shock"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -730,12 +733,6 @@
       "speed": "20' (Swim 60')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "cold",
-      "shock"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Lightning Bolt",

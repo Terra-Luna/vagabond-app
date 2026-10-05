@@ -32,6 +32,16 @@
         "level": 4,
         "value": true,
         "selector": "flags.murdermode"
+      },
+      {
+        "id": "AdDAs6oVcffAKcUD",
+        "key": "FlatModifier",
+        "label": "Status Immunities",
+        "level": 4,
+        "scale": 4,
+        "value": "charmed, confused, frightened",
+        "valueMultiplier": "",
+        "selector": "modifiers.damage.in.statusImmunities"
       }
     ],
     "level": 4,
@@ -48,9 +58,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.93",
+    "systemVersion": "0.1.103",
     "createdTime": 1789491420521,
-    "modifiedTime": 1790916153867,
+    "modifiedTime": 1791236664920,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

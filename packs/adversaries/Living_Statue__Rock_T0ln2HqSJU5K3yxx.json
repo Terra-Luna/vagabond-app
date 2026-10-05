@@ -440,7 +440,18 @@
               },
               "active": false
             }
-          }
+          },
+          "immunities": ["fire", "poison"],
+          "weaknesses": [
+            "blunt",
+            "cold"
+          ],
+          "statusImmunities": [
+            "blinded",
+            "fatigued",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -844,20 +855,6 @@
       "speed": "20'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "blunt",
-      "cold"
-    ],
-    "statusImmunities": [
-      "blinded",
-      "fatigued",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Magma Jet",

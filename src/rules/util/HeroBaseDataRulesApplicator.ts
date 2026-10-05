@@ -125,7 +125,7 @@ export class HeroBaseDataRulesApplicator {
             const paths = selector.split(",")
 
             paths.forEach(path => {
-                const currentValue = foundry.utils.getProperty(actor.system, path)
+                const currentValue = foundry.utils.getProperty(actor.system, path) ?? foundry.utils.getProperty(actor.system, path.split(".").slice(0, -1).join("."))
                 const multiplierValue = foundry.utils.getProperty(actor.system, rule.valueMultiplier) as number
                 const scale = rule.scale > 0
                     ? calculateRecurringRuleScale(actor.system.level.current ?? 1, rule.level, rule.scale)
@@ -167,6 +167,15 @@ export class HeroBaseDataRulesApplicator {
                 else if (isPathOfType(actor.system, path, "number")) {
                     const currentValue = foundry.utils.getProperty(actor.system, path)
                     foundry.utils.setProperty(actor.system, path, currentValue + rule.value)
+                }
+                else if (isPathOfType(actor.system, path, "array")) {
+                    const segments = path.split(".")
+                    const value = segments.pop()
+                    const arrayPath = segments.join(".")
+                    const values = foundry.utils.getProperty(actor.system, arrayPath) as any[]
+                    if (value && !values.includes(value)) {
+                        foundry.utils.setProperty(actor.system, arrayPath, [...values, value])
+                    }
                 }
                 else {
                     foundry.utils.setProperty(actor.system, path, rule.value)

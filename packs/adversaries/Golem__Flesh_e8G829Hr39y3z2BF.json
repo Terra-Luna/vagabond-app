@@ -355,7 +355,17 @@
           "spell": {
             "flatBonus": 0,
             "perDieBonus": 0
-          }
+          },
+          "immunities": ["physical_lt0", "cold", "shock", "poison"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "paralyzed",
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -426,21 +436,6 @@
       "speed": "20'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "physical_lt0",
-      "cold",
-      "shock",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "paralyzed",
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Slam",

@@ -223,12 +223,12 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         return state
     }
 
-    toggleItemRule = async (item: any) => {
+    toggleItemRule = async (item: any, stateOverride?: boolean) => {
         const itemId = item.id?.split('.').pop() || item._sourceId?.split('.').pop() || undefined
         if (!itemId) return
 
         const activeEffectFlag = removeWhitespace(`${item.name ?? item.parent.name}_${itemId}`)
-        const state = this.getRuleToggleState(itemId)
+        const state = stateOverride ?? this.getRuleToggleState(itemId)
 
         if (state) {
             try {

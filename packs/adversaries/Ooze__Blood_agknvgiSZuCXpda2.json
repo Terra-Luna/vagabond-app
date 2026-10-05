@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid", "pierce"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "blinded",
+            "charmed",
+            "fatigued",
+            "frightened",
+            "prone"
+          ]
         },
         "out": {
           "melee": {
@@ -733,18 +742,6 @@
       "speed": "10' (Cling)"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "acid",
-      "pierce"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "blinded",
-      "charmed",
-      "fatigued",
-      "frightened",
-      "prone"
-    ],
     "actions": [
       {
         "name": "Pseudopod",

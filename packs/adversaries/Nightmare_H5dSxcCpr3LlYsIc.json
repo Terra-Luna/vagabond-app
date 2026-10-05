@@ -328,7 +328,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "poison"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,12 +735,6 @@
       "speed": "50' (Fly)"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Bite",

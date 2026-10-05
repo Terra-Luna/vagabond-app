@@ -328,7 +328,20 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical_lt0", "poison"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "fatigued",
+            "frightened",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,22 +745,6 @@
       "speed": "25'"
     },
     "numberAppearing": "2d4",
-    "dmgImmunities": [
-      "physical_lt0",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "fatigued",
-      "frightened",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Glare",

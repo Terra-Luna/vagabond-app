@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "physical_lt0", "poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "fatigued",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,19 +742,6 @@
       "speed": "0' (Fly 30')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "fire",
-      "physical_lt0",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "fatigued",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Flame",

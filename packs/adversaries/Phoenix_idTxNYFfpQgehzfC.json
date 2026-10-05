@@ -328,7 +328,17 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "physical_lt0"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "confused",
+            "paralyzed",
+            "restrained",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,19 +742,6 @@
       "speed": "50' (Fly 150')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "fire",
-      "physical_lt0"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "confused",
-      "paralyzed",
-      "restrained",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Resurrect",

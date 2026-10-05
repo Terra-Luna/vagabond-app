@@ -329,7 +329,13 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "fire",
+            "poison"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -733,12 +739,6 @@
       "speed": "10'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "fire",
-      "poison"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Whorl",

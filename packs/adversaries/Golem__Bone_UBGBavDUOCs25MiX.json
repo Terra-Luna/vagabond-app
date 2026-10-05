@@ -355,7 +355,19 @@
           "spell": {
             "flatBonus": 0,
             "perDieBonus": 0
-          }
+          },
+          "immunities": ["physical", "poison"],
+          "weaknesses": [
+            "blunt",
+            "silvered"
+          ],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "paralyzed",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -426,21 +438,6 @@
       "speed": "30'"
     },
     "numberAppearing": "d2",
-    "dmgImmunities": [
-      "physical",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "blunt",
-      "silvered"
-    ],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "paralyzed",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Cutlass",

@@ -331,7 +331,19 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "fire", "poison", "shock"],
+          "weaknesses": [
+            "silvered"
+          ],
+          "statusImmunities": [
+            "charmed",
+            "confused",
+            "frightened",
+            "paralyzed",
+            "restrained",
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -735,23 +747,6 @@
       "speed": "Speed: 60' (Fly, Phase)"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "cold",
-      "fire",
-      "poison",
-      "shock"
-    ],
-    "dmgWeaknesses": [
-      "silvered"
-    ],
-    "statusImmunities": [
-      "charmed",
-      "confused",
-      "frightened",
-      "paralyzed",
-      "restrained",
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Scythe",

@@ -442,7 +442,16 @@
               },
               "active": false
             }
-          }
+          },
+          "immunities": ["poison"],
+          "weaknesses": [
+            "blunt"
+          ],
+          "statusImmunities": [
+            "fatigued",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -846,17 +855,6 @@
       "speed": "25'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "blunt"
-    ],
-    "statusImmunities": [
-      "fatigued",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Dance of Death",

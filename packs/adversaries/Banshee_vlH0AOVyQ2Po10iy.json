@@ -330,7 +330,19 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "physical_lt0", "poison", "shock"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "frightened",
+            "paralyzed",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -734,23 +746,6 @@
       "speed": "Fly 40', Phase"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "cold",
-      "physical_lt0",
-      "poison",
-      "shock"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "frightened",
-      "paralyzed",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Wail",

@@ -326,7 +326,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "poison"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -730,12 +733,6 @@
       "speed": "10' (Cling)"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Flail",

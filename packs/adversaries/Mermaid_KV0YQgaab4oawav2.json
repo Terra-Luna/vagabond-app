@@ -327,7 +327,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "shock"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -731,12 +734,6 @@
       "speed": "10' (Swim 40')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "cold",
-      "shock"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Call Terror",

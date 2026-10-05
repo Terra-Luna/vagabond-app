@@ -329,7 +329,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -733,11 +736,6 @@
       "speed": "30' (Fly 80')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "fire"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Wall of Fire",

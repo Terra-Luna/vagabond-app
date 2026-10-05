@@ -326,7 +326,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid", "cold", "poison"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -730,15 +735,6 @@
       "speed": "0"
     },
     "numberAppearing": "2d10",
-    "dmgImmunities": [
-      "acid",
-      "cold",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Bite",

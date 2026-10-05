@@ -114,7 +114,7 @@ export abstract class Attack {
     protected shouldApplyDamageToTarget(targetId: string): boolean {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (actor?.system instanceof AdversaryDataModel) {
-            const immunities = actor.system.dmgImmunities ?? []
+            const immunities = actor.system.modifiers.damage.in.immunities ?? []
             if (immunities.includes(this.damageRoll?.dmgType ?? '')) return false
         }
         return true
@@ -122,12 +122,15 @@ export abstract class Attack {
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        const damage = this.damageRoll?.result?.total ?? 0
+        const aSys = actor?.system as any
+        const isResistant = aSys?.modifiers?.damage?.in?.resistances?.includes(this.damageRoll?.dmgType)
+        const perDieMit = (aSys?.modifiers?.damage?.in?.perDieReduction ?? 0) * (this.damageRoll?.result?.rollSummaries?.filter(it => !it.rerolled).length ?? 0)
+        const damage = isResistant ? Math.floor((this.damageRoll?.result?.total ?? 0) / 2) : this.damageRoll?.result?.total ?? 0
         const target = actor?.system
         const armorRating = (target as any)?.armor?.rating ?? 0
         const armorPiercing = this.damageRoll?.result?.armorPiercing ?? 0
         const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
-        return Math.max(0, damage - armor)
+        return Math.max(0, damage - armor - perDieMit)
     }
 
     protected get isCriticalHit(): boolean { return false }
@@ -144,7 +147,7 @@ export abstract class Attack {
 
             for (const eff of this.appliedEffects) {
                 if (actor?.system instanceof AdversaryDataModel) {
-                    const immunities = actor.system.statusImmunities ?? []
+                    const immunities = actor.system.modifiers.damage.in.statusImmunities
                     if (immunities.includes(eff.effect ?? '')) continue
                 }
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
@@ -177,7 +180,7 @@ export abstract class Attack {
     }
 
     protected getHP(target) {
-        return target.health.value
+        return target?.health?.value
     }
 
     protected async updateHP(target, hp) {
@@ -185,11 +188,11 @@ export abstract class Attack {
             const currentHp = this.getHP(target) ?? 0
             const diff = hp - currentHp
             if (diff !== 0) {
-                const actor = target.parent
+                const actor = target?.parent
                 const token = actor ? (actor.getActiveTokens()[0] ?? actor) : null
                 showFloatingText(token ?? target, Math.abs(diff), { isHealing: diff > 0 })
             }
-            await target.parent.update({ "system.health.value": hp })
+            await target?.parent?.update({ "system.health.value": hp })
         }
     }
 

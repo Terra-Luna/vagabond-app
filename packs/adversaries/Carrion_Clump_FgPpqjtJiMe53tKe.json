@@ -328,7 +328,17 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison"],
+          "weaknesses": [
+            "acid"
+          ],
+          "statusImmunities": [
+            "charmed",
+            "fatigued",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,18 +742,6 @@
       "speed": "10'"
     },
     "numberAppearing": "d6",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "acid"
-    ],
-    "statusImmunities": [
-      "charmed",
-      "fatigued",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Viscera Sling",

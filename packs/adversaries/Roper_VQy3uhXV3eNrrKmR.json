@@ -328,7 +328,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "shock"],
+          "weaknesses": [
+            "blunt"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,14 +737,6 @@
       "speed": "10' (Climb, Cling)"
     },
     "numberAppearing": "d3",
-    "dmgImmunities": [
-      "cold",
-      "shock"
-    ],
-    "dmgWeaknesses": [
-      "blunt"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Bite",

@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": [
+            "blinded",
+            "fatigued",
+            "prone"
+          ]
         },
         "out": {
           "melee": {
@@ -733,17 +742,6 @@
       "speed": "5'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "acid"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [
-      "blinded",
-      "fatigued",
-      "prone"
-    ],
     "actions": [
       {
         "name": "Pseudopod",

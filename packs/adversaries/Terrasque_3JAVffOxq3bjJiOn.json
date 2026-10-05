@@ -328,7 +328,17 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "fire", "physical_lt0", "shock"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "confused",
+            "frightened",
+            "paralyzed",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,21 +742,6 @@
       "speed": "120' (Swim)"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "cold",
-      "fire",
-      "physical_lt0",
-      "shock"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "confused",
-      "frightened",
-      "paralyzed",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Claw",

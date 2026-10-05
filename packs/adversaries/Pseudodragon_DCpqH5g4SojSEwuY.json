@@ -329,7 +329,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "shock"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -733,11 +738,6 @@
       "speed": "10' (Fly 30')"
     },
     "numberAppearing": "d6",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "shock"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Stinger",

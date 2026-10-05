@@ -329,7 +329,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold", "fire"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -733,12 +736,6 @@
       "speed": "20' (Swim)"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "cold",
-      "fire"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Slam",

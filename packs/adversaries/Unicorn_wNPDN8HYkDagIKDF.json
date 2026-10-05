@@ -330,7 +330,14 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "confused",
+            "frightened"
+          ]
         },
         "out": {
           "melee": {
@@ -734,13 +741,6 @@
       "speed": "80'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "confused",
-      "frightened"
-    ],
     "actions": [
       {
         "name": "Hoof",

@@ -353,7 +353,16 @@
           "spell": {
             "flatBonus": 0,
             "perDieBonus": 0
-          }
+          },
+          "immunities": ["poison", "psychic"],
+          "weaknesses": [
+            "blunt"
+          ],
+          "statusImmunities": [
+            "fatigued",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -425,18 +434,6 @@
       "speed": "15' (Fly 30')"
     },
     "numberAppearing": "1d4",
-    "dmgImmunities": [
-      "poison",
-      "psychic"
-    ],
-    "dmgWeaknesses": [
-      "blunt"
-    ],
-    "statusImmunities": [
-      "fatigued",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Bite",

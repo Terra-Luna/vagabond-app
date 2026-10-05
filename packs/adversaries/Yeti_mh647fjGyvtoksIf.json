@@ -328,7 +328,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["cold"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,13 +737,6 @@
       "speed": "40' (Climb)"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "cold"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Terror Glare",

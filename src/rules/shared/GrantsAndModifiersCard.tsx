@@ -13,19 +13,23 @@ export const EffectCardContainer = ({ children }) => {
     )
 }
 
-export const GrantsAndModifiersCard = ({ actor, rule, isActive = true }) => {
+export const GrantsAndModifiersCard = ({ rule, isActive = true }) => {
 
     const items = ItemsCache.items
 
     const cleanSelectionName = (path?: string) => {
         if (!path) return ""
         if (path.includes("skills.")) {
-            const skillKey = path.replace(".trained", "").split(".").reverse()[0]
+            const skillKey = path.replace(".trained", "").split(".").pop() ?? ""
             return appLang.Skills[skillKey]?.name ?? skillKey
         }
         else if (path.includes("stats.")) {
-            const statKey = path.split(".").reverse()[0]
+            const statKey = path.split(".").pop() ?? ""
             return appLang.Stat[statKey]?.name ?? statKey
+        }
+        else if (path.includes("resistances.")) {
+            const resistanceKey = path.split(".").pop() ?? ""
+            return appLang.DamageTypes[resistanceKey] ?? resistanceKey.toUpperCase()
         }
         else {
             return items.get(path)?.name ?? path

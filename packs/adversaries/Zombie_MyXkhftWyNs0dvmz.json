@@ -328,7 +328,20 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison"],
+          "weaknesses": [
+            "shock"
+          ],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "fatigued",
+            "frightened",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -732,21 +745,6 @@
       "speed": "20' (Swim)"
     },
     "numberAppearing": "3d8",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "shock"
-    ],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "fatigued",
-      "frightened",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Bite",

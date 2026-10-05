@@ -326,7 +326,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -730,9 +733,6 @@
       "speed": "50'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "description": "<p><span style=\"white-space: pre-wrap;\">[Melee Attack]: 5 (2d4)</span></p>",

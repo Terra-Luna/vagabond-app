@@ -328,7 +328,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,11 +735,6 @@
       "speed": "30' (Fly 60')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "acid"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Breath Attack",

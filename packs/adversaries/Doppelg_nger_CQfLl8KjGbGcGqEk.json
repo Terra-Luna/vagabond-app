@@ -327,7 +327,13 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -731,12 +737,6 @@
       "speed": "30'"
     },
     "numberAppearing": "d6",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Shapechange",

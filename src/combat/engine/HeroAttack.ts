@@ -617,7 +617,7 @@ export class HeroAttack extends Attack {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
 
         if (actor?.system instanceof AdversaryDataModel) {
-            const immunities = actor.system.dmgImmunities ?? []
+            const immunities = actor.system.modifiers.damage.in.immunities ?? []
 
             if (!this.isSpellAttack && ["physical", "blunt", "slash", "pierce"].includes(this.damageRoll?.dmgType ?? "")) {
                 if (immunities.some(i => i.includes("physical_lt"))) {

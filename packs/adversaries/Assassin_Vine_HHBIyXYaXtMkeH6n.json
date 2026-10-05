@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "fire",
+            "poison",
+            "slash"
+          ],
+          "statusImmunities": [
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -733,15 +742,6 @@
       "speed": "5'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "fire",
-      "poison",
-      "slash"
-    ],
-    "statusImmunities": [
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Constrain",

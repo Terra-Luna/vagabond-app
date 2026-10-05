@@ -44,6 +44,8 @@ export const useClassSelection = (navButtons: ReactNode[]) => {
                     options={classOpts ?? []}
                     onChange={onSelectClass}
                 />
+
+
                 {classItem &&
                     <EditModeContextProvider initialEditMode={EditModeOptions.NEVER}>
                         <ClassSheetComponent item={classItem} />

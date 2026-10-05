@@ -440,7 +440,15 @@
               },
               "active": false
             }
-          }
+          },
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "blinded",
+            "fatigued",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -844,16 +852,6 @@
       "speed": "10'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "blinded",
-      "fatigued",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Weapon",

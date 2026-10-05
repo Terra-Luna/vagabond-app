@@ -328,7 +328,12 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "poison"],
+          "weaknesses": [
+            "cold"
+          ],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,14 +737,6 @@
       "speed": "40'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [
-      "cold"
-    ],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Hellfire",

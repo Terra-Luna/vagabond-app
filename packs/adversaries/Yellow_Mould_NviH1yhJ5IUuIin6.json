@@ -330,7 +330,23 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["acid", "cold", "physical", "poison", "shock"],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "fatigued",
+            "frightened",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -734,28 +750,6 @@
       "speed": "0"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "acid",
-      "cold",
-      "physical",
-      "poison",
-      "shock"
-    ],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "fatigued",
-      "frightened",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Spore Cloud",

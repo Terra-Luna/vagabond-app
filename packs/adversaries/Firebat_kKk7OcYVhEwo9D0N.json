@@ -329,7 +329,13 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "fatigued",
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -733,15 +739,6 @@
       "speed": "40' (Fly)"
     },
     "numberAppearing": "2d6",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "fatigued",
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Bite",

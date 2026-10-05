@@ -328,7 +328,14 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "charmed",
+            "paralyzed",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -732,15 +739,6 @@
       "speed": "30' (Swim)"
     },
     "numberAppearing": "2d12",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "charmed",
-      "paralyzed",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Claw",

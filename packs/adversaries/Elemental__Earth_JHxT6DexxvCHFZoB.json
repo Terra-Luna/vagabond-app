@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison", "shock"],
+          "weaknesses": [
+            "blunt"
+          ],
+          "statusImmunities": [
+            "fatigued",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,18 +742,6 @@
       "speed": "30'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "poison",
-      "shock"
-    ],
-    "dmgWeaknesses": [
-      "blunt"
-    ],
-    "statusImmunities": [
-      "fatigued",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Strike",

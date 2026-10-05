@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "frightened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,17 +742,6 @@
       "speed": "60' (Fly 160')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "physical"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "frightened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Claw",

@@ -330,7 +330,14 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": [],
+          "weaknesses": [
+            "fire"
+          ],
+          "statusImmunities": [
+            "sickened"
+          ]
         },
         "out": {
           "melee": {
@@ -734,13 +741,6 @@
       "speed": "5'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [],
-    "dmgWeaknesses": [
-      "fire"
-    ],
-    "statusImmunities": [
-      "sickened"
-    ],
     "actions": [
       {
         "name": "Tendril",

@@ -328,7 +328,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical_lt0"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -732,11 +735,6 @@
       "speed": "10' (Fly 30')"
     },
     "numberAppearing": "d6",
-    "dmgImmunities": [
-      "physical_lt0"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Sabotage",

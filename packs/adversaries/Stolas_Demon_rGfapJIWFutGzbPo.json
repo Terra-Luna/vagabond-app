@@ -329,7 +329,10 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["fire", "physical_lt0", "poison"],
+          "weaknesses": [],
+          "statusImmunities": []
         },
         "out": {
           "melee": {
@@ -733,13 +736,6 @@
       "speed": "40' (Cling; Fly 160')"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "fire",
-      "physical_lt0",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [],
     "actions": [
       {
         "name": "Peer Beyond",

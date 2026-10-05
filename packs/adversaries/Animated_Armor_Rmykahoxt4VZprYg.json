@@ -242,7 +242,18 @@
           "attack": 0,
           "attackPerDie": 0,
           "spell": 0,
-          "spellPerDie": 0
+          "spellPerDie": 0,
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "blinded",
+            "charmed",
+            "fatigued",
+            "frightened",
+            "paralyzed",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "all": 0,
@@ -282,19 +293,6 @@
       "speed": "30'"
     },
     "numberAppearing": "1d4",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "blinded",
-      "charmed",
-      "fatigued",
-      "frightened",
-      "paralyzed",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Weapon",

@@ -30,9 +30,11 @@ export const getCanvasToken = (id): Token | undefined => {
     return canvas?.tokens?.get(id)
 }
 
-export const isPathOfType = (obj: any, path: string, expectedType: "string" | "number" | "boolean" | "object"): boolean => {
-    const value = foundry.utils.getProperty(obj, path)
-    return typeof value === expectedType
+export const isPathOfType = (obj: any, path: string, expectedType: "string" | "number" | "boolean" | "object" | "array"): boolean => {
+    const value = foundry.utils.getProperty(obj, path) ?? foundry.utils.getProperty(obj, path.split(".").slice(0, -1).join(".") ?? "")
+    return expectedType === "array"
+        ? Array.isArray(value)
+        : typeof value === expectedType
 }
 
 /**

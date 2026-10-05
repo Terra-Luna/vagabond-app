@@ -96,8 +96,6 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
         }
     }, [attack])
 
-    const showGMApplyButton = attack instanceof HeroAttack
-
     return (
         <div className={`${attack?.isResolved ? 'opacity-90 grayscale-[85%]' : ''}`}>
             {actor && attack && <BaseChatCardHost
@@ -150,7 +148,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
 
                                         {/* GM TOOL BUTTONS FOR MANAGING OUTCOMES */}
                                         <div className="flex flex-col gap-1 mt-1">
-                                            {showGMApplyButton && (attack.showDamage || attack.appliedEffects.length > 0) &&
+                                            {(attack.showDamage || attack.appliedEffects.length > 0) &&
                                                 <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(

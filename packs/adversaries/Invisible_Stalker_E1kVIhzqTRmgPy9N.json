@@ -329,7 +329,18 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "fatigued",
+            "paralyzed",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating",
+            "unconscious"
+          ]
         },
         "out": {
           "melee": {
@@ -733,19 +744,6 @@
       "speed": "40'"
     },
     "numberAppearing": "d4",
-    "dmgImmunities": [
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "fatigued",
-      "paralyzed",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating",
-      "unconscious"
-    ],
     "actions": [
       {
         "name": "Blow",

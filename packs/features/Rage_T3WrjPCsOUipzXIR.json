@@ -31,6 +31,15 @@
         "value": "2",
         "selector": "modifiers.damage.out.melee.dice.size.bonus, modifiers.damage.out.brawl.dice.size.bonus, modifiers.damage.out.finesse.dice.size.bonus",
         "toggleableEffect": true
+      },
+      {
+        "id": "xe1db9UR9f672H70",
+        "key": "FlatModifier",
+        "label": "Per-die Mitigation",
+        "level": 1,
+        "value": "1",
+        "selector": "modifiers.damage.in.perDieReduction",
+        "toggleableEffect": true
       }
     ],
     "level": 1,
@@ -47,9 +56,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.93",
+    "systemVersion": "0.1.103",
     "createdTime": 1789491073903,
-    "modifiedTime": 1790917417704,
+    "modifiedTime": 1791234987782,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

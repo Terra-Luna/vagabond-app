@@ -440,7 +440,18 @@
               },
               "active": false
             }
-          }
+          },
+          "immunities": ["fire", "poison"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
+            "frightened",
+            "paralyzed",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -844,20 +855,6 @@
       "speed": "50'"
     },
     "numberAppearing": "1",
-    "dmgImmunities": [
-      "fire",
-      "poison"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "berserk",
-      "charmed",
-      "confused",
-      "frightened",
-      "paralyzed",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Slam",

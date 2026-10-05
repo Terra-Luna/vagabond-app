@@ -329,7 +329,16 @@
         "in": {
           "flatReduction": 0,
           "perDieReduction": 0,
-          "resistances": []
+          "resistances": [],
+          "immunities": ["physical_lt0", "poison", "shock"],
+          "weaknesses": [],
+          "statusImmunities": [
+            "fatigued",
+            "prone",
+            "restrained",
+            "sickened",
+            "suffocating"
+          ]
         },
         "out": {
           "melee": {
@@ -733,19 +742,6 @@
       "speed": "40' (Fly)"
     },
     "numberAppearing": "d8",
-    "dmgImmunities": [
-      "physical_lt0",
-      "poison",
-      "shock"
-    ],
-    "dmgWeaknesses": [],
-    "statusImmunities": [
-      "fatigued",
-      "prone",
-      "restrained",
-      "sickened",
-      "suffocating"
-    ],
     "actions": [
       {
         "name": "Whirlwind",
