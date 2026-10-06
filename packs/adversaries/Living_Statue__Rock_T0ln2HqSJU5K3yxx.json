@@ -441,7 +441,10 @@
               "active": false
             }
           },
-          "immunities": ["fire", "poison"],
+          "immunities": [
+            "fire",
+            "poison"
+          ],
           "weaknesses": [
             "blunt",
             "cold"

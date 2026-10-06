@@ -331,7 +331,12 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["cold", "physical_lt0", "poison", "shock"],
+          "immunities": [
+            "cold",
+            "physical_lt0",
+            "poison",
+            "shock"
+          ],
           "weaknesses": [],
           "statusImmunities": [
             "charmed",

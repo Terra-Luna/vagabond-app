@@ -330,7 +330,11 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["acid", "cold", "fire"],
+          "immunities": [
+            "acid",
+            "cold",
+            "fire"
+          ],
           "weaknesses": [
             "shock"
           ],

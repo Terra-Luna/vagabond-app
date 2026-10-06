@@ -5,7 +5,16 @@
   "img": "icons/magic/holy/barrier-shield-winged-blue.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You can’t be Blinded, Paralyzed, or Sickened. Targets of your Lay on Hands Ability are cured of these Statuses.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "ip8UZoUHxJ5DlBWl",
+        "key": "FlatModifier",
+        "label": "Status Immunities",
+        "level": 6,
+        "value": "blinded, paralyzed, sickened",
+        "selector": "modifiers.damage.in.statusImmunities"
+      }
+    ],
     "level": 6,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +30,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789503551187,
-    "modifiedTime": 1789521719843,
+    "modifiedTime": 1791246720204,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

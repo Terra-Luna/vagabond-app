@@ -354,7 +354,10 @@
             "flatBonus": 0,
             "perDieBonus": 0
           },
-          "immunities": ["poison", "psychic"],
+          "immunities": [
+            "poison",
+            "psychic"
+          ],
           "weaknesses": [
             "blunt"
           ],

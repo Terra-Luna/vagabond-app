@@ -35,7 +35,7 @@ export const modifierSchema = () => {
         }),
 
         damage: new fields.SchemaField({
-            in: new fields.SchemaField({ ...damageReductionSchema() }),
+            in: new fields.SchemaField({ ...damageInSchema() }),
             out: new fields.SchemaField({
                 global: new fields.SchemaField({ ...damageOutSchema() }),
                 melee: new fields.SchemaField({ ...damageOutSchema() }),
@@ -73,6 +73,11 @@ export const modifierSchema = () => {
             })
         }),
 
+        combat: new fields.SchemaField({
+            constant: new fields.SchemaField({ ...combatModifiersSchema() }),
+            roundOne: new fields.SchemaField({ ...combatModifiersSchema() })
+        }),
+
         downtime: new fields.SchemaField({
             breather: new fields.SchemaField({
                 removeFatigue: new fields.NumberField({ ...requiredInteger, initial: 0 }),
@@ -96,7 +101,6 @@ const skillModifierSchema = () => {
     }
 }
 
-// modifiers.damage.out[skill]...
 const damageOutSchema = () => {
     return {
         ...baseDamageOutSchema(),
@@ -169,25 +173,54 @@ const extraDiceModSchema = () => {
     }
 }
 
-const damageReductionSchema = () => {
+const damageInSchema = () => {
     return {
-        flatReduction: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
-        perDieReduction: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        // Flat damage reduction
+        flatReduction: new fields.SchemaField({ ...damageReductionByTypeSchema() }),
+        // Per-die damage reduction
+        perDieReduction: new fields.SchemaField({ ...damageReductionByTypeSchema() }),
+        // Damage immunities
         immunities: new fields.ArrayField(
             new fields.StringField({ ...damageImmunityTypeOptions() }),
             { initial: [] }
         ),
+        // Extra damage die
         weaknesses: new fields.ArrayField(
             new fields.StringField({ ...requiredString, choices: Object.keys(appLang.DamageTypes) }),
             { initial: [] }
         ),
+        // Half damage
         resistances: new fields.ArrayField(
             new fields.StringField({ ...requiredString, choices: Object.keys(appLang.DamageTypes) }),
             { initial: [] }
         ),
+        // Status effect immunities
         statusImmunities: new fields.ArrayField(
             new fields.StringField({ ...requiredString, choices: Object.keys(appLang.StatusConditions) }),
             { initial: [] }
         )
+    }
+}
+
+const damageReductionByTypeSchema = () => {
+    return {
+        global: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        physical: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        magical: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        acid: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        cold: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        fire: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        shock: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        necrotic: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        poison: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
+        psychic: new fields.NumberField({ ...uncappedInteger, initial: 0 })
+    }
+}
+
+const combatModifiersSchema = () => {
+    return {
+        speed: new fields.SchemaField({
+            turn: new fields.NumberField({ ...requiredInteger, initial: 0 })
+        })
     }
 }

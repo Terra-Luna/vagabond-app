@@ -327,7 +327,10 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["cold", "shock"],
+          "immunities": [
+            "cold",
+            "shock"
+          ],
           "weaknesses": [],
           "statusImmunities": []
         },

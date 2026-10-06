@@ -329,7 +329,10 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["fire", "poison"],
+          "immunities": [
+            "fire",
+            "poison"
+          ],
           "weaknesses": [],
           "statusImmunities": [
             "sickened"

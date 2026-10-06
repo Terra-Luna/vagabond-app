@@ -327,7 +327,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["blunt"],
+          "immunities": [
+            "blunt"
+          ],
           "weaknesses": [],
           "statusImmunities": []
         },

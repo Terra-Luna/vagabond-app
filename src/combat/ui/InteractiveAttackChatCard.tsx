@@ -39,8 +39,9 @@ import { SpellAttackInfoComponent } from "./SpellAttackInfoComponent"
 
 export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: string, attackId: string }) => {
     const [revision, setRevision] = useState(0)
-    const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
+    const [flanked, setFlanked] = useState<boolean>(false)
     const [targetsToggle, setTargetsToggle] = useState<boolean>(false)
+    const [armorBypassToggle, setArmorBypassToggle] = useState<boolean>(false)
 
     /**
      * This side-effect is responsible for responsive UI elements
@@ -135,6 +136,11 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                     <div className="flex items-end justify-between px-1">
                                         <div>
                                             <Checkbox
+                                                label={"Flanked"}
+                                                checked={flanked}
+                                                onCheckedChanged={(e) => { setFlanked(e) }}
+                                            />
+                                            <Checkbox
                                                 label={"GM Target Override"}
                                                 checked={targetsToggle}
                                                 onCheckedChanged={(e) => { setTargetsToggle(e) }}
@@ -152,7 +158,7 @@ export const InteractiveAttackChatCard = ({ actorId, attackId }: { actorId: stri
                                                 <InteractiveChatCardButton label="Apply" tooltip="Apply damage, effects, & lock attack from edits."
                                                     fn={async () => {
                                                         await attack.applyDamageAndResolve(
-                                                            { bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
+                                                            { flanked: flanked, bypassArmor: armorBypassToggle, gmTargetsOnly: targetsToggle },
                                                             serializeAttack
                                                         )
                                                         setRevision(prev => prev + 1)

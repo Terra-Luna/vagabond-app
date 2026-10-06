@@ -1,6 +1,6 @@
-import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper";
-import { CombatGroup } from "../../model/combat/VagabondCombatant";
-import { sys_id } from "../../utils/foundryUtils";
+import { getCountdowns } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
+import { CombatGroup } from "../../model/combat/VagabondCombatant"
+import { sys_id } from "../../utils/foundryUtils"
 
 export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> extends Combat<SubType> {
     protected override async _preCreate(...[data, options, user]: Parameters<Combat["_preCreate"]>): Promise<boolean | void> {
@@ -8,6 +8,28 @@ export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> ext
         this.updateSource({ turn: null })
 
         return super._preCreate(data, options, user)
+    }
+
+    protected override _onUpdate(changed: any, options: any, userId: string): void {
+        super._onUpdate(changed, options, userId)
+        if ("round" in changed) this.refreshCombatantActors()
+    }
+
+    protected override _onDelete(options: any, userId: string): void {
+        super._onDelete(options, userId)
+        this.refreshCombatantActors()
+    }
+
+    /**
+     * Combat modifiers depend on the combat round, so actors must re-derive their data when it changes.
+     */
+    refreshCombatantActors() {
+        for (const c of this.combatants) {
+            const actor = c.actor
+            if (!actor) continue
+            actor.reset()
+            actor.render()
+        }
     }
 
     callAllHooks(name, updateData, updateOptions = {}) {
@@ -19,23 +41,23 @@ export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> ext
      * Set all combatants to their max activations
      */
     async resetActivations(): Promise<any> {
-        const skipDefeated = this.settings.skipDefeated;
+        const skipDefeated = this.settings.skipDefeated
         const updates = this.combatants.map(c => {
             return {
                 _id: c.id,
                 "system.activations.value": skipDefeated && c.isDefeated ? 0 : ((c as VagabondCombatant).activations.max ?? 0),
-            };
-        });
-        return this.updateEmbeddedDocuments("Combatant", updates);
+            }
+        })
+        return this.updateEmbeddedDocuments("Combatant", updates)
     }
 
     override async startCombat(): Promise<this> {
-        this._playCombatSound("startEncounter");
-        const updateData = { round: 1, turn: null };
-        this.callAllHooks("combatStart", updateData);
-        await this.resetActivations();
-        await this.update(updateData);
-        return this;
+        this._playCombatSound("startEncounter")
+        const updateData = { round: 1, turn: null }
+        this.callAllHooks("combatStart", updateData)
+        await this.resetActivations()
+        await this.update(updateData)
+        return this
     }
 
     getVagabondFlag(flagName) {
@@ -63,36 +85,36 @@ export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> ext
     }
 
     deactivateCombatant(id: string) {
-        const turn = this.turns.findIndex(t => t.id === id);
-        if (turn !== this.turn) return this;
+        const turn = this.turns.findIndex(t => t.id === id)
+        if (turn !== this.turn) return this
         return this.nextTurn()
     }
 
     override async nextTurn(): Promise<this> {
-        const updateData = { turn: null };
-        const updateOptions = { advanceTime: 0, direction: 0 };
-        this.callAllHooks("combatTurn", updateData, updateOptions);
-        await this.update(updateData, updateOptions as any);
-        return this;
+        const updateData = { turn: null }
+        const updateOptions = { advanceTime: 0, direction: 0 }
+        this.callAllHooks("combatTurn", updateData, updateOptions)
+        await this.update(updateData, updateOptions as any)
+        return this
     }
 
     override async nextRound(): Promise<this> {
-        await this.resetActivations();
-        const updateData = { round: this.round + 1, turn: null };
-        const updateOptions = { direction: 1 }; // note - we're not doing advanceTime here, we may want to? Lancer does
-        this.callAllHooks("combatRound", updateData, updateOptions);
-        await this.update(updateData, updateOptions as any);
-        return this;
+        await this.resetActivations()
+        const updateData = { round: this.round + 1, turn: null }
+        const updateOptions = { direction: 1 } // note - we're not doing advanceTime here, we may want to? Lancer does
+        this.callAllHooks("combatRound", updateData, updateOptions)
+        await this.update(updateData, updateOptions as any)
+        return this
     }
 
     override async previousRound(): Promise<this> {
-        await this.resetActivations();
-        const round = Math.max(this.round - 1, 0);
-        const updateData = { round, turn: null };
-        const updateOptions = { direction: -1 };
-        this.callAllHooks("combatRound", updateData, updateOptions);
-        await this.update(updateData, updateOptions as any);
-        return this;
+        await this.resetActivations()
+        const round = Math.max(this.round - 1, 0)
+        const updateData = { round, turn: null }
+        const updateOptions = { direction: -1 }
+        this.callAllHooks("combatRound", updateData, updateOptions)
+        await this.update(updateData, updateOptions as any)
+        return this
     }
 }
 
@@ -100,8 +122,8 @@ export class VagabondCombat<SubType extends Combat.SubType = Combat.SubType> ext
  * Interface for the activations object
  */
 interface Activations {
-    max?: number;
-    value?: number;
+    max?: number
+    value?: number
 }
 
 /**
@@ -116,11 +138,11 @@ export class VagabondCombatant<T extends Combatant.SubType = "base"> extends Com
      * The current activation data for the combatant.
      */
     get activations(): Activations {
-        return (this.system as any).activations;
+        return (this.system as any).activations
     }
 
     get combatGroup(): CombatGroup {
-        return (this.system as any).combatGroup;
+        return (this.system as any).combatGroup
     }
 
     updateBurningStatus() {

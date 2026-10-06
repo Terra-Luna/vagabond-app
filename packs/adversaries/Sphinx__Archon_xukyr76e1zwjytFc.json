@@ -330,7 +330,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["physical"],
+          "immunities": [
+            "physical"
+          ],
           "weaknesses": [],
           "statusImmunities": [
             "berserk",

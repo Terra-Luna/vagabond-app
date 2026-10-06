@@ -276,7 +276,9 @@
             "flatBonus": 0,
             "perDieBonus": 0
           },
-          "immunities": ["poison"],
+          "immunities": [
+            "poison"
+          ],
           "weaknesses": [
             "fire"
           ],

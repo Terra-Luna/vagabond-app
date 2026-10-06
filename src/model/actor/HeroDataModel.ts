@@ -343,6 +343,22 @@ export function setSpeeds(hero: HeroDataModel) {
         hero.speed.crawl += hero.speed.turn * 3
         hero.speed.travel += 7
     }
+
+    hero.speed.turn += getActiveCombatModifiers(hero).speed.turn
+}
+
+export function getActiveCombatModifiers(hero: HeroDataModel) {
+    const result = { speed: { turn: 0 } }
+    const actorId = hero.parent?.id
+    const combat = actorId
+        ? game.combats?.find(c => c.started && c.combatants.some(cb => cb.actorId === actorId))
+        : undefined
+    if (!combat) return result
+
+    const mods = hero.modifiers?.combat
+    result.speed.turn += mods?.constant?.speed?.turn ?? 0
+    if (combat.round === 1) result.speed.turn += mods?.roundOne?.speed?.turn ?? 0
+    return result
 }
 
 export function setSkillDifficulties(hero: HeroDataModel) {

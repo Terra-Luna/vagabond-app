@@ -329,7 +329,9 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["poison"],
+          "immunities": [
+            "poison"
+          ],
           "weaknesses": [],
           "statusImmunities": [
             "berserk",

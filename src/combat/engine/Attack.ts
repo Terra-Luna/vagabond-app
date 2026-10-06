@@ -1,5 +1,4 @@
 import { addCountdown, getAttackRegistry, setAttackRegistry } from "../../apps/vagabond-tools/usecase/VagabondSettingsHelper"
-import { AdversaryDataModel } from "../../model/actor/AdversaryDataModel"
 import { roll3dDice, showFloatingText, sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { getCanvasToken, getTargetIds } from "../../utils/modelUtil"
@@ -7,6 +6,7 @@ import { DamageRoll } from "./roll/DamageRoll"
 import type { AttackSnapshot } from "./util/attack-serializer"
 
 export interface AttackResolutionArgs {
+    flanked?: boolean
     bypassArmor?: boolean
     gmTargetsOnly?: boolean
 }
@@ -56,7 +56,7 @@ export abstract class Attack {
 
     async applyDamageAndResolve(args: AttackResolutionArgs, serialize: (attack: Attack) => AttackSnapshot | undefined) {
         if (this.isResolved) return
-        this.processDamageRoll(args)
+        await this.processDamageRoll(args)
         await this.processStatusFx(args)
         await this.resolve(serialize)
     }
@@ -66,7 +66,12 @@ export abstract class Attack {
         await this.save(serialize)
     }
 
-    protected processDamageRoll(args: AttackResolutionArgs) {
+    static isImmuneToStatus(actor: Actor | null | undefined, status: string): boolean {
+        const immunities: string[] = (actor?.system as any)?.modifiers?.damage?.in?.statusImmunities ?? []
+        return immunities.includes(status)
+    }
+
+    protected processDamageRoll(args: AttackResolutionArgs): void | Promise<void> {
         if (this.damageRoll?.result) {
             if (this.damageRoll.dmgType === 'healing') {
                 this.applyHealing(args)
@@ -113,24 +118,29 @@ export abstract class Attack {
 
     protected shouldApplyDamageToTarget(targetId: string): boolean {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        if (actor?.system instanceof AdversaryDataModel) {
-            const immunities = actor.system.modifiers.damage.in.immunities ?? []
-            if (immunities.includes(this.damageRoll?.dmgType ?? '')) return false
-        }
+        const immunities = (actor?.system as any)?.modifiers?.damage?.in?.immunities ?? []
+        if (immunities.includes(this.damageRoll?.dmgType ?? '')) return false
         return true
     }
 
     protected calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
         const aSys = actor?.system as any
-        const isResistant = aSys?.modifiers?.damage?.in?.resistances?.includes(this.damageRoll?.dmgType)
-        const perDieMit = (aSys?.modifiers?.damage?.in?.perDieReduction ?? 0) * (this.damageRoll?.result?.rollSummaries?.filter(it => !it.rerolled).length ?? 0)
+
+        const dmgType = this.damageRoll?.dmgType ?? ''
+        const mods = aSys?.modifiers?.damage?.in ?? {}
+        const perDieMitigation = (mods?.perDieReduction?.global ?? 0) + (mods?.perDieReduction?.[dmgType] ?? 0)
+        const damageDiceCount = this.damageRoll?.result?.rollSummaries?.filter(it => !it.rerolled).length ?? 0
+        const isResistant = mods?.resistances?.includes(dmgType)
+        const perDieMit = perDieMitigation * damageDiceCount
+
         const damage = isResistant ? Math.floor((this.damageRoll?.result?.total ?? 0) / 2) : this.damageRoll?.result?.total ?? 0
         const target = actor?.system
+
         const armorRating = (target as any)?.armor?.rating ?? 0
         const armorPiercing = this.damageRoll?.result?.armorPiercing ?? 0
         const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
-        return Math.max(0, damage - armor - perDieMit)
+        return Math.max(0, (damage + (args.flanked ? 2 : 0)) - armor - perDieMit)
     }
 
     protected get isCriticalHit(): boolean { return false }
@@ -146,10 +156,8 @@ export abstract class Attack {
             if (!actor) continue
 
             for (const eff of this.appliedEffects) {
-                if (actor?.system instanceof AdversaryDataModel) {
-                    const immunities = actor.system.modifiers.damage.in.statusImmunities
-                    if (immunities.includes(eff.effect ?? '')) continue
-                }
+                if (Attack.isImmuneToStatus(actor, eff.effect)) continue
+
                 const duration = (this.isCriticalHit && eff.critDuration) ? eff.critDuration : eff.duration
                 await this.applyEffects(actor, token, eff.effect, duration, eff.damageType)
             }

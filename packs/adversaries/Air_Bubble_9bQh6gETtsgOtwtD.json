@@ -331,7 +331,11 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["acid", "blunt", "slash"],
+          "immunities": [
+            "acid",
+            "blunt",
+            "slash"
+          ],
           "weaknesses": [],
           "statusImmunities": [
             "blinded",

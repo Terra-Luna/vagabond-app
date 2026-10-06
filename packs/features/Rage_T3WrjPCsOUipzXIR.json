@@ -38,7 +38,7 @@
         "label": "Per-die Mitigation",
         "level": 1,
         "value": "1",
-        "selector": "modifiers.damage.in.perDieReduction",
+        "selector": "modifiers.damage.in.perDieReduction.global",
         "toggleableEffect": true
       }
     ],
@@ -58,7 +58,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.103",
     "createdTime": 1789491073903,
-    "modifiedTime": 1791234987782,
+    "modifiedTime": 1791245793750,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

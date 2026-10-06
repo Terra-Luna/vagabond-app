@@ -29,7 +29,7 @@
         "selector": "skills.melee.trained"
       },
       {
-        "id": "GgqPXzhjYOycY8GO",
+        "id": "xSiZoE51YC6R1M8u",
         "key": "ToggleRule",
         "label": "Training: Leadership",
         "level": "1",
@@ -68,9 +68,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1786568076634,
-    "modifiedTime": 1789503802932,
+    "modifiedTime": 1791248040540,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

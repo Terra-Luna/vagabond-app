@@ -140,7 +140,9 @@ export class AdversaryAttack extends Attack {
             // Skip targets who wouldn't have taken any damage from this attack (e.g. fully mitigated).
             if (this.calculateAdjustedDamage(id, args) < 1) return
             const actor = canvas?.scene?.tokens?.get(id)?.actor
-            this.statuses.forEach(status => actor?.toggleStatusEffect(status, { active: true }))
+            this.statuses
+                .filter(status => !Attack.isImmuneToStatus(actor, status))
+                .forEach(status => actor?.toggleStatusEffect(status, { active: true }))
         })
     }
 

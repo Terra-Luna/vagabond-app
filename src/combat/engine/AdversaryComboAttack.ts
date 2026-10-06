@@ -234,10 +234,11 @@ export class AdversaryComboAttack extends Attack {
 
         for (const id of eligibleTargetIds) {
             // Skip targets who wouldn't have taken any damage from this sub-attack (e.g. fully mitigated).
-            if (sub.calculateAdjustedDamage(id, args) < 1) return
+            if (sub.calculateAdjustedDamage(id, args) < 1) continue
 
             const actor = canvas?.scene?.tokens?.get(id)?.actor
             for (const status of sub.statuses) {
+                if (Attack.isImmuneToStatus(actor, status)) continue
                 if (!actor?.statuses?.has(status)) {
                     await actor?.toggleStatusEffect(status, { active: true })
                 }
@@ -249,12 +250,12 @@ export class AdversaryComboAttack extends Attack {
     async applyStatusesAndResolve(args: AttackResolutionArgs, serialize: (attack: Attack) => AttackSnapshot | undefined) {
         if (this.isResolved) return
 
-        this.subAttacks.forEach(sub => {
-            if (!sub.damageRoll.result) return
+        for (const sub of this.subAttacks) {
+            if (!sub.damageRoll.result) continue
             const targetIds = (args.gmTargetsOnly ? getTargetIds() : this.targetIds ?? [])
                 .filter(id => sub.shouldApplyDamageToTarget(id))
-            this.applyStatusEffectsForSub(sub, args, targetIds)
-        })
+            await this.applyStatusEffectsForSub(sub, args, targetIds)
+        }
 
         await this.resolve(serialize)
     }

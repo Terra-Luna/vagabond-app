@@ -330,7 +330,10 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["poison", "shock"],
+          "immunities": [
+            "poison",
+            "shock"
+          ],
           "weaknesses": [
             "blunt"
           ],

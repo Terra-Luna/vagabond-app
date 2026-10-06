@@ -14,6 +14,15 @@
         "value": "5",
         "selector": "speed.turn",
         "scale": 4
+      },
+      {
+        "id": "qnBvbLVOL8gjlHlo",
+        "key": "FlatModifier",
+        "label": "Speed Bonus: First Round",
+        "level": 2,
+        "value": "5",
+        "selector": "modifiers.combat.roundOne.speed.turn",
+        "scale": 4
       }
     ],
     "level": 2,
@@ -30,9 +39,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789491269971,
-    "modifiedTime": 1789591565406,
+    "modifiedTime": 1791243184623,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

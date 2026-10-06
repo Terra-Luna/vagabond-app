@@ -356,7 +356,10 @@
             "flatBonus": 0,
             "perDieBonus": 0
           },
-          "immunities": ["physical", "poison"],
+          "immunities": [
+            "physical",
+            "poison"
+          ],
           "weaknesses": [
             "blunt",
             "silvered"

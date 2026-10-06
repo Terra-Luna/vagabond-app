@@ -243,7 +243,9 @@
           "attackPerDie": 0,
           "spell": 0,
           "spellPerDie": 0,
-          "immunities": ["poison"],
+          "immunities": [
+            "poison"
+          ],
           "weaknesses": [
             "blunt"
           ],

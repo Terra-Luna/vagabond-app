@@ -327,7 +327,11 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["pierce", "poison", "slash"],
+          "immunities": [
+            "pierce",
+            "poison",
+            "slash"
+          ],
           "weaknesses": [
             "blunt"
           ],

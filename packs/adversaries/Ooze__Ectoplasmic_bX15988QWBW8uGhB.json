@@ -330,7 +330,12 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["acid", "cold", "physical_lt0", "poison"],
+          "immunities": [
+            "acid",
+            "cold",
+            "physical_lt0",
+            "poison"
+          ],
           "weaknesses": [],
           "statusImmunities": [
             "blinded",

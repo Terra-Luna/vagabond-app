@@ -330,7 +330,11 @@
           "flatReduction": 0,
           "perDieReduction": 0,
           "resistances": [],
-          "immunities": ["magical", "pierce", "slash"],
+          "immunities": [
+            "magical",
+            "pierce",
+            "slash"
+          ],
           "weaknesses": [],
           "statusImmunities": [
             "blinded",

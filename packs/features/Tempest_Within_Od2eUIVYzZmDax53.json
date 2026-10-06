@@ -5,7 +5,17 @@
   "img": "/icons/magic/air/wind-tornado-wall-blue.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">You reduce Cold, Fire, and Shock damage you take by {{feature-value:1:1}} per damage die. This reduction is increased by 1 every 4 Levels hereafter.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "QdgGDHZKTeIxsocE",
+        "key": "FlatModifier",
+        "label": "Elemental Resistances",
+        "level": 4,
+        "value": "1",
+        "selector": "modifiers.damage.in.perDieReduction.cold, modifiers.damage.in.perDieReduction.fire, modifiers.damage.in.perDieReduction.shock",
+        "scale": 4
+      }
+    ],
     "level": 4,
     "scale": 4,
     "maxLevel": 0
@@ -21,9 +31,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789495282946,
-    "modifiedTime": 1789605442964,
+    "modifiedTime": 1791247035929,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
