@@ -1,10 +1,10 @@
 {
-  "name": "Evercure",
+  "name": "Ever-Cure",
   "type": "feature",
   "_id": "gwutKEBh0vgG0jeY",
   "img": "icons/magic/life/heart-cross-strong-green.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">When you restore HP, you can chose to end one Status affecting the Target from either Berserk, Blinded, Charmed, Confused, Dazed, Frightened, Paralyzed, or Sickened. The number ({{feature-value:1:1}}) of Statuses you can remove at once this way increases by 1 every 4 Levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">When you restore HP, you can chose to end one Status affecting the Target from either Berserk, Blinded, Charmed, Confused, Dazed, Frightened, Paralyzed, or Sickened. The number [{{feature-value:1:1}}] of Statuses you can remove this way increases by 1 every 4 Levels hereafter.</span></p>",
     "rules": [],
     "level": 4,
     "scale": 4,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789499012919,
-    "modifiedTime": 1789521755038,
+    "modifiedTime": 1791323899099,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
