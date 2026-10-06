@@ -5,7 +5,25 @@
   "img": "/icons/magic/fire/projectile-arrow-fire-gem-yellow.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Your Mark is Weak to your attacks.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "nkTyfwFSE2Pik9ja",
+        "key": "ToggleRule",
+        "label": "Bonus Damage Die",
+        "level": 10,
+        "value": true,
+        "selector": "modifiers.damage.out.global.conditional.weak",
+        "toggleableEffect": true
+      },
+      {
+        "id": "EF86lsmYezNEh7ci",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 10,
+        "value": true,
+        "selector": "flags.apexpredator"
+      }
+    ],
     "level": 10,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +39,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789498250346,
-    "modifiedTime": 1789605328461,
+    "modifiedTime": 1791317816394,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -64,8 +64,13 @@ export class HeroBaseDataRulesApplicator {
             })
         }
 
+        const isToggleRuleActive = (rule) =>
+            (rule.value === true || rule.value === "true" || rule.value === "enabled") &&
+            (!rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId))
+        let activeTogglePaths = new Set<string>()
+
         const applyToggleRule = async (rule) => {
-            const value = (rule.value === true || rule.value === "true" || rule.value === "enabled") && (!rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId))
+            const value = isToggleRuleActive(rule)
             const selector = removeWhitespace(rule.selector)
             const paths = selector.split(",").map(it => it.replace("system.", ""))
 
@@ -112,7 +117,12 @@ export class HeroBaseDataRulesApplicator {
                     }
                 }
                 else {
-                    foundry.utils.setProperty(actor.system, path, value)
+                    const currentValue = foundry.utils.getProperty(actor.system, path)
+                    foundry.utils.setProperty(
+                        actor.system,
+                        path,
+                        typeof currentValue === "boolean" ? value || activeTogglePaths.has(path) : value
+                    )
                 }
             }
         }
@@ -255,6 +265,13 @@ export class HeroBaseDataRulesApplicator {
 
         injectGrantedPerkRules(perkGrants)
         injectChosenPerkRules(chosenPerkRules)
+        activeTogglePaths = new Set(
+            toggleRules
+                .filter(isToggleRuleActive)
+                .flatMap(rule => removeWhitespace(rule.selector)
+                    .split(",")
+                    .map(path => path.replace("system.", "")))
+        )
         for (const rule of toggleRules) { applyToggleRule(rule) }
         for (const rule of flatModifiers) { applyFlatModifier(rule) }
         for (const rule of choiceRules) { applyChoiceRule(rule) }

@@ -5,7 +5,17 @@
   "img": "/icons/creatures/unholy/demon-horned-black-yellow.webp",
   "system": {
     "description": "<p><span style=\"white-space:pre-wrap\">Choose a Being Type. You can use an Action or skip your Move to spend a Studied die and make those Beings Weak to your next damage instance this Round. You can take this Perk multiple times to choose other Being Types.</span></p>",
-    "rules": [],
+    "rules": [
+      {
+        "id": "E9mVI22P097sGozQ",
+        "key": "ToggleRule",
+        "label": "Bonus Damage Die",
+        "level": 0,
+        "value": true,
+        "selector": "modifiers.damage.out.global.conditional.weak",
+        "toggleableEffect": true
+      }
+    ],
     "prerequisites": [
       {
         "type": "stat",
@@ -50,10 +60,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.103",
     "createdTime": 1787884243892,
-    "modifiedTime": 1787884347981,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1791321673763,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

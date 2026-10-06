@@ -125,7 +125,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
 
     const equipDisplayData = useMemo(() => {
         const weaponData = equippedWeapons.map(item => {
-            let attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
+            let attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
             return {
                 item,
                 damageString: attackInstance?.damageRoll?.toString() ?? '',
@@ -138,8 +138,8 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                     d20Count: attackInstance?.skillCheck?.d20Count ?? 1,
                     skillCheckMod: attackInstance?.skillCheck?.modifier ?? 0,
                     critThreshold: attackInstance?.skillCheck?.critThreshold ?? 20,
-                    critSum: false,
-                    explodeFavor: false,
+                    critSum: attackInstance?.skillCheck?.critSum,
+                    explodeFavor: attackInstance?.skillCheck?.explodeFavor,
                     favorHinder: attackInstance?.skillCheck?.favorHinder ?? 'none',
                     damageRolls: attackInstance?.damageRoll?.dice ?? [],
                     flatModifier: attackInstance?.damageRoll?.flatDmgBonus ?? 0,
@@ -148,11 +148,11 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
                 } as RollPreset,
                 initiateAttack: async (e: React.MouseEvent) => {
                     await attackInstance.initiate(e)
-                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
+                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
                 },
                 rollDefenseCheck: async (e: React.MouseEvent) => {
                     await attackInstance.initiate(e, { isDefenseCheck: true })
-                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent, undefined, [])
+                    attackInstance = HeroAttack.buildWeaponAttack(hero.parent, item.parent)
                 }
             }
         })
@@ -170,7 +170,7 @@ const Weapons = ({ hero, equippedWeapons, equippedSundries, documentUpdateKey }:
             {
                 equipDisplayData?.map(({ item, damageString, skill, preset, initiateAttack, rollDefenseCheck }, index: number) => {
                     const isDefense = hero.skills[skill]?.trained && item instanceof WeaponDataModel
-                        ? (item.properties.includes('defense') || hero.modifiers.damage.out[skill]?.weaponProps?.includes('defense'))
+                        ? (item.properties.includes('defense') || hero.modifiers.damage.out[skill]?.properties?.granted?.includes('defense'))
                         : false
 
                     return (

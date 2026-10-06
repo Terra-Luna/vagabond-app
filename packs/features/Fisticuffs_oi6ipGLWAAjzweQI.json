@@ -20,7 +20,7 @@
         "label": "Brawl Weapon Props",
         "level": 1,
         "value": "vicious, defense",
-        "selector": "modifiers.damage.out.brawl.weaponProps"
+        "selector": "modifiers.damage.out.brawl.properties.granted"
       },
       {
         "id": "SNX8iFZKVZjbqdJv",

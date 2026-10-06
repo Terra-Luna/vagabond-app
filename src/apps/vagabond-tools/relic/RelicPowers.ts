@@ -68,6 +68,7 @@ export class RelicPowers {
                 value: 'keen',
                 label: 'Keen',
                 modifiers: [
+                    { path: "skillCheck.attack.critThreshold", value: 1 },
                     { path: "skillCheck.melee.critThreshold", value: 1 },
                     { path: "skillCheck.brawl.critThreshold", value: 1 },
                     { path: "skillCheck.finesse.critThreshold", value: 1 },

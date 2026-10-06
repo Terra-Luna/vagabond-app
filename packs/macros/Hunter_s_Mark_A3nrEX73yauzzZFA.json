@@ -1,0 +1,28 @@
+{
+  "name": "Hunter's Mark",
+  "type": "script",
+  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(\"vagabond-app\", \"huntersmark\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"huntersmark\")) return;\n\nconst state = hero.getFlag(\"vagabond-app\", `ruleToggle_BScKQShDFq92Brhk`);\n\ngame.system.api.rules.toggleEffect(hero, \"Compendium.vagabond-app.features.Item.BScKQShDFq92Brhk\", state);\n\nif (hero.getFlag(\"vagabond-app\", \"lethalprecision\")) {\n  game.system.api.rules.toggleEffect(hero, \"Compendium.vagabond-app.features.Item.cszKHPwJzrURzUfG\", state);\n}\n\nif (hero.getFlag(\"vagabond-app\", \"apexpredator\")) {\n  game.system.api.rules.toggleEffect(hero, \"Compendium.vagabond-app.features.Item.oZzM52yqXRx3iqH5\", state);\n}",
+  "img": "/icons/skills/targeting/crosshair-ringed-gray.webp",
+  "_id": "A3nrEX73yauzzZFA",
+  "author": "KyorYoEvge7ElSaj",
+  "scope": "global",
+  "folder": "iUemtfJf6IrfGTDC",
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.103",
+    "createdTime": 1791311255060,
+    "modifiedTime": 1791313890640,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "exportSource": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "sort": 0,
+  "_key": "!macros!A3nrEX73yauzzZFA"
+}

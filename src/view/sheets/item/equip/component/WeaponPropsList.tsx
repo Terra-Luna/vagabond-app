@@ -8,9 +8,9 @@ export const WeaponPropsList = ({ weaponProps, textStyles }: { weaponProps: stri
                 {weaponProps.map((prop: string, index: number) => (
                     <Tooltip key={`${prop}-${index}`} title={appLang.WeaponProps[prop]?.name ?? prop} content={appLang.WeaponProps[prop]?.description}>
                         <p className={`${textStyles ?? 'text-sm text-text-tertiary font-paradigm font-normal italic'}`}>
-                        {appLang.WeaponProps[prop]?.name ?? prop}
-                        {index < weaponProps.length - 1 && ","}
-                    </p>
+                            {appLang.WeaponProps[prop]?.name ?? prop}
+                            {index < weaponProps.length - 1 && ","}
+                        </p>
                     </Tooltip>
                 ))}
             </div>

@@ -48,8 +48,8 @@ export const ShopItemsList = ({ items, onAddItemToCart }: {
                                                 <p className="font-bold hover-glow cursor-pointer" onClick={() => openItemSheet(item)}>{item.name}</p>
                                                 {((item.type as string) === 'weapon' || item.system instanceof WeaponDataModel) && (item.system as any)?.damage &&
                                                     <p className="text-text-secondary italic">{`
-                                                ${(item.system as any).skills?.map(s => appLang.WeaponSkills[s]?.name).filter(Boolean).join(", ") ?? ''} 
-                                                | d${(item.system as any).damage?.dice?.faces ?? 6} 
+                                                ${(item.system as any).skills?.map(s => appLang.WeaponSkills[s]?.name).filter(Boolean).join(", ") ?? ''}
+                                                | d${(item.system as any).damage?.dice?.faces ?? 6}
                                                 | ${appLang.Grips[(item.system as any).grip?.style]?.name ?? (item.system as any).grip?.style ?? ''}
                                                 | ${(item.system as any).properties?.map(p => appLang.WeaponProps[p]?.name).filter(Boolean).join(", ") ?? ''}
                                             `}</p>}

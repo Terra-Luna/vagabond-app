@@ -346,11 +346,11 @@ export class HeroAttack extends Attack {
     static buildWeaponAttack(
         actor: Actor & { system: HeroDataModel },
         item: Item & { system: WeaponDataModel },
-        skill?: string,
-        extraDice?: DiceRoll[]
+        skill?: string
     ): HeroAttack {
         const hero = actor.system
-        const weapon = item.system
+        const weapon = foundry.utils.deepClone(item.system)
+        const mods = hero.modifiers
 
         let weaponSkill = skill
 
@@ -360,41 +360,69 @@ export class HeroAttack extends Attack {
             weaponSkill = defaultSkill?.skill ?? 'melee'
         }
 
+        /**
+         * Add weapon props granted by modifiers.
+         */
+        const weaponPropGrants = [
+            ...mods?.damage?.out?.global?.properties?.granted ?? [],
+            ...mods?.damage?.out[weaponSkill!]?.properties?.granted ?? []
+        ]
+        weapon.properties = [...weapon.properties, ...weaponPropGrants.filter(prop => !weapon.properties.includes(prop))]
+
+        /**
+         * Add linked weapon properties defined by modifiers.
+         */
+        const weaponPropLinks = [
+            ...mods?.damage?.out?.global?.properties?.linked ?? [],
+            ...mods?.damage?.out[weaponSkill!]?.properties?.linked ?? []
+        ]
+        if (weapon.properties?.some(prop => weaponPropLinks.includes(prop))) {
+            weapon.properties = [...weapon.properties, ...weaponPropLinks.filter(prop => !weapon.properties.includes(prop))]
+        }
+
+        const isKeen = hero.skills[weaponSkill]?.trained && weapon.properties.includes('keen')
+
         const skillCheck = new SkillCheck(hero, {
             type: 'attack',
             item: item.system,
-            skill: weaponSkill!
+            skill: weaponSkill!,
+            critSum: mods?.skillCheck?.attack?.sumCrit || mods?.skillCheck?.[weaponSkill!]?.sumCrit
         })
-
-        const isKeen = hero.skills[weaponSkill]?.trained && (
-            weapon.properties.includes('keen') ||
-            hero.modifiers.damage.out[weaponSkill]?.weaponProps?.includes('keen')
-        )
-        
-        const dmgMods = foundry.utils.deepClone(hero.modifiers.damage.out)
 
         skillCheck.critThreshold -= (isKeen ? 1 : 0)
 
+        /**
+         * Weapon damage with modifiers.
+         */
         const damageDice = new DiceRoll(
             DiceRoll.getItemDamageWithHeroMods(hero, weaponSkill, weapon)
         )
 
-        if (!extraDice || extraDice.length === 0) {
-            if (dmgMods[weaponSkill]?.dice?.extra?.count > 0 || (isKeen && dmgMods.keen.dice.extra.count > 0)) {
-                const extras = dmgMods[weaponSkill]?.dice?.extra.count > 0
-                    ? dmgMods[weaponSkill]?.dice?.extra
-                    : (isKeen && dmgMods.keen.dice.extra.count > 0 ? dmgMods.keen.dice.extra : 0)
+        /**
+         * Add any extra dice granted by modifiers.
+         */
+        const dmgMods = foundry.utils.deepClone(mods.damage.out)
+        const extraDice: DiceRoll[] = []
+        const globalExtraDice = dmgMods.global?.dice?.extra
+        const skillExtraDice = dmgMods[weaponSkill!]?.dice?.extra
+        const keenExtraDice = isKeen ? dmgMods.keen?.dice?.extra : undefined
 
-                if (extras.count > 0) {
-                    const count = extras.count
-                    const faces = extras.faces
-                    const modifier = extras.modifier
-                    const explodesOn = extras.explodesOn
-                    extraDice = [new DiceRoll({ count, faces, modifier, explodesOn }), ...extraDice ?? []]
-                }
-            }
+        const addRoll = (roll: typeof globalExtraDice | typeof skillExtraDice | typeof keenExtraDice) => {
+            extraDice.push(new DiceRoll({
+                count: roll.count,
+                faces: roll.faces > 0 ? roll.faces : damageDice.faces,
+                modifier: roll.modifier,
+                explodesOn: roll.explodesOn?.filter((value): value is number => typeof value === 'number')
+            }))
         }
 
+        if (globalExtraDice?.count ?? 0 > 0) addRoll(globalExtraDice)
+        else if (skillExtraDice?.count ?? 0 > 0) addRoll(skillExtraDice)
+        else if (keenExtraDice?.count ?? 0 > 0) addRoll(keenExtraDice)
+
+        /**
+         * Determine weapon's Relic level.
+         */
         let relicLevel = -1
         if (weapon.relicPowers.length > 0) {
             relicLevel = 0
@@ -416,8 +444,7 @@ export class HeroAttack extends Attack {
             atkName: item.name,
             dmgType: weapon.damage.type,
             dice: [damageDice, ...extraDice ?? []],
-            flatDmgBonus: (dmgMods[weaponSkill]?.bonus?.flat ?? 0),
-            perDieDmgBonus: (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
+            perDieDmgBonus: (dmgMods.global?.bonus?.perDie ?? 0) + (dmgMods[weaponSkill]?.bonus?.perDie ?? 0),
             armorPiercing: dmgMods[weaponSkill]?.armorPiercing?.flat ?? (isKeen ? dmgMods.keen.armorPiercing.flat ?? 0 : 0),
             armorPiercingPerDie: dmgMods[weaponSkill]?.armorPiercing?.perDie ?? (isKeen ? dmgMods.keen.armorPiercing.perDie ?? 0 : 0),
             armorPiercingPerExtraDie: dmgMods[weaponSkill]?.armorPiercing?.perExtraDie ?? (isKeen ? dmgMods.keen.armorPiercing.perExtraDie ?? 0 : 0),

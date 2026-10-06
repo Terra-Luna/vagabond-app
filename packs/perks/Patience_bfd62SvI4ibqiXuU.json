@@ -12,7 +12,7 @@
         "label": "Patient Defense",
         "level": 0,
         "value": "defense",
-        "selector": "modifiers.damage.out.melee.weaponProps",
+        "selector": "modifiers.damage.out.melee.properties.granted",
         "toggleableEffect": true
       },
       {

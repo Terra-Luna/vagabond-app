@@ -2,10 +2,37 @@
   "name": "Hunter's Mark",
   "type": "feature",
   "_id": "BScKQShDFq92Brhk",
-  "img": "/icons/skills/targeting/crosshair-pointed-orange.webp",
+  "img": "/icons/skills/targeting/crosshair-ringed-gray.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can choose a Target when you attack it or by skipping your Move, declaring it as your Mark until you declare a new Mark. The following rules apply while you have a Mark:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Your attacks against it with Weapons that have the Keen or Vicious property also have the other property, and Crit if a Bonus causes the result to exceed your Crit range.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• You roll two d20s on Checks to track it, and use the higher result.</span></p>",
-    "rules": [],
+    "description": "<p><span style=\"white-space:pre-wrap\">You can choose a Target when you attack it or by skipping your Move, declaring it as your Mark until you declare a new Mark. The following rules apply while you have a Mark:</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• Your attacks against it with Weapons that have the Keen or Vicious property also have the other property, and Crit if a Bonus causes the result to exceed your Crit range.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">• You roll two d20s on Checks to track it, and use the higher result.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.A3nrEX73yauzzZFA]{Hunter's Mark}</span></p>",
+    "rules": [
+      {
+        "id": "WHX0iInYg87NHmTM",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 1,
+        "value": true,
+        "selector": "flags.huntersmark"
+      },
+      {
+        "id": "BdIkeZmCUQTQ5JbS",
+        "key": "FlatModifier",
+        "label": "Keen + Vicious",
+        "level": 1,
+        "value": "keen, vicious",
+        "selector": "modifiers.damage.out.global.properties.linked",
+        "toggleableEffect": true
+      },
+      {
+        "id": "3JXMgBPbvCmoFzrw",
+        "key": "ToggleRule",
+        "label": "Bonus Crits",
+        "level": 1,
+        "value": true,
+        "selector": "modifiers.skillCheck.attack.sumCrit",
+        "toggleableEffect": true
+      }
+    ],
     "level": 1,
     "scale": 0,
     "maxLevel": 0
@@ -21,9 +48,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789497644602,
-    "modifiedTime": 1789605323271,
+    "modifiedTime": 1791311894062,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

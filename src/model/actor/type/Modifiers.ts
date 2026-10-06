@@ -94,6 +94,7 @@ const skillModifierSchema = () => {
     return {
         modifier: new fields.NumberField({ ...uncappedInteger, initial: 0 }),
         critThreshold: new fields.NumberField({ ...requiredInteger, initial: 0 }),
+        sumCrit: new fields.BooleanField({ initial: false }),
         extraDice: new fields.NumberField({ ...requiredInteger, initial: 0 }),
         d4: new fields.BooleanField({ initial: false }),
         d6: new fields.BooleanField({ initial: false }),
@@ -104,11 +105,13 @@ const skillModifierSchema = () => {
 const damageOutSchema = () => {
     return {
         ...baseDamageOutSchema(),
-        weaponProps: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
+        properties: new fields.SchemaField({
+            granted: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
+            linked: new fields.ArrayField(new fields.StringField({ ...requiredString, choices: Object.keys(appLang.WeaponProps) }))
+        }),
         conditional: new fields.SchemaField({
-            armored: new fields.SchemaField({
-                ...baseDamageOutSchema()
-            })
+            armored: new fields.SchemaField({ ...baseDamageOutSchema() }),
+            weak: new fields.BooleanField({ initial: false })
         })
     }
 }
