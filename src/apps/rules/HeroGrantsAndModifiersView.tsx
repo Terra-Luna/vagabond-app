@@ -103,7 +103,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                 <CollapsibleSection title={`Passive Modifiers Summary`} settingsKey={'rules-data-summary'} content={
                     <EffectCardContainer>
                         <div className="flex flex-col gap-1">
-                            {flatModifiers.map(mod => {
+                            {flatModifiers.sort((a, b) => (a.label || "").localeCompare(b.label || "")).map(mod => {
                                 const fullPath = mod.selector?.replace("system.", "") || "stat"
                                 return (
                                     <div
