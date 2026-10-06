@@ -14,7 +14,7 @@ import { MaterialsCounter } from "./component/MaterialsCounter"
 export const AlchemyCraftingView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
 
     const [revision, setRevision] = useState(0)
-    const { alchemySlots, alchemyItems } = useAlchemySelection(actor, false, true)
+    const { alchemySlots, alchemyItems } = useAlchemySelection(actor, false, true, true)
     const fullAlchemyItems = useMemo(() => { return ItemsCache.alchemical() }, [])
     const tools = useMemo(() => { return actor.items.find(it => (it.type as string) === 'sundry' && (it.system as any).isAlchemyTools)! }, [])
 

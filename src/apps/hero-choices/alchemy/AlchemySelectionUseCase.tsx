@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { ClassDataModel } from "../../../model/item/character/ClassDataModel"
@@ -6,7 +6,7 @@ import { getItemChoiceRules, getItemRules, normalizeRuleSelections, saveItemRule
 import { groupBy } from "../../../utils/collectionUtil"
 import { useAlchemySelectionView } from "./AlchemySelectionView"
 
-export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, hideCompendiumLink?: boolean) => {
+export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, isLevelUp?: boolean, hideCompendiumLink?: boolean, syncOnItemUpdate?: boolean) => {
 
     const level = actor.system.level.current! + (isLevelUp ? 1 : 0)
     const clazz = actor.items.find(it => (it.type as string) === 'class') as Item & { system: ClassDataModel }
@@ -33,6 +33,17 @@ export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, is
         setSlots(slots)
     }
 
+    const [revision, setRevision] = useState(0)
+
+    useEffect(() => {
+        if (!syncOnItemUpdate || !clazz) return
+        const handler = (item: any) => {
+            if (item.id === clazz.id) setRevision(r => r + 1)
+        }
+        Hooks.on("updateItem", handler)
+        return () => Hooks.off("updateItem", handler)
+    }, [syncOnItemUpdate, clazz?.id])
+
     useEffect(() => {
         const loadInitialAlchemySelections = async () => {
             if (clazz) {
@@ -41,7 +52,7 @@ export const useAlchemySelection = (actor: Actor & { system: HeroDataModel }, is
             }
         }
         loadInitialAlchemySelections()
-    }, [])
+    }, [revision])
 
     useEffect(() => {
         if (!clazz || !alchemySlots.length) return
