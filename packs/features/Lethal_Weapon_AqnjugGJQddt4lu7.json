@@ -12,7 +12,9 @@
         "label": "Sneak Attack: Exploding Dice",
         "level": 6,
         "value": "4",
-        "selector": "modifiers.damage.out.special.sneakAttack.extraDice.explodesOn"
+        "selector": [
+          "modifiers.damage.out.special.sneakAttack.extraDice.explodesOn"
+        ]
       }
     ],
     "classId": "",

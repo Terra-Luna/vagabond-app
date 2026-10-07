@@ -12,7 +12,9 @@
         "label": "Imbue Discount",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.casting.deliveryDiscounts.imbue",
+        "selector": [
+          "modifiers.casting.deliveryDiscounts.imbue"
+        ],
         "scale": 4,
         "toggleableEffect": true
       },
@@ -22,7 +24,9 @@
         "label": "Flag",
         "level": 4,
         "value": true,
-        "selector": "flags.arcanesurge"
+        "selector": [
+          "flags.arcanesurge"
+        ]
       }
     ],
     "level": 4,

@@ -71,7 +71,9 @@
           "label": "Weapon +2",
           "modifiers": [
             {
-              "path": "system.damage.dice.modifier",
+              "selector": [
+                "system.damage.dice.modifier"
+              ],
               "value": 2
             }
           ]

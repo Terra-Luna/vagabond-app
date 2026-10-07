@@ -2,6 +2,7 @@ import { appLang } from "../../utils/lang"
 import { tableBorder } from "../../view/common/border-styles"
 import { normalizeRuleSelections } from "../util/item-rules-util"
 import { ItemsCache } from "../util/ItemsCache"
+import { getRuleSelectors } from "../util/selector-util"
 
 export const EffectCardContainer = ({ children }) => {
     return (
@@ -36,8 +37,13 @@ export const GrantsAndModifiersCard = ({ rule, isActive = true }) => {
         }
     }
 
-    const displaySelections = normalizeRuleSelections(rule.selections)
-        .flatMap(selection => [selection.value])
+    const selectionValues = normalizeRuleSelections(rule.selections).map(selection => selection.value)
+
+    const grantedTrainings = rule.key === "ToggleRule" && rule.value
+        ? getRuleSelectors(rule).filter(s => s.startsWith("skills.") && s.endsWith(".trained"))
+        : []
+
+    const displaySelections = [...selectionValues, ...grantedTrainings]
         .filter(Boolean)
         .map(cleanSelectionName)
         .filter(Boolean)

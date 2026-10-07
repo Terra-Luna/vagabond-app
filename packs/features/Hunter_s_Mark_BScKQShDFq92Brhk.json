@@ -12,7 +12,9 @@
         "label": "Flag",
         "level": 1,
         "value": true,
-        "selector": "flags.huntersmark"
+        "selector": [
+          "flags.huntersmark"
+        ]
       },
       {
         "id": "BdIkeZmCUQTQ5JbS",
@@ -20,7 +22,9 @@
         "label": "Keen + Vicious",
         "level": 1,
         "value": "keen, vicious",
-        "selector": "modifiers.damage.out.global.properties.linked",
+        "selector": [
+          "modifiers.damage.out.global.properties.linked"
+        ],
         "toggleableEffect": true
       },
       {
@@ -29,7 +33,9 @@
         "label": "Bonus Crits",
         "level": 1,
         "value": true,
-        "selector": "modifiers.skillCheck.attack.sumCrit",
+        "selector": [
+          "modifiers.skillCheck.attack.sumCrit"
+        ],
         "toggleableEffect": true
       }
     ],

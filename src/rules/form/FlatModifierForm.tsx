@@ -1,6 +1,8 @@
 import { Checkbox } from "../../view/component/Checkbox"
 import { FormProps } from "../shared/FormProps"
 import { ItemRuleInput } from "../shared/ItemRuleInput"
+import { SelectorInput } from "../shared/SelectorInput"
+import { getRuleSelectors } from "../util/selector-util"
 
 export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
 
@@ -26,11 +28,11 @@ export const FlatModifierForm = ({ rule, onChange }: FormProps) => {
                     type={"number"}
                 />
             </div>
-            <ItemRuleInput
+            <SelectorInput
                 label={"Path"}
-                value={rule.selector || ""}
-                placeholder={"e.g., health.max"}
-                onChange={(e) => onChange({ selector: e.target.value })}
+                kind="modifier"
+                value={getRuleSelectors(rule)}
+                onChange={(selector) => onChange({ selector })}
             />
             <ItemRuleInput
                 label={"Value"}

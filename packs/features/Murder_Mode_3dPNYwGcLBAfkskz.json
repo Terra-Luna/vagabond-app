@@ -12,7 +12,11 @@
         "label": "Exploding Dice",
         "level": 4,
         "value": true,
-        "selector": "modifiers.damage.out.melee.dice.exploding.max, modifiers.damage.out.brawl.dice.exploding.max, modifiers.damage.out.finesse.dice.exploding.max",
+        "selector": [
+          "modifiers.damage.out.melee.dice.exploding.max",
+          "modifiers.damage.out.brawl.dice.exploding.max",
+          "modifiers.damage.out.finesse.dice.exploding.max"
+        ],
         "toggleableEffect": true
       },
       {
@@ -21,7 +25,11 @@
         "label": "Damage Bonus (Per Die)",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.damage.out.melee.bonus.perDie, modifiers.damage.out.brawl.bonus.perDie, modifiers.damage.out.finesse.bonus.perDie",
+        "selector": [
+          "modifiers.damage.out.melee.bonus.perDie",
+          "modifiers.damage.out.brawl.bonus.perDie",
+          "modifiers.damage.out.finesse.bonus.perDie"
+        ],
         "scale": 4,
         "toggleableEffect": true
       },
@@ -31,7 +39,9 @@
         "label": "Flag",
         "level": 4,
         "value": true,
-        "selector": "flags.murdermode"
+        "selector": [
+          "flags.murdermode"
+        ]
       },
       {
         "id": "AdDAs6oVcffAKcUD",
@@ -41,7 +51,9 @@
         "scale": 4,
         "value": "charmed, confused, frightened",
         "valueMultiplier": "",
-        "selector": "modifiers.damage.in.statusImmunities"
+        "selector": [
+          "modifiers.damage.in.statusImmunities"
+        ]
       }
     ],
     "level": 4,

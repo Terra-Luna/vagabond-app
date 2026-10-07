@@ -17,6 +17,7 @@ import { ToggleRuleForm } from "./form/ToggleRuleForm"
 import { ItemRuleSelector } from "./shared/ItemRuleInput"
 import { RuleElement } from "./shared/RuleElement"
 import { RuleSelection } from "./util/item-rules-util"
+import { getRuleSelectors } from "./util/selector-util"
 
 export interface ChoiceRule {
     id: string
@@ -51,7 +52,7 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
             label: name ?? "",
             level: level ?? 0,
             value: 0,
-            selector: ""
+            selector: []
         }
         updateRules([...rules, defaultRule])
     }
@@ -120,7 +121,7 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
                                                             scale: scale ?? 0,
                                                             value: 0,
                                                             valueMultiplier: '',
-                                                            selector: rule.selector || ""
+                                                            selector: getRuleSelectors(rule)
                                                         }
                                                     }
                                                     else if (newType === "ToggleRule") {
@@ -130,7 +131,7 @@ export const ItemRulesManager = ({ item, name, level, scale }: {
                                                             label: rule.label || "",
                                                             level: level ?? 0,
                                                             value: true,
-                                                            selector: rule.selector || ""
+                                                            selector: getRuleSelectors(rule)
                                                         }
                                                     }
                                                     else if (newType === "GrantItem") {

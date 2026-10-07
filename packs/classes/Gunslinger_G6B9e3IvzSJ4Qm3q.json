@@ -23,18 +23,13 @@
       {
         "id": "VUDabU8SRKHX5TuX",
         "key": "ToggleRule",
-        "label": "Training: Ranged",
+        "label": "Training",
         "level": "1",
         "value": true,
-        "selector": "skills.ranged.trained"
-      },
-      {
-        "id": "86sTIWJSY0IRqMge",
-        "key": "ToggleRule",
-        "label": "Training: Detect",
-        "level": "1",
-        "value": true,
-        "selector": "skills.detect.trained"
+        "selector": [
+          "skills.ranged.trained",
+          "skills.detect.trained"
+        ]
       }
     ],
     "complexity": 3,
@@ -67,9 +62,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1786041519359,
-    "modifiedTime": 1789497370342,
+    "modifiedTime": 1791333627174,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

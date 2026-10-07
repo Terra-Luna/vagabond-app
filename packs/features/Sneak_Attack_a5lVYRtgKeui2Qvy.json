@@ -12,7 +12,11 @@
         "label": "Bonus Dice",
         "level": 1,
         "value": "1",
-        "selector": "modifiers.damage.out.finesse.dice.extra.count, modifiers.damage.out.ranged.dice.extra.count, modifiers.damage.out.keen.dice.extra.count",
+        "selector": [
+          "modifiers.damage.out.finesse.dice.extra.count",
+          "modifiers.damage.out.ranged.dice.extra.count",
+          "modifiers.damage.out.keen.dice.extra.count"
+        ],
         "scale": 3,
         "toggleableEffect": true
       },
@@ -24,7 +28,11 @@
         "scale": 0,
         "value": "1",
         "valueMultiplier": "",
-        "selector": "modifiers.damage.out.finesse.armorPiercing.perExtraDie, modifiers.damage.out.ranged.armorPiercing.perExtraDie, modifiers.damage.out.keen.armorPiercing.perExtraDie",
+        "selector": [
+          "modifiers.damage.out.finesse.armorPiercing.perExtraDie",
+          "modifiers.damage.out.ranged.armorPiercing.perExtraDie",
+          "modifiers.damage.out.keen.armorPiercing.perExtraDie"
+        ],
         "toggleableEffect": true
       },
       {
@@ -33,7 +41,11 @@
         "label": "Exploding Dice",
         "level": 6,
         "value": "4",
-        "selector": "modifiers.damage.out.finesse.dice.extra.explodesOn, modifiers.damage.out.ranged.dice.extra.explodesOn, modifiers.damage.out.keen.dice.extra.explodesOn",
+        "selector": [
+          "modifiers.damage.out.finesse.dice.extra.explodesOn",
+          "modifiers.damage.out.ranged.dice.extra.explodesOn",
+          "modifiers.damage.out.keen.dice.extra.explodesOn"
+        ],
         "toggleableEffect": true
       },
       {
@@ -42,7 +54,9 @@
         "label": "Flag",
         "level": 1,
         "value": true,
-        "selector": "flags.sneakattack"
+        "selector": [
+          "flags.sneakattack"
+        ]
       }
     ],
     "classId": "6TmIRB6wIVRxMZxv",

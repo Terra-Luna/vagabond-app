@@ -12,7 +12,9 @@
         "label": "Increased Focus",
         "level": 2,
         "value": "1",
-        "selector": "maxFocus",
+        "selector": [
+          "maxFocus"
+        ],
         "scale": 4
       }
     ],

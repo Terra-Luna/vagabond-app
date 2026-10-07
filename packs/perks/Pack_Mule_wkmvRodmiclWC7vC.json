@@ -12,7 +12,9 @@
         "label": "Pack Mule",
         "level": 0,
         "value": 2,
-        "selector": "inventory.capacity"
+        "selector": [
+          "inventory.capacity"
+        ]
       }
     ],
     "prerequisites": [

@@ -12,7 +12,11 @@
         "label": "Elemental Resistances",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.damage.in.perDieReduction.cold, modifiers.damage.in.perDieReduction.fire, modifiers.damage.in.perDieReduction.shock",
+        "selector": [
+          "modifiers.damage.in.perDieReduction.cold",
+          "modifiers.damage.in.perDieReduction.fire",
+          "modifiers.damage.in.perDieReduction.shock"
+        ],
         "scale": 4
       }
     ],

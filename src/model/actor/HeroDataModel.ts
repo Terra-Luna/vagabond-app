@@ -5,6 +5,7 @@ import { getXpToNext } from "../../apps/vagabond-tools/usecase/VagabondSettingsH
 import { HeroBaseDataRulesApplicator } from "../../rules/util/HeroBaseDataRulesApplicator"
 import { getItemChoiceRules, getItemRules } from "../../rules/util/item-rules-util"
 import { PerkRulesSelectionsApplicator } from "../../rules/util/PerkRulesSelectionsApplicator"
+import { getRuleSelectors, normalizeSelector } from "../../rules/util/selector-util"
 import { sys_id } from "../../utils/foundryUtils"
 import { getEquippedArmor } from "../../utils/heroInventoryUtil"
 import { appLang } from "../../utils/lang"
@@ -243,7 +244,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         }
         else {
             const rules = item.rules ?? item.system.rules ?? []
-            const buffs = rules.filter(rule => rule.toggleableEffect && !rule.selector.includes("flags."))
+            const buffs = rules.filter(rule => rule.toggleableEffect && !getRuleSelectors(rule).some(s => s.includes("flags.")))
 
             if (buffs.length > 0) {
                 const data = {
@@ -267,9 +268,8 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
         for (const rule of rules) {
             if (rule.key !== "ToggleRule" || !rule.toggleableEffect) continue
 
-            const statusNames = removeWhitespace(rule.selector ?? "")
-                .split(",")
-                .map((it: string) => it.replace("system.", ""))
+            const statusNames = getRuleSelectors(rule)
+                .map((it: string) => normalizeSelector(it))
                 .filter((it: string) => it.startsWith("statuses.toggles."))
                 .map((it: string) => it.split(".").pop() as string)
 

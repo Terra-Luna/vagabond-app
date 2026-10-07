@@ -12,7 +12,9 @@
         "label": "Patient Defense",
         "level": 0,
         "value": "defense",
-        "selector": "modifiers.damage.out.melee.properties.granted",
+        "selector": [
+          "modifiers.damage.out.melee.properties.granted"
+        ],
         "toggleableEffect": true
       },
       {
@@ -21,7 +23,9 @@
         "label": "Flag",
         "level": 0,
         "value": true,
-        "selector": "flags.patience"
+        "selector": [
+          "flags.patience"
+        ]
       }
     ],
     "prerequisites": [

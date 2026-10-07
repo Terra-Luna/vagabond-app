@@ -12,7 +12,9 @@
         "label": "Ability: Deadeye",
         "level": 1,
         "value": true,
-        "selector": "flags.deadeye"
+        "selector": [
+          "flags.deadeye"
+        ]
       }
     ],
     "level": 1,

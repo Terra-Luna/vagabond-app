@@ -12,7 +12,9 @@
         "label": "Exploding Crit Dice",
         "level": "6",
         "value": true,
-        "selector": "modifiers.damage.out.ranged.dice.crit.explodes"
+        "selector": [
+          "modifiers.damage.out.ranged.dice.crit.explodes"
+        ]
       }
     ],
     "level": 6,

@@ -45,7 +45,7 @@ export class DiceRoll {
     static getItemDamageWithHeroMods = (hero: HeroDataModel, skill: string, item: AlchemicalItemDataModel | WeaponDataModel): DiceRollSchema => {
         const heroMods = foundry.utils.deepClone(hero.modifiers)
         if (item instanceof WeaponDataModel) {
-            RelicPowerProcessor.applyRelicPowers(item.relicPowers as any, heroMods)
+            RelicPowerProcessor.applyRelicPowers(item.relicPowers as any, heroMods, { skillTrained: hero.skills[skill]?.trained ?? false })
         }
         const mods = heroMods.damage.out
         const isTrained = hero.skills[skill]?.trained ?? false

@@ -12,7 +12,9 @@
         "label": "Per-die Mitigation",
         "level": 10,
         "value": "1",
-        "selector": "modifiers.damage.in.perDieReduction.global",
+        "selector": [
+          "modifiers.damage.in.perDieReduction.global"
+        ],
         "toggleableEffect": true
       },
       {
@@ -21,7 +23,9 @@
         "label": "Flag",
         "level": 10,
         "value": true,
-        "selector": "flags.riptear"
+        "selector": [
+          "flags.riptear"
+        ]
       }
     ],
     "level": 10,

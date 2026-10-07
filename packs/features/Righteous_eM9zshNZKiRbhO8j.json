@@ -20,7 +20,9 @@
         "label": "Casting Skill",
         "level": 1,
         "value": "leadership",
-        "selector": "class.castingSkill"
+        "selector": [
+          "class.castingSkill"
+        ]
       },
       {
         "id": "Xo2J1x45OlAPBEqd",
@@ -28,7 +30,9 @@
         "label": "Mana",
         "level": 1,
         "value": "2",
-        "selector": "mana.max",
+        "selector": [
+          "mana.max"
+        ],
         "valueMultiplier": "level.current"
       },
       {
@@ -37,7 +41,9 @@
         "label": "Caster Type",
         "level": 1,
         "value": "half",
-        "selector": "class.maxCastFormula"
+        "selector": [
+          "class.maxCastFormula"
+        ]
       },
       {
         "id": "ldr4ehdx04MgJyhL",

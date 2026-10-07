@@ -23,18 +23,13 @@
       {
         "id": "sHDdlkNX4yj8vmKE",
         "key": "ToggleRule",
-        "label": "Training: Brawl",
+        "label": "Training",
         "level": "1",
         "value": true,
-        "selector": "skills.brawl.trained"
-      },
-      {
-        "id": "Iwf5JhVdJzaS8sdF",
-        "key": "ToggleRule",
-        "label": "Training: Melee",
-        "level": "1",
-        "value": true,
-        "selector": "skills.melee.trained"
+        "selector": [
+          "skills.brawl.trained",
+          "skills.melee.trained"
+        ]
       }
     ],
     "complexity": 3,
@@ -66,9 +61,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1786571011722,
-    "modifiedTime": 1789505056332,
+    "modifiedTime": 1791333282881,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

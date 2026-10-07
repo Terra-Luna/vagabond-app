@@ -12,7 +12,9 @@
         "label": "Bonus Damage Die",
         "level": 10,
         "value": true,
-        "selector": "modifiers.damage.out.global.conditional.weak",
+        "selector": [
+          "modifiers.damage.out.global.conditional.weak"
+        ],
         "toggleableEffect": true
       },
       {
@@ -21,7 +23,9 @@
         "label": "Flag",
         "level": 10,
         "value": true,
-        "selector": "flags.apexpredator"
+        "selector": [
+          "flags.apexpredator"
+        ]
       }
     ],
     "level": 10,

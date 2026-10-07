@@ -12,7 +12,9 @@
         "label": "Flag",
         "level": "0",
         "value": true,
-        "selector": "flags.sharpshooter"
+        "selector": [
+          "flags.sharpshooter"
+        ]
       },
       {
         "id": "Q1Fu1uMZIoF9KjnY",
@@ -20,7 +22,9 @@
         "label": "Ranged Crit Bonus",
         "level": 0,
         "value": "1",
-        "selector": "modifiers.skillCheck.ranged.critThreshold",
+        "selector": [
+          "modifiers.skillCheck.ranged.critThreshold"
+        ],
         "toggleableEffect": true
       }
     ],

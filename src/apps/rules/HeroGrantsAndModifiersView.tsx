@@ -1,6 +1,7 @@
 import { HeroDataModel } from '../../model/actor/HeroDataModel'
 import { EffectCardContainer,GrantsAndModifiersCard } from '../../rules/shared/GrantsAndModifiersCard'
 import { calculateRecurringRuleScale, getItemRuleSources, RuleSelection } from '../../rules/util/item-rules-util'
+import { getRuleSelectors, normalizeSelector } from '../../rules/util/selector-util'
 import { tableBorder } from '../../view/common/border-styles'
 import { CollapsibleSection } from '../../view/component/Collapsible'
 import { HeroCreationLabel, HeroCreationSubtext } from '../hero-creator/component/HeroCreationTypography'
@@ -9,7 +10,7 @@ interface ActiveRuleDisplay {
     id: string
     key: string
     label: string
-    selector?: string
+    selector?: string[]
     value?: number
     uuid?: string
     level: number
@@ -35,7 +36,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             selections: rule.selections,
             sourceName: source.item?.name || item.name,
             sourceImg: source.item?.img || item.img,
-            value: rule.selector?.includes("class.maxCastFormula")
+            value: getRuleSelectors(rule).some(s => s.includes("class.maxCastFormula"))
                 ? actor.system.mana.maxCast
                 : (Number.isNaN(Number(rule.value))
                     ? String(rule.value).toUpperCase()
@@ -62,7 +63,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
     })
 
     // Separate rules into Active and Upcoming (Locked) categories
-    const activeRules = allRules.filter(r => r.level <= currentLevel && !r.selector?.startsWith("flags."))
+    const activeRules = allRules.filter(r => r.level <= currentLevel && !getRuleSelectors(r).some(s => s.startsWith("flags.")))
     const lockedRules = allRules.filter(r => r.level > currentLevel).sort((a, b) => { return a.level - b.level })
     const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
 
@@ -104,7 +105,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                     <EffectCardContainer>
                         <div className="flex flex-col gap-1">
                             {flatModifiers.sort((a, b) => (a.label || "").localeCompare(b.label || "")).map(mod => {
-                                const fullPath = mod.selector?.replace("system.", "") || "stat"
+                                const fullPath = getRuleSelectors(mod).map(normalizeSelector).join(", ") || "stat"
                                 return (
                                     <div
                                         key={mod.id}

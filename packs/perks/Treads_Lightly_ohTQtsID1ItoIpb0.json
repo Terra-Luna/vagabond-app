@@ -12,7 +12,9 @@
         "label": "Treads Lightly",
         "level": 0,
         "value": 5,
-        "selector": "speed.turn"
+        "selector": [
+          "speed.turn"
+        ]
       }
     ],
     "prerequisites": [

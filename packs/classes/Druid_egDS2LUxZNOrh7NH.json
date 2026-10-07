@@ -23,18 +23,13 @@
       {
         "id": "RsPlpmNZDeIvDSTk",
         "key": "ToggleRule",
-        "label": "Training: Mysticism",
+        "label": "Training",
         "level": "1",
         "value": true,
-        "selector": "skills.mysticism.trained"
-      },
-      {
-        "id": "44iQSGTLh2FEFyO9",
-        "key": "ToggleRule",
-        "label": "Training: Survival",
-        "level": "1",
-        "value": true,
-        "selector": "skills.survival.trained"
+        "selector": [
+          "skills.mysticism.trained",
+          "skills.survival.trained"
+        ]
       }
     ],
     "complexity": 3,
@@ -67,9 +62,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1786555887806,
-    "modifiedTime": 1789495660210,
+    "modifiedTime": 1791333660217,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -12,7 +12,9 @@
         "label": "Aura Discount",
         "level": 4,
         "value": "2",
-        "selector": "modifiers.casting.deliveryDiscounts.aura"
+        "selector": [
+          "modifiers.casting.deliveryDiscounts.aura"
+        ]
       },
       {
         "id": "mDO2OgzwEm3c6bMc",
@@ -20,7 +22,9 @@
         "label": "Imbue Discount",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.casting.deliveryDiscounts.imbue",
+        "selector": [
+          "modifiers.casting.deliveryDiscounts.imbue"
+        ],
         "scale": 4,
         "toggleableEffect": true
       },
@@ -30,7 +34,9 @@
         "label": "Flag",
         "level": 4,
         "value": true,
-        "selector": "flags.paragonsaura"
+        "selector": [
+          "flags.paragonsaura"
+        ]
       }
     ],
     "level": 4,

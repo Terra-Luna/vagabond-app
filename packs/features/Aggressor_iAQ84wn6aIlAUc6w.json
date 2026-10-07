@@ -12,7 +12,9 @@
         "label": "Speed Bonus",
         "level": 2,
         "value": "5",
-        "selector": "speed.turn",
+        "selector": [
+          "speed.turn"
+        ],
         "scale": 4
       },
       {
@@ -21,7 +23,9 @@
         "label": "Speed Bonus: First Round",
         "level": 2,
         "value": "5",
-        "selector": "modifiers.combat.roundOne.speed.turn",
+        "selector": [
+          "modifiers.combat.roundOne.speed.turn"
+        ],
         "scale": 4
       }
     ],

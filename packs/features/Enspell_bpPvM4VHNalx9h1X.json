@@ -12,7 +12,9 @@
         "label": "Enspell",
         "level": 1,
         "value": true,
-        "selector": "flags.enpell"
+        "selector": [
+          "flags.enpell"
+        ]
       }
     ],
     "level": 1,

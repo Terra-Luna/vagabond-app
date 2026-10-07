@@ -4,6 +4,7 @@ import { inventoryItemTypes, isPathOfType } from "../../utils/modelUtil"
 import { removeWhitespace } from "../../utils/stringUtil"
 import { calculateRecurringRuleScale, getRuleSelectionValues, normalizeRuleSelections } from "./item-rules-util"
 import { ItemsCache } from "./ItemsCache"
+import { getRuleSelectors, normalizeSelector } from "./selector-util"
 
 export class HeroBaseDataRulesApplicator {
 
@@ -71,8 +72,7 @@ export class HeroBaseDataRulesApplicator {
 
         const applyToggleRule = async (rule) => {
             const value = isToggleRuleActive(rule)
-            const selector = removeWhitespace(rule.selector)
-            const paths = selector.split(",").map(it => it.replace("system.", ""))
+            const paths = getRuleSelectors(rule).map(it => normalizeSelector(it))
 
             for (const path of paths) {
                 if (path.startsWith("statuses.toggles.")) {
@@ -131,8 +131,7 @@ export class HeroBaseDataRulesApplicator {
             const toggleState = !rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId)
             if (!toggleState) return
 
-            const selector = removeWhitespace(rule.selector.replace("system.", ""))
-            const paths = selector.split(",")
+            const paths = getRuleSelectors(rule).map(it => normalizeSelector(it))
 
             paths.forEach(path => {
                 const currentValue = foundry.utils.getProperty(actor.system, path) ?? foundry.utils.getProperty(actor.system, path.split(".").slice(0, -1).join("."))
@@ -268,9 +267,7 @@ export class HeroBaseDataRulesApplicator {
         activeTogglePaths = new Set(
             toggleRules
                 .filter(isToggleRuleActive)
-                .flatMap(rule => removeWhitespace(rule.selector)
-                    .split(",")
-                    .map(path => path.replace("system.", "")))
+                .flatMap(rule => getRuleSelectors(rule).map(path => normalizeSelector(path)))
         )
         for (const rule of toggleRules) { applyToggleRule(rule) }
         for (const rule of flatModifiers) { applyFlatModifier(rule) }

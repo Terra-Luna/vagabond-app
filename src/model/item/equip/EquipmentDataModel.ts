@@ -35,7 +35,7 @@ const baseEquipmentSchema = () => {
                     label: new fields.StringField({ ...requiredString }),
                     modifiers: new fields.ArrayField(
                         new fields.SchemaField({
-                            path: new fields.StringField({ ...requiredString }),
+                            selector: new fields.ArrayField(new fields.StringField({ ...requiredString }), { initial: [] }),
                             value: new fields.NumberField({ ...uncappedInteger })
                         }),
                         { initial: [] }
@@ -62,6 +62,19 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
             ...super.defineSchema(),
             ...baseEquipmentSchema()
         }
+    }
+
+    /** Converts legacy relic modifiers that used a single `path` string into `selector` arrays. */
+    static override migrateData(source: any) {
+        source?.relicPowers?.forEach?.((relic: any) => {
+            relic?.power?.modifiers?.forEach?.((mod: any) => {
+                if (mod && !Array.isArray(mod.selector) && typeof mod.path === "string") {
+                    mod.selector = mod.path.split(",").map((s: string) => s.trim()).filter(Boolean)
+                }
+                delete mod?.path
+            })
+        })
+        return super.migrateData(source)
     }
 
     /**

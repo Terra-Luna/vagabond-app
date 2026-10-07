@@ -12,7 +12,9 @@
         "label": "Healing: Explode on Min",
         "level": 0,
         "value": 1,
-        "selector": "modifiers.healing.out.spell.dice.exploding.values"
+        "selector": [
+          "modifiers.healing.out.spell.dice.exploding.values"
+        ]
       }
     ],
     "prerequisites": [

@@ -12,7 +12,9 @@
         "label": "Reflex Bonus Die",
         "level": 1,
         "value": "1",
-        "selector": "modifiers.skillCheck.reflex.extraDice"
+        "selector": [
+          "modifiers.skillCheck.reflex.extraDice"
+        ]
       },
       {
         "id": "5UosVDZ7nwMNU1oz",

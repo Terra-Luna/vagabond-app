@@ -12,7 +12,9 @@
         "label": "Exploding Damage",
         "level": 0,
         "value": true,
-        "selector": "modifiers.damage.out.global.dice.exploding.max",
+        "selector": [
+          "modifiers.damage.out.global.dice.exploding.max"
+        ],
         "toggleableEffect": true
       },
       {
@@ -21,7 +23,9 @@
         "label": "Flag",
         "level": 0,
         "value": true,
-        "selector": "flags.mageslayer",
+        "selector": [
+          "flags.mageslayer"
+        ],
         "toggleableEffect": false
       }
     ],

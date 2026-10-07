@@ -2,6 +2,11 @@ import { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import { EquipmentDataModel, EquipmentSchema } from "../../../model/item/equip/EquipmentDataModel"
 import { RelicPower } from "./RelicPowers"
 
+const getModifierSelectors = (mod: any): string[] => {
+    if (Array.isArray(mod?.selector) && mod.selector.length > 0) return mod.selector
+    return typeof mod?.path === "string" ? [mod.path] : []
+}
+
 export class RelicPowerProcessor {
 
     static getFormattedRelicName = (relic: RelicPower): string => {
@@ -27,14 +32,13 @@ export class RelicPowerProcessor {
         const filteredRelics = relics.flatMap(it => ({
             ...it,
             power: {
-                modifiers: [
-                    ...it.power.modifiers.filter(mod =>
-                        mod.path.startsWith("system.") &&
-                        foundry.utils.getProperty(actor, mod.path) !== undefined
-                    ).map(mod => {
-                        return { path: mod.path, value: mod.value }
-                    })
-                ]
+                modifiers: it.power.modifiers.flatMap(mod => {
+                    const selectors = getModifierSelectors(mod).filter(selector =>
+                        selector.startsWith("system.") &&
+                        foundry.utils.getProperty(actor, selector) !== undefined
+                    )
+                    return selectors.length > 0 ? [{ selector: selectors, value: mod.value }] : []
+                })
             }
         })).filter(it => it.power.modifiers.length > 0) as RelicPower[]
 
@@ -66,18 +70,11 @@ export class RelicPowerProcessor {
         if (!relic.power.modifiers || relic.power.modifiers.length === 0) return
 
         for (const mod of relic.power.modifiers) {
-            const currentValue = foundry.utils.getProperty(item, mod.path)
-            if (currentValue !== undefined) {
-                if (event === 'add') {
-                    if (typeof currentValue === 'number') {
-                        await item.update({ [mod.path]: currentValue + mod.value })
-                    }
-                }
-                else {
-                    if (typeof currentValue === 'number') {
-                        await item.update({ [mod.path]: currentValue - mod.value })
-                    }
-                }
+            for (const selector of getModifierSelectors(mod)) {
+                const currentValue = foundry.utils.getProperty(item, selector)
+                if (typeof currentValue !== 'number') continue
+                const delta = event === 'add' ? mod.value : -mod.value
+                await item.update({ [selector]: currentValue + delta })
             }
         }
     }
@@ -89,16 +86,21 @@ export class RelicPowerProcessor {
      * precedence.
      * @param item 
      * @param heroMods 
+     * @param options.skillTrained
      */
-    static applyRelicPowers = (relics?: RelicPower[], heroMods?: any) => {
+    static applyRelicPowers = (relics?: RelicPower[], heroMods?: any, options?: { skillTrained?: boolean }) => {
         if (!relics || relics.length === 0 || !heroMods) return
 
-        const deduped = RelicPowerProcessor.dedupePowers(relics)
+        const eligible = options?.skillTrained === false
+            ? relics.filter(relic => relic.category?.value !== 'ace')
+            : relics
+        const deduped = RelicPowerProcessor.dedupePowers(eligible)
 
         deduped.forEach(relic => {
             relic.power.modifiers?.forEach(relicMod => {
-                if (relicMod.path && relicMod.value !== undefined) {
-                    const keys = relicMod.path.split('.')
+                if (relicMod.value === undefined) return
+                getModifierSelectors(relicMod).forEach(selector => {
+                    const keys = selector.split('.')
 
                     let current = heroMods
                     for (let i = 0; i < keys.length - 1; i++) {
@@ -117,7 +119,7 @@ export class RelicPowerProcessor {
                             current[targetKey] = relicMod.value
                         }
                     }
-                }
+                })
             })
         })
     }

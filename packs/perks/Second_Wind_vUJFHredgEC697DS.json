@@ -12,7 +12,9 @@
         "label": "Used this Shift",
         "level": 0,
         "value": false,
-        "selector": "flags.ruleToggle_vUJFHredgEC697DS",
+        "selector": [
+          "flags.ruleToggle_vUJFHredgEC697DS"
+        ],
         "toggleableEffect": true
       }
     ],

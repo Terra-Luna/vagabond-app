@@ -9,10 +9,12 @@
       {
         "id": "OZls4UxB8laLC6WX",
         "key": "FlatModifier",
-        "label": "Defense Weapon Dmg Bonus",
+        "label": "Defense Weapon Damage Bonus",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.damage.out.defense.conditional.armored.bonus.flat",
+        "selector": [
+          "modifiers.damage.out.defense.conditional.armored.bonus.flat"
+        ],
         "scale": 4
       }
     ],

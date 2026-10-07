@@ -12,7 +12,9 @@
         "label": "Exalted",
         "level": "10",
         "value": true,
-        "selector": "statuses.toggles.exalted",
+        "selector": [
+          "statuses.toggles.exalted"
+        ],
         "toggleableEffect": false
       },
       {
@@ -21,7 +23,9 @@
         "label": "Blessed",
         "level": "10",
         "value": true,
-        "selector": "statuses.toggles.blessed",
+        "selector": [
+          "statuses.toggles.blessed"
+        ],
         "toggleableEffect": false
       }
     ],

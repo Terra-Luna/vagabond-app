@@ -23,18 +23,13 @@
       {
         "id": "lqjMFCnsdfW4Kkz0",
         "key": "ToggleRule",
-        "label": "Training: Melee",
+        "label": "Training",
         "level": "1",
         "value": true,
-        "selector": "skills.melee.trained"
-      },
-      {
-        "id": "ws28DYPWa19S6TK6",
-        "key": "ToggleRule",
-        "label": "Training: Arcana",
-        "level": "1",
-        "value": true,
-        "selector": "skills.arcana.trained"
+        "selector": [
+          "skills.melee.trained",
+          "skills.arcana.trained"
+        ]
       }
     ],
     "complexity": 4,
@@ -68,9 +63,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1784995121741,
-    "modifiedTime": 1789526614988,
+    "modifiedTime": 1791333562780,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

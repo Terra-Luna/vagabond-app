@@ -12,7 +12,9 @@
         "label": "Bonus Damage Die",
         "level": 0,
         "value": true,
-        "selector": "modifiers.damage.out.global.conditional.weak",
+        "selector": [
+          "modifiers.damage.out.global.conditional.weak"
+        ],
         "toggleableEffect": true
       }
     ],

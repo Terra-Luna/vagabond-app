@@ -1,0 +1,28 @@
+{
+  "folder": "dNSZ8oo7EphDRyO4",
+  "name": "Sync Hero Ancestry & Class",
+  "type": "script",
+  "_id": "xkbB61xeXoU6fB5q",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "/icons/creatures/invertebrates/beetle-grub-larvae-gray.webp",
+  "scope": "global",
+  "command": "/**\n * Refresh a Hero's Ancestry and Class items from their compendium source,\n * keeping training, spell and perk selections.\n * Select a hero token (or set a default character) and run.\n */\nconst SYS = \"vagabond-app\";\nconst actor = canvas.tokens.controlled[0]?.actor ?? game.user.character;\n\nif (!actor || actor.type !== \"hero\") {\n  return ui.notifications.warn(\"Select a hero token (or set a default character) first.\");\n}\n\nconst recordedUuid = (item) => item.getFlag(\"core\", \"sourceId\") ?? item._stats?.compendiumSource ?? null;\n\nconst findSource = async (item) => {\n  const uuid = recordedUuid(item);\n  \n  if (uuid) {\n    try {\n      const doc = await fromUuid(uuid);\n      if (doc && doc.documentName === \"Item\" && doc.type === item.type && doc !== item) {\n        return { doc, how: \"compendium source\" };\n      }\n    } catch (e) { /* ignore */ }\n  }\n  \n  for (const pack of game.packs.filter(p => p.documentName === \"Item\" && p.metadata.packageName === SYS)) {\n    const index = await pack.getIndex({ fields: [\"type\"] });\n    const entry = index.find(e => e.type === item.type && e.name === item.name);\n    if (entry) return { doc: await pack.getDocument(entry._id), how: `compendium ${pack.collection}` };\n  }\n  \n  const worldDoc = game.items.find(i => i.type === item.type && i.name === item.name);\n  \n  return worldDoc \n    ? { doc: worldDoc, how: \"world item source\" } \n    : null;\n};\n\nconst sameRule = (a, b) =>\n  a.id === b.id || (a.key === b.key && a.label && a.label === b.label);\n\n// Rules added to the hero's copy (e.g. the \"Elective Trainings\" rule) not defined on the source Item.\nconst isHeroAddedRule = (rule) =>\n  rule.key === \"ChoiceSet\" && rule.channel === \"path\" &&\n  (rule.label === \"Elective Trainings\" ||\n   (rule.choices ?? []).some(c => (typeof c === \"string\" ? c : c?.value ?? \"\").includes(\"skills.\"))\n  );\n\nconst items = actor.items.filter(i => [\"ancestry\", \"class\"].includes(i.type));\nif (items.length === 0) return ui.notifications.warn(`${actor.name} has no ancestry or class item.`);\n\nconst report = [];\n\nfor (const item of items) {\n  const found = await findSource(item);\n  if (!found) {\n    report.push(`<li><b>${item.name}</b> (${item.type}): no source found, skipped.</li>`);\n    continue;\n  }\n  const { doc: source, how } = found;\n\n  const oldRules = foundry.utils.deepClone(item.system.rules ?? []);\n  const oldSelections = foundry.utils.deepClone(item.getFlag(SYS, \"ruleSelections\") ?? {});\n  const newSystem = foundry.utils.deepClone(source.system.toObject());\n  newSystem.rules ??= [];\n\n  const merged = foundry.utils.deepClone(oldSelections);\n\n  for (const rule of newSystem.rules) {\n    const oldRule = oldRules.find(r => sameRule(r, rule));\n    if (!oldRule) continue;\n    if (oldRule.id !== rule.id && oldSelections[oldRule.id]?.length) {\n      merged[rule.id] = oldSelections[oldRule.id];\n    }\n    if (Array.isArray(oldRule.selections) && oldRule.selections.length && !merged[rule.id]?.length) {\n      rule.selections = foundry.utils.deepClone(oldRule.selections);\n    }\n  }\n\n  // Keep player-selected training rules.\n  for (const oldRule of oldRules) {\n    if (newSystem.rules.some(r => sameRule(r, oldRule))) continue;\n    if (!isHeroAddedRule(oldRule)) continue;\n    newSystem.rules.push(foundry.utils.deepClone(oldRule));\n  }\n\n  await item.update({ name: source.name, img: source.img, system: newSystem }, { diff: false });\n  await item.setFlag(SYS, \"ruleSelections\", merged);\n  await item.setFlag(\"core\", \"sourceId\", source.uuid);\n\n  report.push(`<li><b>${source.name}</b> (${item.type}): Successfully refreshed from ${how}.</li>`);\n}\n\nawait actor.system?.forceUpdate?.();\nactor.prepareData();\nactor.sheet?.render(false);\n\nChatMessage.create({\n  speaker: ChatMessage.getSpeaker({ actor }),\n  whisper: [game.user.id],\n  content: `<p><b>${actor.name}</b> refreshed from compendium:</p><ul>${report.join(\"\")}</ul>`\n});",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.103",
+    "createdTime": 1791337032092,
+    "modifiedTime": 1791338602926,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!xkbB61xeXoU6fB5q"
+}

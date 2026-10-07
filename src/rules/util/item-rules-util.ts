@@ -3,6 +3,7 @@ import { sys_id } from "../../utils/foundryUtils"
 import { appLang } from "../../utils/lang"
 import { CombinedItems, getId } from "../../utils/modelUtil"
 import { ItemsCache } from "./ItemsCache"
+import { getRuleSelectors } from "./selector-util"
 
 export interface ItemRule {
     id: string,
@@ -211,7 +212,7 @@ export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | u
         const itemRules = getItemRules(item)
         if (itemRules.length === 0) return
         rules.push(
-            ...itemRules.filter(r => r.key === 'FlatModifier' && r.value && r.selector.includes('stats.'))
+            ...itemRules.filter(r => r.key === 'FlatModifier' && r.value && getRuleSelectors(r).some(s => s.includes('stats.')))
         )
     }
 
@@ -220,9 +221,10 @@ export function getFlatStatBonuses(items: (Item & { system: { rules: any } } | u
     })
 
     // Return a list of flat bonuses by stat name and value...
-    return rules.map(rule => (
-        { name: rule.label, stat: rule.selector.split('.').reverse()[0], bonus: rule.value }
-    ))
+    return rules.flatMap(rule => getRuleSelectors(rule)
+        .filter(s => s.includes('stats.'))
+        .map(s => ({ name: rule.label, stat: s.split('.').reverse()[0], bonus: rule.value }))
+    )
 }
 
 export function getStatChoiceRules(items: (Item & { system: { rules: any } } | undefined)[]) {
@@ -293,7 +295,7 @@ export function getRequiredSkillTrainingRules(items: (Item & { system: { rules: 
 
     const getRequiredTrainings = (item) => {
         const requiredSkillRules = getItemRules(item)
-            .filter(r => r.key === 'ToggleRule' && r.value && r.selector.includes('skills.'))
+            .filter(r => r.key === 'ToggleRule' && r.value && getRuleSelectors(r).some(s => s.includes('skills.')))
 
         if (!requiredSkillRules || requiredSkillRules.length === 0) return
 
@@ -307,7 +309,9 @@ export function getRequiredSkillTrainingRules(items: (Item & { system: { rules: 
     const res: { source: Item, skill: string }[] = []
     itemRules.forEach(itemRule => {
         itemRule.rules.forEach(rule => {
-            res.push({ source: itemRule.item, skill: getSkillNameFromPath(rule.selector) })
+            getRuleSelectors(rule).filter(s => s.includes('skills.')).forEach(s => {
+                res.push({ source: itemRule.item, skill: getSkillNameFromPath(s) })
+            })
         })
     })
 

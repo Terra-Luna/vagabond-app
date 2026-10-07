@@ -12,7 +12,9 @@
         "label": "Status Immunities",
         "level": 6,
         "value": "blinded, paralyzed, sickened",
-        "selector": "modifiers.damage.in.statusImmunities"
+        "selector": [
+          "modifiers.damage.in.statusImmunities"
+        ]
       }
     ],
     "level": 6,

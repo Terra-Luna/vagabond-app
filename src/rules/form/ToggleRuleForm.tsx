@@ -1,5 +1,7 @@
 import { Checkbox } from "../../view/component/Checkbox"
 import { ItemRuleInput, ItemRuleSelector } from "../shared/ItemRuleInput"
+import { SelectorInput } from "../shared/SelectorInput"
+import { getRuleSelectors } from "../util/selector-util"
 
 export const ToggleRuleForm = ({ rule, onChange }) => {
     return (
@@ -19,11 +21,11 @@ export const ToggleRuleForm = ({ rule, onChange }) => {
                     placeholder={"0"}
                 />
             </div>
-            <ItemRuleInput
+            <SelectorInput
                 label={"Path"}
-                value={rule.selector || ""}
-                onChange={(e) => onChange({ selector: e.target.value })}
-                placeholder={"e.g., skills.arcana.trained"}
+                kind="toggle"
+                value={getRuleSelectors(rule)}
+                onChange={(selector) => onChange({ selector })}
             />
             <ItemRuleSelector
                 label={"Select State"}

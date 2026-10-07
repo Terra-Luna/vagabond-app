@@ -12,7 +12,9 @@
         "label": "Ascendancy",
         "level": 0,
         "value": true,
-        "selector": "skills.detect.trained"
+        "selector": [
+          "skills.detect.trained"
+        ]
       },
       {
         "id": "7KkcA8nFI98kMjNH",

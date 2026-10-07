@@ -23,26 +23,14 @@
       {
         "id": "Va5S3We9pq1dh8er",
         "key": "ToggleRule",
-        "label": "Training: Arcana",
+        "label": "Training",
         "level": "1",
         "value": true,
-        "selector": "skills.arcana.trained"
-      },
-      {
-        "id": "JqD4lWC6UGflFfbu",
-        "key": "ToggleRule",
-        "label": "Training: Craft",
-        "level": "1",
-        "value": true,
-        "selector": "skills.craft.trained"
-      },
-      {
-        "id": "ka6KzF0PIZze37lX",
-        "key": "ToggleRule",
-        "label": "Training: Medicine",
-        "level": "1",
-        "value": true,
-        "selector": "skills.medicine.trained"
+        "selector": [
+          "skills.arcana.trained",
+          "skills.craft.trained",
+          "skills.medicine.trained"
+        ]
       }
     ],
     "complexity": 4,
@@ -75,9 +63,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1785901125159,
-    "modifiedTime": 1789490856175,
+    "modifiedTime": 1791330766651,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

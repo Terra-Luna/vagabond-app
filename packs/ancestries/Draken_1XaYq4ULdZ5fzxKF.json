@@ -12,7 +12,9 @@
         "label": "Scale",
         "level": 0,
         "value": 1,
-        "selector": "armor.rating"
+        "selector": [
+          "armor.rating"
+        ]
       },
       {
         "id": "tHTC2Y6S5t4SH9Nw",

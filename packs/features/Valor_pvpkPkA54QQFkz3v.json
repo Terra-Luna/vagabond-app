@@ -12,7 +12,9 @@
         "label": "Crit Threshold Reduction",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.skillCheck.attack.critThreshold",
+        "selector": [
+          "modifiers.skillCheck.attack.critThreshold"
+        ],
         "scale": 4
       }
     ],

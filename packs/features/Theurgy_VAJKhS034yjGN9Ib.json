@@ -48,7 +48,9 @@
         "label": "Casting Skill",
         "level": 1,
         "value": "mysticism",
-        "selector": "class.castingSkill"
+        "selector": [
+          "class.castingSkill"
+        ]
       },
       {
         "id": "c22OGqbmbLSsFThh",
@@ -56,7 +58,9 @@
         "label": "Mana",
         "level": 1,
         "value": "4",
-        "selector": "mana.max",
+        "selector": [
+          "mana.max"
+        ],
         "valueMultiplier": "level.current"
       },
       {
@@ -65,7 +69,9 @@
         "label": "Caster Type",
         "level": 1,
         "value": "full",
-        "selector": "class.maxCastFormula"
+        "selector": [
+          "class.maxCastFormula"
+        ]
       }
     ],
     "level": 1,

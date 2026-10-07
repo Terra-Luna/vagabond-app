@@ -23,26 +23,14 @@
       {
         "id": "J8oiso2PvONaRPNu",
         "key": "ToggleRule",
-        "label": "Training: Craft",
+        "label": "Training",
         "level": "1",
         "value": true,
-        "selector": "skills.craft.trained"
-      },
-      {
-        "id": "7s3Y3832Y0tfchRE",
-        "key": "ToggleRule",
-        "label": "Training: Influence",
-        "level": "1",
-        "value": true,
-        "selector": "skills.influence.trained"
-      },
-      {
-        "id": "k9uaeJ18BlSyNSAv",
-        "key": "ToggleRule",
-        "label": "Training: Finesse",
-        "level": "1",
-        "value": true,
-        "selector": "skills.finesse.trained"
+        "selector": [
+          "skills.craft.trained",
+          "skills.influence.trained",
+          "skills.finesse.trained"
+        ]
       }
     ],
     "complexity": 3,
@@ -77,9 +65,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1786566807612,
-    "modifiedTime": 1789501884216,
+    "modifiedTime": 1791333544265,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

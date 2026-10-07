@@ -12,7 +12,9 @@
         "label": "Alchemy per-die bonus",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.damage.out.alchemy.bonus.perDie",
+        "selector": [
+          "modifiers.damage.out.alchemy.bonus.perDie"
+        ],
         "scale": 4
       },
       {
@@ -21,7 +23,9 @@
         "label": "Alchemy exploding dice",
         "level": 4,
         "value": true,
-        "selector": "modifiers.damage.out.alchemy.dice.exploding.max"
+        "selector": [
+          "modifiers.damage.out.alchemy.dice.exploding.max"
+        ]
       }
     ],
     "level": 4,

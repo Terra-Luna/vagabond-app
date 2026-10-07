@@ -219,7 +219,7 @@ Hooks.on("preCreateItem", (item: any, _options, _userId) => {
                     variant: "primary"
                 }).then((confirmed) => {
                     if (!confirmed) return
-                    preExistingUniqueItem.update({ name: item.name, system: item.system })
+                    preExistingUniqueItem.update({ name: item.name, img: item.img, system: item.system })
                     actor.system.forceUpdate?.()
                 })
             }

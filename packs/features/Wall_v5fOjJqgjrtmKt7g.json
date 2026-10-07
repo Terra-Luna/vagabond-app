@@ -12,7 +12,9 @@
         "label": "Defense Die Size Bonus",
         "level": 2,
         "value": "2",
-        "selector": "modifiers.damage.out.defense.dice.size.bonus",
+        "selector": [
+          "modifiers.damage.out.defense.dice.size.bonus"
+        ],
         "scale": 4
       }
     ],

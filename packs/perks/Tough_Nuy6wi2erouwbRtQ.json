@@ -12,7 +12,9 @@
         "label": "HP/Level",
         "level": 0,
         "value": 1,
-        "selector": "health.max",
+        "selector": [
+          "health.max"
+        ],
         "valueMultiplier": "level.current"
       }
     ],

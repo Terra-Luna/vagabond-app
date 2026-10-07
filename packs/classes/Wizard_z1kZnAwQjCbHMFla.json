@@ -23,26 +23,14 @@
       {
         "id": "voRqNJ0sjhnRhgjQ",
         "key": "ToggleRule",
-        "label": "Training: Arcana",
+        "label": "Training",
         "level": "1",
         "value": true,
-        "selector": "skills.arcana.trained"
-      },
-      {
-        "id": "KMQ6r2DHgSkPYqyN",
-        "key": "ToggleRule",
-        "label": "Training: Craft",
-        "level": "1",
-        "value": true,
-        "selector": "skills.craft.trained"
-      },
-      {
-        "id": "zDKKTlluK2NP8Nvz",
-        "key": "ToggleRule",
-        "label": "Training: Mysticsim",
-        "level": "1",
-        "value": true,
-        "selector": "skills.mysticism.trained"
+        "selector": [
+          "skills.arcana.trained",
+          "skills.craft.trained",
+          "skills.mysticism.trained"
+        ]
       }
     ],
     "complexity": 3,
@@ -73,9 +61,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1786572729833,
-    "modifiedTime": 1789506540798,
+    "modifiedTime": 1791333218894,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

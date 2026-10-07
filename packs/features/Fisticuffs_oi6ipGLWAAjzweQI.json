@@ -20,7 +20,9 @@
         "label": "Brawl Weapon Props",
         "level": 1,
         "value": "vicious, defense",
-        "selector": "modifiers.damage.out.brawl.properties.granted"
+        "selector": [
+          "modifiers.damage.out.brawl.properties.granted"
+        ]
       },
       {
         "id": "SNX8iFZKVZjbqdJv",
@@ -28,7 +30,9 @@
         "label": "Flag",
         "level": 1,
         "value": true,
-        "selector": "flags.fisticuffs"
+        "selector": [
+          "flags.fisticuffs"
+        ]
       }
     ],
     "level": 1,

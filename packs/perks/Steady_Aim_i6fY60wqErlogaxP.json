@@ -12,15 +12,19 @@
         "label": "Flag",
         "level": "0",
         "value": true,
-        "selector": "flags.steadyaim"
+        "selector": [
+          "flags.steadyaim"
+        ]
       },
       {
         "id": "b4ZmlaDUpPHULgai",
         "key": "FlatModifier",
-        "label": "Ranged Dmg Bonus",
+        "label": "Ranged Damage Bonus",
         "level": 0,
         "value": "2",
-        "selector": "modifiers.damage.out.ranged.bonus.flat",
+        "selector": [
+          "modifiers.damage.out.ranged.bonus.flat"
+        ],
         "toggleableEffect": true
       }
     ],

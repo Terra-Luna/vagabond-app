@@ -40,11 +40,22 @@ export const VagabondSheetMixin = (superclass) => class extends superclass {
         if (!htmlElement) return
 
         // Prevent Foundry from capturing user keypresses on our sheets!!
+        // Events are retargeted to the shadow host, so the real target comes from the composed path.
+        const isEditableTarget = (e: Event) => {
+            const target = e.composedPath()[0] as HTMLElement | undefined
+            return !!target && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))
+        }
         htmlElement.addEventListener("keydown", (e) => {
             if (e.key === "F5" || (e.ctrlKey && e.key === "r")) return
+            // Let form controls receive their own key events (e.g., arrow/tab/enter in dropdowns); they're stopped on the way back up below.
+            if (isEditableTarget(e)) return
             e.stopPropagation()
             e.stopImmediatePropagation()
         }, { capture: true })
+        htmlElement.addEventListener("keydown", (e) => {
+            if (e.key === "F5" || (e.ctrlKey && e.key === "r")) return
+            e.stopPropagation()
+        })
     }
 
     _toggleDisabled(disabled: boolean) {

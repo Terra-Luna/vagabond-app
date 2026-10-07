@@ -20,7 +20,9 @@
         "label": "Item Slots",
         "level": 1,
         "value": "2",
-        "selector": "inventory.capacity",
+        "selector": [
+          "inventory.capacity"
+        ],
         "scale": 3
       }
     ],

@@ -12,7 +12,9 @@
         "label": "Damage Bonus",
         "level": 4,
         "value": "1",
-        "selector": "modifiers.damage.out.global.bonus.flat",
+        "selector": [
+          "modifiers.damage.out.global.bonus.flat"
+        ],
         "scale": 4,
         "toggleableEffect": true
       },
@@ -22,7 +24,9 @@
         "label": "Flag",
         "level": 4,
         "value": true,
-        "selector": "flags.lethalprecision",
+        "selector": [
+          "flags.lethalprecision"
+        ],
         "toggleableEffect": false
       }
     ],
