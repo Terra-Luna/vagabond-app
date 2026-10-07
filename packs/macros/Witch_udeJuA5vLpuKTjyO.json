@@ -1,0 +1,23 @@
+{
+  "type": "Macro",
+  "folder": null,
+  "name": "Witch",
+  "color": null,
+  "sorting": "a",
+  "_id": "udeJuA5vLpuKTjyO",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.103",
+    "createdTime": 1791389364415,
+    "modifiedTime": 1791389364415,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!udeJuA5vLpuKTjyO"
+}

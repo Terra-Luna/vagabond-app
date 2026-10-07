@@ -4,7 +4,7 @@
   "_id": "vj3XjAvcddA43PBn",
   "img": "/icons/commodities/currency/coins-assorted-mix-copper-silver-gold.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can take the Use Action to place non-Relic Items into a container, close it, then spend 1 Luck to choose an Item with a value no more than the original valuables’. The chosen Item replaces the valuables.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can take the Use Action to place Items that aren’t Fabled Relics inside a container and choose one Item with a value no higher than the Items placed inside. The chosen Item replaces the originals. If the value exceeds 1g, you must spend 1 Luck to do so.</span></p>",
     "rules": [],
     "level": 1,
     "scale": 0,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789501402957,
-    "modifiedTime": 1789605686625,
+    "modifiedTime": 1791390101508,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

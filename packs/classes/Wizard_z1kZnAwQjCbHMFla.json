@@ -47,7 +47,9 @@
       "Compendium.vagabond-app.features.Item.EIFfdsXwODkmr6V2",
       "Compendium.vagabond-app.features.Item.NQCbPRtyQ62FoBXZ",
       "Compendium.vagabond-app.features.Item.dlE8BvsNsSqU5eqn",
-      "Compendium.vagabond-app.features.Item.rRmWj7FxGn9dwF4c"
+      "Compendium.vagabond-app.features.Item.rRmWj7FxGn9dwF4c",
+      "Compendium.vagabond-app.features.Item.6xDCaDXZBnyt1YzR",
+      "Compendium.vagabond-app.features.Item.yMj1sZZ8t1mi341y"
     ]
   },
   "effects": [],
@@ -63,7 +65,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.103",
     "createdTime": 1786572729833,
-    "modifiedTime": 1791333218894,
+    "modifiedTime": 1791388976444,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

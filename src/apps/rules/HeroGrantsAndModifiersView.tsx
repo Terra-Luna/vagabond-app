@@ -20,6 +20,7 @@ interface ActiveRuleDisplay {
     selections: RuleSelection[] | null
     sourceName: string
     sourceImg: string
+    sourceKey: string
 }
 
 export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system: HeroDataModel } }) => {
@@ -36,6 +37,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             selections: rule.selections,
             sourceName: source.item?.name || item.name,
             sourceImg: source.item?.img || item.img,
+            sourceKey: String(source.item?.uuid ?? source.item?.id ?? source.item?._id ?? item.uuid ?? item.id ?? item._id),
             value: getRuleSelectors(rule).some(s => s.includes("class.maxCastFormula"))
                 ? actor.system.mana.maxCast
                 : (Number.isNaN(Number(rule.value))
@@ -56,16 +58,90 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             pack: rule.pack,
             selections: rule.selections,
             sourceName: item.parent.name,
-            sourceImg: item.parent.img
+            sourceImg: item.parent.img,
+            sourceKey: String(item.parent.uuid ?? item.parent.id ?? item.parent._id ?? item._sourceId ?? item.parent.name)
         })) as ActiveRuleDisplay[]
 
         rules.forEach(rule => { allRules.push(rule) })
     })
 
     // Separate rules into Active and Upcoming (Locked) categories
-    const activeRules = allRules.filter(r => r.level <= currentLevel && !getRuleSelectors(r).some(s => s.startsWith("flags.")))
+    const applicableRules = allRules.filter(r => r.level <= currentLevel && !getRuleSelectors(r).some(s => s.startsWith("flags.")))
     const lockedRules = allRules.filter(r => r.level > currentLevel).sort((a, b) => { return a.level - b.level })
-    const flatModifiers = activeRules.filter(r => r.key === "FlatModifier")
+    const flatModifiers = applicableRules.filter(r => r.key === "FlatModifier")
+    const highestMinMaxValueBySourceAndPath = new Map<string, number>()
+
+    flatModifiers.forEach(mod => {
+        const value = Number(mod.value)
+        if (!Number.isFinite(value)) return
+
+        getRuleSelectors(mod)
+            .map(normalizeSelector)
+            .filter(path => /\.(min|max)$/.test(path))
+            .forEach(path => {
+                const key = JSON.stringify([mod.sourceKey, path])
+                highestMinMaxValueBySourceAndPath.set(
+                    key,
+                    Math.max(highestMinMaxValueBySourceAndPath.get(key) ?? -Infinity, value)
+                )
+            })
+    })
+
+    const activeRules = applicableRules.filter(rule => {
+        if (rule.key !== "FlatModifier") return true
+
+        const selectors = getRuleSelectors(rule).map(normalizeSelector)
+        const minMaxSelectors = selectors.filter(path => /\.(min|max)$/.test(path))
+        if (minMaxSelectors.length === 0) return true
+
+        const value = Number(rule.value)
+        if (!Number.isFinite(value)) return true
+
+        return selectors.some(path => {
+            if (!/\.(min|max)$/.test(path)) return true
+            return value === highestMinMaxValueBySourceAndPath.get(JSON.stringify([rule.sourceKey, path]))
+        })
+    })
+
+    const visibleFlatModifiers = activeRules.filter(r => r.key === "FlatModifier")
+    const modifierSummaryRows: { mod: ActiveRuleDisplay, path: string }[] = []
+    const minMaxModifiers = new Map<string, ActiveRuleDisplay[]>()
+
+    visibleFlatModifiers.forEach(mod => {
+        const paths = getRuleSelectors(mod).map(normalizeSelector)
+        const regularPaths = paths.filter(path => !/\.(min|max)$/.test(path))
+
+        if (regularPaths.length > 0 || paths.length === 0) {
+            modifierSummaryRows.push({ mod, path: regularPaths.join(", ") || "stat" })
+        }
+
+        paths.filter(path => /\.(min|max)$/.test(path)).forEach(path => {
+            const key = JSON.stringify([mod.sourceKey, path])
+            const modifiers = minMaxModifiers.get(key) ?? []
+            modifiers.push(mod)
+            minMaxModifiers.set(key, modifiers)
+        })
+    })
+
+    minMaxModifiers.forEach(modifiers => {
+        const path = getRuleSelectors(modifiers[0]).map(normalizeSelector).find(selector => /\.(min|max)$/.test(selector)) ?? "stat"
+        const numericValues = modifiers
+            .map(mod => ({ mod, value: Number(mod.value) }))
+            .filter(entry => Number.isFinite(entry.value))
+
+        if (numericValues.length === 0) {
+            modifiers.forEach(mod => modifierSummaryRows.push({ mod, path }))
+            return
+        }
+
+        const highestValue = Math.max(...numericValues.map(entry => entry.value))
+        numericValues
+            .filter(entry => entry.value === highestValue)
+            .forEach(entry => modifierSummaryRows.push({ mod: entry.mod, path }))
+        modifiers
+            .filter(mod => !Number.isFinite(Number(mod.value)))
+            .forEach(mod => modifierSummaryRows.push({ mod, path }))
+    })
 
     return (
         <div className="flex flex-col gap-4 p-4 bg-sheet-main-fill text-text-primary max-w-2xl">
@@ -100,18 +176,18 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
             )}
 
             {/* STAT MODIFIER DATA */}
-            {flatModifiers.length > 0 && (
+            {visibleFlatModifiers.length > 0 && (
                 <CollapsibleSection title={`Passive Modifiers Summary`} settingsKey={'rules-data-summary'} content={
                     <EffectCardContainer>
                         <div className="flex flex-col gap-1">
-                            {flatModifiers.sort((a, b) => (a.label || "").localeCompare(b.label || "")).map(mod => {
-                                const fullPath = getRuleSelectors(mod).map(normalizeSelector).join(", ") || "stat"
-                                return (
+                            {modifierSummaryRows
+                                .sort((a, b) => (a.mod.label || "").localeCompare(b.mod.label || "") || a.path.localeCompare(b.path))
+                                .map(({ mod, path }) => (
                                     <div
-                                        key={mod.id}
+                                        key={`${mod.id}:${path}`}
                                         className={`flex justify-between items-center text-xs bg-sheet-main-fill px-2 py-1.5 ${tableBorder}/50 rounded`}>
                                         <span className="text-text-primary line-clamp-1">
-                                            {mod.label || "Modifier"} <span className="text-text-primary">({fullPath})</span>
+                                            {mod.label || "Modifier"} <span className="text-text-primary">({path})</span>
                                         </span>
                                         {/* BONUS VALUE PILL */}
                                         <span className={`
@@ -122,8 +198,7 @@ export const HeroGrantsAndModifiersView = ({ actor }: { actor: Actor & { system:
                                             {mod.value}
                                         </span>
                                     </div>
-                                )
-                            })}
+                                ))}
                         </div>
                     </EffectCardContainer>
                 } />

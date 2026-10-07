@@ -172,8 +172,6 @@ export class HeroAttack extends Attack {
                 { ['skipTrackerChatCard' as string]: true }
             )
 
-            roll3dDice([this.skillCheck?.result?.rolls[0]])
-
             if (this.skillCheck?.result &&
                 this.skillCheck?.result.outcome !== appLang.RollResult.failure &&
                 this.isEligibleForDmgRoll

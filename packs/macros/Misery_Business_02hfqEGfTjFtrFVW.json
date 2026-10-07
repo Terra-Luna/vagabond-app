@@ -1,0 +1,28 @@
+{
+  "folder": "udeJuA5vLpuKTjyO",
+  "name": "Misery Business",
+  "type": "script",
+  "_id": "02hfqEGfTjFtrFVW",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "icons/magic/death/skull-horned-goat-pentagram-red.webp",
+  "scope": "global",
+  "command": "const sysId = \"vagabond-app\";\nconst flag = \"miserybusiness\";\nconst featId = \"Compendium.vagabond-app.features.Item.vb6J3WCDgCnV1K9m\";\n\nlet hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(sysId, flag))?.actor;\n}\n\nif (!hero || !hero.getFlag(sysId, flag)) return;\n\ngame.system.api.rules.toggleEffect(hero, featId);",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.103",
+    "createdTime": 1791389373036,
+    "modifiedTime": 1791394367244,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!02hfqEGfTjFtrFVW"
+}

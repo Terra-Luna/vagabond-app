@@ -4,7 +4,7 @@
   "_id": "wt2SuCqWCPCR5Whh",
   "img": "icons/skills/melee/hand-grip-sword-orange.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If you roll a 1 or 2 on any of the damage dice of a 2H Weapon attack, you can reroll it. Further, when you make a 2H Melee attack and roll 10 above your Difficulty, you can also Shove the Target as part of the attack.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If you roll a 1 or 2 on any of the damage dice of a 2H Weapon attack, you can reroll it. Further, when you make a 2H Melee attack and roll 15 above your Difficulty, you can also Shove the Target as part of the attack.</span></p>",
     "rules": [
       {
         "id": "FT07s42fb9bTrw7b",
@@ -62,9 +62,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.21",
+    "systemVersion": "0.1.103",
     "createdTime": 1786724252405,
-    "modifiedTime": 1788806570943,
+    "modifiedTime": 1791393078640,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

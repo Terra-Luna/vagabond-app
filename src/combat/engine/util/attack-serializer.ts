@@ -32,6 +32,7 @@ export interface AttackSnapshot {
     isResolved: boolean
     saveTypes: SavingThrowType[] | undefined
     saveResults: Record<string, any> | undefined
+    defenseArmorBonuses: Record<string, number> | undefined
     description: string | undefined
     statuses: string[] | undefined
     rerolledSaveTargetIds: string[] | undefined
@@ -122,6 +123,7 @@ function serializeAdversaryAttack(atk: AdversaryAttack): AttackSnapshot {
         type: 'adversary',
         saveTypes: atk.saveTypes,
         saveResults: cleanSaveResults,
+        defenseArmorBonuses: atk.defenseArmorBonuses,
         description: atk.description,
         statuses: atk.statuses,
         rerolledSaveTargetIds: atk.rerolledSaveTargetIds

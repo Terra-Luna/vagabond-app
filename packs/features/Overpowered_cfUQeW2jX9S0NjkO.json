@@ -1,0 +1,33 @@
+{
+  "folder": "QD8fhhjYDQUpFoOi",
+  "name": "Overpowered",
+  "type": "feature",
+  "_id": "cfUQeW2jX9S0NjkO",
+  "img": "icons/magic/lightning/orb-ball-purple.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">When you Cast, you can choose to gain 1 Fatigue. If you do, you regain Cd4! HP and Max HP at the start of your Turns and have a bonus to your Cast Max each Turn equal to the roll. If using an Ability would kill you during this countdown, including Fatigue gained from this Ability, you do not die until the countdown ends, after which your body is vaporized.</span></p>",
+    "rules": [],
+    "level": 10,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.103",
+    "createdTime": 1791388522400,
+    "modifiedTime": 1791388678357,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!cfUQeW2jX9S0NjkO"
+}

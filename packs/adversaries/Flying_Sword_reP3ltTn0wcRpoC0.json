@@ -362,6 +362,7 @@
           "weaknesses": [],
           "statusImmunities": [
             "charmed",
+            "confused",
             "frightened",
             "sickened",
             "suffocating"
@@ -642,9 +643,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.38",
+    "systemVersion": "0.1.103",
     "createdTime": 1788994071431,
-    "modifiedTime": 1790022045790,
+    "modifiedTime": 1791392845574,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

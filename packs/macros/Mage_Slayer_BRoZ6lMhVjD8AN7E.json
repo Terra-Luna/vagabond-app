@@ -6,7 +6,7 @@
   "author": "KyorYoEvge7ElSaj",
   "img": "/icons/magic/unholy/hand-weapon-glow-black-green.webp",
   "scope": "global",
-  "command": "let hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(\"vagabond-app\", \"mageslayer\"))?.actor;\n}\n\nif (!hero || !hero.getFlag(\"vagabond-app\", \"mageslayer\")) return;\n\ngame.system.api.rules.toggleEffect(hero, \"UKxHDfsiFddvWYKu\");",
+  "command": "const sysId = \"vagabond-app\";\nconst flag = \"mageslayer\";\nconst featId = \"UKxHDfsiFddvWYKu\";\n\nlet hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(sysId, flag))?.actor;\n}\n\nif (!hero || !hero.getFlag(sysId, flag)) return;\n\ngame.system.api.rules.toggleEffect(hero, featId);",
   "sort": 0,
   "ownership": {
     "default": 0,
@@ -18,7 +18,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.91",
     "createdTime": 1790826255203,
-    "modifiedTime": 1790833917041,
+    "modifiedTime": 1791394425503,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -186,6 +186,11 @@
       "slash": "Slash"
     },
     "Saves": {
+      "defend": {
+        "name": "Defend",
+        "formula": "",
+        "description": "Use defense weapons to block attacks"
+      },
       "reflex": {
         "name": "Reflex",
         "formula": "[DEX + AWR]",
@@ -518,15 +523,20 @@
         "description": "Standard materials with no additional properties.",
         "valueMultiplier": 1
       },
+      "steel2": {
+        "name": "Steel",
+        "description": "Standard steel with no additional properties.",
+        "valueMultiplier": 1
+      },
       "bronze": {
         "name": "Bronze",
         "description": "Bronze",
-        "valueMultiplier": "1"
+        "valueMultiplier": 1
       },
       "iron": {
         "name": "Iron",
         "description": "Iron",
-        "valueMultiplier": "1"
+        "valueMultiplier": 1
       },
       "adamant": {
         "name": "Adamant",
@@ -557,11 +567,6 @@
         "name": "Gold",
         "description": "Damage die is a countdown die. Armor decreases by 1 after taking damage, breaking at 0.",
         "valueMultiplier": 100
-      },
-      "wood": {
-        "name": "Wood",
-        "description": "Damage die is a countdown die. Armor decreases by 1 after taking damage, breaking at 0.",
-        "valueMultiplier": 0.5
       }
     },
     "EquipmentCategories": {
@@ -666,10 +671,11 @@
       "reflex_tooltip": "Evade physical harm, such as attacks, explosions, quick traps, and dragon's breath.",
       "endure_tooltip": "Withstand physical harm, such as poisons, extreme heat, restraints, and petrification.",
       "will_tooltip": "Resist mental harm, such as charms, dreadful terrors, psychic enthrallment, and your resolve.",
+      "defend_tooltip": "Make an Attack Check to use your Defense weapons to mitigate incoming attacks.",
       "attacks": "ATTACKS",
       "weapons": "WEAPONS",
       "ancestry": "ANCESTRY",
-      "class": "CLASS",
+      "class": "CLASS FEATURES",
       "perks": "PERKS",
       "encumbrance": "ENCUMBRANCE",
       "wealth": "WEALTH",

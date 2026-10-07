@@ -68,10 +68,9 @@ export class DiceRoll {
             flatBonus += armoredMods?.bonus?.flat ?? 0
         }
 
-        let dieSize = 
-            Math.max(mods[skill]?.dice.size.min ?? 0, item.damage.dice.faces)
+        let dieSize = Math.max(mods[skill]?.dice?.size?.min ?? 0, item.damage.dice.faces)
             + versatileBonus
-            + (mods[skill]?.dice.size.bonus ?? 0)
+            + (mods[skill]?.dice?.size?.bonus ?? 0)
             + (isDefense ? mods.defense.dice.size.bonus : 0)
             + (isThrown ? mods.thrown.dice.size.bonus : 0)
 
@@ -81,16 +80,17 @@ export class DiceRoll {
             flatBonus += diff / 2
         }
 
-        const explodesOnCrit = mods[skill]?.dice.crit?.explodes
-        const globalMaxExplode = mods.global.dice.exploding.max
-        const globalSubMaxExplode = mods.global.dice.exploding.subMax
-        const explodesOn = [
-            ...item.damage.dice.explodesOn ?? [],
-            ...mods[skill]?.dice.exploding.values ?? [],
-            ...mods[skill]?.dice.exploding.max ? [dieSize] : [],
-            ...explodesOnCrit || globalMaxExplode ? [dieSize] : [],
-        ]
-        if (globalSubMaxExplode) {
+        const explodesOnCrit = mods.global.dice.crit.explodes || mods[skill]?.dice?.crit?.explodes
+        const maxExplode = mods.global.dice.exploding.max || mods[skill]?.dice?.exploding?.max
+        const subMaxExplode = mods.global.dice.exploding.subMax || mods[skill]?.dice?.exploding?.subMax
+        const explodesOn = [...new Set([
+            ...(item.damage.dice.explodesOn ?? []),
+            ...(mods[skill]?.dice?.exploding?.values ?? []),
+            ...(mods[skill]?.dice?.exploding?.max ? [dieSize] : []),
+            ...(explodesOnCrit || maxExplode ? [dieSize] : []),
+        ])]
+
+        if (subMaxExplode) {
             explodesOn.push(dieSize - 1)
         }
 
@@ -107,7 +107,7 @@ export class DiceRoll {
             count: item.damage.dice.count + (isWeak ? 1 : 0),
             faces: dieSize,
             modifier: flatBonus,
-            explodesOn: explodesOn ?? [],
+            explodesOn: explodesOn?.sort((a, b) => a - b) ?? [],
             explodeOnCritOnly: explodesOnCrit ?? false,
             extraDiceOnCrit: extraDiceOnCrit ?? 0,
             reroll: reroll

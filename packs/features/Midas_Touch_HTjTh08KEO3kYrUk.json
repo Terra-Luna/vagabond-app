@@ -1,10 +1,10 @@
 {
-  "name": "Top Shelf",
+  "name": "Midas Touch",
   "type": "feature",
   "_id": "HTjTh08KEO3kYrUk",
-  "img": "/icons/commodities/currency/coins-plain-stack-gold.webp",
+  "img": "/icons/equipment/hand/gauntlet-plate-gold.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can use your Gold Sink Ability to pull non-Fabled Relics by spending 1 additional Luck per 250g of the Relic’s value, otherwise obeying all the rules for that Ability.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Any Relic Item Bonus or Rank is increased by 1 while you have it Equipped.</span></p>",
     "rules": [],
     "level": 10,
     "scale": 0,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789501747104,
-    "modifiedTime": 1789522015799,
+    "modifiedTime": 1791390495509,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

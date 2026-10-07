@@ -43,6 +43,7 @@ export class ComboSubAttack {
     async rollDamage(isCrit?: boolean) {
         if (this.damageRoll.dice.length > 0 && !this.damageRoll.result) {
             await this.damageRoll.roll(isCrit)
+            roll3dDice((this.damageRoll?.result as any)?.rolls ?? [])
         }
     }
 
@@ -54,8 +55,7 @@ export class ComboSubAttack {
 
     calculateAdjustedDamage(targetId: string, args: AttackResolutionArgs): number {
         const actor = canvas?.scene?.tokens?.get(targetId)?.actor
-        let damage = this.damageRoll.result?.total ?? 0
-        damage = args.halveDamage ? Math.ceil(damage / 2) : damage
+        const damage = this.damageRoll.result?.total ?? 0
 
         const target = actor?.system
         const armorRating = (target as any)?.armor?.rating ?? 0
@@ -74,8 +74,6 @@ export class ComboSubAttack {
         const result = await skillCheck.roll()
 
         this.saveResults = { ...this.saveResults, [targetId]: result }
-        // No chat message is created for save rolls, so animate them manually.
-        roll3dDice(result.rolls)
 
         return result
     }
@@ -105,7 +103,6 @@ export class ComboSubAttack {
 
         this.saveResults = { ...this.saveResults, [targetId]: result }
         this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
-        roll3dDice(result.rolls)
 
         return result
     }

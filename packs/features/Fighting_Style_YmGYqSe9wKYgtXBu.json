@@ -26,6 +26,14 @@
           {
             "type": "training",
             "value": "ranged"
+          },
+          {
+            "type": "training",
+            "value": "brawl"
+          },
+          {
+            "type": "training",
+            "value": "finesse"
           }
         ],
         "ignoreTrainings": true,
@@ -51,6 +59,14 @@
           {
             "type": "training",
             "value": "ranged"
+          },
+          {
+            "type": "training",
+            "value": "brawl"
+          },
+          {
+            "type": "training",
+            "value": "finesse"
           }
         ],
         "ignoreTrainings": true,
@@ -72,9 +88,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789495824611,
-    "modifiedTime": 1789525110291,
+    "modifiedTime": 1791390991728,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

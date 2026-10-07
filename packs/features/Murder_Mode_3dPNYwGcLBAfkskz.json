@@ -44,11 +44,11 @@
         ]
       },
       {
-        "id": "AdDAs6oVcffAKcUD",
+        "id": "FvYKtCcWL8wxuPAO",
         "key": "FlatModifier",
         "label": "Status Immunities",
         "level": 4,
-        "scale": 4,
+        "scale": 0,
         "value": "charmed, confused, frightened",
         "valueMultiplier": "",
         "selector": [
@@ -72,7 +72,7 @@
     "systemId": "vagabond-app",
     "systemVersion": "0.1.103",
     "createdTime": 1789491420521,
-    "modifiedTime": 1791236664920,
+    "modifiedTime": 1791341754517,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

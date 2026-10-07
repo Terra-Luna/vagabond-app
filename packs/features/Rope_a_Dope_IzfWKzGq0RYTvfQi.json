@@ -4,7 +4,7 @@
   "_id": "IzfWKzGq0RYTvfQi",
   "img": "/icons/magic/earth/strike-fist-stone-gray.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If you reduce damage from a Close Enemy’s attack to 0 with the Defense property of a Brawl Weapon, you can immediately make one attack or Move 5’ without using Speed.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If you don’t take damage from a Close Enemy’s attack, you can immediately make one attack or Move 5’ without using Speed.</span></p>",
     "rules": [],
     "level": 1,
     "scale": 0,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789502135940,
-    "modifiedTime": 1789523133061,
+    "modifiedTime": 1791389702967,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

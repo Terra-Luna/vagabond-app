@@ -773,7 +773,8 @@
       "name": "",
       "actions": []
     },
-    "morale": 3
+    "morale": 3,
+    "forceUpdateTrack": true
   },
   "prototypeToken": {
     "name": "Electric Eel",
@@ -867,41 +868,7 @@
     "appendNumber": false,
     "prependAdjective": false
   },
-  "items": [
-    {
-      "name": "Aquatic",
-      "type": "feature",
-      "_id": "fsoySp2xydauefue",
-      "img": "/icons/creatures/fish/fish-pirahna-tan.webp",
-      "system": {
-        "description": "<p><span style=\"white-space:pre-wrap\">Can only breathe water.</span></p>",
-        "rules": [],
-        "level": 0,
-        "scale": 0,
-        "maxLevel": 0
-      },
-      "effects": [],
-      "flags": {},
-      "_stats": {
-        "coreVersion": "14.361",
-        "systemId": "vagabond-app",
-        "systemVersion": "0.1.25",
-        "createdTime": 1790032870807,
-        "modifiedTime": 1790032870807,
-        "lastModifiedBy": "KyorYoEvge7ElSaj",
-        "compendiumSource": "Compendium.vagabond-app.features.Item.fsoySp2xydauefue",
-        "duplicateSource": null,
-        "exportSource": null
-      },
-      "ownership": {
-        "default": 0,
-        "KyorYoEvge7ElSaj": 3
-      },
-      "folder": null,
-      "sort": 0,
-      "_key": "!actors.items!qRnNJUHtmzegUiWu.fsoySp2xydauefue"
-    }
-  ],
+  "items": [],
   "effects": [],
   "folder": "TqnyvVE4A9LUb12r",
   "ownership": {
@@ -912,9 +879,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.25",
+    "systemVersion": "0.1.103",
     "createdTime": 1790032809451,
-    "modifiedTime": 1790033493274,
+    "modifiedTime": 1791392904364,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

@@ -355,14 +355,17 @@
             "perDieBonus": 0
           },
           "immunities": [
-            "poison",
-            "psychic"
+            "poison"
           ],
           "weaknesses": [
             "blunt"
           ],
           "statusImmunities": [
+            "berserk",
+            "charmed",
+            "confused",
             "fatigued",
+            "frightened",
             "sickened",
             "suffocating"
           ]
@@ -659,9 +662,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.42",
+    "systemVersion": "0.1.103",
     "createdTime": 1788994617554,
-    "modifiedTime": 1790022045786,
+    "modifiedTime": 1791392886961,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

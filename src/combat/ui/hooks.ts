@@ -27,11 +27,7 @@ export const useAdversaryAttackTargets = (attack: AdversaryAttack | AdversaryCom
         return liveTargetIds
             .map(id => {
                 const canvasToken = getCanvasToken(id)
-                return {
-                    id,
-                    src: getTokenImg(canvasToken),
-                    token: canvasToken
-                }
+                return { id, src: getTokenImg(canvasToken), token: canvasToken }
             })
             .filter(it => it.src != null && it.src.length > 0)
     }, [liveTargetIds])
@@ -52,7 +48,8 @@ export const useAdversaryAttackSaveHandlers = (
         if (attack instanceof AdversaryComboAttack) {
             if (subIndex === undefined) return
             await attack.rollSave(subIndex, targetId, saveType, clickEvent)
-        } else {
+        }
+        else {
             await attack.rollSave(targetId, saveType, clickEvent)
         }
         setRevision(previous => previous + 1)
@@ -62,7 +59,8 @@ export const useAdversaryAttackSaveHandlers = (
         if (attack instanceof AdversaryComboAttack) {
             if (subIndex === undefined) return
             await attack.rerollSave(subIndex, targetId)
-        } else {
+        }
+        else {
             await attack.rerollSave(targetId)
         }
         setRevision(previous => previous + 1)

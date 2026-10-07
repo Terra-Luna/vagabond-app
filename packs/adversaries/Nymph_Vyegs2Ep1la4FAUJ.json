@@ -737,7 +737,7 @@
     "actions": [
       {
         "name": "Nymph's Kiss",
-        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Will]: Cursed (Cd8 Rounds, immediately suffocating and can only breathe water).</span></p>",
+        "description": "<p><span style=\"white-space: pre-wrap;\">[Cast, Touch | Will]: Cursed (Cd8 Rounds, and can only breathe water).</span></p>",
         "damage": {
           "dice": {
             "count": 0,
@@ -924,9 +924,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.31",
+    "systemVersion": "0.1.103",
     "createdTime": 1790200947423,
-    "modifiedTime": 1790203266130,
+    "modifiedTime": 1791392951655,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

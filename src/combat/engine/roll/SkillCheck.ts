@@ -5,6 +5,7 @@ import { RelicPowerProcessor } from "../../../apps/vagabond-tools/relic/RelicPow
 import type { HeroDataModel } from "../../../model/actor/HeroDataModel"
 import type { AlchemicalItemDataModel } from "../../../model/item/equip/AlchemicalItemDataModel"
 import type { WeaponDataModel } from "../../../model/item/equip/WeaponDataModel"
+import { roll3dDice } from "../../../utils/foundryUtils"
 import { appLang } from "../../../utils/lang"
 import { getDiceTerms, rollExplosions } from "../util/dice-utils"
 import { DiceRoll } from "./DiceRoll"
@@ -212,6 +213,8 @@ export class SkillCheck {
             outcome: isCrit ? appLang.RollResult.crit : (isSuccess ? appLang.RollResult.success : appLang.RollResult.failure),
             rolls: [roll, ...favorExplosions, ...bonusRolls]
         }
+
+        roll3dDice(this.result.rolls)
 
         return this.result
     }

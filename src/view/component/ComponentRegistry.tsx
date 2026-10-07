@@ -1,5 +1,5 @@
-import { InteractiveAttackChatCard } from "../../combat/ui/InteractiveAttackChatCard"
-import { SpellAttackInfoComponent } from "../../combat/ui/SpellAttackInfoComponent"
+import { InteractiveAttackChatCard } from "../../combat/ui/chat/InteractiveAttackChatCard"
+import { SpellAttackInfoComponent } from "../../combat/ui/chat/SpellAttackInfoComponent"
 import { AbilityChatCard } from "../chat/AbilityChatCard"
 import { DamageRollsComponent } from "../chat/component/DamageRollsComponent"
 import { DiceRollComponent } from "../chat/component/DiceRollComponent"

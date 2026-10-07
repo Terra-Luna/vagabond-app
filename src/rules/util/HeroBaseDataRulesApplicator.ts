@@ -127,6 +127,8 @@ export class HeroBaseDataRulesApplicator {
             }
         }
 
+        const strongestMinMaxModifiers = new Map<string, number>()
+
         const applyFlatModifier = (rule) => {
             const toggleState = !rule.toggleableEffect || actor.system.getRuleToggleState(rule.parentId)
             if (!toggleState) return
@@ -141,7 +143,17 @@ export class HeroBaseDataRulesApplicator {
                     : 1
 
                 if (typeof currentValue === "number") {
-                    foundry.utils.setProperty(actor.system, path, currentValue + Math.ceil(rule.value * (multiplierValue ?? 1)) * scale)
+                    let adjValue = Math.ceil(rule.value * (multiplierValue ?? 1)) * scale
+                    if (/\.(min|max)$/.test(path)) {
+                        const modifierValue = adjValue
+                        const strongestValue = strongestMinMaxModifiers.get(path)
+                        if (strongestValue !== undefined) {
+                            if (modifierValue <= strongestValue) return
+                            adjValue = modifierValue - strongestValue
+                        }
+                        strongestMinMaxModifiers.set(path, modifierValue)
+                    }
+                    foundry.utils.setProperty(actor.system, path, currentValue + adjValue)
                 }
                 else if (typeof currentValue === "string") {
                     foundry.utils.setProperty(actor.system, path, String(rule.value))

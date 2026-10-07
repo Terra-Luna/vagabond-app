@@ -4,7 +4,7 @@
   "_id": "YMgRWYHC0XlXhhrS",
   "img": "icons/magic/lightning/bolt-strike-sparks-purple.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">The damage die of your Spells is one size larger. Further, the roll required for you to Crit on Cast Checks and Saves against Casts is reduced by {{feature-value:1:1}}, and is reduced by 1 more every 4 Levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">The damage die of your Spells is one size larger.</span></p><p><br></p><p><span style=\"white-space:pre-wrap\">Further, the roll required for you to Crit on Cast Checks and Saves against Casts is reduced by {{feature-value:1:1}}, and is reduced by 1 more every 4 Levels hereafter.</span></p>",
     "rules": [
       {
         "id": "viV9xPVM66XLb6aE",
@@ -43,9 +43,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.41",
+    "systemVersion": "0.1.103",
     "createdTime": 1789504210954,
-    "modifiedTime": 1790219671625,
+    "modifiedTime": 1791388390968,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

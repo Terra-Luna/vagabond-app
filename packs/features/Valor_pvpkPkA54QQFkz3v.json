@@ -10,7 +10,7 @@
         "id": "wd0w112FdV3scFI3",
         "key": "FlatModifier",
         "label": "Crit Threshold Reduction",
-        "level": 4,
+        "level": 2,
         "value": "1",
         "selector": [
           "modifiers.skillCheck.attack.critThreshold"
@@ -18,9 +18,9 @@
         "scale": 4
       }
     ],
-    "level": 4,
+    "level": 2,
     "scale": 4,
-    "maxLevel": 0
+    "maxLevel": 42
   },
   "effects": [],
   "folder": "HwkvOvCXq07sSyrM",
@@ -33,9 +33,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.23",
+    "systemVersion": "0.1.103",
     "createdTime": 1789496268133,
-    "modifiedTime": 1789922572380,
+    "modifiedTime": 1791391061981,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

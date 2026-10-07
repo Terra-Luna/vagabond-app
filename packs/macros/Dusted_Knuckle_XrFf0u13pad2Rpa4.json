@@ -1,0 +1,28 @@
+{
+  "folder": "u4y2RKBI8ILTtpHZ",
+  "name": "Dusted Knuckle",
+  "type": "script",
+  "_id": "XrFf0u13pad2Rpa4",
+  "author": "KyorYoEvge7ElSaj",
+  "img": "/icons/skills/melee/unarmed-punch-fist-white.webp",
+  "scope": "global",
+  "command": "const sysId = \"vagabond-app\";\nconst flag = \"dustedknucks\";\nconst featId = \"Compendium.vagabond-app.perks.Item.zqTnJZseG8Q8Pf7Z\";\n\nlet hero = game.user.character;\nif (!hero) {\n  const controlled = canvas.tokens.controlled;\n  hero = controlled.find(t => t.actor?.getFlag(sysId, flag))?.actor;\n}\n\nif (!hero || !hero.getFlag(sysId, flag)) return;\n\ngame.system.api.rules.toggleEffect(hero, featId);",
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.103",
+    "createdTime": 1791394002326,
+    "modifiedTime": 1791394387278,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!macros!XrFf0u13pad2Rpa4"
+}

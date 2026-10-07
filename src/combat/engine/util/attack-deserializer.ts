@@ -78,6 +78,9 @@ function deserializeAdversaryAttack(snapshot: AttackSnapshot): AdversaryAttack |
     atk.saveResults = snapshot.saveResults
         ? foundry.utils.deepClone(snapshot.saveResults)
         : {}
+    atk.defenseArmorBonuses = snapshot.defenseArmorBonuses
+        ? foundry.utils.deepClone(snapshot.defenseArmorBonuses)
+        : {}
     atk.rerolledSaveTargetIds = snapshot.rerolledSaveTargetIds
         ? [...snapshot.rerolledSaveTargetIds]
         : []

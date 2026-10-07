@@ -4,16 +4,38 @@
   "_id": "zqTnJZseG8Q8Pf7Z",
   "img": "/icons/skills/melee/unarmed-punch-fist-white.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">You can use a d4 for the the damage dice of Brawl Weapons, and they Explode on a 1.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can use a d4 for the the damage dice of Brawl Weapons, and they can Explode.</span></p><p><br></p><p><b><strong style=\"white-space:pre-wrap\">Macro:</strong></b><span style=\"white-space:pre-wrap\"> @UUID[Compendium.vagabond-app.macros.Macro.XrFf0u13pad2Rpa4]{Dusted Knuckle}</span></p>",
     "rules": [
       {
-        "id": "rRvPbbxYPltXR014",
-        "key": "FlatModifier",
+        "id": "uda9r7VH0tfEHgxq",
+        "key": "ToggleRule",
         "label": "Brawl: Exploding Dice",
         "level": 0,
-        "value": 1,
+        "value": true,
         "selector": [
-          "modifiers.damage.out.brawl.dice.exploding.values"
+          "modifiers.damage.out.brawl.dice.exploding.max"
+        ],
+        "toggleableEffect": true
+      },
+      {
+        "id": "bB9LXeWj5hYfyUmU",
+        "key": "FlatModifier",
+        "label": "Brawl: Die Size",
+        "level": 0,
+        "value": "4",
+        "selector": [
+          "modifiers.damage.out.brawl.dice.size.min"
+        ],
+        "toggleableEffect": true
+      },
+      {
+        "id": "Q7okL1sFhN5lN902",
+        "key": "ToggleRule",
+        "label": "Flag",
+        "level": 0,
+        "value": true,
+        "selector": [
+          "flags.dustedknucks"
         ]
       }
     ],
@@ -60,9 +82,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1787881307891,
-    "modifiedTime": 1789502793090,
+    "modifiedTime": 1791397179989,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

@@ -4,7 +4,7 @@
   "_id": "PMK2detZa6HUCudm",
   "img": "/icons/equipment/hand/gauntlet-simple-leather-brown-gold.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">If the result of your Brawl Check for an attack exceeds your Difficulty by {{feature-value:10:-1}}, the Target is Dazed until the start of your Turn. The number needed to exceed is reduced by 1 every 6 Levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">If the result of your Brawl Check for an attack exceeds your Difficulty by {{feature-value:15:-1}}, the Target is Dazed until your next Turn. The number needed to exceed is reduced by 1 every 4 Levels hereafter.</span></p>",
     "rules": [],
     "level": 2,
     "scale": 6,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789502178805,
-    "modifiedTime": 1789523139291,
+    "modifiedTime": 1791389755544,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

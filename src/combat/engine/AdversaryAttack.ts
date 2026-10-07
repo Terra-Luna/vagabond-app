@@ -4,13 +4,14 @@ import { appLang } from "../../utils/lang"
 import { getTargetIds } from "../../utils/modelUtil"
 import { sendVagabondChatCard } from "../../view/chat/ChatCardSerializer"
 import { Attack, AttackResolutionArgs } from "./Attack"
+import { HeroAttack } from "./HeroAttack"
 import { DamageRoll } from "./roll/DamageRoll"
 import { DiceRoll } from "./roll/DiceRoll"
 import { SkillCheck, SkillCheckResult } from "./roll/SkillCheck"
 import type { AttackSnapshot } from "./util/attack-serializer"
 import { serializeAttack } from "./util/attack-serializer"
 
-export type SavingThrowType = 'reflex' | 'endure' | 'will'
+export type SavingThrowType = 'reflex' | 'endure' | 'will' | 'defend'
 
 export interface AdversaryAttackArgs { attackName: string, dmgType: string, dice: DiceRoll[], saveTypes?: SavingThrowType[], description?: string, statuses?: string[] }
 
@@ -22,6 +23,7 @@ export class AdversaryAttack extends Attack {
 
     saveTypes: SavingThrowType[] = []
     saveResults: Record<string, SkillCheckResult> = {}
+    defenseArmorBonuses: Record<string, number> = {}
     rerolledSaveTargetIds: string[] = []
     description: string = ''
     statuses: string[] = []
@@ -59,20 +61,56 @@ export class AdversaryAttack extends Attack {
     override async rollDamage(isCrit?: boolean) {
         if (this.damageRoll && this.damageRoll.dice.length > 0 && !this.damageRoll?.result) {
             await this.damageRoll.roll(isCrit)
+            roll3dDice(this.damageRoll.result?.rolls ?? [])
         }
     }
 
     async rollSave(targetId: string, saveType: SavingThrowType, clickEvent?: React.MouseEvent): Promise<SkillCheckResult | undefined> {
-        if (!this.saveTypes.includes(saveType) || this.saveResults[targetId]) return
+        // Defend is offered whenever a Reflex save is allowed.
+        const isAllowed = saveType === 'defend' ? this.saveTypes.includes('reflex') : this.saveTypes.includes(saveType)
+        if (!isAllowed || this.saveResults[targetId]) return
 
         const targetActor = canvas?.scene?.tokens?.get(targetId)?.actor
         if (!targetActor) return
 
-        const skillCheck = new SkillCheck(targetActor.system as HeroDataModel, { type: 'save', skill: saveType, clickEvent: clickEvent as any })
+        const hero = targetActor.system as HeroDataModel
+        const defenseWeapons = saveType === 'defend' ? hero.defenseWeapons() : []
+        const weapon = defenseWeapons[0]
+        if (saveType === 'defend' && !weapon) return
+
+        const skill = weapon
+            ? HeroAttack.getHighestDefaultWeaponSkill(hero, weapon.system)?.skill
+            : saveType
+        if (!skill) return
+
+        const skillCheck = new SkillCheck(hero, { type: 'save', skill, item: weapon?.system, clickEvent: clickEvent as any })
         const result = await skillCheck.roll()
 
+        if (saveType === 'defend' &&
+            (result.outcome === appLang.RollResult.success || result.outcome === appLang.RollResult.crit)) {
+            const defenseRolls: Roll[] = []
+            let armorBonus = 0
+
+            for (const defenseWeapon of defenseWeapons) {
+                const weaponSkill = HeroAttack.getHighestDefaultWeaponSkill(hero, defenseWeapon.system)?.skill
+                if (!weaponSkill) continue
+
+                const damageDice = DiceRoll.getItemDamageWithHeroMods(hero, weaponSkill, defenseWeapon.system)
+                const damageRoll = new DamageRoll({
+                    atkName: defenseWeapon.name,
+                    dmgType: defenseWeapon.system.damage.type,
+                    dice: [new DiceRoll(damageDice)]
+                })
+                const damageResult = await damageRoll.roll()
+                armorBonus += damageResult.total
+                defenseRolls.push(...damageResult.rolls)
+            }
+
+            this.defenseArmorBonuses = { ...this.defenseArmorBonuses, [targetId]: armorBonus }
+            roll3dDice(defenseRolls)
+        }
+
         this.saveResults = { ...this.saveResults, [targetId]: result }
-        roll3dDice(result.rolls)
         await this.save(serializeAttack)
 
         return result
@@ -106,7 +144,6 @@ export class AdversaryAttack extends Attack {
 
         this.saveResults = { ...this.saveResults, [targetId]: result }
         this.rerolledSaveTargetIds = [...this.rerolledSaveTargetIds, targetId]
-        roll3dDice(result.rolls)
         await this.save(serializeAttack)
 
         return result
@@ -116,6 +153,10 @@ export class AdversaryAttack extends Attack {
         return new AdversaryAttack(actor, args, targetIds)
     }
 
+    protected override getAdditionalArmorRating(targetId: string): number {
+        return this.defenseArmorBonuses[targetId] ?? 0
+    }
+
     /**
      * A target who succeeded (or crit) their saving throw takes no damage.
      * @param targetId 
@@ -123,6 +164,7 @@ export class AdversaryAttack extends Attack {
      */ 
     protected override shouldApplyDamageToTarget(targetId: string): boolean {
         const result = this.saveResults[targetId]
+        if (this.defenseArmorBonuses[targetId] !== undefined) return true
         return !result || result.outcome === appLang.RollResult.failure
     }
 

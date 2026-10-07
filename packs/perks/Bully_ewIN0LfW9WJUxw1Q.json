@@ -4,7 +4,7 @@
   "_id": "ewIN0LfW9WJUxw1Q",
   "img": "icons/magic/unholy/silhouette-evil-horned-giant.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a Greatshield with the Brawl property that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being as a Shield, it still takes the full damage. Your attacks with it maintain the grapple.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">Your Checks to Grapple or Shove Targets that are smaller than you are Favored, and you can use Beings that are your size or smaller as a @UUID[Compendium.vagabond-app.weapons.Item.GeMN6dmmCX30LQeO]{2H Grip d4 Brawl Weapon with the Defense property} that deals its damage to both the Target and itself on a hit. If you reduce damage with a Being this way, it still takes the full damage. Your attacks with it maintain the grapple.</span></p>",
     "rules": [],
     "prerequisites": [
       {
@@ -49,10 +49,10 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.0",
+    "systemVersion": "0.1.103",
     "createdTime": 1786634070721,
-    "modifiedTime": 1787806185478,
-    "lastModifiedBy": "LxjckWttmatU52UJ",
+    "modifiedTime": 1791398470806,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

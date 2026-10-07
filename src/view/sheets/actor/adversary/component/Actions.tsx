@@ -79,6 +79,16 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
             <div className="flex flex-col gap-1">
                 {
                     npc.actions.map((act, i) => {
+                        const avgDamage = getDamageAverage(act.damage.dice as DiceRollSchema)
+
+                        const attack = (useAvgDmg?: boolean) => {
+                            const roll: DiceRollSchema = useAvgDmg
+                                ? { count: 0, faces: avgDamage }
+                                : act.damage.dice as DiceRollSchema
+
+                            onClickAction(npc, act.name, act.description, act.damage.type, roll, act.saves as SavingThrowType[], act.statuses as string[])
+                        }
+
                         return (
                             <div key={i} className={`flex gap-2 p-2 justify-between ${tableBorderRounded}`} onContextMenu={(e) => onCtxMenu(e, [
                                 { icon: PenSquare, label: 'Edit', action: () => { setEditTarget(act); setIsAddMenuOpen(true); } },
@@ -87,17 +97,9 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                 <div className="flex flex-col">
 
                                     {/* ACTION NAME */}
-                                    <p className="font-bold hover-glow cursor-pointer" onClick={() =>
-                                        onClickAction(
-                                            npc,
-                                            act.name,
-                                            act.description,
-                                            act.damage.type,
-                                            act.damage.dice as DiceRollSchema,
-                                            act.saves as SavingThrowType[],
-                                            act.statuses as string[]
-                                        )
-                                    }>{act.name}</p>
+                                    <p className="font-bold hover-glow cursor-pointer" onClick={() => attack()}>
+                                        {act.name}
+                                    </p>
 
                                     {/* ACTION TRAITS... */}
                                     <div>
@@ -110,9 +112,13 @@ export const Actions = ({ npc, setIsAddMenuOpen, setEditTarget }: { npc: Adversa
                                         {act.damage.dice.count > 0 &&
                                             <div className="flex items-center gap-2">
                                                 <p className="text-text-secondary leading-none">Dmg:</p>
-                                                <p className={`${damageRoll} leading-none`}>{new DiceRoll(act.damage.dice as any).toRollFormula()}</p>
+                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={() => attack()}>
+                                                    {new DiceRoll(act.damage.dice as any).toRollFormula()}
+                                                </p>
                                                 <p className="leading-none text-text-secondary">|</p>
-                                                <p className={`${damageRoll} leading-none`}>{getDamageAverage(act.damage.dice as DiceRollSchema)}</p>
+                                                <p className={`${damageRoll} leading-none cursor-pointer hover-glow`} onClick={() => attack(true)}>
+                                                    {avgDamage}
+                                                </p>
                                             </div>
                                         }
 

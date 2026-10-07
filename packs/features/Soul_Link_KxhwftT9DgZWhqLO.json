@@ -1,0 +1,33 @@
+{
+  "folder": "2yctexWHVMue7l3p",
+  "name": "Soul Link",
+  "type": "feature",
+  "_id": "KxhwftT9DgZWhqLO",
+  "img": "/icons/magic/death/skeleton-skull-soul-blue.webp",
+  "system": {
+    "description": "<p><span style=\"white-space:pre-wrap\">Once per Action, when you deal damage to an Enemy within Far of your hexed Target, the hexed Target also takes the damage.</span></p>",
+    "rules": [],
+    "level": 6,
+    "scale": 0,
+    "maxLevel": 0
+  },
+  "effects": [],
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "KyorYoEvge7ElSaj": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.361",
+    "systemId": "vagabond-app",
+    "systemVersion": "0.1.103",
+    "createdTime": 1791389053271,
+    "modifiedTime": 1791389118598,
+    "lastModifiedBy": "KyorYoEvge7ElSaj",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!KxhwftT9DgZWhqLO"
+}

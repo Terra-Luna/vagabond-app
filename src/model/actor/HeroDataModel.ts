@@ -21,6 +21,7 @@ import { PerkDataModel } from "../item/character/PerkDataModel"
 import { SpellDataModel } from "../item/character/SpellDataModel"
 import { ArmorDataModel } from "../item/equip/ArmorDataModel"
 import type { EquipmentDataModel, EquipmentSchema } from "../item/equip/EquipmentDataModel"
+import { WeaponDataModel } from "../item/equip/WeaponDataModel"
 import { ActorDataModel, BaseActorSchema } from "./ActorDataModel"
 import { inventorySchema, isInventoryItem } from "./type/Inventory"
 import { levelSchema } from "./type/Level"
@@ -195,6 +196,12 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
                 'system.statuses.counters.fatigue': this.statuses.counters.fatigue - removeFatigue,
             } as Record<any, any>)
         }
+    }
+
+    defenseWeapons = (): (Item & { system: WeaponDataModel })[] => {
+        return this.parent.items.filter((it: any) =>
+            it.type === "weapon" && it.system.isEquipped && it.system.isDefenseWeapon() && it.system.skills.some(skill => this.skills[skill].trained)
+        )
     }
 
     equippedRelics = (): (Item & { system: EquipmentDataModel<EquipmentSchema> })[] => {
@@ -386,14 +393,10 @@ export function setSkill(stat: number, trained: boolean): number {
 
 export function setSaves(hero: HeroDataModel) {
     const base = 20
+    const armor = getEquippedArmor(hero)
+    hero.saves.reflex = base + (armor?.system?.bulk?.slots ?? 0) - (hero.stats.dexterity! + hero.stats.awareness!)
     hero.saves.endure = base - (hero.stats.might! * 2)
     hero.saves.will = base - (hero.stats.reason! + hero.stats.presence!)
-    hero.saves.reflex = base - (hero.stats.dexterity! + hero.stats.awareness!)
-
-    const armor = getEquippedArmor(hero)
-    if (armor) {
-        hero.modifiers.skillCheck.reflex.modifier! -= armor.system.bulk.slots
-    }
 }
 
 export function setSpellcastingStats(hero: HeroDataModel) {

@@ -4,7 +4,7 @@
   "_id": "z2A8uH15LuS70JTz",
   "img": "icons/magic/fire/dagger-rune-enchant-blue.webp",
   "system": {
-    "description": "<p><span style=\"white-space:pre-wrap\">Items count as Relics with a compatible +{{feature-value:1:1}} Bonus Relic Power while you have them Equipped. This Bonus stacks with any other Bonus the Item may have. The Bonus Relic Power is increased by 1 every 4 Levels hereafter.</span></p>",
+    "description": "<p><span style=\"white-space:pre-wrap\">You can take the Use Action to change the Power of a Relic you are holding to another Power of equal or lesser value. The Powers must be valued at 250g or lower. This value is multiplied by 5 every 4 Levels hereafter.</span></p>",
     "rules": [],
     "level": 4,
     "scale": 4,
@@ -21,9 +21,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.0.94",
+    "systemVersion": "0.1.103",
     "createdTime": 1789501586701,
-    "modifiedTime": 1789521717087,
+    "modifiedTime": 1791390313167,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "compendiumSource": null,
     "duplicateSource": null,

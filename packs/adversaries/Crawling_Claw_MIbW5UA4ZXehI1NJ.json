@@ -4,7 +4,7 @@
   "img": "systems/vagabond-app/assets/icons/ic_adversary.webp",
   "system": {
     "health": {
-      "value": 2,
+      "value": 1,
       "max": 0
     },
     "armor": {
@@ -736,7 +736,7 @@
     "threatLevel": 1,
     "threatLevelOverride": 1,
     "description": "<p><span style=\"white-space: pre-wrap;\">A necromantically-animated humanoid hand.</span></p>",
-    "hitDice": 2,
+    "hitDice": 1,
     "zone": "front",
     "movement": {
       "speed": "25'"
@@ -870,9 +870,9 @@
   "_stats": {
     "coreVersion": "14.361",
     "systemId": "vagabond-app",
-    "systemVersion": "0.1.27",
+    "systemVersion": "0.1.103",
     "createdTime": 1790089695844,
-    "modifiedTime": 1790098556306,
+    "modifiedTime": 1791392967690,
     "lastModifiedBy": "KyorYoEvge7ElSaj",
     "exportSource": null,
     "compendiumSource": null,

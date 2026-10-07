@@ -138,9 +138,14 @@ export abstract class Attack {
         const target = actor?.system
 
         const armorRating = (target as any)?.armor?.rating ?? 0
+        const additionalArmorRating = this.getAdditionalArmorRating(targetId)
         const armorPiercing = this.damageRoll?.result?.armorPiercing ?? 0
-        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating - armorPiercing)
+        const armor = args.bypassArmor ? 0 : Math.max(0, armorRating + additionalArmorRating - armorPiercing)
         return Math.max(0, (damage + (args.flanked ? 2 : 0)) - armor - perDieMit)
+    }
+
+    protected getAdditionalArmorRating(_targetId: string): number {
+        return 0
     }
 
     protected get isCriticalHit(): boolean { return false }

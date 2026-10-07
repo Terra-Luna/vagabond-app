@@ -25,9 +25,6 @@ export const onClickAction = async (
     saveTypes?: SavingThrowType[],
     statuses?: string[]
 ) => {
-    /**
-     * TODO: create a config item to toggle between using damage rolls vs. flat damage.
-     */
     if (dice) {
         const attack = AdversaryAttack.build(
             npc.parent,
