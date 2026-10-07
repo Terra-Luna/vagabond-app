@@ -61,7 +61,9 @@ export const ClassSheetComponent = ({ item, setFeatureDropEnabled }: { item: Ite
 
                     <div className="mt-2">
                         <ItemRulesManager item={item} />
-                        <ActiveEffectsView initialDocument={item} />
+                        <div className="px-2">
+                            <ActiveEffectsView initialDocument={item} />
+                        </div>
                     </div>
                 </div>
 

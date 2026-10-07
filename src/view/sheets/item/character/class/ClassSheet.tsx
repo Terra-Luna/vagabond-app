@@ -9,7 +9,7 @@ export class ClassSheet extends VagabondItemSheet {
     static DEFAULT_OPTIONS = {
         position: {
             width: 1380,
-            height: 720 as any,
+            height: 670 as any,
             top: 100,
             left: 100
         },
