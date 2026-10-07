@@ -537,11 +537,13 @@ export class HeroAttack extends Attack {
                 ? mods.healing.out.spell.dice.exploding.values
                 : mods.damage.out.spell.dice.exploding.values
 
+            const weak = !isHealing && (mods.damage.out.global.conditional.weak || mods.damage.out.spell.conditional.weak)
+
             damageRoll = new DamageRoll({
                 atkName: delivery.spell.name,
                 dmgType: delivery.spell.damageType,
                 dice: [new DiceRoll({
-                    count: delivery.damageDice + delivery.studyDamageDice,
+                    count: delivery.damageDice + delivery.studyDamageDice + (weak ? 1 : 0),
                     faces: HeroAttack.SPELL_DIE_SIZE + dieSizeMod,
                     modifier: 0,
                     explodesOn: explosionsMod as number[]
