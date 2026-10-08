@@ -158,7 +158,11 @@ export abstract class EquipmentDataModel<T extends EquipmentSchema> extends Item
             ui.notifications?.info(`Unable to remove Bound item: ${this.parent.name}...the curse must be lifted.`)
             return
         }
-        await this.parent.update({ 'system.isEquipped': !this.isEquipped })
+        const updates = { 'system.isEquipped': !this.isEquipped }
+        if (this.parent.type === 'weapon') {
+            updates['system.grip.state'] = (this as any).grip.style === 'HH' ? 'HH' : 'H'
+        }
+        await this.parent.update(updates)
     }
 
     isRelic = (): boolean => {

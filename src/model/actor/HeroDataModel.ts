@@ -206,6 +206,11 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             return
         }
 
+        if (item.system instanceof WeaponDataModel && item.system.grip.style === '-') {
+            await item.system.toggleEquipped()
+            return
+        }
+
         if (item.system instanceof ArmorDataModel) {
             for (const armor of [...this.equippedArmor(), item]) {
                 await armor.system.toggleEquipped()
@@ -218,10 +223,12 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
             return
         }
 
-        const equipped = this.equippedWeapons()
-        const handsAreFull = equipped.length > 0 && equipped[0]?.system instanceof WeaponDataModel
-            ? equipped[0]?.system?.grip?.state === 'HH'
-            : equipped[0]?.system?.bulk?.slots > 1
+        const equipped = this.equippedWeapons().filter(it => it.system instanceof WeaponDataModel && it.system.grip.style !== '-')
+        const handsAreFull = equipped.length > 0 && equipped.reduce((sum, it) => sum + (
+            it.system instanceof WeaponDataModel
+                ? (it.system.grip.state === 'HH' ? 2 : 1)
+                : (it.system.bulk.slots ?? 1)
+        ), 0) > 1
 
         if (handsAreFull) {
             ui.notifications?.info(`Your hands are full.`)
@@ -240,7 +247,7 @@ export class HeroDataModel extends ActorDataModel<HeroDataModelSchema> {
     async toggleVersatileGrip(item: Item & { system: WeaponDataModel }) {
         if (item.system.grip.style !== 'V') return
 
-        const equipped = this.equippedWeapons()
+        const equipped = this.equippedWeapons().filter(it => it.system instanceof WeaponDataModel && it.system.grip.style !== '-')
 
         if (equipped.length > 1) {
             for (const weapon of equipped.filter(it => it.id !== item.id)) {
